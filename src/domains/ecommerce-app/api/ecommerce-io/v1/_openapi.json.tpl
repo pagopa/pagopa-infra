@@ -1443,8 +1443,7 @@
           }
         },
         "required": [
-          "walletId",
-          "pamentToken",
+          "paymentToken",
           "paymentAmount"
         ]
       },
