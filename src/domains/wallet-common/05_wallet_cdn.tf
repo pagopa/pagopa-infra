@@ -48,7 +48,7 @@ module "wallet_fe_cdn" {
       {
         action = "Overwrite"
         name   = "Content-Security-Policy"
-        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s *.nexigroup.com;", var.dns_zone_prefix, var.external_domain)
+        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s *.nexigroup.com;", var.dns_zone_platform, var.external_domain)
       },
       {
         action = "Append"
@@ -63,7 +63,7 @@ module "wallet_fe_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy"
-        value  = "script-src 'self' 'unsafe-inline';"
+        value  = "script-src 'self' 'unsafe-inline' *.nexigroup.com;"
       },
       {
         action = "Append"
