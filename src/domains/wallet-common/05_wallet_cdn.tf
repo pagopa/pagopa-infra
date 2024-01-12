@@ -63,7 +63,7 @@ module "wallet_fe_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy"
-        value  = "script-src 'self' 'unsafe-inline';"
+        value  = "script-src 'self' 'unsafe-inline' *.nexigroup.com;"
       },
       {
         action = "Append"
