@@ -30,18 +30,6 @@
       </createIndex>
   </changeSet>
 
-  <changeSet author="liquibase" id="20240111111303">
-      <preConditions onFail="MARK_RAN">
-          <not>
-              <indexExists tableName="iban_master" indexName="fk_iban_fk_pa_on_iban_master_idx"/>
-          </not>
-      </preConditions>
-      <createIndex indexName="fk_iban_fk_pa_on_iban_master_idx" tableName="iban_master">
-          <column name="fk_iban"/>
-          <column name="fk_pa"/>
-      </createIndex>
-  </changeSet>
-
   <changeSet author="liquibase" id="20240111111304">
       <preConditions onFail="MARK_RAN">
           <not>
