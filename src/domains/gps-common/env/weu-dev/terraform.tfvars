@@ -113,3 +113,32 @@ cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 
 enable_iac_pipeline                   = true
 gpd_payments_sa_delete_retention_days = 0
+
+####################################
+## GitHub Runner Managed Identity ##
+####################################
+
+cd_github_federations = [
+  {
+    repository = "pagopa-gpd-upload"
+    subject    = "dev"
+  },
+  {
+    repository = "pagopa-gpd-upload-function"
+    subject    = "dev"
+  }
+]
+
+environment_cd_roles = {
+  subscription = [
+    "Contributor"
+  ]
+  resource_groups = {
+    "pagopa-d-gps-sec-rg" = [
+      "Key Vault Contributor"
+    ],
+    "pagopa-d-weu-dev-aks-rg" = [
+      "Contributor"
+    ]
+  }
+}
