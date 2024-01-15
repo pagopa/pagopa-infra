@@ -1920,7 +1920,8 @@
             "type": "string"
           },
           "transactionDate": {
-            "type": "date-time"
+            "type": "string",
+            "format": "date-time"
           },
           "pspName": {
             "type": "string"
@@ -1937,6 +1938,7 @@
           "fee": {
             "type": "string"
           }
+        }
       },
       "TransactionDetailWalletInfo": {
         "type": "object",
