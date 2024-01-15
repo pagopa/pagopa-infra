@@ -80,11 +80,11 @@ resource "azurerm_cosmosdb_mongo_database" "pagopa_backoffice" {
     }
   }
 
-  lifecycle {
-    ignore_changes = [
-      autoscale_settings
-    ]
-  }
+  # lifecycle {
+  #   ignore_changes = [
+  #     autoscale_settings
+  #   ]
+  # }
 }
 
 resource "azurerm_management_lock" "mongodb_pagopa_backoffice" {
