@@ -146,8 +146,11 @@
             <when condition="@("false".Equals("${ecommerce_io_with_pm_enabled}") && context.Response.StatusCode == 200)">
                 <set-body>@{ 
                     JObject inBody = context.Response.Body.As<JObject>(preserveContent: true); 
-                    var authorizationUrl = inBody["authorizationUrl"];
-                    inBody["authorizationUrl"] = authorizationUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("sessionToken",""));
+                    var authorizationUrl = (string)inBody["authorizationUrl"];
+                    if(authorizationUrl.Contains("checkout.pagopa.it")){
+                        authorizationUrl = authorizationUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("sessionToken",""));
+                    }
+                    inBody["authorizationUrl"] = authorizationUrl;
                     return inBody.ToString(); 
                 }</set-body>
             </when>
