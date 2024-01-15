@@ -1453,7 +1453,7 @@
           },
           "gateway": {
             "type": "string",
-            "pattern": "XPAY|VPOS|NPG",
+            "pattern": "XPAY|VPOS|NPG|REDIRECT",
             "description": "Pgs identifier"
           }
         },
@@ -1619,6 +1619,22 @@
             "example": {
               "detailType": "cards",
               "orderId": "order-id"
+            }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for Redirection authorization request",
+            "properties": {
+              "detailType": {
+                "description": "fixed value 'redirect'",
+                "type": "string"
+              }
+            },
+            "required": [
+              "detailType"
+            ],
+            "example": {
+              "detailType": "redirect"
             }
           }
         ]

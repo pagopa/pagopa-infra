@@ -273,7 +273,7 @@
             "name": "x-pgs-id",
             "schema": {
               "type": "string",
-              "pattern": "XPAY|VPOS|NPG"
+              "pattern": "XPAY|VPOS|NPG|REDIRECT"
             },
             "required": false,
             "description": "Pgs identifier (populated by APIM policy)"
@@ -629,6 +629,9 @@
               },
               {
                 "$ref": "#/components/schemas/WalletAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/RedirectionAuthRequestDetails"
               }
             ],
             "discriminator": {
@@ -637,7 +640,8 @@
                 "postepay": "#/components/schemas/PostePayAuthRequestDetails",
                 "card": "#/components/schemas/CardAuthRequestDetails",
                 "cards": "#/components/schemas/CardsAuthRequestDetails",
-                "wallet": "#/components/schemas/WalletAuthRequestDetails"
+                "wallet": "#/components/schemas/WalletAuthRequestDetails",
+                "redirect": "#/components/schemas/RedirectionAuthRequestDetails"
               }
             }
           }
@@ -746,18 +750,18 @@
             "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'cards'",
             "type": "string"
           },
-          "sessionId": {
+          "orderId": {
             "type": "string",
-            "description": "NPG transaction session id"
+            "description": "NPG transaction order id"
           }
         },
         "required": [
           "detailType",
-          "sessionId"
+          "orderId"
         ],
         "example": {
           "detailType": "cards",
-          "sessionId": "session-id"
+          "orderId": "orderId"
         }
       },
       "WalletAuthRequestDetails": {
@@ -780,6 +784,22 @@
         "example": {
           "detailType": "wallet",
           "walletId": "walletId"
+        }
+      },
+      "RedirectionAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for Redirection authorization request",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'redirect'",
+            "type": "string"
+          }
+        },
+        "required": [
+          "detailType"
+        ],
+        "example": {
+          "detailType": "redirect"
         }
       },
       "RequestAuthorizationResponse": {
@@ -816,6 +836,24 @@
             "properties": {
               "feeTotal": {
                 "$ref": "#/components/schemas/AmountEuroCents"
+              },
+              "paymentGateway": {
+                "type": "string",
+                "example": "XPAY"
+              },
+              "sendPaymentResultOutcome": {
+                "type": "string",
+                "enum": [
+                  "OK",
+                  "KO",
+                  "NOT_RECEIVED"
+                ]
+              },
+              "authorizationCode": {
+                "type": "string"
+              },
+              "authorizationErrorCode": {
+                "type": "string"
               }
             },
             "required": [
