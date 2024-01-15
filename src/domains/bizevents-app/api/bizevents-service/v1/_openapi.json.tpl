@@ -1844,7 +1844,7 @@
           }
         }
       },
-"TransactionListItem": {
+      "TransactionListItem": {
         "required": [
           "transactionId",
           "payeeName",
@@ -1876,12 +1876,36 @@
       },
       "TransactionDetail": {
         "required": [
-          "transactionId",
-          "payeeName",
-          "subject",
-          "amount",
-          "transactionDate",
+          "infoTransaction",
           "cartItem"
+        ],
+        "type": "object",
+        "properties": {
+          "infoTransaction": {
+            "$ref": "#/components/schemas/DetailInfoTransaction"
+          },
+          "carts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CartItem"
+            }
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "INTERNAL",
+              "PM",
+              "NDP001PROD",
+              "NDP002PROD",
+              "NDP003PROD"
+            ]
+          }
+        }
+      },
+      "DetailInfoTransaction": {
+        "required": [
+          "transactionId",
+          "amount",
         ],
         "type": "object",
         "properties": {
@@ -1889,51 +1913,53 @@
             "type": "string",
             "description": "contains either the biz-event id, or the transactionDetails.transaction.idTransaction value stored in the biz-event data"
           },
-          "payeeName": {
-            "type": "string"
-          },
-          "amount": {
-            "type": "number"
-          },
-          "transactonDate": {
-            "type": "string"
-          },
-          "payerName": {
-            "type": "string"
-          },
-          "payerTaxCode": {
-            "type": "string"
-          },
-          "accountHolder": {
-            "type": "string"
-          },
           "authCode": {
             "type": "string"
           },
           "rnn": {
             "type": "string"
           },
-          "fee": {
-            "type": "string"
-          },
-          "paymentMethod": {
-            "type": "string"
+          "transactionDate": {
+            "type": "date-time"
           },
           "pspName": {
             "type": "string"
           },
-          "opsOrigin": {
-            "type": "string",
-            "enum": [
-              "INTERNAL",
-              "PAYMENT_MANAGER"
-            ]
+          "walletInfo": {
+            "$ref": "#/components/schemas/TransactionDetailWalletInfo"
           },
-          "carts": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CartItem"
-            }
+          "payer": {
+            "$ref": "#/components/schemas/TransactionDetailPayer"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "fee": {
+            "type": "string"
+          }
+      },
+      "TransactionDetailWalletInfo": {
+        "type": "object",
+        "properties": {
+          "accountHolder": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "blurredNumber": {
+            "type": "string"
+          },
+        }
+      },
+      "TransactionDetailPayer": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "taxCode": {
+            "type": "string"
           }
         }
       },
@@ -1946,22 +1972,38 @@
           "amount": {
             "type": "number"
           },
-          "payeeName": {
-            "type": "string"
+          "payee": {
+            "$ref": "#/components/schemas/TransactionDetailPayee"
           },
-          "payeeTaxCode": {
-            "type": "string"
-          },
-          "debtorName": {
-            "type": "string"
-          },
-          "debtorTaxCode": {
-            "type": "string"
+          "debtor": {
+            "$ref": "#/components/schemas/TransactionDetailDebtor"
           },
           "refNumberValue": {
             "type": "string"
           },
           "refNumberType": {
+            "type": "string"
+          }
+        }
+      },
+      "TransactionDetailPayee": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "taxCode": {
+            "type": "string"
+          }
+        }
+      },
+      "TransactionDetailDebtor": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "taxCode": {
             "type": "string"
           }
         }
