@@ -483,8 +483,9 @@
         "type": "string",
         "description": "Enumeration of wallet statuses",
         "enum": [
-          "INITIALIZED",
           "CREATED",
+          "INITIALIZED",
+          "VALIDATED",
           "DELETED",
           "ERROR"
         ]
@@ -732,14 +733,14 @@
                 "maxLength": 20,
                 "example": "+3938*******202"
               },
-              "instituteCode":{
+              "instituteCode": {
                 "description": "institute code",
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 5,
                 "example": "12345"
               },
-              "bankName":{
+              "bankName": {
                 "description": "bank name",
                 "type": "string",
                 "example": "banca di banca"
