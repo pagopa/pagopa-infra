@@ -460,3 +460,15 @@ resource "azurerm_key_vault_secret" "npg_notification_signing_key" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "checkout_redirect_psp_keys" {
+  name         = "checkout-redirect-psp-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

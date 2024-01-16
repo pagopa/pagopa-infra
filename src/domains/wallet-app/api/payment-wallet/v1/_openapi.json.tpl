@@ -491,8 +491,9 @@
         "type": "string",
         "description": "Enumeration of wallet statuses",
         "enum": [
-          "INITIALIZED",
           "CREATED",
+          "INITIALIZED",
+          "VALIDATED",
           "DELETED",
           "ERROR"
         ]
