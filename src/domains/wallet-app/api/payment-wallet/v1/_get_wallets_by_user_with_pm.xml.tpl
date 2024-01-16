@@ -134,7 +134,7 @@
 
                             TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
 
-                            DateTime creationDateTime = DateTime.Parse(wallet["createDate"].Replace(" ","T"));
+                            DateTime creationDateTime = DateTime.Parse(((string)wallet["createDate"]).Replace(" ","T"));
                             DateTime utcCreationDateTime = TimeZoneInfo.ConvertTimeToUtc(creationDateTime, zone);
                             DateTimeOffset creationDateTimeOffset = new DateTimeOffset(utcCreationDateTime);
                             result["creationDate"] = creationDateTimeOffset.ToString("o");
