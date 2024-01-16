@@ -483,7 +483,11 @@
         "type": "string",
         "description": "Enumeration of wallet statuses",
         "enum": [
-          "VALIDATED"
+          "CREATED",
+          "INITIALIZED",
+          "VALIDATED",
+          "DELETED",
+          "ERROR"
         ]
       },
       "WalletCreateRequest": {
