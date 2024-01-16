@@ -1226,10 +1226,8 @@
             "type": "boolean",
             "description": "Check flag for psp validation"
           },
-          "walletId": {
-            "type": "string",
-            "format": "uuid",
-            "description": "User wallet id"
+          "details": {
+            "$ref": "#/components/schemas/AuthorizationDetails"
           }
         },
         "required": [
@@ -1238,7 +1236,99 @@
           "pspId",
           "language",
           "isAllCCP",
-          "walletId"
+          "details"
+        ]
+      },
+      "AuthorizationDetails": {
+        "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for authorization performed with a wallet",
+            "properties": {
+              "detailType": {
+                "$ref": "#/components/schemas/WalletDetailType"
+              },
+              "walletId": {
+                "type": "string",
+                "format": "uuid",
+                "description": "WalletId"
+              }
+            },
+            "required": [
+              "detailType",
+              "walletId"
+            ],
+            "example": {
+              "detailType": "wallet",
+              "walletId": "9972eb61-bea1-405f-846a-980b9aebe017"
+            }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details apm method",
+            "properties": {
+              "detailType": {
+                "$ref": "#/components/schemas/ApmDetailType"
+              },
+              "paymentMethodId": {
+                "description": "User selected payment method id",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "detailType",
+              "paymentMethodId"
+            ],
+            "example": {
+              "detailType": "apm",
+              "paymentMethodId": "dbc12081-ea5c-4a73-ae0a-7d6a881a1160"
+            }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for redirect method",
+            "properties": {
+              "detailType": {
+                "$ref": "#/components/schemas/RedirectDetailType"
+              },
+              "paymentMethodId": {
+                "description": "User selected payment method id",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "detailType",
+              "paymentMethodId"
+            ],
+            "example": {
+              "detailType": "redirect",
+              "paymentMethodId": "dbc12081-ea5c-4a73-ae0a-7d6a881a1160"
+            }
+          }
+        ]
+      },
+      "WalletDetailType": {
+        "description": "wallet detail type discriminator field",
+        "type": "string",
+        "enum": [
+          "wallet"
+        ]
+      },
+      "ApmDetailType": {
+        "description": "apm detail type discriminator field",
+        "type": "string",
+        "enum": [
+          "apm"
+        ]
+      },
+      "RedirectDetailType": {
+        "description": "redirect detail type discriminator field",
+        "type": "string",
+        "enum": [
+          "redirect"
         ]
       },
       "UpdateAuthorizationRequest": {
