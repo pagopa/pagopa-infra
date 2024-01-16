@@ -10,8 +10,7 @@ data "azurerm_kubernetes_cluster" "aks" {
 # repos must be lower than 20 items
 locals {
   repos_01 = [
-    "pagopa-stand-in-manager",
-    "pagopa-stand-in-technical-support",
+    "pagopa-api-config-cache",
   ]
 
   federations_01 = [
@@ -21,10 +20,9 @@ locals {
     }
   ]
 
-  # To avoid contributor -> https://github.com/microsoft/azure-container-apps/issues/35
   environment_cd_roles = {
     subscription = [
-      "Contributor"
+      "Reader"
     ]
     resource_groups = {
       "${local.product}-${var.domain}-sec-rg" = [

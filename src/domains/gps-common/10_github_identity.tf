@@ -3,8 +3,8 @@ data "azurerm_resource_group" "identity_rg" {
 }
 
 data "azurerm_kubernetes_cluster" "aks" {
-  name                = local.aks_cluster.name
-  resource_group_name = local.aks_cluster.resource_group_name
+  name                = "${local.product}-${var.location_short}-${var.instance}-aks"
+  resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
 }
 
 # repos must be lower than 20 items
@@ -33,11 +33,6 @@ locals {
         "Contributor"
       ]
     }
-  }
-
-  aks_cluster = {
-    name                = "${local.product}-${var.location_short}-${var.env}-aks"
-    resource_group_name = "${local.product}-${var.location_short}-${var.env}-aks-rg"
   }
 }
 
