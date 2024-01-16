@@ -147,7 +147,7 @@
                                     JObject converted = new JObject();
                                     converted["name"] = serviceName;
                                     converted["status"] = "ENABLED";
-                                    converted["updateDate"] = wallet["createDate"];
+                                    converted["updateDate"] = result["createDate"];
                                     convertedServices.Add(converted);
                                 }
                             }
