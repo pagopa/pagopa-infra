@@ -6,10 +6,10 @@
             <value>NPG</value>
         </set-header>
         <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
+        <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["details"]["walletId"])" />
         <choose>
             <when condition="@("true".Equals("${ecommerce_io_with_pm_enabled}"))">
                 <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
-                <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["details"]["walletId"])" />
                 <set-variable name="idPsp" value="@((string)((JObject) context.Variables["body"])["pspId"])" />
                 <set-variable name="idWallet" value="@{
                     string walletIdUUID = (string)context.Variables["walletId"];
@@ -127,14 +127,76 @@
                 </choose>
             </when>
             <otherwise>
+                <choose>    
+                    <when condition="@(!String.IsNullOrEmpty((string)(context.Variables["walletId"])))">
+                        <send-request response-variable-name="walletResponse" timeout="10">
+                            <set-url>@($"https://${wallet-basepath}/pagopa-wallet-service/wallets/{(string)context.Variables["walletId"]}")</set-url>
+                            <set-method>GET</set-method>
+                        </send-request>
+                        <choose>
+                            <when condition="@(((int)((IResponse)context.Variables["walletResponse"]).StatusCode) == 200)">
+                                <set-variable name="walletResponseBody" value="@((JObject)((IResponse)context.Variables["walletResponse"]).Body.As<JObject>())" />
+                                <set-variable name="paymentMethodId" value="@((string)((JObject)context.Variables["walletResponseBody"])["paymentMethodId"])" />
+                            </when>
+                            <when condition="@(((int)((IResponse)context.Variables["walletResponse"]).StatusCode) == 404)">
+                                <return-response>
+                                    <set-status code="404" reason="Not found" />
+                                    <set-header name="Content-Type" exists-action="override">
+                                        <value>application/json</value>
+                                    </set-header>
+                                    <set-body>{
+                                        "title": "Wallet not found",
+                                        "status": 404,
+                                        "detail": "Cannot retrieve wallet for input wallet id",
+                                    }</set-body>
+                                </return-response>
+                            </when>
+                            <otherwise>
+                                <return-response>
+                                    <set-status code="502" reason="Bad Gateway" />
+                                    <set-header name="Content-Type" exists-action="override">
+                                        <value>application/json</value>
+                                    </set-header>
+                                    <set-body>{
+                                        "title": "Bad gateway",
+                                        "status": 502,
+                                        "detail": "Wallet not available",
+                                    }</set-body>
+                                </return-response>
+                            </otherwise>
+                        </choose>
+                    </when>
+                </choose>    
                 <set-body>@{ 
                     JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
+                    JObject authDetail = (JObject)inBody["details"];
+                    string walletId = context.Variables["walletId"];
+                    string detailType = (string)authDetail["detailType"];
+                    string paymentMethodId = (string)context.Variables["paymentMethodId"];
+                    JObject requestBodyDetails = new JObject();
+                    requestBodyDetails["detailType"] = (string)authDetail["detailType"];
+                    switch(detailType) 
+                    {
+                        case "wallet":
+                            requestBodyDetails = authDetail; 
+                            requestBodyDetails["walletId"] = walletId;
+                            break;
+                        case "apm":
+                            paymentMethodId = (string)authDetail["paymentMethodId"];
+                            requestBodyDetails = authDetail;
+                            break;
+                        case "redirect":
+                             paymentMethodId = (string)authDetail["paymentMethodId"];
+                            break;
+                        default:
+                            break;
+                    }
                     JObject requestBodyDetails = new JObject(
                         new JProperty("detailType", "wallet"),
                         new JProperty("walletId", requestBody["walletId"])
                     );
                     requestBody["details"] = requestBodyDetails;
-                    requestBody.Remove("walletId");
+                    requestBody["paymentInstrumentId"] = paymentMethodId;
                     return requestBody.ToString();  
                 }</set-body>
             </otherwise>
