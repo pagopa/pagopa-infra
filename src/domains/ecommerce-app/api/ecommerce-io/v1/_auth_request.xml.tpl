@@ -2,14 +2,25 @@
     <inbound>
         <base />
         <set-header name="x-pgs-id" exists-action="delete" />
-        <set-header name="x-pgs-id" exists-action="override">
-            <value>NPG</value>
-        </set-header>
         <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
+        <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
         <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["details"]["walletId"])" />
+        <set-variable name="detailType" value="@((string)((JObject) context.Variables["body"])["details"]["detailType"])" />
+        <choose>
+             <when condition="@(((string)context.Variables["detailType"]).Equals("redirect"))">
+                <set-header name="x-pgs-id" exists-action="override">
+                    <value>REDIRECT</value>
+                </set-header>
+            </when>
+            <otherwise>
+                <set-header name="x-pgs-id" exists-action="override">
+                    <value>NPG</value>
+                </set-header>
+            </otherwise>
+        </choose>
+       
         <choose>
             <when condition="@("true".Equals("${ecommerce_io_with_pm_enabled}"))">
-                <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
                 <set-variable name="idPsp" value="@((string)((JObject) context.Variables["body"])["pspId"])" />
                 <set-variable name="idWallet" value="@{
                     string walletIdUUID = (string)context.Variables["walletId"];
@@ -168,11 +179,11 @@
                     </when>
                 </choose>    
                 <set-body>@{ 
-                    JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
-                    JObject authDetail = (JObject)inBody["details"];
-                    string walletId = context.Variables["walletId"];
+                    JObject requestBody = (JObject)context.Variables["body"]; 
+                    JObject authDetail = (JObject)requestBody["details"];
+                    string walletId = (string)context.Variables["walletId"];
                     string detailType = (string)authDetail["detailType"];
-                    string paymentMethodId = (string)context.Variables["paymentMethodId"];
+                    string paymentMethodId = (string)context.Variables.GetValueOrDefault("paymentMethodId","");
                     JObject requestBodyDetails = new JObject();
                     requestBodyDetails["detailType"] = (string)authDetail["detailType"];
                     switch(detailType) 
@@ -183,18 +194,17 @@
                             break;
                         case "apm":
                             paymentMethodId = (string)authDetail["paymentMethodId"];
+                            authDetail.Remove("paymentMethodId");
                             requestBodyDetails = authDetail;
                             break;
                         case "redirect":
-                             paymentMethodId = (string)authDetail["paymentMethodId"];
+                            paymentMethodId = (string)authDetail["paymentMethodId"];
+                            authDetail.Remove("paymentMethodId");
+                            requestBodyDetails = authDetail;
                             break;
                         default:
                             break;
                     }
-                    JObject requestBodyDetails = new JObject(
-                        new JProperty("detailType", "wallet"),
-                        new JProperty("walletId", requestBody["walletId"])
-                    );
                     requestBody["details"] = requestBodyDetails;
                     requestBody["paymentInstrumentId"] = paymentMethodId;
                     return requestBody.ToString();  
