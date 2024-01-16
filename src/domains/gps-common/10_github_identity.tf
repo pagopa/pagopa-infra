@@ -2,6 +2,11 @@ data "azurerm_resource_group" "identity_rg" {
   name = "${local.product}-identity-rg"
 }
 
+data "azurerm_kubernetes_cluster" "aks" {
+  name                = local.aks_cluster.name
+  resource_group_name = local.aks_cluster.resource_group_name
+}
+
 # repos must be lower than 20 items
 locals {
   repos_01 = [
@@ -29,6 +34,11 @@ locals {
       ]
     }
   }
+
+  aks_cluster = {
+    name                = "${local.product}-${var.location_short}-${var.env}-aks"
+    resource_group_name = "${local.product}-${var.location_short}-${var.env}-aks-rg"
+  }
 }
 
 # create a module for each 20 repos
@@ -53,4 +63,33 @@ module "identity_cd_01" {
   depends_on = [
     data.azurerm_resource_group.identity_rg
   ]
+}
+
+resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
+  triggers = {
+    aks_id               = data.azurerm_kubernetes_cluster.aks.id
+    service_principal_id = module.identity_cd_01.identity_client_id
+    namespace            = var.domain
+    version              = "v2"
+  }
+
+  provisioner "local-exec" {
+    command = <<EOT
+      az role assignment create --role "Azure Kubernetes Service RBAC Admin" \
+      --assignee ${self.triggers.service_principal_id} \
+      --scope ${self.triggers.aks_id}/namespaces/${self.triggers.namespace}
+
+      az role assignment list --role "Azure Kubernetes Service RBAC Admin"  \
+      --scope ${self.triggers.aks_id}/namespaces/${self.triggers.namespace}
+    EOT
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = <<EOT
+      az role assignment delete --role "Azure Kubernetes Service RBAC Admin" \
+      --assignee ${self.triggers.service_principal_id} \
+      --scope ${self.triggers.aks_id}/namespaces/${self.triggers.namespace}
+    EOT
+  }
 }
