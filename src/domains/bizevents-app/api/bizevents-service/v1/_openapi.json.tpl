@@ -1860,15 +1860,20 @@
           },
           "payeeName": {
             "type": "string"
+             "description": "contains either the company name as payee (Ente Creditore), or a default value (Pagamento Multiplo) if it is a cart based transaction"
           },
           "payeeTaxCode": {
             "type": "string"
+            "description": "contains the payee (Ente Creditore) company tax code. null if the biz event does not contain a value"
           },
           "amount": {
             "type": "number"
+            "description": "contains the total amount for the transaction (sum of all the same transaction related amounts if a cart based payment)"
           },
           "transactionDate": {
             "type": "string"
+            "format": "date-time"
+            "description": "contains the transaction date value"
           },
           "isCart": {
             "type": "boolean",
