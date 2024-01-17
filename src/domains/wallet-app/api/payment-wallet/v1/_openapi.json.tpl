@@ -656,10 +656,7 @@
             "properties": {
               "type": {
                 "type": "string",
-                "description": "Wallet details discriminator field.",
-                "enum": [
-                  "CARDS"
-                ]
+                "description": "Wallet details discriminator field. Fixed valued 'CARDS'"
               },
               "maskedPan": {
                 "description": "Card masked pan (first 6 digit and last 4 digit clear, other digit obfuscated)",
@@ -699,10 +696,7 @@
             "properties": {
               "type": {
                 "type": "string",
-                "description": "Wallet details discriminator field.",
-                "enum": [
-                  "PAYPAL"
-                ]
+                "description": "Wallet details discriminator field. Fixed valued 'PAYPAL'"
               },
               "abi": {
                 "description": "bank idetifier",
@@ -725,14 +719,11 @@
           },
           {
             "type": "object",
-            "description": "Paypal instrument details",
+            "description": "Bancomat pay instrument details",
             "properties": {
               "type": {
                 "type": "string",
-                "description": "Wallet details discriminator field.",
-                "enum": [
-                  "BANCOMATPAY"
-                ]
+                "description": "Wallet details discriminator field. Fixed valued 'BANCOMATPAY'"
               },
               "maskedNumber": {
                 "description": "masked number",
