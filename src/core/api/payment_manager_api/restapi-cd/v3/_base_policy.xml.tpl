@@ -51,7 +51,9 @@
                 string[] walletParamArray = requestBody!=null && requestBody.Split('&').Length >= 1 ? requestBody.Split('&') : new string[0];
                 string[] walletIdArray = Array.FindAll(walletParamArray, formIdValue => formIdValue.StartsWith("idWallet=", StringComparison.Ordinal));
                 string walletId = walletIdArray.Length > 0 && walletIdArray[0].Split('=').Length == 2 ? walletIdArray[0].Split('=')[1] : "";
-                return walletId;
+                string walletIdHex = (long.Parse(walletId)).ToString("X").PadLeft(16,'0');
+                string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
+                return walletIdToUuid;
                 }" />
               <set-header name="Set-Cookie" exists-action="append">
                   <value>@($"walletId={(string)context.Variables.GetValueOrDefault<string>("walletId","")}; Path=/pp-restapi-CD")</value>
