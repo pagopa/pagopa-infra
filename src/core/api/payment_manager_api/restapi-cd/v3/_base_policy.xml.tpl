@@ -47,10 +47,11 @@
           <!-- Credit card onboarding -->
           <when condition="@( context.Request.Url.Path.EndsWith("/webview/transactions/cc/verify") && (string)context.Request.Headers.GetValueOrDefault("Referer","") == "${payment_wallet_origin}")">
               <set-variable name="walletId" value="@{
-                    string requestBody = ((string)context.Variables["requestBody"]);
-                    string walletParam = requestBody!=null && requestBody.Split('&').Length >= 1 ? requestBody.Split('&')[0] : "";
-                    string walletId = walletParam != null && walletParam.Split('=').Length == 2 ? walletParam.Split('=')[1] : "";
-                    return walletId;
+                string requestBody = ((string)context.Variables["requestBody"]);
+                string[] walletParamArray = requestBody!=null && requestBody.Split('&').Length >= 1 ? requestBody.Split('&') : new string[0];
+                string[] walletIdArray = Array.FindAll(walletParamArray, formIdValue => formIdValue.StartsWith("idWallet=", StringComparison.Ordinal));
+                string walletId = walletIdArray.Length > 0 && walletIdArray[0].Split('=').Length == 2 ? walletIdArray[0].Split('=')[1] : "";
+                return walletId;
                 }" />
               <set-header name="Set-Cookie" exists-action="append">
                   <value>@($"walletId={(string)context.Variables.GetValueOrDefault<string>("walletId","")}; Path=/pp-restapi-CD")</value>
