@@ -21,9 +21,10 @@ locals {
     }
   ]
 
+  # to avoid subscription Contributor -> https://github.com/microsoft/azure-container-apps/issues/35
   environment_cd_roles = {
     subscription = [
-      "Reader"
+      "Contributor"
     ]
     resource_groups = {
       "${local.product}-${var.domain}-sec-rg" = [
