@@ -433,8 +433,16 @@
         "summary": "Redirection URL for onboarding outcome",
         "description": "Return onboarding outcome result as `outcome` query parameter",
         "responses": {
-          "200": {
-            "description": "Onboarding outcome available (see outcome query parameter)"
+          "302": {
+            "description": "Onboarding outcome available (see outcome query parameter)",
+            "headers": {
+              "Location": {
+                "description": "URI with iowallet:// used by client to show result given outocome in query parameter",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
