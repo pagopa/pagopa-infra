@@ -1848,7 +1848,6 @@
         "required": [
           "transactionId",
           "payeeName",
-          "subject",
           "amount",
           "transactionDate",
           "isCart"
@@ -1860,6 +1859,9 @@
             "description": "contains either the biz-event id, or the transactionDetails.transaction.idTransaction value stored in the biz-event data"
           },
           "payeeName": {
+            "type": "string"
+          },
+          "payeeTaxCode": {
             "type": "string"
           },
           "amount": {
