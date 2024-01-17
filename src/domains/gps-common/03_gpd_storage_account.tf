@@ -64,7 +64,7 @@ resource "azurerm_storage_management_policy" "gpd_sa_lifecycle_policy" {
     name    = "Gpd upload blob sa policy"
     enabled = true
     filters {
-      prefix_match = ["gpd-upload/input", "gpd-upload/output"]
+      prefix_match = ["gpd-upload"]
       blob_types   = ["blockBlob"]
     }
     actions {
