@@ -11,10 +11,11 @@ module "gpd_sa_sftp" {
   account_tier                  = "Standard"
   account_replication_type      = var.gpd_account_replication_type
   access_tier                   = "Hot"
-  is_hns_enabled                = true
-  advanced_threat_protection    = true
 
-  blob_versioning_enabled       = var.gpd_sa_blob_versioning_enabled
+  is_hns_enabled             = true
+  advanced_threat_protection = true
+  # should be false when sftp is enabled, ref:https://learn.microsoft.com/en-us/azure/storage/blobs/secure-file-transfer-protocol-known-issues
+  blob_versioning_enabled       = false
   blob_last_access_time_enabled = true
 
   network_rules = {
@@ -54,14 +55,6 @@ resource "azurerm_storage_container" "gpd_upload_container" {
   name                  = "gpd-upload"
   storage_account_name  = module.gpd_sa_sftp.name
   container_access_type = "private"
-}
-
-resource "azurerm_storage_blob" "gpd_upload_dirs" {
-  for_each               = toset(["input", "output"])
-  name                   = "${each.key}/.blob"
-  storage_account_name   = module.gpd_sa_sftp.name
-  storage_container_name = azurerm_storage_container.gpd_upload_container.name
-  type                   = "Block"
 }
 
 resource "azurerm_storage_management_policy" "gpd_sa_lifecycle_policy" {

@@ -116,7 +116,6 @@ gpd_payments_sa_delete_retention_days = 0
 # GPD Storage Account SFTP
 gpd_account_replication_type                                       = "LRS"
 cidr_subnet_gpd_storage_account                                    = ["10.1.152.16/29"]
-gpd_sa_blob_versioning_enabled                                     = false
 gpd_enable_private_endpoint                                        = false
 gpd_disable_network_rules                                          = true
 storage_account_snet_private_link_service_network_policies_enabled = false
