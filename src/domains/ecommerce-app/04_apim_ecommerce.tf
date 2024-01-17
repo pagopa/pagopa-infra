@@ -145,6 +145,15 @@ module "apim_ecommerce_transaction_auth_requests_service_api_v1" {
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "auth_request_gateway_policy" {
+  api_name            = module.apim_ecommerce_transaction_auth_requests_service_api_v1.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "updateTransactionAuthorization"
+
+  xml_content = file("./api/ecommerce-transaction-auth-requests-service/v1/_auth_request_gateway_policy.xml.tpl")
+}
+
 #####################################
 ## API transaction user receipts service ##
 #####################################
