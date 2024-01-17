@@ -411,36 +411,6 @@ resource "azurerm_key_vault_secret" "db_url" {
 ## GPD-Upload secrets START ##
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "gpd_upload_blob_url" {
-  name         = "gpd-upload-sas-url-blob"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "gpd_upload_blob_token" {
-  name         = "gpd-upload-sas-token-blob"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "gpd_core_key_for_upload" {
   name         = "gpd-core-key-for-gpd-upload"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
