@@ -10,8 +10,6 @@ data "azurerm_kubernetes_cluster" "aks" {
 # repos must be lower than 20 items
 locals {
   repos_01 = [
-    "pagopa-gpd-upload",
-    "pagopa-gpd-upload-function"
   ]
 
   federations_01 = [
