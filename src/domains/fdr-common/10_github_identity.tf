@@ -21,7 +21,7 @@ locals {
 
   environment_cd_roles = {
     subscription = [
-      "Reader"
+      "Contributor"
     ]
     resource_groups = {
       "${local.product}-${var.domain}-sec-rg" = [
@@ -85,4 +85,8 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
       --scope ${self.triggers.aks_id}/namespaces/${self.triggers.namespace}
     EOT
   }
+
+  depends_on = [
+    module.identity_cd_01
+  ]
 }
