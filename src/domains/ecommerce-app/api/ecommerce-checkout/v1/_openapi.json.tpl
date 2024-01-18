@@ -1785,6 +1785,9 @@
             "type": "string",
             "description": "Payment method type code"
           },
+          "methodManagement": {
+            "$ref": "#/components/schemas/PaymentMethodManagementType"
+          },
           "ranges": {
             "description": "Payment amount range in eurocents",
             "type": "array",
@@ -1800,7 +1803,8 @@
           "description",
           "status",
           "paymentTypeCode",
-          "ranges"
+          "ranges",
+          "methodManagement"
         ]
       },
       "PaymentMethodsResponse": {
@@ -2191,6 +2195,15 @@
           "ENABLED",
           "DISABLED",
           "INCOMING"
+        ]
+      },
+      "PaymentMethodManagementType": {
+        "type": "string",
+        "description": "Payment method management type",
+        "enum": [
+          "ONBOARDABLE",
+          "NOT_ONBOARDABLE",
+          "REDIRECT"
         ]
       }
     },
