@@ -22,7 +22,7 @@ locals {
 
   environment_cd_roles = {
     subscription = [
-      "Reader"
+      "Contributor"
     ]
     resource_groups = {
       "${local.product}-${var.domain}-sec-rg" = [
