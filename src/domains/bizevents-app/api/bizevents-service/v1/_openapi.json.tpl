@@ -1999,7 +1999,7 @@
             "description": "contains either the biz-event id, or the transactionDetails.transaction.idTransaction value stored in the biz-event data"
           },
           "payeeName": {
-            "type": "string"
+            "type": "string",
              "description": "contains either the company name as payee (Ente Creditore), or a default value (Pagamento Multiplo) if it is a cart based transaction"
           },
           "payeeTaxCode": {
