@@ -1867,7 +1867,7 @@
             "description": "contains the payee (Ente Creditore) company tax code. null if the biz event does not contain a value"
           },
           "amount": {
-            "type": "number"
+            "type": "string"
             "description": "contains the total amount for the transaction (sum of all the same transaction related amounts if a cart based payment)"
           },
           "transactionDate": {
@@ -1896,16 +1896,6 @@
             "items": {
               "$ref": "#/components/schemas/CartItem"
             }
-          },
-          "origin": {
-            "type": "string",
-            "enum": [
-              "INTERNAL",
-              "PM",
-              "NDP001PROD",
-              "NDP002PROD",
-              "NDP003PROD"
-            ]
           }
         }
       },
@@ -1921,6 +1911,9 @@
             "description": "contains either the biz-event id, or the transactionDetails.transaction.idTransaction value stored in the biz-event data"
           },
           "authCode": {
+            "type": "string"
+          },
+          "paymentMethod": {
             "type": "string"
           },
           "rnn": {
@@ -1940,10 +1933,20 @@
             "$ref": "#/components/schemas/TransactionDetailPayer"
           },
           "amount": {
-            "type": "number"
+            "type": "string"
           },
           "fee": {
             "type": "string"
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "INTERNAL",
+              "PM",
+              "NDP001PROD",
+              "NDP002PROD",
+              "NDP003PROD"
+            ]
           }
         }
       },
