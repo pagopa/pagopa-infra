@@ -362,16 +362,9 @@ variable "nodo_verifyko_storage_account" {
     blob_delete_retention_days    = number
     blob_versioning_enabled       = bool
     public_network_access_enabled = bool
+    backup_enabled                = bool
+    backup_retention_days         = number
   })
-  default = {
-    account_kind                  = "StorageV2"
-    account_tier                  = "Standard"
-    account_replication_type      = "LRS"
-    blob_versioning_enabled       = false
-    advanced_threat_protection    = false
-    blob_delete_retention_days    = 3653
-    public_network_access_enabled = false
-  }
 }
 
 variable "nodo_storico_storage_account" {

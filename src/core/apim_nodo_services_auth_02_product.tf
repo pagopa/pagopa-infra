@@ -25,6 +25,15 @@ module "apim_nodo_dei_pagamenti_product_auth" {
   }) : file("./api_product/nodo_pagamenti_api/auth/_base_policy.xml") # decoupler OFF
 }
 
+data "azurerm_api_management_api" "apim_aca_api_v1_" {
+
+  name                = format("%s-weu-aca-api-v1", "${var.prefix}-${var.env_short}") // pagopa-<ENV>-weu-aca-api-v1
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  revision            = "1"
+}
+
+
 locals {
 
   api_nodo_product_auth = [
@@ -33,7 +42,8 @@ locals {
     azurerm_api_management_api.apim_node_for_io_api_v1_auth.name,
     azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth.name,
     azurerm_api_management_api.apim_node_for_pa_api_v1_auth.name,
-    azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_auth.name
+    azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_auth.name,
+    data.azurerm_api_management_api.apim_aca_api_v1_.name // add ACA to nuova conn, feature needs creare un 2 prodotti separati per nuova connettività x EC e x PSP con in + per gli EC ACA
   ]
 
 }

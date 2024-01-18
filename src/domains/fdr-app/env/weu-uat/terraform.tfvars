@@ -35,6 +35,14 @@ storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
+reporting_fdr_storage_account_info = {
+  account_kind                      = "StorageV2"
+  account_tier                      = "Standard"
+  account_replication_type          = "LRS"
+  access_tier                       = "Hot"
+  advanced_threat_protection_enable = true
+}
+
 ### External resources
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"
 log_analytics_workspace_name                = "pagopa-u-law"

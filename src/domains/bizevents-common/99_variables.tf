@@ -123,6 +123,7 @@ variable "bizevents_datastore_cosmos_db_params" {
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
     container_default_ttl             = number
+    ip_range_filter                   = string
   })
 }
 

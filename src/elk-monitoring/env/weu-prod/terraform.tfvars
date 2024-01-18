@@ -39,8 +39,8 @@ elastic_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "3"
-  node_count_max  = "3"
+  node_count_min  = "4"
+  node_count_max  = "4"
   node_labels = {
     elastic : "eck",
   },
@@ -97,30 +97,50 @@ nodeset_config = {
     roles            = []
     storage          = "20Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-hot"
+    requestMemory    = "2Gi"
+    requestCPU       = "1"
+    limitsMemory     = "2Gi"
+    limitsCPU        = "2"
   },
   master-nodes = {
     count            = "3"
     roles            = ["master"]
     storage          = "20Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-hot"
+    requestMemory    = "2Gi"
+    requestCPU       = "1"
+    limitsMemory     = "2Gi"
+    limitsCPU        = "2"
   },
   data-hot-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_hot"]
     storage          = "500Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-hot"
+    requestMemory    = "4Gi"
+    requestCPU       = "1"
+    limitsMemory     = "4Gi"
+    limitsCPU        = "2"
   },
   data-warm-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_warm"]
     storage          = "500Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-warm"
+    requestMemory    = "4Gi"
+    requestCPU       = "1"
+    limitsMemory     = "4Gi"
+    limitsCPU        = "2"
   },
   data-cold-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
     storage          = "500Gi"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-cold"
+    requestMemory    = "4Gi"
+    requestCPU       = "1"
+    limitsMemory     = "4Gi"
+    limitsCPU        = "2"
   }
 }
 
@@ -138,4 +158,4 @@ elk_snapshot_sa = {
 }
 
 
-snapshot_storage_replication_type = "LRS"
+snapshot_storage_replication_type = "GZRS"

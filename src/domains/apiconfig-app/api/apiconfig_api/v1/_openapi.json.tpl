@@ -1,26 +1,34 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title": "PagoPA API configuration ${service}",
+    "title" : "PagoPA API configuration ${service}",
     "description" : "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei Pagamenti",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.57.5"
+    "version" : "0.58.2"
   },
   "servers" : [ {
     "url": "${host}/apiconfig/api/v1"
-  }, {
-    "url" : "https://{host}{basePath}",
-    "variables" : {
-      "host" : {
-        "default" : "api.dev.platform.pagopa.it",
-        "enum" : [ "api.dev.platform.pagopa.it", "api.uat.platform.pagopa.it", "api.platform.pagopa.it" ]
-      },
-      "basePath" : {
-        "default" : "/apiconfig/auth/api/v1",
-        "enum" : [ "/apiconfig/auth/api/v1", "/apiconfig/api/v1" ]
+  },
+    {
+      "url": "https://{host}{basePath}",
+      "variables": {
+        "host": {
+          "default": "api.dev.platform.pagopa.it",
+          "enum": [
+            "api.dev.platform.pagopa.it",
+            "api.uat.platform.pagopa.it",
+            "api.platform.pagopa.it"
+          ]
+        },
+        "basePath": {
+          "default": "/apiconfig/auth/api/v1",
+          "enum": [
+            "/apiconfig/auth/api/v1",
+            "/apiconfig/api/v1"
+          ]
+        }
       }
-    }
-  } ],
+    } ],
   "tags" : [ {
     "name" : "Payment Service Providers",
     "description" : "Everything about Payment Service Providers"
@@ -10741,6 +10749,153 @@
         }
       } ]
     },
+    "/creditorinstitutions/{creditorinstitutioncode}/ibans/list" : {
+      "get" : {
+        "tags" : [ "Ibans" ],
+        "summary" : "Get creditor institution ibans list",
+        "operationId" : "getIbans",
+        "parameters" : [ {
+          "name" : "creditorinstitutioncode",
+          "in" : "path",
+          "description" : "The fiscal code of the Organization.",
+          "required" : true,
+          "schema" : {
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "\\d{11}",
+            "type" : "string"
+          }
+        }, {
+          "name" : "label",
+          "in" : "query",
+          "description" : "Filter by label",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/IbansEnhanced"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
     "/creditorinstitutions/{creditorinstitutioncode}/ibans/{ibanId}" : {
       "put" : {
         "tags" : [ "Ibans" ],
@@ -16939,7 +17094,7 @@
           },
           "config_description" : {
             "type" : "string",
-            "example" : " default millisecondi validità token"
+            "example" : " default millisecondi validitÃ  token"
           }
         }
       },
@@ -17359,7 +17514,7 @@
           },
           "config_description" : {
             "type" : "string",
-            "example" : " default millisecondi validità token"
+            "example" : " default millisecondi validitÃ  token"
           },
           "config_category" : {
             "type" : "string",
