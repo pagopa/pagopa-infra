@@ -114,6 +114,10 @@ locals {
     MAX_CONNECTIONS_PER_ROUTE = 40
     CONN_TIMEOUT              = 8
 
+    # waitForRender params
+    CHECK_SIZE_INTERVAL        = 100
+    MIN_STABLE_SIZE_ITERATIONS = 3
+
   }
 
   shared_pdf_engine_app_settings_java = {

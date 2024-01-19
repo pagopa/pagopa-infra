@@ -37,7 +37,7 @@
 | <a name="module_apim_statuspage_product"></a> [apim\_statuspage\_product](#module\_apim\_statuspage\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
 | <a name="module_apim_taxonomy_product"></a> [apim\_taxonomy\_product](#module\_apim\_taxonomy\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.3.0 |
 | <a name="module_apim_technical_support_product"></a> [apim\_technical\_support\_product](#module\_apim\_technical\_support\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.20.0 |
-| <a name="module_authorizer_function_app"></a> [authorizer\_function\_app](#module\_authorizer\_function\_app) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.6.0 |
+| <a name="module_authorizer_function_app"></a> [authorizer\_function\_app](#module\_authorizer\_function\_app) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v7.29.0 |
 | <a name="module_authorizer_function_app_slot_staging"></a> [authorizer\_function\_app\_slot\_staging](#module\_authorizer\_function\_app\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v6.9.0 |
 | <a name="module_authorizer_functions_snet"></a> [authorizer\_functions\_snet](#module\_authorizer\_functions\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.6.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.6.0 |
@@ -131,6 +131,8 @@
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.shared_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.taxonomy_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/resource_group) | data source |
+| [azurerm_storage_account.pagopa_apiconfig_fe_sa](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/storage_account) | data source |
+| [azurerm_storage_account.pagopa_selfcare_fe_sa](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/storage_account) | data source |
 | [azurerm_storage_account.taxonomy_storage_account](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/storage_account) | data source |
 | [azurerm_subnet.apim_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/subscription) | data source |
@@ -157,6 +159,7 @@
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
+| <a name="input_function_app_storage_account_replication_type"></a> [function\_app\_storage\_account\_replication\_type](#input\_function\_app\_storage\_account\_replication\_type) | (Optional) Storage account replication type used for function apps | `string` | `"ZRS"` | no |
 | <a name="input_influxdb2_helm"></a> [influxdb2\_helm](#input\_influxdb2\_helm) | influxdb2 helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image = object({<br>      name = string,<br>      tag  = string<br>    })<br>  })</pre> | <pre>{<br>  "chart_version": "2.1.0",<br>  "image": {<br>    "name": "influxdb",<br>    "tag": "2.2.0-alpine@sha256:f3b54d91cae591fc3fde20299bd0b262f6f6d9a1f73b98d623b501e82c49d5fb"<br>  }<br>}</pre> | no |
 | <a name="input_influxdb_helm"></a> [influxdb\_helm](#input\_influxdb\_helm) | influxdb helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image = object({<br>      name = string,<br>      tag  = string<br>    })<br>  })</pre> | <pre>{<br>  "chart_version": "4.12.0",<br>  "image": {<br>    "name": "influxdb",<br>    "tag": "1.8.10-alpine@sha256:c436689dc135f204734d63b82fd03044fa3a5205127cb2d1fa7398ff224936b1"<br>  }<br>}</pre> | no |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |

@@ -1,3 +1,13 @@
+data "azurerm_storage_account" "pagopa_selfcare_fe_sa" {
+  name                = replace("${var.prefix}-${var.env_short}-selfcare-sa", "-", "")
+  resource_group_name = format("%s-%s-fe-rg", var.prefix, var.env_short)
+}
+
+data "azurerm_storage_account" "pagopa_apiconfig_fe_sa" {
+  name                = replace("${var.prefix}-${var.env_short}-${var.location_short}-apiconfig-sa", "-", "")
+  resource_group_name = format("%s-%s-api-config-rg", var.prefix, var.env_short)
+}
+
 ##############
 ## Products ##
 ##############
@@ -31,7 +41,9 @@ locals {
     subscription_required = false
     service_url           = null
   }
-  aks_path = var.env == "prod" ? "weuprod.%s.internal.platform.pagopa.it" : "weu${var.env}.%s.internal.${var.env}.platform.pagopa.it"
+  aks_path           = var.env == "prod" ? "weuprod.%s.internal.platform.pagopa.it" : "weu${var.env}.%s.internal.${var.env}.platform.pagopa.it"
+  fe_backoffice_path = replace(format("%s/ui/version.json", data.azurerm_storage_account.pagopa_selfcare_fe_sa.primary_web_host), "/{2}", "/")
+  fe_apiconfig_path  = replace(format("%s/ui/version.json", data.azurerm_storage_account.pagopa_apiconfig_fe_sa.primary_web_host), "/{2}", "/")
 }
 
 resource "azurerm_api_management_api_version_set" "api_statuspage_api" {
@@ -108,6 +120,7 @@ module "apim_api_statuspage_api_v1" {
       "afmmarketplace"        = format("%s/pagopa-afm-marketplace-service", format(local.aks_path, "afm"))
       "afmutils"              = format("%s/pagopa-afm-utils-service", format(local.aks_path, "afm"))
       "apiconfig"             = format("%s/pagopa-api-config-core-service/o", format(local.aks_path, "apiconfig"))
+      "apiconfig-fe"          = format("%s", local.fe_apiconfig_path)
       "apiconfigcacheo"       = format("%s/api-config-cache/o", format(local.aks_path, "apiconfig"))
       "apiconfigcachep"       = format("%s/api-config-cache/p", format(local.aks_path, "apiconfig"))
       "apiconfigselfcare"     = format("%s/pagopa-api-config-selfcare-integration", format(local.aks_path, "apiconfig"))
@@ -116,6 +129,8 @@ module "apim_api_statuspage_api_v1" {
       "bizevents"             = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
       "bizeventsdatastoreneg" = format("%s/pagopa-negative-biz-events-datastore-service", format(local.aks_path, "bizevents"))
       "bizeventsdatastorepos" = format("%s/pagopa-biz-events-datastore-service", format(local.aks_path, "bizevents"))
+      "backofficepagopa"      = format("%s/selfcare/pagopa/v1", format(local.aks_path, "selfcare"))
+      "backofficepagopa-fe"   = format("%s", local.fe_backoffice_path)
       "canoneunico"           = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
       "fdrndpnew"             = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
       "gpd"                   = format("%s/pagopa-gpd-core", format(local.aks_path, "gps"))
@@ -134,6 +149,7 @@ module "apim_api_statuspage_api_v1" {
       "receiptpdfgenerator"   = format("%s/pagopa-receipt-pdf-generator", format(local.aks_path, "receipts"))
       "receiptpdfnotifier"    = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
       "receiptpdfservice"     = format("%s/pagopa-receipt-pdf-service", format(local.aks_path, "receipts"))
+      "receiptpdfhelpdesk"    = format("%s/pagopa-receipt-pdf-helpdesk", format(local.aks_path, "receipts"))
     }), "\"", "\\\"")
   })
 }

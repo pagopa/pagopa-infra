@@ -589,6 +589,54 @@
         }
       }
     },
+    "/payment-methods": {
+      "get": {
+        "tags": [
+          "ecommerce-payment-methods"
+        ],
+        "operationId": "getAllPaymentMethods",
+        "summary": "Retrieve all Payment Methods",
+        "description": "API for retrieve payment method",
+        "parameters": [
+          {
+            "name": "amount",
+            "in": "query",
+            "description": "Payment Amount",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment method successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethodsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/payment-methods/{id}/fees": {
       "post": {
         "tags": [
@@ -1227,7 +1275,7 @@
             "description": "Check flag for psp validation"
           },
           "details": {
-            "$ref": "#/components/schemas/PaymentInstrumentDetail"
+            "$ref": "#/components/schemas/AuthorizationDetails"
           }
         },
         "required": [
@@ -1239,24 +1287,20 @@
           "details"
         ]
       },
-      "PaymentInstrumentDetail": {
+      "AuthorizationDetails": {
         "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
         "oneOf": [
           {
             "type": "object",
-            "description": "Additional payment authorization details for payment performed with wallet",
+            "description": "Additional payment authorization details for authorization performed with a wallet",
             "properties": {
               "detailType": {
-                "description": "fixed value 'WALLET'",
-                "type": "string",
-                "enum": [
-                  "WALLET"
-                ]
+                "$ref": "#/components/schemas/WalletDetailType"
               },
               "walletId": {
                 "type": "string",
                 "format": "uuid",
-                "description": "User wallet id"
+                "description": "WalletId"
               }
             },
             "required": [
@@ -1265,9 +1309,74 @@
             ],
             "example": {
               "detailType": "wallet",
-              "walletId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+              "walletId": "9972eb61-bea1-405f-846a-980b9aebe017"
+            }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details apm method",
+            "properties": {
+              "detailType": {
+                "$ref": "#/components/schemas/ApmDetailType"
+              },
+              "paymentMethodId": {
+                "description": "User selected payment method id",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "detailType",
+              "paymentMethodId"
+            ],
+            "example": {
+              "detailType": "apm",
+              "paymentMethodId": "dbc12081-ea5c-4a73-ae0a-7d6a881a1160"
+            }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for redirect method",
+            "properties": {
+              "detailType": {
+                "$ref": "#/components/schemas/RedirectDetailType"
+              },
+              "paymentMethodId": {
+                "description": "User selected payment method id",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "detailType",
+              "paymentMethodId"
+            ],
+            "example": {
+              "detailType": "redirect",
+              "paymentMethodId": "dbc12081-ea5c-4a73-ae0a-7d6a881a1160"
             }
           }
+        ]
+      },
+      "WalletDetailType": {
+        "description": "wallet detail type discriminator field",
+        "type": "string",
+        "enum": [
+          "wallet"
+        ]
+      },
+      "ApmDetailType": {
+        "description": "apm detail type discriminator field",
+        "type": "string",
+        "enum": [
+          "apm"
+        ]
+      },
+      "RedirectDetailType": {
+        "description": "redirect detail type discriminator field",
+        "type": "string",
+        "enum": [
+          "redirect"
         ]
       },
       "UpdateAuthorizationRequest": {
@@ -1412,6 +1521,15 @@
           "ENABLED",
           "DISABLED",
           "INCOMING"
+        ]
+      },
+      "PaymentMethodManagementType": {
+        "type": "string",
+        "description": "Payment method management type",
+        "enum": [
+          "ONBOARDABLE",
+          "NOT_ONBOARDABLE",
+          "REDIRECT"
         ]
       },
       "NewSessionTokenResponse": {
@@ -1586,6 +1704,67 @@
           "transferCategory": {
             "description": "Transfer category",
             "type": "string"
+          }
+        }
+      },
+      "PaymentMethodResponse": {
+        "type": "object",
+        "description": "Payment method Response",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Payment method ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Payment method name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Payment method description"
+          },
+          "asset": {
+            "type": "string",
+            "description": "Payment method asset name"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PaymentMethodStatus"
+          },
+          "paymentTypeCode": {
+            "type": "string",
+            "description": "Payment method type code"
+          },
+          "methodManagement": {
+            "$ref": "#/components/schemas/PaymentMethodManagementType"
+          },
+          "ranges": {
+            "description": "Payment amount range in eurocents",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/Range"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "status",
+          "paymentTypeCode",
+          "ranges",
+          "methodManagement"
+        ]
+      },
+      "PaymentMethodsResponse": {
+        "type": "object",
+        "description": "Payment methods response",
+        "properties": {
+          "paymentMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentMethodResponse"
+            }
           }
         }
       }

@@ -52,6 +52,7 @@ pgres_flex_params = {
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
   max_connections                        = 5000
+  enable_private_dns_registration        = true
 }
 
 sftp_account_replication_type = "LRS"
@@ -139,7 +140,7 @@ cosmos_nosql_db_params = {
 verifyko_cosmos_nosql_db_params = {
   enabled      = true
   kind         = "GlobalDocumentDB"
-  capabilities = ["EnableServerless"]
+  capabilities = []
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "Strong"
@@ -174,7 +175,6 @@ nodo_re_storage_account = {
   blob_delete_retention_days    = 0
   public_network_access_enabled = true
   backup_enabled                = false
-
 }
 
 nodo_storico_storage_account = {
@@ -183,7 +183,7 @@ nodo_storico_storage_account = {
   account_replication_type      = "LRS"
   blob_versioning_enabled       = false
   advanced_threat_protection    = true
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   backup_enabled                = false
   blob_delete_retention_days    = 0
 }
@@ -191,9 +191,11 @@ nodo_storico_storage_account = {
 nodo_verifyko_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
-  account_replication_type      = "LRS"
+  account_replication_type      = "ZRS"
   blob_versioning_enabled       = false
-  advanced_threat_protection    = false
+  advanced_threat_protection    = true
   blob_delete_retention_days    = 90
   public_network_access_enabled = true
+  backup_enabled                = false
+  backup_retention_days         = 0
 }

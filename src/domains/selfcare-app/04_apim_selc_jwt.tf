@@ -7,7 +7,7 @@ module "apim_selfcare_product" {
 
   product_id   = "selfcare-be"
   display_name = local.apim_selfcare_pagopa_api.display_name
-  description  = local.apim_selfcare_pagopa_api.display_name
+  description  = local.apim_selfcare_pagopa_api.description
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -25,8 +25,8 @@ module "apim_selfcare_product" {
 #################
 locals {
   apim_selfcare_pagopa_api = {
-    display_name          = "Selfcare Product pagoPA"
-    description           = "API to manage institution api key"
+    display_name          = "Selfcare Backoffice Product pagoPA"
+    description           = "API for Backoffice"
     path                  = "selfcare/pagopa"
     subscription_required = false
     service_url           = null

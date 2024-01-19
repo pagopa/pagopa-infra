@@ -96,6 +96,20 @@ route_aks = [
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.9.150"
   },
+  {
+    # uat aks nodo nexi postgres onprem
+    name                   = "aks-outbound-to-nexi-postgres-onprem-subnet"
+    address_prefix         = "10.222.214.174/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  },
+  {
+    #  prf aks nodo nexi postgres onprem
+    name                   = "aks-outbound-to-nexi-postgres-prf-onprem-subnet"
+    address_prefix         = "10.222.214.184/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  },
 ]
 
 vmss_zones           = ["1"]
@@ -137,7 +151,8 @@ nodo_verifyko_to_datastore_function = {
   kind                         = "Linux"
   sku_size                     = "B1"
   sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 0
+  maximum_elastic_worker_count = null
+  zone_balancing_enabled       = false
 }
 nodo_verifyko_to_datastore_function_always_on       = true
 nodo_verifyko_to_datastore_function_subnet          = ["10.1.188.0/24"]
@@ -154,6 +169,7 @@ nodo_verifyko_to_tablestorage_function = {
   sku_size                     = "B1"
   sku_tier                     = "Basic"
   maximum_elastic_worker_count = 0
+  zone_balancing_enabled       = false
 }
 nodo_verifyko_to_tablestorage_function_subnet          = ["10.1.189.0/24"]
 nodo_verifyko_to_tablestorage_network_policies_enabled = true

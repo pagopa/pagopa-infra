@@ -38,3 +38,7 @@ ecommerce_vpos_psps_list = "BNLIITRR,PSPtest1,CHARITY_AMEX,CHARITY_IDPSPFNZ,CHAR
 ecommerce_npg_psps_list  = "BCITITMM,CIPBITMM,BIC36019,UNCRITMM,BPPIITRRXXX,PPAYITR1XXX"
 
 dns_zone_checkout = "dev.checkout"
+
+io_backend_base_path         = "http://{{aks-lb-nexi}}/pmmockservice/pmmockserviceapi"
+ecommerce_io_with_pm_enabled = false
+pdv_api_base_path            = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"

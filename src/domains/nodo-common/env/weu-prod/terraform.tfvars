@@ -52,9 +52,10 @@ pgres_flex_params = {
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = true
   max_connections                        = 5000
+  enable_private_dns_registration        = true
 }
 
-sftp_account_replication_type = "LRS"
+sftp_account_replication_type = "GZRS"
 sftp_enable_private_endpoint  = true
 sftp_ip_rules                 = [] # List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed
 
@@ -136,7 +137,7 @@ cosmos_nosql_db_params = {
   backup_continuous_enabled = true
 
   events_ttl     = 10368000 # 120 days
-  max_throughput = 20000
+  max_throughput = 2000
 }
 
 verifyko_cosmos_nosql_db_params = {
@@ -149,7 +150,7 @@ verifyko_cosmos_nosql_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
   additional_geo_locations = [{
     location          = "northeurope"
@@ -163,13 +164,15 @@ verifyko_cosmos_nosql_db_params = {
   backup_continuous_enabled = true
 
   events_ttl     = 10368000 # 120 days
-  max_throughput = 20000
+  max_throughput = 2000
 }
 
 cidr_subnet_cosmosdb_nodo_re       = ["10.1.170.0/24"]
 cidr_subnet_cosmosdb_nodo_verifyko = ["10.1.173.0/24"]
 
 nodo_storico_allowed_ips = ["93.63.219.230"]
+
+
 
 nodo_re_storage_account = {
   account_kind                  = "StorageV2"
@@ -188,12 +191,12 @@ nodo_verifyko_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "GZRS"
-  blob_versioning_enabled       = false
+  blob_versioning_enabled       = true
   advanced_threat_protection    = true
-  blob_delete_retention_days    = 0
-  public_network_access_enabled = true
+  blob_delete_retention_days    = 90
+  public_network_access_enabled = false
   backup_enabled                = true
-  backup_retention              = 30
+  backup_retention_days         = 30
 }
 
 
@@ -214,3 +217,10 @@ nodo_storico_storage_account = {
 enable_sftp_backup            = true
 sftp_sa_delete_retention_days = 31
 sftp_sa_backup_retention_days = 30
+
+
+geo_replica_enabled                = true
+location_replica                   = "northeurope"
+location_replica_short             = "neu"
+geo_replica_cidr_subnet_postgresql = ["10.2.160.0/24"]
+postgresql_sku_name                = "GP_Gen5_2"

@@ -208,13 +208,33 @@ fdr_re_storage_account = {
   backup_retention              = 30
 }
 
+fdr_flow_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = true
+  public_network_access_enabled = false
+  blob_delete_retention_days    = 90
+  enable_low_availability_alert = false
+}
+
 #
 # replica settings
 #
 geo_replica_enabled                = true
 location_replica                   = "northeurope"
 location_replica_short             = "neu"
-geo_replica_cidr_vnet              = ["10.2.0.0/16"]
 geo_replica_cidr_subnet_postgresql = ["10.2.162.0/24"]
 postgresql_sku_name                = "GP_Gen5_2"
 postgres_dns_registration_enabled  = true
+
+
+
+
+reporting_fdr_storage_account = {
+  advanced_threat_protection = false
+  blob_versioning_enabled    = false
+  blob_delete_retention_days = 30
+  account_replication_type   = "GZRS"
+}

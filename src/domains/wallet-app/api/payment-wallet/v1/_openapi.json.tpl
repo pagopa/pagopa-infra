@@ -216,6 +216,9 @@
           "404": {
             "description": "Wallet not found"
           },
+          "502": {
+            "description": "Bad gateway"
+          },
           "504": {
             "description": "Timeout serving request"
           }
@@ -321,6 +324,78 @@
         }
       }
     },
+    "/wallets/{walletId}/services": {
+      "put": {
+        "tags": [
+          "wallets"
+        ],
+        "summary": "Update wallet services and their status",
+        "description": "Update wallet services",
+        "operationId": "updateWalletServicesById",
+        "requestBody": {
+          "description": "Update wallet services for the specified wallet",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WalletServiceUpdateRequest"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "walletId",
+            "in": "path",
+            "description": "ID of wallet to return",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/WalletId"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Wallet updated successfully"
+          },
+          "400": {
+            "description": "Invalid input id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Wallet not found"
+          },
+          "409": {
+            "description": "Wallet request is inconsistent with global service status (e.g. the user requested a service to be enabled but the service has a global status of disabled)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletServicesPartialUpdate"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout serving request"
+          }
+        }
+      }
+    },
     "/wallets/outcomes": {
       "get": {
         "tags": [
@@ -358,8 +433,16 @@
         "summary": "Redirection URL for onboarding outcome",
         "description": "Return onboarding outcome result as `outcome` query parameter",
         "responses": {
-          "200": {
-            "description": "Onboarding outcome available (see outcome query parameter)"
+          "302": {
+            "description": "Onboarding outcome available (see outcome query parameter)",
+            "headers": {
+              "Location": {
+                "description": "URI with iowallet:// used by client to show result given outocome in query parameter",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -408,8 +491,9 @@
         "type": "string",
         "description": "Enumeration of wallet statuses",
         "enum": [
-          "INITIALIZED",
           "CREATED",
+          "INITIALIZED",
+          "VALIDATED",
           "DELETED",
           "ERROR"
         ]
@@ -454,6 +538,70 @@
           "walletId",
           "redirectUrl"
         ]
+      },
+      "WalletService": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/ServiceName"
+          },
+          "status": {
+            "$ref": "#/components/schemas/WalletServiceStatus"
+          }
+        }
+      },
+      "WalletServiceStatus": {
+        "type": "string",
+        "description": "Enumeration of wallet statuses",
+        "enum": [
+          "ENABLED",
+          "DISABLED"
+        ]
+      },
+      "WalletServiceUpdateRequest": {
+        "type": "object",
+        "description": "Wallet update request",
+        "properties": {
+          "services": {
+            "type": "array",
+            "description": "List of services to update",
+            "items": {
+              "$ref": "#/components/schemas/WalletService"
+            }
+          }
+        }
+      },
+      "WalletServicesPartialUpdate": {
+        "type": "object",
+        "description": "Response for wallet services partial update due to status conflicts",
+        "properties": {
+          "updatedServices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WalletService"
+            }
+          },
+          "failedServices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Service"
+            }
+          }
+        },
+        "example": {
+          "updatedServices": [
+            {
+              "name": "PAGOPA",
+              "status": "ENABLED"
+            }
+          ],
+          "failedServices": [
+            {
+              "name": "PARI",
+              "status": "DISABLED"
+            }
+          ]
+        }
       },
       "WalletInfo": {
         "type": "object",
@@ -593,14 +741,14 @@
                 "maxLength": 20,
                 "example": "+3938*******202"
               },
-              "instituteCode":{
+              "instituteCode": {
                 "description": "institute code",
                 "type": "string",
                 "minLength": 1,
                 "maxLength": 5,
                 "example": "12345"
               },
-              "bankName":{
+              "bankName": {
                 "description": "bank name",
                 "type": "string",
                 "example": "banca di banca"

@@ -170,7 +170,12 @@ prostgresql_db_mockpsp = "mock-psp"
 # apim x nodo pagamenti
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
-apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
+
+apim_enable_nm3_decoupler_switch     = false
+apim_enable_routing_decoupler_switch = false
+default_node_id                      = "NDP002UAT"
+
+apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "06529501006,97735020584,97249640588,06874351007,08301100015,02224410023,02224410023,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
@@ -179,6 +184,8 @@ nodo_pagamenti_url     = "https://10.70.74.200/nodo-uat/webservices/input"
 ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/uat/webservices/input shall use lb_aks
 lb_aks                 = "10.70.74.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
+schema_ip_nexi = "http://10.70.74.200"
+
 base_path_nodo_oncloud        = "/nodo-uat"
 base_path_nodo_ppt_lmi        = "/ppt-lmi-uat-NOT-FOUND"
 base_path_nodo_sync           = "/sync-cron-uat/syncWisp"
@@ -186,6 +193,8 @@ base_path_nodo_wfesp          = "/wfesp-uat"
 base_path_nodo_fatturazione   = "/fatturazione-uat"
 base_path_nodo_web_bo         = "/web-bo-uat"
 base_path_nodo_web_bo_history = "/web-bo-history-uat"
+
+base_path_nodo_postgresql_nexi_onprem = "/"
 
 nodo_auth_subscription_limit = 10000
 
@@ -332,19 +341,19 @@ eventhubs = [
         send   = false
         manage = false
       },
-#     disabled because at the moment not used
-#      {
-#        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
-#        listen = true
-#        send   = false
-#        manage = false
-#      },
-#      {
-#        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
-#        listen = true
-#        send   = false
-#        manage = false
-#      }
+      #     disabled because at the moment not used
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      },
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      }
     ]
   },
   {
@@ -603,9 +612,11 @@ eventhubs_02 = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-dns_a_reconds_dbnodo_ips           = ["10.70.73.10"] # db onCloud
-dns_a_reconds_dbnodo_prf_ips       = ["10.70.73.20"] # db onCloud prf
-private_dns_zone_db_nodo_pagamenti = "u.db-nodo-pagamenti.com"
+dns_a_reconds_dbnodo_ips                 = ["10.70.73.10"]    # db onCloud
+dns_a_reconds_dbnodo_prf_ips             = ["10.70.73.20"]    # db onCloud prf
+dns_a_reconds_dbnodonexipostgres_ips     = ["10.222.214.174"] # db onPrem PostgreSQL
+dns_a_reconds_dbnodonexipostgres_prf_ips = ["10.222.214.184"] # db onPrem PostgreSQL
+private_dns_zone_db_nodo_pagamenti       = "u.db-nodo-pagamenti.com"
 
 
 # pagopa-proxy app service

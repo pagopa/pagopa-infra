@@ -61,16 +61,17 @@ pgres_flex_params = {
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   # https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compute-storage#storage
-  storage_mb                   = 1048576 # 1Tib
-  zone                         = 1
-  backup_retention_days        = 7
-  geo_redundant_backup_enabled = false
-  create_mode                  = "Default"
-  high_availability_enabled    = false
-  standby_availability_zone    = 2
-  pgbouncer_enabled            = true
-  alerts_enabled               = false
-  max_connections              = 5000
+  storage_mb                      = 1048576 # 1Tib
+  zone                            = 1
+  backup_retention_days           = 7
+  geo_redundant_backup_enabled    = false
+  create_mode                     = "Default"
+  high_availability_enabled       = false
+  standby_availability_zone       = 2
+  pgbouncer_enabled               = true
+  alerts_enabled                  = false
+  max_connections                 = 5000
+  enable_private_dns_registration = true
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]

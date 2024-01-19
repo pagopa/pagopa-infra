@@ -2,6 +2,9 @@ locals {
   project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   product = "${var.prefix}-${var.env_short}"
 
+  pagopa_apim_name = "${local.product}-apim"
+  pagopa_apim_rg   = "${local.product}-api-rg"
+
   app_insights_ips_west_europe = [
     "51.144.56.96/28",
     "51.144.56.112/28",

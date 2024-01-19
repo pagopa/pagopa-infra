@@ -36,6 +36,8 @@ module "checkout_cdn" {
 
   querystring_caching_behaviour = "BypassCaching"
 
+  storage_account_replication_type = var.checkout_cdn_storage_replication_type
+
   global_delivery_rule = {
     cache_expiration_action       = []
     cache_key_query_string_action = []
@@ -116,7 +118,26 @@ module "checkout_cdn" {
         destination             = "/payment-transactions-gateway/index.html"
         preserve_unmatched_path = false
       }
-  }]
+    },
+    {
+      name  = "RewriteRulesEcommerceFe"
+      order = 4
+
+      conditions = [{
+        condition_type   = "url_path_condition"
+        operator         = "BeginsWith"
+        match_values     = ["/ecommerce-fe/gdi-check", "/ecommerce-fe/esito"]
+        transforms       = []
+        negate_condition = false
+      }]
+
+      url_rewrite_action = {
+        source_pattern          = "/"
+        destination             = "/ecommerce-fe/index.html"
+        preserve_unmatched_path = false
+      }
+    }
+  ]
 
   tags = var.tags
 }

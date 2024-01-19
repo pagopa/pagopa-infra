@@ -123,6 +123,7 @@ variable "bizevents_datastore_cosmos_db_params" {
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
     container_default_ttl             = number
+    ip_range_filter                   = string
   })
 }
 
@@ -180,4 +181,10 @@ variable "enable_iac_pipeline" {
   type        = bool
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
+}
+
+variable "storage_account_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "(Optional) biz event fn storage account replication type"
 }

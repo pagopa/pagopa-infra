@@ -81,15 +81,14 @@ module "apim_payment_wallet_api_v1" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_wallets_for_user" {
-  count               = var.payment_wallet_with_pm_enabled ? 1 : 0
   api_name            = "${local.project}-payment-wallet-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "getWalletsByIdUser"
 
-  xml_content = templatefile("./api/payment-wallet/v1/get_wallets_by_user.xml.tpl", {
+  xml_content = var.payment_wallet_with_pm_enabled ? templatefile("./api/payment-wallet/v1/_get_wallets_by_user_with_pm.xml.tpl", {
     ecommerce-basepath = local.ecommerce_hostname
-  })
+  }) : templatefile("./api/payment-wallet/v1/_get_wallets_by_user.xml.tpl", { pdv_api_base_path = var.pdv_api_base_path, io_backend_base_path = var.io_backend_base_path })
 
 }
 
@@ -252,4 +251,18 @@ resource "azurerm_api_management_named_value" "wallet-jwt-signing-key" {
   display_name        = "wallet-jwt-signing-key"
   value               = data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value
   secret              = true
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_psps_for_wallet" {
+  api_name            = module.apim_webview_payment_wallet_api_v1.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getPspsForWallet"
+
+  xml_content = templatefile("./api/webview-payment-wallet/v1/get_psps_policy.xml.tpl", {
+    payment_wallet_origin = "https://${var.dns_zone_prefix}.${var.external_domain}/"
+    gec_hostname          = var.env_short == "p" ? "weuprod.afm.internal.platform.pagopa.it" : "weu${var.env}.afm.internal.${var.env}.platform.pagopa.it"
+    ecommerce_hostname    = local.ecommerce_hostname
+    wallet_hostname       = local.wallet_hostname
+  })
 }

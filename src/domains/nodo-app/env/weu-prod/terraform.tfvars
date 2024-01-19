@@ -110,6 +110,13 @@ route_aks = [
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.10.150"
   },
+  {
+    # aks nodo nexi postgres onprem
+    name                   = "aks-outbound-to-nexi-postgres-onprem-subnet"
+    address_prefix         = "10.222.209.84/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
 
 ]
 
@@ -147,19 +154,22 @@ nodo_re_to_tablestorage_function_autoscale = {
   maximum = 10
 }
 
+function_app_storage_account_replication_type = "GZRS"
+
 nodo_verifyko_to_datastore_function = {
   always_on                    = true
   kind                         = "Linux"
   sku_size                     = "P1v3"
   sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 0
+  maximum_elastic_worker_count = 3
+  zone_balancing_enabled       = true
 }
 nodo_verifyko_to_datastore_function_always_on       = true
 nodo_verifyko_to_datastore_function_subnet          = ["10.1.178.0/24"]
 nodo_verifyko_to_datastore_network_policies_enabled = true
 nodo_verifyko_to_datastore_function_autoscale = {
-  default = 1
-  minimum = 1
+  default = 3
+  minimum = 3
   maximum = 10
 }
 
@@ -168,7 +178,8 @@ nodo_verifyko_to_tablestorage_function = {
   kind                         = "Linux"
   sku_size                     = "P1v3"
   sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 0
+  maximum_elastic_worker_count = 3
+  zone_balancing_enabled       = false
 }
 nodo_verifyko_to_tablestorage_function_subnet          = ["10.1.189.0/24"]
 nodo_verifyko_to_tablestorage_network_policies_enabled = true
@@ -213,3 +224,4 @@ pod_disruption_budgets = {
     }
   },
 }
+

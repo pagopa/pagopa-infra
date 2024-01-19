@@ -15,7 +15,7 @@
       "name": "PM",
       "description": "Api's for performing transaction search on PM DB",
       "externalDocs": {
-        "url": "TODO",
+        "url": "https://pagopa.atlassian.net/wiki/spaces/PPA/pages/417106103/Design+Review+L+S+PM",
         "description": "Technical specifications"
       }
     },
@@ -23,15 +23,23 @@
       "name": "eCommerce",
       "description": "Api's for performing transaction search on ecommerce DB",
       "externalDocs": {
-        "url": "TODO",
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
         "description": "Technical specifications"
       }
     },
     {
       "name": "helpDesk",
-      "description": "Api's for performing transaction search on ecommerce DB",
+      "description": "Api's for performing transaction search on both PM and ecommerce DB",
       "externalDocs": {
-        "url": "TODO",
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
+        "description": "Technical specifications"
+      }
+    },
+    {
+      "name": "helpDesk-pgs",
+      "description": "Api's for performing authorization search on PGS",
+      "externalDocs": {
+        "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/492339720/pagoPA+eCommerce+Design+Review",
         "description": "Technical specifications"
       }
     }
@@ -56,6 +64,7 @@
             "schema": {
               "type": "integer",
               "minimum": 1,
+              "maximum": 20,
               "default": 10
             },
             "required": true,
@@ -115,6 +124,61 @@
         }
       }
     },
+    "/pm/searchPaymentMethod": {
+      "post": {
+        "tags": [
+          "PM"
+        ],
+        "operationId": "pmSearchPaymentMethod",
+        "summary": "PM search payment methods by input parameters",
+        "description": "GET with body payload - no resources created",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SearchPaymentMethodRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Payment method found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchPaymentMethodResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ecommerce/searchTransaction": {
       "post": {
         "parameters": [
@@ -134,6 +198,7 @@
             "schema": {
               "type": "integer",
               "minimum": 1,
+              "maximum": 20,
               "default": 10
             },
             "required": true,
@@ -212,6 +277,7 @@
             "schema": {
               "type": "integer",
               "minimum": 1,
+              "maximum": 20,
               "default": 10
             },
             "required": true,
@@ -250,6 +316,244 @@
           },
           "404": {
             "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/helpdesk/searchPaymentMethod": {
+      "post": {
+        "tags": [
+          "helpDesk"
+        ],
+        "operationId": "helpDeskSearchPaymentMethod",
+        "summary": "Technical helpdesk search payment methods by input parameters",
+        "description": "GET with body payload - no resources created",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SearchPaymentMethodRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Payment methods found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchPaymentMethodResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ecommerce/searchDeadLetterEvents": {
+      "post": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            },
+            "required": true,
+            "description": "Searched page number, starting from 0"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "default": 10
+            },
+            "required": true,
+            "description": "Max element per page"
+          }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SearchDeadLetterEventRequest"
+        },
+        "tags": [
+          "eCommerce"
+        ],
+        "operationId": "ecommerceSearchDeadLetterEvents",
+        "summary": "Search dead letter by input parameters",
+        "description": "GET with body payload - no resources created",
+        "responses": {
+          "200": {
+            "description": "Transactions found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchDeadLetterEventResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pgs/vpos/authorizations/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "PGS authorization ID"
+          }
+        ],
+        "tags": [
+          "helpDesk-pgs"
+        ],
+        "operationId": "pgsGetVposAuthorization",
+        "summary": "PGS search Vpos authorization by ID",
+        "responses": {
+          "200": {
+            "description": "Transactions found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchPgsStatusResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Authorization not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pgs/xpay/authorizations/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "PGS authorization ID"
+          }
+        ],
+        "tags": [
+          "helpDesk-pgs"
+        ],
+        "operationId": "pgsGetXpayAuthorization",
+        "summary": "PGS search Xpay authorization by ID",
+        "responses": {
+          "200": {
+            "description": "Transactions found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchPgsStatusResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Authorization not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -519,7 +823,7 @@
             "type": "string"
           },
           "eventStatus": {
-            "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-ecommerce-transactions-service/main/api-spec/transactions-api.yaml#/components/schemas/TransactionStatus"
+            "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-ecommerce-transactions-service/main/api-spec/v1/transactions-api.yaml#/components/schemas/TransactionStatus"
           },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
@@ -541,6 +845,14 @@
           },
           "brand": {
             "type": "string"
+          },
+          "authorizationRequestId": {
+            "type": "string",
+            "description": "Authorization request id"
+          },
+          "paymentGateway": {
+            "type": "string",
+            "description": "Payment gateway used to perform transaction"
           }
         },
         "example": {
@@ -554,7 +866,9 @@
           "rrn": "rrn",
           "authorizationCode": "auth code",
           "paymentMethodName": "payment method name",
-          "brand": "brand"
+          "brand": "brand",
+          "authorizationRequestId": "authorizationRequestId",
+          "paymentGateway": "VPOS"
         }
       },
       "PaymentInfo": {
@@ -709,6 +1023,411 @@
             "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail"
           }
         }
+      },
+      "SearchDeadLetterEventResponse": {
+        "type": "object",
+        "description": "Dead letter event response",
+        "properties": {
+          "deadLetterEvents": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeadLetterEvent"
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageInfo"
+          }
+        },
+        "required": [
+          "deadLetterEvents",
+          "page"
+        ]
+      },
+      "DeadLetterEvent": {
+        "type": "object",
+        "description": "Dead letter event",
+        "properties": {
+          "queueName": {
+            "type": "string",
+            "description": "Name of the dead letter event source queue"
+          },
+          "data": {
+            "type": "string",
+            "description": "Dead letter event data"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Dead letter event insertion date time"
+          }
+        },
+        "required": [
+          "queueName",
+          "data",
+          "timestamp"
+        ]
+      },
+      "DeadLetterSearchEventSource": {
+        "type": "string",
+        "enum": [
+          "ALL",
+          "ECOMMERCE",
+          "NOTIFICATIONS_SERVICE"
+        ],
+        "description": "Dead letter event source"
+      },
+      "DeadLetterSearchDateTimeRange": {
+        "type": "object",
+        "description": "Dead letter date time filter",
+        "properties": {
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Search start date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Search end date"
+          }
+        },
+        "required": [
+          "startDate",
+          "endDate"
+        ]
+      },
+      "SearchPgsStatusResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "CREATED",
+              "AUTHORIZED",
+              "DENIED",
+              "CANCELLED"
+            ]
+          }
+        }
+      },
+      "SearchPaymentMethodRequestFiscalCode": {
+        "type": "object",
+        "description": "Search transaction by user fiscal code",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "userFiscalCode": {
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 16
+          }
+        },
+        "required": [
+          "type",
+          "userFiscalCode"
+        ],
+        "example": {
+          "type": "USER_FISCAL_CODE",
+          "userFiscalCode": "MRGHRN97L02C469W"
+        }
+      },
+      "SearchPaymentMethodRequestEmail": {
+        "type": "object",
+        "description": "Search transaction by user fiscal code",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "userEmail": {
+            "type": "string",
+            "pattern": "(?:[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
+          }
+        },
+        "required": [
+          "type",
+          "userEmail"
+        ],
+        "example": {
+          "type": "USER_EMAIL",
+          "userEmail": "mario.rossi@pagopa.it"
+        }
+      },
+      "PaypalDetailInfo": {
+        "type": "object",
+        "description": "PaypalDetailInfo",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "property discriminator, used to discriminate the wallet detail. Fixed value 'PAYPAL'",
+            "example": "PAYPAL"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The creation date"
+          },
+          "ppayEmail": {
+            "type": "string",
+            "description": "Email linked to the paypal account"
+          }
+        },
+        "required": [
+          "type",
+          "creationDate",
+          "ppayEmail"
+        ]
+      },
+      "BankAccountDetailInfo": {
+        "type": "object",
+        "description": "BankAccountDetailInfo",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "property discriminator, used to discriminate the wallet detail. Fixed value 'BANK_ACCOUNT'",
+            "example": "BANK_ACCOUNT"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The creation date"
+          },
+          "bankName": {
+            "type": "string",
+            "description": "The identifying name of the bank"
+          },
+          "bankState": {
+            "type": "string",
+            "description": "The bank state"
+          }
+        },
+        "required": [
+          "type",
+          "creationDate",
+          "bankName"
+        ]
+      },
+      "CardDetailInfo": {
+        "type": "object",
+        "description": "CardDetailInfo",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "property discriminator, used to discriminate the wallet detail. Fixed value 'CARD'",
+            "example": "CARD"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The creation date"
+          },
+          "idPsp": {
+            "type": "string",
+            "description": "The identifier of the psp"
+          },
+          "cardBin": {
+            "type": "string",
+            "description": "The card bin number"
+          },
+          "cardNumber": {
+            "type": "string",
+            "description": "The card number obfuscated"
+          }
+        },
+        "required": [
+          "type",
+          "creationDate"
+        ]
+      },
+      "BancomatDetailInfo": {
+        "type": "object",
+        "description": "BancomatDetailInfo",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "property discriminator, used to discriminate the wallet detail. Fixed value 'BANCOMAT'",
+            "example": "BANCOMAT"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The creation date"
+          },
+          "bancomatAbi": {
+            "type": "string",
+            "description": "The bancomat abi"
+          },
+          "bancomatNumber": {
+            "type": "string",
+            "description": "The bancomat number"
+          }
+        },
+        "required": [
+          "type",
+          "creationDate"
+        ]
+      },
+      "BpayDetailInfo": {
+        "type": "object",
+        "description": "BpayDetailInfo",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "property discriminator, used to discriminate the wallet detail. Fixed value 'BPAY'",
+            "example": "BPAY"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The creation date"
+          },
+          "idPsp": {
+            "type": "string",
+            "description": "The identifier of the psp"
+          },
+          "bpayName": {
+            "type": "string",
+            "description": "Name of the institution providing the service"
+          },
+          "bpayPhoneNumber": {
+            "type": "string",
+            "description": "Phone number connected to the BancomatPay account"
+          }
+        },
+        "required": [
+          "type",
+          "creationDate"
+        ]
+      },
+      "SatispayDetailInfo": {
+        "type": "object",
+        "description": "SatispayDetailInfo",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "property discriminator, used to discriminate the wallet detail. Fixed value 'SATISPAY'",
+            "example": "SATISPAY"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The creation date"
+          },
+          "idPsp": {
+            "type": "string",
+            "description": "The identifier of the psp"
+          }
+        },
+        "required": [
+          "type",
+          "creationDate"
+        ]
+      },
+      "GenericMethodDetailInfo": {
+        "type": "object",
+        "description": "GenericMethodDetailInfo",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "property discriminator, used to discriminate the wallet detail. Fixed value 'GENERIC_METHOD'",
+            "example": "GENERIC_METHOD"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The creation date"
+          },
+          "description": {
+            "type": "string",
+            "description": "A description of the generic method"
+          }
+        },
+        "required": [
+          "type",
+          "creationDate"
+        ]
+      },
+      "PaymentMethodDetail": {
+        "type": "object",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/BankAccountDetailInfo"
+          },
+          {
+            "$ref": "#/components/schemas/PaypalDetailInfo"
+          },
+          {
+            "$ref": "#/components/schemas/CardDetailInfo"
+          },
+          {
+            "$ref": "#/components/schemas/BancomatDetailInfo"
+          },
+          {
+            "$ref": "#/components/schemas/BpayDetailInfo"
+          },
+          {
+            "$ref": "#/components/schemas/SatispayDetailInfo"
+          },
+          {
+            "$ref": "#/components/schemas/GenericMethodDetailInfo"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "PAYPAL": "#/components/schemas/PaypalDetailInfo",
+            "BANK_ACCOUNT": "#/components/schemas/BankAccountDetailInfo",
+            "CARD": "#/components/schemas/CardDetailInfo",
+            "BANCOMAT": "#/components/schemas/BancomatDetailInfo",
+            "BPAY": "#/components/schemas/BpayDetailInfo",
+            "SATISPAY": "#/components/schemas/SatispayDetailInfo",
+            "GENERIC_METHOD": "#/components/schemas/GenericMethodDetailInfo"
+          }
+        }
+      },
+      "SearchPaymentMethodResponse": {
+        "type": "object",
+        "description": "SearchPaymentMethodResponse",
+        "properties": {
+          "fiscalCode": {
+            "type": "string",
+            "description": "The user fiscal code"
+          },
+          "notificationEmail": {
+            "type": "string",
+            "description": "The user notification email"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the user"
+          },
+          "surname": {
+            "type": "string",
+            "description": "The surname of the user"
+          },
+          "username": {
+            "type": "string",
+            "description": "The username of the user"
+          },
+          "status": {
+            "type": "string",
+            "description": "The user state."
+          },
+          "paymentMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentMethodDetail"
+            }
+          }
+        },
+        "required": [
+          "fiscalCode",
+          "notificationEmail",
+          "name",
+          "surname",
+          "username",
+          "status"
+        ]
       }
     },
     "requestBodies": {
@@ -883,6 +1602,101 @@
                   "transactionId": "transactionId"
                 }
               }
+            }
+          }
+        }
+      },
+      "SearchDeadLetterEventRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "$ref": "#/components/schemas/DeadLetterSearchEventSource"
+                },
+                "timeRange": {
+                  "$ref": "#/components/schemas/DeadLetterSearchDateTimeRange"
+                }
+              },
+              "required": [
+                "source"
+              ]
+            },
+            "examples": {
+              "search by source without time range": {
+                "value": {
+                  "source": "ALL"
+                }
+              },
+              "search by source with time range": {
+                "value": {
+                  "source": "ALL",
+                  "timeRange": {
+                    "startDate": "2023-01-01T00:00:00.000Z",
+                    "endDate": "2023-01-01T02:00:00.000Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "SearchPgsStatusResponse": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SearchPgsStatusResponse"
+            }
+          }
+        }
+      },
+      "SearchPaymentMethodRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/SearchPaymentMethodRequestFiscalCode"
+                },
+                {
+                  "$ref": "#/components/schemas/SearchPaymentMethodRequestEmail"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                  "USER_FISCAL_CODE": "#/components/schemas/SearchPaymentMethodRequestFiscalCode",
+                  "USER_EMAIL": "#/components/schemas/SearchPaymentMethodRequestEmail"
+                }
+              }
+            },
+            "examples": {
+              "search by user fiscal code": {
+                "value": {
+                  "type": "USER_FISCAL_CODE",
+                  "userFiscalCode": "user_fiscal_code"
+                }
+              },
+              "search by user email": {
+                "value": {
+                  "type": "USER_EMAIL",
+                  "userEmail": "test@test.it"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SearchPaymentMethodResponse": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SearchPaymentMethodResponse"
             }
           }
         }

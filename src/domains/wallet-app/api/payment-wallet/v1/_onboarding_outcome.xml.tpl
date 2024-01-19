@@ -1,7 +1,10 @@
 <policies>
     <inbound>
         <return-response>
-            <set-status code="200" reason="OK" />          
+          <set-status code="302" />
+          <set-header name="location" exists-action="override">
+            <value>@($"iowallet://{context.Request.OriginalUrl.Host}{context.Request.OriginalUrl.Path}{context.Request.OriginalUrl.QueryString}")</value>
+          </set-header>
         </return-response>
     </inbound>
     <outbound>

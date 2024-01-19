@@ -138,6 +138,13 @@ variable "pipe_service_principel_application_id" {
   description = "SP for pipeline application_id - pagopaspa-pagoPA-projects-[subscriptionid]"
 }
 
+variable "certs_storage_account_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "(Optional) Certificates storage account replication type"
+}
+
+
 
 variable "nodo_cert_storage_account" {
   type = object({

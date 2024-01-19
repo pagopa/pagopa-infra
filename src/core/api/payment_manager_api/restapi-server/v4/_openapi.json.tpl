@@ -82,6 +82,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "in": "query",
+            "name": "method",
+            "description": "payment's type",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "BPAY",
+                "PPAL"
+              ]
+            }
           }
         ],
         "responses": {
@@ -423,6 +436,14 @@
           "accountingStatus": {
             "type": "string"
           },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "IO",
+              "CHECKOUT",
+              "WISP"
+            ]
+          },
           "rrn": {
             "type": "string"
           },
@@ -499,6 +520,15 @@
           },
           "userStatus": {
             "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "fiscalCode": {
+            "type": "string"
           },
           "userStatusDescription": {
             "type": "string"

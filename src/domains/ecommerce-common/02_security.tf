@@ -417,3 +417,58 @@ resource "azurerm_key_vault_secret" "wallet-token-test-key" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "ecommerce-io-jwt-signing-key" {
+  name         = "ecommerce-io-jwt-signing-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_storage_dead_letter_account_key" {
+  name         = "ecommerce-storage-dead-letter-account-key"
+  value        = module.ecommerce_storage_deadletter.primary_access_key
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "wallet-api-key" {
+  name         = "wallet-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+
+resource "azurerm_key_vault_secret" "npg_notification_signing_key" {
+  name         = "npg-notification-signing-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "checkout_redirect_psp_keys" {
+  name         = "checkout-redirect-psp-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

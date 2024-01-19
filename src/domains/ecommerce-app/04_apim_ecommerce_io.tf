@@ -1,3 +1,31 @@
+data "azurerm_key_vault_secret" "personal_data_vault_api_key_secret" {
+  name         = "personal-data-vault-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce-personal-data-vault-api-key" {
+  name                = "ecommerce-personal-data-vault-api-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-personal-data-vault-api-key"
+  value               = data.azurerm_key_vault_secret.personal_data_vault_api_key_secret.value
+  secret              = true
+}
+
+data "azurerm_key_vault_secret" "ecommerce_io_jwt_signing_key" {
+  name         = "ecommerce-io-jwt-signing-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce-io-jwt-signing-key" {
+  name                = "ecommerce-io-jwt-signing-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-io-jwt-signing-key"
+  value               = data.azurerm_key_vault_secret.ecommerce_io_jwt_signing_key.value
+  secret              = true
+}
+
 ##############
 ## Products ##
 ##############
@@ -70,7 +98,8 @@ module "apim_ecommerce_io_api_v1" {
   })
 
   xml_content = templatefile("./api/ecommerce-io/v1/_base_policy.xml.tpl", {
-    ecommerce_ingress_hostname = local.ecommerce_hostname
+    ecommerce_ingress_hostname   = local.ecommerce_hostname
+    ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
   })
 }
 
@@ -129,7 +158,10 @@ resource "azurerm_api_management_api_operation_policy" "io_create_transaction" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "newTransaction"
 
-  xml_content = file("./api/ecommerce-io/v1/post_transactions.xml.tpl")
+  xml_content = templatefile("./api/ecommerce-io/v1/post_transactions.xml.tpl", {
+    ecommerce_ingress_hostname   = local.ecommerce_hostname
+    ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
+  })
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_get_transaction_info" {
@@ -138,7 +170,9 @@ resource "azurerm_api_management_api_operation_policy" "io_get_transaction_info"
   api_management_name = local.pagopa_apim_name
   operation_id        = "getTransactionInfo"
 
-  xml_content = file("./api/ecommerce-io/v1/get_transaction.xml.tpl")
+  xml_content = templatefile("./api/ecommerce-io/v1/get_transaction.xml.tpl", {
+    ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
+  })
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_delete_transaction" {
@@ -157,7 +191,9 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_authoriza
   operation_id        = "requestTransactionAuthorization"
 
   xml_content = templatefile("./api/ecommerce-io/v1/_auth_request.xml.tpl", {
-    authurl-basepath = var.env_short == "d" ? local.apim_hostname : "{{wisp2-gov-it}}"
+    authurl-basepath             = var.env_short == "d" ? local.apim_hostname : "{{wisp2-gov-it}}"
+    ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
+    wallet-basepath              = local.wallet_hostname
   })
 }
 
@@ -167,7 +203,11 @@ resource "azurerm_api_management_api_operation_policy" "io_create_session" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "newSessionToken"
 
-  xml_content = file("./api/ecommerce-io/v1/_create_new_session.xml.tpl")
+  xml_content = templatefile("./api/ecommerce-io/v1/_create_new_session.xml.tpl", {
+    ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
+    io_backend_base_path         = var.io_backend_base_path
+    pdv_api_base_path            = var.pdv_api_base_path
+  })
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
@@ -176,7 +216,14 @@ resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "calculateFees"
 
-  xml_content = templatefile("./api/ecommerce-io/v1/_calculate_fees_policy.xml.tpl", { ecommerce-basepath = local.ecommerce_hostname })
+  xml_content = templatefile("./api/ecommerce-io/v1/_calculate_fees_policy.xml.tpl",
+    {
+      ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
+      ecommerce-basepath           = local.ecommerce_hostname
+      wallet-basepath              = local.wallet_hostname
+    }
+  )
+
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_transaction_outcome" {

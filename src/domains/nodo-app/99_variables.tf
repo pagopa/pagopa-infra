@@ -264,6 +264,13 @@ variable "nodo_re_to_tablestorage_function_autoscale" {
   description = "Nodo RE functions autoscaling parameters"
 }
 
+
+variable "function_app_storage_account_replication_type" {
+  type        = string
+  default     = "ZRS"
+  description = "(Optional) Storage account replication type used for function apps"
+}
+
 variable "nodo_verifyko_to_datastore_function" {
   type = object({
     always_on                    = bool
@@ -271,15 +278,9 @@ variable "nodo_verifyko_to_datastore_function" {
     sku_size                     = string
     sku_tier                     = string
     maximum_elastic_worker_count = number
+    zone_balancing_enabled       = bool
   })
   description = "Nodo Verify KO events to datastore function"
-  default = {
-    always_on                    = true
-    kind                         = "Linux"
-    sku_size                     = "B1"
-    sku_tier                     = "Basic"
-    maximum_elastic_worker_count = 1
-  }
 }
 
 variable "nodo_verifyko_to_datastore_function_subnet" {
@@ -315,6 +316,7 @@ variable "nodo_verifyko_to_tablestorage_function" {
     sku_size                     = string
     sku_tier                     = string
     maximum_elastic_worker_count = number
+    zone_balancing_enabled       = bool
   })
   description = "Nodo Verify KO events to table storage function"
 }

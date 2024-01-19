@@ -179,7 +179,6 @@ resource "azurerm_key_vault_secret" "ehub_tx_negative_biz_key" {
 }
 
 resource "azurerm_key_vault_secret" "ehub_rx_negative_final_biz_conn_string" {
-  count        = var.env_short == "d" ? 1 : 0
   name         = format("ehub-rx-%s-negative-final-biz-conn-string", var.env_short)
   value        = format("'%s'", data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-rx-pdnd.primary_connection_string)
   content_type = "text/plain"
@@ -188,7 +187,6 @@ resource "azurerm_key_vault_secret" "ehub_rx_negative_final_biz_conn_string" {
 }
 
 resource "azurerm_key_vault_secret" "ehub_rx_negative_awakable_biz_conn_string" {
-  count        = var.env_short == "d" ? 1 : 0
   name         = format("ehub-rx-%s-negative-awakable-biz-conn-string", var.env_short)
   value        = format("'%s'", data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-rx-pdnd.primary_connection_string)
   content_type = "text/plain"
@@ -212,8 +210,8 @@ resource "azurerm_key_vault_secret" "payment_manager_subscription_key" {
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "elastic-apm-secret-token" {
-  name         = "payment-manager-subscription-key"
+resource "azurerm_key_vault_secret" "elastic_otl_secret_token" {
+  name         = "elastic-otl-secret-token"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
