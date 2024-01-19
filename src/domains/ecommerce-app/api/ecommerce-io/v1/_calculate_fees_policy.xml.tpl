@@ -158,7 +158,7 @@
                 <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
                 <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["walletId"])" />
                 <choose>
-                    <when condition="@((bool)context.Variables["isCard"])">
+                    <when condition="@((bool)context.Variables["isCard"] && !String.IsNullOrEmpty((string)context.Variables["walletId"]))">
                         <send-request ignore-error="false" timeout="10" response-variable-name="authDataResponse">
                             <set-url>@($"https://${wallet-basepath}/pagopa-wallet-service/wallets/{(string)context.Variables["walletId"]}/auth-data")</set-url>
                             <set-method>GET</set-method>

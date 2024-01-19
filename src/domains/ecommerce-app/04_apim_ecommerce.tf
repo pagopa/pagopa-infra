@@ -1,4 +1,15 @@
 ##############
+## Groups ##
+##############
+
+resource "azurerm_api_management_group" "ecommerce-methods-full-read" {
+  name                = "ecommerce-methods-full-read"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = "Payment method full access to read all client"
+}
+
+##############
 ## Products ##
 ##############
 
