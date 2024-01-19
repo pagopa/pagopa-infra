@@ -1590,8 +1590,6 @@
           }
         },
         "required": [
-          "walletId",
-          "pamentToken",
           "paymentAmount"
         ]
       },
