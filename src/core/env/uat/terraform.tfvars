@@ -605,6 +605,32 @@ eventhubs_02 = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "quality-improvement-psp-kpi"
+    partitions        = 3
+    message_retention = 1
+    consumers         = ["pagopa-qi-psp-kpi-rx", "pagopa-qi-psp-kpi-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-qi-psp-kpi-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-psp-kpi-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-psp-kpi-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 
