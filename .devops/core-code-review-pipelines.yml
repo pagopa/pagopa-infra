@@ -1,32 +1,32 @@
 pr:
-  autoCancel: false
+  autoCancel: true
   branches:
     include:
       - main
   paths:
     include:
-      - 'src/core/*'
-      - '.devops/code-review-pipelines.yml'
+      - 'src/core'
     exclude:
       - '**/*.lock.hcl'
+      - '**/*.md'
 
 parameters:
   - name: 'DEV'
-    displayName: 'Plan on DEV environment'
+    displayName: 'Run on DEV environment'
     type: boolean
     default: True
     values:
       - False
       - True
   - name: 'UAT'
-    displayName: 'Plan on UAT environment'
+    displayName: 'Run on UAT environment'
     type: boolean
     default: True
     values:
       - False
       - True
   - name: 'PROD'
-    displayName: 'Plan on PROD environment'
+    displayName: 'Run on PROD environment'
     type: boolean
     default: True
     values:
@@ -34,73 +34,88 @@ parameters:
       - True
 
 variables:
-  TIME_OUT: 10
+  TIME_OUT: 15
+  # working dir
+  WORKING_DIR: 'src/core'
+  poolNameDev: '$(TF_POOL_NAME_DEV)'
+  poolNameUat: '$(TF_POOL_NAME_UAT)'
+  poolNameProd: '$(TF_POOL_NAME_PROD)'
+  azureServiceConnectionPlanNameDev: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+  azureServiceConnectionPlanNameUat: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+  azureServiceConnectionPlanNameProd: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+  githubEndpointName: '$(TF_GITHUB_SERVICE_ENDPOINT_NAME)'
 
 pool:
-  vmImage: 'ubuntu-20.04'
+  vmImage: 'ubuntu-latest'
 
 resources:
   repositories:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v3.0.0
-      endpoint: 'io-azure-devops-github-ro'
+      ref: refs/tags/v5.2.1
+      endpoint: "${{var.githubEndpointName}}"
 
 stages:
-  - stage: tf_plan_core_dev
+  - stage: DEV
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
-      name: pagopa-dev-linux-infra
+      name: "${{variables.poolNameDev}}"
     jobs:
-      - job: tf_plan_core
+      - job: tfplan_core
+        strategy:
+          parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan idpay-common
+          # 2. Run terraform plan core
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              WORKINGDIR: 'src/core'
               TF_ENVIRONMENT_FOLDER: "dev"
-              AZURE_SERVICE_CONNECTION_NAME: DEV-PAGOPA-SERVICE-CONN
+              WORKINGDIR: ${{ variables.WORKING_DIR }}
+              AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{var.azureServiceConnectionPlanNameDev}}"
 
-  - stage: tf_plan_core_uat
+  - stage: UAT
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.UAT}}, true))
     pool:
-      name: pagopa-uat-linux-infra
+      name: "${{variables.poolNameUat}}"
     jobs:
-      - job: tf_plan_core
+      - job: tfplan_core
+        strategy:
+          parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan idpay-common
+          # 2. Run terraform plan core
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              WORKINGDIR: 'src/core'
               TF_ENVIRONMENT_FOLDER: "uat"
-              AZURE_SERVICE_CONNECTION_NAME: UAT-PAGOPA-SERVICE-CONN
+              WORKINGDIR: ${{ variables.WORKING_DIR }}
+              AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{var.azureServiceConnectionPlanNameUat}}"
 
-  - stage: tf_plan_core_prod
+  - stage: PROD
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.PROD}}, true))
     pool:
-      name: pagopa-prod-linux-infra
+      name: "${{variables.poolNameProd}}"
     jobs:
-      - job: tf_plan_core
+      - job: tfplan_core
+        strategy:
+          parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan idpay-common
+          # 2. Run terraform plan core
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              WORKINGDIR: 'src/core'
               TF_ENVIRONMENT_FOLDER: "prod"
-              AZURE_SERVICE_CONNECTION_NAME: PROD-PAGOPA-SERVICE-CONN
+              WORKINGDIR: ${{ variables.WORKING_DIR }}
+              AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{var.azureServiceConnectionPlanNameProd}}"
