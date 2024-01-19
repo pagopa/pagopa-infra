@@ -153,7 +153,7 @@
                                 JObject converted = new JObject();
                                 converted["name"] = serviceName;
                                 converted["status"] = "ENABLED";
-                                converted["updateDate"] = result["createDate"];
+                                converted["updateDate"] = result["creationDate"];
                                 convertedServices.Add(converted);
                             }
                         }
