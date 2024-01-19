@@ -678,7 +678,8 @@
                 "type": "string",
                 "enum": [
                   "MASTERCARD",
-                  "VISA"
+                  "VISA",
+                  "AMEX"
                 ]
               }
             },
