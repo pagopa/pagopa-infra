@@ -1453,7 +1453,7 @@
           },
           "gateway": {
             "type": "string",
-            "pattern": "XPAY|VPOS|NPG",
+            "pattern": "XPAY|VPOS|NPG|REDIRECT",
             "description": "Pgs identifier"
           }
         },
@@ -1620,6 +1620,38 @@
               "detailType": "cards",
               "orderId": "order-id"
             }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for Redirection authorization request",
+            "properties": {
+              "detailType": {
+                "description": "fixed value 'redirect'",
+                "type": "string"
+              }
+            },
+            "required": [
+              "detailType"
+            ],
+            "example": {
+              "detailType": "redirect"
+            }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for APM authorization request",
+            "properties": {
+              "detailType": {
+                "description": "fixed value 'apm'",
+                "type": "string"
+              }
+            },
+            "required": [
+              "detailType"
+            ],
+            "example": {
+              "detailType": "apm"
+            }
           }
         ]
       },
@@ -1785,6 +1817,9 @@
             "type": "string",
             "description": "Payment method type code"
           },
+          "methodManagement": {
+            "$ref": "#/components/schemas/PaymentMethodManagementType"
+          },
           "ranges": {
             "description": "Payment amount range in eurocents",
             "type": "array",
@@ -1800,7 +1835,8 @@
           "description",
           "status",
           "paymentTypeCode",
-          "ranges"
+          "ranges",
+          "methodManagement"
         ]
       },
       "PaymentMethodsResponse": {
@@ -2191,6 +2227,15 @@
           "ENABLED",
           "DISABLED",
           "INCOMING"
+        ]
+      },
+      "PaymentMethodManagementType": {
+        "type": "string",
+        "description": "Payment method management type",
+        "enum": [
+          "ONBOARDABLE",
+          "NOT_ONBOARDABLE",
+          "REDIRECT"
         ]
       }
     },
