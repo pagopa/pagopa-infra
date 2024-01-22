@@ -49,8 +49,9 @@
               <set-variable name="walletId" value="@{
                 string requestBody = ((string)context.Variables["requestBody"]);
                 string[] walletParamArray = requestBody!=null && requestBody.Split('&').Length >= 1 ? requestBody.Split('&') : new string[0];
-                string[] walletIdArray = Array.FindAll(walletParamArray, formIdValue => formIdValue.StartsWith("idWallet=", StringComparison.Ordinal));
-                string walletId = walletIdArray.Length > 0 && walletIdArray[0].Split('=').Length == 2 ? walletIdArray[0].Split('=')[1] : "";
+                string walletIdFound = Array.Find(walletParamArray, formIdValue => formIdValue.StartsWith("idWallet=", StringComparison.Ordinal));
+                string[] walletIdSplit = String.IsNullOrEmpty(walletIdFound) ? new string[0] : walletIdFound.Split('=');
+                string walletId = walletIdSplit.Length == 2 ? walletIdSplit[1] : "";
                 string walletIdHex = (long.Parse(walletId)).ToString("X").PadLeft(16,'0');
                 string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
                 return walletIdToUuid;
