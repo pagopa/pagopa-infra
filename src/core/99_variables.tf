@@ -3,7 +3,7 @@ locals {
 
   soap_basepath_nodo_postgres_pagopa = "nodo"
 
-  azdo_managed_identity_name = "${var.env}-pagopa"
+  azdo_managed_identity_name    = "${var.env}-pagopa"
   azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
 }
 
@@ -252,6 +252,12 @@ variable "cidr_subnet_apim" {
 variable "cidr_subnet_appgateway" {
   type        = list(string)
   description = "Application gateway address space."
+}
+
+variable "cidr_subnet_loadtest_agent" {
+  type        = list(string)
+  description = "LoadTest Agent Pool address space"
+  default     = null
 }
 
 # nat gateway
