@@ -17,6 +17,16 @@
       <when condition="@(((IResponse)context.Variables["user-auth-body"]).StatusCode != 200)">
         <return-response>
           <set-status code="502" reason="Bad Gateway" />
+          <set-header name="Content-Type" exists-action="override">
+              <value>application/json</value>
+          </set-header>
+          <set-body>
+              {
+              "title": "Error get user",
+              "status": 502,
+              "detail": "There was an error getting user info"
+              }
+          </set-body>
         </return-response>
       </when>
     </choose>
@@ -40,6 +50,16 @@
       <when condition="@(((IResponse)context.Variables["pdv-token"]).StatusCode != 200)">
         <return-response>
           <set-status code="502" reason="Bad Gateway" />
+          <set-header name="Content-Type" exists-action="override">
+              <value>application/json</value>
+          </set-header>
+          <set-body>
+              {
+              "title": "Error PDV",
+              "status": 502,
+              "detail": "There was an error during PDV encoding"
+              }
+          </set-body>
         </return-response>
       </when>
     </choose>
