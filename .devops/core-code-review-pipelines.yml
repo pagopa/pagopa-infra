@@ -76,7 +76,7 @@ stages:
             parameters:
               TF_ENVIRONMENT_FOLDER: "dev"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
-              AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{var.azureServiceConnectionPlanNameDev}}"
+              AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
 
   - stage: UAT
     dependsOn: []
@@ -97,7 +97,7 @@ stages:
             parameters:
               TF_ENVIRONMENT_FOLDER: "uat"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
-              AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{var.azureServiceConnectionPlanNameUat}}"
+              AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
 
   - stage: PROD
     dependsOn: []
@@ -118,4 +118,4 @@ stages:
             parameters:
               TF_ENVIRONMENT_FOLDER: "prod"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
-              AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{var.azureServiceConnectionPlanNameProd}}"
+              AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"

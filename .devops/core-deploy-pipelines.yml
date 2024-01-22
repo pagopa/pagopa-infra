@@ -62,10 +62,10 @@ stages:
         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_common"
         TF_ENVIRONMENT_FOLDER: "dev"
         ENVIRONMENT: "DEV"
-        AZURE_DEVOPS_POOL_AGENT_NAME: "${{var.poolNameDev}}"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameDev}}"
         WORKINGDIR: ${{ variables.WORKING_DIR }}
-        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{var.azureServiceConnectionPlanNameDev}}"
-        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{var.azureServiceConnectionApplyNameDev}}"
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameDev}}"
 #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
     - template: templates/terraform-plan-apply/template.yaml@terraform
@@ -73,10 +73,10 @@ stages:
         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_common"
         TF_ENVIRONMENT_FOLDER: "uat"
         ENVIRONMENT: "UAT"
-        AZURE_DEVOPS_POOL_AGENT_NAME: "${{var.poolNameUat}}"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
         WORKINGDIR: ${{ variables.WORKING_DIR }}
-        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{var.azureServiceConnectionPlanNameUat}}"
-        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{var.azureServiceConnectionApplyNameUat}}"
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameUat}}"
 #PROD
   - ${{ if eq(parameters['PROD'], true) }}:
     - template: templates/terraform-plan-apply/template.yaml@terraform
@@ -84,7 +84,7 @@ stages:
         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_common"
         TF_ENVIRONMENT_FOLDER: "prod"
         ENVIRONMENT: "PROD"
-        AZURE_DEVOPS_POOL_AGENT_NAME: "${{var.poolNameProd}}"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameProd}}"
         WORKINGDIR: ${{ variables.WORKING_DIR }}
-        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{var.azureServiceConnectionPlanNameProd}}"
-        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{var.azureServiceConnectionApplyNameProd}}"
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
