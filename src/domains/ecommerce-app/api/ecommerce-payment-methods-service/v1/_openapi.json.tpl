@@ -200,6 +200,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "x-client-id",
+            "in": "header",
+            "description": "client id related to a given touchpoint",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "IO",
+                "CHECKOUT"
+              ]
+            }
           }
         ],
         "responses": {
@@ -604,6 +617,9 @@
             "type": "string",
             "description": "Payment method type code"
           },
+          "methodManagement": {
+            "$ref": "#/components/schemas/PaymentMethodManagementType"
+          },
           "ranges": {
             "description": "Payment method ranges",
             "type": "array",
@@ -617,6 +633,7 @@
           "name",
           "description",
           "status",
+          "methodManagement",
           "paymentTypeCode",
           "ranges"
         ]
@@ -678,6 +695,9 @@
             "type": "string",
             "description": "Payment method type code"
           },
+          "methodManagement": {
+            "$ref": "#/components/schemas/PaymentMethodManagementType"
+          },
           "ranges": {
             "description": "Payment amount range in eurocents",
             "type": "array",
@@ -693,7 +713,8 @@
           "description",
           "status",
           "paymentTypeCode",
-          "ranges"
+          "ranges",
+          "methodManagement"
         ]
       },
       "PaymentMethodsResponse": {
@@ -897,6 +918,15 @@
           "ENABLED",
           "DISABLED",
           "INCOMING"
+        ]
+      },
+      "PaymentMethodManagementType": {
+        "type": "string",
+        "description": "Payment method management type",
+        "enum": [
+          "ONBOARDABLE",
+          "NOT_ONBOARDABLE",
+          "REDIRECT"
         ]
       },
       "CreateSessionResponse": {
