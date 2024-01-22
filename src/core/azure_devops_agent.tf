@@ -59,11 +59,16 @@ data "azuread_service_principal" "iac_principal" {
   display_name = format("pagopaspa-pagoPA-iac-%s", data.azurerm_subscription.current.subscription_id)
 }
 
-resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
+data "azurerm_user_assigned_identity" "iac_plan_azdo" {
+  name                = local.azdo_iac_plan_managed_identity_name
+  resource_group_name = local.managed_identity_rg_name
+}
+
+resource "azurerm_key_vault_access_policy" "azdevops_iac_plan_policy" {
   count        = var.enable_iac_pipeline ? 1 : 0
   key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azuread_service_principal.iac_principal[0].object_id
+  object_id    = data.azurerm_user_assigned_identity.iac_plan_azdo.principal_id
 
   secret_permissions = ["Get", "List", "Set", ]
 

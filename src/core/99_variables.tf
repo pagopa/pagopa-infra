@@ -1,3 +1,18 @@
+locals {
+  apim_x_node_product_id = "apim_for_node"
+
+  soap_basepath_nodo_postgres_pagopa = "nodo"
+
+  managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
+  
+  azdo_app_managed_identity_name    = "${var.env}-pagopa"
+  azdo_app_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
+
+  azdo_iac_plan_managed_identity_name    = "azdo-${var.env}-pagopa-iac-plan"
+  azdo_iac_deploy_managed_identity_name    = "azdo-${var.env}-pagopa-iac-deploy"
+}
+
+
 variable "location" {
   type        = string
   description = "One of westeurope, northeurope"
