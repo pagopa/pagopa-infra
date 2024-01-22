@@ -51,12 +51,6 @@ resource "azurerm_private_endpoint" "gpd_blob" {
   tags = var.tags
 }
 
-resource "azurerm_storage_container" "gpd_upload_container" {
-  name                  = "gpd-upload"
-  storage_account_name  = module.gpd_sa_sftp.name
-  container_access_type = "private"
-}
-
 resource "azurerm_storage_management_policy" "gpd_sa_lifecycle_policy" {
   storage_account_id = module.gpd_sa_sftp.id
 
@@ -64,7 +58,7 @@ resource "azurerm_storage_management_policy" "gpd_sa_lifecycle_policy" {
     name    = "Gpd upload blob sa policy"
     enabled = true
     filters {
-      prefix_match = ["gpd-upload"]
+      prefix_match = ["broker"]
       blob_types   = ["blockBlob"]
     }
     actions {
