@@ -49,7 +49,7 @@
                   {
                       { "CP", "pm-onboarding/creditcard" },
                       { "BPAY", "pm-onboarding/bpay" },
-                      { "PPAY", "pm-onboarding/paypal" }
+                      { "PPAL", "pm-onboarding/paypal" }
                   };
 
               string redirectUrlPrefix;
