@@ -1,5 +1,5 @@
 locals {
-  azdo_app_managed_identity_name = "${var.env}-pagopa"
+  azdo_app_managed_identity_name    = "${var.env}-pagopa"
   azdo_app_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
 }
 
