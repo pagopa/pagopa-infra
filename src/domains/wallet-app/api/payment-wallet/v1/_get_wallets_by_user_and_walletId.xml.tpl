@@ -53,11 +53,11 @@
                   <value>application/json</value>
               </set-header>
               <set-body>@{
-          return new JObject(
-            new JProperty("title", "Bad gateway - Invalid PDV response"),
-            new JProperty("status", 502),
-            new JProperty("detail", "Cannot tokenize fiscal code")
-          ).ToString();
+          {
+                "title": "Bad gateway - Invalid PDV response",
+                "status": 502,
+                "detail": "Cannot tokenize fiscal code"
+          }
         }</set-body>
           </return-response>
       </when>
