@@ -193,10 +193,11 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_FDR_IMPORT_ESITI" 
   name            = "Trigger_KPI_FDR_IMPORT_ESITI"
   data_factory_id = data.azurerm_data_factory.qi_data_factory.id
 
-  interval  = 1
-  frequency = "Hour"
-  activated = true
-  time_zone = "W. Europe Standard Time"
+  interval   = 1
+  frequency  = "Hour"
+  activated  = true
+  time_zone  = "W. Europe Standard Time"
+  start_time = "2023-12-13T14:10:00Z"
 
   description   = "Description of Trigger_KPI_FDR_IMPORT_ESITI"
   pipeline_name = azurerm_data_factory_pipeline.pipeline_KPI_FDR_IMPORT_ESITI.name
