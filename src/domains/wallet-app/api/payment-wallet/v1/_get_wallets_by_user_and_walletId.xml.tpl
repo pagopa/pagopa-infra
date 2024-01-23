@@ -72,13 +72,13 @@
               <set-header name="Content-Type" exists-action="override">
                   <value>application/json</value>
               </set-header>
-              <set-body>@{
-          {
-                "title": "Bad gateway - Invalid PDV response",
-                "status": 502,
-                "detail": "Cannot tokenize fiscal code"
-          }
-        }</set-body>
+              <set-body>
+                {
+                      "title": "Bad gateway - Invalid PDV response",
+                      "status": 502,
+                      "detail": "Cannot tokenize fiscal code"
+                }
+             </set-body>
           </return-response>
       </when>
     </choose>
