@@ -236,7 +236,7 @@
                          JArray wallets = (JArray)(((JObject)context.Variables["walletResponseJson"])["data"]);
                          foreach (JObject wallet in wallets) {
                             if(((string)wallet["walletType"]).Equals("PayPal")) {
-                              string walletIdHex = (long.Parse(wallet["idWallet"])).ToString("X").PadLeft(16,'0');
+                              string walletIdHex = (long.Parse((string)wallet["idWallet"])).ToString("X").PadLeft(16,'0');
                               string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
                               return walletIdToUuid;
                            }
