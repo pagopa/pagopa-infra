@@ -40,9 +40,9 @@ variables:
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
   poolNameProd: '$(TF_POOL_NAME_PROD)'
-  azureServiceConnectionPlanNameDev: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
-  azureServiceConnectionPlanNameUat: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
-  azureServiceConnectionPlanNameProd: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+  azureServiceConnectionPlanNameDev: '$(TF_AZURE_SERVICE_CONNECTION_NAME_DEV)'
+  azureServiceConnectionPlanNameUat: '$(TF_AZURE_SERVICE_CONNECTION_NAME_UAT)'
+  azureServiceConnectionPlanNameProd: '$(TF_AZURE_SERVICE_CONNECTION_NAME_PROD)'
   githubEndpointName: '$(TF_GITHUB_SERVICE_ENDPOINT_NAME)'
 
 pool:
@@ -76,7 +76,8 @@ stages:
             parameters:
               TF_ENVIRONMENT_FOLDER: "dev"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
-              AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+              TF_SUMMARIZE: true
 
   - stage: UAT
     dependsOn: []
@@ -97,7 +98,8 @@ stages:
             parameters:
               TF_ENVIRONMENT_FOLDER: "uat"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
-              AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+              TF_SUMMARIZE: true
 
   - stage: PROD
     dependsOn: []
@@ -118,4 +120,5 @@ stages:
             parameters:
               TF_ENVIRONMENT_FOLDER: "prod"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
-              AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+              TF_SUMMARIZE: true
