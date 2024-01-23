@@ -51,7 +51,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v5.2.1
+      ref: refs/heads/migration-azurecli-to-service-connection
       endpoint: "io-azure-devops-github-ro"
 
 stages:
