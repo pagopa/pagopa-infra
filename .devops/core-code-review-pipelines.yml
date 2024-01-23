@@ -40,9 +40,9 @@ variables:
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
   poolNameProd: '$(TF_POOL_NAME_PROD)'
-  azureServiceConnectionPlanNameDev: '$(TF_AZURE_SERVICE_CONNECTION_NAME_DEV)'
-  azureServiceConnectionPlanNameUat: '$(TF_AZURE_SERVICE_CONNECTION_NAME_UAT)'
-  azureServiceConnectionPlanNameProd: '$(TF_AZURE_SERVICE_CONNECTION_NAME_PROD)'
+  azureServiceConnectionPlanNameDev: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+  azureServiceConnectionPlanNameUat: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+  azureServiceConnectionPlanNameProd: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
   githubEndpointName: '$(TF_GITHUB_SERVICE_ENDPOINT_NAME)'
 
 pool:
