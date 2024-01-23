@@ -48,7 +48,7 @@ module "wallet_fe_cdn" {
       {
         action = "Overwrite"
         name   = "Content-Security-Policy"
-        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s *wisp2.pagopa.gov.it *.nexigroup.com;", var.dns_zone_platform, var.external_domain)
+        value  = "default-src 'self'; connect-src 'self' https://api.${var.dns_zone_platform}.${var.external_domain} *.pagopa.gov.it *.nexigroup.com;"
       },
       {
         action = "Append"
