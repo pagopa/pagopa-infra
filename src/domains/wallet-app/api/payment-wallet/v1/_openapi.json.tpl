@@ -628,7 +628,8 @@
                 "enum": [
                   "MASTERCARD",
                   "VISA",
-                  "AMEX"
+                  "AMEX",
+                  "MAESTRO"
                 ]
               }
             },
