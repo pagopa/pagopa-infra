@@ -300,7 +300,7 @@ module "apim_payment_wallet_outcomes_api_v1" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_payment_wallet_product.product_id]
   subscription_required = local.apim_payment_wallet_outcomes_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.wallet_webview_api.id
+  version_set_id        = azurerm_api_management_api_version_set.wallet_outcomes_api.id
   api_version           = "v1"
 
   description  = local.apim_payment_wallet_outcomes_api.description
