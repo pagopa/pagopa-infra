@@ -50,37 +50,37 @@ dns_zone_checkout = "checkout"
 
 pod_disruption_budgets = {
   "pagopaecommerceeventdispatcherservice" = {
-    minAvailable = 1
+    minAvailable = 3
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopaecommerceeventdispatcherservice"
     }
   },
   "pagopaecommercehelpdeskservice" = {
-    minAvailable = 1
+    minAvailable = 3
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopaecommercehelpdeskservice"
     }
   },
   "pagopaecommercepaymentmethodsservice" = {
-    minAvailable = 1
+    minAvailable = 3
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopaecommercepaymentmethodsservice"
     }
   },
   "pagopaecommercepaymentrequestsservice" = {
-    minAvailable = 1
+    minAvailable = 3
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopaecommercepaymentrequestsservice"
     }
   },
   "pagopaecommercetransactionsservice" = {
-    minAvailable = 1
+    minAvailable = 3
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopaecommercetransactionsservice"
     }
   },
   "pagopanotificationsservice" = {
-    minAvailable = 1
+    minAvailable = 3
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopanotificationsservice"
     }

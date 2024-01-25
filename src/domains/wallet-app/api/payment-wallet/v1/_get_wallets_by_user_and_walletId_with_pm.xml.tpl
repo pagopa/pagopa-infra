@@ -1,6 +1,11 @@
 <policies>
     <inbound>
       <set-variable  name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
+      <set-variable name="walletId" value="@{
+            string walletIdUUID = (string)context.Request.MatchedParameters["walletId"];
+            string walletIdHex = walletIdUUID.Substring(walletIdUUID.Length-17 , 17).Replace("-" , "");
+            return Convert.ToInt64(walletIdHex , 16).ToString();
+       }" />
       <!-- Session PM START-->
       <send-request ignore-error="true" timeout="10" response-variable-name="pm-session-body" mode="new">
           <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/actions/start-session?token={(string)context.Variables["walletToken"]}")</set-url>
@@ -116,70 +121,70 @@
                 foreach(JObject paymentMethod in (JArray)paymentMethods["paymentMethods"]){
                     eCommercePaymentMethodIds[paymentMethod["name"].ToString()] = paymentMethod["id"].ToString();
                 }
-                Object[] wallets = pmWalletResponse["data"]
+                JObject walletResult = (JObject) pmWalletResponse["data"]
                     .Where(wallet =>{
-                       return eCommerceWalletTypes.ContainsKey((string) wallet["walletType"]);
+                       return eCommerceWalletTypes.ContainsKey((string) wallet["walletType"]) && (((string)context.Variables["walletId"]).Equals((string)wallet["idWallet"]));
                     })
                     .Select(wallet =>{
-                            JObject result = new JObject();
-                            //convert wallet id (long) to UUID v4 with all bit set to 0 (except for the version).
-                            //wallet id long value is stored into UUID latest 8 byte
-                            string walletIdHex = ((long)wallet["idWallet"]).ToString("X").PadLeft(16,'0');
-                            string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
-                            result["walletId"] = walletIdToUuid;
-                            string pmWalletType = (string) wallet["walletType"];
-                            string eCommerceWalletType = eCommerceWalletTypes[pmWalletType];
-                            result["paymentMethodId"] = eCommercePaymentMethodIds[eCommerceWalletType];
-                            result["status"] = "VALIDATED";
 
-                            TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+                        JObject result = new JObject();
+                        //convert wallet id (long) to UUID v4 with all bit set to 0 (except for the version).
+                        //wallet id long value is stored into UUID latest 8 byte
+                        string walletIdHex = ((long)wallet["idWallet"]).ToString("X").PadLeft(16,'0');
+                        string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
+                        result["walletId"] = walletIdToUuid;
+                        string pmWalletType = (string) wallet["walletType"];
+                        string eCommerceWalletType = eCommerceWalletTypes[pmWalletType];
+                        result["paymentMethodId"] = eCommercePaymentMethodIds[eCommerceWalletType];
+                        result["status"] = "VALIDATED";
 
-                            DateTime creationDateTime = DateTime.Parse(((string)wallet["createDate"]).Replace(" ","T"));
-                            DateTime utcCreationDateTime = TimeZoneInfo.ConvertTimeToUtc(creationDateTime, zone);
-                            DateTimeOffset creationDateTimeOffset = new DateTimeOffset(utcCreationDateTime);
-                            result["creationDate"] = creationDateTimeOffset.ToString("o");
-                            result["updateDate"] = result["creationDate"];
+                        TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
 
-                            var convertedServices = new List<JObject>();
-                            foreach(JValue service in wallet["enableableFunctions"]){
-                                string serviceName = service.ToString().ToUpper();
-                                if(walletServices.Contains(serviceName)){
-                                    JObject converted = new JObject();
-                                    converted["name"] = serviceName;
-                                    converted["status"] = "ENABLED";
-                                    converted["updateDate"] = result["creationDate"];
-                                    convertedServices.Add(converted);
-                                }
+                        DateTime creationDateTime = DateTime.Parse(((string)wallet["createDate"]).Replace(" ","T"));
+                        DateTime utcCreationDateTime = TimeZoneInfo.ConvertTimeToUtc(creationDateTime, zone);
+                        DateTimeOffset creationDateTimeOffset = new DateTimeOffset(utcCreationDateTime);
+                        result["creationDate"] = creationDateTimeOffset.ToString("o");
+                        result["updateDate"] = result["creationDate"];
+
+                        var convertedServices = new List<JObject>();
+                        foreach(JValue service in wallet["enableableFunctions"]){
+                            string serviceName = service.ToString().ToUpper();
+                            if(walletServices.Contains(serviceName)){
+                                JObject converted = new JObject();
+                                converted["name"] = serviceName;
+                                converted["status"] = "ENABLED";
+                                converted["updateDate"] = result["creationDate"];
+                                convertedServices.Add(converted);
                             }
-                            result["services"] = JArray.FromObject(convertedServices);
-                            JObject details = new JObject();
-                            details["type"] = eCommerceWalletType;
-                            if (eCommerceWalletType == "CARDS") {
-                                details["maskedPan"] = $"************{wallet["info"]["blurredNumber"]}";
-                                details["expiryDate"] = $"{(string)wallet["info"]["expireYear"]}{(string)wallet["info"]["expireMonth"]}";
-                                details["holder"] = wallet["info"]["holder"];
-                                details["brand"] = wallet["info"]["brand"];
-                            }
-                            if (eCommerceWalletType == "PAYPAL") {
-                                var info = (JObject)(wallet["info"]);
-                                var pspArray = (JArray)(info["pspInfo"]);
-                                var pspInfo = (JObject)(pspArray[0]);
-                                details["abi"] = pspInfo["abi"];
-                                details["maskedEmail"] = pspInfo["email"];
-                            }
-                            if (eCommerceWalletType == "BANCOMATPAY") {
-                                details["maskedNumber"] = wallet["info"]["numberObfuscated"];
-                                details["instituteCode"] = wallet["info"]["instituteCode"];
-                                details["bankName"] = wallet["info"]["bankName"];
-                            }
-                            result["details"] = details;
+                        }
+                        result["services"] = JArray.FromObject(convertedServices);
+                        JObject details = new JObject();
+                        details["type"] = eCommerceWalletType;
+                        if (eCommerceWalletType == "CARDS") {
+                            details["maskedPan"] = $"************{wallet["info"]["blurredNumber"]}";
+                            details["expiryDate"] = $"{(string)wallet["info"]["expireYear"]}{(string)wallet["info"]["expireMonth"]}";
+                            details["holder"] = wallet["info"]["holder"];
+                            details["brand"] = wallet["info"]["brand"];
+                        }
+                        if (eCommerceWalletType == "PAYPAL") {
+                            var info = (JObject)(wallet["info"]);
+                            var pspArray = (JArray)(info["pspInfo"]);
+                            var pspInfo = (JObject)(pspArray[0]);
+                            details["abi"] = pspInfo["abi"];
+                            details["maskedEmail"] = pspInfo["email"];
+                        }
+                        if (eCommerceWalletType == "BANCOMATPAY") {
+                            details["maskedNumber"] = wallet["info"]["numberObfuscated"];
+                            details["instituteCode"] = wallet["info"]["instituteCode"];
+                            details["bankName"] = wallet["info"]["bankName"];
+                        }
+                        result["details"] = details;
 
-                            return result;
-                    }).ToArray();
+                        return result;
 
-            JObject response = new JObject();
-            response["wallets"] = JArray.FromObject(wallets);
-            return response.ToString();
+                    }).Single();
+
+                return walletResult.ToString();
             }
         </set-body>
     </return-response>
