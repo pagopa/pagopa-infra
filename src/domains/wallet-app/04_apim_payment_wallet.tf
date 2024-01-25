@@ -278,3 +278,63 @@ resource "azurerm_api_management_api_operation_policy" "get_psps_for_wallet" {
     wallet_hostname       = local.wallet_hostname
   })
 }
+
+
+
+
+
+
+
+
+
+
+#################################################
+## API wallet outcome for App IO               ##
+#################################################
+locals {
+  apim_payment_wallet_outcomes_api = {
+    display_name          = "pagoPA - wallet outcomes API for IO"
+    description           = "API to support payment wallet outcomes handling for IO"
+    path                  = "payment-wallet-outcomes"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+# Wallet service APIs
+resource "azurerm_api_management_api_version_set" "wallet_outcomes_api" {
+  name                = format("%s-outcome-api", local.project)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_payment_wallet_outcomes_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_payment_wallet_outcomes_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
+
+  name                  = "${local.project}-outcome-api"
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_payment_wallet_product.product_id]
+  subscription_required = local.apim_payment_wallet_outcomes_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.wallet_webview_api.id
+  api_version           = "v1"
+
+  description  = local.apim_payment_wallet_outcomes_api.description
+  display_name = local.apim_payment_wallet_outcomes_api.display_name
+  path         = local.apim_payment_wallet_outcomes_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_payment_wallet_outcomes_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/payment-wallet-outcomes/v1/_openapi.json.tpl", {
+    hostname = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/payment-wallet-outcomes/v1/_base_policy.xml.tpl", {
+    hostname              = local.wallet_hostname
+    payment_wallet_origin = "https://${var.dns_zone_prefix}.${var.external_domain}/"
+  })
+}
+
