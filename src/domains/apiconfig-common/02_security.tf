@@ -280,3 +280,18 @@ resource "azurerm_key_vault_secret" "nodo5_slack_webhook_url" {
     ]
   }
 }
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "apicfg_cache_subscription_key" {
+  name         = "api-config-cache-subscription-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+

@@ -92,6 +92,18 @@ resource "azurerm_api_management_api_operation_policy" "get_wallets_for_user" {
 
 }
 
+resource "azurerm_api_management_api_operation_policy" "get_wallet_for_user_and_id" {
+  api_name            = "${local.project}-payment-wallet-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getWalletById"
+
+  xml_content = var.payment_wallet_with_pm_enabled ? templatefile("./api/payment-wallet/v1/_get_wallets_by_user_and_walletId_with_pm.xml.tpl", {
+    ecommerce-basepath = local.ecommerce_hostname
+  }) : templatefile("./api/payment-wallet/v1/_get_wallets_by_user_and_walletId.xml.tpl", { pdv_api_base_path = var.pdv_api_base_path, io_backend_base_path = var.io_backend_base_path })
+
+}
+
 resource "azurerm_api_management_api_operation_policy" "post_wallets" {
   api_name            = "${local.project}-payment-wallet-api-v1"
   resource_group_name = local.pagopa_apim_rg
