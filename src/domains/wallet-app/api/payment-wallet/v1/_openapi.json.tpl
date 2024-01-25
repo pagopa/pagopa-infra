@@ -395,57 +395,6 @@
           }
         }
       }
-    },
-    "/wallets/outcomes": {
-      "get": {
-        "tags": [
-          "wallets"
-        ],
-        "operationId": "getOnboardingOutcome",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "outcome",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "0",
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "7",
-                "8",
-                "9",
-                "10",
-                "11",
-                "12",
-                "13",
-                "14"
-              ]
-            },
-            "description": "`0` - Success `1` - Generic error `2` - Authorization error `3` - Invalid data `4` - Timeout `5` - Unsupported circuit `6` - Missing data `7` - Invalid card: expired card etc `8` - Canceled by the user `9` - Double transaction `10` - Excessive amount `11` - Order not present `12` - Invalid method `13` - Retriable KO `14` - Invalid session\n",
-            "required": true
-          }
-        ],
-        "summary": "Redirection URL for onboarding outcome",
-        "description": "Return onboarding outcome result as `outcome` query parameter",
-        "responses": {
-          "302": {
-            "description": "Onboarding outcome available (see outcome query parameter)",
-            "headers": {
-              "Location": {
-                "description": "URI with iowallet:// used by client to show result given outocome in query parameter",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -656,10 +605,7 @@
             "properties": {
               "type": {
                 "type": "string",
-                "description": "Wallet details discriminator field.",
-                "enum": [
-                  "CARDS"
-                ]
+                "description": "Wallet details discriminator field. Fixed valued 'CARDS'"
               },
               "maskedPan": {
                 "description": "Card masked pan (first 6 digit and last 4 digit clear, other digit obfuscated)",
@@ -669,7 +615,7 @@
               "expiryDate": {
                 "type": "string",
                 "description": "Credit card expiry date. The date format is `YYYYMM`",
-                "pattern": "^\\d{6}$",
+                "pattern": "^[0-9]{6}$",
                 "example": "203012"
               },
               "holder": {
@@ -701,10 +647,7 @@
             "properties": {
               "type": {
                 "type": "string",
-                "description": "Wallet details discriminator field.",
-                "enum": [
-                  "PAYPAL"
-                ]
+                "description": "Wallet details discriminator field. Fixed valued 'PAYPAL'"
               },
               "abi": {
                 "description": "bank idetifier",
@@ -727,14 +670,11 @@
           },
           {
             "type": "object",
-            "description": "Paypal instrument details",
+            "description": "Bancomat pay instrument details",
             "properties": {
               "type": {
                 "type": "string",
-                "description": "Wallet details discriminator field.",
-                "enum": [
-                  "BANCOMATPAY"
-                ]
+                "description": "Wallet details discriminator field. Fixed valued 'BANCOMATPAY'"
               },
               "maskedNumber": {
                 "description": "masked number",
