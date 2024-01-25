@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+  <changeSet author="liquibase" id="20240124-1">
+    <createTable tableName="cache">
+      <column name="id" type="VARCHAR(20)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="time" type="TIMESTAMP WITHOUT TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="cache" type="BYTEA">
+        <constraints nullable="false"/>
+      </column>
+      <column name="version" type="VARCHAR(32)"/>
+    </createTable>
+  </changeSet>
+  <changeSet author="liquibase" id="20240124-2">
+    <createTable tableName="stand_in_stations">
+      <column name="station_code" type="VARCHAR(35)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+</databaseChangeLog>
