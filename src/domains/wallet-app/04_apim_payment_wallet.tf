@@ -279,15 +279,6 @@ resource "azurerm_api_management_api_operation_policy" "get_psps_for_wallet" {
   })
 }
 
-
-
-
-
-
-
-
-
-
 #################################################
 ## API wallet outcome for App IO               ##
 #################################################
