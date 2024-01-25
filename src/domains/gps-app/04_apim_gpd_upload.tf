@@ -6,7 +6,7 @@ locals {
 
   ## GPD-UPLOAD API ##
   apim_gpd_upload_api = {
-    display_name          = "GPD Upload pagoPA - Debt Positions massive upload service API for organizations"
+    display_name          = "GPD Upload pagoPA - Massive Upload"
     description           = "API to support Debt Positions massive upload for organizations"
     path                  = "upload/gpd/debt-positions-service"
     subscription_required = true
