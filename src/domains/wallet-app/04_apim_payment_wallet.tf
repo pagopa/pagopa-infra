@@ -280,7 +280,7 @@ resource "azurerm_api_management_api_operation_policy" "get_psps_for_wallet" {
 }
 
 #################################################
-## API wallet outcome for App IO               ##
+## API wallet outcomes for App IO               ##
 #################################################
 locals {
   apim_payment_wallet_outcomes_api = {
@@ -323,9 +323,6 @@ module "apim_payment_wallet_outcomes_api_v1" {
     hostname = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/payment-wallet-outcomes/v1/_base_policy.xml.tpl", {
-    hostname              = local.wallet_hostname
-    payment_wallet_origin = "https://${var.dns_zone_prefix}.${var.external_domain}/"
-  })
+  xml_content = file("./api/payment-wallet-outcomes/v1/_base_policy.xml.tpl")
 }
 
