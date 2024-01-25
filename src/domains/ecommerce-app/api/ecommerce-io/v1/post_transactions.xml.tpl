@@ -9,7 +9,7 @@
             <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
             <set-variable name="rptId" value="@(((JObject) context.Variables["body"])["paymentNotices"][0]["rptId"].ToObject<string>())" />
             <set-variable name="amount" value="@(((JObject) context.Variables["body"])["paymentNotices"][0]["amount"].Value<int>())" />
-            <cache-lookup-value key="@($"ecommerce:{context.Variables["rptId"]}-rptId")" variable-name="newTransactionCached" caching-type="internal" />
+            <cache-lookup-value key="@($"ecommerce:{context.Variables["rptId"]}-activation")" variable-name="newTransactionCached" caching-type="internal" />
             <choose>
               <when condition="@(context.Variables.ContainsKey("newTransactionCached"))">
                 <return-response>
@@ -123,7 +123,7 @@
 
                   return eCommerceResponseBody.ToString();
                 }" />
-                <cache-store-value key="@($"ecommerce:{context.Variables["rptId"]}-rptId")"  value="@(((string) context.Variables["finalResponse"]))" duration="60" caching-type="internal" />
+                <cache-store-value key="@($"ecommerce:{context.Variables["rptId"]}-activation")"  value="@(((string) context.Variables["finalResponse"]))" duration="120" caching-type="internal" />
                 <set-body>@{
                   return (string) context.Variables["finalResponse"];
                 }</set-body>
