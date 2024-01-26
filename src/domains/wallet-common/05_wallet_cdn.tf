@@ -58,7 +58,7 @@ module "wallet_fe_cdn" {
       {
         action = "Append"
         name   = "Content-Security-Policy"
-        value  = "img-src 'self' https://assets.cdn.io.italia.it data:;"
+        value  = "img-src 'self' https://assets.cdn.io.italia.it https://api.${var.dns_zone_platform}.${var.external_domain} data:;"
       },
       {
         action = "Append"
