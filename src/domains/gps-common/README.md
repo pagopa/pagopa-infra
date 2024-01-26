@@ -59,8 +59,6 @@
 | [azurerm_key_vault_secret.gpd_reporting_batch_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd_reporting_enrollment_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd_reporting_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.gpd_upload_blob_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.gpd_upload_blob_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd_upload_db_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd_upload_sa_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.monitor_notification_email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -81,8 +79,6 @@
 | [azurerm_resource_group.gpd_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.gps_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [azurerm_storage_blob.gpd_upload_dirs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_blob) | resource |
-| [azurerm_storage_container.gpd_upload_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.reporting_flows_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_management_policy.gpd_sa_lifecycle_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
 | [azurerm_storage_queue.reporting_flows_queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
@@ -151,7 +147,6 @@
 | <a name="input_gpd_payments_sa_backup_retention_days"></a> [gpd\_payments\_sa\_backup\_retention\_days](#input\_gpd\_payments\_sa\_backup\_retention\_days) | (Optional) nodo sftp storage backup retention | `number` | `0` | no |
 | <a name="input_gpd_payments_sa_delete_retention_days"></a> [gpd\_payments\_sa\_delete\_retention\_days](#input\_gpd\_payments\_sa\_delete\_retention\_days) | (Optional) nodo sftp storage delete retention | `number` | `0` | no |
 | <a name="input_gpd_payments_versioning"></a> [gpd\_payments\_versioning](#input\_gpd\_payments\_versioning) | Enable sa versioning | `bool` | `false` | no |
-| <a name="input_gpd_sa_blob_versioning_enabled"></a> [gpd\_sa\_blob\_versioning\_enabled](#input\_gpd\_sa\_blob\_versioning\_enabled) | If true blob object versioning is enabled | `bool` | n/a | yes |
 | <a name="input_gpd_sa_delete"></a> [gpd\_sa\_delete](#input\_gpd\_sa\_delete) | Number of days after which the blob is deleted | `number` | n/a | yes |
 | <a name="input_gpd_sa_public_network_access_enabled"></a> [gpd\_sa\_public\_network\_access\_enabled](#input\_gpd\_sa\_public\_network\_access\_enabled) | True if public network access is enabled. It should always set to false unless there are special needs | `bool` | `false` | no |
 | <a name="input_gpd_sa_tier_to_archive"></a> [gpd\_sa\_tier\_to\_archive](#input\_gpd\_sa\_tier\_to\_archive) | Number of days after which the blob is moved to archive | `number` | n/a | yes |
