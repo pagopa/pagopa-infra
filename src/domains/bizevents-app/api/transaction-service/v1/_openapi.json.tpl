@@ -146,15 +146,6 @@
         "operationId": "getPagedTransactions",
         "parameters": [
           {
-            "name": "start",
-            "in": "query",
-            "description": "page start offset",
-            "required": true,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
             "name": "size",
             "in": "query",
             "description": "page size",
@@ -167,6 +158,15 @@
             "name": "x-fiscal-code",
             "in": "header",
             "description": "User Fiscal Code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "x-continuation-token",
+            "in": "header",
+            "description": "Search continuation token",
             "required": true,
             "schema": {
               "type": "string"
@@ -304,15 +304,6 @@
             "required": true,
             "schema": {
               "type": "integer"
-            }
-          },
-          {
-            "name": "isCart",
-            "in": "query",
-            "description": "determines if the id comes fromn a single biz-event, or from a group related to the same cart idTransaction",
-            "required": false,
-            "schema": {
-              "type": "boolean"
             }
           },
           {
@@ -1451,7 +1442,7 @@
             "description": "contains the total amount for the transaction (sum of all the same transaction related amounts if a cart based payment)"
           },
           "transactionDate": {
-            "type": "string".
+            "type": "string",
             "format": "date-time",
             "description": "contains the transaction date value"
           },
