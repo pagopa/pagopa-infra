@@ -1468,6 +1468,7 @@
         "description": "Possible statuses a transaction can be in",
         "enum": [
           "ACTIVATED",
+          "ACTIVATION_REQUESTED",
           "AUTHORIZATION_REQUESTED",
           "AUTHORIZATION_COMPLETED",
           "CLOSED",

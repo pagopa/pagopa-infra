@@ -8,7 +8,7 @@
           </when>
       </choose>
       <choose>
-          <when condition="@(context.User != null && context.User.Groups.Select(g => g.Id).Contains("checkout_rate_no_limit"))">
+          <when condition="@(context.User != null && context.User.Groups.Select(g => g.Id).Contains("checkout-rate-no-limit"))">
               <set-header name="x-client-id" exists-action="override">
                   <value>CHECKOUT</value>
               </set-header>
