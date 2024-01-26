@@ -168,7 +168,7 @@
                     string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletIdLogout","")}";
                     string[] splittedOriginalLocation = location.Split('?');
                     string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
-                    location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet/v1/wallets/outcomes?{queryParameters}";
+                    location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet-outcomes/v1/wallets/outcomes?{queryParameters}";
                     return location;
                   }</value>
               </set-header>
@@ -224,7 +224,7 @@
                             string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletId","")}";
                             string[] splittedOriginalLocation = location.Split('?');
                             string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
-                            location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet/v1/wallets/outcomes?{queryParameters}";
+                            location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet-outcomes/v1/wallets/outcomes?{queryParameters}";
                             return location;
                           }</value>
                         </set-header>
@@ -249,7 +249,7 @@
                               string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletId","")}";
                               string[] splittedOriginalLocation = location.Split('?');
                               string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
-                              location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet/v1/wallets/outcomes?{queryParameters}";
+                              location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet-outcomes/v1/wallets/outcomes?{queryParameters}";
                               return location;
                             }</value>
                         </set-header>
@@ -262,7 +262,7 @@
                       string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}";
                       string[] splittedOriginalLocation = location.Split('?');
                       string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
-                      location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet/v1/wallets/outcomes?{queryParameters}";
+                      location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet-outcomes/v1/wallets/outcomes?{queryParameters}";
                       return location;
                     }</value>
                   </set-header>
