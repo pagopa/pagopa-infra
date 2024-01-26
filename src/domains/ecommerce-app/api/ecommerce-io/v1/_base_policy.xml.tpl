@@ -35,7 +35,7 @@
           <!-- Check sessiontoken START-->
             <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
             <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
-              <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/check-session?token={(string)context.Variables["sessionToken"]}")</set-url>
+              <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/check-session?sessionToken={(string)context.Variables["sessionToken"]}")</set-url>
               <set-method>GET</set-method>
               <set-header name="Authorization" exists-action="override">
                 <value>@("Bearer " + (string)context.Variables["sessionToken"])</value>
