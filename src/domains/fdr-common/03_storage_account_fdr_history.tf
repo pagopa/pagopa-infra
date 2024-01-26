@@ -89,8 +89,8 @@ resource "azurerm_private_endpoint" "fdr_history_table_private_endpoint" {
 }
 
 ## fdr json file
-resource "azurerm_storage_container" "fdr_json_blob_file" {
-  name                  = "fdrjson"
+resource "azurerm_storage_container" "fdr_history_blob_file" {
+  name                  = "fdrhistory"
   storage_account_name  = module.fdr_history_sa.name
   container_access_type = "private"
 }
