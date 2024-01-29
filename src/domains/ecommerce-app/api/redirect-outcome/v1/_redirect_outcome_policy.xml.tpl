@@ -28,6 +28,7 @@
                 string timestampOperation = null;
                 string errorCode = null;
                 string authorizationCode = null;
+                string pspId = (string)requestBody["idPsp"];
                 if(outcome == "OK"){
                     authorizationCode = (string)requestBody["authorizationCode"];
                     timestampOperation = (string)requestBody["timestampOperation"];
@@ -40,8 +41,9 @@
                 string pspTransactionId = (string)requestBody["idPSPTransaction"];;
                 JObject outcomeGateway = new JObject();
                 outcomeGateway["paymentGatewayType"] = "REDIRECT";
-                outcomeGateway["outcome"] = outcome;
                 outcomeGateway["pspTransactionId"] = pspTransactionId;
+                outcomeGateway["outcome"] = outcome;
+                outcomeGateway["pspId"] = pspId;
                 outcomeGateway["authorizationCode"] = authorizationCode;
                 outcomeGateway["errorCode"] = errorCode;
                 JObject response = new JObject();
