@@ -112,7 +112,7 @@ cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
 cosmos_mongo_db_fdr_params = {
   enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -130,9 +130,9 @@ cosmos_mongo_db_fdr_params = {
 
   backup_continuous_enabled = false
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 5000
+  max_throughput     = 2000
   throughput         = 1000
 
   container_default_ttl = 604800 # 7 days
@@ -140,7 +140,7 @@ cosmos_mongo_db_fdr_params = {
 
 cosmos_mongo_db_fdr_re_params = {
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -158,9 +158,9 @@ cosmos_mongo_db_fdr_re_params = {
 
   backup_continuous_enabled = false
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 5000
+  max_throughput     = 2000
   throughput         = 1000
 
   container_default_ttl = 259200 # 3 days

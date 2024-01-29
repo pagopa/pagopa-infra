@@ -9,6 +9,22 @@
             <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
             <set-variable name="rptId" value="@(((JObject) context.Variables["body"])["paymentNotices"][0]["rptId"].ToObject<string>())" />
             <set-variable name="amount" value="@(((JObject) context.Variables["body"])["paymentNotices"][0]["amount"].Value<int>())" />
+            <cache-lookup-value key="@($"ecommerce:{context.Variables["rptId"]}-activation")" variable-name="newTransactionCached" caching-type="internal" />
+            <choose>
+              <when condition="@(context.Variables.ContainsKey("newTransactionCached"))">
+                <return-response>
+                  <set-status code="200" />
+                  <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                  </set-header>
+                  <set-body>
+                          @{
+                            return (string) context.Variables["newTransactionCached"];
+                          }
+                  </set-body>
+                </return-response>
+              </when>
+            </choose>
             <choose>
                 <when condition="@(!context.Request.Headers.ContainsKey("Authorization"))">
                     <return-response>
@@ -91,7 +107,7 @@
             <set-variable name="pagopaProxyResponseBody" value="@(context.Response.Body.As<JObject>())" />
             <choose>
               <when condition="@(context.Response.StatusCode == 200)">
-                <set-body>@{
+                <set-variable name="finalResponse" value="@{
                   JObject payment = new JObject();
                   payment["rptId"] = (string) context.Variables["rptId"];
                   payment["amount"] = (int) ((JObject) context.Variables["pagopaProxyResponseBody"])["importoSingoloVersamento"];
@@ -106,18 +122,25 @@
                   eCommerceResponseBody["clientId"] = "IO";
 
                   return eCommerceResponseBody.ToString();
+                }" />
+                <cache-store-value key="@($"ecommerce:{context.Variables["rptId"]}-activation")"  value="@(((string) context.Variables["finalResponse"]))" duration="120" caching-type="internal" />
+                <set-body>@{
+                  return (string) context.Variables["finalResponse"];
                 }</set-body>
               </when>
               <otherwise>
-                <set-status code="502" reason="Bad Gateway" />
+                <set-status code="@((int)context.Response.StatusCode)" />
                 <set-header name="Content-Type" exists-action="override">
                   <value>application/json</value>
                 </set-header>
                 <set-body>
-                  {
-                    "status": 502,
-                    "title": "Bad Gateway",
-                    "details": "pagopa-proxy returned non-200 status code"
+                  @{
+                    JObject errorResponse = new JObject();
+                    JObject value = (JObject) ((JObject) context.Variables["pagopaProxyResponseBody"]);
+                    errorResponse["title"] = (string) value["title"];
+                    errorResponse["faultCodeDetail"] = (string) value["detail_v2"];
+                    errorResponse["faultCodeCategory"] = (string) value["category"];
+                    return errorResponse.ToString();
                   }
                 </set-body>
               </otherwise>
