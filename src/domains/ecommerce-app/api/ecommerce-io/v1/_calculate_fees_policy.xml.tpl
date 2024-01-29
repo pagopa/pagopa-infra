@@ -116,11 +116,11 @@
                                         psp["bundleName"] = pmPsp["ragioneSociale"];
                                         if(isPayPal) {
                                             psp["taxPayerFee"] = pmPsp["maxFee"];
-                                            psp["idPsp"] = pmPsp["idPsp"];
+                                            psp["idPsp"] = (string)pmPsp["idPsp"];
                                             psp["idBundle"] = pmPsp["idPsp"];
                                         } else {
                                         psp["taxPayerFee"] = pmPsp["fee"];
-                                        psp["idPsp"] = pmPsp["id"];
+                                        psp["idPsp"] = (string)pmPsp["id"];
                                         psp["idBundle"] = pmPsp["idPsp"];
                                         }
                                         pspResponse.Add(psp);
@@ -128,7 +128,7 @@
                                     response["paymentMethodName"] = ((string)((JObject)context.Variables["paymentMethod"])["name"]);
                                     response["paymentMethodDescription"] = ((string)((JObject)context.Variables["paymentMethod"])["description"]);
                                     response["paymentMethodStatus"] = ((string)((JObject)context.Variables["paymentMethod"])["status"]);
-                                    response["belowThreshold"] = "false";
+                                    response["belowThreshold"] = false;
                                     response["bundles"] = (JArray)pspResponse;
                                     return response.ToString();
                                 }</set-body>
