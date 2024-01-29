@@ -518,7 +518,7 @@
             "description": "PSP transaction unique ID"
           },
           "outcome": {
-            "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.6.1/openapi/redirect.yaml#/components/schemas/RefundOutcome"
+            "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.6.1/openapi/redirect.yaml#/components/schemas/AuthorizationOutcome"
           },
           "pspId": {
             "type": "string",
