@@ -66,7 +66,7 @@ locals {
     service_url           = null
   }
 
-    apim_ecommerce_io_outcomes = {
+  apim_ecommerce_io_outcomes = {
     display_name          = "eCommerce API for app IO outcomes"
     description           = "API's exposed from eCommerce services to app IO to handle pagoPA payment outcomes"
     path                  = "ecommerce/io-outcomes"
