@@ -2,6 +2,7 @@
 ## Products ##
 ##############
 
+// EC user(s)
 module "apim_bizevents_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
@@ -20,6 +21,7 @@ module "apim_bizevents_product" {
   policy_xml = file("./api_product/bizevents-service/_base_policy.xml")
 }
 
+// Helpdesk
 module "apim_bizevents_helpdesk_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
@@ -38,6 +40,7 @@ module "apim_bizevents_helpdesk_product" {
   policy_xml = file("./api_product/bizevents-helpdesk/_base_policy.xml")
 }
 
+// AppIO user
 module "apim_transactions_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
@@ -61,21 +64,21 @@ module "apim_transactions_product" {
 #################
 locals {
   apim_bizevents_service_api = {
-    display_name          = "Biz Events Service"
+    display_name          = "Biz Events Service for EC"
     description           = "API to handle biz events payments"
     path                  = "bizevents/service"
     subscription_required = true
     service_url           = null
-  },
+  }
   apim_bizevents_helpdesk_api = {
     display_name          = "Biz Events Helpdesk"
     description           = "API for helpdesk on biz events payments"
     path                  = "bizevents/helpdesk"
     subscription_required = true
     service_url           = null
-  },
+  }
   apim_transaction_service_api = {
-    display_name          = "Biz Events Transaction Service"
+    display_name          = "Biz Events Transaction Service for AppIO"
     description           = "API to handle biz events transactions"
     path                  = "bizevents/tx-service"
     subscription_required = true
