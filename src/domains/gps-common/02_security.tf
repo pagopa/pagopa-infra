@@ -429,6 +429,21 @@ resource "azurerm_key_vault_secret" "gpd_upload_db_key" {
 
 }
 
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "gpd_upload_fn_subkey" {
+  name         = "gpd-upload-fn-key"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 ## GPD-Upload secrets END ##
 
 
