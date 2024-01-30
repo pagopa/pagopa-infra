@@ -158,4 +158,4 @@ elk_snapshot_sa = {
 }
 
 
-snapshot_storage_replication_type = "ZRS"
+snapshot_storage_replication_type = "GZRS"

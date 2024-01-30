@@ -47,10 +47,14 @@
           <!-- Credit card onboarding -->
           <when condition="@( context.Request.Url.Path.EndsWith("/webview/transactions/cc/verify") && (string)context.Request.Headers.GetValueOrDefault("Referer","") == "${payment_wallet_origin}")">
               <set-variable name="walletId" value="@{
-                    string requestBody = ((string)context.Variables["requestBody"]);
-                    string walletParam = requestBody!=null && requestBody.Split('&').Length >= 1 ? requestBody.Split('&')[0] : "";
-                    string walletId = walletParam != null && walletParam.Split('=').Length == 2 ? walletParam.Split('=')[1] : "";
-                    return walletId;
+                string requestBody = ((string)context.Variables["requestBody"]);
+                string[] walletParamArray = requestBody!=null && requestBody.Split('&').Length >= 1 ? requestBody.Split('&') : new string[0];
+                string walletIdFound = Array.Find(walletParamArray, formIdValue => formIdValue.StartsWith("idWallet=", StringComparison.Ordinal));
+                string[] walletIdSplit = String.IsNullOrEmpty(walletIdFound) ? new string[0] : walletIdFound.Split('=');
+                string walletId = walletIdSplit.Length == 2 ? walletIdSplit[1] : "";
+                string walletIdHex = (long.Parse(walletId)).ToString("X").PadLeft(16,'0');
+                string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
+                return walletIdToUuid;
                 }" />
               <set-header name="Set-Cookie" exists-action="append">
                   <value>@($"walletId={(string)context.Variables.GetValueOrDefault<string>("walletId","")}; Path=/pp-restapi-CD")</value>
@@ -164,7 +168,7 @@
                     string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletIdLogout","")}";
                     string[] splittedOriginalLocation = location.Split('?');
                     string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
-                    location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet/v1/wallets/outcomes?{queryParameters}";
+                    location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet-outcomes/v1/wallets/outcomes?{queryParameters}";
                     return location;
                   }</value>
               </set-header>
@@ -220,7 +224,7 @@
                             string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletId","")}";
                             string[] splittedOriginalLocation = location.Split('?');
                             string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
-                            location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet/v1/wallets/outcomes?{queryParameters}";
+                            location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet-outcomes/v1/wallets/outcomes?{queryParameters}";
                             return location;
                           }</value>
                         </set-header>
@@ -231,8 +235,10 @@
                         <set-variable name="walletId" value="@{
                          JArray wallets = (JArray)(((JObject)context.Variables["walletResponseJson"])["data"]);
                          foreach (JObject wallet in wallets) {
-                           if(((string)wallet["walletType"]).Equals("PayPal")) {
-                             return ((string)wallet["idWallet"]);
+                            if(((string)wallet["walletType"]).Equals("PayPal")) {
+                              string walletIdHex = (long.Parse((string)wallet["idWallet"])).ToString("X").PadLeft(16,'0');
+                              string walletIdToUuid = "00000000-0000-4000-"+walletIdHex.Substring(0,4)+"-"+walletIdHex.Substring(4);
+                              return walletIdToUuid;
                            }
                          }
                          return "";
@@ -243,7 +249,7 @@
                               string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}&walletId={context.Variables.GetValueOrDefault<string>("walletId","")}";
                               string[] splittedOriginalLocation = location.Split('?');
                               string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
-                              location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet/v1/wallets/outcomes?{queryParameters}";
+                              location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet-outcomes/v1/wallets/outcomes?{queryParameters}";
                               return location;
                             }</value>
                         </set-header>
@@ -256,7 +262,7 @@
                       string location = $"{(string)context.Response.Headers.GetValueOrDefault("location","")}";
                       string[] splittedOriginalLocation = location.Split('?');
                       string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
-                      location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet/v1/wallets/outcomes?{queryParameters}";
+                      location=$"https://{context.Request.OriginalUrl.Host}/payment-wallet-outcomes/v1/wallets/outcomes?{queryParameters}";
                       return location;
                     }</value>
                   </set-header>
