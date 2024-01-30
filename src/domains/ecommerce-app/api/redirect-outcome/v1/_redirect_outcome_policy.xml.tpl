@@ -2,17 +2,17 @@
     <inbound>
         <base /> 
         <set-variable name="transactionId" value="@(context.Request.MatchedParameters["idTransaction"])" />
-        <!-- start request validation -->
+        <!-- start request validation
         <validate-content unspecified-content-type-action="prevent" max-size="102400" size-exceeded-action="prevent" errors-variable-name="requestBodyValidation">
            <content type="application/json" validate-as="json" action="prevent" />
         </validate-content>
-        <!-- end request validation -->
+         end request validation -->
         <!-- start set policy variables -->
         <set-variable name="redirectRequestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
         <set-variable name="transactionServiceBackendUri" value="https://${hostname}/pagopa-ecommerce-transactions-service" />
         <!-- end set policy variables -->
         <!-- send transactions service PATCH request -->
-        <send-request mode="new" response-variable-name="transactionServiceAuthorizationPatchResponse" timeout="10" ignore-error="true">
+        <send-request mode="new" response-variable-name="transactionServiceAuthorizationPatchResponse" timeout="10" ignore-error="false">
             <set-url>@(String.Format((string)context.Variables["transactionServiceBackendUri"]+"/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))</set-url>
             <set-method>PATCH</set-method>
             <set-header name="Content-Type" exists-action="override">
@@ -55,32 +55,37 @@
         </send-request>
         <choose>
             <when condition="@(((int)((IResponse)context.Variables["transactionServiceAuthorizationPatchResponse"]).StatusCode) == 200)">
-                <set-header name="Content-Type" exists-action="override">
-                    <value>application/json</value>
-                </set-header>
-                <set-body>
-                    @{
-                        string transactionId = (string)context.Variables["transactionId"];
-                        JObject response = new JObject();
-                        response["idTransaction"] = transactionId;
-                        response["outcome"] = "OK";
-                        return response.ToString();
-                    }
-                </set-body>
+                <return-response>
+                     <set-status code="200" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>
+                        @{
+                            string transactionId = (string)context.Variables["transactionId"];
+                            JObject response = new JObject();
+                            response["idTransaction"] = transactionId;
+                            response["outcome"] = "OK";
+                            return response.ToString();
+                        }
+                    </set-body>
+                </return-response>
             </when>
             <otherwise>
-                <set-header name="Content-Type" exists-action="override">
-                    <value>application/json</value>
-                </set-header>
-                <set-body>
+                <return-response>
+                    <set-status code="@(((int)((IResponse)context.Variables["transactionServiceAuthorizationPatchResponse"]).StatusCode))" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>
                     @{
+                        JObject transactionsServiceErrorResponseBody = ((IResponse)context.Variables["transactionServiceAuthorizationPatchResponse"]).Body.As<JObject>(preserveContent: true);
                         string transactionId = (string)context.Variables["transactionId"];
-                        JObject response = new JObject();
-                        response["idTransaction"] = transactionId;
-                        response["outcome"] = "KO";
-                        return response.ToString();
+                        transactionsServiceErrorResponseBody["idTransaction"] = transactionId;
+                        return transactionsServiceErrorResponseBody.ToString();
                     }
-                </set-body>
+                    </set-body>
+            </return-response>
             </otherwise>
         </choose>
         <!-- end send transactions service PATCH request -->
