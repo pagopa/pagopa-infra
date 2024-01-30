@@ -259,6 +259,12 @@ variable "cidr_subnet_appgateway" {
   description = "Application gateway address space."
 }
 
+variable "cidr_subnet_loadtest_agent" {
+  type        = list(string)
+  description = "LoadTest Agent Pool address space"
+  default     = null
+}
+
 # nat gateway
 variable "nat_gateway_enabled" {
   type        = bool
