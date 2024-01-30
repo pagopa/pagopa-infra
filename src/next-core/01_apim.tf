@@ -13,7 +13,7 @@ module "apimv2_snet" {
 resource "azurerm_network_security_group" "apim_snet_nsg" {
   name                = "apimv2-snet-nsg"
   location            = var.location
-  resource_group_name = data.azurerm_virtual_network.vnet_integration.name
+  resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
 }
 
 resource "azurerm_network_security_rule" "apim_snet_nsg_rules" {
@@ -83,7 +83,7 @@ module "apimv2" {
     enabled = true
     instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   }
-  zones = var.apim_v2_zones
+  zones = startswith(var.apim_v2_sku, "Premium") ?  var.apim_v2_zones : null
 
 
 
