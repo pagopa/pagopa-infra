@@ -60,7 +60,7 @@
                 </set-header>
                 <set-body>
                     @{
-                        string transactionId = (string)context.Variables["eCommerceTransactionId"];
+                        string transactionId = (string)context.Variables["transactionId"];
                         JObject response = new JObject();
                         response["idTransaction"] = transactionId;
                         response["outcome"] = "OK";
@@ -74,7 +74,7 @@
                 </set-header>
                 <set-body>
                     @{
-                        string transactionId = (string)context.Variables["eCommerceTransactionId"];
+                        string transactionId = (string)context.Variables["transactionId"];
                         JObject response = new JObject();
                         response["idTransaction"] = transactionId;
                         response["outcome"] = "KO";
@@ -100,7 +100,7 @@
                     </set-header>
                     <set-body>
                     @{
-                        string transactionId = (string)context.Variables["eCommerceTransactionId"];
+                        string transactionId = (string)context.Variables["transactionId"];
                         JObject validationErrorResponse = new JObject();
                         validationErrorResponse["status"] = 400;
                         validationErrorResponse["title"] = "Bad request";
@@ -119,7 +119,7 @@
                 </set-header>
                 <set-body>
                 @{
-                    string transactionId = (string)context.Variables["eCommerceTransactionId"];
+                    string transactionId = (string)context.Variables["transactionId"];
                     JObject validationErrorResponse = new JObject();
                     validationErrorResponse["status"] = 500;
                     validationErrorResponse["title"] = "Internal Server Error";
