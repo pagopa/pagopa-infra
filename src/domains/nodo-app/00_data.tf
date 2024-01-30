@@ -11,5 +11,5 @@ data "azurerm_api_management" "apim" {
 
 data "azurerm_eventhub_namespace" "pagopa-evh-ns01" {
   resource_group_name = "${local.product}-msg-rg"
-  name      = "${local.product}-evh-ns01"
+  name                = "${local.product}-evh-ns01"
 }
