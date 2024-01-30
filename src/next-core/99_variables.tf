@@ -212,7 +212,7 @@ variable "logos_backup_retention" {
 #
 # Feature flags
 #
-variable "is_resource" {
+variable "enabled_resource" {
   type = object({
     container_app_tools_cae = optional(bool, false),
   })
