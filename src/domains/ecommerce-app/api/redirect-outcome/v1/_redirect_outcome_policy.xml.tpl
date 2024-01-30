@@ -1,6 +1,7 @@
 <policies>
     <inbound>
         <base /> 
+        <set-variable name="transactionId" value="@(context.Request.MatchedParameters["idTransaction"])" />
         <!-- start request validation -->
         <validate-content unspecified-content-type-action="prevent" max-size="102400" size-exceeded-action="prevent" errors-variable-name="requestBodyValidation">
            <content type="application/json" validate-as="json" action="prevent" />
@@ -8,7 +9,6 @@
         <!-- end request validation -->
         <!-- start set policy variables -->
         <set-variable name="redirectRequestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
-        <set-variable name="transactionId" value="@(context.Request.MatchedParameters["idTransaction"])" />
         <set-variable name="transactionServiceBackendUri" value="https://${hostname}/pagopa-ecommerce-transactions-service" />
         <!-- end set policy variables -->
         <!-- send transactions service PATCH request -->
