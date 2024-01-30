@@ -5,7 +5,7 @@ pr:
       - main
   paths:
     include:
-      - 'src/core'
+      - 'src/next-core'
     exclude:
       - '**/*.lock.hcl'
       - '**/*.md'
@@ -36,7 +36,7 @@ parameters:
 variables:
   TIME_OUT: 15
   # working dir
-  WORKING_DIR: 'src/core'
+  WORKING_DIR: 'src/next-core'
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
   poolNameProd: '$(TF_POOL_NAME_PROD)'
