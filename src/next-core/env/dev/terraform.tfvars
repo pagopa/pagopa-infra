@@ -48,6 +48,84 @@ postgres_private_dns_enabled = false
 enabled_resource = {
   container_app_tools_cae = true
 }
+#
+# apim v2
+#
+cidr_subnet_apim= ["10.230.8.160/27"]
+apim_v2_zones = ["1"]
+apim_v2_subnet_nsg_security_rules = [
+  {
+    name                       = "inbound-management-3443"
+    priority                   = 110
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    source_address_prefix      = "ApiManagement"
+    destination_port_range     = "3443"
+    destination_address_prefix = "VirtualNetwork"
+  },
+  {
+    name                       = "inbound-management-6390"
+    priority                   = 111
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    source_address_prefix      = "AzureLoadBalancer"
+    destination_port_range     = "6390"
+    destination_address_prefix = "VirtualNetwork"
+  },
+  {
+    name                       = "inbound-load-balancer"
+    priority                   = 120
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    source_address_prefix      = "AzureLoadBalancer"
+    destination_port_range     = "*"
+    destination_address_prefix = "VirtualNetwork"
+  },
+  {
+    name                       = "outbound-storage-443"
+    priority                   = 200
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    source_address_prefix      = "VirtualNetwork"
+    destination_port_range     = "443"
+    destination_address_prefix = "Storage"
+  },
+  {
+    name                       = "outbound-sql-1433"
+    priority                   = 210
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    source_address_prefix      = "VirtualNetwork"
+    destination_port_range     = "1433"
+    destination_address_prefix = "SQL"
+  },
+  {
+    name                       = "outbound-kv-433"
+    priority                   = 220
+    direction                  = "Outbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    source_address_prefix      = "VirtualNetwork"
+    destination_port_range     = "433"
+    destination_address_prefix = "AzureKeyVault"
+  }
+]
+
+apim_v2_publisher_name = "pagoPA Platform DEV"
+apim_v2_sku            = "Developer_1"
+apim_v2_alerts_enabled = false
+dns_zone_prefix   = "dev.platform"
 
 
 

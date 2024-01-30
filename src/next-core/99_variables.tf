@@ -1,30 +1,3 @@
-locals {
-  product             = "${var.prefix}-${var.env_short}"
-  project             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  geo_replica_project = "${var.prefix}-${var.env_short}-${var.geo_replica_location_short}-${var.domain}-replica"
-
-  monitor_appinsights_name        = "${local.product}-appinsights"
-  monitor_action_group_slack_name = "SlackPagoPA"
-  monitor_action_group_email_name = "PagoPA"
-
-  ingress_hostname_prefix               = "${var.instance}.${var.domain}"
-  internal_dns_zone_name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
-  internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
-
-  vnet_core_name                = "${local.product}-vnet"
-  vnet_core_resource_group_name = "${local.product}-vnet-rg"
-
-  data_resource_group_name = "${local.product}-data-rg"
-
-  vnet_integration_name                = "${local.product}-vnet-integration"
-  vnet_integration_resource_group_name = "${local.product}-vnet-rg"
-
-  dns_forwarder_backup_name = "${local.product}-dns-forwarder-backup-vmss"
-
-  msg_resource_group_name = "${local.product}-msg-rg"
-
-}
-
 variable "prefix" {
   type = string
   validation {
@@ -218,6 +191,89 @@ variable "enabled_resource" {
   type = object({
     container_app_tools_cae = optional(bool, false),
   })
+}
+
+
+variable "cidr_subnet_apim" {
+  type = list(string)
+  description = "(Required) APIM v2 subnet cidr"
+}
+
+variable "apim_v2_zones" {
+  type = list(string)
+  description = "(Optional) Zones in which the apim will be deployed"
+  default = ["1"]
+}
+
+variable "apim_v2_subnet_nsg_security_rules" {
+  type        = list(any)
+  description = "Network security rules for APIM subnet"
+}
+
+variable "apim_v2_publisher_name" {
+  type = string
+}
+
+variable "apim_v2_sku" {
+  type = string
+}
+
+variable "redis_cache_enabled" {
+  type        = bool
+  description = "redis cache enabled"
+  default     = false
+}
+
+variable "dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain."
+}
+
+variable "dns_zone_prefix_prf" {
+  type        = string
+  default     = "" # null
+  description = "The dns subdomain."
+}
+
+variable "apim_v2_autoscale" {
+  type = object(
+    {
+      enabled                       = bool
+      default_instances             = number
+      minimum_instances             = number
+      maximum_instances             = number
+      scale_out_capacity_percentage = number
+      scale_out_time_window         = string
+      scale_out_value               = string
+      scale_out_cooldown            = string
+      scale_in_capacity_percentage  = number
+      scale_in_time_window          = string
+      scale_in_value                = string
+      scale_in_cooldown             = string
+    }
+  )
+  default = {
+    enabled                       = false
+    default_instances             = 1
+    minimum_instances             = 1
+    maximum_instances             = 5
+    scale_out_capacity_percentage = 60
+    scale_out_time_window         = "PT10M"
+    scale_out_value               = "2"
+    scale_out_cooldown            = "PT45M"
+    scale_in_capacity_percentage  = 30
+    scale_in_time_window          = "PT30M"
+    scale_in_value                = "1"
+    scale_in_cooldown             = "PT30M"
+  }
+  description = "Configure Apim autoscale on capacity metric"
+}
+
+variable "apim_v2_alerts_enabled" {
+  type        = bool
+  description = "Enable alerts"
+  default     = true
 }
 
 #
