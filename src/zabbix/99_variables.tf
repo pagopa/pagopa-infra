@@ -86,7 +86,7 @@ variable "cidr_subnet_pg_flex_zabbix" {
 #
 # Feature flags
 #
-variable "is_resource" {
+variable "enabled_resource" {
   type = object({
     zabbix_kv_enabled      = optional(bool, false),
     zabbix_pgflexi_enabled = optional(bool, false),

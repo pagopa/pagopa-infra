@@ -13,7 +13,7 @@ resource "random_password" "zabbix_pg_admin_password" {
 }
 
 resource "azurerm_key_vault_secret" "zabbix_pg_admin_password" {
-  count = var.is_resource.zabbix_kv_enabled ? 1 : 0
+  count = var.enabled_resource.zabbix_kv_enabled ? 1 : 0
 
   name         = "zabbix-pg-admin-password"
   value        = random_password.zabbix_pg_admin_password.result
@@ -24,7 +24,7 @@ resource "azurerm_key_vault_secret" "zabbix_pg_admin_password" {
 
 # Postgres Flexible Server subnet
 module "zabbix_pg_flexible_snet" {
-  count = var.is_resource.zabbix_pgflexi_enabled ? 1 : 0
+  count = var.enabled_resource.zabbix_pgflexi_enabled ? 1 : 0
 
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.35.1"
   name                                      = "${local.project}-pg-snet"
@@ -47,7 +47,7 @@ module "zabbix_pg_flexible_snet" {
 
 module "zabbix_pgflex_dev" {
 
-  count = var.is_resource.zabbix_pgflexi_enabled ? 1 : 0
+  count = var.enabled_resource.zabbix_pgflexi_enabled ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v7.35.1"
 
