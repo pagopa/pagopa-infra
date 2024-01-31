@@ -44,6 +44,9 @@ cidr_subnet_loadtest_agent           = ["10.1.159.0/24"]
 
 # specific
 cidr_subnet_redis = ["10.1.163.0/24"]
+# zabbix
+cidr_subnet_tools_cae      = ["10.1.248.0/23"] #placeholders
+cidr_subnet_pg_flex_zabbix = ["10.1.254.0/24"] #placeholders
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31

@@ -191,6 +191,17 @@ fdr_re_storage_account = {
   enable_low_availability_alert = false
 }
 
+fdr_history_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = false
+  public_network_access_enabled = true
+  blob_delete_retention_days    = 30
+  enable_low_availability_alert = false
+}
+
 
 #
 # replica settings
