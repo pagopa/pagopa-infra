@@ -73,6 +73,11 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "cidr_subnet_tools_cae" {
+  type        = list(string)
+  description = "Tool container app env, network address space."
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -202,4 +207,13 @@ variable "logos_backup_retention" {
   type        = number
   default     = 7
   description = "(Optional) Blob backup retention"
+}
+
+#
+# Feature flags
+#
+variable "enabled_resource" {
+  type = object({
+    container_app_tools_cae = optional(bool, false),
+  })
 }
