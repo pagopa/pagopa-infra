@@ -43,7 +43,7 @@ locals {
   }
   aks_path           = var.env == "prod" ? "weuprod.%s.internal.platform.pagopa.it" : "weu${var.env}.%s.internal.${var.env}.platform.pagopa.it"
   fe_backoffice_path = replace(format("%s/ui/version.json", data.azurerm_storage_account.pagopa_selfcare_fe_sa.primary_web_host), "/{2}", "/")
-  fe_apiconfig_path  = replace(format("%s/ui/version.json", data.azurerm_storage_account.pagopa_apiconfig_fe_sa.primary_web_host), "/{2}", "/")
+  fe_apiconfig_path  = format("config.%s.%s/version.json", var.apim_dns_zone_prefix, var.external_domain)
 }
 
 resource "azurerm_api_management_api_version_set" "api_statuspage_api" {
