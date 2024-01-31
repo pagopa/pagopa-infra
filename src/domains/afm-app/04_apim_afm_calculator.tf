@@ -139,6 +139,33 @@ module "apim_api_afm_calculator_api_v1" {
   })
 }
 
+module "apim_api_afm_calculator_api_v2" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+
+  name                  = format("%s-afm-calculator-service-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_afm_calculator_product.product_id]
+  subscription_required = local.apim_afm_calculator_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_afm_calculator_api.id
+  api_version           = "v2"
+
+  description  = local.apim_afm_calculator_service_api.description
+  display_name = local.apim_afm_calculator_service_api.display_name
+  path         = local.apim_afm_calculator_service_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_afm_calculator_service_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/calculator-service/v2/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/calculator-service/v2/_base_policy.xml", {
+    hostname = local.afm_hostname
+  })
+}
+
 
 ##################################
 ##  API AFM Calculator for Node ##
