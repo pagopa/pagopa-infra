@@ -12,8 +12,7 @@ locals {
   repos_01 = [
     "pagopa-stand-in-manager",
     "pagopa-stand-in-technical-support",
-    "pagopa-node-cfg-job-manager",
-    "pagopa-node-cfg-sync-agent",
+    "pagopa-node-cfg-sync",
   ]
 
   federations_01 = [
