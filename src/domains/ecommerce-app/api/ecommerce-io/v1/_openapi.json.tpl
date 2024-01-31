@@ -1441,6 +1441,10 @@
             "properties": {
               "status": {
                 "$ref": "#/components/schemas/TransactionStatus"
+              },
+              "gatewayAuthorizationStatus": {
+                "type": "string",
+                "description": "payment gateway authorization status"
               }
             },
             "required": [
