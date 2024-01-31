@@ -19,7 +19,7 @@
                 <value>application/json</value>
             </set-header>
             <set-header name="x-payment-gateway-type" exists-action="override">
-                <value>"REDIRECT"</value>
+                <value>REDIRECT</value>
             </set-header>
             <set-body>
                 @{
