@@ -723,6 +723,52 @@
           }
         }
       }
+    },
+    "/wallets": {
+      "get": {
+        "tags": [
+          "wallets"
+        ],
+        "summary": "Get wallet by user identifier",
+        "description": "Returns a of wallets related to user",
+        "operationId": "getWalletsByIdUser",
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Wallet retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wallets"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Wallet not found"
+          },
+          "502": {
+            "description": "Bad gateway"
+          },
+          "504": {
+            "description": "Timeout serving request"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1771,6 +1817,219 @@
             }
           }
         }
+      },
+      "Wallets": {
+        "type": "object",
+        "description": "Wallets information",
+        "properties": {
+          "wallets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WalletInfo"
+            }
+          }
+        }
+      },
+      "WalletInfo": {
+        "type": "object",
+        "description": "Wallet information",
+        "properties": {
+          "walletId": {
+            "$ref": "#/components/schemas/WalletId"
+          },
+          "paymentMethodId": {
+            "description": "Payment method identifier",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/WalletStatus"
+          },
+          "creationDate": {
+            "description": "Wallet creation date",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateDate": {
+            "description": "Wallet update date",
+            "type": "string",
+            "format": "date-time"
+          },
+          "services": {
+            "description": "list of services for which this wallet is created for",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Service"
+            }
+          },
+          "details": {
+            "$ref": "#/components/schemas/WalletInfoDetails"
+          }
+        },
+        "required": [
+          "walletId",
+          "paymentMethodId",
+          "status",
+          "creationDate",
+          "updateDate",
+          "services"
+        ]
+      },
+      "WalletInfoDetails": {
+        "description": "details for the specific payment instrument. This field is disciminated by the type field",
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Card payment instrument details",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Wallet details discriminator field. Fixed valued 'CARDS'"
+              },
+              "maskedPan": {
+                "description": "Card masked pan (first 6 digit and last 4 digit clear, other digit obfuscated)",
+                "type": "string",
+                "example": "123456******9876"
+              },
+              "expiryDate": {
+                "type": "string",
+                "description": "Credit card expiry date. The date format is `YYYYMM`",
+                "pattern": "^[0-9]{6}$",
+                "example": "203012"
+              },
+              "holder": {
+                "description": "Holder of the card payment instrument",
+                "type": "string"
+              },
+              "brand": {
+                "description": "Payment instrument brand",
+                "type": "string",
+                "enum": [
+                  "MASTERCARD",
+                  "VISA",
+                  "AMEX",
+                  "MAESTRO"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "maskedPan",
+              "expiryDate",
+              "holder",
+              "brand"
+            ]
+          },
+          {
+            "type": "object",
+            "description": "Paypal instrument details",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Wallet details discriminator field. Fixed valued 'PAYPAL'"
+              },
+              "abi": {
+                "description": "bank idetifier",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 5,
+                "example": "12345"
+              },
+              "maskedEmail": {
+                "description": "email masked pan",
+                "type": "string",
+                "example": "test***@***test.it"
+              }
+            },
+            "required": [
+              "type",
+              "abi",
+              "maskedEmail"
+            ]
+          },
+          {
+            "type": "object",
+            "description": "Bancomat pay instrument details",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Wallet details discriminator field. Fixed valued 'BANCOMATPAY'"
+              },
+              "maskedNumber": {
+                "description": "masked number",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20,
+                "example": "+3938*******202"
+              },
+              "instituteCode": {
+                "description": "institute code",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 5,
+                "example": "12345"
+              },
+              "bankName": {
+                "description": "bank name",
+                "type": "string",
+                "example": "banca di banca"
+              }
+            },
+            "required": [
+              "type",
+              "maskedNumber",
+              "instituteCode",
+              "bankName"
+            ]
+          }
+        ]
+      },
+      "WalletId": {
+        "description": "Wallet identifier",
+        "type": "string",
+        "format": "uuid"
+      },
+      "WalletStatus": {
+        "type": "string",
+        "description": "Enumeration of wallet statuses",
+        "enum": [
+          "CREATED",
+          "INITIALIZED",
+          "VALIDATED",
+          "DELETED",
+          "ERROR"
+        ]
+      },
+      "Service": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/ServiceName"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ServiceStatus"
+          },
+          "updateDate": {
+            "description": "Service last update date",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ServiceStatus": {
+        "type": "string",
+        "description": "Enumeration of wallet statuses",
+        "enum": [
+          "ENABLED",
+          "DISABLED",
+          "INCOMING"
+        ]
+      },
+      "ServiceName": {
+        "type": "string",
+        "description": "Enumeration of services",
+        "enum": [
+          "PAGOPA"
+        ]
       }
     },
     "requestBodies": {
