@@ -249,7 +249,7 @@ resource "azurerm_api_management_api_operation_policy" "io_wallets_by_user" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "getWalletsByIdUser"
 
-  xml_content = var.ecommerce_io_with_pm_enabled ? templatefile("./api/payment-wallet/v1/_get_wallets_by_user_with_pm.xml.tpl", {
+  xml_content = var.ecommerce_io_with_pm_enabled ? templatefile("./api/ecommerce-io/v1/_get_wallets_by_user_with_pm.xml.tpl", {
     ecommerce-hostname = local.ecommerce_hostname
   }) : templatefile("./api/ecommerce-io/v1/_get_wallets_by_user.xml.tpl", { wallet-hostname = local.wallet_hostname })
 }
