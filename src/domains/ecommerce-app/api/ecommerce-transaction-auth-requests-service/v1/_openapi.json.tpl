@@ -227,6 +227,9 @@
               },
               {
                 "$ref": "#/components/schemas/OutcomeNpgGateway"
+              },
+              {
+                "$ref": "#/components/schemas/OutcomeRedirectGateway"
               }
             ],
             "discriminator": {
@@ -234,7 +237,8 @@
               "mapping": {
                 "XPAY": "#/components/schemas/OutcomeXpayGateway",
                 "VPOS": "#/components/schemas/OutcomeVposGateway",
-                "NPG": "#/components/schemas/OutcomeNpgGateway"
+                "NPG": "#/components/schemas/OutcomeNpgGateway",
+                "REDIRECT": "#/components/schemas/OutcomeRedirectGateway"
               }
             }
           },
@@ -500,6 +504,41 @@
         "required": [
           "paymentGatewayType",
           "operationResult"
+        ]
+      },
+      "OutcomeRedirectGateway": {
+        "type": "object",
+        "properties": {
+          "paymentGatewayType": {
+            "type": "string",
+            "example": "REDIRECT",
+            "description": "disciminator field. fixed value `REDIRECT`"
+          },
+          "pspTransactionId": {
+            "type": "string",
+            "description": "PSP transaction unique ID"
+          },
+          "outcome": {
+            "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.6.1/openapi/redirect.yaml#/components/schemas/AuthorizationOutcome"
+          },
+          "pspId": {
+            "type": "string",
+            "description": "PSP ID from which the authorization outcome request come"
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "payment authorization code"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "payment error code"
+          }
+        },
+        "required": [
+          "paymentGatewayType",
+          "pspId",
+          "outcome",
+          "pspTransactionId"
         ]
       }
     },
