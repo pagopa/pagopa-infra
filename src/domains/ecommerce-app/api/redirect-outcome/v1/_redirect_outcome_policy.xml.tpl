@@ -30,10 +30,10 @@
                 string authorizationCode = null;
                 string pspId = (string)requestBody["idPsp"];
                 if(outcome == "OK"){
-                    authorizationCode = (string)requestBody["authorizationCode"];
-                    timestampOperation = (string)requestBody["timestampOperation"];
+                    authorizationCode = (string)requestBody["details"]["authorizationCode"];
+                    timestampOperation = ((DateTimeOffset)requestBody["details"]["timestampOperation"]).ToString("o");
                 } else {
-                    errorCode = (string)requestBody["errorCode"];
+                    errorCode = (string)requestBody["details"]["errorCode"];
                     //we receive timestamp operation only for authorized transactions (outcome OK)
                     //in case of error set timestampOperation to now since this field is mandatory in eCommerce transactions service api
                     timestampOperation = DateTimeOffset.Now.ToString("o");
