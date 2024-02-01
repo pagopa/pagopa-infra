@@ -1,5 +1,5 @@
 resource "azurerm_eventgrid_system_topic" "storage_topic" {
-  name                   = format("%s-gpd-events-storage-topic", local.product)
+  name                   = "${local.product}-gpd-events-storage-topic"
   location               = var.location
   resource_group_name    = azurerm_resource_group.gpd_rg.name
   source_arm_resource_id = module.gpd_sa_sftp.id
@@ -11,14 +11,15 @@ resource "azurerm_eventgrid_system_topic" "storage_topic" {
 }
 
 resource "azurerm_eventgrid_system_topic_event_subscription" "storage_subscription" {
-  name                = "${local.project}-events-storage-subscription"
+  name                = "${local.product}-gpd-events-storage-subscription"
   system_topic        = azurerm_eventgrid_system_topic.storage_topic.name
   resource_group_name = azurerm_resource_group.gpd_rg.name
 
-  webhook_endpoint {
-    url                               = "https://api.${var.env}.platform.pagopa.it/gpd/event/v1/upload"
-    max_events_per_batch              = 1
-    preferred_batch_size_in_kilobytes = 64
+  included_event_types = ["Microsoft.Storage.BlobCreated"]
+
+  storage_queue_endpoint {
+    storage_account_id = module.gpd_sa_sftp.id
+    queue_name         = "gpd-blob-events-queue"
   }
 
   subject_filter {
@@ -34,16 +35,5 @@ resource "azurerm_eventgrid_system_topic_event_subscription" "storage_subscripti
         "azure-webjobs-hosts", "azure-webjobs-secrets", "report"
       ]
     }
-  }
-
-  delivery_property {
-    header_name = "Ocp-Apim-Subscription-Key"
-    type        = "Static"
-    value       = azurerm_key_vault_secret.gpd_upload_fn_subkey.value
-    secret      = true
-  }
-
-  delivery_identity {
-    type = "SystemAssigned"
   }
 }
