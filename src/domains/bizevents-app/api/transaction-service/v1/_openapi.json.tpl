@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Biz-Events Service",
-    "description": "Microservice for exposing REST APIs about payment receipts.",
+    "title": "Biz-Events Transaction Service",
+    "description": "Microservice for exposing REST APIs about payment transaction.",
     "termsOfService": "https://www.pagopa.gov.it/",
     "version": "0.1.12"
   },
