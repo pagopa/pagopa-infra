@@ -99,8 +99,14 @@
                 "1"
               ]
             },
-            "description": "`0` - Success `1` - Generic error\n",
-            "required": true
+            "description": "`0` - Success `1` - Generic error\n"
+          },
+          {
+            "in": "query",
+            "name": "saveMethod",
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "summary": "Redirection URL for onboarding with transaction  outcome",
