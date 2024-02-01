@@ -53,8 +53,8 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/heads/migration-azurecli-to-service-connection
-      endpoint: "io-azure-devops-github-ro"
+      ref: refs/tags/v5.0.1
+      endpoint: 'io-azure-devops-github-ro'
 
 stages:
   - stage: DEV
@@ -69,7 +69,7 @@ stages:
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform
+          # 1. Install terraform and terragrunt
           - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terraform plan core
           - template: templates/terraform-plan/template.yaml@terraform
@@ -77,7 +77,6 @@ stages:
               TF_ENVIRONMENT_FOLDER: "dev"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
-              TF_SUMMARIZE: true
 
   - stage: UAT
     dependsOn: []
@@ -91,7 +90,7 @@ stages:
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform
+          # 1. Install terraform and terragrunt
           - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terraform plan core
           - template: templates/terraform-plan/template.yaml@terraform
@@ -99,7 +98,6 @@ stages:
               TF_ENVIRONMENT_FOLDER: "uat"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
-              TF_SUMMARIZE: true
 
   - stage: PROD
     dependsOn: []
@@ -113,7 +111,7 @@ stages:
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform
+          # 1. Install terraform and terragrunt
           - template: templates/terraform-setup/template.yaml@terraform
           # 2. Run terraform plan core
           - template: templates/terraform-plan/template.yaml@terraform
@@ -121,4 +119,3 @@ stages:
               TF_ENVIRONMENT_FOLDER: "prod"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
-              TF_SUMMARIZE: true
