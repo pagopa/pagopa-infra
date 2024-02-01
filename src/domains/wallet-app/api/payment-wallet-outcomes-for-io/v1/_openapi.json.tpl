@@ -54,6 +54,15 @@
             },
             "description": "`0` - Success `1` - Generic error `2` - Authorization error `3` - Invalid data `4` - Timeout `5` - Unsupported circuit `6` - Missing data `7` - Invalid card: expired card etc `8` - Canceled by the user `9` - Double transaction `10` - Excessive amount `11` - Order not present `12` - Invalid method `13` - Retriable KO `14` - Invalid session\n",
             "required": true
+          },
+          {
+            "in": "query",
+            "name": "isWithEcommerceTransaction",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "`true` - wallete created with eCommerce transaction\n`false` or empty- wallete created with wallet onboarding flow\n",
+            "required": false
           }
         ],
         "summary": "Redirection URL for onboarding outcome",
