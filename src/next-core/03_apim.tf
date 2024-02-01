@@ -43,7 +43,7 @@ resource "azurerm_public_ip" "apim_public_ip" {
   resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
   location            = data.azurerm_resource_group.rg_vnet_integration.location
   sku                 = "Standard"
-  domain_name_label   = "apimpagopa"
+  domain_name_label   = "apimv2pagopa"
   allocation_method   = "Static"
 
   zones = var.apim_v2_zones
@@ -59,6 +59,9 @@ locals {
   prf_domain        = format("api.%s.%s", var.dns_zone_prefix_prf, var.external_domain)
   portal_domain     = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
   management_domain = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
+
+  redis_connection_string =  var.create_redis_multiaz ? module.redis[0].primary_connection_string : data.azurerm_redis_cache.redis.primary_connection_string
+  redis_cache_id          =  var.create_redis_multiaz ? module.redis[0].id : data.azurerm_redis_cache.redis.id
 }
 
 module "apimv2" {
@@ -76,8 +79,8 @@ module "apimv2" {
 
   virtual_network_type = "Internal"
 
-  redis_connection_string = var.redis_cache_enabled ? data.azurerm_redis_cache.redis.primary_connection_string : null
-  redis_cache_id          = var.redis_cache_enabled ? data.azurerm_redis_cache.redis.id : null
+  redis_connection_string = var.redis_cache_enabled ? local.redis_connection_string : null
+  redis_cache_id          = var.redis_cache_enabled ? local.redis_cache_id : null
 
   application_insights = {
     enabled = true
@@ -198,4 +201,16 @@ module "apimv2" {
 #  depends_on = [
 #    azurerm_application_insights.application_insights
 #  ]
+}
+
+
+# Already apply forcing redis_connection_string on apim_module
+resource "azurerm_api_management_redis_cache" "apim_external_cache_redis" {
+  count             = var.create_redis_multiaz ? 1 : 0
+  name              = "apim-v2-external-cache-redis"
+  api_management_id = module.apimv2.id
+  connection_string = module.redis[0].primary_connection_string
+  description       = "APIM external cache Redis"
+  redis_cache_id    = module.redis[0].id
+  cache_location    = var.location
 }

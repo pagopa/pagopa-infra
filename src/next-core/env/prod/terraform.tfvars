@@ -31,7 +31,7 @@ dns_zone_internal_prefix = "internal.platform"
 # CIRDs
 #
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
-cidr_subnet_tools_cae            = ["10.1.248.0/23"]
+cidr_subnet_tools_cae = ["10.1.248.0/23"]
 
 dns_forwarder_backup_is_enabled = true
 dns_forwarder_vm_image_name     = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
@@ -135,6 +135,17 @@ apim_v2_sku            = "Premium_1"
 apim_v2_alerts_enabled = true
 dns_zone_prefix   = "platform"
 apim_v2_zones = ["1", "2", "3"]
+create_redis_multiaz = true
+redis_zones = ["1", "2", "3"]
+redis_cache_enabled            = true
+# redis apim
+
+redis_cache_params = {
+  public_access = false
+  capacity      = 1
+  sku_name      = "Premium"
+  family        = "P"
+}
 
 #
 # Feature Flags

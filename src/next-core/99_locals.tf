@@ -1,5 +1,6 @@
 locals {
   product             = "${var.prefix}-${var.env_short}"
+  product_region      = "${var.prefix}-${var.env_short}-${var.location_short}"
   project             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   geo_replica_project = "${var.prefix}-${var.env_short}-${var.geo_replica_location_short}-${var.domain}-replica"
 

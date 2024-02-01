@@ -276,6 +276,42 @@ variable "apim_v2_alerts_enabled" {
   default     = true
 }
 
+
+## Redis cache
+variable "redis_cache_params" {
+  type = object({
+    public_access = bool
+    capacity      = number
+    sku_name      = string
+    family        = string
+  })
+  default = {
+    public_access = false
+    capacity      = 1
+    sku_name      = "Basic"
+    family        = "C"
+  }
+}
+
+variable "create_redis_multiaz" {
+  type = bool
+  description = "(Optional) true if a multi az premium instance of redis is required"
+  default = false
+}
+
+
+variable "redis_zones" {
+  type = list(string)
+  description = "(Optional) Zone list where redis will be deployed"
+  default = ["1"]
+}
+
+variable "redis_version" {
+  type = string
+  description = "The version of Redis to use: 4 (deprecated) or 6"
+  default = "6"
+}
+
 #
 # Event hub
 #
