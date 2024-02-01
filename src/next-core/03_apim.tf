@@ -43,7 +43,7 @@ resource "azurerm_public_ip" "apim_public_ip" {
   resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
   location            = data.azurerm_resource_group.rg_vnet_integration.location
   sku                 = "Standard"
-  domain_name_label   = "apimv2pagopa"
+  domain_name_label   = "apim-${var.env_short}-pagopa"
   allocation_method   = "Static"
 
   zones = var.apim_v2_zones
