@@ -213,22 +213,12 @@
         "operationId": "createWalletForTransactions",
         "parameters": [
           {
-            "in": "header",
-            "name": "x-user-id",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
             "name": "transactionId",
             "in": "path",
             "description": "ecommerce transaction id",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
