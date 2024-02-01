@@ -203,8 +203,8 @@
         "tags": [
           "wallets"
         ],
-        "summary": "Create a new wallet for transactionId with contextual onboarding",
-        "description": "Creates a new wallet for transactionId with contestul onboarding",
+        "summary": "Create wallet for payment with contextual onboard",
+        "description": "Create wallet for payment with contextual onboard",
         "security": [
           {
             "eCommerceSessionToken": []
