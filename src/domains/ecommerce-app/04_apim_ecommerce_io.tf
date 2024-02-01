@@ -107,6 +107,7 @@ module "apim_ecommerce_io_api_v1" {
 
   xml_content = templatefile("./api/ecommerce-io/v1/_base_policy.xml.tpl", {
     ecommerce_ingress_hostname   = local.ecommerce_hostname
+    wallet_ingress_hostname      = local.wallet_hostname
     ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
   })
 }
@@ -253,6 +254,20 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_outcome" 
 
   xml_content = file("./api/ecommerce-io/v1/_transaction_outcome.xml.tpl")
 }
+
+resource "azurerm_api_management_api_operation_policy" "io_wallets_by_user" {
+  count               = var.ecommerce_io_with_pm_enabled ? 1 : 0
+  api_name            = "${local.project}-ecommerce-io-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getWalletsByIdUser"
+
+  xml_content = templatefile("./api/ecommerce-io/v1/_get_wallets_by_user_with_pm.xml.tpl", {
+    ecommerce-hostname = local.ecommerce_hostname
+  })
+}
+
+
 
 #################################################
 ## API eCommerce outcomes for App IO               ##
