@@ -362,14 +362,14 @@ locals {
       "severity"    = 3
       "time_window" = 15
       "frequency"   = 15
-      "threshold"   = 15
+      "threshold"   = 5
     },
     {
       "queue_key"   = "transactions-dead-letter-queue"
       "severity"    = 3
       "time_window" = 15
       "frequency"   = 15
-      "threshold"   = 15
+      "threshold"   = 25
     },
   ] : []
 }
