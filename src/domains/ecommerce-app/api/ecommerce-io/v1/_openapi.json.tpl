@@ -2109,11 +2109,6 @@
           }
         ]
       },
-      "WalletId": {
-        "description": "Wallet identifier",
-        "type": "string",
-        "format": "uuid"
-      },
       "WalletStatus": {
         "type": "string",
         "description": "Enumeration of wallet statuses",
