@@ -198,23 +198,33 @@
         }
       }
     },
-    "/wallets/payments": {
+    "/transactions/{transactionId}/wallets": {
       "post": {
         "tags": [
           "wallets"
         ],
-        "summary": "Create a new wallet for payment with contextual onboarding",
-        "description": "Creates a new wallet for payment with contestul onboarding",
+        "summary": "Create a new wallet for transactionId with contextual onboarding",
+        "description": "Creates a new wallet for transactionId with contestul onboarding",
         "security": [
           {
             "eCommerceSessionToken": []
           }
         ],
-        "operationId": "createWalletForPayments",
+        "operationId": "createWalletForTransactions",
         "parameters": [
           {
             "in": "header",
             "name": "x-user-id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "ecommerce transaction id",
             "required": true,
             "schema": {
               "type": "string",
@@ -227,7 +237,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/WalletPaymentCreateRequest"
+                "$ref": "#/components/schemas/WalletTransactionCreateRequest"
               }
             }
           },
@@ -239,7 +249,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WalletPaymentCreateResponse"
+                  "$ref": "#/components/schemas/WalletTransactionCreateResponse"
                 }
               }
             }
@@ -1859,9 +1869,9 @@
         "type": "string",
         "format": "uuid"
       },
-      "WalletPaymentCreateRequest": {
+      "WalletTransactionCreateRequest": {
         "type": "object",
-        "description": "Wallet for payment with contextual onboarding creation request",
+        "description": "Wallet for transaction with contextual onboarding creation request",
         "properties": {
           "useDiagnosticTracing": {
             "type": "boolean"
@@ -1870,24 +1880,19 @@
             "type": "string",
             "format": "uuid"
           },
-          "transactionId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           }
         },
         "required": [
-          "transactionId",
           "useDiagnosticTracing",
           "paymentMethodId",
           "amount"
         ]
       },
-      "WalletPaymentCreateResponse": {
+      "WalletTransactionCreateResponse": {
         "type": "object",
-        "description": "Wallet for payment with contextual onboarding creation response",
+        "description": "Wallet for transaction with contextual onboarding creation response",
         "properties": {
           "walletId": {
             "$ref": "#/components/schemas/WalletId"
@@ -1896,7 +1901,7 @@
             "type": "string",
             "format": "url",
             "description": "Redirection URL to a payment gateway page where the user can input a payment instrument information with walletId and useDiagnosticTracing as query param",
-            "example": "http://localhost/inputPage?walletId=123&useDiagnosticTracing=true"
+            "example": "http://localhost/inputPage?walletId=123&useDiagnosticTracing=true&sessionToken=sessionToken"
           }
         },
         "required": [

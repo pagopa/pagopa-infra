@@ -183,13 +183,13 @@ resource "azurerm_api_management_api_operation_policy" "io_get_transaction_info"
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "io_post_wallet_payments" {
+resource "azurerm_api_management_api_operation_policy" "io_post_wallet_transactions" {
   api_name            = "${local.project}-ecommerce-io-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  operation_id        = "createWalletForPayments"
+  operation_id        = "createWalletForTransactions"
 
-  xml_content = templatefile("./api/ecommerce-io/v1/_wallet_payments.xml.tpl", {
+  xml_content = templatefile("./api/ecommerce-io/v1/_wallet_transactions.xml.tpl", {
     wallet-basepath = local.wallet_hostname
   })
 }
