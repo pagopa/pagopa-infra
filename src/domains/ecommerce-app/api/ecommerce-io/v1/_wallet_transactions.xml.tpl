@@ -10,7 +10,7 @@
             <set-variable name="body" value="@(context.Response.Body.As<JObject>(preserveContent: true))" />
             <set-variable name="redirectUrl" value="@((string)((JObject) context.Variables["body"])["redirectUrl"])" />
               <choose>
-                <when condition="@(!String.IsNullOrEmpty((string)context.Variables["redirectUrl"])">
+                <when condition="@(!String.IsNullOrEmpty((string)context.Variables["redirectUrl"]))">
                     <!-- Token JWT START-->
                       <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["walletId"])" />
                       <set-variable name="x-jwt-token" value="@{
