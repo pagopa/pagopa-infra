@@ -198,6 +198,88 @@
         }
       }
     },
+    "/wallets/payments": {
+      "post": {
+        "tags": [
+          "wallets"
+        ],
+        "summary": "Create a new wallet for payment with contextual onboarding",
+        "description": "Creates a new wallet for payment with contestul onboarding",
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
+        "operationId": "createWalletForPayments",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-user-id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Create a new wallet",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WalletPaymentCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Wallet created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletPaymentCreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Gateway error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout serving request"
+          }
+        }
+      }
+    },
     "/transactions": {
       "post": {
         "tags": [
@@ -1771,6 +1853,55 @@
             }
           }
         }
+      },
+      "WalletId": {
+        "description": "Wallet identifier",
+        "type": "string",
+        "format": "uuid"
+      },
+      "WalletPaymentCreateRequest": {
+        "type": "object",
+        "description": "Wallet for payment with contextual onboarding creation request",
+        "properties": {
+          "useDiagnosticTracing": {
+            "type": "boolean"
+          },
+          "paymentMethodId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "transactionId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "transactionId",
+          "useDiagnosticTracing",
+          "paymentMethodId",
+          "amount"
+        ]
+      },
+      "WalletPaymentCreateResponse": {
+        "type": "object",
+        "description": "Wallet for payment with contextual onboarding creation response",
+        "properties": {
+          "walletId": {
+            "$ref": "#/components/schemas/WalletId"
+          },
+          "redirectUrl": {
+            "type": "string",
+            "format": "url",
+            "description": "Redirection URL to a payment gateway page where the user can input a payment instrument information with walletId and useDiagnosticTracing as query param",
+            "example": "http://localhost/inputPage?walletId=123&useDiagnosticTracing=true"
+          }
+        },
+        "required": [
+          "walletId"
+        ]
       }
     },
     "requestBodies": {
