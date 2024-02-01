@@ -8,12 +8,11 @@
       <choose>
         <when condition="@(context.Response.StatusCode == 201)">
             <set-variable name="body" value="@(context.Response.Body.As<JObject>(preserveContent: true))" />
-            <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["walletId"])" />
-            <set-variable name="redirectUrl" value="@((string)((JObject) context.Variables["body"])["walletId"])" />
+            <set-variable name="redirectUrl" value="@((string)((JObject) context.Variables["body"])["redirectUrl"])" />
               <choose>
                 <when condition="@(!String.IsNullOrEmpty((string)context.Variables["redirectUrl"])">
                     <!-- Token JWT START-->
-                      <set-variable name="walletId" value="@((string)((context.Response.Body.As<JObject>(preserveContent: true))["walletId"]))" />
+                      <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["walletId"])" />
                       <set-variable name="x-jwt-token" value="@{
                       // Construct the Base64Url-encoded header
                       var header = new { typ = "JWT", alg = "HS512" };
