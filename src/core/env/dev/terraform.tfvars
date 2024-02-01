@@ -44,6 +44,9 @@ cidr_subnet_loadtest_agent           = ["10.1.159.0/24"]
 
 # specific
 cidr_subnet_redis = ["10.1.163.0/24"]
+# zabbix
+cidr_subnet_tools_cae      = ["10.1.248.0/23"] #placeholders
+cidr_subnet_pg_flex_zabbix = ["10.1.254.0/24"] #placeholders
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -596,6 +599,46 @@ eventhubs_02 = [
       },
       {
         name   = "pagopa-qi-psp-kpi-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-cache"
+    partitions        = 1
+    message_retention = 7
+    consumers         = ["nodo-dei-pagamenti-cache-sync-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-cache-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-cache-sync-rx" # node-cfg-sync
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-stand-in"
+    partitions        = 1
+    message_retention = 7
+    consumers         = ["nodo-dei-pagamenti-stand-in-sync-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-stand-in-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-stand-in-sync-rx" # node-cfg-sync
         listen = true
         send   = false
         manage = false
