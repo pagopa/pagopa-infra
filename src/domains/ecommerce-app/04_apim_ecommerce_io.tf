@@ -245,7 +245,7 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_outcome" 
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_wallets_by_user" {
-  count               = var.ecommerce_io_with_pm_enabled
+  count               = var.ecommerce_io_with_pm_enabled ? 1 : 0
   api_name            = "${local.project}-ecommerce-io-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
