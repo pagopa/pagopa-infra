@@ -153,7 +153,7 @@
                     string ecommerceTransactionId = (string)context.Variables["ecommerceTransactionId"];
                     string[] splittedOriginalLocation = location.Split('?');
                     string queryParameters = splittedOriginalLocation.Length == 2 ? splittedOriginalLocation[1]: "";
-                    location=$"https://{context.Request.OriginalUrl.Host}/ecommerce/io/v1/transactions/{ecommerceTransactionId}/outcomes?{queryParameters}";
+                    location=$"https://{context.Request.OriginalUrl.Host}/ecommerce/io-outcomes/v1/transactions/{ecommerceTransactionId}/outcomes?{queryParameters}";
                     return location;
                   }</value>
               </set-header>

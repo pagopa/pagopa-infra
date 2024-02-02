@@ -292,6 +292,7 @@
           "ACTIVATED",
           "AUTHORIZATION_REQUESTED",
           "AUTHORIZATION_COMPLETED",
+          "CLOSURE_REQUESTED",
           "CLOSED",
           "CLOSURE_ERROR",
           "NOTIFIED_OK",
@@ -320,6 +321,10 @@
             "properties": {
               "status": {
                 "$ref": "#/components/schemas/TransactionStatus"
+              },
+              "gatewayAuthorizationStatus": {
+                "type": "string",
+                "description": "Payment gateway authorization status"
               }
             },
             "required": [

@@ -572,6 +572,10 @@
             "type": "string",
             "pattern": "XPAY|VPOS|NPG",
             "description": "Pgs identifier"
+          },
+          "gatewayAuthorizationStatus": {
+            "type": "string",
+            "description": "payment gateway authorization status"
           }
         },
         "required": [
@@ -856,24 +860,6 @@
             "properties": {
               "feeTotal": {
                 "$ref": "#/components/schemas/AmountEuroCents"
-              },
-              "paymentGateway": {
-                "type": "string",
-                "example": "XPAY"
-              },
-              "sendPaymentResultOutcome": {
-                "type": "string",
-                "enum": [
-                  "OK",
-                  "KO",
-                  "NOT_RECEIVED"
-                ]
-              },
-              "authorizationCode": {
-                "type": "string"
-              },
-              "authorizationErrorCode": {
-                "type": "string"
               }
             },
             "required": [
@@ -895,6 +881,7 @@
           "ACTIVATED",
           "AUTHORIZATION_REQUESTED",
           "AUTHORIZATION_COMPLETED",
+          "CLOSURE_REQUESTED",
           "CLOSED",
           "CLOSURE_ERROR",
           "NOTIFIED_OK",
