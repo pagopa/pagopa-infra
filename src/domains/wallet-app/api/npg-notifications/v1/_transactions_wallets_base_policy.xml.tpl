@@ -1,47 +1,194 @@
 <policies>
     <inbound>
-      <base />
-      <set-variable name="walletId" value="@(context.Request.MatchedParameters["walletId"])" />
-      <set-variable name="npgNotificationRequestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
-      <set-header name="Authorization" exists-action="override">
-      <value> 
-          @{
-              JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
-              return "Bearer " + (string)requestBody["securityToken"];
-          }
-      </value>
-      </set-header>  
-      <set-body>
-          @{
-            JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
-            JObject operation = (JObject)requestBody["operation"];
-            string operationResult = (string)operation["operationResult"];
-            string operationId = (string)operation["operationId"];
-            string operationTime = (string)operation["operationTime"];
-            string timestampOperation = null;
-            if(operationTime != null) {
-                DateTime npgDateTime = DateTime.Parse(operationTime.Replace(" ","T"));
-                TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-                DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(npgDateTime, zone);
-                DateTimeOffset dateTimeOffset = new DateTimeOffset(utcDateTime);
-                timestampOperation = dateTimeOffset.ToString("o");
+        <base />
+      
+        <!-- start validation policy -->
+        <set-variable name="orderId" value="@(context.Request.MatchedParameters["orderId"])" />
+        <validate-jwt query-parameter-name="sessionToken" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="jwtToken">
+        <issuer-signing-keys>
+            <key>{{npg-notification-jwt-secret}}</key>
+        </issuer-signing-keys>
+        <required-claims>
+          <claim name="orderId" match="all">
+            <value>@((string)context.Variables.GetValueOrDefault("orderId",""))</value>
+          </claim>
+         </required-claims>
+        </validate-jwt>
+        <!-- end validation policy -->
+      
+        <!-- start policy variables -->
+        <set-variable name="transactionId" value="@{
+            var jwt = (Jwt)context.Variables["jwtToken"];
+            if(jwt.Claims.ContainsKey("transactionId")){
+                string uuidString = jwt.Claims["transactionId"][0];
+                uuidString = uuidString.Replace("-", "");
+                byte[] transactionIdBase64 = new byte[uuidString.Length / 2];
+                for (int i = 0; i < transactionIdBase64.Length; i++)
+                {
+                    transactionIdBase64[i] = Convert.ToByte(uuidString.Substring(i * 2, 2), 16);
+                }
+                return Convert.ToBase64String(transactionIdBase64)
+                    .Replace('+', '-')
+                    .Replace('/', '_')
+                    .Replace("=", "");
             }
-            string paymentCircuit = (string)operation["paymentCircuit"];
-            JObject details = null;
-            if(paymentCircuit == "PAYPAL"){
-                details = new JObject();
-                details["type"] = "PAYPAL";
-                details["maskedEmail"] = (string)operation["paymentInstrumentInfo"];
+            return "";
+            }" />   
+        <set-variable name="paymentMethodId" value="@{
+            var jwt = (Jwt)context.Variables["jwtToken"];
+            if(jwt.Claims.ContainsKey("paymentMethodId")){
+                return jwt.Claims["paymentMethodId"][0];
             }
-            JObject request = new JObject();
-            request["timestampOperation"] = timestampOperation;
-            request["operationResult"] = operationResult;
-            request["operationId"] = operationId;
-            request["details"] = details;
-            return request.ToString();
-          }
-      </set-body>
-      <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
+            return "";
+        }" />
+        <choose>
+            <when condition="@((string)context.Variables["transactionId"] == "" && (string)context.Variables["paymentMethodId"] == "")">
+                <return-response>
+                    <set-status code="500" reason="Mandatory data missing" />
+                </return-response>
+            </when>
+        </choose>
+        <set-variable name="paymentMethodBackendUri" value="https://${hostname}/pagopa-ecommerce-payment-methods-service" />
+        <set-variable name="transactionServiceBackendUri" value="https://${hostname}/pagopa-ecommerce-transactions-service" />
+        <set-variable name="npgNotificationRequestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
+        <!-- end policy variables -->
+        
+        <!-- payment method verify session -->
+        <choose>
+            <when condition="@((string)context.Variables["transactionId"] == "")">
+                <send-request mode="new" response-variable-name="paymentMethodSessionVerificationResponse" timeout="10" ignore-error="true">
+                    <set-url>@(String.Format((string)context.Variables["paymentMethodBackendUri"]+"/payment-methods/{0}/sessions/{1}/transactionId", (string)context.Variables["paymentMethodId"], (string)context.Variables["orderId"]))</set-url>
+                    <set-method>GET</set-method>
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-header name="Authorization" exists-action="override">
+                        <value> @{
+                                JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
+                                return "Bearer " + (string)requestBody["securityToken"];
+                            }</value>
+                    </set-header>
+                </send-request>
+                <choose>
+                    <when condition="@(((int)((IResponse)context.Variables["paymentMethodSessionVerificationResponse"]).StatusCode) != 200)">
+                        <return-response>
+                            <set-status code="500" reason="Error retrieving session" />
+                        </return-response>
+                    </when>
+                </choose>
+                <set-variable name="transactionId" value="@(((string)((IResponse)context.Variables["paymentMethodSessionVerificationResponse"]).Body.As<JObject>(preserveContent: true)["transactionId"]))" />
+            </when>
+        </choose>
+        <!-- end payment method verify session -->
+
+        <!-- send transactions service PATCH request -->
+        <send-request mode="new" response-variable-name="transactionServiceAuthorizationPatchResponse" timeout="10" ignore-error="true">
+            <set-url>@(String.Format((string)context.Variables["transactionServiceBackendUri"]+"/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))</set-url>
+            <set-method>PATCH</set-method>
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-header name="x-payment-gateway-type" exists-action="override">
+                <value>"NPG"</value>
+            </set-header>
+            <set-body>
+                     @{
+                        JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
+                        JObject operation = (JObject)requestBody["operation"];
+                        string operationResult = (string)operation["operationResult"];
+                        string orderId = (string)operation["orderId"];
+                        string operationId = (string)operation["operationId"];
+                        var additionalData = operation["additionalData"];
+                        string authorizationCode = null;
+                        string rrn = null;
+                        if(additionalData.Type != JTokenType.Null){
+                            JObject receivedAdditionalData = (JObject)additionalData;
+                            authorizationCode = (string)receivedAdditionalData["authorizationCode"];
+                            rrn = (string)receivedAdditionalData["rrn"];
+                        }
+                        string paymentEndToEndId = (string)operation["paymentEndToEndId"];
+                        string operationTime = (string)operation["operationTime"];
+                        string timestampOperation = null;
+                        if(operationTime != null) {
+                            DateTime npgDateTime = DateTime.Parse(operationTime.Replace(" ","T"));
+                            TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+                            DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(npgDateTime, zone);
+                            DateTimeOffset dateTimeOffset = new DateTimeOffset(utcDateTime);
+                            timestampOperation = dateTimeOffset.ToString("o");
+                        }
+                        JObject outcomeGateway = new JObject();
+                        outcomeGateway["paymentGatewayType"] = "NPG";
+                        outcomeGateway["operationResult"] = operationResult;
+                        outcomeGateway["orderId"] = orderId;
+                        outcomeGateway["operationId"] = operationId;
+                        outcomeGateway["authorizationCode"] = authorizationCode;
+                        outcomeGateway["paymentEndToEndId"] = paymentEndToEndId;
+                        outcomeGateway["rrn"] = rrn;
+                        JObject response = new JObject();
+                        response["timestampOperation"] = timestampOperation;
+                        response["outcomeGateway"] = outcomeGateway;
+                        return response.ToString();
+                     }
+            </set-body>
+        </send-request>
+        <choose>
+            <when condition="@(((int)((IResponse)context.Variables["transactionServiceAuthorizationPatchResponse"]).StatusCode) == 200)">
+                <return-response>
+                    <set-status code="200" reason="Notification elaborated successfully" />
+                </return-response>
+            </when>
+            <otherwise>
+                <return-response>
+                    <set-status code="500" reason="Error during transaction status notify" />
+                </return-response>
+            </otherwise>
+        </choose>
+        <!-- end send transactions service PATCH request -->
+        
+        <!-- TODO consider making it asynchronous-->
+        <!-- START send wallet notify request -->
+        <set-variable name="walletId" value="@(context.Request.MatchedParameters["walletId"])" />
+        <set-variable name="npgNotificationRequestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
+        <set-header name="Authorization" exists-action="override">
+        <value> 
+            @{
+                JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
+                return "Bearer " + (string)requestBody["securityToken"];
+            }
+        </value>
+        </set-header>  
+        <set-body>
+            @{
+                JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
+                JObject operation = (JObject)requestBody["operation"];
+                string operationResult = (string)operation["operationResult"];
+                string operationId = (string)operation["operationId"];
+                string operationTime = (string)operation["operationTime"];
+                string timestampOperation = null;
+                if(operationTime != null) {
+                    DateTime npgDateTime = DateTime.Parse(operationTime.Replace(" ","T"));
+                    TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+                    DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(npgDateTime, zone);
+                    DateTimeOffset dateTimeOffset = new DateTimeOffset(utcDateTime);
+                    timestampOperation = dateTimeOffset.ToString("o");
+                }
+                string paymentCircuit = (string)operation["paymentCircuit"];
+                JObject details = null;
+                if(paymentCircuit == "PAYPAL"){
+                    details = new JObject();
+                    details["type"] = "PAYPAL";
+                    details["maskedEmail"] = (string)operation["paymentInstrumentInfo"];
+                }
+                JObject request = new JObject();
+                request["timestampOperation"] = timestampOperation;
+                request["operationResult"] = operationResult;
+                request["operationId"] = operationId;
+                request["details"] = details;
+                return request.ToString();
+            }
+        </set-body>
+        <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
+         <!-- END send wallet notify request -->
     </inbound>
     <backend>
         <base />
