@@ -122,6 +122,111 @@
           }
         }
       }
+    },
+    "/transactions/{transactionId}/wallets/{walletId}/sessions/{orderId}/notifications": {
+      "post": {
+        "tags": [
+          "walletNotifications"
+        ],
+        "summary": "Update Wallet and Trabsaction on NPG onboarding authorization response",
+        "description": "Update Wallet and Transaction on NPG onboarding authorization response",
+        "operationId": "notifyTransactionWallet",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "Unique identifier of the transaction"
+          },
+          {
+            "in": "path",
+            "name": "walletId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "Unique identifier of the wallet"
+          },
+          {
+            "in": "path",
+            "name": "orderId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Unique identifier of the npg session"
+          }
+        ],
+        "requestBody": {
+          "description": "Notify wallet",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Notification handled successfully"
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "type": "https://example.com/problem/",
+                  "title": "string",
+                  "status": 400,
+                  "detail": "Invalid input"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "type": "https://example.com/problem/",
+                  "title": "string",
+                  "status": 401,
+                  "detail": "Unauthorized"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "type": "https://example.com/problem/",
+                  "title": "string",
+                  "status": 500,
+                  "detail": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
