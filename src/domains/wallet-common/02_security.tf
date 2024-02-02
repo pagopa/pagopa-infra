@@ -177,4 +177,14 @@ resource "azurerm_key_vault_secret" "paypal_psp_api_key" {
   }
 }
 
+resource "azurerm_key_vault_secret" "npg_notifications_jwt_secret_key" {
+  name         = "npg-notifications-jwt-secret-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
 
