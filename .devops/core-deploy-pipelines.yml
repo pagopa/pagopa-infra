@@ -26,7 +26,7 @@ parameters:
       - True
 
 variables:
-  TIME_OUT: 10
+  TIME_OUT: 30
   # working dir
   WORKING_DIR: 'src/core'
   DOMAIN_NAME: core
