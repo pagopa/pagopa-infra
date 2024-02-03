@@ -131,7 +131,6 @@ data "azuread_service_principal" "iac_plan_legacy" {
   display_name = "azdo-sp-plan-PAGOPA-IAC-LEGACY-${var.env}"
 }
 
-
 resource "azurerm_key_vault_access_policy" "azdevops_iac_legacy_policies" {
   for_each = toset([
     data.azuread_service_principal.iac_plan_legacy.object_id,
@@ -147,12 +146,3 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_legacy_policies" {
 
   storage_permissions = []
 }
-
-
-# data "azurerm_user_assigned_identity" "iac_plan_azdo" {
-#   name                = local.azdo_iac_plan_managed_identity_name
-#   resource_group_name = local.managed_identity_rg_name
-# }
-# azdo-dev-pagopa-iac-deploy
-# azdo-dev-pagopa-iac-plan
-# azdo-sp-plan-PAGOPA-IAC-LEGACY-dev
