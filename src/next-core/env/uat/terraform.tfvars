@@ -31,7 +31,7 @@ dns_zone_internal_prefix = "internal.uat.platform"
 # CIRDs
 #
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
-cidr_subnet_tools_cae = ["10.1.248.0/23"]
+cidr_subnet_tools_cae            = ["10.1.248.0/23"]
 
 
 dns_forwarder_backup_is_enabled = true

@@ -70,7 +70,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
 #
 
 data "azurerm_user_assigned_identity" "iac_federated_azdo" {
-  for_each = local.azdo_iac_managed_identities
+  for_each            = local.azdo_iac_managed_identities
   name                = each.key
   resource_group_name = local.azdo_managed_identity_rg_name
 }

@@ -4,7 +4,7 @@ locals {
   ndp_stand_in_manager_key = "pagopastandinmanager"
 
   ndp_stand_in_manager_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_stand_in_manager_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
-  ndp_stand_in_manager_ilm_policy      = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
+  ndp_stand_in_manager_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
     name        = local.ndp_stand_in_manager_key,
     managed     = false,
     policy_name = local.default_snapshot_policy_key
