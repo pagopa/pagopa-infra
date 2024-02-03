@@ -75,7 +75,7 @@ stages:
           # 2. Run terraform plan core
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              TF_ENVIRONMENT_FOLDER: "dev"
+              TF_ENVIRONMENT_FOLDER: "weu-dev"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
               TF_SUMMARIZE: true
@@ -98,7 +98,7 @@ stages:
           # 2. Run terraform plan core
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              TF_ENVIRONMENT_FOLDER: "uat"
+              TF_ENVIRONMENT_FOLDER: "weu-uat"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
               TF_SUMMARIZE: true
@@ -121,7 +121,7 @@ stages:
           # 2. Run terraform plan core
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
-              TF_ENVIRONMENT_FOLDER: "prod"
+              TF_ENVIRONMENT_FOLDER: "weu-prod"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
               TF_SUMMARIZE: true
