@@ -1,6 +1,6 @@
 data "azurerm_key_vault" "kv_domain" {
-  name                = "${local.product}-${var.domain}-kv"
-  resource_group_name = "${local.product}-${var.domain}-sec-rg"
+  name                = "${local.product}-kv"
+  resource_group_name = "${local.product}-sec-rg"
 }
 
 module "domain_key_vault_secrets_query" {
