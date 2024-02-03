@@ -13,3 +13,9 @@ module "domain_key_vault_secrets_query" {
     "alert-error-notification-email"
   ]
 }
+
+resource "azurerm_key_vault_secret" "delete_me" {
+  name         = "secret-sauce"
+  value        = "szechuan"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}
