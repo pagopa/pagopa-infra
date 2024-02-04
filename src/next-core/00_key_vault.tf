@@ -1,15 +1,21 @@
-# data "azurerm_key_vault" "kv_domain" {
-#   name                = "${local.product}-${var.domain}-kv"
-#   resource_group_name = "${local.product}-${var.domain}-sec-rg"
-# }
+data "azurerm_key_vault" "kv_domain" {
+  name                = "${local.product}-kv"
+  resource_group_name = "${local.product}-sec-rg"
+}
 
-# module "domain_key_vault_secrets_query" {
-#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault_secrets_query?ref=v7.10.1""
+module "domain_key_vault_secrets_query" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault_secrets_query?ref=v7.50.0"
 
-#   key_vault_name = local.key_vault_domain_name
-#   resource_group = local.key_vault_domain_resource_group
+  key_vault_name = data.azurerm_key_vault.kv_domain.name
+  resource_group = data.azurerm_key_vault.kv_domain.resource_group_name
 
-#   secrets = [
-#     "dvopla-d-appinsights-connection-string"
-#   ]
-# }
+  secrets = [
+    "alert-error-notification-email"
+  ]
+}
+
+resource "azurerm_key_vault_secret" "delete_me" {
+  name         = "secret-sauce"
+  value        = "szechuan"
+  key_vault_id = data.azurerm_key_vault.kv_domain.id
+}

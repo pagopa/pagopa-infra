@@ -1,5 +1,5 @@
 module "logos_donation_flows_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.30.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.50.0"
 
   name                            = replace("${local.product}-logos-donation-sa", "-", "")
   account_kind                    = "StorageV2"
@@ -31,7 +31,7 @@ module "logos_donation_flows_sa" {
 
 ## blob container logo 7
 resource "azurerm_storage_container" "donation_logo7" {
-  name                  = format("%slogo7", module.logos_donation_flows_sa.name)
+  name                  = "${module.logos_donation_flows_sa.name}logo7"
   storage_account_name  = module.logos_donation_flows_sa.name
   container_access_type = "private"
 }
@@ -45,7 +45,7 @@ resource "azurerm_storage_blob" "donation_logo7" {
 
 ## blob container logo 8
 resource "azurerm_storage_container" "donation_logo8" {
-  name                  = format("%slogo8", module.logos_donation_flows_sa.name)
+  name                  = "${module.logos_donation_flows_sa.name}logo8"
   storage_account_name  = module.logos_donation_flows_sa.name
   container_access_type = "private"
 }
@@ -59,7 +59,7 @@ resource "azurerm_storage_blob" "donation_logo8" {
 
 ## blob container logo 9
 resource "azurerm_storage_container" "donation_logo9" {
-  name                  = format("%slogo9", module.logos_donation_flows_sa.name)
+  name                  = "${module.logos_donation_flows_sa.name}logo9"
   storage_account_name  = module.logos_donation_flows_sa.name
   container_access_type = "private"
 }
@@ -73,7 +73,7 @@ resource "azurerm_storage_blob" "donation_logo9" {
 
 ## blob container logo 10
 resource "azurerm_storage_container" "donation_logo10" {
-  name                  = format("%slogo10", module.logos_donation_flows_sa.name)
+  name                  = "${module.logos_donation_flows_sa.name}logo10"
   storage_account_name  = module.logos_donation_flows_sa.name
   container_access_type = "private"
 }

@@ -26,9 +26,9 @@ parameters:
       - True
 
 variables:
-  TIME_OUT: 30
+  TIME_OUT: 10
   # working dir
-  WORKING_DIR: 'src/core'
+  WORKING_DIR: 'src/next-core'
   DOMAIN_NAME: core
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
@@ -51,8 +51,8 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v5.2.1
-      endpoint: 'io-azure-devops-github-ro'
+      ref: refs/tags/v6.0.0
+      endpoint: "io-azure-devops-github-ro"
 
 stages:
 #DEV

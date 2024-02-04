@@ -45,6 +45,6 @@ postgres_private_dns_enabled = false
 #
 # Feature Flags
 #
-is_resource = {
+enabled_resource = {
   container_app_tools_cae = true
 }

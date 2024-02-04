@@ -26,10 +26,10 @@ parameters:
       - True
 
 variables:
-  TIME_OUT: 30
+  TIME_OUT: 10
   # working dir
-  WORKING_DIR: 'src/core'
-  DOMAIN_NAME: core
+  WORKING_DIR: 'src/elk-monitoring'
+  DOMAIN_NAME: elk-monitoring
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
   poolNameProd: '$(TF_POOL_NAME_PROD)'
@@ -42,6 +42,21 @@ variables:
   azureServiceConnectionApplyNameUat: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
   azureServiceConnectionApplyNameProd: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
   githubEndpointName: '$(TF_GITHUB_SERVICE_ENDPOINT_NAME)'
+
+  DEV_AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
+  DEV_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
+  DEV_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
+  AKS_DEV_NAME: '$(TF_AKS_DEV_NAME)'
+
+  UAT_AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
+  UAT_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
+  UAT_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
+  AKS_UAT_NAME: '$(TF_AKS_UAT_NAME)'
+
+  PROD_AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
+  PROD_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
+  PROD_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
+  AKS_PROD_NAME: '$(TF_AKS_PROD_NAME)'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -60,31 +75,43 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
-        TF_ENVIRONMENT_FOLDER: "dev"
+        TF_ENVIRONMENT_FOLDER: "weu-dev"
         ENVIRONMENT: "DEV"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameDev}}"
         WORKINGDIR: ${{ variables.WORKING_DIR }}
         AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
         AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameDev}}"
+        AKS_NAME: ${{ variables.AKS_DEV_NAME }}
+        AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
+        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
+        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
-        TF_ENVIRONMENT_FOLDER: "uat"
+        TF_ENVIRONMENT_FOLDER: "weu-uat"
         ENVIRONMENT: "UAT"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
         WORKINGDIR: ${{ variables.WORKING_DIR }}
         AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
         AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameUat}}"
+        AKS_NAME: ${{ variables.AKS_UAT_NAME }}
+        AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
+        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
+        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
 #PROD
   - ${{ if eq(parameters['PROD'], true) }}:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
-        TF_ENVIRONMENT_FOLDER: "prod"
+        TF_ENVIRONMENT_FOLDER: "weu-prod"
         ENVIRONMENT: "PROD"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameProd}}"
         WORKINGDIR: ${{ variables.WORKING_DIR }}
         AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
         AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
+        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
+        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
+        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
+        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
