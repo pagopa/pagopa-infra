@@ -16,20 +16,20 @@ resource "azurerm_role_definition" "iac_reader" {
       "Microsoft.ServiceBus/namespaces/queues/authorizationRules/listKeys/action",
       "Microsoft.Cache/redis/listKeys/action", # Redis List
       "Microsoft.Web/sites/host/listkeys/action",
-      "Microsoft.Storage/storageAccounts/listkeys/action", # terraform get status backend
+      "Microsoft.Storage/storageAccounts/listkeys/action",             # terraform get status backend
       "Microsoft.ContainerRegistry/registries/listCredentials/action", # ACR list
     ]
   }
 }
 
-    # "PagoPA IaC Reader",
-    # "Reader",
-    # "Reader and Data Access",
-    # "Storage Blob Data Reader",
-    # "Storage File Data SMB Share Reader",
-    # "Storage Queue Data Reader",
-    # "Storage Table Data Reader",
-    # "PagoPA Export Deployments Template",
-    # "Key Vault Secrets User",
-    # "DocumentDB Account Contributor",
-    # "API Management Service Contributor",
+# "PagoPA IaC Reader",
+# "Reader",
+# "Reader and Data Access",
+# "Storage Blob Data Reader",
+# "Storage File Data SMB Share Reader",
+# "Storage Queue Data Reader",
+# "Storage Table Data Reader",
+# "PagoPA Export Deployments Template",
+# "Key Vault Secrets User",
+# "DocumentDB Account Contributor",
+# "API Management Service Contributor",
