@@ -28,7 +28,7 @@ module "azdoa_li_app" {
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
   source_image_name   = "pagopa-${var.env_short}-azdo-agent-ubuntu2204-image-v2"
-  vm_sku = "Standard_B2ms"
+  vm_sku              = "Standard_B2ms"
 
   zones        = var.devops_agent_zones
   zone_balance = var.devops_agent_balance_zones
@@ -47,7 +47,7 @@ module "azdoa_li_infra" {
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
   source_image_name   = "pagopa-${var.env_short}-azdo-agent-ubuntu2204-image-v2"
-  vm_sku = "Standard_B2ms"
+  vm_sku              = "Standard_B2ms"
 
   zones        = var.devops_agent_zones
   zone_balance = var.devops_agent_balance_zones
