@@ -8,7 +8,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost",
+      "url": "${host}/bizevents/helpdesk/v1",
       "description": "Generated server url"
     }
   ],

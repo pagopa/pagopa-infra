@@ -8,7 +8,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost",
+      "url": "${host}/bizevents/bizevents/tx-service/v1",
       "description": "Generated server url"
     }
   ],
