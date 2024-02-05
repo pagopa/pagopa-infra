@@ -51,18 +51,8 @@ resource "azurerm_role_definition" "iac_reader" {
       "Microsoft.Security/*/read",
       # "Microsoft.Security/advancedThreatProtectionSettings/read",
       "Microsoft.Authorization/*/read",
+      "Microsoft.Compute/*/read"
+      # "Microsoft.Compute/sshPublicKeys/read",
     ]
   }
 }
-
-# "PagoPA IaC Reader",
-# "Reader",
-# "Reader and Data Access",
-# "Storage Blob Data Reader",
-# "Storage File Data SMB Share Reader",
-# "Storage Queue Data Reader",
-# "Storage Table Data Reader",
-# "PagoPA Export Deployments Template",
-# "Key Vault Secrets User",
-# "DocumentDB Account Contributor",
-# "API Management Service Contributor",
