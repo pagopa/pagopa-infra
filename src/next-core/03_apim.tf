@@ -10,16 +10,16 @@ module "apimv2_snet" {
 }
 
 
-resource "azurerm_network_security_group" "apim_snet_nsg" {
+resource "azurerm_network_security_group" "apimv2_snet_nsg" {
   name                = "apimv2-snet-nsg"
   location            = var.location
   resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
 }
 
-resource "azurerm_network_security_rule" "apim_snet_nsg_rules" {
+resource "azurerm_network_security_rule" "apimv2_snet_nsg_rules" {
   count = length(var.apim_v2_subnet_nsg_security_rules)
 
-  network_security_group_name = azurerm_network_security_group.apim_snet_nsg.name
+  network_security_group_name = azurerm_network_security_group.apimv2_snet_nsg.name
   name                        = var.apim_v2_subnet_nsg_security_rules[count.index].name
   resource_group_name         = data.azurerm_resource_group.rg_vnet_integration.name
   priority                    = var.apim_v2_subnet_nsg_security_rules[count.index].priority
@@ -34,11 +34,11 @@ resource "azurerm_network_security_rule" "apim_snet_nsg_rules" {
 
 resource "azurerm_subnet_network_security_group_association" "apim_stv2_snet" {
   subnet_id                 = module.apimv2_snet.id
-  network_security_group_id = azurerm_network_security_group.apim_snet_nsg.id
+  network_security_group_id = azurerm_network_security_group.apimv2_snet_nsg.id
 }
 
 
-resource "azurerm_public_ip" "apim_public_ip" {
+resource "azurerm_public_ip" "apimv2_public_ip" {
   name                = "${local.product}-apim-pip"
   resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
   location            = data.azurerm_resource_group.rg_vnet_integration.location
@@ -69,13 +69,13 @@ module "apimv2" {
 
   subnet_id            = module.apimv2_snet.id
   location             = data.azurerm_resource_group.rg_vnet_integration.location
-  name                 = "${local.project}-apim"
+  name                 = "${local.project}-apim-v2"
   resource_group_name  = data.azurerm_resource_group.rg_vnet_integration.name
   publisher_name       = var.apim_v2_publisher_name
   publisher_email      = data.azurerm_key_vault_secret.apim_publisher_email.value
   sku_name             = var.apim_v2_sku
 
-  public_ip_address_id = azurerm_public_ip.apim_public_ip.id
+  public_ip_address_id = azurerm_public_ip.apimv2_public_ip.id
 
   virtual_network_type = "Internal"
 
@@ -105,7 +105,7 @@ module "apimv2" {
   xml_content = templatefile("./api/base_policy.tpl", {
     portal-domain         = local.portal_domain
     management-api-domain = local.management_domain
-    apim-name             = format("%s-apim", local.project)
+    apim-name             = "${local.project}-apim-v2"
   })
 
   autoscale = var.apim_v2_autoscale
@@ -205,7 +205,7 @@ module "apimv2" {
 
 
 # Already apply forcing redis_connection_string on apim_module
-resource "azurerm_api_management_redis_cache" "apim_external_cache_redis" {
+resource "azurerm_api_management_redis_cache" "apimv2_external_cache_redis" {
   count             = var.create_redis_multiaz ? 1 : 0
   name              = "apim-v2-external-cache-redis"
   api_management_id = module.apimv2.id

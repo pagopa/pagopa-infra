@@ -50,7 +50,7 @@ postgres_private_dns_enabled = true
 #
 # apim v2
 #
-cidr_subnet_apim= ["10.230.9.192/27"]
+cidr_subnet_apim= ["10.230.9.160/27"]
 apim_v2_zones = ["1"]
 apim_v2_subnet_nsg_security_rules = [
   {
