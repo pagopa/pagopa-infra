@@ -100,6 +100,7 @@ resource "azurerm_dns_a_record" "dns_a_api" {
 }
 
 resource "azurerm_dns_a_record" "dns_a_upload" {
+  count               = var.upload_endpoint_enabled ? 1 : 0
   name                = "upload"
   zone_name           = azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name

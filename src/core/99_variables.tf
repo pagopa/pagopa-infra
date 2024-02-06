@@ -466,6 +466,12 @@ variable "app_gateway_upload_certificate_name" {
   description = "Application gateway api certificate name on Key Vault ( 'upload' is used for heavy payload size)"
 }
 
+variable "upload_endpoint_enabled" {
+  type        = bool
+  description = "Enable upload for heavy payload size on appgw"
+  default     = false
+}
+
 variable "app_gateway_prf_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
