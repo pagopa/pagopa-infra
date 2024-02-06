@@ -31,6 +31,12 @@ locals {
       "Contributor"
     ]
     resource_groups = {
+      # "${local.product}-${var.location_short}-${var.domain}-rg" = [
+      #   "Contributor"
+      # ],
+      # "${local.product}-${var.location_short}-bizevents-rg" = [
+      #   "Contributor"
+      # ],      
       "${local.product}-${var.domain}-sec-rg" = [
         "Key Vault Reader"
       ],
