@@ -20,18 +20,18 @@ locals {
       }
     }
 
-    fdr = {
+    upload = {
       protocol           = "Https"
-      host               = format("fdr.%s.%s", var.dns_zone_prefix, var.external_domain)
+      host               = format("upload.%s.%s", var.dns_zone_prefix, var.external_domain)
       port               = 443
       ssl_profile_name   = format("%s-ssl-profile", local.project)
       firewall_policy_id = null
 
       certificate = {
-        name = var.app_gateway_fdr_certificate_name
+        name = var.app_gateway_upload_certificate_name
         id = replace(
-          data.azurerm_key_vault_certificate.app_gw_platform_fdr.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_platform_fdr.version}",
+          data.azurerm_key_vault_certificate.app_gw_platform_upload.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_platform_upload.version}",
           ""
         )
       }
@@ -168,8 +168,8 @@ locals {
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
 
-    fdr = {
-      listener              = "fdr"
+    upload = {
+      listener              = "upload"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
@@ -278,15 +278,15 @@ module "app_gw" {
       pick_host_name_from_backend = false
     }
 
-    apimfdr = {
+    apimupload = {
       protocol                    = "Https"
-      host                        = trim(azurerm_dns_a_record.dns_a_fdr.fqdn, ".")
+      host                        = trim(azurerm_dns_a_record.dns_a_upload.fqdn, ".")
       port                        = 443
       ip_addresses                = module.apim.private_ip_addresses
-      fqdns                       = [azurerm_dns_a_record.dns_a_fdr.fqdn]
+      fqdns                       = [azurerm_dns_a_record.dns_a_upload.fqdn]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
-      request_timeout             = 300 # long timeout for heavy api request ( ex. FDR flow managment )
+      request_timeout             = 300 # long timeout for heavy api request ( ex. FDR flow managment, GPD upload, ... )
       pick_host_name_from_backend = false
     }
 
@@ -451,7 +451,7 @@ module "app_gw" {
           conditions = [
             {
               variable    = "var_host"
-              pattern     = format("fdr.%s.%s", var.dns_zone_prefix, var.external_domain)
+              pattern     = format("upload.%s.%s", var.dns_zone_prefix, var.external_domain)
               ignore_case = true
               negate      = false
             },

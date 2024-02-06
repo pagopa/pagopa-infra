@@ -461,9 +461,9 @@ variable "app_gateway_api_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
 }
-variable "app_gateway_fdr_certificate_name" {
+variable "app_gateway_upload_certificate_name" {
   type        = string
-  description = "Application gateway api certificate name on Key Vault ( 'fdr' is used for heavy FdR payload )"
+  description = "Application gateway api certificate name on Key Vault ( 'upload' is used for heavy payload size)"
 }
 
 variable "app_gateway_prf_certificate_name" {
