@@ -486,12 +486,18 @@
             "description": "NPG order id",
             "type": "string",
             "example": "orderId"
+          },
+          "correlationId": {
+            "description": "NPG correlation id",
+            "type": "string",
+            "format": "uuid"
           }
         },
         "required": [
           "paymentNotices",
           "email",
-          "orderId"
+          "orderId",
+          "correlationId"
         ]
       },
       "NewTransactionResponse": {
