@@ -10,6 +10,12 @@ data "azurerm_kubernetes_cluster" "aks" {
 # repos must be lower than 20 items
 locals {
   repos_01 = [
+    "pagopa-receipt-pdf-generator",
+    "pagopa-receipt-pdf-datastore",
+    "pagopa-receipt-pdf-helpdesk",
+    "pagopa-receipt-pdf-notifier",
+    "pagopa-receipt-pdf-service",
+    # pagopa-pdf-engine
   ]
 
   federations_01 = [
@@ -25,6 +31,12 @@ locals {
       "Contributor"
     ]
     resource_groups = {
+      # "${local.product}-${var.location_short}-${var.domain}-rg" = [
+      #   "Contributor"
+      # ],
+      # "${local.product}-${var.location_short}-bizevents-rg" = [
+      #   "Contributor"
+      # ],      
       "${local.product}-${var.domain}-sec-rg" = [
         "Key Vault Reader"
       ],
