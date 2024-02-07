@@ -1,31 +1,27 @@
-resource "azurerm_data_factory_dataset_cosmosdb_sqlapi" "biz-events" {
-  name                = "example"
-  data_factory_id     = azurerm_data_factory.data_factory.id
-  linked_service_name = azurerm_data_factory_linked_service_cosmosdb.biz_event_data_factory_linked_service.name
-
-  collection_name = "biz-events"
+locals {
+  cosmos = { for filename in fileset(path.module, "datafactory/cosmos/*.json") : replace(basename(filename), ".json", "") => file("${path.module}/${filename}") }
+  # datasets = { for filename in fileset(path.module, "datafactory/${var.env_short == "p" ? "NOT_FOUND" : "datasets"}/*.json") : replace(basename(filename), ".json", "") => file("${path.module}/${filename}") }
 }
 
-resource "azurerm_data_factory_dataset_cosmosdb_sqlapi" "biz-events-view-general" {
-  name                = "biz-events-view-general"
-  data_factory_id     = azurerm_data_factory.data_factory.id
-  linked_service_name = azurerm_data_factory_linked_service_cosmosdb.biz_event_data_factory_linked_service.name
-
-  collection_name = "biz-events-cart-view-general"
+data "azurerm_data_factory" "qi_data_factory_cosmos" {
+  name                = "pagopa-${var.env_short}-weu-nodo-df"
+  resource_group_name = "pagopa-${var.env_short}-weu-nodo-df-rg"
 }
 
-resource "azurerm_data_factory_dataset_cosmosdb_sqlapi" "biz-events-view-item" {
-  name                = "biz-events-view-item"
-  data_factory_id     = azurerm_data_factory.data_factory.id
-  linked_service_name = azurerm_data_factory_linked_service_cosmosdb.biz_event_data_factory_linked_service.name
+resource "azurerm_data_factory_custom_dataset" "biz_events_datasets_cosmos" {
+  depends_on      = [azurerm_data_factory_linked_service_cosmosdb.biz_event_data_factory_linked_service]
+  for_each        = local.cosmos
+  name            = "SMO_COSMOS_${each.key}_DataSet"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory_cosmos.id
+  type            = "CosmosDbSqlApiCollection"
 
-  collection_name = "biz-events-cart-view-item"
-}
+  type_properties_json = file("datafactory/cosmos/type_properties/${each.key}.json")
 
-resource "azurerm_data_factory_dataset_cosmosdb_sqlapi" "biz-events-view-user" {
-  name                = "biz-events-view-user"
-  data_factory_id     = azurerm_data_factory.data_factory.id
-  linked_service_name = azurerm_data_factory_linked_service_cosmosdb.biz_event_data_factory_linked_service.name
+  schema_json = <<JSON
+      ${each.value}
+  JSON
 
-  collection_name = "biz-events-cart-view-user"
+  linked_service {
+    name = azurerm_data_factory_linked_service_cosmosdb.biz_event_data_factory_linked_service.name
+  }
 }

@@ -5,7 +5,7 @@ data "azurerm_cosmosdb_account" "biz_event_cosmos_account" {
 
 resource "azurerm_data_factory_linked_service_cosmosdb" "biz_event_data_factory_linked_service" {
   name             = "biz_event_data_factory_linked_service"
-  data_factory_id  = azurerm_data_factory.data_factory.id
+  data_factory_id  = data.azurerm_data_factory.qi_data_factory_cosmos.id
   account_endpoint = data.azurerm_cosmosdb_account.biz_event_cosmos_account.endpoint
   account_key      = data.azurerm_cosmosdb_account.biz_event_cosmos_account.primary_key
   database         = "db"

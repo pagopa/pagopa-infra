@@ -1,0 +1,99 @@
+{
+    "type": "object",
+    "properties": {
+        "debtor": {
+          "type": "object",
+          "properties": {
+            "entityUniqueIdentifierValue": {
+              "type": "string"
+            }
+          }
+        },
+        "payer": {
+          "type": "object",
+          "properties": {
+            "entityUniqueIdentifierValue": {
+              "type": "string"
+            }
+          }
+        },
+        "debtorPosition": {
+            "type": "object",
+            "properties": {
+                "modelType": {
+                    "type": "string"
+                },
+                "noticeNumber": {
+                    "type": "string"
+                },
+                "iuv": {
+                    "type": "string"
+                }
+            }
+        },
+        "creditor": {
+            "type": "object",
+            "properties": {
+                "idPA": {
+                    "type": "string"
+                },
+                "idBrokerPA": {
+                    "type": "string"
+                },
+                "idStation": {
+                    "type": "string"
+                },
+                "companyName": {
+                    "type": "string"
+                }
+            }
+        },
+        "eventStatus": {
+            "type": "string"
+        },
+        "eventRetryEnrichmentCount": {
+            "type": "integer"
+        },
+        "transactionDetails": {
+          "type": "object",
+          "properties": {
+            "transaction": {
+              "type": "object",
+              "properties": {
+                "transactionId": {
+                  "type": "string"
+                },
+                "creationDate": {
+                  "type": "string"
+                },
+                "rrn": {
+                  "type": "string"
+                },
+                "numAut": {
+                  "type": "string"
+                }
+              }
+            },
+            "user": {
+              "type": "object",
+              "properties": {
+                "fiscalCode": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "paymentInfo": {
+          "type": "object",
+          "properties": {
+            "totalNotice": {
+              "type": "number"
+            },
+            "paymentToken": {
+              "type": "string"
+            }
+          }
+        }
+    }
+}

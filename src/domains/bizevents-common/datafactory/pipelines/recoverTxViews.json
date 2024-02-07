@@ -1,6 +1,6 @@
 [
   {
-    "name": "cleanWfespPipeline",
+    "name": "recoverTxViews",
     "type": "ExecuteDataFlow",
     "dependsOn": [],
     "policy": {
@@ -13,7 +13,7 @@
     "userProperties": [],
     "typeProperties": {
       "dataflow": {
-        "referenceName": "wfespDataflow",
+        "referenceName": "recoverTxViews",
         "type": "DataFlowReference",
         "parameters": {
           "daysToKeep": {

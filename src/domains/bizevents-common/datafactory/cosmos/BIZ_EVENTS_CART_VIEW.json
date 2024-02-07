@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "properties": {
+    "eventId": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "subject": {
+      "type": "string"
+    },
+    "transactionId": {
+      "type": "string"
+    },
+    "payee": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "taxCode": {
+          "type": "string"
+        }
+      }
+    },
+    "debtor": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "taxCode": {
+          "type": "string"
+        }
+      }
+    },
+    "refNumberValue": {
+      "type": "string"
+    },
+    "refNumberType": {
+      "type": "string"
+    }
+  }
+}
