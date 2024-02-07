@@ -1,20 +1,209 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "description": "Utility microservice for pagoPA AFM",
-    "termsOfService": "https://www.pagopa.gov.it/",
     "title": "afm-utils",
-    "version": "0.6.1"
+    "description": "@project.description@",
+    "termsOfService": "https://www.pagopa.gov.it/",
+    "version": "0.9.2-1-PAGOPA-1481-sviluppo-upgrade-ai-with-java-17"
   },
   "servers": [
     {
-      "description": "Generated server url",
-      "url": "${host}"
+      "url": "${host}",
+      "description": "Generated server url"
     }
   ],
   "paths": {
     "/cdis/sync": {
+      "get": {
+        "tags": [
+          "Import CDI rest API"
+        ],
+        "summary": "API to retry the import of the CDIs and convert to bundles.",
+        "operationId": "syncCDI_1",
+        "responses": {
+          "200": {
+            "description": "Obtained bundle list.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BundleResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Import CDI rest API"
+        ],
+        "summary": "API to trigger the import of the CDIs and convert to bundles.",
+        "operationId": "syncCDI",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CDI"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Obtained bundle list.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BundleResponse"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
       "delete": {
+        "tags": [
+          "Delete CDI rest API"
+        ],
+        "summary": "API to trigger the bulk deletion of the CDIs and its related bundles.",
         "operationId": "syncCDIDeletion",
         "responses": {
           "200": {
@@ -62,19 +251,19 @@
             }
           },
           "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            },
             "description": "Service unavailable.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -84,221 +273,29 @@
           {
             "ApiKey": []
           }
-        ],
-        "summary": "API to trigger the bulk deletion of the CDIs and its related bundles.",
-        "tags": [
-          "Delete CDI rest API"
-        ]
-      },
-      "get": {
-        "operationId": "syncCDI_1",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BundleResponse"
-                  }
-                }
-              }
-            },
-            "description": "Obtained bundle list.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description": "Service unavailable.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "ApiKey": []
-          }
-        ],
-        "summary": "API to retry the import of the CDIs and convert to bundles.",
-        "tags": [
-          "Import CDI rest API"
         ]
       },
       "parameters": [
         {
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "in": "header",
           "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
           "schema": {
             "type": "string"
           }
         }
-      ],
-      "post": {
-        "operationId": "syncCDI",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/CDI"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/BundleResponse"
-                  }
-                }
-              }
-            },
-            "description": "Obtained bundle list.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            },
-            "description": "Service unavailable.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "ApiKey": []
-          }
-        ],
-        "summary": "API to trigger the import of the CDIs and convert to bundles.",
-        "tags": [
-          "Import CDI rest API"
-        ]
-      }
+      ]
     },
     "/info": {
       "get": {
+        "tags": [
+          "Home"
+        ],
+        "summary": "health check",
         "description": "Return OK if application is started",
         "operationId": "healthCheck",
         "responses": {
           "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppInfo"
-                }
-              }
-            },
             "description": "OK",
             "headers": {
               "X-Request-Id": {
@@ -307,22 +304,29 @@
                   "type": "string"
                 }
               }
-            }
-          },
-          "400": {
+            },
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+                  "$ref": "#/components/schemas/AppInfo"
                 }
               }
-            },
+            }
+          },
+          "400": {
             "description": "Bad Request",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -361,19 +365,19 @@
             }
           },
           "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            },
             "description": "Service unavailable",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -383,17 +387,13 @@
           {
             "ApiKey": []
           }
-        ],
-        "summary": "health check",
-        "tags": [
-          "Home"
         ]
       },
       "parameters": [
         {
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "in": "header",
           "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
           "schema": {
             "type": "string"
           }
@@ -402,12 +402,16 @@
     },
     "/psps/{pspCode}/cdis/{idCdi}": {
       "delete": {
+        "tags": [
+          "Delete Bundles by id CDI rest API"
+        ],
+        "summary": "API to trigger the deletion of the bundles by a CDI id.",
         "operationId": "syncBundlesDeletionByIdCDI",
         "parameters": [
           {
-            "description": "CDI identifier",
-            "in": "path",
             "name": "idCdi",
+            "in": "path",
+            "description": "CDI identifier",
             "required": true,
             "schema": {
               "maxLength": 50,
@@ -416,9 +420,9 @@
             }
           },
           {
-            "description": "PSP code",
-            "in": "path",
             "name": "pspCode",
+            "in": "path",
+            "description": "PSP code",
             "required": true,
             "schema": {
               "pattern": "[A-Z0-9_]{6,14}",
@@ -461,19 +465,19 @@
             }
           },
           "404": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            },
             "description": "Not Found",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -490,19 +494,19 @@
             }
           },
           "500": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            },
             "description": "Service unavailable.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -512,17 +516,13 @@
           {
             "ApiKey": []
           }
-        ],
-        "summary": "API to trigger the deletion of the bundles by a CDI id.",
-        "tags": [
-          "Delete Bundles by id CDI rest API"
         ]
       },
       "parameters": [
         {
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "in": "header",
           "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
           "schema": {
             "type": "string"
           }
@@ -532,17 +532,117 @@
   },
   "components": {
     "schemas": {
-      "AppInfo": {
+      "CDI": {
         "type": "object",
         "properties": {
-          "environment": {
+          "id": {
+            "type": "string"
+          },
+          "idPsp": {
+            "type": "string"
+          },
+          "idCdi": {
+            "type": "string"
+          },
+          "abi": {
+            "type": "string"
+          },
+          "digitalStamp": {
+            "type": "boolean"
+          },
+          "validityDateFrom": {
+            "type": "string"
+          },
+          "pspBusinessName": {
+            "type": "string"
+          },
+          "details": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Detail"
+            }
+          },
+          "cdiStatus": {
+            "type": "string",
+            "enum": [
+              "StatusType.NEW",
+              "StatusType.FAILED",
+              "StatusType.PROCESSING"
+            ]
+          },
+          "cdiErrorDesc": {
+            "type": "string"
+          }
+        }
+      },
+      "Detail": {
+        "type": "object",
+        "properties": {
+          "idBrokerPsp": {
+            "type": "string"
+          },
+          "idChannel": {
             "type": "string"
           },
           "name": {
             "type": "string"
           },
-          "version": {
+          "description": {
             "type": "string"
+          },
+          "paymentType": {
+            "type": "string"
+          },
+          "channelApp": {
+            "type": "boolean"
+          },
+          "channelCardsCart": {
+            "type": "boolean"
+          },
+          "serviceAmount": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceAmount"
+            }
+          }
+        }
+      },
+      "ServiceAmount": {
+        "type": "object",
+        "properties": {
+          "paymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "minPaymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "maxPaymentAmount": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "ProblemJson": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+          },
+          "status": {
+            "maximum": 600,
+            "minimum": 100,
+            "type": "integer",
+            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format": "int32",
+            "example": 200
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the problem.",
+            "example": "There was an error processing the request"
           }
         }
       },
@@ -554,127 +654,27 @@
           }
         }
       },
-      "CDI": {
+      "AppInfo": {
         "type": "object",
         "properties": {
-          "abi": {
-            "type": "string"
-          },
-          "cdiErrorDesc": {
-            "type": "string"
-          },
-          "cdiStatus": {
-            "type": "string",
-            "enum": [
-              "NEW",
-              "FAILED",
-              "PROCESSING"
-            ]
-          },
-          "details": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Detail"
-            }
-          },
-          "digitalStamp": {
-            "type": "boolean"
-          },
-          "id": {
-            "type": "string"
-          },
-          "idCdi": {
-            "type": "string"
-          },
-          "idPsp": {
-            "type": "string"
-          },
-          "pspBusinessName": {
-            "type": "string"
-          },
-          "validityDateFrom": {
-            "type": "string"
-          }
-        }
-      },
-      "Detail": {
-        "type": "object",
-        "properties": {
-          "channelApp": {
-            "type": "boolean"
-          },
-          "channelCardsCart": {
-            "type": "boolean"
-          },
-          "description": {
-            "type": "string"
-          },
-          "idBrokerPsp": {
-            "type": "string"
-          },
-          "idChannel": {
-            "type": "string"
-          },
           "name": {
             "type": "string"
           },
-          "paymentType": {
+          "version": {
             "type": "string"
           },
-          "serviceAmount": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ServiceAmount"
-            }
-          }
-        }
-      },
-      "ProblemJson": {
-        "type": "object",
-        "properties": {
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the problem.",
-            "example": "There was an error processing the request"
-          },
-          "status": {
-            "maximum": 600,
-            "minimum": 100,
-            "type": "integer",
-            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format": "int32",
-            "example": 200
-          },
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
-          }
-        }
-      },
-      "ServiceAmount": {
-        "type": "object",
-        "properties": {
-          "maxPaymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "minPaymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "paymentAmount": {
-            "type": "integer",
-            "format": "int64"
+          "environment": {
+            "type": "string"
           }
         }
       }
     },
     "securitySchemes": {
       "ApiKey": {
+        "type": "apiKey",
         "description": "The API key to access this function app.",
-        "in": "header",
         "name": "Ocp-Apim-Subscription-Key",
-        "type": "apiKey"
+        "in": "header"
       }
     }
   }
