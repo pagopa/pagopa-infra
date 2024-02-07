@@ -1,20 +1,15 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.1",
   "info": {
+    "title": "Nodo-Per-PaymentManager",
     "description": "Specifiche di interfaccia Nodo per Payment Manager",
-    "version": "2.0.0",
-    "title": "Nodo-Per-PaymentManager"
+    "version": "2.0.0"
   },
-  "schemes": [
-    "http"
+  "servers": [
+    {
+      "url": "http://${host}/"
+    }
   ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
-  "host": "${host}",
   "paths": {
     "/closepayment": {
       "post": {
@@ -26,350 +21,373 @@
         "operationId": "closePaymentV2",
         "parameters": [
           {
-            "in": "query",
             "name": "clientId",
+            "in": "query",
             "description": "The client who made the request",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "required": true,
             "schema": {
-              "$ref": "#/definitions/ClosePaymentRequestV2"
+              "type": "string"
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClosePaymentRequestV2"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
             "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/ClosePaymentResponse"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClosePaymentResponse"
+                }
+              }
             }
           },
           "400": {
             "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/Error"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
             }
           },
           "404": {
             "description": "Not found",
-            "schema": {
-              "$ref": "#/definitions/Error"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
             }
           },
           "408": {
             "description": "Request Timeout",
-            "schema": {
-              "$ref": "#/definitions/Error"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
             }
           },
           "422": {
             "description": "Unprocessable entry",
-            "schema": {
-              "$ref": "#/definitions/Error"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
             }
           }
-        }
+        },
+        "x-codegen-request-body-name": "body"
       }
     }
   },
-  "definitions": {
-    "ClosePaymentResponse": {
-      "type": "object",
-      "required": [
-        "outcome"
-      ],
-      "properties": {
-        "outcome": {
-          "type": "string",
-          "enum": [
-            "OK",
-            "KO"
-          ]
-        }
-      }
-    },
-    "Error": {
-      "type": "object",
-      "required": [
-        "error"
-      ],
-      "properties": {
-        "error": {
-          "type": "string",
-          "example": "error message"
-        }
-      }
-    },
-    "ClosePaymentRequestV2": {
-      "type": "object",
-      "required": [
-        "paymentTokens",
-        "outcome",
-        "transactionId",
-        "transactionDetails"
-      ],
-      "properties": {
-        "paymentTokens": {
-          "type": "array",
-          "minItems": 1,
-          "items": {
+  "components": {
+    "schemas": {
+      "ClosePaymentResponse": {
+        "required": [
+          "outcome"
+        ],
+        "type": "object",
+        "properties": {
+          "outcome": {
             "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          }
+        }
+      },
+      "Error": {
+        "required": [
+          "error"
+        ],
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "error message"
+          }
+        }
+      },
+      "ClosePaymentRequestV2": {
+        "required": [
+          "outcome",
+          "paymentTokens",
+          "transactionDetails",
+          "transactionId"
+        ],
+        "type": "object",
+        "properties": {
+          "paymentTokens": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "maxLength": 36,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "idPSP": {
+            "maxLength": 35,
             "minLength": 1,
-            "maxLength": 36
+            "type": "string",
+            "description": "required only for outcomePaymentGateway OK"
+          },
+          "idBrokerPSP": {
+            "maxLength": 35,
+            "minLength": 1,
+            "type": "string",
+            "description": "required only for outcomePaymentGateway OK"
+          },
+          "idChannel": {
+            "maxLength": 35,
+            "minLength": 1,
+            "type": "string",
+            "description": "required only for outcomePaymentGateway OK"
+          },
+          "paymentMethod": {
+            "minLength": 1,
+            "type": "string",
+            "description": "required only for outcomePaymentGateway OK"
+          },
+          "transactionId": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "totalAmount": {
+            "maximum": 1000000000,
+            "minimum": 0,
+            "type": "number",
+            "description": "required only for outcomePaymentGateway OK",
+            "example": 20.1
+          },
+          "fee": {
+            "maximum": 1000000000,
+            "minimum": 0,
+            "type": "number",
+            "description": "required only for outcomePaymentGateway OK",
+            "example": 10.0
+          },
+          "timestampOperation": {
+            "type": "string",
+            "description": "required only for outcomePaymentGateway OK",
+            "format": "date-time",
+            "example": "2022-02-22T14:41:58.811+01:00"
+          },
+          "additionalPaymentInformations": {
+            "$ref": "#/components/schemas/AdditionalPaymentInformations"
+          },
+          "transactionDetails": {
+            "$ref": "#/components/schemas/TransactionDetails"
+          }
+        }
+      },
+      "AdditionalPaymentInformations": {
+        "required": [
+          "fee",
+          "outcomePaymentGateway",
+          "timestampOperation",
+          "totalAmount"
+        ],
+        "type": "object",
+        "properties": {
+          "outcomePaymentGateway": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "rrn": {
+            "type": "string",
+            "description": "only for vpos authorizations"
+          },
+          "fee": {
+            "type": "string",
+            "description": "commision amount, converted in string",
+            "format": "###.##",
+            "example": "10.00"
+          },
+          "totalAmount": {
+            "type": "string",
+            "description": "sum of payment advices amount and fee, converted in string",
+            "format": "###.##",
+            "example": "10.00"
+          },
+          "timestampOperation": {
+            "type": "string",
+            "description": "timestampOperation of payment gateway converted in string with this format 'yyyy-MM-ddThh:mm:ss'",
+            "format": "yyyy-MM-ddThh:mm:ss",
+            "example": "2022-02-22T14:41:58"
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "only for xpay authorizations"
           }
         },
-        "outcome": {
-          "type": "string",
-          "enum": [
-            "OK",
-            "KO"
-          ]
-        },
-        "idPSP": {
-          "description": "required only for outcomePaymentGateway OK",
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 35
-        },
-        "idBrokerPSP": {
-          "description": "required only for outcomePaymentGateway OK",
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 35
-        },
-        "idChannel": {
-          "description": "required only for outcomePaymentGateway OK",
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 35
-        },
-        "paymentMethod": {
-          "description": "required only for outcomePaymentGateway OK",
-          "type": "string",
-          "minLength": 1
-        },
-        "transactionId": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 255
-        },
-        "totalAmount": {
-          "description": "required only for outcomePaymentGateway OK",
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1000000000,
-          "example": "20.10"
-        },
-        "fee": {
-          "type": "number",
-          "description": "required only for outcomePaymentGateway OK",
-          "minimum": 0,
-          "maximum": 1000000000,
-          "example": "10.00"
-        },
-        "timestampOperation": {
-          "description": "required only for outcomePaymentGateway OK",
-          "type": "string",
-          "format": "date-time",
-          "example": "2022-02-22T14:41:58.811+01:00"
-        },
-        "additionalPaymentInformations": {
-          "$ref": "#/definitions/AdditionalPaymentInformations"
-        },
-        "transactionDetails": {
-          "$ref": "#/definitions/TransactionDetails"
+        "description": "required with outcomePaymentGateway OK"
+      },
+      "TransactionDetails": {
+        "required": [
+          "info",
+          "transaction",
+          "user"
+        ],
+        "type": "object",
+        "properties": {
+          "transaction": {
+            "$ref": "#/components/schemas/Transaction"
+          },
+          "info": {
+            "$ref": "#/components/schemas/Info"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
         }
-      }
-    },
-    "AdditionalPaymentInformations": {
-      "description": "required with outcomePaymentGateway OK",
-      "type": "object",
-      "required": [
-        "outcomePaymentGateway",
-        "totalAmount",
-        "fee",
-        "timestampOperation"
-      ],
-      "properties": {
-        "outcomePaymentGateway": {
-          "type": "string",
-          "enum": [
-            "OK",
-            "KO"
-          ]
-        },
-        "rrn": {
-          "description": "only for vpos authorizations",
-          "type": "string"
-        },
-        "fee": {
-          "type": "string",
-          "description": "commision amount, converted in string",
-          "format": "###.##",
-          "example": "10.00"
-        },
-        "totalAmount": {
-          "type": "string",
-          "description": "sum of payment advices amount and fee, converted in string",
-          "format": "###.##",
-          "example": "10.00"
-        },
-        "timestampOperation": {
-          "description": "timestampOperation of payment gateway converted in string with this format 'yyyy-MM-ddThh:mm:ss'",
-          "type": "string",
-          "format": "yyyy-MM-ddThh:mm:ss",
-          "example": "2022-02-22T14:41:58"
-        },
-        "authorizationCode": {
-          "description": "only for xpay authorizations",
-          "type": "string"
+      },
+      "Transaction": {
+        "required": [
+          "creationDate",
+          "transactionId",
+          "transactionStatus"
+        ],
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string"
+          },
+          "grandTotal": {
+            "maximum": 1000000000,
+            "minimum": 0,
+            "type": "number",
+            "example": 20.1
+          },
+          "amount": {
+            "maximum": 1000000000,
+            "minimum": 0,
+            "type": "number",
+            "example": 20.1
+          },
+          "fee": {
+            "maximum": 1000000000,
+            "minimum": 0,
+            "type": "number",
+            "description": "commission amount and  required with outcomePaymentGateway not null",
+            "example": 10.0
+          },
+          "transactionStatus": {
+            "type": "string"
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "only for xpay authorizations"
+          },
+          "rrn": {
+            "type": "string",
+            "description": "only for vpos authorizations"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2022-02-22T14:41:58.811+01:00"
+          },
+          "psp": {
+            "$ref": "#/components/schemas/Psp"
+          },
+          "errorCode": {
+            "type": "string"
+          },
+          "timestampOperation": {
+            "type": "string"
+          },
+          "paymentGateway": {
+            "type": "string"
+          }
         }
-      }
-    },
-    "TransactionDetails": {
-      "type": "object",
-      "required": [
-        "transaction",
-        "info",
-        "user"
-      ],
-      "properties": {
-        "transaction": {
-          "$ref": "#/definitions/Transaction"
-        },
-        "info": {
-          "$ref": "#/definitions/Info"
-        },
-        "user": {
-          "$ref": "#/definitions/User"
+      },
+      "Psp": {
+        "required": [
+          "brokerName",
+          "businessName",
+          "idChannel",
+          "idPsp"
+        ],
+        "type": "object",
+        "properties": {
+          "idPsp": {
+            "type": "string"
+          },
+          "idChannel": {
+            "type": "string"
+          },
+          "businessName": {
+            "type": "string"
+          },
+          "brokerName": {
+            "type": "string"
+          },
+          "pspOnUs": {
+            "type": "boolean"
+          }
         }
-      }
-    },
-    "Transaction": {
-      "type": "object",
-      "required": [
-        "transactionId",
-        "transactionStatus",
-        "creationDate"
-      ],
-      "properties": {
-        "transactionId": {
-          "type": "string"
-        },
-        "grandTotal": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1000000000,
-          "example": "20.10"
-        },
-        "amount": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1000000000,
-          "example": "20.10"
-        },
-        "fee": {
-          "type": "number",
-          "description": "commission amount and  required with outcomePaymentGateway not null",
-          "minimum": 0,
-          "maximum": 1000000000,
-          "example": "10.00"
-        },
-        "transactionStatus": {
-          "type": "string"
-        },
-        "authorizationCode": {
-          "description": "only for xpay authorizations",
-          "type": "string"
-        },
-        "rrn": {
-          "description": "only for vpos authorizations",
-          "type": "string"
-        },
-        "creationDate": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2022-02-22T14:41:58.811+01:00"
-        },
-        "psp": {
-          "$ref": "#/definitions/Psp"
-        },
-        "errorCode": {
-          "type": "string"
-        },
-        "timestampOperation": {
-          "type": "string"
-        },
-        "paymentGateway": {
-          "type": "string"
+      },
+      "Info": {
+        "required": [
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "ecommerce payment method"
+          },
+          "brandLogo": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "paymentMethodName": {
+            "type": "string"
+          },
+          "clientId": {
+            "type": "string"
+          }
         }
-      }
-    },
-    "Psp": {
-      "type": "object",
-      "required": [
-        "idPsp",
-        "idChannel",
-        "businessName",
-        "brokerName"
-      ],
-      "properties": {
-        "idPsp": {
-          "type": "string"
-        },
-        "idChannel": {
-          "type": "string"
-        },
-        "businessName": {
-          "type": "string"
-        },
-        "brokerName": {
-          "type": "string"
-        },
-        "pspOnUs": {
-          "type": "boolean"
-        }
-      }
-    },
-    "Info": {
-      "type": "object",
-      "required": [
-        "type"
-      ],
-      "properties": {
-        "type": {
-          "description": "ecommerce payment method",
-          "type": "string"
-        },
-        "brandLogo": {
-          "type": "string"
-        },
-        "brand": {
-          "type": "string"
-        },
-        "paymentMethodName": {
-          "type": "string"
-        },
-        "clientId": {
-          "type": "string"
-        }
-      }
-    },
-    "User": {
-      "type": "object",
-      "required": [
-        "userStatusDescription"
-      ],
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": [
-            "GUEST"
-          ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "GUEST"
+            ]
+          }
         }
       }
     }
