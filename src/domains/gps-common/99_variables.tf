@@ -62,16 +62,15 @@ variable "tags" {
   }
 }
 
-variable "gpd_archive_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
-
 variable "gpd_archive_advanced_threat_protection" {
   type        = bool
   description = "Enable contract threat advanced protection"
   default     = false
+}
+
+variable "gpd_archive_replication_type" {
+  type        = string
+  description = "Archive storage account replication type"
 }
 
 
