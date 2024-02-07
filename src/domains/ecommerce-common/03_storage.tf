@@ -110,6 +110,16 @@ resource "azurerm_storage_queue" "transactions_notifications_queue" {
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
+resource "azurerm_storage_queue" "transactions_authorization_requested_queue" {
+  name                 = "${local.project}-transaction-authorization-requested-queue"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue" "transactions_authorization_requested_retry_queue" {
+  name                 = "${local.project}-transaction-authorization-requested-retry-queue"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
 resource "azurerm_private_endpoint" "storage_deadletter_private_endpoint" {
   count = var.env_short != "d" ? 1 : 0
 
@@ -274,6 +284,20 @@ locals {
       "frequency"   = 15
       "threshold"   = 10
     },
+    {
+      "queue_key"   = "transactions-authorization-requested-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transactions-authorization-requested-retry-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    }
   ] : []
 }
 
