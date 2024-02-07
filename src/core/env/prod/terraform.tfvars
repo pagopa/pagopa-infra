@@ -96,6 +96,7 @@ apim_autoscale = {
 
 # app_gateway
 app_gateway_api_certificate_name        = "api-platform-pagopa-it"
+app_gateway_upload_certificate_name     = "upload-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
