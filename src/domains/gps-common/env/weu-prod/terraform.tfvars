@@ -149,3 +149,6 @@ gpd_sa_public_network_access_enabled                               = false
 
 gpd_sa_tier_to_archive = 7
 gpd_sa_delete          = 30
+
+# GPD Archive account
+gpd_archive_replication_type                           = "GZRS"
