@@ -546,7 +546,7 @@ module "apim_nodo_per_pm_api_v2_ndp" {
   protocols    = ["https"]
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_swagger.json.tpl", {
+  content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_openapi.json.tpl", {
     host = local.apim_hostname
   })
 
