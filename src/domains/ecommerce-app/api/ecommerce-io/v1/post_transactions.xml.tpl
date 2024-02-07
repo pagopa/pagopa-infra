@@ -66,7 +66,7 @@
             </choose>
             <set-variable name="ccp" value="@(Guid.NewGuid().ToString("N"))" />
             <cache-store-value key="@($"ecommerce:{context.Variables["ccp"]}-rptId")"  value="@(((string) context.Variables["rptId"]))" duration="900" caching-type="internal" />
-            <cache-store-value key="@($"ecommerce:{context.Variables["ccp"]}-amount")" value="@(((int) context.Variables["amount"]))" duration="900" caching-type="internal" /> 
+            <cache-store-value key="@($"ecommerce:{context.Variables["ccp"]}-amount")" value="@(((int) context.Variables["amount"]))" duration="900" caching-type="internal" />
             <set-body>
               @{
                 JObject pagopaProxyBody = new JObject();
@@ -88,11 +88,12 @@
             return authHeader.AsJwt()?.Claims.GetValueOrDefault("email", "");
         }" />
           <!-- Read email from JWT END-->
-            <set-body>@{ 
-              JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true); 
+            <set-body>@{
+              JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
               requestBody["orderId"] = "ORDER_ID"; //To be removed since it is mandatory for transaction request body, but it should not be
+              requestBody["correlationId"] = Guid.NewGuid().ToString();
               requestBody["email"] = (String)context.Variables["email"];
-              return requestBody.ToString(); 
+              return requestBody.ToString();
             }</set-body>
             <set-header name="X-Client-Id" exists-action="override">
               <value>IO</value>
@@ -144,7 +145,7 @@
                   }
                 </set-body>
               </otherwise>
-            </choose> 
+            </choose>
           </when>
         </choose>
     </outbound>
