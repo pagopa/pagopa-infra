@@ -192,10 +192,6 @@
             "type": "object",
             "description": "Additional payment data pertaining to Redirect-type payments",
             "properties": {
-              "tipoVersamento": {
-                "type": "string",
-                "description": "Specific Checkout Redirect gateway"
-              },
               "idTransaction": {
                 "type": "string",
                 "description": "Unique identifier for the transaction"
@@ -223,7 +219,6 @@
               }
             },
             "required": [
-              "tipoVersamento",
               "idTransaction",
               "idPSPTransaction",
               "totalAmount",
