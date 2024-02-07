@@ -461,6 +461,16 @@ variable "app_gateway_api_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
 }
+variable "app_gateway_upload_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault ( 'upload' is used for heavy payload size)"
+}
+
+variable "upload_endpoint_enabled" {
+  type        = bool
+  description = "Enable upload for heavy payload size on appgw"
+  default     = false
+}
 
 variable "app_gateway_prf_certificate_name" {
   type        = string
@@ -556,6 +566,38 @@ variable "app_gateway_allowed_paths_pagopa_onprem_only" {
     ips   = list(string)
   })
   description = "Allowed paths from pagopa onprem only"
+}
+
+variable "app_gateway_allowed_fdr_soap_action" {
+  type        = list(string)
+  description = "Allowed SOAPAction header for upload platform fqdn"
+  default     = ["nodoInviaFlussoRendicontazione", "nodoChiediFlussoRendicontazione", "nodoChiediElencoFlussiRendicontazione"]
+}
+
+# nodoInviaFlussoRendicontazione
+# https://api.<ENV>.platform.pagopa.it/nodo-auth/node-for-psp/v1
+# https://api.<ENV>.platform.pagopa.it/nodo-auth/nodo-per-psp/v1
+# https://api.<ENV>.platform.pagopa.it/nodo/nodo-per-psp/v1
+
+# nodoChiediFlussoRendicontazione && nodoChiediElencoFlussiRendicontazione
+# https://api.<ENV>.platform.pagopa.it/fdr-legacy/nodo-per-pa/v1
+# https://api.<ENV>.platform.pagopa.it/nodo/nodo-per-pa/v1
+# https://api.<ENV>.platform.pagopa.it/nodo-auth/nodo-per-pa/v1
+# https://api.<ENV>.platform.pagopa.it/nodo-auth/node-for-pa/v1
+
+variable "app_gateway_allowed_paths_upload" {
+  type        = list(string)
+  description = "Allowed paths from pagopa for upload platform fqdn"
+  default = [
+    "/upload/gpd/.*",
+    "/nodo-auth/node-for-psp/.*",
+    "/nodo-auth/nodo-per-psp/.*",
+    "/nodo/nodo-per-psp/.*",
+    "/fdr-legacy/nodo-per-pa/.*",
+    "/nodo/nodo-per-pa/.*",
+    "/nodo-auth/nodo-per-pa/.*",
+    "/nodo-auth/node-for-pa/.*",
+  "/nodo/node-for-psp/.*"]
 }
 
 # Azure DevOps Agent
