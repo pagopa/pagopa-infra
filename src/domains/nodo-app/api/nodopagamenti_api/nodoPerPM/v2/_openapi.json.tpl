@@ -253,7 +253,7 @@
           }
         }
       },
-      "ClosePaymentRequestV2": {
+      "BaseClosePaymentRequestV2": {
         "required": [
           "fee",
           "idBrokerPSP",
@@ -335,11 +335,18 @@
           },
           "transactionDetails": {
             "$ref": "#/components/schemas/TransactionDetails"
-          },
-          "additionalPaymentInformations": {
-            "$ref": "#/components/schemas/AdditionalPaymentInformations"
           }
         }
+      },
+      "ClosePaymentRequestV2": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseClosePaymentRequestV2"
+          },
+          {
+            "$ref": "#/components/schemas/AdditionalPaymentInformations"
+          }
+        ]
       },
       "TransactionDetails": {
         "required": [
