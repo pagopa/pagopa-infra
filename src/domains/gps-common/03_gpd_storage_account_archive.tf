@@ -18,19 +18,21 @@ module "gpd_archive_sa" {
   public_network_access_enabled   = true
   enable_low_availability_alert   = false
 
+  // blob section not used & not cfg
+
   tags = var.tags
 }
 
 
 ## table debt position archive storage
 resource "azurerm_storage_table" "gpd_archive_pd_table" {
-  name                 = format("%spaymentpositiontable", module.gpd_archive_sa.name)
+  name                 = "paymentpositiontable"
   storage_account_name = module.gpd_archive_sa.name
 }
 
 ## table payments options archive storage
 resource "azurerm_storage_table" "gpd_archive_po_table" {
-  name                 = format("%spaymentoptiontable", module.gpd_archive_sa.name)
+  name                 = "paymentoptiontable"
   storage_account_name = module.gpd_archive_sa.name
 }
 

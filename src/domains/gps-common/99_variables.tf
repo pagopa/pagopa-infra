@@ -324,18 +324,6 @@ variable "enable_gpd_archive_backup" {
   description = "(Optional) Enables nodo sftp storage account backup"
 }
 
-variable "gpd_archive_sa_delete_retention_days" {
-  type        = number
-  default     = 0
-  description = "(Optional) nodo sftp storage delete retention"
-}
-
-variable "gpd_archive_sa_backup_retention_days" {
-  type        = number
-  default     = 0
-  description = "(Optional) nodo sftp storage backup retention"
-}
-
 variable "reporting_storage_account" {
   type = object({
     advanced_threat_protection = bool
