@@ -126,110 +126,84 @@
       },
       "CardAdditionalPaymentInformations": {
         "type": "object",
-        "properties": {
-          "paymentMethod": {
-            "type": "string",
-            "description": "Fixed value \"CP\""
-          },
-          "additionalPaymentInformations": {
-            "type": "object",
-            "required": [
-              "outcomePaymentGateway",
-              "fee",
-              "totalAmount",
-              "timestampOperation"
-            ],
-            "properties": {
-              "outcomePaymentGateway": {
-                "type": "string",
-                "enum": [
-                  "OK",
-                  "KO"
-                ]
-              },
-              "fee": {
-                "type": "string",
-                "description": "commision amount, converted in string",
-                "format": "###.##",
-                "example": "10.00"
-              },
-              "totalAmount": {
-                "type": "string",
-                "description": "sum of payment advices amount and fee, converted in string",
-                "format": "###.##",
-                "example": "10.00"
-              },
-              "timestampOperation": {
-                "type": "string",
-                "description": "timestampOperation of payment gateway converted in string with this format 'yyyy-MM-ddThh:mm:ss'",
-                "format": "yyyy-MM-ddThh:mm:ss",
-                "example": "2022-02-22T14:41:58"
-              },
-              "rrn": {
-                "type": "string",
-                "description": "Transaction identifier on the card circuit"
-              },
-              "authorizationCode": {
-                "type": "string",
-                "description": "Authorization code sent by the payment gateway, present only if `outcomePaymentGateway` is `OK`"
-              }
-            }
-          }
-        },
         "required": [
-          "paymentMethod",
-          "additionalPaymentInformations"
-        ]
+          "outcomePaymentGateway",
+          "fee",
+          "totalAmount",
+          "timestampOperation"
+        ],
+        "properties": {
+          "outcomePaymentGateway": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "fee": {
+            "type": "string",
+            "description": "commision amount, converted in string",
+            "format": "###.##",
+            "example": "10.00"
+          },
+          "totalAmount": {
+            "type": "string",
+            "description": "sum of payment advices amount and fee, converted in string",
+            "format": "###.##",
+            "example": "10.00"
+          },
+          "timestampOperation": {
+            "type": "string",
+            "description": "timestampOperation of payment gateway converted in string with this format 'yyyy-MM-ddThh:mm:ss'",
+            "format": "yyyy-MM-ddThh:mm:ss",
+            "example": "2022-02-22T14:41:58"
+          },
+          "rrn": {
+            "type": "string",
+            "description": "Transaction identifier on the card circuit"
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Authorization code sent by the payment gateway, present only if `outcomePaymentGateway` is `OK`"
+          }
+        }
       },
       "RedirectAdditionalPaymentInformations": {
         "type": "object",
+        "description": "Additional payment data pertaining to Redirect-type payments",
         "properties": {
-          "paymentMethod": {
+          "idTransaction": {
             "type": "string",
-            "description": "Redirect payment method name"
+            "description": "Unique identifier for the transaction"
           },
-          "additionalPaymentInformations": {
-            "type": "object",
-            "description": "Additional payment data pertaining to Redirect-type payments",
-            "properties": {
-              "idTransaction": {
-                "type": "string",
-                "description": "Unique identifier for the transaction"
-              },
-              "idPSPTransaction": {
-                "type": "string",
-                "description": "Unique identifier for the transaction, given by the PSP"
-              },
-              "totalAmount": {
-                "type": "number",
-                "description": "Amount paid by the user, including fee"
-              },
-              "fee": {
-                "type": "number",
-                "description": "Transaction fee"
-              },
-              "timestampOperation": {
-                "type": "string",
-                "format": "date-time",
-                "description": "Transaction timestamp"
-              },
-              "authorizationCode": {
-                "type": "string",
-                "description": "Authorization identifier, present only in case of successful authorization"
-              }
-            },
-            "required": [
-              "idTransaction",
-              "idPSPTransaction",
-              "totalAmount",
-              "fee",
-              "timestampOperation"
-            ]
+          "idPSPTransaction": {
+            "type": "string",
+            "description": "Unique identifier for the transaction, given by the PSP"
+          },
+          "totalAmount": {
+            "type": "number",
+            "description": "Amount paid by the user, including fee"
+          },
+          "fee": {
+            "type": "number",
+            "description": "Transaction fee"
+          },
+          "timestampOperation": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Transaction timestamp"
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Authorization identifier, present only in case of successful authorization"
           }
         },
         "required": [
-          "paymentMethod",
-          "additionalPaymentInformations"
+          "idTransaction",
+          "idPSPTransaction",
+          "totalAmount",
+          "fee",
+          "timestampOperation"
         ]
       },
       "AdditionalPaymentInformations": {
@@ -240,20 +214,9 @@
           {
             "$ref": "#/components/schemas/RedirectAdditionalPaymentInformations"
           }
-        ],
-        "discriminator": {
-          "propertyName": "paymentMethod",
-          "mapping": {
-            "CP": "#/components/schemas/CardAdditionalPaymentInformations",
-            "RBPR": "#/components/schemas/RedirectAdditionalPaymentInformations",
-            "RBPB": "#/components/schemas/RedirectAdditionalPaymentInformations",
-            "RBPP": "#/components/schemas/RedirectAdditionalPaymentInformations",
-            "RPIC": "#/components/schemas/RedirectAdditionalPaymentInformations",
-            "RBPS": "#/components/schemas/RedirectAdditionalPaymentInformations"
-          }
-        }
+        ]
       },
-      "BaseClosePaymentRequestV2": {
+      "ClosePaymentRequestV2": {
         "required": [
           "fee",
           "idBrokerPSP",
@@ -306,7 +269,7 @@
           "paymentMethod": {
             "minLength": 1,
             "type": "string",
-            "description": "required only for outcomePaymentGateway OK"
+            "description": "Payment method used in this transaction, required only for outcomePaymentGateway OK"
           },
           "transactionId": {
             "maxLength": 255,
@@ -335,18 +298,11 @@
           },
           "transactionDetails": {
             "$ref": "#/components/schemas/TransactionDetails"
-          }
-        }
-      },
-      "ClosePaymentRequestV2": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/BaseClosePaymentRequestV2"
           },
-          {
+          "additionalPaymentInformations": {
             "$ref": "#/components/schemas/AdditionalPaymentInformations"
           }
-        ]
+        }
       },
       "TransactionDetails": {
         "required": [
