@@ -102,15 +102,6 @@ resource "azurerm_key_vault_secret" "storage_reporting_connection_string" {
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "storage_connection_string" {
-  name         = format("gpd-payments-%s-sa-connection-string", var.env_short)
-  value        = module.payments_receipt_sa.primary_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "payments_cosmos_connection_string" {
   name         = format("gpd-payments-%s-cosmos-connection-string", var.env_short)
   value        = module.gpd_payments_cosmosdb_account.connection_strings[4]
@@ -123,7 +114,7 @@ resource "azurerm_key_vault_secret" "payments_cosmos_connection_string" {
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "gpd_reporting_batch_connection_string" {
   name         = format("gpd-%s-reporting-batch-connection-string", var.env_short)
-  value        = module.payments_receipt_sa.primary_connection_string
+  value        = module.flows.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -401,11 +392,6 @@ resource "azurerm_key_vault_secret" "db_url" {
 
   key_vault_id = module.key_vault.id
 
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 ## GPD-Upload secrets START ##
@@ -432,11 +418,6 @@ resource "azurerm_key_vault_secret" "gpd_upload_sa_connection_string" {
 
   key_vault_id = module.key_vault.id
 
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 resource "azurerm_key_vault_secret" "gpd_upload_db_key" {
@@ -446,12 +427,19 @@ resource "azurerm_key_vault_secret" "gpd_upload_db_key" {
 
   key_vault_id = module.key_vault.id
 
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 ## GPD-Upload secrets END ##
+
+
+## GDP archive sa conn-string
+
+resource "azurerm_key_vault_secret" "gpd_archive_sa_connection_string" {
+  name         = "gpd-archive-${var.env_short}-sa-connection-string"
+  value        = module.gpd_archive_sa.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+}
 

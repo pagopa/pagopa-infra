@@ -124,3 +124,5 @@ gpd_sa_public_network_access_enabled                               = true
 gpd_sa_tier_to_archive = 1
 gpd_sa_delete          = 2
 
+# GPD Archive account
+gpd_archive_replication_type                           = "LRS"

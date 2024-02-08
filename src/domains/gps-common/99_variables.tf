@@ -62,16 +62,15 @@ variable "tags" {
   }
 }
 
-variable "gpd_payments_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
-
-variable "gpd_payments_advanced_threat_protection" {
+variable "gpd_archive_advanced_threat_protection" {
   type        = bool
   description = "Enable contract threat advanced protection"
   default     = false
+}
+
+variable "gpd_archive_replication_type" {
+  type        = string
+  description = "Archive storage account replication type"
 }
 
 
@@ -319,22 +318,10 @@ variable "flow_storage_account_replication_type" {
   description = "(Optional) Reporting storage acocunt replication type"
 }
 
-variable "enable_gpd_payments_backup" {
+variable "enable_gpd_archive_backup" {
   type        = bool
   default     = false
   description = "(Optional) Enables nodo sftp storage account backup"
-}
-
-variable "gpd_payments_sa_delete_retention_days" {
-  type        = number
-  default     = 0
-  description = "(Optional) nodo sftp storage delete retention"
-}
-
-variable "gpd_payments_sa_backup_retention_days" {
-  type        = number
-  default     = 0
-  description = "(Optional) nodo sftp storage backup retention"
 }
 
 variable "reporting_storage_account" {
