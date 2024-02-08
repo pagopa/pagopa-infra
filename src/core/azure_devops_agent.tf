@@ -28,6 +28,7 @@ module "azdoa_li_app" {
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
   source_image_name   = "pagopa-${var.env_short}-azdo-agent-ubuntu2204-image-v2"
+  vm_sku              = "Standard_B2ms"
 
   zones        = var.devops_agent_zones
   zone_balance = var.devops_agent_balance_zones
@@ -46,6 +47,7 @@ module "azdoa_li_infra" {
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
   source_image_name   = "pagopa-${var.env_short}-azdo-agent-ubuntu2204-image-v2"
+  vm_sku              = "Standard_B2ms"
 
   zones        = var.devops_agent_zones
   zone_balance = var.devops_agent_balance_zones
@@ -53,17 +55,92 @@ module "azdoa_li_infra" {
   tags = var.tags
 }
 
-# azure devops policy
-data "azuread_service_principal" "iac_principal" {
-  count        = var.enable_iac_pipeline ? 1 : 0
-  display_name = format("pagopaspa-pagoPA-iac-%s", data.azurerm_subscription.current.subscription_id)
+#
+# Load Tests
+#
+
+module "loadtest_agent_snet" {
+  count                = var.env_short != "p" ? 1 : 0
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v3.5.0"
+  name                 = "${local.project}-loadtest-agent-snet"
+  address_prefixes     = var.cidr_subnet_loadtest_agent
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  virtual_network_name = module.vnet.name
+
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage",
+  ]
 }
 
-resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
-  count        = var.enable_iac_pipeline ? 1 : 0
+module "azdoa_loadtest_li" {
+  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v4.20.0"
+  count               = var.env_short != "p" ? 1 : 0
+  name                = "${local.project}-azdoa-vmss-loadtest-li"
+  resource_group_name = azurerm_resource_group.azdo_rg[0].name
+  subnet_id           = module.azdoa_snet[0].id
+  subscription_name   = data.azurerm_subscription.current.display_name
+  subscription_id     = data.azurerm_subscription.current.subscription_id
+  location            = var.location
+  image_type          = "custom" # enables usage of "source_image_name"
+  source_image_name   = "pagopa-${var.env_short}-azdo-agent-ubuntu2204-image-v2"
+
+  zones        = var.devops_agent_zones
+  zone_balance = var.devops_agent_balance_zones
+
+  vm_sku = "Standard_D8ds_v5"
+
+  tags = var.tags
+}
+
+#
+# Policy
+#
+
+data "azurerm_user_assigned_identity" "iac_federated_azdo" {
+  for_each            = local.azdo_iac_managed_identities
+  name                = each.key
+  resource_group_name = local.azdo_managed_identity_rg_name
+}
+
+resource "azurerm_key_vault_access_policy" "azdevops_iac_managed_identities" {
+  for_each = local.azdo_iac_managed_identities
+
   key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azuread_service_principal.iac_principal[0].object_id
+  object_id    = data.azurerm_user_assigned_identity.iac_federated_azdo[each.key].principal_id
+
+  secret_permissions = ["Get", "List", "Set", ]
+
+  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
+
+  storage_permissions = []
+}
+
+
+#
+# Legacy
+#
+
+# azure devops policy
+data "azuread_service_principal" "iac_deploy_legacy" {
+  display_name = "pagopaspa-pagoPA-iac-${data.azurerm_subscription.current.subscription_id}"
+}
+
+data "azuread_service_principal" "iac_plan_legacy" {
+  display_name = "azdo-sp-plan-PAGOPA-IAC-LEGACY-${var.env}"
+}
+
+resource "azurerm_key_vault_access_policy" "azdevops_iac_legacy_policies" {
+  for_each = toset([
+    data.azuread_service_principal.iac_plan_legacy.object_id,
+    data.azuread_service_principal.iac_deploy_legacy.object_id
+  ])
+  key_vault_id = module.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = each.key
 
   secret_permissions = ["Get", "List", "Set", ]
 

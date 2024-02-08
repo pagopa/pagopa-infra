@@ -94,6 +94,7 @@ module "nodo_verifyko_to_datastore_function" {
   }
 
   storage_account_name = replace("${local.project}-vko-2-ds-fn-sa", "-", "")
+  storage_account_info = var.storage_account_info
 
   app_settings = local.function_verifyko_to_datastore_app_settings
 

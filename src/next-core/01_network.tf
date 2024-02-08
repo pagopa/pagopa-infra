@@ -1,6 +1,6 @@
 # vnet
 module "vnet_replica" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.18.0"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.50.0"
   count               = var.geo_replica_enabled ? 1 : 0
   name                = "${local.geo_replica_project}-vnet"
   location            = var.geo_replica_location
@@ -14,7 +14,7 @@ module "vnet_replica" {
 
 ## Peering between the vnet(main) and replica vnet
 module "vnet_peering" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.33.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.50.0"
   count  = var.geo_replica_enabled ? 1 : 0
 
   source_resource_group_name       = data.azurerm_resource_group.rg_vnet_core.name

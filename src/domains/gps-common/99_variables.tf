@@ -62,16 +62,15 @@ variable "tags" {
   }
 }
 
-variable "gpd_payments_versioning" {
-  type        = bool
-  description = "Enable sa versioning"
-  default     = false
-}
-
-variable "gpd_payments_advanced_threat_protection" {
+variable "gpd_archive_advanced_threat_protection" {
   type        = bool
   description = "Enable contract threat advanced protection"
   default     = false
+}
+
+variable "gpd_archive_replication_type" {
+  type        = string
+  description = "Archive storage account replication type"
 }
 
 
@@ -307,7 +306,6 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
-
 variable "storage_account_replication_type" {
   type        = string
   default     = "LRS"
@@ -320,22 +318,10 @@ variable "flow_storage_account_replication_type" {
   description = "(Optional) Reporting storage acocunt replication type"
 }
 
-variable "enable_gpd_payments_backup" {
+variable "enable_gpd_archive_backup" {
   type        = bool
   default     = false
   description = "(Optional) Enables nodo sftp storage account backup"
-}
-
-variable "gpd_payments_sa_delete_retention_days" {
-  type        = number
-  default     = 0
-  description = "(Optional) nodo sftp storage delete retention"
-}
-
-variable "gpd_payments_sa_backup_retention_days" {
-  type        = number
-  default     = 0
-  description = "(Optional) nodo sftp storage backup retention"
 }
 
 variable "reporting_storage_account" {
@@ -355,13 +341,61 @@ variable "reporting_storage_account" {
   }
 }
 
+variable "gpd_account_replication_type" {
+  type        = string
+  description = "Defines the type of replication to use for this storage account. Valid options are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS. Changing this forces a new resource to be created when types LRS, GRS and RAGRS are changed to ZRS, GZRS or RAGZRS and vice versa"
+}
+
+variable "gpd_disable_network_rules" {
+  type        = bool
+  description = "If false, allow any connection from outside the vnet"
+  default     = false
+}
+
+variable "gpd_ip_rules" {
+  type        = list(string)
+  description = "List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed"
+  default     = []
+}
+
+variable "gpd_enable_private_endpoint" {
+  type        = bool
+  description = "If true, create a private endpoint for the GPD storage account"
+  default     = false
+}
+
+variable "storage_account_snet_private_link_service_network_policies_enabled" {
+  type        = bool
+  description = "If true, create a private link service"
+  default     = true
+}
+
+variable "cidr_subnet_gpd_storage_account" {
+  type        = list(string)
+  description = "Storage account network address space."
+}
+
+variable "gpd_sa_tier_to_archive" {
+  type        = number
+  description = "Number of days after which the blob is moved to archive"
+}
+
+variable "gpd_sa_delete" {
+  type        = number
+  description = "Number of days after which the blob is deleted"
+}
+
+variable "gpd_sa_public_network_access_enabled" {
+  type        = bool
+  description = "True if public network access is enabled. It should always set to false unless there are special needs"
+  default     = false
+}
 
 variable "geo_replica_enabled" {
   type        = bool
   description = "(Optional) True if geo replica should be active for key data components i.e. PostgreSQL Flexible servers"
   default     = false
 }
-
 
 variable "geo_replica_cidr_subnet_postgresql" {
   type        = list(string)

@@ -96,6 +96,7 @@ apim_autoscale = {
 
 # app_gateway
 app_gateway_api_certificate_name        = "api-platform-pagopa-it"
+app_gateway_upload_certificate_name     = "upload-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
@@ -603,6 +604,72 @@ eventhubs_02 = [
       },
       {
         name   = "pagopa-qi-alert-rx-debug"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "quality-improvement-psp-kpi"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-qi-psp-kpi-rx", "pagopa-qi-psp-kpi-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-qi-psp-kpi-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-psp-kpi-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-psp-kpi-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-cache"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["nodo-dei-pagamenti-cache-sync-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-cache-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-cache-sync-rx" # node-cfg-sync
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-stand-in"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["nodo-dei-pagamenti-stand-in-sync-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-stand-in-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-stand-in-sync-rx" # node-cfg-sync
         listen = true
         send   = false
         manage = false

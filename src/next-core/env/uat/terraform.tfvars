@@ -31,6 +31,8 @@ dns_zone_internal_prefix = "internal.uat.platform"
 # CIRDs
 #
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
+cidr_subnet_tools_cae            = ["10.1.248.0/23"]
+
 
 dns_forwarder_backup_is_enabled = true
 
@@ -43,3 +45,10 @@ dns_forwarder_vm_image_name = "pagopa-u-dns-forwarder-ubuntu2204-image-v4"
 #
 geo_replica_enabled          = false
 postgres_private_dns_enabled = true
+
+#
+# Feature Flags
+#
+enabled_resource = {
+  container_app_tools_cae = true
+}

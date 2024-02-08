@@ -15,6 +15,9 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+### Network
+cidr_subnet_tools_cae = ["10.1.248.0/23"]
+
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
@@ -33,10 +36,15 @@ dns_zone_internal_prefix = "internal.dev.platform"
 
 dns_forwarder_backup_is_enabled = false
 
-
 #
 # replica settings
 #
 geo_replica_enabled          = false
 postgres_private_dns_enabled = false
 
+#
+# Feature Flags
+#
+enabled_resource = {
+  container_app_tools_cae = true
+}
