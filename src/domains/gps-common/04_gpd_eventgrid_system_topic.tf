@@ -36,4 +36,9 @@ resource "azurerm_eventgrid_system_topic_event_subscription" "storage_subscripti
       ]
     }
   }
+
+  retry_policy {
+    event_time_to_live    = 1440
+    max_delivery_attempts = 30
+  }
 }
