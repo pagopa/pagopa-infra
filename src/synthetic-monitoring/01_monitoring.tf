@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "synthetic_rg" {
 module "monitoring_function" {
   depends_on = [azurerm_resource_group.synthetic_rg]
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//monitoring_function?ref=v7.52.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//monitoring_function?ref=v7.53.0"
 
   location            = var.location
   prefix              = "${local.product}-${var.location_short}"
@@ -36,7 +36,9 @@ module "monitoring_function" {
 
   tags = var.tags
 
-  self_alert_enabled = false
+  self_alert_configuration = {
+    enabled = false
+  }
   monitoring_configuration_encoded = jsonencode([
     {
       "apiName" : "api-uat-pagopa",
@@ -50,7 +52,9 @@ module "monitoring_function" {
         "description" : "pagopa uat context root"
       },
       "durationLimit" : 10000,
-      "alertEnabled" : false
+      "alertConfiguration" : {
+        "enabled" : false
+      }
     }
   ])
 }
