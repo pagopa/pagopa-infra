@@ -336,6 +336,27 @@ variable "cidr_subnet_appgateway_integration" {
   default     = null
 }
 
+variable "app_gateway_api_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "app_gateway_min_capacity" {
+  type    = number
+  default = 0
+}
+
+variable "app_gateway_max_capacity" {
+  type    = number
+  default = 2
+}
+
+variable "app_gateway_alerts_enabled" {
+  type        = bool
+  description = "Enable alerts"
+  default     = true
+}
+
 #
 # Event hub
 #

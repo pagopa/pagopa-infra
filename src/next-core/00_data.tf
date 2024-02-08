@@ -11,3 +11,7 @@ data "azurerm_subnet" "eventhub_snet" {
 data "azurerm_resource_group" "rg_vnet" {
   name     = format("%s-vnet-rg", local.product)
 }
+
+data "azurerm_resource_group" "sec_rg" {
+  name     = format("%s-sec-rg", local.product)
+}

@@ -147,6 +147,8 @@ redis_cache_params = {
   family        = "P"
 }
 
+app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
+
 #
 # Feature Flags
 #

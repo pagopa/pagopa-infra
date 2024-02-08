@@ -127,6 +127,8 @@ apim_v2_sku            = "Developer_1"
 apim_v2_alerts_enabled = false
 dns_zone_prefix   = "dev.platform"
 
+app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
+
 
 
 ehns_metric_alerts = {

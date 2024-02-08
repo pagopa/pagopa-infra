@@ -125,6 +125,7 @@ apim_v2_publisher_name = "pagoPA Platform UAT"
 apim_v2_sku            = "Developer_1"
 apim_v2_alerts_enabled = false
 dns_zone_prefix   = "uat.platform"
+app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
 
 #
 # Feature Flags

@@ -21,6 +21,7 @@ locals {
   vnet_integration_resource_group_name = "${local.product}-vnet-rg"
 
   dns_forwarder_backup_name = "${local.product}-dns-forwarder-backup-vmss"
+  integration_appgateway_private_ip = ["10.230.10.200"]
 
   msg_resource_group_name = "${local.product}-msg-rg"
 

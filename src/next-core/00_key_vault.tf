@@ -30,3 +30,8 @@ data "azurerm_key_vault_secret" "apim_publisher_email" {
   name         = "apim-publisher-email"
   key_vault_id = data.azurerm_key_vault.kv_core.id
 }
+
+ data "azurerm_key_vault_certificate" "app_gw_platform" {
+  name         = var.app_gateway_api_certificate_name
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
