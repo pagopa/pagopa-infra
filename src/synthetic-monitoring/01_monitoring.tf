@@ -17,7 +17,7 @@ module "monitoring_function" {
   application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id]
 
   docker_settings = {
-    image_tag = "v1.2.0"
+    image_tag = "v1.3.0@sha256:2b5509e0e51bd92b10e0e3b5d5075f2f3351ac145fd6242249ae4d29b4b9d5b4"
   }
 
   job_settings = {
@@ -39,17 +39,17 @@ module "monitoring_function" {
   self_alert_enabled = false
   monitoring_configuration_encoded = jsonencode([
     {
-      "apiName" : "aks_ingress",
-      "appName" : "microservice",
-      "url" : "https://dev01.blueprint.internal.devopslab.pagopa.it/blueprint/v5-java-helm-complete-test/",
-      "type" : "private",
+      "apiName" : "api-uat-pagopa",
+      "appName" : "root",
+      "url" : "https://api.uat.platform.pagopa.it/",
+      "type" : "public",
       "checkCertificate" : true,
       "method" : "GET",
-      "expectedCodes" : ["200-299", "303"],
+      "expectedCodes" : ["200"],
       "tags" : {
-        "description" : "AKS ingress tested from internal network"
+        "description" : "pagopa uat context root"
       },
-      "durationLimit" : 1000,
+      "durationLimit" : 10000,
       "alertEnabled" : false
     }
   ])
