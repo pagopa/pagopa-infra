@@ -1,10 +1,9 @@
 <policies>
     <inbound>
         <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
-        <set-variable name="calculatorCartRequestPathKey" value="@("/multi")" />
         <choose>
           <when condition="@(((string)context.Request.Method).Equals("POST"))">
-            <rewrite-uri template="@(((string)context.Variables["requestPath"]) + ((string)context.Variables["calculatorCartRequestPathKey"]))" copy-unmatched-params="true" />
+            <rewrite-uri template="@((string)context.Variables["requestPath"]+"/multi")" copy-unmatched-params="true" />
           </when>
         </choose>
       <base />
