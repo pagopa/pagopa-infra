@@ -1,10 +1,8 @@
-resource "azurerm_resource_group" "synthetic_rg" {
-  location = var.location
-  name     = "${local.project}-rg"
-}
+
 
 module "monitoring_function" {
-  depends_on = [azurerm_resource_group.synthetic_rg]
+
+  depends_on = [azurerm_application_insights.application_insights]
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//monitoring_function?ref=v7.53.0"
 
@@ -12,12 +10,12 @@ module "monitoring_function" {
   prefix              = "${local.product}-${var.location_short}"
   resource_group_name = azurerm_resource_group.synthetic_rg.name
 
-  application_insight_name              = data.azurerm_application_insights.application_insights.name
-  application_insight_rg_name           = data.azurerm_application_insights.application_insights.resource_group_name
+  application_insight_name              = azurerm_application_insights.application_insights.name
+  application_insight_rg_name           = azurerm_application_insights.application_insights.resource_group_name
   application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id]
 
   docker_settings = {
-    image_tag = "v1.3.0@sha256:2b5509e0e51bd92b10e0e3b5d5075f2f3351ac145fd6242249ae4d29b4b9d5b4"
+    image_tag = "v1.5.0@sha256:13990c56c815c9ab8e1a333c87e67f48edf3be46750caba37a6830af8c464192"
   }
 
   job_settings = {
@@ -39,22 +37,5 @@ module "monitoring_function" {
   self_alert_configuration = {
     enabled = false
   }
-  monitoring_configuration_encoded = jsonencode([
-    {
-      "apiName" : "api-uat-pagopa",
-      "appName" : "root",
-      "url" : "https://api.uat.platform.pagopa.it/",
-      "type" : "public",
-      "checkCertificate" : true,
-      "method" : "GET",
-      "expectedCodes" : ["200"],
-      "tags" : {
-        "description" : "pagopa uat context root"
-      },
-      "durationLimit" : 10000,
-      "alertConfiguration" : {
-        "enabled" : false
-      }
-    }
-  ])
+  monitoring_configuration_encoded = file("./monitoring_configuration.json")
 }

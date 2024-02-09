@@ -20,3 +20,9 @@ use_private_endpoint             = false
 enabled_resource = {
   container_app_tools_cae = true
 }
+
+
+# monitoring
+law_sku               = "PerGB2018"
+law_retention_in_days = 30
+law_daily_quota_gb    = 10
