@@ -41,4 +41,6 @@ resource "azurerm_eventgrid_system_topic_event_subscription" "storage_subscripti
     event_time_to_live    = 1440
     max_delivery_attempts = 30
   }
+
+  depends_on = [azurerm_eventgrid_system_topic.storage_topic, azurerm_storage_queue.gpd_blob_events_queue, azurerm_storage_queue.gpd_valid_positions_queue]
 }
