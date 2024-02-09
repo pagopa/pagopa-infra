@@ -44,7 +44,7 @@ module "app_gw_integration" {
   # Networking
   subnet_id          = module.integration_appgateway_snet.id
   public_ip_id       = azurerm_public_ip.integration_appgateway_public_ip.id
-  private_ip_address = local.integration_appgateway_private_ip
+  private_ip_address = [var.integration_appgateway_private_ip]
   zones              = [1, 2, 3]
 
   # Configure backends
@@ -94,15 +94,49 @@ module "app_gw_integration" {
       protocol           = "Https"
       host               = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.product_region)
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
       firewall_policy_id = null
-      type               = "Private"
 
       certificate = {
         name = var.app_gateway_api_certificate_name
-        id = trimsuffix(
+        id = replace(
           data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
-          data.azurerm_key_vault_certificate.app_gw_platform.version
+          "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
+          ""
+        )
+      }
+    }
+
+    portal = {
+      protocol           = "Https"
+      host               = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_portal_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.portal_platform.secret_id,
+          "/${data.azurerm_key_vault_certificate.portal_platform.version}",
+          ""
+        )
+      }
+    }
+
+    management = {
+      protocol           = "Https"
+      host               = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_management_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.management_platform.secret_id,
+          "/${data.azurerm_key_vault_certificate.management_platform.version}",
+          ""
         )
       }
     }

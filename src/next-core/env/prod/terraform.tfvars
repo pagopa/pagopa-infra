@@ -147,7 +147,14 @@ redis_cache_params = {
   family        = "P"
 }
 
-app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
+
+app_gateway_sku_name = "Standard_v2"
+app_gateway_sku_tier = "Standard_v2"
+cidr_subnet_appgateway_integration = ["10.230.10.192/27"]
+integration_appgateway_private_ip = "10.230.10.200"
+app_gateway_api_certificate_name        = "api-platform-pagopa-it"
+app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
+app_gateway_management_certificate_name = "management-platform-pagopa-it"
 
 #
 # Feature Flags

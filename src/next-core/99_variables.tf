@@ -357,6 +357,21 @@ variable "app_gateway_alerts_enabled" {
   default     = true
 }
 
+variable "app_gateway_portal_certificate_name" {
+  type        = string
+  description = "Application gateway developer portal certificate name on Key Vault"
+}
+
+variable "app_gateway_management_certificate_name" {
+  type        = string
+  description = "Application gateway api management certificate name on Key Vault"
+}
+
+variable "integration_appgateway_private_ip" {
+  type = string
+  description = "Integration app gateway private ip"
+}
+
 #
 # Event hub
 #
