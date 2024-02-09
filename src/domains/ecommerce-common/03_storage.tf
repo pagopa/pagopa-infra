@@ -109,6 +109,56 @@ resource "azurerm_storage_queue" "transactions_notifications_queue" {
   name                 = "${local.project}-transaction-notifications-queue"
   storage_account_name = module.ecommerce_storage_transient.name
 }
+//storage queue for blue deployment
+resource "azurerm_storage_queue_blue" "notifications_service_retry_queue_blue" {
+  count                = var.env_short != "u" ? 1 : 0
+  name                 = "${local.project}-notifications-service-retry-queue-blue"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue_blue" "transactions_expiration_queue_blue" {
+  count                = var.env_short != "u" ? 1 : 0
+  name                 = "${local.project}-transactions-expiration-queue-blue"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue_blue" "transactions_close_payment_queue_blue" {
+  count                = var.env_short != "u" ? 1 : 0
+  name                 = "${local.project}-transactions-close-payment-queue-blue"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue_blue" "transactions_close_payment_retry_queue_blue" {
+  count                = var.env_short != "u" ? 1 : 0
+  name                 = "${local.project}-transactions-close-payment-retry-queue-blue"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue_blue" "transactions_refund_retry_queue_blue" {
+  count                = var.env_short != "u" ? 1 : 0
+  name                 = "${local.project}-transactions-refund-retry-queue-blue"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue_blue" "transactions_refund_queue_blue" {
+  count                = var.env_short != "u" ? 1 : 0
+  name                 = "${local.project}-transactions-refund-queue-blue"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue_blue" "transactions_notifications_retry_queue_blue" {
+  count                = var.env_short != "u" ? 1 : 0
+  name                 = "${local.project}-transaction-notifications-retry-queue-blue"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue_blue" "transactions_notifications_queue_blue" {
+  count                = var.env_short != "u" ? 1 : 0
+  name                 = "${local.project}-transaction-notifications-queue-blue"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+
 
 resource "azurerm_private_endpoint" "storage_deadletter_private_endpoint" {
   count = var.env_short != "d" ? 1 : 0
@@ -168,6 +218,19 @@ resource "azurerm_storage_queue" "transactions_dead_letter_queue" {
 
 resource "azurerm_storage_queue" "notifications_service_errors_queue" {
   name                 = "${local.project}-notifications-service-errors-queue"
+  storage_account_name = module.ecommerce_storage_deadletter.name
+}
+
+//dead letter queues for blue deployment
+resource "azurerm_storage_queue_blue" "transactions_dead_letter_queue_blue" {
+  count                = var.env_short != "u" ? 1 : 0
+  name                 = "${local.project}-transactions-dead-letter-queue-blue"
+  storage_account_name = module.ecommerce_storage_deadletter.name
+}
+
+resource "azurerm_storage_queue_blue" "notifications_service_errors_queue_blue" {
+  count                = var.env_short != "u" ? 1 : 0
+  name                 = "${local.project}-notifications-service-errors-queue-blue"
   storage_account_name = module.ecommerce_storage_deadletter.name
 }
 
