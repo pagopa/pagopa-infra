@@ -74,3 +74,13 @@ resource "azurerm_storage_management_policy" "gpd_sa_lifecycle_policy" {
     }
   }
 }
+
+resource "azurerm_storage_queue" "gpd_blob_events_queue" {
+  name                 = "gpd-blob-events-queue"
+  storage_account_name = module.gpd_sa_sftp.name
+}
+
+resource "azurerm_storage_queue" "gpd_valid_positions_queue" {
+  name                 = "gpd-valid-debt-position-queue"
+  storage_account_name = module.gpd_sa_sftp.name
+}
