@@ -38,8 +38,8 @@ locals {
       metric_name      = "cpuUsagePercentage"
       operator         = "GreaterThan"
       threshold        = 80
-      frequency        = "PT5M"
-      window_size      = "PT30M"
+      frequency        = "PT15M"
+      window_size      = "PT1H"
       dimension = [
         {
           name     = "host"
@@ -54,8 +54,8 @@ locals {
       metric_name      = "memoryWorkingSetPercentage"
       operator         = "GreaterThan"
       threshold        = 80
-      frequency        = "PT5M"
-      window_size      = "PT30M"
+      frequency        = "PT15M"
+      window_size      = "PT1H"
       dimension = [
         {
           name     = "host"
@@ -70,8 +70,8 @@ locals {
       metric_name      = "DiskUsedPercentage"
       operator         = "GreaterThan"
       threshold        = 80
-      frequency        = "PT5M"
-      window_size      = "PT30M"
+      frequency        = "PT15M"
+      window_size      = "PT1H"
       dimension = [
         {
           name     = "host"
@@ -91,8 +91,8 @@ locals {
       metric_name      = "nodesCount"
       operator         = "GreaterThan"
       threshold        = 0
-      frequency        = "PT5M"
-      window_size      = "PT30M"
+      frequency        = "PT15M"
+      window_size      = "PT1H"
       dimension = [
         {
           name     = "status"
@@ -107,8 +107,8 @@ locals {
       metric_name      = "podCount"
       operator         = "GreaterThan"
       threshold        = 0
-      frequency        = "PT5M"
-      window_size      = "PT30M"
+      frequency        = "PT15M"
+      window_size      = "PT1H"
       dimension = [
         {
           name     = "phase"
@@ -123,18 +123,30 @@ locals {
       metric_name      = "PodReadyPercentage"
       operator         = "LessThan"
       threshold        = 80
-      frequency        = "PT5M"
-      window_size      = "PT30M"
+      frequency        = "PT15M"
+      window_size      = "PT1H"
       dimension = [
         {
-          name     = "kubernetes namespace"
+          name     = "Kubernetes namespace"
           operator = "Include"
-          values   = ["*"]
-        },
-        {
-          name     = "controllerName"
-          operator = "Include"
-          values   = ["*"]
+          values   = [
+                "aca",
+                "afm",
+                "apiconfig",
+                "bizevents",
+                "ecommerce",
+                "elastic-system",
+                "fdr",
+                "gps",
+                "mock",
+                "nodo",
+                "nodo-cron",
+                "qi",
+                "receipts",
+                "selfcare",
+                "shared",
+                "wallet",
+              ]
         }
       ]
     }
@@ -144,19 +156,31 @@ locals {
       metric_name      = "cpuExceededPercentage"
       operator         = "GreaterThan"
       threshold        = 95
-      frequency        = "PT5M"
-      window_size      = "PT30M"
+      frequency        = "PT15M"
+      window_size      = "PT1H"
       dimension = [
         {
-          name     = "kubernetes namespace"
+          name     = "Kubernetes namespace"
           operator = "Include"
-          values   = ["*"]
+          values   = [
+                "aca",
+                "afm",
+                "apiconfig",
+                "bizevents",
+                "ecommerce",
+                "elastic-system",
+                "fdr",
+                "gps",
+                "mock",
+                "nodo",
+                "nodo-cron",
+                "qi",
+                "receipts",
+                "selfcare",
+                "shared",
+                "wallet",
+              ]
         },
-        {
-          name     = "controllerName"
-          operator = "Include"
-          values   = ["*"]
-        }
       ]
     }
     container_memory = {
@@ -165,19 +189,14 @@ locals {
       metric_name      = "memoryWorkingSetExceededPercentage"
       operator         = "GreaterThan"
       threshold        = 95
-      frequency        = "PT5M"
-      window_size      = "PT30M"
+      frequency        = "PT15M"
+      window_size      = "PT1H"
       dimension = [
         {
-          name     = "kubernetes namespace"
+          name     = "Kubernetes namespace"
           operator = "Include"
           values   = ["*"]
         },
-        {
-          name     = "controllerName"
-          operator = "Include"
-          values   = ["*"]
-        }
       ]
     }
     container_oom = {
@@ -186,19 +205,14 @@ locals {
       metric_name      = "oomKilledContainerCount"
       operator         = "GreaterThan"
       threshold        = 0
-      frequency        = "PT5M"
-      window_size      = "PT30M"
+      frequency        = "PT15M"
+      window_size      = "PT1H"
       dimension = [
         {
-          name     = "kubernetes namespace"
+          name     = "Kubernetes namespace"
           operator = "Include"
           values   = ["*"]
         },
-        {
-          name     = "controllerName"
-          operator = "Include"
-          values   = ["*"]
-        }
       ]
     }
     container_restart = {
@@ -207,19 +221,14 @@ locals {
       metric_name      = "restartingContainerCount"
       operator         = "GreaterThan"
       threshold        = 0
-      frequency        = "PT5M"
-      window_size      = "PT30M"
+      frequency        = "PT15M"
+      window_size      = "PT1H"
       dimension = [
         {
-          name     = "kubernetes namespace"
+          name     = "Kubernetes namespace"
           operator = "Include"
           values   = ["*"]
         },
-        {
-          name     = "controllerName"
-          operator = "Include"
-          values   = ["*"]
-        }
       ]
     }
   }
