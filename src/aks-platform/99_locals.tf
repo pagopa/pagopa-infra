@@ -129,24 +129,24 @@ locals {
         {
           name     = "Kubernetes namespace"
           operator = "Include"
-          values   = [
-                "aca",
-                "afm",
-                "apiconfig",
-                "bizevents",
-                "ecommerce",
-                "elastic-system",
-                "fdr",
-                "gps",
-                "mock",
-                "nodo",
-                "nodo-cron",
-                "qi",
-                "receipts",
-                "selfcare",
-                "shared",
-                "wallet",
-              ]
+          values = [
+            "aca",
+            "afm",
+            "apiconfig",
+            "bizevents",
+            "ecommerce",
+            "elastic-system",
+            "fdr",
+            "gps",
+            "mock",
+            "nodo",
+            "nodo-cron",
+            "qi",
+            "receipts",
+            "selfcare",
+            "shared",
+            "wallet",
+          ]
         }
       ]
     }
@@ -162,24 +162,24 @@ locals {
         {
           name     = "Kubernetes namespace"
           operator = "Include"
-          values   = [
-                "aca",
-                "afm",
-                "apiconfig",
-                "bizevents",
-                "ecommerce",
-                "elastic-system",
-                "fdr",
-                "gps",
-                "mock",
-                "nodo",
-                "nodo-cron",
-                "qi",
-                "receipts",
-                "selfcare",
-                "shared",
-                "wallet",
-              ]
+          values = [
+            "aca",
+            "afm",
+            "apiconfig",
+            "bizevents",
+            "ecommerce",
+            "elastic-system",
+            "fdr",
+            "gps",
+            "mock",
+            "nodo",
+            "nodo-cron",
+            "qi",
+            "receipts",
+            "selfcare",
+            "shared",
+            "wallet",
+          ]
         },
       ]
     }
