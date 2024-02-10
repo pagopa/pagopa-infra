@@ -145,7 +145,7 @@ cidr_subnet_gpd_storage_account                                    = ["10.1.152.
 gpd_enable_private_endpoint                                        = true
 gpd_disable_network_rules                                          = true
 storage_account_snet_private_link_service_network_policies_enabled = false
-gpd_sa_public_network_access_enabled                               = false
+gpd_sa_public_network_access_enabled                               = true
 
 gpd_sa_tier_to_archive = 7
 gpd_sa_delete          = 30
