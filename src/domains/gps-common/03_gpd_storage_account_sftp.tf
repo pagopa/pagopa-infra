@@ -67,7 +67,7 @@ resource "azurerm_storage_management_policy" "gpd_sa_lifecycle_policy" {
     }
     actions {
       base_blob {
-        tier_to_archive_after_days_since_modification_greater_than = var.gpd_sftp_sa_tier_to_archive
+        tier_to_archive_after_days_since_modification_greater_than = var.env_short == "p" ? null : var.gpd_sftp_sa_tier_to_archive // GZRS not allow
         tier_to_cool_after_days_since_modification_greater_than    = var.gpd_sftp_sa_tier_to_cool
         delete_after_days_since_modification_greater_than          = var.gpd_sftp_sa_delete
       }
