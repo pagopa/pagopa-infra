@@ -1,6 +1,15 @@
-# only manual
-trigger: none
-pr: none
+pr:
+  autoCancel: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - 'src/domains/wallet-app'
+      - 'src/domains/wallet-common'
+    exclude:
+      - '**/*.lock.hcl'
+      - '**/*.md'
 
 parameters:
   - name: 'DEV'
@@ -26,22 +35,16 @@ parameters:
       - True
 
 variables:
-  TIME_OUT: 10
+  TIME_OUT: 15
   # working dir
   WORKING_DIR_APP: 'src/domains/wallet-app'
   WORKING_DIR_COMMON: 'src/domains/wallet-common'
-  DOMAIN_NAME: wallet
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
   poolNameProd: '$(TF_POOL_NAME_PROD)'
-  #PLAN
   azureServiceConnectionPlanNameDev: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
   azureServiceConnectionPlanNameUat: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
   azureServiceConnectionPlanNameProd: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
-  #APPLY
-  azureServiceConnectionApplyNameDev: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
-  azureServiceConnectionApplyNameUat: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
-  azureServiceConnectionApplyNameProd: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
   githubEndpointName: '$(TF_GITHUB_SERVICE_ENDPOINT_NAME)'
 
   DEV_AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
@@ -71,82 +74,131 @@ resources:
       endpoint: "io-azure-devops-github-ro"
 
 stages:
-#DEV
-  - ${{ if eq(parameters['DEV'], true) }}:
-    #APP
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
-        TF_ENVIRONMENT_FOLDER: "weu-dev"
-        ENVIRONMENT: "DEV"
-        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameDev}}"
-        WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
-        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
-        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameDev}}"
-        AKS_NAME: ${{ variables.AKS_DEV_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
-    #COMMON
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
-        TF_ENVIRONMENT_FOLDER: "weu-dev"
-        ENVIRONMENT: "DEV"
-        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameDev}}"
-        WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
-        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
-        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameDev}}"
-#UAT
-  - ${{ if eq(parameters['UAT'], true) }}:
-    #APP
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
-        TF_ENVIRONMENT_FOLDER: "weu-uat"
-        ENVIRONMENT: "UAT"
-        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
-        WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
-        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
-        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameUat}}"
-        AKS_NAME: ${{ variables.AKS_UAT_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
-    #COMMON
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
-        TF_ENVIRONMENT_FOLDER: "weu-uat"
-        ENVIRONMENT: "UAT"
-        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
-        WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
-        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
-        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameUat}}"
+  - stage: DEV
+    dependsOn: []
+    condition: and(succeeded(), eq(${{parameters.DEV}}, true))
+    pool:
+      name: "${{variables.poolNameDev}}"
+    jobs:
+      - job: tfplan_common
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan core
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              TF_ENVIRONMENT_FOLDER: "weu-dev"
+              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+              TF_SUMMARIZE: true
+      - job: tfplan_app
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan core
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              TF_ENVIRONMENT_FOLDER: "weu-dev"
+              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+              TF_SUMMARIZE: true
+              AKS_NAME: ${{ variables.AKS_DEV_NAME }}
+              AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
+              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
+              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
-#PROD
-  - ${{ if eq(parameters['PROD'], true) }}:
-    #APP
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
-        TF_ENVIRONMENT_FOLDER: "weu-prod"
-        ENVIRONMENT: "PROD"
-        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameProd}}"
-        WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
-        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
-        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
-        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
-    #COMMON
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
-        TF_ENVIRONMENT_FOLDER: "weu-prod"
-        ENVIRONMENT: "PROD"
-        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameProd}}"
-        WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
-        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
-        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
+  - stage: UAT
+    dependsOn: []
+    condition: and(succeeded(), eq(${{parameters.UAT}}, true))
+    pool:
+      name: "${{variables.poolNameUat}}"
+    jobs:
+      - job: tfplan_common
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan core
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              TF_ENVIRONMENT_FOLDER: "weu-uat"
+              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+              TF_SUMMARIZE: true
+      - job: tfplan_app
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan core
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              TF_ENVIRONMENT_FOLDER: "weu-uat"
+              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+              TF_SUMMARIZE: true
+              AKS_NAME: ${{ variables.AKS_UAT_NAME }}
+              AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
+              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
+              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
+
+  - stage: PROD
+    dependsOn: []
+    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+    pool:
+      name: "${{variables.poolNameProd}}"
+    jobs:
+      - job: tfplan_common
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan core
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              TF_ENVIRONMENT_FOLDER: "weu-prod"
+              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+              TF_SUMMARIZE: true
+      - job: tfplan_app
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan core
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              TF_ENVIRONMENT_FOLDER: "weu-prod"
+              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+              TF_SUMMARIZE: true
+              AKS_NAME: ${{ variables.AKS_PROD_NAME }}
+              AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
+              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
+              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}

@@ -93,7 +93,7 @@ stages:
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-dev"
-              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
               TF_SUMMARIZE: true
       - job: tfplan_app
@@ -109,7 +109,7 @@ stages:
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-dev"
-              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
               TF_SUMMARIZE: true
               AKS_NAME: ${{ variables.AKS_DEV_NAME }}
@@ -136,7 +136,7 @@ stages:
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-uat"
-              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
               TF_SUMMARIZE: true
       - job: tfplan_app
@@ -152,7 +152,7 @@ stages:
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-uat"
-              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
               TF_SUMMARIZE: true
               AKS_NAME: ${{ variables.AKS_UAT_NAME }}
@@ -179,7 +179,7 @@ stages:
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-prod"
-              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
               TF_SUMMARIZE: true
       - job: tfplan_app
@@ -195,7 +195,7 @@ stages:
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-prod"
-              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
               TF_SUMMARIZE: true
               AKS_NAME: ${{ variables.AKS_PROD_NAME }}
