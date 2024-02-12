@@ -28,8 +28,8 @@ parameters:
 variables:
   TIME_OUT: 10
   # working dir
-  WORKING_DIR_APP: 'src/domain/gps-app'
-  WORKING_DIR_COMMON: 'src/domain/gps-common'
+  WORKING_DIR_APP: 'src/domains/gps-app'
+  WORKING_DIR_COMMON: 'src/domains/gps-common'
   DOMAIN_NAME: gps
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'

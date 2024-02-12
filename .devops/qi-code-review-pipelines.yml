@@ -37,8 +37,8 @@ parameters:
 variables:
   TIME_OUT: 15
   # working dir
-  WORKING_DIR_APP: 'src/domain/qi-app'
-  WORKING_DIR_COMMON: 'src/domain/qi-common'
+  WORKING_DIR_APP: 'src/domains/qi-app'
+  WORKING_DIR_COMMON: 'src/domains/qi-common'
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
   poolNameProd: '$(TF_POOL_NAME_PROD)'

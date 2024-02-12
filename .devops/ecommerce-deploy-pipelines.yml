@@ -28,8 +28,8 @@ parameters:
 variables:
   TIME_OUT: 10
   # working dir
-  WORKING_DIR_APP: 'src/domain/ecommerce-app'
-  WORKING_DIR_COMMON: 'src/domain/ecommerce-common'
+  WORKING_DIR_APP: 'src/domains/ecommerce-app'
+  WORKING_DIR_COMMON: 'src/domains/ecommerce-common'
   DOMAIN_NAME: ecommerce
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'

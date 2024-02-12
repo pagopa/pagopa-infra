@@ -28,9 +28,9 @@ parameters:
 variables:
   TIME_OUT: 10
   # working dir
-  WORKING_DIR_APP: 'src/domain/nodo-app'
-  WORKING_DIR_COMMON: 'src/domain/nodo-common'
-  WORKING_DIR_SECRET: 'src/domain/nodo-secret'
+  WORKING_DIR_APP: 'src/domains/nodo-app'
+  WORKING_DIR_COMMON: 'src/domains/nodo-common'
+  WORKING_DIR_SECRET: 'src/domains/nodo-secret'
   DOMAIN_NAME: nodo
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'

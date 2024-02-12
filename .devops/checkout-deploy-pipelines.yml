@@ -28,8 +28,8 @@ parameters:
 variables:
   TIME_OUT: 10
   # working dir
-  WORKING_DIR_APP: 'src/domain/checkout-app'
-  WORKING_DIR_COMMON: 'src/domain/checkout-common'
+  WORKING_DIR_APP: 'src/domains/checkout-app'
+  WORKING_DIR_COMMON: 'src/domains/checkout-common'
   DOMAIN_NAME: checkout
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'

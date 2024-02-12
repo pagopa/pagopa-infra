@@ -37,8 +37,8 @@ parameters:
 variables:
   TIME_OUT: 15
   # working dir
-  WORKING_DIR_APP: 'src/domain/aca-app'
-  WORKING_DIR_COMMON: 'src/domain/aca-common'
+  WORKING_DIR_APP: 'src/domains/aca-app'
+  WORKING_DIR_COMMON: 'src/domains/aca-common'
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
   poolNameProd: '$(TF_POOL_NAME_PROD)'

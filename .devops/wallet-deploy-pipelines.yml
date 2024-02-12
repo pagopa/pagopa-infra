@@ -28,8 +28,8 @@ parameters:
 variables:
   TIME_OUT: 10
   # working dir
-  WORKING_DIR_APP: 'src/domain/wallet-app'
-  WORKING_DIR_COMMON: 'src/domain/wallet-common'
+  WORKING_DIR_APP: 'src/domains/wallet-app'
+  WORKING_DIR_COMMON: 'src/domains/wallet-common'
   DOMAIN_NAME: wallet
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
