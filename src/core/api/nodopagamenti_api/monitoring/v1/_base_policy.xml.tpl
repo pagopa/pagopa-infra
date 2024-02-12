@@ -18,6 +18,7 @@
                 <value>${allowed_ip_2}</value>
                 <value>${allowed_ip_3}</value>
                 <value>${allowed_ip_4}</value>
+                <value>${allowed_ip_5}</value>
             </check-header>
         </when>
         </choose>
