@@ -10,6 +10,18 @@
                   }" />
             </when>
         </choose>
+
+        <choose>
+        <when condition="@(context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("uat") || context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("prod"))">
+            <check-header name="X-Forwarded-For" failed-check-httpcode="403" failed-check-error-message="Unauthorized" ignore-case="true">
+                <value>${allowed_ip_1}</value>
+                <value>${allowed_ip_2}</value>
+                <value>${allowed_ip_3}</value>
+                <value>${allowed_ip_4}</value>
+            </check-header>
+        </when>
+        </choose>
+
     </inbound>
     <backend>
         <base />

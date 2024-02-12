@@ -69,6 +69,10 @@ module "apim_nodo_monitoring_api" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
-    base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    base-url     = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    allowed_ip_1 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0] # PagoPA on prem VPN
+    allowed_ip_2 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[1] # PagoPA on prem VPN DR
+    allowed_ip_3 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8] # NEXI VPN
+    allowed_ip_4 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9] # NEXI VPN
   })
 }
