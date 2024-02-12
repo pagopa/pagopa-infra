@@ -9,6 +9,7 @@ module "aks_snet" {
   service_endpoints = [
     "Microsoft.AzureCosmosDB",
     "Microsoft.EventHub",
+    "Microsoft.Storage",
   ]
 
 }

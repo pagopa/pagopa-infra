@@ -140,15 +140,16 @@ geo_replica_cidr_subnet_postgresql = ["10.2.141.0/24"]
 postgresql_sku_name                = "GP_Gen5_2"
 
 # GPD Storage Account SFTP
-gpd_account_replication_type                                       = "GRS"
-cidr_subnet_gpd_storage_account                                    = ["10.1.152.16/29"]
-gpd_enable_private_endpoint                                        = true
-gpd_disable_network_rules                                          = true
-storage_account_snet_private_link_service_network_policies_enabled = false
-gpd_sa_public_network_access_enabled                               = true
-
-gpd_sa_tier_to_archive = 7
-gpd_sa_delete          = 30
+gpd_sftp_sa_replication_type                                   = "GZRS"
+gpd_sftp_sa_access_tier                                        = "Hot"
+gpd_sftp_cidr_subnet_gpd_storage_account                       = ["10.1.152.16/29"]
+gpd_sftp_enable_private_endpoint                               = true
+gpd_sftp_disable_network_rules                                 = false
+gpd_sftp_sa_snet_private_link_service_network_policies_enabled = false
+gpd_sftp_sa_public_network_access_enabled                      = true
+gpd_sftp_sa_tier_to_cool                                       = 7
+gpd_sftp_sa_tier_to_archive                                    = -1 # disabled because with GZRS is not supported
+gpd_sftp_sa_delete                                             = 60
 
 # GPD Archive account
 gpd_archive_replication_type = "GZRS"
