@@ -24,6 +24,14 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo" {
   records             = var.dns_a_reconds_dbnodo_ips
 }
 
+resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_nexi_postgres" {
+  name                = "db-postgres-ndp"
+  zone_name           = azurerm_private_dns_zone.db_nodo_dns_zone.name
+  resource_group_name = azurerm_resource_group.data.name
+  ttl                 = 60
+  records             = var.dns_a_reconds_dbnodonexipostgres_ips
+}
+
 resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_prf" {
   count               = var.env_short == "u" ? 1 : 0
   name                = "db-nodo-pagamenti-prf"
@@ -31,6 +39,15 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_prf" {
   resource_group_name = azurerm_resource_group.data.name
   ttl                 = 60
   records             = var.dns_a_reconds_dbnodo_prf_ips
+}
+
+resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_nexi_postgres_prf" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "db-postgres-ndp-prf"
+  zone_name           = azurerm_private_dns_zone.db_nodo_dns_zone.name
+  resource_group_name = azurerm_resource_group.data.name
+  ttl                 = 60
+  records             = var.dns_a_reconds_dbnodonexipostgres_prf_ips
 }
 
 # Private dns zone: redis
@@ -158,7 +175,6 @@ resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet
   tags = var.tags
 }
 
-
 # Private DNS Zone for Postgres Databases
 
 resource "azurerm_private_dns_zone" "postgres" {
@@ -270,8 +286,6 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_blob_azure
   tags = var.tags
 }
 
-
-
 # DNS private: internal.dev.platform.pagopa.it
 
 resource "azurerm_private_dns_zone" "internal_platform_pagopa_it" {
@@ -321,6 +335,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_privatelink_mongo
 
   tags = var.tags
 }
+
 
 # Private DNS Zone for Table Storage Account
 # https://learn.microsoft.com/en-us/azure/storage/common/storage-private-endpoints?toc=%2Fazure%2Fstorage%2Fblobs%2Ftoc.json&bc=%2Fazure%2Fstorage%2Fblobs%2Fbreadcrumb%2Ftoc.json

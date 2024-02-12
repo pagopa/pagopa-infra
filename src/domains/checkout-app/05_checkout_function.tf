@@ -80,13 +80,7 @@ module "checkout_function" {
     PAY_PORTAL_RECAPTCHA_SECRET = data.azurerm_key_vault_secret.google_recaptcha_secret.value
   }
 
-  storage_account_info = {
-    account_kind                      = "StorageV2"
-    account_tier                      = "Standard"
-    account_replication_type          = "LRS"
-    access_tier                       = "Hot"
-    advanced_threat_protection_enable = true
-  }
+  storage_account_info = var.function_app_storage_account_info
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
 

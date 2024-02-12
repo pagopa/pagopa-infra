@@ -117,6 +117,7 @@ variable "pgres_flex_params" {
     pgres_flex_pgbouncer_enabled           = bool
     pgres_flex_diagnostic_settings_enabled = bool
     max_connections                        = number
+    enable_private_dns_registration        = optional(bool, false)
   })
 
 }
@@ -264,8 +265,70 @@ variable "cidr_subnet_cosmosdb_nodo_re" {
   type        = list(string)
   description = "Cosmos DB address space for nodo re."
 }
+variable "cidr_subnet_cosmosdb_nodo_verifyko" {
+  type        = list(string)
+  description = "Cosmos DB address space for nodo re."
+}
+variable "cidr_subnet_cosmosdb_standin" {
+  type        = list(string)
+  description = "Cosmos DB address space for standin."
+}
 
 variable "cosmos_nosql_db_params" {
+  type = object({
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    kind           = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+    events_ttl                        = number
+    max_throughput                    = number
+  })
+}
+
+variable "verifyko_cosmos_nosql_db_params" {
+  type = object({
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    kind           = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+    events_ttl                        = number
+    max_throughput                    = number
+  })
+}
+
+variable "standin_cosmos_nosql_db_params" {
   type = object({
     capabilities   = list(string)
     offer_type     = string
@@ -303,6 +366,8 @@ variable "nodo_re_storage_account" {
     blob_delete_retention_days    = number
     blob_versioning_enabled       = bool
     public_network_access_enabled = bool
+    backup_enabled                = bool
+    backup_retention              = optional(number, 0)
   })
   default = {
     account_kind                  = "StorageV2"
@@ -310,9 +375,27 @@ variable "nodo_re_storage_account" {
     account_replication_type      = "LRS"
     blob_versioning_enabled       = false
     advanced_threat_protection    = false
-    blob_delete_retention_days    = 3653
+    blob_delete_retention_days    = 0
     public_network_access_enabled = false
+    backup_enabled                = false
+    backup_retention              = 0
   }
+}
+
+# Nodo Verify KO store Storage Account
+
+variable "nodo_verifyko_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_delete_retention_days    = number
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    backup_enabled                = bool
+    backup_retention_days         = number
+  })
 }
 
 variable "nodo_storico_storage_account" {
@@ -323,6 +406,10 @@ variable "nodo_storico_storage_account" {
     advanced_threat_protection    = bool
     blob_versioning_enabled       = bool
     public_network_access_enabled = bool
+    backup_enabled                = bool
+    blob_delete_retention_days    = number
+    backup_retention              = optional(number, 0)
+
   })
   default = {
     account_kind                  = "StorageV2"
@@ -331,6 +418,10 @@ variable "nodo_storico_storage_account" {
     blob_versioning_enabled       = false
     advanced_threat_protection    = true
     public_network_access_enabled = true
+    backup_enabled                = false
+    blob_delete_retention_days    = 0
+    backup_retention              = 0
+
   }
 }
 
@@ -338,4 +429,61 @@ variable "nodo_storico_allowed_ips" {
   type        = list(string)
   description = "List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed"
   default     = []
+}
+
+
+variable "enable_sftp_backup" {
+  type        = bool
+  default     = false
+  description = "(Optional) Enables nodo sftp storage account backup"
+}
+
+variable "sftp_sa_delete_retention_days" {
+  type        = number
+  default     = 0
+  description = "(Optional) nodo sftp storage delete retention"
+}
+
+variable "sftp_sa_backup_retention_days" {
+  type        = number
+  default     = 0
+  description = "(Optional) nodo sftp storage backup retention"
+}
+
+variable "enable_nodo_re" {
+  type        = bool
+  default     = false
+  description = "Enables dumping nodo re"
+}
+
+
+variable "geo_replica_enabled" {
+  type        = bool
+  description = "(Optional) True if geo replica should be active for key data components i.e. PostgreSQL Flexible servers"
+  default     = false
+}
+
+
+variable "geo_replica_cidr_subnet_postgresql" {
+  type        = list(string)
+  description = "Address prefixes replica subnet postgresql"
+  default     = null
+}
+
+variable "location_replica" {
+  type        = string
+  description = "One of westeurope, northeurope"
+  default     = "northeurope"
+}
+
+variable "location_replica_short" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_replica_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "One of wue, neu"
+  default     = "neu"
 }

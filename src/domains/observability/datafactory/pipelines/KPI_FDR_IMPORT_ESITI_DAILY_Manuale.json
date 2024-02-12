@@ -1,0 +1,106 @@
+{
+    "name": "Ciclo per ore",
+    "type": "Until",
+    "dependsOn": [],
+    "userProperties": [],
+    "typeProperties": {
+        "expression": {
+            "value": "@greaterOrEquals(variables('i'),pipeline().parameters.nh)",
+            "type": "Expression"
+        },
+        "activities": [
+            {
+                "name": "Incremento Indice",
+                "type": "SetVariable",
+                "dependsOn": [],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "variableName": "_i",
+                    "value": {
+                        "value": "@add(variables('i'), 1)",
+                        "type": "Expression"
+                    }
+                }
+            },
+            {
+                "name": "Incremento fake",
+                "type": "SetVariable",
+                "dependsOn": [
+                    {
+                        "activity": "Incremento Indice",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "variableName": "i",
+                    "value": {
+                        "value": "@variables('_i')",
+                        "type": "Expression"
+                    }
+                }
+            },
+            {
+                "name": "Imposto la data di start",
+                "type": "SetVariable",
+                "dependsOn": [
+                    {
+                        "activity": "Incremento fake",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "variableName": "date_start",
+                    "value": {
+                        "value": "@addHours(startOfHour(pipeline().parameters.date_trigger), variables('i'))",
+                        "type": "Expression"
+                    }
+                }
+            },
+            {
+                "name": "Esecuzone su fascia oraria",
+                "type": "ExecutePipeline",
+                "dependsOn": [
+                    {
+                        "activity": "Imposto la data di start",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "userProperties": [],
+                "typeProperties": {
+                    "pipeline": {
+                        "referenceName": "SMO_KPI_FDR_IMPORT_ESITI_Manuale_Pipeline",
+                        "type": "PipelineReference"
+                    },
+                    "waitOnCompletion": true,
+                    "parameters": {
+                        "date_trigger": {
+                            "value": "@variables('date_start')",
+                            "type": "Expression"
+                        }
+                    }
+                }
+            }
+        ],
+        "timeout": "0.12:00:00"
+    }
+}

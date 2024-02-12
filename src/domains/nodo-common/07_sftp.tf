@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "sftp" {
 }
 
 module "sftp" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.20.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
   #source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=add-SFTP-to-sa"
 
   name                = replace("${local.project}-sftp", "-", "")
@@ -21,6 +21,17 @@ module "sftp" {
   account_replication_type      = var.sftp_account_replication_type
   access_tier                   = "Hot"
   is_hns_enabled                = true
+
+  blob_versioning_enabled = false
+
+  #  blob_delete_retention_days = var.sftp_sa_delete_retention_days
+  #  blob_change_feed_enabled = var.enable_sftp_backup
+  #  blob_change_feed_retention_in_days = var.enable_sftp_backup ? var.sftp_sa_backup_retention_days : null
+  #  blob_container_delete_retention_days =  var.sftp_sa_backup_retention_days
+  #  blob_storage_policy ={
+  #    enable_immutability_policy = false
+  #    blob_restore_policy_days = var.sftp_sa_backup_retention_days
+  #  }
 
   network_rules = {
     default_action             = var.sftp_disable_network_rules ? "Allow" : "Deny"

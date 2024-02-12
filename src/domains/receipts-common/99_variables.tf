@@ -113,7 +113,6 @@ variable "receipts_datastore_cosmos_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -155,7 +154,13 @@ variable "receipts_datastore_fn_sa_advanced_threat_protection" {
 variable "receipts_datastore_fn_sa_delete_retention_days" {
   type        = number
   description = "Number of days to retain deleted."
-  default     = 30
+  default     = 0
+}
+
+variable "receipts_datastore_fn_sa_backup_retention_days" {
+  type        = number
+  description = "Number of days to retain backups."
+  default     = 0
 }
 
 variable "receipts_datastore_fn_sa_tier_to_cool_after_last_access" {
@@ -210,4 +215,18 @@ variable "receipts_queue_delay_sec" {
   type        = number
   description = "The length of time during which the message will be invisible, starting when it is added to the queue."
   default     = 3600
+}
+
+
+variable "receipts_storage_account_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "(Optional) Receipts datastore storage account replication type"
+}
+
+
+variable "enable_sa_backup" {
+  type        = bool
+  default     = false
+  description = "(Optional) Enables storage account backup PIT restore"
 }

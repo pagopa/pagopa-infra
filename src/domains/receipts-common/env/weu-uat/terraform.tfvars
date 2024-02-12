@@ -34,7 +34,7 @@ receipts_datastore_cosmos_db_params = {
   capabilities = []
   offer_type   = "Standard"
   consistency_policy = {
-    consistency_level       = "BoundedStaleness"
+    consistency_level       = "Strong"
     max_interval_in_seconds = 300
     max_staleness_prefix    = 100000
   }

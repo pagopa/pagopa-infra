@@ -117,3 +117,29 @@ variable "tls_cert_check_helm" {
   })
   description = "tls cert helm chart configuration"
 }
+
+variable "payment_wallet_with_pm_enabled" {
+  type        = bool
+  default     = false
+  description = "payment wallet using Payment Manager"
+}
+
+variable "pdv_api_base_path" {
+  type        = string
+  default     = null
+  description = "Personal data vault api base path"
+}
+
+variable "io_backend_base_path" {
+  type        = string
+  default     = null
+  description = "io backend api base path"
+}
+
+# DNS
+
+variable "dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The wallet dns subdomain."
+}

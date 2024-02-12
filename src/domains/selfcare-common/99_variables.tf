@@ -124,7 +124,6 @@ variable "bopagopa_datastore_cosmos_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -159,11 +158,11 @@ variable "cosmosdb_mongodb_throughput" {
 variable "cosmosdb_mongodb_enable_autoscaling" {
   type        = bool
   description = "It will enable autoscaling mode. If true, cosmosdb_mongodb_throughput must be unset"
-  default     = false
+  default     = true
 }
 
 variable "cosmosdb_mongodb_max_throughput" {
   type        = number
   description = "The maximum throughput of the MongoDB database (RU/s). Must be between 4,000 and 1,000,000. Must be set in increments of 1,000. Conflicts with throughput"
-  default     = 4000
+  default     = 5000
 }

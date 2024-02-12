@@ -17,7 +17,8 @@ module "apim_nodo_dei_pagamenti_monitoring_product" {
   approval_required     = false
 
   policy_xml = templatefile("./api_product/nodo_pagamenti_api/monitoring/base_policy.xml.tpl", {
-    base-url                 = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+
   })
 }
 
@@ -26,8 +27,8 @@ module "apim_nodo_dei_pagamenti_monitoring_product" {
 ######################
 locals {
   apim_nodo_monitoring_api = {
-    display_name = "Nodo monitoring"
-    description  = "Nodo monitoring"
+    display_name          = "Nodo monitoring"
+    description           = "Nodo monitoring"
     path                  = "nodo-monitoring/monitoring"
     subscription_required = false
     service_url           = null
@@ -68,6 +69,6 @@ module "apim_nodo_monitoring_api" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
-    base-url                  = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
   })
 }

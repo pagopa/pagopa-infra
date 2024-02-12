@@ -31,6 +31,8 @@ module "assets_cdn_platform" {
   keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
   keyvault_vault_name          = module.key_vault.name
 
+  storage_account_replication_type = var.cdn_storage_account_replication_type
+
   querystring_caching_behaviour = "BypassCaching"
 
   index_document     = "index.html"

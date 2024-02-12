@@ -1,5 +1,5 @@
 module "afm_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
   name                            = replace("${local.project}-sa", "-", "")
   account_kind                    = var.afm_storage_params.kind
@@ -14,6 +14,14 @@ module "afm_storage" {
   public_network_access_enabled   = var.afm_storage_params.public_network_access_enabled
 
   blob_delete_retention_days = var.afm_storage_params.retention_days
+
+  blob_change_feed_enabled             = var.afm_storage_params.enable_backup
+  blob_change_feed_retention_in_days   = var.afm_storage_params.enable_backup ? var.afm_storage_params.backup_retention_days + 1 : null
+  blob_container_delete_retention_days = var.afm_storage_params.backup_retention_days
+  blob_storage_policy = {
+    enable_immutability_policy = false
+    blob_restore_policy_days   = var.afm_storage_params.backup_retention_days
+  }
 
   tags = var.tags
 }

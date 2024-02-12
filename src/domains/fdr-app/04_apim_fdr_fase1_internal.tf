@@ -38,7 +38,7 @@ module "apim_api_fdr_legacy_api_v1_internal" {
   content_format = "openapi"
   content_value = templatefile("./api/fdr-fase1-internal/v1/_openapi.json.tpl", {
     host    = local.apim_hostname
-    service = module.apim_fdr_product.product_id
+    service = module.apim_fdr_product_internal.product_id
   })
 
   xml_content = templatefile("./api/fdr-fase1-internal/v1/_base_policy.xml.tpl", {

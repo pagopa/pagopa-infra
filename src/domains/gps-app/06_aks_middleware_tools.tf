@@ -38,3 +38,19 @@ resource "helm_release" "cert_mounter" {
     }"
   ]
 }
+
+resource "helm_release" "reloader" {
+  name       = "reloader"
+  repository = "https://stakater.github.io/stakater-charts"
+  chart      = "reloader"
+  version    = "v1.0.48"
+  namespace  = kubernetes_namespace.namespace.metadata[0].name
+
+  # enabled it if you remove accidentally reloader
+  # force_update = true
+
+  set {
+    name  = "reloader.watchGlobally"
+    value = "false"
+  }
+}

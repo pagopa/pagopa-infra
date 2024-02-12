@@ -1,36 +1,74 @@
 <policies>
-    <inbound>
-        <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
-        <set-variable name="sub" value="@(context.Subscription.Name)" />
-        <set-variable name="subid" value="@(context.Subscription.Id)" />
-        <set-variable name="subkey" value="@(context.Subscription.Key)" />
-<!--        <set-variable name="organizationFiscalCode" value="@{-->
-<!--            return context.Variables.ContainsKey("User.Id") ? context.User.Id : "Unknown" ;-->
-<!--        }" />-->
-        <base />
-        <!-- rate limit by subscription key -->
-        <rate-limit calls="300" renewal-period="10" remaining-calls-variable-name="remainingCallsPerSubscription"/>
-        <!--
-            subset/restriced api of src/core/api/gpd_api/v1/_openapi.json.tpl (INTERNAL) without /organizations/{organizationfiscalcode}
-        -->
-<!--        <rewrite-uri template="@("/organizations/"+(string)context.Variables["organizationFiscalCode"]+"/"+(string)context.Variables["requestPath"])" copy-unmatched-params="true" />-->
-        <!-- Calling Authorizer's fragment -->
-        <set-variable name="application_domain" value="gpd" />
+  <inbound>
+    <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
+    <set-variable name="sub" value="@(context.Subscription.Name)" />
+    <set-variable name="subid" value="@(context.Subscription.Id)" />
+    <set-variable name="subkey" value="@(context.Subscription.Key)" />
+    <base />
+    <!-- rate limit by subscription key -->
+    <rate-limit calls="300" renewal-period="10"
+      remaining-calls-variable-name="remainingCallsPerSubscription" />
+    <!-- Calling Authorizer's fragment -->
+    <set-variable name="application_domain" value="gpd" />
+    <set-variable name="metadata" value="no-metadata" />
+    <choose>
+      <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
+      <when condition="@(context.Request.MatchedParameters.ContainsKey("organizationfiscalcode") && !context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "").Equals(""))">
+        <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organizationfiscalcode"])" />
+        <include-fragment fragment-id="authorizer" />
+        <!-- ################################################################### -->
+        <!-- ##### GPD System: Extracting and validating segregation code ###### -->
+        <!-- ################################################################### -->
+        <!-- Extracting segregation code -->
+        <set-variable name="segregation_codes"
+          value="@{
+            string segregationCodes = "";
+            string[] metadataObjects = ((string) context.Variables["metadata"]).Split(new[] { ";;" }, StringSplitOptions.None);
+            string organizationId = ((string) context.Variables["authorization_entity"]);
+            bool found = false;
+            for (int i = 0; i < metadataObjects.Length && !found; i ++) {
+                string metadataObject = metadataObjects[i];
+                if (metadataObject.Contains("_seg")) {
+                    string[] segregationCodeMap = (metadataObject.Split('=')[1]).Split(';');
+                    for (int j = 0; j < segregationCodeMap.Length && !found; j++) {
+                        string[] splitString = segregationCodeMap[j].Split(':');
+                        found = splitString[0].Equals(organizationId);
+                        if (found) {
+                            segregationCodes = splitString[1];
+                        }
+                    }
+                }
+            }
+            return segregationCodes;
+          }" />
+        <!-- Block request if it does not have valid segregation codes -->
         <choose>
-            <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
-            <when condition="@(context.Request.MatchedParameters.ContainsKey("organizationfiscalcode") && !context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "").Equals(""))">
-                <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organizationfiscalcode"])" />
-                <include-fragment fragment-id="authorizer" />
-            </when>
+          <when condition="@("".Equals(context.Variables["segregation_codes"]))">
+          <!-- Block request if it does not have valid segregation codes -->
+          <!--                    <return-response>-->
+          <!--                        <set-status code="403" reason="Forbidden" />-->
+          <!--                    </return-response>-->
+            <trace source="GPD-Payments External Policy for organizations" severity="information">
+              <message>No valid segregation codes associated with EC</message>
+            </trace>
+          </when>
+          <otherwise>
+            <!-- Add query parameter to the request -->
+            <set-query-parameter name="segregationCodes" exists-action="override">
+              <value>@((string) context.Variables["segregation_codes"])</value>
+            </set-query-parameter>
+          </otherwise>
         </choose>
-    </inbound>
-    <outbound>
-        <base />
-    </outbound>
-    <backend>
-        <base />
-    </backend>
-    <on-error>
-        <base />
-    </on-error>
+      </when>
+    </choose>
+  </inbound>
+  <outbound>
+    <base />
+  </outbound>
+  <backend>
+    <base />
+  </backend>
+  <on-error>
+    <base />
+  </on-error>
 </policies>

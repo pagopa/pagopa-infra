@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "aks_rg" {
 }
 
 module "aks" {
-  source = "git::https://github.com/pagopa/azurerm.git//kubernetes_cluster?ref=v2.17.0"
+  source = "git::https://github.com/pagopa/azurerm.git//kubernetes_cluster?ref=kubernetes-metric-alerts-updates"
 
   name                       = local.aks_name
   location                   = var.location
@@ -73,8 +73,9 @@ module "aks" {
   addon_azure_key_vault_secrets_provider_enabled = true
   addon_azure_pod_identity_enabled               = true
 
-  custom_metric_alerts = null
   alerts_enabled       = var.aks_alerts_enabled
+  custom_metric_alerts = local.aks_metrics_alerts
+
   action = [
     {
       action_group_id    = data.azurerm_monitor_action_group.slack.id

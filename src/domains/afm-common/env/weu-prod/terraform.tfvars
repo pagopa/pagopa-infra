@@ -62,13 +62,15 @@ cidr_subnet_afm_marketplace_cosmosdb = ["10.1.151.0/24"]
 cidr_subnet_afm_storage              = ["10.1.155.0/24"]
 
 afm_storage_params = {
+  enable_backup                 = true
   enabled                       = true
   tier                          = "Standard"
   kind                          = "StorageV2"
-  account_replication_type      = "LRS",
+  account_replication_type      = "GZRS",
   advanced_threat_protection    = true,
-  retention_days                = 7,
+  retention_days                = 31,
   public_network_access_enabled = true,
+  backup_retention_days         = 30
 }
 
 storage_private_endpoint_enabled = false

@@ -133,7 +133,6 @@ variable "cosmos_mongo_db_params" {
       max_interval_in_seconds = number
       max_staleness_prefix    = number
     })
-    main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
     main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
@@ -161,4 +160,19 @@ variable "enable_iac_pipeline" {
   type        = bool
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
+}
+
+# Redis
+variable "cidr_subnet_redis_wallet" {
+  type        = list(string)
+  description = "Redis DB address space for wallet."
+}
+
+variable "redis_wallet_params" {
+  type = object({
+    capacity = number
+    sku_name = string
+    family   = string
+    version  = string
+  })
 }

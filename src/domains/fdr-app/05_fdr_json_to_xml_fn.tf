@@ -23,7 +23,7 @@ locals {
   json_to_xml_docker_settings = {
     IMAGE_NAME = "pagopa/pagopa-fdr-json-to-xml"
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = "ghcr.io"
+    DOCKER_REGISTRY_SERVER_URL = "ghcr.io"
   }
 }
 
@@ -53,6 +53,8 @@ module "fdr_json_to_xml_function" {
     registry_password = null
   }
 
+
+
   #sticky_connection_string_names = ["COSMOS_CONN_STRING"]
   client_certificate_mode = "Optional"
 
@@ -70,6 +72,7 @@ module "fdr_json_to_xml_function" {
   }
 
   storage_account_name = replace(format("%s-json-2-xml-sa", local.project), "-", "")
+  storage_account_info = var.storage_account_info
 
   app_settings = local.function_json_to_xml_app_settings
 

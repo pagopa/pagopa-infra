@@ -13,9 +13,9 @@ module "apim_taxonomy_product" {
   resource_group_name = local.pagopa_apim_rg
 
   published             = true
-  subscription_required = true
-  approval_required     = true
-  subscriptions_limit   = 1000
+  subscription_required = false
+  approval_required     = false
+  subscriptions_limit   = 0
 
   policy_xml = file("./api_product/taxonomy/_base_policy.xml")
 }
@@ -28,7 +28,7 @@ locals {
     display_name          = "Taxonomy"
     description           = "Taxonomy"
     path                  = "taxonomy/service"
-    subscription_required = true
+    subscription_required = false
     service_url           = null
   }
 }
@@ -66,6 +66,6 @@ module "apim_api_taxonomy_api_v1" {
   })
 
   xml_content = templatefile("./api/taxonomy/v1/_base_policy.xml.tpl", {
-    hostname = local.hostnameAzFunction
+    hostname = "${module.taxonomy_function.name}.azurewebsites.net"
   })
 }

@@ -15,7 +15,42 @@ resource "azurerm_storage_account" "elk_snapshot_sa" {
   resource_group_name      = azurerm_resource_group.elk_rg.name
   location                 = azurerm_resource_group.elk_rg.location
   account_tier             = "Standard"
-  account_replication_type = "LRS"
+  account_replication_type = var.snapshot_storage_replication_type
+
+  blob_properties {
+    change_feed_enabled = var.elk_snapshot_sa.backup_enabled
+    dynamic "container_delete_retention_policy" {
+      for_each = var.elk_snapshot_sa.backup_enabled ? [1] : []
+      content {
+        days = var.elk_snapshot_sa.blob_delete_retention_days
+      }
+
+    }
+    #    change_feed_retention_in_days = var.elk_snapshot_sa.backup_enabled ? var.elk_snapshot_sa.blob_delete_retention_days : null
+    #    restore_policy {
+    #      days = var.elk_snapshot_sa.blob_delete_retention_days
+    #    }
+    versioning_enabled = var.elk_snapshot_sa.backup_enabled
+    dynamic "delete_retention_policy" {
+      for_each = var.elk_snapshot_sa.backup_enabled ? [1] : []
+      content {
+        days = var.elk_snapshot_sa.blob_delete_retention_days
+      }
+
+    }
+  }
+
+
+
+
+  #  blob_change_feed_enabled = var.elk_snapshot_sa.backup_enabled
+  #  blob_change_feed_retention_in_days = var.elk_snapshot_sa.backup_enabled ? var.elk_snapshot_sa.blob_delete_retention_days : null
+  #  blob_container_delete_retention_days =  var.elk_snapshot_sa.blob_delete_retention_days
+  #  blob_storage_policy ={
+  #    enable_immutability_policy = false
+  #    blob_restore_policy_days = var.elk_snapshot_sa.blob_delete_retention_days
+  #  }
+  #  blob_delete_retention_days = var.elk_snapshot_sa.blob_delete_retention_days
 }
 
 resource "azurerm_storage_container" "snapshot_container" {
@@ -52,7 +87,7 @@ module "elastic_stack" {
     kubernetes_secret.snapshot_secret
   ]
 
-  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.17.0"
+  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.22.0"
 
   namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config

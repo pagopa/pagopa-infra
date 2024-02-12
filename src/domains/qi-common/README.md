@@ -13,7 +13,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v6.7.0 |
-| <a name="module_letsencrypt_receipt"></a> [letsencrypt\_receipt](#module\_letsencrypt\_receipt) | git::https://github.com/pagopa/terraform-azurerm-v3.git//letsencrypt_credential | v6.8.0 |
+| <a name="module_letsencrypt_qi"></a> [letsencrypt\_qi](#module\_letsencrypt\_qi) | git::https://github.com/pagopa/terraform-azurerm-v3.git//letsencrypt_credential | v6.8.0 |
 | <a name="module_qi_fn_sa"></a> [qi\_fn\_sa](#module\_qi\_fn\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.7.0 |
 
 ## Resources

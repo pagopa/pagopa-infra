@@ -1,8 +1,3 @@
-data "azurerm_virtual_network" "vnet" {
-  name                = local.vnet_name
-  resource_group_name = local.vnet_resource_group_name
-}
-
 module "aks_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.12.0"
   name                                           = "${local.project}-aks-snet"
@@ -14,6 +9,7 @@ module "aks_snet" {
   service_endpoints = [
     "Microsoft.AzureCosmosDB",
     "Microsoft.EventHub",
+    "Microsoft.Storage",
   ]
 
 }

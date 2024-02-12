@@ -48,7 +48,9 @@ pgres_flex_params = {
   pgres_flex_ha_enabled                  = false
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
-  max_connections                        = 1000
+  max_connections                        = 1700
+  pgbouncer_min_pool_size                = 500
+  pgbouncer_default_pool_size            = 1000
 }
 
 custom_metric_alerts = {
@@ -110,7 +112,7 @@ cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
 cosmos_mongo_db_fdr_params = {
   enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -130,16 +132,16 @@ cosmos_mongo_db_fdr_params = {
 
   container_default_ttl = 2629800 # 1 month in second
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 5000
+  max_throughput     = 2000
   throughput         = 1000
 }
 
 cosmos_mongo_db_fdr_re_params = {
   enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -159,9 +161,9 @@ cosmos_mongo_db_fdr_re_params = {
 
   container_default_ttl = 2629800 # 1 month in second
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 5000
+  max_throughput     = 2000
   throughput         = 1000
 }
 
@@ -190,3 +192,22 @@ fdr_re_storage_account = {
   blob_delete_retention_days    = 90
   enable_low_availability_alert = false
 }
+
+fdr_history_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = false
+  public_network_access_enabled = false
+  blob_delete_retention_days    = 90
+  enable_low_availability_alert = false
+}
+
+
+
+#
+# replica settings
+#
+geo_replica_enabled               = false
+postgres_dns_registration_enabled = true

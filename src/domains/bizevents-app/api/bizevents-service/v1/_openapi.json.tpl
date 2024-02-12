@@ -4,36 +4,45 @@
     "title": "Biz-Events Service",
     "description": "Microservice for exposing REST APIs about payment receipts.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.0.2-4"
+    "version": "0.1.18"
   },
   "servers": [
     {
-      "url": "http://localhost:8080",
+      "url": "${host}/bizevents/service/v1",
       "description": "Generated server url"
     }
   ],
-  "tags": [
-    {
-      "name": "Actuator",
-      "description": "Monitor and interact",
-      "externalDocs": {
-        "description": "Spring Boot Actuator Web API Documentation",
-        "url": "https://docs.spring.io/spring-boot/docs/current/actuator-api/html/"
-      }
-    }
-  ],
   "paths": {
-    "/info": {
+    "/organizations/{organizationfiscalcode}/receipts/{iur}": {
       "get": {
         "tags": [
-          "Home"
+          "Payment Receipts REST APIs"
         ],
-        "summary": "health check",
-        "description": "Return OK if application is started",
-        "operationId": "healthCheck",
+        "summary": "The organization get the receipt for the creditor institution using IUR.",
+        "operationId": "getOrganizationReceiptIur",
+        "parameters": [
+          {
+            "name": "organizationfiscalcode",
+            "in": "path",
+            "description": "The fiscal code of the Organization.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "iur",
+            "in": "path",
+            "description": "The unique reference of the operation assigned to the payment (Payment Token).",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "200": {
-            "description": "OK",
+          "422": {
+            "description": "Unable to process the request.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -45,64 +54,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AppInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
                 }
               }
             }
           },
           "500": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -114,7 +72,65 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Obtained receipt.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.response.CtReceiptModelResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found the receipt.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -142,8 +158,8 @@
         "tags": [
           "Payment Receipts REST APIs"
         ],
-        "summary": "The organization get the receipt for the creditor institution.",
-        "operationId": "getOrganizationReceipt",
+        "summary": "The organization get the receipt for the creditor institution using IUV and IUR.",
+        "operationId": "getOrganizationReceiptIuvIur",
         "parameters": [
           {
             "name": "organizationfiscalcode",
@@ -174,53 +190,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Obtained receipt.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CtReceiptModelResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found the receipt.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
           "422": {
             "description": "Unable to process the request.",
             "headers": {
@@ -234,18 +203,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
                 }
               }
             }
@@ -263,7 +221,179 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Obtained receipt.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.response.CtReceiptModelResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found the receipt.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/info": {
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "summary": "health check",
+        "description": "Return OK if application is started",
+        "operationId": "healthCheck",
+        "responses": {
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.AppInfo"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
                 }
               }
             }
@@ -289,7 +419,7 @@
   },
   "components": {
     "schemas": {
-      "ProblemJson": {
+      "it.gov.pagopa.bizeventsservice.model.ProblemJson": {
         "type": "object",
         "properties": {
           "title": {
@@ -311,7 +441,18 @@
           }
         }
       },
-      "CtReceiptModelResponse": {
+      "it.gov.pagopa.bizeventsservice.model.MapEntry": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "it.gov.pagopa.bizeventsservice.model.response.CtReceiptModelResponse": {
         "required": [
           "channelDescription",
           "companyName",
@@ -358,12 +499,12 @@
             "type": "string"
           },
           "debtor": {
-            "$ref": "#/components/schemas/Debtor"
+            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.response.Debtor"
           },
           "transferList": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/TransferPA"
+              "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.response.TransferPA"
             }
           },
           "idPSP": {
@@ -385,7 +526,7 @@
             "type": "string"
           },
           "payer": {
-            "$ref": "#/components/schemas/Payer"
+            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.response.Payer"
           },
           "paymentMethod": {
             "type": "string"
@@ -417,12 +558,12 @@
           "metadata": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MapEntry"
+              "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.MapEntry"
             }
           }
         }
       },
-      "Debtor": {
+      "it.gov.pagopa.bizeventsservice.model.response.Debtor": {
         "required": [
           "entityUniqueIdentifierType",
           "entityUniqueIdentifierValue",
@@ -466,18 +607,7 @@
           }
         }
       },
-      "MapEntry": {
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          }
-        }
-      },
-      "Payer": {
+      "it.gov.pagopa.bizeventsservice.model.response.Payer": {
         "required": [
           "entityUniqueIdentifierType",
           "entityUniqueIdentifierValue",
@@ -521,7 +651,7 @@
           }
         }
       },
-      "TransferPA": {
+      "it.gov.pagopa.bizeventsservice.model.response.TransferPA": {
         "required": [
           "fiscalCodePA",
           "iban",
@@ -559,12 +689,12 @@
           "metadata": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/MapEntry"
+              "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.MapEntry"
             }
           }
         }
       },
-      "AppInfo": {
+      "it.gov.pagopa.bizeventsservice.model.AppInfo": {
         "type": "object",
         "properties": {
           "name": {
@@ -575,17 +705,6 @@
           },
           "environment": {
             "type": "string"
-          }
-        }
-      },
-      "Link": {
-        "type": "object",
-        "properties": {
-          "href": {
-            "type": "string"
-          },
-          "templated": {
-            "type": "boolean"
           }
         }
       }

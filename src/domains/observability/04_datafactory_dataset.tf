@@ -3,7 +3,6 @@ locals {
   # datasets = { for filename in fileset(path.module, "datafactory/${var.env_short == "p" ? "NOT_FOUND" : "datasets"}/*.json") : replace(basename(filename), ".json", "") => file("${path.module}/${filename}") }
 }
 
-
 data "azurerm_data_factory" "qi_data_factory" {
   name                = "pagopa-${var.env_short}-weu-nodo-df"
   resource_group_name = "pagopa-${var.env_short}-weu-nodo-df-rg"

@@ -149,3 +149,20 @@ variable "api_config_reporting_delete_retention_days" {
   default     = 30
 }
 
+variable "api_config_reporting_backup_retention_days" {
+  type        = number
+  description = "Number of days to retain backups."
+  default     = 0
+}
+
+variable "enable_apiconfig_sa_backup" {
+  type        = bool
+  default     = false
+  description = "(Optional) Enables apiconfig storage account backup"
+}
+
+variable "api_config_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "(Optional) Api config storage account replication type"
+}

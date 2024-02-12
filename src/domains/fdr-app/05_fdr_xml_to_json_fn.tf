@@ -36,7 +36,7 @@ locals {
   xml_to_json_docker_settings = {
     IMAGE_NAME = "pagopa/pagopa-fdr-xml-to-json"
     # ACR
-    DOCKER_REGISTRY_SERVER_URL      = "ghcr.io"
+    DOCKER_REGISTRY_SERVER_URL = "ghcr.io"
   }
 }
 
@@ -83,6 +83,8 @@ module "fdr_xml_to_json_function" {
   }
 
   storage_account_name = replace(format("%s-xml-2-json-sa", local.project), "-", "")
+
+  storage_account_info = var.storage_account_info
 
   app_settings = local.function_xml_to_json_app_settings
 

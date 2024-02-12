@@ -20,20 +20,3 @@ module "pod_identity" {
 
   secret_permissions = ["Get"]
 }
-
-resource "helm_release" "reloader" {
-  count      = var.env_short == "d" ? 1 : 0
-  name       = "reloader"
-  repository = "https://stakater.github.io/stakater-charts"
-  chart      = "reloader"
-  version    = "v0.0.110"
-  namespace  = kubernetes_namespace.namespace[0].metadata[0].name
-
-  # enabled it if you remove accidentally reloader
-  # force_update = true
-
-  set {
-    name  = "reloader.watchGlobally"
-    value = "false"
-  }
-}

@@ -21,6 +21,7 @@
 | <a name="module_apim_afm_marketplace_product"></a> [apim\_afm\_marketplace\_product](#module\_apim\_afm\_marketplace\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.5.0 |
 | <a name="module_apim_api_afm_calculator_api_node_v1"></a> [apim\_api\_afm\_calculator\_api\_node\_v1](#module\_apim\_api\_afm\_calculator\_api\_node\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
 | <a name="module_apim_api_afm_calculator_api_v1"></a> [apim\_api\_afm\_calculator\_api\_v1](#module\_apim\_api\_afm\_calculator\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
+| <a name="module_apim_api_afm_calculator_api_v2"></a> [apim\_api\_afm\_calculator\_api\_v2](#module\_apim\_api\_afm\_calculator\_api\_v2) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v6.11.2 |
 | <a name="module_apim_api_afm_marketplace_api_v1"></a> [apim\_api\_afm\_marketplace\_api\_v1](#module\_apim\_api\_afm\_marketplace\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
 | <a name="module_apim_api_afm_utils_v1"></a> [apim\_api\_afm\_utils\_v1](#module\_apim\_api\_afm\_utils\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.5.0 |
@@ -49,6 +50,7 @@
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
 | [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
+| [kubernetes_pod_disruption_budget_v1.afm](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/pod_disruption_budget_v1) | resource |
 | [kubernetes_role_binding.deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
 | [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
 | [kubernetes_service_account.azure_devops](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/service_account) | resource |
@@ -90,6 +92,7 @@
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
+| <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br>    name         = optional(string, null)<br>    minAvailable = optional(number, null)<br>    matchLabels  = optional(map(any), {})<br>  }))</pre> | `{}` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 | <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image_name    = string,<br>    image_tag     = string<br>  })</pre> | n/a | yes |

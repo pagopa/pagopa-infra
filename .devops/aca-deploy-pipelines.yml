@@ -127,10 +127,6 @@ stages:
         TF_ENVIRONMENT_FOLDER: "weu-prod"
         WORKINGDIR: 'src/domains/aca-common'
         AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
-        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
     # PROD aca APP
     - template: templates/terraform-plan-apply/template.yaml@terraform

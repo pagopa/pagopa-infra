@@ -7,6 +7,12 @@ data "azurerm_resource_group" "rg_vnet" {
   name = local.vnet_resource_group_name
 }
 
+data "azurerm_virtual_network" "vnet_replica" {
+  count               = var.geo_replica_enabled ? 1 : 0
+  name                = local.vnet_replica_name
+  resource_group_name = local.vnet_resource_group_name
+}
+
 data "azurerm_private_dns_zone" "internal" {
   name                = local.internal_dns_zone_name
   resource_group_name = local.internal_dns_zone_resource_group_name
@@ -40,13 +46,11 @@ data "azurerm_private_dns_zone" "storage" {
 }
 
 resource "azurerm_private_dns_zone" "adf" {
-
   name                = "privatelink.datafactory.azure.net"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "adf_vnet" {
-
   name                  = "${local.project}-adf-private-dns-zone-link"
   resource_group_name   = data.azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.adf.name
@@ -60,10 +64,17 @@ data "azurerm_subnet" "private_endpoint_snet" {
 }
 
 data "azurerm_subnet" "nodo_re_to_datastore_function_snet" {
+  count                = var.enable_nodo_re ? 1 : 0
   name                 = "${local.project}-nodo-re-to-datastore-fn-snet"
   virtual_network_name = data.azurerm_virtual_network.vnet.name
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
 }
+
+#data "azurerm_subnet" "nodo_verifyko_to_datastore_function_snet" {
+#  name                 = "${local.project}-nodo-verifyko-to-datastore-fn-snet"
+#  virtual_network_name = data.azurerm_virtual_network.vnet.name
+#  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+#}
 
 data "azurerm_private_dns_zone" "privatelink_redis_azure_com" {
   name                = "privatelink.redis.cache.windows.net"
@@ -103,6 +114,7 @@ module "storage_account_snet" {
 
 # CosmosDB subnet
 module "cosmosdb_nodo_re_snet" {
+  count                = var.enable_nodo_re ? 1 : 0
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
   name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_nodo_re
@@ -116,3 +128,43 @@ module "cosmosdb_nodo_re_snet" {
     "Microsoft.AzureCosmosDB",
   ]
 }
+
+# CosmosDB subnet
+module "cosmosdb_nodo_verifyko_snet" {
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
+  name                 = "${local.project}-verifyko-cosmosdb-snet"
+  address_prefixes     = var.cidr_subnet_cosmosdb_nodo_verifyko
+  resource_group_name  = local.vnet_resource_group_name
+  virtual_network_name = local.vnet_name
+
+  private_link_service_network_policies_enabled = true
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+  ]
+}
+
+# Stand-In
+resource "azurerm_resource_group" "standin_rg" {
+  name     = "${local.project}-standin-rg"
+  location = var.location
+
+  tags = var.tags
+}
+
+module "cosmosdb_standin_snet" {
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
+  name                 = "${local.project}-standin-cosmosdb-snet"
+  address_prefixes     = var.cidr_subnet_cosmosdb_standin
+  resource_group_name  = local.vnet_resource_group_name
+  virtual_network_name = local.vnet_name
+
+  private_link_service_network_policies_enabled = true
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+  ]
+}
+

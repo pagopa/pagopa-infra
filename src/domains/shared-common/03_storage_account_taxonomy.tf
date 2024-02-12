@@ -10,7 +10,7 @@ resource "azurerm_resource_group" "taxonomy_rg" {
 }
 
 module "taxonomy_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.17.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.17.0"
 
   name                            = replace("${local.project}-${local.taxonomy_label}-sa", "-", "")
   account_kind                    = var.taxonomy_storage_account.account_kind
@@ -26,6 +26,17 @@ module "taxonomy_sa" {
   enable_low_availability_alert   = var.taxonomy_storage_account.enable_low_availability_alert
 
   blob_delete_retention_days = var.taxonomy_storage_account.blob_delete_retention_days
+
+
+  blob_change_feed_enabled             = var.taxonomy_storage_account.backup_enabled
+  blob_change_feed_retention_in_days   = var.taxonomy_storage_account.backup_enabled ? var.taxonomy_storage_account.backup_retention + 1 : null
+  blob_container_delete_retention_days = var.taxonomy_storage_account.backup_retention
+  blob_storage_policy = {
+    enable_immutability_policy = false
+    blob_restore_policy_days   = var.taxonomy_storage_account.backup_retention
+  }
+
+  network_rules = var.taxonomy_network_rules
 
   tags = var.tags
 }

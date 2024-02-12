@@ -25,12 +25,12 @@
           },
           {
             "in": "query",
-            "name": "paymentMethodId",
+            "name": "sessionToken",
             "schema": {
               "type": "string"
             },
             "required": true,
-            "description": "Payment method ID used for transaction"
+            "description": "Session token used to validate path params"
           }
         ],
         "requestBody": {
@@ -67,8 +67,7 @@
             "description": "Event identifier"
           },
           "eventTime": {
-            "type": "integer",
-            "format": "int64",
+            "type": "string",
             "description": "Event timestamp in ISO 8601 format"
           },
           "securityToken": {

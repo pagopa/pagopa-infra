@@ -35,6 +35,14 @@ storage_account_info = {
   advanced_threat_protection_enable = false
 }
 
+reporting_fdr_storage_account_info = {
+  account_kind                      = "StorageV2"
+  account_tier                      = "Standard"
+  account_replication_type          = "LRS"
+  access_tier                       = "Hot"
+  advanced_threat_protection_enable = false
+}
+
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
@@ -114,3 +122,5 @@ fdr_json_to_xml_function_autoscale = {
   minimum = 1
   maximum = 3
 }
+
+ftp_organization = "55555555555,90000000002,88888888888,11111111111,paStress4,44444444444,19721972197,11111122222,66666666666,55555666666,89898989898,20000000002,11111122223,11223344551,15376371009_FTP"

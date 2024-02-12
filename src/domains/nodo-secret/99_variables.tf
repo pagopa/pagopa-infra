@@ -1,5 +1,9 @@
-# general
+locals {
+  azdo_app_managed_identity_name    = "${var.env}-pagopa"
+  azdo_app_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
+}
 
+# general
 variable "prefix" {
   type = string
   validation {
@@ -133,7 +137,27 @@ variable "cacerts_path" {
   description = "Java cacerts"
 }
 
-variable "pipe_service_principel_application_id" {
+variable "certs_storage_account_replication_type" {
   type        = string
-  description = "SP for pipeline application_id - pagopaspa-pagoPA-projects-[subscriptionid]"
+  default     = "LRS"
+  description = "(Optional) Certificates storage account replication type"
+}
+
+variable "nodo_cert_storage_account" {
+  type = object({
+    advanced_threat_protection    = bool
+    blob_delete_retention_days    = number
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    backup_enabled                = bool
+    backup_retention              = optional(number, 0)
+  })
+  default = {
+    blob_versioning_enabled       = false
+    advanced_threat_protection    = false
+    blob_delete_retention_days    = 30
+    public_network_access_enabled = false
+    backup_enabled                = false
+    backup_retention              = 0
+  }
 }

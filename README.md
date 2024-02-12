@@ -1,6 +1,6 @@
 # pagoPA-infrastructure
 
-[![Static Analysis](https://github.com/pagopa/pagopa-infra/actions/workflows/static_analysis.yml/badge.svg)](https://github.com/pagopa/pagopa-infra/actions/workflows/static_analysis.yml)
+[![Static Analysis](https://github.com/pagopa/pagopa-infra/actions/workflows/static_analysis.yml/badge.svg?branch=main&event=push)](https://github.com/pagopa/pagopa-infra/actions/workflows/static_analysis.yml)
 
 pagoPA project infrastructure
 

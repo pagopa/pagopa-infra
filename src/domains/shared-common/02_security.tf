@@ -29,10 +29,10 @@ resource "azurerm_key_vault_access_policy" "ad_admin_group_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
 }
 
 ## ad group policy ##
@@ -305,6 +305,18 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 
 resource "azurerm_key_vault_secret" "elastic_apm_secret_token" {
   name         = "elastic-apm-secret-token"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "nodo5_slack_webhook_url" {
+  name         = "nodo5-slack-webhook-url"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 

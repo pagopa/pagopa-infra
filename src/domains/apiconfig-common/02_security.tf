@@ -24,10 +24,10 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
 }
 
 ## ad group policy ##
@@ -82,6 +82,13 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
 
   storage_permissions = []
+}
+
+data "azurerm_eventhub_authorization_rule" "nodo_dei_pagamenti_cache_tx" {
+  name                = "nodo-dei-pagamenti-cache-tx"
+  resource_group_name = "${local.product}-msg-rg"
+  namespace_name      = "${local.product}-evh-ns02"
+  eventhub_name       = "nodo-dei-pagamenti-cache"
 }
 
 ################
@@ -267,3 +274,37 @@ resource "azurerm_key_vault_secret" "storage_connection_string" {
 
   key_vault_id = module.key_vault.id
 }
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "nodo5_slack_webhook_url" {
+  name         = "nodo5-slack-webhook-url"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "apicfg_cache_subscription_key" {
+  name         = "api-config-cache-subscription-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "apicfg_cache_tx_connection_string" {
+  name         = "nodo-dei-pagamenti-cache-tx-connection-string-key"
+  value        = data.azurerm_eventhub_authorization_rule.nodo_dei_pagamenti_cache_tx.primary_connection_string
+  key_vault_id = module.key_vault.id
+}
+
+

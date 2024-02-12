@@ -233,6 +233,25 @@ variable "storage_account_info" {
   }
 }
 
+# Storage account
+variable "reporting_fdr_storage_account_info" {
+  type = object({
+    account_kind                      = string
+    account_tier                      = string
+    account_replication_type          = string
+    access_tier                       = string
+    advanced_threat_protection_enable = bool
+  })
+
+  default = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+}
+
 # App service plan
 variable "app_service_plan_info" {
   type = object({
@@ -401,4 +420,26 @@ variable "fdr_json_to_xml_function_autoscale" {
     maximum = number
   })
   description = "FdR JSON to XML function autoscaling parameters"
+}
+
+variable "function_app_storage_account_replication_type" {
+  type        = string
+  default     = "ZRS"
+  description = "(Optional) Storage account replication type used for function apps"
+}
+
+variable "ftp_organization" {
+  type        = string
+  description = "Organization configured with FTP"
+  default     = null
+}
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
 }

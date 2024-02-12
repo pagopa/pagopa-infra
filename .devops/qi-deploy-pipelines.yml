@@ -83,6 +83,20 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
+    # DEV qi secrets
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        DOMAIN_NAME: 'qi_secrets'
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-dev-linux-infra"
+        ENVIRONMENT: "dev"
+        TF_ENVIRONMENT_FOLDER: "weu-dev"
+        WORKINGDIR: 'src/domains/qi-secrets'
+        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
+        AKS_NAME: ${{ variables.AKS_DEV_NAME }}
+        AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
+        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
+        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
+
 
 
   #
@@ -113,6 +127,20 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
+
+    # UAT qi secrets
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        DOMAIN_NAME: 'qi_secrets'
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-uat-linux-infra"
+        ENVIRONMENT: "uat"
+        TF_ENVIRONMENT_FOLDER: "weu-uat"
+        WORKINGDIR: 'src/domains/qi-secrets'
+        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
+        AKS_NAME: ${{ variables.AKS_UAT_NAME }}
+        AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
+        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
+        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
   #
   # PROD
@@ -146,4 +174,18 @@ stages:
         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
+
+    # PROD qi APP
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        DOMAIN_NAME: 'qi_secrets'
+        AZURE_DEVOPS_POOL_AGENT_NAME: "pagopa-prod-linux-infra"
+        ENVIRONMENT: "prod"
+        TF_ENVIRONMENT_FOLDER: "weu-prod"
+        WORKINGDIR: 'src/domains/qi-secrets'
+        AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
+        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
+        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
+        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
+        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
 

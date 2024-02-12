@@ -1,0 +1,58 @@
+[
+    {
+        "name": "REQUEST_PSPNOTIFY",
+        "type": "datetime"
+    },
+    {
+        "name": "REQUEST_SPO",
+        "type": "datetime"
+    },
+    {
+        "name": "ID_DOMINIO",
+        "type": "string"
+    },
+    {
+        "name": "IUV",
+        "type": "string"
+    },
+    {
+        "name": "TOKEN",
+        "type": "string"
+    },
+    {
+        "name": "ID_BROKER_PSP",
+        "type": "string"
+    },
+    {
+        "name": "ID_BROKER_PA",
+        "type": "string"
+    },
+    {
+        "name": "PSP",
+        "type": "string"
+    },
+    {
+        "name": "STAZIONE",
+        "type": "string"
+    },
+    {
+        "name": "CANALE",
+        "type": "string"
+    },
+    {
+        "name": "DIFF_TIME_IN_MS",
+        "type": "long"
+    },
+    {
+        "name": "OUTCOME",
+        "type": "string"
+    },
+    {
+        "name": "NO_RESPONSE",
+        "type": "bool"
+    },
+    {
+        "name": "pipelineRunID",
+        "type": "string"
+    }
+]

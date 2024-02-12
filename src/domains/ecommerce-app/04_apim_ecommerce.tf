@@ -1,4 +1,15 @@
 ##############
+## Groups ##
+##############
+
+resource "azurerm_api_management_group" "ecommerce-methods-full-read" {
+  name                = "ecommerce-methods-full-read"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = "Payment method full access to read all client"
+}
+
+##############
 ## Products ##
 ##############
 
@@ -69,6 +80,33 @@ module "apim_ecommerce_transactions_service_api_v1" {
   })
 }
 
+module "apim_ecommerce_transactions_service_api_v2" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+
+  name                  = format("%s-transactions-service-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_ecommerce_product.product_id]
+  subscription_required = local.apim_ecommerce_transactions_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.ecommerce_transactions_service_api.id
+  api_version           = "v2"
+
+  description  = local.apim_ecommerce_transactions_service_api.description
+  display_name = local.apim_ecommerce_transactions_service_api.display_name
+  path         = local.apim_ecommerce_transactions_service_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_ecommerce_transactions_service_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/ecommerce-transactions-service/v2/_openapi.json.tpl", {
+    hostname = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/ecommerce-transactions-service/v2/_base_policy.xml.tpl", {
+    hostname = local.ecommerce_hostname
+  })
+}
+
 ###########################################
 ## API transaction auth requests service ##
 ###########################################
@@ -116,6 +154,15 @@ module "apim_ecommerce_transaction_auth_requests_service_api_v1" {
   xml_content = templatefile("./api/ecommerce-transaction-auth-requests-service/v1/_base_policy.xml.tpl", {
     hostname = local.ecommerce_hostname
   })
+}
+
+resource "azurerm_api_management_api_operation_policy" "auth_request_gateway_policy" {
+  api_name            = module.apim_ecommerce_transaction_auth_requests_service_api_v1.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "updateTransactionAuthorization"
+
+  xml_content = file("./api/ecommerce-transaction-auth-requests-service/v1/_auth_request_gateway_policy.xml.tpl")
 }
 
 #####################################
@@ -365,6 +412,23 @@ module "apim_pagopa_ecommerce_helpdesk_service_api_v1" {
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "helpdesk_pgs_xpay" {
+  api_name            = "${local.project}-helpdesk-service-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "pgsGetXpayAuthorization"
+
+  xml_content = file("./api/ecommerce-helpdesk-api/v1/_pgs_search.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "helpdesk_pgs_vpos" {
+  api_name            = "${local.project}-helpdesk-service-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "pgsGetVposAuthorization"
+
+  xml_content = file("./api/ecommerce-helpdesk-api/v1/_pgs_search.xml.tpl")
+}
 
 ##############################
 ## API ecommerce technical helpdesk service ##
