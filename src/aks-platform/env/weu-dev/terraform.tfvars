@@ -33,7 +33,7 @@ aks_system_node_pool = {
   vm_size                      = "Standard_D2ds_v5"
   os_disk_type                 = "Ephemeral"
   os_disk_size_gb              = "75"
-  node_count_min               = "1" #TODO change to 2 or 3 in prod
+  node_count_min               = "1"
   node_count_max               = "3"
   only_critical_addons_enabled = true
   node_labels                  = { node_name : "aks-system-01", node_type : "system" },
@@ -44,7 +44,7 @@ aks_user_node_pool = {
   enabled         = true
   name            = "user01"
   vm_size         = "Standard_B8ms"
-  os_disk_type    = "Ephemeral"
+  os_disk_type    = "Managed"
   os_disk_size_gb = "300"
   node_count_min  = "4"
   node_count_max  = "5"
@@ -55,7 +55,7 @@ aks_user_node_pool = {
 
 aks_cidr_subnet = ["10.1.0.0/17"]
 
-aks_kubernetes_version = "1.25.11"
+aks_kubernetes_version = "1.27.3"
 
 ingress_min_replica_count = "1"
 ingress_max_replica_count = "3"
