@@ -4,7 +4,7 @@ module "monitoring_function" {
 
   depends_on = [azurerm_application_insights.application_insights]
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//monitoring_function?ref=v7.53.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//monitoring_function?ref=v7.55.0"
 
   location            = var.location
   prefix              = "${local.product}-${var.location_short}"
@@ -15,7 +15,7 @@ module "monitoring_function" {
   application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id]
 
   docker_settings = {
-    image_tag = "v1.5.0@sha256:13990c56c815c9ab8e1a333c87e67f48edf3be46750caba37a6830af8c464192"
+    image_tag = "v1.6.0@sha256:5a391e7d2413d5fa0b20061d8b82c0b062f0c75e4bf24ba804d9efab8afc9972"
   }
 
   job_settings = {
