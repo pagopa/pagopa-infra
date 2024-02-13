@@ -1864,13 +1864,19 @@
             "type": "string",
             "description": "Identifier of the payment gateway session associated to the form"
           },
+          "correlationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier of the payment session associated to the transaction flow"
+          },
           "paymentMethodData": {
             "$ref": "#/components/schemas/CardFormFields"
           }
         },
         "required": [
           "paymentMethodData",
-          "orderId"
+          "orderId",
+          "correlationId"
         ]
       },
       "CardFormFields": {
