@@ -136,6 +136,7 @@ module "apim_api_statuspage_api_v1" {
       "gpd"                   = format("%s/pagopa-gpd-core", format(local.aks_path, "gps"))
       "gpdpayments"           = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
       "gpdenrollment"         = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
+      "gpdupload"             = format("%s/pagopa-gpd-upload", format(local.aks_path, "gps"))
       "gpdreportinganalysis"  = format("%s/", data.azurerm_function_app.reporting_analysis.default_hostname)
       "gpdreportingbatch"     = format("%s/api/", data.azurerm_function_app.reporting_batch.default_hostname)
       "gpdreportingservice"   = format("%s/api/", data.azurerm_function_app.reporting_service.default_hostname)
