@@ -45,7 +45,7 @@
             "in": "header",
             "name": "correlationId",
             "required": true,
-            "description": "NPG correlation id",
+            "description": "Flow correlation id",
             "schema": {
               "$ref": "#/components/schemas/CorrelationId"
             }

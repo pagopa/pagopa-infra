@@ -51,7 +51,7 @@
             "in": "header",
             "name": "correlationId",
             "required": true,
-            "description": "NPG correlation id",
+            "description": "Flow correlation id",
             "schema": {
               "type": "string",
               "format": "uuid"
