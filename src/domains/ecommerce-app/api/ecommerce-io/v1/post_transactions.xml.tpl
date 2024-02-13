@@ -91,12 +91,14 @@
             <set-body>@{
               JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
               requestBody["orderId"] = "ORDER_ID"; //To be removed since it is mandatory for transaction request body, but it should not be
-              requestBody["correlationId"] = Guid.NewGuid().ToString();
               requestBody["email"] = (String)context.Variables["email"];
               return requestBody.ToString();
             }</set-body>
             <set-header name="X-Client-Id" exists-action="override">
               <value>IO</value>
+            </set-header>
+            <set-header name="x-correlation-id" exists-action="override">
+              <value>Guid.NewGuid().ToString()</value>
             </set-header>
           </otherwise>
         </choose>
