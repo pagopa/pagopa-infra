@@ -98,7 +98,7 @@
               <value>IO</value>
             </set-header>
             <set-header name="x-correlation-id" exists-action="override">
-              <value>@{Guid.NewGuid().ToString()}</value>
+              <value>@(Guid.NewGuid().ToString())</value>
             </set-header>
           </otherwise>
         </choose>
