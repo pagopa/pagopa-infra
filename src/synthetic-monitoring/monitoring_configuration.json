@@ -1,14 +1,14 @@
 [
   {
-    "apiName" : "api-uat-pagopa",
+    "apiName" : "root",
     "appName" : "root",
-    "url" : "https://api.uat.platform.pagopa.it/",
+    "url" : "https://api.dev.platform.pagopa.it/",
     "type" : "public",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
     "tags" : {
-      "description" : "pagopa uat context root"
+      "description" : "pagopa dev context root"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -16,8 +16,8 @@
     }
   },
   {
-    "apiName" : "dev-status",
-    "appName" : "fdr",
+    "apiName" : "status",
+    "appName" : "fdr-org",
     "url" : "https://api.dev.platform.pagopa.it/fdr-org/service/v1/info",
     "type" : "public",
     "checkCertificate" : true,
@@ -27,26 +27,7 @@
       "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
     },
     "tags" : {
-      "description" : "pagopa fdr dev status endpoint"
-    },
-    "durationLimit" : 10000,
-    "alertConfiguration" : {
-      "enabled" : false
-    }
-  },
-  {
-    "apiName" : "uat-status",
-    "appName" : "fdr",
-    "url" : "https://api.uat.platform.pagopa.it/fdr-org/service/v1/info",
-    "type" : "public",
-    "checkCertificate" : true,
-    "method" : "GET",
-    "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "f1447d0abf91486ca8c7651ce7cc01b8"
-    },
-    "tags" : {
-      "description" : "pagopa fdr uat status endpoint"
+      "description" : "pagopa fdr status endpoint"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {

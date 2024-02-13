@@ -21,6 +21,10 @@ variable "env_short" {
   }
 }
 
+variable "env" {
+  type = string
+}
+
 variable "location" {
   type        = string
   description = "One of westeurope, northeurope"
@@ -83,5 +87,6 @@ variable "law_daily_quota_gb" {
   description = "The workspace daily quota for ingestion in GB."
   default     = -1
 }
+
 
 

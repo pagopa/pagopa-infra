@@ -1,10 +1,20 @@
+data "template_file" "monitoring_configuration" {
+  template = file("${path.module}/monitoring_configuration.json.tpl")
+  vars = {
+    env_name = var.env,
+    env_short = var.env_short,
+    api_dot_env_name = var.env == "prod" ? "api" : "api.${var.env}"
+    internal_api_domain_prefix = "weu${var.env}"
+    internal_api_domain_suffix = var.env == "prod" ? "internal.platform.pagopa.it" : "internal.${var.env}.platform.pagopa.it"
+  }
+}
 
 
 module "monitoring_function" {
 
   depends_on = [azurerm_application_insights.application_insights]
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//monitoring_function?ref=v7.55.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//monitoring_function?ref=v7.57.0"
 
   location            = var.location
   prefix              = "${local.product}-${var.location_short}"
@@ -15,7 +25,7 @@ module "monitoring_function" {
   application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id]
 
   docker_settings = {
-    image_tag = "v1.6.0@sha256:5a391e7d2413d5fa0b20061d8b82c0b062f0c75e4bf24ba804d9efab8afc9972"
+    image_tag = "v1.7.0@sha256:08b88e12aa79b423a96a96274786b4d1ad5a2a4cf6c72fcd1a52b570ba034b18"
   }
 
   job_settings = {
@@ -37,5 +47,5 @@ module "monitoring_function" {
   self_alert_configuration = {
     enabled = false
   }
-  monitoring_configuration_encoded = file("./monitoring_configuration.json")
+  monitoring_configuration_encoded = data.template_file.monitoring_configuration.rendered
 }

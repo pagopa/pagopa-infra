@@ -1,5 +1,6 @@
 prefix         = "pagopa"
 env_short      = "d"
+env            = "dev"
 location       = "westeurope"
 location_short = "weu"
 
