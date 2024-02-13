@@ -40,4 +40,7 @@ locals {
 
   gpd_hostname = var.env_short != "d" ? module.postgres_flexible_server_private[0].fqdn : module.postgresql[0].fqdn
   gpd_dbmsport = var.env_short != "d" ? "6432" : "5432"
+
+  azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
+  azdo_iac_managed_identities = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
 }
