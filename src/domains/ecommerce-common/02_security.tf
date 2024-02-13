@@ -472,3 +472,15 @@ resource "azurerm_key_vault_secret" "checkout_redirect_psp_keys" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "node_forwarder_api_key" {
+  name         = "node-forwarder-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
