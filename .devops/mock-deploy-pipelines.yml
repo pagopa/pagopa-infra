@@ -95,30 +95,31 @@ stages:
         WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
         AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
         AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameDev}}"
-#UAT
-  - ${{ if eq(parameters['UAT'], true) }}:
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
-        TF_ENVIRONMENT_FOLDER: "weu-uat"
-        ENVIRONMENT: "UAT"
-        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
-        WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
-        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
-        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameUat}}"
-        AKS_NAME: ${{ variables.AKS_UAT_NAME }}
-        AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
-    - template: templates/terraform-plan-apply/template.yaml@terraform
-      parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
-        TF_ENVIRONMENT_FOLDER: "weu-uat"
-        ENVIRONMENT: "UAT"
-        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
-        WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
-        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
-        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameUat}}"
+
+# #UAT
+#   - ${{ if eq(parameters['UAT'], true) }}:
+#     - template: templates/terraform-plan-apply/template.yaml@terraform
+#       parameters:
+#         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+#         TF_ENVIRONMENT_FOLDER: "weu-uat"
+#         ENVIRONMENT: "UAT"
+#         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
+#         WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+#         AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+#         AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameUat}}"
+#         AKS_NAME: ${{ variables.AKS_UAT_NAME }}
+#         AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
+#         AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
+#         AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
+#     - template: templates/terraform-plan-apply/template.yaml@terraform
+#       parameters:
+#         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+#         TF_ENVIRONMENT_FOLDER: "weu-uat"
+#         ENVIRONMENT: "UAT"
+#         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
+#         WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+#         AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+#         AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameUat}}"
 
 # #PROD
 #   - ${{ if eq(parameters['PROD'], true) }}:

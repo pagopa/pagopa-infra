@@ -117,48 +117,48 @@ stages:
               AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
               AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
-  - stage: UAT
-    dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.UAT}}, true))
-    pool:
-      name: "${{variables.poolNameUat}}"
-    jobs:
-      - job: tfplan_common
-        strategy:
-          parallel: 1
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - checkout: self
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
-          - template: templates/terraform-summarize/template.yaml@terraform
-          # 2. Run terraform plan core
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              TF_ENVIRONMENT_FOLDER: "weu-uat"
-              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
-              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
-              TF_SUMMARIZE: true
-      - job: tfplan_app
-        strategy:
-          parallel: 1
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - checkout: self
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
-          - template: templates/terraform-summarize/template.yaml@terraform
-          # 2. Run terraform plan core
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              TF_ENVIRONMENT_FOLDER: "weu-uat"
-              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
-              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
-              TF_SUMMARIZE: true
-              AKS_NAME: ${{ variables.AKS_UAT_NAME }}
-              AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
-              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
-              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
+  # - stage: UAT
+  #   dependsOn: []
+  #   condition: and(succeeded(), eq(${{parameters.UAT}}, true))
+  #   pool:
+  #     name: "${{variables.poolNameUat}}"
+  #   jobs:
+  #     - job: tfplan_common
+  #       strategy:
+  #         parallel: 1
+  #       timeoutInMinutes: $[variables.TIME_OUT]
+  #       steps:
+  #         - checkout: self
+  #         # 1. Install terraform
+  #         - template: templates/terraform-setup/template.yaml@terraform
+  #         - template: templates/terraform-summarize/template.yaml@terraform
+  #         # 2. Run terraform plan core
+  #         - template: templates/terraform-plan/template.yaml@terraform
+  #           parameters:
+  #             TF_ENVIRONMENT_FOLDER: "weu-uat"
+  #             WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+  #             AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+  #             TF_SUMMARIZE: true
+  #     - job: tfplan_app
+  #       strategy:
+  #         parallel: 1
+  #       timeoutInMinutes: $[variables.TIME_OUT]
+  #       steps:
+  #         - checkout: self
+  #         # 1. Install terraform
+  #         - template: templates/terraform-setup/template.yaml@terraform
+  #         - template: templates/terraform-summarize/template.yaml@terraform
+  #         # 2. Run terraform plan core
+  #         - template: templates/terraform-plan/template.yaml@terraform
+  #           parameters:
+  #             TF_ENVIRONMENT_FOLDER: "weu-uat"
+  #             WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+  #             AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+  #             TF_SUMMARIZE: true
+  #             AKS_NAME: ${{ variables.AKS_UAT_NAME }}
+  #             AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
+  #             AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
+  #             AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
   # - stage: PROD
   #   dependsOn: []
