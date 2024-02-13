@@ -43,7 +43,7 @@
         "parameters": [
           {
             "in": "header",
-            "name": "correlationId",
+            "name": "x-correlation-id",
             "required": true,
             "description": "Flow correlation id",
             "schema": {
