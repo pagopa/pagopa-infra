@@ -53,7 +53,8 @@
             "required": true,
             "description": "NPG correlation id",
             "schema": {
-              "$ref": "#/components/schemas/CorrelationId"
+              "type": "string",
+              "format": "uuid"
             }
           },
           {
@@ -670,11 +671,6 @@
           "digitalStamp",
           "transferAmount"
         ]
-      },
-      "CorrelationId": {
-        "description": "correlationId",
-        "type": "string",
-        "format": "uuid"
       }
     },
     "requestBodies": {
