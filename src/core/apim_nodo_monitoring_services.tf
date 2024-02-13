@@ -16,15 +16,9 @@ module "apim_nodo_dei_pagamenti_monitoring_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = var.apim_nodo_decoupler_enable ? templatefile("./api_product/nodo_pagamenti_api/decoupler/base_policy.xml.tpl", { # decoupler ON
-    address-range-from       = var.env_short != "d" ? "10.1.128.0" : "0.0.0.0"
-    address-range-to         = var.env_short != "d" ? "10.1.128.255" : "0.0.0.0"
-    base-url                 = azurerm_api_management_named_value.default_nodo_backend.value
-    base-node-id             = azurerm_api_management_named_value.default_nodo_id.value
-    is-nodo-auth-pwd-replace = false
-    }) : templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", { # decoupler OFF
-    address-range-from = var.env_short != "d" ? "10.1.128.0" : "0.0.0.0"
-    address-range-to   = var.env_short != "d" ? "10.1.128.255" : "0.0.0.0"
+  policy_xml = templatefile("./api_product/nodo_pagamenti_api/monitoring/base_policy.xml.tpl", {
+    base-url = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+
   })
 }
 
@@ -75,7 +69,11 @@ module "apim_nodo_monitoring_api" {
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
-    base-url                  = azurerm_api_management_named_value.default_nodo_backend.value
-    is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+    base-url     = var.env_short == "p" ? "https://{{ip-nodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}"
+    allowed_ip_1 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0]  # PagoPA on prem VPN
+    allowed_ip_2 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[1]  # PagoPA on prem VPN DR
+    allowed_ip_3 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8]  # NEXI VPN
+    allowed_ip_4 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9]  # NEXI VPN
+    allowed_ip_5 = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[10] # NEXI VPN
   })
 }
