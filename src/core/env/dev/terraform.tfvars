@@ -115,6 +115,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "0.0.0.0",
     "0.0.0.0",
     "0.0.0.0",
+    "0.0.0.0",
   ]
 }
 
