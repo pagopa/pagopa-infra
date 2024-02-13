@@ -48,6 +48,15 @@
         },
         "parameters": [
           {
+            "in": "header",
+            "name": "correlationId",
+            "required": true,
+            "description": "NPG correlation id",
+            "schema": {
+              "$ref": "#/components/schemas/CorrelationId"
+            }
+          },
+          {
             "in": "query",
             "name": "recaptchaResponse",
             "description": "Recaptcha response",
@@ -486,18 +495,12 @@
             "description": "NPG order id",
             "type": "string",
             "example": "orderId"
-          },
-          "correlationId": {
-            "description": "NPG correlation id",
-            "type": "string",
-            "format": "uuid"
           }
         },
         "required": [
           "paymentNotices",
           "email",
-          "orderId",
-          "correlationId"
+          "orderId"
         ]
       },
       "NewTransactionResponse": {
@@ -667,6 +670,11 @@
           "digitalStamp",
           "transferAmount"
         ]
+      },
+      "CorrelationId": {
+        "description": "correlationId",
+        "type": "string",
+        "format": "uuid"
       }
     },
     "requestBodies": {

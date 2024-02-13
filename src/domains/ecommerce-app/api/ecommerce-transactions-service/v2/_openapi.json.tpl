@@ -40,6 +40,17 @@
           "transactions"
         ],
         "description": "Create a new transaction activating the payments notice by meaning of 'Nodo' ActivatePaymentNotice primitive",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "correlationId",
+            "required": true,
+            "description": "NPG correlation id",
+            "schema": {
+              "$ref": "#/components/schemas/CorrelationId"
+            }
+          }
+        ],
         "summary": "Make a new transaction",
         "requestBody": {
           "$ref": "#/components/requestBodies/NewTransactionRequest"
@@ -243,18 +254,12 @@
             "description": "NPG order id",
             "type": "string",
             "example": "orderId"
-          },
-          "correlationId": {
-            "description": "NPG correlation id",
-            "type": "string",
-            "format": "uuid"
           }
         },
         "required": [
           "paymentNotices",
           "email",
-          "orderId",
-          "correlationId"
+          "orderId"
         ]
       },
       "NewTransactionResponse": {
@@ -400,6 +405,11 @@
           "digitalStamp",
           "transferAmount"
         ]
+      },
+      "CorrelationId": {
+        "description": "correlationId",
+        "type": "string",
+        "format": "uuid"
       },
       "ProblemJson": {
         "description": "Body definition for error responses containing failure details",
