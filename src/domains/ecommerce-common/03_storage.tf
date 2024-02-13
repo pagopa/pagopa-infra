@@ -161,7 +161,7 @@ resource "azurerm_storage_queue" "transactions_notifications_queue_blue" {
 
 
 resource "azurerm_storage_queue" "transactions_authorization_requested_queue" {
-  name                 = "${local.project}-transaction-authorization-requested-queue"
+  name                 = "${local.project}-transaction-auth-requested-queue"
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
