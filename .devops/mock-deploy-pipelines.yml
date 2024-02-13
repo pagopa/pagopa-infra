@@ -10,13 +10,13 @@ parameters:
     values:
       - False
       - True
-  - name: 'UAT'
-    displayName: 'Run on UAT environment'
-    type: boolean
-    default: True
-    values:
-      - False
-      - True
+  # - name: 'UAT'
+  #   displayName: 'Run on UAT environment'
+  #   type: boolean
+  #   default: True
+  #   values:
+  #     - False
+  #     - True
   # - name: 'PROD'
   #   displayName: 'Run on PROD environment'
   #   type: boolean
