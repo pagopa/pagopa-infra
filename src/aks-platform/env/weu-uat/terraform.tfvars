@@ -47,8 +47,8 @@ aks_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Ephemeral"
   os_disk_size_gb = "300"
-  node_count_min  = "4"
-  node_count_max  = "5"
+  node_count_min  = "6"
+  node_count_max  = "7"
   node_labels     = { node_name : "aks-user-01", node_type : "user" },
   node_taints     = [],
   node_tags       = { node_tag_1 : "1" },
@@ -56,7 +56,7 @@ aks_user_node_pool = {
 
 aks_cidr_subnet = ["10.1.0.0/17"]
 
-aks_kubernetes_version = "1.25.11"
+aks_kubernetes_version = "1.27.3"
 
 ingress_min_replica_count = "2"
 ingress_max_replica_count = "30"
