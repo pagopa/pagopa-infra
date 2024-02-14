@@ -21,6 +21,7 @@ resource "azurerm_role_definition" "iac_reader" {
       # "Microsoft.ServiceBus/namespaces/authorizationRules/listKeys/action",              #help to list key for service bus connection
       # "Microsoft.ServiceBus/namespaces/queues/authorizationRules/listKeys/action",
       "Microsoft.Cache/*/listKeys/action", # Redis List
+      "Microsoft.Cache/redis/read", # Redis
       # "Microsoft.Cache/redis/listKeys/action", # Redis List
       "Microsoft.Web/sites/*/listkeys/action",
       # "Microsoft.Web/sites/host/listkeys/action",
@@ -51,8 +52,17 @@ resource "azurerm_role_definition" "iac_reader" {
       "Microsoft.Security/*/read",
       # "Microsoft.Security/advancedThreatProtectionSettings/read",
       "Microsoft.Authorization/*/read",
-      "Microsoft.Compute/*/read"
+      "Microsoft.Compute/*/read",
       # "Microsoft.Compute/sshPublicKeys/read",
+      "Microsoft.ManagedIdentity/userAssignedIdentities/read",
+      "Microsoft.DBforPostgreSQL/servers/read",
+      "Microsoft.DocumentDB/databaseAccounts/read", #cosmosdb
+      "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/read", #cosmos mongodb
+      "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections/read", #cosmosdb mongodb
+      "Microsoft.ContainerService/managedClusters/accessProfiles/listCredential/action", #aks
+      "Microsoft.Kusto/clusters/databases/read", #DAX
+      "Microsoft.DataFactory/factories/read",
+
     ]
   }
 }
