@@ -54,14 +54,20 @@ resource "azurerm_role_definition" "iac_reader" {
       "Microsoft.Authorization/*/read",
       "Microsoft.Compute/*/read",
       # "Microsoft.Compute/sshPublicKeys/read",
-      "Microsoft.ManagedIdentity/userAssignedIdentities/read",
-      "Microsoft.DBforPostgreSQL/servers/read",
+      "Microsoft.ManagedIdentity/userAssignedIdentities/read", #managed identity
+      "Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials/read", #managed identity
+      "Microsoft.DBforPostgreSQL/servers/read", #postgresql
+      "Microsoft.DBforPostgreSQL/servers/databases/read", #postgreql
+      "Microsoft.DBforPostgreSQL/servers/firewallRules/read", #postgresql
+      "Microsoft.DBforPostgreSQL/servers/configurations/read", #postgresql
       "Microsoft.DocumentDB/databaseAccounts/read", #cosmosdb
       "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/read", #cosmos mongodb
       "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections/read", #cosmosdb mongodb
+      "Microsoft.DocumentDB/databaseAccounts/listKeys/action", #cosmosdb
       "Microsoft.ContainerService/managedClusters/accessProfiles/listCredential/action", #aks
       "Microsoft.Kusto/clusters/databases/read", #DAX
       "Microsoft.DataFactory/factories/read",
+      "Microsoft.EventGrid/systemTopics/read",
 
     ]
   }
