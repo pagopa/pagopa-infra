@@ -271,3 +271,35 @@ variable "pod_disruption_budgets" {
   description = "Pod disruption budget for domain namespace"
   default     = {}
 }
+
+variable "pagopa_shared_toolbox_enabled" {
+  type        = bool
+  description = "pagoPA Shared Toolbox enabled"
+  default     = true
+}
+
+variable "cname_record_name" {
+  type    = string
+  default = "shared"
+}
+
+variable "cdn_storage_account_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) Cdn storage account replication type"
+}
+
+variable "pagopa_shared_toolbox_auth_client_id" {
+  type = string
+}
+
+variable "pagopa_shared_toolbox_singlepageapp" {
+  type        = list(string)
+  description = "Single Page Applications root directories"
+  default     = ["ui"]
+}
+
+variable "robots_indexed_paths" {
+  type        = list(string)
+  description = "List of cdn paths to allow robots index"
+}
