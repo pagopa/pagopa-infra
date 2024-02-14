@@ -30,7 +30,7 @@ variables:
   # working dir
   WORKING_DIR_APP: 'src/domains/qi-app'
   WORKING_DIR_COMMON: 'src/domains/qi-common'
-  WORKING_DIR_SECRET: 'src/domains/qi-secret'
+  WORKING_DIR_SECRET: 'src/domains/qi-secrets'
   DOMAIN_NAME: qi
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
