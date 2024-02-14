@@ -68,7 +68,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v6.0.0
+      ref: refs/heads/iac-fix
       endpoint: "io-azure-devops-github-ro"
 
 stages:
