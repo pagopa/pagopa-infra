@@ -37,5 +37,5 @@ locals {
   storage_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
   azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
-  azdo_iac_managed_identities = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
+  azdo_iac_managed_identities   = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
 }
