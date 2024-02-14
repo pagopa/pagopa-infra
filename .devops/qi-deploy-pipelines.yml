@@ -28,9 +28,10 @@ parameters:
 variables:
   TIME_OUT: 10
   # working dir
-  WORKING_DIR_APP: 'src/domains/qi-app'
-  WORKING_DIR_COMMON: 'src/domains/qi-common'
-  DOMAIN_NAME: qi
+  WORKING_DIR_APP: 'src/domains/qui-app'
+  WORKING_DIR_COMMON: 'src/domains/qui-common'
+  WORKING_DIR_SECRET: 'src/domains/qui-secret'
+  DOMAIN_NAME: qui
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
   poolNameProd: '$(TF_POOL_NAME_PROD)'
@@ -97,6 +98,17 @@ stages:
         WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
         AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
         AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameDev}}"
+    #SECRET
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        TF_ENVIRONMENT_FOLDER: "weu-dev"
+        ENVIRONMENT: "DEV"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameDev}}"
+        WORKINGDIR: ${{ variables.WORKING_DIR_SECRET }}
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameDev}}"
+
 #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
     #APP
@@ -121,6 +133,16 @@ stages:
         ENVIRONMENT: "UAT"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
         WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameUat}}"
+    #SECRET
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        TF_ENVIRONMENT_FOLDER: "weu-uat"
+        ENVIRONMENT: "UAT"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
+        WORKINGDIR: ${{ variables.WORKING_DIR_SECRET }}
         AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
         AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameUat}}"
 
@@ -148,5 +170,15 @@ stages:
         ENVIRONMENT: "PROD"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameProd}}"
         WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
+    #SECRET
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        TF_ENVIRONMENT_FOLDER: "weu-prod"
+        ENVIRONMENT: "PROD"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameProd}}"
+        WORKINGDIR: ${{ variables.WORKING_DIR_SECRET }}
         AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
         AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"

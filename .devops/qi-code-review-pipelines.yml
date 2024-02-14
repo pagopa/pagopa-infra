@@ -5,8 +5,9 @@ pr:
       - main
   paths:
     include:
-      - 'src/domains/qi-app'
-      - 'src/domains/qi-common'
+      - 'src/domains/qui-app'
+      - 'src/domains/qui-common'
+      - 'src/domains/qui-secret'
     exclude:
       - '**/*.lock.hcl'
       - '**/*.md'
@@ -37,8 +38,9 @@ parameters:
 variables:
   TIME_OUT: 15
   # working dir
-  WORKING_DIR_APP: 'src/domains/qi-app'
-  WORKING_DIR_COMMON: 'src/domains/qi-common'
+  WORKING_DIR_APP: 'src/domains/qui-app'
+  WORKING_DIR_COMMON: 'src/domains/qui-common'
+  WORKING_DIR_SECRET: 'src/domains/qui-secret'
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
   poolNameProd: '$(TF_POOL_NAME_PROD)'
@@ -80,6 +82,22 @@ stages:
     pool:
       name: "${{variables.poolNameDev}}"
     jobs:
+      - job: tfplan_secret
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan core
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              TF_ENVIRONMENT_FOLDER: "weu-dev"
+              WORKINGDIR: ${{ variables.WORKING_DIR_SECRET }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+              TF_SUMMARIZE: true
       - job: tfplan_common
         strategy:
           parallel: 1
@@ -123,6 +141,22 @@ stages:
     pool:
       name: "${{variables.poolNameUat}}"
     jobs:
+      - job: tfplan_secret
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan core
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              TF_ENVIRONMENT_FOLDER: "weu-uat"
+              WORKINGDIR: ${{ variables.WORKING_DIR_SECRET }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+              TF_SUMMARIZE: true
       - job: tfplan_common
         strategy:
           parallel: 1
@@ -166,6 +200,22 @@ stages:
     pool:
       name: "${{variables.poolNameProd}}"
     jobs:
+      - job: tfplan_secret
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - checkout: self
+          # 1. Install terraform
+          - template: templates/terraform-setup/template.yaml@terraform
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan core
+          - template: templates/terraform-plan/template.yaml@terraform
+            parameters:
+              TF_ENVIRONMENT_FOLDER: "weu-prod"
+              WORKINGDIR: ${{ variables.WORKING_DIR_SECRET }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+              TF_SUMMARIZE: true
       - job: tfplan_common
         strategy:
           parallel: 1
