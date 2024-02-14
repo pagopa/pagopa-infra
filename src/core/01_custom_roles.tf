@@ -24,6 +24,8 @@ resource "azurerm_role_definition" "iac_reader" {
       "Microsoft.Cache/redis/read", # Redis
       # "Microsoft.Cache/redis/listKeys/action", # Redis List
       "Microsoft.Web/sites/*/listkeys/action",
+      "Microsoft.Web/sites/read",
+      "Microsoft.Web/serverfarms/read",
       # "Microsoft.Web/sites/host/listkeys/action",
       "Microsoft.Storage/*/listkeys/action", # terraform get status backend
       # "Microsoft.Storage/storageAccounts/listkeys/action",             # terraform get status backend
@@ -32,6 +34,7 @@ resource "azurerm_role_definition" "iac_reader" {
       # "Microsoft.Storage/storageAccounts/queueServices/read",
       "Microsoft.Storage/*/read",
       # "Microsoft.Storage/storageAccounts/read",
+      "Microsoft.ContainerRegistry/registries/read", #ACR
       "Microsoft.ContainerRegistry/*/listCredentials/action", # ACR list
       # "Microsoft.ContainerRegistry/registries/listCredentials/action", # ACR list
       "Microsoft.ApiManagement/*/read",
@@ -64,10 +67,19 @@ resource "azurerm_role_definition" "iac_reader" {
       "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/read", #cosmos mongodb
       "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections/read", #cosmosdb mongodb
       "Microsoft.DocumentDB/databaseAccounts/listKeys/action", #cosmosdb
+      "Microsoft.DocumentDB/databaseAccounts/readonlykeys/action", #cosmosdb
+      "Microsoft.DocumentDB/databaseAccounts/listConnectionStrings/action", #cosmosdb
       "Microsoft.ContainerService/managedClusters/accessProfiles/listCredential/action", #aks
       "Microsoft.Kusto/clusters/databases/read", #DAX
+      "Microsoft.Kusto/clusters/databases/principalAssignments/read",
       "Microsoft.DataFactory/factories/read",
+      "Microsoft.DataFactory/factories/linkedservices/read",
+      "Microsoft.DataFactory/factories/pipelines/read",
       "Microsoft.EventGrid/systemTopics/read",
+      "Microsoft.EventGrid/systemTopics/eventSubscriptions/read",
+      "Microsoft.EventHub/namespaces/eventhubs/authorizationRules/read",
+      "Microsoft.Cdn/profiles/read",
+      "Microsoft.Cdn/profiles/endpoints/read",
 
     ]
   }
