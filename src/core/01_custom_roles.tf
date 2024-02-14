@@ -26,6 +26,7 @@ resource "azurerm_role_definition" "iac_reader" {
       "Microsoft.Web/sites/*/listkeys/action",
       "Microsoft.Web/sites/read",
       "Microsoft.Web/serverfarms/read",
+      "Microsoft.Web/sites/config/read",
       # "Microsoft.Web/sites/host/listkeys/action",
       "Microsoft.Storage/*/listkeys/action", # terraform get status backend
       # "Microsoft.Storage/storageAccounts/listkeys/action",             # terraform get status backend
@@ -68,7 +69,9 @@ resource "azurerm_role_definition" "iac_reader" {
       "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections/read", #cosmosdb mongodb
       "Microsoft.DocumentDB/databaseAccounts/listKeys/action", #cosmosdb
       "Microsoft.DocumentDB/databaseAccounts/readonlykeys/action", #cosmosdb
+      "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/read", #cosmosdb
       "Microsoft.DocumentDB/databaseAccounts/listConnectionStrings/action", #cosmosdb
+      "Microsoft.DocumentDB/databaseAccounts/tables/read", #cosmosdb
       "Microsoft.ContainerService/managedClusters/accessProfiles/listCredential/action", #aks
       "Microsoft.Kusto/clusters/databases/read", #DAX
       "Microsoft.Kusto/clusters/databases/principalAssignments/read",
@@ -78,8 +81,10 @@ resource "azurerm_role_definition" "iac_reader" {
       "Microsoft.EventGrid/systemTopics/read",
       "Microsoft.EventGrid/systemTopics/eventSubscriptions/read",
       "Microsoft.EventHub/namespaces/eventhubs/authorizationRules/read",
+      "Microsoft.EventHub/namespaces/read",
       "Microsoft.Cdn/profiles/read",
       "Microsoft.Cdn/profiles/endpoints/read",
+      "Microsoft.DataFactory/factories/datasets/read",
 
     ]
   }
