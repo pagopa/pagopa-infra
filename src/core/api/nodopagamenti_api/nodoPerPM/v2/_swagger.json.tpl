@@ -95,12 +95,17 @@
     "Error": {
       "type": "object",
       "required": [
-        "error"
+        "outcome",
+        "description"
       ],
       "properties": {
-        "error": {
+        "outcome": {
           "type": "string",
-          "example": "error message"
+          "example": "KO"
+        },
+        "description": {
+          "type": "string",
+          "example": "error description"
         }
       }
     },

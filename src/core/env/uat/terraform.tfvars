@@ -81,6 +81,8 @@ redis_cache_enabled            = true
 
 # app_gateway
 app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
+app_gateway_upload_certificate_name     = "upload-uat-platform-pagopa-it"
+upload_endpoint_enabled                 = true
 app_gateway_prf_certificate_name        = "api-prf-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
@@ -147,6 +149,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "151.2.45.1",     # Softlab L1 Pagamenti VPN
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
+    "193.203.230.21", # VPN NEXI
   ]
 }
 
