@@ -13,6 +13,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_flows"></a> [flows](#module\_flows) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
+| <a name="module_gpd_archive_sa"></a> [gpd\_archive\_sa](#module\_gpd\_archive\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 | <a name="module_gpd_cosmosdb_containers"></a> [gpd\_cosmosdb\_containers](#module\_gpd\_cosmosdb\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v6.4.1 |
 | <a name="module_gpd_cosmosdb_database"></a> [gpd\_cosmosdb\_database](#module\_gpd\_cosmosdb\_database) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v6.4.1 |
 | <a name="module_gpd_payments_cosmosdb_account"></a> [gpd\_payments\_cosmosdb\_account](#module\_gpd\_payments\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v7.0.0 |
@@ -23,7 +24,6 @@
 | <a name="module_gps_cosmosdb_snet"></a> [gps\_cosmosdb\_snet](#module\_gps\_cosmosdb\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.6.1 |
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v7.45.0 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v6.4.1 |
-| <a name="module_payments_receipt_sa"></a> [payments\_receipt\_sa](#module\_payments\_receipt\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 | <a name="module_postgres_flexible_server_private"></a> [postgres\_flexible\_server\_private](#module\_postgres\_flexible\_server\_private) | git::https://github.com/pagopa/terraform-azurerm-v3//postgres_flexible_server | v7.23.0 |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3//subnet | v6.11.2 |
 | <a name="module_postgres_flexible_snet_replica"></a> [postgres\_flexible\_snet\_replica](#module\_postgres\_flexible\_snet\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.22.0 |
@@ -37,6 +37,8 @@
 | Name | Type |
 |------|------|
 | [azurerm_cosmosdb_table.payments_receipts_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_table) | resource |
+| [azurerm_eventgrid_system_topic.storage_topic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventgrid_system_topic) | resource |
+| [azurerm_eventgrid_system_topic_event_subscription.storage_subscription](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventgrid_system_topic_event_subscription) | resource |
 | [azurerm_key_vault_access_policy.ad_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.azdevops_iac_legacy_policies](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -48,6 +50,7 @@
 | [azurerm_key_vault_secret.flows_sa_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd-paa-password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd_apiconfig_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.gpd_archive_sa_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd_core_key_for_upload](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd_db_pwd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.gpd_db_usr](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -68,7 +71,6 @@
 | [azurerm_key_vault_secret.payments_cosmos_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.pgres_admin_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.pgres_admin_pwd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.storage_reporting_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.payments_gpd_inconsistency_error](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_postgresql_database.apd_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_database) | resource |
@@ -83,10 +85,13 @@
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_storage_container.reporting_flows_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_management_policy.gpd_sa_lifecycle_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
+| [azurerm_storage_queue.gpd_blob_events_queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
+| [azurerm_storage_queue.gpd_valid_positions_queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.reporting_flows_queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.reporting_options_queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.reporting_organizations_queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
-| [azurerm_storage_table.payments_receipts_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
+| [azurerm_storage_table.gpd_archive_pd_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
+| [azurerm_storage_table.gpd_archive_po_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [azurerm_storage_table.reporting_flows_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [azurerm_storage_table.reporting_organizations_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
@@ -116,6 +121,7 @@
 | [azurerm_resource_group.identity_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_subnet.aks_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_user_assigned_identity.iac_federated_azdo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
@@ -128,14 +134,13 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_application_insights_name"></a> [application\_insights\_name](#input\_application\_insights\_name) | Specifies the name of the Application Insights. | `string` | n/a | yes |
 | <a name="input_cidr_subnet_gpd_payments_cosmosdb"></a> [cidr\_subnet\_gpd\_payments\_cosmosdb](#input\_cidr\_subnet\_gpd\_payments\_cosmosdb) | Cosmos DB gpd payments address space | `list(string)` | `null` | no |
-| <a name="input_cidr_subnet_gpd_storage_account"></a> [cidr\_subnet\_gpd\_storage\_account](#input\_cidr\_subnet\_gpd\_storage\_account) | Storage account network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_gps_cosmosdb"></a> [cidr\_subnet\_gps\_cosmosdb](#input\_cidr\_subnet\_gps\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_pg_flex_dbms"></a> [cidr\_subnet\_pg\_flex\_dbms](#input\_cidr\_subnet\_pg\_flex\_dbms) | Postgres Flexible Server network address space. | `list(string)` | n/a | yes |
 | <a name="input_cosmos_gpd_payments_db_params"></a> [cosmos\_gpd\_payments\_db\_params](#input\_cosmos\_gpd\_payments\_db\_params) | n/a | <pre>object({<br>    kind           = string<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>    payments_receipts_table = object({<br>      autoscale  = bool<br>      throughput = number<br>    })<br>  })</pre> | n/a | yes |
 | <a name="input_cosmos_gps_db_params"></a> [cosmos\_gps\_db\_params](#input\_cosmos\_gps\_db\_params) | n/a | <pre>object({<br>    kind           = string<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>  })</pre> | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
-| <a name="input_enable_gpd_payments_backup"></a> [enable\_gpd\_payments\_backup](#input\_enable\_gpd\_payments\_backup) | (Optional) Enables nodo sftp storage account backup | `bool` | `false` | no |
+| <a name="input_enable_gpd_archive_backup"></a> [enable\_gpd\_archive\_backup](#input\_enable\_gpd\_archive\_backup) | (Optional) Enables nodo sftp storage account backup | `bool` | `false` | no |
 | <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
@@ -143,18 +148,20 @@
 | <a name="input_flow_storage_account_replication_type"></a> [flow\_storage\_account\_replication\_type](#input\_flow\_storage\_account\_replication\_type) | (Optional) Reporting storage acocunt replication type | `string` | `"LRS"` | no |
 | <a name="input_geo_replica_cidr_subnet_postgresql"></a> [geo\_replica\_cidr\_subnet\_postgresql](#input\_geo\_replica\_cidr\_subnet\_postgresql) | Address prefixes replica subnet postgresql | `list(string)` | `null` | no |
 | <a name="input_geo_replica_enabled"></a> [geo\_replica\_enabled](#input\_geo\_replica\_enabled) | (Optional) True if geo replica should be active for key data components i.e. PostgreSQL Flexible servers | `bool` | `false` | no |
-| <a name="input_gpd_account_replication_type"></a> [gpd\_account\_replication\_type](#input\_gpd\_account\_replication\_type) | Defines the type of replication to use for this storage account. Valid options are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS. Changing this forces a new resource to be created when types LRS, GRS and RAGRS are changed to ZRS, GZRS or RAGZRS and vice versa | `string` | n/a | yes |
+| <a name="input_gpd_archive_advanced_threat_protection"></a> [gpd\_archive\_advanced\_threat\_protection](#input\_gpd\_archive\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
+| <a name="input_gpd_archive_replication_type"></a> [gpd\_archive\_replication\_type](#input\_gpd\_archive\_replication\_type) | Archive storage account replication type | `string` | n/a | yes |
 | <a name="input_gpd_db_name"></a> [gpd\_db\_name](#input\_gpd\_db\_name) | Name of the DB to connect to | `string` | `"apd"` | no |
-| <a name="input_gpd_disable_network_rules"></a> [gpd\_disable\_network\_rules](#input\_gpd\_disable\_network\_rules) | If false, allow any connection from outside the vnet | `bool` | `false` | no |
-| <a name="input_gpd_enable_private_endpoint"></a> [gpd\_enable\_private\_endpoint](#input\_gpd\_enable\_private\_endpoint) | If true, create a private endpoint for the GPD storage account | `bool` | `false` | no |
-| <a name="input_gpd_ip_rules"></a> [gpd\_ip\_rules](#input\_gpd\_ip\_rules) | List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed | `list(string)` | `[]` | no |
-| <a name="input_gpd_payments_advanced_threat_protection"></a> [gpd\_payments\_advanced\_threat\_protection](#input\_gpd\_payments\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
-| <a name="input_gpd_payments_sa_backup_retention_days"></a> [gpd\_payments\_sa\_backup\_retention\_days](#input\_gpd\_payments\_sa\_backup\_retention\_days) | (Optional) nodo sftp storage backup retention | `number` | `0` | no |
-| <a name="input_gpd_payments_sa_delete_retention_days"></a> [gpd\_payments\_sa\_delete\_retention\_days](#input\_gpd\_payments\_sa\_delete\_retention\_days) | (Optional) nodo sftp storage delete retention | `number` | `0` | no |
-| <a name="input_gpd_payments_versioning"></a> [gpd\_payments\_versioning](#input\_gpd\_payments\_versioning) | Enable sa versioning | `bool` | `false` | no |
-| <a name="input_gpd_sa_delete"></a> [gpd\_sa\_delete](#input\_gpd\_sa\_delete) | Number of days after which the blob is deleted | `number` | n/a | yes |
-| <a name="input_gpd_sa_public_network_access_enabled"></a> [gpd\_sa\_public\_network\_access\_enabled](#input\_gpd\_sa\_public\_network\_access\_enabled) | True if public network access is enabled. It should always set to false unless there are special needs | `bool` | `false` | no |
-| <a name="input_gpd_sa_tier_to_archive"></a> [gpd\_sa\_tier\_to\_archive](#input\_gpd\_sa\_tier\_to\_archive) | Number of days after which the blob is moved to archive | `number` | n/a | yes |
+| <a name="input_gpd_sftp_cidr_subnet_gpd_storage_account"></a> [gpd\_sftp\_cidr\_subnet\_gpd\_storage\_account](#input\_gpd\_sftp\_cidr\_subnet\_gpd\_storage\_account) | Storage account network address space. | `list(string)` | n/a | yes |
+| <a name="input_gpd_sftp_disable_network_rules"></a> [gpd\_sftp\_disable\_network\_rules](#input\_gpd\_sftp\_disable\_network\_rules) | If false, allow any connection from outside the vnet | `bool` | `false` | no |
+| <a name="input_gpd_sftp_enable_private_endpoint"></a> [gpd\_sftp\_enable\_private\_endpoint](#input\_gpd\_sftp\_enable\_private\_endpoint) | If true, create a private endpoint for the GPD storage account | `bool` | `false` | no |
+| <a name="input_gpd_sftp_ip_rules"></a> [gpd\_sftp\_ip\_rules](#input\_gpd\_sftp\_ip\_rules) | List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed | `list(string)` | `[]` | no |
+| <a name="input_gpd_sftp_sa_access_tier"></a> [gpd\_sftp\_sa\_access\_tier](#input\_gpd\_sftp\_sa\_access\_tier) | (Optional) Defines the access tier for BlobStorage, FileStorage and StorageV2 accounts. Valid options are Hot and Cool, defaults to Hot | `string` | `"Hot"` | no |
+| <a name="input_gpd_sftp_sa_delete"></a> [gpd\_sftp\_sa\_delete](#input\_gpd\_sftp\_sa\_delete) | Number of days after which the blob is deleted | `number` | n/a | yes |
+| <a name="input_gpd_sftp_sa_public_network_access_enabled"></a> [gpd\_sftp\_sa\_public\_network\_access\_enabled](#input\_gpd\_sftp\_sa\_public\_network\_access\_enabled) | True if public network access is enabled. It should always set to false unless there are special needs | `bool` | `false` | no |
+| <a name="input_gpd_sftp_sa_replication_type"></a> [gpd\_sftp\_sa\_replication\_type](#input\_gpd\_sftp\_sa\_replication\_type) | Defines the type of replication to use for this storage account. Valid options are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS. Changing this forces a new resource to be created when types LRS, GRS and RAGRS are changed to ZRS, GZRS or RAGZRS and vice versa | `string` | n/a | yes |
+| <a name="input_gpd_sftp_sa_snet_private_link_service_network_policies_enabled"></a> [gpd\_sftp\_sa\_snet\_private\_link\_service\_network\_policies\_enabled](#input\_gpd\_sftp\_sa\_snet\_private\_link\_service\_network\_policies\_enabled) | If true, create a private link service | `bool` | `true` | no |
+| <a name="input_gpd_sftp_sa_tier_to_archive"></a> [gpd\_sftp\_sa\_tier\_to\_archive](#input\_gpd\_sftp\_sa\_tier\_to\_archive) | Number of days after which the blob is moved to archive | `number` | `-1` | no |
+| <a name="input_gpd_sftp_sa_tier_to_cool"></a> [gpd\_sftp\_sa\_tier\_to\_cool](#input\_gpd\_sftp\_sa\_tier\_to\_cool) | Number of days after which the blob is moved to cool | `number` | n/a | yes |
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
@@ -170,7 +177,6 @@
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_reporting_storage_account"></a> [reporting\_storage\_account](#input\_reporting\_storage\_account) | n/a | <pre>object({<br>    advanced_threat_protection = bool<br>    blob_delete_retention_days = number<br>    blob_versioning_enabled    = bool<br>    backup_enabled             = bool<br>    backup_retention           = optional(number, 0)<br>  })</pre> | <pre>{<br>  "advanced_threat_protection": false,<br>  "backup_enabled": false,<br>  "backup_retention": 0,<br>  "blob_delete_retention_days": 30,<br>  "blob_versioning_enabled": false<br>}</pre> | no |
 | <a name="input_storage_account_replication_type"></a> [storage\_account\_replication\_type](#input\_storage\_account\_replication\_type) | (Optional) Fn app storage acocunt replication type | `string` | `"LRS"` | no |
-| <a name="input_storage_account_snet_private_link_service_network_policies_enabled"></a> [storage\_account\_snet\_private\_link\_service\_network\_policies\_enabled](#input\_storage\_account\_snet\_private\_link\_service\_network\_policies\_enabled) | If true, create a private link service | `bool` | `true` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 
 ## Outputs
