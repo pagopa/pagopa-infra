@@ -47,21 +47,6 @@ variables:
   azureServiceConnectionPlanNameProd: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
   githubEndpointName: '$(TF_GITHUB_SERVICE_ENDPOINT_NAME)'
 
-  DEV_AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
-  DEV_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
-  DEV_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
-  AKS_DEV_NAME: '$(TF_AKS_DEV_NAME)'
-
-  UAT_AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
-  UAT_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
-  UAT_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
-  AKS_UAT_NAME: '$(TF_AKS_UAT_NAME)'
-
-  PROD_AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
-  PROD_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
-  PROD_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
-  AKS_PROD_NAME: '$(TF_AKS_PROD_NAME)'
-
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -112,10 +97,6 @@ stages:
               WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
               TF_SUMMARIZE: true
-              AKS_NAME: ${{ variables.AKS_DEV_NAME }}
-              AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
-              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
-              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
   - stage: UAT
     dependsOn: []
@@ -155,10 +136,6 @@ stages:
               WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
               TF_SUMMARIZE: true
-              AKS_NAME: ${{ variables.AKS_UAT_NAME }}
-              AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
-              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
-              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
   - stage: PROD
     dependsOn: []
@@ -198,7 +175,3 @@ stages:
               WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
               TF_SUMMARIZE: true
-              AKS_NAME: ${{ variables.AKS_PROD_NAME }}
-              AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
-              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
-              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
