@@ -66,7 +66,7 @@ stages:
       name: "${{variables.poolNameDev}}"
     jobs:
       #APP
-      - job: tfplan_checkout
+      - job: tfplan_checkout_app
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
@@ -83,7 +83,7 @@ stages:
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
               TF_SUMMARIZE: true
       #COMMON
-      - job: tfplan_checkout
+      - job: tfplan_checkout_common
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
@@ -107,7 +107,7 @@ stages:
       name: "${{variables.poolNameUat}}"
     jobs:
       #APP
-      - job: tfplan_checkout
+      - job: tfplan_checkout_app
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
@@ -124,7 +124,7 @@ stages:
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
               TF_SUMMARIZE: true
       #COMMON
-      - job: tfplan_checkout
+      - job: tfplan_checkout_common
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
@@ -148,7 +148,7 @@ stages:
       name: "${{variables.poolNameProd}}"
     jobs:
       #APP
-      - job: tfplan_checkout
+      - job: tfplan_checkout_app
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
@@ -165,7 +165,7 @@ stages:
               AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
               TF_SUMMARIZE: true
       #COMMON
-      - job: tfplan_checkout
+      - job: tfplan_checkout_common
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
