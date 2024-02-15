@@ -262,39 +262,3 @@ resource "azurerm_key_vault_secret" "pagopa_shared_toolbox_web_storage_blob_conn
 
   key_vault_id = data.azurerm_key_vault.kv.id
 }
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry
-resource "azurerm_key_vault_secret" "pagopa_shared_toolbox_auth_client_id" {
-  name         = "auth-clientid"
-  value        = var.pagopa_shared_toolbox_auth_client_id
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry
-resource "azurerm_key_vault_secret" "pagopa_shared_toolbox_auth_redirect_url" {
-  name         = "auth-redirect-url"
-  value        = var.env == "prod" ? "https://shared.platform.pagopa.it/" : "https://shared.${var.env}.platform.pagopa.it/"
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry
-resource "azurerm_key_vault_secret" "pagopa_shared_toolbox_auth_scopes" {
-  name         = "auth-scopes"
-  value        = "api://${var.prefix}-${var.env_short}-shared_toolbox/access-shared_toolbox"
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry
-resource "azurerm_key_vault_secret" "pagopa_shared_toolbox_auth_tenant" {
-  name         = "auth-tenant"
-  value        = "https://login.microsoftonline.com/7788edaf-0346-4068-9d79-c868aed15b3d"
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
