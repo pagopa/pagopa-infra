@@ -82,8 +82,10 @@ resource "azurerm_role_definition" "iac_reader" {
       # "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/read", #cosmos mongodb
       # "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections/read", #cosmosdb mongodb
       "Microsoft.ContainerService/managedClusters/accessProfiles/listCredential/action", #aks
-      "Microsoft.Kusto/clusters/databases/read",                                         #DAX
-      "Microsoft.Kusto/clusters/databases/*/read",
+      "Microsoft.Kusto/clusters/read",
+      "Microsoft.Kusto/clusters/*/read",
+      # "Microsoft.Kusto/clusters/databases/read",                                         #DAX
+      # "Microsoft.Kusto/clusters/databases/*/read",
       # "Microsoft.Kusto/clusters/databases/principalAssignments/read",
       "Microsoft.DataFactory/factories/read",
       "Microsoft.DataFactory/factories/*/read",
