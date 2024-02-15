@@ -51,7 +51,7 @@ locals {
     product_id            = "mocker"
     display_name          = "Mocker - Core"
     description           = "Generic entrypoint for mocking response for pagoPA platform"
-    subscription_required = true
+    subscription_required = false
     subscription_limit    = 1000
 
     path        = "mocker"
