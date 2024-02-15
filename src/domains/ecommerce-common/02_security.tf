@@ -484,3 +484,15 @@ resource "azurerm_key_vault_secret" "node_forwarder_api_key" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "transactions_service_auth_update_api_key" {
+  name         = "transactions-service-auth-update-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
