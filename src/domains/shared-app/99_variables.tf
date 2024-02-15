@@ -289,10 +289,6 @@ variable "cdn_storage_account_replication_type" {
   description = "(Optional) Cdn storage account replication type"
 }
 
-variable "pagopa_shared_toolbox_auth_client_id" {
-  type = string
-}
-
 variable "pagopa_shared_toolbox_singlepageapp" {
   type        = list(string)
   description = "Single Page Applications root directories"

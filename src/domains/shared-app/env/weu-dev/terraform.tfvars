@@ -68,6 +68,4 @@ taxonomy_function_autoscale = {
 # pdf-engine
 cidr_subnet_pdf_engine_app_service = ["10.1.187.0/24"]
 
-# Currently using APIConfig client ID with same grants
-pagopa_shared_toolbox_auth_client_id = "156820bb-8193-4cc8-86a8-b710fb6b6756"
-robots_indexed_paths                 = []
+robots_indexed_paths = []
