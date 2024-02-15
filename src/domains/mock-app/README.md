@@ -33,6 +33,7 @@
 | <a name="module_apim_mock_psp_service_product"></a> [apim\_mock\_psp\_service\_product](#module\_apim\_mock\_psp\_service\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_mock_psp_service_product_secondary"></a> [apim\_mock\_psp\_service\_product\_secondary](#module\_apim\_mock\_psp\_service\_product\_secondary) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_mock_receipt_pdf"></a> [apim\_mock\_receipt\_pdf](#module\_apim\_mock\_receipt\_pdf) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
+| <a name="module_apim_mocker_config_product"></a> [apim\_mocker\_config\_product](#module\_apim\_mocker\_config\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
 | <a name="module_apim_mocker_core_api_v1"></a> [apim\_mocker\_core\_api\_v1](#module\_apim\_mocker\_core\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.7.0 |
 | <a name="module_apim_mocker_core_product"></a> [apim\_mocker\_core\_product](#module\_apim\_mocker\_core\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
 | <a name="module_apim_receipt_pdf_api"></a> [apim\_receipt\_pdf\_api](#module\_apim\_receipt\_pdf\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |

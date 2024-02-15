@@ -60,6 +60,18 @@ locals {
     pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
   }
 
+  mocker_config_api_locals = {
+    product_id            = "mocker-config"
+    display_name          = "Mocker Configurator"
+    description           = "Service for configure resources used by Mocker"
+    subscription_required = false
+
+    path        = "mocker-config"
+    service_url = null
+
+    pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
+  }
+
   # Product APIM for Node
   apim_x_node_product_id = "apim_for_node"
 }
