@@ -3,7 +3,7 @@
 module "poc_reporting_enrollment_sa" {
   count = var.env_short == "d" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.4.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.60.0"
 
   name                          = replace(format("%s-penrol-sa", local.project), "-", "")
   account_kind                  = "StorageV2"
