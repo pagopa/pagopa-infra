@@ -11,10 +11,21 @@ module "integration_appgateway_snet" {
 resource "azurerm_user_assigned_identity" "appgateway" {
   resource_group_name = data.azurerm_resource_group.sec_rg.name
   location            = data.azurerm_resource_group.sec_rg.location
-  name                = format("%s-appgateway-identity", local.product_region)
+  name                = format("%s-integration-appgateway-identity", local.product_region)
 
   tags = var.tags
 }
+
+resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
+  key_vault_id            = data.azurerm_key_vault.kv_core.id
+  tenant_id               = data.azurerm_client_config.current.tenant_id
+  object_id               = azurerm_user_assigned_identity.appgateway.principal_id
+  key_permissions         = ["Get", "List"]
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List", "Purge"]
+  storage_permissions     = []
+}
+
 
 resource "azurerm_public_ip" "integration_appgateway_public_ip" {
   name                = "${local.product_region}-integration-appgateway-pip"
@@ -45,7 +56,7 @@ module "app_gw_integration" {
   subnet_id          = module.integration_appgateway_snet.id
   public_ip_id       = azurerm_public_ip.integration_appgateway_public_ip.id
   private_ip_address = [var.integration_appgateway_private_ip]
-  zones              = [1, 2, 3]
+  zones              = var.integration_appgateway_zones
 
   # Configure backends
   backends = {
@@ -94,7 +105,7 @@ module "app_gw_integration" {
       protocol           = "Https"
       host               = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", local.product_region)
       firewall_policy_id = null
 
       certificate = {
@@ -111,7 +122,7 @@ module "app_gw_integration" {
       protocol           = "Https"
       host               = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", local.product_region)
       firewall_policy_id = null
 
       certificate = {
@@ -128,7 +139,7 @@ module "app_gw_integration" {
       protocol           = "Https"
       host               = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", local.product_region)
       firewall_policy_id = null
 
       certificate = {

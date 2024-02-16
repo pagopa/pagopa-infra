@@ -371,6 +371,145 @@ variable "integration_appgateway_private_ip" {
   type = string
   description = "Integration app gateway private ip"
 }
+variable "integration_appgateway_zones" {
+  type = list(number)
+  description = "Integration app gateway private ip"
+}
+
+# apim named values
+variable "checkout_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "nodo_pagamenti_psp" {
+  type        = string
+  description = "PSP' white list nodo pagamenti (separate comma list) ."
+  default     = ","
+}
+
+variable "nodo_pagamenti_ec" {
+  type        = string
+  description = "EC' black list nodo pagamenti (separate comma list)."
+  default     = ","
+}
+
+variable "nodo_pagamenti_url" {
+  type        = string
+  description = "Nodo pagamenti url"
+  default     = "https://"
+}
+
+variable "ip_nodo" { # TEMP used only for onPrem shall be replace with "lb_aks"
+  type        = string
+  description = "Nodo pagamenti ip"
+}
+
+variable "lb_aks" {
+  type        = string
+  description = "IP load balancer AKS Nexi/SIA"
+  default     = "0.0.0.0"
+}
+
+variable "base_path_nodo_oncloud" {
+  type        = string
+  description = "base nodo on cloud"
+}
+
+variable "schema_ip_nexi" {
+  type        = string
+  description = "Nodo Pagamenti Nexi schema://ip"
+}
+
+variable "default_node_id" {
+  type        = string
+  description = "Default NodeId according to default base url"
+}
+
+variable "apim_enable_nm3_decoupler_switch" {
+  type        = bool
+  default     = false
+  description = "Enable switch backend address in NM3 algorithm logic"
+}
+
+variable "apim_enable_routing_decoupler_switch" {
+  type        = bool
+  default     = false
+  description = "Enable switch backend address in Routing algorithm logic"
+}
+variable "base_path_nodo_ppt_lmi" {
+  type        = string
+  description = "base nodo on cloud"
+}
+variable "base_path_nodo_ppt_lmi_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/ppt-lmi-dev"
+}
+
+variable "base_path_nodo_sync" {
+  type        = string
+  description = "base nodo on cloud"
+}
+
+variable "base_path_nodo_sync_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/sync-cron-dev/syncWisp"
+}
+
+variable "base_path_nodo_wfesp" {
+  type        = string
+  description = "base nodo on cloud"
+}
+variable "base_path_nodo_wfesp_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/wfesp-dev"
+}
+
+variable "base_path_nodo_fatturazione" {
+  type        = string
+  description = "base nodo on cloud"
+}
+variable "base_path_nodo_fatturazione_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/fatturazione-dev"
+}
+
+variable "base_path_nodo_web_bo" {
+  type        = string
+  description = "base nodo on cloud"
+}
+variable "base_path_nodo_web_bo_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/web-bo-dev"
+}
+
+variable "base_path_nodo_web_bo_history" {
+  type        = string
+  description = "base nodo on cloud"
+}
+variable "base_path_nodo_web_bo_history_dev" {
+  type        = string
+  description = "base nodo on cloud"
+  default     = "/web-bo-history-dev"
+}
+
+variable "dns_zone_wisp2" {
+  type        = string
+  default     = null
+  description = "The wisp2 dns subdomain."
+}
+
+variable "app_gateway_prf_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
+
 
 #
 # Event hub

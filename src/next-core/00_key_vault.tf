@@ -45,3 +45,46 @@ data "azurerm_key_vault_certificate" "management_platform" {
   name         = var.app_gateway_management_certificate_name
   key_vault_id = data.azurerm_key_vault.kv_core.id
 }
+
+
+ data "azurerm_key_vault_secret" "fn_checkout_key" {
+  name         = "fn-checkout-key"
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+
+data "azurerm_key_vault_secret" "google_recaptcha_secret" {
+  name         = "google-recaptcha-secret"
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+
+data "azurerm_key_vault_secret" "fn_buyerbanks_key" {
+  name         = "fn-buyerbanks-key"
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+
+data "azurerm_key_vault_secret" "pm_gtw_hostname" {
+  name         = "pm-gtw-hostname"
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+
+data "azurerm_key_vault_secret" "pm_onprem_hostname" {
+  name         = "pm-onprem-hostname"
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+
+data "azurerm_key_vault_secret" "pm_host" {
+  name         = "pm-host"
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+
+data "azurerm_key_vault_secret" "pm_host_prf" {
+  name         = "pm-host-prf"
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+
+ data "azurerm_key_vault_certificate" "app_gw_platform_prf" {
+  count = (var.dns_zone_prefix_prf == "") ? 0 : 1
+
+  name         = var.app_gateway_prf_certificate_name
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}

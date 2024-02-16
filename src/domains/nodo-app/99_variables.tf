@@ -364,6 +364,14 @@ variable "enable_nodo_re" {
   description = "Enables dumping nodo re"
 }
 
+variable "app_gateway_allowed_paths_pagopa_onprem_only" {
+  type = object({
+    paths = list(string)
+    ips   = list(string)
+  })
+  description = "Allowed paths from pagopa onprem only"
+}
+
 # Storage account
 variable "storage_account_info" {
   type = object({

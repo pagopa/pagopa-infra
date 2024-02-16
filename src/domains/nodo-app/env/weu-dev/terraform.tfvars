@@ -166,6 +166,24 @@ nodo_verifyko_to_tablestorage_function_autoscale = {
   maximum = 3
 }
 
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/allowed/*",
+  ]
+  ips = [
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+  ]
+}
+
 
 storage_account_info = {
   account_kind                      = "StorageV2"
