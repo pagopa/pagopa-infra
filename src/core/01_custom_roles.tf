@@ -21,16 +21,28 @@ resource "azurerm_role_definition" "iac_reader" {
       # "Microsoft.ServiceBus/namespaces/authorizationRules/listKeys/action",              #help to list key for service bus connection
       # "Microsoft.ServiceBus/namespaces/queues/authorizationRules/listKeys/action",
       "Microsoft.Cache/*/listKeys/action", # Redis List
+      "Microsoft.Cache/redis/read",        # Redis
+      "Microsoft.Cache/redis/*/read",      # redis
+      # "Microsoft.Cache/redis/patchSchedules/read", # redis
       # "Microsoft.Cache/redis/listKeys/action", # Redis List
       "Microsoft.Web/sites/*/listkeys/action",
+      "Microsoft.Web/sites/read",
+      "Microsoft.Web/sites/*/read",
+      "Microsoft.Web/serverfarms/read",
+      # "Microsoft.Web/sites/config/read",
       # "Microsoft.Web/sites/host/listkeys/action",
+      "Microsoft.Storage/*/read",
       "Microsoft.Storage/*/listkeys/action", # terraform get status backend
+      "Microsoft.Storage/storageAccounts/*/read",
+      "Microsoft.Storage/storageAccounts/queueServices/*/read",
+      "Microsoft.Storage/storageAccounts/tableServices/*/read",
+      "Microsoft.Storage/storageAccounts/blobServices/*/read",
       # "Microsoft.Storage/storageAccounts/listkeys/action",             # terraform get status backend
       # "Microsoft.Storage/storageAccounts/blobServices/read",
       # "Microsoft.Storage/storageAccounts/fileServices/read",
       # "Microsoft.Storage/storageAccounts/queueServices/read",
-      "Microsoft.Storage/*/read",
       # "Microsoft.Storage/storageAccounts/read",
+      "Microsoft.ContainerRegistry/registries/read",          #ACR
       "Microsoft.ContainerRegistry/*/listCredentials/action", # ACR list
       # "Microsoft.ContainerRegistry/registries/listCredentials/action", # ACR list
       "Microsoft.ApiManagement/*/read",
@@ -51,8 +63,50 @@ resource "azurerm_role_definition" "iac_reader" {
       "Microsoft.Security/*/read",
       # "Microsoft.Security/advancedThreatProtectionSettings/read",
       "Microsoft.Authorization/*/read",
-      "Microsoft.Compute/*/read"
+      "Microsoft.Compute/*/read",
       # "Microsoft.Compute/sshPublicKeys/read",
+      "Microsoft.ManagedIdentity/userAssignedIdentities/read",                              #managed identity
+      "Microsoft.ManagedIdentity/userAssignedIdentities/federatedIdentityCredentials/read", #managed identity
+      "Microsoft.DBforPostgreSQL/servers/read",                                             #postgresql
+      "Microsoft.DBforPostgreSQL/servers/*/read",                                           #postgreql
+      # "Microsoft.DBforPostgreSQL/servers/databases/read", #postgreql
+      # "Microsoft.DBforPostgreSQL/servers/firewallRules/read", #postgresql
+      # "Microsoft.DBforPostgreSQL/servers/configurations/read", #postgresql
+      "Microsoft.DBforPostgreSQL/flexibleServers/read",                     #postgres flexible
+      "Microsoft.DBforPostgreSQL/flexibleServers/*/read",                   #postgres flexible
+      "Microsoft.DocumentDB/databaseAccounts/read",                         #cosmosdb
+      "Microsoft.DocumentDB/databaseAccounts/*/read",                       #cosmos mongodb
+      "Microsoft.DocumentDB/databaseAccounts/listConnectionStrings/action", #cosmosdb
+      "Microsoft.DocumentDB/databaseAccounts/listKeys/action",              #cosmosdb
+      "Microsoft.DocumentDB/databaseAccounts/readonlykeys/action",          #cosmosdb
+      # "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/read", #cosmosdb
+      # "Microsoft.DocumentDB/databaseAccounts/tables/read", #cosmosdb
+      # "Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers/read", #cosmosdb
+      # "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/throughputSettings/read", #cosmosdb
+      # "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/read", #cosmos mongodb
+      # "Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections/read", #cosmosdb mongodb
+      "Microsoft.ContainerService/managedClusters/accessProfiles/listCredential/action", #aks
+      "Microsoft.Kusto/clusters/read",
+      "Microsoft.Kusto/clusters/*/read",
+      # "Microsoft.Kusto/clusters/databases/read",                                         #DAX
+      # "Microsoft.Kusto/clusters/databases/*/read",
+      # "Microsoft.Kusto/clusters/databases/principalAssignments/read",
+      "Microsoft.DataFactory/factories/read",
+      "Microsoft.DataFactory/factories/*/read",
+      # "Microsoft.DataFactory/factories/linkedservices/read",
+      # "Microsoft.DataFactory/factories/pipelines/read",
+      "Microsoft.EventGrid/systemTopics/read",
+      "Microsoft.EventGrid/systemTopics/*/read",
+      # "Microsoft.EventGrid/systemTopics/eventSubscriptions/read",
+      "Microsoft.EventHub/namespaces/read",
+      "Microsoft.EventHub/namespaces/*/read",
+      # "Microsoft.EventHub/namespaces/eventhubs/read",
+      # "Microsoft.EventHub/namespaces/eventhubs/authorizationRules/read",
+      "Microsoft.Cdn/profiles/read",
+      "Microsoft.Cdn/profiles/*/read",
+      # "Microsoft.Cdn/profiles/endpoints/read",
+      "Microsoft.DataFactory/factories/*/read",
+      # "Microsoft.DataFactory/factories/datasets/read",
     ]
   }
 }

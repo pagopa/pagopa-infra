@@ -82,22 +82,22 @@ stages:
     pool:
       name: "${{variables.poolNameDev}}"
     jobs:
-      - job: tfplan_secret
-        strategy:
-          parallel: 1
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - checkout: self
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
-          - template: templates/terraform-summarize/template.yaml@terraform
-          # 2. Run terraform plan core
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              TF_ENVIRONMENT_FOLDER: "weu-dev"
-              WORKINGDIR: ${{ variables.WORKING_DIR_SECRET }}
-              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
-              TF_SUMMARIZE: true
+      # - job: tfplan_secret
+      #   strategy:
+      #     parallel: 1
+      #   timeoutInMinutes: $[variables.TIME_OUT]
+      #   steps:
+      #     - checkout: self
+      #     # 1. Install terraform
+      #     - template: templates/terraform-setup/template.yaml@terraform
+      #     - template: templates/terraform-summarize/template.yaml@terraform
+      #     # 2. Run terraform plan core
+      #     - template: templates/terraform-plan/template.yaml@terraform
+      #       parameters:
+      #         TF_ENVIRONMENT_FOLDER: "weu-dev"
+      #         WORKINGDIR: ${{ variables.WORKING_DIR_SECRET }}
+      #         AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+      #         TF_SUMMARIZE: true
       - job: tfplan_common
         strategy:
           parallel: 1
@@ -141,22 +141,22 @@ stages:
     pool:
       name: "${{variables.poolNameUat}}"
     jobs:
-      - job: tfplan_secret
-        strategy:
-          parallel: 1
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - checkout: self
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
-          - template: templates/terraform-summarize/template.yaml@terraform
-          # 2. Run terraform plan core
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              TF_ENVIRONMENT_FOLDER: "weu-uat"
-              WORKINGDIR: ${{ variables.WORKING_DIR_SECRET }}
-              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
-              TF_SUMMARIZE: true
+      # - job: tfplan_secret
+      #   strategy:
+      #     parallel: 1
+      #   timeoutInMinutes: $[variables.TIME_OUT]
+      #   steps:
+      #     - checkout: self
+      #     # 1. Install terraform
+      #     - template: templates/terraform-setup/template.yaml@terraform
+      #     - template: templates/terraform-summarize/template.yaml@terraform
+      #     # 2. Run terraform plan core
+      #     - template: templates/terraform-plan/template.yaml@terraform
+      #       parameters:
+      #         TF_ENVIRONMENT_FOLDER: "weu-uat"
+      #         WORKINGDIR: ${{ variables.WORKING_DIR_SECRET }}
+      #         AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+      #         TF_SUMMARIZE: true
       - job: tfplan_common
         strategy:
           parallel: 1
@@ -200,22 +200,22 @@ stages:
     pool:
       name: "${{variables.poolNameProd}}"
     jobs:
-      - job: tfplan_secret
-        strategy:
-          parallel: 1
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - checkout: self
-          # 1. Install terraform
-          - template: templates/terraform-setup/template.yaml@terraform
-          - template: templates/terraform-summarize/template.yaml@terraform
-          # 2. Run terraform plan core
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              TF_ENVIRONMENT_FOLDER: "weu-prod"
-              WORKINGDIR: ${{ variables.WORKING_DIR_SECRET }}
-              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
-              TF_SUMMARIZE: true
+      # - job: tfplan_secret
+      #   strategy:
+      #     parallel: 1
+      #   timeoutInMinutes: $[variables.TIME_OUT]
+      #   steps:
+      #     - checkout: self
+      #     # 1. Install terraform
+      #     - template: templates/terraform-setup/template.yaml@terraform
+      #     - template: templates/terraform-summarize/template.yaml@terraform
+      #     # 2. Run terraform plan core
+      #     - template: templates/terraform-plan/template.yaml@terraform
+      #       parameters:
+      #         TF_ENVIRONMENT_FOLDER: "weu-prod"
+      #         WORKINGDIR: ${{ variables.WORKING_DIR_SECRET }}
+      #         AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+      #         TF_SUMMARIZE: true
       - job: tfplan_common
         strategy:
           parallel: 1
