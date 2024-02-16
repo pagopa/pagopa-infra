@@ -34,7 +34,7 @@ data "azurerm_private_dns_zone" "storage" {
 
 module "taxonomy_storage_snet" {
   count  = var.env_short == "d" ? 0 : 1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.60.0"
 
   name                 = "${local.project}-${local.taxonomy_label}-storage-snet"
   address_prefixes     = var.cidr_subnet_taxonomy_storage_account

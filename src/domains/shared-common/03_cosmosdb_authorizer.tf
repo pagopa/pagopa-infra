@@ -1,5 +1,5 @@
 module "authorizer_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.60.0"
   name                 = "${local.project}-auth-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_authorizer_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
@@ -15,7 +15,7 @@ module "authorizer_cosmosdb_snet" {
 }
 
 module "authorizer_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.4.1"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.60.0"
   name     = "${local.project}-auth-cosmos-account"
   location = var.location
   domain   = "shared"
@@ -56,7 +56,7 @@ module "authorizer_cosmosdb_account" {
 }
 
 module "authorizer_cosmosdb_database" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.4.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v7.60.0"
 
   name                = "authorizer"
   resource_group_name = azurerm_resource_group.shared_rg.name

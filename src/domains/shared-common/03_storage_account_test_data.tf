@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "test_data_rg" {
 
 module "test_data_sa" {
   count  = var.env_short == "p" ? 0 : 1
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.17.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.60.0"
 
   name                            = replace("${local.project}-${local.test_label}-sa", "-", "")
   account_kind                    = var.test_data_storage_account.account_kind
