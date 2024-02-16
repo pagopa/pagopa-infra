@@ -16,7 +16,7 @@ module "apim_standin_manager_product" {
   approval_required     = false
   subscriptions_limit   = 1000
 
-  policy_xml = file("./api_product/_standin_manager_policy.xml")
+  policy_xml = file("./api_product/standin-manager/_base_policy.xml")
 }
 
 ##############
