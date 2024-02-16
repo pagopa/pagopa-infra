@@ -54,6 +54,12 @@ data "azurerm_subnet" "aks_snet" {
   resource_group_name  = local.vnet_resource_group_name
 }
 
+data "azurerm_subnet" "azdo_snet" {
+  name                 = local.azdo_subnet_name
+  virtual_network_name = local.vnet_name
+  resource_group_name  = local.vnet_resource_group_name
+}
+
 data "azurerm_subnet" "aks_subnet" {
   name                 = local.aks_subnet_name
   virtual_network_name = local.vnet_name
