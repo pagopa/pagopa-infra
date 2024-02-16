@@ -22,7 +22,7 @@ module "gpd_sa_sftp" {
     default_action             = var.gpd_sftp_disable_network_rules ? "Allow" : "Deny"
     bypass                     = ["AzureServices"]
     ip_rules                   = var.gpd_sftp_ip_rules
-    virtual_network_subnet_ids = var.gpd_sftp_disable_network_rules ? [] : [data.azurerm_subnet.aks_snet.id]
+    virtual_network_subnet_ids = var.gpd_sftp_disable_network_rules ? [] : [data.azurerm_subnet.aks_snet.id, data.azurerm_subnet.azdo_snet.id]
   }
 
   tags = var.tags
