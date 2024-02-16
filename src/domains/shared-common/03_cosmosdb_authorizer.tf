@@ -47,11 +47,11 @@ module "authorizer_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = []
 
   # private endpoint
-  private_endpoint_sql_name    = "${local.project}-auth-cosmos-endpoint"
+  private_endpoint_sql_name           = "${local.project}-auth-cosmos-endpoint"
   private_service_connection_sql_name = "${local.project}-auth-cosmos-endpoint"
-  private_endpoint_enabled = var.cosmos_authorizer_db_params.private_endpoint_enabled
-  subnet_id                = module.authorizer_cosmosdb_snet.id
-  private_dns_zone_sql_ids     = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_enabled            = var.cosmos_authorizer_db_params.private_endpoint_enabled
+  subnet_id                           = module.authorizer_cosmosdb_snet.id
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
   tags = var.tags
 }

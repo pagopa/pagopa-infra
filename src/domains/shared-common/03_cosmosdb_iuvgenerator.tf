@@ -52,11 +52,11 @@ module "iuvgenerator_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = var.cosmos_iuvgenerator_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
 
   # private endpoint
-  private_endpoint_sql_name    = "${local.project}-iuv-gen-cosmos-sql-endpoint"
+  private_endpoint_sql_name           = "${local.project}-iuv-gen-cosmos-sql-endpoint"
   private_service_connection_sql_name = "${local.project}-iuv-gen-cosmos-sql-endpoint"
-  private_endpoint_enabled = var.cosmos_iuvgenerator_db_params.private_endpoint_enabled
-  subnet_id                = module.iuvgenerator_cosmosdb_snet.id
-  private_dns_zone_sql_ids     = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_enabled            = var.cosmos_iuvgenerator_db_params.private_endpoint_enabled
+  subnet_id                           = module.iuvgenerator_cosmosdb_snet.id
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
   tags = var.tags
 }
