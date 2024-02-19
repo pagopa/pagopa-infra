@@ -185,6 +185,10 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
 }
 
 
+# node forwarder
+nodo_pagamenti_x_forwarded_for = "10.230.8.5"
+
+
 storage_account_info = {
   account_kind                      = "StorageV2"
   account_tier                      = "Standard"

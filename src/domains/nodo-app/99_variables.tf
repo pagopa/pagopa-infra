@@ -372,6 +372,50 @@ variable "app_gateway_allowed_paths_pagopa_onprem_only" {
   description = "Allowed paths from pagopa onprem only"
 }
 
+
+variable "apim_nodo_decoupler_enable" {
+  type        = bool
+  default     = true
+  description = "Apply decoupler to nodo product apim policy"
+}
+
+variable "node_decoupler_primitives" {
+  type        = string
+  description = "Node decoupler primitives"
+  default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
+}
+
+
+variable "nodo_pagamenti_subkey_required" {
+  type        = bool
+  description = "Enabled subkeys for nodo dei pagamenti api"
+  default     = false
+}
+
+# nodo dei pagamenti - auth (nuova connettività)
+variable "nodo_auth_subscription_limit" {
+  type        = number
+  description = "subscriptions limit"
+  default     = 1000
+}
+
+variable "apim_nodo_auth_decoupler_enable" {
+  type        = bool
+  default     = true
+  description = "Apply decoupler to nodo-auth product apim policy"
+}
+
+variable "nodo_pagamenti_auth_password" {
+  type        = string
+  description = "Default password used for nodo-auth"
+  default     = "PLACEHOLDER"
+}
+
+variable "nodo_pagamenti_x_forwarded_for" {
+  type        = string
+  description = "X-Forwarded-For IP address used for nodo-auth"
+}
+
 # Storage account
 variable "storage_account_info" {
   type = object({

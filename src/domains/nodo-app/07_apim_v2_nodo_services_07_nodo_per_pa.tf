@@ -42,7 +42,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_pa_api_v1" {
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/nodopagamenti_api/nodoPerPa/v1/NodoPerPa.wsdl")
+    content_value  = file("./apim_v2/api/nodopagamenti_api/nodoPerPa/v1/NodoPerPa.wsdl")
     wsdl_selector {
       service_name  = "PagamentiTelematiciRPTservice"
       endpoint_name = "PagamentiTelematiciRPTPort"
@@ -55,7 +55,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy" {
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPa/v1/_base_policy.xml.tpl", {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
 }

@@ -4,7 +4,7 @@
 
 module "apim_nodo_sync_product" {
   count  = var.env_short == "p" ? 0 : 1
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
 
   product_id   = "product-nodo-sync"
   display_name = "product-nodo-sync"
@@ -17,7 +17,7 @@ module "apim_nodo_sync_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+  policy_xml = templatefile("./apim_v2/api_product/nodo_pagamenti_api/_base_policy.xml", {
     address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
     address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
   })
@@ -35,7 +35,7 @@ resource "azurerm_api_management_api_version_set" "nodo_sync_api" {
 
 module "apim_nodo_sync_api" {
   count  = var.env_short == "p" ? 0 : 1
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-sync-api", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
@@ -54,11 +54,11 @@ module "apim_nodo_sync_api" {
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/sync/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/sync/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/sync/v1/_base_policy.xml", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/sync/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.apim_dns_zone_prefix, var.external_domain),
     apim_base_path      = "/sync/api/v1"
   })
@@ -70,7 +70,7 @@ module "apim_nodo_sync_api" {
 ############################
 
 module "apim_nodo_wfesp_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
 
   product_id   = "product-nodo-wfesp"
   display_name = "product-nodo-wfesp"
@@ -83,7 +83,7 @@ module "apim_nodo_wfesp_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+  policy_xml = templatefile("./apim_v2/api_product/nodo_pagamenti_api/_base_policy.xml", {
     # address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
     # address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
     address-range-from = "0.0.0.0"
@@ -105,7 +105,7 @@ resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
 # PROD  https://wfesp.pagopa.gov.it/redirect (ex followed by /wpl05 )
 
 module "apim_nodo_wfesp_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-wfesp-api", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
@@ -124,12 +124,12 @@ module "apim_nodo_wfesp_api" {
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/wfesp/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/wfesp/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host = local.apim_hostname
 
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/wfesp/v1/_base_policy.xml", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/wfesp/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.apim_dns_zone_prefix, var.external_domain),
     apim_base_path      = "/redirect"
     #    TODO prod is a variant in this case!
@@ -144,7 +144,7 @@ module "apim_nodo_wfesp_api" {
 
 module "apim_nodo_fatturazione_product" {
   count  = var.env_short == "p" ? 0 : 1
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
 
   product_id   = "product-nodo-fatturazione"
   display_name = "product-nodo-fatturazione"
@@ -157,7 +157,7 @@ module "apim_nodo_fatturazione_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+  policy_xml = templatefile("./apim_v2/api_product/nodo_pagamenti_api/_base_policy.xml", {
     address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
     address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
   })
@@ -175,7 +175,7 @@ resource "azurerm_api_management_api_version_set" "nodo_fatturazione_api" {
 
 module "apim_nodo_fatturazione_api" {
   count  = var.env_short == "p" ? 0 : 1
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-fatturazione-api", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
@@ -194,11 +194,11 @@ module "apim_nodo_fatturazione_api" {
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/fatturazione/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/fatturazione/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/fatturazione/v1/_base_policy.xml", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/fatturazione/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.apim_dns_zone_prefix, var.external_domain),
     apim_base_path      = "/fatturazione/api/v1"
   })
@@ -210,7 +210,7 @@ module "apim_nodo_fatturazione_api" {
 ############################
 
 module "apim_nodo_web_bo_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
 
   product_id   = "product-nodo-web-bo"
   display_name = "product-nodo-web-bo"
@@ -223,7 +223,7 @@ module "apim_nodo_web_bo_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+  policy_xml = templatefile("./apim_v2/api_product/nodo_pagamenti_api/_base_policy.xml", {
     address-range-from = "0.0.0.0"
     address-range-to   = "0.0.0.0"
   })
@@ -242,7 +242,7 @@ module "apim_nodo_web_bo_product" {
 module "apim_nodo_web_bo_api" {
   count = var.env_short != "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-web-bo-api", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
@@ -261,11 +261,11 @@ module "apim_nodo_web_bo_api" {
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/web-bo/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/web-bo/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/web-bo/v1/_base_policy.xml", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/web-bo/v1/_base_policy.xml", {
     # dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
     dns_pagopa_platform = var.env_short != "u" ? "uat.wisp2.pagopa.gov.it" : format("api.%s.%s", var.apim_dns_zone_prefix, var.external_domain),
     apim_base_path      = "/bo-nodo"
@@ -285,7 +285,7 @@ module "apim_nodo_web_bo_api" {
 module "apim_nodo_web_bo_api_onprem" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-web-bo-onprem-api", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
@@ -304,11 +304,11 @@ module "apim_nodo_web_bo_api_onprem" {
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/web-bo/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/web-bo/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/web-bo-on-prem/v1/_base_policy.xml", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/web-bo-on-prem/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.apim_dns_zone_prefix, var.external_domain),
     apim_base_path      = "/bo-nodo"
     allowed_ip_1        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0] # PagoPA on prem VPN
@@ -329,7 +329,7 @@ module "apim_nodo_web_bo_api_onprem" {
 ############################
 
 module "apim_nodo_web_bo_product_history" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
 
   product_id   = "product-nodo-web-bo-history"
   display_name = "product-nodo-web-bo-history"
@@ -342,7 +342,7 @@ module "apim_nodo_web_bo_product_history" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+  policy_xml = templatefile("./apim_v2/api_product/nodo_pagamenti_api/_base_policy.xml", {
     address-range-from = "0.0.0.0"
     address-range-to   = "0.0.0.0"
   })
@@ -361,7 +361,7 @@ module "apim_nodo_web_bo_product_history" {
 module "apim_nodo_web_bo_api_history" {
   count = var.env_short != "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-web-bo-api-history", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
@@ -380,11 +380,11 @@ module "apim_nodo_web_bo_api_history" {
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/web-bo-history/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/web-bo-history/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/web-bo-history/v1/_base_policy.xml", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/web-bo-history/v1/_base_policy.xml", {
     # dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
     dns_pagopa_platform = var.env_short != "u" ? "uat.wisp2.pagopa.gov.it" : format("api.%s.%s", var.apim_dns_zone_prefix, var.external_domain),
     apim_base_path      = "/bo-nodo-history"
@@ -404,7 +404,7 @@ module "apim_nodo_web_bo_api_history" {
 module "apim_nodo_web_bo_api_onprem_history" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-web-bo-onprem-api-history", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
@@ -423,11 +423,11 @@ module "apim_nodo_web_bo_api_onprem_history" {
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/web-bo-history/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/web-bo-history/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/web-bo-history-on-prem/v1/_base_policy.xml", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoServices/web-bo-history-on-prem/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.apim_dns_zone_prefix, var.external_domain),
     apim_base_path      = "/bo-nodo-history"
     allowed_ip_1        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[0] # PagoPA on prem VPN

@@ -206,6 +206,11 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
   ]
 }
 
+nodo_auth_subscription_limit = 10000
+
+# node forwarder
+nodo_pagamenti_x_forwarded_for = "10.230.9.5"
+
 
 storage_account_info = {
   account_kind                      = "StorageV2"

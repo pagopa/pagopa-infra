@@ -38,7 +38,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_api_v1" {
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/nodopagamenti_api/nodoPerPsp/v1/nodoPerPsp.wsdl")
+    content_value  = file("./apim_v2/api/nodopagamenti_api/nodoPerPsp/v1/nodoPerPsp.wsdl")
     wsdl_selector {
       service_name  = "PagamentiTelematiciPspNodoservice"
       endpoint_name = "PPTPort"
@@ -52,7 +52,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy" {
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPsp/v1/_base_policy.xml.tpl", {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
 }
@@ -99,7 +99,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_richiesta_avvisi_api_v1
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/nodopagamenti_api/nodoPerPspRichiestaAvvisi/v1/nodoPerPspRichiestaAvvisi.wsdl")
+    content_value  = file("./apim_v2/api/nodopagamenti_api/nodoPerPspRichiestaAvvisi/v1/nodoPerPspRichiestaAvvisi.wsdl")
     wsdl_selector {
       service_name  = "RichiestaAvvisiservice"
       endpoint_name = "PPTPort"
@@ -113,7 +113,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPspRichiestaAvvisi/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPspRichiestaAvvisi/v1/_base_policy.xml.tpl", {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
 

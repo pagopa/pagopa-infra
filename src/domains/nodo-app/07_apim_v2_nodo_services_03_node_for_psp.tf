@@ -39,7 +39,7 @@ resource "azurerm_api_management_api" "apim_node_for_psp_api_v1" {
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/nodopagamenti_api/nodeForPsp/v1/nodeForPsp.wsdl")
+    content_value  = file("./apim_v2/api/nodopagamenti_api/nodeForPsp/v1/nodeForPsp.wsdl")
     wsdl_selector {
       service_name  = "nodeForPsp_Service"
       endpoint_name = "nodeForPsp_Port"
@@ -53,7 +53,7 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy" {
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodeForPsp/v1/_base_policy.xml.tpl", {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
 }
@@ -67,7 +67,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
   operation_id        = var.env_short == "d" ? "637601f8c257810fc0ecfe01" : var.env_short == "u" ? "61dedb1872975e13800fd7ff" : "61dedafc2a92e81a0c7a58fc"
 
   #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
     urlenvpath                = var.env_short
     url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
@@ -82,7 +82,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_p
   operation_id        = var.env_short == "d" ? "637601f8c257810fc0ecfe06" : var.env_short == "u" ? "636e6ca51a11929386f0b101" : "63c559672a92e811a8f33a00"
 
   #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v2/activate_nm3.xml", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodeForPsp/v2/activate_nm3.xml", {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
     urlenvpath                = var.env_short
     url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"

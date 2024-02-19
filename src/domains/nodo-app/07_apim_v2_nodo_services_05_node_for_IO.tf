@@ -38,7 +38,7 @@ resource "azurerm_api_management_api" "apim_node_for_io_api_v1" {
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/nodopagamenti_api/nodeForIO/v1/nodeForIO.wsdl")
+    content_value  = file("./apim_v2/api/nodopagamenti_api/nodeForIO/v1/nodeForIO.wsdl")
     wsdl_selector {
       service_name  = "nodeForIO_Service"
       endpoint_name = "nodeForIO_Port"
@@ -52,7 +52,7 @@ resource "azurerm_api_management_api_policy" "apim_node_for_io_policy" {
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodeForIO/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodeForIO/v1/_base_policy.xml.tpl", {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
 
@@ -66,5 +66,5 @@ resource "azurerm_api_management_api_operation_policy" "activateIO_reservation_p
   operation_id        = var.env_short == "d" ? "61dc5018b78e981290d7c176" : var.env_short == "u" ? "61dedb1e72975e13800fd80f" : "61dedb1eea7c4a07cc7d47b8"
 
   #tfsec:ignore:GEN005
-  xml_content = file("./api/nodopagamenti_api/nodeForIO/v1/activateIO_reservation_nm3.xml")
+  xml_content = file("./apim_v2/api/nodopagamenti_api/nodeForIO/v1/activateIO_reservation_nm3.xml")
 }

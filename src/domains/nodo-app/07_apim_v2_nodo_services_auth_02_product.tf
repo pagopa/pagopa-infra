@@ -3,7 +3,7 @@
 ##############
 
 module "apim_nodo_dei_pagamenti_product_auth" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
 
   product_id   = "nodo-auth"
   display_name = "Nodo dei Pagamenti (Nuova Connettività)"
@@ -22,7 +22,7 @@ module "apim_nodo_dei_pagamenti_product_auth" {
     address-range-from       = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
     address-range-to         = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
     is-nodo-auth-pwd-replace = true
-  }) : file("./api_product/nodo_pagamenti_api/auth/_base_policy.xml") # decoupler OFF
+  }) : file("./apim_v2/api_product/nodo_pagamenti_api/auth/_base_policy.xml") # decoupler OFF
 }
 
 data "azurerm_api_management_api" "apim_aca_api_v1_" {

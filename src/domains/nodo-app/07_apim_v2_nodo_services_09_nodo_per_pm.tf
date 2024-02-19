@@ -22,7 +22,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api" {
 
 module "apim_nodo_per_pm_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-per-pm-api", local.project)
   api_management_name   = local.pagopa_apim_v2_name
@@ -38,12 +38,12 @@ module "apim_nodo_per_pm_api_v1" {
   protocols    = ["https"]
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_swagger.json.tpl", {
+  content_value = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPM/v1/_swagger.json.tpl", {
     host    = local.apim_hostname
     service = module.apim_nodo_dei_pagamenti_product.product_id
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
 }
@@ -53,7 +53,7 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
   operation_id        = "closePayment"
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
 }
@@ -63,13 +63,13 @@ resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1" {
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
   operation_id        = "parkedList"
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
 }
 
 module "apim_nodo_per_pm_api_v2" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-per-pm-api", local.project)
   api_management_name   = local.pagopa_apim_v2_name
@@ -85,11 +85,11 @@ module "apim_nodo_per_pm_api_v2" {
   protocols    = ["https"]
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_swagger.json.tpl", {
+  content_value = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPM/v2/_swagger.json.tpl", {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_base_policy.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPM/v2/_base_policy.xml.tpl", {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
 }

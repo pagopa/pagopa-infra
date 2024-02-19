@@ -16,11 +16,11 @@ module "apim_nodo_dei_pagamenti_monitoring_product" {
   subscription_required = false
   approval_required     = false
 
-  policy_xml = var.apim_nodo_decoupler_enable ? templatefile("./api_product/nodo_pagamenti_api/decoupler/base_policy.xml.tpl", { # decoupler ON
+  policy_xml = var.apim_nodo_decoupler_enable ? templatefile("./apim_v2/api_product/nodo_pagamenti_api/decoupler/base_policy.xml.tpl", { # decoupler ON
     address-range-from       = var.env_short != "d" ? "10.1.128.0" : "0.0.0.0"
     address-range-to         = var.env_short != "d" ? "10.1.128.255" : "0.0.0.0"
-    base-url                 = azurerm_api_management_named_value.default_nodo_backend.value
-    base-node-id             = azurerm_api_management_named_value.default_nodo_id.value
+    base-url                 = "{{default-nodo-backend}}"
+    base-node-id             = "{{default-nodo-id}}"
     is-nodo-auth-pwd-replace = false
     }) : templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", { # decoupler OFF
     address-range-from = var.env_short != "d" ? "10.1.128.0" : "0.0.0.0"
@@ -69,13 +69,13 @@ module "apim_nodo_monitoring_api" {
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./apim_v2/api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host    = local.apim_hostname
     service = module.apim_nodo_dei_pagamenti_monitoring_product.product_id
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
-    base-url                  = azurerm_api_management_named_value.default_nodo_backend.value
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
+    base-url                  = "{{default-nodo-backend}}"
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
   })
 }

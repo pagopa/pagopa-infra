@@ -4,7 +4,7 @@
 
 module "apim_nodo_dei_pagamenti_product_dev" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
 
   product_id   = "nodo-dev"
   display_name = "Nodo dei Pagamenti (DEV)"
@@ -87,7 +87,7 @@ resource "azurerm_api_management_api" "apim_node_for_psp_api_v1_dev" {
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/nodopagamenti_api/nodeForPsp/v1/nodeForPsp.wsdl")
+    content_value  = file("./apim_v2/api/nodopagamenti_api/nodeForPsp/v1/nodeForPsp.wsdl")
     wsdl_selector {
       service_name  = "nodeForPsp_Service"
       endpoint_name = "nodeForPsp_Port"
@@ -103,7 +103,7 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_dev" {
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/_base_policy_dev.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodeForPsp/v1/_base_policy_dev.xml.tpl", {
     is-nodo-decoupler-enabled = false
   })
 }
@@ -120,7 +120,7 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_dev" {
 #   operation_id        = var.env_short == "d" ? "61d70973b78e982064458676" : var.env_short == "u" ? "61dedb1872975e13800fd7ff" : "61dedafc2a92e81a0c7a58fc"
 
 #   #tfsec:ignore:GEN005
-#   xml_content = file("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml")
+#   xml_content = file("./apim_v2/api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml")
 # }
 
 # resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_policy" { # activatePaymentNoticeV2 verificatore
@@ -131,7 +131,7 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_dev" {
 #   operation_id        = var.env_short == "d" ? "637601f8c257810fc0ecfe06" : var.env_short == "u" ? "636e6ca51a11929386f0b101" : "TODO"
 
 #   #tfsec:ignore:GEN005
-#   xml_content = file("./api/nodopagamenti_api/nodeForPsp/v2/activate_nm3.xml")
+#   xml_content = file("./apim_v2/api/nodopagamenti_api/nodeForPsp/v2/activate_nm3.xml")
 # }
 
 ######################
@@ -178,7 +178,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_api_v1_dev" {
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/nodopagamenti_api/nodoPerPsp/v1/nodoPerPsp.wsdl")
+    content_value  = file("./apim_v2/api/nodopagamenti_api/nodoPerPsp/v1/nodoPerPsp.wsdl")
     wsdl_selector {
       service_name  = "PagamentiTelematiciPspNodoservice"
       endpoint_name = "PPTPort"
@@ -194,7 +194,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_dev" {
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/_base_policy_dev.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPsp/v1/_base_policy_dev.xml.tpl", {
     is-nodo-decoupler-enabled = false
   })
 }
@@ -244,7 +244,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_richiesta_avvisi_api_v1
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/nodopagamenti_api/nodoPerPspRichiestaAvvisi/v1/nodoPerPspRichiestaAvvisi.wsdl")
+    content_value  = file("./apim_v2/api/nodopagamenti_api/nodoPerPspRichiestaAvvisi/v1/nodoPerPspRichiestaAvvisi.wsdl")
     wsdl_selector {
       service_name  = "RichiestaAvvisiservice"
       endpoint_name = "PPTPort"
@@ -260,7 +260,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPspRichiestaAvvisi/v1/_base_policy_dev.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPspRichiestaAvvisi/v1/_base_policy_dev.xml.tpl", {
     is-nodo-decoupler-enabled = false
   })
 
@@ -311,7 +311,7 @@ resource "azurerm_api_management_api" "apim_node_for_io_api_v1_dev" {
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/nodopagamenti_api/nodeForIO/v1/nodeForIO.wsdl")
+    content_value  = file("./apim_v2/api/nodopagamenti_api/nodeForIO/v1/nodeForIO.wsdl")
     wsdl_selector {
       service_name  = "nodeForIO_Service"
       endpoint_name = "nodeForIO_Port"
@@ -327,7 +327,7 @@ resource "azurerm_api_management_api_policy" "apim_node_for_io_policy_dev" {
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodeForIO/v1/_base_policy_dev.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodeForIO/v1/_base_policy_dev.xml.tpl", {
     is-nodo-decoupler-enabled = false
   })
 
@@ -341,7 +341,7 @@ resource "azurerm_api_management_api_policy" "apim_node_for_io_policy_dev" {
 #   operation_id        = var.env_short == "d" ? "61dc5018b78e981290d7c176" : var.env_short == "u" ? "61dedb1e72975e13800fd80f" : "61dedb1eea7c4a07cc7d47b8"
 
 #   #tfsec:ignore:GEN005
-#   xml_content = file("./api/nodopagamenti_api/nodeForIO/v1/activateIO_reservation_nm3.xml")
+#   xml_content = file("./apim_v2/api/nodopagamenti_api/nodeForIO/v1/activateIO_reservation_nm3.xml")
 # }
 
 ############################
@@ -388,7 +388,7 @@ resource "azurerm_api_management_api_policy" "apim_node_for_io_policy_dev" {
 #
 #  import {
 #    content_format = "wsdl"
-#    content_value  = file("./api/nodopagamenti_api/pspForNode/v1/pspForNode.wsdl")
+#    content_value  = file("./apim_v2/api/nodopagamenti_api/pspForNode/v1/pspForNode.wsdl")
 #    wsdl_selector {
 #      service_name  = "pspForNode_Service"
 #      endpoint_name = "pspForNode_Port"
@@ -452,7 +452,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_pa_api_v1_dev" {
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/nodopagamenti_api/nodoPerPa/v1/NodoPerPa.wsdl")
+    content_value  = file("./apim_v2/api/nodopagamenti_api/nodoPerPa/v1/NodoPerPa.wsdl")
     wsdl_selector {
       service_name  = "PagamentiTelematiciRPTservice"
       endpoint_name = "PagamentiTelematiciRPTPort"
@@ -468,7 +468,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy_dev" {
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/_base_policy_dev.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPa/v1/_base_policy_dev.xml.tpl", {
     is-nodo-decoupler-enabled = false
   })
 }
@@ -498,7 +498,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_dev" {
 
 module "apim_nodo_per_pm_api_v1_dev" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-per-pm-api-dev", local.project)
   api_management_name   = local.pagopa_apim_v2_name
@@ -514,12 +514,12 @@ module "apim_nodo_per_pm_api_v1_dev" {
   protocols    = ["https"]
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_swagger.json.tpl", {
+  content_value = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPM/v1/_swagger.json.tpl", {
     host    = local.apim_hostname
     service = module.apim_nodo_dei_pagamenti_product_dev[0].product_id
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
     is-nodo-decoupler-enabled = false
   })
 }
@@ -531,7 +531,7 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_dev
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
   operation_id        = "closePayment"
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy_dev.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy_dev.xml.tpl", {
     is-nodo-decoupler-enabled = false
   })
 }
@@ -543,14 +543,14 @@ resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1_dev" 
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
   operation_id        = "parkedList"
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy_dev.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy_dev.xml.tpl", {
     is-nodo-decoupler-enabled = false
   })
 }
 
 module "apim_nodo_per_pm_api_v2_dev" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-per-pm-api-dev", local.project)
   api_management_name   = local.pagopa_apim_v2_name
@@ -566,11 +566,11 @@ module "apim_nodo_per_pm_api_v2_dev" {
   protocols    = ["https"]
 
   content_format = "swagger-json"
-  content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_swagger.json.tpl", {
+  content_value = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPM/v2/_swagger.json.tpl", {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_base_policy_dev.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/nodoPerPM/v2/_base_policy_dev.xml.tpl", {
     is-nodo-decoupler-enabled = false
   })
 }
@@ -600,7 +600,7 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_dev" {
 
 module "apim_nodo_monitoring_api_dev" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-monitoring-api-dev", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
@@ -619,12 +619,12 @@ module "apim_nodo_monitoring_api_dev" {
   service_url = null
 
   content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+  content_value = templatefile("./apim_v2/api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host    = local.apim_hostname
     service = module.apim_nodo_dei_pagamenti_product_dev[0].product_id
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./apim_v2/api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {
     base-url                  = "{{default-nodo-backend-dev-nexi}}"
     is-nodo-decoupler-enabled = false
   })
