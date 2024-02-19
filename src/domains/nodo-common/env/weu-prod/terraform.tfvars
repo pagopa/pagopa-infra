@@ -252,3 +252,15 @@ location_replica                   = "northeurope"
 location_replica_short             = "neu"
 geo_replica_cidr_subnet_postgresql = ["10.2.160.0/24"]
 postgresql_sku_name                = "GP_Gen5_2"
+
+nodo_cfg_sync_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
+  blob_delete_retention_days    = 90
+  public_network_access_enabled = false
+  backup_enabled                = true
+  backup_retention_days         = 30
+}

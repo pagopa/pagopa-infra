@@ -1,3 +1,5 @@
+###
+### IT SHOULD BE DEPRECATED, PLEASE USE cfg-for-node PRODUCT
 module "apim_apiconfig_cache_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
