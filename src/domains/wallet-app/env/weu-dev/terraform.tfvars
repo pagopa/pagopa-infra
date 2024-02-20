@@ -37,3 +37,7 @@ tls_cert_check_helm = {
 payment_wallet_with_pm_enabled = false
 pdv_api_base_path              = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
 io_backend_base_path           = "http://{{aks-lb-nexi}}/pmmockservice/pmmockserviceapi"
+
+cidr_subnet_payment_wallet_services = ["10.1.161.0/24"]
+
+payment_wallet_app_service_sku_name = "B1"

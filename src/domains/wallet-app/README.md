@@ -21,6 +21,9 @@
 | <a name="module_apim_payment_wallet_product"></a> [apim\_payment\_wallet\_product](#module\_apim\_payment\_wallet\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.3.0 |
 | <a name="module_apim_wallet_service_notifications_api_v1"></a> [apim\_wallet\_service\_notifications\_api\_v1](#module\_apim\_wallet\_service\_notifications\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
 | <a name="module_apim_webview_payment_wallet_api_v1"></a> [apim\_webview\_payment\_wallet\_api\_v1](#module\_apim\_webview\_payment\_wallet\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
+| <a name="module_payment_wallet_app_service"></a> [payment\_wallet\_app\_service](#module\_payment\_wallet\_app\_service) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v7.52.0 |
+| <a name="module_payment_wallet_app_service_slot_staging"></a> [payment\_wallet\_app\_service\_slot\_staging](#module\_payment\_wallet\_app\_service\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v7.52.0 |
+| <a name="module_payment_wallet_services_snet"></a> [payment\_wallet\_services\_snet](#module\_payment\_wallet\_services\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.52.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.3.0 |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v6.3.0 |
 
@@ -44,6 +47,9 @@
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_monitor_autoscale_setting.payment_wallet_app_service_autoscale](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
+| [azurerm_resource_group.payment_wallet_services_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_service_plan.payment_wallet_app_service_plan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/service_plan) | resource |
 | [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
@@ -75,6 +81,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
+| <a name="input_cidr_subnet_payment_wallet_services"></a> [cidr\_subnet\_payment\_wallet\_services](#input\_cidr\_subnet\_payment\_wallet\_services) | Address prefixes subnet payment wallet app service | `list(string)` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The wallet dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
@@ -90,6 +97,7 @@
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
+| <a name="input_payment_wallet_app_service_sku_name"></a> [payment\_wallet\_app\_service\_sku\_name](#input\_payment\_wallet\_app\_service\_sku\_name) | SKU name for wallet app service | `string` | `null` | no |
 | <a name="input_payment_wallet_with_pm_enabled"></a> [payment\_wallet\_with\_pm\_enabled](#input\_payment\_wallet\_with\_pm\_enabled) | payment wallet using Payment Manager | `bool` | `false` | no |
 | <a name="input_pdv_api_base_path"></a> [pdv\_api\_base\_path](#input\_pdv\_api\_base\_path) | Personal data vault api base path | `string` | `null` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
