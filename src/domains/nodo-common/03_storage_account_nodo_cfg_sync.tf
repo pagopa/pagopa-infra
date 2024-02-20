@@ -33,24 +33,24 @@ module "nodo_cfg_sync_re_storage_account" {
   tags = var.tags
 }
 
-resource "azurerm_private_endpoint" "nodo_cfg_sync_re_private_endpoint_table" {
+resource "azurerm_private_endpoint" "nodo_cfg_sync_re_private_endpoint_container" {
   count = var.env_short == "d" ? 0 : 1
 
-  name                = "${local.project}-cfg-sync-re-private-endpoint-table"
+  name                = "${local.project}-cfg-sync-re-private-endpoint-container"
   location            = var.location
   resource_group_name = azurerm_resource_group.nodo_cfg_sync_rg.name
   subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
 
   private_dns_zone_group {
-    name                 = "${local.project}-cfg-sync-re-private-dns-zone-group-table"
+    name                 = "${local.project}-cfg-sync-re-private-dns-zone-group-container"
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
   }
 
   private_service_connection {
-    name                           = "${local.project}-cfg-sync-re-private-service-connection-table"
+    name                           = "${local.project}-cfg-sync-re-private-service-connection-container"
     private_connection_resource_id = module.nodo_cfg_sync_re_storage_account.id
     is_manual_connection           = false
-    subresource_names              = ["table"]
+    subresource_names              = ["container"]
   }
 
   tags = var.tags
@@ -61,7 +61,7 @@ resource "azurerm_private_endpoint" "nodo_cfg_sync_re_private_endpoint_table" {
 }
 
 # table nodo-cfg-sync
-resource "azurerm_storage_table" "nodo_cfg_sync_re_cache_table" {
+resource "azurerm_storage_container" "nodo_cfg_sync_re_cache_container" {
   name                 = "cacheevents"
   storage_account_name = module.nodo_cfg_sync_re_storage_account.name
 
@@ -70,7 +70,7 @@ resource "azurerm_storage_table" "nodo_cfg_sync_re_cache_table" {
   ]
 }
 
-resource "azurerm_storage_table" "nodo_cfg_sync_re_stand_in_table" {
+resource "azurerm_storage_container" "nodo_cfg_sync_re_stand_in_container" {
   name                 = "standinevents"
   storage_account_name = module.nodo_cfg_sync_re_storage_account.name
 
