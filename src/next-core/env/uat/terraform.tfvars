@@ -150,6 +150,7 @@ base_path_nodo_web_bo         = "/web-bo-uat"
 base_path_nodo_web_bo_history = "/web-bo-history-uat"
 dns_zone_wisp2      = "uat.wisp2"
 app_gateway_prf_certificate_name        = "api-prf-platform-pagopa-it"
+base_path_nodo_oncloud        = "/nodo-uat"
 
 
 #

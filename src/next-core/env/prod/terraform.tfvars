@@ -171,6 +171,7 @@ base_path_nodo_fatturazione   = "/fatturazione-prd"
 base_path_nodo_web_bo         = "/web-bo-prd"
 base_path_nodo_web_bo_history = "/web-bo-history-prd"
 dns_zone_wisp2    = "wisp2"
+base_path_nodo_oncloud        = "/nodo-prd"
 
 
 #
