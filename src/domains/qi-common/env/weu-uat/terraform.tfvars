@@ -28,3 +28,14 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
 
 enable_iac_pipeline = true
+
+qi_storage_params = {
+  enabled                       = true
+  tier                          = "Standard"
+  kind                          = "StorageV2"
+  account_replication_type      = "ZRS",
+  advanced_threat_protection    = true,
+  retention_days                = 7,
+  public_network_access_enabled = true,
+  access_tier                   = "Hot"
+}
