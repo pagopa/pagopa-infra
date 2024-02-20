@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "shared_rg" {
 }
 
 module "iuvgenerator_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.60.0"
   name                 = "${local.project}-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_iuvgenerator_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
@@ -22,7 +22,7 @@ module "iuvgenerator_cosmosdb_snet" {
 }
 
 module "iuvgenerator_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.4.1"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.60.0"
   name     = "${local.project}-iuv-gen-cosmos-account"
   location = var.location
   domain   = "shared"
@@ -52,10 +52,11 @@ module "iuvgenerator_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = var.cosmos_iuvgenerator_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
 
   # private endpoint
-  private_endpoint_name    = "${local.project}-iuv-gen-cosmos-sql-endpoint"
-  private_endpoint_enabled = var.cosmos_iuvgenerator_db_params.private_endpoint_enabled
-  subnet_id                = module.iuvgenerator_cosmosdb_snet.id
-  private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_sql_name           = "${local.project}-iuv-gen-cosmos-sql-endpoint"
+  private_service_connection_sql_name = "${local.project}-iuv-gen-cosmos-sql-endpoint"
+  private_endpoint_enabled            = var.cosmos_iuvgenerator_db_params.private_endpoint_enabled
+  subnet_id                           = module.iuvgenerator_cosmosdb_snet.id
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
   tags = var.tags
 }

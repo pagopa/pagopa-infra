@@ -10,7 +10,7 @@ resource "azurerm_resource_group" "taxonomy_rg" {
 }
 
 module "taxonomy_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.17.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.60.0"
 
   name                            = replace("${local.project}-${local.taxonomy_label}-sa", "-", "")
   account_kind                    = var.taxonomy_storage_account.account_kind
