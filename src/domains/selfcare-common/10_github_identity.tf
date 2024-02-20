@@ -10,6 +10,7 @@ data "azurerm_kubernetes_cluster" "aks" {
 # repos must be lower than 20 items
 locals {
   repos_01 = [
+    "pagopa-selfcare-ms-backoffice-backend"
   ]
 
   federations_01 = [
@@ -29,6 +30,9 @@ locals {
         "Key Vault Reader"
       ],
       "${local.product}-${var.location_short}-${var.env}-aks-rg" = [
+        "Contributor"
+      ],
+      "dashboards" = [
         "Contributor"
       ]
     }
