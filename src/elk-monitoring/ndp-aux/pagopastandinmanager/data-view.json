@@ -1,0 +1,9 @@
+{
+    "data_view": {
+       "id": "log_pattern_${name}",
+       "title": "ogs-apm.app.${name}-*",
+       "name": "Log ${name}",
+       "timeFieldName": "@timestamp"
+    },
+    "override": true
+  }

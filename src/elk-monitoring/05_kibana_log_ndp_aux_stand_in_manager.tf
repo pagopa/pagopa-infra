@@ -29,8 +29,7 @@ locals {
       component_template_custom  = "${local.standInManager_prj.project_key}@custom"
     }), "\""), "\""), "'", "'\\''")
 
-
-    data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
+    data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/${local.standInManager_prj.space}/data-view.json", {
       name = local.standInManager_prj.project_key
     }), "\""), "\""), "'", "'\\''")
   }
@@ -142,7 +141,7 @@ resource "null_resource" "ndp_aux_stand_in_manager_data_stream_rollover" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.elastic_url}/logs-${local.standInManager_prj.project_key}-default/_rollover/" \
+      curl -k -X POST "${local.elastic_url}/logs-apm.app-${local.standInManager_prj.project_key}-default/_rollover/" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json'
     EOT
