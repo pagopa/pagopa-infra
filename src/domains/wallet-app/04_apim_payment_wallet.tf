@@ -141,6 +141,20 @@ locals {
   }
 }
 
+data "azurerm_key_vault_secret" "npg_notifications_jwt_secret_key" {
+  name         = "npg-notifications-jwt-secret-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "wallet_npg_notifications_jwt_secret_key" {
+  name                = "wallet-npg-notifications-jwt-secret-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "wallet-npg-notifications-jwt-secret-key"
+  value               = data.azurerm_key_vault_secret.npg_notifications_jwt_secret_key.value
+  secret              = true
+}
+
 # NPG notifications service APIs
 resource "azurerm_api_management_api_version_set" "npg_notifications_api" {
   name                = "${local.project}-npg-notifications-api"
@@ -177,6 +191,16 @@ module "apim_wallet_service_notifications_api_v1" {
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "notify_transaction_wallet" {
+  api_name            = module.apim_wallet_service_notifications_api_v1.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "notifyTransactionWallet"
+
+  xml_content = templatefile("./api/npg-notifications/v1/_transactions_wallets_base_policy.xml.tpl", {
+    hostname = local.wallet_hostname
+  })
+}
 
 #################################################
 ## API wallet service for Webview                   ##
