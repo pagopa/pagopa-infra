@@ -221,7 +221,7 @@
           }
         ]
       },
-      "ClosePaymentRequestV2": {
+      "RedirectClosePaymentRequestV2": {
         "required": [
           "fee",
           "idBrokerPSP",
@@ -233,7 +233,8 @@
           "timestampOperation",
           "totalAmount",
           "transactionDetails",
-          "transactionId"
+          "transactionId",
+          "additionalPaymentInformations"
         ],
         "type": "object",
         "properties": {
@@ -305,7 +306,117 @@
             "$ref": "#/components/schemas/TransactionDetails"
           },
           "additionalPaymentInformations": {
-            "$ref": "#/components/schemas/AdditionalPaymentInformations"
+            "$ref": "#/components/schemas/RedirectAdditionalPaymentInformations"
+          }
+        }
+      },
+      "CardClosePaymentRequestV2": {
+        "required": [
+          "fee",
+          "idBrokerPSP",
+          "idChannel",
+          "idPSP",
+          "outcome",
+          "paymentMethod",
+          "paymentTokens",
+          "timestampOperation",
+          "totalAmount",
+          "transactionDetails",
+          "transactionId",
+          "additionalPaymentInformations"
+        ],
+        "type": "object",
+        "properties": {
+          "paymentTokens": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "maxLength": 36,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO"
+            ]
+          },
+          "idPSP": {
+            "maxLength": 35,
+            "minLength": 1,
+            "type": "string",
+            "description": "required only for outcomePaymentGateway OK"
+          },
+          "idBrokerPSP": {
+            "maxLength": 35,
+            "minLength": 1,
+            "type": "string",
+            "description": "required only for outcomePaymentGateway OK"
+          },
+          "idChannel": {
+            "maxLength": 35,
+            "minLength": 1,
+            "type": "string",
+            "description": "required only for outcomePaymentGateway OK"
+          },
+          "paymentMethod": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Payment method used in this transaction, required only for outcomePaymentGateway OK"
+          },
+          "transactionId": {
+            "maxLength": 255,
+            "minLength": 1,
+            "type": "string"
+          },
+          "totalAmount": {
+            "maximum": 1000000000,
+            "minimum": 0,
+            "type": "number",
+            "description": "required only for outcomePaymentGateway OK",
+            "example": 20.1
+          },
+          "fee": {
+            "maximum": 1000000000,
+            "minimum": 0,
+            "type": "number",
+            "description": "required only for outcomePaymentGateway OK",
+            "example": 10
+          },
+          "timestampOperation": {
+            "type": "string",
+            "description": "required only for outcomePaymentGateway OK",
+            "format": "date-time",
+            "example": "2022-02-22T14:41:58.811+01:00"
+          },
+          "transactionDetails": {
+            "$ref": "#/components/schemas/TransactionDetails"
+          },
+          "additionalPaymentInformations": {
+            "$ref": "#/components/schemas/CardAdditionalPaymentInformations"
+          }
+        }
+      },
+      "ClosePaymentRequestV2": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/CardClosePaymentRequestV2"
+          },
+          {
+            "$ref": "#/components/schemas/RedirectClosePaymentRequestV2"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "paymentMethod",
+          "mapping": {
+            "CP": "#/components/schemas/CardClosePaymentRequestV2",
+            "RBPR": "#/components/schemas/RedirectClosePaymentRequestV2",
+            "RBPB": "#/components/schemas/RedirectClosePaymentRequestV2",
+            "RBPP": "#/components/schemas/RedirectClosePaymentRequestV2",
+            "RPIC": "#/components/schemas/RedirectClosePaymentRequestV2",
+            "RBPS": "#/components/schemas/RedirectClosePaymentRequestV2"
           }
         }
       },
