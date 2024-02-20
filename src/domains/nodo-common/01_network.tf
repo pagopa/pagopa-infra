@@ -70,12 +70,6 @@ data "azurerm_subnet" "nodo_re_to_datastore_function_snet" {
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
 }
 
-#data "azurerm_subnet" "nodo_verifyko_to_datastore_function_snet" {
-#  name                 = "${local.project}-nodo-verifyko-to-datastore-fn-snet"
-#  virtual_network_name = data.azurerm_virtual_network.vnet.name
-#  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
-#}
-
 data "azurerm_private_dns_zone" "privatelink_redis_azure_com" {
   name                = "privatelink.redis.cache.windows.net"
   resource_group_name = local.vnet_resource_group_name
@@ -167,4 +161,3 @@ module "cosmosdb_standin_snet" {
     "Microsoft.AzureCosmosDB",
   ]
 }
-

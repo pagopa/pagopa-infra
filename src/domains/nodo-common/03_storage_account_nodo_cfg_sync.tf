@@ -1,5 +1,5 @@
-resource "azurerm_resource_group" "nodo_cfg_sync_to_datastore_rg" {
-  name     = "${local.project}-cfg-sync-to-datastore-rg"
+resource "azurerm_resource_group" "nodo_cfg_sync_rg" {
+  name     = "${local.project}-cfg-sync-rg"
   location = var.location
 
   tags = var.tags
@@ -14,7 +14,7 @@ module "nodo_cfg_sync_re_storage_account" {
   account_replication_type        = var.nodo_cfg_sync_storage_account.account_replication_type
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.nodo_cfg_sync_storage_account.blob_versioning_enabled
-  resource_group_name             = azurerm_resource_group.nodo_cfg_sync_to_datastore_rg.name
+  resource_group_name             = azurerm_resource_group.nodo_cfg_sync_rg.name
   location                        = var.location
   advanced_threat_protection      = var.nodo_cfg_sync_storage_account.advanced_threat_protection
   allow_nested_items_to_be_public = false
@@ -38,8 +38,8 @@ resource "azurerm_private_endpoint" "nodo_cfg_sync_re_private_endpoint_table" {
 
   name                = "${local.project}-cfg-sync-re-private-endpoint-table"
   location            = var.location
-  resource_group_name = azurerm_resource_group.nodo_cfg_sync_to_datastore_rg.name
-  subnet_id           = module.storage_account_snet.id
+  resource_group_name = azurerm_resource_group.nodo_cfg_sync_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
 
   private_dns_zone_group {
     name                 = "${local.project}-cfg-sync-re-private-dns-zone-group-table"
@@ -61,7 +61,20 @@ resource "azurerm_private_endpoint" "nodo_cfg_sync_re_private_endpoint_table" {
 }
 
 # table nodo-cfg-sync
-resource "azurerm_storage_table" "nodo_cfg_sync_re_table" {
-  name                 = "events"
+resource "azurerm_storage_table" "nodo_cfg_sync_re_cache_table" {
+  name                 = "cacheevents"
   storage_account_name = module.nodo_cfg_sync_re_storage_account.name
+
+  depends_on = [
+    module.nodo_cfg_sync_re_storage_account
+  ]
+}
+
+resource "azurerm_storage_table" "nodo_cfg_sync_re_stand_in_table" {
+  name                 = "standinevents"
+  storage_account_name = module.nodo_cfg_sync_re_storage_account.name
+
+  depends_on = [
+    module.nodo_cfg_sync_re_storage_account
+  ]
 }
