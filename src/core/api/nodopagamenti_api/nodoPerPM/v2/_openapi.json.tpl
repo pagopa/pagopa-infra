@@ -114,13 +114,18 @@
       },
       "Error": {
         "required": [
-          "error"
+          "outcome",
+          "description"
         ],
         "type": "object",
         "properties": {
-          "error": {
+          "outcome": {
             "type": "string",
-            "example": "error message"
+            "example": "KO"
+          },
+          "description": {
+            "type": "string",
+            "example": "error description"
           }
         }
       },
