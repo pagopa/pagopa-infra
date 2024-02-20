@@ -79,7 +79,7 @@ cosmos_authorizer_db_params = {
 
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 }
 
 
