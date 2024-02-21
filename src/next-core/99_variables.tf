@@ -21,6 +21,8 @@ locals {
 
   dns_forwarder_backup_name = "${local.product}-dns-forwarder-backup-vmss"
 
+  msg_resource_group_name = "${local.product}-msg-rg"
+
 }
 
 variable "prefix" {
@@ -216,4 +218,54 @@ variable "enabled_resource" {
   type = object({
     container_app_tools_cae = optional(bool, false),
   })
+}
+
+#
+# Event hub
+#
+variable "ehns_auto_inflate_enabled" {
+  type        = bool
+  description = "Is Auto Inflate enabled for the EventHub Namespace?"
+  default     = false
+}
+
+variable "ehns_sku_name" {
+  type        = string
+  description = "Defines which tier to use."
+  default     = "Standard"
+}
+
+variable "ehns_capacity" {
+  type        = number
+  description = "Specifies the Capacity / Throughput Units for a Standard SKU namespace."
+  default     = null
+}
+
+variable "ehns_maximum_throughput_units" {
+  type        = number
+  description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
+  default     = null
+}
+
+variable "ehns_zone_redundant" {
+  type        = bool
+  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
+  default     = false
+}
+
+variable "eventhubs_03" {
+  description = "A list of event hubs to add to namespace."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
 }

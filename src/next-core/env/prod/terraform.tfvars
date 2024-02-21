@@ -61,3 +61,163 @@ logos_donations_storage_account_replication_type = "GZRS"
 enabled_resource = {
   container_app_tools_cae = false
 }
+
+
+# to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
+ehns_auto_inflate_enabled     = true
+ehns_maximum_throughput_units = 5
+ehns_capacity                 = 5
+ehns_zone_redundant           = true
+
+eventhubs_02 = [
+  {
+    name              = "nodo-dei-pagamenti-negative-awakable-biz-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-negative-final-biz-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "quality-improvement-alerts"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-qi-alert-rx", "pagopa-qi-alert-rx-pdnd", "pagopa-qi-alert-rx-debug"]
+    keys = [
+      {
+        name   = "pagopa-qi-alert-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-debug"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "quality-improvement-psp-kpi"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-qi-psp-kpi-rx", "pagopa-qi-psp-kpi-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-qi-psp-kpi-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-psp-kpi-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-psp-kpi-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-cache"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["nodo-dei-pagamenti-cache-sync-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-cache-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-cache-sync-rx" # node-cfg-sync
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-stand-in"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["nodo-dei-pagamenti-stand-in-sync-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-stand-in-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-stand-in-sync-rx" # node-cfg-sync
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
+]
