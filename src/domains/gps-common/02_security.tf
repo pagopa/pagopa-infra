@@ -432,11 +432,12 @@ resource "azurerm_key_vault_secret" "gpd_upload_db_key" {
 ## GPD-Upload secrets END ##
 
 
-## GDP archive sa conn-string
+## GDP archive conn-string
 
 resource "azurerm_key_vault_secret" "gpd_archive_sa_connection_string" {
-  name         = "gpd-archive-${var.env_short}-sa-connection-string"
-  value        = module.gpd_archive_sa.primary_connection_string
+  name = "gpd-archive-${var.env_short}-sa-connection-string"
+  # value        = module.gpd_archive_sa.primary_connection_string // az sa tables
+  value        = module.gpd_payments_cosmosdb_account.connection_strings[4] // az cosmos tables
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
