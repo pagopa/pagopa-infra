@@ -59,7 +59,7 @@ ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
 ehns_capacity                 = 5
 
-eventhubs_02 = [
+eventhubs_03 = [
   {
     name              = "nodo-dei-pagamenti-negative-awakable-biz-evt"
     partitions        = 32
