@@ -68,9 +68,9 @@ module "apimv2" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v7.50.0"
 
   subnet_id            = module.apimv2_snet.id
-  location             = data.azurerm_resource_group.rg_vnet_integration.location
+  location             = data.azurerm_resource_group.rg_api.location
   name                 = "${local.project}-apim-v2"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet_integration.name
+  resource_group_name  = data.azurerm_resource_group.rg_api.name
   publisher_name       = var.apim_v2_publisher_name
   publisher_email      = data.azurerm_key_vault_secret.apim_publisher_email.value
   sku_name             = var.apim_v2_sku
@@ -201,6 +201,18 @@ module "apimv2" {
 #  depends_on = [
 #    azurerm_application_insights.application_insights
 #  ]
+}
+
+# ## api management policy ##
+resource "azurerm_key_vault_access_policy" "api_management_policy" {
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.apimv2.principal_id
+
+  key_permissions         = []
+  secret_permissions      = ["Get", "List"]
+  certificate_permissions = ["Get", "List"]
+  storage_permissions     = []
 }
 
 
