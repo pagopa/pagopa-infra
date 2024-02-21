@@ -143,3 +143,18 @@ variable "dns_zone_prefix" {
   default     = null
   description = "The wallet dns subdomain."
 }
+
+# payment wallet app service
+variable "cidr_subnet_payment_wallet_services" {
+  type        = list(string)
+  description = "Address prefixes subnet payment wallet app service"
+  default     = null
+}
+
+
+# payment wallet app service SKU
+variable "payment_wallet_app_service_sku_name" {
+  type        = string
+  description = "SKU name for wallet app service"
+  default     = null
+}

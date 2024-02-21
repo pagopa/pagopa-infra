@@ -36,3 +36,9 @@ data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
   resource_group_name = local.vnet_resource_group_name
 }
 
+data "azurerm_subnet" "payment_wallet_app_service_subnet" {
+  name                 = local.payment_wallet_app_service_subnet_name
+  virtual_network_name = data.azurerm_virtual_network.vnet.name
+  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+}
+
