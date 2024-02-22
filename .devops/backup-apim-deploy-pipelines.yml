@@ -8,7 +8,7 @@ steps:
   - task: AzureCLI@2
     displayName: Run apim $(APIM_NAME) backup
     inputs:
-      azureSubscription: "${{variables.azureServiceConnectionPlanNameDev}}"
+      connectedServiceNameARM: "${{variables.azureServiceConnectionApplyNameProd}}"
       scriptType: bash
       scriptLocation: inlineScript
       failOnStandardError: false
