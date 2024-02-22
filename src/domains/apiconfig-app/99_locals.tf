@@ -96,6 +96,7 @@ locals {
     pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
   }
   apim_x_node_product_id = "apim_for_node"
+  cfg_x_node_product_id  = "cfg-for-node"
 
   apiconfig_cache_alert = {
     pagopa_api_config_cache_name = format("%s-%s", var.prefix, local.apiconfig_cache_locals.path)
