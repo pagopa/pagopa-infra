@@ -16,3 +16,8 @@ data "azurerm_resource_group" "rg_vnet_integration" {
   name = local.vnet_integration_resource_group_name
 }
 
+
+data "azurerm_private_dns_zone" "eventhub" {
+  name                = "privatelink.servicebus.windows.net"
+  resource_group_name = local.msg_resource_group_name
+}
