@@ -51,7 +51,314 @@ enabled_resource = {
 
 
 
+ehns_metric_alerts = {
+  no_trx = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "No messagge received in the last 24h"
+    operator    = "LessThanOrEqual"
+    threshold   = 1000
+    frequency   = "PT1H"
+    window_size = "P1D"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values = [
+          "nodo-dei-pagamenti-log",
+          "nodo-dei-pagamenti-re"
+        ]
+      }
+    ],
+  },
+  active_connections = {
+    aggregation = "Average"
+    metric_name = "ActiveConnections"
+    description = null
+    operator    = "LessThanOrEqual"
+    threshold   = 0
+    frequency   = "PT5M"
+    window_size = "PT15M"
+    dimension   = [],
+  },
+  error_trx = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "rejected received. trx write on eventhub. check immediately"
+    operator    = "GreaterThan"
+    threshold   = 0
+    frequency   = "PT5M"
+    window_size = "PT30M"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values = [
+          "nodo-dei-pagamenti-log",
+          "nodo-dei-pagamenti-re"
+        ]
+      }
+    ],
+  },
+}
+
 eventhubs_03 = [
+  {
+    name              = "nodo-dei-pagamenti-log"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["logstash-pdnd", "logstash-oper", "logstash-tech"]
+    keys = [
+      {
+        name   = "logstash-SIA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "logstash-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "logstash-oper"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "logstash-tech"
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-re"
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-sia-rx"] #, "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-SIA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-pdnd" # pdnd
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-oper" # oper
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-sia-rx" # oper
+        listen = true
+        send   = false
+        manage = false
+      },
+      #     disabled because at the moment not used
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      },
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      }
+    ]
+  },
+  {
+    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["fdr-re-rx"]
+    keys = [
+      {
+        name   = "fdr-re-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-re-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-fdr" # used by Monitoring FdR
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-pdnd" # pdnd
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-oper" # oper
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-biz-evt"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-test", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-test"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-io"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-negative-biz-evt"
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["pagopa-negative-biz-evt-rx", "pagopa-negative-biz-evt-rx-test"]
+    keys = [
+      {
+        name   = "pagopa-negative-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-negative-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-negative-biz-evt-rx-test"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-biz-evt-enrich"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pn"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-verify-ko"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["nodo-dei-pagamenti-verify-ko-to-datastore-rx", "nodo-dei-pagamenti-verify-ko-to-tablestorage-rx", "nodo-dei-pagamenti-verify-ko-test-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-datastore-rx" # re->cosmos
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tablestorage-rx" # re->table storage
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-test-rx" # re->anywhere for test
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
+]
+
+eventhubs_04 = [
   {
     name              = "nodo-dei-pagamenti-negative-awakable-biz-evt"
     partitions        = 32
