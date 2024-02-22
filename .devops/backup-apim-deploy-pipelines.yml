@@ -22,7 +22,7 @@ steps:
         --account-name $(STORAGE_ACCOUNT_NAME) \
         --query [0].value -o tsv)
 
-        echo "🚀 Start backup"
+        echo "🚀 Start backup (can take 10 minutes+)"
 
         az apim backup \
         --name $(APIM_NAME) \
@@ -30,6 +30,7 @@ steps:
         --backup-name $(BACKUP_NAME) \
         --storage-account-name $(STORAGE_ACCOUNT_NAME) \
         --storage-account-container $(STORAGE_ACCOUNT_CONTAINER) \
-        --storage-account-key $key
+        --storage-account-key $key \
+        --verbose
 
         echo "✅ Backup apim complete"
