@@ -34,8 +34,8 @@ locals {
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"
 
-  pagopa_apim_v2_name = "${local.product_location}-apim"
-  pagopa_apim_v2_rg   = "${local.product_location}-api-rg"
+  pagopa_apim_v2_name = "${local.product_location}-core-apim-v2"
+  pagopa_apim_v2_rg   = "${local.product}-api-rg"
 
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   apim_snet     = "${local.product}-apim-snet"
