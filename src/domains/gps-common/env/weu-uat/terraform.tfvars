@@ -103,6 +103,14 @@ cosmos_gpd_payments_db_params = {
     autoscale  = true
     throughput = 2000
   }
+  payments_po_table = {
+    autoscale  = true
+    throughput = 2000
+  }
+  payments_pp_table = {
+    autoscale  = true
+    throughput = 2000
+  }
 }
 
 cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
