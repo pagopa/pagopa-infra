@@ -187,18 +187,11 @@ resource "azurerm_cosmosdb_table" "payments_receipts_table" {
 }
 
 
-resource "azurerm_cosmosdb_table" "payments_po_table" {
-  name                = "paymentoptiontable"
-  resource_group_name = azurerm_resource_group.gps_rg.name
-  account_name        = module.gpd_payments_cosmosdb_account.name
-  throughput          = !var.cosmos_gpd_payments_db_params.payments_po_table.autoscale ? var.cosmos_gpd_payments_db_params.payments_receipts_table.throughput : null
-  dynamic "autoscale_settings" {
-    for_each = var.cosmos_gpd_payments_db_params.payments_po_table.autoscale ? ["dummy"] : []
-    content {
-      max_throughput = var.cosmos_gpd_payments_db_params.payments_po_table.throughput
-    }
-  }
-}
+// Az portal manual setting 
+// DEV  7 Giorni  = 604800 Secondi
+// UAT  3 Mesi    = 7889400 Secondi
+// PROD 10 Anni   = 315576000 Secondi
+// https://github.com/hashicorp/terraform-provider-azurerm/issues/11098
 resource "azurerm_cosmosdb_table" "payments_pp_table" {
   name                = "paymentpositiontable"
   resource_group_name = azurerm_resource_group.gps_rg.name
