@@ -1,0 +1,27 @@
+<fragment>
+        <!-- <trace source="renewrequestdebug" severity="information">@((string) context.Variables["renewrequest"])</trace> -->
+        <choose>
+        <when condition="@(context.Variables.ContainsKey("baseUrl") && context.Variables.ContainsKey("renewrequest") && context.Variables.ContainsKey("renewrequest")!= null)">
+        <send-request mode="new" ignore-error="true" response-variable-name="risposta">
+            <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
+            <set-method>POST</set-method>
+            <set-header name="Content-Type" exists-action="override">
+                <value>text/xml</value>
+            </set-header>
+            <set-body>@{     
+                return (string) context.Variables["renewrequest"]; 
+            }</set-body>
+        </send-request>
+        <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["risposta"]).Body.As<string>(preserveContent: true))" />
+        <return-response>
+            <set-header name="Content-Type" exists-action="override">
+                <value>text/xml</value>
+            </set-header>
+            <set-body>@{     
+                string message = (string)context.Variables["leggirisposta"];
+                return message; 
+            }</set-body>
+        </return-response>
+        </when>
+        </choose>
+</fragment>
