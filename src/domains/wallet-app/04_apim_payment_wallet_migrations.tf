@@ -48,3 +48,17 @@ module "apim_payment_wallet_migrations_api_v1" {
     hostname = local.wallet_hostname
   })
 }
+
+resource "azurerm_api_management_api_operation_policy" "create_wallet_pm" {
+  count = var.payment_wallet_migrations_enabled ? 1 : 0
+
+  api_name            = module.apim_payment_wallet_migrations_api_v1[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "createWalletByPM"
+
+  xml_content = templatefile("./api/payment-wallet-migrations/v1/_create_wallet_pm.xml.tpl", {
+    pdv_api_base_path = var.pdv_api_base_path
+    }
+  )
+}
