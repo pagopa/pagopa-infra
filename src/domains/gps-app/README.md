@@ -20,6 +20,7 @@
 | <a name="module_apim_aca_integration_product"></a> [apim\_aca\_integration\_product](#module\_apim\_aca\_integration\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
 | <a name="module_apim_api_debt_positions_api_v1"></a> [apim\_api\_debt\_positions\_api\_v1](#module\_apim\_api\_debt\_positions\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v6.11.2 |
 | <a name="module_apim_api_debt_positions_api_v2"></a> [apim\_api\_debt\_positions\_api\_v2](#module\_apim\_api\_debt\_positions\_api\_v2) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v6.11.2 |
+| <a name="module_apim_api_donations_api"></a> [apim\_api\_donations\_api](#module\_apim\_api\_donations\_api) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.60.0 |
 | <a name="module_apim_api_gpd_api"></a> [apim\_api\_gpd\_api](#module\_apim\_api\_gpd\_api) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v6.11.2 |
 | <a name="module_apim_api_gpd_api_v2"></a> [apim\_api\_gpd\_api\_v2](#module\_apim\_api\_gpd\_api\_v2) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v6.11.2 |
 | <a name="module_apim_api_gpd_enrollment_api_v1"></a> [apim\_api\_gpd\_enrollment\_api\_v1](#module\_apim\_api\_gpd\_enrollment\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
@@ -30,6 +31,8 @@
 | <a name="module_apim_api_gps_enrollments_api_v1"></a> [apim\_api\_gps\_enrollments\_api\_v1](#module\_apim\_api\_gps\_enrollments\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
 | <a name="module_apim_api_pn_integration_gpd_api_v1"></a> [apim\_api\_pn\_integration\_gpd\_api\_v1](#module\_apim\_api\_pn\_integration\_gpd\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
 | <a name="module_apim_debt_positions_product"></a> [apim\_debt\_positions\_product](#module\_apim\_debt\_positions\_product) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v6.11.2 |
+| <a name="module_apim_donations_product"></a> [apim\_donations\_product](#module\_apim\_donations\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v7.60.0 |
+| <a name="module_apim_donazioni_ucraina_product"></a> [apim\_donazioni\_ucraina\_product](#module\_apim\_donazioni\_ucraina\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v7.60.0 |
 | <a name="module_apim_gpd_enrollment_product"></a> [apim\_gpd\_enrollment\_product](#module\_apim\_gpd\_enrollment\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
 | <a name="module_apim_gpd_integration_product"></a> [apim\_gpd\_integration\_product](#module\_apim\_gpd\_integration\_product) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product | v6.11.2 |
 | <a name="module_apim_gpd_payments_rest_external_product"></a> [apim\_gpd\_payments\_rest\_external\_product](#module\_apim\_gpd\_payments\_rest\_external\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
@@ -55,9 +58,17 @@
 
 | Name | Type |
 |------|------|
+| [azurerm_api_management_api.apim_api_donazioni_ucraina_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api.apim_api_gpd_payments_soap_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api_diagnostic.apim_logs](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api_diagnostic) | resource |
+| [azurerm_api_management_api_operation_policy.donazioni_activate_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.donazioni_sendrt_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.donazioni_verify_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.get_donations](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_policy.apim_node_for_donazioni_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_version_set.api_debt_positions_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.api_donations_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.api_donazioni_ucraina_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_enrollment_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_gpd_payments_rest_external_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/api_management_api_version_set) | resource |
