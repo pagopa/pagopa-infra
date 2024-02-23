@@ -84,13 +84,6 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   storage_permissions = []
 }
 
-data "azurerm_eventhub_authorization_rule" "nodo_dei_pagamenti_cache_tx" {
-  name                = "nodo-dei-pagamenti-cache-tx"
-  resource_group_name = "${local.product}-msg-rg"
-  namespace_name      = "${local.product}-evh-ns02"
-  eventhub_name       = "nodo-dei-pagamenti-cache"
-}
-
 ################
 ##   Secrets  ##
 ################
