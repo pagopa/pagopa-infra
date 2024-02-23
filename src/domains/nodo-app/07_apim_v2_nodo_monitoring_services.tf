@@ -5,6 +5,8 @@
 module "apim_nodo_dei_pagamenti_monitoring_product" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
   product_id   = "nodo-monitoring"
   display_name = "Nodo dei Pagamenti - Monitoring"
   description  = "Product for Nodo dei Pagamenti - Monitoring"
@@ -42,6 +44,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_monitoring_api" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
   name                = format("%s-nodo-monitoring-api", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
   api_management_name = local.pagopa_apim_v2_name
@@ -51,14 +55,15 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api" {
 
 module "apim_nodo_monitoring_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  count  = var.enabled_features.apim_v2 ? 1 : 0
 
   name                  = format("%s-nodo-monitoring-api", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
   resource_group_name   = local.pagopa_apim_v2_rg
-  product_ids           = [module.apim_nodo_dei_pagamenti_monitoring_product.product_id]
+  product_ids           = [module.apim_nodo_dei_pagamenti_monitoring_product[0].product_id]
   subscription_required = local.apim_nodo_monitoring_api.subscription_required
 
-  version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api.id
+  version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api[0].id
   api_version    = "v1"
 
   description  = local.apim_nodo_monitoring_api.description
@@ -71,7 +76,7 @@ module "apim_nodo_monitoring_api" {
   content_format = "openapi"
   content_value = templatefile("./apim_v2/api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
     host    = local.apim_hostname
-    service = module.apim_nodo_dei_pagamenti_monitoring_product.product_id
+    service = module.apim_nodo_dei_pagamenti_monitoring_product[0].product_id
   })
 
   xml_content = templatefile("./apim_v2/api/nodopagamenti_api/monitoring/v1/_base_policy.xml.tpl", {

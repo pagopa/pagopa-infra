@@ -434,3 +434,13 @@ variable "storage_account_info" {
     advanced_threat_protection_enable = true
   }
 }
+
+variable "enabled_features" {
+  type = object({
+    apim_v2 = bool
+  })
+  default = {
+    apim_v2 = false
+  }
+  description = "Features enabled in this domain"
+}

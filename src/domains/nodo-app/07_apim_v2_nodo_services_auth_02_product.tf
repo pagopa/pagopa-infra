@@ -4,6 +4,7 @@
 
 module "apim_nodo_dei_pagamenti_product_auth" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
+  count  = var.enabled_features.apim_v2 ? 1 : 0
 
   product_id   = "nodo-auth"
   display_name = "Nodo dei Pagamenti (Nuova Connettività)"
@@ -26,6 +27,7 @@ module "apim_nodo_dei_pagamenti_product_auth" {
 }
 
 data "azurerm_api_management_api" "apim_aca_api_v1_" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
 
   name                = format("%s-weu-aca-api-v1", "${var.prefix}-${var.env_short}") // pagopa-<ENV>-weu-aca-api-v1
   api_management_name = local.pagopa_apim_v2_name
@@ -36,15 +38,16 @@ data "azurerm_api_management_api" "apim_aca_api_v1_" {
 
 locals {
 
-  api_nodo_product_auth = [
-    azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name,
-    azurerm_api_management_api.apim_nodo_per_psp_api_v1_auth.name,
-    azurerm_api_management_api.apim_node_for_io_api_v1_auth.name,
-    azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth.name,
-    azurerm_api_management_api.apim_node_for_pa_api_v1_auth.name,
-    azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_auth.name,
-    data.azurerm_api_management_api.apim_aca_api_v1_.name // add ACA to nuova conn, feature needs creare un 2 prodotti separati per nuova connettività x EC e x PSP con in + per gli EC ACA
-  ]
+  api_nodo_product_auth = var.enabled_features.apim_v2 ? [
+    azurerm_api_management_api.apim_node_for_psp_api_v1_auth[0].name,
+    azurerm_api_management_api.apim_nodo_per_psp_api_v1_auth[0].name,
+    azurerm_api_management_api.apim_node_for_io_api_v1_auth[0].name,
+    azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth[0].name,
+    azurerm_api_management_api.apim_node_for_pa_api_v1_auth[0].name,
+    azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_auth[0].name,
+    data.azurerm_api_management_api.apim_aca_api_v1_[0].name // add ACA to nuova conn, feature needs creare un 2 prodotti separati per nuova connettività x EC e x PSP con in + per gli EC ACA
+  ] : []
+
 
 }
 
@@ -52,7 +55,7 @@ resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_a
   for_each = toset(local.api_nodo_product_auth)
 
   api_name            = each.key
-  product_id          = module.apim_nodo_dei_pagamenti_product_auth.product_id
+  product_id          = module.apim_nodo_dei_pagamenti_product_auth[0].product_id
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 }
@@ -60,6 +63,8 @@ resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_a
 ## NAMED VALUE
 
 resource "azurerm_api_management_named_value" "nodo_auth_password_value" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
   name                = "nodoAuthPassword"
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
@@ -68,6 +73,8 @@ resource "azurerm_api_management_named_value" "nodo_auth_password_value" {
 }
 
 resource "azurerm_api_management_named_value" "x_forwarded_for_value" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
   name                = "xForwardedFor"
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg

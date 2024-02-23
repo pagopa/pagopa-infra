@@ -12,6 +12,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_psp_api_auth" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
   name                = format("%s-node-for-psp-api-auth", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
   api_management_name = local.pagopa_apim_v2_name
@@ -20,11 +22,13 @@ resource "azurerm_api_management_api_version_set" "node_for_psp_api_auth" {
 }
 
 resource "azurerm_api_management_api" "apim_node_for_psp_api_v1_auth" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
   name                  = format("%s-node-for-psp-api-auth", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
   resource_group_name   = local.pagopa_apim_v2_rg
   subscription_required = local.apim_node_for_psp_api_auth.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.node_for_psp_api_auth.id
+  version_set_id        = azurerm_api_management_api_version_set.node_for_psp_api_auth[0].id
   version               = "v1"
   service_url           = local.apim_node_for_psp_api_auth.service_url
   revision              = "1"
@@ -48,7 +52,9 @@ resource "azurerm_api_management_api" "apim_node_for_psp_api_v1_auth" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_auth" {
-  api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
+  api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_auth[0].name
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
@@ -59,8 +65,9 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_auth" {
 
 
 resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_policy_auth" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
 
-  api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
+  api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_auth[0].name
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
   operation_id        = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0"
@@ -74,8 +81,9 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
 }
 
 resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_policy_auth" { # activatePaymentNoticeV2 verificatore
+  count = var.enabled_features.apim_v2 ? 1 : 0
 
-  api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
+  api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_auth[0].name
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
   operation_id        = var.env_short == "d" ? "637608a0c257810fc0ecfe21" : var.env_short == "u" ? "63756cf1451c1c01c4186baa" : "63b6e2daea7c4a25440fdaa5"

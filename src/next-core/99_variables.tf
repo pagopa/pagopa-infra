@@ -195,14 +195,14 @@ variable "enabled_resource" {
 
 
 variable "cidr_subnet_apim" {
-  type = list(string)
+  type        = list(string)
   description = "(Required) APIM v2 subnet cidr"
 }
 
 variable "apim_v2_zones" {
-  type = list(string)
+  type        = list(string)
   description = "(Optional) Zones in which the apim will be deployed"
-  default = ["1"]
+  default     = ["1"]
 }
 
 variable "apim_v2_subnet_nsg_security_rules" {
@@ -294,22 +294,22 @@ variable "redis_cache_params" {
 }
 
 variable "create_redis_multiaz" {
-  type = bool
+  type        = bool
   description = "(Optional) true if a multi az premium instance of redis is required"
-  default = false
+  default     = false
 }
 
 
 variable "redis_zones" {
-  type = list(string)
+  type        = list(string)
   description = "(Optional) Zone list where redis will be deployed"
-  default = ["1"]
+  default     = ["1"]
 }
 
 variable "redis_version" {
-  type = string
+  type        = string
   description = "The version of Redis to use: 4 (deprecated) or 6"
-  default = "6"
+  default     = "6"
 }
 
 ## integration app gateway
@@ -368,11 +368,11 @@ variable "app_gateway_management_certificate_name" {
 }
 
 variable "integration_appgateway_private_ip" {
-  type = string
+  type        = string
   description = "Integration app gateway private ip"
 }
 variable "integration_appgateway_zones" {
-  type = list(number)
+  type        = list(number)
   description = "Integration app gateway private ip"
 }
 

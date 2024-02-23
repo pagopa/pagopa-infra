@@ -4,8 +4,8 @@ data "azurerm_private_dns_zone" "privatelink_redis_azure_com" {
 }
 
 data "azurerm_subnet" "redis_subnet" {
-  name = "${local.product}-redis-snet"
-  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+  name                 = "${local.product}-redis-snet"
+  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
   virtual_network_name = data.azurerm_virtual_network.vnet_core.name
 }
 
@@ -24,7 +24,7 @@ module "redis" {
   public_network_access_enabled = var.redis_cache_params.public_access
 
   redis_version = var.redis_version
-  zones = var.redis_zones
+  zones         = var.redis_zones
 
   private_endpoint = {
     enabled              = !var.redis_cache_params.public_access

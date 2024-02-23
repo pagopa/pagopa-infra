@@ -22,7 +22,7 @@ locals {
 
   dns_forwarder_backup_name = "${local.product}-dns-forwarder-backup-vmss"
 
-    soap_basepath_nodo_postgres_pagopa = "nodo"
+  soap_basepath_nodo_postgres_pagopa = "nodo"
 
   integration_appgateway_private_ip = ["10.230.10.200"]
 

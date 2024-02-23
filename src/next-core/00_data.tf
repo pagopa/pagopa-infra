@@ -9,13 +9,13 @@ data "azurerm_subnet" "eventhub_snet" {
   name                 = "${local.product}-eventhub-snet"
 }
 data "azurerm_resource_group" "rg_vnet" {
-  name     = format("%s-vnet-rg", local.product)
+  name = format("%s-vnet-rg", local.product)
 }
 
 data "azurerm_resource_group" "sec_rg" {
-  name     = format("%s-sec-rg", local.product)
+  name = format("%s-sec-rg", local.product)
 }
 
 data "azurerm_resource_group" "rg_api" {
-  name     = format("%s-api-rg", local.product)
+  name = format("%s-api-rg", local.product)
 }

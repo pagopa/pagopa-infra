@@ -3,7 +3,7 @@
 ############################
 
 module "apim_nodo_sync_dev_product" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
 
   product_id   = "product-nodo-sync-dev"
@@ -24,7 +24,7 @@ module "apim_nodo_sync_dev_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_sync_dev_api" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                = format("%s-nodo-sync-dev-api", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
@@ -34,7 +34,7 @@ resource "azurerm_api_management_api_version_set" "nodo_sync_dev_api" {
 }
 
 module "apim_nodo_sync_dev_api" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-sync-dev-api", var.env_short)
@@ -70,7 +70,7 @@ module "apim_nodo_sync_dev_api" {
 ############################
 
 module "apim_nodo_wfesp_dev_product" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
 
   product_id   = "product-nodo-wfesp-dev"
@@ -91,7 +91,7 @@ module "apim_nodo_wfesp_dev_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_wfesp_dev_api" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                = format("%s-nodo-wfesp-dev-api", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
@@ -101,7 +101,7 @@ resource "azurerm_api_management_api_version_set" "nodo_wfesp_dev_api" {
 }
 
 module "apim_nodo_wfesp_dev_api" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-wfesp-dev-api", var.env_short)
@@ -137,7 +137,7 @@ module "apim_nodo_wfesp_dev_api" {
 ############################
 
 module "apim_nodo_fatturazione_dev_product" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
 
   product_id   = "product-nodo-fatturazione-dev"
@@ -158,7 +158,7 @@ module "apim_nodo_fatturazione_dev_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_fatturazione_dev_api" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                = format("%s-nodo-fatturazione-dev-api", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
@@ -168,7 +168,7 @@ resource "azurerm_api_management_api_version_set" "nodo_fatturazione_dev_api" {
 }
 
 module "apim_nodo_fatturazione_dev_api" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-fatturazione-dev-api", var.env_short)
@@ -204,7 +204,7 @@ module "apim_nodo_fatturazione_dev_api" {
 ############################
 
 module "apim_nodo_web_bo_dev_product" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
 
@@ -236,7 +236,7 @@ module "apim_nodo_web_bo_dev_product" {
 # }
 
 module "apim_nodo_web_bo_dev_api" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
@@ -282,7 +282,7 @@ module "apim_nodo_web_bo_dev_api" {
 ############################
 
 module "apim_nodo_web_bo_dev_product_history" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
 
@@ -314,7 +314,7 @@ module "apim_nodo_web_bo_dev_product_history" {
 # }
 
 module "apim_nodo_web_bo_dev_api_history" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 

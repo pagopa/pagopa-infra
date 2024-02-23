@@ -3,7 +3,7 @@
 ##############
 
 module "apim_nodo_dei_pagamenti_product_dev" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.60.0"
 
   product_id   = "nodo-dev"
@@ -25,7 +25,7 @@ module "apim_nodo_dei_pagamenti_product_dev" {
 
 locals {
 
-  api_nodo_product_dev = var.env_short == "d" ? [
+  api_nodo_product_dev = var.env_short == "d" && var.enabled_features.apim_v2 ? [
     azurerm_api_management_api.apim_node_for_psp_api_v1_dev[0].name,
     azurerm_api_management_api.apim_nodo_per_psp_api_v1_dev[0].name,
     azurerm_api_management_api.apim_node_for_io_api_v1_dev[0].name,
@@ -57,7 +57,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_psp_api_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                = format("%s-node-for-psp-api-dev", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
@@ -67,7 +67,7 @@ resource "azurerm_api_management_api_version_set" "node_for_psp_api_dev" {
 }
 
 resource "azurerm_api_management_api" "apim_node_for_psp_api_v1_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                  = format("%s-node-for-psp-api-dev", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
@@ -97,7 +97,7 @@ resource "azurerm_api_management_api" "apim_node_for_psp_api_v1_dev" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_dev[0].name
   api_management_name = local.pagopa_apim_v2_name
@@ -148,7 +148,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_psp_api_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                = format("%s-nodo-per-psp-api-dev", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
@@ -158,7 +158,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_psp_api_dev" {
 }
 
 resource "azurerm_api_management_api" "apim_nodo_per_psp_api_v1_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                  = format("%s-nodo-per-psp-api-dev", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
@@ -188,7 +188,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_api_v1_dev" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   api_name            = azurerm_api_management_api.apim_nodo_per_psp_api_v1_dev[0].name
   api_management_name = local.pagopa_apim_v2_name
@@ -214,7 +214,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_psp_richiesta_avvisi_api_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                = format("%s-nodo-per-psp-richiesta-avvisi-api-dev", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
@@ -224,7 +224,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_psp_richiesta_avvisi
 }
 
 resource "azurerm_api_management_api" "apim_nodo_per_psp_richiesta_avvisi_api_v1_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                  = format("%s-nodo-per-psp-richiesta-avvisi-api-dev", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
@@ -254,7 +254,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_richiesta_avvisi_api_v1
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi_policy_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   api_name            = azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_dev[0].name
   api_management_name = local.pagopa_apim_v2_name
@@ -281,7 +281,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_io_api_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                = format("%s-nodo-for-io-api-dev", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
@@ -291,7 +291,7 @@ resource "azurerm_api_management_api_version_set" "node_for_io_api_dev" {
 }
 
 resource "azurerm_api_management_api" "apim_node_for_io_api_v1_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                  = format("%s-node-for-io-api-dev", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
@@ -321,7 +321,7 @@ resource "azurerm_api_management_api" "apim_node_for_io_api_v1_dev" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_node_for_io_policy_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   api_name            = azurerm_api_management_api.apim_node_for_io_api_v1_dev[0].name
   api_management_name = local.pagopa_apim_v2_name
@@ -422,7 +422,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_pa_api_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                = format("%s-nodo-per-pa-api-dev", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
@@ -432,7 +432,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pa_api_dev" {
 }
 
 resource "azurerm_api_management_api" "apim_nodo_per_pa_api_v1_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                  = format("%s-nodo-per-pa-api-dev", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
@@ -462,7 +462,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_pa_api_v1_dev" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1_dev[0].name
   api_management_name = local.pagopa_apim_v2_name
@@ -487,7 +487,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                = format("%s-nodo-per-pm-api-dev", local.project)
   resource_group_name = local.pagopa_apim_v2_rg
@@ -497,7 +497,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_dev" {
 }
 
 module "apim_nodo_per_pm_api_v1_dev" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-per-pm-api-dev", local.project)
@@ -525,7 +525,7 @@ module "apim_nodo_per_pm_api_v1_dev" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   api_name            = format("%s-nodo-per-pm-api-dev-v1", local.project)
   api_management_name = local.pagopa_apim_v2_name
@@ -537,7 +537,7 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1_dev
 }
 
 resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   api_name            = format("%s-nodo-per-pm-api-dev-v1", local.project)
   api_management_name = local.pagopa_apim_v2_name
@@ -549,7 +549,7 @@ resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1_dev" 
 }
 
 module "apim_nodo_per_pm_api_v2_dev" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-per-pm-api-dev", local.project)
@@ -589,7 +589,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_dev" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
 
   name                = format("%s-nodo-monitoring-api-dev", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
@@ -599,7 +599,7 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_dev" {
 }
 
 module "apim_nodo_monitoring_api_dev" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "d" && var.enabled_features.apim_v2 ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.60.0"
 
   name                  = format("%s-nodo-monitoring-api-dev", var.env_short)

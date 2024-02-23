@@ -1,7 +1,7 @@
- data "azurerm_key_vault" "kv_core" {
-   name                = "${local.product}-kv"
-   resource_group_name = "${local.product}-sec-rg"
- }
+data "azurerm_key_vault" "kv_core" {
+  name                = "${local.product}-kv"
+  resource_group_name = "${local.product}-sec-rg"
+}
 
 
 module "domain_key_vault_secrets_query" {
@@ -22,7 +22,7 @@ data "azurerm_key_vault_secret" "apim_publisher_email" {
   key_vault_id = data.azurerm_key_vault.kv_core.id
 }
 
- data "azurerm_key_vault_certificate" "app_gw_platform" {
+data "azurerm_key_vault_certificate" "app_gw_platform" {
   name         = var.app_gateway_api_certificate_name
   key_vault_id = data.azurerm_key_vault.kv_core.id
 }
@@ -38,7 +38,7 @@ data "azurerm_key_vault_certificate" "management_platform" {
 }
 
 
- data "azurerm_key_vault_secret" "fn_checkout_key" {
+data "azurerm_key_vault_secret" "fn_checkout_key" {
   name         = "fn-checkout-key"
   key_vault_id = data.azurerm_key_vault.kv_core.id
 }
@@ -73,7 +73,7 @@ data "azurerm_key_vault_secret" "pm_host_prf" {
   key_vault_id = data.azurerm_key_vault.kv_core.id
 }
 
- data "azurerm_key_vault_certificate" "app_gw_platform_prf" {
+data "azurerm_key_vault_certificate" "app_gw_platform_prf" {
   count = (var.dns_zone_prefix_prf == "") ? 0 : 1
 
   name         = var.app_gateway_prf_certificate_name

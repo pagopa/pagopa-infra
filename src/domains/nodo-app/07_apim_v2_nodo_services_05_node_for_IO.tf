@@ -12,6 +12,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_io_api" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
   name                = format("%s-nodo-for-io-api", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
   api_management_name = local.pagopa_apim_v2_name
@@ -20,11 +22,13 @@ resource "azurerm_api_management_api_version_set" "node_for_io_api" {
 }
 
 resource "azurerm_api_management_api" "apim_node_for_io_api_v1" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
   name                  = format("%s-node-for-io-api", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
   resource_group_name   = local.pagopa_apim_v2_rg
   subscription_required = local.apim_node_for_io_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.node_for_io_api.id
+  version_set_id        = azurerm_api_management_api_version_set.node_for_io_api[0].id
   version               = "v1"
   service_url           = local.apim_node_for_io_api.service_url
   revision              = "1"
@@ -48,7 +52,9 @@ resource "azurerm_api_management_api" "apim_node_for_io_api_v1" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_node_for_io_policy" {
-  api_name            = azurerm_api_management_api.apim_node_for_io_api_v1.name
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
+  api_name            = azurerm_api_management_api.apim_node_for_io_api_v1[0].name
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
@@ -59,8 +65,9 @@ resource "azurerm_api_management_api_policy" "apim_node_for_io_policy" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "activateIO_reservation_policy" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
 
-  api_name            = azurerm_api_management_api.apim_node_for_io_api_v1.name
+  api_name            = azurerm_api_management_api.apim_node_for_io_api_v1[0].name
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
   operation_id        = var.env_short == "d" ? "61dc5018b78e981290d7c176" : var.env_short == "u" ? "61dedb1e72975e13800fd80f" : "61dedb1eea7c4a07cc7d47b8"

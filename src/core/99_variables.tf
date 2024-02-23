@@ -15,6 +15,18 @@ variable "location" {
   default     = "westeurope"
 }
 
+variable "location_short" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "One of wue, neu"
+  default     = "weu"
+}
+
 variable "prefix" {
   type    = string
   default = "pagopa"
@@ -1750,4 +1762,15 @@ variable "fdr_flow_sa_replication_type" {
   type        = string
   default     = "LRS"
   description = "(Optional) Fdr flow storage account replication type"
+}
+
+
+variable "enabled_features" {
+  type = object({
+    apim_v2 = bool
+  })
+  default = {
+    apim_v2 = false
+  }
+  description = "Features enabled in this domain"
 }

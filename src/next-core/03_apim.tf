@@ -6,7 +6,7 @@ module "apimv2_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet_integration.name
   address_prefixes     = var.cidr_subnet_apim
 
-  service_endpoints                              = ["Microsoft.Web"]
+  service_endpoints = ["Microsoft.Web"]
 }
 
 
@@ -60,20 +60,20 @@ locals {
   portal_domain     = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
   management_domain = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
 
-  redis_connection_string =  var.create_redis_multiaz ? module.redis[0].primary_connection_string : data.azurerm_redis_cache.redis.primary_connection_string
-  redis_cache_id          =  var.create_redis_multiaz ? module.redis[0].id : data.azurerm_redis_cache.redis.id
+  redis_connection_string = var.create_redis_multiaz ? module.redis[0].primary_connection_string : data.azurerm_redis_cache.redis.primary_connection_string
+  redis_cache_id          = var.create_redis_multiaz ? module.redis[0].id : data.azurerm_redis_cache.redis.id
 }
 
 module "apimv2" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v7.50.0"
 
-  subnet_id            = module.apimv2_snet.id
-  location             = data.azurerm_resource_group.rg_api.location
-  name                 = "${local.project}-apim-v2"
-  resource_group_name  = data.azurerm_resource_group.rg_api.name
-  publisher_name       = var.apim_v2_publisher_name
-  publisher_email      = data.azurerm_key_vault_secret.apim_publisher_email.value
-  sku_name             = var.apim_v2_sku
+  subnet_id           = module.apimv2_snet.id
+  location            = data.azurerm_resource_group.rg_api.location
+  name                = "${local.project}-apim-v2"
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  publisher_name      = var.apim_v2_publisher_name
+  publisher_email     = data.azurerm_key_vault_secret.apim_publisher_email.value
+  sku_name            = var.apim_v2_sku
 
   public_ip_address_id = azurerm_public_ip.apimv2_public_ip.id
 
@@ -83,10 +83,10 @@ module "apimv2" {
   redis_cache_id          = var.redis_cache_enabled ? local.redis_cache_id : null
 
   application_insights = {
-    enabled = true
+    enabled             = true
     instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   }
-  zones = startswith(var.apim_v2_sku, "Premium") ?  var.apim_v2_zones : null
+  zones = startswith(var.apim_v2_sku, "Premium") ? var.apim_v2_zones : null
 
 
 
@@ -198,9 +198,9 @@ module "apimv2" {
 
   tags = var.tags
 
-#  depends_on = [
-#    azurerm_application_insights.application_insights
-#  ]
+  #  depends_on = [
+  #    azurerm_application_insights.application_insights
+  #  ]
 }
 
 # ## api management policy ##

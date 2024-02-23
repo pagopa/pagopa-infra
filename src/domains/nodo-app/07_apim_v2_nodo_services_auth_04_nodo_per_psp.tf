@@ -12,6 +12,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_psp_api_auth" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
   name                = format("%s-nodo-per-psp-api-auth", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
   api_management_name = local.pagopa_apim_v2_name
@@ -20,11 +22,13 @@ resource "azurerm_api_management_api_version_set" "nodo_per_psp_api_auth" {
 }
 
 resource "azurerm_api_management_api" "apim_nodo_per_psp_api_v1_auth" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
   name                  = format("%s-nodo-per-psp-api-auth", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
   resource_group_name   = local.pagopa_apim_v2_rg
   subscription_required = local.apim_nodo_per_psp_api_auth.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.nodo_per_psp_api_auth.id
+  version_set_id        = azurerm_api_management_api_version_set.nodo_per_psp_api_auth[0].id
   version               = "v1"
   service_url           = local.apim_nodo_per_psp_api_auth.service_url
   revision              = "1"
@@ -48,7 +52,9 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_api_v1_auth" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_auth" {
-  api_name            = azurerm_api_management_api.apim_nodo_per_psp_api_v1_auth.name
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
+  api_name            = azurerm_api_management_api.apim_nodo_per_psp_api_v1_auth[0].name
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
@@ -71,6 +77,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_psp_richiesta_avvisi_api_auth" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
   name                = format("%s-nodo-per-psp-richiesta-avvisi-api-auth", var.env_short)
   resource_group_name = local.pagopa_apim_v2_rg
   api_management_name = local.pagopa_apim_v2_name
@@ -79,11 +87,13 @@ resource "azurerm_api_management_api_version_set" "nodo_per_psp_richiesta_avvisi
 }
 
 resource "azurerm_api_management_api" "apim_nodo_per_psp_richiesta_avvisi_api_v1_auth" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
   name                  = format("%s-nodo-per-psp-richiesta-avvisi-api-auth", var.env_short)
   api_management_name   = local.pagopa_apim_v2_name
   resource_group_name   = local.pagopa_apim_v2_rg
   subscription_required = local.apim_nodo_per_psp_richiesta_avvisi_api_auth.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api_auth.id
+  version_set_id        = azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api_auth[0].id
   version               = "v1"
   service_url           = local.apim_nodo_per_psp_richiesta_avvisi_api_auth.service_url
   revision              = "1"
@@ -107,7 +117,9 @@ resource "azurerm_api_management_api" "apim_nodo_per_psp_richiesta_avvisi_api_v1
 }
 
 resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_richiesta_avvisi_policy_auth" {
-  api_name            = azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_auth.name
+  count = var.enabled_features.apim_v2 ? 1 : 0
+
+  api_name            = azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_auth[0].name
   api_management_name = local.pagopa_apim_v2_name
   resource_group_name = local.pagopa_apim_v2_rg
 
