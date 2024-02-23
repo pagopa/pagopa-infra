@@ -50,7 +50,7 @@
           JObject bodyAsJobject = (JObject) context.Variables["body"];
           String fiscalCodeTokenized = (String) context.Variables["fiscalCodeTokenized"];
           bodyAsJobject["userId"] = fiscalCodeTokenized;
-          bodyAsJobject.remove("fiscalCode");
+          bodyAsJobject.Remove("fiscalCode");
           return bodyAsJobject.ToString();
       }</set-body>
       <!-- Override body with fiscalCodeTokenized - END -->
