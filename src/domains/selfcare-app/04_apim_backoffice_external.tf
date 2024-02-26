@@ -27,3 +27,4 @@ module "apim_selfcare_backoffice_external_product" {
   policy_xml = file("./api_product/_base_policy.xml")
 }
 
+
