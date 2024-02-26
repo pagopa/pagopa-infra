@@ -39,9 +39,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} afm calculator status endpoint"
     },
@@ -108,9 +105,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} afm utils status endpoint"
     },
@@ -144,9 +138,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} apiconfig status endpoint"
     },
@@ -180,9 +171,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} authorizer status endpoint"
     },
@@ -216,9 +204,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} bizevents status endpoint"
     },
@@ -252,9 +237,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} bizevents negative status endpoint"
     },
@@ -288,9 +270,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} bizevents datastore status endpoint"
     },
@@ -341,9 +320,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} fdr status endpoint"
     },
@@ -377,9 +353,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} gpd status endpoint"
     },
@@ -413,9 +386,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} gpd payments status endpoint"
     },
@@ -449,9 +419,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} gpd reports status endpoint"
     },
@@ -485,9 +452,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} gps status endpoint"
     },
@@ -521,9 +485,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} receipts datastore status endpoint"
     },
@@ -557,9 +518,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} receipts generator status endpoint"
     },
@@ -593,9 +551,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} receipts notifier status endpoint"
     },
@@ -629,9 +584,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} receipts status endpoint"
     },
@@ -665,9 +617,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} authorizer status endpoint"
     },
@@ -701,9 +650,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} canoneunico status endpoint"
     },
@@ -737,9 +683,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} gpd-analysis status endpoint"
     },
@@ -773,9 +716,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} gpd-batch status endpoint"
     },
@@ -809,9 +749,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} gpd-reporting status endpoint"
     },
@@ -846,9 +783,6 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "headers": {
-      "Ocp-Apim-Subscription-Key": "b9461d7ae36746309752298df93934da"
-    },
     "tags" : {
       "description" : "pagopa ${env_name} fdr status endpoint"
     },
