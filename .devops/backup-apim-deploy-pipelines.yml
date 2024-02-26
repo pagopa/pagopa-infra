@@ -1,11 +1,14 @@
 pool:
-  vmImage: "ubuntu-20.04"
+  vmImage: 'ubuntu-latest'
+
+variables:
+  azureServiceConnectionApplyNameProd: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
 
 steps:
   - task: AzureCLI@2
     displayName: Run apim $(APIM_NAME) backup
     inputs:
-      azureSubscription: PROD-PAGOPA-SERVICE-CONN
+      azureSubscription: "${{variables.azureServiceConnectionPlanNameDev}}"
       scriptType: bash
       scriptLocation: inlineScript
       failOnStandardError: false
