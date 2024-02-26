@@ -47,7 +47,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_stand_in_sync_rx"
 
 ### verify ko
 resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_tx" {
-  name         = "ehub-verifyko-tx-connection-string"
+  name         = "azure-event-hub-verify-ko-evt-connection-string"
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko-tx.primary_connection_string
   content_type = "text/plain"
 
