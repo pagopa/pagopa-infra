@@ -40,7 +40,7 @@ resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
   name                = "${local.project}-re-private-endpoint"
   location            = var.location
   resource_group_name = data.azurerm_resource_group.nodo_re_to_datastore_rg[0].name
-  subnet_id           = module.storage_account_snet.id
+  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
 
   private_dns_zone_group {
     name                 = "${local.project}-re-private-dns-zone-group"

@@ -28,7 +28,7 @@ ingress_load_balancer_ip = "10.1.100.250"
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
 
-# CosmosDb GPS
+# CosmosDB GPS
 cosmos_gps_db_params = {
   kind         = "GlobalDocumentDB"
   capabilities = ["EnableServerless"]
@@ -107,9 +107,28 @@ cosmos_gpd_payments_db_params = {
     throughput = 1000
   }
 
+  payments_pp_table = {
+    autoscale  = true
+    throughput = 1000
+  }
 }
 
 cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 
 enable_iac_pipeline                   = true
 gpd_payments_sa_delete_retention_days = 0
+
+# GPD Storage Account SFTP
+gpd_sftp_sa_replication_type                                   = "LRS"
+gpd_sftp_sa_access_tier                                        = "Hot"
+gpd_sftp_cidr_subnet_gpd_storage_account                       = ["10.1.152.16/29"]
+gpd_sftp_enable_private_endpoint                               = false
+gpd_sftp_disable_network_rules                                 = true
+gpd_sftp_sa_snet_private_link_service_network_policies_enabled = false
+gpd_sftp_sa_public_network_access_enabled                      = true
+gpd_sftp_sa_tier_to_cool                                       = 1
+gpd_sftp_sa_tier_to_archive                                    = 1
+gpd_sftp_sa_delete                                             = 2
+
+# GPD Archive account
+gpd_archive_replication_type = "LRS"

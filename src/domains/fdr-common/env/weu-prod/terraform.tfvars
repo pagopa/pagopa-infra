@@ -169,7 +169,7 @@ cosmos_mongo_db_fdr_re_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
   container_default_ttl = 10368000 # 120 days
 
@@ -196,6 +196,19 @@ fdr_storage_account = {
 }
 
 fdr_re_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
+  public_network_access_enabled = false
+  blob_delete_retention_days    = 90
+  enable_low_availability_alert = false
+  backup_enabled                = true
+  backup_retention              = 30
+}
+
+fdr_history_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "GZRS"

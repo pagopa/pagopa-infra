@@ -32,7 +32,7 @@ resource "azurerm_private_endpoint" "nodo_verifyko_private_endpoint_table" {
   name                = "${local.project}-verifyko-private-endpoint-table"
   location            = var.location
   resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
-  subnet_id           = module.storage_account_snet.id
+  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
 
   private_dns_zone_group {
     name                 = "${local.project}-verifyko-private-dns-zone-group-table"
@@ -59,7 +59,7 @@ resource "azurerm_private_endpoint" "nodo_verifyko_private_endpoint_blob" {
   name                = "${local.project}-verifyko-private-endpoint-blob"
   location            = var.location
   resource_group_name = azurerm_resource_group.nodo_verifyko_to_datastore_rg.name
-  subnet_id           = module.storage_account_snet.id
+  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
 
   private_dns_zone_group {
     name                 = "${local.project}-verifyko-private-dns-zone-group-blob"

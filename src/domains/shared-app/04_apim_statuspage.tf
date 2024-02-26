@@ -43,7 +43,7 @@ locals {
   }
   aks_path           = var.env == "prod" ? "weuprod.%s.internal.platform.pagopa.it" : "weu${var.env}.%s.internal.${var.env}.platform.pagopa.it"
   fe_backoffice_path = replace(format("%s/ui/version.json", data.azurerm_storage_account.pagopa_selfcare_fe_sa.primary_web_host), "/{2}", "/")
-  fe_apiconfig_path  = replace(format("%s/ui/version.json", data.azurerm_storage_account.pagopa_apiconfig_fe_sa.primary_web_host), "/{2}", "/")
+  fe_apiconfig_path  = format("config.%s.%s/version.json", var.apim_dns_zone_prefix, var.external_domain)
 }
 
 resource "azurerm_api_management_api_version_set" "api_statuspage_api" {
@@ -136,6 +136,7 @@ module "apim_api_statuspage_api_v1" {
       "gpd"                   = format("%s/pagopa-gpd-core", format(local.aks_path, "gps"))
       "gpdpayments"           = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
       "gpdenrollment"         = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
+      "gpdupload"             = format("%s/pagopa-gpd-upload", format(local.aks_path, "gps"))
       "gpdreportinganalysis"  = format("%s/", data.azurerm_function_app.reporting_analysis.default_hostname)
       "gpdreportingbatch"     = format("%s/api/", data.azurerm_function_app.reporting_batch.default_hostname)
       "gpdreportingservice"   = format("%s/api/", data.azurerm_function_app.reporting_service.default_hostname)

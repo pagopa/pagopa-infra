@@ -114,6 +114,10 @@ locals {
         {
           keys   = ["paymentNotices.paymentToken"]
           unique = false
+        },
+        {
+          keys   = ["email.data"]
+          unique = false
         }
       ]
       shard_key = "_id"
@@ -126,6 +130,10 @@ locals {
         },
         {
           keys   = ["insertionDate", "queueName"]
+          unique = false
+        },
+        {
+          keys   = ["insertionDate"]
           unique = false
         }
       ]

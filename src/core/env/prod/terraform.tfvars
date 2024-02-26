@@ -96,6 +96,7 @@ apim_autoscale = {
 
 # app_gateway
 app_gateway_api_certificate_name        = "api-platform-pagopa-it"
+app_gateway_upload_certificate_name     = "upload-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
@@ -162,6 +163,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "151.2.45.1",     # Softlab L1 Pagamenti VPN
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
+    "193.203.230.21", # VPN NEXI
   ]
 }
 
@@ -608,6 +610,32 @@ eventhubs_02 = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "quality-improvement-psp-kpi"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-qi-psp-kpi-rx", "pagopa-qi-psp-kpi-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-qi-psp-kpi-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-psp-kpi-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-psp-kpi-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 
@@ -708,7 +736,7 @@ cosmos_document_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = true
 
   private_endpoint_enabled      = true

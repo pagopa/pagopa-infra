@@ -116,11 +116,11 @@
                                         psp["bundleName"] = pmPsp["ragioneSociale"];
                                         if(isPayPal) {
                                             psp["taxPayerFee"] = pmPsp["maxFee"];
-                                            psp["idPsp"] = pmPsp["idPsp"];
+                                            psp["idPsp"] = (string)pmPsp["idPsp"];
                                             psp["idBundle"] = pmPsp["idPsp"];
                                         } else {
                                         psp["taxPayerFee"] = pmPsp["fee"];
-                                        psp["idPsp"] = pmPsp["id"];
+                                        psp["idPsp"] = (string)pmPsp["id"];
                                         psp["idBundle"] = pmPsp["idPsp"];
                                         }
                                         pspResponse.Add(psp);
@@ -128,7 +128,7 @@
                                     response["paymentMethodName"] = ((string)((JObject)context.Variables["paymentMethod"])["name"]);
                                     response["paymentMethodDescription"] = ((string)((JObject)context.Variables["paymentMethod"])["description"]);
                                     response["paymentMethodStatus"] = ((string)((JObject)context.Variables["paymentMethod"])["status"]);
-                                    response["belowThreshold"] = "false";
+                                    response["belowThreshold"] = false;
                                     response["bundles"] = (JArray)pspResponse;
                                     return response.ToString();
                                 }</set-body>
@@ -158,7 +158,7 @@
                 <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
                 <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["walletId"])" />
                 <choose>
-                    <when condition="@((bool)context.Variables["isCard"])">
+                    <when condition="@((bool)context.Variables["isCard"] && !String.IsNullOrEmpty((string)context.Variables["walletId"]))">
                         <send-request ignore-error="false" timeout="10" response-variable-name="authDataResponse">
                             <set-url>@($"https://${wallet-basepath}/pagopa-wallet-service/wallets/{(string)context.Variables["walletId"]}/auth-data")</set-url>
                             <set-method>GET</set-method>

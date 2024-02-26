@@ -92,6 +92,18 @@ resource "azurerm_api_management_api_operation_policy" "get_wallets_for_user" {
 
 }
 
+resource "azurerm_api_management_api_operation_policy" "get_wallet_for_user_and_id" {
+  api_name            = "${local.project}-payment-wallet-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getWalletById"
+
+  xml_content = var.payment_wallet_with_pm_enabled ? templatefile("./api/payment-wallet/v1/_get_wallets_by_user_and_walletId_with_pm.xml.tpl", {
+    ecommerce-basepath = local.ecommerce_hostname
+  }) : templatefile("./api/payment-wallet/v1/_get_wallets_by_user_and_walletId.xml.tpl", { pdv_api_base_path = var.pdv_api_base_path, io_backend_base_path = var.io_backend_base_path })
+
+}
+
 resource "azurerm_api_management_api_operation_policy" "post_wallets" {
   api_name            = "${local.project}-payment-wallet-api-v1"
   resource_group_name = local.pagopa_apim_rg
@@ -114,15 +126,6 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_methods" {
 
   xml_content = templatefile("./api/payment-wallet/v1/_get_payment_methods_policy.xml.tpl", { ecommerce_hostname = local.ecommerce_hostname }
   )
-}
-
-resource "azurerm_api_management_api_operation_policy" "onboarding_outcome" {
-  api_name            = "${local.project}-payment-wallet-api-v1"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "getOnboardingOutcome"
-
-  xml_content = file("./api/payment-wallet/v1/_onboarding_outcome.xml.tpl")
 }
 
 #################################################
@@ -230,11 +233,11 @@ data "azurerm_key_vault_secret" "personal_data_vault_api_key_secret" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-resource "azurerm_api_management_named_value" "personal-data-vault-api-key" {
-  name                = "personal-data-vault-api-key"
+resource "azurerm_api_management_named_value" "wallet_personal_data_vault_api_key" {
+  name                = "wallet-personal-data-vault-api-key"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = "personal-data-vault-api-key"
+  display_name        = "wallet-personal-data-vault-api-key"
   value               = data.azurerm_key_vault_secret.personal_data_vault_api_key_secret.value
   secret              = true
 }
@@ -266,3 +269,51 @@ resource "azurerm_api_management_api_operation_policy" "get_psps_for_wallet" {
     wallet_hostname       = local.wallet_hostname
   })
 }
+
+#################################################
+## API wallet outcomes for App IO               ##
+#################################################
+locals {
+  apim_payment_wallet_outcomes_api = {
+    display_name          = "pagoPA - wallet outcomes API for IO"
+    description           = "API to support payment wallet outcomes handling for IO"
+    path                  = "payment-wallet-outcomes"
+    subscription_required = false
+    service_url           = null
+  }
+}
+
+# Wallet service APIs
+resource "azurerm_api_management_api_version_set" "wallet_outcomes_api" {
+  name                = format("%s-outcomes-api", local.project)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_payment_wallet_outcomes_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+module "apim_payment_wallet_outcomes_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
+
+  name                  = "${local.project}-outcomes-api"
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_payment_wallet_product.product_id]
+  subscription_required = local.apim_payment_wallet_outcomes_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.wallet_outcomes_api.id
+  api_version           = "v1"
+
+  description  = local.apim_payment_wallet_outcomes_api.description
+  display_name = local.apim_payment_wallet_outcomes_api.display_name
+  path         = local.apim_payment_wallet_outcomes_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_payment_wallet_outcomes_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/payment-wallet-outcomes-for-io/v1/_openapi.json.tpl", {
+    hostname = local.apim_hostname
+  })
+
+  xml_content = file("./api/payment-wallet-outcomes-for-io/v1/_base_policy.xml.tpl")
+}
+

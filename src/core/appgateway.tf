@@ -1,7 +1,7 @@
 
 locals {
 
-  # listeners
+  # 1.listeners
   listeners = {
     api = {
       protocol           = "Https"
@@ -106,6 +106,7 @@ locals {
     }
   }
 
+
   listeners_wisp2govit = {
     wisp2govit = {
       protocol           = "Https"
@@ -142,7 +143,26 @@ locals {
     }
   }
 
-  # routes
+  listeners_apiupload = {
+    upload = {
+      protocol           = "Https"
+      host               = format("upload.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_upload_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_platform_upload.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_platform_upload.version}",
+          ""
+        )
+      }
+    }
+  }
+
+  # 2.routes
 
   routes = {
     api = {
@@ -175,6 +195,7 @@ locals {
       rewrite_rule_set_name = "rewrite-rule-set-kibana"
     }
   }
+
   routes_apiprf = {
     apiprf = {
       listener              = "apiprf"
@@ -198,6 +219,82 @@ locals {
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
   }
+
+  routes_apiupload = {
+    upload = {
+      listener              = "upload"
+      backend               = "apim"
+      rewrite_rule_set_name = "rewrite-rule-set-api"
+    }
+  }
+
+  # 3.backends
+
+  backends = {
+    apim = {
+      protocol                    = "Https"
+      host                        = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
+      port                        = 443
+      ip_addresses                = var.enabled_features.apim_v2 ? concat(module.apim.private_ip_addresses, data.azurerm_api_management.apim_v2[0].private_ip_addresses) : module.apim.private_ip_addresses
+      fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apim"
+      request_timeout             = 30
+      pick_host_name_from_backend = false
+    }
+
+    portal = {
+      protocol                    = "Https"
+      host                        = trim(azurerm_dns_a_record.dns_a_portal.fqdn, ".")
+      port                        = 443
+      ip_addresses                = var.enabled_features.apim_v2 ? concat(module.apim.private_ip_addresses, data.azurerm_api_management.apim_v2[0].private_ip_addresses) : module.apim.private_ip_addresses
+      fqdns                       = [azurerm_dns_a_record.dns_a_portal.fqdn]
+      probe                       = "/signin"
+      probe_name                  = "probe-portal"
+      request_timeout             = 8
+      pick_host_name_from_backend = false
+    }
+
+    management = {
+      protocol     = "Https"
+      host         = trim(azurerm_dns_a_record.dns_a_management.fqdn, ".")
+      port         = 443
+      ip_addresses = var.enabled_features.apim_v2 ? concat(module.apim.private_ip_addresses, data.azurerm_api_management.apim_v2[0].private_ip_addresses) : module.apim.private_ip_addresses
+      fqdns        = [azurerm_dns_a_record.dns_a_management.fqdn]
+
+      probe                       = "/ServiceStatus"
+      probe_name                  = "probe-management"
+      request_timeout             = 8
+      pick_host_name_from_backend = false
+    }
+
+    kibana = {
+      protocol                    = "Https"
+      host                        = var.env == "prod" ? "weu${var.env}.kibana.internal.platform.pagopa.it" : "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
+      port                        = 443
+      ip_addresses                = [var.ingress_elk_load_balancer_ip]
+      fqdns                       = [var.env == "prod" ? "weu${var.env}.kibana.internal.platform.pagopa.it" : "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"]
+      probe                       = "/kibana"
+      probe_name                  = "probe-kibana"
+      request_timeout             = 10
+      pick_host_name_from_backend = false
+    }
+  }
+
+  backends_upload = {
+    apimupload = {
+      protocol                    = "Https"
+      host                        = trim(var.upload_endpoint_enabled ? azurerm_dns_a_record.dns_a_upload[0].fqdn : "", ".")
+      port                        = 443
+      ip_addresses                = var.enabled_features.apim_v2 ? concat(module.apim.private_ip_addresses, data.azurerm_api_management.apim_v2[0].private_ip_addresses) : module.apim.private_ip_addresses
+      fqdns                       = var.upload_endpoint_enabled ? [azurerm_dns_a_record.dns_a_upload[0].fqdn] : []
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apim"
+      request_timeout             = 300 # long timeout for heavy api request ( ex. FDR flow managment, GPD upload, ... )
+      pick_host_name_from_backend = false
+    }
+  }
+
 }
 
 ## Application gateway public ip ##
@@ -241,57 +338,11 @@ module "app_gw" {
   subnet_id    = module.appgateway_snet.id
   public_ip_id = azurerm_public_ip.appgateway_public_ip.id
 
-  # Configure backends
-  backends = {
-    apim = {
-      protocol                    = "Https"
-      host                        = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
-      port                        = 443
-      ip_addresses                = module.apim.private_ip_addresses
-      fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
-      probe                       = "/status-0123456789abcdef"
-      probe_name                  = "probe-apim"
-      request_timeout             = 30 # workaround for FDR - set to 10s after new Fdr service deployed
-      pick_host_name_from_backend = false
-    }
-
-    portal = {
-      protocol                    = "Https"
-      host                        = trim(azurerm_dns_a_record.dns_a_portal.fqdn, ".")
-      port                        = 443
-      ip_addresses                = module.apim.private_ip_addresses
-      fqdns                       = [azurerm_dns_a_record.dns_a_portal.fqdn]
-      probe                       = "/signin"
-      probe_name                  = "probe-portal"
-      request_timeout             = 8
-      pick_host_name_from_backend = false
-    }
-
-    management = {
-      protocol     = "Https"
-      host         = trim(azurerm_dns_a_record.dns_a_management.fqdn, ".")
-      port         = 443
-      ip_addresses = module.apim.private_ip_addresses
-      fqdns        = [azurerm_dns_a_record.dns_a_management.fqdn]
-
-      probe                       = "/ServiceStatus"
-      probe_name                  = "probe-management"
-      request_timeout             = 8
-      pick_host_name_from_backend = false
-    }
-
-    kibana = {
-      protocol                    = "Https"
-      host                        = var.env == "prod" ? "weu${var.env}.kibana.internal.platform.pagopa.it" : "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
-      port                        = 443
-      ip_addresses                = [var.ingress_elk_load_balancer_ip]
-      fqdns                       = [var.env == "prod" ? "weu${var.env}.kibana.internal.platform.pagopa.it" : "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"]
-      probe                       = "/kibana"
-      probe_name                  = "probe-kibana"
-      request_timeout             = 10
-      pick_host_name_from_backend = false
-    }
-  }
+  # Configure 3.backends
+  backends = merge(
+    local.backends,
+    var.upload_endpoint_enabled ? local.backends_upload : {},
+  )
 
   ssl_profiles = [{
     name                             = format("%s-ssl-profile", local.project)
@@ -317,6 +368,7 @@ module "app_gw" {
     var.dns_zone_prefix_prf != "" ? local.listeners_apiprf : {},
     var.app_gateway_wisp2govit_certificate_name != "" ? local.listeners_wisp2govit : {},
     var.app_gateway_wfespgovit_certificate_name != "" ? local.listeners_wfespgovit : {},
+    var.upload_endpoint_enabled ? local.listeners_apiupload : {},
   )
 
   # maps listener to backend
@@ -325,6 +377,7 @@ module "app_gw" {
     var.dns_zone_prefix_prf != "" ? local.routes_apiprf : {},
     var.app_gateway_wisp2govit_certificate_name != "" ? local.routes_wisp2govit : {},
     var.app_gateway_wfespgovit_certificate_name != "" ? local.routes_wfespgovit : {},
+    var.upload_endpoint_enabled ? local.routes_apiupload : {},
   )
 
   rewrite_rule_sets = [
@@ -410,6 +463,60 @@ module "app_gw" {
           response_header_configurations = []
           url                            = null
         },
+        {
+          name          = "http-deny-path-only-to-upload-allowed-path"
+          rule_sequence = 4
+          conditions = [
+            {
+              variable    = "var_host"
+              pattern     = format("upload.%s.%s", var.dns_zone_prefix, var.external_domain)
+              ignore_case = true
+              negate      = false
+            },
+            {
+              variable    = "var_uri_path"
+              pattern     = join("|", var.app_gateway_allowed_paths_upload)
+              ignore_case = true
+              negate      = true
+            },
+          ]
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            path         = "notfound"
+            query_string = null
+          }
+        },
+        {
+          name          = "http-deny-path-only-upload-soap-fdr"
+          rule_sequence = 4
+          conditions = [
+            {
+              variable    = "var_host"
+              pattern     = format("upload.%s.%s", var.dns_zone_prefix, var.external_domain)
+              ignore_case = true
+              negate      = false
+            },
+            {
+              variable    = "http_req_Content-Type"
+              pattern     = "application/xml"
+              ignore_case = true
+              negate      = false
+            },
+            {
+              variable    = "http_req_SOAPAction"
+              pattern     = join("|", var.app_gateway_allowed_fdr_soap_action)
+              ignore_case = true
+              negate      = true
+            },
+          ]
+          request_header_configurations  = []
+          response_header_configurations = []
+          url = {
+            path         = "notfound"
+            query_string = null
+          }
+        },
       ]
     },
     {
@@ -432,7 +539,38 @@ module "app_gw" {
           }
         },
       ]
-    }
+    },
+    # {
+    #   name = "rewrite-rule-set-fdr"
+    #   rewrite_rules = [
+    #     {
+    #       name          = "http-deny-path-only-fdr"
+    #       rule_sequence = 4
+    #       conditions = [
+    #         {
+    #           variable    = "var_host"
+    #           # pattern     = join("|", var.app_gateway_deny_paths)
+    #           pattern     = "fdr.dev.platform.pagopa.it"
+    #           ignore_case = true
+    #           negate      = false
+    #         },
+    #         {
+    #           variable    = "var_uri_path"
+    #           # pattern     = join("|", var.app_gateway_deny_paths)
+    #           pattern     = "/nodo/node-for-psp/*"
+    #           ignore_case = true
+    #           negate      = false
+    #         },
+    #       ]
+    #       request_header_configurations  = []
+    #       response_header_configurations = []
+    #       url = {
+    #         path         = "notfound"
+    #         query_string = null
+    #       }
+    #     },
+    #   ]
+    # },
   ]
   # TLS
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]

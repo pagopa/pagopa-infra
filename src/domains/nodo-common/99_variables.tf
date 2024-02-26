@@ -269,6 +269,10 @@ variable "cidr_subnet_cosmosdb_nodo_verifyko" {
   type        = list(string)
   description = "Cosmos DB address space for nodo re."
 }
+variable "cidr_subnet_cosmosdb_standin" {
+  type        = list(string)
+  description = "Cosmos DB address space for standin."
+}
 
 variable "cosmos_nosql_db_params" {
   type = object({
@@ -298,6 +302,33 @@ variable "cosmos_nosql_db_params" {
 }
 
 variable "verifyko_cosmos_nosql_db_params" {
+  type = object({
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    kind           = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+    events_ttl                        = number
+    max_throughput                    = number
+  })
+}
+
+variable "standin_cosmos_nosql_db_params" {
   type = object({
     capabilities   = list(string)
     offer_type     = string
@@ -455,4 +486,18 @@ variable "location_replica_short" {
   }
   description = "One of wue, neu"
   default     = "neu"
+}
+
+variable "nodo_cfg_sync_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_delete_retention_days    = number
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    backup_enabled                = bool
+    backup_retention_days         = number
+  })
 }

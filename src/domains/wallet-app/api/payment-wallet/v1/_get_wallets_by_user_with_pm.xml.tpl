@@ -131,8 +131,15 @@
                             string eCommerceWalletType = eCommerceWalletTypes[pmWalletType];
                             result["paymentMethodId"] = eCommercePaymentMethodIds[eCommerceWalletType];
                             result["status"] = "VALIDATED";
-                            result["creationDate"] = wallet["createDate"];
-                            result["updateDate"] = wallet["createDate"];
+
+                            TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
+                            DateTime creationDateTime = DateTime.Parse(((string)wallet["createDate"]).Replace(" ","T"));
+                            DateTime utcCreationDateTime = TimeZoneInfo.ConvertTimeToUtc(creationDateTime, zone);
+                            DateTimeOffset creationDateTimeOffset = new DateTimeOffset(utcCreationDateTime);
+                            result["creationDate"] = creationDateTimeOffset.ToString("o");
+                            result["updateDate"] = result["creationDate"];
+
                             var convertedServices = new List<JObject>();
                             foreach(JValue service in wallet["enableableFunctions"]){
                                 string serviceName = service.ToString().ToUpper();
@@ -140,7 +147,7 @@
                                     JObject converted = new JObject();
                                     converted["name"] = serviceName;
                                     converted["status"] = "ENABLED";
-                                    converted["updateDate"] = wallet["createDate"];
+                                    converted["updateDate"] = result["creationDate"];
                                     convertedServices.Add(converted);
                                 }
                             }
@@ -148,7 +155,7 @@
                             JObject details = new JObject();
                             details["type"] = eCommerceWalletType;
                             if (eCommerceWalletType == "CARDS") {
-                                details["maskedPan"] = $"************{wallet["info"]["blurredNumber"]}";
+                                details["maskedPan"] = $"{wallet["info"]["blurredNumber"]}";
                                 details["expiryDate"] = $"{(string)wallet["info"]["expireYear"]}{(string)wallet["info"]["expireMonth"]}";
                                 details["holder"] = wallet["info"]["holder"];
                                 details["brand"] = wallet["info"]["brand"];

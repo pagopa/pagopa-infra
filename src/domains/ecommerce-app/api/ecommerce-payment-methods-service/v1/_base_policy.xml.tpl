@@ -2,9 +2,13 @@
     <inbound>
       <base />
       <!-- Handle X-Client-Id START-->
-      <set-header name="x-client-id" exists-action="delete" />
       <choose>
-          <when condition="@(context.User != null && context.User.Groups.Select(g => g.Id).Contains("checkout_rate_no_limit"))">
+          <when condition="@(context.User == null || !context.User.Groups.Select(g => g.Id).Contains("ecommerce-methods-full-read"))">
+               <set-header name="x-client-id" exists-action="delete" />
+          </when>
+      </choose>
+      <choose>
+          <when condition="@(context.User != null && context.User.Groups.Select(g => g.Id).Contains("checkout-rate-no-limit"))">
               <set-header name="x-client-id" exists-action="override">
                   <value>CHECKOUT</value>
               </set-header>

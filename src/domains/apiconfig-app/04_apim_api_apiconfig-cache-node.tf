@@ -14,7 +14,7 @@ module "apim_api_apiconfig_cache_node_api_v1_p" {
   name                  = format("%s-apiconfig-cache-node-%s-api", local.project, local.postgres)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_apiconfig_cache_product.product_id, local.apim_x_node_product_id]
+  product_ids           = [module.apim_apiconfig_cache_product.product_id, local.apim_x_node_product_id, local.cfg_x_node_product_id]
   subscription_required = local.apiconfig_cache_locals.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.api_apiconfig_cache_node_api_p.id
@@ -56,7 +56,7 @@ module "apim_api_apiconfig_cache_node_api_v1_o" {
   name                  = format("%s-apiconfig-cache-node-%s-api", local.project, local.oracle)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_apiconfig_cache_product.product_id, local.apim_x_node_product_id]
+  product_ids           = [module.apim_apiconfig_cache_product.product_id, local.apim_x_node_product_id, local.cfg_x_node_product_id]
   subscription_required = local.apiconfig_cache_locals.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.api_apiconfig_cache_node_api_o.id

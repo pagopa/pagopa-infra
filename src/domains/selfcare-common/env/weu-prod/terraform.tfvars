@@ -34,7 +34,7 @@ enable_iac_pipeline = true
 bopagopa_datastore_cosmos_db_params = {
   kind = "MongoDB"
   # capabilities = ["EnableMongo", "EnableServerless"]
-  capabilities = ["EnableMongo"]
+  capabilities = ["EnableMongo", "EnableMongo16MBDocumentSupport"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -42,7 +42,7 @@ bopagopa_datastore_cosmos_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
   additional_geo_locations = [{
