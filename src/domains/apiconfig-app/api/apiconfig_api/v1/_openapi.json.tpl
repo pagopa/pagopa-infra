@@ -1,10 +1,10 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "PagoPA API configuration ${service}",
+    "title": "core",
     "description": "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei Pagamenti",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.58.7"
+    "version": "0.58.13"
   },
   "servers": [
     {
@@ -15817,142 +15817,6 @@
         }
       ]
     },
-    "/refresh/config/{configtype}": {
-      "get": {
-        "tags": [
-          "Refresh Operation"
-        ],
-        "summary": "Refresh Configuration activation for a specific domain",
-        "operationId": "getRefreshConfig",
-        "parameters": [
-          {
-            "name": "configtype",
-            "in": "path",
-            "description": "Configuration domain",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "FTP_SERVER",
-                "INFORMATIVA_CDI",
-                "INFORMATIVA_PA",
-                "PA",
-                "PDD",
-                "PSP",
-                "GLOBAL"
-              ]
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
-    },
     "/refresh/job/{jobtype}": {
       "get": {
         "tags": [
@@ -17253,9 +17117,9 @@
             }
           },
           {
-            "name": "ciName",
+            "name": "ciNameOrCF",
             "in": "query",
-            "description": "Filter by creditor institution name",
+            "description": "Filter by name or tax code of the creditor institution",
             "required": false,
             "schema": {
               "type": "string"
@@ -18018,6 +17882,10 @@
             "type": "string",
             "example": "Comune di Lorem Ipsum"
           },
+          "cbill_code": {
+            "type": "string",
+            "example": "1234567890100"
+          },
           "address": {
             "$ref": "#/components/schemas/CreditorInstitutionAddress"
           },
@@ -18279,7 +18147,7 @@
           },
           "config_description": {
             "type": "string",
-            "example": " default millisecondi validitÃ  token"
+            "example": " default millisecondi validità token"
           }
         }
       },
@@ -18780,7 +18648,7 @@
           },
           "config_description": {
             "type": "string",
-            "example": " default millisecondi validitÃ  token"
+            "example": " default millisecondi validità token"
           },
           "config_category": {
             "type": "string",
@@ -19706,7 +19574,8 @@
           "business_name",
           "enabled",
           "payment_types",
-          "psp_code"
+          "psp_code",
+          "tax_code"
         ],
         "type": "object",
         "properties": {
@@ -19724,6 +19593,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "tax_code": {
+            "type": "string"
           }
         }
       },
