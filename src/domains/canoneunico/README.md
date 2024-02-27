@@ -69,6 +69,7 @@
 | <a name="input_canoneunico_runtime_version"></a> [canoneunico\_runtime\_version](#input\_canoneunico\_runtime\_version) | Version for the Azure function runtime | `string` | `"~4"` | no |
 | <a name="input_canoneunico_schedule_batch"></a> [canoneunico\_schedule\_batch](#input\_canoneunico\_schedule\_batch) | Cron scheduling (NCRON) default : every hour | `string` | `"0 0 */1 * * *"` | no |
 | <a name="input_cidr_subnet_canoneunico_common"></a> [cidr\_subnet\_canoneunico\_common](#input\_cidr\_subnet\_canoneunico\_common) | Address prefixes subnet canoneunico\_common function | `list(string)` | `null` | no |
+| <a name="input_corporate_cup_users"></a> [corporate\_cup\_users](#input\_corporate\_cup\_users) | List of corporate CUP user. | <pre>list(object({<br>    username = string<br>  }))</pre> | `[]` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_enable_canoneunico_backup"></a> [enable\_canoneunico\_backup](#input\_enable\_canoneunico\_backup) | (Optional) Enables canoneunico storage account backup | `bool` | `false` | no |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
