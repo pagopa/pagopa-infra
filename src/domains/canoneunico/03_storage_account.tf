@@ -76,17 +76,16 @@ resource "azurerm_storage_container" "err_csv_blob_container" {
 # https://learn.microsoft.com/en-us/azure/templates/microsoft.storage/storageaccounts/localusers?pivots=deployment-language-terraform
 # list of local user 
 locals {
-  cup_localuser_corporate = [
-    {
-      username : "corporatenameex1",
-      container_name : "corporatenamecontainer1",
-    },
-    {
-      username : "corporatenameex2",
-      container_name : "corporatenamecontainer2",
-    },
-  ]
+  # cup_localuser_corporate = [
+  #   {
+  #     username : "corporatenameex1",
+  #   },
+  #   {
+  #     username : "corporatenameex2",
+  #   },
+  # ]
 
+  cup_localuser_corporate = var.corporate_cup_users
 }
 
 
@@ -94,7 +93,7 @@ locals {
 resource "azurerm_storage_container" "corporate_containers" {
   for_each = { for c in local.cup_localuser_corporate : c.username => c }
 
-  name                  = each.value.container_name
+  name                  = "${each.value.username}container"
   storage_account_name  = module.canoneunico_sa.name
   container_access_type = "private"
 }
@@ -118,7 +117,7 @@ resource "azapi_resource" "sftp_localuser_on_container" {
       permissionScopes = [{
         permissions  = "cwl",
         service      = "blob",
-        resourceName = each.value.container_name // "containername"
+        resourceName = "${each.value.username}container" // "containername"
       }]
     }
   })

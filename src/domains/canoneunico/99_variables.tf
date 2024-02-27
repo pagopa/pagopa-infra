@@ -207,3 +207,11 @@ variable "enable_canoneunico_backup" {
   default     = false
   description = "(Optional) Enables canoneunico storage account backup"
 }
+
+variable "corporate_cup_users" {
+  description = "List of corporate CUP user."
+  type = list(object({
+    username = string
+  }))
+  default = []
+}
