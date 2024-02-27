@@ -6,7 +6,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_datasto
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_sev3
     email_subject          = "AppException on Verify KO Event dumping"
     custom_webhook_payload = "{}"
   }
@@ -74,7 +74,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_tablest
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_sev3
     email_subject          = "AppException on Verify KO Event dumping"
     custom_webhook_payload = "{}"
   }
@@ -142,7 +142,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_datasto
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_sev3
     email_subject          = "CosmosException on Verify KO Event dumping"
     custom_webhook_payload = "{}"
   }
@@ -169,7 +169,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_datasto
   }
 }
 
-
 # Exception during table storage saving
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_tablestorage_persistenceexception" {
   count               = var.env_short == "p" ? 1 : 0
@@ -178,7 +177,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_verifyko_to_tablest
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_sev3
     email_subject          = "Persistence exception on Verify KO Event dumping"
     custom_webhook_payload = "{}"
   }
