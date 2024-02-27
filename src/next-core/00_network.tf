@@ -21,3 +21,9 @@ data "azurerm_private_dns_zone" "eventhub" {
   name                = "privatelink.servicebus.windows.net"
   resource_group_name = local.msg_resource_group_name
 }
+
+
+data "azurerm_route_table" "rt_sia" {
+  name                = format("%s-sia-rt", local.product)
+  resource_group_name = local.vnet_core_resource_group_name
+}

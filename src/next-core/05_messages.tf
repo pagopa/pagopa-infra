@@ -15,8 +15,8 @@ module "event_hub03" {
 
   eventhubs = var.eventhubs_03
 
-  private_dns_zones              = {
-    id = [data.azurerm_private_dns_zone.eventhub.id]
+  private_dns_zones = {
+    id   = [data.azurerm_private_dns_zone.eventhub.id]
     name = [data.azurerm_private_dns_zone.eventhub.name]
   }
   private_dns_zone_record_A_name = "event_hub03"
@@ -24,15 +24,15 @@ module "event_hub03" {
   alerts_enabled = var.ehns_alerts_enabled
   metric_alerts  = var.ehns_metric_alerts
   action = [
-     {
-       action_group_id    = data.azurerm_monitor_action_group.slack.id
-       webhook_properties = null
-     },
-     {
-       action_group_id    = data.azurerm_monitor_action_group.email.id
-       webhook_properties = null
-     }
-   ]
+    {
+      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    }
+  ]
 
   tags = var.tags
 }
@@ -52,8 +52,8 @@ module "event_hub04" {
   virtual_network_ids = [data.azurerm_virtual_network.vnet_integration.id, data.azurerm_virtual_network.vnet_core.id]
   subnet_id           = data.azurerm_subnet.eventhub_snet.id
 
-  private_dns_zones              = {
-    id = [data.azurerm_private_dns_zone.eventhub.id]
+  private_dns_zones = {
+    id   = [data.azurerm_private_dns_zone.eventhub.id]
     name = [data.azurerm_private_dns_zone.eventhub.name]
   }
   private_dns_zone_record_A_name = "event_hub04"
@@ -61,15 +61,15 @@ module "event_hub04" {
   eventhubs = var.eventhubs_04
 
   action = [
-     {
-       action_group_id    = data.azurerm_monitor_action_group.slack.id
-       webhook_properties = null
-     },
-     {
-       action_group_id    = data.azurerm_monitor_action_group.email.id
-       webhook_properties = null
-     }
-   ]
+    {
+      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    }
+  ]
 
   tags = var.tags
 }

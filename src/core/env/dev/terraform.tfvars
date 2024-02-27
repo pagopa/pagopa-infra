@@ -607,46 +607,6 @@ eventhubs_02 = [
         manage = false
       }
     ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-cache"
-    partitions        = 1
-    message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-cache-sync-rx"]
-    keys = [
-      {
-        name   = "nodo-dei-pagamenti-cache-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-cache-sync-rx" # node-cfg-sync
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-stand-in"
-    partitions        = 1
-    message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-stand-in-sync-rx"]
-    keys = [
-      {
-        name   = "nodo-dei-pagamenti-stand-in-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-stand-in-sync-rx" # node-cfg-sync
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
   }
 ]
 
@@ -806,3 +766,8 @@ nodo_pagamenti_x_forwarded_for = "10.230.8.5"
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
 node_forwarder_autoscale_enabled = false
+
+
+enabled_features = {
+  apim_v2 = true
+}
