@@ -8,10 +8,10 @@ locals {
   azdo_iac_deploy_managed_identity_name = "azdo-${var.env}-pagopa-iac-deploy"
 }
 
-
+### Main location
 variable "location" {
   type        = string
-  description = "One of westeurope, northeurope"
+  description = "Main location"
   default     = "westeurope"
 }
 
@@ -27,6 +27,25 @@ variable "location_short" {
   default     = "weu"
 }
 
+### Italy location
+variable "location_it" {
+  type        = string
+  description = "Main location"
+  default     = "italynorth"
+}
+
+variable "location_short_it" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "Location short for italy: itn"
+  default     = "itn"
+}
+
 variable "prefix" {
   type    = string
   default = "pagopa"
@@ -39,6 +58,13 @@ variable "prefix" {
 }
 
 variable "env_short" {
+  description = "Environment shot version"
+  validation {
+    condition = (
+      length(var.prefix) == 1
+    )
+    error_message = "Max length is 1 chars."
+  }
   type = string
 }
 
@@ -51,13 +77,6 @@ variable "lock_enable" {
   type        = bool
   default     = false
   description = "Apply locks to block accidentally deletions."
-}
-
-# Azure DevOps
-variable "azdo_sp_tls_cert_enabled" {
-  type        = string
-  description = "Enable Azure DevOps connection for TLS cert management"
-  default     = false
 }
 
 variable "tags" {
@@ -613,6 +632,13 @@ variable "app_gateway_allowed_paths_upload" {
 }
 
 # Azure DevOps Agent
+
+variable "azdo_sp_tls_cert_enabled" {
+  type        = string
+  description = "Enable Azure DevOps connection for TLS cert management"
+  default     = false
+}
+
 variable "enable_azdoa" {
   type        = bool
   description = "Enable Azure DevOps agent."
