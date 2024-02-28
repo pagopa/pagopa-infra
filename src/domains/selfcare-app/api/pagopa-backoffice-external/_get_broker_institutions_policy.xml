@@ -1,0 +1,27 @@
+<policies>
+  <inbound>
+    <base />
+    <!-- rate limit by subscription key -->
+    <rate-limit calls="300" renewal-period="10" remaining-calls-variable-name="remainingCallsPerSubscription"/>
+    <set-backend-service base-url="https://${hostname}/pagopa-backoffice-external" />
+
+    <!-- Calling Authorizer's fragment -->
+    <set-variable name="application_domain" value="backoffice_external" />
+    <choose>
+      <!-- Making sure that will excludes all APIs that does not includes brokerCode -->
+      <when condition="@(context.Request.MatchedParameters.ContainsKey("brokerCode"))">
+        <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["brokerCode"])" />
+        <include-fragment fragment-id="authorizer" />
+      </when>
+    </choose>
+  </inbound>
+  <outbound>
+    <base />
+  </outbound>
+  <backend>
+    <base />
+  </backend>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
