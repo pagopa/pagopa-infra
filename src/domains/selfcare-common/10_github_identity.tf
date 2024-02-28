@@ -25,9 +25,7 @@ locals {
   environment_cd_roles = {
     subscription = [
       "Contributor",
-      "PagoPA Platform Dev IaC Reader",
-      "PagoPA Platform Uat IaC Reader",
-      "PagoPA Platform Prod IaC Reader",
+      "PagoPA Platform ${var.env_capital} IaC Reader",
     ]
     resource_groups = {
       "${local.product}-${var.domain}-sec-rg" = [

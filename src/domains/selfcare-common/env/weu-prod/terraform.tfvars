@@ -5,6 +5,7 @@ domain         = "selfcare"
 location       = "westeurope"
 location_short = "weu"
 instance       = "prod"
+env_capital    = "Prod"
 
 tags = {
   CreatedBy   = "Terraform"
