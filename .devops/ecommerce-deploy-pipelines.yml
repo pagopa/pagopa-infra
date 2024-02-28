@@ -82,7 +82,7 @@ stages:
     #APP
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_app"
         TF_ENVIRONMENT_FOLDER: "weu-dev"
         ENVIRONMENT: "DEV"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameDev}}"
@@ -96,7 +96,7 @@ stages:
     #COMMON
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_common"
         TF_ENVIRONMENT_FOLDER: "weu-dev"
         ENVIRONMENT: "DEV"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameDev}}"
@@ -123,7 +123,7 @@ stages:
     #APP
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_app"
         TF_ENVIRONMENT_FOLDER: "weu-uat"
         ENVIRONMENT: "UAT"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
@@ -137,7 +137,7 @@ stages:
     #COMMON
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_common"
         TF_ENVIRONMENT_FOLDER: "weu-uat"
         ENVIRONMENT: "UAT"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
@@ -164,7 +164,7 @@ stages:
     #APP
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_app"
         TF_ENVIRONMENT_FOLDER: "weu-prod"
         ENVIRONMENT: "PROD"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameProd}}"
@@ -178,7 +178,7 @@ stages:
     #COMMON
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
-        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_common"
         TF_ENVIRONMENT_FOLDER: "weu-prod"
         ENVIRONMENT: "PROD"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameProd}}"
