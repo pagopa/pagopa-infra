@@ -114,6 +114,11 @@ resource "azurerm_storage_queue" "transactions_authorization_requested_queue" {
   name                 = "${local.project}-transaction-auth-requested-queue"
   storage_account_name = module.ecommerce_storage_transient.name
 }
+
+resource "azurerm_storage_queue" "transactions_authorization_requested_retry_queue" {
+  name                 = "${local.project}-transaction-auth-requested-retry-queue"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
 //storage queue for blue deployment
 resource "azurerm_storage_queue" "notifications_service_retry_queue_blue" {
   count                = var.env_short == "u" ? 1 : 0
@@ -166,6 +171,12 @@ resource "azurerm_storage_queue" "transactions_notifications_queue_blue" {
 resource "azurerm_storage_queue" "transactions_authorization_requested_queue_blue" {
   count                = var.env_short == "u" ? 1 : 0
   name                 = "${local.project}-transaction-auth-requested-queue-b"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue" "transactions_authorization_requested_retry_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-transaction-auth-requested-retry-queue-b"
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
@@ -347,7 +358,14 @@ locals {
       "threshold"   = 10
     },
     {
-      "queue_key"   = "transaction-authorization-requested-queue"
+      "queue_key"   = "transaction-auth-requested-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transaction-auth-requested-retry-queue"
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15
