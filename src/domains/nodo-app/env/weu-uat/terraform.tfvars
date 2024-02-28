@@ -179,6 +179,38 @@ nodo_verifyko_to_tablestorage_function_autoscale = {
   maximum = 10
 }
 
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/web-bo/.*",
+    "/bo-nodo/.*",
+    "/pp-admin-panel/.*",
+    "/tkm/tkmacquirermanager/.*",
+    "/nodo-monitoring/monitoring/.*",
+    "/nodo-ndp/monitoring/.*",
+    "/nodo-replica-ndp/monitoring/.*",
+    "/wfesp-ndp/.*",
+    "/wfesp-replica-ndp/.*",
+    "/web-bo-ndp/.*",
+  ]
+  ips = [
+    "93.63.219.230",  # PagoPA on prem VPN
+    "93.63.219.234",  # PagoPA on prem VPN DR
+    "20.93.160.60",   # CSTAR
+    "213.215.138.80", # Softlab L1 Pagamenti VPN
+    "213.215.138.79", # Softlab L1 Pagamenti VPN
+    "82.112.220.178", # Softlab L1 Pagamenti VPN
+    "77.43.17.42",    # Softlab L1 Pagamenti VPN
+    "151.2.45.1",     # Softlab L1 Pagamenti VPN
+    "193.203.229.20", # VPN NEXI
+    "193.203.230.22", # VPN NEXI
+  ]
+}
+
+nodo_auth_subscription_limit = 10000
+
+# node forwarder
+nodo_pagamenti_x_forwarded_for = "10.230.9.5"
+
 
 storage_account_info = {
   account_kind                      = "StorageV2"

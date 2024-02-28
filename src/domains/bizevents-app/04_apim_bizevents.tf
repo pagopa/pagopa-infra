@@ -40,7 +40,7 @@ module "apim_bizevents_product" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  published             = false
+  published             = true
   subscription_required = local.apim_bizevents_service_api.subscription_required
   approval_required     = true
   subscriptions_limit   = 1000

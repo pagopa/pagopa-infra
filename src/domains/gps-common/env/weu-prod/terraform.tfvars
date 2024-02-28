@@ -106,11 +106,16 @@ cosmos_gpd_payments_db_params = {
   public_network_access_enabled     = true
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
   payments_receipts_table = {
     autoscale  = true
     throughput = 3000
+  }
+
+  payments_pp_table = {
+    autoscale  = true
+    throughput = 4000
   }
 }
 

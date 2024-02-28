@@ -131,6 +131,10 @@ locals {
         {
           keys   = ["insertionDate", "queueName"]
           unique = false
+        },
+        {
+          keys   = ["insertionDate"]
+          unique = false
         }
       ]
       shard_key = "_id"

@@ -51,3 +51,10 @@ resource "azurerm_private_dns_zone_virtual_network_link" "private_db_zone_to_cor
 
   tags = var.tags
 }
+
+
+# RT sia associated to new apim v2 snet
+resource "azurerm_subnet_route_table_association" "rt_sia_for_apim_v2" {
+  subnet_id      = module.apimv2_snet.id
+  route_table_id = data.azurerm_route_table.rt_sia.id
+}

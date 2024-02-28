@@ -166,6 +166,28 @@ nodo_verifyko_to_tablestorage_function_autoscale = {
   maximum = 3
 }
 
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/allowed/*",
+  ]
+  ips = [
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+  ]
+}
+
+
+# node forwarder
+nodo_pagamenti_x_forwarded_for = "10.230.8.5"
+
 
 storage_account_info = {
   account_kind                      = "StorageV2"
@@ -173,4 +195,9 @@ storage_account_info = {
   account_replication_type          = "ZRS"
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
+}
+
+
+enabled_features = {
+  apim_v2 = true
 }
