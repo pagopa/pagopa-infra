@@ -75,27 +75,18 @@ resource "azurerm_storage_container" "err_csv_blob_container" {
 }
 
 
-# ##################################### #
+# ##################################### # 
 # CUP corporate automation itfself
-# ##################################### #
+# ##################################### # 
 
 # https://learn.microsoft.com/en-us/azure/templates/microsoft.storage/storageaccounts/localusers?pivots=deployment-language-terraform
-# list of local user
+# list of local user 
 locals {
-  #   cup_localuser_corporate = [
-  #     {
-  #       username : "corporatenameex1",
-  #     },
-  #     {
-  #       username : "corporatenameex2",
-  #     },
-  #   ]
-
   cup_localuser_corporate = var.corporate_cup_users
 }
 
 
-# 1. creare corporate container
+# 1. creare corporate container & directory 
 resource "azurerm_storage_container" "corporate_containers" {
   for_each = { for c in local.cup_localuser_corporate : c.username => c }
 
