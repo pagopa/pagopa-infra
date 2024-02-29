@@ -69,3 +69,19 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_tablest
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
+
+resource "azurerm_key_vault_secret" "verifyko_tablestorage_connection_string" {
+  name         = "verifyko-tablestorage-connection-string"
+  value        = module.nodo_verifyko_storage_account.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "verifyko_datastore_cosmos_uri" {
+  name         = "verifyko-datastore-cosmos-uri"
+  value        = module.cosmosdb_account_nodo_verifyko.endpoint
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
