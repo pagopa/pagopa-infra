@@ -62,7 +62,7 @@ variable "location_short_ita" {
   type = string
   validation {
     condition = (
-      length(var.location_short) == 3
+      length(var.location_short_ita) == 3
     )
     error_message = "Length must be 3 chars."
   }
