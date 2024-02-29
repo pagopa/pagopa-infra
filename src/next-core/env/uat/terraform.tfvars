@@ -5,6 +5,8 @@ domain          = "core"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
+location_ita = "italynorth"
+location_short_ita = "itn"
 instance        = "uat"
 
 tags = {
@@ -13,6 +15,11 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+}
+
+### Feature Flag
+is_feature_enabled = {
+  vnet_ita = false
 }
 
 ### External resources

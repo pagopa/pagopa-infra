@@ -5,6 +5,8 @@ domain          = "core"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
+location_ita = "italynorth"
+location_short_ita = "itn"
 instance        = "dev"
 
 tags = {
@@ -17,6 +19,12 @@ tags = {
 
 ### Network
 cidr_subnet_tools_cae = ["10.1.248.0/23"]
+
+### Feature Flag
+is_feature_enabled = {
+  vnet_ita = true
+}
+
 
 ### External resources
 
