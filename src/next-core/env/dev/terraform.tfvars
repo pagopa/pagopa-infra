@@ -1,13 +1,13 @@
-prefix          = "pagopa"
-env_short       = "d"
-env             = "dev"
-domain          = "core"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-location_ita = "italynorth"
+prefix             = "pagopa"
+env_short          = "d"
+env                = "dev"
+domain             = "core"
+location           = "westeurope"
+location_short     = "weu"
+location_string    = "West Europe"
+location_ita       = "italynorth"
 location_short_ita = "itn"
-instance        = "dev"
+instance           = "dev"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -17,20 +17,15 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-### Network
-cidr_subnet_tools_cae = ["10.1.248.0/23"]
-
 ### Feature Flag
 is_feature_enabled = {
   vnet_ita = true
 }
 
+### Network
+cidr_vnet_italy = ["10.3.0.0/16"]
 
-### External resources
-
-monitor_resource_group_name                 = "pagopa-d-monitor-rg"
-log_analytics_workspace_name                = "pagopa-d-law"
-log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
+cidr_subnet_tools_cae = ["10.1.248.0/23"]
 
 #
 # Dns
@@ -38,10 +33,13 @@ log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
 
-#
-# CIRDs
-#
+### External resources
 
+monitor_resource_group_name                 = "pagopa-d-monitor-rg"
+log_analytics_workspace_name                = "pagopa-d-law"
+log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
+
+### VPN
 dns_forwarder_backup_is_enabled = false
 
 #
