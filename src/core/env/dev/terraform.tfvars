@@ -1,10 +1,10 @@
 # general
-env_short = "d"
-env       = "dev"
-location = "westeurope"
-location_short = "weu"
-location_it = "italynorth"
-location_short_it = "itn"
+env_short          = "d"
+env                = "dev"
+location           = "westeurope"
+location_short     = "weu"
+location_ita       = "italynorth"
+location_short_ita = "itn"
 
 tags = {
   CreatedBy   = "Terraform"

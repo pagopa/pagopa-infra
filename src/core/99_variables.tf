@@ -28,17 +28,17 @@ variable "location_short" {
 }
 
 ### Italy location
-variable "location_it" {
+variable "location_ita" {
   type        = string
   description = "Main location"
   default     = "italynorth"
 }
 
-variable "location_short_it" {
+variable "location_short_ita" {
   type = string
   validation {
     condition = (
-      length(var.location_short) == 3
+      length(var.location_short_ita) == 3
     )
     error_message = "Length must be 3 chars."
   }
