@@ -188,7 +188,7 @@ resource "azurerm_key_vault_secret" "npg_notifications_jwt_secret_key" {
   }
 }
 
-resource "azurerm_key_vault_secret" "wallet-token-test-key" {
+resource "azurerm_key_vault_secret" "migration_wallet_token_test_key" {
   count        = var.env_short != "p" ? 1 : 0
   name         = "migration-wallet-token-test-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
