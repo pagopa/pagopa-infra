@@ -47,6 +47,12 @@ resource "azurerm_storage_queue" "cu_debtposition_queue" {
   storage_account_name = module.canoneunico_sa.name
 }
 
+## queue#2 blob event (EventGrid subscriber endpoint)
+resource "azurerm_storage_queue" "cu_blob_event_queue" {
+  name                 = "${module.canoneunico_sa.name}blobeventqueue"
+  storage_account_name = module.canoneunico_sa.name
+}
+
 ## blob container (Input CSV Blob)
 resource "azurerm_storage_container" "in_csv_blob_container" {
   name                  = "${module.canoneunico_sa.name}incsvcontainer"
@@ -76,20 +82,11 @@ resource "azurerm_storage_container" "err_csv_blob_container" {
 # https://learn.microsoft.com/en-us/azure/templates/microsoft.storage/storageaccounts/localusers?pivots=deployment-language-terraform
 # list of local user 
 locals {
-  # cup_localuser_corporate = [
-  #   {
-  #     username : "corporatenameex1",
-  #   },
-  #   {
-  #     username : "corporatenameex2",
-  #   },
-  # ]
-
   cup_localuser_corporate = var.corporate_cup_users
 }
 
 
-# 1. creare corporate container
+# 1. creare corporate container & directory 
 resource "azurerm_storage_container" "corporate_containers" {
   for_each = { for c in local.cup_localuser_corporate : c.username => c }
 
@@ -98,8 +95,40 @@ resource "azurerm_storage_container" "corporate_containers" {
   container_access_type = "private"
 }
 
-# 2. Configure the Azure Storage Account Container User who will get access
+resource "azurerm_storage_blob" "containers_err_directory" {
+  for_each = { for c in local.cup_localuser_corporate : c.username => c }
 
+  # name                   = "pagopa${var.env_short}canoneunicosaerrcsvcontainer/.info"
+  name                   = "error/.info"
+  storage_account_name   = module.canoneunico_sa.name
+  storage_container_name = "${each.value.username}container"
+  type                   = "Block"
+  source                 = "./info.txt" # placeholder file
+}
+
+resource "azurerm_storage_blob" "containers_in_directory" {
+  for_each = { for c in local.cup_localuser_corporate : c.username => c }
+
+  # name                   = "pagopa${var.env_short}canoneunicosaincsvcontainer/.info"
+  name                   = "input/.info"
+  storage_account_name   = module.canoneunico_sa.name
+  storage_container_name = "${each.value.username}container"
+  type                   = "Block"
+  source                 = "./info.txt" # placeholder file
+}
+
+resource "azurerm_storage_blob" "containers_out_directory" {
+  for_each = { for c in local.cup_localuser_corporate : c.username => c }
+
+  # name                   = "pagopa${var.env_short}canoneunicosaoutcsvcontainer/.info"
+  name                   = "output/.info"
+  storage_account_name   = module.canoneunico_sa.name
+  storage_container_name = "${each.value.username}container"
+  type                   = "Block"
+  source                 = "info.txt" # placeholder file
+}
+
+# 2. Configure the Azure Storage Account Container User who will get access
 resource "azapi_resource" "sftp_localuser_on_container" {
   for_each = { for c in local.cup_localuser_corporate : c.username => c }
 
