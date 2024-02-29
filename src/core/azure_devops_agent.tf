@@ -9,11 +9,15 @@ resource "azurerm_resource_group" "azdo_rg" {
 module "azdoa_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v3.5.0"
   count                                          = var.enable_azdoa ? 1 : 0
-  name                                           = format("%s-azdoa-snet", local.project)
+  name                                           = "${local.project}-azdoa-snet"
   address_prefixes                               = var.cidr_subnet_azdoa
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = module.vnet.name
   enforce_private_link_endpoint_network_policies = true
+
+  service_endpoints = [
+    "Microsoft.Storage",
+  ]
 }
 
 

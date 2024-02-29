@@ -5,8 +5,12 @@ locals {
 
   soap_basepath_nodo_postgres_pagopa = "nodo"
 
-  azdo_managed_identity_name    = "${var.env}-pagopa"
-  azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
+  azdo_managed_identity_name = "${var.env}-pagopa"
 
-  azdo_iac_managed_identities = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
+  azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
+  azdo_iac_managed_identities   = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
+
+
+  pagopa_apim_v2_name = "${local.project}-${var.location_short}-core-apim-v2"
+  pagopa_apim_v2_rg   = "${local.project}-api-rg"
 }

@@ -1515,29 +1515,6 @@
         "oneOf": [
           {
             "type": "object",
-            "description": "Additional payment authorization details for the PostePay payment method",
-            "properties": {
-              "detailType": {
-                "type": "string",
-                "description": "fixed value 'postepay'"
-              },
-              "accountEmail": {
-                "type": "string",
-                "format": "email",
-                "description": "PostePay account email"
-              }
-            },
-            "required": [
-              "detailType",
-              "accountEmail"
-            ],
-            "example": {
-              "detailType": "postepay",
-              "accountEmail": "user@example.com"
-            }
-          },
-          {
-            "type": "object",
             "description": "Additional payment authorization details for credit cards",
             "properties": {
               "detailType": {

@@ -21,19 +21,19 @@ parameters:
 variables:
   ${{ if eq(parameters.k8sEnv, 'dev') }}:
     DB_HOST: pagopa-d-weu-fdr-flexible-postgresql
-    AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
     KEY_VAULT_NAME: 'pagopa-d-fdr-kv'
     DATABASE_NAME: fdr
     poolImage: 'pagopa-dev-linux-infra'
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     DB_HOST: pagopa-u-weu-fdr-flexible-postgresql
-    AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
     KEY_VAULT_NAME: 'pagopa-u-fdr-kv'
     DATABASE_NAME: fdr
     poolImage: 'pagopa-uat-linux-infra'
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     DB_HOST: pagopa-p-weu-fdr-flexible-postgresql
-    AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
     KEY_VAULT_NAME: 'pagopa-p-fdr-kv'
     DATABASE_NAME: fdr
     poolImage: 'pagopa-prod-linux-infra'

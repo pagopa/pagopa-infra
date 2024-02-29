@@ -35,7 +35,9 @@
             string operationResult = (string)operation["operationResult"];
             string operationId = (string)operation["operationId"];
             string operationTime = (string)operation["operationTime"];
+            var additionalData = operation["additionalData"];
             string timestampOperation = null;
+            string errorCode = null;
             if(operationTime != null) {
                 DateTime npgDateTime = DateTime.Parse(operationTime.Replace(" ","T"));
                 TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
@@ -50,10 +52,15 @@
                 details["type"] = "PAYPAL";
                 details["maskedEmail"] = (string)operation["paymentInstrumentInfo"];
             }
+            if(additionalData.Type != JTokenType.Null){
+                JObject receivedAdditionalData = (JObject)additionalData;
+                errorCode = (string)receivedAdditionalData["authorizationStatus"];
+            }
             JObject request = new JObject();
             request["timestampOperation"] = timestampOperation;
             request["operationResult"] = operationResult;
             request["operationId"] = operationId;
+            request["errorCode"] = errorCode;
             request["details"] = details;
             return request.ToString();
           }

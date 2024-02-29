@@ -28,7 +28,7 @@
         <set-url>${pdv_api_base_path}/tokens</set-url>
         <set-method>PUT</set-method>
         <set-header name="x-api-key" exists-action="override">
-            <value>{{personal-data-vault-api-key}}</value>
+            <value>{{wallet-personal-data-vault-api-key}}</value>
         </set-header>
         <set-body>@{
           JObject requestBody = (JObject)context.Variables["userAuth"];
