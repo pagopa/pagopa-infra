@@ -1,27 +1,23 @@
 module "canoneunico_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
-  name                            = replace("${local.project}-canoneunico-sa", "-", "")
-  account_kind                    = var.storage_account_info.account_kind
-  account_tier                    = var.storage_account_info.account_tier
-  account_replication_type        = var.storage_account_info.account_replication_type
-  access_tier                     = var.storage_account_info.access_tier
-  blob_versioning_enabled         = var.canoneunico_enable_versioning
-  resource_group_name             = azurerm_resource_group.canoneunico_rg.name
-  location                        = var.location
-  advanced_threat_protection      = var.canoneunico_advanced_threat_protection
-  allow_nested_items_to_be_public = false
-  public_network_access_enabled   = var.public_network_access_enabled
+  name                = replace("${local.project}-canoneunico-sa", "-", "")
+  resource_group_name = azurerm_resource_group.canoneunico_rg.name
+  location            = var.location
 
-  blob_delete_retention_days = var.canoneunico_delete_retention_days
+  public_network_access_enabled = var.public_network_access_enabled
+  is_sftp_enabled               = true
+  account_kind                  = var.storage_account_info.account_kind
+  account_tier                  = var.storage_account_info.account_tier
+  account_replication_type      = var.storage_account_info.account_replication_type
+  access_tier                   = var.storage_account_info.access_tier
 
-  blob_change_feed_enabled             = var.enable_canoneunico_backup
-  blob_change_feed_retention_in_days   = var.enable_canoneunico_backup ? var.canoneunico_backup_retention_days + 1 : null
-  blob_container_delete_retention_days = var.canoneunico_backup_retention_days
-  blob_storage_policy = {
-    enable_immutability_policy = false
-    blob_restore_policy_days   = var.canoneunico_backup_retention_days
-  }
+  is_hns_enabled             = true
+  advanced_threat_protection = true
+  # should be false when sftp is enabled, ref:https://learn.microsoft.com/en-us/azure/storage/blobs/secure-file-transfer-protocol-known-issues
+  blob_versioning_enabled       = false
+  blob_last_access_time_enabled = true
+
 
   tags = var.tags
 }
@@ -70,4 +66,77 @@ resource "azurerm_storage_container" "err_csv_blob_container" {
   name                  = "${module.canoneunico_sa.name}errcsvcontainer"
   storage_account_name  = module.canoneunico_sa.name
   container_access_type = "private"
+}
+
+
+# ##################################### # 
+# CUP corporate automation itfself
+# ##################################### # 
+
+# https://learn.microsoft.com/en-us/azure/templates/microsoft.storage/storageaccounts/localusers?pivots=deployment-language-terraform
+# list of local user 
+locals {
+  # cup_localuser_corporate = [
+  #   {
+  #     username : "corporatenameex1",
+  #   },
+  #   {
+  #     username : "corporatenameex2",
+  #   },
+  # ]
+
+  cup_localuser_corporate = var.corporate_cup_users
+}
+
+
+# 1. creare corporate container
+resource "azurerm_storage_container" "corporate_containers" {
+  for_each = { for c in local.cup_localuser_corporate : c.username => c }
+
+  name                  = "${each.value.username}container"
+  storage_account_name  = module.canoneunico_sa.name
+  container_access_type = "private"
+}
+
+# 2. Configure the Azure Storage Account Container User who will get access
+
+resource "azapi_resource" "sftp_localuser_on_container" {
+  for_each = { for c in local.cup_localuser_corporate : c.username => c }
+
+  type = "Microsoft.Storage/storageAccounts/localUsers@2023-01-01"
+
+  parent_id = module.canoneunico_sa.id
+  name      = each.value.username // "username"
+
+  body = jsonencode({
+    properties = {
+      hasSshPassword = true,
+      homeDirectory  = "./"
+      hasSharedKey   = true,
+      hasSshKey      = false,
+      permissionScopes = [{
+        permissions  = "cwl",
+        service      = "blob",
+        resourceName = "${each.value.username}container" // "containername"
+      }]
+    }
+  })
+  # depends_on = [
+  #   azurerm_storage_account.erpsftpserver,
+  #   azapi_update_resource.enablesftp
+  # ]
+}
+
+# 3. Configure/generate the Azure Storage Account Container password
+resource "azapi_resource_action" "generate_sftp_user_password" {
+  for_each = { for c in local.cup_localuser_corporate : c.username => c }
+
+  type        = "Microsoft.Storage/storageAccounts/localUsers@2022-05-01"
+  resource_id = azapi_resource.sftp_localuser_on_container[each.key].id
+  action      = "regeneratePassword"
+  body = jsonencode({
+    username = azapi_resource.sftp_localuser_on_container[each.key].name
+  })
+
+  response_export_values = ["sshPassword"]
 }
