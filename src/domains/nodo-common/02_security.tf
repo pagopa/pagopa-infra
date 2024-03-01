@@ -83,16 +83,17 @@ resource "azurerm_key_vault_secret" "verifyko_tablestorage_connection_string" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "verifyko_datastore_key" {
-  name         = "verifyko-datastore-key"
+resource "azurerm_key_vault_secret" "verifyko_datastore_primary_key" {
+  name         = "verifyko-datastore-primary-key"
   value        = module.cosmosdb_account_nodo_verifyko.primary_key
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "redis_password" {
-  name         = "redis-password"
+### redis
+resource "azurerm_key_vault_secret" "redis_primary_key" {
+  name         = "redis-primary-key"
   value        = data.azurerm_redis_cache.redis_cache.primary_access_key
   content_type = "text/plain"
 
