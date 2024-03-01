@@ -155,9 +155,8 @@
                             JObject details = new JObject();
                             details["type"] = eCommerceWalletType;
                             if (eCommerceWalletType == "CARDS") {
-                                details["maskedPan"] = $"{wallet["info"]["blurredNumber"]}";
+                                details["lastFourDigits"] = $"{wallet["info"]["blurredNumber"]}";
                                 details["expiryDate"] = $"{(string)wallet["info"]["expireYear"]}{(string)wallet["info"]["expireMonth"]}";
-                                details["holder"] = wallet["info"]["holder"];
                                 details["brand"] = wallet["info"]["brand"];
                             }
                             if (eCommerceWalletType == "PAYPAL") {
