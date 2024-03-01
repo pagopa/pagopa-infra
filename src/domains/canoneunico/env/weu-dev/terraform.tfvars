@@ -49,9 +49,9 @@ storage_account_info = {
 
 corporate_cup_users = [
   {
-    username : "corporatenameex1",
+    username : "testcorporate01"
   },
   {
-    username : "corporatenameex2",
+    username : "testcorporate02"
   },
 ]
