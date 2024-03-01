@@ -1,7 +1,7 @@
 <policies>
   <inbound>
     <base />
-    <set-backend-service base-url="https://${hostname}/pagopa-api-config-selfcare-integration" />
+    <set-backend-service base-url="https://${hostname}/pagopa-api-config-selfcare-integration/p" />
   </inbound>
   <outbound>
     <base />
