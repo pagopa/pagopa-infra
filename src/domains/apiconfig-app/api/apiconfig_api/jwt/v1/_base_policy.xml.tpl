@@ -28,7 +28,7 @@
             </allowed-headers>
         </cors>
         <base />
-        <set-backend-service base-url="https://${hostname}/pagopa-api-config-core-service/o" />
+        <set-backend-service base-url="https://${hostname}/pagopa-api-config-core-service/p" />
 
         <rate-limit-by-key calls="300" renewal-period="60" counter-key="@(context.Request.Headers.GetValueOrDefault("Authorization","").AsJwt()?.Subject)" />
         <set-variable name="isGet" value="@(context.Request.Method.Equals("GET"))" />
