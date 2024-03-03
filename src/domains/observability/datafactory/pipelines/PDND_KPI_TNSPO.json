@@ -1,0 +1,222 @@
+{
+    "name": "QueryTNSPO",
+    "type": "Lookup",
+    "dependsOn": [
+        {
+            "activity": "StartDate",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "AzureDataExplorerSource",
+            "query": {
+                "value": "let start=datetime('@{variables('startDate')}');\nlet end=datetime('@{variables('startDate')}');\nKPI_TNSPO\n| where REQUEST_PSPNOTIFY between (start .. end)\n| extend KPI_THRESHOLD=2.0\n| extend DiffinSec=DIFF_TIME_IN_MS/1000\n| summarize TOT_CHIAMATE_OUTSLA= countif(DiffinSec>KPI_THRESHOLD), TOT_CHIAMATE = count(),MEDIA=round( avg(DIFF_TIME_IN_MS) ,2), take_any(KPI_THRESHOLD)  by  PSP, ID_BROKER_PSP\n| join kind=inner PSP on $left.PSP == $right.ID_PSP\n| join kind=inner INTERMEDIARI_PSP on $left.ID_BROKER_PSP == $right.ID_INTERMEDIARIO_PSP\n| extend KPI_ID =\"TNSPO\"\n| extend PercentualeKO =round( (TOT_CHIAMATE_OUTSLA*100.00)/TOT_CHIAMATE,2)\n| extend KPI_OUTCOME = iff(PercentualeKO > KPI_THRESHOLD,\"KO\",\"OK\")\n| project KPI_ID, KPI_THRESHOLD, start , end , MEDIA,TOT_CHIAMATE,TOT_CHIAMATE_OUTSLA,PercentualeKO,KPI_OUTCOME, ID_PSP,PSP=iif( DESCRIZIONE <> '' , DESCRIZIONE,RAGIONE_SOCIALE) ,ID_BROKER_PSP, INTERMEDIARIO_DESCR\n| project  pack_all()",
+                "type": "Expression"
+            },
+            "queryTimeout": "01:00:00",
+            "noTruncation": true
+        },
+        "dataset": {
+            "referenceName": "SMO_ReEvent_DataSet",
+            "type": "DatasetReference"
+        },
+        "firstRowOnly": false
+    }
+},
+{
+    "name": "EndDate",
+    "description": "Ricavo la data fine per prendere la mensilità\n",
+    "type": "SetVariable",
+    "dependsOn": [],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "endDate",
+        "value": {
+            "value": "@addDays(startOfMonth(convertFromUtc(pipeline().TriggerTime, 'W. Europe Standard Time')), -1)",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "StartDate",
+    "description": "mi calcolo la data di inzio della query mese precedente primo giorno",
+    "type": "SetVariable",
+    "dependsOn": [
+        {
+            "activity": "EndDate",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "variableName": "startDate",
+        "value": {
+            "value": "@startOfMonth(variables('endDate'))",
+            "type": "Expression"
+        }
+    }
+},
+{
+    "name": "ForEachKPI",
+    "type": "ForEach",
+    "dependsOn": [
+        {
+            "activity": "QueryTNSPO",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "userProperties": [],
+    "typeProperties": {
+        "items": {
+            "value": "@activity('QueryTNSPO').output.value",
+            "type": "Expression"
+        },
+        "isSequential": true,
+        "activities": [
+            {
+                "name": "GetKPI",
+                "type": "SetVariable",
+                "dependsOn": [],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "variableName": "item",
+                    "value": {
+                        "value": "@concat(item().KPI, ',')",
+                        "type": "Expression"
+                    }
+                }
+            },
+            {
+                "name": "ConcatKPI",
+                "type": "SetVariable",
+                "dependsOn": [
+                    {
+                        "activity": "GetKPI",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "variableName": "jsonChunk",
+                    "value": {
+                        "value": "@concat(variables('JsonResult'), variables('Item'))",
+                        "type": "Expression"
+                    }
+                }
+            },
+            {
+                "name": "SetJsonResult",
+                "type": "SetVariable",
+                "dependsOn": [
+                    {
+                        "activity": "ConcatKPI",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "variableName": "jsonResult",
+                    "value": {
+                        "value": "@variables('JsonChunk')",
+                        "type": "Expression"
+                    }
+                }
+            }
+        ]
+    }
+},
+{
+    "name": "CheckResult",
+    "type": "IfCondition",
+    "dependsOn": [
+        {
+            "activity": "ForEachKPI",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "userProperties": [],
+    "typeProperties": {
+        "expression": {
+            "value": "@greater(length(variables('JsonResult')), 0)",
+            "type": "Expression"
+        },
+        "ifTrueActivities": [
+            {
+                "name": "WriteEvhub",
+                "type": "WebActivity",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "POST",
+                    "url": {
+                        "value": "@pipeline().globalParameters.evhBaseUrl",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "body": {
+                        "value": "@json(concat('[', variables('JsonResult'), ']'))",
+                        "type": "Expression"
+                    },
+                    "authentication": {
+                        "type": "MSI",
+                        "resource": {
+                            "value": "@concat(pipeline().globalParameters.evhBaseUrl, '/quality-improvement-psp-kpi/messages')",
+                            "type": "Expression"
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}
