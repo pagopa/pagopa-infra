@@ -748,3 +748,20 @@ module "monitor" {
     }
   ]
 }
+
+# apicfg cache path(s) configuration
+
+resource "azurerm_api_management_named_value" "apicfg_core_cache_path" { // https://${url_aks}/pagopa-api-config-core-service/<o|p>/
+  name                = "apicfg-core-cache-path"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "apicfg-core-cache-path"
+  value               = var.apicfg_core_cache_path_value
+}
+resource "azurerm_api_management_named_value" "apicfg_selfcare_integ_cache_path" { // https://${hostname}/pagopa-api-config-selfcare-integration/<o|p>"
+  name                = "apicfg-selfcare-integ-cache-path"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "apicfg-selfcare-integ-cache-path"
+  value               = var.apicfg_selfcare_integ_cache_path_value
+}
