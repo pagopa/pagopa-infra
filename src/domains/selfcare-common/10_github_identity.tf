@@ -12,6 +12,7 @@ locals {
   repos_01 = [
     "pagopa-selfcare-ms-backoffice-backend",
     "pagopa-backoffice-external",
+    "pagopa-selfcare-frontend"
   ]
 
   federations_01 = [
