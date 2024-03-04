@@ -101,10 +101,12 @@
                         string operationId = (string)operation["operationId"];
                         var additionalData = operation["additionalData"];
                         string authorizationCode = null;
+                        string errorCode = null;
                         string rrn = null;
                         if(additionalData.Type != JTokenType.Null){
                             JObject receivedAdditionalData = (JObject)additionalData;
                             authorizationCode = (string)receivedAdditionalData["authorizationCode"];
+                            errorCode = (string)receivedAdditionalData["authorizationStatus"];
                             rrn = (string)receivedAdditionalData["rrn"];
                         }
                         string paymentEndToEndId = (string)operation["paymentEndToEndId"];
@@ -122,6 +124,7 @@
                         outcomeGateway["operationResult"] = operationResult;
                         outcomeGateway["orderId"] = orderId;
                         outcomeGateway["operationId"] = operationId;
+                        outcomeGateway["errorCode"] = errorCode;
                         outcomeGateway["authorizationCode"] = authorizationCode;
                         outcomeGateway["paymentEndToEndId"] = paymentEndToEndId;
                         outcomeGateway["rrn"] = rrn;
