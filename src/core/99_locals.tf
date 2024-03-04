@@ -13,4 +13,8 @@ locals {
 
   pagopa_apim_v2_name = "${local.project}-${var.location_short}-core-apim-v2"
   pagopa_apim_v2_rg   = "${local.project}-api-rg"
+
+  vnet_itn_name = "pagopa-${var.location_short}-itn-vnet"
+  vnet_itn_resource_group_name = "pagopa-${var.location_short}-itn-vnet-rg"
+
 }
