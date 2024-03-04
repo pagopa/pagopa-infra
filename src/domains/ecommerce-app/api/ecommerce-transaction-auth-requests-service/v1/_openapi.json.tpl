@@ -493,6 +493,10 @@
             "type": "string",
             "description": "Authorization code"
           },
+          "errorCode": {
+            "type": "string",
+            "description": "Error code"
+          },
           "paymentEndToEndId": {
             "description": "Circuit unique transaction ID",
             "type": "string"

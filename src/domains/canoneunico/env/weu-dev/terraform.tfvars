@@ -45,3 +45,13 @@ storage_account_info = {
   access_tier                       = "Hot"
   advanced_threat_protection_enable = false
 }
+
+
+corporate_cup_users = [
+  {
+    username : "corporatenameex1",
+  },
+  {
+    username : "corporatenameex2",
+  },
+]
