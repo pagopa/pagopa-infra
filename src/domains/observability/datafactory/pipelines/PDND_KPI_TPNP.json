@@ -132,7 +132,7 @@
                 "typeProperties": {
                     "variableName": "jsonChunk",
                     "value": {
-                        "value": "@concat(variables('JsonResult'), variables('Item'))",
+                        "value": "@concat(variables('jsonResult'), variables('item'))",
                         "type": "Expression"
                     }
                 }
@@ -156,7 +156,7 @@
                 "typeProperties": {
                     "variableName": "jsonResult",
                     "value": {
-                        "value": "@variables('JsonChunk')",
+                        "value": "@variables('jsonChunk')",
                         "type": "Expression"
                     }
                 }
@@ -178,7 +178,7 @@
     "userProperties": [],
     "typeProperties": {
         "expression": {
-            "value": "@greater(length(variables('JsonResult')), 0)",
+            "value": "@greater(length(variables('jsonResult')), 0)",
             "type": "Expression"
         },
         "ifTrueActivities": [
@@ -197,7 +197,7 @@
                 "typeProperties": {
                     "method": "POST",
                     "url": {
-                        "value": "@pipeline().globalParameters.evhBaseUrl",
+                        "value": "@concat(pipeline().globalParameters.evhBaseUrl, '/quality-improvement-psp-kpi/messages')",
                         "type": "Expression"
                     },
                     "connectVia": {
@@ -205,13 +205,13 @@
                         "type": "IntegrationRuntimeReference"
                     },
                     "body": {
-                        "value": "@json(concat('[', variables('JsonResult'), ']'))",
+                        "value": "@json(concat('[', variables('jsonResult'), ']'))",
                         "type": "Expression"
                     },
                     "authentication": {
                         "type": "MSI",
                         "resource": {
-                            "value": "@concat(pipeline().globalParameters.evhBaseUrl, '/quality-improvement-psp-kpi/messages')",
+                            "value": "@pipeline().globalParameters.evhBaseUrl",
                             "type": "Expression"
                         }
                     }
