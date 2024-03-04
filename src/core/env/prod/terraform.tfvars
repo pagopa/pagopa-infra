@@ -18,7 +18,7 @@ tags = {
 # Feature flag
 #
 enabled_features = {
-  apim_v2 = false
+  apim_v2  = false
   vnet_ita = false
 }
 
