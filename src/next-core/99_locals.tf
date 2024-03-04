@@ -30,9 +30,4 @@ locals {
 
   msg_resource_group_name = "${local.product}-msg-rg"
 
-  ### Feature Flag
-  is_feature_enabled = {
-    vnet_ita = var.env_short == "d" ? 1 : 0
-  }
-
 }

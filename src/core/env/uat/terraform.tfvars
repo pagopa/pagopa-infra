@@ -14,6 +14,14 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+#
+# Feature flag
+#
+enabled_features = {
+  apim_v2 = false
+  vnet_ita = false
+}
+
 lock_enable = true
 
 # monitoring

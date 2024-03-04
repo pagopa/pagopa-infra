@@ -61,7 +61,7 @@ variable "env_short" {
   description = "Environment shot version"
   validation {
     condition = (
-      length(var.prefix) == 1
+      length(var.env_short) == 1
     )
     error_message = "Max length is 1 chars."
   }
@@ -84,6 +84,21 @@ variable "tags" {
   default = {
     CreatedBy = "Terraform"
   }
+}
+
+#
+# Feature Flag
+#
+variable "enabled_features" {
+  type = object({
+    apim_v2 = bool
+    vnet_ita = bool
+  })
+  default = {
+    apim_v2 = false
+    vnet_ita = false
+  }
+  description = "Features enabled in this domain"
 }
 
 ## Monitor
@@ -1788,15 +1803,4 @@ variable "fdr_flow_sa_replication_type" {
   type        = string
   default     = "LRS"
   description = "(Optional) Fdr flow storage account replication type"
-}
-
-
-variable "enabled_features" {
-  type = object({
-    apim_v2 = bool
-  })
-  default = {
-    apim_v2 = false
-  }
-  description = "Features enabled in this domain"
 }
