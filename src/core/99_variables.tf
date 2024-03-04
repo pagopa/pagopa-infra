@@ -1774,3 +1774,18 @@ variable "enabled_features" {
   }
   description = "Features enabled in this domain"
 }
+
+variable "apicfg_core_cache_path_value" {
+  type        = string
+  description = "apicfg core cache path"
+  default     = "pagopa-api-config-core-service/o"
+}
+
+variable "apicfg_selfcare_integ_cache_path_value" {
+  type        = string
+  description = "apicfg selfcare integ cache path"
+  default     = "pagopa-api-config-selfcare-integration" // at moment blocked to ORA 👀 https://github.com/pagopa/pagopa-api-config-selfcare-integration/pull/36
+}
+
+
+
