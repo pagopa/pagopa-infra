@@ -25,16 +25,12 @@ locals {
   environment_cd_roles = {
     subscription = [
       "Contributor",
-      "PagoPA Platform ${var.env_capital} IaC Reader",
     ]
     resource_groups = {
       "${local.product}-${var.domain}-sec-rg" = [
         "Key Vault Reader"
       ],
       "${local.product}-${var.location_short}-${var.env}-aks-rg" = [
-        "Contributor"
-      ],
-      "dashboards" = [
         "Contributor"
       ],
     }
@@ -74,7 +70,7 @@ resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
   secret_permissions = ["Get", "List", "Set", ]
 
   certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"]
 
   storage_permissions = []
 }
