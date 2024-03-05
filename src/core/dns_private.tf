@@ -17,11 +17,11 @@ resource "azurerm_private_dns_zone_virtual_network_link" "db_nodo_dns_zone_virtu
 
 resource "azurerm_private_dns_zone_virtual_network_link" "italy_db_nodo_dns_zone_virtual_link" {
   count                 = var.enabled_features.vnet_ita ? 1 : 0
-  name                  = data.azurerm_virtual_network.vnet_ita.name
+  name                  = data.azurerm_virtual_network.vnet_ita[0].name
   private_dns_zone_name = azurerm_private_dns_zone.db_nodo_dns_zone.name
   resource_group_name   = azurerm_resource_group.data.name
 
-  virtual_network_id = data.azurerm_virtual_network.vnet_ita.id
+  virtual_network_id = data.azurerm_virtual_network.vnet_ita[0].id
 
   tags = var.tags
 }
@@ -83,12 +83,12 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_redis_cach
 
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_ita_link_redis_cache_windows_net_vnet" {
   count                 = var.redis_private_endpoint_enabled && var.enabled_features.vnet_ita ? 1 : 0
-  name                  = data.azurerm_virtual_network.vnet_ita.name
+  name                  = data.azurerm_virtual_network.vnet_ita[0].name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache_windows_net[0].name
   registration_enabled  = false
 
-  virtual_network_id = data.azurerm_virtual_network.vnet_ita.id
+  virtual_network_id = data.azurerm_virtual_network.vnet_ita[0].id
 
   tags = var.tags
 }
@@ -119,12 +119,12 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_link_privatelink_
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_ita_link_privatelink_queue_core_windows_net" {
   count = var.storage_queue_private_endpoint_enabled && var.enabled_features.vnet_ita ? 1 : 0
 
-  name                  = data.azurerm_virtual_network.vnet_ita.name
+  name                  = data.azurerm_virtual_network.vnet_ita[0].name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_queue_core_windows_net[0].name
   registration_enabled  = false
 
-  virtual_network_id = data.azurerm_virtual_network.vnet_ita.id
+  virtual_network_id = data.azurerm_virtual_network.vnet_ita[0].id
 
   tags = var.tags
 }
@@ -172,12 +172,12 @@ resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_ita_link_platform_platform_pagopa_it" {
   count = var.enabled_features.vnet_ita ? 1 : 0
 
-  name                  = data.azurerm_virtual_network.vnet_ita.name
+  name                  = data.azurerm_virtual_network.vnet_ita[0].name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.platform_private_dns_zone.name
   registration_enabled  = false
 
-  virtual_network_id = data.azurerm_virtual_network.vnet_ita.id
+  virtual_network_id = data.azurerm_virtual_network.vnet_ita[0].id
   tags               = var.tags
 }
 
@@ -225,12 +225,12 @@ resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet
 
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_ita_link_prf_platform" {
   count                 = var.env_short == "u" && var.enabled_features.vnet_ita ? 1 : 0
-  name                  = data.azurerm_virtual_network.vnet_ita.name
+  name                  = data.azurerm_virtual_network.vnet_ita[0].name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.platform_private_dns_zone_prf[0].name
   registration_enabled  = false
 
-  virtual_network_id = data.azurerm_virtual_network.vnet_ita.id
+  virtual_network_id = data.azurerm_virtual_network.vnet_ita[0].id
   tags               = var.tags
 }
 
@@ -256,11 +256,11 @@ resource "azurerm_private_dns_zone_virtual_network_link" "postgres_vnet" {
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_ita_link_postgres" {
   count = var.env_short != "d" && var.enabled_features.vnet_ita ? 1 : 0
 
-  name                  = data.azurerm_virtual_network.vnet_ita.name
+  name                  = data.azurerm_virtual_network.vnet_ita[0].name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.postgres[0].name
 
-  virtual_network_id = data.azurerm_virtual_network.vnet_ita.id
+  virtual_network_id = data.azurerm_virtual_network.vnet_ita[0].id
 }
 
 ### 🔮 Private DNS Zone for ACR azure container registry
@@ -303,12 +303,12 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_documents_
 
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_ita_link_privatelink_documents_azure_com_vnet" {
   count                 = var.enabled_features.vnet_ita ? 1 : 0
-  name                  = data.azurerm_virtual_network.vnet_ita.name
+  name                  = data.azurerm_virtual_network.vnet_ita[0].name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_documents_azure_com.name
   registration_enabled  = false
 
-  virtual_network_id = data.azurerm_virtual_network.vnet_ita.id
+  virtual_network_id = data.azurerm_virtual_network.vnet_ita[0].id
   tags               = var.tags
 }
 
@@ -343,12 +343,12 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_cosm
 
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_ita_link_privatelink_table_cosmos_azure_com_vnet" {
   count                 = var.enabled_features.vnet_ita ? 1 : 0
-  name                  = data.azurerm_virtual_network.vnet_ita.name
+  name                  = data.azurerm_virtual_network.vnet_ita[0].name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_table_cosmos_azure_com.name
   registration_enabled  = false
 
-  virtual_network_id = data.azurerm_virtual_network.vnet_ita.id
+  virtual_network_id = data.azurerm_virtual_network.vnet_ita[0].id
   tags               = var.tags
 }
 
@@ -383,12 +383,12 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_blob_azure
 
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_ita_link_privatelink_blob_azure_com_vnet" {
   count                 = var.enabled_features.vnet_ita ? 1 : 0
-  name                  = data.azurerm_virtual_network.vnet_ita.name
+  name                  = data.azurerm_virtual_network.vnet_ita[0].name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.storage_account.name
   registration_enabled  = false
 
-  virtual_network_id = data.azurerm_virtual_network.vnet_ita.id
+  virtual_network_id = data.azurerm_virtual_network.vnet_ita[0].id
   tags               = var.tags
 }
 
@@ -424,12 +424,12 @@ resource "azurerm_private_dns_zone_virtual_network_link" "internal_platform_vnet
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_ita_link_internal_platform" {
   count = var.enabled_features.vnet_ita ? 1 : 0
 
-  name                  = data.azurerm_virtual_network.vnet_ita.name
+  name                  = data.azurerm_virtual_network.vnet_ita[0].name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.internal_platform_pagopa_it.name
   registration_enabled  = false
 
-  virtual_network_id = data.azurerm_virtual_network.vnet_ita.id
+  virtual_network_id = data.azurerm_virtual_network.vnet_ita[0].id
   tags               = var.tags
 }
 
@@ -457,12 +457,12 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_privatelink_mongo
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_ita_link_privatelink_mongo_cosmos_azure_com" {
   count = var.enabled_features.vnet_ita ? 1 : 0
 
-  name                  = data.azurerm_virtual_network.vnet_ita.name
+  name                  = data.azurerm_virtual_network.vnet_ita[0].name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_mongo_cosmos_azure_com.name
   registration_enabled  = false
 
-  virtual_network_id = data.azurerm_virtual_network.vnet_ita.id
+  virtual_network_id = data.azurerm_virtual_network.vnet_ita[0].id
   tags               = var.tags
 }
 
@@ -489,12 +489,12 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_azur
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_ita_link_privatelink_table_azure_com_vnet" {
   count = var.enabled_features.vnet_ita ? 1 : 0
 
-  name                  = data.azurerm_virtual_network.vnet_ita.name
+  name                  = data.azurerm_virtual_network.vnet_ita[0].name
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.table_storage_account.name
   registration_enabled  = false
 
-  virtual_network_id = data.azurerm_virtual_network.vnet_ita.id
+  virtual_network_id = data.azurerm_virtual_network.vnet_ita[0].id
   tags               = var.tags
 }
 
