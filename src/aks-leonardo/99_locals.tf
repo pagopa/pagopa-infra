@@ -6,15 +6,14 @@ locals {
   aks_rg_name      = "${local.project}-aks-rg"
   aks_cluster_name = "${local.project}-aks"
 
-  # VNET
+  ### Network
+  vnet_ita_resource_group_name = "${local.product}-itn-vnet-rg"
+  vnet_ita_name                = "${local.product}-itn-vnet"
+
   vnet_core_resource_group_name = "${local.product}-vnet-rg"
   vnet_core_name                = "${local.product}-vnet"
 
-  vnet_integration_resource_group_name = "${local.product}-vnet-rg"
-  vnet_integration_name                = "${local.product}-integration-vnet"
-
-  vnet_pair_resource_group_name = "${local.product}-${var.location_pair_short}-vnet-rg"
-  vnet_pair_name                = "${local.product}-${var.location_pair_short}-vnet"
+  public_ip_aks_leonardo_outbound_name = "pagopa-${var.env_short}-itn-aks-leonardo-pip"
 
   # ACR DOCKER
   docker_rg_name       = "${local.product}-container-registry-rg"
@@ -28,6 +27,6 @@ locals {
 
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
-  alert_action_group_core_name    = "${var.prefix}${var.env_short}core"
+  alert_action_group_ita_name    = "${var.prefix}${var.env_short}ita"
   alert_action_group_error_name   = "${var.prefix}${var.env_short}error"
 }
