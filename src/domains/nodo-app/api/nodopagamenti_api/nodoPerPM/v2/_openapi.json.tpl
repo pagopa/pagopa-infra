@@ -200,13 +200,17 @@
                 "type": "string",
                 "description": "Unique identifier for the transaction, given by the PSP"
               },
-              "totalAmount": {
-                "type": "number",
-                "description": "Amount paid by the user, including fee"
-              },
               "fee": {
-                "type": "number",
-                "description": "Transaction fee"
+                "type": "string",
+                "description": "commision amount, converted in string",
+                "format": "###.##",
+                "example": "10.00"
+              },
+              "totalAmount": {
+                "type": "string",
+                "description": "sum of payment advices amount and fee, converted in string",
+                "format": "###.##",
+                "example": "10.00"
               },
               "timestampOperation": {
                 "type": "string",
