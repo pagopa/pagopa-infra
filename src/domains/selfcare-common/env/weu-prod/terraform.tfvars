@@ -38,9 +38,9 @@ bopagopa_datastore_cosmos_db_params = {
   capabilities = ["EnableMongo", "EnableMongo16MBDocumentSupport"]
   offer_type   = "Standard"
   consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 300
-    max_staleness_prefix    = 100000
+    consistency_level       = "Strong" // "BoundedStaleness"
+    max_interval_in_seconds = 5        // 300
+    max_staleness_prefix    = 100      // 100000
   }
   server_version                   = "4.0"
   main_geo_location_zone_redundant = true
