@@ -300,4 +300,16 @@ resource "azurerm_key_vault_secret" "apicfg_cache_tx_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "cfg_for_node_subscription_key" {
+  name         = "cfg-for-node-subscription-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
 
