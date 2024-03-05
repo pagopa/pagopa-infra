@@ -77,3 +77,18 @@ resource "azurerm_subnet_route_table_association" "rt_sia_for_apim_v2" {
   subnet_id      = module.apimv2_snet.id
   route_table_id = data.azurerm_route_table.rt_sia.id
 }
+
+#
+# AKS
+#
+resource "azurerm_public_ip" "aks_leonardo_public_ip" {
+  name                = "${local.product_ita}-aks-leonardo-pip"
+  resource_group_name = azurerm_resource_group.rg_ita_vnet.name
+  location            = azurerm_resource_group.rg_ita_vnet.location
+  sku                 = "Standard"
+  allocation_method   = "Static"
+
+  zones = [1, 2, 3]
+
+  tags = var.tags
+}
