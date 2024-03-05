@@ -404,18 +404,15 @@
         "type": "string",
         "format": "uuid"
       },
-      "ApplicationName": {
+      "ApplicationId": {
         "type": "string",
-        "description": "Enumeration of applications",
-        "enum": [
-          "PAGOPA"
-        ]
+        "description": "Id of applications"
       },
       "Application": {
         "type": "object",
         "properties": {
           "name": {
-            "$ref": "#/components/schemas/ApplicationName"
+            "$ref": "#/components/schemas/ApplicationId"
           },
           "status": {
             "$ref": "#/components/schemas/ApplicationStatus"
@@ -455,7 +452,7 @@
             "type": "array",
             "description": "List of applications for which wallet is enabled",
             "items": {
-              "$ref": "#/components/schemas/ApplicationName"
+              "$ref": "#/components/schemas/WalletApplicationId"
             }
           },
           "useDiagnosticTracing": {
@@ -492,12 +489,16 @@
         "type": "object",
         "properties": {
           "name": {
-            "$ref": "#/components/schemas/ApplicationName"
+            "$ref": "#/components/schemas/WalletApplicationId"
           },
           "status": {
             "$ref": "#/components/schemas/WalletApplicationStatus"
           }
         }
+      },
+      "WalletApplicationId": {
+        "type": "string",
+        "description": "Id of wallet application"
       },
       "WalletApplicationStatus": {
         "type": "string",
