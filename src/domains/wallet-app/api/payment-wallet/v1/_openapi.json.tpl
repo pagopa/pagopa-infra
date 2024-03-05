@@ -3,7 +3,7 @@
   "info": {
     "title": "pagoPA Payment Wallet API",
     "version": "0.0.1",
-    "description": "API to handle payment wallets PagoPA for App IO, where a wallet is triple between user identifier, payment instrument and services (i.e pagoPA, bpd).\n\nThe wallet onboarding outcome and walletId are returned as query params to the app IO, for example \n/wallets/{walletId}/outcomes?outcome=0&walletId=123. The possible outcome are:\n- SUCCESS(0)\n- GENERIC_ERROR(1)\n- AUTH_ERROR(2)\n- TIMEOUT(4)\n- CANCELED_BY_USER(8)\n- INVALID_SESSION(14)",
+    "description": "API to handle payment wallets PagoPA for App IO, where a wallet is triple between user identifier, payment instrument and applications (i.e pagoPA, bpd).\n\nThe wallet onboarding outcome and walletId are returned as query params to the app IO, for example \n/wallets/{walletId}/outcomes?outcome=0&walletId=123. The possible outcome are:\n- SUCCESS(0)\n- GENERIC_ERROR(1)\n- AUTH_ERROR(2)\n- TIMEOUT(4)\n- CANCELED_BY_USER(8)\n- INVALID_SESSION(14)",
     "termsOfService": "https://pagopa.it/terms/"
   },
   "tags": [
@@ -324,20 +324,20 @@
         }
       }
     },
-    "/wallets/{walletId}/services": {
+    "/wallets/{walletId}/applications": {
       "put": {
         "tags": [
           "wallets"
         ],
-        "summary": "Update wallet services and their status",
-        "description": "Update wallet services",
-        "operationId": "updateWalletServicesById",
+        "summary": "Update wallet applications and their status",
+        "description": "Update wallet applications",
+        "operationId": "updateWalletApplicationsById",
         "requestBody": {
-          "description": "Update wallet services for the specified wallet",
+          "description": "Update wallet applications for the specified wallet",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/WalletServiceUpdateRequest"
+                "$ref": "#/components/schemas/WalletApplicationUpdateRequest"
               }
             }
           }
@@ -381,11 +381,11 @@
             "description": "Wallet not found"
           },
           "409": {
-            "description": "Wallet request is inconsistent with global service status (e.g. the user requested a service to be enabled but the service has a global status of disabled)",
+            "description": "Wallet request is inconsistent with global application status (e.g. the user requested a application to be enabled but the application has a global status of disabled)",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/WalletServicesPartialUpdate"
+                  "$ref": "#/components/schemas/WalletApplicationsPartialUpdate"
                 }
               }
             }
@@ -404,30 +404,30 @@
         "type": "string",
         "format": "uuid"
       },
-      "ServiceName": {
+      "ApplicationName": {
         "type": "string",
-        "description": "Enumeration of services",
+        "description": "Enumeration of applications",
         "enum": [
           "PAGOPA"
         ]
       },
-      "Service": {
+      "Application": {
         "type": "object",
         "properties": {
           "name": {
-            "$ref": "#/components/schemas/ServiceName"
+            "$ref": "#/components/schemas/ApplicationName"
           },
           "status": {
-            "$ref": "#/components/schemas/ServiceStatus"
+            "$ref": "#/components/schemas/ApplicationStatus"
           },
           "updateDate": {
-            "description": "Service last update date",
+            "description": "Application last update date",
             "type": "string",
             "format": "date-time"
           }
         }
       },
-      "ServiceStatus": {
+      "ApplicationStatus": {
         "type": "string",
         "description": "Enumeration of wallet statuses",
         "enum": [
@@ -451,11 +451,11 @@
         "type": "object",
         "description": "Wallet creation request",
         "properties": {
-          "services": {
+          "applications": {
             "type": "array",
-            "description": "List of services for which wallet is enabled",
+            "description": "List of applications for which wallet is enabled",
             "items": {
-              "$ref": "#/components/schemas/ServiceName"
+              "$ref": "#/components/schemas/ApplicationName"
             }
           },
           "useDiagnosticTracing": {
@@ -468,7 +468,7 @@
         },
         "required": [
           "paymentMethodId",
-          "services",
+          "applications",
           "useDiagnosticTracing"
         ]
       },
@@ -488,18 +488,18 @@
           "redirectUrl"
         ]
       },
-      "WalletService": {
+      "WalletApplication": {
         "type": "object",
         "properties": {
           "name": {
-            "$ref": "#/components/schemas/ServiceName"
+            "$ref": "#/components/schemas/ApplicationName"
           },
           "status": {
-            "$ref": "#/components/schemas/WalletServiceStatus"
+            "$ref": "#/components/schemas/WalletApplicationStatus"
           }
         }
       },
-      "WalletServiceStatus": {
+      "WalletApplicationStatus": {
         "type": "string",
         "description": "Enumeration of wallet statuses",
         "enum": [
@@ -507,44 +507,44 @@
           "DISABLED"
         ]
       },
-      "WalletServiceUpdateRequest": {
+      "WalletApplicationUpdateRequest": {
         "type": "object",
         "description": "Wallet update request",
         "properties": {
-          "services": {
+          "applications": {
             "type": "array",
-            "description": "List of services to update",
+            "description": "List of applications to update",
             "items": {
-              "$ref": "#/components/schemas/WalletService"
+              "$ref": "#/components/schemas/WalletApplication"
             }
           }
         }
       },
-      "WalletServicesPartialUpdate": {
+      "WalletApplicationsPartialUpdate": {
         "type": "object",
-        "description": "Response for wallet services partial update due to status conflicts",
+        "description": "Response for wallet applications partial update due to status conflicts",
         "properties": {
-          "updatedServices": {
+          "updatedApplications": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/WalletService"
+              "$ref": "#/components/schemas/WalletApplication"
             }
           },
-          "failedServices": {
+          "failedApplications": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Service"
+              "$ref": "#/components/schemas/Application"
             }
           }
         },
         "example": {
-          "updatedServices": [
+          "updatedApplications": [
             {
               "name": "PAGOPA",
               "status": "ENABLED"
             }
           ],
-          "failedServices": [
+          "failedApplications": [
             {
               "name": "PARI",
               "status": "DISABLED"
@@ -576,11 +576,11 @@
             "type": "string",
             "format": "date-time"
           },
-          "services": {
-            "description": "list of services for which this wallet is created for",
+          "applications": {
+            "description": "list of applications for which this wallet is created for",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Service"
+              "$ref": "#/components/schemas/Application"
             }
           },
           "details": {
@@ -593,7 +593,7 @@
           "status",
           "creationDate",
           "updateDate",
-          "services"
+          "applications"
         ]
       },
       "WalletInfoDetails": {
@@ -725,7 +725,7 @@
           },
           "title": {
             "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Application Unavailable"
           },
           "status": {
             "$ref": "#/components/schemas/HttpStatusCode"
