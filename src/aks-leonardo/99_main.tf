@@ -1,29 +1,29 @@
 terraform {
-  required_version = ">=1.3.5"
+  required_version = ">= 1.3.5"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.71.0"
+      version = "<= 3.93.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "> 2.10.0"
+      version = "<= 2.47.0"
     }
     external = {
       source  = "hashicorp/external"
-      version = "> 2.0.0"
+      version = "<= 2.3.3"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "= 2.17.0"
+      version = "<= 2.26.0"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "= 2.8.0"
+      version = "<= 2.12.1"
     }
     null = {
       source  = "hashicorp/null"
-      version = ">= 3.1.1"
+      version = "<= 3.2.2"
     }
   }
 
