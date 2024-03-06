@@ -34,24 +34,14 @@ variable "location" {
   description = "Location name complete"
 }
 
-variable "location_pair" {
-  type        = string
-  description = "Location pair name complete"
-}
-
 variable "location_short" {
   type        = string
-  description = "Location short like eg: weu, neu.."
-}
-
-variable "location_pair_short" {
-  type        = string
-  description = "Location short like eg: weu, neu.."
+  description = "Location short like eg: itn, weu.."
 }
 
 variable "location_string" {
   type        = string
-  description = "One of West Europe, North Europe"
+  description = "One of Italy North, North Europe"
 }
 
 variable "domain" {
@@ -95,10 +85,17 @@ variable "public_ip_aksoutbound_name" {
   description = "Public IP AKS outbound"
 }
 
-variable "cidr_subnet_aks" {
+variable "cidr_subnet_system_aks" {
   type        = list(string)
-  description = "Subnet cluster kubernetes."
+  description = "Subnet for system nodepool."
 }
+
+variable "cidr_subnet_user_aks" {
+  type        = list(string)
+  description = "Subnet for generic user nodepool."
+}
+
+
 
 #
 # 🔐 Key Vault
@@ -465,6 +462,7 @@ variable "aks_system_node_pool" {
     node_count_max  = number,
     node_labels     = map(any),
     node_tags       = map(any),
+    only_critical_addons_enabled = optional(bool, true)
     zones           = optional(list(any), [1, 2, 3])
   })
   description = "AKS node pool system configuration"
@@ -472,7 +470,7 @@ variable "aks_system_node_pool" {
 
 variable "aks_user_node_pool" {
   type = object({
-    enabled         = bool,
+    enabled         = optional(bool, true),
     name            = string,
     vm_size         = string,
     os_disk_type    = string,
@@ -482,7 +480,11 @@ variable "aks_user_node_pool" {
     node_labels     = map(any),
     node_taints     = list(string),
     node_tags       = map(any),
-    zones           = optional(list(any), [1, 2, 3])
+    ultra_ssd_enabled = optional(bool, false),
+    enable_host_encryption = optional(bool, true),
+    max_pods = optional(number, 250),
+    upgrade_settings_max_surge = optional(string, "30%"),
+    zones           = optional(list(any), [1, 2, 3]),
   })
   description = "AKS node pool user configuration"
 }

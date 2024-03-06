@@ -2,12 +2,10 @@
 prefix              = "pagopa"
 env_short           = "u"
 env                 = "uat"
-domain              = "uat01"
-location            = "westeurope"
-location_string     = "West Europe"
-location_short      = "weu"
-location_pair_short = "neu"
-location_pair       = "northeurope"
+domain              = "aks-leonardo"
+location            = "italynorth"
+location_string     = "Italy North"
+location_short      = "itn"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -23,7 +21,8 @@ tags = {
 
 ### Network
 
-cidr_subnet_aks = ["10.11.0.0/17"]
+cidr_subnet_system_aks = ["10.3.1.0/24"]
+cidr_subnet_user_aks = ["10.3.2.0/24"]
 
 ### External resources
 
@@ -36,14 +35,14 @@ log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 #
 # ⛴ AKS
 #
-rg_vnet_aks_name           = "pagopa-u-weu-uat01-vnet-rg"
-vnet_aks_name              = "pagopa-u-weu-uat01-vnet"
-public_ip_aksoutbound_name = "pagopa-u-weu-uat01-aksoutbound-pip-1"
+rg_vnet_aks_name           = "pagopa-u-itn-uat01-vnet-rg"
+vnet_aks_name              = "pagopa-u-itn-uat01-vnet"
+public_ip_aksoutbound_name = "pagopa-u-itn-uat01-aksoutbound-pip-1"
 
 aks_enabled                 = true
 aks_private_cluster_enabled = true
 aks_alerts_enabled          = false
-aks_kubernetes_version      = "1.27.3"
+aks_kubernetes_version      = "1.27.9"
 aks_system_node_pool = {
   name            = "cstuat01sys",
   vm_size         = "Standard_D2ds_v5",

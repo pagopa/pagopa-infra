@@ -3,11 +3,9 @@ prefix              = "pagopa"
 env_short           = "d"
 env                 = "dev"
 domain              = "aks-leonardo"
-location            = "westeurope"
-location_string     = "West Europe"
-location_short      = "weu"
-location_pair_short = "neu"
-location_pair       = "northeurope"
+location            = "italynorth"
+location_string     = "Italy North"
+location_short      = "itn"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -23,7 +21,8 @@ tags = {
 
 ### Network
 
-cidr_subnet_aks = ["10.11.0.0/17"]
+cidr_subnet_system_aks = ["10.3.1.0/24"]
+cidr_subnet_user_aks = ["10.3.2.0/24"]
 
 ### External resources
 
@@ -36,35 +35,35 @@ log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 #
 # ⛴ AKS
 #
-rg_vnet_aks_name           = "pagopa-d-weu-aks-leonardo-vnet-rg"
-vnet_aks_name              = "pagopa-d-weu-aks-leonardo-vnet"
-public_ip_aksoutbound_name = "pagopa-d-weu-aks-leonardo-aksoutbound-pip-1"
+rg_vnet_aks_name           = "pagopa-d-itn-aks-leonardo-vnet-rg"
+vnet_aks_name              = "pagopa-d-itn-aks-leonardo-vnet"
+public_ip_aksoutbound_name = "pagopa-d-itn-aks-leonardo-aksoutbound-pip-1"
 
 aks_enabled                 = true
 aks_private_cluster_enabled = false
 aks_alerts_enabled          = false
-aks_kubernetes_version      = "1.27.3"
+aks_kubernetes_version      = "1.27.9"
 aks_system_node_pool = {
-  name            = "cstaks-leonardosys",
+  name            = "pagaksleosys",
   vm_size         = "Standard_B2ms",
   os_disk_type    = "Managed",
   os_disk_size_gb = 75,
   node_count_min  = 1,
   node_count_max  = 3,
-  node_labels     = { node_name : "aks-aks-leonardo-sys", node_type : "system" },
-  node_tags       = { node_tag_1 : "1" },
+  node_labels     = { node_name : "aks-leonardo-sys", node_type : "system" },
+  node_tags       = { },
 }
 aks_user_node_pool = {
   enabled         = true,
-  name            = "cstaks-leonardousr",
+  name            = "pagaksleousr",
   vm_size         = "Standard_B8ms",
   os_disk_type    = "Managed",
   os_disk_size_gb = 75,
   node_count_min  = 1,
   node_count_max  = 3,
-  node_labels     = { node_name : "aks-aks-leonardo-user", node_type : "user" },
+  node_labels     = { node_name : "aks-leonardo-user", node_type : "user" },
   node_taints     = [],
-  node_tags       = { node_tag_2 : "2" },
+  node_tags       = {  },
 }
 
 aks_addons = {
@@ -75,7 +74,7 @@ aks_addons = {
 
 ingress_replica_count = "2"
 # This is the k8s ingress controller ip. It must be in the aks subnet range.
-ingress_load_balancer_ip = "10.11.100.250"
+ingress_load_balancer_ip = "10.3.100.250"
 nginx_helm_version       = "4.7.1"
 keda_helm_version        = "2.11.1"
 
