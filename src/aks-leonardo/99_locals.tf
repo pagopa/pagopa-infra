@@ -13,7 +13,7 @@ locals {
   vnet_core_resource_group_name = "${local.product}-vnet-rg"
   vnet_core_name                = "${local.product}-vnet"
 
-  public_ip_aks_leonardo_outbound_name = "pagopa-${var.env_short}-itn-aks-leonardo-pip"
+  public_ip_aks_leonardo_outbound_name = "pagopa-${var.env_short}-itn-${var.env}-aksoutbound-pip"
 
   # ACR DOCKER
   docker_rg_name       = "${local.product}-container-registry-rg"

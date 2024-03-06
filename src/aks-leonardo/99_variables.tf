@@ -70,21 +70,6 @@ variable "tags" {
 #
 # Network
 #
-variable "rg_vnet_aks_name" {
-  type        = string
-  description = "Resource group dedicated to VNet AKS"
-}
-
-variable "vnet_aks_name" {
-  type        = string
-  description = "VNet dedicated to AKS"
-}
-
-variable "public_ip_aksoutbound_name" {
-  type        = string
-  description = "Public IP AKS outbound"
-}
-
 variable "cidr_subnet_system_aks" {
   type        = list(string)
   description = "Subnet for system nodepool."
