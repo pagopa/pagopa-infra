@@ -15,10 +15,6 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-# # 🔐 key vault
-# key_vault_name    = "pagopa-u-xyz"
-# key_vault_rg_name = "pagopa-u-xyz"
-
 ### Network
 
 cidr_subnet_system_aks = ["10.3.1.0/24"]
@@ -35,16 +31,11 @@ log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 #
 # ⛴ AKS
 #
-rg_vnet_aks_name           = "pagopa-u-itn-uat01-vnet-rg"
-vnet_aks_name              = "pagopa-u-itn-uat01-vnet"
-public_ip_aksoutbound_name = "pagopa-u-itn-uat01-aksoutbound-pip-1"
-
-aks_enabled                 = true
 aks_private_cluster_enabled = true
 aks_alerts_enabled          = false
 aks_kubernetes_version      = "1.27.9"
 aks_system_node_pool = {
-  name            = "cstuat01sys",
+  name            = "pauaksleosys",
   vm_size         = "Standard_D2ds_v5",
   os_disk_type    = "Ephemeral",
   os_disk_size_gb = 75,
@@ -55,7 +46,7 @@ aks_system_node_pool = {
 }
 aks_user_node_pool = {
   enabled         = true,
-  name            = "cstuat01usr",
+  name            = "pauaksleousr",
   vm_size         = "Standard_D8ds_v5",
   os_disk_type    = "Ephemeral",
   os_disk_size_gb = 300,
@@ -74,7 +65,7 @@ aks_addons = {
 
 ingress_replica_count = "2"
 # This is the k8s ingress controller ip. It must be in the aks subnet range.
-ingress_load_balancer_ip = "10.11.100.250"
+ingress_load_balancer_ip = "10.3.100.250"
 nginx_helm_version       = "4.7.1"
 keda_helm_version        = "2.11.1"
 

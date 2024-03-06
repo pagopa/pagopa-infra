@@ -2,7 +2,7 @@
 prefix              = "pagopa"
 env_short           = "d"
 env                 = "dev"
-domain              = "aks-leonardo"
+domain              = "dev"
 location            = "italynorth"
 location_string     = "Italy North"
 location_short      = "itn"
@@ -14,10 +14,6 @@ tags = {
   Source      = "https://github.com/pagopa/pagopa-infrastructure"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
-
-# # 🔐 key vault
-# key_vault_name    = "pagopa-d-xyz"
-# key_vault_rg_name = "pagopa-d-xyz"
 
 ### Network
 
@@ -35,16 +31,11 @@ log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 #
 # ⛴ AKS
 #
-rg_vnet_aks_name           = "pagopa-d-itn-aks-leonardo-vnet-rg"
-vnet_aks_name              = "pagopa-d-itn-aks-leonardo-vnet"
-public_ip_aksoutbound_name = "pagopa-d-itn-aks-leonardo-aksoutbound-pip-1"
-
-aks_enabled                 = true
 aks_private_cluster_enabled = false
 aks_alerts_enabled          = false
 aks_kubernetes_version      = "1.27.9"
 aks_system_node_pool = {
-  name            = "pagaksleosys",
+  name            = "padaksleosys",
   vm_size         = "Standard_B2ms",
   os_disk_type    = "Managed",
   os_disk_size_gb = 75,
@@ -55,7 +46,7 @@ aks_system_node_pool = {
 }
 aks_user_node_pool = {
   enabled         = true,
-  name            = "pagaksleousr",
+  name            = "padaksleousr",
   vm_size         = "Standard_B8ms",
   os_disk_type    = "Managed",
   os_disk_size_gb = 75,
