@@ -40,6 +40,17 @@
           "transactions"
         ],
         "description": "Create a new transaction activating the payments notice by meaning of 'Nodo' ActivatePaymentNotice primitive",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-correlation-id",
+            "required": true,
+            "description": "Flow correlation id",
+            "schema": {
+              "$ref": "#/components/schemas/CorrelationId"
+            }
+          }
+        ],
         "summary": "Make a new transaction",
         "requestBody": {
           "$ref": "#/components/requestBodies/NewTransactionRequest"
@@ -394,6 +405,11 @@
           "digitalStamp",
           "transferAmount"
         ]
+      },
+      "CorrelationId": {
+        "description": "correlationId",
+        "type": "string",
+        "format": "uuid"
       },
       "ProblemJson": {
         "description": "Body definition for error responses containing failure details",

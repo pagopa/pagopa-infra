@@ -35,7 +35,7 @@ tls_cert_check_helm = {
 
 selfcare_fe_enabled               = true
 robots_indexed_paths              = []
-selfcare_storage_replication_type = "GRS"
+selfcare_storage_replication_type = "GZRS"
 
 pod_disruption_budgets = {
   "pagopaselfcaremsbackofficebackend" = {

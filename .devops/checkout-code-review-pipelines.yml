@@ -1,14 +1,15 @@
 pr:
-  autoCancel: false
+  autoCancel: true
   branches:
     include:
       - main
   paths:
     include:
-      - 'src/domains/checkout-app'
       - 'src/domains/checkout-common'
+      - 'src/domains/checkout-app'
     exclude:
       - '**/*.lock.hcl'
+      - '**/*.md'
 
 parameters:
   - name: 'DEV'
@@ -28,143 +29,155 @@ parameters:
   - name: 'PROD'
     displayName: 'Run on PROD environment'
     type: boolean
-    default: False
+    default: True
     values:
       - False
       - True
 
 variables:
-  TIME_OUT: 15
-  DEV_AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
-  UAT_AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
-  PROD_AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
+  TIME_OUT: 30
+  # working dir
+  WORKING_DIR_APP: 'src/domains/checkout-app'
+  WORKING_DIR_COMMON: 'src/domains/checkout-common'
+  poolNameDev: '$(TF_POOL_NAME_DEV)'
+  poolNameUat: '$(TF_POOL_NAME_UAT)'
+  poolNameProd: '$(TF_POOL_NAME_PROD)'
+  azureServiceConnectionPlanNameDev: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+  azureServiceConnectionPlanNameUat: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+  azureServiceConnectionPlanNameProd: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+  githubEndpointName: '$(TF_GITHUB_SERVICE_ENDPOINT_NAME)'
 
 pool:
-  vmImage: 'ubuntu-20.04'
+  vmImage: 'ubuntu-latest'
 
 resources:
   repositories:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v3.0.0
+      ref: refs/tags/v5.2.1
       endpoint: 'io-azure-devops-github-ro'
 
-lockBehavior: sequential
 stages:
   - stage: DEV
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
-      name: "pagopa-dev-linux-infra"
+      name: "${{variables.poolNameDev}}"
     jobs:
-      - job: plan_checkout_common
-        displayName: 🔦 plan_checkout_common
+      #APP
+      - job: tfplan_checkout_app
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan checkout-common
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan checkout
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-dev"
-              WORKINGDIR: 'src/domains/checkout-common'
-              AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
-      - job: plan_checkout_app
-        displayName: 🔦 plan_checkout_app
-        timeoutInMinutes: $[variables.TIME_OUT]
+              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+              TF_SUMMARIZE: true
+      #COMMON
+      - job: tfplan_checkout_common
         strategy:
           parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # Run terraform plan checkout-app
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan checkout
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-dev"
-              WORKINGDIR: 'src/domains/checkout-app'
-              AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
+              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+              TF_SUMMARIZE: true
 
-#
-# UAT
-#
   - stage: UAT
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.UAT}}, true))
     pool:
-      name: "pagopa-uat-linux-infra"
+      name: "${{variables.poolNameUat}}"
     jobs:
-      - job: plan_checkout_common
-        displayName: 🔦 plan_checkout_common
+      #APP
+      - job: tfplan_checkout_app
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan checkout-common
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan checkout
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-uat"
-              WORKINGDIR: 'src/domains/checkout-common'
-              AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
-      - job: plan_checkout_app
-        displayName: 🔦 plan_checkout_app
-        timeoutInMinutes: $[variables.TIME_OUT]
+              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+              TF_SUMMARIZE: true
+      #COMMON
+      - job: tfplan_checkout_common
         strategy:
           parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # Run terraform plan checkout-app
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan checkout
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-uat"
-              WORKINGDIR: 'src/domains/checkout-app'
-              AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
+              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+              TF_SUMMARIZE: true
 
-#
-# PROD
-#
   - stage: PROD
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.PROD}}, true))
     pool:
-      name: "pagopa-prod-linux-infra"
+      name: "${{variables.poolNameProd}}"
     jobs:
-      - job: plan_checkout_common
-        displayName: 🔦 plan_checkout_common
+      #APP
+      - job: tfplan_checkout_app
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan checkout-common
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan checkout
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-prod"
-              WORKINGDIR: 'src/domains/checkout-common'
-              AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
-      - job: plan_checkout_app
-        displayName: 🔦 plan_checkout_app
-        timeoutInMinutes: $[variables.TIME_OUT]
+              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+              TF_SUMMARIZE: true
+      #COMMON
+      - job: tfplan_checkout_common
         strategy:
           parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # Run terraform plan checkout-app
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan checkout
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-prod"
-              WORKINGDIR: 'src/domains/checkout-app'
-              AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
+              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+              TF_SUMMARIZE: true

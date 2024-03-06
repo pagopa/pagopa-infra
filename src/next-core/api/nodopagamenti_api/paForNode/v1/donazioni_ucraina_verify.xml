@@ -1,0 +1,195 @@
+<policies>
+    <inbound>
+        <base />
+        <set-variable name="donazioniucraina" value="{{donazioni-ucraina}}" />
+        <set-variable name="donazioniucraina2" value="{{donazioni-ucraina2}}" />
+        <set-variable name="readrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
+        <set-variable name="fiscalCode" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"fiscalCode"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var fiscalCode = result[1].Substring(1,result[1].Length-3);
+            return fiscalCode;
+        }" />
+        <set-variable name="noticeNumber" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"noticeNumber"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            var noticeNumber = result[1].Substring(1,result[1].Length-3);
+            return noticeNumber;
+        }" />
+        <set-variable name="dueDate" value="@(DateTime.Now.ToString("yyyy-MM-dd"))" />
+        <set-variable name="amount" value="@{
+            var donazioniucraina = ((string) context.Variables["donazioniucraina"]);
+            var donazioniucraina2 = ((string) context.Variables["donazioniucraina2"]);
+            JObject json = JObject.Parse(donazioniucraina);
+
+            foreach (var item1 in json["data"])
+            {
+                foreach (var item2 in ((JObject) item1)["slices"])
+                {
+                    var idDonation = (string)((JObject) item2)["idDonation"];
+                    var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
+                    if (idDonation == indexIuv ) {
+                        return (int) (((JObject) item2)["amount"])/100;
+                    }
+                }
+            }
+
+            JObject json2 = JObject.Parse(donazioniucraina2);
+
+            foreach (var item1 in json2["data"])
+            {
+                foreach (var item2 in ((JObject) item1)["slices"])
+                {
+                    var idDonation = (string)((JObject) item2)["idDonation"];
+                    var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
+                    if (idDonation == indexIuv ) {
+                        return (int) (((JObject) item2)["amount"])/100;
+                    }
+                }
+            }            
+
+            return "0";
+        }" />
+        <set-variable name="companyName" value="@{
+            var donazioniucraina = ((string) context.Variables["donazioniucraina"]);
+            var donazioniucraina2 = ((string) context.Variables["donazioniucraina2"]);
+
+            JObject json = JObject.Parse(donazioniucraina);
+
+            foreach (var item1 in json["data"])
+            {
+                foreach (var item2 in ((JObject) item1)["slices"])
+                {
+                    var idDonation = (string)((JObject) item2)["idDonation"];
+                    var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
+                    if (idDonation == indexIuv ) {
+                        return ((JObject) item1)["companyName"];
+                    }
+                }
+            }
+
+            JObject json2 = JObject.Parse(donazioniucraina2);
+
+            foreach (var item1 in json2["data"])
+            {
+                foreach (var item2 in ((JObject) item1)["slices"])
+                {
+                    var idDonation = (string)((JObject) item2)["idDonation"];
+                    var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
+                    if (idDonation == indexIuv ) {
+                        return ((JObject) item1)["companyName"];
+                    }
+                }
+            }
+            return "0";
+        }" />
+        <set-variable name="officeName" value="@{
+            var donazioniucraina = ((string) context.Variables["donazioniucraina"]);
+            var donazioniucraina2 = ((string) context.Variables["donazioniucraina2"]);
+
+            JObject json = JObject.Parse(donazioniucraina);
+
+            foreach (var item1 in json["data"])
+            {
+                foreach (var item2 in ((JObject) item1)["slices"])
+                {
+                    var idDonation = (string)((JObject) item2)["idDonation"];
+                    var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
+                    if (idDonation == indexIuv ) {
+                        return ((JObject) item1)["officeName"];
+                    }
+                }
+            }
+
+            JObject json2 = JObject.Parse(donazioniucraina2);
+
+            foreach (var item1 in json2["data"])
+            {
+                foreach (var item2 in ((JObject) item1)["slices"])
+                {
+                    var idDonation = (string)((JObject) item2)["idDonation"];
+                    var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
+                    if (idDonation == indexIuv ) {
+                        return ((JObject) item1)["officeName"];
+                    }
+                }
+            }
+
+            return "0";
+        }" />
+        <set-variable name="paymentDescription" value="@{
+            var donazioniucraina = ((string) context.Variables["donazioniucraina"]);
+            var donazioniucraina2 = ((string) context.Variables["donazioniucraina2"]);
+
+            JObject json = JObject.Parse(donazioniucraina);
+
+            foreach (var item1 in json["data"])
+            {
+                foreach (var item2 in ((JObject) item1)["slices"])
+                {
+                    var idDonation = (string)((JObject) item2)["idDonation"];
+                    var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
+                    if (idDonation == indexIuv ) {
+                        return ((JObject) item1)["paymentDescription"];
+                    }
+                }
+            }
+
+            JObject json2 = JObject.Parse(donazioniucraina2);
+
+            foreach (var item1 in json2["data"])
+            {
+                foreach (var item2 in ((JObject) item1)["slices"])
+                {
+                    var idDonation = (string)((JObject) item2)["idDonation"];
+                    var indexIuv = ((string)context.Variables["noticeNumber"]).Substring(3,2);
+                    if (idDonation == indexIuv ) {
+                        return ((JObject) item1)["paymentDescription"];
+                    }
+                }
+            }
+            
+            return "0";
+        }" />        
+        <return-response>
+            <set-status code="200" reason="OK" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/xml</value>
+            </set-header>
+            <set-body template="liquid">
+				<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:paf="http://pagopa-api.pagopa.gov.it/pa/paForNode.xsd">
+					<soapenv:Header />
+					<soapenv:Body>
+						<paf:paVerifyPaymentNoticeRes>
+							<outcome>OK</outcome>
+							<paymentList>
+								<paymentOptionDescription>
+									<amount>{{context.Variables["amount"]}}.00</amount>
+									<options>EQ</options>
+									<dueDate>{{context.Variables["dueDate"]}}</dueDate>
+									<detailDescription>{{context.Variables["paymentDescription"]}}</detailDescription>
+									<allCCP>false</allCCP>
+								</paymentOptionDescription>
+							</paymentList>
+							<paymentDescription>{{context.Variables["paymentDescription"]}}</paymentDescription>
+							<fiscalCodePA>{{context.Variables["fiscalCode"]}}</fiscalCodePA>
+							<companyName>{{context.Variables["companyName"]}}</companyName>
+							<officeName>{{context.Variables["officeName"]}}</officeName>
+						</paf:paVerifyPaymentNoticeRes>
+					</soapenv:Body>
+				</soapenv:Envelope>
+			</set-body>
+        </return-response>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

@@ -1,0 +1,38 @@
+<!--
+    IMPORTANT:
+    - Policy fragment are included as-is whenever they are referenced.
+    - If using variables. Ensure they are setup before use.
+    - Copy and paste your code here or simply start coding
+-->
+<fragment>
+  <trace source="activate-outbound" severity="information">outbound</trace>
+  <choose>
+    <when condition="@{
+            string[] activatePayment = new string[] {"activatePaymentNotice", "activateIOPayment", "activatePaymentNoticeV2"};
+            var soapAction = (string)context.Variables["soapAction"];
+            return activatePayment.Contains(soapAction);
+        }">
+      <trace source="activate" severity="information">@(context.Response.Body.As<string>(preserveContent: true))</trace>
+      <set-variable name="paymentToken" value="@{
+                XElement response = context.Response.Body.As<XElement>(preserveContent: true);
+                XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
+                XElement primitive = (XElement) body.FirstNode;
+                var paymentToken = primitive.Descendants("paymentToken").FirstOrDefault();
+
+                return paymentToken != null ? paymentToken.Value.ToString() : "NONE";
+            }" />
+      <trace source="activate-data-set" severity="information">@((string)context.Variables["dataToSet"])</trace>
+      <choose>
+        <when condition="@(!((string)context.Variables["paymentToken"]).Equals("NONE"))">
+          <cache-store-value key="@((string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"])" value="@{
+                            var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
+                            return (string)requestData["nodeId"];
+                        }" duration="@{
+                            var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
+                            return (int)requestData["ttl"];
+                        }" caching-type="internal" />
+        </when>
+      </choose>
+    </when>
+  </choose>
+</fragment>

@@ -1,6 +1,10 @@
 # general
-env_short = "d"
-env       = "dev"
+env_short          = "d"
+env                = "dev"
+location           = "westeurope"
+location_short     = "weu"
+location_ita       = "italynorth"
+location_short_ita = "itn"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -11,6 +15,14 @@ tags = {
 }
 
 lock_enable = false
+
+#
+# Feature flag
+#
+enabled_features = {
+  apim_v2  = true
+  vnet_ita = true
+}
 
 # monitoring
 law_sku               = "PerGB2018"
@@ -105,6 +117,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "/allowed/*",
   ]
   ips = [
+    "0.0.0.0",
     "0.0.0.0",
     "0.0.0.0",
     "0.0.0.0",
@@ -601,46 +614,6 @@ eventhubs_02 = [
       },
       {
         name   = "pagopa-qi-psp-kpi-rx-pdnd"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-cache"
-    partitions        = 1
-    message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-cache-sync-rx"]
-    keys = [
-      {
-        name   = "nodo-dei-pagamenti-cache-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-cache-sync-rx" # node-cfg-sync
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-stand-in"
-    partitions        = 1
-    message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-stand-in-sync-rx"]
-    keys = [
-      {
-        name   = "nodo-dei-pagamenti-stand-in-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-stand-in-sync-rx" # node-cfg-sync
         listen = true
         send   = false
         manage = false

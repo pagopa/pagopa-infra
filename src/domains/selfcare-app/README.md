@@ -16,10 +16,9 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_api_selfcare_api_subkey_v1"></a> [apim\_api\_selfcare\_api\_subkey\_v1](#module\_apim\_api\_selfcare\_api\_subkey\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.7.0 |
-| <a name="module_apim_api_selfcare_api_v1"></a> [apim\_api\_selfcare\_api\_v1](#module\_apim\_api\_selfcare\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.7.0 |
+| <a name="module_apim_selfcare_backoffice_external_product"></a> [apim\_selfcare\_backoffice\_external\_product](#module\_apim\_selfcare\_backoffice\_external\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.7.0 |
+| <a name="module_apim_selfcare_backoffice_helpdesk_product"></a> [apim\_selfcare\_backoffice\_helpdesk\_product](#module\_apim\_selfcare\_backoffice\_helpdesk\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.7.0 |
 | <a name="module_apim_selfcare_product"></a> [apim\_selfcare\_product](#module\_apim\_selfcare\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.7.0 |
-| <a name="module_apim_selfcare_product_subkey"></a> [apim\_selfcare\_product\_subkey](#module\_apim\_selfcare\_product\_subkey) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.7.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.7.0 |
 | <a name="module_selfcare_cdn"></a> [selfcare\_cdn](#module\_selfcare\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn | v6.7.0 |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v6.7.0 |
@@ -31,8 +30,6 @@
 | [azurerm_api_management_api.pagopa_token_exchange](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api_operation.pagopa_token_exchange](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/api_management_api_operation) | resource |
 | [azurerm_api_management_api_operation_policy.pagopa_token_exchange_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/api_management_api_operation_policy) | resource |
-| [azurerm_api_management_api_version_set.api_selfcare_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.api_selfcare_api_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_certificate.pagopa_token_exchange_cert_jwt](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/api_management_certificate) | resource |
 | [azurerm_key_vault_certificate.pagopa_jwt_signing_cert](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/key_vault_certificate) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/key_vault_secret) | resource |

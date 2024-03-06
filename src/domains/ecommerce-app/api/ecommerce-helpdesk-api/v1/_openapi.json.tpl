@@ -853,6 +853,11 @@
           "paymentGateway": {
             "type": "string",
             "description": "Payment gateway used to perform transaction"
+          },
+          "correlationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "correlation id for a transaction executed with NPG"
           }
         },
         "example": {
@@ -868,7 +873,8 @@
           "paymentMethodName": "payment method name",
           "brand": "brand",
           "authorizationRequestId": "authorizationRequestId",
-          "paymentGateway": "VPOS"
+          "paymentGateway": "VPOS",
+          "correlationId": "30846e8f-efa1-47ad-abad-08cfb30e5c09"
         }
       },
       "PaymentInfo": {
