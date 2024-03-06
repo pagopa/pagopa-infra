@@ -28,7 +28,7 @@ module "apim_selfcare_backoffice_external_product" {
   approval_required     = true
   subscriptions_limit   = 10000
 
-  policy_xml = file("./api_product/backoffice-external/_base_policy.xml")
+  policy_xml = file("./api_product/_base_policy.xml")
 }
 
 module "apim_selfcare_backoffice_helpdesk_product" {
@@ -46,5 +46,5 @@ module "apim_selfcare_backoffice_helpdesk_product" {
   approval_required     = true
   subscriptions_limit   = 10000
 
-  policy_xml = file("./api_product/backoffice-helpdesk/_base_policy.xml")
+  policy_xml = file("./api_product/_base_policy.xml")
 }
