@@ -14,7 +14,7 @@ module "monitoring_function" {
 
   depends_on = [azurerm_application_insights.application_insights]
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//monitoring_function?ref=v7.57.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//monitoring_function?ref=v7.60.0"
 
   location            = var.location
   prefix              = "${local.product}-${var.location_short}"
