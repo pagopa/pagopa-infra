@@ -6,6 +6,10 @@ locals {
     display_name = "Selfcare Backoffice External Product pagoPA"
     description  = "API for Backoffice External"
   }
+  apim_selfcare_backoffice_helpdesk_api = {
+    display_name = "Selfcare Backoffice Helpdesk Product pagoPA"
+    description  = "API for Backoffice Helpdesk"
+  }
 }
 
 
@@ -24,7 +28,23 @@ module "apim_selfcare_backoffice_external_product" {
   approval_required     = true
   subscriptions_limit   = 10000
 
-  policy_xml = file("./api_product/_base_policy.xml")
+  policy_xml = file("./api_product/backoffice-external/_base_policy.xml")
 }
 
+module "apim_selfcare_backoffice_helpdesk_product" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.7.0"
 
+  product_id   = "selfcare-bo-helpdesk"
+  display_name = local.apim_selfcare_backoffice_helpdesk_api.display_name
+  description  = local.apim_selfcare_backoffice_helpdesk_api.description
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = false
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 10000
+
+  policy_xml = file("./api_product/backoffice-helpdesk/_base_policy.xml")
+}
