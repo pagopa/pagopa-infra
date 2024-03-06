@@ -118,14 +118,14 @@ resource "azurerm_kubernetes_cluster_node_pool" "user_nodepool_default" {
   }
 }
 
-##
-## Pod identity permissions
-##
-#resource "azurerm_role_assignment" "managed_identity_operator_vs_aks_managed_identity" {
-#  scope                = azurerm_resource_group.rg_aks.id
-#  role_definition_name = "Managed Identity Operator"
-#  principal_id         = module.aks_leonardo[0].identity_principal_id
-#}
+#
+# Pod identity permissions
+#
+resource "azurerm_role_assignment" "managed_identity_operator_vs_aks_managed_identity" {
+  scope                = azurerm_resource_group.rg_aks.id
+  role_definition_name = "Managed Identity Operator"
+  principal_id         = module.aks_leonardo.identity_principal_id
+}
 #
 #module "aks_storage_class" {
 #  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_storage_class?ref=aks-keda"
