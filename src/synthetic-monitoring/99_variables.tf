@@ -88,5 +88,11 @@ variable "law_daily_quota_gb" {
   default     = -1
 }
 
+variable "self_alert_enabled" {
+  type = bool
+  description = "(Optional) enables the alert on the function itself"
+  default = true
+}
+
 
 

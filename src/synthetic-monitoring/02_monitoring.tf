@@ -45,7 +45,7 @@ module "monitoring_function" {
   tags = var.tags
 
   self_alert_configuration = {
-    enabled = false
+    enabled = var.self_alert_enabled
   }
   monitoring_configuration_encoded = data.template_file.monitoring_configuration.rendered
 }
