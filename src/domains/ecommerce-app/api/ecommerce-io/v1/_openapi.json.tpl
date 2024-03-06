@@ -1989,6 +1989,12 @@
           },
           "details": {
             "$ref": "#/components/schemas/WalletInfoDetails"
+          },
+          "logoUrl": {
+            "description": "url for the logo associated to the wallet",
+            "type": "string",
+            "format": "uri",
+            "example": "http://logo.cdn/brandLogo"
           }
         },
         "required": [
@@ -1997,7 +2003,8 @@
           "status",
           "creationDate",
           "updateDate",
-          "services"
+          "services",
+          "logoUrl"
         ]
       },
       "WalletInfoDetails": {
