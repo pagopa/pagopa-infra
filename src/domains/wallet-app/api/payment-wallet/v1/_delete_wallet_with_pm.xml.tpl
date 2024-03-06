@@ -37,9 +37,9 @@
             </set-header>
         </send-request>
         <!-- END delete wallet -->
+        <set-variable name="deleteStatusCode" value="@(((IResponse)context.Variables["pmWalletDeleteResponse"]).StatusCode)" />
         <choose>
-            <set-variable name="deleteStatusCode" value="@((IResponse)context.Variables["pmWalletDeleteResponse"]).StatusCode)" />
-            <when condition="@(((int)context.Variables["deleteStatusCode"]).StatusCode == 200 || ((int)context.Variables["deleteStatusCode"]).StatusCode == 204)">
+            <when condition="@(((int)context.Variables["deleteStatusCode"]) == 200 || ((int)context.Variables["deleteStatusCode"]) == 204)">
                 <return-response>
                     <set-status code="204" reason="No content" />
                 </return-response>
