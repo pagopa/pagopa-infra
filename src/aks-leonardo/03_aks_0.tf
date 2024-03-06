@@ -5,39 +5,16 @@ resource "azurerm_resource_group" "rg_aks" {
   tags     = var.tags
 }
 
-# k8s cluster subnet
-module "snet_aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.20.0"
-  name   = "${local.project}-aks-snet"
+module "aks_leonardo" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=aks-keda"
 
-  resource_group_name  = data.azurerm_resource_group.vnet_aks_rg.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_aks.name
-
-  address_prefixes                          = var.cidr_subnet_aks
-  private_endpoint_network_policies_enabled = var.aks_private_cluster_enabled
-
-  service_endpoints = [
-    "Microsoft.Web",
-    "Microsoft.Storage",
-    "Microsoft.EventHub",
-    "Microsoft.AzureCosmosDB"
-  ]
-}
-
-
-module "aks" {
-  count  = var.aks_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v7.33.0"
-
-  name                                          = local.aks_cluster_name
-  location                                      = azurerm_resource_group.rg_aks.location
-  dns_prefix                                    = "${local.project}-aks"
-  resource_group_name                           = azurerm_resource_group.rg_aks.name
-  kubernetes_version                            = var.aks_kubernetes_version
-  log_analytics_workspace_id                    = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
-  microsoft_defender_log_analytics_workspace_id = var.env_short == "p" ? data.azurerm_log_analytics_workspace.log_analytics_workspace.id : null
-
-  sku_tier = var.aks_sku_tier
+  name                       = local.aks_cluster_name
+  location                   = var.location
+  dns_prefix                 = local.project
+  resource_group_name        = azurerm_resource_group.rg_aks.name
+  kubernetes_version         = var.aks_kubernetes_version
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
+  sku_tier                   = var.aks_sku_tier
 
   #
   # 🤖 System node pool
@@ -50,58 +27,38 @@ module "aks" {
   system_node_pool_node_count_min  = var.aks_system_node_pool.node_count_min
   system_node_pool_node_count_max  = var.aks_system_node_pool.node_count_max
   ### K8s node configuration
-  system_node_pool_node_labels        = var.aks_system_node_pool.node_labels
-  system_node_pool_tags               = var.aks_system_node_pool.node_tags
-  system_node_pool_availability_zones = var.aks_system_node_pool.zones
-
-  #
-  # 👤 User node pool
-  #
-  user_node_pool_enabled = var.aks_user_node_pool.enabled
-  user_node_pool_name    = var.aks_user_node_pool.name
-  ### vm configuration
-  user_node_pool_vm_size            = var.aks_user_node_pool.vm_size
-  user_node_pool_os_disk_type       = var.aks_user_node_pool.os_disk_type
-  user_node_pool_os_disk_size_gb    = var.aks_user_node_pool.os_disk_size_gb
-  user_node_pool_node_count_min     = var.aks_user_node_pool.node_count_min
-  user_node_pool_node_count_max     = var.aks_user_node_pool.node_count_max
-  user_node_pool_availability_zones = var.aks_user_node_pool.zones
-  ### K8s node configuration
-  user_node_pool_node_labels = var.aks_user_node_pool.node_labels
-  user_node_pool_node_taints = var.aks_user_node_pool.node_taints
-  user_node_pool_tags        = var.aks_user_node_pool.node_tags
-  # end user node pool
+  system_node_pool_only_critical_addons_enabled = var.aks_system_node_pool.only_critical_addons_enabled
+  system_node_pool_node_labels                  = var.aks_system_node_pool.node_labels
+  system_node_pool_tags                         = var.aks_system_node_pool.node_tags
 
   #
   # ☁️ Network
   #
-  vnet_id        = data.azurerm_virtual_network.vnet_aks.id
-  vnet_subnet_id = module.snet_aks.id
+  vnet_id             = data.azurerm_virtual_network.vnet_ita.id
+  vnet_subnet_id      = azurerm_subnet.system_aks_subnet.id
 
-  outbound_ip_address_ids = [data.azurerm_public_ip.pip_aks_outboud.id]
+  outbound_ip_address_ids = data.azurerm_public_ip.pip_aks_outboud.*.id
   private_cluster_enabled = var.aks_private_cluster_enabled
   network_profile = {
     docker_bridge_cidr  = "172.17.0.1/16"
-    dns_service_ip      = "10.250.0.10"
+    dns_service_ip      = "10.0.0.10"
     network_plugin      = "azure"
+    network_plugin_mode = "overlay"
     network_policy      = "azure"
     outbound_type       = "loadBalancer"
-    service_cidr        = "10.250.0.0/16"
-    network_plugin_mode = null
+    service_cidr        = "10.0.0.0/16"
   }
   # end network
 
-  rbac_enabled        = true
-  aad_admin_group_ids = var.env_short == "d" ? [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id, data.azuread_group.adgroup_externals.object_id] : [data.azuread_group.adgroup_admin.object_id]
+  aad_admin_group_ids = var.env_short == "p" ? [data.azuread_group.adgroup_admin.object_id] : [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id, data.azuread_group.adgroup_externals.object_id]
 
-  addon_azure_policy_enabled                     = var.aks_addons.azure_policy
-  addon_azure_key_vault_secrets_provider_enabled = var.aks_addons.azure_key_vault_secrets_provider
-  addon_azure_pod_identity_enabled               = var.aks_addons.pod_identity_enabled
+  addon_azure_policy_enabled                     = true
+  addon_azure_key_vault_secrets_provider_enabled = true
+  addon_azure_pod_identity_enabled               = true
 
-  default_metric_alerts = var.aks_metric_alerts_default
-  custom_metric_alerts  = var.aks_metric_alerts_custom
+  alerts_enabled       = var.aks_alerts_enabled
+  custom_metric_alerts = local.aks_metrics_alerts
 
-  alerts_enabled = var.aks_alerts_enabled
   action = [
     {
       action_group_id    = data.azurerm_monitor_action_group.slack.id
@@ -112,24 +69,64 @@ module "aks" {
       webhook_properties = null
     }
   ]
+
   tags = var.tags
-
-  depends_on = [
-    module.snet_aks,
-    data.azurerm_public_ip.pip_aks_outboud,
-    data.azurerm_virtual_network.vnet_aks
-  ]
 }
 
+resource "azurerm_kubernetes_cluster_node_pool" "user_nodepool_default" {
+  count = var.aks_user_node_pool.enabled ? 1 : 0
+
+  kubernetes_cluster_id = module.aks_leonardo.id
+
+  name = var.aks_user_node_pool.name
+
+  ### vm configuration
+  vm_size = var.aks_user_node_pool.vm_size
+  # https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general
+  os_disk_type           = var.aks_user_node_pool.os_disk_type # Managed or Ephemeral
+  os_disk_size_gb        = var.aks_user_node_pool.os_disk_size_gb
+  zones                  = var.aks_user_node_pool.zones
+  ultra_ssd_enabled      = var.aks_user_node_pool.ultra_ssd_enabled
+  enable_host_encryption = var.aks_user_node_pool.enable_host_encryption
+  os_type                = "Linux"
+
+  ### autoscaling
+  enable_auto_scaling = true
+  node_count          = var.aks_user_node_pool.node_count_min
+  min_count           = var.aks_user_node_pool.node_count_min
+  max_count           = var.aks_user_node_pool.node_count_max
+
+  ### K8s node configuration
+  max_pods    = var.aks_user_node_pool.max_pods
+  node_labels = var.aks_user_node_pool.node_labels
+  node_taints = var.aks_user_node_pool.node_taints
+
+  ### networking
+  vnet_subnet_id        = azurerm_subnet.user_aks_subnet.id
+  enable_node_public_ip = false
+
+  upgrade_settings {
+    max_surge = var.aks_user_node_pool.upgrade_settings_max_surge
+  }
+
+  tags = merge(var.tags, var.aks_user_node_pool.node_tags)
+
+  lifecycle {
+    ignore_changes = [
+      node_count
+    ]
+  }
+}
+
+##
+## Pod identity permissions
+##
+#resource "azurerm_role_assignment" "managed_identity_operator_vs_aks_managed_identity" {
+#  scope                = azurerm_resource_group.rg_aks.id
+#  role_definition_name = "Managed Identity Operator"
+#  principal_id         = module.aks_leonardo[0].identity_principal_id
+#}
 #
-# Pod identity permissions
-#
-resource "azurerm_role_assignment" "managed_identity_operator_vs_aks_managed_identity" {
-  scope                = azurerm_resource_group.rg_aks.id
-  role_definition_name = "Managed Identity Operator"
-  principal_id         = module.aks[0].identity_principal_id
-}
-
-module "aks_storage_class" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_storage_class?ref=v7.20.0"
-}
+#module "aks_storage_class" {
+#  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_storage_class?ref=aks-keda"
+#}
