@@ -16,7 +16,7 @@ resource "kubernetes_cluster_role" "system_cluster_deployer" {
   }
 
   depends_on = [
-    module.aks
+    module.aks_leonardo
   ]
 }
 
@@ -80,7 +80,7 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
   }
 
   depends_on = [
-    module.aks
+    module.aks_leonardo
   ]
 }
 
@@ -109,7 +109,7 @@ resource "kubernetes_cluster_role" "view_extra" {
   }
 
   depends_on = [
-    module.aks
+    module.aks_leonardo
   ]
 }
 
@@ -155,7 +155,7 @@ resource "kubernetes_cluster_role_binding" "view_extra_binding" {
   }
 
   depends_on = [
-    module.aks
+    module.aks_leonardo
   ]
 }
 
@@ -171,7 +171,7 @@ resource "kubernetes_cluster_role" "edit_extra" {
   }
 
   depends_on = [
-    module.aks
+    module.aks_leonardo
   ]
 }
 
@@ -193,7 +193,7 @@ resource "kubernetes_cluster_role_binding" "edit_extra_binding" {
   }
 
   depends_on = [
-    module.aks
+    module.aks_leonardo
   ]
 }
 
@@ -215,7 +215,7 @@ resource "kubernetes_cluster_role_binding" "edit_binding" {
   }
 
   depends_on = [
-    module.aks
+    module.aks_leonardo
   ]
 }
 
@@ -261,6 +261,6 @@ resource "kubernetes_cluster_role_binding" "view_binding" {
   }
 
   depends_on = [
-    module.aks
+    module.aks_leonardo
   ]
 }
