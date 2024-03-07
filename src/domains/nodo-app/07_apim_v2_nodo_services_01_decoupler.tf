@@ -35,7 +35,7 @@ resource "azapi_resource" "decoupler_configuration" {
 
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-configuration"
-  parent_id = data.azurerm_api_management.apim_v2.id
+  parent_id = data.azurerm_api_management.apim_v2[0].id
 
   body = jsonencode({
     properties = {
@@ -56,7 +56,7 @@ resource "azapi_resource" "decoupler_algorithm" {
 
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-algorithm"
-  parent_id = data.azurerm_api_management.apim_v2.id
+  parent_id = data.azurerm_api_management.apim_v2[0].id
 
   body = jsonencode({
     properties = {
@@ -77,7 +77,7 @@ resource "azapi_resource" "decoupler_activate_outbound" {
 
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-activate-outbound"
-  parent_id = data.azurerm_api_management.apim_v2.id
+  parent_id = data.azurerm_api_management.apim_v2[0].id
 
   body = jsonencode({
     properties = {
@@ -97,7 +97,7 @@ resource "azapi_resource" "on_erro_soap_handler" {
 
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "onerror-soap-req"
-  parent_id = data.azurerm_api_management.apim_v2.id
+  parent_id = data.azurerm_api_management.apim_v2[0].id
 
   body = jsonencode({
     properties = {
