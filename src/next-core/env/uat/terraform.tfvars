@@ -35,7 +35,7 @@ cidr_subnet_tools_cae            = ["10.1.248.0/23"]
 #
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
-dns_zone_prefix_prf = "prf.platform"
+dns_zone_prefix_prf      = "prf.platform"
 
 ### External resources
 
