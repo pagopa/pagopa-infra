@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "rg_aks" {
 }
 
 module "aks_leonardo" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=aks-keda"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v7.61.1"
 
   name                       = local.aks_cluster_name
   location                   = var.location
@@ -128,5 +128,5 @@ resource "azurerm_role_assignment" "managed_identity_operator_vs_aks_managed_ide
 }
 
 module "aks_storage_class" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_storage_class?ref=aks-keda"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_storage_class?ref=v7.61.1"
 }
