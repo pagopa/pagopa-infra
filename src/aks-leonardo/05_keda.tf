@@ -4,7 +4,7 @@ resource "kubernetes_namespace" "keda" {
   }
 
   depends_on = [
-    module.aks
+    module.aks_leonardo
   ]
 }
 
@@ -13,7 +13,7 @@ locals {
 }
 
 module "keda_pod_identity" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v7.20.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=aks-keda"
 
   resource_group_name = azurerm_resource_group.rg_aks.name
   location            = var.location
@@ -21,11 +21,11 @@ module "keda_pod_identity" {
   identity_name = "${local.keda_namespace_name}-pod-identity"
   tenant_id     = data.azurerm_subscription.current.tenant_id
 
-  cluster_name = module.aks[0].name
+  cluster_name = module.aks_leonardo.name
   namespace    = kubernetes_namespace.keda.metadata[0].name
 
   depends_on = [
-    module.aks
+    module.aks_leonardo
   ]
 }
 
@@ -35,7 +35,8 @@ resource "azurerm_role_assignment" "keda_monitoring_reader" {
   principal_id         = module.keda_pod_identity.identity.principal_id
 
   depends_on = [
-    module.aks
+    module.aks_leonardo,
+    module.keda_pod_identity
   ]
 }
 
@@ -53,6 +54,6 @@ resource "helm_release" "keda" {
   }
 
   depends_on = [
-    module.aks
+    module.aks_leonardo
   ]
 }
