@@ -29,18 +29,18 @@ resource "azurerm_private_dns_zone_virtual_network_link" "aks_dns_private_link_v
 }
 
 
- # linking aks network to core vnet
- resource "null_resource" "create_vnet_core_aks_link" {
+# linking aks network to core vnet
+resource "null_resource" "create_vnet_core_aks_link" {
 
-   count = var.aks_enabled && var.aks_private_cluster_enabled ? 1 : 0
-   triggers = {
-     cluster_name = module.aks_leonardo.name
-     vnet_id      = data.azurerm_virtual_network.vnet_core.id
-     vnet_name    = data.azurerm_virtual_network.vnet_core.name
-   }
+  count = var.aks_enabled && var.aks_private_cluster_enabled ? 1 : 0
+  triggers = {
+    cluster_name = module.aks_leonardo.name
+    vnet_id      = data.azurerm_virtual_network.vnet_core.id
+    vnet_name    = data.azurerm_virtual_network.vnet_core.name
+  }
 
-   provisioner "local-exec" {
-     command = <<EOT
+  provisioner "local-exec" {
+    command = <<EOT
        dns_zone_name=$(az network private-dns zone list --output tsv --query "[?contains(id,'${self.triggers.cluster_name}')].{name:name}")
        dns_zone_resource_group_name=$(az network private-dns zone list --output tsv --query "[?contains(id,'${self.triggers.cluster_name}')].{resourceGroup:resourceGroup}")
        az network private-dns link vnet create \
@@ -50,11 +50,11 @@ resource "azurerm_private_dns_zone_virtual_network_link" "aks_dns_private_link_v
          --virtual-network ${self.triggers.vnet_id} \
          --zone-name $dns_zone_name
      EOT
-   }
+  }
 
-   provisioner "local-exec" {
-     when    = destroy
-     command = <<EOT
+  provisioner "local-exec" {
+    when    = destroy
+    command = <<EOT
        dns_zone_name=$(az network private-dns zone list --output tsv --query "[?contains(id,'${self.triggers.cluster_name}')].{name:name}")
        dns_zone_resource_group_name=$(az network private-dns zone list --output tsv --query "[?contains(id,'${self.triggers.cluster_name}')].{resourceGroup:resourceGroup}")
        az network private-dns link vnet delete \
@@ -63,9 +63,9 @@ resource "azurerm_private_dns_zone_virtual_network_link" "aks_dns_private_link_v
          --zone-name $dns_zone_name \
          --yes
      EOT
-   }
+  }
 
-   depends_on = [
-     module.aks_leonardo
-   ]
- }
+  depends_on = [
+    module.aks_leonardo
+  ]
+}

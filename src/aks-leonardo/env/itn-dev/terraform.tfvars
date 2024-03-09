@@ -1,11 +1,11 @@
 # general
-prefix              = "pagopa"
-env_short           = "d"
-env                 = "dev"
-domain              = "dev"
-location            = "italynorth"
-location_string     = "Italy North"
-location_short      = "itn"
+prefix          = "pagopa"
+env_short       = "d"
+env             = "dev"
+domain          = "dev"
+location        = "italynorth"
+location_string = "Italy North"
+location_short  = "itn"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -18,7 +18,7 @@ tags = {
 ### Network
 
 cidr_subnet_system_aks = ["10.3.1.0/24"]
-cidr_subnet_user_aks = ["10.3.2.0/24"]
+cidr_subnet_user_aks   = ["10.3.2.0/24"]
 
 ### External resources
 
@@ -42,7 +42,7 @@ aks_system_node_pool = {
   node_count_min  = 1,
   node_count_max  = 3,
   node_labels     = { node_name : "aks-leonardo-sys", node_type : "system" },
-  node_tags       = { },
+  node_tags       = {},
 }
 aks_user_node_pool = {
   enabled         = true,
@@ -54,7 +54,7 @@ aks_user_node_pool = {
   node_count_max  = 3,
   node_labels     = { node_name : "aks-leonardo-user", node_type : "user" },
   node_taints     = [],
-  node_tags       = {  },
+  node_tags       = {},
 }
 
 aks_addons = {

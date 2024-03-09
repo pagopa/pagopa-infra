@@ -1,11 +1,11 @@
 # general
-prefix              = "pagopa"
-env_short           = "u"
-env                 = "uat"
-domain              = "aks-leonardo"
-location            = "italynorth"
-location_string     = "Italy North"
-location_short      = "itn"
+prefix          = "pagopa"
+env_short       = "u"
+env             = "uat"
+domain          = "aks-leonardo"
+location        = "italynorth"
+location_string = "Italy North"
+location_short  = "itn"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -18,7 +18,7 @@ tags = {
 ### Network
 
 cidr_subnet_system_aks = ["10.3.1.0/24"]
-cidr_subnet_user_aks = ["10.3.2.0/24"]
+cidr_subnet_user_aks   = ["10.3.2.0/24"]
 
 ### External resources
 

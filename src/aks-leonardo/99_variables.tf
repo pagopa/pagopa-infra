@@ -439,37 +439,37 @@ variable "aks_alerts_enabled" {
 
 variable "aks_system_node_pool" {
   type = object({
-    name            = string,
-    vm_size         = string,
-    os_disk_type    = string,
-    os_disk_size_gb = string,
-    node_count_min  = number,
-    node_count_max  = number,
-    node_labels     = map(any),
-    node_tags       = map(any),
+    name                         = string,
+    vm_size                      = string,
+    os_disk_type                 = string,
+    os_disk_size_gb              = string,
+    node_count_min               = number,
+    node_count_max               = number,
+    node_labels                  = map(any),
+    node_tags                    = map(any),
     only_critical_addons_enabled = optional(bool, true)
-    zones           = optional(list(any), [1, 2, 3])
+    zones                        = optional(list(any), [1, 2, 3])
   })
   description = "AKS node pool system configuration"
 }
 
 variable "aks_user_node_pool" {
   type = object({
-    enabled         = optional(bool, true),
-    name            = string,
-    vm_size         = string,
-    os_disk_type    = string,
-    os_disk_size_gb = string,
-    node_count_min  = number,
-    node_count_max  = number,
-    node_labels     = map(any),
-    node_taints     = list(string),
-    node_tags       = map(any),
-    ultra_ssd_enabled = optional(bool, false),
-    enable_host_encryption = optional(bool, true),
-    max_pods = optional(number, 250),
+    enabled                    = optional(bool, true),
+    name                       = string,
+    vm_size                    = string,
+    os_disk_type               = string,
+    os_disk_size_gb            = string,
+    node_count_min             = number,
+    node_count_max             = number,
+    node_labels                = map(any),
+    node_taints                = list(string),
+    node_tags                  = map(any),
+    ultra_ssd_enabled          = optional(bool, false),
+    enable_host_encryption     = optional(bool, true),
+    max_pods                   = optional(number, 250),
     upgrade_settings_max_surge = optional(string, "30%"),
-    zones           = optional(list(any), [1, 2, 3]),
+    zones                      = optional(list(any), [1, 2, 3]),
   })
   description = "AKS node pool user configuration"
 }

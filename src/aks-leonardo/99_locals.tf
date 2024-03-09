@@ -27,7 +27,7 @@ locals {
 
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
-  alert_action_group_ita_name    = "${var.prefix}${var.env_short}ita"
+  alert_action_group_ita_name     = "${var.prefix}${var.env_short}ita"
   alert_action_group_error_name   = "${var.prefix}${var.env_short}error"
 
   aks_metrics_alerts = {
@@ -128,7 +128,7 @@ locals {
         {
           name     = "Kubernetes namespace"
           operator = "Include"
-          values = ["*"]
+          values   = ["*"]
         }
       ]
     }
@@ -144,7 +144,7 @@ locals {
         {
           name     = "Kubernetes namespace"
           operator = "Include"
-          values = ["*"]
+          values   = ["*"]
         },
       ]
     }

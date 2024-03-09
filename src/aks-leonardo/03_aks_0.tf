@@ -34,8 +34,8 @@ module "aks_leonardo" {
   #
   # ☁️ Network
   #
-  vnet_id             = data.azurerm_virtual_network.vnet_ita.id
-  vnet_subnet_id      = azurerm_subnet.system_aks_subnet.id
+  vnet_id        = data.azurerm_virtual_network.vnet_ita.id
+  vnet_subnet_id = azurerm_subnet.system_aks_subnet.id
 
   outbound_ip_address_ids = data.azurerm_public_ip.pip_aks_outboud.*.id
   private_cluster_enabled = var.aks_private_cluster_enabled
