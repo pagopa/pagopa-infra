@@ -1,29 +1,29 @@
 prefix          = "pagopa"
-env_short       = "d"
-env             = "dev"
-domain          = "printcenter"
+env_short       = "p"
+env             = "prod"
+domain          = "printit"
 location        = "italynorth"
 location_short  = "itn"
 location_string = "Italy North"
-instance        = "dev"
+instance        = "prod"
 
 tags = {
   CreatedBy   = "Terraform"
-  Environment = "Dev"
+  Environment = "prod"
   Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/printcenter-app"
+  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/printit-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-d-monitor-rg"
-log_analytics_workspace_name                = "pagopa-d-law"
-log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
+monitor_resource_group_name                 = "pagopa-p-monitor-rg"
+log_analytics_workspace_name                = "pagopa-p-law"
+log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
 external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.dev.platform"
-dns_zone_prefix          = "printcenter"
+dns_zone_prefix          = "printit"
+dns_zone_internal_prefix = "internal.platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
