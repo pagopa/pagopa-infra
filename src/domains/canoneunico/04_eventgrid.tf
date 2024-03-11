@@ -33,14 +33,14 @@ resource "azurerm_eventgrid_system_topic_event_subscription" "storage_subscripti
       key = "subject"
       values = [
         "pagopa${var.env_short}canoneunicosaincsvcontainer",
-        "input"
+        "input/"
       ]
     }
     string_not_contains {
       key = "subject"
       values = [
-        "error",
-        "output",
+        "error/",
+        "output/",
         "pagopa${var.env_short}canoneunicosaerrcsvcontainer",
         "pagopa${var.env_short}canoneunicosaoutcsvcontainer"
       ]

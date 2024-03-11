@@ -39,6 +39,7 @@ module "canoneunico_function" {
     ORGANIZATIONS_CONFIG_TABLE = azurerm_storage_table.cu_ecconfig_table.name
     IUVS_TABLE                 = azurerm_storage_table.cu_iuvs_table.name
     DEBT_POSITIONS_QUEUE       = azurerm_storage_queue.cu_debtposition_queue.name
+    CU_BLOB_EVENTS_QUEUE       = azurerm_storage_queue.cu_blob_event_queue.name
     INPUT_CSV_BLOB             = azurerm_storage_container.in_csv_blob_container.name
     OUTPUT_CSV_BLOB            = azurerm_storage_container.out_csv_blob_container.name
     ERROR_CSV_BLOB             = azurerm_storage_container.err_csv_blob_container.name
@@ -50,6 +51,8 @@ module "canoneunico_function" {
     MAX_ATTEMPTS               = 3
     QUEUE_TIME_TO_LIVE         = 7200                                // 2h
     QUEUE_DELAY                = var.canoneunico_queue_message_delay // 2m
+    CUP_YEAR                   = "2024"
+    PO_DUE_DATE                = "2025-04-30T23:59:59.999Z"
 
     BATCH_SIZE_DEBT_POS_QUEUE = var.canoneunico_batch_size_debt_pos_queue
     BATCH_SIZE_DEBT_POS_TABLE = var.canoneunico_batch_size_debt_pos_table
