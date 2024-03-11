@@ -27,7 +27,7 @@
         <!-- START delete wallet -->
         <set-variable name="idWalletPM" value="@{
             string walletId = context.Request.MatchedParameters["walletId"];
-            return Convert.ToInt32("0x" + walletId.Substring(walletId.Length - 12), 16);
+            return Convert.ToInt32("0x" + walletId.Substring(walletId.Length - 12), 16).ToString();
         }" />
         <send-request ignore-error="false" timeout="10" response-variable-name="pmWalletDeleteResponse">
             <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/wallet/{(string)context.Variables["idWalletPM"]}")</set-url>
