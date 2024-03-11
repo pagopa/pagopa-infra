@@ -134,7 +134,7 @@ resource "azurerm_api_management_api_operation_policy" "delete_wallet" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "deleteWalletById"
 
-  xml_content = var.payment_wallet_with_pm_enabled ? file("./api/payment-wallet/v1/_delete_wallet_with_pm.xml.tpl") : file("./api/payment-wallet/v1/_delete_wallet.xml.tpl")
+  xml_content = var.payment_wallet_with_pm_enabled ? file("./api/payment-wallet/v1/_delete_wallet_with_pm.xml.tpl") : templatefile("./api/payment-wallet/v1/_delete_wallet.xml.tpl", { pdv_api_base_path = var.pdv_api_base_path, io_backend_base_path = var.io_backend_base_path })
 }
 
 #################################################
