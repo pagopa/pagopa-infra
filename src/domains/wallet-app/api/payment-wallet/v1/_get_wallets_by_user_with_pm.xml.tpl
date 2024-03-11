@@ -177,7 +177,7 @@
                                 logoUrl = wallet["info"]["brandLogo"];
                             }
                             result["details"] = details;
-
+                            result["logoUrl"] = logoUrl;
                             return result;
                     }).ToArray();
 
