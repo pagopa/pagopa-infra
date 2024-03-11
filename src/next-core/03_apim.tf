@@ -65,7 +65,7 @@ locals {
 }
 
 module "apimv2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v7.50.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v7.67.1"
 
   subnet_id           = module.apimv2_snet.id
   location            = data.azurerm_resource_group.rg_api.location
@@ -79,6 +79,7 @@ module "apimv2" {
 
   virtual_network_type = "Internal"
 
+  redis_cache_enabled     = var.redis_cache_enabled
   redis_connection_string = var.redis_cache_enabled ? local.redis_connection_string : null
   redis_cache_id          = var.redis_cache_enabled ? local.redis_cache_id : null
 
