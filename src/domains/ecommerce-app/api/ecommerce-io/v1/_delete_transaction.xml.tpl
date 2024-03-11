@@ -26,13 +26,14 @@
                             <value>@("Bearer " + (string)context.Variables["sessionToken"])</value>
                         </set-header>
                     </send-request>
+                    <set-variable name="pmDeleteResponseCode" value="@((int)((IResponse)context.Variables["pmActionsDeleteResponse"]).StatusCode)" />
                     <choose>
-                        <when condition="@((int)context.Variables["pmActionsDeleteResponse"] == 200 || (int)context.Variables["pmActionsDeleteResponse"] == 204)">
+                        <when condition="@((int)context.Variables["pmDeleteResponseCode"] == 200 || (int)context.Variables["pmDeleteResponseCode"] == 204)">
                             <return-response>
                                 <set-status code="202" reason="Accepted" />
                             </return-response>
                         </when>
-                        <when condition="@((int)context.Variables["pmActionsDeleteResponse"] == 401)">
+                        <when condition="@((int)context.Variables["pmDeleteResponseCode"] == 401)">
                         <return-response>
                             <set-status code="401" reason="Unathorized" />
                         </return-response>
