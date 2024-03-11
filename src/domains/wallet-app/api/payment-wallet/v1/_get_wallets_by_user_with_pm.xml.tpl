@@ -160,7 +160,7 @@
                                 details["expiryDate"] = $"{(string)wallet["info"]["expireYear"]}{(string)wallet["info"]["expireMonth"]}";
                                 details["holder"] = wallet["info"]["holder"];
                                 details["brand"] = wallet["info"]["brand"];
-                                logoUrl = wallet["info"]["brandLogo"];
+                                logoUrl = (string)wallet["info"]["brandLogo"];
                             }
                             if (eCommerceWalletType == "PAYPAL") {
                                 var info = (JObject)(wallet["info"]);
@@ -174,7 +174,7 @@
                                 details["maskedNumber"] = wallet["info"]["numberObfuscated"];
                                 details["instituteCode"] = wallet["info"]["instituteCode"];
                                 details["bankName"] = wallet["info"]["bankName"];
-                                logoUrl = wallet["info"]["brandLogo"];
+                                logoUrl = (string)wallet["info"]["brandLogo"];
                             }
                             result["details"] = details;
                             result["logoUrl"] = logoUrl;
