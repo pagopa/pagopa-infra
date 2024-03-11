@@ -61,3 +61,208 @@ canoneunico_enable_versioning     = true
 
 # storage
 storage_queue_private_endpoint_enabled = true
+
+# local users
+corporate_cup_users = [
+  {
+    username : "tim"
+  },
+  {
+    username : "enelsole"
+  },
+  {
+    username : "retidistribuzione"
+  },
+  {
+    username : "snamretegas"
+  },
+  {
+    username : "infrtrasportogas"
+  },
+  {
+    username : "stoccaggigasitalia"
+  },
+  {
+    username : "hera"
+  },
+  {
+    username : "openfiber"
+  },
+  {
+    username : "veritas"
+  },
+  {
+    username : "aimag"
+  },
+  {
+    username : "novareti"
+  },
+  {
+    username : "setdistribuzione"
+  },
+  {
+    username : "acantho"
+  },
+  {
+    username : "heracomm"
+  },
+  {
+    username : "heracommmarche"
+  },
+  {
+    username : "heratrading"
+  },
+  {
+    username : "heratech"
+  },
+  {
+    username : "inretedistrenergia"
+  },
+  {
+    username : "uniflotte"
+  },
+  {
+    username : "herambiente"
+  },
+  {
+    username : "hasiheraservind"
+  },
+  {
+    username : "feafrulloenambiente"
+  },
+  {
+    username : "aceagasapsamga"
+  },
+  {
+    username : "aceagasapsamgase"
+  },
+  {
+    username : "estenergy"
+  },
+  {
+    username : "heraluce"
+  },
+  {
+    username : "hestambiente"
+  },
+  {
+    username : "trigenscarl"
+  },
+  {
+    username : "italgasreti"
+  },
+  {
+    username : "edistribuzione"
+  },
+  {
+    username : "medea"
+  },
+  {
+    username : "metanodottofriuli"
+  },
+  {
+    username : "smvalletanaro"
+  },
+  {
+    username : "toscanaenergia"
+  },
+  {
+    username : "asretigas"
+  },
+  {
+    username : "snamretegasdnordocc"
+  },
+  {
+    username : "snamretegasdnord"
+  },
+  {
+    username : "snamretegasdcentroori"
+  },
+  {
+    username : "snamretegasdcentroocc"
+  },
+  {
+    username : "snamretegasdsudocc"
+  },
+  {
+    username : "snamretegasdsudori"
+  },
+  {
+    username : "snamretegasdsicilia"
+  },
+  {
+    username : "infrtraspgasdnordocc"
+  },
+  {
+    username : "infrtraspgasdcentroori"
+  },
+  {
+    username : "planetel"
+  },
+  {
+    username : "verizon"
+  },
+  {
+    username : "apmgroup"
+  },
+  {
+    username : "piaservizi"
+  },
+  {
+    username : "fenenergia"
+  },
+  {
+    username : "gei"
+  },
+  {
+    username : "padaniaacque"
+  },
+  {
+    username : "petrolgas"
+  },
+  {
+    username : "fibercop"
+  },
+  {
+    username : "bbbeell"
+  },
+  {
+    username : "windtre"
+  },
+  {
+    username : "gemedicalsystemm"
+  },
+  {
+    username : "gehealthcare"
+  },
+  {
+    username : "deval"
+  },
+  {
+    username : "blureti"
+  },
+  {
+    username : "lereti"
+  },
+  {
+    username : "irenenergia"
+  },
+  {
+    username : "retelitds"
+  },
+  {
+    username : "2iretegas"
+  },
+  {
+    username : "fastweb"
+  },
+  {
+    username : "rete"
+  },
+  {
+    username : "terna"
+  },
+  {
+    username : "erogasmet"
+  }
+]
