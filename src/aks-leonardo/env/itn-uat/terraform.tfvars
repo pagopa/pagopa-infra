@@ -2,7 +2,7 @@
 prefix          = "pagopa"
 env_short       = "u"
 env             = "uat"
-domain          = "aks-leonardo"
+domain          = "uat"
 location        = "italynorth"
 location_string = "Italy North"
 location_short  = "itn"

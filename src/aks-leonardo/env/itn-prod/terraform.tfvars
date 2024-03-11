@@ -2,7 +2,7 @@
 prefix          = "pagopa"
 env_short       = "p"
 env             = "prod"
-domain          = "aks-leonardo"
+domain          = "prod"
 location        = "italynorth"
 location_string = "Italy North"
 location_short  = "itn"
