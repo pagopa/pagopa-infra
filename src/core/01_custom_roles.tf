@@ -107,6 +107,8 @@ resource "azurerm_role_definition" "iac_reader" {
       # "Microsoft.Cdn/profiles/endpoints/read",
       "Microsoft.DataFactory/factories/*/read",
       # "Microsoft.DataFactory/factories/datasets/read",
+      "Microsoft.ApiManagement/service/portalsettings/listSecrets/action",
+      "Microsoft.ApiManagement/service/tenant/listSecrets/action"
     ]
   }
 }
