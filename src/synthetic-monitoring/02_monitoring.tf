@@ -1,9 +1,9 @@
 data "template_file" "monitoring_configuration" {
   template = file("${path.module}/monitoring_configuration.json.tpl")
   vars = {
-    env_name = var.env,
-    env_short = var.env_short,
-    api_dot_env_name = var.env == "prod" ? "api" : "api.${var.env}"
+    env_name                   = var.env,
+    env_short                  = var.env_short,
+    api_dot_env_name           = var.env == "prod" ? "api" : "api.${var.env}"
     internal_api_domain_prefix = "weu${var.env}"
     internal_api_domain_suffix = var.env == "prod" ? "internal.platform.pagopa.it" : "internal.${var.env}.platform.pagopa.it"
   }

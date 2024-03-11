@@ -53,8 +53,14 @@ resource "azurerm_storage_queue" "cu_blob_event_queue" {
   storage_account_name = module.canoneunico_sa.name
 }
 
+
+# Older container used by pagoPA ref
+# from CUP'24 swithed to "CUP corporate automation itfself" see below 👇
+
 ## blob container (Input CSV Blob)
 resource "azurerm_storage_container" "in_csv_blob_container" {
+  count = var.env_short == "p" ? 1 : 0 // not del in prod only for backup 
+
   name                  = "${module.canoneunico_sa.name}incsvcontainer"
   storage_account_name  = module.canoneunico_sa.name
   container_access_type = "private"
@@ -62,6 +68,8 @@ resource "azurerm_storage_container" "in_csv_blob_container" {
 
 ## blob container (Output CSV Blob)
 resource "azurerm_storage_container" "out_csv_blob_container" {
+  count = var.env_short == "p" ? 1 : 0 // not del in prod only for backup 
+
   name                  = "${module.canoneunico_sa.name}outcsvcontainer"
   storage_account_name  = module.canoneunico_sa.name
   container_access_type = "private"
@@ -69,6 +77,8 @@ resource "azurerm_storage_container" "out_csv_blob_container" {
 
 ## blob container (Error CSV Blob)
 resource "azurerm_storage_container" "err_csv_blob_container" {
+  count = var.env_short == "p" ? 1 : 0 // not del in prod only for backup 
+
   name                  = "${module.canoneunico_sa.name}errcsvcontainer"
   storage_account_name  = module.canoneunico_sa.name
   container_access_type = "private"
