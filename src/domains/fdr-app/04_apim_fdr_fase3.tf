@@ -18,7 +18,7 @@ module "apim_fdr_product_psp" {
 
   published             = true
   subscription_required = true
-  approval_required     = true
+  approval_required     = false
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/fdr-service/psp/_base_policy.xml")
@@ -40,7 +40,7 @@ module "apim_fdr_product_org" {
 
   published             = true
   subscription_required = true
-  approval_required     = true
+  approval_required     = false
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/fdr-service/org/_base_policy.xml")
