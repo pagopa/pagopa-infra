@@ -141,7 +141,7 @@ apim_v2_subnet_nsg_security_rules = [
 ]
 
 apim_v2_publisher_name = "pagoPA Platform UAT"
-apim_v2_sku            = "Premium_1"
+apim_v2_sku            = "Premium_3"
 apim_v2_alerts_enabled = true
 dns_zone_prefix        = "platform"
 apim_v2_zones          = ["1", "2", "3"]
