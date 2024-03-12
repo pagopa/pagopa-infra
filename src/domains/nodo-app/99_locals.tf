@@ -1,6 +1,7 @@
 locals {
-  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  product = "${var.prefix}-${var.env_short}"
+  project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  product          = "${var.prefix}-${var.env_short}"
+  product_location = "${var.prefix}-${var.env_short}-${var.location_short}"
 
   app_insights_ips_west_europe = [
     "51.144.56.96/28",
@@ -32,6 +33,9 @@ locals {
 
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"
+
+  pagopa_apim_v2_name = "${local.product_location}-core-apim-v2"
+  pagopa_apim_v2_rg   = "${local.product}-api-rg"
 
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   apim_snet     = "${local.product}-apim-snet"

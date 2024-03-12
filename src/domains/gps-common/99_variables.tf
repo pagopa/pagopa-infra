@@ -291,6 +291,10 @@ variable "cosmos_gpd_payments_db_params" {
       autoscale  = bool
       throughput = number
     })
+    payments_pp_table = object({
+      autoscale  = bool
+      throughput = number
+    })
   })
 }
 

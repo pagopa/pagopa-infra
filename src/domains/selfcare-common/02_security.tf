@@ -110,4 +110,10 @@ resource "azurerm_key_vault_secret" "cosmodb_mongo_bopagopa_key" {
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }

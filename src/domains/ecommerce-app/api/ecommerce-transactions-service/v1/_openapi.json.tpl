@@ -623,9 +623,6 @@
             "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/PostePayAuthRequestDetails"
-              },
-              {
                 "$ref": "#/components/schemas/CardAuthRequestDetails"
               },
               {
@@ -644,7 +641,6 @@
             "discriminator": {
               "propertyName": "detailType",
               "mapping": {
-                "postepay": "#/components/schemas/PostePayAuthRequestDetails",
                 "card": "#/components/schemas/CardAuthRequestDetails",
                 "cards": "#/components/schemas/CardsAuthRequestDetails",
                 "wallet": "#/components/schemas/WalletAuthRequestDetails",
@@ -663,29 +659,6 @@
           "isAllCCP",
           "details"
         ]
-      },
-      "PostePayAuthRequestDetails": {
-        "type": "object",
-        "description": "Additional payment authorization details for the PostePay payment method",
-        "properties": {
-          "detailType": {
-            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'postepay'",
-            "type": "string"
-          },
-          "accountEmail": {
-            "type": "string",
-            "format": "email",
-            "description": "PostePay account email"
-          }
-        },
-        "required": [
-          "detailType",
-          "accountEmail"
-        ],
-        "example": {
-          "detailType": "postepay",
-          "accountEmail": "user@example.com"
-        }
       },
       "CardAuthRequestDetails": {
         "type": "object",

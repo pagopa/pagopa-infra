@@ -1,6 +1,10 @@
 # general
-env_short = "p"
-env       = "prod"
+env_short          = "p"
+env                = "prod"
+location           = "westeurope"
+location_short     = "weu"
+location_ita       = "italynorth"
+location_short_ita = "itn"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -8,6 +12,14 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+}
+
+#
+# Feature flag
+#
+enabled_features = {
+  apim_v2  = false
+  vnet_ita = false
 }
 
 lock_enable = true
@@ -163,6 +175,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "151.2.45.1",     # Softlab L1 Pagamenti VPN
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
+    "193.203.230.21", # VPN NEXI
   ]
 }
 
@@ -635,46 +648,6 @@ eventhubs_02 = [
         manage = false
       }
     ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-cache"
-    partitions        = 32
-    message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-cache-sync-rx"]
-    keys = [
-      {
-        name   = "nodo-dei-pagamenti-cache-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-cache-sync-rx" # node-cfg-sync
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "nodo-dei-pagamenti-stand-in"
-    partitions        = 32
-    message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-stand-in-sync-rx"]
-    keys = [
-      {
-        name   = "nodo-dei-pagamenti-stand-in-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "nodo-dei-pagamenti-stand-in-sync-rx" # node-cfg-sync
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
   }
 ]
 
@@ -775,7 +748,7 @@ cosmos_document_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = true
 
   private_endpoint_enabled      = true

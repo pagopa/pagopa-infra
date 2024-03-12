@@ -143,3 +143,9 @@ variable "dns_zone_prefix" {
   default     = null
   description = "The wallet dns subdomain."
 }
+
+variable "payment_wallet_migrations_enabled" {
+  type        = bool
+  default     = false
+  description = "Payment wallet migrations enabled"
+}

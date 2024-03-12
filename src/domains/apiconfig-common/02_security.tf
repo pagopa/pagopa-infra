@@ -84,13 +84,6 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   storage_permissions = []
 }
 
-data "azurerm_eventhub_authorization_rule" "nodo_dei_pagamenti_cache_tx" {
-  name                = "nodo-dei-pagamenti-cache-tx"
-  resource_group_name = "${local.product}-msg-rg"
-  namespace_name      = "${local.product}-evh-ns02"
-  eventhub_name       = "nodo-dei-pagamenti-cache"
-}
-
 ################
 ##   Secrets  ##
 ################
@@ -307,4 +300,16 @@ resource "azurerm_key_vault_secret" "apicfg_cache_tx_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "cfg_for_node_subscription_key" {
+  name         = "cfg-for-node-subscription-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
 
