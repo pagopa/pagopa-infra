@@ -534,7 +534,7 @@
           "failedApplications": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Application"
+              "$ref": "#/components/schemas/WalletApplication"
             }
           }
         },
@@ -581,7 +581,7 @@
             "description": "list of applications for which this wallet is created for",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Application"
+              "$ref": "#/components/schemas/WalletApplication"
             }
           },
           "details": {
