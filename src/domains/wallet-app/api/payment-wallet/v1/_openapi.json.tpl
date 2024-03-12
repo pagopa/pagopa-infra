@@ -586,8 +586,8 @@
           "details": {
             "$ref": "#/components/schemas/WalletInfoDetails"
           },
-          "logoUrl": {
-            "description": "url for the logo associated to the wallet",
+          "paymentMethodAsset": {
+            "description": "Payment method asset",
             "type": "string",
             "format": "uri",
             "example": "http://logo.cdn/brandLogo"
@@ -600,7 +600,7 @@
           "creationDate",
           "updateDate",
           "services",
-          "logoUrl"
+          "paymentMethodAsset"
         ]
       },
       "WalletInfoDetails": {
