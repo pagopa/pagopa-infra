@@ -39,8 +39,7 @@
 | [azurerm_key_vault_secret.selfcare_web_storage_access_key](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.selfcare_web_storage_blob_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.selfcare_web_storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.alert_pagopa-backoffice-availability](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.alert_pagopa-backoffice-responsetime](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.alert-pagopa-backoffice-availability](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_resource_group.selfcare_fe_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/resource_group) | resource |
 | [azurerm_storage_container.pagopa_oidc_config](https://registry.terraform.io/providers/hashicorp/azurerm/3.39.0/docs/resources/storage_container) | resource |
 | [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
