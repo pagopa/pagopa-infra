@@ -2144,7 +2144,8 @@
           },
           "bundleName": {
             "description": "Bundle name",
-            "type": "string"
+            "type": "string",
+            "deprecated": true
           },
           "idBrokerPsp": {
             "description": "Bundle PSP broker id",
