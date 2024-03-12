@@ -75,6 +75,7 @@ AzureDiagnostics
     by bin(TimeGenerated, 5m)
 | extend availability=toreal(Success) / Total
 | where availability < threshold
+| where Total > 10
   QUERY
     ) : (<<-QUERY
 let threshold = 0.99;
@@ -86,6 +87,7 @@ ApiManagementGatewayLogs
     by bin(TimeGenerated, 5m)
 | extend availability=toreal(Success) / Total
 | where availability < threshold
+| where Total > 10
   QUERY
   )
   severity    = 1
