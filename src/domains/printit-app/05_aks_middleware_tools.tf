@@ -1,5 +1,5 @@
 #module "tls_checker" {
-#  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v6.3.0"
+#  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v7.67.1"
 #
 #  https_endpoint                         = local.wallet_hostname
 #  alert_name                             = local.wallet_hostname
@@ -17,35 +17,36 @@
 #  keyvault_name                          = data.azurerm_key_vault.kv.name
 #  keyvault_tenantid                      = data.azurerm_client_config.current.tenant_id
 #}
-#
-#resource "helm_release" "cert_mounter" {
-#  name         = "cert-mounter-blueprint"
-#  repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
-#  chart        = "cert-mounter-blueprint"
-#  version      = "1.0.4"
-#  namespace    = var.domain
-#  timeout      = 120
-#  force_update = true
-#
-#  values = [
-#      templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
-#        NAMESPACE        = var.domain,
-#        DOMAIN           = var.domain,
-#        CERTIFICATE_NAME = replace(local.wallet_hostname, ".", "-"),
-#        ENV_SHORT        = var.env_short,
-#      })
-#  ]
-#}
-#
-#resource "helm_release" "reloader" {
-#  name       = "reloader"
-#  repository = "https://stakater.github.io/stakater-charts"
-#  chart      = "reloader"
-#  version    = "v1.0.48"
-#  namespace  = kubernetes_namespace.namespace.metadata[0].name
-#
-#  set {
-#    name  = "reloader.watchGlobally"
-#    value = "false"
-#  }
-#}
+
+resource "helm_release" "cert_mounter" {
+  name         = "cert-mounter-blueprint"
+  repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
+  chart        = "cert-mounter-blueprint"
+  version      = "1.0.4"
+  namespace    = var.domain
+  timeout      = 120
+  force_update = true
+
+  values = [
+      templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
+        NAMESPACE        = var.domain,
+        DOMAIN           = var.domain,
+        CERTIFICATE_NAME = replace(local.domain_hostname, ".", "-"),
+        ENV_SHORT        = var.env_short,
+        KV_NAME = data.azurerm_key_vault.kv.name
+      })
+  ]
+}
+
+resource "helm_release" "reloader" {
+  name       = "reloader"
+  repository = "https://stakater.github.io/stakater-charts"
+  chart      = "reloader"
+  version    = "v1.0.69"
+  namespace  = kubernetes_namespace.namespace.metadata[0].name
+
+  set {
+    name  = "reloader.watchGlobally"
+    value = "false"
+  }
+}
