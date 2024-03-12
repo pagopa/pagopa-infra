@@ -67,3 +67,5 @@ taxonomy_function_autoscale = {
 
 # pdf-engine
 cidr_subnet_pdf_engine_app_service = ["10.1.187.0/24"]
+
+robots_indexed_paths = []

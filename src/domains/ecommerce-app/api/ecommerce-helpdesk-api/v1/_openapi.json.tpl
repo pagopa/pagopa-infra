@@ -858,6 +858,14 @@
             "type": "string",
             "format": "uuid",
             "description": "correlation id for a transaction executed with NPG"
+          },
+          "gatewayAuthorizationStatus": {
+            "type": "string",
+            "description": "payment gateway authorization status"
+          },
+          "gatewayErrorCode": {
+            "type": "string",
+            "description": "payment gateway authorization error code"
           }
         },
         "example": {
@@ -874,7 +882,9 @@
           "brand": "brand",
           "authorizationRequestId": "authorizationRequestId",
           "paymentGateway": "VPOS",
-          "correlationId": "30846e8f-efa1-47ad-abad-08cfb30e5c09"
+          "correlationId": "30846e8f-efa1-47ad-abad-08cfb30e5c09",
+          "gatewayAuthorizationStatus": "EXECUTED",
+          "gatewayErrorCode": "000"
         }
       },
       "PaymentInfo": {
