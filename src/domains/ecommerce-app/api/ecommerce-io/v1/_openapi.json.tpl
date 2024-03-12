@@ -1818,6 +1818,10 @@
           "touchpoint": {
             "description": "The touchpoint name",
             "type": "string"
+          },
+          "pspBusinessName": {
+            "description": "The psp business name",
+            "type": "string"
           }
         }
       },
