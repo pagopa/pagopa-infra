@@ -31,7 +31,7 @@ module "apim_mocker_config_product" {
   published             = true
   subscription_required = local.mocker_config_api_locals.subscription_required
   approval_required     = false
-  subscriptions_limit   = local.mocker_core_api_locals.subscription_limit
+  subscriptions_limit   = local.mocker_config_api_locals.subscription_limit
 
   policy_xml = file("./api_product/v1/_base_policy.xml")
 }

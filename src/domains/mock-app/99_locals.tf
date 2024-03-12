@@ -65,6 +65,7 @@ locals {
     display_name          = "Mocker Configurator"
     description           = "Service for configure resources used by Mocker"
     subscription_required = false
+    subscription_limit    = 1000
 
     path        = "mocker-config"
     service_url = null
