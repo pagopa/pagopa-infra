@@ -18,7 +18,7 @@ module "apim_gpd_integration_product" {
 
   published             = true
   subscription_required = true
-  approval_required     = true
+  approval_required     = false
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/gpd/debt-position-services/_base_policy.xml")

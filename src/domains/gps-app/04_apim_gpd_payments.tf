@@ -19,7 +19,7 @@ locals {
     path                  = "gpd/payments-receipts-service"
     published             = true
     subscription_required = true
-    approval_required     = true
+    approval_required     = false
     subscriptions_limit   = 1000
     service_url           = null
   }

@@ -6,7 +6,7 @@ locals {
   apim_gpd_reporting_analysis_api = {
     published             = true
     subscription_required = true
-    approval_required     = true
+    approval_required     = false
     subscriptions_limit   = 1000
   }
 }

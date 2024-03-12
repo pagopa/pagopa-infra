@@ -42,7 +42,7 @@ module "apim_bizevents_product" {
 
   published             = true
   subscription_required = local.apim_bizevents_service_api.subscription_required
-  approval_required     = true
+  approval_required     = false
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/bizevents-service/_base_policy.xml")
