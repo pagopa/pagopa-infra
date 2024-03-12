@@ -53,7 +53,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert_pagopa-backoffice-availability" {
   for_each            = { for c in local.selfcare_services : c.base_path => c }
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-alert_pagopa-backoffice-${each.value.name}-availability @ _gpd"
+  name                = "pagopa-${var.env_short}-alert_pagopa-backoffice-${each.value.name}-availability @ _backoffice"
   location            = var.location
 
   action {
