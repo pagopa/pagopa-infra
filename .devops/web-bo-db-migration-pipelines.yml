@@ -148,7 +148,7 @@ stages:
       - job: initialization
         pool: $(poolImage)
         dependsOn: [liquibase_status_job,prd_approval]
-        condition: or(eq('${{ parameters.k8sEnv }}', 'dev'),eq('${{ parameters.k8sEnv }}', 'it'),eq('${{ parameters.k8sEnv }}', 'prf'),eq('${{ parameters.k8sEnv }}', 'uat'),and(eq('${{ parameters.k8sEnv }}', 'prd'),not(failed('prd_approval'))))
+        condition: or(and(eq('${{ parameters.k8sEnv }}', 'dev'),eq('${{ parameters.k8sEnv }}', 'it'),eq('${{ parameters.k8sEnv }}', 'prf'),eq('${{ parameters.k8sEnv }}', 'uat'), not(failed('liquibase_status_job'))),and(eq('${{ parameters.k8sEnv }}', 'prd'),not(failed('prd_approval'))))
         displayName: "Update web-bo DB ${{ parameters.k8sEnv }}"
         steps:
           - checkout: self
