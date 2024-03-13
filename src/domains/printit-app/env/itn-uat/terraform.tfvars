@@ -22,8 +22,12 @@ log_analytics_workspace_name                = "pagopa-u-law"
 log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 
 external_domain          = "pagopa.it"
-dns_zone_prefix          = "printit"
 dns_zone_internal_prefix = "internal.uat.platform"
+dns_zone_prefix          = "printit.itn"
+
+### Aks
+
+ingress_load_balancer_ip = "10.3.100.250"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases

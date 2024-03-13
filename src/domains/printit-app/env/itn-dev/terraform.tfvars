@@ -23,7 +23,7 @@ log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
-dns_zone_prefix          = "printit"
+dns_zone_prefix          = "printit.itn"
 
 ### Aks
 
