@@ -66,7 +66,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-pagopa-backoffice-
   description    = "Availability for ${each.value.base_path} is less than or equal to 99%"
   enabled        = true
   query = var.env_short == "p" ? (<<-QUERY
-let threshold = 0.99;
+let threshold = 0.9;
 AzureDiagnostics
 | where url_s matches regex "${each.value.base_path}"
 | summarize
@@ -78,7 +78,7 @@ AzureDiagnostics
 | where Total > 10
   QUERY
     ) : (<<-QUERY
-let threshold = 0.99;
+let threshold = 0.9;
 ApiManagementGatewayLogs
 | where Url matches regex "${each.value.base_path}"
 | summarize
@@ -91,8 +91,8 @@ ApiManagementGatewayLogs
   QUERY
   )
   severity    = 1
-  frequency   = 5
-  time_window = 5
+  frequency   = 10
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
