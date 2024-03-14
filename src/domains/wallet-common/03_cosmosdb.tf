@@ -115,6 +115,14 @@ locals {
       ]
       shard_key = null
     },
+    {
+      name = "wallets-migration-pm",
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+      }],
+      shard_key = null
+    }
   ]
 }
 
