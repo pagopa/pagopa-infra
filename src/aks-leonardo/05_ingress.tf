@@ -26,7 +26,7 @@ module "nginx_ingress" {
 
   values = [
     templatefile("${path.module}/ingress/loadbalancer.yaml.tpl", {
-      load_balancer_ip = var.ingress_load_balancer_ip
+      load_balancer_ip    = var.ingress_load_balancer_ip
       private_subnet_name = data.azurerm_subnet.aks_default_user_subnet.name
     })
   ]

@@ -28,13 +28,13 @@ resource "helm_release" "cert_mounter" {
   force_update = true
 
   values = [
-      templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
-        NAMESPACE        = var.domain,
-        DOMAIN           = var.domain,
-        CERTIFICATE_NAME = replace(local.domain_hostname, ".", "-"),
-        ENV_SHORT        = var.env_short,
-        KV_NAME = data.azurerm_key_vault.kv.name
-      })
+    templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
+      NAMESPACE        = var.domain,
+      DOMAIN           = var.domain,
+      CERTIFICATE_NAME = replace(local.domain_hostname, ".", "-"),
+      ENV_SHORT        = var.env_short,
+      KV_NAME          = data.azurerm_key_vault.kv.name
+    })
   ]
 }
 
