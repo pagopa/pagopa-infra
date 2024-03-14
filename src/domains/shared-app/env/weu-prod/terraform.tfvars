@@ -86,3 +86,6 @@ pod_disruption_budgets = {
     }
   },
 }
+
+pagopa_shared_toolbox_enabled = false
+robots_indexed_paths          = []
