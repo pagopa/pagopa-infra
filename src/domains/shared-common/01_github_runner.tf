@@ -1,5 +1,3 @@
-#  DISABLED TMP
-
 resource "azurerm_resource_group" "github_runner_rg" {
   name     = "${var.prefix}-${var.env_short}-${var.location_short}-github-runner-rg"
   location = var.location

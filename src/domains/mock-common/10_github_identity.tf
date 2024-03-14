@@ -10,7 +10,8 @@ data "azurerm_kubernetes_cluster" "aks" {
 # repos must be lower than 20 items
 locals {
   repos_01 = [
-    "pagopa-shared-toolbox"
+    "pagopa-mocker",
+    "pagopa-mocker-config"
   ]
 
   federations_01 = [
@@ -20,7 +21,7 @@ locals {
     }
   ]
 
-  # to avoid subscription Contributor -> https://github.com/microsoft/azure-container-apps/issues/35
+  # To avoid contributor -> https://github.com/microsoft/azure-container-apps/issues/35
   environment_cd_roles = {
     subscription = [
       "Contributor"
@@ -38,7 +39,7 @@ locals {
 
 # create a module for each 20 repos
 module "identity_cd_01" {
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.60.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.45.0"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short

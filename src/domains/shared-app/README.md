@@ -40,6 +40,7 @@
 | <a name="module_authorizer_function_app"></a> [authorizer\_function\_app](#module\_authorizer\_function\_app) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v7.29.0 |
 | <a name="module_authorizer_function_app_slot_staging"></a> [authorizer\_function\_app\_slot\_staging](#module\_authorizer\_function\_app\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v6.9.0 |
 | <a name="module_authorizer_functions_snet"></a> [authorizer\_functions\_snet](#module\_authorizer\_functions\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.6.0 |
+| <a name="module_pagopa_shared_toolbox_cdn"></a> [pagopa\_shared\_toolbox\_cdn](#module\_pagopa\_shared\_toolbox\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn | v6.4.1 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.6.0 |
 | <a name="module_shared_pdf_engine_app_service"></a> [shared\_pdf\_engine\_app\_service](#module\_shared\_pdf\_engine\_app\_service) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v6.3.0 |
 | <a name="module_shared_pdf_engine_app_service_java"></a> [shared\_pdf\_engine\_app\_service\_java](#module\_shared\_pdf\_engine\_app\_service\_java) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v6.3.0 |
@@ -72,6 +73,8 @@
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.pagopa_shared_toolbox_storage_account_key](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.pagopa_shared_toolbox_web_storage_blob_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_autoscale_setting.authorizer_function](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.autoscale_app_service_shared_pdf_engine_autoscale](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.autoscale_app_service_shared_pdf_engine_java_autoscale](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/monitor_autoscale_setting) | resource |
@@ -86,6 +89,7 @@
 | [azurerm_monitor_scheduled_query_rules_alert.taxonomy_appexception](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.taxonomy_blobstorageexception](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.taxonomy_genericerror](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_resource_group.pagopa_shared_toolbox_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.shared_pdf_engine_app_service_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/resource_group) | resource |
 | [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [helm_release.influxdb](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
@@ -107,6 +111,7 @@
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/client_config) | data source |
 | [azurerm_container_registry.acr](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/container_registry) | data source |
 | [azurerm_container_registry.container_registry](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/container_registry) | data source |
+| [azurerm_dns_zone.public](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/dns_zone) | data source |
 | [azurerm_function_app.authorizer](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/function_app) | data source |
 | [azurerm_function_app.canone_unico](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/function_app) | data source |
 | [azurerm_function_app.reporting_analysis](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/data-sources/function_app) | data source |
@@ -152,8 +157,10 @@
 | <a name="input_authorizer_functions_app_image_tag"></a> [authorizer\_functions\_app\_image\_tag](#input\_authorizer\_functions\_app\_image\_tag) | Authorizer functions app docker image tag. Defaults to 'latest' | `string` | `"latest"` | no |
 | <a name="input_authorizer_functions_app_sku"></a> [authorizer\_functions\_app\_sku](#input\_authorizer\_functions\_app\_sku) | Authorizer functions app plan SKU | <pre>object({<br>    kind     = string<br>    sku_size = string<br>  })</pre> | n/a | yes |
 | <a name="input_authorizer_functions_autoscale"></a> [authorizer\_functions\_autoscale](#input\_authorizer\_functions\_autoscale) | Authorizer functions autoscaling parameters | <pre>object({<br>    default = number<br>    minimum = number<br>    maximum = number<br>  })</pre> | n/a | yes |
+| <a name="input_cdn_storage_account_replication_type"></a> [cdn\_storage\_account\_replication\_type](#input\_cdn\_storage\_account\_replication\_type) | (Optional) Cdn storage account replication type | `string` | `"GRS"` | no |
 | <a name="input_cidr_subnet_authorizer_functions"></a> [cidr\_subnet\_authorizer\_functions](#input\_cidr\_subnet\_authorizer\_functions) | CIDR subnet for Authorizer functions | `string` | n/a | yes |
 | <a name="input_cidr_subnet_pdf_engine_app_service"></a> [cidr\_subnet\_pdf\_engine\_app\_service](#input\_cidr\_subnet\_pdf\_engine\_app\_service) | CIDR subnet for App Service | `list(string)` | `null` | no |
+| <a name="input_cname_record_name"></a> [cname\_record\_name](#input\_cname\_record\_name) | n/a | `string` | `"shared"` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
@@ -170,8 +177,11 @@
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
+| <a name="input_pagopa_shared_toolbox_enabled"></a> [pagopa\_shared\_toolbox\_enabled](#input\_pagopa\_shared\_toolbox\_enabled) | pagoPA Shared Toolbox enabled | `bool` | `true` | no |
+| <a name="input_pagopa_shared_toolbox_singlepageapp"></a> [pagopa\_shared\_toolbox\_singlepageapp](#input\_pagopa\_shared\_toolbox\_singlepageapp) | Single Page Applications root directories | `list(string)` | <pre>[<br>  "ui"<br>]</pre> | no |
 | <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br>    name         = optional(string, null)<br>    minAvailable = optional(number, null)<br>    matchLabels  = optional(map(any), {})<br>  }))</pre> | `{}` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
+| <a name="input_robots_indexed_paths"></a> [robots\_indexed\_paths](#input\_robots\_indexed\_paths) | List of cdn paths to allow robots index | `list(string)` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 | <a name="input_taxonomy_function"></a> [taxonomy\_function](#input\_taxonomy\_function) | Taxonomy function | <pre>object({<br>    always_on                    = bool<br>    kind                         = string<br>    sku_size                     = string<br>    maximum_elastic_worker_count = number<br>  })</pre> | n/a | yes |
 | <a name="input_taxonomy_function_app_image_tag"></a> [taxonomy\_function\_app\_image\_tag](#input\_taxonomy\_function\_app\_image\_tag) | Taxonomy function app docker image tag. Defaults to 'latest' | `string` | `"latest"` | no |
