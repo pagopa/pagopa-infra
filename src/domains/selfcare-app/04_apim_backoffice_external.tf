@@ -41,7 +41,7 @@ module "apim_selfcare_backoffice_helpdesk_product" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  published             = false
+  published             = true
   subscription_required = true
   approval_required     = true
   subscriptions_limit   = 10000
