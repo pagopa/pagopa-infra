@@ -25,7 +25,7 @@ module "apim_selfcare_backoffice_external_product" {
 
   published             = true
   subscription_required = true
-  approval_required     = true
+  approval_required     = false
   subscriptions_limit   = 10000
 
   policy_xml = file("./api_product/_base_policy.xml")
