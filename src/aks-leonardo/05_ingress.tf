@@ -21,11 +21,14 @@ module "nginx_ingress" {
     version       = var.nginx_helm_version
     chart         = "ingress-nginx"
     recreate_pods = true
-    deploy        = 1
+    deploy        = true
   }
 
   values = [
-    "${templatefile("${path.module}/ingress/loadbalancer.yaml.tpl", { load_balancer_ip = var.ingress_load_balancer_ip })}"
+    templatefile("${path.module}/ingress/loadbalancer.yaml.tpl", {
+      load_balancer_ip = var.ingress_load_balancer_ip
+      private_subnet_name = data.azurerm_subnet.aks_default_user_subnet.name
+    })
   ]
 
   set = [
