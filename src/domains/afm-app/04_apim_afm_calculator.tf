@@ -205,3 +205,30 @@ module "apim_api_afm_calculator_api_node_v1" {
     hostname = local.afm_hostname
   })
 }
+
+module "apim_api_afm_calculator_api_node_v2" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.5.0"
+
+  name                  = format("%s-afm-calculator-service-node-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_afm_calculator_node_product.product_id, local.apim_x_node_product_id]
+  subscription_required = local.apim_afm_calculator_service_node_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_afm_calculator_node_api.id
+  api_version           = "v2"
+
+  description  = local.apim_afm_calculator_service_node_api.description
+  display_name = local.apim_afm_calculator_service_node_api.display_name
+  path         = local.apim_afm_calculator_service_node_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_afm_calculator_service_node_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/calculator-service/node/v2/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/calculator-service/node/v2/_base_policy.xml", {
+    hostname = local.afm_hostname
+  })
+}

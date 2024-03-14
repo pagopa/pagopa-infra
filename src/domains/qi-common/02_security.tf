@@ -116,33 +116,37 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+// PRODns02ns04
 resource "azurerm_key_vault_secret" "ehub_alert_qi_rx_connection_string" {
   name         = format("ehub-%s-rx-qi-alert-connection-string", var.env_short)
-  value        = var.env_short == "p" ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_quality-improvement-alerts_pagopa-qi-alert-rx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_quality-improvement-alerts_pagopa-qi-alert-rx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_quality-improvement-alerts_pagopa-qi-alert-rx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
+// PRODns02ns04
 resource "azurerm_key_vault_secret" "ehub_alert_qi_tx_connection_string" {
   name         = format("ehub-%s-tx-qi-alert-connection-string", var.env_short)
-  value        = var.env_short == "p" ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_quality-improvement-alerts_pagopa-qi-alert-tx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_quality-improvement-alerts_pagopa-qi-alert-tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_quality-improvement-alerts_pagopa-qi-alert-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
+// PRODns02ns04
 resource "azurerm_key_vault_secret" "ehub_alert_qi_rx_pdnd_connection_string" {
   name         = format("ehub-%s-rx-qi-alert-pdnd-connection-string", var.env_short)
-  value        = var.env_short == "p" ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_quality-improvement-alerts_pagopa-qi-alert-rx-pdnd.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_quality-improvement-alerts_pagopa-qi-alert-rx-pdnd.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_quality-improvement-alerts_pagopa-qi-alert-rx-pdnd.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
+// PRODns02ns04
 resource "azurerm_key_vault_secret" "ehub_alert_qi_rx_debug_connection_string" {
   name         = format("ehub-%s-rx-qi-alert-debug-connection-string", var.env_short)
-  value        = var.env_short == "p" ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_quality-improvement-alerts_pagopa-qi-alert-rx-debug.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_quality-improvement-alerts_pagopa-qi-alert-rx-debug.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_quality-improvement-alerts_pagopa-qi-alert-rx-debug.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

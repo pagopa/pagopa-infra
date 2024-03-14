@@ -1,10 +1,10 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "PagoPA API Debt Position",
+    "title" : "PagoPA API Debt Position v2 ${service}",
     "description" : "Progetto Gestione Posizioni Debitorie",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.10.0"
+    "version" : "0.11.6"
   },
   "servers" : [ {
     "url" : "${host}",
@@ -47,13 +47,20 @@
           "required" : true
         },
         "responses" : {
-          "401" : {
-            "description" : "Wrong or missing function key.",
+          "500" : {
+            "description" : "Service unavailable.",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
                 "schema" : {
                   "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -87,8 +94,8 @@
               }
             }
           },
-          "500" : {
-            "description" : "Service unavailable.",
+          "409" : {
+            "description" : "Conflict: duplicate debt position found.",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
@@ -105,20 +112,13 @@
               }
             }
           },
-          "409" : {
-            "description" : "Conflict: duplicate debt position found.",
+          "401" : {
+            "description" : "Wrong or missing function key.",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
                 "schema" : {
                   "type" : "string"
-                }
-              }
-            },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -145,28 +145,6 @@
         "summary" : "Return OK if application is started",
         "operationId" : "healthCheck",
         "responses" : {
-          "401" : {
-            "description" : "Wrong or missing function key.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "Forbidden.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
           "200" : {
             "description" : "OK.",
             "headers" : {
@@ -199,6 +177,28 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Wrong or missing function key.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
@@ -252,8 +252,7 @@
         "type" : "object",
         "properties" : {
           "nav" : {
-            "type" : "string",
-            "readOnly" : true
+            "type" : "string"
           },
           "iuv" : {
             "type" : "string"
@@ -303,7 +302,7 @@
         }
       },
       "PaymentPositionModel" : {
-        "required" : [ "companyName", "fiscalCode", "fullName", "iupd", "type" ],
+        "required" : [ "companyName", "fiscalCode", "fullName", "iupd", "switchToExpired", "type" ],
         "type" : "object",
         "properties" : {
           "iupd" : {
@@ -442,12 +441,12 @@
           },
           "iban" : {
             "type" : "string",
-            "description" : "mutual exclusive with postalIban and stamp",
+            "description" : "mutual exclusive with stamp",
             "example" : "IT0000000000000000000000000"
           },
           "postalIban" : {
             "type" : "string",
-            "description" : "mutual exclusive with iban and stamp",
+            "description" : "optional - can be combined with iban but not with stamp",
             "example" : "IT0000000000000000000000000"
           },
           "stamp" : {

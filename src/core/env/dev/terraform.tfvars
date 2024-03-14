@@ -1,6 +1,10 @@
 # general
-env_short = "d"
-env       = "dev"
+env_short          = "d"
+env                = "dev"
+location           = "westeurope"
+location_short     = "weu"
+location_ita       = "italynorth"
+location_short_ita = "itn"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -11,6 +15,14 @@ tags = {
 }
 
 lock_enable = false
+
+#
+# Feature flag
+#
+enabled_features = {
+  apim_v2  = true
+  vnet_ita = true
+}
 
 # monitoring
 law_sku               = "PerGB2018"
@@ -766,8 +778,3 @@ nodo_pagamenti_x_forwarded_for = "10.230.8.5"
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
 node_forwarder_autoscale_enabled = false
-
-
-enabled_features = {
-  apim_v2 = true
-}

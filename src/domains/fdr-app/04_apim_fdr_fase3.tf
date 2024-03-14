@@ -10,15 +10,15 @@ module "apim_fdr_product_psp" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
 
   product_id   = "fdr-psp"
-  display_name = "FDR - Flussi di rendicontazione [PSP]"
-  description  = "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC"
+  display_name = "FDR - Flussi di rendicontazione (PSP)"
+  description  = "Manage FDR (PSP) ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = true
-  approval_required     = true
+  approval_required     = false
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/fdr-service/psp/_base_policy.xml")
@@ -32,15 +32,15 @@ module "apim_fdr_product_org" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
 
   product_id   = "fdr-org"
-  display_name = "FDR - Flussi di rendicontazione [ORG]"
-  description  = "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC"
+  display_name = "FDR - Flussi di rendicontazione (ORGS)"
+  description  = "Manage FDR (ORGS) ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = true
-  approval_required     = true
+  approval_required     = false
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/fdr-service/org/_base_policy.xml")
@@ -54,7 +54,7 @@ module "apim_fdr_product_internal" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
 
   product_id   = "fdr_internal"
-  display_name = "FDR - (INTERNAL) Flussi di rendicontazione"
+  display_name = "FDR - Flussi di rendicontazione (INTERNAL)"
   description  = "Manage FDR (INTERNAL) ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC"
 
   api_management_name = local.pagopa_apim_name
@@ -75,25 +75,25 @@ module "apim_fdr_product_internal" {
 ###############
 locals {
   apim_fdr_psp_service_api = {
-    display_name          = "FDR - Flussi di rendicontazione [PSP]"
-    description           = "FDR - Flussi di rendicontazione [PSP]"
+    display_name          = "FDR - Flussi di rendicontazione (PSP)"
+    description           = "FDR - Flussi di rendicontazione (PSP)"
     path                  = "fdr-psp/service"
     subscription_required = true
     service_url           = null
   }
 
   apim_fdr_org_service_api = {
-    display_name          = "FDR - Flussi di rendicontazione [ORG]"
-    description           = "FDR - Flussi di rendicontazione [ORG]"
+    display_name          = "FDR - Flussi di rendicontazione (ORGS)"
+    description           = "FDR - Flussi di rendicontazione (ORGS)"
     path                  = "fdr-org/service"
     subscription_required = true
     service_url           = null
   }
 
   apim_fdr_service_api_internal = {
-    display_name          = "FDR - (INTERNAL) Flussi di rendicontazione"
-    description           = "FDR - (INTERNAL) Flussi di rendicontazione"
-    path                  = "fdr/service-internal"
+    display_name          = "FDR - Flussi di rendicontazione (INTERNAL)"
+    description           = "FDR - Flussi di rendicontazione (INTERNAL)"
+    path                  = "fdr-internal/service"
     subscription_required = true
     service_url           = null
   }

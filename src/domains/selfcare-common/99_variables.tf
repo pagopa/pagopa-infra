@@ -14,6 +14,10 @@ variable "env" {
   type = string
 }
 
+variable "env_capital" {
+  type = string
+}
+
 variable "env_short" {
   type = string
   validation {

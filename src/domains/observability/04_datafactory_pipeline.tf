@@ -322,3 +322,339 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_KPI_FDR_RENDICONTAZION
   pipeline_name = azurerm_data_factory_pipeline.pipeline_KPI_FDR_RENDICONTAZIONI.name
 
 }
+
+########################### KPI PDND TPNP ###########################
+resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_TPNP" {
+
+  name            = "PDND_KPI_TPNP_Pipeline"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  variables = {
+    startDate  = "",
+    endDate    = "",
+    item       = "",
+    jsonChunk  = "",
+    jsonResult = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_TPNP.json", {
+    inputdataset = "SMO_ReEvent_DataSet"
+  })}]"
+
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_TPNP" {
+
+  name            = "Trigger_PDND_KPI_TPNP"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  interval  = 1
+  frequency = "Month"
+  activated = true
+  time_zone = "W. Europe Standard Time"
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
+  }
+
+  description   = "Trigger for PDND_KPI_TPNP pipeline"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_PDND_KPI_TPNP.name
+}
+
+########################### KPI PDND DASPO ###########################
+resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_DASPO" {
+
+  name            = "PDND_KPI_DASPO_Pipeline"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  variables = {
+    startDate  = "",
+    endDate    = "",
+    item       = "",
+    jsonChunk  = "",
+    jsonResult = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_DASPO.json", {
+    inputdataset = "SMO_ReEvent_DataSet"
+  })}]"
+
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_DASPO" {
+
+  name            = "Trigger_PDND_KPI_DASPO"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  interval  = 1
+  frequency = "Month"
+  activated = true
+  time_zone = "W. Europe Standard Time"
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
+  }
+
+  description   = "Trigger for PDND_KPI_DASPO pipeline"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_PDND_KPI_DASPO.name
+}
+
+########################### KPI PDND LFDR ###########################
+resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_LFDR" {
+
+  name            = "PDND_KPI_LFDR_Pipeline"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  variables = {
+    startDate  = "",
+    endDate    = "",
+    item       = "",
+    jsonChunk  = "",
+    jsonResult = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_LFDR.json", {
+    inputdataset = "SMO_KPI_RENDICONTAZIONI_DataSet"
+  })}]"
+
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_LFDR" {
+
+  name            = "Trigger_PDND_KPI_LFDR"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  interval  = 1
+  frequency = "Month"
+  activated = true
+  time_zone = "W. Europe Standard Time"
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
+  }
+
+  description   = "Trigger for PDND_KPI_LFDR pipeline"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_PDND_KPI_LFDR.name
+}
+
+########################### KPI PDND LSPO ###########################
+resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_LSPO" {
+
+  name            = "PDND_KPI_LSPO_Pipeline"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  variables = {
+    startDate  = "",
+    endDate    = "",
+    item       = "",
+    jsonChunk  = "",
+    jsonResult = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_LSPO.json", {
+    inputdataset = "SMO_ReEvent_DataSet"
+  })}]"
+
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_LSPO" {
+
+  name            = "Trigger_PDND_KPI_LSPO"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  interval  = 1
+  frequency = "Month"
+  activated = true
+  time_zone = "W. Europe Standard Time"
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
+  }
+
+  description   = "Trigger for PDND_KPI_LSPO pipeline"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_PDND_KPI_LSPO.name
+}
+
+########################### KPI PDND NRFDR ###########################
+resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_NRFDR" {
+
+  name            = "PDND_KPI_NRFDR_Pipeline"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  variables = {
+    startDate  = "",
+    endDate    = "",
+    item       = "",
+    jsonChunk  = "",
+    jsonResult = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_NRFDR.json", {
+    inputdataset = "SMO_KPI_RENDICONTAZIONI_DataSet"
+  })}]"
+
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_NRFDR" {
+
+  name            = "Trigger_PDND_KPI_NRFDR"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  interval  = 1
+  frequency = "Month"
+  activated = true
+  time_zone = "W. Europe Standard Time"
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
+  }
+
+  description   = "Trigger for PDND_KPI_NRFDR pipeline"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_PDND_KPI_NRFDR.name
+}
+
+########################### KPI PDND TNSPO ###########################
+resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_TNSPO" {
+
+  name            = "PDND_KPI_TNSPO_Pipeline"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  variables = {
+    startDate  = "",
+    endDate    = "",
+    item       = "",
+    jsonChunk  = "",
+    jsonResult = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_TNSPO.json", {
+    inputdataset = "SMO_ReEvent_DataSet"
+  })}]"
+
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_TNSPO" {
+
+  name            = "Trigger_PDND_KPI_TNSPO"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  interval  = 1
+  frequency = "Month"
+  activated = true
+  time_zone = "W. Europe Standard Time"
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
+  }
+
+  description   = "Trigger for PDND_KPI_TNSPO pipeline"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_PDND_KPI_TNSPO.name
+}
+
+########################### KPI PDND WAFDR ###########################
+resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_WAFDR" {
+
+  name            = "PDND_KPI_WAFDR_Pipeline"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  variables = {
+    startDate  = "",
+    endDate    = "",
+    item       = "",
+    jsonChunk  = "",
+    jsonResult = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_WAFDR.json", {
+    inputdataset = "SMO_KPI_RENDICONTAZIONI_DataSet"
+  })}]"
+
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_WAFDR" {
+
+  name            = "Trigger_PDND_KPI_WAFDR"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  interval  = 1
+  frequency = "Month"
+  activated = true
+  time_zone = "W. Europe Standard Time"
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
+  }
+
+  description   = "Trigger for PDND_KPI_WAFDR pipeline"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_PDND_KPI_WAFDR.name
+}
+
+########################### KPI PDND WPNFDR ###########################
+resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_WPNFDR" {
+
+  name            = "PDND_KPI_WPNFDR_Pipeline"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  variables = {
+    startDate  = "",
+    endDate    = "",
+    item       = "",
+    jsonChunk  = "",
+    jsonResult = ""
+  }
+
+  activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_WPNFDR.json", {
+    inputdataset = "SMO_KPI_RENDICONTAZIONI_DataSet"
+  })}]"
+
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
+}
+
+resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_WPNFDR" {
+
+  name            = "Trigger_PDND_KPI_WPNFDR"
+  data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+
+  interval  = 1
+  frequency = "Month"
+  activated = true
+  time_zone = "W. Europe Standard Time"
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
+  }
+
+  description   = "Trigger for PDND_KPI_WPNFDR pipeline"
+  pipeline_name = azurerm_data_factory_pipeline.pipeline_PDND_KPI_WPNFDR.name
+}

@@ -8,10 +8,10 @@ locals {
   azdo_iac_deploy_managed_identity_name = "azdo-${var.env}-pagopa-iac-deploy"
 }
 
-
+### Main location
 variable "location" {
   type        = string
-  description = "One of westeurope, northeurope"
+  description = "Main location"
   default     = "westeurope"
 }
 
@@ -27,6 +27,25 @@ variable "location_short" {
   default     = "weu"
 }
 
+### Italy location
+variable "location_ita" {
+  type        = string
+  description = "Main location"
+  default     = "italynorth"
+}
+
+variable "location_short_ita" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_short_ita) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "Location short for italy: itn"
+  default     = "itn"
+}
+
 variable "prefix" {
   type    = string
   default = "pagopa"
@@ -39,6 +58,13 @@ variable "prefix" {
 }
 
 variable "env_short" {
+  description = "Environment shot version"
+  validation {
+    condition = (
+      length(var.env_short) == 1
+    )
+    error_message = "Max length is 1 chars."
+  }
   type = string
 }
 
@@ -53,18 +79,26 @@ variable "lock_enable" {
   description = "Apply locks to block accidentally deletions."
 }
 
-# Azure DevOps
-variable "azdo_sp_tls_cert_enabled" {
-  type        = string
-  description = "Enable Azure DevOps connection for TLS cert management"
-  default     = false
-}
-
 variable "tags" {
   type = map(any)
   default = {
     CreatedBy = "Terraform"
   }
+}
+
+#
+# Feature Flag
+#
+variable "enabled_features" {
+  type = object({
+    apim_v2  = bool
+    vnet_ita = bool
+  })
+  default = {
+    apim_v2  = false
+    vnet_ita = false
+  }
+  description = "Features enabled in this domain"
 }
 
 ## Monitor
@@ -613,6 +647,13 @@ variable "app_gateway_allowed_paths_upload" {
 }
 
 # Azure DevOps Agent
+
+variable "azdo_sp_tls_cert_enabled" {
+  type        = string
+  description = "Enable Azure DevOps connection for TLS cert management"
+  default     = false
+}
+
 variable "enable_azdoa" {
   type        = bool
   description = "Enable Azure DevOps agent."
@@ -1762,15 +1803,4 @@ variable "fdr_flow_sa_replication_type" {
   type        = string
   default     = "LRS"
   description = "(Optional) Fdr flow storage account replication type"
-}
-
-
-variable "enabled_features" {
-  type = object({
-    apim_v2 = bool
-  })
-  default = {
-    apim_v2 = false
-  }
-  description = "Features enabled in this domain"
 }

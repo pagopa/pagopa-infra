@@ -32,6 +32,9 @@ variable "domain" {
   }
 }
 
+#
+# location
+#
 variable "location" {
   type        = string
   description = "One of westeurope, northeurope"
@@ -48,9 +51,31 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "cidr_subnet_tools_cae" {
-  type        = list(string)
-  description = "Tool container app env, network address space."
+### Italy location
+variable "location_ita" {
+  type        = string
+  description = "Main location"
+  default     = "italynorth"
+}
+
+variable "location_short_ita" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_short_ita) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "Location short for italy: itn"
+  default     = "itn"
+}
+
+variable "vnet_ita_ddos_protection_plan" {
+  type = object({
+    id     = string
+    enable = bool
+  })
+  default = null
 }
 
 variable "instance" {
@@ -72,10 +97,20 @@ variable "tags" {
 }
 ### Network
 
+variable "cidr_vnet_italy" {
+  type        = list(string)
+  description = "Address prefixes for vnet in italy."
+}
+
 variable "cidr_subnet_dns_forwarder_backup" {
   type        = list(string)
   description = "Address prefixes subnet dns forwarder backup."
   default     = null
+}
+
+variable "cidr_subnet_tools_cae" {
+  type        = list(string)
+  description = "Tool container app env, network address space."
 }
 
 
@@ -611,5 +646,12 @@ EOD
       }
     ))
   }))
+}
+
+variable "is_feature_enabled" {
+  type = object({
+    vnet_ita = bool
+  })
+  description = "Features enabled in this domain"
 }
 
