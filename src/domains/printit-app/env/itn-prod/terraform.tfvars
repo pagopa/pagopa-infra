@@ -27,7 +27,7 @@ dns_zone_prefix          = "printit.itn"
 
 ### Aks
 
-ingress_load_balancer_ip = "10.3.100.250"
+ingress_load_balancer_ip = "10.3.2.250"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
