@@ -2143,7 +2143,7 @@
             "type": "string"
           },
           "bundleName": {
-            "description": "Bundle name",
+            "description": "DEPRECATED: Use pspBusinessName instead.",
             "type": "string",
             "deprecated": true
           },
