@@ -33,6 +33,7 @@ resource "azurerm_public_ip" "integration_appgateway_public_ip" {
   location            = data.azurerm_resource_group.rg_vnet_integration.location
   sku                 = "Standard"
   allocation_method   = "Static"
+  zones               = var.integration_appgateway_zones
 
   tags = var.tags
 }
