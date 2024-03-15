@@ -621,3 +621,7 @@ eventhubs_04 = [
     ]
   }
 ]
+
+node_forwarder_autoscale_enabled      = false
+node_forwarder_zone_balancing_enabled = false
+node_forwarder_sku                    = "B1"

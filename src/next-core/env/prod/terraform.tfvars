@@ -639,3 +639,6 @@ eventhubs_04 = [
     ]
   }
 ]
+
+node_forwarder_zone_balancing_enabled = true
+node_forwarder_sku                    = "P3v3"
