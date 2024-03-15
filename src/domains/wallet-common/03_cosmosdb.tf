@@ -123,7 +123,7 @@ locals {
           unique = true
         },
         {
-          keys = ["contractId"],
+          keys   = ["contractId"],
           unique = true
         }
       ],
