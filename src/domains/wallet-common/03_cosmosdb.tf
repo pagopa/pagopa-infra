@@ -119,7 +119,7 @@ locals {
       name = "wallets-migration-pm",
       indexes = [
         {
-          keys   = ["_id"]
+          keys   = ["_id"] # wallet id pm
           unique = true
         },
         {
