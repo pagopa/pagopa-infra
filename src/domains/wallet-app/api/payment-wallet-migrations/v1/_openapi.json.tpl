@@ -281,14 +281,12 @@
             "pattern": "^(\\d{6})|(\\d{8})$",
             "example": "123456"
           },
-          "panTail": {
+          "lastFourDigits": {
             "type": "string",
             "description": "The last 4 digits of PAN",
-            "pattern": "^\\d{4}$",
-            "minLength": 4,
-            "maxLength": 4
+            "pattern": "^\\d{4}$"
           },
-          "expireDate": {
+          "expiryDate": {
             "type": "string",
             "description": "Credit card expiry date. The date format is `MM/YY`",
             "pattern": "^\\d{2}\\/\\d{2}$",
@@ -313,8 +311,8 @@
         },
         "required": [
           "cardBin",
-          "panTail",
-          "expireDate",
+          "lastFourDigits",
+          "expiryDate",
           "paymentGatewayCardId",
           "paymentCircuit",
           "originalContractIdentifier",
