@@ -161,3 +161,25 @@ module "cosmosdb_standin_snet" {
     "Microsoft.AzureCosmosDB",
   ]
 }
+# Wisp converter
+resource "azurerm_resource_group" "wispconv_rg" {
+  name     = "${local.project}-wispconv-rg"
+  location = var.location
+
+  tags = var.tags
+}
+
+module "cosmosdb_wispconv_snet" {
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
+  name                 = "${local.project}-wispconv-cosmosdb-snet"
+  address_prefixes     = var.cidr_subnet_cosmosdb_wispconv
+  resource_group_name  = local.vnet_resource_group_name
+  virtual_network_name = local.vnet_name
+
+  private_link_service_network_policies_enabled = true
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+  ]
+}
