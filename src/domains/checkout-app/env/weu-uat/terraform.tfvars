@@ -35,8 +35,7 @@ apim_logger_resource_id = "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/r
 
 cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
 
-pagopa_proxy_tier = "Standard"
-pagopa_proxy_size = "S1"
+pagopa_proxy_plan_sku = "S1"
 
 # Checkout
 
@@ -50,6 +49,7 @@ checkout_function_sku_size          = "S1"
 checkout_function_autoscale_minimum = 1
 checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
+checkout_function_zone_balancing_enabled = false
 
 # ecommerce ingress hostname
 ecommerce_ingress_hostname = "weuuat.ecommerce.internal.uat.platform.pagopa.it"

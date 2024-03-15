@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
  * CDN
  */
 module "checkout_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.69.1"
 
   count                 = var.checkout_enabled ? 1 : 0
   name                  = "checkout"
@@ -22,7 +22,8 @@ module "checkout_cdn" {
   location              = var.location
   hostname              = format("%s.%s", var.dns_zone_checkout, var.external_domain)
   https_rewrite_enabled = true
-  lock_enabled          = false
+
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 
   index_document     = "index.html"
   error_404_document = "index.html"
