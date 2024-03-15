@@ -106,7 +106,7 @@ module "storage_account_snet" {
   private_link_service_network_policies_enabled = var.storage_account_snet_private_link_service_network_policies_enabled
 }
 
-# CosmosDB subnet
+# CosmosDB subnet Nodo-RE
 module "cosmosdb_nodo_re_snet" {
   count                = var.enable_nodo_re ? 1 : 0
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
@@ -123,7 +123,7 @@ module "cosmosdb_nodo_re_snet" {
   ]
 }
 
-# CosmosDB subnet
+# CosmosDB subnet Verify KO
 module "cosmosdb_nodo_verifyko_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
   name                 = "${local.project}-verifyko-cosmosdb-snet"
@@ -161,18 +161,19 @@ module "cosmosdb_standin_snet" {
     "Microsoft.AzureCosmosDB",
   ]
 }
+
 # Wisp converter
-resource "azurerm_resource_group" "wispconv_rg" {
-  name     = "${local.project}-wispconv-rg"
+resource "azurerm_resource_group" "wisp_converter_rg" {
+  name     = "${local.project}-wisp-converter-rg"
   location = var.location
 
   tags = var.tags
 }
 
-module "cosmosdb_wispconv_snet" {
+module "cosmosdb_wisp_converter_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
-  name                 = "${local.project}-wispconv-cosmosdb-snet"
-  address_prefixes     = var.cidr_subnet_cosmosdb_wispconv
+  name                 = "${local.project}-wisp-converter-cosmosdb-snet"
+  address_prefixes     = var.cidr_subnet_cosmosdb_wisp_converter
   resource_group_name  = local.vnet_resource_group_name
   virtual_network_name = local.vnet_name
 

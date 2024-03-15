@@ -273,7 +273,7 @@ variable "cidr_subnet_cosmosdb_standin" {
   type        = list(string)
   description = "Cosmos DB address space for standin."
 }
-variable "cidr_subnet_cosmosdb_wispconv" {
+variable "cidr_subnet_cosmosdb_wisp_converter" {
   type        = list(string)
   description = "Cosmos DB address space for wispconv."
 }
@@ -359,7 +359,7 @@ variable "standin_cosmos_nosql_db_params" {
   })
 }
 
-variable "wispconv_cosmos_nosql_db_params" {
+variable "wisp_converter_cosmos_nosql_db_params" {
   type = object({
     capabilities   = list(string)
     offer_type     = string
@@ -533,7 +533,7 @@ variable "nodo_cfg_sync_storage_account" {
   })
 }
 
-variable "wispconv_storage_account" {
+variable "wisp_converter_storage_account" {
   type = object({
     account_kind                  = string
     account_tier                  = string

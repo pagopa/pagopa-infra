@@ -185,7 +185,7 @@ standin_cosmos_nosql_db_params = {
   max_throughput = 1000
 }
 
-wispconv_cosmos_nosql_db_params = {
+wisp_converter_cosmos_nosql_db_params = {
   enabled      = true
   kind         = "GlobalDocumentDB"
   capabilities = ["EnableServerless"]
@@ -205,15 +205,14 @@ wispconv_cosmos_nosql_db_params = {
 
   backup_continuous_enabled = false
 
-  events_ttl     = 2629800 # 1 month in second
+  events_ttl     = 259200 # 3 days in second
   max_throughput = 1000
 }
 
 cidr_subnet_cosmosdb_nodo_re       = ["10.1.170.0/24"]
 cidr_subnet_cosmosdb_nodo_verifyko = ["10.1.173.0/24"]
 cidr_subnet_cosmosdb_standin       = ["10.1.190.0/24"]
-cidr_subnet_cosmosdb_wispconv = ["10.1.191.0/24"]
-
+cidr_subnet_cosmosdb_wisp_converter = ["10.1.191.0/24"]
 
 nodo_re_storage_account = {
   account_kind                  = "StorageV2"
@@ -224,7 +223,6 @@ nodo_re_storage_account = {
   blob_delete_retention_days    = 0
   public_network_access_enabled = true
   backup_enabled                = false
-
 }
 
 nodo_verifyko_storage_account = {
@@ -251,7 +249,7 @@ nodo_cfg_sync_storage_account = {
   backup_retention_days         = 0
 }
 
-wispconv_storage_account = {
+wisp_converter_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "LRS"
