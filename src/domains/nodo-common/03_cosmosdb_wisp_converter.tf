@@ -46,7 +46,7 @@ locals {
   wispconv_containers = [
     {
       name               = "data",
-      partition_key_path = "/PartitionKey",
+      partition_key_path = "/id", # contains brokerEC_sessionId
       default_ttl        = var.wisp_converter_cosmos_nosql_db_params.events_ttl
       autoscale_settings = {
         max_throughput = var.wisp_converter_cosmos_nosql_db_params.max_throughput

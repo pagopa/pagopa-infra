@@ -1,7 +1,7 @@
 module "wisp_converter_storage_account" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.60.0"
 
-  name                            = replace(format("%s-wisp-converter-st", local.project), "-", "")
+  name                            = replace(format("%s-wisp-conv-st", local.project), "-", "")
   account_kind                    = var.wisp_converter_storage_account.account_kind
   account_tier                    = var.wisp_converter_storage_account.account_tier
   account_replication_type        = var.wisp_converter_storage_account.account_replication_type
@@ -56,13 +56,14 @@ resource "azurerm_private_endpoint" "wispconv_private_endpoint_container" {
 # table wispconverter
 resource "azurerm_storage_table" "wisp_converter_table" {
   name                 = "events"
-  storage_account_name = module.wispconv_storage_account.name
+  storage_account_name = module.wisp_converter_storage_account.name
 }
 
 # blob wispconverter
 resource "azurerm_storage_container" "wisp_converter_container" {
   name                 = "payloads"
   storage_account_name = module.wisp_converter_storage_account.name
+
   depends_on = [
     module.wisp_converter_storage_account
   ]
