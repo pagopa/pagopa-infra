@@ -56,7 +56,7 @@ resource "azurerm_private_endpoint" "wispconv_private_endpoint_container" {
 # table wispconverter
 resource "azurerm_storage_table" "wispconv_table" {
   name                 = "events"
-  storage_account_name = module.nodo_verifyko_storage_account.name
+  storage_account_name = module.wispconv_storage_account.name
 }
 
 # blob wispconverter
