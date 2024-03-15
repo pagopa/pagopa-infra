@@ -154,10 +154,12 @@
                             result["applications"] = JArray.FromObject(convertedApplications);
                             JObject details = new JObject();
                             details["type"] = eCommerceWalletType;
+                            string paymentMethodAsset = null;
                             if (eCommerceWalletType == "CARDS") {
                                 details["lastFourDigits"] = $"{wallet["info"]["blurredNumber"]}";
                                 details["expiryDate"] = $"{(string)wallet["info"]["expireYear"]}{(string)wallet["info"]["expireMonth"]}";
                                 details["brand"] = wallet["info"]["brand"];
+                                paymentMethodAsset = (string)wallet["info"]["brandLogo"];
                             }
                             if (eCommerceWalletType == "PAYPAL") {
                                 var info = (JObject)(wallet["info"]);
@@ -165,14 +167,16 @@
                                 var pspInfo = (JObject)(pspArray[0]);
                                 details["abi"] = pspInfo["abi"];
                                 details["maskedEmail"] = pspInfo["email"];
+                                paymentMethodAsset = "https://assets.cdn.platform.pagopa.it/apm/paypal.png";
                             }
                             if (eCommerceWalletType == "BANCOMATPAY") {
                                 details["maskedNumber"] = wallet["info"]["numberObfuscated"];
                                 details["instituteCode"] = wallet["info"]["instituteCode"];
                                 details["bankName"] = wallet["info"]["bankName"];
+                                paymentMethodAsset = (string)wallet["info"]["brandLogo"];
                             }
                             result["details"] = details;
-
+                            result["paymentMethodAsset"] = paymentMethodAsset;
                             return result;
                     }).ToArray();
 
