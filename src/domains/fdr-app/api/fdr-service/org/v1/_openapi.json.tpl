@@ -2,13 +2,13 @@
   "openapi": "3.0.3",
   "info": {
     "title": "FDR - Flussi di rendicontazione (ORGS) ${service}",
-        "description": "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC ${service}",
+    "description": "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC ${service}",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.0.4"
+    "version": "1.0.14"
   },
   "servers": [
     {
-      "url" : "${host}/fdr-org/api/v1"
+      "url": "${host}/fdr-org/service/v1"
     }
   ],
   "security": [
@@ -958,7 +958,7 @@
             "example": 0.01
           },
           "payStatus": {
-            "description": "[XML FlussoRiversamento]=[datiSingoliPagamenti.codiceEsitoSingoloPagamento] \n0 -> EXECUTED\n3 -> REVOKED\n9 -> NO_RPT",
+            "description": "[XML FlussoRiversamento]=[datiSingoliPagamenti.codiceEsitoSingoloPagamento] \n0 -> EXECUTED\n3 -> REVOKED\n9 -> NO_RPT\n4 -> STAND_IN",
             "type": "string",
             "allOf": [
               {
@@ -983,7 +983,8 @@
         "enum": [
           "EXECUTED",
           "REVOKED",
-          "NO_RPT"
+          "NO_RPT",
+          "STAND_IN"
         ],
         "type": "string"
       },

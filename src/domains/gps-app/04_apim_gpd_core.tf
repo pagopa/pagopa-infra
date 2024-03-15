@@ -67,7 +67,8 @@ module "apim_api_gpd_api_v2" {
 
   content_format = "openapi"
   content_value = templatefile("./api/gpd_api/v2/_openapi.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = module.apim_gpd_product.product_id
   })
 
   xml_content = file("./api/gpd_api/v2/_base_policy.xml")
@@ -99,7 +100,7 @@ module "apim_debt_positions_product" {
 
   published             = true
   subscription_required = true
-  approval_required     = true
+  approval_required     = false
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/gpd/debt-position-services/_base_policy.xml")
@@ -160,7 +161,8 @@ module "apim_api_debt_positions_api_v2" {
 
   content_format = "openapi"
   content_value = templatefile("./api/gpd_api/debt-position-services/v2/_openapi.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = module.apim_debt_positions_product.product_id
   })
 
   xml_content = file("./api/gpd_api/debt-position-services/v2/_base_policy.xml")

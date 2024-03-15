@@ -14,7 +14,7 @@ module "apim_nodo_dei_pagamenti_product_auth" {
 
   published             = true
   subscription_required = true
-  approval_required     = true
+  approval_required     = false
   subscriptions_limit   = var.nodo_auth_subscription_limit
 
 

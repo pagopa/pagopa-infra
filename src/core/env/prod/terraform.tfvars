@@ -1,6 +1,10 @@
 # general
-env_short = "p"
-env       = "prod"
+env_short          = "p"
+env                = "prod"
+location           = "westeurope"
+location_short     = "weu"
+location_ita       = "italynorth"
+location_short_ita = "itn"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -8,6 +12,14 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+}
+
+#
+# Feature flag
+#
+enabled_features = {
+  apim_v2  = false
+  vnet_ita = false
 }
 
 lock_enable = true
