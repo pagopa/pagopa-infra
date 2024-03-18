@@ -65,7 +65,7 @@ module "apim_selfcare_backoffice_helpdesk_product" {
 
   published             = true
   subscription_required = true
-  approval_required     = false
+  approval_required     = true
   subscriptions_limit   = 10000
 
   policy_xml = file("./api_product/_base_policy.xml")
