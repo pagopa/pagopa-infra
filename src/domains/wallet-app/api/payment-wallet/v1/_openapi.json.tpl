@@ -809,6 +809,13 @@
             "items": {
               "$ref": "#/components/schemas/Range"
             }
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         },
         "required": [
