@@ -585,6 +585,12 @@
           },
           "details": {
             "$ref": "#/components/schemas/WalletInfoDetails"
+          },
+          "paymentMethodAsset": {
+            "description": "Payment method asset",
+            "type": "string",
+            "format": "uri",
+            "example": "http://logo.cdn/brandLogo"
           }
         },
         "required": [
@@ -593,7 +599,8 @@
           "status",
           "creationDate",
           "updateDate",
-          "services"
+          "services",
+          "paymentMethodAsset"
         ]
       },
       "WalletInfoDetails": {

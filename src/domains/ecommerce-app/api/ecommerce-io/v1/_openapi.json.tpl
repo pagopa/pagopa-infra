@@ -1786,8 +1786,9 @@
             "type": "string"
           },
           "bundleName": {
-            "description": "Bundle name",
-            "type": "string"
+            "description": "DEPRECATED: use pspBusinessName instead",
+            "type": "string",
+            "deprecated": true
           },
           "idBrokerPsp": {
             "description": "Bundle PSP broker id",
@@ -1829,6 +1830,10 @@
           },
           "touchpoint": {
             "description": "The touchpoint name",
+            "type": "string"
+          },
+          "pspBusinessName": {
+            "description": "The psp business name",
             "type": "string"
           }
         }
@@ -2008,6 +2013,12 @@
           },
           "details": {
             "$ref": "#/components/schemas/WalletInfoDetails"
+          },
+          "paymentMethodAsset": {
+            "description": "Payment method asset",
+            "type": "string",
+            "format": "uri",
+            "example": "http://logo.cdn/brandLogo"
           }
         },
         "required": [
@@ -2016,7 +2027,8 @@
           "status",
           "creationDate",
           "updateDate",
-          "services"
+          "services",
+          "paymentMethodAsset"
         ]
       },
       "WalletInfoDetails": {
