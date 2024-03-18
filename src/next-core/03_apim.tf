@@ -11,7 +11,7 @@ module "apimv2_snet" {
 
 
 resource "azurerm_network_security_group" "apimv2_snet_nsg" {
-  name                = "apimv2-snet-nsg"
+  name                = "${local.project}-apimv2-snet-nsg"
   location            = var.location
   resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
 }
@@ -65,8 +65,8 @@ locals {
 }
 
 module "apimv2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v7.50.0"
-
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v7.67.1"
+  depends_on          = [azurerm_subnet_network_security_group_association.apim_stv2_snet]
   subnet_id           = module.apimv2_snet.id
   location            = data.azurerm_resource_group.rg_api.location
   name                = "${local.project}-apim-v2"
@@ -79,6 +79,7 @@ module "apimv2" {
 
   virtual_network_type = "Internal"
 
+  redis_cache_enabled     = var.redis_cache_enabled
   redis_connection_string = var.redis_cache_enabled ? local.redis_connection_string : null
   redis_cache_id          = var.redis_cache_enabled ? local.redis_cache_id : null
 

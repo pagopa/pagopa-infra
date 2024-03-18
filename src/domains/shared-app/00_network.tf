@@ -9,6 +9,10 @@ data "azurerm_subnet" "apim_vnet" {
   virtual_network_name = local.pagopa_vnet_integration
 }
 
+data "azurerm_dns_zone" "public" {
+  name = join(".", [var.apim_dns_zone_prefix, var.external_domain])
+}
+
 module "taxonomy_function_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.6.0"
   name                                      = "${local.project}-txnm-fn-snet"
