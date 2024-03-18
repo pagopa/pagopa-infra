@@ -65,8 +65,8 @@ locals {
 }
 
 module "apimv2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v7.67.1"
-  depends_on = [azurerm_subnet_network_security_group_association.apim_stv2_snet]
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v7.67.1"
+  depends_on          = [azurerm_subnet_network_security_group_association.apim_stv2_snet]
   subnet_id           = module.apimv2_snet.id
   location            = data.azurerm_resource_group.rg_api.location
   name                = "${local.project}-apim-v2"
