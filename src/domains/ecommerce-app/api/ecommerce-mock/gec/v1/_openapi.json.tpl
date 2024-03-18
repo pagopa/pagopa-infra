@@ -974,6 +974,9 @@
           "bundleName": {
             "type": "string"
           },
+          "pspBusinessName": {
+            "type": "string"
+          },
           "idBrokerPsp": {
             "type": "string"
           },

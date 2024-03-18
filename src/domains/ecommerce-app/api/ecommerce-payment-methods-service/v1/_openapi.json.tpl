@@ -824,8 +824,9 @@
             "type": "string"
           },
           "bundleName": {
-            "description": "Bundle name",
-            "type": "string"
+            "description": "DEPRECATED: Use pspBusinessName instead.",
+            "type": "string",
+            "deprecated": true
           },
           "idBrokerPsp": {
             "description": "Bundle PSP broker id",
@@ -867,6 +868,10 @@
           },
           "touchpoint": {
             "description": "The touchpoint name",
+            "type": "string"
+          },
+          "pspBusinessName": {
+            "description": "The psp business name",
             "type": "string"
           }
         }
