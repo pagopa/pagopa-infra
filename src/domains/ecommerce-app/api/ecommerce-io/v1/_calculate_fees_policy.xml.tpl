@@ -114,6 +114,7 @@
                                         JObject psp = new JObject();
                                         psp["abi"] = pmPsp["codiceAbi"];
                                         psp["bundleName"] = pmPsp["ragioneSociale"];
+                                        psp["pspBusinessName"] = pmPsp["ragioneSociale"];
                                         if(isPayPal) {
                                             psp["taxPayerFee"] = pmPsp["maxFee"];
                                             psp["idPsp"] = (string)pmPsp["idPsp"];
