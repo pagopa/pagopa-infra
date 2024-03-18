@@ -12,6 +12,12 @@ resource "azurerm_role_assignment" "selfcare_appconf_dataowner" {
   principal_id         = data.azurerm_client_config.current.object_id
 }
 
+resource "azurerm_role_assignment" "selfcare_appconf_dataowner_sp" {
+  scope                = azurerm_app_configuration.selfcare_appconf.id
+  role_definition_name = "Contributor"
+  principal_id         = azuread_service_principal.selfcare.object_id
+}
+
 resource "azurerm_app_configuration_feature" "maintenance_banner_flag" {
   configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
   description            = "It enables the banner"
