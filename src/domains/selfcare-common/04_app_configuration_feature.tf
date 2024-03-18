@@ -14,7 +14,7 @@ resource "azurerm_role_assignment" "selfcare_appconf_dataowner" {
 
 resource "azurerm_role_assignment" "selfcare_appconf_dataowner_sp" {
   scope                = azurerm_app_configuration.selfcare_appconf.id
-  role_definition_name = "Contributor"
+  role_definition_name = "App Configuration Data Owner"
   principal_id         = azuread_service_principal.selfcare.object_id
 }
 
