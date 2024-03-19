@@ -585,6 +585,12 @@
           },
           "details": {
             "$ref": "#/components/schemas/WalletInfoDetails"
+          },
+          "paymentMethodAsset": {
+            "description": "Payment method asset",
+            "type": "string",
+            "format": "uri",
+            "example": "http://logo.cdn/brandLogo"
           }
         },
         "required": [
@@ -593,7 +599,8 @@
           "status",
           "creationDate",
           "updateDate",
-          "services"
+          "services",
+          "paymentMethodAsset"
         ]
       },
       "WalletInfoDetails": {
@@ -801,6 +808,13 @@
             "minItems": 1,
             "items": {
               "$ref": "#/components/schemas/Range"
+            }
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
             }
           }
         },

@@ -1752,13 +1752,25 @@
             "items": {
               "$ref": "#/components/schemas/Bundle"
             }
+          },
+          "asset": {
+            "description": "Payment method asset",
+            "type": "string"
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         },
         "required": [
           "bundles",
           "paymentMethodName",
           "paymentMethodDescription",
-          "paymentMethodStatus"
+          "paymentMethodStatus",
+          "asset"
         ]
       },
       "Bundle": {
@@ -1774,8 +1786,9 @@
             "type": "string"
           },
           "bundleName": {
-            "description": "Bundle name",
-            "type": "string"
+            "description": "DEPRECATED: use pspBusinessName instead",
+            "type": "string",
+            "deprecated": true
           },
           "idBrokerPsp": {
             "description": "Bundle PSP broker id",
@@ -1817,6 +1830,10 @@
           },
           "touchpoint": {
             "description": "The touchpoint name",
+            "type": "string"
+          },
+          "pspBusinessName": {
+            "description": "The psp business name",
             "type": "string"
           }
         }
@@ -1875,6 +1892,13 @@
             "minItems": 1,
             "items": {
               "$ref": "#/components/schemas/Range"
+            }
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
             }
           }
         },
@@ -1989,6 +2013,12 @@
           },
           "details": {
             "$ref": "#/components/schemas/WalletInfoDetails"
+          },
+          "paymentMethodAsset": {
+            "description": "Payment method asset",
+            "type": "string",
+            "format": "uri",
+            "example": "http://logo.cdn/brandLogo"
           }
         },
         "required": [
@@ -1997,7 +2027,8 @@
           "status",
           "creationDate",
           "updateDate",
-          "services"
+          "services",
+          "paymentMethodAsset"
         ]
       },
       "WalletInfoDetails": {
