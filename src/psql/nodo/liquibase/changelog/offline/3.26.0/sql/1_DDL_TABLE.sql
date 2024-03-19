@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS ${schema}.rendicontazione_sftp_receive_queue_parted
 (
-    id numeric NOT NULL DEFAULT nextval(${schema}'.rendicontazione_sftp_receive_queue_seq'::regclass),
+    id numeric NOT NULL DEFAULT nextval('${schema}.rendicontazione_sftp_receive_queue_seq'::regclass),
     file_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
     status character varying(10) COLLATE pg_catalog."default" NOT NULL,
     file_size numeric(19,0),
@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS ${schema}.rendicontazione_sftp_receive_queue_parted
 
 CREATE TABLE IF NOT EXISTS ${schema}.rendicontazione_sftp_send_queue_parted
 (
-    id numeric NOT NULL DEFAULT nextval(${schema}'.rendicontazione_sftp_send_queue_seq'::regclass),
+    id numeric NOT NULL DEFAULT nextval('${schema}.rendicontazione_sftp_send_queue_seq'::regclass),
     file_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
     status character varying(10) COLLATE pg_catalog."default" NOT NULL,
     file_size numeric(19,0),
