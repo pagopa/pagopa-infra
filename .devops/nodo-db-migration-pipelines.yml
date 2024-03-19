@@ -134,7 +134,7 @@ stages:
               --defaultSchemaName="$(ONLINE_SCHEMA)" \
               --contexts="${{ parameters.lbContexts }}" \
               --log-level=${{ parameters.lbLogLevel }} \
-              status -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
+              status -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DschemaWfesp=$(WFESP_SCHEMA) -DschemaRe=$(RE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
             displayName: "online db status"
           - script: |
               liquibase \

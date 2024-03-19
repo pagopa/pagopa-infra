@@ -9,58 +9,39 @@
   http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
 
   <changeSet author="liquibase" id="20240318000001">
-    <sql splitStatements="false">
-      CREATE TABLE IF NOT EXISTS rendicontazione_sftp_receive_queue_parted
-      (
-      id numeric NOT NULL DEFAULT nextval('rendicontazione_sftp_receive_queue_seq'::regclass),
-      file_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
-      status character varying(10) COLLATE pg_catalog."default" NOT NULL,
-      file_size numeric(19,0),
-      server_id numeric(19,0) NOT NULL,
-      host_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
-      port numeric(19,0) NOT NULL,
-      path character varying(255) COLLATE pg_catalog."default" NOT NULL,
-      hash character varying(32) COLLATE pg_catalog."default" NOT NULL,
-      content bytea NOT NULL,
-      sender character varying(50) COLLATE pg_catalog."default",
-      receiver character varying(50) COLLATE pg_catalog."default",
-      inserted_timestamp timestamp(6) without time zone NOT NULL,
-      updated_timestamp timestamp(6) without time zone NOT NULL,
-      inserted_by character varying(35) COLLATE pg_catalog."default" NOT NULL,
-      updated_by character varying(35) COLLATE pg_catalog."default" NOT NULL,
-      CONSTRAINT rendicontazione_sftp_receive_queue_parted_pk PRIMARY KEY (id,inserted_timestamp)
-      ) partition by range ("inserted_timestamp");
-
-
-      --
-
-      CREATE TABLE IF NOT EXISTS rendicontazione_sftp_send_queue_parted
-      (
-      id numeric NOT NULL DEFAULT nextval('rendicontazione_sftp_send_queue_seq'::regclass),
-      file_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
-      status character varying(10) COLLATE pg_catalog."default" NOT NULL,
-      file_size numeric(19,0),
-      server_id numeric(19,0) NOT NULL,
-      host_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
-      port numeric(19,0) NOT NULL,
-      path character varying(255) COLLATE pg_catalog."default" NOT NULL,
-      hash character varying(32) COLLATE pg_catalog."default" NOT NULL,
-      content bytea NOT NULL,
-      sender character varying(50) COLLATE pg_catalog."default",
-      receiver character varying(50) COLLATE pg_catalog."default",
-      inserted_timestamp timestamp(6) without time zone NOT NULL,
-      updated_timestamp timestamp(6) without time zone NOT NULL,
-      inserted_by character varying(35) COLLATE pg_catalog."default" NOT NULL,
-      updated_by character varying(35) COLLATE pg_catalog."default" NOT NULL,
-      retry numeric(19,0),
-      CONSTRAINT rendicontazione_sftp_send_queue_parted_pk PRIMARY KEY (id,inserted_timestamp)
-      ) partition by range ("inserted_timestamp");
-    </sql>
+    <sqlFile dbms="postgresql"
+             encoding="UTF-8"
+             path="sql/1_DDL_TABLE.sql"
+             relativeToChangelogFile="true"
+             splitStatements="true"
+             stripComments="true"/>
   </changeSet>
-  <changeSet author="liquibase" id="20231003000001">
-    <addColumn tableName="POSITION_RECEIPT">
-      <column name="FLAG_STANDIN" type="CHAR(1)"/>
-    </addColumn>
+
+  <changeSet author="liquibase" id="20240318000003">
+    <sqlFile dbms="postgresql"
+             encoding="UTF-8"
+             path="sql/3_RENAME_OLD_PART.sql"
+             relativeToChangelogFile="true"
+             splitStatements="true"
+             stripComments="true"/>
+  </changeSet>
+
+  <changeSet author="liquibase" id="20240318000006">
+    <sqlFile dbms="postgresql"
+             encoding="UTF-8"
+             path="sql/6_POPOLA_TABLE.sql"
+             relativeToChangelogFile="true"
+             splitStatements="true"
+             stripComments="true"/>
+  </changeSet>
+
+  <changeSet author="liquibase" id="20240318000007">
+    <sqlFile dbms="postgresql"
+             encoding="UTF-8"
+             path="sql/7_GRANT.sql"
+             relativeToChangelogFile="true"
+             splitStatements="true"
+             stripComments="true"/>
   </changeSet>
 
 </databaseChangeLog>
