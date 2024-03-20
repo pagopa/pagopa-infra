@@ -32,6 +32,10 @@ elif [[ "${TIPO}" == 'it' ]]; then
   export POSTGRES_DB_PORT="6432"
   export POSTGRES_DB="nodo-replica"
   export NODO_CFG_SCHEMA=$SCHEMA
+  export NODO_ONLINE_SCHEMA='online'
+  export NODO_OFFLINE_SCHEMA='offline'
+  export NODO_RE_SCHEMA='re'
+  export NODO_WFESP_SCHEMA='wfesp'
   export LQB_CONTEXTS="it"
   export NODO_CFG_USERNAME=$SCHEMA
   export NODO_CFG_PASSWORD="password"

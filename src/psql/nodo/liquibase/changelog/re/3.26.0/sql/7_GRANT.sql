@@ -1,5 +1,5 @@
 
- GRANT ALL ON TABLE ${schema}.re TO re;
+ GRANT ALL ON TABLE ${schema}.re TO ${schema};
  -------------------------------------------------------------------
- ALTER TABLE IF EXISTS ${schema}.re OWNER to re;
+ ALTER TABLE IF EXISTS ${schema}.re OWNER to ${schema};
  -------------------------------------------------------------------
