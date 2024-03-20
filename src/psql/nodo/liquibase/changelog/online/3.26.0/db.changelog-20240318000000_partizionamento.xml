@@ -14,48 +14,30 @@
              path="sql/1_DDL_TABLE.sql"
              relativeToChangelogFile="true"
              splitStatements="true"/>
-  </changeSet>
-
-  <changeSet author="liquibase" id="20240318000002">
     <sqlFile dbms="postgresql"
              encoding="UTF-8"
              path="sql/2_DML_TABLE_PART.sql"
              relativeToChangelogFile="true"
              splitStatements="true"/>
-  </changeSet>
-
-  <changeSet author="liquibase" id="20240318000003">
     <sqlFile dbms="postgresql"
              encoding="UTF-8"
              path="sql/3_RENAME_OLD_PART.sql"
              relativeToChangelogFile="true"/>
-  </changeSet>
-
-  <changeSet author="liquibase" id="20240318000004">
     <sqlFile dbms="postgresql"
              encoding="UTF-8"
              path="sql/4_PROCEDURE_modify_partition.sql"
              relativeToChangelogFile="true"
              splitStatements="true"/>
-  </changeSet>
-
-  <changeSet author="liquibase" id="20240318000005">
     <sqlFile dbms="postgresql"
              encoding="UTF-8"
              path="sql/5_exec_PROCEDURE.sql"
              relativeToChangelogFile="true"
              splitStatements="true"/>
-  </changeSet>
-
-  <changeSet author="liquibase" id="20240318000006">
     <sqlFile dbms="postgresql"
              encoding="UTF-8"
              path="sql/6_POPOLA_TABLE.sql"
              relativeToChangelogFile="true"
              splitStatements="true"/>
-  </changeSet>
-
-  <changeSet author="liquibase" id="20240318000007">
     <sqlFile dbms="postgresql"
              encoding="UTF-8"
              path="sql/7_GRANT.sql"
