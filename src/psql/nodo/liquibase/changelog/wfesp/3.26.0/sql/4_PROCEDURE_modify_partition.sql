@@ -1,6 +1,6 @@
--- PROCEDURE: online.modify_partition()
+-- PROCEDURE: ${schema}.modify_partition()
 
--- DROP PROCEDURE IF EXISTS online.modify_partition();
+-- DROP PROCEDURE IF EXISTS ${schema}.modify_partition();
 
 
 CREATE OR REPLACE PROCEDURE ${schema}.modify_partition(
