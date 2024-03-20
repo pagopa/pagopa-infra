@@ -64,4 +64,4 @@ function_app_storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
-checkout_cdn_storage_replication_type = "GRS"
+checkout_cdn_storage_replication_type = "GZRS"
