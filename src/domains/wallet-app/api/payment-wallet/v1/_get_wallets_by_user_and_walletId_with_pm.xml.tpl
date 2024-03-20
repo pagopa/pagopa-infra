@@ -109,7 +109,7 @@
         <set-body>
             @{
                 JObject pmWalletResponse = (JObject)context.Variables["pmUserWalletResponseBody"];
-                var walletServices = new List<String>{"PAGOPA"};
+                var walletApplications = new List<String>{"PAGOPA"};
                 var eCommerceWalletTypes = new Dictionary<string, string>
                     {
                         { "Card", "CARDS" },
@@ -145,25 +145,25 @@
                         DateTimeOffset creationDateTimeOffset = new DateTimeOffset(utcCreationDateTime);
                         result["creationDate"] = creationDateTimeOffset.ToString("o");
                         result["updateDate"] = result["creationDate"];
+
                         string paymentMethodAsset=null;
-                        var convertedServices = new List<JObject>();
-                        foreach(JValue service in wallet["enableableFunctions"]){
-                            string serviceName = service.ToString().ToUpper();
-                            if(walletServices.Contains(serviceName)){
+                        var convertedApplications = new List<JObject>();
+                        foreach(JValue application in wallet["enableableFunctions"]){
+                            string applicationName = application.ToString().ToUpper();
+                            if(walletApplications.Contains(applicationName)){
                                 JObject converted = new JObject();
-                                converted["name"] = serviceName;
+                                converted["name"] = applicationName;
                                 converted["status"] = "ENABLED";
                                 converted["updateDate"] = result["creationDate"];
-                                convertedServices.Add(converted);
+                                convertedApplications.Add(converted);
                             }
                         }
-                        result["services"] = JArray.FromObject(convertedServices);
+                        result["applications"] = JArray.FromObject(convertedApplications);
                         JObject details = new JObject();
                         details["type"] = eCommerceWalletType;
                         if (eCommerceWalletType == "CARDS") {
-                            details["maskedPan"] = $"{wallet["info"]["blurredNumber"]}";
+                            details["lastFourDigits"] = $"{wallet["info"]["blurredNumber"]}";
                             details["expiryDate"] = $"{(string)wallet["info"]["expireYear"]}{(string)wallet["info"]["expireMonth"]}";
-                            details["holder"] = wallet["info"]["holder"];
                             details["brand"] = wallet["info"]["brand"];
                             paymentMethodAsset = (string)wallet["info"]["brandLogo"];
                         }

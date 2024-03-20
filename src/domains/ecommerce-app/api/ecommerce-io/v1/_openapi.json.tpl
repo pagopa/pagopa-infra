@@ -1752,13 +1752,25 @@
             "items": {
               "$ref": "#/components/schemas/Bundle"
             }
+          },
+          "asset": {
+            "description": "Payment method asset",
+            "type": "string"
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         },
         "required": [
           "bundles",
           "paymentMethodName",
           "paymentMethodDescription",
-          "paymentMethodStatus"
+          "paymentMethodStatus",
+          "asset"
         ]
       },
       "Bundle": {
@@ -1880,6 +1892,13 @@
             "minItems": 1,
             "items": {
               "$ref": "#/components/schemas/Range"
+            }
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
             }
           }
         },
@@ -2023,20 +2042,16 @@
                 "type": "string",
                 "description": "Wallet details discriminator field. Fixed valued 'CARDS'"
               },
-              "maskedPan": {
-                "description": "Card masked pan (first 6 digit and last 4 digit clear, other digit obfuscated)",
+              "lastFourDigits": {
+                "description": "Card last 4 digits",
                 "type": "string",
-                "example": "123456******9876"
+                "example": "9876"
               },
               "expiryDate": {
                 "type": "string",
                 "description": "Credit card expiry date. The date format is `YYYYMM`",
                 "pattern": "^[0-9]{6}$",
                 "example": "203012"
-              },
-              "holder": {
-                "description": "Holder of the card payment instrument",
-                "type": "string"
               },
               "brand": {
                 "description": "Payment instrument brand",
@@ -2051,9 +2066,8 @@
             },
             "required": [
               "type",
-              "maskedPan",
+              "lastFourDigits",
               "expiryDate",
-              "holder",
               "brand"
             ]
           },
