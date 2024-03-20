@@ -27,7 +27,7 @@
              encoding="UTF-8"
              path="sql/4_PROCEDURE_modify_partition.sql"
              relativeToChangelogFile="true"
-             splitStatements="true"/>
+             splitStatements="false"/>
     <sqlFile dbms="postgresql"
              encoding="UTF-8"
              path="sql/5_exec_PROCEDURE.sql"
