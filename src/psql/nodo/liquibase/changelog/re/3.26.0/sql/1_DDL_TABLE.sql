@@ -33,3 +33,11 @@ CREATE TABLE IF NOT EXISTS ${schema}.re_parted
     id_eventhub character varying(36) COLLATE pg_catalog."default",
     flag_standin character(1) COLLATE pg_catalog."default"
 ) partition by range ("inserted_timestamp");
+
+--
+
+CREATE TABLE IF NOT EXISTS ${schema}.tab_part
+(
+    tabella character varying(100) COLLATE pg_catalog."default",
+    schema character varying(100) COLLATE pg_catalog."default"
+);

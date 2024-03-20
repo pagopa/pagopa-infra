@@ -180,3 +180,11 @@ CREATE INDEX IF NOT EXISTS rpt_parted_idx02
 CREATE INDEX IF NOT EXISTS rpt_parted_idx03
     ON ${schema}.rpt_parted USING btree
     (iuv COLLATE pg_catalog."default" ASC NULLS LAST, ccp COLLATE pg_catalog."default" ASC NULLS LAST);
+
+--
+
+CREATE TABLE IF NOT EXISTS ${schema}.tab_part
+(
+    tabella character varying(100) COLLATE pg_catalog."default",
+    schema character varying(100) COLLATE pg_catalog."default"
+);
