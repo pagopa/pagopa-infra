@@ -13,8 +13,7 @@
              encoding="UTF-8"
              path="sql/1_DDL_TABLE.sql"
              relativeToChangelogFile="true"
-             splitStatements="true"
-             stripComments="true"/>
+             splitStatements="true"/>
   </changeSet>
 
   <changeSet author="liquibase" id="20240318000003">
@@ -22,8 +21,7 @@
              encoding="UTF-8"
              path="sql/3_RENAME_OLD_PART.sql"
              relativeToChangelogFile="true"
-             splitStatements="true"
-             stripComments="true"/>
+             splitStatements="true"/>
   </changeSet>
 
   <changeSet author="liquibase" id="20240318000006">
@@ -31,8 +29,7 @@
              encoding="UTF-8"
              path="sql/6_POPOLA_TABLE.sql"
              relativeToChangelogFile="true"
-             splitStatements="true"
-             stripComments="true"/>
+             splitStatements="true"/>
   </changeSet>
 
   <changeSet author="liquibase" id="20240318000007">
@@ -40,8 +37,7 @@
              encoding="UTF-8"
              path="sql/7_GRANT.sql"
              relativeToChangelogFile="true"
-             splitStatements="true"
-             stripComments="true"/>
+             splitStatements="true"/>
   </changeSet>
 
 </databaseChangeLog>
