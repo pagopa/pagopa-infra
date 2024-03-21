@@ -53,7 +53,7 @@ checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
 
 # ecommerce ingress hostname
-ecommerce_ingress_hostname = "disabled"
+ecommerce_ingress_hostname = "weuprod.ecommerce.internal.platform.pagopa.it"
 
 
 function_app_storage_account_info = {
@@ -64,4 +64,4 @@ function_app_storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
-checkout_cdn_storage_replication_type = "GRS"
+checkout_cdn_storage_replication_type = "GZRS"

@@ -7,11 +7,11 @@
       </ip-filter>
       <set-variable name="ccp" value="@(context.Request.Body.As<XElement>(preserveContent: true).Descendants().FirstOrDefault(a => a.Name.LocalName == "codiceContestoPagamento")?.Value)" />
       <set-variable name="id_pagamento" value="@(context.Request.Body.As<XElement>(preserveContent: true).Descendants().FirstOrDefault(a => a.Name.LocalName == "idPagamento")?.Value)" />
-      <set-variable name="ecommerce_url" value="${ecommerce_ingress_hostname}"/>
+      <!--<set-variable name="ecommerce_url" value="${ecommerce_ingress_hostname}"/-->
       <set-backend-service base-url="{{pagopa-appservice-proxy-url}}/FespCdService" />
     </inbound>
     <outbound>
-      <!-- START ecommerce activation result  -->
+      <!-- START ecommerce activation result  
       <choose>
         <when condition="@(context.Variables.GetValueOrDefault<string>("ecommerce_url","").Contains("pagopa.it"))">
           <send-request response-variable-name="transaction-check-result" ignore-error="true" mode="new">
@@ -28,7 +28,7 @@
           </send-request>
         </when>
       </choose>
-      <!-- END ecommerce activation result  -->
+     END ecommerce activation result  -->
       <base />
     </outbound>
     <backend>
