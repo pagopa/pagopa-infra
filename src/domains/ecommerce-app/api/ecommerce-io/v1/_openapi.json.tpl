@@ -1752,13 +1752,25 @@
             "items": {
               "$ref": "#/components/schemas/Bundle"
             }
+          },
+          "asset": {
+            "description": "Payment method asset",
+            "type": "string"
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         },
         "required": [
           "bundles",
           "paymentMethodName",
           "paymentMethodDescription",
-          "paymentMethodStatus"
+          "paymentMethodStatus",
+          "asset"
         ]
       },
       "Bundle": {
@@ -1881,6 +1893,13 @@
             "items": {
               "$ref": "#/components/schemas/Range"
             }
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         },
         "required": [
@@ -1985,11 +2004,11 @@
             "type": "string",
             "format": "date-time"
           },
-          "services": {
-            "description": "list of services for which this wallet is created for",
+          "applications": {
+            "description": "list of applications for which this wallet is created for",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Service"
+              "$ref": "#/components/schemas/WalletApplication"
             }
           },
           "details": {
@@ -2008,7 +2027,7 @@
           "status",
           "creationDate",
           "updateDate",
-          "services",
+          "applications",
           "paymentMethodAsset"
         ]
       },
@@ -2023,20 +2042,16 @@
                 "type": "string",
                 "description": "Wallet details discriminator field. Fixed valued 'CARDS'"
               },
-              "maskedPan": {
-                "description": "Card masked pan (first 6 digit and last 4 digit clear, other digit obfuscated)",
+              "lastFourDigits": {
+                "description": "Card last 4 digits",
                 "type": "string",
-                "example": "123456******9876"
+                "example": "9876"
               },
               "expiryDate": {
                 "type": "string",
                 "description": "Credit card expiry date. The date format is `YYYYMM`",
                 "pattern": "^[0-9]{6}$",
                 "example": "203012"
-              },
-              "holder": {
-                "description": "Holder of the card payment instrument",
-                "type": "string"
               },
               "brand": {
                 "description": "Payment instrument brand",
@@ -2051,9 +2066,8 @@
             },
             "required": [
               "type",
-              "maskedPan",
+              "lastFourDigits",
               "expiryDate",
-              "holder",
               "brand"
             ]
           },
@@ -2132,14 +2146,14 @@
           "ERROR"
         ]
       },
-      "Service": {
+      "WalletApplication": {
         "type": "object",
         "properties": {
           "name": {
-            "$ref": "#/components/schemas/ServiceName"
+            "$ref": "#/components/schemas/WalletApplicationName"
           },
           "status": {
-            "$ref": "#/components/schemas/ServiceStatus"
+            "$ref": "#/components/schemas/WalletApplicationStatus"
           },
           "updateDate": {
             "description": "Service last update date",
@@ -2148,7 +2162,7 @@
           }
         }
       },
-      "ServiceStatus": {
+      "WalletApplicationStatus": {
         "type": "string",
         "description": "Enumeration of wallet statuses",
         "enum": [
@@ -2157,9 +2171,9 @@
           "INCOMING"
         ]
       },
-      "ServiceName": {
+      "WalletApplicationName": {
         "type": "string",
-        "description": "Enumeration of services",
+        "description": "Enumeration of applications",
         "enum": [
           "PAGOPA"
         ]

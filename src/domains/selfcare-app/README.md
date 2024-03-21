@@ -16,7 +16,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_selfcare_backoffice_external_product"></a> [apim\_selfcare\_backoffice\_external\_product](#module\_apim\_selfcare\_backoffice\_external\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.7.0 |
+| <a name="module_apim_selfcare_backoffice_external_ec_product"></a> [apim\_selfcare\_backoffice\_external\_ec\_product](#module\_apim\_selfcare\_backoffice\_external\_ec\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.7.0 |
+| <a name="module_apim_selfcare_backoffice_external_psp_product"></a> [apim\_selfcare\_backoffice\_external\_psp\_product](#module\_apim\_selfcare\_backoffice\_external\_psp\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.7.0 |
 | <a name="module_apim_selfcare_backoffice_helpdesk_product"></a> [apim\_selfcare\_backoffice\_helpdesk\_product](#module\_apim\_selfcare\_backoffice\_helpdesk\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.7.0 |
 | <a name="module_apim_selfcare_product"></a> [apim\_selfcare\_product](#module\_apim\_selfcare\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.7.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.7.0 |

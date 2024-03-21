@@ -10,6 +10,12 @@ data "azurerm_virtual_network" "vnet_ita" {
   resource_group_name = data.azurerm_resource_group.vnet_ita_rg.name
 }
 
+data "azurerm_subnet" "aks_default_user_subnet" {
+  name                 = "pagopa-${var.env_short}-itn-${var.env}-user-aks"
+  virtual_network_name = data.azurerm_virtual_network.vnet_ita.name
+  resource_group_name  = data.azurerm_resource_group.vnet_ita_rg.name
+}
+
 #
 # CORE
 #
