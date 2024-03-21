@@ -1,10 +1,6 @@
-########################################################
-# Aggregated product for APIs of the following microservice
-# - GPD-core: module.apim_api_debt_positions_api_v1
-# - GPD-Payments: module.apim_api_gpd_payments_rest_external_api_v1
-# - GPD-Reporting-Analysis: module.apim_api_gpd_reporting_analysis_api
-# - GPD-Upload: module.apim_gpd_upload_api_v1
-########################################################
+####################################
+## GPD Payments Pull APIM Product ##
+####################################
 
 module "apim_gpd_payments_pull_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v6.11.2"
