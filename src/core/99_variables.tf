@@ -1784,7 +1784,7 @@ variable "apicfg_core_cache_path_value" {
 variable "apicfg_selfcare_integ_cache_path_value" {
   type        = string
   description = "apicfg selfcare integ cache path"
-  default     = "pagopa-api-config-selfcare-integration" // at moment blocked to ORA 👀 https://github.com/pagopa/pagopa-api-config-selfcare-integration/pull/36
+  default     = "pagopa-api-config-selfcare-integration/o" // at moment blocked to ORA 👀 https://github.com/pagopa/pagopa-api-config-selfcare-integration/pull/36
 }
 
 
