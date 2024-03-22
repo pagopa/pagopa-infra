@@ -74,6 +74,16 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized: the provided token is not valid or expired.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Payment methods not found",
             "content": {
@@ -155,6 +165,16 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized: the provided token is not valid or expired.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal server error serving request",
             "content": {
@@ -205,6 +225,16 @@
           },
           "400": {
             "description": "Invalid input id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: the provided token is not valid or expired.",
             "content": {
               "application/json": {
                 "schema": {
@@ -270,6 +300,16 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized: the provided token is not valid or expired.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Wallet not found"
           },
@@ -307,6 +347,16 @@
           },
           "400": {
             "description": "Invalid input id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: the provided token is not valid or expired.",
             "content": {
               "application/json": {
                 "schema": {
