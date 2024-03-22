@@ -386,6 +386,13 @@ variable "wisp_converter_cosmos_nosql_db_params" {
   })
 }
 
+variable "enable_wisp_converter" {
+  type        = bool
+  default     = false
+  description = "Enables WISP Converter"
+
+}
+
 # Nodo RE Storage Account
 
 variable "nodo_re_storage_account" {
