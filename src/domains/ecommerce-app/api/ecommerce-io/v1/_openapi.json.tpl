@@ -2004,11 +2004,11 @@
             "type": "string",
             "format": "date-time"
           },
-          "services": {
-            "description": "list of services for which this wallet is created for",
+          "applications": {
+            "description": "list of applications for which this wallet is created for",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Service"
+              "$ref": "#/components/schemas/WalletApplication"
             }
           },
           "details": {
@@ -2027,7 +2027,7 @@
           "status",
           "creationDate",
           "updateDate",
-          "services",
+          "applications",
           "paymentMethodAsset"
         ]
       },
@@ -2146,14 +2146,14 @@
           "ERROR"
         ]
       },
-      "Service": {
+      "WalletApplication": {
         "type": "object",
         "properties": {
           "name": {
-            "$ref": "#/components/schemas/ServiceName"
+            "$ref": "#/components/schemas/WalletApplicationName"
           },
           "status": {
-            "$ref": "#/components/schemas/ServiceStatus"
+            "$ref": "#/components/schemas/WalletApplicationStatus"
           },
           "updateDate": {
             "description": "Service last update date",
@@ -2162,7 +2162,7 @@
           }
         }
       },
-      "ServiceStatus": {
+      "WalletApplicationStatus": {
         "type": "string",
         "description": "Enumeration of wallet statuses",
         "enum": [
@@ -2171,9 +2171,9 @@
           "INCOMING"
         ]
       },
-      "ServiceName": {
+      "WalletApplicationName": {
         "type": "string",
-        "description": "Enumeration of services",
+        "description": "Enumeration of applications",
         "enum": [
           "PAGOPA"
         ]
