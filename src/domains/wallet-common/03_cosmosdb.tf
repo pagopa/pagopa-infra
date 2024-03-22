@@ -117,10 +117,16 @@ locals {
     },
     {
       name = "wallets-migration-pm",
-      indexes = [{
-        keys   = ["_id"]
-        unique = true
-      }],
+      indexes = [
+        {
+          keys   = ["_id"] # wallet id pm
+          unique = true
+        },
+        {
+          keys   = ["contractId"],
+          unique = true
+        }
+      ],
       shard_key = null
     }
   ]

@@ -52,32 +52,32 @@ module "checkout_cdn" {
       # Content-Security-Policy
       {
         action = "Overwrite"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = var.env_short == "p" || var.env_short == "d" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
         value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", var.dns_zone_prefix, var.external_domain)
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = var.env_short == "p" || var.env_short == "d" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
         value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = var.env_short == "p" || var.env_short == "d" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
         value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.sia.eu *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = var.env_short == "p" || var.env_short == "d" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
         value  = "img-src 'self' https://cdn.cookielaw.org https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data:;"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = var.env_short == "p" || var.env_short == "d" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
         value  = "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/;"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = var.env_short == "p" || var.env_short == "d" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
         value  = "style-src 'self'  'unsafe-inline'; worker-src www.recaptcha.net blob:;"
       }
     ]

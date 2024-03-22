@@ -69,7 +69,7 @@ pgres_flex_params = {
   # https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compute-storage#storage
   storage_mb                      = 1048576 # 1Tib
   zone                            = 1
-  backup_retention_days           = 7
+  backup_retention_days           = 30
   geo_redundant_backup_enabled    = true
   create_mode                     = "Default"
   high_availability_enabled       = true
