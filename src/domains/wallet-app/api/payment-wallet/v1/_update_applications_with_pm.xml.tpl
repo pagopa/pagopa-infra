@@ -42,7 +42,7 @@
             foreach(JObject application in applications){
                 String name = application["name"].ToString();
                 String status = application["status"].ToString();
-                if(name.Equals("pagoPA")) {
+                if(name.Equals("PAGOPA")) {
                     return new JObject(
                     new JProperty("data", new JObject(
                       new JProperty("pagoPA", status.Equals("ENABLED"))
