@@ -27,8 +27,7 @@ dns_zone_checkout    = "checkout"
 
 cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
 
-pagopa_proxy_tier = "PremiumV3"
-pagopa_proxy_size = "P1v3"
+pagopa_proxy_plan_sku = "P1v3"
 
 # Networking
 
@@ -51,6 +50,7 @@ checkout_function_always_on         = true
 checkout_function_autoscale_minimum = 1
 checkout_function_autoscale_maximum = 3
 checkout_function_autoscale_default = 1
+checkout_function_zone_balancing_enabled = false
 
 # ecommerce ingress hostname
 ecommerce_ingress_hostname = "weuprod.ecommerce.internal.platform.pagopa.it"
