@@ -130,6 +130,121 @@
           "Authorization" : [ ]
         } ]
       },
+      "put" : {
+        "tags" : [ "Debt Positions API" ],
+        "summary" : "The Organization updates multiple debt positions.",
+        "operationId" : "updateMultiplePositions",
+        "parameters" : [ {
+          "name" : "organizationfiscalcode",
+          "in" : "path",
+          "description" : "Organization fiscal code, the fiscal code of the Organization.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "toPublish",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean",
+            "default" : false
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MultiplePaymentPositionModel"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "500" : {
+            "description" : "Service unavailable.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Conflict: existing related payment found.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Wrong or missing function key.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Malformed request.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Debt Positions updated.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
+      },
       "parameters" : [ {
         "name" : "X-Request-Id",
         "in" : "header",
