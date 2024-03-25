@@ -237,24 +237,24 @@ variable "checkout_cdn_storage_replication_type" {
 }
 
 variable "checkout_function_zone_balancing_enabled" {
-  type = bool
+  type        = bool
   description = "(Optional) Enables zone balancing for checkout function"
-  default = true
+  default     = true
 }
 
 variable "checkout_function_worker_count" {
-  type = number
+  type        = number
   description = "(Optional) checkout function worker count number"
-  default = 1
+  default     = 1
 }
 
 variable "pagopa_proxy_plan_sku" {
   description = "(Required) pagopa proxy app service sku name"
-  type = string
+  type        = string
 }
 
 variable "pagopa_proxy_vnet_integration" {
-  type = bool
-  default = true
+  type        = bool
+  default     = true
   description = "(Optional) enables vnet integration for pagopa proxy app service"
 }
