@@ -9,4 +9,7 @@ locals {
   monitor_action_group_opsgenie_name = "PaymentManagerOpsgenie"
 
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
+
+  log_analytics_workspace_name                = "pagopa-${var.env_short}-law"
+  log_analytics_workspace_resource_group_name = "pagopa-${var.env_short}-monitor-rg"
 }

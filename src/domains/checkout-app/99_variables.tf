@@ -128,18 +128,6 @@ variable "cidr_subnet_pagopa_proxy" {
   default     = null
 }
 
-variable "pagopa_proxy_tier" {
-  type        = string
-  description = "pagopa-proxy Plan tier"
-  default     = null
-}
-
-variable "pagopa_proxy_size" {
-  type        = string
-  description = "pagopa-proxy Plan size"
-  default     = null
-}
-
 variable "pagopa_proxy_autoscale_minimum" {
   type        = number
   description = "The minimum number of instances for this resource."
@@ -229,6 +217,7 @@ variable "function_app_storage_account_info" {
     account_replication_type          = optional(string, "LRS")
     access_tier                       = optional(string, "Hot")
     advanced_threat_protection_enable = optional(bool, true)
+    use_legacy_defender_version       = optional(bool, true)
   })
 
   default = {
@@ -237,6 +226,7 @@ variable "function_app_storage_account_info" {
     account_replication_type          = "LRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
+    use_legacy_defender_version       = true
   }
 }
 
@@ -244,4 +234,27 @@ variable "checkout_cdn_storage_replication_type" {
   type        = string
   default     = "GRS"
   description = "(Optional) Checkout cnd storage replication type"
+}
+
+variable "checkout_function_zone_balancing_enabled" {
+  type = bool
+  description = "(Optional) Enables zone balancing for checkout function"
+  default = true
+}
+
+variable "checkout_function_worker_count" {
+  type = number
+  description = "(Optional) checkout function worker count number"
+  default = 1
+}
+
+variable "pagopa_proxy_plan_sku" {
+  description = "(Required) pagopa proxy app service sku name"
+  type = string
+}
+
+variable "pagopa_proxy_vnet_integration" {
+  type = bool
+  default = true
+  description = "(Optional) enables vnet integration for pagopa proxy app service"
 }

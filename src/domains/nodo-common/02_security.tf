@@ -21,6 +21,17 @@ resource "azurerm_key_vault_secret" "node_cfg_sync_re_sa_connection_string" {
   ]
 }
 
+resource "azurerm_key_vault_secret" "wisp_converter_re_sa_connection_string" {
+  count        = var.enable_wisp_converter ? 1 : 0
+  name         = "wisp-converter-re-sa-connection-string-key"
+  value        = module.wisp_converter_storage_account[0].primary_connection_string
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  depends_on = [
+    module.nodo_cfg_sync_re_storage_account
+  ]
+}
+
 /**********
 Event Hub
 ***********/
@@ -91,7 +102,26 @@ resource "azurerm_key_vault_secret" "verifyko_datastore_primary_key" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
-### redis
+/*****************
+CosmosDB
+*****************/
+
+resource "azurerm_key_vault_secret" "wisp_converter_cosmosdb_account_key" {
+  count        = var.enable_wisp_converter ? 1 : 0
+  name         = "cosmosdb-wisp-converter-account-key"
+  value        = module.cosmosdb_account_wispconv[0].primary_key
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  depends_on = [
+    module.cosmosdb_account_wispconv
+  ]
+}
+
+
+/*****************
+Redis
+*****************/
+
 resource "azurerm_key_vault_secret" "redis_primary_key" {
   name         = "redis-primary-key"
   value        = data.azurerm_redis_cache.redis_cache.primary_access_key

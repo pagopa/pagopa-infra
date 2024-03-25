@@ -14,6 +14,7 @@ locals {
     "pagopa-stand-in-technical-support",
     "pagopa-node-cfg-sync",
     "pagopa-nodo-verifyko-aux",
+    "pagopa-wisp-soap-converter",
     "pagopa-wisp-converter",
     "pagopa-wisp-converter-technical-support"
   ]
