@@ -19,3 +19,4 @@ module "apim_gpd_payments_pull_product" {
 
   policy_xml = file("./api_product/payments-pull/_base_policy.xml")
 }
+
