@@ -137,6 +137,25 @@ module "checkout_cdn" {
         destination             = "/ecommerce-fe/index.html"
         preserve_unmatched_path = false
       }
+    },
+    {
+      name  = "CorsFontForNPG"
+      order = 5
+
+      conditions = [{
+        condition_type   = "request_header_conditions"
+        name             = "Origin"
+        operator         = "Equals"
+        match_values     = [var.env_short == "p" ? "https://xpay.nexigroup.com" : "https://stg-ta.nexigroup.com"]
+        transforms       = []
+        negate_condition = false
+      }]
+
+      modify_response_header_actions = [{
+        action = "Overwrite"
+        name   = "Access-Control-Allow-Origin"
+        value  = var.env_short == "p" ? "https://xpay.nexigroup.com" : "https://stg-ta.nexigroup.com"
+      }]
     }
   ]
 
