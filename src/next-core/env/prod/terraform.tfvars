@@ -197,6 +197,7 @@ ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
 ehns_capacity                 = 5
 ehns_zone_redundant           = true
+ehns_public_network_access = true
 
 ehns_metric_alerts = {
   no_trx = {

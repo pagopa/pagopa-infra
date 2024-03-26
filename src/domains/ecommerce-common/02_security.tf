@@ -497,15 +497,3 @@ resource "azurerm_key_vault_secret" "redirect_url_mapping" {
     ]
   }
 }
-
-resource "azurerm_key_vault_secret" "redirect_refund_mapping" {
-  name         = "redirect-refund-mapping"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
