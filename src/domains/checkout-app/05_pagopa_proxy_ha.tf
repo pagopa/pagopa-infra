@@ -1,6 +1,6 @@
 module "pagopa_proxy_app_service_ha" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
-
+  count = var.pagopa_proxy_ha_enabled ? 1 : 0
   depends_on = [
     module.pagopa_proxy_snet_ha
   ]
@@ -37,14 +37,14 @@ module "pagopa_proxy_app_service_ha" {
 
 
 module "pagopa_proxy_app_service_slot_staging_ha" {
-  count = var.env_short == "p" ? 1 : 0
+  count = var.env_short == "p" && var.pagopa_proxy_ha_enabled ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.69.1"
 
   # App service plan
 #  app_service_plan_id = module.pagopa_proxy_app_service.plan_id
-  app_service_id      = module.pagopa_proxy_app_service_ha.id
-  app_service_name    = module.pagopa_proxy_app_service_ha.name
+  app_service_id      = module.pagopa_proxy_app_service_ha[0].id
+  app_service_name    = module.pagopa_proxy_app_service_ha[0].name
 
   # App service
   name                = "staging"
@@ -69,10 +69,11 @@ module "pagopa_proxy_app_service_slot_staging_ha" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "pagopa_proxy_app_service_autoscale_ha" {
+  count = var.pagopa_proxy_ha_enabled ? 1 : 0
   name                = format("%s-autoscale-pagopa-proxy-ha", local.parent_project)
   resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
   location            = data.azurerm_resource_group.pagopa_proxy_rg.location
-  target_resource_id  = module.pagopa_proxy_app_service_ha.plan_id
+  target_resource_id  = module.pagopa_proxy_app_service_ha[0].plan_id
 
   profile {
     name = "default"
@@ -86,7 +87,7 @@ resource "azurerm_monitor_autoscale_setting" "pagopa_proxy_app_service_autoscale
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.pagopa_proxy_app_service_ha.id
+        metric_resource_id       = module.pagopa_proxy_app_service_ha[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -108,7 +109,7 @@ resource "azurerm_monitor_autoscale_setting" "pagopa_proxy_app_service_autoscale
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.pagopa_proxy_app_service_ha.id
+        metric_resource_id       = module.pagopa_proxy_app_service_ha[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"

@@ -48,9 +48,10 @@ locals {
 }
 
 
-
 module "node_forwarder_app_service" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
+
+  count = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
 
   vnet_integration    = false
   resource_group_name = "${local.product}-node-forwarder-rg"
@@ -84,13 +85,13 @@ module "node_forwarder_app_service" {
 }
 
 module "node_forwarder_slot_staging" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short != "d" && var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.60.0"
 
   # App service plan
-  app_service_id   = module.node_forwarder_app_service.id
-  app_service_name = module.node_forwarder_app_service.name
+  app_service_id   = module.node_forwarder_app_service[0].id
+  app_service_name = module.node_forwarder_app_service[0].name
 
   # App service
   name                = "staging"
@@ -111,10 +112,11 @@ module "node_forwarder_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autoscale" {
+  count = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
   name                = "${local.project}-autoscale-node-forwarder-ha"
   resource_group_name = local.node_forwarder_rg_name
   location            = var.location
-  target_resource_id  = module.node_forwarder_app_service.plan_id
+  target_resource_id  = module.node_forwarder_app_service[0].plan_id
   enabled             = var.node_forwarder_autoscale_enabled
 
   # default profile on REQUESTs
@@ -130,7 +132,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.node_forwarder_app_service.id
+        metric_resource_id       = module.node_forwarder_app_service[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -152,7 +154,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.node_forwarder_app_service.id
+        metric_resource_id       = module.node_forwarder_app_service[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -176,7 +178,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.node_forwarder_app_service.id
+        metric_resource_id       = module.node_forwarder_app_service[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -198,7 +200,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.node_forwarder_app_service.id
+        metric_resource_id       = module.node_forwarder_app_service[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -228,11 +230,11 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
 # Alert on mem or cpu avr
 #################################
 resource "azurerm_monitor_metric_alert" "app_service_over_cpu_usage" {
-  count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" && var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-pagopa-node-forwarder-ha-cpu-usage-over-80"
 
-  scopes      = [module.node_forwarder_app_service.plan_id]
+  scopes      = [module.node_forwarder_app_service[0].plan_id]
   description = "Forwarder CPU usage greater than 80% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
   severity    = 3
   frequency   = "PT5M"
@@ -265,11 +267,11 @@ resource "azurerm_monitor_metric_alert" "app_service_over_cpu_usage" {
 }
 
 resource "azurerm_monitor_metric_alert" "app_service_over_mem_usage" {
-  count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" && var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-pagopa-node-forwarder-ha-mem-usage-over-80"
 
-  scopes      = [module.node_forwarder_app_service.plan_id]
+  scopes      = [module.node_forwarder_app_service[0].plan_id]
   description = "Forwarder MEM usage greater than 80% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
   severity    = 3
   frequency   = "PT5M"

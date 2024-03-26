@@ -2,9 +2,10 @@
 # node
 ################
 
+
 module "shared_pdf_engine_app_service_ha" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
-
+  count = var.pdf_engine_app_ha_enabled ? 1 : 0
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
   location            = var.location
@@ -35,14 +36,14 @@ module "shared_pdf_engine_app_service_ha" {
 }
 
 module "shared_pdf_engine_slot_staging_ha" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short != "d" && var.pdf_engine_app_ha_enabled ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.69.1"
 
   # App service plan
   # app_service_plan_id = module.shared_pdf_engine_app_service.plan_id
-  app_service_id   = module.shared_pdf_engine_app_service_ha.id
-  app_service_name = module.shared_pdf_engine_app_service_ha.name
+  app_service_id   = module.shared_pdf_engine_app_service_ha[0].id
+  app_service_name = module.shared_pdf_engine_app_service_ha[0].name
 
   # App service
   name                = "staging"
@@ -67,12 +68,12 @@ module "shared_pdf_engine_slot_staging_ha" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_autoscale_ha" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short != "d" && var.pdf_engine_app_ha_enabled ? 1 : 0
 
   name                = format("%s-autoscale-pdf-engine-ha", local.project)
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
   location            = azurerm_resource_group.shared_pdf_engine_app_service_rg.location
-  target_resource_id  = module.shared_pdf_engine_app_service_ha.plan_id
+  target_resource_id  = module.shared_pdf_engine_app_service_ha[0].plan_id
   enabled             = var.app_service_pdf_engine_autoscale_enabled
 
   profile {
@@ -88,7 +89,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.shared_pdf_engine_app_service_ha.id
+        metric_resource_id       = module.shared_pdf_engine_app_service_ha[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -110,7 +111,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.shared_pdf_engine_app_service_ha.id
+        metric_resource_id       = module.shared_pdf_engine_app_service_ha[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -136,7 +137,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.shared_pdf_engine_app_service_ha.id
+        metric_resource_id       = module.shared_pdf_engine_app_service_ha[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -158,7 +159,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.shared_pdf_engine_app_service_ha.id
+        metric_resource_id       = module.shared_pdf_engine_app_service_ha[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -184,7 +185,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.shared_pdf_engine_app_service_ha.plan_id
+        metric_resource_id       = module.shared_pdf_engine_app_service_ha[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -206,7 +207,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.shared_pdf_engine_app_service_ha.plan_id
+        metric_resource_id       = module.shared_pdf_engine_app_service_ha[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -235,7 +236,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
 ################
 module "shared_pdf_engine_app_service_java_ha" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
-
+  count = var.pdf_engine_app_ha_enabled ? 1 : 0
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
   location            = var.location
@@ -265,14 +266,14 @@ module "shared_pdf_engine_app_service_java_ha" {
 }
 
 module "shared_pdf_engine_java_slot_staging_ha" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short != "d" && var.pdf_engine_app_ha_enabled ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.69.1"
 
   # App service plan
   # app_service_plan_id = module.shared_pdf_engine_app_service.plan_id
-  app_service_id   = module.shared_pdf_engine_app_service_java_ha.id
-  app_service_name = module.shared_pdf_engine_app_service_java_ha.name
+  app_service_id   = module.shared_pdf_engine_app_service_java_ha[0].id
+  app_service_name = module.shared_pdf_engine_app_service_java_ha[0].name
 
   # App service
   name                = "staging"
@@ -297,12 +298,12 @@ module "shared_pdf_engine_java_slot_staging_ha" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_java_autoscale_ha" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short != "d" && var.pdf_engine_app_ha_enabled ? 1 : 0
 
   name                = format("%s-autoscale-pdf-engine-java-ha", local.project)
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
   location            = azurerm_resource_group.shared_pdf_engine_app_service_rg.location
-  target_resource_id  = module.shared_pdf_engine_app_service_java_ha.plan_id
+  target_resource_id  = module.shared_pdf_engine_app_service_java_ha[0].plan_id
   enabled             = var.app_service_pdf_engine_autoscale_enabled
 
   profile {
@@ -318,7 +319,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java_ha.id
+        metric_resource_id       = module.shared_pdf_engine_app_service_java_ha[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -340,7 +341,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java_ha.id
+        metric_resource_id       = module.shared_pdf_engine_app_service_java_ha[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -366,7 +367,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java_ha.id
+        metric_resource_id       = module.shared_pdf_engine_app_service_java_ha[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -388,7 +389,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java_ha.id
+        metric_resource_id       = module.shared_pdf_engine_app_service_java_ha[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -414,7 +415,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java_ha.plan_id
+        metric_resource_id       = module.shared_pdf_engine_app_service_java_ha[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -436,7 +437,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java_ha.plan_id
+        metric_resource_id       = module.shared_pdf_engine_app_service_java_ha[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"

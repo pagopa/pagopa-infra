@@ -271,3 +271,8 @@ variable "pagopa_proxy_zone_balance_enabled" {
   description = "(Optional) enables zone balancing for pagopa proxy app service"
   default = true
 }
+
+variable "pagopa_proxy_ha_enabled" {
+  type = bool
+  description = "(Required) enables the deployment of pagopa proxy in HA"
+}

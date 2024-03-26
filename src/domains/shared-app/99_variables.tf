@@ -299,3 +299,8 @@ variable "robots_indexed_paths" {
   type        = list(string)
   description = "List of cdn paths to allow robots index"
 }
+
+variable "pdf_engine_app_ha_enabled" {
+  type = bool
+  description = "(Required) enables the deployment of pdf engine in HA mode"
+}

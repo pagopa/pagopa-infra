@@ -19,7 +19,9 @@ tags = {
 
 ### Feature Flag
 is_feature_enabled = {
-  vnet_ita = true
+  vnet_ita = true,
+  container_app_tools_cae = true,
+  node_forwarder_ha_enabled = true
 }
 
 ### Network
@@ -625,3 +627,4 @@ eventhubs_04 = [
 node_forwarder_autoscale_enabled      = false
 node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "B1"
+

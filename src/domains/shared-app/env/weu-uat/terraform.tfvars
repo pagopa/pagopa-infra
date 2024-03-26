@@ -70,3 +70,4 @@ app_service_pdf_engine_sku_name      = "P1v3"
 app_service_pdf_engine_sku_name_java = "P1v3"
 
 robots_indexed_paths = []
+pdf_engine_app_ha_enabled = false
