@@ -59,7 +59,7 @@ resource "azurerm_storage_queue" "cu_blob_event_queue" {
 
 ## blob container (Input CSV Blob)
 resource "azurerm_storage_container" "in_csv_blob_container" {
-  count = var.env_short == "p" ? 1 : 0 // not del in prod only for backup 
+  count = var.env_short == "p" ? 1 : 0 // not del in prod only for backup
 
   name                  = "${module.canoneunico_sa.name}incsvcontainer"
   storage_account_name  = module.canoneunico_sa.name
@@ -68,7 +68,7 @@ resource "azurerm_storage_container" "in_csv_blob_container" {
 
 ## blob container (Output CSV Blob)
 resource "azurerm_storage_container" "out_csv_blob_container" {
-  count = var.env_short == "p" ? 1 : 0 // not del in prod only for backup 
+  count = var.env_short == "p" ? 1 : 0 // not del in prod only for backup
 
   name                  = "${module.canoneunico_sa.name}outcsvcontainer"
   storage_account_name  = module.canoneunico_sa.name
@@ -77,7 +77,7 @@ resource "azurerm_storage_container" "out_csv_blob_container" {
 
 ## blob container (Error CSV Blob)
 resource "azurerm_storage_container" "err_csv_blob_container" {
-  count = var.env_short == "p" ? 1 : 0 // not del in prod only for backup 
+  count = var.env_short == "p" ? 1 : 0 // not del in prod only for backup
 
   name                  = "${module.canoneunico_sa.name}errcsvcontainer"
   storage_account_name  = module.canoneunico_sa.name
@@ -85,18 +85,18 @@ resource "azurerm_storage_container" "err_csv_blob_container" {
 }
 
 
-# ##################################### # 
+# ##################################### #
 # CUP corporate automation itfself
-# ##################################### # 
+# ##################################### #
 
 # https://learn.microsoft.com/en-us/azure/templates/microsoft.storage/storageaccounts/localusers?pivots=deployment-language-terraform
-# list of local user 
+# list of local user
 locals {
   cup_localuser_corporate = var.corporate_cup_users
 }
 
 
-# 1. creare corporate container & directory 
+# 1. creare corporate container & directory
 resource "azurerm_storage_container" "corporate_containers" {
   for_each = { for c in local.cup_localuser_corporate : c.username => c }
 
@@ -150,7 +150,7 @@ resource "azapi_resource" "sftp_localuser_on_container" {
   body = jsonencode({
     properties = {
       hasSshPassword = true,
-      homeDirectory  = "./"
+      homeDirectory  = "${each.value.username}container"
       hasSharedKey   = true,
       hasSshKey      = false,
       permissionScopes = [{
