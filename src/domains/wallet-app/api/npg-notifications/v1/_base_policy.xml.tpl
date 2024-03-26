@@ -56,6 +56,13 @@
                 JObject receivedAdditionalData = (JObject)additionalData;
                 errorCode = (string)receivedAdditionalData["authorizationStatus"];
             }
+            if(paymentCircuit == "CARD"){
+                details = new JObject();
+                details["type"] = "CARD";
+                if(additionalData.Type != JTokenType.Null){
+                    details["paymentInstrumentGatewayId"] = (string)((JObject)additionalData)["cardId4"];
+                }
+            }
             JObject request = new JObject();
             request["timestampOperation"] = timestampOperation;
             request["operationResult"] = operationResult;
