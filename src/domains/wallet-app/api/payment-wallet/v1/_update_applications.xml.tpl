@@ -39,7 +39,17 @@
     <choose>
       <when condition="@(((IResponse)context.Variables["pdv-token"]).StatusCode != 200)">
         <return-response>
-          <set-status code="502" reason="Bad Gateway" />
+        <set-status code="502" />
+        <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+        </set-header>
+        <set-body>
+        {
+            "title": "Bad gateway - Invalid PDV response status code",
+            "status": 502,
+            "details": "Cannot tokenize fiscal code"
+        }
+        </set-body>
         </return-response>
       </when>
     </choose>
@@ -54,7 +64,7 @@
               </set-header>
               <set-body>
               {
-                  "title": "Bad gateway - Invalid PDV response",
+                  "title": "Bad gateway - Invalid PDV response body",
                   "status": 502,
                   "details": "Cannot tokenize fiscal code"
               }

@@ -54,14 +54,14 @@
        }</set-body>
     </send-request>
     <!-- END payment status wallet -->
-    <set-variable name="changeStatusCode" value="@(((IResponse)context.Variables["pmWalletStatusResponse"]).StatusCode)" />
+    <set-variable name="updateStatusCode" value="@(((IResponse)context.Variables["pmWalletStatusResponse"]).StatusCode)" />
     <choose>
-        <when condition="@(((int)context.Variables["changeStatusCode"]) == 200 || ((int)context.Variables["changeStatusCode"]) == 201)">
+        <when condition="@(((int)context.Variables["updateStatusCode"]) == 200 || ((int)context.Variables["updateStatusCode"]) == 201)">
             <return-response>
                 <set-status code="204" reason="No content" />
             </return-response>
         </when>     
-        <when condition="@(((int)context.Variables["changeStatusCode"]) == 401)">
+        <when condition="@(((int)context.Variables["updateStatusCode"]) == 401)">
             <return-response>
                 <set-status code="401" reason="Unauthorized" />
                 <set-header name="Content-Type" exists-action="override">
@@ -76,7 +76,7 @@
                 </set-body>
             </return-response>
         </when>
-        <when condition="@(((int)context.Variables["changeStatusCode"]) == 403)">
+        <when condition="@(((int)context.Variables["updateStatusCode"]) == 403)">
         <return-response>
             <set-status code="403" reason="Forbidden" />
             <set-header name="Content-Type" exists-action="override">
@@ -91,7 +91,7 @@
             </set-body>
         </return-response>
     </when>
-        <when condition="@(((int)context.Variables["changeStatusCode"]) == 404)">
+        <when condition="@(((int)context.Variables["updateStatusCode"]) == 404)">
             <return-response>
                 <set-status code="404" reason="Not Found" />
                 <set-header name="Content-Type" exists-action="override">
