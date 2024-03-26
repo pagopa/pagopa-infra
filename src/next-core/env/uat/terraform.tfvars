@@ -19,7 +19,9 @@ tags = {
 
 ### Feature Flag
 is_feature_enabled = {
-  vnet_ita = false
+  vnet_ita = false,
+  container_app_tools_cae = true,
+  node_forwarder_ha_enabled = false
 }
 
 #
@@ -159,12 +161,6 @@ app_gateway_prf_certificate_name = "api-prf-platform-pagopa-it"
 base_path_nodo_oncloud           = "/nodo-uat"
 
 
-#
-# Feature Flags
-#
-enabled_resource = {
-  container_app_tools_cae = true
-}
 
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
@@ -613,3 +609,8 @@ eventhubs_04 = [
     ]
   }
 ]
+
+node_forwarder_logging_level          = "DEBUG"
+node_forwarder_zone_balancing_enabled = false
+node_forwarder_sku                    = "B1"
+

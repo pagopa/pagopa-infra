@@ -89,3 +89,4 @@ pod_disruption_budgets = {
 
 pagopa_shared_toolbox_enabled = false
 robots_indexed_paths          = []
+pdf_engine_app_ha_enabled = false
