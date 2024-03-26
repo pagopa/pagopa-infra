@@ -16,6 +16,10 @@ if [[ "${TIPO}" == 'dev' ]]; then
   export POSTGRES_DB_PORT="6432"
   export POSTGRES_DB="nodo"
   export NODO_CFG_SCHEMA=$SCHEMA
+  export NODO_ONLINE_SCHEMA='online'
+  export NODO_OFFLINE_SCHEMA='offline'
+  export NODO_RE_SCHEMA='re'
+  export NODO_WFESP_SCHEMA='wfesp'
   export LQB_CONTEXTS="dev"
   export NODO_CFG_USERNAME=$SCHEMA
   export NODO_CFG_PASSWORD="password"
@@ -28,6 +32,10 @@ elif [[ "${TIPO}" == 'it' ]]; then
   export POSTGRES_DB_PORT="6432"
   export POSTGRES_DB="nodo-replica"
   export NODO_CFG_SCHEMA=$SCHEMA
+  export NODO_ONLINE_SCHEMA='online'
+  export NODO_OFFLINE_SCHEMA='offline'
+  export NODO_RE_SCHEMA='re'
+  export NODO_WFESP_SCHEMA='wfesp'
   export LQB_CONTEXTS="it"
   export NODO_CFG_USERNAME=$SCHEMA
   export NODO_CFG_PASSWORD="password"
@@ -86,20 +94,23 @@ if [[ "${SCHEMA}" == 'offline' ]]; then
   export NODO_ONLINE_SCHEMA="online"
 fi
 
-properties=${NODO_CFG_SCHEMA}.properties
+properties=$SCHEMA.properties
 
 echo "
-classpath: ./changelog/$NODO_CFG_SCHEMA/
+classpath: ./changelog/$SCHEMA/
 liquibase.headless: true
-#url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?sslmode=require&prepareThreshold=0&currentSchema=${NODO_CFG_SCHEMA}
-url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?prepareThreshold=0&currentSchema=${NODO_CFG_SCHEMA}
+#url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?sslmode=require&prepareThreshold=0&currentSchema=$SCHEMA
+url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?prepareThreshold=0&currentSchema=$SCHEMA
 contexts: ${LQB_CONTEXTS}
 username: ${NODO_CFG_USERNAME}
 password: ${NODO_CFG_PASSWORD}
-defaultSchemaName: ${NODO_CFG_SCHEMA}
-liquibaseSchemaName: ${NODO_CFG_SCHEMA}
-parameter.schema: ${NODO_CFG_SCHEMA}
+defaultSchemaName: $SCHEMA
+liquibaseSchemaName: $SCHEMA
+parameter.schema: $SCHEMA
 parameter.schemaOnline: ${NODO_ONLINE_SCHEMA}
+parameter.schemaOffline: ${NODO_OFFLINE_SCHEMA}
+parameter.schemaRe: ${NODO_RE_SCHEMA}
+parameter.schemaWfesp: ${NODO_WFESP_SCHEMA}
 parameter.usernameOffline: offline
 liquibase.hub.mode: OFF
 log-level: INFO
@@ -110,7 +121,7 @@ log-level: INFO
 # liquibase --defaultsFile=cfg.properties update-sql --changelogFile="db.changelog-master-$VERSION.xml"
 
 liquibase \
---defaultsFile=${properties} update \
+--defaultsFile=${properties} update-sql \
 --contexts="${LQB_CONTEXTS}" \
 --changelogFile="db.changelog-master-$VERSION.xml"
 
