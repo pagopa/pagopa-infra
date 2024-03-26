@@ -50,12 +50,7 @@ dns_forwarder_backup_is_enabled = false
 geo_replica_enabled          = false
 postgres_private_dns_enabled = false
 
-#
-# Feature Flags
-#
-enabled_resource = {
-  container_app_tools_cae = true
-}
+
 #
 # apim v2
 #
