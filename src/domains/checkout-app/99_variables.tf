@@ -128,6 +128,12 @@ variable "cidr_subnet_pagopa_proxy" {
   default     = null
 }
 
+variable "cidr_subnet_pagopa_proxy_ha" {
+  type        = list(string)
+  description = "Address prefixes subnet proxy ha"
+  default     = null
+}
+
 variable "pagopa_proxy_autoscale_minimum" {
   type        = number
   description = "The minimum number of instances for this resource."
@@ -257,4 +263,11 @@ variable "pagopa_proxy_vnet_integration" {
   type = bool
   default = true
   description = "(Optional) enables vnet integration for pagopa proxy app service"
+}
+
+
+variable "pagopa_proxy_zone_balance_enabled" {
+  type = bool
+  description = "(Optional) enables zone balancing for pagopa proxy app service"
+  default = true
 }

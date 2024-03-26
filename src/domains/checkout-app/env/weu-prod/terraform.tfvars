@@ -26,8 +26,10 @@ dns_zone_checkout    = "checkout"
 ### pagopa-proxy app service
 
 cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
+cidr_subnet_pagopa_proxy_ha = ["10.1.194.0/27"]
 
 pagopa_proxy_plan_sku = "P1v3"
+pagopa_proxy_zone_balance_enabled = true
 
 # Networking
 
