@@ -52,13 +52,13 @@
               <set-header name="Content-Type" exists-action="override">
                   <value>application/json</value>
               </set-header>
-              <set-body>@{
-          return new JObject(
-            new JProperty("title", "Bad gateway - Invalid PDV response"),
-            new JProperty("status", 502),
-            new JProperty("detail", "Cannot tokenize fiscal code")
-          ).ToString();
-        }</set-body>
+              <set-body>
+              {
+                  "title": "Bad gateway - Invalid PDV response",
+                  "status": 502,
+                  "details": "Cannot tokenize fiscal code"
+              }
+              </set-body>
           </return-response>
       </when>
     </choose>
