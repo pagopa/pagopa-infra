@@ -1,3 +1,9 @@
+
+locals {
+  npg_sdk_hostname                    = var.env_short == "p" ? "https://xpay.nexigroup.com" : "https://stg-ta.nexigroup.com"
+  content_security_policy_header_name = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+}
+
 /**
  * Checkout resource group
  **/
@@ -53,32 +59,32 @@ module "checkout_cdn" {
       # Content-Security-Policy
       {
         action = "Overwrite"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = local.content_security_policy_header_name
         value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", var.dns_zone_prefix, var.external_domain)
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = local.content_security_policy_header_name
         value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = local.content_security_policy_header_name
         value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.sia.eu *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = local.content_security_policy_header_name
         value  = "img-src 'self' https://cdn.cookielaw.org https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it;"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://xpay.nexigroup.com https://stg-ta.nexigroup.com ;"
+        name   = local.content_security_policy_header_name
+        value  = "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname};"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = local.content_security_policy_header_name
         value  = "style-src 'self'  'unsafe-inline'; worker-src www.recaptcha.net blob:;"
       }
     ]
@@ -157,7 +163,7 @@ module "checkout_cdn" {
       request_header_conditions = [{
         selector         = "Origin"
         operator         = "Equal"
-        match_values     = [var.env_short == "p" ? "https://xpay.nexigroup.com" : "https://stg-ta.nexigroup.com"]
+        match_values     = ["https://${local.npg_sdk_hostname}"]
         transforms       = []
         negate_condition = false
       }]
@@ -171,7 +177,7 @@ module "checkout_cdn" {
       modify_response_header_actions = [{
         action = "Overwrite"
         name   = "Access-Control-Allow-Origin"
-        value  = var.env_short == "p" ? "https://xpay.nexigroup.com" : "https://stg-ta.nexigroup.com"
+        value  = "https://${local.npg_sdk_hostname}"
       }]
       cache_expiration_actions       = []
       cache_key_query_string_actions = []
