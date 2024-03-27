@@ -95,6 +95,17 @@
               }
             }
           },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not found the receipt.",
             "headers": {
@@ -109,17 +120,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
                 }
               }
             }
@@ -244,6 +244,17 @@
               }
             }
           },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Not found the receipt.",
             "headers": {
@@ -258,17 +269,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
                 }
               }
             }
@@ -311,6 +311,28 @@
         "description": "Return OK if application is started",
         "operationId": "healthCheck",
         "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Too many requests",
             "headers": {
@@ -340,17 +362,6 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "headers": {
@@ -365,17 +376,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.AppInfo"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
                 }
               }
             }
