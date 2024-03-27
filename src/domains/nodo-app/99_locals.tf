@@ -1,6 +1,7 @@
 locals {
-  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  product = "${var.prefix}-${var.env_short}"
+  project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  product          = "${var.prefix}-${var.env_short}"
+  product_location = "${var.prefix}-${var.env_short}-${var.location_short}"
 
   app_insights_ips_west_europe = [
     "51.144.56.96/28",
@@ -13,7 +14,7 @@ locals {
 
   monitor_action_group_slack_name    = "SlackPagoPANODO"
   monitor_action_group_email_name    = "PagoPA"
-  monitor_action_group_opsgenie_name = "NuovaConnettivitOpsgenie"
+  monitor_action_group_opsgenie_name = "Opsgenie"
   monitor_appinsights_name           = "${local.product}-appinsights"
 
   vnet_name                = "${local.product}-vnet"
@@ -33,9 +34,14 @@ locals {
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"
 
+  pagopa_apim_v2_name = "${local.product_location}-core-apim-v2"
+  pagopa_apim_v2_rg   = "${local.product}-api-rg"
+
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   apim_snet     = "${local.product}-apim-snet"
   nodo_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
+
+  nodo_datamigration_hostname = "${local.nodo_hostname}/datamigration"
 
   apim_for_node = {
     product_id            = "apim_for_node"

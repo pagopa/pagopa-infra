@@ -33,4 +33,9 @@ locals {
   aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
 
   subscription_name = "${var.env}-${var.prefix}"
+
+  azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
+  azdo_iac_managed_identities   = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
+
+  evt_hub_location = "weu-core"
 }

@@ -2,14 +2,18 @@
 ## API-CONFIG CORE ##
 #####################
 
+locals {
+  app_name = format("%s-%s-app-api-config", var.prefix, var.env_short)
+}
+
 # Node database availability
 resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck" {
-  name                = format("%s-%s", module.api_config_app_service.name, "db-healthcheck")
+  name                = format("%s-%s", local.app_name, "db-healthcheck")
   resource_group_name = azurerm_resource_group.api_config_rg.name
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "DB Nodo Healthcheck"
     custom_webhook_payload = "{}"
   }
@@ -24,7 +28,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
     | extend Availability=((Success*1.0)/Total)*100
     | where toint(Availability) < 99
   QUERY
-    , module.api_config_app_service.name
+    , local.app_name
   )
   severity    = 1
   frequency   = 45
@@ -37,13 +41,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_db_healthcheck
 
 # JDBC connection problem
 resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_jdbc_connection" {
-  name                = format("%s-%s", module.api_config_app_service.name, "jdbc-connection")
+  name                = format("%s-%s", local.app_name, "jdbc-connection")
   resource_group_name = azurerm_resource_group.api_config_rg.name
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie[0].id]
-    email_subject          = "JDBC Connection"
+    action_group           = var.env_short != "d" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "[${var.env}] JDBC Connection"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
@@ -61,7 +65,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "apiconfig_jdbc_connectio
     | where Problem > threshold
     | order by length desc
     QUERY
-    , module.api_config_app_service.name
+    , local.app_name
   )
 
   severity    = 1

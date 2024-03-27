@@ -31,7 +31,7 @@ dns_zone_internal_prefix = "internal.dev.platform"
 cidr_subnet_flex_dbms = ["10.1.160.0/24"]
 
 ## CIDR storage subnet
-cidr_subnet_storage_account = ["10.1.137.16/29"]
+cidr_subnet_storage_account                                        = ["10.1.137.16/29"]
 storage_account_snet_private_link_service_network_policies_enabled = false
 
 pgres_flex_params = {
@@ -52,6 +52,7 @@ pgres_flex_params = {
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
   max_connections                        = 1700
+  enable_private_dns_registration        = false
 }
 
 sftp_account_replication_type = "LRS"
@@ -112,20 +113,19 @@ custom_metric_alerts = {
   }
 }
 
-cosmos_mongo_db_params = {
+cosmos_nosql_db_params = {
   enabled      = true
-  kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  kind         = "GlobalDocumentDB"
+  capabilities = ["EnableServerless"]
   offer_type   = "Standard"
   consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 5
+    consistency_level       = "Strong"
+    max_interval_in_seconds = 300
     max_staleness_prefix    = 100000
   }
-  server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
-  enable_free_tier                 = false
-
+  server_version                    = "4.0"
+  main_geo_location_zone_redundant  = false
+  enable_free_tier                  = false
   additional_geo_locations          = []
   private_endpoint_enabled          = false
   public_network_access_enabled     = true
@@ -133,17 +133,88 @@ cosmos_mongo_db_params = {
 
   backup_continuous_enabled = false
 
+  events_ttl     = 2629800 # 1 month in second
+  max_throughput = 1000
 }
 
-cidr_subnet_cosmosdb_nodo_re = ["10.1.170.0/24"]
+verifyko_cosmos_nosql_db_params = {
+  enabled      = true
+  kind         = "GlobalDocumentDB"
+  capabilities = ["EnableServerless"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "Strong"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                    = "4.0"
+  main_geo_location_zone_redundant  = false
+  enable_free_tier                  = false
+  additional_geo_locations          = []
+  private_endpoint_enabled          = false
+  public_network_access_enabled     = true
+  is_virtual_network_filter_enabled = false
 
-cosmos_mongo_db_nodo_re_params = {
-  enable_serverless  = true
-  enable_autoscaling = true
-  max_throughput     = 5000
-  throughput         = 1000
-  events_ttl         = 86400 # 1 days
+  backup_continuous_enabled = false
+
+  events_ttl     = 2629800 # 1 month in second
+  max_throughput = 1000
 }
+
+standin_cosmos_nosql_db_params = {
+  enabled      = true
+  kind         = "GlobalDocumentDB"
+  capabilities = ["EnableServerless"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "Strong"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                    = "4.0"
+  main_geo_location_zone_redundant  = false
+  enable_free_tier                  = false
+  additional_geo_locations          = []
+  private_endpoint_enabled          = false
+  public_network_access_enabled     = true
+  is_virtual_network_filter_enabled = false
+
+  backup_continuous_enabled = false
+
+  events_ttl     = 2629800 # 1 month in second
+  max_throughput = 1000
+}
+
+enable_wisp_converter = true
+
+wisp_converter_cosmos_nosql_db_params = {
+  enabled      = true
+  kind         = "GlobalDocumentDB"
+  capabilities = ["EnableServerless"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "Strong"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                    = "4.0"
+  main_geo_location_zone_redundant  = false
+  enable_free_tier                  = false
+  additional_geo_locations          = []
+  private_endpoint_enabled          = false
+  public_network_access_enabled     = true
+  is_virtual_network_filter_enabled = false
+
+  backup_continuous_enabled = false
+
+  events_ttl     = 259200 # 3 days in second
+  max_throughput = 1000
+}
+
+cidr_subnet_cosmosdb_nodo_re       = ["10.1.170.0/24"]
+cidr_subnet_cosmosdb_nodo_verifyko = ["10.1.173.0/24"]
+cidr_subnet_cosmosdb_standin       = ["10.1.190.0/24"]
+cidr_subnet_cosmosdb_wisp_converter = ["10.1.191.0/24"]
 
 nodo_re_storage_account = {
   account_kind                  = "StorageV2"
@@ -151,6 +222,43 @@ nodo_re_storage_account = {
   account_replication_type      = "LRS"
   blob_versioning_enabled       = false
   advanced_threat_protection    = false
-  blob_delete_retention_days    = 15
+  blob_delete_retention_days    = 0
   public_network_access_enabled = true
+  backup_enabled                = false
+}
+
+nodo_verifyko_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = true
+  blob_delete_retention_days    = 0
+  public_network_access_enabled = true
+  backup_enabled                = false
+  backup_retention_days         = 0
+}
+
+nodo_cfg_sync_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = true
+  blob_delete_retention_days    = 0
+  public_network_access_enabled = true
+  backup_enabled                = false
+  backup_retention_days         = 0
+}
+
+wisp_converter_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = false
+  blob_delete_retention_days    = 0
+  public_network_access_enabled = true
+  backup_enabled                = false
+  backup_retention_days         = 0
 }

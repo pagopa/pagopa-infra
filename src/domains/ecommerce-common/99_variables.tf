@@ -113,7 +113,6 @@ variable "cosmos_mongo_db_params" {
       max_interval_in_seconds = number
       max_staleness_prefix    = number
     })
-    main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
     main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({

@@ -71,4 +71,10 @@ apiconfig_storage_params = {
 
 storage_private_endpoint_enabled = false
 
-enable_iac_pipeline = true
+enable_iac_pipeline         = true
+api_config_replication_type = "GZRS"
+
+enable_apiconfig_sa_backup                 = true
+api_config_reporting_delete_retention_days = 31
+api_config_reporting_backup_retention_days = 30
+api_config_enable_versioning               = true

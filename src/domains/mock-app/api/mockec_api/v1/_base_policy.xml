@@ -14,7 +14,7 @@
     <inbound>
         <base />
         <!-- https://pagopa.atlassian.net/browse/PAP-20 -->
-        <rewrite-uri template="/" />
+        <!-- <rewrite-uri template="/" /> -->
         <set-backend-service base-url="${mock_ec_host_path}" />
     </inbound>
     <backend>

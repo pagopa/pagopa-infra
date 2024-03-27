@@ -25,7 +25,7 @@ ingress_load_balancer_ip = "10.1.100.250"
 cidr_subnet_mock_ec              = ["10.1.137.0/29"]
 cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
 cidr_subnet_dbms                 = ["10.1.180.0/24"]
-cidr_subnet_pgflex_dbms          = ["10.1.181.0/24"]
+cidr_subnet_mocker_cosmosdb      = ["10.1.192.0/24"]
 
 external_domain          = "pagopa.it"
 dns_zone_prefix          = "uat.platform"
@@ -38,29 +38,33 @@ mock_ec_always_on                  = true
 mock_psp_service_enabled           = true
 mock_psp_secondary_service_enabled = true
 
-postgresql_network_rules = {
-  ip_rules = [
-    "0.0.0.0/0"
-  ]
-  # dblink
-  allow_access_to_azure_services = false
-}
-
-# Postgres Flexible
-pgres_flex_params = {
-  private_endpoint_enabled = true
-  sku_name                 = "GP_Standard_D2s_v3"
-  db_version               = "13"
-  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
-  # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                   = 1048576
-  zone                         = 1
-  backup_retention_days        = 7
-  geo_redundant_backup_enabled = false
-  create_mode                  = "Default"
-  high_availability_enabled    = false
-  standby_availability_zone    = 2
-  pgbouncer_enabled            = true
-}
-
 enable_iac_pipeline = false
+
+# CosmosDB for Mocker
+mocker_cosmosdb_params = {
+  kind         = "MongoDB"
+  capabilities = ["EnableMongo", "EnableServerless"]
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "Strong"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = false
+  enable_free_tier                 = false
+
+  additional_geo_locations          = []
+  private_endpoint_enabled          = false
+  public_network_access_enabled     = true
+  is_virtual_network_filter_enabled = false
+
+  backup_continuous_enabled = false
+
+  container_default_ttl = 2629800 # 1 month in second
+}
+
+# CosmosDb MongoDb
+cosmosdb_mongodb_extra_capabilities = ["EnableServerless"]
+
+mock_ec_size = "P1v3"

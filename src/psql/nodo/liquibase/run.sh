@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-# example to run : 
+# example to run :
 # sh run.sh dev cfg 3.22.0
 
 TIPO=$1
@@ -16,6 +16,10 @@ if [[ "${TIPO}" == 'dev' ]]; then
   export POSTGRES_DB_PORT="6432"
   export POSTGRES_DB="nodo"
   export NODO_CFG_SCHEMA=$SCHEMA
+  export NODO_ONLINE_SCHEMA='online'
+  export NODO_OFFLINE_SCHEMA='offline'
+  export NODO_RE_SCHEMA='re'
+  export NODO_WFESP_SCHEMA='wfesp'
   export LQB_CONTEXTS="dev"
   export NODO_CFG_USERNAME=$SCHEMA
   export NODO_CFG_PASSWORD="password"
@@ -28,6 +32,22 @@ elif [[ "${TIPO}" == 'it' ]]; then
   export POSTGRES_DB_PORT="6432"
   export POSTGRES_DB="nodo-replica"
   export NODO_CFG_SCHEMA=$SCHEMA
+  export NODO_ONLINE_SCHEMA='online'
+  export NODO_OFFLINE_SCHEMA='offline'
+  export NODO_RE_SCHEMA='re'
+  export NODO_WFESP_SCHEMA='wfesp'
+  export LQB_CONTEXTS="it"
+  export NODO_CFG_USERNAME=$SCHEMA
+  export NODO_CFG_PASSWORD="password"
+  export REPLICA="-replica"
+  export DOMAIN=dev
+elif [[ "${TIPO}" == 'partner' ]]; then
+  #IT
+  echo "run on IT PARTNER"
+  export POSTGRES_DB_HOST="pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com"
+  export POSTGRES_DB_PORT="6432"
+  export POSTGRES_DB="nodo-replica"
+  export NODO_CFG_SCHEMA="partner"
   export LQB_CONTEXTS="it"
   export NODO_CFG_USERNAME=$SCHEMA
   export NODO_CFG_PASSWORD="password"
@@ -70,26 +90,39 @@ else
   export REPLICA=""
   export DOMAIN=dev
 fi
+if [[ "${SCHEMA}" == 'offline' ]]; then
+  export NODO_ONLINE_SCHEMA="online"
+fi
+
+properties=$SCHEMA.properties
 
 echo "
 classpath: ./changelog/$SCHEMA/
 liquibase.headless: true
-#url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?sslmode=require&prepareThreshold=0&currentSchema=${NODO_CFG_SCHEMA}
-url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?prepareThreshold=0&currentSchema=${NODO_CFG_SCHEMA}
+#url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?sslmode=require&prepareThreshold=0&currentSchema=$SCHEMA
+url: jdbc:postgresql://${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB}?prepareThreshold=0&currentSchema=$SCHEMA
 contexts: ${LQB_CONTEXTS}
 username: ${NODO_CFG_USERNAME}
 password: ${NODO_CFG_PASSWORD}
-defaultSchemaName: ${NODO_CFG_SCHEMA}
-liquibaseSchemaName: ${NODO_CFG_SCHEMA}
-parameter.schema: ${NODO_CFG_SCHEMA}
+defaultSchemaName: $SCHEMA
+liquibaseSchemaName: $SCHEMA
+parameter.schema: $SCHEMA
+parameter.schemaOnline: ${NODO_ONLINE_SCHEMA}
+parameter.schemaOffline: ${NODO_OFFLINE_SCHEMA}
+parameter.schemaRe: ${NODO_RE_SCHEMA}
+parameter.schemaWfesp: ${NODO_WFESP_SCHEMA}
 parameter.usernameOffline: offline
 liquibase.hub.mode: OFF
 log-level: INFO
-" > cfg.properties
+" > ${properties}
 
 #liquibase --defaultsFile=cfg.properties drop-all
 # liquibase --defaultsFile=cfg.properties update-sql --changelogFile="db.changelog-master-3.20.0.xml"
 # liquibase --defaultsFile=cfg.properties update-sql --changelogFile="db.changelog-master-$VERSION.xml"
-liquibase --defaultsFile=cfg.properties update --changelogFile="db.changelog-master-$VERSION.xml"
 
-rm cfg.properties
+liquibase \
+--defaultsFile=${properties} update-sql \
+--contexts="${LQB_CONTEXTS}" \
+--changelogFile="db.changelog-master-$VERSION.xml"
+
+#rm ${properties}

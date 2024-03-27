@@ -41,15 +41,18 @@ pgres_flex_params = {
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                             = 32768
-  zone                                   = 1
-  backup_retention_days                  = 7
-  geo_redundant_backup_enabled           = false
+  zone                                   = 2
+  standby_zone                           = 1
+  backup_retention_days                  = 30
+  geo_redundant_backup_enabled           = true
   create_mode                            = "Default"
   pgres_flex_private_endpoint_enabled    = true
-  pgres_flex_ha_enabled                  = false
+  pgres_flex_ha_enabled                  = true
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
-  max_connections                        = 200
+  max_connections                        = 1700
+  pgbouncer_min_pool_size                = 500
+  pgbouncer_default_pool_size            = 1000
 }
 
 custom_metric_alerts = {
@@ -132,11 +135,11 @@ cosmos_mongo_db_fdr_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
   container_default_ttl = 315576000 # 10 year in second
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
   max_throughput     = 5000
   throughput         = 1000
@@ -166,11 +169,11 @@ cosmos_mongo_db_fdr_re_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
   container_default_ttl = 10368000 # 120 days
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
   max_throughput     = 5000
   throughput         = 1000
@@ -183,14 +186,42 @@ fdr_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "GZRS"
-  blob_versioning_enabled       = false
+  blob_versioning_enabled       = true
   advanced_threat_protection    = true
   public_network_access_enabled = false
   blob_delete_retention_days    = 90
   enable_low_availability_alert = false
+  backup_enabled                = true
+  backup_retention              = 30
 }
 
 fdr_re_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
+  public_network_access_enabled = false
+  blob_delete_retention_days    = 90
+  enable_low_availability_alert = false
+  backup_enabled                = true
+  backup_retention              = 30
+}
+
+fdr_history_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
+  public_network_access_enabled = false
+  blob_delete_retention_days    = 90
+  enable_low_availability_alert = false
+  backup_enabled                = true
+  backup_retention              = 30
+}
+
+fdr_flow_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "GZRS"
@@ -199,4 +230,24 @@ fdr_re_storage_account = {
   public_network_access_enabled = false
   blob_delete_retention_days    = 90
   enable_low_availability_alert = false
+}
+
+#
+# replica settings
+#
+geo_replica_enabled                = true
+location_replica                   = "northeurope"
+location_replica_short             = "neu"
+geo_replica_cidr_subnet_postgresql = ["10.2.162.0/24"]
+postgresql_sku_name                = "GP_Gen5_2"
+postgres_dns_registration_enabled  = true
+
+
+
+
+reporting_fdr_storage_account = {
+  advanced_threat_protection = false
+  blob_versioning_enabled    = false
+  blob_delete_retention_days = 30
+  account_replication_type   = "GZRS"
 }

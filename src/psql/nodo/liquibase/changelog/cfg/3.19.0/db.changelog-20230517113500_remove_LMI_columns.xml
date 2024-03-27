@@ -1,0 +1,119 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="liquibase" id="202305171140">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="CANALI" columnName="CANALE_AVV"/></preConditions>
+        <dropColumn columnName="CANALE_AVV"
+                    tableName="CANALI">
+            <column name="CANALE_AVV"/>
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202305171141">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="CANALI" columnName="CANALE_NODO"/></preConditions>
+        <dropColumn columnName="CANALE_NODO"
+                    tableName="CANALI">
+            <column name="CANALE_NODO"/>
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202305171142">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="INTERMEDIARI_PSP" columnName="INTERMEDIARIO_AVV"/></preConditions>
+        <dropColumn columnName="INTERMEDIARIO_AVV"
+                    tableName="INTERMEDIARI_PSP">
+            <column name="INTERMEDIARIO_AVV"/>
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202305171143">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="INTERMEDIARI_PSP" columnName="INTERMEDIARIO_NODO"/></preConditions>
+        <dropColumn columnName="INTERMEDIARIO_NODO"
+                    tableName="INTERMEDIARI_PSP">
+            <column name="INTERMEDIARIO_NODO"/>
+        </dropColumn>
+    </changeSet>
+
+
+    <changeSet author="liquibase" id="202305171144">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="PA_STAZIONE_PA" columnName="STAZIONE_AVV"/></preConditions>
+        <dropColumn columnName="STAZIONE_AVV"
+                    tableName="PA_STAZIONE_PA">
+            <column name="STAZIONE_AVV"/>
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202305171145">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="PA_STAZIONE_PA" columnName="STAZIONE_NODO"/></preConditions>
+        <dropColumn columnName="STAZIONE_NODO"
+                    tableName="PA_STAZIONE_PA">
+            <column name="STAZIONE_NODO"/>
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202305171146">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="PSP" columnName="PSP_NODO"/></preConditions>
+        <dropColumn columnName="PSP_NODO"
+                    tableName="PSP">
+            <column name="PSP_NODO"/>
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202305171147">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="PSP" columnName="PSP_AVV"/></preConditions>
+        <dropColumn columnName="PSP_AVV"
+                    tableName="PSP">
+            <column name="PSP_AVV"/>
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202305171148">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="PSP" columnName="FLAG_REPO_COMMISSIONE_CARICO_PA"/></preConditions>
+        <dropColumn columnName="FLAG_REPO_COMMISSIONE_CARICO_PA"
+                    tableName="PSP">
+            <column name="FLAG_REPO_COMMISSIONE_CARICO_PA"/>
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202305171149">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="PSP" columnName="EMAIL_REPO_COMMISSIONE_CARICO_PA"/></preConditions>
+        <dropColumn columnName="EMAIL_REPO_COMMISSIONE_CARICO_PA"
+                    tableName="PSP">
+            <column name="EMAIL_REPO_COMMISSIONE_CARICO_PA"/>
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202305171150">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="PSP" columnName="STORNO_PAGAMENTO"/></preConditions>
+        <dropColumn columnName="STORNO_PAGAMENTO"
+                    tableName="PSP">
+            <column name="STORNO_PAGAMENTO"/>
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202305171151">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="PA" columnName="REVOCA_PAGAMENTO"/></preConditions>
+        <dropColumn columnName="REVOCA_PAGAMENTO"
+                    tableName="PA">
+            <column name="REVOCA_PAGAMENTO"/>
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202305171152">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="PA" columnName="FLAG_REPO_COMMISSIONE_CARICO_PA"/></preConditions>
+        <dropColumn columnName="FLAG_REPO_COMMISSIONE_CARICO_PA"
+                    tableName="PA">
+            <column name="FLAG_REPO_COMMISSIONE_CARICO_PA"/>
+        </dropColumn>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202305171153">
+        <preConditions onFail="MARK_RAN"><columnExists tableName="PA" columnName="EMAIL_REPO_COMMISSIONE_CARICO_PA"/></preConditions>
+        <dropColumn columnName="EMAIL_REPO_COMMISSIONE_CARICO_PA"
+                    tableName="PA">
+            <column name="EMAIL_REPO_COMMISSIONE_CARICO_PA"/>
+        </dropColumn>
+    </changeSet>
+
+</databaseChangeLog>

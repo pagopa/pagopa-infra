@@ -1,0 +1,50 @@
+[
+  {
+    "name": "REQUEST_TIMESTAMP",
+    "type": "datetime"
+  },
+  {
+    "name": "RESPONSE_TIMESTAMP",
+    "type": "datetime"
+  },
+  {
+    "name": "ID_DOMINIO",
+    "type": "string"
+  },
+  {
+    "name": "IUV",
+    "type": "string"
+  },
+  {
+    "name": "TOKEN",
+    "type": "string"
+  },
+  {
+    "name": "ID_BROKER_PSP",
+    "type": "string"
+  },
+  {
+    "name": "PSP",
+    "type": "string"
+  },
+  {
+    "name": "CANALE",
+    "type": "string"
+  },
+  {
+    "name": "OUTCOME",
+    "type": "string"
+  },
+  {
+    "name": "DIFF_TIME_IN_MS",
+    "type": "long"
+  },
+  {
+    "name": "IS_TIMEOUT",
+    "type": "bool"
+  },
+  {
+    "name": "pipelineRunID",
+    "type": "string"
+  }
+]

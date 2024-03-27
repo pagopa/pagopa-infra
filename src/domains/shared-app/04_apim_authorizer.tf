@@ -1,7 +1,7 @@
 locals {
   apim_authorizer_api = {
-    display_name          = "Authorizer Domain Caching - API"
-    description           = "API for Authorizer Domain Caching"
+    display_name          = "Authorizer Domain Caching - Internal API"
+    description           = "Internal API for cache handling of domains for Authorizer"
     path                  = "shared/authorizer"
     subscription_required = false
     service_url           = null
@@ -15,7 +15,7 @@ module "apim_authorizer_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
 
   product_id   = "authorizer"
-  display_name = "Authorizer Domain Caching"
+  display_name = "Authorizer Domain Caching - Internal API"
   description  = "Internal API for cache handling of domains for Authorizer"
 
   api_management_name = local.pagopa_apim_name
@@ -28,6 +28,7 @@ module "apim_authorizer_product" {
 
   policy_xml = file("./api_product/_authorizer_policy.xml")
 }
+
 
 resource "azurerm_api_management_api_version_set" "api_authorizer_api" {
 

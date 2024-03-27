@@ -20,13 +20,6 @@ module "apim_api_config_product" {
 }
 
 
-resource "azurerm_api_management_group" "apiconfig_grp" {
-  name                = "api-config-be-writer"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "ApiConfig Writer"
-}
-
 
 ##############
 ##    API   ##
@@ -42,6 +35,8 @@ resource "azurerm_api_management_api_version_set" "api_config_api" {
 }
 
 locals {
+  hostname = var.env == "prod" ? "weuprod.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
+
   pagopa_tenant_id       = data.azurerm_client_config.current.tenant_id
   apiconfig_be_client_id = data.azuread_application.apiconfig-be.application_id
   apiconfig_fe_client_id = data.azuread_application.apiconfig-fe.application_id
@@ -68,7 +63,7 @@ module "apim_api_config_api" {
   protocols    = ["https"]
 
   #  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
-  service_url = ""
+  service_url = null
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
@@ -77,6 +72,7 @@ module "apim_api_config_api" {
   })
 
   xml_content = templatefile("./api/apiconfig_api/jwt/v1/_base_policy.xml.tpl", {
+    hostname               = local.apiconfig_core_locals.hostname
     origin                 = format("https://%s.%s.%s", var.cname_record_name, var.apim_dns_zone_prefix, var.external_domain)
     pagopa_tenant_id       = local.pagopa_tenant_id
     apiconfig_be_client_id = local.apiconfig_be_client_id
@@ -177,7 +173,7 @@ module "apim_api_config_auth_api" {
   path         = "apiconfig/auth/api"
   protocols    = ["https"]
 
-  service_url = format("https://%s/apiconfig/api/v1", module.api_config_app_service.default_site_hostname)
+  service_url = null
 
   content_format = "openapi"
   content_value = templatefile("./api/apiconfig_api/v1/_openapi.json.tpl", {
@@ -186,7 +182,8 @@ module "apim_api_config_auth_api" {
   })
 
   xml_content = templatefile("./api/apiconfig_api/subkey/v1/_base_policy.xml.tpl", {
+    hostname    = local.apiconfig_core_locals.hostname
     origin      = "*"
-    addMockResp = var.env_short != "p" ? "true" : "false"
+    addMockResp = var.env_short != "d" ? "true" : "false"
   })
 }

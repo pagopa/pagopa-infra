@@ -130,8 +130,42 @@ variable "ecommerce_vpos_psps_list" {
   default     = ""
 }
 
+variable "ecommerce_npg_psps_list" {
+  type        = string
+  description = "psps list using npg as comma separated value"
+  default     = ""
+}
+
 variable "dns_zone_checkout" {
   type        = string
   default     = null
   description = "The checkout dns subdomain."
+}
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
+}
+
+variable "io_backend_base_path" {
+  type        = string
+  default     = null
+  description = "io backend api base path"
+}
+
+variable "ecommerce_io_with_pm_enabled" {
+  type        = bool
+  default     = false
+  description = "ecommerce for IO using Payment Manager enabled"
+}
+
+variable "pdv_api_base_path" {
+  type        = string
+  default     = null
+  description = "Personal data vault api base path"
 }

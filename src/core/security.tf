@@ -138,6 +138,11 @@ data "azurerm_key_vault_certificate" "app_gw_platform" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_certificate" "app_gw_platform_upload" {
+  name         = var.app_gateway_upload_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_certificate" "app_gw_platform_prf" {
   count = (var.dns_zone_prefix_prf == "") ? 0 : 1
 
@@ -308,6 +313,21 @@ resource "azurerm_key_vault_secret" "newconn_opsgenie_webhook_token" {
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "team_core_opsgenie_webhook_token" {
   name         = "opsgenie-webhook-token"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+# GITHUB_TOKEN_READ_PACKAGES_BOT
+resource "azurerm_key_vault_secret" "github_token_read_packages_bot" {
+  name         = "github-token-read-packages-bot"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 

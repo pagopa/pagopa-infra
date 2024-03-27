@@ -5,6 +5,30 @@ resource "azurerm_resource_group" "receipts_rg" {
   tags = var.tags
 }
 
+
+locals {
+
+  action_groups_default = [
+    {
+      action_group_id    = data.azurerm_monitor_action_group.email.id
+      webhook_properties = null
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      webhook_properties = null
+    }
+  ]
+
+  action_groups = var.env_short == "p" ? concat(local.action_groups_default, [{
+    action_group_id    = data.azurerm_monitor_action_group.opsgenie[0].id
+    webhook_properties = null
+  }]) : local.action_groups_default
+}
+
+
+
+
+
 module "receipts_datastore_cosmosdb_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
   name                 = "${local.project}-datastore-cosmosdb-snet"
@@ -47,6 +71,10 @@ module "receipts_datastore_cosmosdb_account" {
 
   ip_range = ""
 
+  enable_provisioned_throughput_exceeded_alert = var.env_short == "p" ? true : false
+
+  action = local.action_groups
+
   # add data.azurerm_subnet.<my_service>.id
   # allowed_virtual_network_subnet_ids = var.receipts_datastore_cosmos_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
   allowed_virtual_network_subnet_ids = []
@@ -71,30 +99,52 @@ module "receipts_datastore_cosmosdb_database" {
 ### Containers
 locals {
   receipts_datastore_cosmosdb_containers = [
+    # {
+    #   name               = "fake",
+    #   partition_key_path = "/fakeid",
+    #   default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
+    #   autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
+    # },
     {
-      name               = "receipts",
-      partition_key_path = "/eventId",
-      default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
+      name                       = "receipts",
+      partition_key_path         = "/id",
+      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings         = { max_throughput = (var.env_short != "p" ? 6000 : 20000) },
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
-      name               = "receipts-message-errors",
+      name               = "cart-for-receipts",
       partition_key_path = "/id",
       default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
+      autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) },
+      conflict_resolution_policy = {
+        mode      = "Custom",
+        path      = null,
+        procedure = "dbs/db/colls/cart-for-receipts/sprocs/cart-for-receipts-merge-procedure"
+      }
     },
     {
-      name               = "receipts-io-messages",
-      partition_key_path = "/messageId",
-      default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
+      name                       = "receipts-message-errors",
+      partition_key_path         = "/id",
+      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings         = { max_throughput = (var.env_short != "p" ? 6000 : 20000) },
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
+    },
+    {
+      name                       = "receipts-io-messages",
+      partition_key_path         = "/messageId",
+      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings         = { max_throughput = (var.env_short != "p" ? 6000 : 20000) },
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
   ]
 }
 
 # cosmosdb container for receipts datastore
 module "receipts_datastore_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
+  # source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=1f3a347147c8ce627dbfd8d8e19f28d8c42a2c15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=PRDP-276-feat-add-conflict-resolution-policy-and-stored-procedure"
+
   for_each = { for c in local.receipts_datastore_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
@@ -105,5 +155,71 @@ module "receipts_datastore_cosmosdb_containers" {
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
 
-  autoscale_settings = contains(var.receipts_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+  conflict_resolution_policy = each.value.conflict_resolution_policy == null ? null : each.value.conflict_resolution_policy
+  autoscale_settings         = contains(var.receipts_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+}
+
+module "azurerm_cosmosdb_sql_stored_procedure" {
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_stored_procedure?ref=7eea8d90faa331e7f3efc90edf396917120197b7"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_stored_procedure?ref=PRDP-276-feat-add-conflict-resolution-policy-and-stored-procedure"
+  depends_on          = [module.receipts_datastore_cosmosdb_containers]
+  name                = "cart-for-receipts-merge-procedure"
+  resource_group_name = azurerm_resource_group.receipts_rg.name
+  account_name        = module.receipts_datastore_cosmosdb_account.name
+  database_name       = module.receipts_datastore_cosmosdb_database.name
+  container_name      = "cart-for-receipts"
+
+  body = file("./scripts/store_procedure.js")
+
+}
+
+resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.receipts_datastore_cosmosdb_account.name}] Normalized RU Exceeded"
+  resource_group_name = azurerm_resource_group.receipts_rg.name
+  scopes              = [module.receipts_datastore_cosmosdb_account.id]
+  description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
+  severity            = 0
+  window_size         = "PT5M"
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "NormalizedRUConsumption"
+    aggregation            = "Maximum"
+    operator               = "GreaterThan"
+    threshold              = "80"
+    skip_metric_validation = false
+
+
+    dimension {
+      name     = "Region"
+      operator = "Include"
+      values   = [azurerm_resource_group.receipts_rg.location]
+    }
+
+    dimension {
+      name     = "CollectionName"
+      operator = "Include"
+      values   = ["*"]
+    }
+
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
+  }
+
+  tags = var.tags
 }

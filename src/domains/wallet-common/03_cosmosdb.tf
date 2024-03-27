@@ -74,3 +74,134 @@ resource "azurerm_cosmosdb_mongo_database" "wallet" {
 }
 
 # Collections
+locals {
+  collections = [
+    {
+      name = "services"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["name"]
+          unique = true
+        }
+      ]
+      shard_key = null
+    },
+    {
+      name = "wallets"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["userId"]
+          unique = false
+        }
+      ]
+      shard_key = "_id"
+    },
+    {
+      name = "wallet-log-events"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["walletId", "timestamp", "eventType"]
+          unique = true
+        }
+      ]
+      shard_key = null
+    },
+    {
+      name = "wallets-migration-pm",
+      indexes = [
+        {
+          keys   = ["_id"] # wallet id pm
+          unique = true
+        },
+        {
+          keys   = ["contractId"],
+          unique = true
+        }
+      ],
+      shard_key = null
+    }
+  ]
+}
+
+module "cosmosdb_wallet_collections" {
+
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
+
+
+  for_each = {
+    for index, coll in local.collections :
+    coll.name => coll
+  }
+
+  name                = each.value.name
+  resource_group_name = azurerm_resource_group.cosmosdb_wallet_rg[0].name
+
+  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb[0].name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.wallet[0].name
+
+  indexes     = each.value.indexes
+  shard_key   = each.value.shard_key
+  lock_enable = var.env_short != "p" ? false : true
+}
+
+# -----------------------------------------------
+# Alerts
+# -----------------------------------------------
+
+resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb[0].name}] Normalized RU Exceeded"
+  resource_group_name = azurerm_resource_group.cosmosdb_wallet_rg[0].name
+  scopes              = [module.cosmosdb_account_mongodb[0].id]
+  description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
+  severity            = 0
+  window_size         = "PT5M"
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "NormalizedRUConsumption"
+    aggregation            = "Maximum"
+    operator               = "GreaterThan"
+    threshold              = "80"
+    skip_metric_validation = false
+
+
+    dimension {
+      name     = "Region"
+      operator = "Include"
+      values   = [azurerm_resource_group.cosmosdb_wallet_rg[0].location]
+    }
+
+    dimension {
+      name     = "CollectionName"
+      operator = "Include"
+      values   = ["*"]
+    }
+
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  tags = var.tags
+}

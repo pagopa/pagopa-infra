@@ -28,48 +28,7 @@
             </allowed-headers>
         </cors>
         <base />
-        <choose>
-            <!-- Mock response for ibans/enhanced -->
-            <when condition="@(${addMockResp} && context.Request.Method == "GET" && context.Request.Url.Path.Contains("ibans/enhanced"))">
-                <return-response>
-                    <set-status code="200" reason="OK" />
-                    <set-header name="Content-Type" exists-action="override">
-                        <value>application/json</value>
-                    </set-header>
-                    <set-body template="liquid">
-                    {
-                        "ibans_enhanced": [{
-                            "ci_owner": "00168480242",
-                            "company_name": "Comune di Bassano del Grappa",
-                            "description": "Riscossione tributi",
-                            "iban": "IT99C0222211111000000000000",
-                            "is_active": true,
-                            "labels": [
-                                {
-                                "description": "The iban to use for ACA/Standin payments",
-                                "name": "STANDIN"
-                                }
-                            ],
-                            "publication_date": "2023-05-23T10:38:07.165Z",
-                            "validity_date": "2023-06-07T13:48:15.166Z"
-                            }]
-                    }
-                    </set-body>
-                </return-response>
-            </when>
-            <when condition="@(context.User == null || !context.User.Groups.Select(g => g.Id).Contains("api-config-be-writer"))">
-                <set-variable name="isGet" value="@(context.Request.Method.Equals("GET"))" />
-                <set-variable name="isPost" value="@(context.Request.Method.Equals("POST"))" />
-                <set-variable name="isXsd" value="@(context.Request.Url.Path.Contains("xsd"))" />
-                <choose>
-                    <when condition="@(!context.Variables.GetValueOrDefault<bool>("isGet") && !(context.Variables.GetValueOrDefault<bool>("isPost") && context.Variables.GetValueOrDefault<bool>("isXsd")))">
-                        <return-response>
-                            <set-status code="403" reason="Unauthorized, you have read-only access" />
-                        </return-response>
-                    </when>
-                </choose>
-            </when>
-        </choose>
+        <set-backend-service base-url="https://${hostname}/pagopa-api-config-core-service/o" />
     </inbound>
     <outbound>
         <base />

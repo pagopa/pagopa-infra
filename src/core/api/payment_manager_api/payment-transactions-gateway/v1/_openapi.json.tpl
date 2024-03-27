@@ -76,25 +76,23 @@
             }
           }
         }
-      }
-    },
-    "/request-payments/bancomatpay/{requestId}": {
+      },
       "get": {
         "tags": [
           "payment-transactions-controller"
         ],
-        "operationId": "retrieve the correlationId of a BancomatPay payment request",
+        "operationId": "retrieve informations about a BancomatPay payment request",
         "parameters": [
           {
-            "in": "path",
-            "name": "requestId",
+            "in": "query",
+            "name": "transactionId",
             "schema": {
               "type": "string",
-              "format": "uuid"
+              "format": "number"
             },
             "required": true,
-            "description": "PGS-generated GUID of the request to retrieve",
-            "example": "77e1c83b-7bb0-437b-bc50-a7a58e5660ac"
+            "description": "Transaction ID of the request to retrieve",
+            "example": 775660
           }
         ],
         "responses": {
@@ -302,13 +300,13 @@
       "BPayInfoResponse": {
         "type": "object",
         "properties": {
-          "correlationId": {
+          "abi": {
             "type": "string",
-            "example": "7cbf110b-6ebe-49ed-ab39-cd2f35339622"
+            "example": 435654
           },
           "errorMessage": {
             "type": "string",
-            "example": "RequestId 77e1c83b-7bb0-437b-bc50-a7a58e5660ac has not been found"
+            "example": "transactionId 775660 has not been found"
           }
         },
         "required": [

@@ -47,14 +47,11 @@ locals {
   mock_ec_default_site_hostname              = "pagopa-${var.env_short}-app-mock-ec.azurewebsites.net"
   mock_payment_gateway_default_site_hostname = "pagopa-${var.env_short}-app-mock-payment-gateway.azurewebsites.net"
 
-  mocker_db_hostname = data.azurerm_postgresql_server.postgresql.fqdn
-  mocker_dbms_port   = "5432" # replace data fetch of module.postgres_flexible_server_private[0].connection_port present in gpd-common
-
   mocker_core_api_locals = {
     product_id            = "mocker"
     display_name          = "Mocker - Core"
     description           = "Generic entrypoint for mocking response for pagoPA platform"
-    subscription_required = true
+    subscription_required = false
     subscription_limit    = 1000
 
     path        = "mocker"
@@ -62,4 +59,20 @@ locals {
 
     pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
   }
+
+  mocker_config_api_locals = {
+    product_id            = "mocker-config"
+    display_name          = "Mocker Configurator"
+    description           = "Service for configure resources used by Mocker"
+    subscription_required = false
+    subscription_limit    = 1000
+
+    path        = "mocker-config"
+    service_url = null
+
+    pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
+  }
+
+  # Product APIM for Node
+  apim_x_node_product_id = "apim_for_node"
 }

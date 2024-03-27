@@ -1,6 +1,10 @@
 # general
-env_short = "p"
-env       = "prod"
+env_short          = "p"
+env                = "prod"
+location           = "westeurope"
+location_short     = "weu"
+location_ita       = "italynorth"
+location_short_ita = "itn"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -10,10 +14,18 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+#
+# Feature flag
+#
+enabled_features = {
+  apim_v2  = false
+  vnet_ita = false
+}
+
 lock_enable = true
 
 # monitoring
-law_sku               = "PerGB2018"
+law_sku               = "CapacityReservation" # TODO verify why it is changed from PerGB2018 to CapacityReservation
 law_retention_in_days = 30
 law_daily_quota_gb    = -1
 
@@ -47,7 +59,8 @@ cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder = ["10.1.158.0/24"]
 
 # specific
-cidr_subnet_redis = ["10.1.163.0/24"]
+cidr_subnet_redis                = ["10.1.163.0/24"]
+cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -95,6 +108,7 @@ apim_autoscale = {
 
 # app_gateway
 app_gateway_api_certificate_name        = "api-platform-pagopa-it"
+app_gateway_upload_certificate_name     = "upload-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
@@ -115,9 +129,9 @@ app_gateway_deny_paths = [
   "/payment-manager/db-logging/.*",
   "/payment-manager/payment-gateway/.*",
   "/payment-manager/internal*",
-  "/payment-manager/pm-per-nodo/.*",
-  "/checkout/io-for-node/.*",
-  "/gpd-payments/.*", # internal use no sub-keys SOAP
+  #  "/payment-manager/pm-per-nodo/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #  "/checkout/io-for-node/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #"/gpd-payments/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
   "/tkm/tkmcardmanager/.*",
   "/tkm/tkmacquirermanager/.*",
   "/tkm/internal/.*",
@@ -161,6 +175,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "151.2.45.1",     # Softlab L1 Pagamenti VPN
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
+    "193.203.230.21", # VPN NEXI
   ]
 }
 
@@ -184,12 +199,19 @@ apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
 apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
+
+apim_enable_nm3_decoupler_switch     = false
+apim_enable_routing_decoupler_switch = false
+default_node_id                      = "NDP003PROD"
+
 nodo_pagamenti_enabled = true
 nodo_pagamenti_psp     = "97249640588,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec      = "00493410583,09633951000,06655971007,00856930102,02478610583,97169170822,01266290996,01248040998,01429910183,80007270376,01142420056,80052310580,83000730297,80082160013,94050080038,01032450072,01013130073,10718570012,01013210073,87007530170,01242340998,80012150274,02508710585,80422850588,94032590278,94055970480,92001600524,80043570482,92000530532,80094780378,80016430045,80011170505,80031650486,00337870406,09227921005,01928010683,00608810057,03299640163,82002730487,02928200241"
 nodo_pagamenti_url     = "https://10.79.20.34/webservices/input"
 ip_nodo                = "10.79.20.34"   # TEMP Nodo On Premises
 lb_aks                 = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
+
+schema_ip_nexi = "https://10.79.20.34"
 
 base_path_nodo_oncloud        = "/nodo-prd"
 base_path_nodo_ppt_lmi        = "/ppt-lmi-prd-NOT-FOUND"
@@ -198,6 +220,8 @@ base_path_nodo_wfesp          = "/wfesp-prd"
 base_path_nodo_fatturazione   = "/fatturazione-prd"
 base_path_nodo_web_bo         = "/web-bo-prd"
 base_path_nodo_web_bo_history = "/web-bo-history-prd"
+
+base_path_nodo_postgresql_nexi_onprem = "/"
 
 
 nodo_auth_subscription_limit = 10000
@@ -314,7 +338,7 @@ eventhubs = [
     name              = "nodo-dei-pagamenti-re"
     partitions        = 30
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper", "nodo-dei-pagamenti-re-to-datastore-rx"]
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"] #, "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-SIA"
@@ -334,12 +358,19 @@ eventhubs = [
         send   = false
         manage = false
       },
-      {
-        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
-        listen = true
-        send   = false
-        manage = false
-      }
+      #     disabled because at the moment not used
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      },
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      }
     ]
   },
   {
@@ -473,6 +504,38 @@ eventhubs = [
       },
     ]
   },
+  {
+    name              = "nodo-dei-pagamenti-verify-ko"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["nodo-dei-pagamenti-verify-ko-to-datastore-rx", "nodo-dei-pagamenti-verify-ko-to-tablestorage-rx", "nodo-dei-pagamenti-verify-ko-test-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-datastore-rx" # re->cosmos
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tablestorage-rx" # re->table storage
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-test-rx" # re->anywhere for test
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
 ]
 
 eventhubs_02 = [
@@ -528,13 +591,73 @@ eventhubs_02 = [
       }
     ]
   },
+  {
+    name              = "quality-improvement-alerts"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-qi-alert-rx", "pagopa-qi-alert-rx-pdnd", "pagopa-qi-alert-rx-debug"]
+    keys = [
+      {
+        name   = "pagopa-qi-alert-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-alert-rx-debug"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "quality-improvement-psp-kpi"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-qi-psp-kpi-rx", "pagopa-qi-psp-kpi-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-qi-psp-kpi-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-psp-kpi-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-qi-psp-kpi-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
 ]
+
 # acr
 acr_enabled = true
 
 # db nodo dei pagamenti
-dns_a_reconds_dbnodo_ips           = ["10.102.35.58", "10.102.35.57"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
-private_dns_zone_db_nodo_pagamenti = "p.db-nodo-pagamenti.com"
+dns_a_reconds_dbnodo_ips             = ["10.102.35.58", "10.102.35.57"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
+dns_a_reconds_dbnodonexipostgres_ips = ["10.222.209.84"]                # db onPrem PostgreSQL
+private_dns_zone_db_nodo_pagamenti   = "p.db-nodo-pagamenti.com"
 
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
@@ -625,7 +748,7 @@ cosmos_document_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = true
 
   private_endpoint_enabled      = true
@@ -653,3 +776,21 @@ node_forwarder_size            = "P1v3"
 # lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
+devops_agent_zones         = [1, 2, 3]
+devops_agent_balance_zones = false
+
+
+function_app_storage_account_info = {
+  account_kind                      = "StorageV2"
+  account_tier                      = "Standard"
+  account_replication_type          = "GZRS"
+  access_tier                       = "Hot"
+  advanced_threat_protection_enable = true
+}
+
+
+logic_app_storage_account_replication_type   = "LRS"
+buyer_banks_storage_account_replication_type = "GZRS"
+cdn_storage_account_replication_type         = "GRS"
+backup_storage_replication_type              = "GRS"
+fdr_flow_sa_replication_type                 = "ZRS"

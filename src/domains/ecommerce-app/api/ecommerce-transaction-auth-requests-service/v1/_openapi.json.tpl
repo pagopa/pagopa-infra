@@ -224,13 +224,21 @@
               },
               {
                 "$ref": "#/components/schemas/OutcomeXpayGateway"
+              },
+              {
+                "$ref": "#/components/schemas/OutcomeNpgGateway"
+              },
+              {
+                "$ref": "#/components/schemas/OutcomeRedirectGateway"
               }
             ],
             "discriminator": {
               "propertyName": "paymentGatewayType",
               "mapping": {
                 "XPAY": "#/components/schemas/OutcomeXpayGateway",
-                "VPOS": "#/components/schemas/OutcomeVposGateway"
+                "VPOS": "#/components/schemas/OutcomeVposGateway",
+                "NPG": "#/components/schemas/OutcomeNpgGateway",
+                "REDIRECT": "#/components/schemas/OutcomeRedirectGateway"
               }
             }
           },
@@ -277,6 +285,7 @@
           "ACTIVATED",
           "AUTHORIZATION_REQUESTED",
           "AUTHORIZATION_COMPLETED",
+          "CLOSURE_REQUESTED",
           "CLOSED",
           "CLOSURE_ERROR",
           "NOTIFIED_OK",
@@ -446,6 +455,94 @@
         "required": [
           "outcome",
           "paymentGatewayType"
+        ]
+      },
+      "OutcomeNpgGateway": {
+        "type": "object",
+        "properties": {
+          "paymentGatewayType": {
+            "type": "string",
+            "example": "NPG"
+          },
+          "operationResult": {
+            "type": "string",
+            "description": "outcome received by NPG - https://developer.nexi.it/it/api/notifica",
+            "enum": [
+              "AUTHORIZED",
+              "EXECUTED",
+              "DECLINED",
+              "DENIED_BY_RISK",
+              "THREEDS_VALIDATED",
+              "THREEDS_FAILED",
+              "PENDING",
+              "CANCELED",
+              "VOIDED",
+              "REFUNDED",
+              "FAILED"
+            ]
+          },
+          "orderId": {
+            "description": "Operator unique order ID",
+            "type": "string"
+          },
+          "operationId": {
+            "description": "Operation ID",
+            "type": "string"
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Authorization code"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "Error code"
+          },
+          "paymentEndToEndId": {
+            "description": "Circuit unique transaction ID",
+            "type": "string"
+          },
+          "rrn": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "paymentGatewayType",
+          "operationResult"
+        ]
+      },
+      "OutcomeRedirectGateway": {
+        "type": "object",
+        "properties": {
+          "paymentGatewayType": {
+            "type": "string",
+            "example": "REDIRECT",
+            "description": "disciminator field. fixed value `REDIRECT`"
+          },
+          "pspTransactionId": {
+            "type": "string",
+            "description": "PSP transaction unique ID"
+          },
+          "outcome": {
+            "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-api/SANP3.6.1/openapi/redirect.yaml#/components/schemas/AuthorizationOutcome"
+          },
+          "pspId": {
+            "type": "string",
+            "description": "PSP ID from which the authorization outcome request come"
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "payment authorization code"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "payment error code"
+          }
+        },
+        "required": [
+          "paymentGatewayType",
+          "pspId",
+          "outcome",
+          "pspTransactionId"
         ]
       }
     },

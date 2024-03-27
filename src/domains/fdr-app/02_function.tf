@@ -45,7 +45,7 @@ module "reporting_fdr_function" {
   app_service_plan_info = var.app_service_plan_info
 
   # Storage account
-  storage_account_info = var.storage_account_info
+  storage_account_info = var.reporting_fdr_storage_account_info
 
   # acr
   docker = {

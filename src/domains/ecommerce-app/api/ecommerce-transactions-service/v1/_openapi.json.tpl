@@ -273,7 +273,7 @@
             "name": "x-pgs-id",
             "schema": {
               "type": "string",
-              "pattern": "XPAY|VPOS"
+              "pattern": "XPAY|VPOS|NPG|REDIRECT"
             },
             "required": false,
             "description": "Pgs identifier (populated by APIM policy)"
@@ -570,8 +570,12 @@
           },
           "gateway": {
             "type": "string",
-            "pattern": "XPAY|VPOS",
+            "pattern": "XPAY|VPOS|NPG",
             "description": "Pgs identifier"
+          },
+          "gatewayAuthorizationStatus": {
+            "type": "string",
+            "description": "payment gateway authorization status"
           }
         },
         "required": [
@@ -619,17 +623,29 @@
             "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/PostePayAuthRequestDetails"
+                "$ref": "#/components/schemas/CardAuthRequestDetails"
               },
               {
-                "$ref": "#/components/schemas/CardAuthRequestDetails"
+                "$ref": "#/components/schemas/CardsAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/WalletAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/RedirectionAuthRequestDetails"
+              },
+              {
+                "$ref": "#/components/schemas/ApmAuthRequestDetails"
               }
             ],
             "discriminator": {
               "propertyName": "detailType",
               "mapping": {
-                "postepay": "#/components/schemas/PostePayAuthRequestDetails",
-                "card": "#/components/schemas/CardAuthRequestDetails"
+                "card": "#/components/schemas/CardAuthRequestDetails",
+                "cards": "#/components/schemas/CardsAuthRequestDetails",
+                "wallet": "#/components/schemas/WalletAuthRequestDetails",
+                "redirect": "#/components/schemas/RedirectionAuthRequestDetails",
+                "apm": "#/components/schemas/ApmAuthRequestDetails"
               }
             }
           }
@@ -644,35 +660,12 @@
           "details"
         ]
       },
-      "PostePayAuthRequestDetails": {
-        "type": "object",
-        "description": "Additional payment authorization details for the PostePay payment method",
-        "properties": {
-          "detailType": {
-            "description": "property discriminator, used to discriminate the authorization request detail instance",
-            "type": "string"
-          },
-          "accountEmail": {
-            "type": "string",
-            "format": "email",
-            "description": "PostePay account email"
-          }
-        },
-        "required": [
-          "detailType",
-          "accountEmail"
-        ],
-        "example": {
-          "detailType": "postepay",
-          "accountEmail": "user@example.com"
-        }
-      },
       "CardAuthRequestDetails": {
         "type": "object",
         "description": "Additional payment authorization details for credit cards",
         "properties": {
           "detailType": {
-            "description": "property discriminator, used to discriminate the authorization request detail",
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'card'",
             "type": "string"
           },
           "cvv": {
@@ -730,6 +723,82 @@
           "threeDsData": "threeDsData"
         }
       },
+      "CardsAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for cards NPG authorization",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'cards'",
+            "type": "string"
+          },
+          "orderId": {
+            "type": "string",
+            "description": "NPG transaction order id"
+          }
+        },
+        "required": [
+          "detailType",
+          "orderId"
+        ],
+        "example": {
+          "detailType": "cards",
+          "orderId": "orderId"
+        }
+      },
+      "WalletAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for wallet NPG authorization",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'wallet'",
+            "type": "string"
+          },
+          "walletId": {
+            "type": "string",
+            "description": "The user wallet id"
+          }
+        },
+        "required": [
+          "detailType",
+          "walletId"
+        ],
+        "example": {
+          "detailType": "wallet",
+          "walletId": "walletId"
+        }
+      },
+      "RedirectionAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for Redirection authorization request",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'redirect'",
+            "type": "string"
+          }
+        },
+        "required": [
+          "detailType"
+        ],
+        "example": {
+          "detailType": "redirect"
+        }
+      },
+      "ApmAuthRequestDetails": {
+        "type": "object",
+        "description": "Additional payment authorization details for payment apm authorization",
+        "properties": {
+          "detailType": {
+            "description": "property discriminator, used to discriminate the authorization request detail. Fixed value 'apm'",
+            "type": "string"
+          }
+        },
+        "required": [
+          "detailType"
+        ],
+        "example": {
+          "detailType": "apm"
+        }
+      },
       "RequestAuthorizationResponse": {
         "type": "object",
         "description": "Response body for requesting an authorization for a transaction",
@@ -785,6 +854,7 @@
           "ACTIVATED",
           "AUTHORIZATION_REQUESTED",
           "AUTHORIZATION_COMPLETED",
+          "CLOSURE_REQUESTED",
           "CLOSED",
           "CLOSURE_ERROR",
           "NOTIFIED_OK",

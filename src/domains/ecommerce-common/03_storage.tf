@@ -110,6 +110,76 @@ resource "azurerm_storage_queue" "transactions_notifications_queue" {
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
+resource "azurerm_storage_queue" "transactions_authorization_requested_queue" {
+  name                 = "${local.project}-transaction-auth-requested-queue"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue" "transactions_authorization_outcome_waiting_queue" {
+  name                 = "${local.project}-transaction-auth-outcome-waiting-queue"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+//storage queue for blue deployment
+resource "azurerm_storage_queue" "notifications_service_retry_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-notifications-service-retry-queue-b"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue" "transactions_expiration_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-transactions-expiration-queue-b"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue" "transactions_close_payment_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-transactions-close-payment-queue-b"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue" "transactions_close_payment_retry_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-transactions-close-payment-retry-queue-b"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue" "transactions_refund_retry_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-transactions-refund-retry-queue-b"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue" "transactions_refund_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-transactions-refund-queue-b"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue" "transactions_notifications_retry_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-transaction-notifications-retry-queue-b"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue" "transactions_notifications_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-transaction-notifications-queue-b"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue" "transactions_authorization_requested_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-transaction-auth-requested-queue-b"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
+resource "azurerm_storage_queue" "transactions_authorization_outcome_waiting_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-transaction-auth-outcome-waiting-queue-b"
+  storage_account_name = module.ecommerce_storage_transient.name
+}
+
 resource "azurerm_private_endpoint" "storage_deadletter_private_endpoint" {
   count = var.env_short != "d" ? 1 : 0
 
@@ -171,6 +241,19 @@ resource "azurerm_storage_queue" "notifications_service_errors_queue" {
   storage_account_name = module.ecommerce_storage_deadletter.name
 }
 
+//dead letter queues for blue deployment
+resource "azurerm_storage_queue" "transactions_dead_letter_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-transactions-dead-letter-queue-b"
+  storage_account_name = module.ecommerce_storage_deadletter.name
+}
+
+resource "azurerm_storage_queue" "notifications_service_errors_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-notifications-service-errors-queue-b"
+  storage_account_name = module.ecommerce_storage_deadletter.name
+}
+
 # Ecommerce transient queue alert diagnostic settings
 resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnostics" {
   count                      = var.env_short == "p" ? 1 : 0
@@ -186,6 +269,25 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnos
       days    = 7
     }
   }
+  metric {
+    category = "Capacity"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  metric {
+    category = "Transaction"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
 
   enabled_log {
     category = "StorageDelete"
@@ -255,6 +357,20 @@ locals {
       "frequency"   = 15
       "threshold"   = 10
     },
+    {
+      "queue_key"   = "transaction-auth-requested-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transaction-auth-outcome-waiting-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    }
   ] : []
 }
 
@@ -266,7 +382,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -281,13 +397,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
     };
     let MessageRateForQueue = (queueKey: string) {
       OpCountForQueue("PutMessage", queueKey)
-      | join OpCountForQueue("DeleteMessage", queueKey) on count_
+      | join kind=fullouter OpCountForQueue("DeleteMessage", queueKey) on count_
       | project name = queueKey, Count = count_ - count_1
     };
     MessageRateForQueue("%s")
     | where Count > ${each.value.threshold}
     QUERY
-    , "${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
+    , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
@@ -314,6 +430,25 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_deadletter_queue_diagno
       days    = 7
     }
   }
+  metric {
+    category = "Capacity"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+  metric {
+    category = "Transaction"
+    enabled  = false
+
+    retention_policy {
+      days    = 0
+      enabled = false
+    }
+  }
+
 }
 
 
@@ -324,14 +459,14 @@ locals {
       "severity"    = 3
       "time_window" = 15
       "frequency"   = 15
-      "threshold"   = 0
+      "threshold"   = 5
     },
     {
       "queue_key"   = "transactions-dead-letter-queue"
       "severity"    = 3
       "time_window" = 15
       "frequency"   = 15
-      "threshold"   = 0
+      "threshold"   = 25
     },
   ] : []
 }
@@ -344,7 +479,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -357,7 +492,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
       | summarize count()
       | where count_ > ${each.value.threshold}
     QUERY
-    , "${module.ecommerce_storage_deadletter.name}/${local.project}-${each.value.queue_key}"
+    , "/${module.ecommerce_storage_deadletter.name}/${local.project}-${each.value.queue_key}"
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
@@ -376,7 +511,7 @@ locals {
       "severity"             = 1
       "time_window"          = "PT1H"
       "frequency"            = "PT15M"
-      "threshold"            = 100
+      "threshold"            = 1000
     },
     {
       "storage_account_id"   = "${module.ecommerce_storage_deadletter.id}"
@@ -384,13 +519,25 @@ locals {
       "severity"             = 1
       "time_window"          = "PT1H"
       "frequency"            = "PT15M"
-      "threshold"            = 10
+      "threshold"            = 200
     },
   ] : []
 }
 
 resource "azurerm_monitor_metric_alert" "queue_storage_account_average_messge_count" {
   for_each = { for q in local.storage_accounts_queue_message_count_alert_props : q.storage_account_id => q }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.ecommerce_opsgenie[0].id
+  }
 
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${each.value.storage_account_name}] Queue message count average exceeds ${each.value.threshold}"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name

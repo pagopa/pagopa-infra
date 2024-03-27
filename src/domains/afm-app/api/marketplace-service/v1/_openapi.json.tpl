@@ -4,7 +4,7 @@
     "title": "Marketplace API for PagoPA AFM",
     "description": "marketplace-be",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.12.1-1"
+    "version": "0.13.3"
   },
   "servers": [
     {
@@ -2267,31 +2267,19 @@
           }
         ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
-    },
-    "/paymenttypes/upload": {
       "post": {
         "tags": [
           "Payment Type"
         ],
-        "summary": "Upload a set of payment types by list",
-        "operationId": "uploadPaymentTypeByList",
+        "summary": "Sync payment types",
+        "operationId": "syncPaymentTypes",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/PaymentType"
                 }
               }
             }
@@ -2310,11 +2298,7 @@
               }
             },
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentType"
-                }
-              }
+              "application/json": {}
             }
           },
           "400": {
@@ -4956,9 +4940,10 @@
     "schemas": {
       "BundleRequest": {
         "required": [
+          "abi",
           "idBrokerPsp",
-          "idCdi",
-          "idChannel"
+          "idChannel",
+          "pspBusinessName"
         ],
         "type": "object",
         "properties": {
@@ -4975,6 +4960,9 @@
             "type": "string"
           },
           "name": {
+            "type": "string"
+          },
+          "pspBusinessName": {
             "type": "string"
           },
           "description": {

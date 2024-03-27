@@ -20,6 +20,10 @@ terraform {
       source  = "Azure/azapi"
       version = "= 1.3.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "<= 3.4.3"
+    }
   }
 
   backend "azurerm" {}
@@ -40,7 +44,3 @@ provider "azapi" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
-
-locals {
-  project = format("%s-%s", var.prefix, var.env_short)
-}

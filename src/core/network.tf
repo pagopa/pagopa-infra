@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "rg_vnet" {
-  name     = format("%s-vnet-rg", local.project)
+  name     = "${local.project}-vnet-rg"
   location = var.location
 
   tags = var.tags
@@ -7,8 +7,8 @@ resource "azurerm_resource_group" "rg_vnet" {
 
 # vnet
 module "vnet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.90"
-  name                 = format("%s-vnet", local.project)
+  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v4.18.1"
+  name                 = "${local.project}-vnet"
   location             = azurerm_resource_group.rg_vnet.location
   resource_group_name  = azurerm_resource_group.rg_vnet.name
   address_space        = var.cidr_vnet
@@ -19,8 +19,8 @@ module "vnet" {
 
 # vnet integration
 module "vnet_integration" {
-  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v1.0.90"
-  name                 = format("%s-vnet-integration", local.project)
+  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v4.18.1"
+  name                 = "${local.project}-vnet-integration"
   location             = azurerm_resource_group.rg_vnet.location
   resource_group_name  = azurerm_resource_group.rg_vnet.name
   address_space        = var.cidr_vnet_integration
@@ -29,9 +29,12 @@ module "vnet_integration" {
   tags = var.tags
 }
 
+#
+# Peerings
+#
 ## Peering between the vnet(main) and integration vnet
 module "vnet_peering" {
-  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v4.19.0"
 
   location = azurerm_resource_group.rg_vnet.location
 
@@ -39,16 +42,18 @@ module "vnet_peering" {
   source_virtual_network_name      = module.vnet.name
   source_remote_virtual_network_id = module.vnet.id
   source_allow_gateway_transit     = true # needed by vpn gateway for enabling routing from vnet to vnet_integration
+
   target_resource_group_name       = azurerm_resource_group.rg_vnet.name
   target_virtual_network_name      = module.vnet_integration.name
   target_remote_virtual_network_id = module.vnet_integration.id
   target_use_remote_gateways       = false # needed by vnet peering with SIA
+  target_peering_custom_name       = "pagopa-${var.env_short}-vnet-to-pagopa-${var.env_short}-vnet-integration"
 }
 
 module "route_table_peering_sia" {
-  source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v4.18.1"
 
-  name                          = format("%s-sia-rt", local.project)
+  name                          = "${local.project}-sia-rt"
   location                      = azurerm_resource_group.rg_vnet.location
   resource_group_name           = azurerm_resource_group.rg_vnet.name
   disable_bgp_route_propagation = false
@@ -140,8 +145,8 @@ module "route_table_peering_sia" {
 
 # subnet acr
 module "common_private_endpoint_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.0.28"
-  name                 = format("%s-common-private-endpoint-snet", local.project)
+  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.18.1"
+  name                 = "${local.project}-common-private-endpoint-snet"
   address_prefixes     = var.cidr_common_private_endpoint_snet
   resource_group_name  = azurerm_resource_group.rg_vnet.name
   virtual_network_name = module.vnet.name

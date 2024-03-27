@@ -23,13 +23,13 @@ data "azurerm_monitor_action_group" "email" {
 }
 
 data "azurerm_key_vault_secret" "opsgenie_webhook_key" {
-  count        = var.env_short == "p" ? 1 : 0
+  count        = var.env_short != "d" ? 1 : 0
   name         = "opsgenie-webhook-token"
   key_vault_id = data.azurerm_key_vault.core_kv.id
 }
 
 resource "azurerm_monitor_action_group" "opsgenie" {
-  count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short != "d" ? 1 : 0
   name                = "Opsgenie"
   resource_group_name = var.monitor_resource_group_name
   short_name          = "opsgenie"

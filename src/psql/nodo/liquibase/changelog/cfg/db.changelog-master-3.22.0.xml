@@ -7,6 +7,7 @@
 
   <include file="./db.changelog-master-3.21.0.xml"/>
 
-  <include file="./${version}/db.changelog-20230705163700_update_database_object.xml"  labels="${version}"/>
+<!--  <include file="./${version}/db.changelog-20230705163700_add_unique_to_id_dominio.xml"  labels="${version}"/>-->
+  <include file="./${version}/db.changelog-20230630120000_delete_denylist_table.xml"  labels="${version}"/>
 
 </databaseChangeLog>

@@ -49,9 +49,14 @@ locals {
   fdr_re_collections = [
     {
       name = "events"
-      indexes = [{
-        keys   = ["_id"]
-        unique = true
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["PartitionKey"]
+          unique = false
         }
       ]
       shard_key = "created"

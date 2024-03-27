@@ -1,72 +1,4 @@
 ############################
-## 1. Nodo PPT LMI        ##
-############################
-
-
-module "apim_nodo_ppt_lmi_product" {
-  count  = var.env_short == "p" ? 0 : 1
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
-
-  product_id   = "product-nodo-ppt-lmi"
-  display_name = "product-nodo-ppt-lmi"
-  description  = "product-nodo-ppt-lmi"
-
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
-
-  published             = true
-  subscription_required = false
-  approval_required     = false
-
-  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
-    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
-    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
-  })
-}
-
-resource "azurerm_api_management_api_version_set" "nodo_ppt_lmi_api" {
-  count = var.env_short == "p" ? 0 : 1
-
-  name                = format("%s-nodo-ppt-lmi-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
-  display_name        = "Nodo OnCloud PPT LMI"
-  versioning_scheme   = "Segment"
-}
-
-module "apim_nodo_ppt_lmi_api" {
-  count  = var.env_short == "p" ? 0 : 1
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-
-  name                  = format("%s-nodo-ppt-lmi-api", var.env_short)
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_ppt_lmi_product[0].product_id]
-  subscription_required = false
-
-  version_set_id = azurerm_api_management_api_version_set.nodo_ppt_lmi_api[0].id
-  api_version    = "v1"
-
-  description  = "NodeDeiPagamenti (ppt-lmi)"
-  display_name = "NodeDeiPagamenti (ppt-lmi)"
-  path         = "ppt-lmi/api"
-  protocols    = ["https"]
-
-  service_url = null
-
-  content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/ppt-lmi/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
-  })
-
-  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/ppt-lmi/v1/_base_policy.xml", {
-    dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
-    apim_base_path      = "/ppt-lmi/api/v1"
-  })
-
-}
-
-############################
 ## 2. Nodo SYNC           ##
 ############################
 
@@ -200,7 +132,8 @@ module "apim_nodo_wfesp_api" {
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/wfesp/v1/_base_policy.xml", {
     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
     apim_base_path      = "/redirect"
-    base-url            = var.env_short == "p" ? "http://10.79.20.23:81" : "http://{{aks-lb-nexi}}{{base-path-wfesp}}"
+    #    TODO prod is a variant in this case!
+    base-url = var.env_short == "p" ? "http://10.79.20.23:81" : "{{schema-ip-nexi}}{{base-path-wfesp}}"
   })
 
 }
@@ -342,10 +275,10 @@ module "apim_nodo_web_bo_api" {
     allowed_ip_4        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[4] # Softlab L1 Pagamenti VPN
     allowed_ip_5        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[5] # Softlab L1 Pagamenti VPN
     allowed_ip_6        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[6] # Softlab L1 Pagamenti VPN
-    allowed_ip_7        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7] # NEXI VPN
+    allowed_ip_7        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7] # Softlab L1 Pagamenti VPN
     allowed_ip_8        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8] # NEXI VPN
+    allowed_ip_9        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9] # NEXI VPN
   })
-
 }
 
 
@@ -384,8 +317,9 @@ module "apim_nodo_web_bo_api_onprem" {
     allowed_ip_4        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[4] # Softlab L1 Pagamenti VPN
     allowed_ip_5        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[5] # Softlab L1 Pagamenti VPN
     allowed_ip_6        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[6] # Softlab L1 Pagamenti VPN
-    allowed_ip_7        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7] # NEXI VPN
+    allowed_ip_7        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7] # Softlab L1 Pagamenti VPN
     allowed_ip_8        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8] # NEXI VPN
+    allowed_ip_9        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9] # NEXI VPN
   })
 
 }
@@ -460,8 +394,9 @@ module "apim_nodo_web_bo_api_history" {
     allowed_ip_4        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[4] # Softlab L1 Pagamenti VPN
     allowed_ip_5        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[5] # Softlab L1 Pagamenti VPN
     allowed_ip_6        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[6] # Softlab L1 Pagamenti VPN
-    allowed_ip_7        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7] # NEXI VPN
+    allowed_ip_7        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7] # Softlab L1 Pagamenti VPN
     allowed_ip_8        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8] # NEXI VPN
+    allowed_ip_9        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9] # NEXI VPN
   })
 
 }
@@ -501,8 +436,9 @@ module "apim_nodo_web_bo_api_onprem_history" {
     allowed_ip_4        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[4] # Softlab L1 Pagamenti VPN
     allowed_ip_5        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[5] # Softlab L1 Pagamenti VPN
     allowed_ip_6        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[6] # Softlab L1 Pagamenti VPN
-    allowed_ip_7        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7] # NEXI VPN
+    allowed_ip_7        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7] # Softlab L1 Pagamenti VPN
     allowed_ip_8        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8] # NEXI VPN
+    allowed_ip_9        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9] # NEXI VPN
   })
 
 }

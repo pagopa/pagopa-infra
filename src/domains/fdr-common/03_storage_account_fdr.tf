@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "fdr_rg" {
 }
 
 module "fdr_conversion_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.17.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
   name                            = replace("${local.project}-sa", "-", "")
   account_kind                    = var.fdr_storage_account.account_kind
@@ -23,6 +23,14 @@ module "fdr_conversion_sa" {
 
   blob_delete_retention_days = var.fdr_storage_account.blob_delete_retention_days
 
+  blob_change_feed_enabled             = var.fdr_storage_account.backup_enabled
+  blob_change_feed_retention_in_days   = var.fdr_storage_account.backup_enabled ? var.fdr_storage_account.backup_retention + 1 : null
+  blob_container_delete_retention_days = var.fdr_storage_account.backup_retention
+  blob_storage_policy = {
+    enable_immutability_policy = false
+    blob_restore_policy_days   = var.fdr_storage_account.backup_retention
+  }
+
   tags = var.tags
 }
 
@@ -31,7 +39,7 @@ resource "azurerm_private_endpoint" "fdr_blob_private_endpoint" {
 
   name                = format("%s-blob-private-endpoint", local.project)
   location            = var.location
-  resource_group_name = azurerm_resource_group.fdr_re_rg.name
+  resource_group_name = azurerm_resource_group.fdr_rg.name
   subnet_id           = module.fdr_storage_snet[0].id
 
   private_dns_zone_group {
@@ -59,7 +67,7 @@ resource "azurerm_private_endpoint" "fdr_queue_private_endpoint" {
 
   name                = format("%s-queue-private-endpoint", local.project)
   location            = var.location
-  resource_group_name = azurerm_resource_group.fdr_re_rg.name
+  resource_group_name = azurerm_resource_group.fdr_rg.name
   subnet_id           = module.fdr_storage_snet[0].id
 
   private_dns_zone_group {
@@ -72,6 +80,34 @@ resource "azurerm_private_endpoint" "fdr_queue_private_endpoint" {
     private_connection_resource_id = module.fdr_conversion_sa.id
     is_manual_connection           = false
     subresource_names              = ["queue"]
+  }
+
+  tags = var.tags
+
+  depends_on = [
+    module.fdr_conversion_sa
+  ]
+}
+
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/5820
+resource "azurerm_private_endpoint" "fdr_table_private_endpoint" {
+  count = var.env_short == "d" ? 0 : 1
+
+  name                = format("%s-table-private-endpoint", local.project)
+  location            = var.location
+  resource_group_name = azurerm_resource_group.fdr_rg.name
+  subnet_id           = module.fdr_storage_snet[0].id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-table-sa-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-table-sa-private-service-connection"
+    private_connection_resource_id = module.fdr_conversion_sa.id
+    is_manual_connection           = false
+    subresource_names              = ["table"]
   }
 
   tags = var.tags
@@ -94,4 +130,9 @@ resource "azurerm_storage_queue" "flow_id_send_queue" {
   storage_account_name = module.fdr_conversion_sa.name
 }
 
+# table#1 fdr-re
+resource "azurerm_storage_table" "xml_share_file_error_table" {
+  name                 = "xmlsharefileerror"
+  storage_account_name = module.fdr_conversion_sa.name
+}
 

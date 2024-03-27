@@ -39,8 +39,8 @@ nodo_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "2"
-  node_count_max  = "8"
+  node_count_min  = "7"
+  node_count_max  = "7"
   node_labels = {
   "nodo-cron" = "true", },
   node_taints        = ["dedicated=nodo-cron:NoSchedule"],

@@ -76,7 +76,7 @@ ingress_elk_load_balancer_ip = "10.1.100.251"
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.1.0" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.1.0/charts/ingress-nginx/values.yaml
 nginx_helm = {
-  version = "4.1.0"
+  version = "4.7.1"
   controller = {
     image = {
       registry     = "k8s.gcr.io"
@@ -97,30 +97,50 @@ nodeset_config = {
     roles            = []
     storage          = "20Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-hot"
+    requestMemory    = "1Gi"
+    requestCPU       = "1"
+    limitsMemory     = "2Gi"
+    limitsCPU        = "1"
   },
   master-nodes = {
     count            = "2"
     roles            = ["master"]
     storage          = "20Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-hot"
+    requestMemory    = "1Gi"
+    requestCPU       = "1"
+    limitsMemory     = "2Gi"
+    limitsCPU        = "1"
   },
   data-hot-nodes = {
     count            = "2"
     roles            = ["ingest", "data_content", "data_hot"]
     storage          = "100Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-hot"
+    requestMemory    = "3Gi"
+    requestCPU       = "1"
+    limitsMemory     = "4Gi"
+    limitsCPU        = "2"
   },
   data-warm-nodes = {
     count            = "2"
     roles            = ["ingest", "data_content", "data_warm"]
-    storage          = "100Gi"
+    storage          = "150Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-warm"
+    requestMemory    = "3Gi"
+    requestCPU       = "1"
+    limitsMemory     = "4Gi"
+    limitsCPU        = "2"
   },
   data-cold-nodes = {
     count            = "2"
     roles            = ["ingest", "data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
-    storage          = "100Gi"
+    storage          = "200Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-cold"
+    requestMemory    = "3Gi"
+    requestCPU       = "1"
+    limitsMemory     = "4Gi"
+    limitsCPU        = "2"
   }
 }
 

@@ -35,7 +35,7 @@ tls_cert_check_helm = {
 }
 
 # function_app docker
-reporting_batch_image    = "pagopagpdreportingbatch"
+reporting_batch_image    = "pagopa/pagopa-gpd-reporting-batch"
 reporting_service_image  = "pagopagpdreportingservice"
 reporting_analysis_image = "pagopagpdreportinganalysis"
 

@@ -1,0 +1,304 @@
+{
+  "name": "Copy From ReEvent To pspNotifyPayment_KPI",
+  "type": "Copy",
+  "dependsOn": [
+    {
+      "activity": "Set variable1",
+      "dependencyConditions": ["Completed"]
+    }
+  ],
+  "policy": {
+    "timeout": "0.12:00:00",
+    "retry": 0,
+    "retryIntervalInSeconds": 30,
+    "secureOutput": false,
+    "secureInput": false
+  },
+  "userProperties": [],
+  "typeProperties": {
+    "source": {
+      "type": "AzureDataExplorerSource",
+      "additionalColumns": [
+        {
+          "name": "pipelineRunID",
+          "value": {
+            "value": "@pipeline().parameters.run_id",
+            "type": "Expression"
+          }
+        }
+      ],
+      "query": {
+        "value": "let trigger_start=bin(datetime('@{pipeline().parameters.start_date}'), 10m);\nlet start=trigger_start;\nlet end=datetime_add('minute', 10, start);\nlet end_resp=datetime_add('minute', 15, start);\nlet pspNotifyPayment_Req = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend idBrokerPSP = extract(\"<idBrokerPSP>(.*)</idBrokerPSP>\", 1 , payload_xml)\n| extend channel = extract(\"<idChannel>(.*)</idChannel>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, idBrokerPSP, psp, channel, sessionId, tipoEvento;\nlet pspNotifyPayment_Resp = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"RESP\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, sessionId, outcome, tipoEvento;\nlet result = pspNotifyPayment_Req\n| join kind=leftouter pspNotifyPayment_Resp on idDominio, iuv, ccp, sessionId, tipoEvento\n| project-rename REQUEST_TIMESTAMP=dataOraEvento, RESPONSE_TIMESTAMP=dataOraEvento1\n| extend diff_time_in_ms=datetime_diff(\"millisecond\", RESPONSE_TIMESTAMP, REQUEST_TIMESTAMP)\n| extend IS_TIMEOUT=case(isempty(RESPONSE_TIMESTAMP), true, false)\n| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, idDominio, iuv, ccp, idBrokerPSP, psp, channel, outcome, diff_time_in_ms, IS_TIMEOUT, tipoEvento;\nlet notCopy = KPI_TPNP\n| where REQUEST_TIMESTAMP between (start .. end)\n| where pipelineRunID == \"@{pipeline().parameters.run_id}\";\nresult\n| join kind=leftanti notCopy on $left.REQUEST_TIMESTAMP == $right.REQUEST_TIMESTAMP, $left.idDominio == $right.ID_DOMINIO, $left.iuv == $right.IUV, $left.ccp == $right.TOKEN, $left.tipoEvento == $right.TIPO_EVENTO\n| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, idDominio, iuv, ccp, idBrokerPSP, psp, channel, outcome, diff_time_in_ms, IS_TIMEOUT, tipoEvento ",
+        "type": "Expression"
+      },
+      "queryTimeout": "00:10:00",
+      "noTruncation": false
+    },
+    "sink": {
+      "type": "AzureDataExplorerSink",
+      "ingestionMappingName": ""
+    },
+    "enableStaging": false,
+    "validateDataConsistency": true,
+    "translator": {
+      "type": "TabularTranslator",
+      "mappings": [
+        {
+          "source": {
+            "name": "REQUEST_TIMESTAMP",
+            "type": "DateTime",
+            "physicalType": "datetime"
+          },
+          "sink": {
+            "name": "REQUEST_TIMESTAMP",
+            "type": "DateTime",
+            "physicalType": "datetime"
+          }
+        },
+        {
+          "source": {
+            "name": "RESPONSE_TIMESTAMP",
+            "type": "DateTime",
+            "physicalType": "datetime"
+          },
+          "sink": {
+            "name": "RESPONSE_TIMESTAMP",
+            "type": "DateTime",
+            "physicalType": "datetime"
+          }
+        },
+        {
+          "source": {
+            "name": "idDominio",
+            "type": "String",
+            "physicalType": "string"
+          },
+          "sink": {
+            "name": "ID_DOMINIO",
+            "type": "String",
+            "physicalType": "string"
+          }
+        },
+        {
+          "source": {
+            "name": "iuv",
+            "type": "String",
+            "physicalType": "string"
+          },
+          "sink": {
+            "name": "IUV",
+            "type": "String",
+            "physicalType": "string"
+          }
+        },
+        {
+          "source": {
+            "name": "ccp",
+            "type": "String",
+            "physicalType": "string"
+          },
+          "sink": {
+            "name": "TOKEN",
+            "type": "String",
+            "physicalType": "string"
+          }
+        },
+        {
+          "source": {
+            "name": "idBrokerPSP",
+            "type": "String",
+            "physicalType": "string"
+          },
+          "sink": {
+            "name": "ID_BROKER_PSP",
+            "type": "String",
+            "physicalType": "string"
+          }
+        },
+        {
+          "source": {
+            "name": "psp",
+            "type": "String",
+            "physicalType": "string"
+          },
+          "sink": {
+            "name": "PSP",
+            "type": "String",
+            "physicalType": "string"
+          }
+        },
+        {
+          "source": {
+            "name": "channel",
+            "type": "String",
+            "physicalType": "string"
+          },
+          "sink": {
+            "name": "CANALE",
+            "type": "String",
+            "physicalType": "string"
+          }
+        },
+        {
+          "source": {
+            "name": "outcome",
+            "type": "String",
+            "physicalType": "string"
+          },
+          "sink": {
+            "name": "OUTCOME",
+            "type": "String",
+            "physicalType": "string"
+          }
+        },
+        {
+          "source": {
+            "name": "diff_time_in_ms",
+            "type": "Int64",
+            "physicalType": "long"
+          },
+          "sink": {
+            "name": "DIFF_TIME_IN_MS",
+            "type": "Int64",
+            "physicalType": "long"
+          }
+        },
+        {
+          "source": {
+            "name": "IS_TIMEOUT",
+            "type": "Boolean",
+            "physicalType": "bool"
+          },
+          "sink": {
+            "name": "IS_TIMEOUT",
+            "type": "Boolean",
+            "physicalType": "bool"
+          }
+        },
+        {
+          "source": {
+            "name": "pipelineRunID",
+            "type": "String"
+          },
+          "sink": {
+            "name": "pipelineRunID",
+            "type": "String",
+            "physicalType": "string"
+          }
+        },
+        {
+          "source": {
+            "name": "tipoEvento",
+            "type": "String",
+            "physicalType": "string"
+          },
+          "sink": {
+            "name": "TIPO_EVENTO",
+            "type": "String",
+            "physicalType": "string"
+          }
+        }
+      ],
+      "typeConversion": true,
+      "typeConversionSettings": {
+        "allowDataTruncation": true,
+        "treatBooleanAsNumber": false
+      }
+    }
+  },
+  "inputs": [
+    {
+      "referenceName": "${inputdataset}",
+      "type": "DatasetReference"
+    }
+  ],
+  "outputs": [
+    {
+      "referenceName": "${outputdataset}",
+      "type": "DatasetReference"
+    }
+  ]
+},
+{
+  "name": "Lookup1",
+  "type": "Lookup",
+  "dependsOn": [],
+  "policy": {
+    "timeout": "0.12:00:00",
+    "retry": 0,
+    "retryIntervalInSeconds": 30,
+    "secureOutput": false,
+    "secureInput": false
+  },
+  "userProperties": [],
+  "typeProperties": {
+    "source": {
+      "type": "AzureDataExplorerSource",
+      "query": {
+        "value": "let trigger_start=bin(datetime('@{pipeline().parameters.start_date}'), 10m);\nlet start=trigger_start;\nlet end=datetime_add('minute', 10, start);\nlet end_resp=datetime_add('minute', 15, start);\nlet pspNotifyPayment_Req = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend idBrokerPSP = extract(\"<idBrokerPSP>(.*)</idBrokerPSP>\", 1 , payload_xml)\n| extend channel = extract(\"<idChannel>(.*)</idChannel>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, idBrokerPSP, psp, channel, sessionId, tipoEvento;\nlet pspNotifyPayment_Resp = ReEvent\n| where insertedTimestamp between (start .. end_resp)\n| where tipoEvento in (\"pspNotifyPayment\",\"pspNotifyPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"RESP\"\n| extend payload_xml = base64_decode_tostring(payload)\n| extend outcome = extract(\"<outcome>(.*)</outcome>\", 1 , payload_xml)\n| project-away payload\n| project dataOraEvento, idDominio, iuv, ccp, sessionId, outcome, tipoEvento;\nlet result = pspNotifyPayment_Req\n| join kind=leftouter pspNotifyPayment_Resp on idDominio, iuv, ccp, sessionId, tipoEvento\n| project-rename REQUEST_TIMESTAMP=dataOraEvento, RESPONSE_TIMESTAMP=dataOraEvento1\n| extend diff_time_in_ms=datetime_diff(\"millisecond\", RESPONSE_TIMESTAMP, REQUEST_TIMESTAMP)\n| extend IS_TIMEOUT=case(isempty(RESPONSE_TIMESTAMP), true, false)\n| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, idDominio, iuv, ccp, idBrokerPSP, psp, channel, outcome, diff_time_in_ms, IS_TIMEOUT, tipoEvento;\nlet notCopy = KPI_TPNP\n| where REQUEST_TIMESTAMP between (start .. end)\n| where pipelineRunID == \"@{pipeline().parameters.run_id}\";\nresult\n| join kind=leftanti notCopy on $left.REQUEST_TIMESTAMP == $right.REQUEST_TIMESTAMP, $left.idDominio == $right.idDominio, $left.iuv == $right.iuv, $left.ccp == $right.ccp, $left.tipoEvento == $right.tipoEvento\n| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, idDominio, iuv, ccp, idBrokerPSP, psp, channel, outcome, diff_time_in_ms, IS_TIMEOUT, tipoEvento",
+        "type": "Expression"
+      },
+      "queryTimeout": "00:10:00",
+      "noTruncation": false
+    },
+    "dataset": {
+      "referenceName": "${inputdataset}",
+      "type": "DatasetReference"
+    },
+    "firstRowOnly": false
+  }
+},
+{
+  "name": "Set variable1",
+  "type": "SetVariable",
+  "dependsOn": [
+    {
+      "activity": "Lookup1",
+      "dependencyConditions": ["Completed"]
+    }
+  ],
+  "policy": {
+    "secureOutput": false,
+    "secureInput": false
+  },
+  "userProperties": [],
+  "typeProperties": {
+    "variableName": "count_record",
+    "value": {
+      "value": "@string(activity('Lookup1').output.count)",
+      "type": "Expression"
+    }
+  }
+},
+{
+  "name": "If Condition1",
+  "type": "IfCondition",
+  "dependsOn": [
+    {
+      "activity": "Copy From ReEvent To pspNotifyPayment_KPI",
+      "dependencyConditions": ["Completed"]
+    }
+  ],
+  "userProperties": [],
+  "typeProperties": {
+    "expression": {
+      "value": "@equals(variables('count_record'),string(activity('Copy From ReEvent To pspNotifyPayment_KPI').output.rowsCopied))",
+      "type": "Expression"
+    },
+    "ifFalseActivities": [
+      {
+        "name": "Errore",
+        "type": "Fail",
+        "dependsOn": [],
+        "userProperties": [],
+        "typeProperties": {
+          "message": {
+            "value": "@concat('Lette :' ,variables('count_record'), ' Scritte : ', activity('Copy From ReEvent To pspNotifyPayment_KPI').output.rowsCopied)",
+            "type": "Expression"
+          },
+          "errorCode": "412"
+        }
+      }
+    ]
+  }
+}

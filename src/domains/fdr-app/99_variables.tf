@@ -233,6 +233,25 @@ variable "storage_account_info" {
   }
 }
 
+# Storage account
+variable "reporting_fdr_storage_account_info" {
+  type = object({
+    account_kind                      = string
+    account_tier                      = string
+    account_replication_type          = string
+    access_tier                       = string
+    advanced_threat_protection_enable = bool
+  })
+
+  default = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+}
+
 # App service plan
 variable "app_service_plan_info" {
   type = object({
@@ -311,4 +330,116 @@ variable "fdr_re_function_autoscale" {
     maximum = number
   })
   description = "FdR function autoscaling parameters"
+}
+
+# FdR xml to json
+variable "fdr_xml_to_json_function_subnet" {
+  type        = list(string)
+  description = "Address prefixes subnet"
+  default     = null
+}
+
+variable "fdr_xml_to_json_function_network_policies_enabled" {
+  type        = bool
+  description = "Network policies enabled"
+  default     = false
+}
+variable "fdr_xml_to_json_function" {
+  type = object({
+    always_on                    = bool
+    kind                         = string
+    sku_size                     = string
+    sku_tier                     = string
+    maximum_elastic_worker_count = number
+  })
+  description = "FdR XML to JSON function"
+  default = {
+    always_on                    = true
+    kind                         = "Linux"
+    sku_size                     = "B1"
+    sku_tier                     = "Basic"
+    maximum_elastic_worker_count = 1
+  }
+}
+
+variable "fdr_xml_to_json_function_app_image_tag" {
+  type        = string
+  default     = "latest"
+  description = "FdR XML to JSON function app docker image tag. Defaults to 'latest'"
+}
+
+variable "fdr_xml_to_json_function_autoscale" {
+  type = object({
+    default = number
+    minimum = number
+    maximum = number
+  })
+  description = "FdR function autoscaling parameters"
+}
+
+# FdR json to xml
+variable "fdr_json_to_xml_function_subnet" {
+  type        = list(string)
+  description = "Address prefixes subnet"
+  default     = null
+}
+
+variable "fdr_json_to_xml_function_network_policies_enabled" {
+  type        = bool
+  description = "Network policies enabled"
+  default     = false
+}
+variable "fdr_json_to_xml_function" {
+  type = object({
+    always_on                    = bool
+    kind                         = string
+    sku_size                     = string
+    sku_tier                     = string
+    maximum_elastic_worker_count = number
+  })
+  description = "FdR JSON to XML function"
+  default = {
+    always_on                    = true
+    kind                         = "Linux"
+    sku_size                     = "B1"
+    sku_tier                     = "Basic"
+    maximum_elastic_worker_count = 1
+  }
+}
+
+variable "fdr_json_to_xml_function_app_image_tag" {
+  type        = string
+  default     = "latest"
+  description = "FdR JSON to XML function app docker image tag. Defaults to 'latest'"
+}
+
+variable "fdr_json_to_xml_function_autoscale" {
+  type = object({
+    default = number
+    minimum = number
+    maximum = number
+  })
+  description = "FdR JSON to XML function autoscaling parameters"
+}
+
+variable "function_app_storage_account_replication_type" {
+  type        = string
+  default     = "ZRS"
+  description = "(Optional) Storage account replication type used for function apps"
+}
+
+variable "ftp_organization" {
+  type        = string
+  description = "Organization configured with FTP"
+  default     = null
+}
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
 }

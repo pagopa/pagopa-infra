@@ -18,11 +18,6 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_fdr-re_fdr-re-rx" {
   resource_group_name = "${local.product}-msg-rg"
 }
 
-data "azurerm_container_registry" "acr" {
-  name                = local.acr_name
-  resource_group_name = local.acr_resource_group_name
-}
-
 # info for table storage
 data "azurerm_resource_group" "fdr_re_rg" {
   name = "${local.project}-re-rg"
@@ -35,13 +30,12 @@ data "azurerm_storage_account" "fdr_re_storage_account" {
 
 locals {
   function_re_to_datastore_app_settings = {
-    linux_fx_version                    = "JAVA|11"
-    FUNCTIONS_WORKER_RUNTIME            = "java"
-    FUNCTIONS_WORKER_PROCESS_COUNT      = 4
+    linux_fx_version               = "JAVA|11"
+    FUNCTIONS_WORKER_RUNTIME       = "java"
+    FUNCTIONS_WORKER_PROCESS_COUNT = 4
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
     FETCH_KEEPALIVE_SOCKET_ACTIVE_TTL   = "110000"
-
     FETCH_KEEPALIVE_FREE_SOCKET_TIMEOUT = "30000"
     FETCH_KEEPALIVE_TIMEOUT             = "60000"
 
@@ -63,11 +57,11 @@ locals {
   }
 
   docker_settings = {
-    IMAGE_NAME = "pagopafdrretodatastore"
+    IMAGE_NAME = "pagopa/pagopa-fdr-re-to-datastore"
     # ACR
-    DOCKER_REGISTRY_SERVER_URL = "https://${data.azurerm_container_registry.acr.login_server}"
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
+    DOCKER_REGISTRY_SERVER_URL      = "ghcr.io"
+    DOCKER_REGISTRY_SERVER_USERNAME = null
+    DOCKER_REGISTRY_SERVER_PASSWORD = null
   }
 }
 
@@ -114,6 +108,8 @@ module "fdr_re_function" {
   }
 
   storage_account_name = replace(format("%s-re-fn-sa", local.project), "-", "")
+
+  storage_account_info = var.storage_account_info
 
   app_settings = local.function_re_to_datastore_app_settings
 

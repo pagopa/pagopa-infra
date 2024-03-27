@@ -6,7 +6,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-payments
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -26,10 +26,10 @@ AzureDiagnostics
   )
   severity    = 2
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
 }
 ## GPD-Payments SOAP Availability ##
@@ -77,7 +77,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-payments
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -97,10 +97,10 @@ AzureDiagnostics
   )
   severity    = 2
   frequency   = 5
-  time_window = 5
+  time_window = 10
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 2
   }
 }
 ## GPD-Payments REST Availability ##

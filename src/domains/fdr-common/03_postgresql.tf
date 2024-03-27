@@ -37,7 +37,7 @@ module "postgres_flexible_snet" {
 }
 
 module "postgres_flexible_server_fdr" {
-  source                      = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v6.2.1"
+  source                      = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v7.23.0"
   name                        = "${local.project}-flexible-postgresql"
   location                    = azurerm_resource_group.db_rg.location
   resource_group_name         = azurerm_resource_group.db_rg.name
@@ -45,7 +45,7 @@ module "postgres_flexible_server_fdr" {
   private_dns_zone_id         = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
   delegated_subnet_id         = var.env_short != "d" ? module.postgres_flexible_snet.id : null
   high_availability_enabled   = var.pgres_flex_params.pgres_flex_ha_enabled
-  standby_availability_zone   = var.env_short != "d" ? var.pgres_flex_params.zone : null
+  standby_availability_zone   = var.env_short != "d" ? var.pgres_flex_params.standby_zone : null
   pgbouncer_enabled           = var.pgres_flex_params.pgres_flex_pgbouncer_enabled
   diagnostic_settings_enabled = var.pgres_flex_params.pgres_flex_diagnostic_settings_enabled
   administrator_login         = data.azurerm_key_vault_secret.pgres_flex_admin_login.value
@@ -59,6 +59,7 @@ module "postgres_flexible_server_fdr" {
   geo_redundant_backup_enabled = var.pgres_flex_params.geo_redundant_backup_enabled
   create_mode                  = var.pgres_flex_params.create_mode
 
+
   log_analytics_workspace_id = var.env_short != "d" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
   custom_metric_alerts       = var.custom_metric_alerts
   alert_action = [
@@ -71,6 +72,13 @@ module "postgres_flexible_server_fdr" {
       webhook_properties = null
     }
   ]
+
+
+  private_dns_registration = var.postgres_dns_registration_enabled
+  private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
+  private_dns_zone_rg_name = data.azurerm_resource_group.rg_vnet.name
+  private_dns_record_cname = "fdr-db"
+
   tags = var.tags
 }
 
@@ -114,13 +122,13 @@ resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_min_poo
   count     = var.pgres_flex_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.min_pool_size"
   server_id = module.postgres_flexible_server_fdr.id
-  value     = 500
+  value     = var.pgres_flex_params.pgbouncer_min_pool_size
 }
 resource "azurerm_postgresql_flexible_server_configuration" "fdr_db_flex_default_pool_size" {
   count     = var.pgres_flex_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.default_pool_size"
   server_id = module.postgres_flexible_server_fdr.id
-  value     = 1000
+  value     = var.pgres_flex_params.pgbouncer_default_pool_size
 }
 
 

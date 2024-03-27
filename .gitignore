@@ -46,3 +46,6 @@ __*.sh
 **/*copy.xml
 **/libs
 __import_apim
+/pagopa-infra.iml
+/src/psql/nodo/liquibase/online.properties
+/src/psql/nodo/liquibase/re.properties

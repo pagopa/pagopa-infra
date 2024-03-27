@@ -11,9 +11,10 @@ locals {
     "51.144.56.176/28",
   ]
 
-  monitor_appinsights_name        = "${local.product}-appinsights"
-  monitor_action_group_slack_name = "SlackPagoPA"
-  monitor_action_group_email_name = "PagoPA"
+  monitor_appinsights_name           = "${local.product}-appinsights"
+  monitor_action_group_slack_name    = "SlackPagoPA"
+  monitor_action_group_email_name    = "PagoPA"
+  monitor_action_group_opsgenie_name = "Opsgenie"
 
   vnet_name                = "${local.product}-vnet"
   vnet_integration_name    = "${local.product}-vnet-integration"
@@ -39,14 +40,16 @@ locals {
     path                  = "nodo/nodo-per-pa"
     subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
-    fdr_hostname          = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
   }
 
-  apim_snet     = "${local.product}-apim-snet"
+  apim_snet = "${local.product}-apim-snet"
 
   fdr_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
 
-  hostname = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
+  # TODO fix the following uing fdr_hostname
+  hostname                    = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
+  hostnameAzFunctionXmlToJson = var.env == "prod" ? "pagopa-weu-fdr-xml-to-json-fn.azurewebsites.net" : "pagopa-${var.env_short}-weu-fdr-xml-to-json-fn.azurewebsites.net"
+  hostnameAzFunctionJsonToXml = var.env == "prod" ? "pagopa-weu-fdr-json-to-xml-fn.azurewebsites.net" : "pagopa-${var.env_short}-weu-fdr-json-to-xml-fn.azurewebsites.net"
 
   product_id            = "fdr"
   display_name          = "Flussi di rendicontazione"

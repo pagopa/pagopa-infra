@@ -94,6 +94,13 @@ data "azurerm_api_management_api" "apim_nodo_per_pa_api_v1" {
   revision            = "1"
 }
 
+data "azurerm_api_management_api" "apim_nodo_per_pa_api_v1_auth" {
+  name                = "${var.env_short}-nodo-per-pa-api-auth"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  revision            = "1"
+}
+
 data "azurerm_api_management_api" "apim_nodo_per_psp_api_v1" {
   name                = "${var.env_short}-nodo-per-psp-api"
   api_management_name = data.azurerm_api_management.apim.name

@@ -1,5 +1,6 @@
 
 module "tls_checker" {
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v6.7.0"
 
   https_endpoint                                            = local.mock_hostname
@@ -7,7 +8,7 @@ module "tls_checker" {
   alert_enabled                                             = true
   helm_chart_present                                        = true
   helm_chart_version                                        = var.tls_cert_check_helm.chart_version
-  namespace                                                 = kubernetes_namespace.namespace.metadata[0].name
+  namespace                                                 = kubernetes_namespace.namespace[0].metadata[0].name
   helm_chart_image_name                                     = var.tls_cert_check_helm.image_name
   helm_chart_image_tag                                      = var.tls_cert_check_helm.image_tag
   location_string                                           = var.location_string
@@ -20,6 +21,7 @@ module "tls_checker" {
 }
 
 resource "helm_release" "cert_mounter" {
+  count        = var.env_short == "d" ? 1 : 0
   name         = "cert-mounter-blueprint"
   repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
   chart        = "cert-mounter-blueprint"
@@ -40,3 +42,19 @@ resource "helm_release" "cert_mounter" {
   ]
 }
 
+resource "helm_release" "reloader" {
+  count      = var.env_short == "d" ? 1 : 0
+  name       = "reloader"
+  repository = "https://stakater.github.io/stakater-charts"
+  chart      = "reloader"
+  version    = "v1.0.48"
+  namespace  = kubernetes_namespace.namespace[0].metadata[0].name
+
+  # enabled it if you remove accidentally reloader
+  # force_update = true
+
+  set {
+    name  = "reloader.watchGlobally"
+    value = "false"
+  }
+}

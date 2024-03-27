@@ -8,9 +8,9 @@ locals {
     description           = "SOAP API del servizio Payments per Gestione Posizione Debitorie"
     path                  = "gpd-payments/api"
     published             = true
-    subscription_required = false
+    subscription_required = true
     approval_required     = false
-    subscriptions_limit   = 0
+    subscriptions_limit   = 1000
     service_url           = format("https://%s/pagopa-gpd-payments/partner", local.gps_hostname)
   }
   apim_gpd_payments_rest_external_api = {
@@ -19,7 +19,7 @@ locals {
     path                  = "gpd/payments-receipts-service"
     published             = true
     subscription_required = true
-    approval_required     = true
+    approval_required     = false
     subscriptions_limit   = 1000
     service_url           = null
   }
@@ -97,6 +97,16 @@ resource "azurerm_api_management_product_api" "apim_api_gpd_payments_soap_produc
   api_name   = azurerm_api_management_api.apim_api_gpd_payments_soap_api_v1.name
 }
 
+# Associate the SOAP API with the product APIM for Node
+resource "azurerm_api_management_product_api" "apim_api_gpd_payments_soap_product_nodo_api_v1" {
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id = local.apim_x_node_product_id
+  api_name   = azurerm_api_management_api.apim_api_gpd_payments_soap_api_v1.name
+}
+
 ###################
 ## REST Products ##
 ###################
@@ -137,7 +147,7 @@ module "apim_api_gpd_payments_rest_external_api_v1" {
   name                  = format("%s-gpd-payments-rest-api-aks", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_gpd_payments_rest_external_product.product_id, module.apim_gpd_integration_product.product_id]
+  product_ids           = [module.apim_gpd_payments_rest_external_product.product_id, module.apim_gpd_integration_product.product_id, "technical_support_api"]
   subscription_required = local.apim_gpd_payments_rest_external_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_gpd_payments_rest_external_api.id
   api_version           = "v1"

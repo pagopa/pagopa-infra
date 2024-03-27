@@ -1,0 +1,242 @@
+<!--
+    IMPORTANT:
+    - Policy fragment are included as-is whenever they are referenced.
+    - If using variables. Ensure they are setup before use.
+    - Copy and paste your code here or simply start coding
+-->
+<fragment>
+  <trace source="primitive-type" severity="information">@((string) context.Variables["primitiveType"])</trace>
+  <set-variable name="enable_nm3_switch" value="{{enable-nm3-decoupler-switch}}" />
+  <set-variable name="enable_routing_switch" value="{{enable-routing-decoupler-switch}}" />
+  <choose>
+    <!-- evaluate routing algorithm -->
+    <when condition="@(((string)context.Variables["primitiveType"]).Equals("ROUTING"))">
+    <set-variable name="configuration" value="@{
+    JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
+    JArray sorted = new JArray(json_configuration.OrderByDescending(obj => (int)obj["routing"]));
+    return sorted.ToString();
+    }" />
+    <choose>
+      <when condition="@(context.Variables.GetValueOrDefault<string>("enable_routing_switch", "").Equals("true"))">
+      <set-variable name="baseUrl" value="@{
+                        var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
+
+                        // get random number
+                        var rand = new Random();
+                        int random = rand.Next(0, 100);
+
+                        // priority is given by list order. add field for sorting the priority
+                        int currentRouting = 0;
+                        foreach (JObject item in configuration) {
+                            currentRouting += int.Parse(item.GetValue("routing").ToString());
+                            if (random <= currentRouting) {
+                                return item.GetValue("node_uri").ToString();
+                            }
+                        }
+
+                        return context.Variables.GetValueOrDefault<string>("baseUrl", "");
+      }" />
+    </when>
+    <otherwise>
+      <trace source="skip-set-base-user-routing" severity="information">skipped set base url routing</trace>
+    </otherwise>
+  </choose>
+</when>
+<when condition="@(((string)context.Variables["primitiveType"]).Equals("NM3"))">
+<set-variable name="configuration" value="@{
+    JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
+    JArray sorted = new JArray(json_configuration.OrderBy(obj => (int)obj["list_priority"]));
+    return sorted.ToString();
+    }" />
+  <!-- read request info -->
+<choose>
+<when condition="@(((string)context.Variables["soapAction"]).Equals("sendPaymentOutcome"))">
+<set-variable name="requestData" value="@{
+                            // retrieve data from request body
+                            XElement request = context.Request.Body.As<XElement>(preserveContent: true);
+                            XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
+                            if (body != null ) {
+                                XElement primitive = (XElement) body.FirstNode;
+                                XElement idBrokerPSP = primitive.Descendants("idBrokerPSP").FirstOrDefault();
+                                XElement paymentToken = primitive.Descendants("paymentToken").FirstOrDefault();
+                                var ptoken = paymentToken.Value;
+                                // ttl in seconds
+                                return new JObject(
+                                    new JProperty("brokerPsp", idBrokerPSP.Value),
+                                    new JProperty("paymentToken", paymentToken.Value),
+                                    new JProperty("key", paymentToken.Value),
+                                    new JProperty("ttl", 86400)
+                                ).ToString();
+                            } else {
+                                return new JObject(
+                                    new JProperty("brokerPsp", ""),
+new JProperty("paymentToken", ""),
+new JProperty("key", ""),
+new JProperty("ttl", 1)
+).ToString();
+}
+}" />
+</when>
+<otherwise>
+<set-variable name="requestData" value="@{
+                            // retrieve data from request body
+                            XElement request = context.Request.Body.As<XElement>(preserveContent: true);
+                            XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
+
+                            if (body != null ) {
+                                XElement primitive = (XElement) body.FirstNode;
+                                XElement idBrokerPSP = primitive.Descendants("idBrokerPSP").FirstOrDefault();
+                                XElement idCi = primitive.Descendants("fiscalCode").FirstOrDefault();
+                                XElement noticeNumber = primitive.Descendants("noticeNumber").FirstOrDefault();
+                                var brokerPsp = idBrokerPSP.Value;
+                                var ci = idCi.Value;
+                                // ttl in seconds
+                                return new JObject(
+                                    new JProperty("brokerPsp", idBrokerPSP.Value),
+                                    new JProperty("ci", idCi.Value),
+                                    new JProperty("key", brokerPsp + "_" + ci + "_" + noticeNumber.Value),
+                                    new JProperty("ttl", 3600)
+                                ).ToString();
+                            } else {
+                                return new JObject(
+                                    new JProperty("brokerPsp", ""),
+new JProperty("paymentToken", ""),
+new JProperty("key", ""),
+new JProperty("ttl", 1)
+).ToString();
+}
+}" />
+</otherwise>
+  </choose>
+  <!-- check if key is cached -->
+<cache-lookup-value key="@{
+                        var domain = (string)context.Variables["domain"];
+                        var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                        return domain + "_" + (string)requestData["key"];
+                    }" variable-name="nodeId" default-value="LIST" caching-type="internal" />
+<choose>
+<!-- if key not in cache -->
+<when condition="@(context.Variables.GetValueOrDefault<string>("nodeId", "").Equals("LIST"))">
+<!-- evaluate list algorithm -->
+<set-variable name="dataToSet" value="@{
+                            var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
+
+                            var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                            bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true");
+if (enable_nm3_switch) {
+foreach (JObject item in configuration) {
+bool brokerPspFound = false;
+bool ciFound = false;
+
+var brokerPsps = item.GetValue("broker_psps").ToList();
+var cis = item.GetValue("cis").ToList();
+
+if (brokerPsps.Count == 0 || (brokerPsps.Count > 0 && brokerPsps.Contains(requestData.GetValue("brokerPsp")))) {
+brokerPspFound = true;
+}
+
+if (cis.Count == 0 || (cis.Count > 0 && cis.Contains(requestData.GetValue("ci")))) {
+ciFound = true;
+}
+
+if (brokerPspFound && ciFound) {
+return new JObject(
+new JProperty("nodeId", item.GetValue("node_id").ToString()),
+new JProperty("nodeUri", item.GetValue("node_uri").ToString()),
+new JProperty("ttl", requestData.GetValue("ttl"))
+).ToString();
+}
+}
+}
+var baseNodeId = context.Variables.GetValueOrDefault<string>("baseNodeId", "");
+var baseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "");
+return new JObject(
+new JProperty("nodeId", baseNodeId),
+new JProperty("nodeUri", baseUrl),
+new JProperty("ttl", requestData.GetValue("ttl"))
+).ToString();
+
+}" />
+<!-- set base url -->
+<choose>
+  <!-- if enable_nm3_decoupler_switch == true -->
+  <when condition="@(context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true"))">
+  <set-variable name="baseUrl" value="@{
+                                  var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
+                                  var target = dataToSet.GetValue("nodeUri").ToString();
+                                  var defaultBaseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "");
+  return target.Equals("NONE") ? defaultBaseUrl : target;
+  }" />
+</when>
+<otherwise>
+  <trace source="skip-set-base-user" severity="information">skipped set base url nm3</trace>
+</otherwise>
+</choose>
+  <!-- set node_id in cache -->
+<choose>
+<when condition="@{
+                                var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
+                                return !dataToSet.GetValue("nodeId").ToString().Equals("NONE");
+                            }">
+<cache-store-value key="@{
+                                    var domain = (string)context.Variables["domain"];
+                                    var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                                    return domain + "_" + (string)requestData["key"];
+                                }" value="@{
+                                    var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
+                                    return (string)requestData["nodeId"];
+                                }" duration="@{
+                                    var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
+                                    return (int)requestData["ttl"];
+                                }" caching-type="internal" />
+</when>
+  </choose>
+  </when>
+  <!-- key in cache -->
+<otherwise>
+<trace source="retrieve-node-uri" severity="information">Node URI retrieved by cache</trace>
+<!-- retrieve url by node_id according to configuration -->
+<set-variable name="dataToSet" value="@{
+                            var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
+
+                            var nodeId = (string)context.Variables["nodeId"];
+                            foreach (JObject item in configuration) {
+                                var currentNodeId = item.GetValue("node_id").ToString();
+
+                                if (currentNodeId.Equals(nodeId)) {
+                                    return new JObject(
+                                        new JProperty("nodeId", item.GetValue("node_id").ToString()),
+                                        new JProperty("nodeUri", item.GetValue("node_uri").ToString()),
+                                        new JProperty("ttl", 3600)
+                                    ).ToString();
+                                }
+                            }
+                                var baseNodeId = context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
+                                var baseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "NONE");
+                                return new JObject(
+                                    new JProperty("nodeId", baseNodeId),
+                                    new JProperty("nodeUri", baseUrl),
+                                    new JProperty("ttl", 3600)
+                                    ).ToString();
+
+                        }" />
+<!-- set base url -->
+<!-- if enable_nm3_decoupler_switch == true -->
+<choose>
+  <when condition="@(context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true"))">
+  <set-variable name="baseUrl" value="@{
+                                  var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
+                                  var target = dataToSet.GetValue("nodeUri").ToString();
+                                  var defaultBaseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "");
+  return target.Equals("NONE") ? defaultBaseUrl : target;
+  }" />
+</when>
+<otherwise>
+  <trace source="skip-set-base-user" severity="information">skipped set base url nm3</trace>
+</otherwise>
+</choose>
+  </otherwise>
+  </choose>
+  </when>
+  </choose>
+  </fragment>

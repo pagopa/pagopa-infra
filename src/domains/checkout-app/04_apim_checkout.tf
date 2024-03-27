@@ -4,7 +4,7 @@
 
 module "apim_checkout_product" {
   count  = var.checkout_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.69.1"
 
   product_id   = "checkout"
   display_name = "checkout pagoPA"
@@ -52,7 +52,7 @@ resource "azurerm_api_management_api_version_set" "checkout_payment_activations_
 }
 
 module "apim_checkout_payment_activations_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.69.1"
 
   name                  = format("%s-checkout-payment-activations-api", local.parent_project)
   api_management_name   = data.azurerm_api_management.apim.name
@@ -106,7 +106,7 @@ resource "azurerm_api_management_api_version_set" "checkout_payment_activations_
 }
 
 module "apim_checkout_payment_activations_api_auth_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.69.1"
 
   name                  = format("%s-checkout-payment-activations-auth-api", local.parent_project)
   api_management_name   = data.azurerm_api_management.apim.name
@@ -132,7 +132,7 @@ module "apim_checkout_payment_activations_api_auth_v1" {
 
 # Payment activation v2 authenticated APIs
 module "apim_checkout_payment_activations_api_auth_v2" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.69.1"
 
   name                  = format("%s-checkout-payment-activations-auth-api", local.parent_project)
   api_management_name   = data.azurerm_api_management.apim.name
@@ -162,7 +162,7 @@ locals {
     display_name          = "IO for Node WS"
     description           = "SOAP service used from Nodo to relay idPayment"
     path                  = "checkout/io-for-node/CdInfoWisp"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }
@@ -219,6 +219,13 @@ resource "azurerm_api_management_product_api" "apim_cd_info_wisp_product_v1" {
   resource_group_name = data.azurerm_resource_group.rg_api.name
 }
 
+resource "azurerm_api_management_product_api" "apim_cd_info_wisp_product_v1_apim_for_node" {
+  product_id          = "apim_for_node"
+  api_name            = resource.azurerm_api_management_api.apim_cd_info_wisp_v1.name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+}
+
 ######################################
 ## API checkout payment transaction ##
 ######################################
@@ -246,7 +253,7 @@ resource "azurerm_api_management_api_version_set" "checkout_transactions_api" {
 module "apim_checkout_transactions_api_v1" {
   count = var.checkout_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.69.1"
 
   name                  = format("%s-checkout-transactions-api", var.env_short)
   api_management_name   = data.azurerm_api_management.apim.name
@@ -293,7 +300,7 @@ resource "azurerm_api_management_api_version_set" "checkout_ecommerce_api_v1" {
 }
 
 module "apim_checkout_ecommerce_api_v1" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.69.1"
 
   name                  = "${local.parent_project}-checkout-ecommerce-api"
   api_management_name   = data.azurerm_api_management.apim.name

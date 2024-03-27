@@ -8,14 +8,15 @@ locals {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
-    DOCKER_REGISTRY_SERVER_URL      = data.azurerm_container_registry.acr.login_server
-    DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.acr.admin_password
+    DOCKER_REGISTRY_SERVER_URL = "ghcr.io"
+    IMAGE_NAME                 = "pagopa/pagopa-platform-authorizer"
 
     COSMOS_CONN_STRING                    = data.azurerm_key_vault_secret.authorizer_cosmos_connection_string.value
     REFRESH_CONFIGURATION_PATH            = data.azurerm_key_vault_secret.authorizer_refresh_configuration_url.value
     APICONFIG_SELFCARE_INTEGRATION_PATH   = data.azurerm_key_vault_secret.apiconfig_selfcare_integration_url.value
     APICONFIG_SELFCARE_INTEGRATION_SUBKEY = data.azurerm_key_vault_secret.apiconfig_selfcare_integration_subkey.value
+    RETRY_NUMBER                          = 4
+    STARTING_RETRY_DELAY_MILLIS           = 1500
 
     EC_SQL_QUERY             = "SELECT VALUE i FROM c JOIN i IN c.authorization WHERE c.domain = {domain}"
     IS_EC_ENROLLED_SQL_QUERY = "SELECT VALUE COUNT(i) FROM c JOIN i IN c.authorization WHERE c.domain = {domain} AND ARRAY_CONTAINS(c.authorization, {organizationFiscalCode})"
@@ -49,7 +50,7 @@ data "azurerm_resource_group" "shared_rg" {
 }
 
 module "authorizer_function_app" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.6.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.29.0"
 
   resource_group_name                      = data.azurerm_resource_group.shared_rg.name
   name                                     = "${local.project}-authorizer-fn"
@@ -66,10 +67,10 @@ module "authorizer_function_app" {
 
   docker = {
     registry_url      = local.authorizer_functions_app_settings.DOCKER_REGISTRY_SERVER_URL
-    image_name        = "pagopaplatformauthorizer"
+    image_name        = local.authorizer_functions_app_settings.IMAGE_NAME
     image_tag         = "latest"
-    registry_username = local.authorizer_functions_app_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    registry_password = local.authorizer_functions_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+    registry_username = null
+    registry_password = null
   }
 
   sticky_connection_string_names = ["COSMOS_CONN_STRING", "COSMOS_CONNection_STRING"]
@@ -84,12 +85,19 @@ module "authorizer_function_app" {
   app_service_plan_info = {
     kind                         = var.authorizer_functions_app_sku.kind
     sku_size                     = var.authorizer_functions_app_sku.sku_size
-    maximum_elastic_worker_count = 1
+    maximum_elastic_worker_count = 0
     worker_count                 = 1
     zone_balancing_enabled       = false
   }
 
   storage_account_name = replace(format("%s-auth-st", local.project), "-", "")
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = var.function_app_storage_account_replication_type
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
 
@@ -121,10 +129,10 @@ module "authorizer_function_app_slot_staging" {
 
   docker = {
     registry_url      = local.authorizer_functions_app_settings.DOCKER_REGISTRY_SERVER_URL
-    image_name        = "pagopaplatformauthorizer"
+    image_name        = local.authorizer_functions_app_settings.IMAGE_NAME
     image_tag         = "latest"
-    registry_username = local.authorizer_functions_app_settings.DOCKER_REGISTRY_SERVER_USERNAME
-    registry_password = local.authorizer_functions_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
+    registry_username = null
+    registry_password = null
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]

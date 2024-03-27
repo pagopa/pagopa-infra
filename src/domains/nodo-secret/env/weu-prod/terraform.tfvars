@@ -32,4 +32,14 @@ upload_firmatore = {
 
 cacerts_path = "./env/weu-prod/resources/cacerts"
 
-pipe_service_principel_application_id = "22dff46c-7e53-4e83-abeb-1d7e3bf72e53"
+certs_storage_account_replication_type = "ZRS"
+
+
+nodo_cert_storage_account = {
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = false
+  blob_delete_retention_days    = 31
+  public_network_access_enabled = false
+  backup_enabled                = true
+  backup_retention              = 30
+}

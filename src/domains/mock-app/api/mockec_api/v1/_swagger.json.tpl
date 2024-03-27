@@ -21,7 +21,7 @@
       "post": {
         "summary": "Operation paVerifyPaymentNotice, paGetPayment, paSendRT",
         "description": "To call paVerifyPaymentNotice, paGetPayment, paSendRT. The primitive to invoke is specified in the body request.",
-        "operationId": "mockEc",
+        "operationId": "mock-ec",
         "parameters": [
           {
             "in": "body",

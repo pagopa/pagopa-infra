@@ -57,6 +57,25 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+
+variable "location_replica" {
+  type        = string
+  description = "One of westeurope, northeurope"
+  default     = "northeurope"
+}
+
+variable "location_replica_short" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_replica_short) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "One of wue, neu"
+  default     = "neu"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -135,6 +154,7 @@ variable "pgres_flex_params" {
     db_version                             = string
     storage_mb                             = string
     zone                                   = number
+    standby_zone                           = optional(number, 1)
     backup_retention_days                  = number
     geo_redundant_backup_enabled           = bool
     create_mode                            = string
@@ -143,6 +163,8 @@ variable "pgres_flex_params" {
     pgres_flex_pgbouncer_enabled           = bool
     pgres_flex_diagnostic_settings_enabled = bool
     max_connections                        = number
+    pgbouncer_min_pool_size                = number
+    pgbouncer_default_pool_size            = number
   })
 
 }
@@ -250,7 +272,6 @@ variable "cosmos_mongo_db_fdr_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -281,7 +302,6 @@ variable "cosmos_mongo_db_fdr_re_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
-    main_geo_location_zone_redundant = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
@@ -343,6 +363,8 @@ variable "fdr_storage_account" {
     public_network_access_enabled = bool
     blob_delete_retention_days    = number
     enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
   })
 
   default = {
@@ -354,6 +376,8 @@ variable "fdr_storage_account" {
     public_network_access_enabled = false
     blob_delete_retention_days    = 30
     enable_low_availability_alert = false
+    backup_enabled                = false
+    backup_retention              = 0
   }
 }
 
@@ -367,6 +391,8 @@ variable "fdr_re_storage_account" {
     public_network_access_enabled = bool
     blob_delete_retention_days    = number
     enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
   })
 
   default = {
@@ -378,19 +404,73 @@ variable "fdr_re_storage_account" {
     public_network_access_enabled = false
     blob_delete_retention_days    = 30
     enable_low_availability_alert = false
+    backup_enabled                = false
+    backup_retention              = 0
   }
 }
+
+variable "fdr_history_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    blob_delete_retention_days    = number
+    enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
+  })
+
+  default = {
+    account_kind                  = "StorageV2"
+    account_tier                  = "Standard"
+    account_replication_type      = "LRS"
+    blob_versioning_enabled       = false
+    advanced_threat_protection    = true
+    public_network_access_enabled = false
+    blob_delete_retention_days    = 30
+    enable_low_availability_alert = false
+    backup_enabled                = false
+    backup_retention              = 0
+  }
+}
+
 
 variable "reporting_fdr_storage_account" {
   type = object({
     advanced_threat_protection = bool
     blob_versioning_enabled    = bool
     blob_delete_retention_days = number
+    account_replication_type   = string
   })
 
   default = {
     advanced_threat_protection = false
     blob_versioning_enabled    = false
     blob_delete_retention_days = 30
+    account_replication_type   = "LRS"
   }
+}
+
+
+variable "geo_replica_enabled" {
+  type        = bool
+  description = "(Optional) True if geo replica should be active for key data components i.e. PostgreSQL Flexible servers"
+  default     = false
+}
+
+
+variable "postgres_dns_registration_enabled" {
+  type        = bool
+  description = "(Optional) If true, adds a CNAME record for the database FQDN in the db private dns"
+  default     = false
+}
+
+
+variable "geo_replica_cidr_subnet_postgresql" {
+  type        = list(string)
+  description = "Address prefixes replica subnet postgresql"
+  default     = null
 }
