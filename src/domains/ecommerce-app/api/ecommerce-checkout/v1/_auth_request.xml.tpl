@@ -23,21 +23,26 @@
         <set-variable name="NPGPspsList" value="${ecommerce_npg_psps_list}"/>
         <set-variable name="pspId" value="@(((string)((JObject)context.Request.Body.As<JObject>(preserveContent: true))["pspId"]))"/>
         <set-variable name="pgsId" value="@{
-        string[] xpayList = ((string)context.Variables["XPAYPspsList"]).Split(',');
-        string[] vposList = ((string)context.Variables["VPOSPspsList"]).Split(',');
-        string[] npgList = ((string)context.Variables["NPGPspsList"]).Split(',');
-        string pspId = (string)(context.Variables.GetValueOrDefault("pspId",""));
-        if (xpayList.Contains(pspId)) {
-            return "XPAY";
-        }
-        if (vposList.Contains(pspId)) {
-            return "VPOS";
-        }
-        if (npgList.Contains(pspId)) {
-            return "NPG";
-        }
-        return "";
-    }"/>
+            string[] xpayList = ((string)context.Variables["XPAYPspsList"]).Split(',');
+            string[] vposList = ((string)context.Variables["VPOSPspsList"]).Split(',');
+            string[] npgList = ((string)context.Variables["NPGPspsList"]).Split(',');
+            string pspId = (string)(context.Variables.GetValueOrDefault("pspId",""));
+            if (xpayList.Contains(pspId)) {
+                return "XPAY";
+            }
+            if (vposList.Contains(pspId)) {
+                return "VPOS";
+            }
+            if (npgList.Contains(pspId)) {
+                return "NPG";
+            }
+            return "";
+        }"/>
+        <choose>
+            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("Origin","")).Equals("https://dev.checkout.pagopa.it"))">
+                <set-variable name="pgsId" value="NPG" />
+            </when>
+        </choose>
         <choose>
             <when condition="@((string)context.Variables.GetValueOrDefault("tokenTransactionId","") != (string)context.Variables.GetValueOrDefault("requestTransactionId",""))">
                 <return-response>
