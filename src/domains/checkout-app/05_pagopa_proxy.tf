@@ -3,7 +3,7 @@ locals {
     WEBSITE_NODE_DEFAULT_VERSION = "18.16.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
     #WEBSITE_VNET_ROUTE_ALL       = "1"
-    WEBSITE_DNS_SERVER           = "168.63.129.16"
+    WEBSITE_DNS_SERVER = "168.63.129.16"
 
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -51,9 +51,9 @@ module "pagopa_proxy_app_service" {
   location            = var.location
 
   # App service plan vars
-  plan_name     = format("%s-plan-pagopa-proxy", local.parent_project)
-  plan_type     = "internal"
-  sku_name = var.pagopa_proxy_plan_sku
+  plan_name = format("%s-plan-pagopa-proxy", local.parent_project)
+  plan_type = "internal"
+  sku_name  = var.pagopa_proxy_plan_sku
 
   node_version = local.pagopa_proxy_node_version
 
@@ -82,19 +82,19 @@ module "pagopa_proxy_app_service_slot_staging" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.69.1"
 
   # App service plan
-#  app_service_plan_id = module.pagopa_proxy_app_service.plan_id
-  app_service_id      = module.pagopa_proxy_app_service.id
-  app_service_name    = module.pagopa_proxy_app_service.name
+  #  app_service_plan_id = module.pagopa_proxy_app_service.plan_id
+  app_service_id   = module.pagopa_proxy_app_service.id
+  app_service_name = module.pagopa_proxy_app_service.name
 
   # App service
   name                = "staging"
   resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
   location            = data.azurerm_resource_group.pagopa_proxy_rg.location
 
-  always_on         = true
-#  linux_fx_version  = "NODE|18-lts"
+  always_on = true
+  #  linux_fx_version  = "NODE|18-lts"
   health_check_path = "/ping"
-  node_version = local.pagopa_proxy_node_version
+  node_version      = local.pagopa_proxy_node_version
 
   # App settings
   app_settings = local.pagopa_proxy_config
