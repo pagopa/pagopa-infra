@@ -40,7 +40,7 @@ reporting_analysis_image = "pagopagpdreportinganalysis"
 
 # gpd-reporting-functions
 gpd_paa_id_intermediario = "15376371009"
-gpd_paa_stazione_int     = "15376371009_01"
+gpd_paa_stazione_int     = "15376371009_07"
 
 reporting_batch_function_always_on    = true
 reporting_service_function_always_on  = true
@@ -100,3 +100,11 @@ pod_disruption_budgets = {
   },
 }
 
+
+fn_app_storage_account_info = {
+  account_replication_type          = "GZRS"
+  account_kind                      = "StorageV2"
+  account_tier                      = "Standard"
+  access_tier                       = "Hot"
+  advanced_threat_protection_enable = true
+}

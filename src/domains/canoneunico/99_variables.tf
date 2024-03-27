@@ -182,8 +182,36 @@ variable "storage_account_info" {
   }
 }
 
+
+
+variable "function_storage_account_info" {
+  type = object({
+    account_kind                      = string
+    account_tier                      = string
+    account_replication_type          = string
+    access_tier                       = string
+    advanced_threat_protection_enable = bool
+  })
+
+  default = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "LRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = true
+  }
+}
+
 variable "enable_canoneunico_backup" {
   type        = bool
   default     = false
   description = "(Optional) Enables canoneunico storage account backup"
+}
+
+variable "corporate_cup_users" {
+  description = "List of corporate CUP user."
+  type = list(object({
+    username = string
+  }))
+  default = []
 }

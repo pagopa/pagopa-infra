@@ -1453,7 +1453,7 @@
           },
           "gateway": {
             "type": "string",
-            "pattern": "XPAY|VPOS|NPG",
+            "pattern": "XPAY|VPOS|NPG|REDIRECT",
             "description": "Pgs identifier"
           }
         },
@@ -1513,29 +1513,6 @@
       "PaymentInstrumentDetail": {
         "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
         "oneOf": [
-          {
-            "type": "object",
-            "description": "Additional payment authorization details for the PostePay payment method",
-            "properties": {
-              "detailType": {
-                "type": "string",
-                "description": "fixed value 'postepay'"
-              },
-              "accountEmail": {
-                "type": "string",
-                "format": "email",
-                "description": "PostePay account email"
-              }
-            },
-            "required": [
-              "detailType",
-              "accountEmail"
-            ],
-            "example": {
-              "detailType": "postepay",
-              "accountEmail": "user@example.com"
-            }
-          },
           {
             "type": "object",
             "description": "Additional payment authorization details for credit cards",
@@ -1620,6 +1597,38 @@
               "detailType": "cards",
               "orderId": "order-id"
             }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for Redirection authorization request",
+            "properties": {
+              "detailType": {
+                "description": "fixed value 'redirect'",
+                "type": "string"
+              }
+            },
+            "required": [
+              "detailType"
+            ],
+            "example": {
+              "detailType": "redirect"
+            }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for APM authorization request",
+            "properties": {
+              "detailType": {
+                "description": "fixed value 'apm'",
+                "type": "string"
+              }
+            },
+            "required": [
+              "detailType"
+            ],
+            "example": {
+              "detailType": "apm"
+            }
           }
         ]
       },
@@ -1685,6 +1694,10 @@
             "properties": {
               "status": {
                 "$ref": "#/components/schemas/TransactionStatus"
+              },
+              "gatewayAuthorizationStatus": {
+                "type": "string",
+                "description": "Payment gateway authorization status"
               }
             },
             "required": [
@@ -1714,6 +1727,7 @@
           "ACTIVATED",
           "AUTHORIZATION_REQUESTED",
           "AUTHORIZATION_COMPLETED",
+          "CLOSURE_REQUESTED",
           "CLOSED",
           "CLOSURE_ERROR",
           "NOTIFIED_OK",
@@ -1785,12 +1799,22 @@
             "type": "string",
             "description": "Payment method type code"
           },
+          "methodManagement": {
+            "$ref": "#/components/schemas/PaymentMethodManagementType"
+          },
           "ranges": {
             "description": "Payment amount range in eurocents",
             "type": "array",
             "minItems": 1,
             "items": {
               "$ref": "#/components/schemas/Range"
+            }
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
             }
           }
         },
@@ -1800,7 +1824,8 @@
           "description",
           "status",
           "paymentTypeCode",
-          "ranges"
+          "ranges",
+          "methodManagement"
         ]
       },
       "PaymentMethodsResponse": {
@@ -1823,13 +1848,19 @@
             "type": "string",
             "description": "Identifier of the payment gateway session associated to the form"
           },
+          "correlationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier of the payment session associated to the transaction flow"
+          },
           "paymentMethodData": {
             "$ref": "#/components/schemas/CardFormFields"
           }
         },
         "required": [
           "paymentMethodData",
-          "orderId"
+          "orderId",
+          "correlationId"
         ]
       },
       "CardFormFields": {
@@ -2097,13 +2128,25 @@
             "items": {
               "$ref": "#/components/schemas/Bundle"
             }
+          },
+          "asset": {
+            "description": "Payment method asset",
+            "type": "string"
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         },
         "required": [
           "bundles",
           "paymentMethodName",
           "paymentMethodDescription",
-          "paymentMethodStatus"
+          "paymentMethodStatus",
+          "asset"
         ]
       },
       "Bundle": {
@@ -2119,8 +2162,9 @@
             "type": "string"
           },
           "bundleName": {
-            "description": "Bundle name",
-            "type": "string"
+            "description": "DEPRECATED: Use pspBusinessName instead.",
+            "type": "string",
+            "deprecated": true
           },
           "idBrokerPsp": {
             "description": "Bundle PSP broker id",
@@ -2163,6 +2207,10 @@
           "touchpoint": {
             "description": "The touchpoint name",
             "type": "string"
+          },
+          "pspBusinessName": {
+            "description": "The psp business name",
+            "type": "string"
           }
         }
       },
@@ -2191,6 +2239,15 @@
           "ENABLED",
           "DISABLED",
           "INCOMING"
+        ]
+      },
+      "PaymentMethodManagementType": {
+        "type": "string",
+        "description": "Payment method management type",
+        "enum": [
+          "ONBOARDABLE",
+          "NOT_ONBOARDABLE",
+          "REDIRECT"
         ]
       }
     },

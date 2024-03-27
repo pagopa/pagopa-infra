@@ -198,6 +198,88 @@
         }
       }
     },
+    "/transactions/{transactionId}/wallets": {
+      "post": {
+        "tags": [
+          "wallets"
+        ],
+        "summary": "Create wallet for payment with contextual onboard",
+        "description": "Create wallet for payment with contextual onboard",
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
+        "operationId": "createWalletForTransactions",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "ecommerce transaction id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Create a new wallet",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WalletTransactionCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Wallet created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WalletTransactionCreateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Gateway error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout serving request"
+          }
+        }
+      }
+    },
     "/transactions": {
       "post": {
         "tags": [
@@ -537,6 +619,106 @@
         }
       }
     },
+    "/transactions/{transactionId}/outcomes": {
+      "get": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
+        "operationId": "getTransactionOutcome",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          },
+          {
+            "in": "query",
+            "name": "outcome",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+                "11",
+                "12",
+                "13",
+                "14"
+              ]
+            },
+            "description": "`0` - Success `1` - Generic error `2` - Authorization error `3` - Invalid data `4` - Timeout `5` - Unsupported circuit `6` - Missing data `7` - Invalid card: expired card etc `8` - Canceled by the user `9` - Double transaction `10` - Excessive amount `11` - Order not present `12` - Invalid method `13` - Retriable KO `14` - Invalid session\n",
+            "required": true
+          }
+        ],
+        "summary": "Redirection URL for transaction outcome",
+        "description": "Return transaction outcome result as `outcome` query parameter",
+        "responses": {
+          "200": {
+            "description": "Transaction outcome available (see outcome query parameter)"
+          }
+        }
+      }
+    },
+    "/payment-methods": {
+      "get": {
+        "tags": [
+          "ecommerce-payment-methods"
+        ],
+        "operationId": "getAllPaymentMethods",
+        "summary": "Retrieve all Payment Methods",
+        "description": "API for retrieve payment method",
+        "parameters": [
+          {
+            "name": "amount",
+            "in": "query",
+            "description": "Payment Amount",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment method successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentMethodsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/payment-methods/{id}/fees": {
       "post": {
         "tags": [
@@ -620,6 +802,52 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/wallets": {
+      "get": {
+        "tags": [
+          "wallets"
+        ],
+        "summary": "Get wallet by user identifier",
+        "description": "Returns a of wallets related to user",
+        "operationId": "getWalletsByIdUser",
+        "security": [
+          {
+            "eCommerceSessionToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Wallet retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Wallets"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Wallet not found"
+          },
+          "502": {
+            "description": "Bad gateway"
+          },
+          "504": {
+            "description": "Timeout serving request"
           }
         }
       }
@@ -1175,7 +1403,7 @@
             "description": "Check flag for psp validation"
           },
           "details": {
-            "$ref": "#/components/schemas/PaymentInstrumentDetail"
+            "$ref": "#/components/schemas/AuthorizationDetails"
           }
         },
         "required": [
@@ -1187,24 +1415,20 @@
           "details"
         ]
       },
-      "PaymentInstrumentDetail": {
+      "AuthorizationDetails": {
         "description": "Additional payment authorization details. Must match the correct format for the chosen payment method.",
         "oneOf": [
           {
             "type": "object",
-            "description": "Additional payment authorization details for payment performed with wallet",
+            "description": "Additional payment authorization details for authorization performed with a wallet",
             "properties": {
               "detailType": {
-                "description": "fixed value 'WALLET'",
-                "type": "string",
-                "enum": [
-                  "WALLET"
-                ]
+                "$ref": "#/components/schemas/WalletDetailType"
               },
               "walletId": {
                 "type": "string",
                 "format": "uuid",
-                "description": "User wallet id"
+                "description": "WalletId"
               }
             },
             "required": [
@@ -1213,9 +1437,74 @@
             ],
             "example": {
               "detailType": "wallet",
-              "walletId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+              "walletId": "9972eb61-bea1-405f-846a-980b9aebe017"
+            }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details apm method",
+            "properties": {
+              "detailType": {
+                "$ref": "#/components/schemas/ApmDetailType"
+              },
+              "paymentMethodId": {
+                "description": "User selected payment method id",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "detailType",
+              "paymentMethodId"
+            ],
+            "example": {
+              "detailType": "apm",
+              "paymentMethodId": "dbc12081-ea5c-4a73-ae0a-7d6a881a1160"
+            }
+          },
+          {
+            "type": "object",
+            "description": "Additional payment authorization details for redirect method",
+            "properties": {
+              "detailType": {
+                "$ref": "#/components/schemas/RedirectDetailType"
+              },
+              "paymentMethodId": {
+                "description": "User selected payment method id",
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "required": [
+              "detailType",
+              "paymentMethodId"
+            ],
+            "example": {
+              "detailType": "redirect",
+              "paymentMethodId": "dbc12081-ea5c-4a73-ae0a-7d6a881a1160"
             }
           }
+        ]
+      },
+      "WalletDetailType": {
+        "description": "wallet detail type discriminator field",
+        "type": "string",
+        "enum": [
+          "wallet"
+        ]
+      },
+      "ApmDetailType": {
+        "description": "apm detail type discriminator field",
+        "type": "string",
+        "enum": [
+          "apm"
+        ]
+      },
+      "RedirectDetailType": {
+        "description": "redirect detail type discriminator field",
+        "type": "string",
+        "enum": [
+          "redirect"
         ]
       },
       "UpdateAuthorizationRequest": {
@@ -1280,6 +1569,10 @@
             "properties": {
               "status": {
                 "$ref": "#/components/schemas/TransactionStatus"
+              },
+              "gatewayAuthorizationStatus": {
+                "type": "string",
+                "description": "payment gateway authorization status"
               }
             },
             "required": [
@@ -1307,8 +1600,10 @@
         "description": "Possible statuses a transaction can be in",
         "enum": [
           "ACTIVATED",
+          "ACTIVATION_REQUESTED",
           "AUTHORIZATION_REQUESTED",
           "AUTHORIZATION_COMPLETED",
+          "CLOSURE_REQUESTED",
           "CLOSED",
           "CLOSURE_ERROR",
           "NOTIFIED_OK",
@@ -1360,6 +1655,15 @@
           "ENABLED",
           "DISABLED",
           "INCOMING"
+        ]
+      },
+      "PaymentMethodManagementType": {
+        "type": "string",
+        "description": "Payment method management type",
+        "enum": [
+          "ONBOARDABLE",
+          "NOT_ONBOARDABLE",
+          "REDIRECT"
         ]
       },
       "NewSessionTokenResponse": {
@@ -1420,8 +1724,6 @@
           }
         },
         "required": [
-          "walletId",
-          "pamentToken",
           "paymentAmount"
         ]
       },
@@ -1450,13 +1752,25 @@
             "items": {
               "$ref": "#/components/schemas/Bundle"
             }
+          },
+          "asset": {
+            "description": "Payment method asset",
+            "type": "string"
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         },
         "required": [
           "bundles",
           "paymentMethodName",
           "paymentMethodDescription",
-          "paymentMethodStatus"
+          "paymentMethodStatus",
+          "asset"
         ]
       },
       "Bundle": {
@@ -1472,8 +1786,9 @@
             "type": "string"
           },
           "bundleName": {
-            "description": "Bundle name",
-            "type": "string"
+            "description": "DEPRECATED: use pspBusinessName instead",
+            "type": "string",
+            "deprecated": true
           },
           "idBrokerPsp": {
             "description": "Bundle PSP broker id",
@@ -1516,6 +1831,10 @@
           "touchpoint": {
             "description": "The touchpoint name",
             "type": "string"
+          },
+          "pspBusinessName": {
+            "description": "The psp business name",
+            "type": "string"
           }
         }
       },
@@ -1536,6 +1855,328 @@
             "type": "string"
           }
         }
+      },
+      "PaymentMethodResponse": {
+        "type": "object",
+        "description": "Payment method Response",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Payment method ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "Payment method name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Payment method description"
+          },
+          "asset": {
+            "type": "string",
+            "description": "Payment method asset name"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PaymentMethodStatus"
+          },
+          "paymentTypeCode": {
+            "type": "string",
+            "description": "Payment method type code"
+          },
+          "methodManagement": {
+            "$ref": "#/components/schemas/PaymentMethodManagementType"
+          },
+          "ranges": {
+            "description": "Payment amount range in eurocents",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/Range"
+            }
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "status",
+          "paymentTypeCode",
+          "ranges",
+          "methodManagement"
+        ]
+      },
+      "PaymentMethodsResponse": {
+        "type": "object",
+        "description": "Payment methods response",
+        "properties": {
+          "paymentMethods": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentMethodResponse"
+            }
+          }
+        }
+      },
+      "WalletId": {
+        "description": "Wallet identifier",
+        "type": "string",
+        "format": "uuid"
+      },
+      "WalletTransactionCreateRequest": {
+        "type": "object",
+        "description": "Wallet for transaction with contextual onboarding creation request",
+        "properties": {
+          "useDiagnosticTracing": {
+            "type": "boolean"
+          },
+          "paymentMethodId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "useDiagnosticTracing",
+          "paymentMethodId",
+          "amount"
+        ]
+      },
+      "WalletTransactionCreateResponse": {
+        "type": "object",
+        "description": "Wallet for transaction with contextual onboarding creation response",
+        "properties": {
+          "walletId": {
+            "$ref": "#/components/schemas/WalletId"
+          },
+          "redirectUrl": {
+            "type": "string",
+            "format": "url",
+            "description": "Redirection URL to a payment gateway page where the user can input a payment instrument information with walletId and useDiagnosticTracing as query param",
+            "example": "http://localhost/inputPage?walletId=123&useDiagnosticTracing=true&sessionToken=sessionToken"
+          }
+        },
+        "required": [
+          "walletId"
+        ]
+      },
+      "Wallets": {
+        "type": "object",
+        "description": "Wallets information",
+        "properties": {
+          "wallets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WalletInfo"
+            }
+          }
+        }
+      },
+      "WalletInfo": {
+        "type": "object",
+        "description": "Wallet information",
+        "properties": {
+          "walletId": {
+            "$ref": "#/components/schemas/WalletId"
+          },
+          "paymentMethodId": {
+            "description": "Payment method identifier",
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/WalletStatus"
+          },
+          "creationDate": {
+            "description": "Wallet creation date",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateDate": {
+            "description": "Wallet update date",
+            "type": "string",
+            "format": "date-time"
+          },
+          "applications": {
+            "description": "list of applications for which this wallet is created for",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WalletApplication"
+            }
+          },
+          "details": {
+            "$ref": "#/components/schemas/WalletInfoDetails"
+          },
+          "paymentMethodAsset": {
+            "description": "Payment method asset",
+            "type": "string",
+            "format": "uri",
+            "example": "http://logo.cdn/brandLogo"
+          }
+        },
+        "required": [
+          "walletId",
+          "paymentMethodId",
+          "status",
+          "creationDate",
+          "updateDate",
+          "applications",
+          "paymentMethodAsset"
+        ]
+      },
+      "WalletInfoDetails": {
+        "description": "details for the specific payment instrument. This field is disciminated by the type field",
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Card payment instrument details",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Wallet details discriminator field. Fixed valued 'CARDS'"
+              },
+              "lastFourDigits": {
+                "description": "Card last 4 digits",
+                "type": "string",
+                "example": "9876"
+              },
+              "expiryDate": {
+                "type": "string",
+                "description": "Credit card expiry date. The date format is `YYYYMM`",
+                "pattern": "^[0-9]{6}$",
+                "example": "203012"
+              },
+              "brand": {
+                "description": "Payment instrument brand",
+                "type": "string",
+                "enum": [
+                  "MASTERCARD",
+                  "VISA",
+                  "AMEX",
+                  "MAESTRO"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "lastFourDigits",
+              "expiryDate",
+              "brand"
+            ]
+          },
+          {
+            "type": "object",
+            "description": "Paypal instrument details",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Wallet details discriminator field. Fixed valued 'PAYPAL'"
+              },
+              "abi": {
+                "description": "bank idetifier",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 5,
+                "example": "12345"
+              },
+              "maskedEmail": {
+                "description": "email masked pan",
+                "type": "string",
+                "example": "test***@***test.it"
+              }
+            },
+            "required": [
+              "type",
+              "abi",
+              "maskedEmail"
+            ]
+          },
+          {
+            "type": "object",
+            "description": "Bancomat pay instrument details",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Wallet details discriminator field. Fixed valued 'BANCOMATPAY'"
+              },
+              "maskedNumber": {
+                "description": "masked number",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20,
+                "example": "+3938*******202"
+              },
+              "instituteCode": {
+                "description": "institute code",
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 5,
+                "example": "12345"
+              },
+              "bankName": {
+                "description": "bank name",
+                "type": "string",
+                "example": "banca di banca"
+              }
+            },
+            "required": [
+              "type",
+              "maskedNumber",
+              "instituteCode",
+              "bankName"
+            ]
+          }
+        ]
+      },
+      "WalletStatus": {
+        "type": "string",
+        "description": "Enumeration of wallet statuses",
+        "enum": [
+          "CREATED",
+          "INITIALIZED",
+          "VALIDATED",
+          "DELETED",
+          "ERROR"
+        ]
+      },
+      "WalletApplication": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/WalletApplicationName"
+          },
+          "status": {
+            "$ref": "#/components/schemas/WalletApplicationStatus"
+          },
+          "updateDate": {
+            "description": "Service last update date",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "WalletApplicationStatus": {
+        "type": "string",
+        "description": "Enumeration of wallet statuses",
+        "enum": [
+          "ENABLED",
+          "DISABLED",
+          "INCOMING"
+        ]
+      },
+      "WalletApplicationName": {
+        "type": "string",
+        "description": "Enumeration of applications",
+        "enum": [
+          "PAGOPA"
+        ]
       }
     },
     "requestBodies": {

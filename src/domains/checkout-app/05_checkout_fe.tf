@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
  * CDN
  */
 module "checkout_cdn" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.69.1"
 
   count                 = var.checkout_enabled ? 1 : 0
   name                  = "checkout"
@@ -22,7 +22,8 @@ module "checkout_cdn" {
   location              = var.location
   hostname              = format("%s.%s", var.dns_zone_checkout, var.external_domain)
   https_rewrite_enabled = true
-  lock_enabled          = false
+
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 
   index_document     = "index.html"
   error_404_document = "index.html"
@@ -35,6 +36,8 @@ module "checkout_cdn" {
   keyvault_vault_name          = data.azurerm_key_vault.key_vault.name
 
   querystring_caching_behaviour = "BypassCaching"
+
+  storage_account_replication_type = var.checkout_cdn_storage_replication_type
 
   global_delivery_rule = {
     cache_expiration_action       = []
@@ -50,32 +53,32 @@ module "checkout_cdn" {
       # Content-Security-Policy
       {
         action = "Overwrite"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = "Content-Security-Policy-Report-Only"
         value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", var.dns_zone_prefix, var.external_domain)
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = "Content-Security-Policy-Report-Only"
         value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = "Content-Security-Policy-Report-Only"
         value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.sia.eu *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = "Content-Security-Policy-Report-Only"
         value  = "img-src 'self' https://cdn.cookielaw.org https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data:;"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = "Content-Security-Policy-Report-Only"
         value  = "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/;"
       },
       {
         action = "Append"
-        name   = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+        name   = "Content-Security-Policy-Report-Only"
         value  = "style-src 'self'  'unsafe-inline'; worker-src www.recaptcha.net blob:;"
       }
     ]
@@ -116,7 +119,26 @@ module "checkout_cdn" {
         destination             = "/payment-transactions-gateway/index.html"
         preserve_unmatched_path = false
       }
-  }]
+    },
+    {
+      name  = "RewriteRulesEcommerceFe"
+      order = 4
+
+      conditions = [{
+        condition_type   = "url_path_condition"
+        operator         = "BeginsWith"
+        match_values     = ["/ecommerce-fe/gdi-check", "/ecommerce-fe/esito"]
+        transforms       = []
+        negate_condition = false
+      }]
+
+      url_rewrite_action = {
+        source_pattern          = "/"
+        destination             = "/ecommerce-fe/index.html"
+        preserve_unmatched_path = false
+      }
+    }
+  ]
 
   tags = var.tags
 }

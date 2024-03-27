@@ -1,4 +1,5 @@
 module "cosmosdb_account_nodo_re" {
+  count               = var.enable_nodo_re ? 1 : 0
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
   domain              = var.domain
   name                = "${local.project}-re-cosmos-nosql-account"
@@ -10,14 +11,14 @@ module "cosmosdb_account_nodo_re" {
   capabilities     = var.cosmos_nosql_db_params.capabilities
   enable_free_tier = var.cosmos_nosql_db_params.enable_free_tier
 
-  subnet_id                     = module.cosmosdb_nodo_re_snet.id
+  subnet_id                     = module.cosmosdb_nodo_re_snet[0].id
   public_network_access_enabled = var.cosmos_nosql_db_params.public_network_access_enabled
   # private endpoint
   private_endpoint_enabled           = var.cosmos_nosql_db_params.private_endpoint_enabled
   private_endpoint_name              = "${local.project}-re-cosmos-nosql-endpoint"
   private_dns_zone_ids               = [data.azurerm_private_dns_zone.cosmos_nosql.id]
   is_virtual_network_filter_enabled  = var.cosmos_nosql_db_params.is_virtual_network_filter_enabled
-  allowed_virtual_network_subnet_ids = var.cosmos_nosql_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id, data.azurerm_subnet.nodo_re_to_datastore_function_snet.id]
+  allowed_virtual_network_subnet_ids = var.cosmos_nosql_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id, data.azurerm_subnet.nodo_re_to_datastore_function_snet[0].id]
   ip_range                           = ""
 
   enable_automatic_failover = true
@@ -34,10 +35,15 @@ module "cosmosdb_account_nodo_re" {
 
 # cosmosdb database for nodo_re
 module "cosmosdb_account_nodo_re_db" {
+  count               = var.enable_nodo_re ? 1 : 0
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.7.0"
   name                = "nodo_re"
   resource_group_name = azurerm_resource_group.db_rg.name
-  account_name        = module.cosmosdb_account_nodo_re.name
+  account_name        = var.enable_nodo_re ? module.cosmosdb_account_nodo_re[0].name : "no-account-name"
+
+  depends_on = [
+    module.cosmosdb_account_nodo_re
+  ]
 }
 
 ### containers
@@ -56,16 +62,22 @@ locals {
 
 # cosmosdb container for nodo re datastore
 module "cosmosdb_account_nodo_re_containers" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
-  for_each = { for c in local.nodo_re_containers : c.name => c }
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
+  for_each = {
+    for c in local.nodo_re_containers : c.name => c if var.enable_nodo_re
+  }
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.db_rg.name
-  account_name        = module.cosmosdb_account_nodo_re.name
-  database_name       = module.cosmosdb_account_nodo_re_db.name
+  account_name        = var.enable_nodo_re ? module.cosmosdb_account_nodo_re[0].name : "no-account-name"
+  database_name       = var.enable_nodo_re ? module.cosmosdb_account_nodo_re_db[0].name : "no-database-name"
   partition_key_path  = each.value.partition_key_path
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
 
   autoscale_settings = contains(var.cosmos_nosql_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+
+  depends_on = [
+    module.cosmosdb_account_nodo_re
+  ]
 }

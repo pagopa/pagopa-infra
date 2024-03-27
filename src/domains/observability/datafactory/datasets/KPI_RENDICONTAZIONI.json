@@ -1,0 +1,42 @@
+[
+    {
+        "name": "GIORNATA_PAGAMENTO",
+        "type": "datetime"
+    },
+    {
+        "name": "ID_BROKER_PSP",
+        "type": "string"
+    },
+    {
+        "name": "ID_PSP",
+        "type": "string"
+    },
+    {
+        "name": "TOTALE_FLUSSI",
+        "type": "int"
+    },
+    {
+        "name": "FLUSSI_ASSENTI",
+        "type": "int"
+    },
+    {
+        "name": "FLUSSI_PRESENTI",
+        "type": "int"
+    },
+    {
+        "name": "FDR_IN_RITARDO_FIRST_VERSION",
+        "type": "int"
+    },
+    {
+        "name": "FDR_IN_RITARDO_LAST_VERSION",
+        "type": "int"
+    },
+    {
+        "name": "TOTALE_DIFF_AMOUNT",
+        "type": "int"
+    },
+    {
+        "name": "TOTALE_DIFF_NUM",
+        "type": "int"
+    }
+]

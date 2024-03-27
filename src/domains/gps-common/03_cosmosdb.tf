@@ -69,6 +69,14 @@ module "gps_cosmosdb_database" {
   account_name        = module.gps_cosmosdb_account.name
 }
 
+# GPD cosmosdb database
+module "gpd_cosmosdb_database" {
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.4.1"
+  name                = "gpd_db"
+  resource_group_name = azurerm_resource_group.gps_rg.name
+  account_name        = module.gps_cosmosdb_account.name
+}
+
 ### Containers
 locals {
 
@@ -84,7 +92,31 @@ locals {
       autoscale_settings = { max_throughput = 1000 }
     },
   ]
+
+  gpd_cosmosdb_containers = [
+    {
+      name               = "gpd_upload_status",
+      partition_key_path = "/fiscalCode",
+      autoscale_settings = { max_throughput = 1000 }
+    },
+  ]
 }
+
+# cosmosdb container
+module "gpd_cosmosdb_containers" {
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.4.1"
+  for_each = { for c in local.gpd_cosmosdb_containers : c.name => c }
+
+  name                = each.value.name
+  resource_group_name = azurerm_resource_group.gps_rg.name
+  account_name        = module.gps_cosmosdb_account.name
+  database_name       = module.gpd_cosmosdb_database.name
+  partition_key_path  = each.value.partition_key_path
+  throughput          = lookup(each.value, "throughput", null)
+
+  autoscale_settings = contains(var.cosmos_gps_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+}
+
 
 # cosmosdb container
 module "gps_cosmosdb_containers" {
@@ -150,6 +182,25 @@ resource "azurerm_cosmosdb_table" "payments_receipts_table" {
     for_each = var.cosmos_gpd_payments_db_params.payments_receipts_table.autoscale ? ["dummy"] : []
     content {
       max_throughput = var.cosmos_gpd_payments_db_params.payments_receipts_table.throughput
+    }
+  }
+}
+
+
+// Az portal manual setting 
+// DEV  7 Giorni  = 604800 Secondi
+// UAT  3 Mesi    = 7889400 Secondi
+// PROD 10 Anni   = 315576000 Secondi
+// https://github.com/hashicorp/terraform-provider-azurerm/issues/11098
+resource "azurerm_cosmosdb_table" "payments_pp_table" {
+  name                = "paymentpositiontable"
+  resource_group_name = azurerm_resource_group.gps_rg.name
+  account_name        = module.gpd_payments_cosmosdb_account.name
+  throughput          = !var.cosmos_gpd_payments_db_params.payments_pp_table.autoscale ? var.cosmos_gpd_payments_db_params.payments_receipts_table.throughput : null
+  dynamic "autoscale_settings" {
+    for_each = var.cosmos_gpd_payments_db_params.payments_pp_table.autoscale ? ["dummy"] : []
+    content {
+      max_throughput = var.cosmos_gpd_payments_db_params.payments_pp_table.throughput
     }
   }
 }

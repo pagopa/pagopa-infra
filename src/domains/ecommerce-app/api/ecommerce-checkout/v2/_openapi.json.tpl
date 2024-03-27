@@ -48,6 +48,16 @@
         },
         "parameters": [
           {
+            "in": "header",
+            "name": "x-correlation-id",
+            "required": true,
+            "description": "Flow correlation id",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
             "in": "query",
             "name": "recaptchaResponse",
             "description": "Recaptcha response",
@@ -617,6 +627,7 @@
           "ACTIVATED",
           "AUTHORIZATION_REQUESTED",
           "AUTHORIZATION_COMPLETED",
+          "CLOSURE_REQUESTED",
           "CLOSED",
           "CLOSURE_ERROR",
           "NOTIFIED_OK",

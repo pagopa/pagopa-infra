@@ -90,6 +90,13 @@ route_aks = [
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.8.150"
   },
+  {
+    #  dev aks nodo nexi postgres onprem
+    name                   = "aks-outbound-to-nexi-postgres-onprem-subnet"
+    address_prefix         = "10.222.214.176/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.8.150"
+  },
 ]
 
 vmss_zones           = ["1"]
@@ -125,3 +132,72 @@ nodo_re_to_tablestorage_function_autoscale = {
   maximum = 3
 }
 
+nodo_verifyko_to_datastore_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "B1"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = null
+  zone_balancing_enabled       = false
+
+}
+nodo_verifyko_to_datastore_function_always_on       = true
+nodo_verifyko_to_datastore_function_subnet          = ["10.1.188.0/24"]
+nodo_verifyko_to_datastore_network_policies_enabled = false
+nodo_verifyko_to_datastore_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 3
+}
+
+nodo_verifyko_to_tablestorage_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "B1"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = null
+  zone_balancing_enabled       = false
+}
+nodo_verifyko_to_tablestorage_function_subnet          = ["10.1.189.0/24"]
+nodo_verifyko_to_tablestorage_network_policies_enabled = false
+nodo_verifyko_to_tablestorage_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 3
+}
+
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/allowed/*",
+  ]
+  ips = [
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+  ]
+}
+
+
+# node forwarder
+nodo_pagamenti_x_forwarded_for = "10.230.8.5"
+
+
+storage_account_info = {
+  account_kind                      = "StorageV2"
+  account_tier                      = "Standard"
+  account_replication_type          = "ZRS"
+  access_tier                       = "Hot"
+  advanced_threat_protection_enable = true
+}
+
+
+enabled_features = {
+  apim_v2 = true
+}

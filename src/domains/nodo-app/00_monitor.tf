@@ -28,6 +28,8 @@ data "azurerm_monitor_action_group" "email" {
 }
 
 data "azurerm_monitor_action_group" "opsgenie" {
+  count = var.env_short == "p" ? 1 : 0
+
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_opsgenie_name
 }

@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "rg_vnet" {
-  name     = format("%s-vnet-rg", local.project)
+  name     = "${local.project}-vnet-rg"
   location = var.location
 
   tags = var.tags
@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "rg_vnet" {
 # vnet
 module "vnet" {
   source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v4.18.1"
-  name                 = format("%s-vnet", local.project)
+  name                 = "${local.project}-vnet"
   location             = azurerm_resource_group.rg_vnet.location
   resource_group_name  = azurerm_resource_group.rg_vnet.name
   address_space        = var.cidr_vnet
@@ -20,7 +20,7 @@ module "vnet" {
 # vnet integration
 module "vnet_integration" {
   source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v4.18.1"
-  name                 = format("%s-vnet-integration", local.project)
+  name                 = "${local.project}-vnet-integration"
   location             = azurerm_resource_group.rg_vnet.location
   resource_group_name  = azurerm_resource_group.rg_vnet.name
   address_space        = var.cidr_vnet_integration
@@ -29,6 +29,9 @@ module "vnet_integration" {
   tags = var.tags
 }
 
+#
+# Peerings
+#
 ## Peering between the vnet(main) and integration vnet
 module "vnet_peering" {
   source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v4.19.0"
@@ -50,7 +53,7 @@ module "vnet_peering" {
 module "route_table_peering_sia" {
   source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v4.18.1"
 
-  name                          = format("%s-sia-rt", local.project)
+  name                          = "${local.project}-sia-rt"
   location                      = azurerm_resource_group.rg_vnet.location
   resource_group_name           = azurerm_resource_group.rg_vnet.name
   disable_bgp_route_propagation = false
@@ -143,7 +146,7 @@ module "route_table_peering_sia" {
 # subnet acr
 module "common_private_endpoint_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.18.1"
-  name                 = format("%s-common-private-endpoint-snet", local.project)
+  name                 = "${local.project}-common-private-endpoint-snet"
   address_prefixes     = var.cidr_common_private_endpoint_snet
   resource_group_name  = azurerm_resource_group.rg_vnet.name
   virtual_network_name = module.vnet.name

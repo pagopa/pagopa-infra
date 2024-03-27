@@ -15,7 +15,7 @@ resource "azurerm_storage_account" "elk_snapshot_sa" {
   resource_group_name      = azurerm_resource_group.elk_rg.name
   location                 = azurerm_resource_group.elk_rg.location
   account_tier             = "Standard"
-  account_replication_type = "LRS"
+  account_replication_type = var.snapshot_storage_replication_type
 
   blob_properties {
     change_feed_enabled = var.elk_snapshot_sa.backup_enabled
@@ -87,7 +87,7 @@ module "elastic_stack" {
     kubernetes_secret.snapshot_secret
   ]
 
-  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.21.0"
+  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.22.0"
 
   namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config
@@ -98,8 +98,8 @@ module "elastic_stack" {
     /* bizevents */ "pagopabizeventsdatastore-microservice-chart", "pagopabizeventsservice-microservice-chart", "pagopanegativebizeventsdatastore-microservice-chart",
     /* apiconfig */ "pagopaapiconfig-postgresql", "pagopaapiconfig-oracle", "apiconfig-selfcare-integration-microservice-chart", "cache-oracle", "cache-postgresql", "cache-replica-oracle", "cache-replica-postgresql",
     /* ecommerce */ "pagopaecommerceeventdispatcherservice-microservice-chart", "pagopaecommercepaymentmethodsservice-microservice-chart", "pagopaecommercepaymentrequestsservice-microservice-chart", "pagopaecommercetransactionsservice-microservice-chart", "pagopaecommercetxschedulerservice-microservice-chart", "pagopanotificationsservice-microservice-chart",
-    /* selfcare */ "pagopaselfcaremsbackofficebackend-microservice-chart",
-    /* gps */ "gpd-core-microservice-chart", "pagopagpdpayments-microservice-chart", "pagopareportingorgsenrollment-microservice-chart", "pagopaspontaneouspayments-microservice-chart"
+    /* selfcare */ "pagopaselfcaremsbackofficebackend-microservice-chart", "backoffice-external",
+    /* gps */ "gpd-core-microservice-chart", "pagopagpdpayments-microservice-chart", "pagopareportingorgsenrollment-microservice-chart", "pagopaspontaneouspayments-microservice-chart", "gpd-payments-pull"
 
   ]
 

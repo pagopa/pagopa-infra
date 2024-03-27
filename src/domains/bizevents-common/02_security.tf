@@ -24,10 +24,10 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
 }
 
 ## ad group policy ##
@@ -123,17 +123,19 @@ resource "azurerm_key_vault_secret" "ehub_negative_biz_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+// PRODns02ns04
 resource "azurerm_key_vault_secret" "ehub_awakable_negative_biz_connection_string" {
   name         = format("ehub-%s-tx-awakable-negative-biz-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
+// PRODns02ns04
 resource "azurerm_key_vault_secret" "ehub_final_negative_biz_connection_string" {
   name         = format("ehub-%s-tx-final-negative-biz-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -178,19 +180,19 @@ resource "azurerm_key_vault_secret" "ehub_tx_negative_biz_key" {
   key_vault_id = module.key_vault.id
 }
 
+// PRODns02ns04
 resource "azurerm_key_vault_secret" "ehub_rx_negative_final_biz_conn_string" {
-  count        = var.env_short == "d" ? 1 : 0
   name         = format("ehub-rx-%s-negative-final-biz-conn-string", var.env_short)
-  value        = format("'%s'", data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-rx-pdnd.primary_connection_string)
+  value        = format("'%s'", data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-rx-pdnd.primary_connection_string)
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
+// PRODns02ns04
 resource "azurerm_key_vault_secret" "ehub_rx_negative_awakable_biz_conn_string" {
-  count        = var.env_short == "d" ? 1 : 0
   name         = format("ehub-rx-%s-negative-awakable-biz-conn-string", var.env_short)
-  value        = format("'%s'", data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-rx-pdnd.primary_connection_string)
+  value        = format("'%s'", data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-rx-pdnd.primary_connection_string)
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -212,8 +214,8 @@ resource "azurerm_key_vault_secret" "payment_manager_subscription_key" {
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "elastic-apm-secret-token" {
-  name         = "payment-manager-subscription-key"
+resource "azurerm_key_vault_secret" "elastic_otl_secret_token" {
+  name         = "elastic-otl-secret-token"
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
@@ -237,4 +239,19 @@ resource "azurerm_key_vault_secret" "redis_password" {
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "tokenizer_api_key" {
+  name         = "tokenizer-api-key"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }

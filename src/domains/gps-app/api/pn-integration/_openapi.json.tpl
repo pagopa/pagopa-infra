@@ -4,10 +4,10 @@
     "title" : "PagoPA API Debt Position for PN ${service}",
     "description" : "Progetto Gestione Posizioni Debitorie per PN",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.9.0"
+    "version" : "0.11.6"
   },
   "servers" : [ {
-    "url" : "${host}/${service}/gpd/api/v1",
+    "url": "${host}/${service}/v1",
     "description" : "Generated server url"
   } ],
   "tags" : [ {
@@ -47,24 +47,6 @@
           "required" : true
         },
         "responses" : {
-          "422" : {
-            "description" : "Unprocessable payment option.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
           "500" : {
             "description" : "Service unavailable.",
             "headers" : {
@@ -83,8 +65,8 @@
               }
             }
           },
-          "404" : {
-            "description" : "No payment option found.",
+          "400" : {
+            "description" : "Malformed request.",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
@@ -101,13 +83,20 @@
               }
             }
           },
-          "401" : {
-            "description" : "Wrong or missing function key.",
+          "422" : {
+            "description" : "Unprocessable payment option.",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
                 "schema" : {
                   "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -130,6 +119,24 @@
               }
             }
           },
+          "404" : {
+            "description" : "No payment option found.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "209" : {
             "description" : "Request updated with a payment in progress.",
             "headers" : {
@@ -148,20 +155,13 @@
               }
             }
           },
-          "400" : {
-            "description" : "Malformed request.",
+          "401" : {
+            "description" : "Wrong or missing function key.",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
                 "schema" : {
                   "type" : "string"
-                }
-              }
-            },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -182,11 +182,11 @@
         }
       } ]
     },
-    "/organizations/{organizationfiscalcode}/paymentoptions/{iuv}" : {
+    "/organizations/{organizationfiscalcode}/paymentoptions/{nav}" : {
       "get" : {
         "tags" : [ "Payments API" ],
         "summary" : "Return the details of a specific payment option.",
-        "operationId" : "getOrganizationPaymentOptionByIUV",
+        "operationId" : "getOrganizationPaymentOptionByNAV",
         "parameters" : [ {
           "name" : "organizationfiscalcode",
           "in" : "path",
@@ -196,41 +196,15 @@
             "type" : "string"
           }
         }, {
-          "name" : "iuv",
+          "name" : "nav",
           "in" : "path",
-          "description" : "IUV (Unique Payment Identification). Alphanumeric code that uniquely associates and identifies three key elements of a payment: reason, payer, amount",
+          "description" : "NAV (notice number) is the unique reference assigned to the payment by a creditor institution.",
           "required" : true,
           "schema" : {
             "type" : "string"
           }
-        },
-          {
-            "name" : "X-Request-Id",
-            "in" : "header",
-            "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-            "schema" : {
-              "type" : "string"
-            }
-          } ],
+        } ],
         "responses" : {
-          "200" : {
-            "description" : "Obtained payment option details.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/PaymentsWithDebtorInfoModelResponse"
-                }
-              }
-            }
-          },
           "500" : {
             "description" : "Service unavailable.",
             "headers" : {
@@ -245,6 +219,24 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Obtained payment option details.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentsWithDebtorInfoModelResponse"
                 }
               }
             }
@@ -284,22 +276,40 @@
         }, {
           "Authorization" : [ ]
         } ]
-      }
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
     },
     "/info" : {
       "get" : {
         "tags" : [ "Home" ],
         "summary" : "Return OK if application is started",
         "operationId" : "healthCheck",
-        "parameters" : [ {
-          "name" : "X-Request-Id",
-          "in" : "header",
-          "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
         "responses" : {
+          "200" : {
+            "description" : "OK.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AppInfo"
+                }
+              }
+            }
+          },
           "500" : {
             "description" : "Service unavailable.",
             "headers" : {
@@ -339,16 +349,6 @@
                 }
               }
             }
-          },
-          "200" : {
-            "description" : "OK.",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/AppInfo"
-                }
-              }
-            }
           }
         },
         "security" : [ {
@@ -356,7 +356,15 @@
         }, {
           "Authorization" : [ ]
         } ]
-      }
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
     }
   },
   "components" : {
@@ -393,9 +401,23 @@
           }
         }
       },
+      "PaymentOptionMetadataModelResponse" : {
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
       "PaymentsModelResponse" : {
         "type" : "object",
         "properties" : {
+          "nav" : {
+            "type" : "string"
+          },
           "iuv" : {
             "type" : "string"
           },
@@ -464,6 +486,12 @@
             "type" : "string",
             "format" : "date-time"
           },
+          "paymentOptionMetadata" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/PaymentOptionMetadataModelResponse"
+            }
+          },
           "transfer" : {
             "type" : "array",
             "items" : {
@@ -511,6 +539,12 @@
           "lastUpdatedDate" : {
             "type" : "string",
             "format" : "date-time"
+          },
+          "transferMetadata" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TransferMetadataModelResponse"
+            }
           }
         }
       },
@@ -536,9 +570,23 @@
           }
         }
       },
+      "TransferMetadataModelResponse" : {
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
       "PaymentsWithDebtorInfoModelResponse" : {
         "type" : "object",
         "properties" : {
+          "nav" : {
+            "type" : "string"
+          },
           "iuv" : {
             "type" : "string"
           },
@@ -598,6 +646,12 @@
           "status" : {
             "type" : "string",
             "enum" : [ "PO_UNPAID", "PO_PAID", "PO_PARTIALLY_REPORTED", "PO_REPORTED" ]
+          },
+          "paymentOptionMetadata" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/PaymentOptionMetadataModelResponse"
+            }
           },
           "iupd" : {
             "type" : "string"

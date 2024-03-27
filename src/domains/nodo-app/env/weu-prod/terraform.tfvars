@@ -110,6 +110,13 @@ route_aks = [
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.10.150"
   },
+  {
+    # aks nodo nexi postgres onprem
+    name                   = "aks-outbound-to-nexi-postgres-onprem-subnet"
+    address_prefix         = "10.222.209.84/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
 
 ]
 
@@ -142,6 +149,41 @@ nodo_re_to_tablestorage_function = {
 nodo_re_to_tablestorage_function_subnet          = ["10.1.184.0/24"]
 nodo_re_to_tablestorage_network_policies_enabled = true
 nodo_re_to_tablestorage_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 10
+}
+
+function_app_storage_account_replication_type = "GZRS"
+
+nodo_verifyko_to_datastore_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "P1v3"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = 3
+  zone_balancing_enabled       = true
+}
+nodo_verifyko_to_datastore_function_always_on       = true
+nodo_verifyko_to_datastore_function_subnet          = ["10.1.178.0/24"]
+nodo_verifyko_to_datastore_network_policies_enabled = true
+nodo_verifyko_to_datastore_function_autoscale = {
+  default = 3
+  minimum = 3
+  maximum = 10
+}
+
+nodo_verifyko_to_tablestorage_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "P1v3"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = 3
+  zone_balancing_enabled       = false
+}
+nodo_verifyko_to_tablestorage_function_subnet          = ["10.1.189.0/24"]
+nodo_verifyko_to_tablestorage_network_policies_enabled = true
+nodo_verifyko_to_tablestorage_function_autoscale = {
   default = 1
   minimum = 1
   maximum = 10
@@ -182,3 +224,40 @@ pod_disruption_budgets = {
     }
   },
 }
+
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/web-bo/.*",
+    "/bo-nodo/.*",
+    "/pp-admin-panel/.*",
+    "/nodo-monitoring/monitoring/.*",
+    "/nodo-ndp/monitoring/.*",
+    "/nodo-replica-ndp/monitoring/.*",
+    "/wfesp-ndp/.*",
+    "/wfesp-replica-ndp/.*",
+    "/web-bo-ndp/.*",
+  ]
+  ips = [
+    "93.63.219.230",  # PagoPA on prem VPN
+    "93.63.219.234",  # PagoPA on prem VPN DR
+    "20.86.161.243",  # CSTAR
+    "213.215.138.80", # Softlab L1 Pagamenti VPN
+    "213.215.138.79", # Softlab L1 Pagamenti VPN
+    "82.112.220.178", # Softlab L1 Pagamenti VPN
+    "77.43.17.42",    # Softlab L1 Pagamenti VPN
+    "151.2.45.1",     # Softlab L1 Pagamenti VPN
+    "193.203.229.20", # VPN NEXI
+    "193.203.230.22", # VPN NEXI
+  ]
+}
+storage_account_info = {
+  account_kind                      = "StorageV2"
+  account_tier                      = "Standard"
+  account_replication_type          = "GZRS"
+  access_tier                       = "Hot"
+  advanced_threat_protection_enable = true
+}
+
+nodo_auth_subscription_limit = 10000
+# node forwarder
+nodo_pagamenti_x_forwarded_for = "10.230.10.5"

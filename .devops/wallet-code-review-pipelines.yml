@@ -1,5 +1,5 @@
 pr:
-  autoCancel: false
+  autoCancel: true
   branches:
     include:
       - main
@@ -9,6 +9,7 @@ pr:
       - 'src/domains/wallet-common'
     exclude:
       - '**/*.lock.hcl'
+      - '**/*.md'
 
 parameters:
   - name: 'DEV'
@@ -25,172 +26,179 @@ parameters:
     values:
       - False
       - True
-  - name: 'PROD'
-    displayName: 'Run on PROD environment'
-    type: boolean
-    default: False
-    values:
-      - False
-      - True
+  # - name: 'PROD'
+  #   displayName: 'Run on PROD environment'
+  #   type: boolean
+  #   default: True
+  #   values:
+  #     - False
+  #     - True
 
 variables:
   TIME_OUT: 15
+  # working dir
+  WORKING_DIR_APP: 'src/domains/wallet-app'
+  WORKING_DIR_COMMON: 'src/domains/wallet-common'
+  poolNameDev: '$(TF_POOL_NAME_DEV)'
+  poolNameUat: '$(TF_POOL_NAME_UAT)'
+  poolNameProd: '$(TF_POOL_NAME_PROD)'
+  azureServiceConnectionPlanNameDev: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+  azureServiceConnectionPlanNameUat: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+  azureServiceConnectionPlanNameProd: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+  githubEndpointName: '$(TF_GITHUB_SERVICE_ENDPOINT_NAME)'
+
   DEV_AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
   DEV_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
   DEV_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
   AKS_DEV_NAME: '$(TF_AKS_DEV_NAME)'
-  DEV_AZURE_SERVICE_CONNECTION: '$(TF_DEV_AZURE_SERVICE_CONNECTION)'
 
   UAT_AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
   UAT_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
   UAT_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
   AKS_UAT_NAME: '$(TF_AKS_UAT_NAME)'
-  UAT_AZURE_SERVICE_CONNECTION: '$(TF_UAT_AZURE_SERVICE_CONNECTION)'
 
   PROD_AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
   PROD_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
   PROD_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
   AKS_PROD_NAME: '$(TF_AKS_PROD_NAME)'
-  PROD_AZURE_SERVICE_CONNECTION: '$(TF_PROD_AZURE_SERVICE_CONNECTION)'
 
 pool:
-  vmImage: 'ubuntu-20.04'
+  vmImage: 'ubuntu-latest'
 
 resources:
   repositories:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v3.0.0
-      endpoint: 'io-azure-devops-github-ro'
+      ref: refs/tags/v6.0.0
+      endpoint: "io-azure-devops-github-ro"
 
-lockBehavior: sequential
 stages:
   - stage: DEV
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
-      name: "pagopa-dev-linux-infra"
+      name: "${{variables.poolNameDev}}"
     jobs:
-      - job: plan_wallet_common
-        displayName: 🔦 plan_wallet_common
+      - job: tfplan_common
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan wallet-common
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan core
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-dev"
-              WORKINGDIR: 'src/domains/wallet-common'
-              AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
-      - job: plan_wallet_app
-        displayName: 🔦 plan_wallet_app
-        timeoutInMinutes: $[variables.TIME_OUT]
+              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+              TF_SUMMARIZE: true
+      - job: tfplan_app
         strategy:
           parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # Run terraform plan wallet-app
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan core
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-dev"
-              WORKINGDIR: 'src/domains/wallet-app'
-              AZURE_SERVICE_CONNECTION_NAME: ${{ variables.DEV_AZURE_SERVICE_CONNECTION }}
+              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+              TF_SUMMARIZE: true
               AKS_NAME: ${{ variables.AKS_DEV_NAME }}
               AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
               AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
               AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
-#
-# UAT
-#
   - stage: UAT
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.UAT}}, true))
     pool:
-      name: "pagopa-uat-linux-infra"
+      name: "${{variables.poolNameUat}}"
     jobs:
-      - job: plan_wallet_common
-        displayName: 🔦 plan_wallet_common
+      - job: tfplan_common
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan wallet-common
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan core
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-uat"
-              WORKINGDIR: 'src/domains/wallet-common'
-              AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
-      - job: plan_wallet_app
-        displayName: 🔦 plan_wallet_app
-        timeoutInMinutes: $[variables.TIME_OUT]
+              WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+              TF_SUMMARIZE: true
+      - job: tfplan_app
         strategy:
           parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
         steps:
           - checkout: self
-          # 1. Install terraform and terragrunt
+          # 1. Install terraform
           - template: templates/terraform-setup/template.yaml@terraform
-          # Run terraform plan wallet-app
+          - template: templates/terraform-summarize/template.yaml@terraform
+          # 2. Run terraform plan core
           - template: templates/terraform-plan/template.yaml@terraform
             parameters:
               TF_ENVIRONMENT_FOLDER: "weu-uat"
-              WORKINGDIR: 'src/domains/wallet-app'
-              AZURE_SERVICE_CONNECTION_NAME: ${{ variables.UAT_AZURE_SERVICE_CONNECTION }}
+              WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+              AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+              TF_SUMMARIZE: true
               AKS_NAME: ${{ variables.AKS_UAT_NAME }}
               AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
               AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
               AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
 
-#
-# PROD
-#
-  - stage: PROD
-    dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
-    pool:
-      name: "pagopa-prod-linux-infra"
-    jobs:
-      - job: plan_wallet_common
-        displayName: 🔦 plan_wallet_common
-        strategy:
-          parallel: 1
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - checkout: self
-          # 1. Install terraform and terragrunt
-          - template: templates/terraform-setup/template.yaml@terraform
-          # 2. Run terraform plan wallet-common
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              TF_ENVIRONMENT_FOLDER: "weu-prod"
-              WORKINGDIR: 'src/domains/wallet-common'
-              AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
-      - job: plan_wallet_app
-        displayName: 🔦 plan_wallet_app
-        timeoutInMinutes: $[variables.TIME_OUT]
-        strategy:
-          parallel: 1
-        steps:
-          - checkout: self
-          # 1. Install terraform and terragrunt
-          - template: templates/terraform-setup/template.yaml@terraform
-          # Run terraform plan wallet-app
-          - template: templates/terraform-plan/template.yaml@terraform
-            parameters:
-              TF_ENVIRONMENT_FOLDER: "weu-prod"
-              WORKINGDIR: 'src/domains/wallet-app'
-              AZURE_SERVICE_CONNECTION_NAME: ${{ variables.PROD_AZURE_SERVICE_CONNECTION }}
-              AKS_NAME: ${{ variables.AKS_PROD_NAME }}
-              AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
-              AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
-              AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
+  # - stage: PROD
+  #   dependsOn: []
+  #   condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+  #   pool:
+  #     name: "${{variables.poolNameProd}}"
+  #   jobs:
+  #     - job: tfplan_common
+  #       strategy:
+  #         parallel: 1
+  #       timeoutInMinutes: $[variables.TIME_OUT]
+  #       steps:
+  #         - checkout: self
+  #         # 1. Install terraform
+  #         - template: templates/terraform-setup/template.yaml@terraform
+  #         - template: templates/terraform-summarize/template.yaml@terraform
+  #         # 2. Run terraform plan core
+  #         - template: templates/terraform-plan/template.yaml@terraform
+  #           parameters:
+  #             TF_ENVIRONMENT_FOLDER: "weu-prod"
+  #             WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+  #             AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+  #             TF_SUMMARIZE: true
+  #     - job: tfplan_app
+  #       strategy:
+  #         parallel: 1
+  #       timeoutInMinutes: $[variables.TIME_OUT]
+  #       steps:
+  #         - checkout: self
+  #         # 1. Install terraform
+  #         - template: templates/terraform-setup/template.yaml@terraform
+  #         - template: templates/terraform-summarize/template.yaml@terraform
+  #         # 2. Run terraform plan core
+  #         - template: templates/terraform-plan/template.yaml@terraform
+  #           parameters:
+  #             TF_ENVIRONMENT_FOLDER: "weu-prod"
+  #             WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+  #             AZURE_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+  #             TF_SUMMARIZE: true
+  #             AKS_NAME: ${{ variables.AKS_PROD_NAME }}
+  #             AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
+  #             AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
+  #             AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}

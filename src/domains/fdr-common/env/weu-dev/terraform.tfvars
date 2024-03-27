@@ -112,7 +112,7 @@ cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
 cosmos_mongo_db_fdr_params = {
   enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -130,9 +130,9 @@ cosmos_mongo_db_fdr_params = {
 
   backup_continuous_enabled = false
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 5000
+  max_throughput     = 2000
   throughput         = 1000
 
   container_default_ttl = 604800 # 7 days
@@ -140,7 +140,7 @@ cosmos_mongo_db_fdr_params = {
 
 cosmos_mongo_db_fdr_re_params = {
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -158,9 +158,9 @@ cosmos_mongo_db_fdr_re_params = {
 
   backup_continuous_enabled = false
 
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 5000
+  max_throughput     = 2000
   throughput         = 1000
 
   container_default_ttl = 259200 # 3 days
@@ -191,9 +191,21 @@ fdr_re_storage_account = {
   enable_low_availability_alert = false
 }
 
+fdr_history_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = false
+  public_network_access_enabled = true
+  blob_delete_retention_days    = 30
+  enable_low_availability_alert = false
+}
+
 
 #
 # replica settings
 #
-geo_replica_enabled = false
+geo_replica_enabled               = false
+postgres_dns_registration_enabled = false
 

@@ -5,8 +5,9 @@ resource "azurerm_resource_group" "pagopa_proxy_rg" {
   tags = var.tags
 }
 
+
 module "pagopa_proxy_redis" {
-  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.0.28"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.69.1"
   name                  = format("%s-pagopa-proxy-redis", local.parent_project)
   resource_group_name   = azurerm_resource_group.pagopa_proxy_rg.name
   location              = azurerm_resource_group.pagopa_proxy_rg.location
@@ -22,6 +23,9 @@ module "pagopa_proxy_redis" {
     subnet_id            = module.pagopa_proxy_redis_snet.id
     private_dns_zone_ids = var.redis_private_endpoint_enabled ? [data.azurerm_private_dns_zone.privatelink_redis_cache_windows_net.id] : []
   }
+
+  zones = var.redis_zones
+  redis_version = "6"
 
   // when azure can apply patch?
   patch_schedules = [

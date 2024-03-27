@@ -200,6 +200,19 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "x-client-id",
+            "in": "header",
+            "description": "client id related to a given touchpoint",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "IO",
+                "CHECKOUT"
+              ]
+            }
           }
         ],
         "responses": {
@@ -604,6 +617,9 @@
             "type": "string",
             "description": "Payment method type code"
           },
+          "methodManagement": {
+            "$ref": "#/components/schemas/PaymentMethodManagementType"
+          },
           "ranges": {
             "description": "Payment method ranges",
             "type": "array",
@@ -617,6 +633,7 @@
           "name",
           "description",
           "status",
+          "methodManagement",
           "paymentTypeCode",
           "ranges"
         ]
@@ -678,12 +695,22 @@
             "type": "string",
             "description": "Payment method type code"
           },
+          "methodManagement": {
+            "$ref": "#/components/schemas/PaymentMethodManagementType"
+          },
           "ranges": {
             "description": "Payment amount range in eurocents",
             "type": "array",
             "minItems": 1,
             "items": {
               "$ref": "#/components/schemas/Range"
+            }
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
             }
           }
         },
@@ -693,7 +720,8 @@
           "description",
           "status",
           "paymentTypeCode",
-          "ranges"
+          "ranges",
+          "methodManagement"
         ]
       },
       "PaymentMethodsResponse": {
@@ -781,13 +809,25 @@
             "items": {
               "$ref": "#/components/schemas/Bundle"
             }
+          },
+          "asset": {
+            "description": "Payment method asset",
+            "type": "string"
+          },
+          "brandAssets": {
+            "description": "Brand assets map associated to the selected payment method",
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
           }
         },
         "required": [
           "bundles",
           "paymentMethodName",
           "paymentMethodDescription",
-          "paymentMethodStatus"
+          "paymentMethodStatus",
+          "asset"
         ]
       },
       "Bundle": {
@@ -803,8 +843,9 @@
             "type": "string"
           },
           "bundleName": {
-            "description": "Bundle name",
-            "type": "string"
+            "description": "DEPRECATED: Use pspBusinessName instead.",
+            "type": "string",
+            "deprecated": true
           },
           "idBrokerPsp": {
             "description": "Bundle PSP broker id",
@@ -846,6 +887,10 @@
           },
           "touchpoint": {
             "description": "The touchpoint name",
+            "type": "string"
+          },
+          "pspBusinessName": {
+            "description": "The psp business name",
             "type": "string"
           }
         }
@@ -899,6 +944,15 @@
           "INCOMING"
         ]
       },
+      "PaymentMethodManagementType": {
+        "type": "string",
+        "description": "Payment method management type",
+        "enum": [
+          "ONBOARDABLE",
+          "NOT_ONBOARDABLE",
+          "REDIRECT"
+        ]
+      },
       "CreateSessionResponse": {
         "type": "object",
         "description": "Form data needed to create a payment method input form",
@@ -907,13 +961,19 @@
             "type": "string",
             "description": "Identifier of the payment gateway session associated to the form"
           },
+          "correlationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier of the payment session associated to the transaction flow"
+          },
           "paymentMethodData": {
             "$ref": "#/components/schemas/CardFormFields"
           }
         },
         "required": [
           "paymentMethodData",
-          "orderId"
+          "orderId",
+          "correlationId"
         ]
       },
       "CardFormFields": {

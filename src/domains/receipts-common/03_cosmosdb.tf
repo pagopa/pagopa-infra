@@ -99,30 +99,52 @@ module "receipts_datastore_cosmosdb_database" {
 ### Containers
 locals {
   receipts_datastore_cosmosdb_containers = [
+    # {
+    #   name               = "fake",
+    #   partition_key_path = "/fakeid",
+    #   default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
+    #   autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
+    # },
     {
-      name               = "receipts",
-      partition_key_path = "/eventId",
-      default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
+      name                       = "receipts",
+      partition_key_path         = "/id",
+      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings         = { max_throughput = (var.env_short != "p" ? 6000 : 20000) },
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
-      name               = "receipts-message-errors",
+      name               = "cart-for-receipts",
       partition_key_path = "/id",
       default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
+      autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) },
+      conflict_resolution_policy = {
+        mode      = "Custom",
+        path      = null,
+        procedure = "dbs/db/colls/cart-for-receipts/sprocs/cart-for-receipts-merge-procedure"
+      }
     },
     {
-      name               = "receipts-io-messages",
-      partition_key_path = "/messageId",
-      default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) }
+      name                       = "receipts-message-errors",
+      partition_key_path         = "/id",
+      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings         = { max_throughput = (var.env_short != "p" ? 6000 : 20000) },
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
+    },
+    {
+      name                       = "receipts-io-messages",
+      partition_key_path         = "/messageId",
+      default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
+      autoscale_settings         = { max_throughput = (var.env_short != "p" ? 6000 : 20000) },
+      conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
   ]
 }
 
 # cosmosdb container for receipts datastore
 module "receipts_datastore_cosmosdb_containers" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
+  # source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=1f3a347147c8ce627dbfd8d8e19f28d8c42a2c15"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=PRDP-276-feat-add-conflict-resolution-policy-and-stored-procedure"
+
   for_each = { for c in local.receipts_datastore_cosmosdb_containers : c.name => c }
 
   name                = each.value.name
@@ -133,7 +155,22 @@ module "receipts_datastore_cosmosdb_containers" {
   throughput          = lookup(each.value, "throughput", null)
   default_ttl         = lookup(each.value, "default_ttl", null)
 
-  autoscale_settings = contains(var.receipts_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+  conflict_resolution_policy = each.value.conflict_resolution_policy == null ? null : each.value.conflict_resolution_policy
+  autoscale_settings         = contains(var.receipts_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+}
+
+module "azurerm_cosmosdb_sql_stored_procedure" {
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_stored_procedure?ref=7eea8d90faa331e7f3efc90edf396917120197b7"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_stored_procedure?ref=PRDP-276-feat-add-conflict-resolution-policy-and-stored-procedure"
+  depends_on          = [module.receipts_datastore_cosmosdb_containers]
+  name                = "cart-for-receipts-merge-procedure"
+  resource_group_name = azurerm_resource_group.receipts_rg.name
+  account_name        = module.receipts_datastore_cosmosdb_account.name
+  database_name       = module.receipts_datastore_cosmosdb_database.name
+  container_name      = "cart-for-receipts"
+
+  body = file("./scripts/store_procedure.js")
+
 }
 
 resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {

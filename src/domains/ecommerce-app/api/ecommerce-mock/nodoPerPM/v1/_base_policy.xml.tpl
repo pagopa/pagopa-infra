@@ -22,6 +22,19 @@
           </set-body>
         </return-response>
       </when>
+      <when condition="@(((string)(context.Request.Url.Path)).Contains("closepayment"))">
+        <return-response>
+          <set-status code="200" reason="OK" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+          <set-body>
+            {
+                "outcome": "OK"
+            }
+          </set-body>
+        </return-response>
+      </when>
     </choose>
   </inbound>
   <outbound>

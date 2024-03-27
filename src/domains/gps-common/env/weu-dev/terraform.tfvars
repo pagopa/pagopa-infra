@@ -28,7 +28,7 @@ ingress_load_balancer_ip = "10.1.100.250"
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
 
-# CosmosDb GPS
+# CosmosDB GPS
 cosmos_gps_db_params = {
   kind         = "GlobalDocumentDB"
   capabilities = ["EnableServerless"]
@@ -57,16 +57,17 @@ pgres_flex_params = {
   db_version               = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                   = 32768
-  zone                         = 1
-  backup_retention_days        = 7
-  geo_redundant_backup_enabled = false
-  create_mode                  = "Default"
-  high_availability_enabled    = false
-  standby_availability_zone    = 2
-  pgbouncer_enabled            = true
-  alerts_enabled               = false
-  max_connections              = 1000
+  storage_mb                      = 32768
+  zone                            = 1
+  backup_retention_days           = 7
+  geo_redundant_backup_enabled    = false
+  create_mode                     = "Default"
+  high_availability_enabled       = false
+  standby_availability_zone       = 2
+  pgbouncer_enabled               = true
+  alerts_enabled                  = false
+  max_connections                 = 1000
+  enable_private_dns_registration = false
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
@@ -106,9 +107,28 @@ cosmos_gpd_payments_db_params = {
     throughput = 1000
   }
 
+  payments_pp_table = {
+    autoscale  = true
+    throughput = 1000
+  }
 }
 
 cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 
 enable_iac_pipeline                   = true
 gpd_payments_sa_delete_retention_days = 0
+
+# GPD Storage Account SFTP
+gpd_sftp_sa_replication_type                                   = "LRS"
+gpd_sftp_sa_access_tier                                        = "Hot"
+gpd_sftp_cidr_subnet_gpd_storage_account                       = ["10.1.152.16/29"]
+gpd_sftp_enable_private_endpoint                               = false
+gpd_sftp_disable_network_rules                                 = true
+gpd_sftp_sa_snet_private_link_service_network_policies_enabled = false
+gpd_sftp_sa_public_network_access_enabled                      = true
+gpd_sftp_sa_tier_to_cool                                       = 1
+gpd_sftp_sa_tier_to_archive                                    = 1
+gpd_sftp_sa_delete                                             = 2
+
+# GPD Archive account
+gpd_archive_replication_type = "LRS"

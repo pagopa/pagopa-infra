@@ -50,45 +50,43 @@ dns_zone_checkout = "checkout"
 
 pod_disruption_budgets = {
   "pagopaecommerceeventdispatcherservice" = {
-    minAvailable = 1
+    minAvailable = 3
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopaecommerceeventdispatcherservice"
     }
   },
   "pagopaecommercehelpdeskservice" = {
-    minAvailable = 1
+    minAvailable = 3
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopaecommercehelpdeskservice"
     }
   },
   "pagopaecommercepaymentmethodsservice" = {
-    minAvailable = 1
+    minAvailable = 3
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopaecommercepaymentmethodsservice"
     }
   },
   "pagopaecommercepaymentrequestsservice" = {
-    minAvailable = 1
+    minAvailable = 3
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopaecommercepaymentrequestsservice"
     }
   },
   "pagopaecommercetransactionsservice" = {
-    minAvailable = 1
+    minAvailable = 3
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopaecommercetransactionsservice"
     }
   },
-  "pagopaecommercetxschedulerservice" = {
-    minAvailable = 1
-    matchLabels = {
-      "app.kubernetes.io/instance" = "pagopaecommercetransactionsschedulerservice"
-    }
-  },
   "pagopanotificationsservice" = {
-    minAvailable = 1
+    minAvailable = 3
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopanotificationsservice"
     }
   },
 }
+
+io_backend_base_path         = "https://disabled"
+ecommerce_io_with_pm_enabled = false
+pdv_api_base_path            = "https://disabled"
