@@ -16,7 +16,17 @@
     <choose>
       <when condition="@(((IResponse)context.Variables["user-auth-body"]).StatusCode != 200)">
         <return-response>
-          <set-status code="502" reason="Bad Gateway" />
+          <set-status code="502" />
+          <set-header name="Content-Type" exists-action="override">
+              <value>application/json</value>
+          </set-header>
+          <set-body>
+          {
+              "title": "Bad gateway - Invalid user auth response status code",
+              "status": 502,
+              "details": "Cannot get user auth info"
+          }
+          </set-body>
         </return-response>
       </when>
     </choose>
