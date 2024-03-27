@@ -154,7 +154,7 @@ resource "azapi_resource" "sftp_localuser_on_container" {
       hasSharedKey   = true,
       hasSshKey      = false,
       permissionScopes = [{
-        permissions  = "cwl",
+        permissions  = "cwlr",
         service      = "blob",
         resourceName = "${each.value.username}container" // "containername"
       }]
