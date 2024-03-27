@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "aks_rg" {
 }
 
 module "aks" {
-  source = "git::https://github.com/pagopa/azurerm.git//kubernetes_cluster?ref=kubernetes-metric-alerts-updates"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v7.58.0"
 
   name                       = local.aks_name
   location                   = var.location
@@ -66,7 +66,6 @@ module "aks" {
   }
   # end network
 
-  rbac_enabled        = true
   aad_admin_group_ids = var.env_short == "p" ? [data.azuread_group.adgroup_admin.object_id] : [data.azuread_group.adgroup_admin.object_id, data.azuread_group.adgroup_developers.object_id, data.azuread_group.adgroup_externals.object_id]
 
   addon_azure_policy_enabled                     = true
