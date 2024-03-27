@@ -24,6 +24,12 @@ data "azurerm_private_dns_zone" "eventhub" {
 
 
 data "azurerm_route_table" "rt_sia" {
-  name                = format("%s-sia-rt", local.product)
+  name                = "${local.product}-sia-rt"
   resource_group_name = local.vnet_core_resource_group_name
+}
+
+data "azurerm_subnet" "node_forwarder_snet" {
+  name                 = "${local.product}-node-forwarder-snet"
+  resource_group_name  = local.vnet_core_resource_group_name
+  virtual_network_name = data.azurerm_virtual_network.vnet_core.name
 }
