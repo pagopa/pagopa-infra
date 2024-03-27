@@ -19,7 +19,9 @@ tags = {
 
 ### Feature Flag
 is_feature_enabled = {
-  vnet_ita = true
+  vnet_ita = true,
+  container_app_tools_cae = true,
+  node_forwarder_ha_enabled = true
 }
 
 ### Network
@@ -48,12 +50,7 @@ dns_forwarder_backup_is_enabled = false
 geo_replica_enabled          = false
 postgres_private_dns_enabled = false
 
-#
-# Feature Flags
-#
-enabled_resource = {
-  container_app_tools_cae = true
-}
+
 #
 # apim v2
 #
@@ -161,7 +158,7 @@ base_path_nodo_oncloud        = "/nodo-sit"
 
 
 
-
+ehns_public_network_access = true
 ehns_metric_alerts = {
   no_trx = {
     aggregation = "Total"
@@ -621,3 +618,8 @@ eventhubs_04 = [
     ]
   }
 ]
+
+node_forwarder_autoscale_enabled      = false
+node_forwarder_zone_balancing_enabled = false
+node_forwarder_sku                    = "B1"
+
