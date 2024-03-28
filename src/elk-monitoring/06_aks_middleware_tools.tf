@@ -16,9 +16,9 @@ module "tls_checker" {
     data.azurerm_monitor_action_group.slack.id,
     data.azurerm_monitor_action_group.email.id
   ]
-  keyvault_name                                             = data.azurerm_key_vault.kv.name
+  keyvault_name                                             = module.key_vault.name
   keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
-  kv_secret_name_for_application_insights_connection_string = local.kibana_hostname
+  kv_secret_name_for_application_insights_connection_string = "ai-${var.env_short}-connection-string"
 }
 
 module "letsencrypt_dev_elk" {
