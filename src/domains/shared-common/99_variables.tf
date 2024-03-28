@@ -257,7 +257,7 @@ variable "cidr_subnet_test_data_storage_account" {
   default     = null
 }
 
-variable "use_redis_ha" {
+variable "redis_ha_enabled" {
   type = bool
   description = "(Required) If true, enables the usage of HA redis instance"
 }

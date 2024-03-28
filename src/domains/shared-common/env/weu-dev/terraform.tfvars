@@ -100,4 +100,4 @@ test_data_storage_account = {
   enable_low_availability_alert = false
 }
 
-use_redis_ha = false
+redis_ha_enabled = false

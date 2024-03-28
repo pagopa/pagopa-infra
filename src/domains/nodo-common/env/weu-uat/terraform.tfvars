@@ -277,4 +277,4 @@ wisp_converter_storage_account = {
 }
 
 
-use_redis_ha = false
+redis_ha_enabled = false
