@@ -21,4 +21,7 @@ locals {
 
   domain_hostname = "${var.dns_zone_prefix}.${local.internal_dns_zone_name}"
 
+  pagopa_apim_name = "${local.product}-apim"
+  pagopa_apim_rg   = "${local.product}-api-rg"
+
 }
