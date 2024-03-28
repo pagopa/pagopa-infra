@@ -51,11 +51,19 @@
                 details = new JObject();
                 details["type"] = "PAYPAL";
                 details["maskedEmail"] = (string)operation["paymentInstrumentInfo"];
+            } else if(paymentCircuit == "CARD"){
+                details = new JObject();
+                details["type"] = "CARD";
+                if(additionalData.Type != JTokenType.Null){
+                    details["paymentInstrumentGatewayId"] = (string)((JObject)additionalData)["cardId4"];
+                }
             }
+
             if(additionalData.Type != JTokenType.Null){
                 JObject receivedAdditionalData = (JObject)additionalData;
                 errorCode = (string)receivedAdditionalData["authorizationStatus"];
             }
+
             JObject request = new JObject();
             request["timestampOperation"] = timestampOperation;
             request["operationResult"] = operationResult;
