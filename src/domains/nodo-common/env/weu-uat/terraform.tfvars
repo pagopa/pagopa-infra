@@ -236,3 +236,6 @@ nodo_cfg_sync_storage_account = {
   backup_enabled                = false
   backup_retention_days         = 0
 }
+
+
+use_redis_ha = false
