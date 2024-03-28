@@ -25,7 +25,7 @@ module "pagopa_proxy_redis" {
   }
 
   zones = var.redis_zones
-  redis_version = "6"
+  redis_version = var.redis_version
 
   // when azure can apply patch?
   patch_schedules = [
@@ -76,7 +76,7 @@ module "pagopa_proxy_redis_ha" {
   }
 
   zones = var.redis_zones
-  redis_version = "6"
+  redis_version = var.redis_version
 
   // when azure can apply patch?
   patch_schedules = [
