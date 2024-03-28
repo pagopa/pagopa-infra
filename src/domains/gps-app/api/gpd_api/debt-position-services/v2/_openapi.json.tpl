@@ -4,7 +4,7 @@
     "title" : "PagoPA API Debt Position v2 ${service}",
     "description" : "Progetto Gestione Posizioni Debitorie",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.11.6"
+    "version" : "0.11.12"
   },
   "servers" : [ {
     "url" : "${host}",
@@ -114,6 +114,121 @@
           },
           "401" : {
             "description" : "Wrong or missing function key.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        }, {
+          "Authorization" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "Debt Positions API" ],
+        "summary" : "The Organization updates multiple debt positions.",
+        "operationId" : "updateMultiplePositions",
+        "parameters" : [ {
+          "name" : "organizationfiscalcode",
+          "in" : "path",
+          "description" : "Organization fiscal code, the fiscal code of the Organization.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "toPublish",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean",
+            "default" : false
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MultiplePaymentPositionModel"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "500" : {
+            "description" : "Service unavailable.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Conflict: existing related payment found.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Wrong or missing function key.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Malformed request.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Debt Positions updated.",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
@@ -248,7 +363,7 @@
         "description" : "it can added a maximum of 10 key-value pairs for metadata"
       },
       "PaymentOptionModel" : {
-        "required" : [ "amount", "dueDate", "isPartialPayment", "iuv" ],
+        "required" : [ "amount", "dueDate", "isPartialPayment", "iuv", "description" ],
         "type" : "object",
         "properties" : {
           "nav" : {
