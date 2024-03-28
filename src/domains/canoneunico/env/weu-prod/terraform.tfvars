@@ -73,9 +73,9 @@ corporate_cup_users = [
   {
     username : "retidistribuzione"
   },
-  {
-    username : "snamretegas"
-  },
+  # {
+  #   username : "snamretegas" NOT USED
+  # },
   {
     username : "infrtrasportogas"
   },
@@ -190,9 +190,9 @@ corporate_cup_users = [
   {
     username : "snamretegasdsicilia"
   },
-  {
-    username : "infrtraspgasdnordocc"
-  },
+  # {
+  #   username : "infrtraspgasdnordocc" NOT USED
+  # },
   {
     username : "infrtraspgasdcentroori"
   },
@@ -264,5 +264,17 @@ corporate_cup_users = [
   },
   {
     username : "erogasmet"
+  },
+  {
+    username : "snamretegasdnordori"
+  },
+  {
+    username : "infrtraspgasdnordori"
+  },
+  {
+    username : "sisem"
+  },
+  {
+    username : "raiway"
   }
 ]
