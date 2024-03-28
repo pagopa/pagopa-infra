@@ -209,9 +209,15 @@ data "azurerm_redis_cache" "redis_cache" {
   resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
 }
 
+data "azurerm_redis_cache" "redis_cache_ha" {
+  count = var.use_redis_ha ? 1 : 0
+  name                = format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short)
+  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
+}
+
 resource "azurerm_key_vault_secret" "redis_password" {
   name         = "redis-password"
-  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
+  value        = var.use_redis_ha ? data.azurerm_redis_cache.redis_cache_ha[0].primary_access_key : data.azurerm_redis_cache.redis_cache.primary_access_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -220,7 +226,7 @@ resource "azurerm_key_vault_secret" "redis_password" {
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "github_token_read_packages" {
   name         = "github-token-read-packages"
-  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
+  value        = var.use_redis_ha ? data.azurerm_redis_cache.redis_cache_ha[0].primary_access_key : data.azurerm_redis_cache.redis_cache.primary_access_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

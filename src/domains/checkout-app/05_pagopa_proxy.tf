@@ -17,9 +17,9 @@ locals {
     NM3_ENABLED                = true
     NODE_CONNECTIONS_CONFIG    = data.azurerm_key_vault_secret.pagopaproxy_node_clients_config.value
 
-    REDIS_DB_URL      = format("redis://%s", data.azurerm_redis_cache.pagopa_proxy_redis.hostname)
-    REDIS_DB_PORT     = data.azurerm_redis_cache.pagopa_proxy_redis.ssl_port
-    REDIS_DB_PASSWORD = data.azurerm_redis_cache.pagopa_proxy_redis.primary_access_key
+    REDIS_DB_URL      = format("redis://%s", var.redis_ha_enabled ? data.azurerm_redis_cache.pagopa_proxy_redis_ha[0].hostname : data.azurerm_redis_cache.pagopa_proxy_redis.hostname)
+    REDIS_DB_PORT     = var.redis_ha_enabled ? data.azurerm_redis_cache.pagopa_proxy_redis_ha[0].ssl_port : data.azurerm_redis_cache.pagopa_proxy_redis.ssl_port
+    REDIS_DB_PASSWORD = var.redis_ha_enabled ? data.azurerm_redis_cache.pagopa_proxy_redis_ha[0].primary_access_key : data.azurerm_redis_cache.pagopa_proxy_redis.primary_access_key
     REDIS_USE_CLUSTER = false
   }
   pagopa_proxy_node_version = "18-lts"
@@ -36,6 +36,12 @@ data "azurerm_resource_group" "pagopa_proxy_rg" {
 
 data "azurerm_redis_cache" "pagopa_proxy_redis" {
   name                = format("%s-pagopa-proxy-redis", local.parent_project)
+  resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
+}
+
+data "azurerm_redis_cache" "pagopa_proxy_redis_ha" {
+  count = var.redis_ha_enabled ? 1 : 0
+  name                = format("%s-pagopa-proxy-redis-ha", local.parent_project)
   resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
 }
 

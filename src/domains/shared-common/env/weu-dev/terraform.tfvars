@@ -99,3 +99,5 @@ test_data_storage_account = {
   blob_delete_retention_days    = 7
   enable_low_availability_alert = false
 }
+
+use_redis_ha = false

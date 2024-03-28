@@ -276,3 +276,10 @@ variable "pagopa_proxy_ha_enabled" {
   type        = bool
   description = "(Required) enables the deployment of pagopa proxy in HA"
 }
+
+
+variable "redis_ha_enabled" {
+  type = bool
+  default = true
+  description = "(Optional) enables the usage of redis in high availability"
+}
