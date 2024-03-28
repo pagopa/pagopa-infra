@@ -3,7 +3,7 @@
 ##############
 
 module "apim_nodo_dei_pagamenti_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.72.1"
   count  = var.enabled_features.apim_v2 ? 1 : 0
 
   product_id   = "nodo"

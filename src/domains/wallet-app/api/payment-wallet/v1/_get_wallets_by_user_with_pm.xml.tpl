@@ -104,7 +104,7 @@
         <set-body>
             @{
                 JObject pmWalletResponse = (JObject)context.Variables["pmUserWalletResponseBody"];
-                var walletServices = new List<String>{"PAGOPA"};
+                var walletApplications = new List<String>{"PAGOPA"};
                 var eCommerceWalletTypes = new Dictionary<string, string>
                     {
                         { "Card", "CARDS" },
@@ -143,10 +143,10 @@
                             var convertedApplications = new List<JObject>();
                             foreach(JValue application in wallet["enableableFunctions"]){
                                 string applicationName = application.ToString().ToUpper();
-                                if(walletServices.Contains(applicationName)){
+                                if(walletApplications.Contains(applicationName) && wallet[application.ToString()] != null){
                                     JObject converted = new JObject();
                                     converted["name"] = applicationName;
-                                    converted["status"] = "ENABLED";
+                                    converted["status"] = Convert.ToBoolean(wallet[application.ToString()]) == true ? "ENABLED" : "DISABLED";
                                     converted["updateDate"] = result["creationDate"];
                                     convertedApplications.Add(converted);
                                 }
