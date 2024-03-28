@@ -4,7 +4,7 @@
     "title" : "PagoPA API Debt Position v2 ${service}",
     "description" : "Progetto Gestione Posizioni Debitorie",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.11.6"
+    "version" : "0.11.12"
   },
   "servers" : [ {
     "url" : "${host}",
@@ -363,7 +363,7 @@
         "description" : "it can added a maximum of 10 key-value pairs for metadata"
       },
       "PaymentOptionModel" : {
-        "required" : [ "amount", "dueDate", "isPartialPayment", "iuv" ],
+        "required" : [ "amount", "dueDate", "isPartialPayment", "iuv", "description" ],
         "type" : "object",
         "properties" : {
           "nav" : {

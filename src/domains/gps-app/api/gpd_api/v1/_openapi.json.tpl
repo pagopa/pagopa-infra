@@ -4,7 +4,7 @@
     "title" : "PagoPA API Debt Position",
     "description" : "Progetto Gestione Posizioni Debitorie",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.11.10"
+    "version" : "0.11.12"
   },
   "servers" : [ {
     "url": "${host}",
@@ -285,7 +285,7 @@
       "put" : {
         "tags" : [ "Debt Positions API" ],
         "summary" : "The Organization updates multiple debt positions.",
-        "operationId" : "createMultiplePositions",
+        "operationId" : "updateMultiplePositions",
         "parameters" : [ {
           "name" : "organizationfiscalcode",
           "in" : "path",
@@ -2090,7 +2090,7 @@
         "description" : "it can added a maximum of 10 key-value pairs for metadata"
       },
       "PaymentOptionModel" : {
-        "required" : [ "amount", "dueDate", "isPartialPayment", "iuv" ],
+        "required" : [ "amount", "dueDate", "isPartialPayment", "iuv", "description" ],
         "type" : "object",
         "properties" : {
           "nav" : {
