@@ -9,7 +9,7 @@ locals {
       query       = <<-QUERY
           traces
           | where cloud_RoleName == "%s"
-          | where message contains "[NODE-CFG-SYNC][ALERT]"
+          | where message contains "[api-config-cache][ALERT] Problem to dump cache"
           | order by timestamp desc
           | summarize Total=count() by length=bin(timestamp,1m)
           | order by length desc
