@@ -71,6 +71,7 @@ redis_wallet_params = {
   sku_name = "Basic"
   family   = "C"
   version  = 6
+  zones    = []
 }
 
 enable_iac_pipeline = true

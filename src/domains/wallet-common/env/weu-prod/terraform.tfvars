@@ -67,10 +67,11 @@ cosmos_mongo_db_wallet_params = {
 }
 
 redis_wallet_params = {
-  capacity = 0
-  sku_name = "Standard"
-  family   = "C"
+  capacity = 1
+  sku_name = "Premium"
+  family   = "P"
   version  = 6
+  zones    = [1, 2, 3]
 }
 
 enable_iac_pipeline = true
