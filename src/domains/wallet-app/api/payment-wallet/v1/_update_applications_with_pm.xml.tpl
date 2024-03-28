@@ -33,6 +33,9 @@
     <send-request ignore-error="false" timeout="10" response-variable-name="pmWalletStatusResponse">
         <set-url>@($"{{pm-host}}/pp-restapi-CD/v2/wallet/{(string)context.Variables["idWalletPM"]}/payment-status")</set-url>
         <set-method>PUT</set-method>
+        <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+        </set-header>
         <set-header name="Authorization" exists-action="override">
             <value>@($"Bearer {((JObject)context.Variables["pmSession"])["data"]["sessionToken"].ToString()}")</value>
         </set-header>
