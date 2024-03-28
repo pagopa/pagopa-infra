@@ -167,7 +167,7 @@ variable "api_config_replication_type" {
   description = "(Optional) Api config storage account replication type"
 }
 
-variable "use_redis_ha" {
+variable "redis_ha_enabled" {
   type = bool
   description = "(Required) If true, enables the usage of HA redis instance"
 }

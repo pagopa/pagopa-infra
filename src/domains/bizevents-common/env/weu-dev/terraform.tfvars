@@ -81,3 +81,4 @@ negative_bizevents_datastore_cosmos_db_params = {
 cidr_subnet_bizevents_datastore_cosmosdb = ["10.1.156.0/24"]
 
 enable_iac_pipeline = true
+redis_ha_enabled = false

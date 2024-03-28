@@ -188,3 +188,8 @@ variable "storage_account_replication_type" {
   default     = "LRS"
   description = "(Optional) biz event fn storage account replication type"
 }
+
+variable "redis_ha_enabled" {
+  type = bool
+  description = "(Required) enables usage of HA deployed redis instance"
+}
