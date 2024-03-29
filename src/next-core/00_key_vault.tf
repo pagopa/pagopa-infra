@@ -79,3 +79,12 @@ data "azurerm_key_vault_certificate" "app_gw_platform_prf" {
   name         = var.app_gateway_prf_certificate_name
   key_vault_id = data.azurerm_key_vault.kv_core.id
 }
+
+data "azurerm_key_vault_secret" "certificate_crt_node_forwarder" {
+  name         = "certificate-crt-node-forwarder"
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+data "azurerm_key_vault_secret" "certificate_key_node_forwarder" {
+  name         = "certificate-key-node-forwarder"
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}

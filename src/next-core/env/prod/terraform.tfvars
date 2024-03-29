@@ -19,7 +19,9 @@ tags = {
 
 ### Feature Flag
 is_feature_enabled = {
-  vnet_ita = false
+  vnet_ita = false,
+  container_app_tools_cae = false,
+  node_forwarder_ha_enabled = false
 }
 
 #
@@ -184,19 +186,13 @@ dns_zone_wisp2                = "wisp2"
 base_path_nodo_oncloud        = "/nodo-prd"
 
 
-#
-# Feature Flags
-#
-enabled_resource = {
-  container_app_tools_cae = false
-}
-
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
 ehns_capacity                 = 5
 ehns_zone_redundant           = true
+ehns_public_network_access = true
 
 ehns_metric_alerts = {
   no_trx = {
@@ -638,3 +634,7 @@ eventhubs_04 = [
     ]
   }
 ]
+
+node_forwarder_zone_balancing_enabled = true
+node_forwarder_sku                    = "P3v3"
+

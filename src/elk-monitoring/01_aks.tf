@@ -17,7 +17,6 @@ resource "azurerm_key_vault_secret" "aks_apiserver_url" {
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "elastic" {
-
   kubernetes_cluster_id = data.azurerm_kubernetes_cluster.aks.id
 
   name = var.elastic_node_pool.name
@@ -25,9 +24,9 @@ resource "azurerm_kubernetes_cluster_node_pool" "elastic" {
   ### vm configuration
   vm_size = var.elastic_node_pool.vm_size
   # https://docs.microsoft.com/en-us/azure/virtual-machines/sizes-general
-  os_disk_type       = var.elastic_node_pool.os_disk_type # Managed or Ephemeral
-  os_disk_size_gb    = var.elastic_node_pool.os_disk_size_gb
-  availability_zones = ["1", "2", "3"]
+  os_disk_type    = var.elastic_node_pool.os_disk_type # Managed or Ephemeral
+  os_disk_size_gb = var.elastic_node_pool.os_disk_size_gb
+  zones           = ["1", "2", "3"]
 
   os_type = "Linux"
 

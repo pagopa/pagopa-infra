@@ -135,7 +135,7 @@ module "load_balancer_nodo_egress" {
 # create routing table from aks to external endpoint via load balancer NVA
 #
 module "route_table_peering_nexi" {
-  source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//route_table?ref=v7.72.1"
 
   name                          = format("%s-aks-to-nexi-rt", local.project)
   location                      = var.location
