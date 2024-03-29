@@ -131,6 +131,7 @@
                                     response["paymentMethodStatus"] = ((string)((JObject)context.Variables["paymentMethod"])["status"]);
                                     response["belowThreshold"] = false;
                                     response["bundles"] = (JArray)pspResponse;
+                                    response["asset"] = "https://assets.cdn.platform.pagopa.it/creditcard/generic.png";
                                     return response.ToString();
                                 }</set-body>
                         </return-response>

@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "= 2.99.0"
+      version = "> 3.0.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -24,7 +24,6 @@ terraform {
       source  = "hashicorp/http"
       version = "3.2.1"
     }
-
     kubectl = {
       source  = "gavinbunney/kubectl"
       version = "1.14.0"

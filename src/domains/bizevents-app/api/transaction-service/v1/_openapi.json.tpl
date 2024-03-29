@@ -4,7 +4,7 @@
     "title": "Biz-Events Transaction Service",
     "description": "Microservice for exposing REST APIs about payment transaction.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.1.18"
+    "version": "0.1.20"
   },
   "servers": [
     {
@@ -40,38 +40,6 @@
           }
         ],
         "responses": {
-          "422": {
-            "description": "Unable to process the request.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Disabled Transactions.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {}
-            }
-          },
           "500": {
             "description": "Service unavailable.",
             "headers": {
@@ -117,6 +85,20 @@
                   "type": "string"
                 }
               }
+            }
+          },
+          "200": {
+            "description": "Disabled Transactions.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {}
             }
           },
           "401": {
@@ -184,52 +166,6 @@
           }
         ],
         "responses": {
-          "422": {
-            "description": "Unable to process the request.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Obtained transaction list.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "x-continuation-token": {
-                "description": "continuation token for paginated query",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.response.transaction.TransactionListItem"
-                  }
-                }
-              }
-            }
-          },
           "500": {
             "description": "Service unavailable.",
             "headers": {
@@ -273,6 +209,34 @@
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Obtained transaction list.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "x-continuation-token": {
+                "description": "continuation token for paginated query",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.response.transaction.TransactionListItem"
+                  }
                 }
               }
             }
@@ -333,42 +297,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Obtained transaction details.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.response.transaction.TransactionDetailResponse"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Unable to process the request.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Service unavailable.",
             "headers": {
@@ -416,6 +344,24 @@
               }
             }
           },
+          "200": {
+            "description": "Obtained transaction details.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.response.transaction.TransactionDetailResponse"
+                }
+              }
+            }
+          },
           "401": {
             "description": "Wrong or missing function key.",
             "headers": {
@@ -454,6 +400,28 @@
         "description": "Return OK if application is started",
         "operationId": "healthCheck",
         "responses": {
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Too many requests",
             "headers": {
@@ -483,17 +451,6 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
           "200": {
             "description": "OK",
             "headers": {
@@ -508,17 +465,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.AppInfo"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
                 }
               }
             }

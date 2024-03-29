@@ -36,3 +36,4 @@ pagopa_proxy_redis_sku_name = "Basic"
 pagopa_proxy_redis_family   = "C"
 
 redis_private_endpoint_enabled = true
+redis_zones = []

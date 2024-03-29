@@ -45,13 +45,13 @@ checkout_enabled = true
 
 # Checkout functions
 
-checkout_function_kind              = "Linux"
-checkout_function_sku_tier          = "PremiumV3"
-checkout_function_sku_size          = "P1v3"
-checkout_function_always_on         = true
-checkout_function_autoscale_minimum = 1
-checkout_function_autoscale_maximum = 3
-checkout_function_autoscale_default = 1
+checkout_function_kind                   = "Linux"
+checkout_function_sku_tier               = "PremiumV3"
+checkout_function_sku_size               = "P1v3"
+checkout_function_always_on              = true
+checkout_function_autoscale_minimum      = 1
+checkout_function_autoscale_maximum      = 3
+checkout_function_autoscale_default      = 1
 checkout_function_zone_balancing_enabled = false
 
 # ecommerce ingress hostname
