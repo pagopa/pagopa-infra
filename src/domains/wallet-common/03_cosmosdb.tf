@@ -77,7 +77,7 @@ resource "azurerm_cosmosdb_mongo_database" "wallet" {
 locals {
   collections = [
     {
-      name = "services"
+      name = "applications"
       indexes = [{
         keys   = ["_id"]
         unique = true
