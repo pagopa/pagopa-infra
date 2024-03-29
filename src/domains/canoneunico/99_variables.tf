@@ -215,3 +215,10 @@ variable "corporate_cup_users" {
   }))
   default = []
 }
+
+### External resources
+
+variable "monitor_resource_group_name" {
+  type        = string
+  description = "Monitor resource group name"
+}
