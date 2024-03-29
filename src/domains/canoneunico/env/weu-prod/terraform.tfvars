@@ -58,6 +58,7 @@ canoneunico_delete_retention_days = 31
 canoneunico_backup_retention_days = 30
 enable_canoneunico_backup         = true
 canoneunico_enable_versioning     = true
+canoneunico_schedule_batch        = "0 */15 * * * *" # 4 times an hour: every 15 minutes of every hour of each day
 
 # storage
 storage_queue_private_endpoint_enabled = true
@@ -278,3 +279,6 @@ corporate_cup_users = [
     username : "raiway"
   }
 ]
+
+### External resources
+monitor_resource_group_name = "pagopa-p-monitor-rg"

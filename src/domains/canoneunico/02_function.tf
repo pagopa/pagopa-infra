@@ -14,7 +14,7 @@ module "canoneunico_function" {
 
   docker = {
     image_name        = var.image_name
-    image_tag         = var.image_tag
+    image_tag         = "latest"
     registry_password = data.azurerm_container_registry.login_server.admin_password
     registry_url      = "https://${data.azurerm_container_registry.login_server.login_server}"
     registry_username = data.azurerm_container_registry.login_server.admin_username
