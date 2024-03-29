@@ -150,10 +150,10 @@
                         var convertedApplications = new List<JObject>();
                         foreach(JValue application in wallet["enableableFunctions"]){
                             string applicationName = application.ToString().ToUpper();
-                            if(walletApplications.Contains(applicationName)){
+                            if(walletApplications.Contains(applicationName) && wallet[application.ToString()] != null){
                                 JObject converted = new JObject();
                                 converted["name"] = applicationName;
-                                converted["status"] = "ENABLED";
+                                converted["status"] = Convert.ToBoolean(wallet[application.ToString()]) == true ? "ENABLED" : "DISABLED";
                                 converted["updateDate"] = result["creationDate"];
                                 convertedApplications.Add(converted);
                             }
