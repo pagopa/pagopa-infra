@@ -25,13 +25,12 @@
              encoding="UTF-8"
              path="sql/3_RENAME_OLD_PART.sql"
              relativeToChangelogFile="true"
-             splitStatements="true"
              stripComments="true"/>
     <sqlFile 
              encoding="UTF-8"
              path="sql/4_PROCEDURE_modify_partition.sql"
              relativeToChangelogFile="true"
-             splitStatements="true"
+             splitStatements="false"
              stripComments="true"/>
     <sqlFile 
              encoding="UTF-8"
