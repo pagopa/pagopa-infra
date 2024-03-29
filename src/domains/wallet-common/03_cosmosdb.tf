@@ -128,7 +128,20 @@ locals {
         }
       ],
       shard_key = null
-    }
+    },
+    {
+      name = "payment-wallets"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["userId"]
+          unique = false
+        }
+      ]
+      shard_key = "userId"
+    },
   ]
 }
 
