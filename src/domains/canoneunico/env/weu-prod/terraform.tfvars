@@ -279,3 +279,6 @@ corporate_cup_users = [
     username : "raiway"
   }
 ]
+
+### External resources
+monitor_resource_group_name = "pagopa-p-monitor-rg"
