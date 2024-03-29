@@ -18,7 +18,7 @@
 | <a name="module_cosmosdb_wallet_collections"></a> [cosmosdb\_wallet\_collections](#module\_cosmosdb\_wallet\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v6.7.0 |
 | <a name="module_cosmosdb_wallet_snet"></a> [cosmosdb\_wallet\_snet](#module\_cosmosdb\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.0 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v6.3.0 |
-| <a name="module_pagopa_wallet_redis"></a> [pagopa\_wallet\_redis](#module\_pagopa\_wallet\_redis) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v6.7.0 |
+| <a name="module_pagopa_wallet_redis"></a> [pagopa\_wallet\_redis](#module\_pagopa\_wallet\_redis) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v7.72.1 |
 | <a name="module_pagopa_wallet_redis_snet"></a> [pagopa\_wallet\_redis\_snet](#module\_pagopa\_wallet\_redis\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.7.0 |
 | <a name="module_wallet_fe_cdn"></a> [wallet\_fe\_cdn](#module\_wallet\_fe\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn | v6.15.2 |
 | <a name="module_web_test_availability_alert_rules_for_api"></a> [web\_test\_availability\_alert\_rules\_for\_api](#module\_web\_test\_availability\_alert\_rules\_for\_api) | git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview | v6.20.2 |
@@ -103,7 +103,7 @@
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_redis_wallet_params"></a> [redis\_wallet\_params](#input\_redis\_wallet\_params) | n/a | <pre>object({<br>    capacity = number<br>    sku_name = string<br>    family   = string<br>    version  = string<br>  })</pre> | n/a | yes |
+| <a name="input_redis_wallet_params"></a> [redis\_wallet\_params](#input\_redis\_wallet\_params) | n/a | <pre>object({<br>    capacity = number<br>    sku_name = string<br>    family   = string<br>    version  = string<br>    zones    = list(number)<br>  })</pre> | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 
 ## Outputs

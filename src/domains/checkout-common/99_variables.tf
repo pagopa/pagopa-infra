@@ -143,12 +143,12 @@ variable "redis_private_endpoint_enabled" {
 
 
 variable "redis_zones" {
-  type = list(number)
+  type        = list(number)
   description = "(Required) redis deployment zones"
 }
 
 variable "redis_version" {
-  type = string
-  default = "6"
+  type        = string
+  default     = "6"
   description = "(Optional) redis version"
 }

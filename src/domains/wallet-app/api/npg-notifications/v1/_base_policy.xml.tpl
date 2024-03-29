@@ -38,12 +38,18 @@
             var additionalData = operation["additionalData"];
             string timestampOperation = null;
             string errorCode = null;
+            string cardId4 = null;
             if(operationTime != null) {
                 DateTime npgDateTime = DateTime.Parse(operationTime.Replace(" ","T"));
                 TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
                 DateTime utcDateTime = TimeZoneInfo.ConvertTimeToUtc(npgDateTime, zone);
                 DateTimeOffset dateTimeOffset = new DateTimeOffset(utcDateTime);
                 timestampOperation = dateTimeOffset.ToString("o");
+            }
+            if(additionalData.Type != JTokenType.Null){
+                JObject receivedAdditionalData = (JObject)additionalData;
+                errorCode = (string)receivedAdditionalData["authorizationStatus"];
+                cardId4 = (string)((JObject)additionalData)["cardId4"];
             }
             string paymentCircuit = (string)operation["paymentCircuit"];
             JObject details = null;
@@ -54,14 +60,7 @@
             } else if(paymentCircuit == "CARD"){
                 details = new JObject();
                 details["type"] = "CARD";
-                if(additionalData.Type != JTokenType.Null){
-                    details["paymentInstrumentGatewayId"] = (string)((JObject)additionalData)["cardId4"];
-                }
-            }
-
-            if(additionalData.Type != JTokenType.Null){
-                JObject receivedAdditionalData = (JObject)additionalData;
-                errorCode = (string)receivedAdditionalData["authorizationStatus"];
+                details["paymentInstrumentGatewayId"] = cardId4;
             }
 
             JObject request = new JObject();

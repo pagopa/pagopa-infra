@@ -1,6 +1,6 @@
 module "pagopa_proxy_app_service_ha" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
-  count = var.pagopa_proxy_ha_enabled ? 1 : 0
+  count  = var.pagopa_proxy_ha_enabled ? 1 : 0
   depends_on = [
     module.pagopa_proxy_snet_ha
   ]
@@ -9,9 +9,9 @@ module "pagopa_proxy_app_service_ha" {
   location            = var.location
 
   # App service plan vars
-  plan_name     = format("%s-plan-pagopa-proxy-ha", local.parent_project)
-  plan_type     = "internal"
-  sku_name = var.pagopa_proxy_plan_sku
+  plan_name = format("%s-plan-pagopa-proxy-ha", local.parent_project)
+  plan_type = "internal"
+  sku_name  = var.pagopa_proxy_plan_sku
 
   node_version = local.pagopa_proxy_node_version
 
@@ -42,19 +42,19 @@ module "pagopa_proxy_app_service_slot_staging_ha" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.69.1"
 
   # App service plan
-#  app_service_plan_id = module.pagopa_proxy_app_service.plan_id
-  app_service_id      = module.pagopa_proxy_app_service_ha[0].id
-  app_service_name    = module.pagopa_proxy_app_service_ha[0].name
+  #  app_service_plan_id = module.pagopa_proxy_app_service.plan_id
+  app_service_id   = module.pagopa_proxy_app_service_ha[0].id
+  app_service_name = module.pagopa_proxy_app_service_ha[0].name
 
   # App service
   name                = "staging"
   resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
   location            = data.azurerm_resource_group.pagopa_proxy_rg.location
 
-  always_on         = true
-#  linux_fx_version  = "NODE|18-lts"
+  always_on = true
+  #  linux_fx_version  = "NODE|18-lts"
   health_check_path = "/ping"
-  node_version = local.pagopa_proxy_node_version
+  node_version      = local.pagopa_proxy_node_version
 
   # App settings
   app_settings = local.pagopa_proxy_config
@@ -69,7 +69,7 @@ module "pagopa_proxy_app_service_slot_staging_ha" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "pagopa_proxy_app_service_autoscale_ha" {
-  count = var.pagopa_proxy_ha_enabled ? 1 : 0
+  count               = var.pagopa_proxy_ha_enabled ? 1 : 0
   name                = format("%s-autoscale-pagopa-proxy-ha", local.parent_project)
   resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
   location            = data.azurerm_resource_group.pagopa_proxy_rg.location
