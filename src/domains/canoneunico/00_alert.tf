@@ -49,7 +49,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-cup-csv-gene
   traces
   | where cloud_RoleName == "pagopa-p-fn-canoneunico"
   | summarize Total=countif(tostring(message) matches regex "Function \"CuGenerateOutputCsvBatchFunction\" (.*) invoked"),
-Error=countif(tostring(message) matches regex "[CuGenerateOutputCsvBatchFunction](.*)error") by length=bin(timestamp, 15m)
+Error=countif(tostring(message) matches regex "CuGenerateOutputCsvBatchFunction](.*)error") by length=bin(timestamp, 15m)
   | where Total > 0 and Error > 0
   QUERY
   )
@@ -81,7 +81,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-cup-create-d
   traces
   | where cloud_RoleName == "pagopa-p-fn-canoneunico"
   | summarize Total=countif(tostring(message) matches regex "Function \"CuCreateDebtPositionFunction\" (.*) invoked"),
-Error=countif(tostring(message) contains "[CuCreateDebtPositionFunction ERROR]") by length=bin(timestamp, 15m)
+Error=countif(tostring(message) contains "CuCreateDebtPositionFunction ERROR]") by length=bin(timestamp, 15m)
   | where Total > 0 and Error > 0
   QUERY
   )
