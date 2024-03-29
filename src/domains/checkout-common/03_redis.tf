@@ -24,7 +24,7 @@ module "pagopa_proxy_redis" {
     private_dns_zone_ids = var.redis_private_endpoint_enabled ? [data.azurerm_private_dns_zone.privatelink_redis_cache_windows_net.id] : []
   }
 
-  zones = var.redis_zones
+  zones         = var.redis_zones
   redis_version = "6"
 
   // when azure can apply patch?
