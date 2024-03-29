@@ -64,11 +64,49 @@ resource "azurerm_app_configuration_feature" "is_operation_flag" {
   }
 }
 
-
 resource "azurerm_app_configuration_feature" "commission_bundles_flag" {
   configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
   description            = "It enables the commission bundles"
   name                   = "commission-bundles"
+  enabled                = false
+
+  lifecycle {
+    ignore_changes = [
+      enabled,
+    ]
+  }
+}
+
+resource "azurerm_app_configuration_feature" "commission_bundles_private_flag" {
+  configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
+  description            = "It enables the commission bundles of type PRIVATE"
+  name                   = "commission-bundles-private"
+  enabled                = false
+
+  lifecycle {
+    ignore_changes = [
+      enabled,
+    ]
+  }
+}
+
+resource "azurerm_app_configuration_feature" "commission_bundles_public_flag" {
+  configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
+  description            = "It enables the commission bundles of type PUBLIC"
+  name                   = "commission-bundles-public"
+  enabled                = false
+
+  lifecycle {
+    ignore_changes = [
+      enabled,
+    ]
+  }
+}
+
+resource "azurerm_app_configuration_feature" "delegations_list_flag" {
+  configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
+  description            = "It enables the credit institution's delegations' page"
+  name                   = "delegations-list"
   enabled                = false
 
   lifecycle {

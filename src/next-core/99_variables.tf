@@ -219,16 +219,6 @@ variable "logos_backup_retention" {
   description = "(Optional) Blob backup retention"
 }
 
-#
-# Feature flags
-#
-variable "enabled_resource" {
-  type = object({
-    container_app_tools_cae = optional(bool, false),
-  })
-}
-
-
 variable "cidr_subnet_apim" {
   type        = list(string)
   description = "(Required) APIM v2 subnet cidr"
@@ -618,6 +608,12 @@ variable "ehns_alerts_enabled" {
   default     = false
   description = "Event hub alerts enabled?"
 }
+
+variable "ehns_public_network_access" {
+  type = bool
+  description = "(Required) enables public network access to the event hubs"
+}
+
 variable "ehns_metric_alerts" {
   default = {}
 
@@ -650,8 +646,40 @@ EOD
 
 variable "is_feature_enabled" {
   type = object({
-    vnet_ita = bool
+    vnet_ita = bool,
+    container_app_tools_cae = optional(bool, false),
+    node_forwarder_ha_enabled = bool
   })
   description = "Features enabled in this domain"
+}
+
+
+variable "node_forwarder_always_on" {
+  type        = bool
+  description = "Node Forwarder always on property"
+  default     = true
+}
+
+variable "node_forwarder_zone_balancing_enabled" {
+  type        = bool
+  description = "(Optional) enables the load balancing for node forwarder app service plan"
+  default     = true
+}
+
+variable "node_forwarder_logging_level" {
+  type        = string
+  description = "Logging level of Node Forwarder"
+  default     = "INFO"
+}
+
+variable "node_forwarder_autoscale_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "node_forwarder_sku" {
+  type        = string
+  description = "(Required) The SKU for the plan. Possible values include B1, B2, B3, D1, F1, I1, I2, I3, I1v2, I2v2, I3v2, I4v2, I5v2, I6v2, P1v2, P2v2, P3v2, P0v3, P1v3, P2v3, P3v3, P1mv3, P2mv3, P3mv3, P4mv3, P5mv3, S1, S2, S3, SHARED, EP1, EP2, EP3, WS1, WS2, WS3, and Y1."
+  default     = "P3v3"
 }
 
