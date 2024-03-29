@@ -34,13 +34,13 @@ variable "dns_zone_prefix" {
 
 variable "image_name" {
   type        = string
-  default     = null
+  default     = "pagopa/canone-unico"
   description = "The image name to use with a function app"
 }
 
 variable "image_tag" {
   type        = string
-  default     = null
+  default     = "latest"
   description = "The image tag to use with a function app"
 }
 
@@ -214,4 +214,11 @@ variable "corporate_cup_users" {
     username = string
   }))
   default = []
+}
+
+### External resources
+
+variable "monitor_resource_group_name" {
+  type        = string
+  description = "Monitor resource group name"
 }
