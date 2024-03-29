@@ -1,6 +1,6 @@
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-cup-csv-parsing-function-availability" {
   count               = var.env_short == "p" ? 1 : 0
-  resource_group_name = "opex"
+  resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-opex_pagopa-cup-CuCsvParsingFunction-availability"
   location            = var.location
 
@@ -10,7 +10,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-cup-csv-pars
     custom_webhook_payload = "{}"
   }
 
-  data_source_id = data.azurerm_application_insights.application_insights
+  data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "There were some errors for function CuCsvParsingFunction. Check on application insight"
   enabled        = true
   query = (<<-QUERY
@@ -32,7 +32,7 @@ Error=countif(tostring(message) contains "CuCsvParsingFunction Error") by length
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-cup-csv-genearate-csv-batch-function-availability" {
   count               = var.env_short == "p" ? 1 : 0
-  resource_group_name = "opex"
+  resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-opex_pagopa-cup-CuGenerateOutputCsvBatchFunction-availability"
   location            = var.location
 
@@ -42,7 +42,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-cup-csv-gene
     custom_webhook_payload = "{}"
   }
 
-  data_source_id = data.azurerm_application_insights.application_insights
+  data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "There were some errors for function CuGenerateOutputCsvBatchFunction. Check on application insight"
   enabled        = true
   query = (<<-QUERY
@@ -64,7 +64,7 @@ Error=countif(tostring(message) matches regex "CuGenerateOutputCsvBatchFunction]
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-cup-create-debt-position-function-availability" {
   count               = var.env_short == "p" ? 1 : 0
-  resource_group_name = "opex"
+  resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-opex_pagopa-cup-CuCreateDebtPositionFunction-availability"
   location            = var.location
 
@@ -74,7 +74,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-cup-create-d
     custom_webhook_payload = "{}"
   }
 
-  data_source_id = data.azurerm_application_insights.application_insights
+  data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "There were some errors for function CuCreateDebtPositionFunction. Check on application insight"
   enabled        = true
   query = (<<-QUERY
