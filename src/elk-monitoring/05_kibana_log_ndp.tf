@@ -1080,23 +1080,6 @@ resource "null_resource" "ndp_wispsoapconverter_index_template" {
   }
 }
 
-resource "null_resource" "ndp_wispsoapconverter_data_stream_rollover" {
-  depends_on = [null_resource.ndp_wispsoapconverter_index_template]
-
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-
-  provisioner "local-exec" {
-    command     = <<EOT
-      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_wispsoapconverter_key}-default/_rollover/" \
-      -H 'kbn-xsrf: true' \
-      -H 'Content-Type: application/json' > ndp_wispsoapconverter_data_stream_rollover.txt
-    EOT
-    interpreter = ["/bin/bash", "-c"]
-  }
-}
-
 resource "null_resource" "ndp_wispsoapconverter_kibana_data_view" {
   depends_on = [null_resource.ndp_kibana_space]
 
@@ -1110,6 +1093,23 @@ resource "null_resource" "ndp_wispsoapconverter_kibana_data_view" {
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
       -d '${local.ndp_wispsoapconverter_data_view}' > ndp_wispsoapconverter_kibana_data_view.txt
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
+resource "null_resource" "ndp_wispsoapconverter_data_stream_rollover" {
+  depends_on = [null_resource.ndp_wispsoapconverter_index_template]
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_wispsoapconverter_key}-default/_rollover/" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json' > ndp_wispsoapconverter_data_stream_rollover.txt
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
