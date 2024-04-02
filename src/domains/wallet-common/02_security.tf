@@ -84,12 +84,6 @@ resource "azurerm_key_vault_secret" "redis_wallet_password" {
   name         = "redis-wallet-password"
   value        = module.pagopa_wallet_redis.primary_access_key
   key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 resource "azurerm_key_vault_secret" "personal-data-vault-api-key" {
