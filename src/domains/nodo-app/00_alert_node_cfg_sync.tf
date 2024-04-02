@@ -30,7 +30,7 @@ locals {
           | order by length desc
           QUERY
       severity    = 0
-      frequency   = 1440
+      frequency   = 30
       time_window = 1440
     },
   }
