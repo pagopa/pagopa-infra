@@ -174,5 +174,6 @@ variable "redis_wallet_params" {
     sku_name = string
     family   = string
     version  = string
+    zones    = list(number)
   })
 }
