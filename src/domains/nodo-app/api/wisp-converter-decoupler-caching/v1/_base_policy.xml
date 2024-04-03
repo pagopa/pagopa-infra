@@ -1,0 +1,86 @@
+<policies>
+	<inbound>
+		<base />
+		<set-variable name="nav_keys" value="@((JArray)context.Request.Body.As<JObject>()["keys"])" />
+		<set-variable name="keys_number" value="@(((JArray) context.Variables["nav_keys"]).Count)" />
+		<!-- Extracting passed keys values or set null if not exists -->
+		<set-variable name="navkey_0" value="@{
+		  if ((int) context.Variables["keys_number"] > 0) {
+		    return (string)((JArray) context.Variables["nav_keys"])[0];
+      }
+      return null;
+    }" />
+		<set-variable name="navkey_1" value="@{
+		  if ((int) context.Variables["keys_number"] > 1) {
+		    return (string)((JArray) context.Variables["nav_keys"])[1];
+      }
+      return null;
+    }" />
+		<set-variable name="navkey_2" value="@{
+		  if ((int) context.Variables["keys_number"] > 2) {
+		    return (string)((JArray) context.Variables["nav_keys"])[2];
+      }
+      return null;
+    }" />
+		<set-variable name="navkey_3" value="@{
+		  if ((int) context.Variables["keys_number"] > 3) {
+		    return (string)((JArray) context.Variables["nav_keys"])[3];
+      }
+      return null;
+    }" />
+		<set-variable name="navkey_4" value="@{
+		  if ((int) context.Variables["keys_number"] > 4) {
+		    return (string)((JArray) context.Variables["nav_keys"])[4];
+      }
+      return null;
+    }" />
+		<!-- Storing first key in APIM's internal cache, if exists -->
+		<choose>
+			<when condition="@((string) context.Variables["navkey_0"] != null)">
+				<trace source="keyvalue" severity="information">Storing key: @((string) context.Variables["navkey_0"])</trace>
+				<cache-store-value key="@((string) context.Variables["navkey_0"])" value="True" duration="86400" caching-type="internal" />
+			</when>
+		</choose>
+		<!-- Storing second key in APIM's internal cache, if exists -->
+		<choose>
+			<when condition="@((string) context.Variables["navkey_1"] != null)">
+				<trace source="keyvalue" severity="information">Storing key: @((string) context.Variables["navkey_1"])</trace>
+				<cache-store-value key="@((string) context.Variables["navkey_1"])" value="True" duration="86400" caching-type="external" />
+			</when>
+		</choose>
+		<!-- Storing third key in APIM's internal cache, if exists -->
+		<choose>
+			<when condition="@((string) context.Variables["navkey_2"] != null)">
+				<trace source="keyvalue" severity="information">Storing key: @((string) context.Variables["navkey_2"])</trace>
+				<cache-store-value key="@((string) context.Variables["navkey_2"])" value="True" duration="86400" caching-type="internal" />
+			</when>
+		</choose>
+		<!-- Storing fourth key in APIM's internal cache, if exists -->
+		<choose>
+			<when condition="@((string) context.Variables["navkey_3"] != null)">
+				<trace source="keyvalue" severity="information">Storing key: @((string) context.Variables["navkey_3"])</trace>
+				<cache-store-value key="@((string) context.Variables["navkey_3"])" value="True" duration="86400" caching-type="internal" />
+			</when>
+		</choose>
+		<!-- Storing fifth key in APIM's internal cache, if exists -->
+		<choose>
+			<when condition="@((string) context.Variables["navkey_4"] != null)">
+				<trace source="keyvalue" severity="information">Storing key: @((string) context.Variables["navkey_4"])</trace>
+				<cache-store-value key="@((string) context.Variables["navkey_4"])" value="True" duration="86400" caching-type="internal" />
+			</when>
+		</choose>
+		<!-- Return an affirmative response of completed caching process -->
+		<return-response>
+			<set-status code="201" reason="Created" />
+		</return-response>
+	</inbound>
+	<outbound>
+		<base />
+	</outbound>
+	<backend>
+		<base />
+	</backend>
+	<on-error>
+		<base />
+	</on-error>
+</policies>
