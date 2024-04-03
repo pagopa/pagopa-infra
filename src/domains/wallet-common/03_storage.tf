@@ -71,14 +71,14 @@ module "wallet_storage" {
 }
 
 resource "azurerm_storage_queue" "wallet_usage_update_queue" {
-  name                 = "${local.project}-wallet-usage-update-queue"
+  name                 = "${local.project}-usage-update-queue"
   storage_account_name = module.wallet_storage.name
 }
 
 //storage queue for blue deployment
 resource "azurerm_storage_queue" "wallet_usage_update_queue_blue" {
   count                = var.env_short == "u" ? 1 : 0
-  name                 = "${local.project}-wallet-usage-update-queue-b"
+  name                 = "${local.project}-usage-update-queue-b"
   storage_account_name = module.wallet_storage.name
 }
 
@@ -130,7 +130,7 @@ resource "azurerm_monitor_diagnostic_setting" "wallet_queue_diagnostics" {
 locals {
   queue_alert_props = var.env_short == "p" ? [
     {
-      "queue_key"   = "wallet-usage-update-queue"
+      "queue_key"   = "usage-update-queue"
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15
