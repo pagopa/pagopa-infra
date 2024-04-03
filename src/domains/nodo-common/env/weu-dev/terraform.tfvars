@@ -52,7 +52,7 @@ pgres_flex_params = {
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
   max_connections                        = 1700
-  enable_private_dns_registration        = false
+  enable_private_dns_registration        = true
 }
 
 sftp_account_replication_type = "LRS"
