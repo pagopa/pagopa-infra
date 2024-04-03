@@ -221,6 +221,19 @@ resource "azurerm_key_vault_secret" "redis_ecommerce_password" {
   }
 }
 
+
+resource "azurerm_key_vault_secret" "redis_ecommerce_access_key" {
+  name         = "redis-ecommerce-access-key"
+  value        = module.pagopa_ecommerce_redis.primary_access_key
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "redis_ecommerce_hostname" {
+  name         = "redis-ecommerce-hostname"
+  value        = module.pagopa_ecommerce_redis.hostname
+  key_vault_id = module.key_vault.id
+}
+
 resource "azurerm_key_vault_secret" "nodo_connection_string" {
   name         = "nodo-connection-string"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"

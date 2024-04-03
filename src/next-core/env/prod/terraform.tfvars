@@ -21,7 +21,8 @@ tags = {
 is_feature_enabled = {
   vnet_ita = false,
   container_app_tools_cae = false,
-  node_forwarder_ha_enabled = false
+  node_forwarder_ha_enabled = false,
+  postgres_private_dns = true
 }
 
 #
@@ -61,7 +62,6 @@ geo_replica_ddos_protection_plan = {
   enable = true
 }
 
-postgres_private_dns_enabled = true
 
 enable_logos_backup                              = true
 logos_backup_retention                           = 30
