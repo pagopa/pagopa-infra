@@ -162,9 +162,9 @@ resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
 resource "azurerm_monitor_metric_alert" "redis_cache_ha_used_memory_exceeded" {
   count = var.env_short == "p" && var.redis_ecommerce_params.ha_enabled ? 1 : 0
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.pagopa_ecommerce_redis_ha.name}] Used Memory close to the threshold"
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.pagopa_ecommerce_redis_ha[0].name}] Used Memory close to the threshold"
   resource_group_name = azurerm_resource_group.redis_ecommerce_rg.name
-  scopes              = [module.pagopa_ecommerce_redis_ha.id]
+  scopes              = [module.pagopa_ecommerce_redis_ha[0].id]
   description         = "The amount of cache memory in MB that is used for key/value pairs in the cache during the specified reporting interval, this amount is close to 200 MB so close to the threshold (250 MB)"
   severity            = 0
   window_size         = "PT5M"
