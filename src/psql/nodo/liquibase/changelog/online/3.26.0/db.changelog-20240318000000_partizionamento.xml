@@ -9,40 +9,47 @@
   http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
 
   <changeSet author="liquibase" id="20240318000001">
-    <sqlFile dbms="postgresql"
+    <sqlFile 
              encoding="UTF-8"
              path="sql/1_DDL_TABLE.sql"
              relativeToChangelogFile="true"
-             splitStatements="true"/>
-    <sqlFile dbms="postgresql"
+             splitStatements="true"
+             stripComments="true"/>
+    <sqlFile 
              encoding="UTF-8"
              path="sql/2_DML_TABLE_PART.sql"
              relativeToChangelogFile="true"
-             splitStatements="true"/>
-    <sqlFile dbms="postgresql"
+             splitStatements="true"
+             stripComments="true"/>
+    <sqlFile 
              encoding="UTF-8"
              path="sql/3_RENAME_OLD_PART.sql"
-             relativeToChangelogFile="true"/>
-    <sqlFile dbms="postgresql"
+             relativeToChangelogFile="true"
+             stripComments="true"/>
+    <sqlFile 
              encoding="UTF-8"
              path="sql/4_PROCEDURE_modify_partition.sql"
              relativeToChangelogFile="true"
-             splitStatements="false"/>
-    <sqlFile dbms="postgresql"
+             splitStatements="false"
+             stripComments="true"/>
+    <sqlFile 
              encoding="UTF-8"
              path="sql/5_exec_PROCEDURE.sql"
              relativeToChangelogFile="true"
-             splitStatements="true"/>
-    <sqlFile dbms="postgresql"
+             splitStatements="true"
+             stripComments="true"/>
+    <sqlFile 
              encoding="UTF-8"
              path="sql/6_POPOLA_TABLE.sql"
              relativeToChangelogFile="true"
-             splitStatements="true"/>
-    <sqlFile dbms="postgresql"
+             splitStatements="true"
+             stripComments="true"/>
+    <sqlFile 
              encoding="UTF-8"
              path="sql/7_GRANT.sql"
              relativeToChangelogFile="true"
-             splitStatements="true"/>
+             splitStatements="true"
+             stripComments="true"/>
   </changeSet>
 
 </databaseChangeLog>

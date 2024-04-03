@@ -52,12 +52,13 @@
                 cardId4 = (string)((JObject)additionalData)["cardId4"];
             }
             string paymentCircuit = (string)operation["paymentCircuit"];
+            string paymentMethod = (string)operation["paymentMethod"];
             JObject details = null;
             if(paymentCircuit == "PAYPAL"){
                 details = new JObject();
                 details["type"] = "PAYPAL";
                 details["maskedEmail"] = (string)operation["paymentInstrumentInfo"];
-            } else if(paymentCircuit == "CARD"){
+            } else if(paymentMethod == "CARD"){
                 details = new JObject();
                 details["type"] = "CARD";
                 details["paymentInstrumentGatewayId"] = cardId4;
