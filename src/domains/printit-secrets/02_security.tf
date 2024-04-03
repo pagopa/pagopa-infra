@@ -118,7 +118,22 @@ module "letsencrypt_printit" {
   subscription_name = local.subscription_name
 }
 
-data "azurerm_cosmosdb_mongo_database" "notices_cosmos_account" {
+data "azurerm_eventhub_authorization_rule" "notices_evt_authorization_rule" {
+  name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notice-evt-rx"
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-msg-rg"
+}
+
+data "azurerm_eventhub_authorization_rule" "notices_complete_evt_authorization_rule" {
+  name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notice-complete-evt-tx"
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-msg-rg"
+}
+
+data "azurerm_eventhub_authorization_rule" "notices_error_evt_authorization_rule" {
+  name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notice-error-evt-tx"
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-msg-rg"
+}
+
+data "azurerm_cosmosdb_account" "notices_cosmos_account" {
   name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notices_mongo_db"
   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-rg"
 }
@@ -143,9 +158,102 @@ data "azurerm_application_insights" "application_insights" {
   resource_group_name = var.monitor_resource_group_name
 }
 
-resource "azurerm_key_vault_secret" "cosmos_receipt_connection_string" {
-  name         = "cosmos-receipt-connection-string"
-  value        = "AccountEndpoint=https://pagopa-${var.env_short}-${var.location_short}-${var.domain}-ds-cosmos-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.pdf_receipts_cosmos_account.primary_key};"
+resource "azurerm_key_vault_secret" "notices_mongo_connection_string" {
+  name         = "notices-mongo-connection-string"
+  value        = "AccountEndpoint=https://pagopa-${var.env_short}-${var.location_short}-${var.domain}-ds-cosmos-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.notices_cosmos_account.primary_key};"
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "notices_mongo_primary_key" {
+  name         = "notices-mongo-primary-key"
+  value        = data.azurerm_cosmosdb_account.notices_cosmos_account.primary_key
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "notices_storage_account_connection_string" {
+  name         = "notices-storage-account-connection-string"
+  value        = data.azurerm_storage_account.notices_storage_sa.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "notices_storage_account_pkey" {
+  name         = "notices-storage-account-pkey"
+  value        = data.azurerm_storage_account.notices_storage_sa.primary_access_key
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "templates_storage_account_connection_string" {
+  name         = "templates-storage-account-connection-string"
+  value        = data.azurerm_storage_account.templates_storage_sa.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "templates_storage_account_pkey" {
+  name         = "templates-storage-account-pkey"
+  value        = data.azurerm_storage_account.templates_storage_sa.primary_access_key
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "institutions_storage_account_connection_string" {
+  name         = "institutions-storage-account-connection-string"
+  value        = data.azurerm_storage_account.institutions_storage_sa.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "institutions_storage_account_pkey" {
+  name         = "institutions-storage-account-pkey"
+  value        = data.azurerm_storage_account.institutions_storage_sa.primary_access_key
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_notice_connection_string" {
+  name         = format("ehub-%s-notice-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_notice_complete_connection_string" {
+  name         = format("ehub-%s-notice-complete-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.notices_complete_evt_authorization_rule.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_notice_complete_connection_string" {
+  name         = format("ehub-%s-notice-complete-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.notices_complete_evt_authorization_rule.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_notice_error_connection_string" {
+  name         = format("ehub-%s-notice-error-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.notices_error_evt_authorization_rule.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "elastic_otel_token_header" {
+  name         = "elastic-otel-token-header"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+
 }

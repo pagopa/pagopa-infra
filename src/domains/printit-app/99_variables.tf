@@ -153,3 +153,39 @@ variable "payment_wallet_migrations_enabled" {
   default     = false
   description = "Payment wallet migrations enabled"
 }
+
+
+# pdf-engine
+variable "cidr_subnet_pdf_engine_app_service" {
+  type        = list(string)
+  description = "CIDR subnet for App Service"
+  default     = null
+}
+
+
+variable "app_service_pdf_engine_autoscale_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "app_service_pdf_engine_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = true
+}
+
+variable "app_service_pdf_engine_sku_name" {
+  type        = string
+  description = "app service plan size"
+  default     = "S1"
+}
+variable "app_service_pdf_engine_sku_name_java" {
+  type        = string
+  description = "app service plan size"
+  default     = "S1"
+}
+
+variable "pdf_engine_app_ha_enabled" {
+  type = bool
+  description = "(Required) enables the deployment of pdf engine in HA mode"
+}
