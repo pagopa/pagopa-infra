@@ -22,7 +22,7 @@ is_feature_enabled = {
   vnet_ita                  = true,
   container_app_tools_cae   = true,
   node_forwarder_ha_enabled = true,
-  postgres_private_dns = true
+  postgres_private_dns      = true
 }
 
 ### Network
@@ -48,7 +48,7 @@ dns_forwarder_backup_is_enabled = false
 #
 # replica settings
 #
-geo_replica_enabled          = false
+geo_replica_enabled = false
 
 
 #

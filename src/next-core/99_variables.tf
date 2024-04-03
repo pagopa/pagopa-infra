@@ -641,10 +641,10 @@ EOD
 
 variable "is_feature_enabled" {
   type = object({
-    vnet_ita = bool,
-    container_app_tools_cae = optional(bool, false),
+    vnet_ita                  = bool,
+    container_app_tools_cae   = optional(bool, false),
     node_forwarder_ha_enabled = bool,
-    postgres_private_dns = bool
+    postgres_private_dns      = bool
   })
   description = "Features enabled in this domain"
 }
