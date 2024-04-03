@@ -510,3 +510,39 @@ resource "azurerm_key_vault_secret" "redirect_url_mapping" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "npg_paypal_psp_keys" {
+  name         = "npg-paypal-psp-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "npg_bancomatpay_psp_keys" {
+  name         = "npg-bancomatpay-psp-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "npg_mybank_psp_keys" {
+  name         = "npg-mybank-psp-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
