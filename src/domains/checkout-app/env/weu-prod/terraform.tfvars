@@ -25,12 +25,12 @@ dns_zone_checkout    = "checkout"
 
 ### pagopa-proxy app service
 
-cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
+cidr_subnet_pagopa_proxy    = ["10.1.132.0/24"]
 cidr_subnet_pagopa_proxy_ha = ["10.1.194.0/27"]
 
-pagopa_proxy_plan_sku = "P1v3"
+pagopa_proxy_plan_sku             = "P1v3"
 pagopa_proxy_zone_balance_enabled = true
-pagopa_proxy_ha_enabled = false
+pagopa_proxy_ha_enabled           = false
 # Networking
 
 cidr_subnet_checkout_be = ["10.1.133.0/24"]
@@ -45,13 +45,13 @@ checkout_enabled = true
 
 # Checkout functions
 
-checkout_function_kind              = "Linux"
-checkout_function_sku_tier          = "PremiumV3"
-checkout_function_sku_size          = "P1v3"
-checkout_function_always_on         = true
-checkout_function_autoscale_minimum = 1
-checkout_function_autoscale_maximum = 3
-checkout_function_autoscale_default = 1
+checkout_function_kind                   = "Linux"
+checkout_function_sku_tier               = "PremiumV3"
+checkout_function_sku_size               = "P1v3"
+checkout_function_always_on              = true
+checkout_function_autoscale_minimum      = 1
+checkout_function_autoscale_maximum      = 3
+checkout_function_autoscale_default      = 1
 checkout_function_zone_balancing_enabled = false
 
 # ecommerce ingress hostname

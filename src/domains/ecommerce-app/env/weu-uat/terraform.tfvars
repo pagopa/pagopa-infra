@@ -35,7 +35,7 @@ tls_cert_check_helm = {
 
 ecommerce_xpay_psps_list = ""
 ecommerce_vpos_psps_list = ""
-ecommerce_npg_psps_list  = "CIPBITMM,BNLIITRR,BCITITMM,UNCRITMM,BPPIITRRXXX,PPAYITR1XXX,BIC36019"
+ecommerce_npg_psps_list  = "CIPBITMM,BNLIITRR,BCITITMM,UNCRITMM,BPPIITRRXXX,PPAYITR1XXX,BIC36019,POSOIT22XXX"
 
 dns_zone_checkout = "uat.checkout"
 

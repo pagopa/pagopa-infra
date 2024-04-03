@@ -19,9 +19,10 @@ tags = {
 
 ### Feature Flag
 is_feature_enabled = {
-  vnet_ita = false,
-  container_app_tools_cae = false,
-  node_forwarder_ha_enabled = false
+  vnet_ita                  = false,
+  container_app_tools_cae   = false,
+  node_forwarder_ha_enabled = false,
+  postgres_private_dns      = true
 }
 
 #
@@ -61,7 +62,6 @@ geo_replica_ddos_protection_plan = {
   enable = true
 }
 
-postgres_private_dns_enabled = true
 
 enable_logos_backup                              = true
 logos_backup_retention                           = 30
@@ -192,7 +192,7 @@ ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
 ehns_capacity                 = 5
 ehns_zone_redundant           = true
-ehns_public_network_access = true
+ehns_public_network_access    = true
 
 ehns_metric_alerts = {
   no_trx = {

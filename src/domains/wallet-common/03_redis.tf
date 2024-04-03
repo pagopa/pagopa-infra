@@ -16,7 +16,7 @@ module "pagopa_wallet_redis_snet" {
 }
 
 module "pagopa_wallet_redis" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.72.1"
 
   name                          = "${local.project}-redis"
   resource_group_name           = azurerm_resource_group.redis_wallet_rg.name
@@ -28,6 +28,8 @@ module "pagopa_wallet_redis" {
   enable_authentication         = true
   redis_version                 = var.redis_wallet_params.version
   public_network_access_enabled = var.env_short == "d"
+
+  zones = var.redis_wallet_params.zones
 
   private_endpoint = {
     enabled              = var.env_short != "d"
