@@ -83,6 +83,6 @@ wallet_storage_params = {
   kind                          = "StorageV2"
   account_replication_type      = "GZRS",
   advanced_threat_protection    = true,
-  retention_days                = 30,
+  retention_days                = 7,
   public_network_access_enabled = false,
 }
