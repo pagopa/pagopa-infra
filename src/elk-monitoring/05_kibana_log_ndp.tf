@@ -874,7 +874,7 @@ resource "null_resource" "ndp_pagopawfespwfesp_ingest_pipeline" {
       curl -k -X PUT "${local.elastic_url}/_ingest/pipeline/${local.ndp_pagopawfespwfesp_key}" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
-      -d '${local.ndp_pagopawfespwfesp_ingest_pipeline}'> ndp_pagopawfespwfesp_ingest_pipeline.txt
+      -d '${local.ndp_pagopawfespwfesp_ingest_pipeline}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
@@ -892,7 +892,7 @@ resource "null_resource" "ndp_pagopawfespwfesp_ilm_policy" {
       curl -k -X PUT "${local.elastic_url}/_ilm/policy/${local.ndp_pagopawfespwfesp_key}" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
-      -d '${local.ndp_pagopawfespwfesp_ilm_policy}'> ndp_pagopawfespwfesp_ilm_policy.txt
+      -d '${local.ndp_pagopawfespwfesp_ilm_policy}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
@@ -910,7 +910,7 @@ resource "null_resource" "ndp_pagopawfespwfesp_component_template_package" {
       curl -k -X PUT "${local.elastic_url}/_component_template/${local.ndp_pagopawfespwfesp_key}@package" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
-      -d '${local.ndp_pagopawfespwfesp_component_template_package}'> ndp_pagopawfespwfesp_component_template_package.txt
+      -d '${local.ndp_pagopawfespwfesp_component_template_package}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
@@ -928,7 +928,7 @@ resource "null_resource" "ndp_pagopawfespwfesp_component_template_custom" {
       curl -k -X PUT "${local.elastic_url}/_component_template/${local.ndp_pagopawfespwfesp_key}@custom" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
-      -d '${local.ndp_pagopawfespwfesp_component_template_custom}'> ndp_pagopawfespwfesp_component_template_custom.txt
+      -d '${local.ndp_pagopawfespwfesp_component_template_custom}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
@@ -947,7 +947,7 @@ resource "null_resource" "ndp_pagopawfespwfesp_index_template" {
       curl -k -X PUT "${local.elastic_url}/_index_template/${local.ndp_pagopawfespwfesp_key}" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
-      -d '${local.ndp_pagopawfespwfesp_index_template}'> ndp_pagopawfespwfesp_index_template.txt
+      -d '${local.ndp_pagopawfespwfesp_index_template}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
@@ -964,7 +964,7 @@ resource "null_resource" "ndp_pagopawfespwfesp_data_stream_rollover" {
     command     = <<EOT
       curl -k -X POST "${local.elastic_url}/logs-${local.ndp_pagopawfespwfesp_key}-default/_rollover/" \
       -H 'kbn-xsrf: true' \
-      -H 'Content-Type: application/json' > ndp_pagopawfespwfesp_data_stream_rollover.txt
+      -H 'Content-Type: application/json'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
@@ -982,7 +982,7 @@ resource "null_resource" "ndp_pagopawfespwfesp_kibana_data_view" {
       curl -k -X POST "${local.kibana_url}/s/${local.ndp_space_name}/api/data_views/data_view" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
-      -d '${local.ndp_pagopawfespwfesp_data_view}' > ndp_pagopawfespwfesp_kibana_data_view.txt
+      -d '${local.ndp_pagopawfespwfesp_data_view}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
@@ -1002,7 +1002,7 @@ resource "null_resource" "ndp_wispsoapconverter_ingest_pipeline" {
       curl -k -X PUT "${local.elastic_url}/_ingest/pipeline/${local.ndp_wispsoapconverter_key}" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
-      -d '${local.ndp_wispsoapconverter_ingest_pipeline}' > ndp_wispsoapconverter_ingest_pipeline.txt
+      -d '${local.ndp_wispsoapconverter_ingest_pipeline}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
@@ -1020,7 +1020,7 @@ resource "null_resource" "ndp_wispsoapconverter_ilm_policy" {
       curl -k -X PUT "${local.elastic_url}/_ilm/policy/${local.ndp_wispsoapconverter_key}" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
-      -d '${local.ndp_wispsoapconverter_ilm_policy}' > ndp_wispsoapconverter_ilm_policy.txt
+      -d '${local.ndp_wispsoapconverter_ilm_policy}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
@@ -1038,7 +1038,7 @@ resource "null_resource" "ndp_wispsoapconverter_component_template_package" {
       curl -k -X PUT "${local.elastic_url}/_component_template/${local.ndp_wispsoapconverter_key}@package" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
-      -d '${local.ndp_wispsoapconverter_component_template_package}' > ndp_wispsoapconverter_component_template_package.txt
+      -d '${local.ndp_wispsoapconverter_component_template_package}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
@@ -1056,7 +1056,7 @@ resource "null_resource" "ndp_wispsoapconverter_component_template_custom" {
       curl -k -X PUT "${local.elastic_url}/_component_template/${local.ndp_wispsoapconverter_key}@custom" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
-      -d '${local.ndp_wispsoapconverter_component_template_custom}' > ndp_wispsoapconverter_component_template_custom.txt
+      -d '${local.ndp_wispsoapconverter_component_template_custom}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
@@ -1074,14 +1074,14 @@ resource "null_resource" "ndp_wispsoapconverter_index_template" {
       curl -k -X PUT "${local.elastic_url}/_index_template/${local.ndp_wispsoapconverter_key}" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
-      -d '${local.ndp_wispsoapconverter_index_template}' > ndp_wispsoapconverter_index_template.txt
+      -d '${local.ndp_wispsoapconverter_index_template}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
 }
 
 resource "null_resource" "ndp_wispsoapconverter_kibana_data_view" {
-  depends_on = [null_resource.ndp_kibana_space]
+  depends_on = [null_resource.ndp_wispsoapconverter_index_template]
 
   triggers = {
     always_run = "${timestamp()}"
@@ -1092,14 +1092,14 @@ resource "null_resource" "ndp_wispsoapconverter_kibana_data_view" {
       curl -k -X POST "${local.kibana_url}/s/${local.ndp_space_name}/api/data_views/data_view" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
-      -d '${local.ndp_wispsoapconverter_data_view}' > ndp_wispsoapconverter_kibana_data_view.txt
+      -d '${local.ndp_wispsoapconverter_data_view}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
 }
 
 resource "null_resource" "ndp_wispsoapconverter_data_stream_rollover" {
-  depends_on = [null_resource.ndp_wispsoapconverter_index_template]
+  depends_on = [null_resource.ndp_wispsoapconverter_kibana_data_view]
 
   triggers = {
     always_run = "${timestamp()}"
@@ -1109,7 +1109,7 @@ resource "null_resource" "ndp_wispsoapconverter_data_stream_rollover" {
     command     = <<EOT
       curl -k -X POST "${local.elastic_url}/logs-${local.ndp_wispsoapconverter_key}-default/_rollover/" \
       -H 'kbn-xsrf: true' \
-      -H 'Content-Type: application/json' > ndp_wispsoapconverter_data_stream_rollover.txt
+      -H 'Content-Type: application/json'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }

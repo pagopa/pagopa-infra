@@ -223,6 +223,12 @@ pod_disruption_budgets = {
       "app.kubernetes.io/instance" = "pagopawfespwfesp"
     }
   },
+  "wispsoapconverter" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "wispsoapconverter"
+    }
+  }
 }
 
 app_gateway_allowed_paths_pagopa_onprem_only = {
