@@ -26,8 +26,11 @@
 | <a name="module_checkout_function"></a> [checkout\_function](#module\_checkout\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v7.69.1 |
 | <a name="module_checkout_function_snet"></a> [checkout\_function\_snet](#module\_checkout\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.69.1 |
 | <a name="module_pagopa_proxy_app_service"></a> [pagopa\_proxy\_app\_service](#module\_pagopa\_proxy\_app\_service) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v7.69.1 |
+| <a name="module_pagopa_proxy_app_service_ha"></a> [pagopa\_proxy\_app\_service\_ha](#module\_pagopa\_proxy\_app\_service\_ha) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v7.69.1 |
 | <a name="module_pagopa_proxy_app_service_slot_staging"></a> [pagopa\_proxy\_app\_service\_slot\_staging](#module\_pagopa\_proxy\_app\_service\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v7.69.1 |
+| <a name="module_pagopa_proxy_app_service_slot_staging_ha"></a> [pagopa\_proxy\_app\_service\_slot\_staging\_ha](#module\_pagopa\_proxy\_app\_service\_slot\_staging\_ha) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v7.69.1 |
 | <a name="module_pagopa_proxy_snet"></a> [pagopa\_proxy\_snet](#module\_pagopa\_proxy\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.69.1 |
+| <a name="module_pagopa_proxy_snet_ha"></a> [pagopa\_proxy\_snet\_ha](#module\_pagopa\_proxy\_snet\_ha) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.69.1 |
 
 ## Resources
 
@@ -52,6 +55,7 @@
 | [azurerm_application_insights_web_test.checkout_fe_web_test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights_web_test) | resource |
 | [azurerm_monitor_autoscale_setting.checkout_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.pagopa_proxy_app_service_autoscale](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
+| [azurerm_monitor_autoscale_setting.pagopa_proxy_app_service_autoscale_ha](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_metric_alert.checkout_fn_5xx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.checkout_availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_resource_group.checkout_be_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -101,6 +105,7 @@
 | <a name="input_checkout_pagopaproxy_host"></a> [checkout\_pagopaproxy\_host](#input\_checkout\_pagopaproxy\_host) | pagopaproxy host | `string` | `null` | no |
 | <a name="input_cidr_subnet_checkout_be"></a> [cidr\_subnet\_checkout\_be](#input\_cidr\_subnet\_checkout\_be) | Address prefixes subnet checkout function | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_pagopa_proxy"></a> [cidr\_subnet\_pagopa\_proxy](#input\_cidr\_subnet\_pagopa\_proxy) | Address prefixes subnet proxy | `list(string)` | `null` | no |
+| <a name="input_cidr_subnet_pagopa_proxy_ha"></a> [cidr\_subnet\_pagopa\_proxy\_ha](#input\_cidr\_subnet\_pagopa\_proxy\_ha) | Address prefixes subnet proxy ha | `list(string)` | `null` | no |
 | <a name="input_dns_zone_checkout"></a> [dns\_zone\_checkout](#input\_dns\_zone\_checkout) | The checkout dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
@@ -118,8 +123,10 @@
 | <a name="input_pagopa_proxy_autoscale_default"></a> [pagopa\_proxy\_autoscale\_default](#input\_pagopa\_proxy\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `5` | no |
 | <a name="input_pagopa_proxy_autoscale_maximum"></a> [pagopa\_proxy\_autoscale\_maximum](#input\_pagopa\_proxy\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `10` | no |
 | <a name="input_pagopa_proxy_autoscale_minimum"></a> [pagopa\_proxy\_autoscale\_minimum](#input\_pagopa\_proxy\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
+| <a name="input_pagopa_proxy_ha_enabled"></a> [pagopa\_proxy\_ha\_enabled](#input\_pagopa\_proxy\_ha\_enabled) | (Required) enables the deployment of pagopa proxy in HA | `bool` | n/a | yes |
 | <a name="input_pagopa_proxy_plan_sku"></a> [pagopa\_proxy\_plan\_sku](#input\_pagopa\_proxy\_plan\_sku) | (Required) pagopa proxy app service sku name | `string` | n/a | yes |
 | <a name="input_pagopa_proxy_vnet_integration"></a> [pagopa\_proxy\_vnet\_integration](#input\_pagopa\_proxy\_vnet\_integration) | (Optional) enables vnet integration for pagopa proxy app service | `bool` | `true` | no |
+| <a name="input_pagopa_proxy_zone_balance_enabled"></a> [pagopa\_proxy\_zone\_balance\_enabled](#input\_pagopa\_proxy\_zone\_balance\_enabled) | (Optional) enables zone balancing for pagopa proxy app service | `bool` | `true` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 
