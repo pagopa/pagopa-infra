@@ -162,7 +162,6 @@ variable "cidr_subnet_pdf_engine_app_service" {
   default     = null
 }
 
-
 variable "app_service_pdf_engine_autoscale_enabled" {
   type    = bool
   default = true

@@ -103,7 +103,9 @@ resource "azurerm_storage_management_policy" "st_blob_receipts_management_policy
     name    = "tier-to-cool-policy"
     enabled = true
     filters {
-      prefix_match = [format("%s/", azurerm_storage_container.notices_blob_file.name)]
+      prefix_match = [
+        format("%s/", azurerm_storage_container.notices_blob_file.name)
+      ]
       blob_types   = ["blockBlob"]
     }
 
@@ -119,9 +121,4 @@ resource "azurerm_storage_management_policy" "st_blob_receipts_management_policy
     }
   }
 
-# table#1 fdr-re
-resource "azurerm_storage_table" "xml_share_file_error_table" {
-  name                 = "xmlsharefileerror"
-  storage_account_name = module.notices_sa.name
 }
-
