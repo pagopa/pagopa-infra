@@ -130,7 +130,7 @@ resource "azurerm_monitor_diagnostic_setting" "wallet_queue_diagnostics" {
 locals {
   queue_alert_props = var.env_short == "p" ? [
     {
-      "queue_key"   = "transactions-expiration-queue"
+      "queue_key"   = "wallet-usage-update-queue"
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15
