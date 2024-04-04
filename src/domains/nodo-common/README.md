@@ -22,9 +22,13 @@
 | <a name="module_cosmosdb_account_standin"></a> [cosmosdb\_account\_standin](#module\_cosmosdb\_account\_standin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v6.7.0 |
 | <a name="module_cosmosdb_account_standin_containers"></a> [cosmosdb\_account\_standin\_containers](#module\_cosmosdb\_account\_standin\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v6.7.0 |
 | <a name="module_cosmosdb_account_standin_db"></a> [cosmosdb\_account\_standin\_db](#module\_cosmosdb\_account\_standin\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v6.7.0 |
+| <a name="module_cosmosdb_account_wispconv"></a> [cosmosdb\_account\_wispconv](#module\_cosmosdb\_account\_wispconv) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v6.7.0 |
+| <a name="module_cosmosdb_account_wispconv_containers"></a> [cosmosdb\_account\_wispconv\_containers](#module\_cosmosdb\_account\_wispconv\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v6.7.0 |
+| <a name="module_cosmosdb_account_wispconv_db"></a> [cosmosdb\_account\_wispconv\_db](#module\_cosmosdb\_account\_wispconv\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v6.7.0 |
 | <a name="module_cosmosdb_nodo_re_snet"></a> [cosmosdb\_nodo\_re\_snet](#module\_cosmosdb\_nodo\_re\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.1 |
 | <a name="module_cosmosdb_nodo_verifyko_snet"></a> [cosmosdb\_nodo\_verifyko\_snet](#module\_cosmosdb\_nodo\_verifyko\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.1 |
 | <a name="module_cosmosdb_standin_snet"></a> [cosmosdb\_standin\_snet](#module\_cosmosdb\_standin\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.1 |
+| <a name="module_cosmosdb_wisp_converter_snet"></a> [cosmosdb\_wisp\_converter\_snet](#module\_cosmosdb\_wisp\_converter\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.1 |
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v7.45.0 |
 | <a name="module_nodo_cfg_sync_re_storage_account"></a> [nodo\_cfg\_sync\_re\_storage\_account](#module\_nodo\_cfg\_sync\_re\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.60.0 |
 | <a name="module_nodo_re_storage_account"></a> [nodo\_re\_storage\_account](#module\_nodo\_re\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
@@ -36,6 +40,7 @@
 | <a name="module_postgresql_nodo_replica_db"></a> [postgresql\_nodo\_replica\_db](#module\_postgresql\_nodo\_replica\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server_replica | v7.22.0 |
 | <a name="module_sftp"></a> [sftp](#module\_sftp) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 | <a name="module_storage_account_snet"></a> [storage\_account\_snet](#module\_storage\_account\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.2.1 |
+| <a name="module_wisp_converter_storage_account"></a> [wisp\_converter\_storage\_account](#module\_wisp\_converter\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.60.0 |
 
 ## Resources
 
@@ -64,6 +69,8 @@
 | [azurerm_key_vault_secret.redis_primary_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.verifyko_datastore_primary_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.verifyko_tablestorage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.wisp_converter_cosmosdb_account_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.wisp_converter_re_sa_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
 | [azurerm_postgresql_flexible_server_configuration.nodo_db_flex_default_pool_size](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
 | [azurerm_postgresql_flexible_server_configuration.nodo_db_flex_ignore_startup_parameters](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
@@ -82,6 +89,7 @@
 | [azurerm_private_endpoint.nodo_verifyko_private_endpoint_blob](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.nodo_verifyko_private_endpoint_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.sftp_blob](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.wispconv_private_endpoint_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.data_factory_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.db_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.nodo_cfg_sync_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -89,14 +97,17 @@
 | [azurerm_resource_group.nodo_verifyko_to_datastore_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sftp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.standin_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.wisp_converter_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_storage_blob.sogei_dirs](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_blob) | resource |
 | [azurerm_storage_container.nodo_cfg_sync_re_cache_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.nodo_cfg_sync_re_stand_in_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.nodo_verifyko_blob](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.sogei](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.storico_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
+| [azurerm_storage_container.wisp_converter_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_table.nodo_re_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [azurerm_storage_table.nodo_verifyko_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
+| [azurerm_storage_table.wisp_converter_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
@@ -143,6 +154,7 @@
 | <a name="input_cidr_subnet_cosmosdb_nodo_re"></a> [cidr\_subnet\_cosmosdb\_nodo\_re](#input\_cidr\_subnet\_cosmosdb\_nodo\_re) | Cosmos DB address space for nodo re. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_cosmosdb_nodo_verifyko"></a> [cidr\_subnet\_cosmosdb\_nodo\_verifyko](#input\_cidr\_subnet\_cosmosdb\_nodo\_verifyko) | Cosmos DB address space for nodo re. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_cosmosdb_standin"></a> [cidr\_subnet\_cosmosdb\_standin](#input\_cidr\_subnet\_cosmosdb\_standin) | Cosmos DB address space for standin. | `list(string)` | n/a | yes |
+| <a name="input_cidr_subnet_cosmosdb_wisp_converter"></a> [cidr\_subnet\_cosmosdb\_wisp\_converter](#input\_cidr\_subnet\_cosmosdb\_wisp\_converter) | Cosmos DB address space for wispconv. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_flex_dbms"></a> [cidr\_subnet\_flex\_dbms](#input\_cidr\_subnet\_flex\_dbms) | Postgresql network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_ndp_redis"></a> [cidr\_subnet\_ndp\_redis](#input\_cidr\_subnet\_ndp\_redis) | Redis DB address space for NDP. | `list(string)` | <pre>[<br>  "10.1.162.0/24"<br>]</pre> | no |
 | <a name="input_cidr_subnet_storage_account"></a> [cidr\_subnet\_storage\_account](#input\_cidr\_subnet\_storage\_account) | Storage account network address space. | `list(string)` | n/a | yes |
@@ -152,6 +164,7 @@
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_nodo_re"></a> [enable\_nodo\_re](#input\_enable\_nodo\_re) | Enables dumping nodo re | `bool` | `false` | no |
 | <a name="input_enable_sftp_backup"></a> [enable\_sftp\_backup](#input\_enable\_sftp\_backup) | (Optional) Enables nodo sftp storage account backup | `bool` | `false` | no |
+| <a name="input_enable_wisp_converter"></a> [enable\_wisp\_converter](#input\_enable\_wisp\_converter) | Enables WISP Converter | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
@@ -185,6 +198,8 @@
 | <a name="input_storage_account_snet_private_link_service_network_policies_enabled"></a> [storage\_account\_snet\_private\_link\_service\_network\_policies\_enabled](#input\_storage\_account\_snet\_private\_link\_service\_network\_policies\_enabled) | If true, create a private link service | `bool` | `true` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 | <a name="input_verifyko_cosmos_nosql_db_params"></a> [verifyko\_cosmos\_nosql\_db\_params](#input\_verifyko\_cosmos\_nosql\_db\_params) | n/a | <pre>object({<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    kind           = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>    events_ttl                        = number<br>    max_throughput                    = number<br>  })</pre> | n/a | yes |
+| <a name="input_wisp_converter_cosmos_nosql_db_params"></a> [wisp\_converter\_cosmos\_nosql\_db\_params](#input\_wisp\_converter\_cosmos\_nosql\_db\_params) | n/a | <pre>object({<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    kind           = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>    events_ttl                        = number<br>    max_throughput                    = number<br>  })</pre> | n/a | yes |
+| <a name="input_wisp_converter_storage_account"></a> [wisp\_converter\_storage\_account](#input\_wisp\_converter\_storage\_account) | n/a | <pre>object({<br>    account_kind                  = string<br>    account_tier                  = string<br>    account_replication_type      = string<br>    advanced_threat_protection    = bool<br>    blob_delete_retention_days    = number<br>    blob_versioning_enabled       = bool<br>    public_network_access_enabled = bool<br>    backup_enabled                = bool<br>    backup_retention_days         = number<br>  })</pre> | n/a | yes |
 
 ## Outputs
 
