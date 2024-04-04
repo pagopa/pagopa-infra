@@ -95,5 +95,43 @@ institutions_storage_account = {
 
 cidr_subnet_cosmosdb_printit = ["10.3.3.0/24"]
 cidr_subnet_storage_account  = ["10.3.4.0/24"]
+cidr_subnet_eventhub   = ["10.3.5.64/26"]
 
 enable_iac_pipeline = true
+
+# eventhub
+eventhub_enabled = true
+
+ehns_sku_name = "Standard"
+
+ehns_alerts_enabled = false
+ehns_metric_alerts = {}
+
+eventhubs = [
+  {
+    name              = "payment-notice-evt"
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["pagopa-notice-evt-rx", "pagopa-notice-complete-evt-rx", "pagopa-notice-error-evt-rx"]
+    keys = [
+      {
+        name   = "pagopa-notice-evt-rx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-notice-complete-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-notice-error-evt-rxv"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+]

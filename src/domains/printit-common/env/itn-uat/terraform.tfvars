@@ -95,5 +95,46 @@ institutions_storage_account = {
 
 cidr_subnet_cosmosdb_printit = ["10.3.3.0/24"]
 cidr_subnet_storage_account  = ["10.3.4.0/24"]
+cidr_subnet_eventhub   = ["10.3.5.64/26"]
 
 enable_iac_pipeline = true
+
+
+ehns_sku_name = "Standard"
+# to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
+ehns_auto_inflate_enabled     = true
+ehns_maximum_throughput_units = 5
+ehns_capacity                 = 5
+
+ehns_alerts_enabled = false
+
+ehns_metric_alerts = {}
+
+eventhubs = [
+  {
+    name              = "payment-notice-evt"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["pagopa-notice-evt-rx", "pagopa-notice-complete-evt-rx", "pagopa-notice-error-evt-rx"]
+    keys = [
+      {
+        name   = "pagopa-notice-evt-rx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-notice-complete-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-notice-error-evt-rxv"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+]
