@@ -53,7 +53,13 @@
             // cards -> ecommerce with NPG request
 
             } else if ( detailType == "cards" && npgList.Contains(pspId)){      
+             
                 pgsId = "NPG";
+
+            // redirect -> ecommerce with redirect
+            } else if ( detailType == "redirect"){      
+
+                pgsId = "redirect";
             }
 
             return pgsId;
