@@ -39,6 +39,6 @@ ecommerce_npg_psps_list  = "CIPBITMM,BNLIITRR,BCITITMM,UNCRITMM,BPPIITRRXXX,PPAY
 
 dns_zone_checkout = "uat.checkout"
 
-io_backend_base_path         = "http://{{aks-lb-nexi}}/pmmockservice/pmmockserviceapi"
-ecommerce_io_with_pm_enabled = true
+io_backend_base_path         = "https://api-app.io.pagopa.it"
+ecommerce_io_with_pm_enabled = false
 pdv_api_base_path            = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
