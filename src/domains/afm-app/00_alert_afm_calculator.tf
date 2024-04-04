@@ -1,7 +1,16 @@
+locals {
+  afm-calculator-dash = {
+    node-v1       = "https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-afm-calculator-node-v1"
+    node-v2       = "https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-afm-calculator-node-v2"
+    calculator-v1 = "https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-afm-calculator-v1"
+    calculator-v2 = "https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-afm-calculator-v2"
+  }
+}
+
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculator-responsetime-fees" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v1-responsetime @ _fees"
+  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v1-responsetime_fees"
   location            = var.location
 
   action {
@@ -11,7 +20,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for V1 version of /fees is less than or equal to 1.5s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-afm-calculator"
+  description    = "Response time for V1 version of /fees is less than or equal to 1.5s - ${local.afm-calculator-dash.calculator-v1}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 1500;
@@ -34,7 +43,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculator-availability-fees" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v1-availability @ _fees"
+  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v1-availability_fees"
   location            = var.location
 
   action {
@@ -44,7 +53,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for V1 version of /fees is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-afm-calculator"
+  description    = "Availability for V1 version of /fees is less than or equal to 99% - ${local.afm-calculator-dash.calculator-v1}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
@@ -70,7 +79,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculator-responsetime-feesbypsp" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v1-responsetime @ _psps_idPsp_fees"
+  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v1-responsetime_psps_idPsp_fees"
   location            = var.location
 
   action {
@@ -80,7 +89,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for V1 version of /psps/[^/]+/fees is less than or equal to 1.5s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-afm-calculator"
+  description    = "Response time for V1 version of /psps/[^/]+/fees is less than or equal to 1.5s - ${local.afm-calculator-dash.calculator-v1}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 1500;
@@ -103,7 +112,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculator-availability-feesbypsp" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v1-availability @ _psps_idPsp_fees"
+  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v1-availability_psps_idPsp_fees"
   location            = var.location
 
   action {
@@ -113,7 +122,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for V1 version of /psps/[^/]+/fees is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-afm-calculator"
+  description    = "Availability for V1 version of /psps/[^/]+/fees is less than or equal to 99% - ${local.afm-calculator-dash.calculator-v1}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
@@ -139,7 +148,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculator-v2-responsetime-fees" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v2-responsetime @ _fees_multi"
+  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v2-responsetime_fees_multi"
   location            = var.location
 
   action {
@@ -149,7 +158,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for V2 version of /fees is less than or equal to 1.5s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-afm-calculator"
+  description    = "Response time for V2 version of /fees is less than or equal to 1.5s - ${local.afm-calculator-dash.calculator-v2}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 1500;
@@ -172,7 +181,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculator-v2-availability-fees" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v2-availability @ _fees_multi"
+  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v2-availability_fees_multi"
   location            = var.location
 
   action {
@@ -182,7 +191,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for V2 version of /fees is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-afm-calculator"
+  description    = "Availability for V2 version of /fees is less than or equal to 99% - ${local.afm-calculator-dash.calculator-v2}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
@@ -208,7 +217,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculator-v2-responsetime-feesbypsp" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v2-responsetime @ _psps_idPsp_fees_multi"
+  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v2-responsetime_psps_idPsp_fees_multi"
   location            = var.location
 
   action {
@@ -218,7 +227,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for V2 version of /psps/[^/]+/fees is less than or equal to 1.5s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-afm-calculator"
+  description    = "Response time for V2 version of /psps/[^/]+/fees is less than or equal to 1.5s - ${local.afm-calculator-dash.calculator-v2}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 1500;
@@ -241,7 +250,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculator-v2-availability-feesbypsp" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-availability @ _psps_idPsp_fees_multi"
+  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-availability_psps_idPsp_fees_multi"
   location            = var.location
 
   action {
@@ -251,7 +260,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for V2 version of /psps/[^/]+/fees is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-afm-calculator"
+  description    = "Availability for V2 version of /psps/[^/]+/fees is less than or equal to 99% - ${local.afm-calculator-dash.calculator-v2}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
