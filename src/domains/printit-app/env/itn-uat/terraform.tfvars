@@ -38,3 +38,5 @@ tls_cert_check_helm = {
 }
 
 cidr_subnet_pdf_engine_app_service = ["10.3.5.0/24"]
+
+pdf_engine_app_ha_enabled = false

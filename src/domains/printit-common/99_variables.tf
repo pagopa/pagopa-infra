@@ -148,29 +148,35 @@ variable "cosmos_mongo_db_notices_params" {
 
 variable "notices_storage_account" {
   type = object({
-    account_kind                  = string
-    account_tier                  = string
-    account_replication_type      = string
-    advanced_threat_protection    = bool
-    blob_versioning_enabled       = bool
-    public_network_access_enabled = bool
-    blob_delete_retention_days    = number
-    enable_low_availability_alert = bool
-    backup_enabled                = optional(bool, false)
-    backup_retention              = optional(number, 0)
+    account_kind                                                        = string
+    account_tier                                                        = string
+    account_replication_type                                            = string
+    advanced_threat_protection                                          = bool
+    blob_versioning_enabled                                             = bool
+    public_network_access_enabled                                       = bool
+    blob_delete_retention_days                                          = number
+    enable_low_availability_alert                                       = bool
+    backup_enabled                                                      = optional(bool, false)
+    backup_retention                                                    = optional(number, 0)
+    blob_tier_to_cool_after_last_access                                 = number
+    blob_tier_to_archive_after_days_since_last_access_time_greater_than = number
+    blob_delete_after_last_access                                       = number
   })
 
   default = {
-    account_kind                  = "StorageV2"
-    account_tier                  = "Standard"
-    account_replication_type      = "LRS"
-    blob_versioning_enabled       = false
-    advanced_threat_protection    = true
-    public_network_access_enabled = false
-    blob_delete_retention_days    = 30
-    enable_low_availability_alert = false
-    backup_enabled                = false
-    backup_retention              = 0
+    account_kind                                                        = "StorageV2"
+    account_tier                                                        = "Standard"
+    account_replication_type                                            = "LRS"
+    blob_versioning_enabled                                             = false
+    advanced_threat_protection                                          = true
+    public_network_access_enabled                                       = false
+    blob_delete_retention_days                                          = 30
+    enable_low_availability_alert                                       = false
+    backup_enabled                                                      = false
+    backup_retention                                                    = 0
+    blob_tier_to_cool_after_last_access                                 = 0
+    blob_tier_to_archive_after_days_since_last_access_time_greater_than = 3650
+    blob_delete_after_last_access                                       = 3650
   }
 }
 

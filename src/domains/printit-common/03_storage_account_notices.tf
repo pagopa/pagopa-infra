@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "printit_rg" {
 module "notices_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
-  name                            = replace("${local.project}-sa", "-", "")
+  name                            = replace("${var.domain}-notices", "-", "")
   account_kind                    = var.notices_storage_account.account_kind
   account_tier                    = var.notices_storage_account.account_tier
   account_replication_type        = var.notices_storage_account.account_replication_type
@@ -61,33 +61,6 @@ resource "azurerm_private_endpoint" "notices_blob_private_endpoint" {
   ]
 }
 
-# https://github.com/hashicorp/terraform-provider-azurerm/issues/5820
-resource "azurerm_private_endpoint" "notices_table_private_endpoint" {
-  count = var.env_short == "d" ? 0 : 1
-
-  name                = format("%s-table-private-endpoint", local.project)
-  location            = var.location
-  resource_group_name = azurerm_resource_group.printit_rg.name
-  subnet_id           = module.printit_storage_snet[0].id
-
-  private_dns_zone_group {
-    name                 = "${local.project}-table-sa-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
-  }
-
-  private_service_connection {
-    name                           = "${local.project}-table-sa-private-service-connection"
-    private_connection_resource_id = module.notices_sa.id
-    is_manual_connection           = false
-    subresource_names              = ["table"]
-  }
-
-  tags = var.tags
-
-  depends_on = [
-    module.notices_sa
-  ]
-}
 
 ## share xml file
 resource "azurerm_storage_container" "notices_blob_file" {
@@ -106,7 +79,7 @@ resource "azurerm_storage_management_policy" "st_blob_receipts_management_policy
       prefix_match = [
         format("%s/", azurerm_storage_container.notices_blob_file.name)
       ]
-      blob_types   = ["blockBlob"]
+      blob_types = ["blockBlob"]
     }
 
     # https://docs.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview

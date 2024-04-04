@@ -1,7 +1,7 @@
 module "templates_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
-  name                            = replace("${local.project}-templates-sa", "-", "")
+  name                            = replace("${var.domain}-templates", "-", "")
   account_kind                    = var.templates_storage_account.account_kind
   account_tier                    = var.templates_storage_account.account_tier
   account_replication_type        = var.templates_storage_account.account_replication_type
@@ -83,13 +83,13 @@ resource "azurerm_private_endpoint" "notices_table_private_endpoint" {
 }
 
 resource "azurerm_storage_container" "template_blob_file" {
-  name                  = "notice_template_blob"
+  name                  = "noticetemplateblob"
   storage_account_name  = module.templates_sa.name
   container_access_type = "private"
 }
 
 resource "azurerm_storage_table" "template_data_table" {
-  name                 = "notice_template_data_table"
+  name                 = "noticetemplatedatatable"
   storage_account_name = module.templates_sa.name
 }
 

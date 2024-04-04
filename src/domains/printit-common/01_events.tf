@@ -1,5 +1,5 @@
 data "azurerm_eventhub_namespace" "printit_event_hub_namespace" {
-  name                = "${local.product}-printit-evh-ns"
+  name                = "${var.prefix}-${var.env_short}-weu-core-evh-ns04"
   resource_group_name = data.azurerm_resource_group.msg_rg.name
 }
 

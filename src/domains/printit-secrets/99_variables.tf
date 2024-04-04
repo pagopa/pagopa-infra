@@ -50,11 +50,6 @@ variable "location_short" {
   description = "One of weu, neu"
 }
 
-variable "location_string" {
-  type        = string
-  description = "One of West Europe, North Europe"
-}
-
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"

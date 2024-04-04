@@ -27,16 +27,16 @@ locals {
   apim_pdf_engine_service_api = { # java
     display_name          = "PDF Engine Service pagoPA - API"
     description           = "PDF Engine Service pagoPA - API"
-    path                  = "shared/pdf-engine"
+    path                  = "printit/pdf-engine"
     subscription_required = true
-    service_url           = module.shared_pdf_engine_app_service_java.default_site_hostname
+    service_url           = module.printit_pdf_engine_app_service_java.default_site_hostname
   }
   apim_pdf_engine_node_service_api = { # node
     display_name          = "PDF Engine Node Service pagoPA - API"
     description           = "PDF Engine Node Service pagoPA - API"
-    path                  = "shared/pdf-engine-node"
+    path                  = "printit/pdf-engine-node"
     subscription_required = true
-    service_url           = module.shared_pdf_engine_app_service.default_site_hostname
+    service_url           = module.printit_pdf_engine_app_service.default_site_hostname
   }
 }
 

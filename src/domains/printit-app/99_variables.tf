@@ -185,6 +185,6 @@ variable "app_service_pdf_engine_sku_name_java" {
 }
 
 variable "pdf_engine_app_ha_enabled" {
-  type = bool
+  type        = bool
   description = "(Required) enables the deployment of pdf engine in HA mode"
 }

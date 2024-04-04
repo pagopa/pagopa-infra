@@ -74,7 +74,7 @@ locals {
     {
       name = "payment_notice_request_item"
       indexes = [{
-        keys   = ["_id"]  # folderId + notice_item_id
+        keys   = ["_id"] # folderId + notice_item_id
         unique = true
         }
       ]

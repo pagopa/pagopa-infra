@@ -1,7 +1,7 @@
 module "institutions_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
 
-  name                            = replace("${local.project}-institutions-sa", "-", "")
+  name                            = replace("${var.domain}-institutions", "-", "")
   account_kind                    = var.institutions_storage_account.account_kind
   account_tier                    = var.institutions_storage_account.account_tier
   account_replication_type        = var.institutions_storage_account.account_replication_type
@@ -55,7 +55,7 @@ resource "azurerm_private_endpoint" "institutions_blob_private_endpoint" {
 }
 
 resource "azurerm_storage_container" "institutions_blob_file" {
-  name                  = "institutions_data_blob"
+  name                  = "institutionsdatablob"
   storage_account_name  = module.institutions_sa.name
   container_access_type = "private"
 }

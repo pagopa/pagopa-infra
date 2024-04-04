@@ -29,6 +29,7 @@ dns_zone_internal_prefix = "internal.platform"
 
 # Cosmos MongoDB Notices Params
 cosmos_mongo_db_notices_params = {
+  enabled      = true
   kind         = "MongoDB"
   capabilities = ["EnableMongo"]
   offer_type   = "Standard"
@@ -57,14 +58,17 @@ cosmos_mongo_db_notices_params = {
 }
 
 notices_storage_account = {
-  account_kind                  = "StorageV2"
-  account_tier                  = "Standard"
-  account_replication_type      = "LRS"
-  blob_versioning_enabled       = false
-  advanced_threat_protection    = false
-  public_network_access_enabled = true
-  blob_delete_retention_days    = 30
-  enable_low_availability_alert = false
+  account_kind                                                        = "StorageV2"
+  account_tier                                                        = "Standard"
+  account_replication_type                                            = "LRS"
+  blob_versioning_enabled                                             = false
+  advanced_threat_protection                                          = false
+  public_network_access_enabled                                       = true
+  blob_delete_retention_days                                          = 30
+  enable_low_availability_alert                                       = false
+  blob_tier_to_cool_after_last_access                                 = 100
+  blob_tier_to_archive_after_days_since_last_access_time_greater_than = 3650
+  blob_delete_after_last_access                                       = 3650
 }
 
 templates_storage_account = {

@@ -121,16 +121,22 @@ module "letsencrypt_printit" {
 data "azurerm_eventhub_authorization_rule" "notices_evt_authorization_rule" {
   name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notice-evt-rx"
   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-msg-rg"
+  eventhub_name       = "${var.prefix}-printit-evh"
+  namespace_name      = "${var.prefix}-${var.env_short}-weu-core-evh-ns04"
 }
 
 data "azurerm_eventhub_authorization_rule" "notices_complete_evt_authorization_rule" {
   name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notice-complete-evt-tx"
   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-msg-rg"
+  eventhub_name       = "${var.prefix}-printit-evh"
+  namespace_name      = "${var.prefix}-${var.env_short}-weu-core-evh-ns04"
 }
 
 data "azurerm_eventhub_authorization_rule" "notices_error_evt_authorization_rule" {
   name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notice-error-evt-tx"
   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-msg-rg"
+  eventhub_name       = "${var.prefix}-printit-evh"
+  namespace_name      = "${var.prefix}-${var.env_short}-weu-core-evh-ns04"
 }
 
 data "azurerm_cosmosdb_account" "notices_cosmos_account" {
@@ -139,7 +145,7 @@ data "azurerm_cosmosdb_account" "notices_cosmos_account" {
 }
 
 data "azurerm_storage_account" "notices_storage_sa" {
-  name                = "pagopa-${var.env_short}${var.location_short}${var.domain}fnsa"
+  name                = replace("${var.domain}-notices", "-", "")
   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-st-rg"
 }
 
@@ -230,14 +236,6 @@ resource "azurerm_key_vault_secret" "ehub_notice_complete_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "ehub_notice_complete_connection_string" {
-  name         = format("ehub-%s-notice-complete-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.notices_complete_evt_authorization_rule.primary_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
-
 resource "azurerm_key_vault_secret" "ehub_notice_error_connection_string" {
   name         = format("ehub-%s-notice-error-connection-string", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.notices_error_evt_authorization_rule.primary_connection_string
@@ -246,9 +244,11 @@ resource "azurerm_key_vault_secret" "ehub_notice_error_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "elastic_otel_token_header" {
+resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
   name         = "elastic-otel-token-header"
   key_vault_id = module.key_vault.id
+  value        = "SET-MANUALLY"
+
 
   lifecycle {
     ignore_changes = [
