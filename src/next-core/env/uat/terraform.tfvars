@@ -22,7 +22,7 @@ is_feature_enabled = {
   vnet_ita                  = false,
   container_app_tools_cae   = true,
   node_forwarder_ha_enabled = false,
-  postgres_private_dns = true
+  postgres_private_dns      = true
 }
 
 #
@@ -53,7 +53,7 @@ dns_forwarder_vm_image_name     = "pagopa-u-dns-forwarder-ubuntu2204-image-v4"
 #
 # replica settings
 #
-geo_replica_enabled          = false
+geo_replica_enabled = false
 
 #
 # apim v2
