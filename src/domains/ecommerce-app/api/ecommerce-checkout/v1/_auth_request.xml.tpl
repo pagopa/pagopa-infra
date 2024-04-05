@@ -21,7 +21,6 @@
         <!-- START set pgsId -->
         <set-variable name="XPAYPspsList" value="${ecommerce_xpay_psps_list}"/>
         <set-variable name="VPOSPspsList" value="${ecommerce_vpos_psps_list}"/>
-        <set-variable name="NPGPspsList" value="${ecommerce_npg_psps_list}"/>
         <set-variable name="requestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
 
         <set-variable name="pspId" value="@(((string)((JObject)context.Variables["requestBody"])["pspId"]))"/>
@@ -39,7 +38,6 @@
             string pgsId = "";
 
             // card -> ecommerce with PGS request
-            
             if ( detailType == "card" ){                                    
 
                 if (xpayList.Contains(pspId)) {
@@ -50,17 +48,16 @@
                     pgsId = "VPOS";
                 }
 
-            // cards -> ecommerce with NPG request
-
-            } else if ( detailType == "cards" && npgList.Contains(pspId)){      
+            // cards or apm -> ecommerce with NPG request
+            } else if ( detailType == "cards" || detailType == "apm"){      
              
                 pgsId = "NPG";
 
             // redirect -> ecommerce with redirect
             } else if ( detailType == "redirect"){      
 
-                pgsId = "REDIRECT";
-            }
+                pgsId = "REDIRECT";            
+            } 
 
             return pgsId;
         }"/>
