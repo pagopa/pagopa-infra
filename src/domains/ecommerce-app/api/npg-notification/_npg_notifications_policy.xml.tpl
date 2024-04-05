@@ -103,7 +103,7 @@
                         string authorizationCode = null;
                         string errorCode = null;
                         string rrn = null;
-                        if(additionalData.Type != JTokenType.Null){
+                        if(additionalData !=null && additionalData.Type != JTokenType.Null){
                             JObject receivedAdditionalData = (JObject)additionalData;
                             authorizationCode = (string)receivedAdditionalData["authorizationCode"];
                             errorCode = (string)receivedAdditionalData["authorizationStatus"];
