@@ -40,14 +40,14 @@ data "azurerm_redis_cache" "pagopa_proxy_redis" {
 }
 
 data "azurerm_redis_cache" "pagopa_proxy_redis_ha" {
-  count = var.redis_ha_enabled ? 1 : 0
+  count               = var.redis_ha_enabled ? 1 : 0
   name                = format("%s-pagopa-proxy-redis-ha", local.parent_project)
   resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
 }
 
 
 module "pagopa_proxy_app_service" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.76.1"
 
   depends_on = [
     module.pagopa_proxy_snet
@@ -85,7 +85,7 @@ module "pagopa_proxy_app_service" {
 module "pagopa_proxy_app_service_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.69.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.76.1"
 
   # App service plan
   #  app_service_plan_id = module.pagopa_proxy_app_service.plan_id
