@@ -221,6 +221,18 @@ resource "azurerm_key_vault_secret" "redis_ecommerce_password" {
   }
 }
 
+resource "azurerm_key_vault_secret" "redis_ecommerce_access_key" {
+  name         = "redis-ecommerce-access-key"
+  value        = var.redis_ecommerce_params.ha_enabled ? module.pagopa_ecommerce_redis_ha[0].primary_access_key : module.pagopa_ecommerce_redis.primary_access_key
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "redis_ecommerce_hostname" {
+  name         = "redis-ecommerce-hostname"
+  value        = var.redis_ecommerce_params.ha_enabled ? module.pagopa_ecommerce_redis_ha[0].hostname : module.pagopa_ecommerce_redis.hostname
+  key_vault_id = module.key_vault.id
+}
+
 resource "azurerm_key_vault_secret" "nodo_connection_string" {
   name         = "nodo-connection-string"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
@@ -488,6 +500,42 @@ resource "azurerm_key_vault_secret" "transactions_service_auth_update_api_key" {
 
 resource "azurerm_key_vault_secret" "redirect_url_mapping" {
   name         = "redirect-url-mapping"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "npg_paypal_psp_keys" {
+  name         = "npg-paypal-psp-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "npg_bancomatpay_psp_keys" {
+  name         = "npg-bancomatpay-psp-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "npg_mybank_psp_keys" {
+  name         = "npg-mybank-psp-keys"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
