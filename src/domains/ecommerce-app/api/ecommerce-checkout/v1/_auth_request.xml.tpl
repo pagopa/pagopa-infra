@@ -59,7 +59,7 @@
             // redirect -> ecommerce with redirect
             } else if ( detailType == "redirect"){      
 
-                pgsId = "redirect";
+                pgsId = "REDIRECT";
             }
 
             return pgsId;
