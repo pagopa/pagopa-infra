@@ -166,3 +166,8 @@ variable "api_config_replication_type" {
   default     = "LRS"
   description = "(Optional) Api config storage account replication type"
 }
+
+variable "redis_ha_enabled" {
+  type = bool
+  description = "(Required) If true, enables the usage of HA redis instance"
+}
