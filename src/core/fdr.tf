@@ -2,7 +2,7 @@
 
 ## Storage Account
 module "fdr_flows_sa" {
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.76.0"
 
   name                       = replace(format("%s-fdr-flows-sa", local.project), "-", "")
   account_kind               = "StorageV2"

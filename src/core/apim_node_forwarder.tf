@@ -3,7 +3,7 @@
 ##############
 
 module "apim_node_forwarder_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.76.0"
 
   product_id   = "product-node-forwarder"
   display_name = "pagoPA Node Forwarder API"
@@ -30,7 +30,7 @@ resource "azurerm_api_management_api_version_set" "node_forwarder_api" {
 }
 
 module "apim_node_forwarder_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = "${var.env_short}-node-forwarder-api"
   api_management_name   = module.apim.name

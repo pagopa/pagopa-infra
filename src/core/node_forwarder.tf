@@ -58,7 +58,7 @@ resource "azurerm_resource_group" "node_forwarder_rg" {
 
 # Subnet to host the node forwarder
 module "node_forwarder_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
+  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
   name                                           = format("%s-node-forwarder-snet", local.project)
   address_prefixes                               = var.cidr_subnet_node_forwarder
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
@@ -75,7 +75,7 @@ module "node_forwarder_snet" {
 }
 
 module "node_forwarder_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.76.0"
 
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
@@ -108,7 +108,7 @@ module "node_forwarder_app_service" {
 module "node_forwarder_slot_staging" {
   count = var.env_short != "d" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.4.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.76.0"
 
   # App service plan
   app_service_plan_id = module.node_forwarder_app_service.plan_id

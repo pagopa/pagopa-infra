@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "reporting_fdr_rg" {
 # Subnet to host reporting-fdr function
 module "reporting_fdr_function_snet" {
   count                                          = var.cidr_subnet_reporting_fdr != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
+  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
   name                                           = format("%s-reporting-fdr-snet", local.project)
   address_prefixes                               = var.cidr_subnet_reporting_fdr
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
@@ -26,7 +26,7 @@ module "reporting_fdr_function_snet" {
 }
 
 module "reporting_fdr_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v2.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.76.0"
 
   resource_group_name                      = azurerm_resource_group.reporting_fdr_rg.name
   name                                     = format("%s-fn-reportingfdr", local.project)

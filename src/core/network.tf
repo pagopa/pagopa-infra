@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg_vnet" {
 
 # vnet
 module "vnet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v4.18.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.76.0"
   name                 = "${local.project}-vnet"
   location             = azurerm_resource_group.rg_vnet.location
   resource_group_name  = azurerm_resource_group.rg_vnet.name
@@ -19,7 +19,7 @@ module "vnet" {
 
 # vnet integration
 module "vnet_integration" {
-  source               = "git::https://github.com/pagopa/azurerm.git//virtual_network?ref=v4.18.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.76.0"
   name                 = "${local.project}-vnet-integration"
   location             = azurerm_resource_group.rg_vnet.location
   resource_group_name  = azurerm_resource_group.rg_vnet.name
@@ -34,7 +34,7 @@ module "vnet_integration" {
 #
 ## Peering between the vnet(main) and integration vnet
 module "vnet_peering" {
-  source = "git::https://github.com/pagopa/azurerm.git//virtual_network_peering?ref=v4.19.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.76.0"
 
   location = azurerm_resource_group.rg_vnet.location
 
@@ -51,7 +51,7 @@ module "vnet_peering" {
 }
 
 module "route_table_peering_sia" {
-  source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v4.18.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//route_table?ref=v7.76.0"
 
   name                          = "${local.project}-sia-rt"
   location                      = azurerm_resource_group.rg_vnet.location
@@ -145,7 +145,7 @@ module "route_table_peering_sia" {
 
 # subnet acr
 module "common_private_endpoint_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.18.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
   name                 = "${local.project}-common-private-endpoint-snet"
   address_prefixes     = var.cidr_common_private_endpoint_snet
   resource_group_name  = azurerm_resource_group.rg_vnet.name

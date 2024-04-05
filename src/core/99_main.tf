@@ -10,7 +10,7 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "= 2.99.0"
+      version = ">= 3.0.0"
     }
     local = {
       source  = "hashicorp/local"
@@ -45,9 +45,7 @@ provider "azurerm" {
   }
 }
 
-provider "azapi" {
-
-}
+provider "azapi" {}
 
 data "azurerm_subscription" "current" {}
 

@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "buyerbanks_rg" {
 
 # Subnet to host buyerbanks function
 module "buyerbanks_function_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
+  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
   name                                           = format("%s-buyerbanks-snet", local.project)
   address_prefixes                               = var.cidr_subnet_buyerbanks
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
@@ -29,7 +29,7 @@ module "buyerbanks_function_snet" {
 }
 
 module "buyerbanks_function" {
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.2.5"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.76.0"
 
   resource_group_name                      = azurerm_resource_group.buyerbanks_rg.name
   name                                     = format("%s-fn-buyerbanks", local.project)
@@ -180,7 +180,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_update_alert"
 #tfsec:ignore:azure-storage-default-action-deny
 module "buyerbanks_storage" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//storage_account?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.76.0"
 
   name                       = replace(format("%s-buyerbanks-storage", local.project), "-", "")
   account_kind               = "StorageV2"

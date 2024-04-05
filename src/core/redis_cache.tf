@@ -5,7 +5,7 @@ data "azurerm_private_dns_zone" "privatelink_redis_azure_com" {
 
 ## Redis subnet
 module "redis_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.18.3"
+  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
   name                                           = format("%s-redis-snet", local.project)
   address_prefixes                               = var.cidr_subnet_redis
   resource_group_name                            = azurerm_resource_group.rg_vnet.name
@@ -14,7 +14,7 @@ module "redis_snet" {
 }
 
 module "redis" {
-  source                = "git::https://github.com/pagopa/azurerm.git//redis_cache?ref=v2.18.3"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.76.0"
   name                  = format("%s-redis", local.project)
   resource_group_name   = azurerm_resource_group.data.name
   location              = azurerm_resource_group.data.location

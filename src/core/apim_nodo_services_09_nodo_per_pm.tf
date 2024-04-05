@@ -22,7 +22,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api" {
 
 module "apim_nodo_per_pm_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-nodo-per-pm-api", local.project)
   api_management_name   = module.apim.name
@@ -69,7 +69,7 @@ resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1" {
 }
 
 module "apim_nodo_per_pm_api_v2" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-nodo-per-pm-api", local.project)
   api_management_name   = module.apim.name

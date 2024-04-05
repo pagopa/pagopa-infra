@@ -4,7 +4,7 @@
 
 module "apim_nodo_dei_pagamenti_product_dev" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.76.0"
 
   product_id   = "nodo-dev"
   display_name = "Nodo dei Pagamenti (DEV)"
@@ -498,7 +498,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_dev" {
 
 module "apim_nodo_per_pm_api_v1_dev" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-nodo-per-pm-api-dev", local.project)
   api_management_name   = module.apim.name
@@ -550,7 +550,7 @@ resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1_dev" 
 
 module "apim_nodo_per_pm_api_v2_dev" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-nodo-per-pm-api-dev", local.project)
   api_management_name   = module.apim.name
@@ -600,7 +600,7 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_dev" {
 
 module "apim_nodo_monitoring_api_dev" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-nodo-monitoring-api-dev", var.env_short)
   api_management_name   = module.apim.name

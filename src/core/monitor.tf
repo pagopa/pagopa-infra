@@ -221,7 +221,7 @@ locals {
 }
 
 module "web_test_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.19.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v7.76.0"
 
   for_each = { for v in local.test_urls : v.host => v if v != null }
 

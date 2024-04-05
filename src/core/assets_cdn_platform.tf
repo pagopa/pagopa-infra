@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "assets_cdn_platform_rg" {
  * CDN
  */
 module "assets_cdn_platform" {
-  source = "git::https://github.com/pagopa/azurerm.git//cdn?ref=v3.2.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.76.0"
 
   count                 = var.env_short == "p" ? 1 : 0
   name                  = "assets-platform"

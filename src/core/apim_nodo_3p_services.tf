@@ -4,7 +4,7 @@
 
 module "apim_nodo_sync_product" {
   count  = var.env_short == "p" ? 0 : 1
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.76.0"
 
   product_id   = "product-nodo-sync"
   display_name = "product-nodo-sync"
@@ -35,7 +35,7 @@ resource "azurerm_api_management_api_version_set" "nodo_sync_api" {
 
 module "apim_nodo_sync_api" {
   count  = var.env_short == "p" ? 0 : 1
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-nodo-sync-api", var.env_short)
   api_management_name   = module.apim.name
@@ -70,7 +70,7 @@ module "apim_nodo_sync_api" {
 ############################
 
 module "apim_nodo_wfesp_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.76.0"
 
   product_id   = "product-nodo-wfesp"
   display_name = "product-nodo-wfesp"
@@ -105,7 +105,7 @@ resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
 # PROD  https://wfesp.pagopa.gov.it/redirect (ex followed by /wpl05 )
 
 module "apim_nodo_wfesp_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-nodo-wfesp-api", var.env_short)
   api_management_name   = module.apim.name
@@ -144,7 +144,7 @@ module "apim_nodo_wfesp_api" {
 
 module "apim_nodo_fatturazione_product" {
   count  = var.env_short == "p" ? 0 : 1
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.76.0"
 
   product_id   = "product-nodo-fatturazione"
   display_name = "product-nodo-fatturazione"
@@ -175,7 +175,7 @@ resource "azurerm_api_management_api_version_set" "nodo_fatturazione_api" {
 
 module "apim_nodo_fatturazione_api" {
   count  = var.env_short == "p" ? 0 : 1
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-nodo-fatturazione-api", var.env_short)
   api_management_name   = module.apim.name
@@ -210,7 +210,7 @@ module "apim_nodo_fatturazione_api" {
 ############################
 
 module "apim_nodo_web_bo_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.76.0"
 
   product_id   = "product-nodo-web-bo"
   display_name = "product-nodo-web-bo"
@@ -242,7 +242,7 @@ module "apim_nodo_web_bo_product" {
 module "apim_nodo_web_bo_api" {
   count = var.env_short != "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-nodo-web-bo-api", var.env_short)
   api_management_name   = module.apim.name
@@ -285,7 +285,7 @@ module "apim_nodo_web_bo_api" {
 module "apim_nodo_web_bo_api_onprem" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-nodo-web-bo-onprem-api", var.env_short)
   api_management_name   = module.apim.name
@@ -329,7 +329,7 @@ module "apim_nodo_web_bo_api_onprem" {
 ############################
 
 module "apim_nodo_web_bo_product_history" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.76.0"
 
   product_id   = "product-nodo-web-bo-history"
   display_name = "product-nodo-web-bo-history"
@@ -361,7 +361,7 @@ module "apim_nodo_web_bo_product_history" {
 module "apim_nodo_web_bo_api_history" {
   count = var.env_short != "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-nodo-web-bo-api-history", var.env_short)
   api_management_name   = module.apim.name
@@ -404,7 +404,7 @@ module "apim_nodo_web_bo_api_history" {
 module "apim_nodo_web_bo_api_onprem_history" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-nodo-web-bo-onprem-api-history", var.env_short)
   api_management_name   = module.apim.name

@@ -3,7 +3,7 @@
 ##############
 
 module "apim_tkm_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.76.0"
 
   product_id   = "tkm"
   display_name = "Token Manager pagoPA"
@@ -45,7 +45,7 @@ resource "azurerm_api_management_api_version_set" "tkm_consent_manager_api" {
 
 module "apim_tkm_consent_manager_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-tkm-consent-manager-api", local.project)
   api_management_name   = module.apim.name
@@ -97,7 +97,7 @@ resource "azurerm_api_management_api_version_set" "tkm_consent_manager_internal_
 
 module "apim_tkm_consent_manager_internal_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-tkm-consent-manager-internal-api", local.project)
   api_management_name   = module.apim.name
@@ -146,7 +146,7 @@ resource "azurerm_api_management_api_version_set" "tkm_card_manager_api" {
 
 module "apim_tkm_card_manager_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-tkm-card-manager-api", local.project)
   api_management_name   = module.apim.name
@@ -195,7 +195,7 @@ resource "azurerm_api_management_api_version_set" "tkm_acquirer_manager_api" {
 
 module "apim_tkm_acquirer_manager_api_v1" {
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-tkm-acquirer-manager-api", local.project)
   api_management_name   = module.apim.name
@@ -246,7 +246,7 @@ resource "azurerm_api_management_api_version_set" "tkm_test_utility_api" {
 
 module "apim_tkm_test_utility_api_v1" {
   count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-tkm-ms-test-utility-api", local.project)
   api_management_name   = module.apim.name
@@ -297,7 +297,7 @@ resource "azurerm_api_management_api_version_set" "tkm_mock_circuit_api" {
 module "apim_tkm_mock_circuit_api_v1" {
   count = var.env_short == "u" || var.env_short == "d" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = "${local.project}-tkm-mock-circuit-api"
   api_management_name   = module.apim.name

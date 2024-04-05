@@ -3,7 +3,7 @@
 ##############
 
 module "apim_donations_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.76.0"
 
   product_id   = "donations-iuv"
   display_name = "Donations"
@@ -35,7 +35,7 @@ resource "azurerm_api_management_api_version_set" "api_donations_api" {
 
 
 module "apim_api_donations_api" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.0"
 
   name                  = format("%s-api-donations-api", local.project)
   api_management_name   = module.apim.name
