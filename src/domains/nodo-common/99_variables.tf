@@ -240,23 +240,9 @@ variable "custom_metric_alerts" {
 
 
 # Redis
-variable "cidr_subnet_ndp_redis" {
-  type        = list(string)
-  description = "Redis DB address space for NDP."
-  default     = ["10.1.162.0/24"]
-}
-
-variable "ndp_redis_params" {
-  type = object({
-    capacity = number
-    sku_name = string
-    family   = string
-  })
-  default = {
-    capacity = 0
-    sku_name = "Basic"
-    family   = "C"
-  }
+variable "redis_ha_enabled" {
+  type = bool
+  description = "(Required) If true, enables the usage of HA redis instance"
 }
 
 
