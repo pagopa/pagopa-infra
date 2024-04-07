@@ -1,13 +1,14 @@
 ## VPN subnet
 module "vpn_snet" {
-  count                                          = var.env_short != "d" ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
-  name                                           = "GatewaySubnet"
-  address_prefixes                               = var.cidr_subnet_vpn
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  service_endpoints                              = []
-  enforce_private_link_endpoint_network_policies = true
+  count  = var.env_short != "d" ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
+
+  name                                      = "GatewaySubnet"
+  address_prefixes                          = var.cidr_subnet_vpn
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
+  service_endpoints                         = []
+  private_endpoint_network_policies_enabled = true
 }
 
 data "azuread_application" "vpn_app" {
@@ -47,11 +48,11 @@ module "dns_forwarder_snet" {
   count  = var.env_short != "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
 
-  name                                           = "${local.project}-dns-forwarder-snet"
-  address_prefixes                               = var.cidr_subnet_dns_forwarder
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  name                                      = "${local.project}-dns-forwarder-snet"
+  address_prefixes                          = var.cidr_subnet_dns_forwarder
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
+  private_endpoint_network_policies_enabled = true
 
   delegation = {
     name = "delegation"

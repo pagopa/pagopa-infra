@@ -7,14 +7,15 @@ resource "azurerm_resource_group" "msg_rg" {
 
 ## Eventhub subnet
 module "eventhub_snet" {
-  count                                          = var.eventhub_enabled && var.cidr_subnet_eventhub != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
-  name                                           = format("%s-eventhub-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_eventhub
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet_integration.name
-  service_endpoints                              = ["Microsoft.EventHub"]
-  enforce_private_link_endpoint_network_policies = true
+  count  = var.eventhub_enabled && var.cidr_subnet_eventhub != null ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
+
+  name                                      = format("%s-eventhub-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_eventhub
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet_integration.name
+  service_endpoints                         = ["Microsoft.EventHub"]
+  private_endpoint_network_policies_enabled = true
 }
 
 module "event_hub01" {

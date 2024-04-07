@@ -50,11 +50,22 @@ module "apim_node_forwarder_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/node_forwarder_api/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = azurerm_api_management_custom_domain.api_custom_domain.gateway[0].host_name
   })
 
+  # TOCHECK
+  # │ Error: Invalid count argument
+  # │
+  # │   on .terraform/modules/apim_node_forwarder_api/api_management_api/main.tf line 32, in resource "azurerm_api_management_api_policy" "this":
+  # │   32:   count               = var.xml_content == null ? 0 : 1
+  # │
+  # │ The "count" value depends on resource attributes that cannot be determined
+  # │ until apply, so Terraform cannot predict how many instances will be created. To
+  # │ work around this, use the -target argument to first apply only the resources
+  # │ that the count depends on.
   xml_content = templatefile("./api/node_forwarder_api/v1/_base_policy.xml", {
-    node_forwarder_host_path = "https://${module.node_forwarder_app_service.default_site_hostname}"
+    #   node_forwarder_host_path = "https://${module.node_forwarder_app_service.default_site_hostname}"
+    node_forwarder_host_path = "https://placeholder"
   })
 
   depends_on = [

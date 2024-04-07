@@ -7,12 +7,13 @@ resource "azurerm_resource_group" "buyerbanks_rg" {
 
 # Subnet to host buyerbanks function
 module "buyerbanks_function_snet" {
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
-  name                                           = format("%s-buyerbanks-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_buyerbanks
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
+
+  name                                      = format("%s-buyerbanks-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_buyerbanks
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
+  private_endpoint_network_policies_enabled = true
 
   delegation = {
     name = "default"
@@ -38,8 +39,7 @@ module "buyerbanks_function" {
   subnet_id                                = module.buyerbanks_function_snet.id
   runtime_version                          = "~4"
   always_on                                = true
-  os_type                                  = "linux"
-  linux_fx_version                         = "NODE|18"
+  node_version                             = "18"
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_name = format("%s-plan-fnbuyerbanks", local.project)
@@ -48,6 +48,8 @@ module "buyerbanks_function" {
     sku_tier                     = var.buyerbanks_function_sku_tier
     sku_size                     = var.buyerbanks_function_sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = var.buyerbanks_function_worker_count
+    zone_balancing_enabled       = var.buyerbanks_function_zone_balancing
   }
 
   storage_account_info = var.function_app_storage_account_info
@@ -179,22 +181,21 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_update_alert"
 
 #tfsec:ignore:azure-storage-default-action-deny
 module "buyerbanks_storage" {
-
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.76.0"
 
-  name                       = replace(format("%s-buyerbanks-storage", local.project), "-", "")
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  account_replication_type   = var.buyer_banks_storage_account_replication_type
-  access_tier                = "Hot"
-  versioning_name            = "versioning"
-  enable_versioning          = var.buyerbanks_enable_versioning
-  resource_group_name        = azurerm_resource_group.buyerbanks_rg.name
-  location                   = var.location
-  advanced_threat_protection = var.buyerbanks_advanced_threat_protection
-  allow_blob_public_access   = false
-
-  blob_properties_delete_retention_policy_days = var.buyerbanks_delete_retention_days
+  name                             = replace(format("%s-buyerbanks-storage", local.project), "-", "")
+  account_kind                     = "StorageV2"
+  account_tier                     = "Standard"
+  account_replication_type         = var.buyer_banks_storage_account_replication_type
+  access_tier                      = "Hot"
+  blob_versioning_enabled          = var.buyerbanks_enable_versioning
+  resource_group_name              = azurerm_resource_group.buyerbanks_rg.name
+  location                         = var.location
+  advanced_threat_protection       = var.buyerbanks_advanced_threat_protection
+  allow_nested_items_to_be_public  = false
+  public_network_access_enabled    = true
+  cross_tenant_replication_enabled = true
+  blob_delete_retention_days       = var.buyerbanks_delete_retention_days
 
   # TODO FIXME
   # network_rules = {

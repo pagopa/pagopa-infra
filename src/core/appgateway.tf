@@ -169,30 +169,35 @@ locals {
       listener              = "api"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 1
     }
 
     portal = {
       listener              = "portal"
       backend               = "portal"
       rewrite_rule_set_name = null
+      priority              = 1
     }
 
     mangement = {
       listener              = "management"
       backend               = "management"
       rewrite_rule_set_name = null
+      priority              = 1
     }
 
     wisp2 = {
       listener              = "wisp2"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 1
     }
 
     kibana = {
       listener              = "kibana"
       backend               = "kibana"
       rewrite_rule_set_name = "rewrite-rule-set-kibana"
+      priority              = 1
     }
   }
 
@@ -201,6 +206,7 @@ locals {
       listener              = "apiprf"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 1
     }
   }
 
@@ -209,6 +215,7 @@ locals {
       listener              = "wisp2govit"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 1
     }
   }
 
@@ -217,6 +224,7 @@ locals {
       listener              = "wfespgovit"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 1
     }
   }
 
@@ -225,6 +233,7 @@ locals {
       listener              = "upload"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 1
     }
   }
 

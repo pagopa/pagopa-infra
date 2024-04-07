@@ -8,13 +8,14 @@ resource "azurerm_resource_group" "reporting_fdr_rg" {
 
 # Subnet to host reporting-fdr function
 module "reporting_fdr_function_snet" {
-  count                                          = var.cidr_subnet_reporting_fdr != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
-  name                                           = format("%s-reporting-fdr-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_reporting_fdr
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  count  = var.cidr_subnet_reporting_fdr != null ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
+
+  name                                      = format("%s-reporting-fdr-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_reporting_fdr
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
+  private_endpoint_network_policies_enabled = true
 
   delegation = {
     name = "default"
@@ -34,7 +35,6 @@ module "reporting_fdr_function" {
   health_check_path                        = "info"
   subnet_id                                = module.reporting_fdr_function_snet[0].id
   runtime_version                          = "~3"
-  os_type                                  = "linux"
   always_on                                = var.reporting_fdr_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
@@ -45,6 +45,8 @@ module "reporting_fdr_function" {
     sku_tier                     = var.reporting_fdr_function_sku_tier
     sku_size                     = var.reporting_fdr_function_sku_size
     maximum_elastic_worker_count = 0
+    worker_count                 = var.reporting_fdr_function_worker_count
+    zone_balancing_enabled       = var.reporting_fdr_function_zone_balancing
   }
 
   app_settings = {

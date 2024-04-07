@@ -1,11 +1,12 @@
 module "postgresql_snet" {
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
-  name                                           = format("%s-postgresql-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_postgresql
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  service_endpoints                              = ["Microsoft.Sql"]
-  enforce_private_link_endpoint_network_policies = true
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
+
+  name                                      = format("%s-postgresql-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_postgresql
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
+  service_endpoints                         = ["Microsoft.Sql"]
+  private_endpoint_network_policies_enabled = true
 
   delegation = {
     name = "delegation"

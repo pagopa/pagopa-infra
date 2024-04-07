@@ -10,12 +10,12 @@ resource "azurerm_resource_group" "pagopa_logic_app" {
 }
 
 module "logic_app_biz_evt_snet" {
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
-  name                                           = format("%s-logicapp-biz-evt-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_logicapp_biz_evt
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
+  name                                      = format("%s-logicapp-biz-evt-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_logicapp_biz_evt
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
@@ -34,17 +34,18 @@ module "logic_app_biz_evt_snet" {
 module "logic_app_biz_evt_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.76.0"
 
-  name                       = replace(format("%s-logic-app-biz-evt-sa", local.project), "-", "")
-  account_kind               = "StorageV2"
-  account_tier               = "Standard"
-  account_replication_type   = var.logic_app_storage_account_replication_type
-  access_tier                = "Hot"
-  versioning_name            = "versioning"
-  enable_versioning          = false
-  resource_group_name        = azurerm_resource_group.pagopa_logic_app.name
-  location                   = var.location
-  advanced_threat_protection = false
-  allow_blob_public_access   = false
+  name                             = replace(format("%s-logic-app-biz-evt-sa", local.project), "-", "")
+  account_kind                     = "StorageV2"
+  account_tier                     = "Standard"
+  account_replication_type         = var.logic_app_storage_account_replication_type
+  access_tier                      = "Hot"
+  blob_versioning_enabled          = false
+  resource_group_name              = azurerm_resource_group.pagopa_logic_app.name
+  location                         = var.location
+  advanced_threat_protection       = false
+  allow_nested_items_to_be_public  = false
+  public_network_access_enabled    = true
+  cross_tenant_replication_enabled = true
 
   tags = var.tags
 }

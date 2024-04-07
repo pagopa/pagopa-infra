@@ -36,8 +36,6 @@ module "vnet_integration" {
 module "vnet_peering" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.76.0"
 
-  location = azurerm_resource_group.rg_vnet.location
-
   source_resource_group_name       = azurerm_resource_group.rg_vnet.name
   source_virtual_network_name      = module.vnet.name
   source_remote_virtual_network_id = module.vnet.id
@@ -47,7 +45,6 @@ module "vnet_peering" {
   target_virtual_network_name      = module.vnet_integration.name
   target_remote_virtual_network_id = module.vnet_integration.id
   target_use_remote_gateways       = false # needed by vnet peering with SIA
-  target_peering_custom_name       = "pagopa-${var.env_short}-vnet-to-pagopa-${var.env_short}-vnet-integration"
 }
 
 module "route_table_peering_sia" {
@@ -145,11 +142,12 @@ module "route_table_peering_sia" {
 
 # subnet acr
 module "common_private_endpoint_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
+
   name                 = "${local.project}-common-private-endpoint-snet"
   address_prefixes     = var.cidr_common_private_endpoint_snet
   resource_group_name  = azurerm_resource_group.rg_vnet.name
   virtual_network_name = module.vnet.name
 
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled = true
 }

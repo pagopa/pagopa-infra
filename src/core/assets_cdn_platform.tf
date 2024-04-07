@@ -22,7 +22,6 @@ module "assets_cdn_platform" {
   location              = var.location
   hostname              = "assets.cdn.platform.pagopa.it"
   https_rewrite_enabled = true
-  lock_enabled          = false
 
   dns_zone_name                = azurerm_dns_zone.public[0].name
   dns_zone_resource_group_name = azurerm_dns_zone.public[0].resource_group_name
@@ -32,6 +31,8 @@ module "assets_cdn_platform" {
   keyvault_vault_name          = module.key_vault.name
 
   storage_account_replication_type = var.cdn_storage_account_replication_type
+
+  log_analytics_workspace_id = var.cdn_log_analytics_workspace_id
 
   querystring_caching_behaviour = "BypassCaching"
 

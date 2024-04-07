@@ -649,10 +649,12 @@ nodo_ip_filter              = "10.70.66.200"
 
 # redis apim
 redis_cache_params = {
-  public_access = true
+  public_access = false
   capacity      = 0
   sku_name      = "Basic"
   family        = "C"
+  version       = 6
+  zones         = []
 }
 
 # nodo-dei-pagamenti-test

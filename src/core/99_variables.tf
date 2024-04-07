@@ -476,12 +476,16 @@ variable "redis_cache_params" {
     capacity      = number
     sku_name      = string
     family        = string
+    zones         = list(string)
+    version       = string
   })
   default = {
     public_access = false
     capacity      = 1
     sku_name      = "Basic"
     family        = "C"
+    zones         = []
+    version       = "6"
   }
 }
 
@@ -1026,6 +1030,18 @@ variable "buyerbanks_function_sku_size" {
   default     = null
 }
 
+variable "buyerbanks_function_worker_count" {
+  type        = number
+  description = "App service plan worker count"
+  default     = 1
+}
+
+variable "buyerbanks_function_zone_balancing" {
+  type        = bool
+  description = "App service plan zone balancing"
+  default     = false
+}
+
 variable "buyerbanks_function_autoscale_minimum" {
   type        = number
   description = "The minimum number of instances for this resource."
@@ -1214,6 +1230,18 @@ variable "reporting_fdr_function_sku_size" {
   default     = null
 }
 
+variable "reporting_fdr_function_worker_count" {
+  type        = number
+  description = "App service plan worker count"
+  default     = 1
+}
+
+variable "reporting_fdr_function_zone_balancing" {
+  type        = bool
+  description = "App service plan zone balancing"
+  default     = false
+}
+
 variable "cidr_subnet_reporting_fdr" {
   type        = list(string)
   description = "Address prefixes subnet reporting_fdr function"
@@ -1252,17 +1280,23 @@ variable "reporting_fdr_blobs_retention_days" {
 
 variable "reporting_fdr_storage_account_info" {
   type = object({
+    account_kind                      = string
     account_tier                      = string
     account_replication_type          = string
     access_tier                       = string
     advanced_threat_protection_enable = bool
+    public_network_access_enabled     = bool
+    use_legacy_defender_version       = bool
   })
 
   default = {
+    account_kind                      = "BlobStorage"
     account_tier                      = "Standard"
     account_replication_type          = "ZRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
+    public_network_access_enabled     = false
+    use_legacy_defender_version       = false
   }
 }
 
@@ -1776,6 +1810,8 @@ variable "function_app_storage_account_info" {
     account_replication_type          = optional(string, "LRS")
     access_tier                       = optional(string, "Hot")
     advanced_threat_protection_enable = optional(bool, true)
+    public_network_access_enabled     = bool
+    use_legacy_defender_version       = bool
   })
 
   default = {
@@ -1784,6 +1820,8 @@ variable "function_app_storage_account_info" {
     account_replication_type          = "LRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
+    public_network_access_enabled     = false
+    use_legacy_defender_version       = false
   }
 }
 
@@ -1798,6 +1836,13 @@ variable "cdn_storage_account_replication_type" {
   default     = "GRS"
   description = "(Optional) Cdn storage account replication type"
 }
+
+variable "cdn_log_analytics_workspace_id" {
+  type        = string
+  default     = null
+  description = "(Optional) CDN log analytics workspace id"
+}
+
 
 variable "backup_storage_replication_type" {
   type        = string

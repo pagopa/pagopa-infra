@@ -1,5 +1,4 @@
 locals {
-
   node_forwarder_app_settings = {
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
@@ -14,12 +13,10 @@ locals {
     XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled"
     XDT_MicrosoftApplicationInsights_Mode           = "recommended"
     XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
     TIMEOUT_DELAY                                   = 300
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
     WEBSITE_RUN_FROM_PACKAGE                        = "1"
-    WEBSITE_VNET_ROUTE_ALL                          = "1"
     WEBSITE_DNS_SERVER                              = "168.63.129.16"
     WEBSITE_ENABLE_SYNC_UPDATE_SITE                 = true
     # Spring Environment
@@ -58,12 +55,13 @@ resource "azurerm_resource_group" "node_forwarder_rg" {
 
 # Subnet to host the node forwarder
 module "node_forwarder_snet" {
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
-  name                                           = format("%s-node-forwarder-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_node_forwarder
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
+
+  name                                      = format("%s-node-forwarder-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_node_forwarder
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
+  private_endpoint_network_policies_enabled = true
 
   delegation = {
     name = "default"
@@ -82,18 +80,17 @@ module "node_forwarder_app_service" {
   location            = var.location
 
   # App service plan vars
-  plan_name     = format("%s-plan-node-forwarder", local.project)
-  plan_kind     = "Linux"
-  plan_sku_tier = var.node_forwarder_tier
-  plan_sku_size = var.node_forwarder_size
-  plan_reserved = true # Mandatory for Linux plan
+  plan_name = format("%s-plan-node-forwarder", local.project)
+  sku_name  = var.node_forwarder_size
 
   # App service plan
-  name                = format("%s-app-node-forwarder", local.project)
-  client_cert_enabled = false
-  always_on           = var.node_forwarder_always_on
-  linux_fx_version    = format("DOCKER|%s/pagopanodeforwarder:%s", module.container_registry.login_server, "latest")
-  health_check_path   = "/actuator/info"
+  name                         = format("%s-app-node-forwarder", local.project)
+  client_cert_enabled          = false
+  always_on                    = var.node_forwarder_always_on
+  docker_image                 = "${module.container_registry.login_server}/pagopanodeforwarder"
+  docker_image_tag             = "latest"
+  health_check_path            = "/actuator/info"
+  health_check_maxpingfailures = 10
 
   app_settings = local.node_forwarder_app_settings
 
@@ -106,14 +103,12 @@ module "node_forwarder_app_service" {
 }
 
 module "node_forwarder_slot_staging" {
-  count = var.env_short != "d" ? 1 : 0
-
+  count  = var.env_short != "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.76.0"
 
   # App service plan
-  app_service_plan_id = module.node_forwarder_app_service.plan_id
-  app_service_id      = module.node_forwarder_app_service.id
-  app_service_name    = module.node_forwarder_app_service.name
+  app_service_id   = module.node_forwarder_app_service.id
+  app_service_name = module.node_forwarder_app_service.name
 
   # App service
   name                = "staging"
@@ -121,9 +116,9 @@ module "node_forwarder_slot_staging" {
   location            = var.location
 
   always_on         = true
-  linux_fx_version  = format("DOCKER|%s/pagopanodeforwarder:%s", module.container_registry.login_server, "latest")
+  docker_image      = "${module.container_registry.login_server}/pagopanodeforwarder"
+  docker_image_tag  = "latest"
   health_check_path = "/actuator/info"
-
 
   # App settings
   app_settings = local.node_forwarder_app_settings
@@ -196,7 +191,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
       }
     }
 
-    # Supported metrics for Microsoft.Web/sites 
+    # Supported metrics for Microsoft.Web/sites
     # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
     rule {
       metric_trigger {
@@ -254,7 +249,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
   #     maximum = 10
   #   }
 
-  #   # Supported metrics for Microsoft.Web/sites 
+  #   # Supported metrics for Microsoft.Web/sites
   #   # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
   #   rule {
   #     metric_trigger {
@@ -446,7 +441,7 @@ AzureDiagnostics
 }
 
 #################################
-# Alert on mem or cpu avr 
+# Alert on mem or cpu avr
 #################################
 resource "azurerm_monitor_metric_alert" "app_service_over_cpu_usage" {
   count               = var.env_short == "p" ? 1 : 0

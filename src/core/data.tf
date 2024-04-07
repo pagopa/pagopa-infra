@@ -11,16 +11,16 @@ module "backupstorage" {
   count  = var.env_short == "p" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.76.0"
 
-  name                     = replace(format("%s-backupstorage", local.project), "-", "")
-  account_kind             = "BlobStorage"
-  account_tier             = "Standard"
-  account_replication_type = var.backup_storage_replication_type
-  access_tier              = "Cool"
-  enable_versioning        = true
-  versioning_name          = "versioning"
-  resource_group_name      = azurerm_resource_group.data.name
-  location                 = var.location
-  allow_blob_public_access = false
+  name                            = replace(format("%s-backupstorage", local.project), "-", "")
+  account_kind                    = "BlobStorage"
+  account_tier                    = "Standard"
+  account_replication_type        = var.backup_storage_replication_type
+  access_tier                     = "Cool"
+  blob_versioning_enabled         = true
+  resource_group_name             = azurerm_resource_group.data.name
+  location                        = var.location
+  allow_nested_items_to_be_public = false
+  public_network_access_enabled   = false
 
   tags = var.tags
 }

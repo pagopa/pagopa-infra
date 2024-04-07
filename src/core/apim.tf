@@ -6,8 +6,8 @@ module "apim_snet" {
   virtual_network_name = module.vnet_integration.name
   address_prefixes     = var.cidr_subnet_apim
 
-  enforce_private_link_endpoint_network_policies = true
-  service_endpoints                              = ["Microsoft.Web"]
+  private_endpoint_network_policies_enabled = true
+  service_endpoints                         = ["Microsoft.Web"]
 }
 
 resource "azurerm_resource_group" "rg_api" {
@@ -57,7 +57,10 @@ module "apim" {
   #   text             = ""
   # }
 
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights = {
+    enabled             = true
+    instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  }
 
   xml_content = templatefile("./api/base_policy.tpl", {
     portal-domain         = local.portal_domain
@@ -674,7 +677,7 @@ resource "azurerm_api_management_named_value" "donazioni_config_name_2" {
 resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   api_management_id = module.apim.id
 
-  proxy {
+  gateway {
     host_name = local.api_domain
     key_vault_id = replace(
       data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
@@ -701,7 +704,7 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
     )
   }
 
-  dynamic "proxy" {
+  dynamic "gateway" {
     for_each = var.env_short == "u" ? [""] : []
     content {
       host_name = local.prf_domain
@@ -734,7 +737,7 @@ module "monitor" {
 
   content_format = "openapi"
   content_value = templatefile("./api/monitor/openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = azurerm_api_management_custom_domain.api_custom_domain.gateway[0].host_name
   })
 
   xml_content = file("./api/base_policy.xml")

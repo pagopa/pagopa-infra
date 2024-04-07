@@ -5,12 +5,13 @@ data "azurerm_private_dns_zone" "privatelink_redis_azure_com" {
 
 ## Redis subnet
 module "redis_snet" {
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
-  name                                           = format("%s-redis-snet", local.project)
-  address_prefixes                               = var.cidr_subnet_redis
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name # module.vnet_integration.name ???
-  enforce_private_link_endpoint_network_policies = !var.redis_cache_params.public_access
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
+
+  name                                      = format("%s-redis-snet", local.project)
+  address_prefixes                          = var.cidr_subnet_redis
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name # module.vnet_integration.name ???
+  private_endpoint_network_policies_enabled = !var.redis_cache_params.public_access
 }
 
 module "redis" {
@@ -23,6 +24,8 @@ module "redis" {
   family                = var.redis_cache_params.family
   sku_name              = var.redis_cache_params.sku_name
   enable_authentication = true
+  zones                 = var.redis_cache_params.zones
+  redis_version         = var.redis_cache_params.version
 
   public_network_access_enabled = var.redis_cache_params.public_access
 

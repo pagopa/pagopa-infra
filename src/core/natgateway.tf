@@ -12,7 +12,7 @@ module "nat_gw" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
   public_ips_count    = var.nat_gateway_public_ips
-  zone                = "1"
+  zones               = ["1"]
   subnet_ids          = local.subnet_in_nat_gw_ids
 
   tags = var.tags
