@@ -30,7 +30,6 @@
             
             string[] xpayList = ((string)context.Variables["XPAYPspsList"]).Split(',');
             string[] vposList = ((string)context.Variables["VPOSPspsList"]).Split(',');
-            string[] npgList = ((string)context.Variables["NPGPspsList"]).Split(',');
             
             string pspId = (string)(context.Variables.GetValueOrDefault("pspId",""));
             string detailType = (string)(context.Variables.GetValueOrDefault("detailType",""));
