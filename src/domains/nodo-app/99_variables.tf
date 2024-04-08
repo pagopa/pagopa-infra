@@ -444,3 +444,9 @@ variable "enabled_features" {
   }
   description = "Features enabled in this domain"
 }
+
+variable "enable_wisp_converter" {
+  type        = bool
+  default     = false
+  description = "Enable WISP converter system, replacing old WISP handling"
+}

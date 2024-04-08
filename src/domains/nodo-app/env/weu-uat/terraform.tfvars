@@ -219,3 +219,5 @@ storage_account_info = {
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
 }
+
+enable_wisp_converter = false

@@ -201,3 +201,5 @@ storage_account_info = {
 enabled_features = {
   apim_v2 = true
 }
+
+enable_wisp_converter = true
