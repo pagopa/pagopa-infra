@@ -44,7 +44,6 @@ ecommerce_xpay_psps_list = "CIPBITMM"
 # - PPAYITR1XXX (POSTEPAY)
 # - BIC36019 (AMEX)
 ecommerce_vpos_psps_list = "BNLIITRR,BCITITMM,UNCRITMM,BPPIITRRXXX,PPAYITR1XXX,BIC36019"
-ecommerce_npg_psps_list  = ""
 
 dns_zone_checkout = "checkout"
 
