@@ -64,8 +64,8 @@ module "pagopa_ecommerce_redis" {
 }
 
 module "pagopa_ecommerce_redis_ha" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.72.1"
-  count = var.redis_ecommerce_params.ha_enabled ? 1 : 0
+  source                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.72.1"
+  count                         = var.redis_ecommerce_params.ha_enabled ? 1 : 0
   name                          = "${local.project}-redis-ha"
   resource_group_name           = azurerm_resource_group.redis_ecommerce_rg.name
   location                      = azurerm_resource_group.redis_ecommerce_rg.location
