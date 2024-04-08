@@ -18,26 +18,49 @@
         }
         return "";
         }"/>
+        <!-- START set pgsId -->
         <set-variable name="XPAYPspsList" value="${ecommerce_xpay_psps_list}"/>
         <set-variable name="VPOSPspsList" value="${ecommerce_vpos_psps_list}"/>
-        <set-variable name="NPGPspsList" value="${ecommerce_npg_psps_list}"/>
-        <set-variable name="pspId" value="@(((string)((JObject)context.Request.Body.As<JObject>(preserveContent: true))["pspId"]))"/>
+        <set-variable name="requestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
+
+        <set-variable name="pspId" value="@(((string)((JObject)context.Variables["requestBody"])["pspId"]))"/>
+        <set-variable name="detailType" value="@((string)((JObject)((JObject)context.Variables["requestBody"])["details"])["detailType"])"/>
+
         <set-variable name="pgsId" value="@{
-        string[] xpayList = ((string)context.Variables["XPAYPspsList"]).Split(',');
-        string[] vposList = ((string)context.Variables["VPOSPspsList"]).Split(',');
-        string[] npgList = ((string)context.Variables["NPGPspsList"]).Split(',');
-        string pspId = (string)(context.Variables.GetValueOrDefault("pspId",""));
-        if (xpayList.Contains(pspId)) {
-            return "XPAY";
-        }
-        if (vposList.Contains(pspId)) {
-            return "VPOS";
-        }
-        if (npgList.Contains(pspId)) {
-            return "NPG";
-        }
-        return "";
-    }"/>
+            
+            string[] xpayList = ((string)context.Variables["XPAYPspsList"]).Split(',');
+            string[] vposList = ((string)context.Variables["VPOSPspsList"]).Split(',');
+            
+            string pspId = (string)(context.Variables.GetValueOrDefault("pspId",""));
+            string detailType = (string)(context.Variables.GetValueOrDefault("detailType",""));
+            
+            string pgsId = "";
+
+            // card -> ecommerce with PGS request
+            if ( detailType == "card" ){                                    
+
+                if (xpayList.Contains(pspId)) {
+
+                    pgsId = "XPAY";
+                } else if (vposList.Contains(pspId)) {
+
+                    pgsId = "VPOS";
+                }
+
+            // cards or apm -> ecommerce with NPG request
+            } else if ( detailType == "cards" || detailType == "apm"){      
+             
+                pgsId = "NPG";
+
+            // redirect -> ecommerce with redirect
+            } else if ( detailType == "redirect"){      
+
+                pgsId = "REDIRECT";            
+            } 
+
+            return pgsId;
+        }"/>
+        <!-- END set pgsId -->
         <choose>
             <when condition="@((string)context.Variables.GetValueOrDefault("tokenTransactionId","") != (string)context.Variables.GetValueOrDefault("requestTransactionId",""))">
                 <return-response>
