@@ -4,8 +4,8 @@
 
 
 module "shared_pdf_engine_app_service_ha" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
-  count = var.pdf_engine_app_ha_enabled ? 1 : 0
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
+  count               = var.pdf_engine_app_ha_enabled ? 1 : 0
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
   location            = var.location
@@ -235,8 +235,8 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
 # java
 ################
 module "shared_pdf_engine_app_service_java_ha" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
-  count = var.pdf_engine_app_ha_enabled ? 1 : 0
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
+  count               = var.pdf_engine_app_ha_enabled ? 1 : 0
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
   location            = var.location

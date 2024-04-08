@@ -211,9 +211,9 @@ wisp_converter_cosmos_nosql_db_params = {
   max_throughput = 1000
 }
 
-cidr_subnet_cosmosdb_nodo_re       = ["10.1.170.0/24"]
-cidr_subnet_cosmosdb_nodo_verifyko = ["10.1.173.0/24"]
-cidr_subnet_cosmosdb_standin       = ["10.1.190.0/24"]
+cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
+cidr_subnet_cosmosdb_nodo_verifyko  = ["10.1.173.0/24"]
+cidr_subnet_cosmosdb_standin        = ["10.1.190.0/24"]
 cidr_subnet_cosmosdb_wisp_converter = ["10.1.191.0/24"]
 
 nodo_re_storage_account = {
@@ -262,3 +262,5 @@ wisp_converter_storage_account = {
   backup_enabled                = false
   backup_retention_days         = 0
 }
+
+redis_ha_enabled = false
