@@ -71,6 +71,11 @@ redis_ecommerce_params = {
   sku_name = "Standard"
   family   = "C"
   version  = 6
+  ha_enabled = true
+  capacity_ha = 1
+  family_ha   = "P"
+  sku_name_ha = "Premium"
+  zones = [1, 2, 3]
 }
 
 ecommerce_storage_transient_params = {
