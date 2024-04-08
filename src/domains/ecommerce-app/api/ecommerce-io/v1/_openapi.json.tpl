@@ -2055,13 +2055,7 @@
               },
               "brand": {
                 "description": "Payment instrument brand",
-                "type": "string",
-                "enum": [
-                  "MASTERCARD",
-                  "VISA",
-                  "AMEX",
-                  "MAESTRO"
-                ]
+                "type": "string"
               }
             },
             "required": [

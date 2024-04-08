@@ -8,6 +8,14 @@ data "azurerm_redis_cache" "redis_cache" {
   resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
 }
 
+data "azurerm_redis_cache" "redis_cache_ha" {
+  count = var.redis_ha_enabled ? 1 : 0
+  name                = format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short)
+  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
+}
+
+
+
 /*****************
 Storage Account
 *****************/
@@ -124,7 +132,7 @@ Redis
 
 resource "azurerm_key_vault_secret" "redis_primary_key" {
   name         = "redis-primary-key"
-  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
+  value        = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].primary_access_key : data.azurerm_redis_cache.redis_cache.primary_access_key
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
