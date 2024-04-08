@@ -2130,11 +2130,7 @@
         "type": "string",
         "description": "Enumeration of wallet statuses",
         "enum": [
-          "CREATED",
-          "INITIALIZED",
-          "VALIDATED",
-          "DELETED",
-          "ERROR"
+          "VALIDATED"
         ]
       },
       "WalletApplication": {

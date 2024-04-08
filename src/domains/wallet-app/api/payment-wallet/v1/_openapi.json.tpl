@@ -713,8 +713,7 @@
             },
             "required": [
               "type",
-              "pspId",
-              "maskedEmail"
+              "pspId"
             ]
           },
           {
