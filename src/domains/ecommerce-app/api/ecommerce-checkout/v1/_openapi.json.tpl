@@ -99,14 +99,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ValidationFaultPaymentDataErrorProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ValidationFaultPaymentUnknownProblemJson"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/NodeProblemJson404"
                 }
               }
             }
@@ -116,20 +109,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/PaymentOngoingStatusFaultPaymentProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PaymentExpiredStatusFaultPaymentProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PaymentCanceledStatusFaultPaymentProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PaymentDuplicatedStatusFaultPaymentProblemJson"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/NodeProblemJson409"
                 }
               }
             }
@@ -139,14 +119,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/GatewayFaultPaymentProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ValidationFaultPaymentUnavailableProblemJson"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/NodeProblemJson502"
                 }
               }
             }
@@ -219,7 +192,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationFaultPaymentProblemJson"
+                  "$ref": "#/components/schemas/NodeProblemJson404"
                 }
               }
             }
@@ -229,7 +202,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PaymentStatusFaultPaymentProblemJson"
+                  "$ref": "#/components/schemas/NodeProblemJson409"
                 }
               }
             }
@@ -239,7 +212,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GatewayFaultPaymentProblemJson"
+                  "$ref": "#/components/schemas/NodeProblemJson502"
                 }
               }
             }
@@ -250,16 +223,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PartyConfigurationFaultPaymentProblemJson"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Timeout from PagoPA services",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PartyTimeoutFaultPaymentProblemJson"
                 }
               }
             }
@@ -914,6 +877,42 @@
   },
   "components": {
     "schemas": {
+      "NodeProblemJson404": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ValidationFaultPaymentDataErrorProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/ValidationFaultPaymentUnknownProblemJson"
+          }
+        ]
+      },
+      "NodeProblemJson409": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/PaymentOngoingStatusFaultPaymentProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/PaymentExpiredStatusFaultPaymentProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/PaymentCanceledStatusFaultPaymentProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/PaymentDuplicatedStatusFaultPaymentProblemJson"
+          }
+        ]
+      },
+      "NodeProblemJson502": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/GatewayFaultPaymentProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/ValidationFaultPaymentUnavailableProblemJson"
+          }
+        ]
+      },
       "ProblemJson": {
         "type": "object",
         "properties": {

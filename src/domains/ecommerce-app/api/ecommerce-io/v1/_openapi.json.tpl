@@ -150,14 +150,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ValidationFaultPaymentDataErrorProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ValidationFaultPaymentUnknownProblemJson"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/NodeProblemJson404"
                 }
               }
             }
@@ -167,20 +160,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/PaymentOngoingStatusFaultPaymentProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PaymentExpiredStatusFaultPaymentProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PaymentCanceledStatusFaultPaymentProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PaymentDuplicatedStatusFaultPaymentProblemJson"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/NodeProblemJson409"
                 }
               }
             }
@@ -190,14 +170,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/GatewayFaultPaymentProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ValidationFaultPaymentUnavailableProblemJson"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/NodeProblemJson502"
                 }
               }
             }
@@ -346,14 +319,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ValidationFaultPaymentDataErrorProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ValidationFaultPaymentUnknownProblemJson"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/NodeProblemJson404"
                 }
               }
             }
@@ -363,20 +329,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/PaymentOngoingStatusFaultPaymentProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PaymentExpiredStatusFaultPaymentProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PaymentCanceledStatusFaultPaymentProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/PaymentDuplicatedStatusFaultPaymentProblemJson"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/NodeProblemJson409"
                 }
               }
             }
@@ -386,14 +339,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/GatewayFaultPaymentProblemJson"
-                    },
-                    {
-                      "$ref": "#/components/schemas/ValidationFaultPaymentUnavailableProblemJson"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/NodeProblemJson502"
                 }
               }
             }
@@ -889,6 +835,42 @@
   },
   "components": {
     "schemas": {
+      "NodeProblemJson404": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ValidationFaultPaymentDataErrorProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/ValidationFaultPaymentUnknownProblemJson"
+          }
+        ]
+      },
+      "NodeProblemJson409": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/PaymentOngoingStatusFaultPaymentProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/PaymentExpiredStatusFaultPaymentProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/PaymentCanceledStatusFaultPaymentProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/PaymentDuplicatedStatusFaultPaymentProblemJson"
+          }
+        ]
+      },
+      "NodeProblemJson502": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/GatewayFaultPaymentProblemJson"
+          },
+          {
+            "$ref": "#/components/schemas/ValidationFaultPaymentUnavailableProblemJson"
+          }
+        ]
+      },
       "ProblemJson": {
         "type": "object",
         "properties": {
@@ -1027,52 +1009,6 @@
         },
         "required": [
           "amount"
-        ]
-      },
-      "ValidationFaultPaymentUnavailableProblemJson": {
-        "description": "A PaymentProblemJson-like type specific for the GetPayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to validation errors.",
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-          },
-          "faultCodeCategory": {
-            "type": "string",
-            "enum": [
-              "PAYMENT_UNAVAILABLE"
-            ]
-          },
-          "faultCodeDetail": {
-            "$ref": "#/components/schemas/ValidationFaultPaymentUnavailable"
-          }
-        },
-        "required": [
-          "faultCodeCategory",
-          "faultCodeDetail"
-        ]
-      },
-      "ValidationFaultPaymentUnknownProblemJson": {
-        "description": "A PaymentProblemJson-like type specific for the GetPayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to validation errors.",
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
-          },
-          "faultCodeCategory": {
-            "type": "string",
-            "enum": [
-              "PAYMENT_UNKNOWN"
-            ]
-          },
-          "faultCodeDetail": {
-            "$ref": "#/components/schemas/ValidationFaultPaymentUnknown"
-          }
-        },
-        "required": [
-          "faultCodeCategory",
-          "faultCodeDetail"
         ]
       },
       "ValidationFaultPaymentDataErrorProblemJson": {
@@ -1339,6 +1275,52 @@
           "PAA_ATTIVA_RPT_IMPORTO_NON_VALIDO",
           "PPT_ERRORE_EMESSO_DA_PAA",
           "PAA_SYSTEM_ERROR"
+        ]
+      },
+      "ValidationFaultPaymentUnknownProblemJson": {
+        "description": "A PaymentProblemJson-like type specific for the GetPayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to validation errors.",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+          },
+          "faultCodeCategory": {
+            "type": "string",
+            "enum": [
+              "PAYMENT_UNKNOWN"
+            ]
+          },
+          "faultCodeDetail": {
+            "$ref": "#/components/schemas/ValidationFaultPaymentUnknown"
+          }
+        },
+        "required": [
+          "faultCodeCategory",
+          "faultCodeDetail"
+        ]
+      },
+      "ValidationFaultPaymentUnavailableProblemJson": {
+        "description": "A PaymentProblemJson-like type specific for the GetPayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to validation errors.",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+          },
+          "faultCodeCategory": {
+            "type": "string",
+            "enum": [
+              "PAYMENT_UNAVAILABLE"
+            ]
+          },
+          "faultCodeDetail": {
+            "$ref": "#/components/schemas/ValidationFaultPaymentUnavailable"
+          }
+        },
+        "required": [
+          "faultCodeCategory",
+          "faultCodeDetail"
         ]
       },
       "RptId": {
