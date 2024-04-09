@@ -43,11 +43,29 @@
         "parameters": [
           {
             "in": "header",
+            "name": "X-Client-Id",
+            "required": true,
+            "description": "Transaction origin",
+            "schema": {
+              "$ref": "#/components/schemas/ClientId"
+            }
+          },
+          {
+            "in": "header",
             "name": "x-correlation-id",
             "required": true,
             "description": "Flow correlation id",
             "schema": {
               "$ref": "#/components/schemas/CorrelationId"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-user-id",
+            "required": false,
+            "description": "User id (valued for authenticated payments)",
+            "schema": {
+              "$ref": "#/components/schemas/UserId"
             }
           }
         ],
@@ -405,6 +423,20 @@
           "digitalStamp",
           "transferAmount"
         ]
+      },
+      "ClientId": {
+        "type": "string",
+        "description": "Enumerations of client ids",
+        "enum": [
+          "IO",
+          "CHECKOUT",
+          "CHECKOUT_CART"
+        ]
+      },
+      "UserId": {
+        "description": "unique user identifier",
+        "type": "string",
+        "format": "uuid"
       },
       "CorrelationId": {
         "description": "correlationId",
