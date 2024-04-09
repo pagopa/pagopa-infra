@@ -1,5 +1,5 @@
 module "vpn_snet" {
-  count  = var.is_feature_enabled.vpn ? 1 : 0
+  count = var.is_feature_enabled.vpn ? 1 : 0
 
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
   name                                      = "GatewaySubnet"
@@ -18,13 +18,13 @@ module "vpn" {
   count  = var.is_feature_enabled.vpn ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//vpn_gateway?ref=v7.76.0"
 
-  name                = "${local.product}-vpn"
-  location            = var.location
-  resource_group_name = data.azurerm_resource_group.rg_vnet_core.name
-  sku                 = "VpnGw1"
-  pip_sku             = "Standard"
+  name                  = "${local.product}-vpn"
+  location              = var.location
+  resource_group_name   = data.azurerm_resource_group.rg_vnet_core.name
+  sku                   = "VpnGw1"
+  pip_sku               = "Standard"
   pip_allocation_method = "Static"
-  subnet_id           = module.vpn_snet[0].id
+  subnet_id             = module.vpn_snet[0].id
 
   vpn_client_configuration = [
     {

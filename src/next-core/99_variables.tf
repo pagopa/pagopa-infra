@@ -610,7 +610,7 @@ variable "ehns_alerts_enabled" {
 }
 
 variable "ehns_public_network_access" {
-  type = bool
+  type        = bool
   description = "(Required) enables public network access to the event hubs"
 }
 
@@ -646,10 +646,10 @@ EOD
 
 variable "is_feature_enabled" {
   type = object({
-    vnet_ita = bool,
-    container_app_tools_cae = optional(bool, false),
+    vnet_ita                  = bool,
+    container_app_tools_cae   = optional(bool, false),
     node_forwarder_ha_enabled = bool
-    vpn = optional(bool, false)
+    vpn                       = optional(bool, false)
   })
   description = "Features enabled in this domain"
 }

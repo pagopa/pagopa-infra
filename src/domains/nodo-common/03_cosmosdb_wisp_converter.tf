@@ -1,5 +1,5 @@
 module "cosmosdb_account_wispconv" {
-  count               = var.enable_wisp_converter ? 1 : 0
+  count = var.enable_wisp_converter ? 1 : 0
 
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
   domain              = var.domain

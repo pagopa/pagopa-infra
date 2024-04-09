@@ -19,8 +19,8 @@ tags = {
 
 ### Feature Flag
 is_feature_enabled = {
-  vnet_ita = false,
-  container_app_tools_cae = true,
+  vnet_ita                  = false,
+  container_app_tools_cae   = true,
   node_forwarder_ha_enabled = false
 }
 
@@ -167,7 +167,7 @@ base_path_nodo_oncloud           = "/nodo-uat"
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
 ehns_capacity                 = 5
-ehns_public_network_access = true
+ehns_public_network_access    = true
 
 ehns_metric_alerts = {
   no_trx = {

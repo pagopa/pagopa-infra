@@ -19,14 +19,14 @@ tags = {
 
 ### Feature Flag
 is_feature_enabled = {
-  vnet_ita = true,
-  container_app_tools_cae = true,
+  vnet_ita                  = true,
+  container_app_tools_cae   = true,
   node_forwarder_ha_enabled = true,
-  vpn = true,
+  vpn                       = true,
 }
 
 ### Network west europe
-cidr_subnet_vpn                      = ["10.1.142.0/24"]
+cidr_subnet_vpn       = ["10.1.142.0/24"]
 cidr_subnet_tools_cae = ["10.1.248.0/23"]
 
 ### Network Italy
