@@ -1,5 +1,5 @@
 ############################################
-## WISP Converter - Redirect API ##
+## WISP Converter - Decoupler Caching API ##
 ############################################
 
 resource "azurerm_api_management_api_version_set" "api_version_set_wisp_converter_decoupler_caching" {

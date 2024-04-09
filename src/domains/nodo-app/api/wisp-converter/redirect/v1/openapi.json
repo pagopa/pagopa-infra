@@ -8,7 +8,7 @@
   },
   "servers": [
     {
-      "url": "https://{host}{basePath}/wisp-converter/redirect",
+      "url": "https://{host}",
       "description": "Generated server url"
     }
   ],

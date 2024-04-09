@@ -453,11 +453,11 @@ variable "enable_wisp_converter" {
 
 variable "wisp_converter" {
   type = object({
-    brokerPSP_blacklist = []
-    channel_blacklist = []
+    brokerPSP_blacklist = string
+    channel_blacklist   = string
   })
   default = {
-    brokerPSP_blacklist = ["15376371009"]
-    channel_blacklist = ["15376371009_01"]
+    brokerPSP_blacklist = "15376371009"
+    channel_blacklist   = "15376371009_01"
   }
 }

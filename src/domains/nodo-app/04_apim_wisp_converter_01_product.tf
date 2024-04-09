@@ -36,7 +36,8 @@ resource "azurerm_api_management_named_value" "is_wisp_converter_enabled_named_v
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   display_name        = "Enabler for WISP dismantling"
-  value               = var.enable_wisp_converter
+  #value               = var.enable_wisp_converter
+  value = false
 }
 
 resource "azurerm_api_management_named_value" "wisp_brokerPSP_blacklist_named_value" {

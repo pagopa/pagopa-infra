@@ -20,14 +20,14 @@ data "azurerm_api_management_api" "apim_nodo_per_pa_api_v1" {
 
 locals {
   nodoInviaRPT = {
-    dev = "6218976195aa0303ccfcf8fa",
-    uat = "",
-    prod = "",
-  },
+    dev  = "6218976195aa0303ccfcf8fa"
+    uat  = ""
+    prod = ""
+  }
   nodoInviaCarrelloRPT = {
-    dev = "6218976195aa0303ccfcf8fb",
-    uat = "",
-    prod = "",
+    dev  = "6218976195aa0303ccfcf8fb"
+    uat  = ""
+    prod = ""
   }
 }
 
@@ -44,10 +44,8 @@ resource "azurerm_api_management_api_operation_policy" "wisp_policy_nodoInviaRPT
 
   # the enable is managed through is-wisp-converter-enabled named value
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/wisp-converter/nodoInviaRPT.xml.tpl", {
-    wisp-soap-converter-base-url = var.apim_nodo_decoupler_enable ?
-    "https://${local.nodo_hostname}/wisp-soap-converter" :
-    "https://${local.nodo_hostname}/wisp-soap-converter/webservices/input/"
-
+    is-nodo-decoupler-enabled    = var.apim_nodo_decoupler_enable,
+    wisp-soap-converter-base-url = var.apim_nodo_decoupler_enable ? "https://${local.nodo_hostname}/wisp-soap-converter" : "https://${local.nodo_hostname}/wisp-soap-converter/webservices/input/"
   })
 }
 
@@ -62,9 +60,7 @@ resource "azurerm_api_management_api_operation_policy" "wisp_policy_nodoInviaCar
 
   # the enable is managed through is-wisp-converter-enabled named value
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/wisp-converter/nodoInviaCarrelloRPT.xml.tpl", {
-    wisp-soap-converter-base-url = var.apim_nodo_decoupler_enable ?
-    "https://${local.nodo_hostname}/wisp-soap-converter" :
-    "https://${local.nodo_hostname}/wisp-soap-converter/webservices/input/"
-
+    is-nodo-decoupler-enabled    = var.apim_nodo_decoupler_enable,
+    wisp-soap-converter-base-url = var.apim_nodo_decoupler_enable ? "https://${local.nodo_hostname}/wisp-soap-converter" : "https://${local.nodo_hostname}/wisp-soap-converter/webservices/input/"
   })
 }
