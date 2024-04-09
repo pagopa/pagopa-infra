@@ -170,6 +170,10 @@
           "authorizationCode": {
             "type": "string",
             "description": "Authorization code sent by the payment gateway, present only if `outcomePaymentGateway` is `OK`"
+          },
+          "eMail": {
+            "type": "string",
+            "description": "User email used for the transaction outcome notification"
           }
         }
       },
@@ -243,6 +247,10 @@
             "type": "string",
             "format": "date-time",
             "description": "Transaction timestamp"
+          },
+          "eMail": {
+            "type": "string",
+            "description": "User email used for the transaction outcome notification"
           }
         },
         "required": [
@@ -251,19 +259,6 @@
           "totalAmount",
           "fee",
           "timestampOperation"
-        ]
-      },
-      "AdditionalPaymentInformations": {
-        "oneOf": [
-          {
-            "$ref": "#/components/schemas/CardAdditionalPaymentInformations"
-          },
-          {
-            "$ref": "#/components/schemas/RedirectAdditionalPaymentInformations"
-          },
-          {
-            "$ref": "#/components/schemas/PayPalAdditionalPaymentInformations"
-          }
         ]
       },
       "RedirectClosePaymentRequestV2": {
