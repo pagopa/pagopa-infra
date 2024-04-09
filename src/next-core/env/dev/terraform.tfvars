@@ -616,33 +616,7 @@ eventhubs_04 = [
         manage = false
       }
     ]
-  },
-  {
-    name              = "pagopa-printit-evh"
-    partitions        = 32
-    message_retention = 7
-    consumers         = ["pagopa-notice-evt-rx", "pagopa-notice-complete-evt-tx", "pagopa-notice-error-evt-tx"]
-    keys = [
-      {
-        name   = "pagopa-notice-evt-rx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-biz-evt-rx-pdnd"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
+  }
 ]
 
 node_forwarder_autoscale_enabled      = false

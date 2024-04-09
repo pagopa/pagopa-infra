@@ -1,3 +1,9 @@
+locals {
+  eventhub = {
+    name : format("%s-printit-evh-ns01", local.project)
+  }
+}
+
 resource "azurerm_resource_group" "msg_rg" {
   name     = format("%s-msg-rg", local.project)
   location = var.location
@@ -19,7 +25,7 @@ module "printit_eventhub_snet" {
 
 module "printit_event_hub" {
   source                   = "git::https://github.com/pagopa/azurerm.git//eventhub?ref=v1.0.90"
-  name                     = format("%s-printit-evh-ns01", local.project)
+  name                     = local.eventhub.name
   location                 = var.location
   resource_group_name      = azurerm_resource_group.msg_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
@@ -57,20 +63,20 @@ data "azurerm_eventhub_namespace" "printit_event_hub_namespace" {
 data "azurerm_eventhub_authorization_rule" "pagopa_evh_printit-evt_notice-evt-rx" {
   name                = "${var.prefix}-notice-evt-rx"
   namespace_name      = data.azurerm_eventhub_namespace.printit_event_hub_namespace
-  eventhub_name       = module.printit_event_hub.name
+  eventhub_name       = local.eventhub.name
   resource_group_name = azurerm_resource_group.msg_rg
 }
 
 data "azurerm_eventhub_authorization_rule" "pagopa_evh_printit-evt_notice-complete-evt-rx" {
   name                = "${var.prefix}-notice-complete-evt-tx"
   namespace_name      = data.azurerm_eventhub_namespace.printit_event_hub_namespace
-  eventhub_name       = module.printit_event_hub.name
+  eventhub_name       = local.eventhub.name
   resource_group_name = azurerm_resource_group.msg_rg
 }
 
 data "azurerm_eventhub_authorization_rule" "pagopa_evh_printit-evt_notice-error-evt-rx" {
   name                = "${var.prefix}-notice-error-evt-tx"
   namespace_name      = data.azurerm_eventhub_namespace.printit_event_hub_namespace
-  eventhub_name       = module.printit_event_hub.name
+  eventhub_name       = local.eventhub.name
   resource_group_name = azurerm_resource_group.msg_rg
 }
