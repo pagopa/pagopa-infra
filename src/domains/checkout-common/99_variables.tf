@@ -125,10 +125,26 @@ variable "pagopa_proxy_redis_capacity" {
   default = 1
 }
 
+variable "pagopa_proxy_redis_ha_capacity" {
+  type    = number
+  default = 1
+}
+
 variable "pagopa_proxy_redis_sku_name" {
   type    = string
   default = null
 }
+
+variable "pagopa_proxy_redis_ha_sku_name" {
+  type    = string
+  default = null
+}
+
+variable "pagopa_proxy_redis_ha_family" {
+  type    = string
+  default = null
+}
+
 
 variable "pagopa_proxy_redis_family" {
   type    = string
@@ -151,4 +167,10 @@ variable "redis_version" {
   type        = string
   default     = "6"
   description = "(Optional) redis version"
+}
+
+variable "redis_ha_enabled" {
+  type        = bool
+  description = "(Optional) enables the deployment of premium redis with multiple availability zones"
+  default     = true
 }

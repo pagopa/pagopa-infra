@@ -46,7 +46,7 @@
                 DateTimeOffset dateTimeOffset = new DateTimeOffset(utcDateTime);
                 timestampOperation = dateTimeOffset.ToString("o");
             }
-            if(additionalData.Type != JTokenType.Null){
+            if(additionalData != null && additionalData.Type != JTokenType.Null){
                 JObject receivedAdditionalData = (JObject)additionalData;
                 errorCode = (string)receivedAdditionalData["authorizationStatus"];
                 cardId4 = (string)((JObject)additionalData)["cardId4"];

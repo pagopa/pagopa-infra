@@ -256,3 +256,8 @@ variable "cidr_subnet_test_data_storage_account" {
   description = "Storage account network address space."
   default     = null
 }
+
+variable "redis_ha_enabled" {
+  type = bool
+  description = "(Required) If true, enables the usage of HA redis instance"
+}
