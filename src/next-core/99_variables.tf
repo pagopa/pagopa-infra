@@ -649,6 +649,7 @@ variable "is_feature_enabled" {
     vnet_ita = bool,
     container_app_tools_cae = optional(bool, false),
     node_forwarder_ha_enabled = bool
+    vpn = optional(bool, false)
   })
   description = "Features enabled in this domain"
 }
@@ -683,3 +684,8 @@ variable "node_forwarder_sku" {
   default     = "P3v3"
 }
 
+### VPN
+variable "cidr_subnet_vpn" {
+  type        = list(string)
+  description = "VPN network address space."
+}

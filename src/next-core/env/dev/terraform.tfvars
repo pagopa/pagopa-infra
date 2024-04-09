@@ -21,13 +21,17 @@ tags = {
 is_feature_enabled = {
   vnet_ita = true,
   container_app_tools_cae = true,
-  node_forwarder_ha_enabled = true
+  node_forwarder_ha_enabled = true,
+  vpn = true,
 }
 
-### Network
+### Network west europe
+cidr_subnet_vpn                      = ["10.1.142.0/24"]
+cidr_subnet_tools_cae = ["10.1.248.0/23"]
+
+### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]
 
-cidr_subnet_tools_cae = ["10.1.248.0/23"]
 
 #
 # Dns
