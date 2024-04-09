@@ -450,3 +450,14 @@ variable "enable_wisp_converter" {
   default     = false
   description = "Enable WISP converter system, replacing old WISP handling"
 }
+
+variable "wisp_converter" {
+  type = object({
+    brokerPSP_blacklist = []
+    channel_blacklist = []
+  })
+  default = {
+    brokerPSP_blacklist = ["15376371009"]
+    channel_blacklist = ["15376371009_01"]
+  }
+}
