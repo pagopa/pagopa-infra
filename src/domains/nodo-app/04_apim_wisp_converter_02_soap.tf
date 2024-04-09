@@ -32,9 +32,7 @@ locals {
 }
 
 
-# nodoInviaRPT DEV
-# nodoInviaRPT UAT
-# nodoInviaRPT PRD
+# nodoInviaRPT
 resource "azurerm_api_management_api_operation_policy" "wisp_policy_nodoInviaRPT" {
 
   api_name            = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1.name
