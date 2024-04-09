@@ -21,7 +21,8 @@ tags = {
 is_feature_enabled = {
   vnet_ita                  = false,
   container_app_tools_cae   = false,
-  node_forwarder_ha_enabled = false
+  node_forwarder_ha_enabled = false,
+  dns_forwarder_lb = true
 }
 
 #
@@ -45,7 +46,6 @@ log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
 ### VPN
-dns_forwarder_backup_is_enabled = true
 dns_forwarder_vm_image_name     = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
 
 
