@@ -23,13 +23,13 @@ is_feature_enabled = {
   container_app_tools_cae   = true,
   node_forwarder_ha_enabled = true,
   vpn                       = true,
-  dns_forwarder_lb = true
+  dns_forwarder_lb          = true
 }
 
 ### Network west europe
-cidr_subnet_vpn       = ["10.1.142.0/24"]
+cidr_subnet_vpn                  = ["10.1.142.0/24"]
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
-cidr_subnet_tools_cae = ["10.1.248.0/23"]
+cidr_subnet_tools_cae            = ["10.1.248.0/23"]
 
 ### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]

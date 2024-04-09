@@ -650,7 +650,7 @@ variable "is_feature_enabled" {
     container_app_tools_cae   = optional(bool, false),
     node_forwarder_ha_enabled = bool
     vpn                       = optional(bool, false)
-    dns_forwarder_lb                       = optional(bool, false)
+    dns_forwarder_lb          = optional(bool, false)
   })
   description = "Features enabled in this domain"
 }
