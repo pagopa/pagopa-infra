@@ -40,18 +40,18 @@ resource "azurerm_api_management_named_value" "is_wisp_converter_enabled_named_v
   value = false
 }
 
-resource "azurerm_api_management_named_value" "wisp_brokerPSP_blacklist_named_value" {
-  name                = "wisp-brokerPSP-blacklist"
+resource "azurerm_api_management_named_value" "wisp_brokerPSP_whitelist_named_value" {
+  name                = "wisp-brokerPSP-whitelist"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = replace("List of brokerPSPs not handled by WISP dismantling", " ", "_")
-  value               = var.wisp_converter.brokerPSP_blacklist
+  display_name        = replace("List of brokerPSPs handled by WISP dismantling", " ", "_")
+  value               = var.wisp_converter.brokerPSP_whitelist
 }
 
-resource "azurerm_api_management_named_value" "wisp_channel_blacklist_named_value" {
-  name                = "wisp-channel-blacklist"
+resource "azurerm_api_management_named_value" "wisp_channel_whitelist_named_value" {
+  name                = "wisp-channel-whitelist"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = replace("List of channels not handled by WISP dismantling", " ", "_")
-  value               = var.wisp_converter.channel_blacklist
+  display_name        = replace("List of channels handled by WISP dismantling", " ", "_")
+  value               = var.wisp_converter.channel_whitelist
 }

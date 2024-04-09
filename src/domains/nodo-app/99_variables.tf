@@ -453,11 +453,11 @@ variable "enable_wisp_converter" {
 
 variable "wisp_converter" {
   type = object({
-    brokerPSP_blacklist = string
-    channel_blacklist   = string
+    brokerPSP_whitelist = string
+    channel_whitelist   = string
   })
   default = {
-    brokerPSP_blacklist = "15376371009"
-    channel_blacklist   = "15376371009_01"
+    brokerPSP_whitelist = "97735020584" # AGID
+    channel_whitelist   = "97735020584_02,97735020584_03,97735020584_06"
   }
 }
