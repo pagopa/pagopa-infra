@@ -1,0 +1,123 @@
+# only manual
+trigger: none
+pr: none
+
+parameters:
+  - name: 'DEV'
+    displayName: 'Run on DEV environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'UAT'
+    displayName: 'Run on UAT environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'PROD'
+    displayName: 'Run on PROD environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+
+variables:
+  TIME_OUT: 10
+  # working dir
+  WORKING_DIR: 'src'
+  poolNameDev: '$(TF_POOL_NAME_DEV)'
+  poolNameUat: '$(TF_POOL_NAME_UAT)'
+  poolNameProd: '$(TF_POOL_NAME_PROD)'
+  #APPLY
+  azureServiceConnectionApplyNameDev: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
+  azureServiceConnectionApplyNameUat: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
+  azureServiceConnectionApplyNameProd: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
+  githubEndpointName: '$(TF_GITHUB_SERVICE_ENDPOINT_NAME)'
+
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+    - repository: terraform
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: cbc149b
+      endpoint: "io-azure-devops-github-ro"
+
+
+stages:
+  - stage: UAT
+    dependsOn: []
+    condition: and(succeeded(), eq(${{parameters.UAT}}, true))
+    pool:
+      name: "${{variables.poolNameUat}}"
+    jobs:
+      - job: fdr_failover
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - template: templates/postgres-flexible-failover/template.yaml@terraform
+            parameters:
+              TF_DNS_ZONE_NAME: "u.internal.postgresql.pagopa.it"
+              TF_DNS_ZONE_RG_NAME: "pagopa-u-vnet-rg"
+              TF_DNS_ZONE_RECORD_NAME: "fdr-db"
+              TF_FAILED_DB_NAME: "pagopa-u-weu-fdr-flexible-postgresql"
+              TF_FAILOVER_DB_NAME: "pagopa-u-neu-fdr-pgflex"
+              WORKINGDIR: ${{ variables.WORKING_DIR }}
+              TF_AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameUat}}"
+
+  - stage: PROD
+    dependsOn: []
+    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+    pool:
+      name: "${{variables.poolNameProd}}"
+    jobs:
+      - job: fdr_failover
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - template: templates/postgres-flexible-failover/template.yaml@terraform
+            parameters:
+              TF_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
+              TF_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
+              TF_DNS_ZONE_RECORD_NAME: "fdr-db"
+              TF_FAILED_DB_NAME: "pagopa-p-weu-fdr-flexible-postgresql"
+              TF_FAILOVER_DB_NAME: "pagopa-p-neu-fdr-pgflex"
+              WORKINGDIR: ${{ variables.WORKING_DIR }}
+              TF_AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
+      - job: gpd_failover
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - template: templates/postgres-flexible-failover/template.yaml@terraform
+            parameters:
+              TF_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
+              TF_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
+              TF_DNS_ZONE_RECORD_NAME: "gpd-db"
+              TF_FAILED_DB_NAME: "pagopa-p-gpd-pgflex"
+              TF_FAILOVER_DB_NAME: "pagopa-p-neu-gps-pgflex"
+              WORKINGDIR: ${{ variables.WORKING_DIR }}
+              TF_AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
+      - job: nodo_failover
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        steps:
+          - template: templates/postgres-flexible-failover/template.yaml@terraform
+            parameters:
+              TF_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
+              TF_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
+              TF_DNS_ZONE_RECORD_NAME: "nodo-db"
+              TF_FAILED_DB_NAME: "pagopa-p-weu-nodo-flexible-postgresql"
+              TF_FAILOVER_DB_NAME: "pagopa-p-neu-nodo-flexible-postgresql"
+              WORKINGDIR: ${{ variables.WORKING_DIR }}
+              TF_AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
