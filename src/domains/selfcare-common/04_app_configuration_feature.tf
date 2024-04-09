@@ -115,3 +115,16 @@ resource "azurerm_app_configuration_feature" "delegations_list_flag" {
     ]
   }
 }
+
+resource "azurerm_app_configuration_feature" "payments_receipts_flag" {
+  configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
+  description            = "It enables the payments receipts' page"
+  name                   = "payments-receipts"
+  enabled                = false
+
+  lifecycle {
+    ignore_changes = [
+      enabled,
+    ]
+  }
+}
