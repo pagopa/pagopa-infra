@@ -17,6 +17,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_pagopa_proxy_redis"></a> [pagopa\_proxy\_redis](#module\_pagopa\_proxy\_redis) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v7.69.1 |
+| <a name="module_pagopa_proxy_redis_ha"></a> [pagopa\_proxy\_redis\_ha](#module\_pagopa\_proxy\_redis\_ha) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v7.69.1 |
 | <a name="module_pagopa_proxy_redis_snet"></a> [pagopa\_proxy\_redis\_snet](#module\_pagopa\_proxy\_redis\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.69.1 |
 
 ## Resources
@@ -60,8 +61,12 @@
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_pagopa_proxy_redis_capacity"></a> [pagopa\_proxy\_redis\_capacity](#input\_pagopa\_proxy\_redis\_capacity) | n/a | `number` | `1` | no |
 | <a name="input_pagopa_proxy_redis_family"></a> [pagopa\_proxy\_redis\_family](#input\_pagopa\_proxy\_redis\_family) | n/a | `string` | `"C"` | no |
+| <a name="input_pagopa_proxy_redis_ha_capacity"></a> [pagopa\_proxy\_redis\_ha\_capacity](#input\_pagopa\_proxy\_redis\_ha\_capacity) | n/a | `number` | `1` | no |
+| <a name="input_pagopa_proxy_redis_ha_family"></a> [pagopa\_proxy\_redis\_ha\_family](#input\_pagopa\_proxy\_redis\_ha\_family) | n/a | `string` | `null` | no |
+| <a name="input_pagopa_proxy_redis_ha_sku_name"></a> [pagopa\_proxy\_redis\_ha\_sku\_name](#input\_pagopa\_proxy\_redis\_ha\_sku\_name) | n/a | `string` | `null` | no |
 | <a name="input_pagopa_proxy_redis_sku_name"></a> [pagopa\_proxy\_redis\_sku\_name](#input\_pagopa\_proxy\_redis\_sku\_name) | n/a | `string` | `null` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
+| <a name="input_redis_ha_enabled"></a> [redis\_ha\_enabled](#input\_redis\_ha\_enabled) | (Optional) enables the deployment of premium redis with multiple availability zones | `bool` | `true` | no |
 | <a name="input_redis_private_endpoint_enabled"></a> [redis\_private\_endpoint\_enabled](#input\_redis\_private\_endpoint\_enabled) | Enable private endpoints for redis instances? | `bool` | `true` | no |
 | <a name="input_redis_version"></a> [redis\_version](#input\_redis\_version) | (Optional) redis version | `string` | `"6"` | no |
 | <a name="input_redis_zones"></a> [redis\_zones](#input\_redis\_zones) | (Required) redis deployment zones | `list(number)` | n/a | yes |

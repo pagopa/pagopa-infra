@@ -130,12 +130,6 @@ variable "ecommerce_vpos_psps_list" {
   default     = ""
 }
 
-variable "ecommerce_npg_psps_list" {
-  type        = string
-  description = "psps list using npg as comma separated value"
-  default     = ""
-}
-
 variable "dns_zone_checkout" {
   type        = string
   default     = null
