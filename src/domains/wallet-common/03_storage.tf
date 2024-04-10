@@ -226,15 +226,3 @@ resource "azurerm_monitor_metric_alert" "queue_storage_account_average_message_c
     skip_metric_validation = false
   }
 }
-
-resource "azurerm_key_vault_secret" "wallet_storage_connection_string" {
-  name         = "wallet-storage-connection-string"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
