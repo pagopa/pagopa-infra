@@ -206,3 +206,9 @@ resource "azurerm_key_vault_secret" "migration_wallet_token_test_dev" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "wallet_storage_connection_string" {
+  name         = "wallet-storage-connection-string"
+  value        = module.wallet_storage.primary_connection_string
+  key_vault_id = module.key_vault.id
+}
