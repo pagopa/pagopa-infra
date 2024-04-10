@@ -147,6 +147,16 @@ resource "azurerm_key_vault_secret" "redis_password" {
   key_vault_id = module.key_vault.id
 }
 
+
+resource "azurerm_key_vault_secret" "redis_hostname" {
+  name         = "redis-hostname"
+  value        = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].hostname : data.azurerm_redis_cache.redis_cache.hostname
+
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 # https://api.dev.platform.pagopa.it/shared/authorizer/v1
 resource "azurerm_key_vault_secret" "authorizer_refresh_configuration_url" {
   name         = format("auth-%s-refresh-configuration-url", var.env_short)

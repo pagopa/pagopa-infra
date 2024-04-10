@@ -137,3 +137,12 @@ resource "azurerm_key_vault_secret" "redis_primary_key" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
+
+
+resource "azurerm_key_vault_secret" "redis_hostname" {
+  name         = "redis-hostname"
+  value        = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].hostname : data.azurerm_redis_cache.redis_cache.hostname
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
