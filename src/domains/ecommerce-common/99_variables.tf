@@ -150,6 +150,7 @@ variable "redis_ecommerce_params" {
     family      = string
     version     = string
     ha_enabled  = bool
+    ha_usage    = bool
     capacity_ha = number
     family_ha   = string
     sku_name_ha = string
