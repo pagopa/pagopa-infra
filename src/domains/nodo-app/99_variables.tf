@@ -438,9 +438,12 @@ variable "storage_account_info" {
 variable "enabled_features" {
   type = object({
     apim_v2 = bool
+    eventhub_ha = bool
   })
   default = {
     apim_v2 = false
+    eventhub_ha = false
   }
   description = "Features enabled in this domain"
 }
+
