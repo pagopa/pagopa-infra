@@ -35,7 +35,7 @@ resource "azurerm_api_management_named_value" "is_wisp_converter_enabled_named_v
   name                = "is-wisp-converter-enabled"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = replace("Enabler for WISP dismantling", " ", "_")
+  display_name        = "is-wisp-converter-enabled"
   #value               = var.enable_wisp_converter
   value = false
 }
@@ -44,7 +44,7 @@ resource "azurerm_api_management_named_value" "wisp_brokerPSP_whitelist_named_va
   name                = "wisp-brokerPSP-whitelist"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = replace("List of brokerPSPs handled by WISP dismantling", " ", "_")
+  display_name        = "wisp-brokerPSP-whitelist"
   value               = var.wisp_converter.brokerPSP_whitelist
 }
 
@@ -52,7 +52,7 @@ resource "azurerm_api_management_named_value" "wisp_channel_whitelist_named_valu
   name                = "wisp-channel-whitelist"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = replace("List of channels handled by WISP dismantling", " ", "_")
+  display_name        = "wisp-channel-whitelist"
   value               = var.wisp_converter.channel_whitelist
 }
 
@@ -60,14 +60,14 @@ resource "azurerm_api_management_named_value" "wisp_dismantling_primitives" {
   name                = "wisp-dismantling-primitives"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = replace("List of primitives included for WISP dismantling", " ", "_")
+  display_name        = "wisp-dismantling-primitives"
   value               = var.wisp_converter.dismantling_primitives
 }
 
 resource "azurerm_api_management_named_value" "wisp_dismantling_backend_url" {
-  name                = "wisp-dismantling-primitives"
+  name                = "wisp-dismantling-backend-url"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = replace("Backend URL used for redirection to WISP SOAP Converter", " ", "_")
+  display_name        = "wisp-dismantling-backend-url"
   value               = "https://${local.nodo_hostname}/wisp-soap-converter"
 }

@@ -50,3 +50,44 @@ resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_a
   resource_group_name = azurerm_resource_group.rg_api.name
 }
 
+# decoupler algorithm fragment
+resource "azapi_resource" "decoupler_algorithm_wisp" {
+  count = var.env_short == "d" ? 1 : 0
+
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "decoupler-algorithm-wisp"
+  parent_id = module.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "[WISP] Logic about NPD decoupler"
+      format      = "rawxml"
+      value       = file("./api_product/nodo_pagamenti_api/wisp_decoupler/decoupler-algorithm-wisp.xml")
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
+
+# fragment for managing outbound policy if primitive is activatePayment or activateIO
+resource "azapi_resource" "decoupler_activate_outbound_wisp" {
+  count = var.env_short == "d" ? 1 : 0
+
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "decoupler-activate-outbound-wisp"
+  parent_id = module.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "[WISP] Outbound logic for Activate primitive of NDP decoupler"
+      format      = "rawxml"
+      value       = file("./api_product/nodo_pagamenti_api/wisp_decoupler/decoupler-activate-outbound-wisp.xml")
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
