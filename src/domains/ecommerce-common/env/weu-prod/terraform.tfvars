@@ -72,6 +72,7 @@ redis_ecommerce_params = {
   family      = "C"
   version     = 6
   ha_enabled  = false
+  ha_usage    = false
   capacity_ha = 1
   family_ha   = "P"
   sku_name_ha = "Premium"
