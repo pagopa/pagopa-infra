@@ -7,6 +7,7 @@
 ## towards default backend url  ##
 ##################################
 
+/*
 data "azurerm_resource_group" "rg_api" {
   name = "${local.product}-api-rg"
 }
@@ -62,3 +63,4 @@ resource "azurerm_api_management_api_operation_policy" "wisp_policy_nodoInviaCar
     wisp-soap-converter-base-url = var.apim_nodo_decoupler_enable ? "https://${local.nodo_hostname}/wisp-soap-converter" : "https://${local.nodo_hostname}/wisp-soap-converter/webservices/input/"
   })
 }
+*/

@@ -453,11 +453,13 @@ variable "enable_wisp_converter" {
 
 variable "wisp_converter" {
   type = object({
-    brokerPSP_whitelist = string
-    channel_whitelist   = string
+    brokerPSP_whitelist    = string
+    channel_whitelist      = string
+    dismantling_primitives = string
   })
   default = {
-    brokerPSP_whitelist = "97735020584" # AGID
-    channel_whitelist   = "97735020584_02,97735020584_03,97735020584_06"
+    brokerPSP_whitelist    = "97735020584" # AGID
+    channel_whitelist      = "97735020584_02,97735020584_03,97735020584_06"
+    dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
   }
 }

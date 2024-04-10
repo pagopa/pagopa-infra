@@ -55,3 +55,19 @@ resource "azurerm_api_management_named_value" "wisp_channel_whitelist_named_valu
   display_name        = replace("List of channels handled by WISP dismantling", " ", "_")
   value               = var.wisp_converter.channel_whitelist
 }
+
+resource "azurerm_api_management_named_value" "wisp_dismantling_primitives" {
+  name                = "wisp-dismantling-primitives"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = replace("List of primitives included for WISP dismantling", " ", "_")
+  value               = var.wisp_converter.dismantling_primitives
+}
+
+resource "azurerm_api_management_named_value" "wisp_dismantling_backend_url" {
+  name                = "wisp-dismantling-primitives"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = replace("Backend URL used for redirection to WISP SOAP Converter", " ", "_")
+  value               = "https://${local.nodo_hostname}/wisp-soap-converter"
+}
