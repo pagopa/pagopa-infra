@@ -377,6 +377,8 @@
             "format" : "int64"
           },
           "description" : {
+            "maxLength" : 140,
+            "minLength" : 0,
             "type" : "string"
           },
           "isPartialPayment" : {
@@ -468,9 +470,13 @@
             "default" : false
           },
           "companyName" : {
+            "maxLength" : 140,
+            "minLength" : 0,
             "type" : "string"
           },
           "officeName" : {
+            "maxLength" : 140,
+            "minLength" : 0,
             "type" : "string"
           },
           "validityDate" : {
