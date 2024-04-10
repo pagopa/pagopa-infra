@@ -32,6 +32,7 @@
 | [azurerm_app_configuration_feature.commission_bundles_private_flag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.commission_bundles_public_flag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.delegations_list_flag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
+| [azurerm_app_configuration_feature.payments_receipts_flag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.is_operation_flag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.maintenance_banner_flag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.maintenance_flag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |

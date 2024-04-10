@@ -165,7 +165,7 @@
                                 var info = (JObject)(wallet["info"]);
                                 var pspArray = (JArray)(info["pspInfo"]);
                                 var pspInfo = (JObject)(pspArray[0]);
-                                details["abi"] = pspInfo["abi"];
+                                details["pspId"] = pspInfo["abi"];
                                 details["maskedEmail"] = pspInfo["email"];
                                 paymentMethodAsset = "https://assets.cdn.platform.pagopa.it/apm/paypal.png";
                             }

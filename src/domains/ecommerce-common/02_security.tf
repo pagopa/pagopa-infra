@@ -221,16 +221,15 @@ resource "azurerm_key_vault_secret" "redis_ecommerce_password" {
   }
 }
 
-
 resource "azurerm_key_vault_secret" "redis_ecommerce_access_key" {
   name         = "redis-ecommerce-access-key"
-  value        = module.pagopa_ecommerce_redis.primary_access_key
+  value        = var.redis_ecommerce_params.ha_usage ? module.pagopa_ecommerce_redis_ha[0].primary_access_key : module.pagopa_ecommerce_redis.primary_access_key
   key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "redis_ecommerce_hostname" {
   name         = "redis-ecommerce-hostname"
-  value        = module.pagopa_ecommerce_redis.hostname
+  value        = var.redis_ecommerce_params.ha_usage ? module.pagopa_ecommerce_redis_ha[0].hostname : module.pagopa_ecommerce_redis.hostname
   key_vault_id = module.key_vault.id
 }
 

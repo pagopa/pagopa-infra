@@ -683,13 +683,7 @@
               },
               "brand": {
                 "description": "Payment instrument brand",
-                "type": "string",
-                "enum": [
-                  "MASTERCARD",
-                  "VISA",
-                  "AMEX",
-                  "MAESTRO"
-                ]
+                "type": "string"
               }
             },
             "required": [
@@ -707,12 +701,9 @@
                 "type": "string",
                 "description": "Wallet details discriminator field. Fixed valued 'PAYPAL'"
               },
-              "abi": {
+              "pspId": {
                 "description": "bank idetifier",
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 5,
-                "example": "12345"
+                "type": "string"
               },
               "maskedEmail": {
                 "description": "email masked pan",
@@ -722,8 +713,7 @@
             },
             "required": [
               "type",
-              "abi",
-              "maskedEmail"
+              "pspId"
             ]
           },
           {

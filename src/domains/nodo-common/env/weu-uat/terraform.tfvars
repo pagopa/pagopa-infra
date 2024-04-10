@@ -275,3 +275,6 @@ wisp_converter_storage_account = {
   backup_enabled                = false
   backup_retention_days         = 0
 }
+
+
+redis_ha_enabled = false
