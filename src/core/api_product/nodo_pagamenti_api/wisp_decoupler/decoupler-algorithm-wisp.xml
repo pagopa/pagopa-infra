@@ -114,6 +114,7 @@ new JProperty("ttl", 1)
 }" />
 </otherwise>
   </choose>
+<!-- TODO insert here wisp logic! -->
   <!-- check if key is cached -->
 <cache-lookup-value key="@{
                         var domain = (string)context.Variables["domain"];
