@@ -235,7 +235,7 @@ data "azurerm_redis_cache" "redis_cache" {
 
 
 data "azurerm_redis_cache" "redis_cache_ha" {
-  count = var.redis_ha_enabled ? 1 : 0
+  count               = var.redis_ha_enabled ? 1 : 0
   name                = format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short)
   resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
 }
