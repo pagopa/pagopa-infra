@@ -39,6 +39,8 @@ cidr_subnet_pagopa_proxy_ha = ["10.1.194.0/28"]
 pagopa_proxy_plan_sku             = "S1"
 pagopa_proxy_zone_balance_enabled = false
 pagopa_proxy_ha_enabled           = false
+
+redis_ha_enabled = false
 # Checkout
 
 checkout_enabled = true
