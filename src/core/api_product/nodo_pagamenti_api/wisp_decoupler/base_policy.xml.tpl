@@ -21,7 +21,7 @@
     </choose>
     <!-- read decoupler configuration json -->
     <choose>
-      <when condition="@(true)">
+      <when condition="@(${is-nodo-auth-pwd-replace})">
         <!-- the following block code is to override password XML element with default nodoAuthPassword -->
         <set-variable name="password" value="{{nodoAuthPassword}}" />
         <set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction"))" />
@@ -118,7 +118,7 @@
             else if (activatePayment.Contains(soapAction) || soapAction.Equals(verifyPaymentNotice) || sendPaymentOutcome.Contains(soapAction)) {
                 return "NM3";
             }
-            if (wispDismantlingPrimitives.Contains(soapAction)) {
+            else if (wispDismantlingPrimitives.Contains(soapAction)) {
                 return "OTHER_WISPDISMANTLING";
             }
             return "NOTSET";

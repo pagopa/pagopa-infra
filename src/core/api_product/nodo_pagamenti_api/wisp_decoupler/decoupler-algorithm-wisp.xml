@@ -8,7 +8,7 @@
   <trace source="primitive-type" severity="information">@((string) context.Variables["primitiveType"])</trace>
   <set-variable name="enable_nm3_switch" value="{{enable-nm3-decoupler-switch}}" />
   <set-variable name="enable_routing_switch" value="{{enable-routing-decoupler-switch}}" />
-  <set-variable name="enable_wispdismantling_switch" value="{{is-wisp-converter-enabled}}" />
+  <set-variable name="enable_wisp_dismantling_switch" value="{{is-wisp-converter-enabled}}" />
   <choose>
     <!-- evaluate routing algorithm -->
     <when condition="@(((string)context.Variables["primitiveType"]).Equals("ROUTING"))">
@@ -44,8 +44,6 @@
     </otherwise>
   </choose>
 </when>
-
-
 <when condition="@(((string)context.Variables["primitiveType"]).Equals("NM3"))">
 <set-variable name="configuration" value="@{
     JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
@@ -249,16 +247,21 @@ new JProperty("ttl", requestData.GetValue("ttl"))
   </when>
   <!-- evaluate wisp dismantling algorithm -->
 <when condition="@(((string)context.Variables["primitiveType"]).Equals("OTHER_WISPDISMANTLING"))">
-<choose>
-<when condition="@(context.Variables.GetValueOrDefault<string>("enable_wispdismantling_switch", "").Equals("true"))">
-
-<set-variable name="whitelisted_brokers" value="{{wisp-brokerPSP-whitelist}}" />
-<set-variable name="whitelisted_channels" value="{{wisp-channel-whitelist}}" />
-
+<set-variable name="wisp_whitelisted_brokers" value="{{wisp-brokerPSP-whitelist}}" />
+<set-variable name="wisp_whitelisted_channels" value="{{wisp-channel-whitelist}}" />
 <set-variable name="is_whitelisted" value="@{
+                        // isWhiteListed if:
+                        // - lists are empties
+                        // - channelId and brokerPSP belong to relative lists
+
                         bool isWhitelisted = false;
-                        string[] brokers = ((string) context.Variables["whitelisted_brokers"]).Split(',');
-                        string[] channels = ((string) context.Variables["whitelisted_channels"]).Split(',');
+                        string[] brokers = ((string) context.Variables["wisp_whitelisted_brokers"]).Split(',');
+                        string[] channels = ((string) context.Variables["wisp_whitelisted_channels"]).Split(',');
+
+                        if (brokers.Count() == 0 && channels.Count() == 0) {
+                            isWhitelisted = true;
+                            return isWhitelisted;
+                        }
 
                         XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
                         try {
@@ -266,27 +269,22 @@ new JProperty("ttl", requestData.GetValue("ttl"))
                             XElement primitive = (XElement) body.FirstNode;
                             string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
                             string pspBrokerId = (string) primitive.Descendants("identificativoIntermediarioPSP").FirstOrDefault();
+
                             isWhitelisted = brokers.Contains(pspBrokerId) && channels.Contains(channelId);
                         } catch (Exception e) {
                             // do nothing
                         }
                         return isWhitelisted;
                     }" />
-
 <choose>
-  <when condition="@(context.Variables.GetValueOrDefault<bool>("is_whitelisted", false) == true)">
+<when condition="@( context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && context.Variables.GetValueOrDefault<bool>("is_whitelisted", false) )">
   <set-variable name="baseUrl" value="{{wisp-dismantling-backend-url}}" />
 </when>
+<!-- TODO remove after test -->
 <otherwise>
-  <trace source="skip-set-base-url-whitelisted-broker-and-channel" severity="information">broker and channel not in whitelist, skipped set base url for WISP dismantling</trace>
+  <trace source="skip-set-base-url-whitelisted-broker-and-channel" severity="information">broker and channel not in whitelist or WISP dismantling disabled</trace>
 </otherwise>
 </choose>
-  </when>
-  <!-- TODO remove after test -->
-<otherwise>
-<trace source="skip-set-base-url-wispdismantling" severity="information">skipped set base url for WISP dismantling</trace>
-</otherwise>
-  </choose>
   </when>
   </choose>
   </fragment>

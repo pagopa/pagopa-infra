@@ -40,3 +40,24 @@ module "wisp_converter_caching_api_v1" {
   xml_content = templatefile("./api/wisp-converter/caching/v1/_base_policy.xml", {})
 }
 
+# fragment for loading configuration inside policy
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
+# https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+resource "azapi_resource" "wisp_cache_4_decoupler" {
+
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "wisp-cache-for-decoupler"
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Cache info for decoupler"
+      format      = "rawxml"
+      value       = file("./api/wisp-converter/caching/v1/wisp-cache-for-decoupler.xml")
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
