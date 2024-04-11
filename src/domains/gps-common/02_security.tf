@@ -444,3 +444,14 @@ resource "azurerm_key_vault_secret" "gpd_archive_sa_connection_string" {
 
 }
 
+resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
+  name         = "elastic-apm-secret-token" #"elastic-otel-token-header" 
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
