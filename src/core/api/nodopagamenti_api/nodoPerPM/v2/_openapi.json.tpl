@@ -131,12 +131,6 @@
       },
       "CardAdditionalPaymentInformations": {
         "type": "object",
-        "required": [
-          "outcomePaymentGateway",
-          "fee",
-          "totalAmount",
-          "timestampOperation"
-        ],
         "properties": {
           "outcomePaymentGateway": {
             "type": "string",
@@ -174,8 +168,18 @@
           "eMail": {
             "type": "string",
             "description": "User email used for the transaction outcome notification"
+          },
+          "paymentGateway": {
+            "type": "string",
+            "description": "Transaction payment gateway"
           }
-        }
+        },
+        "required": [
+          "outcomePaymentGateway",
+          "fee",
+          "totalAmount",
+          "timestampOperation"
+        ]
       },
       "RedirectAdditionalPaymentInformations": {
         "type": "object",
@@ -862,7 +866,9 @@
           "transactionId",
           "transactionStatus",
           "amount",
-          "grandTotal"
+          "grandTotal",
+          "paymentGateway",
+          "timestampOperation"
         ],
         "type": "object",
         "properties": {
@@ -923,7 +929,8 @@
           "brokerName",
           "businessName",
           "idChannel",
-          "idPsp"
+          "idPsp",
+          "pspOnUs"
         ],
         "type": "object",
         "properties": {
@@ -969,6 +976,15 @@
           },
           "clientId": {
             "type": "string"
+          },
+          "bin": {
+            "type": "string"
+          },
+          "lastFourDigits": {
+            "type": "string"
+          },
+          "maskedEmail": {
+            "type": "string"
           }
         }
       },
@@ -978,10 +994,17 @@
           "type": {
             "type": "string",
             "enum": [
-              "GUEST"
+              "GUEST",
+              "REGISTERED"
             ]
+          },
+          "fiscalCode": {
+            "type": "string"
           }
-        }
+        },
+        "required": [
+          "type"
+        ]
       }
     }
   }
