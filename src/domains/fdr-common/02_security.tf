@@ -6,23 +6,11 @@ data "azurerm_key_vault" "key_vault" {
 ###############
 ## Event Hub ##
 ###############
-// TODO
-#data "azurerm_eventhub_authorization_rule" "pagopa-weu-core-evh-ns03_nodo-dei-pagamenti-cache-sync-rx" {
-#  name                = "nodo-dei-pagamenti-cache-sync-rx"
-#  namespace_name      = "${local.product}-${local.evt_hub_location}-evh-ns04"
-#  eventhub_name       = "nodo-dei-pagamenti-cache"
-#  resource_group_name = "${local.product}-msg-rg"
-#}
-#
-#resource "azurerm_key_vault_secret" "fdr-re-tx" {
-#  name         = "azure-event-hub-re-connection-string"
-#  value        = module.cosmosdb_account_mongodb.connection_strings
-#  key_vault_id = data.azurerm_key_vault.key_vault.id
-#
-#  depends_on = [
-#    module.cosmosdb_account_mongodb
-#  ]
-#}
+resource "azurerm_key_vault_secret" "fdr-re-tx" {
+  name         = "azure-event-hub-re-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns03_fdr-re-fdr-re-tx.primary_connection_string
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
 
 ############
 ## Cosmos ##
