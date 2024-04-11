@@ -18,7 +18,7 @@ module "tls_checker" {
     data.azurerm_monitor_action_group.slack.id,
     data.azurerm_monitor_action_group.email.id
   ]
-  kv_secret_name_for_application_insights_connection_string = var.tls_checker_keyvault.secret_name
-  keyvault_name                                             = var.tls_checker_keyvault.name
+  kv_secret_name_for_application_insights_connection_string = "ai-${var.env_short}-connection-string"
+  keyvault_name                                             = data.azurerm_key_vault.kv.name
   keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
 }

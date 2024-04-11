@@ -23,7 +23,6 @@ locals {
 
   aks_name = "${local.project}-aks"
 
-
   vnet_integration_resource_group_name = "${local.product}-vnet-rg"
   vnet_integration_name                = "${local.product}-vnet-integration"
 
@@ -232,5 +231,4 @@ locals {
       ]
     }
   }
-
 }

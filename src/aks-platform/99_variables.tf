@@ -273,14 +273,6 @@ variable "tls_cert_check_helm" {
   description = "tls cert helm chart configuration"
 }
 
-variable "tls_checker_keyvault" {
-  type = object({
-    secret_name = string,
-    name        = string
-  })
-  description = "KeyVault to retrieve application insight connection string"
-}
-
 variable "tls_checker_https_endpoints_to_check" {
   type = list(object({
     https_endpoint = string
