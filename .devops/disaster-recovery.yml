@@ -36,7 +36,6 @@ variables:
   azureServiceConnectionApplyNameDev: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
   azureServiceConnectionApplyNameUat: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
   azureServiceConnectionApplyNameProd: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
-  githubEndpointName: '$(TF_GITHUB_SERVICE_ENDPOINT_NAME)'
 
 
 pool:
@@ -56,7 +55,7 @@ stages:
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
-      name: "${{variables.poolNameUat}}"
+      name: "${{variables.poolNameDev}}"
     jobs:
       - job: nodo_failover
         strategy:
