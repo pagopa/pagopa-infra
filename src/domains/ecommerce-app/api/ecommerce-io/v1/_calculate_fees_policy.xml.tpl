@@ -200,6 +200,9 @@
                         </choose>
                     </when>
                 </choose>
+                <set-query-parameter name="maxOccurrences" exists-action="override">
+                    <value>100</value>
+                </set-query-parameter>
                 <set-body>@{ 
                     var bin = (string)context.Variables.GetValueOrDefault("bin", "");
                     JObject inBody = (JObject)context.Variables["body"]; 
@@ -209,6 +212,14 @@
                     inBody.Add("touchpoint","IO");
                     if(!String.IsNullOrEmpty(bin)) {
                         inBody.Add("bin", bin);
+                    }
+                    foreach (JObject transfer in ((JArray)(inBody["transferList"]))) {
+                        if( transfer.ContainsKey("paFiscalCode") == true )
+                        {
+                            var creditorInstitution = ((string)transfer["paFiscalCode"]);
+                            transfer.Add("creditorInstitution",creditorInstitution);
+                            transfer.Remove("paFiscalCode");
+                        }
                     }
                     return inBody.ToString(); 
                 }</set-body>

@@ -45,6 +45,13 @@
               <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) != 200)">
                 <return-response>
                   <set-status code="401" reason="Unauthorized" />
+                  <set-body>
+                    {
+                        "status": 401,
+                        "title": "Unauthorized",
+                        "detail": "Invalid token"
+                    }
+                  </set-body>
                 </return-response>
               </when>
             </choose>
@@ -68,7 +75,7 @@
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
       </when>
       <when condition="@( context.Request.Url.Path.Contains("wallets") )">
-        <set-backend-service base-url="@("https://${wallet_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/wallets-service")"/>
+        <set-backend-service base-url="@("https://${wallet_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")"/>
       </when>
     </choose>
   </inbound>
