@@ -78,7 +78,7 @@ locals {
     COSMOS_DB_NAME            = "nodo_re"
     COSMOS_DB_COLLECTION_NAME = "events"
 
-    EVENTHUB_CONN_STRING = var.enable_nodo_re ? (var.enabled_features.eventhub_ha ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx[0].primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx[0].primary_connection_string ): ""
+    EVENTHUB_CONN_STRING = var.enable_nodo_re ? (var.enabled_features.eventhub_ha ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx[0].primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx[0].primary_connection_string) : ""
   }
 
   docker_settings = {

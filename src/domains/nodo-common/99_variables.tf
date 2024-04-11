@@ -241,7 +241,7 @@ variable "custom_metric_alerts" {
 
 # Redis
 variable "redis_ha_enabled" {
-  type = bool
+  type        = bool
   description = "(Required) If true, enables the usage of HA redis instance"
 }
 

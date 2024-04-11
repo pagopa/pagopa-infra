@@ -307,6 +307,6 @@ wisp_converter_storage_account = {
 redis_ha_enabled = false
 
 enabled_features = {
-    eventhub_ha_tx = false
-    eventhub_ha_rx = false
+  eventhub_ha_tx = false
+  eventhub_ha_rx = false
 }
