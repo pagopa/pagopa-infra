@@ -5,7 +5,7 @@
 locals {
   pagopa_node_cfg_sync = {
     name = "pagopa-node-cfg-sync"
-    dumpProblem               = {
+    dumpProblem = {
       query       = <<-QUERY
           traces
           | where cloud_RoleName == "%s"
@@ -18,7 +18,7 @@ locals {
       frequency   = 5
       time_window = 5
     },
-    dumpTrigger              = {
+    dumpTrigger = {
       query       = <<-QUERY
           let start = datetime_local_to_utc(startofday(now()), 'Europe/Rome');
           let end = start + 30m;
@@ -33,7 +33,7 @@ locals {
       frequency   = 30
       time_window = 1440
     },
-    genericProblem               = {
+    genericProblem = {
       query       = <<-QUERY
           traces
           | where cloud_RoleName == "%s"
