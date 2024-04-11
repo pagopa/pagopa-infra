@@ -240,23 +240,9 @@ variable "custom_metric_alerts" {
 
 
 # Redis
-variable "cidr_subnet_ndp_redis" {
-  type        = list(string)
-  description = "Redis DB address space for NDP."
-  default     = ["10.1.162.0/24"]
-}
-
-variable "ndp_redis_params" {
-  type = object({
-    capacity = number
-    sku_name = string
-    family   = string
-  })
-  default = {
-    capacity = 0
-    sku_name = "Basic"
-    family   = "C"
-  }
+variable "redis_ha_enabled" {
+  type        = bool
+  description = "(Required) If true, enables the usage of HA redis instance"
 }
 
 
@@ -553,3 +539,16 @@ variable "wisp_converter_storage_account" {
     backup_retention_days         = number
   })
 }
+
+variable "enabled_features" {
+  type = object({
+    eventhub_ha_tx = bool
+    eventhub_ha_rx = bool
+  })
+  default = {
+    eventhub_ha_tx = false
+    eventhub_ha_rx = false
+  }
+  description = "Features enabled in this domain"
+}
+

@@ -86,7 +86,13 @@
           <set-variable name="email" value="@{
             var authHeader = context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ","");
             return authHeader.AsJwt()?.Claims.GetValueOrDefault("email", "");
-        }" />
+            }" 
+          />
+          <set-variable name="userId" value="@{
+            var authHeader = context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ","");
+            return authHeader.AsJwt()?.Claims.GetValueOrDefault("userId", "");
+            }" 
+          />
           <!-- Read email from JWT END-->
             <set-body>@{
               JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
@@ -99,6 +105,9 @@
             </set-header>
             <set-header name="x-correlation-id" exists-action="override">
               <value>@(Guid.NewGuid().ToString())</value>
+            </set-header>
+            <set-header name="x-user-id" exists-action="override">
+              <value>@((String)context.Variables["userId"])</value>
             </set-header>
           </otherwise>
         </choose>

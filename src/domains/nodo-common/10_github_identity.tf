@@ -16,7 +16,8 @@ locals {
     "pagopa-nodo-verifyko-aux",
     "pagopa-wisp-soap-converter",
     "pagopa-wisp-converter",
-    "pagopa-wisp-converter-technical-support"
+    "pagopa-wisp-converter-technical-support",
+    "pagopa-node-technical-support-worker"
   ]
 
   federations_01 = [

@@ -79,7 +79,7 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
     aks_id               = data.azurerm_kubernetes_cluster.aks.id
     service_principal_id = module.identity_cd_01.identity_client_id
     namespace            = var.domain
-    version              = "v2"
+    version              = "v3"
   }
 
   provisioner "local-exec" {

@@ -43,14 +43,14 @@ resource "azurerm_private_endpoint" "nodo_cfg_sync_re_private_endpoint_container
 
   private_dns_zone_group {
     name                 = "${local.project}-cfg-sync-re-private-dns-zone-group-container"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
   }
 
   private_service_connection {
     name                           = "${local.project}-cfg-sync-re-private-service-connection-container"
     private_connection_resource_id = module.nodo_cfg_sync_re_storage_account.id
     is_manual_connection           = false
-    subresource_names              = ["container"]
+    subresource_names              = ["blob"]
   }
 
   tags = var.tags
