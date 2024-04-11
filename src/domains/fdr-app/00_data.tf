@@ -58,15 +58,21 @@ data "azurerm_eventhub_namespace" "event_hub01_namespace" {
   resource_group_name = data.azurerm_resource_group.msg_rg.name
 }
 
-data "azurerm_eventhub" "event_hub01" {
-  name                = var.eventhub_name
+data "azurerm_eventhub_namespace" "event_hub03_namespace" {
+  name                = "${local.product}-${var.location_short}-core-evh-ns03"
   resource_group_name = data.azurerm_resource_group.msg_rg.name
-  namespace_name      = "${local.product}-evh-ns01"
 }
 
 data "azurerm_eventhub_authorization_rule" "events" {
   name                = var.event_name
   namespace_name      = data.azurerm_eventhub_namespace.event_hub01_namespace.name
+  eventhub_name       = var.eventhub_name
+  resource_group_name = data.azurerm_resource_group.msg_rg.name
+}
+
+data "azurerm_eventhub_authorization_rule" "events_03" {
+  name                = var.event_name
+  namespace_name      = data.azurerm_eventhub_namespace.event_hub03_namespace.name
   eventhub_name       = var.eventhub_name
   resource_group_name = data.azurerm_resource_group.msg_rg.name
 }

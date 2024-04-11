@@ -168,6 +168,6 @@ variable "api_config_replication_type" {
 }
 
 variable "redis_ha_enabled" {
-  type = bool
+  type        = bool
   description = "(Required) If true, enables the usage of HA redis instance"
 }
