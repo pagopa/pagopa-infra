@@ -47,7 +47,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: cbc149b
+      ref: postgres-failover
       endpoint: "io-azure-devops-github-ro"
 
 
