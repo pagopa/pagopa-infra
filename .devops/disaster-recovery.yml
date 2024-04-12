@@ -52,12 +52,14 @@ resources:
 
 stages:
   - stage: DEV
+    displayName: Disaster recovery DEV
     dependsOn: []
     condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
       name: "${{variables.poolNameDev}}"
     jobs:
       - job: nodo_failover
+        displayName: Nodo postgres flexible failover
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
@@ -73,12 +75,14 @@ stages:
               TF_AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameDev}}"
 
 #  - stage: PROD
+#    displayName: Disaster recovery PROD
 #    dependsOn: []
 #    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
 #    pool:
 #      name: "${{variables.poolNameProd}}"
 #    jobs:
-#      - job: fdr_failover
+#      - job: postgres_fdr_failover
+#        displayName: FDR postgres flexible failover
 #        strategy:
 #          parallel: 1
 #        timeoutInMinutes: $[variables.TIME_OUT]
@@ -88,11 +92,12 @@ stages:
 #              TF_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
 #              TF_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
 #              TF_DNS_ZONE_RECORD_NAME: "fdr-db"
-#              TF_FAILED_DB_NAME: "pagopa-p-weu-fdr-flexible-postgresql"
+#              TF_FAILOVER_DB_RG: "pagopa-p-weu-fdr-db-rg"
 #              TF_FAILOVER_DB_NAME: "pagopa-p-neu-fdr-pgflex"
 #              WORKINGDIR: ${{ variables.WORKING_DIR }}
 #              TF_AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
-#      - job: gpd_failover
+#      - job: postgres_gpd_failover
+#        displayName: GPD/GPS postgres flexible failover
 #        strategy:
 #          parallel: 1
 #        timeoutInMinutes: $[variables.TIME_OUT]
@@ -102,11 +107,12 @@ stages:
 #              TF_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
 #              TF_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
 #              TF_DNS_ZONE_RECORD_NAME: "gpd-db"
-#              TF_FAILED_DB_NAME: "pagopa-p-gpd-pgflex"
+#              TF_FAILOVER_DB_RG: "pagopa-p-pgres-flex-rg"
 #              TF_FAILOVER_DB_NAME: "pagopa-p-neu-gps-pgflex"
 #              WORKINGDIR: ${{ variables.WORKING_DIR }}
 #              TF_AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
-#      - job: nodo_failover
+#      - job: postgres_nodo_failover
+#        displayName: Nodo postgres flexible failover
 #        strategy:
 #          parallel: 1
 #        timeoutInMinutes: $[variables.TIME_OUT]
@@ -116,7 +122,7 @@ stages:
 #              TF_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
 #              TF_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
 #              TF_DNS_ZONE_RECORD_NAME: "nodo-db"
-#              TF_FAILED_DB_NAME: "pagopa-p-weu-nodo-flexible-postgresql"
+#              TF_FAILOVER_DB_RG: "pagopa-p-weu-nodo-db-rg"
 #              TF_FAILOVER_DB_NAME: "pagopa-p-neu-nodo-flexible-postgresql"
 #              WORKINGDIR: ${{ variables.WORKING_DIR }}
 #              TF_AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
