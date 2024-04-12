@@ -10,8 +10,6 @@
       <base />
       <choose>
         <when condition="@(context.Response.StatusCode == 302)">
-            <!-- Token JWT START-->
-        
             <set-status code="200" />
             <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
