@@ -112,7 +112,7 @@ module "node_forwarder_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autoscale" {
-  count = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
+  count               = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
   name                = "${local.project}-autoscale-node-forwarder-ha"
   resource_group_name = local.node_forwarder_rg_name
   location            = var.location

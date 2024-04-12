@@ -25,7 +25,7 @@ log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/482967553/AKS#sku-(dimensionamento)
 
 # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/482870619/VPN+-+pagoPA+platform
-aks_sku_tier                   = "Paid"
+aks_sku_tier                   = "Standard"
 aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
 
