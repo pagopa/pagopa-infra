@@ -119,14 +119,6 @@ resource "azurerm_key_vault_secret" "verifyko_datastore_primary_key" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "cosmos_verifyko_account_key" {
-  name         = "cosmos-verifyko-account-key"
-  value        = module.cosmosdb_account_nodo_verifyko.secondary_key
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
 /*****************
 CosmosDB
 *****************/
@@ -144,7 +136,7 @@ resource "azurerm_key_vault_secret" "wisp_converter_cosmosdb_account_key" {
 
 resource "azurerm_key_vault_secret" "cosmos_neg_biz_account_key" {
   name         = "cosmos-neg-biz-account-key"
-  value        = data.azurerm_cosmosdb_account.bizevents_datastore_cosmosdb_account.secondary_key
+  value        = data.azurerm_cosmosdb_account.bizevents_neg_datastore_cosmosdb_account.secondary_key
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
@@ -152,7 +144,15 @@ resource "azurerm_key_vault_secret" "cosmos_neg_biz_account_key" {
 
 resource "azurerm_key_vault_secret" "cosmos_biz_account_key" {
   name         = "cosmos-biz-account-key"
-  value        = data.azurerm_cosmosdb_account.bizevents_neg_datastore_cosmosdb_account.secondary_key
+  value        = data.azurerm_cosmosdb_account.bizevents_datastore_cosmosdb_account.secondary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "cosmos_verifyko_account_key" {
+  name         = "cosmos-verifyko-account-key"
+  value        = module.cosmosdb_account_nodo_verifyko.secondary_key
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
