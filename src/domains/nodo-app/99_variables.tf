@@ -455,11 +455,13 @@ variable "wisp_converter" {
   type = object({
     brokerPSP_whitelist    = string
     channel_whitelist      = string
+    station_whitelist      = string
     dismantling_primitives = string
   })
   default = {
     brokerPSP_whitelist    = "97735020584" # AGID
     channel_whitelist      = "97735020584_02,97735020584_03,97735020584_06"
+    station_whitelist      = ""
     dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
   }
 }

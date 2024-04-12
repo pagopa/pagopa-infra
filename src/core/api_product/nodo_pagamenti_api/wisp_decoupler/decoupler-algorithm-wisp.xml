@@ -280,16 +280,18 @@ new JProperty("ttl", requestData.GetValue("ttl"))
 <when condition="@(((string)context.Variables["primitiveType"]).Equals("OTHER_WISPDISMANTLING"))">
 <set-variable name="wisp_whitelisted_brokers" value="{{wisp-brokerPSP-whitelist}}" />
 <set-variable name="wisp_whitelisted_channels" value="{{wisp-channel-whitelist}}" />
+<set-variable name="wisp_whitelisted_stations" value="{{wisp-station-whitelist}}" />
 <set-variable name="is_whitelisted" value="@{
                         // isWhiteListed if:
                         // - lists are empties
-                        // - channelId and brokerPSP belong to relative lists
+                        // - channelId, brokerPSP and stationId belong to relative lists
 
                         bool isWhitelisted = false;
                         string[] brokers = ((string) context.Variables["wisp_whitelisted_brokers"]).Split(',');
                         string[] channels = ((string) context.Variables["wisp_whitelisted_channels"]).Split(',');
+                        string[] stations = ((string) context.Variables["wisp_whitelisted_stations"]).Split(',');
 
-                        if (brokers.Count() == 0 && channels.Count() == 0) {
+                        if (brokers.Count() == 0 && channels.Count() == 0 && stations.Count() == 0) {
                             isWhitelisted = true;
                             return isWhitelisted;
                         }
@@ -301,7 +303,16 @@ new JProperty("ttl", requestData.GetValue("ttl"))
                             string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
                             string pspBrokerId = (string) primitive.Descendants("identificativoIntermediarioPSP").FirstOrDefault();
 
-                            isWhitelisted = brokers.Contains(pspBrokerId) && channels.Contains(channelId);
+                            // check stations only if whitelist contains at least one element
+                            bool isStationOk = true;
+                            if (stations.Count() > 0) {
+                                XElement header = doc.Descendants(doc.Name.Namespace + "Header").FirstOrDefault();
+                                XElement primitiveHeader = (XElement) body.FirstNode;
+                                string stationId = (string) primitiveHeader.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
+                                isStationOk = stations.Contains(stationId);
+                            }
+
+                            isWhitelisted = brokers.Contains(pspBrokerId) && channels.Contains(channelId) && isStationOk;
                         } catch (Exception e) {
                             // do nothing
                         }
