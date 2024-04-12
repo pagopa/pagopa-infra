@@ -21,4 +21,6 @@ module "tls_checker" {
   kv_secret_name_for_application_insights_connection_string = "ai-${var.env_short}-connection-string"
   keyvault_name                                             = data.azurerm_key_vault.kv.name
   keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
+
+  depends_on = [module.monitoring_pod_identity]
 }
