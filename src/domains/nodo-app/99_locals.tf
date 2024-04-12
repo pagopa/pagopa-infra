@@ -52,15 +52,6 @@ locals {
     subscription_limit    = 1000
   }
 
-  wisp_soap_converter = {
-    product_id            = "wisp_soap_converter"
-    display_name          = "WISP Soap converter"
-    description           = "Apis of wisp soap converter"
-    subscription_required = true
-    approval_required     = true
-    subscription_limit    = 1000
-  }
-
   activate_identifier = {
     dev  = "63bff3b4c257811280ef762c"
     uat  = "63d1611e451c1c1948ef3e84"
