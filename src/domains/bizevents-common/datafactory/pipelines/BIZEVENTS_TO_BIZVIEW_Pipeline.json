@@ -1,0 +1,43 @@
+{
+    "name": "BIZEVENTS_TO_BIZVIEW_Pipeline",
+    "properties": {
+        "activities": [
+            {
+                "name": "Data flow biz events to biz view",
+                "type": "ExecuteDataFlow",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataflow": {
+                        "referenceName": "writeBizEventsToBizView",
+                        "type": "DataFlowReference",
+                        "parameters": {
+                            "daysToRecover": "7"
+                        }
+                    },
+                    "compute": {
+                        "coreCount": 8,
+                        "computeType": "General"
+                    },
+                    "traceLevel": "Fine"
+                }
+            }
+        ],
+        "parameters": {
+            "daysToRecover": {
+                "type": "int",
+                "defaultValue": 7
+            }
+        },
+        "annotations": [],
+        "lastPublishTime": "2024-04-11T08:39:38Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,38 @@
+{
+    "name": "BIZ_EVENTS_USER_VIEW_DataSet",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "NewCosmosBizEventsDbNoSql",
+            "type": "LinkedServiceReference"
+        },
+        "folder": {
+            "name": "BIZ_EVENTS_DESTINATION"
+        },
+        "annotations": [],
+        "type": "CosmosDbSqlApiCollection",
+        "schema": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "transactionId": {
+                    "type": "string"
+                },
+                "taxCode": {
+                    "type": "string"
+                },
+                "transactionDate": {
+                    "type": "string"
+                },
+                "hidden": {
+                    "type": "bool"
+                }
+            }
+        },
+        "typeProperties": {
+            "collectionName": "biz-events-view-user"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}

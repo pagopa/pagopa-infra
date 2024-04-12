@@ -1,0 +1,19 @@
+{
+    "name": "BIZ_EVENTS_GENERAL_VIEW_DataSet",
+    "properties": {
+        "linkedServiceName": {
+            "referenceName": "NewCosmosBizEventsDbNoSql",
+            "type": "LinkedServiceReference"
+        },
+        "folder": {
+            "name": "BIZ_EVENTS_DESTINATION"
+        },
+        "annotations": [],
+        "type": "CosmosDbSqlApiCollection",
+        "schema": {},
+        "typeProperties": {
+            "collectionName": "biz-events-view-general"
+        }
+    },
+    "type": "Microsoft.DataFactory/factories/datasets"
+}
