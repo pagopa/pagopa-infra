@@ -8,6 +8,26 @@
 
   <outbound>
       <base />
+      <choose>
+        <when condition="@(context.Response.StatusCode == 302)">
+            <!-- Token JWT START-->
+        
+            <set-status code="200" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>
+                @{
+                    return new JObject(
+                        new JProperty(
+                            "checkoutRedirectUrl", 
+                            (string)context.Response.Headers.GetValueOrDefault("Location","")
+                        )
+                    ).ToString();
+                }
+            </set-body>
+        </when>
+    </choose>
   </outbound>
 
   <backend>

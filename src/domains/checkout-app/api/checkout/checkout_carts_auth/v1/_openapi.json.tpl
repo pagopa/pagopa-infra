@@ -27,14 +27,12 @@
           }
         },
         "responses": {
-          "302": {
-            "description": "Redirect",
-            "headers": {
-              "location": {
-                "description": "CheckOut Url",
+          "200": {
+            "description": "Cart initilized",
+            "content": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "uri"
+                  "$ref": "#/components/schemas/CartResponse"
                 }
               }
             }
@@ -126,7 +124,9 @@
               {
                 "noticeNumber": "302012387654312384",
                 "fiscalCode": "77777777777",
-                "amount": 1000
+                "amount": 1000,
+                "companyName": "companyName",
+                "description": "description"
               },
               {
                 "noticeNumber": "302012387654312385",
@@ -205,6 +205,19 @@
             "maxLength": 140
           }
         }
+      },
+      "CartResponse": {
+        "type": "object",
+        "required": [
+          "checkoutRedirectUrl"
+        ],
+        "properties": {
+          "checkoutRedirectUrl": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://dev.checkout.pagopa.it.it/c/123"
+          }
+        }
       }
     },
     "requestBodies": {
@@ -214,6 +227,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/CartRequest"
+            }
+          }
+        }
+      },
+      "CartResponse": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CartResponse"
             }
           }
         }
