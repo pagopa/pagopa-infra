@@ -131,7 +131,9 @@
               {
                 "noticeNumber": "302012387654312385",
                 "fiscalCode": "77777777777",
-                "amount": 2000
+                "amount": 2000,
+                "companyName": "companyName",
+                "description": "description"
               }
             ]
           },
@@ -175,7 +177,9 @@
         "required": [
           "noticeNumber",
           "fiscalCode",
-          "amount"
+          "amount",
+          "companyName",
+          "description"
         ],
         "properties": {
           "noticeNumber": {
