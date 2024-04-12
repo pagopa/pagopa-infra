@@ -100,12 +100,15 @@ new JProperty("ttl", 1)
                                 return new JObject(
                                     new JProperty("brokerPsp", idBrokerPSP.Value),
                                     new JProperty("ci", idCi.Value),
+                                    new JProperty("noticeNumber", noticeNumber.Value),
                                     new JProperty("key", brokerPsp + "_" + ci + "_" + noticeNumber.Value),
                                     new JProperty("ttl", 3600)
                                 ).ToString();
                             } else {
                                 return new JObject(
                                     new JProperty("brokerPsp", ""),
+new JProperty("ci", ""),
+new JProperty("noticeNumber", ""),
 new JProperty("paymentToken", ""),
 new JProperty("key", ""),
 new JProperty("ttl", 1)
@@ -114,7 +117,34 @@ new JProperty("ttl", 1)
 }" />
 </otherwise>
   </choose>
-<!-- TODO insert here wisp logic! -->
+
+  <!-- Execute cache lookup for default node ID if WISP dismantling is enabled -->
+<choose>
+<when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
+<!-- if fiscalcode and notice number belongs to wisp dismantling, set nodeId as default value ( {{default-nodo-id}} ) -->
+<set-variable name="wisp_fiscalcode_noticenumber" value="@{
+                        var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                        var noticeNumber = context.Variables.GetValueOrDefault<string>((string) requestData["noticeNumber"], "");
+var ci = context.Variables.GetValueOrDefault<string>((string) requestData["ci"], "");
+return "wisp_" + ci + "_" + noticeNumber;
+}" />
+<cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
+<choose>
+  <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+  <cache-store-value key="@{
+                                    var domain = (string) context.Variables["domain"];
+                                    var requestData = JObject.Parse((string) context.Variables["requestData"]);
+                                    return domain + "_" + (string) requestData["key"];
+                                }" value="@((string) context.Variables["baseNodeId"])" duration="@{
+                                    var requestData = JObject.Parse((string) context.Variables["requestData"]);
+                                    return (int) requestData["ttl"];
+                                }" caching-type="internal" />
+
+</when>
+</choose>
+  </when>
+  </choose>
+
   <!-- check if key is cached -->
 <cache-lookup-value key="@{
                         var domain = (string)context.Variables["domain"];
