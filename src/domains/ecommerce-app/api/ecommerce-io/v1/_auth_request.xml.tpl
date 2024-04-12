@@ -2,6 +2,7 @@
     <inbound>
         <base />
         <set-header name="x-pgs-id" exists-action="delete" />
+        <set-header name="x-user-id" exists-action="delete" />
         <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
         <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
         <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["details"]["walletId"])" />
