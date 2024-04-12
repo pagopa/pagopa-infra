@@ -124,8 +124,8 @@ new JProperty("ttl", 1)
 <!-- if fiscalcode and notice number belongs to wisp dismantling, set nodeId as default value ( {{default-nodo-id}} ) -->
 <set-variable name="wisp_fiscalcode_noticenumber" value="@{
                         var requestData = JObject.Parse((string)context.Variables["requestData"]);
-                        var noticeNumber = context.Variables.GetValueOrDefault<string>((string) requestData["noticeNumber"], "");
-var ci = context.Variables.GetValueOrDefault<string>((string) requestData["ci"], "");
+                        var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
+var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
 return "wisp_" + ci + "_" + noticeNumber;
 }" />
 <cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
