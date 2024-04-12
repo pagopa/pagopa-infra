@@ -170,7 +170,7 @@ variable "redis_version" {
 }
 
 variable "redis_ha_enabled" {
-  type = bool
+  type        = bool
   description = "(Optional) enables the deployment of premium redis with multiple availability zones"
-  default = true
+  default     = true
 }

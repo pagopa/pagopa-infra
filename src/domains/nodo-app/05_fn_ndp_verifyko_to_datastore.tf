@@ -17,6 +17,13 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-v
   resource_group_name = "${local.product}-msg-rg"
 }
 
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx" {
+  name                = "nodo-dei-pagamenti-verify-ko-datastore-rx"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
+  eventhub_name       = "nodo-dei-pagamenti-verify-ko"
+  resource_group_name = "${local.product}-msg-rg"
+}
+
 locals {
   function_verifyko_to_datastore_app_settings = {
     linux_fx_version = "JAVA|11"
@@ -41,7 +48,7 @@ locals {
     COSMOS_DB_NAME            = "nodo_verifyko"
     COSMOS_DB_COLLECTION_NAME = "events"
 
-    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx.primary_connection_string
+    EVENTHUB_CONN_STRING = var.enabled_features.eventhub_ha ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx.primary_connection_string
   }
 
   verifyko_ds_docker_settings = {

@@ -145,15 +145,16 @@ variable "cidr_subnet_redis_ecommerce" {
 
 variable "redis_ecommerce_params" {
   type = object({
-    capacity = number
-    sku_name = string
-    family   = string
-    version  = string
-    ha_enabled = bool
+    capacity    = number
+    sku_name    = string
+    family      = string
+    version     = string
+    ha_enabled  = bool
+    ha_usage    = bool
     capacity_ha = number
     family_ha   = string
     sku_name_ha = string
-    zones = list(number)
+    zones       = list(number)
   })
 }
 
