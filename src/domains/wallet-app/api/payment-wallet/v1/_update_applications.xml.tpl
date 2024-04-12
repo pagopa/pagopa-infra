@@ -29,7 +29,7 @@
               </set-body>
           </return-response>
       </when>
-      <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode != 200)">
+      <when condition="@(((IResponse)context.Variables["user-auth-body"]).StatusCode != 200)">
           <return-response>
               <set-status code="502" reason="Bad Gateway" />
               <set-header name="Content-Type" exists-action="override">

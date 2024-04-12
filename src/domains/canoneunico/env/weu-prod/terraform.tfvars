@@ -277,6 +277,9 @@ corporate_cup_users = [
   },
   {
     username : "raiway"
+  },
+  {
+    username : "mynet"
   }
 ]
 

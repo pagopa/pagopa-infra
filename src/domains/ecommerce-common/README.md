@@ -168,7 +168,7 @@
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_redis_ecommerce_params"></a> [redis\_ecommerce\_params](#input\_redis\_ecommerce\_params) | n/a | <pre>object({<br>    capacity    = number<br>    sku_name    = string<br>    family      = string<br>    version     = string<br>    ha_enabled  = bool<br>    capacity_ha = number<br>    family_ha   = string<br>    sku_name_ha = string<br>    zones       = list(number)<br>  })</pre> | n/a | yes |
+| <a name="input_redis_ecommerce_params"></a> [redis\_ecommerce\_params](#input\_redis\_ecommerce\_params) | n/a | <pre>object({<br>    capacity    = number<br>    sku_name    = string<br>    family      = string<br>    version     = string<br>    ha_enabled  = bool<br>    ha_usage    = bool<br>    capacity_ha = number<br>    family_ha   = string<br>    sku_name_ha = string<br>    zones       = list(number)<br>  })</pre> | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 
 ## Outputs
