@@ -12,8 +12,8 @@
             var soapAction = (string)context.Variables["soapAction"];
             return activatePayment.Contains(soapAction);
         }">
-      <trace source="activate" severity="information">@(context.Response.Body.As<string>(preserveContent: true))</trace>
-      <set-variable name="paymentToken" value="@{
+    <trace source="activate" severity="information">@(context.Response.Body.As<string>(preserveContent: true))</trace>
+    <set-variable name="paymentToken" value="@{
                 XElement response = context.Response.Body.As<XElement>(preserveContent: true);
                 XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
                 XElement primitive = (XElement) body.FirstNode;
@@ -21,18 +21,39 @@
 
                 return paymentToken != null ? paymentToken.Value.ToString() : "NONE";
             }" />
-      <trace source="activate-data-set" severity="information">@((string)context.Variables["dataToSet"])</trace>
-      <choose>
-        <when condition="@(!((string)context.Variables["paymentToken"]).Equals("NONE"))">
-          <cache-store-value key="@((string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"])" value="@{
+    <trace source="activate-data-set" severity="information">@((string)context.Variables["dataToSet"])</trace>
+    <choose>
+      <when condition="@(!((string)context.Variables["paymentToken"]).Equals("NONE"))">
+      <cache-store-value key="@((string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"])" value="@{
                             var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
                             return (string)requestData["nodeId"];
                         }" duration="@{
                             var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
                             return (int)requestData["ttl"];
                         }" caching-type="internal" />
+
+      <!-- Caching wisp_paymenttoken key if WISP dismantling is enabled and the payment belongs to WISP dismantling -->
+      <choose>
+        <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
+        <choose>
+          <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+          <cache-store-value key="@("wisp_" + (string)context.Variables["paymentToken"])" value="@{
+                                        var requestData = JObject.Parse((string) context.Variables["requestData"]);
+                                        var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
+          var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
+          var paymentToken = (string)context.Variables["paymentToken"];
+          return new JObject(
+          new JProperty("fiscalCode", ci),
+          new JProperty("noticeNumber", noticeNumber),
+          new JProperty("paymentToken", paymentToken)
+          ).ToString();
+          }" duration="172800" caching-type="external" /> <!-- TODO to change type to internal -->
         </when>
       </choose>
     </when>
   </choose>
-</fragment>
+</when>
+  </choose>
+  </when>
+  </choose>
+  </fragment>
