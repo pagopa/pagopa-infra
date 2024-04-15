@@ -36,7 +36,7 @@ module "cosmosdb_account_mongodb" {
 }
 
 resource "azurerm_cosmosdb_mongo_database" "notices_mongo_db" {
-  name                = "${local.project}-notices_mongo_db"
+  name                = "noticesMongoDb"
   resource_group_name = azurerm_resource_group.db_rg.name
   account_name        = module.cosmosdb_account_mongodb.name
 
