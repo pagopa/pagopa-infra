@@ -241,7 +241,7 @@ variable "custom_metric_alerts" {
 
 # Redis
 variable "redis_ha_enabled" {
-  type = bool
+  type        = bool
   description = "(Required) If true, enables the usage of HA redis instance"
 }
 
@@ -539,3 +539,16 @@ variable "wisp_converter_storage_account" {
     backup_retention_days         = number
   })
 }
+
+variable "enabled_features" {
+  type = object({
+    eventhub_ha_tx = bool
+    eventhub_ha_rx = bool
+  })
+  default = {
+    eventhub_ha_tx = false
+    eventhub_ha_rx = false
+  }
+  description = "Features enabled in this domain"
+}
+

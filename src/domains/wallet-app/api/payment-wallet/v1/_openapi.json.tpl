@@ -608,6 +608,25 @@
           ]
         }
       },
+      "WalletApplicationInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/WalletApplicationId"
+          },
+          "status": {
+            "$ref": "#/components/schemas/WalletApplicationStatus"
+          },
+          "lastUsage": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "name",
+          "status"
+        ]
+      },
       "WalletInfo": {
         "type": "object",
         "description": "Wallet information",
@@ -636,7 +655,7 @@
             "description": "list of applications for which this wallet is created for",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/WalletApplication"
+              "$ref": "#/components/schemas/WalletApplicationInfo"
             }
           },
           "details": {

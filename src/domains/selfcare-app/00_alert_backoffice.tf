@@ -5,8 +5,11 @@ locals {
       base_path : "/backoffice/v1"
     },
     {
-      name : "external",
-      base_path : "/backoffice/external/v1"
+      name : "external-ec",
+      base_path : "/backoffice/external/ec/v1"
+      }, {
+      name : "external-psp",
+      base_path : "/backoffice/external/psp/v1"
     },
     {
       name : "helpdesk",
@@ -57,7 +60,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-pagopa-backoffice-
   location            = var.location
 
   action {
-    action_group           = var.env_short == "p" ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group = var.env_short == "p" ? [
+      data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id,
+      data.azurerm_monitor_action_group.opsgenie[0].id
+    ] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "Backoffice Availability"
     custom_webhook_payload = "{}"
   }

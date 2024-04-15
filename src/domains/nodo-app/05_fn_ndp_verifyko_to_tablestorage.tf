@@ -6,6 +6,13 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-v
   resource_group_name = "${local.product}-msg-rg"
 }
 
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-tablestorage-rx" {
+  name                = "nodo-dei-pagamenti-verify-ko-tablestorage-rx"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
+  eventhub_name       = "nodo-dei-pagamenti-verify-ko"
+  resource_group_name = "${local.product}-msg-rg"
+}
+
 data "azurerm_resource_group" "nodo_verify_ko_rg" {
   name = "${local.project}-verifyko-to-datastore-rg"
 }
@@ -42,7 +49,7 @@ locals {
 
     DOCKER_REGISTRY_SERVER_URL = local.verifyko_ts_docker_settings.DOCKER_REGISTRY_SERVER_URL
 
-    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-tablestorage-rx.primary_connection_string
+    EVENTHUB_CONN_STRING = var.enabled_features.eventhub_ha ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-tablestorage-rx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-tablestorage-rx.primary_connection_string
 
     TABLE_STORAGE_CONN_STRING   = data.azurerm_storage_account.nodo_verifyko_storage.primary_connection_string
     BLOB_STORAGE_CONN_STRING    = data.azurerm_storage_account.nodo_verifyko_storage.primary_connection_string
@@ -164,7 +171,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_verifyko_to_tablestorage_func
       metric_trigger {
         metric_name        = "IncomingMessages"
         metric_namespace   = "microsoft.eventhub/namespaces"
-        metric_resource_id = data.azurerm_eventhub_namespace.pagopa-evh-ns01.id
+        metric_resource_id = var.enabled_features.eventhub_ha ? data.azurerm_eventhub_namespace.pagopa-evh-ns03.id : data.azurerm_eventhub_namespace.pagopa-evh-ns01.id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
@@ -191,7 +198,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_verifyko_to_tablestorage_func
       metric_trigger {
         metric_name        = "IncomingMessages"
         metric_namespace   = "microsoft.eventhub/namespaces"
-        metric_resource_id = data.azurerm_eventhub_namespace.pagopa-evh-ns01.id
+        metric_resource_id = var.enabled_features.eventhub_ha ? data.azurerm_eventhub_namespace.pagopa-evh-ns03.id : data.azurerm_eventhub_namespace.pagopa-evh-ns01.id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
@@ -215,3 +222,5 @@ resource "azurerm_monitor_autoscale_setting" "nodo_verifyko_to_tablestorage_func
     }
   }
 }
+
+
