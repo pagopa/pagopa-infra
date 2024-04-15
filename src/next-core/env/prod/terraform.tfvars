@@ -22,7 +22,8 @@ is_feature_enabled = {
   vnet_ita                  = false,
   container_app_tools_cae   = false,
   node_forwarder_ha_enabled = false,
-  dns_forwarder_lb          = true
+  dns_forwarder_lb          = true,
+  postgres_private_dns      = true
 }
 
 #

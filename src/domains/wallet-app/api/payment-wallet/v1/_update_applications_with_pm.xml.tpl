@@ -7,19 +7,34 @@
         <set-method>GET</set-method>
     </send-request>
     <choose>
+        <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode == 401)">
+            <return-response>
+                <set-status code="401" reason="Unauthorized" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>
+                    {
+                        "title": "Unauthorized",
+                        "status": 401,
+                        "detail": "Invalid session token"
+                    }
+                </set-body>
+            </return-response>
+        </when>
         <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode != 200)">
             <return-response>
-            <set-status code="502" reason="Bad Gateway" />
-            <set-header name="Content-Type" exists-action="override">
-                <value>application/json</value>
-            </set-header>
-            <set-body>
-                {
-                "title": "Error starting session",
-                "status": 502,
-                "detail": "There was an error starting session for input wallet token"
-                }
-            </set-body>
+                <set-status code="502" reason="Bad Gateway" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>
+                    {
+                        "title": "Error starting session",
+                        "status": 502,
+                        "detail": "There was an error starting session for input wallet token"
+                    }
+                </set-body>
             </return-response>
         </when>
     </choose>
@@ -33,6 +48,9 @@
     <send-request ignore-error="false" timeout="10" response-variable-name="pmWalletStatusResponse">
         <set-url>@($"{{pm-host}}/pp-restapi-CD/v2/wallet/{(string)context.Variables["idWalletPM"]}/payment-status")</set-url>
         <set-method>PUT</set-method>
+        <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+        </set-header>
         <set-header name="Authorization" exists-action="override">
             <value>@($"Bearer {((JObject)context.Variables["pmSession"])["data"]["sessionToken"].ToString()}")</value>
         </set-header>

@@ -66,7 +66,7 @@ locals {
 # cosmosdb container for stand-in datastore
 module "cosmosdb_account_wispconv_containers" {
   source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
-  for_each = { for c in local.wispconv_containers : c.name => c }
+  for_each = { for c in local.wispconv_containers : c.name => c if var.enable_wisp_converter }
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.wisp_converter_rg[0].name

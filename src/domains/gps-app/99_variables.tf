@@ -77,6 +77,7 @@ variable "tags" {
 variable "monitor_resource_group_name" {
   type        = string
   description = "Monitor resource group name"
+  default     = "pagopa-p-monitor-rg"
 }
 
 variable "log_analytics_workspace_name" {

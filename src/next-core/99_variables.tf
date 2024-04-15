@@ -205,11 +205,6 @@ variable "geo_replica_ddos_protection_plan" {
   default = null
 }
 
-variable "postgres_private_dns_enabled" {
-  type        = bool
-  description = "(Optional) If true creates a private dns that can be used to access the postgres databases"
-  default     = false
-}
 
 
 variable "logos_donations_storage_account_replication_type" {
@@ -651,6 +646,7 @@ variable "is_feature_enabled" {
     node_forwarder_ha_enabled = bool
     vpn                       = optional(bool, false)
     dns_forwarder_lb          = optional(bool, false)
+    postgres_private_dns      = bool
   })
   description = "Features enabled in this domain"
 }

@@ -52,7 +52,7 @@ pgres_flex_params = {
   pgres_flex_pgbouncer_enabled           = true
   pgres_flex_diagnostic_settings_enabled = false
   max_connections                        = 1700
-  enable_private_dns_registration        = false
+  enable_private_dns_registration        = true
 }
 
 sftp_account_replication_type = "LRS"
@@ -261,4 +261,11 @@ wisp_converter_storage_account = {
   public_network_access_enabled = true
   backup_enabled                = false
   backup_retention_days         = 0
+}
+
+redis_ha_enabled = false
+
+enabled_features = {
+  eventhub_ha_tx = false
+  eventhub_ha_rx = false
 }
