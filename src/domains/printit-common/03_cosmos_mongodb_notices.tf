@@ -58,16 +58,6 @@ locals {
       indexes = [{
         keys   = ["_id"] # folderId
         unique = true
-        }
-      ]
-      shard_key = null
-    },
-    {
-      name = "payment_notice_user_folders"
-      indexes = [
-        {
-          keys   = ["_id"] # folderId + userId
-          unique = true
         },
         {
           keys   = ["userId"] # userId
@@ -81,19 +71,14 @@ locals {
       indexes = [{
         keys   = ["_id"] # folderId + notice_item_id
         unique = true
+        },
+        {
+          keys   = ["folderId"] # folderId
+          unique = false
         }
       ]
       shard_key = null
-    },
-    {
-      name = "payment_notice_request_item"
-      indexes = [{
-        keys   = ["_id"] # folderId + notice_item_id
-        unique = true
-        }
-      ]
-      shard_key = null
-    },
+    }
   ]
 }
 
