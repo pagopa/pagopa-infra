@@ -28,6 +28,12 @@
 | Name | Type |
 |------|------|
 | [azapi_resource.tokenizer_rest_service](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) | resource |
+| [azurerm_data_factory_data_flow.write_biz_events_to_biz_view](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_data_flow) | resource |
+| [azurerm_data_factory_dataset_cosmosdb_sqlapi.biz_events_cart_view_dataset](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_dataset_cosmosdb_sqlapi) | resource |
+| [azurerm_data_factory_dataset_cosmosdb_sqlapi.biz_events_dataset](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_dataset_cosmosdb_sqlapi) | resource |
+| [azurerm_data_factory_dataset_cosmosdb_sqlapi.biz_events_general_view_dataset](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_dataset_cosmosdb_sqlapi) | resource |
+| [azurerm_data_factory_dataset_cosmosdb_sqlapi.biz_events_user_view_dataset](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_dataset_cosmosdb_sqlapi) | resource |
+| [azurerm_data_factory_pipeline.pipeline_biz_to_view](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_key_vault_access_policy.ad_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.azdevops_iac_legacy_policies](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
