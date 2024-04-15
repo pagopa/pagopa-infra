@@ -186,7 +186,7 @@ module "bizevents_datastore_cosmosdb_containers" {
 module "bizevents_datastore_cosmosdb_containers_dev" {
 
   source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
-  for_each = { for c in local.bizevents_datastore_cosmosdb_containers : c.name => c }
+  for_each = { for c in local.bizevents_datastore_cosmosdb_containers_dev : c.name => c }
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.bizevents_rg.name
