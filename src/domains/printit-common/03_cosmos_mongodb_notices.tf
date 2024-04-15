@@ -54,7 +54,7 @@ resource "azurerm_cosmosdb_mongo_database" "notices_mongo_db" {
 locals {
   collections = [
     {
-      name = "payment_notice_request"
+      name = "payment_notice_generation_request"
       indexes = [{
         keys   = ["_id"] # folderId
         unique = true
@@ -67,7 +67,7 @@ locals {
       shard_key = null
     },
     {
-      name = "payment_notice_request_error"
+      name = "payment_notice_generation_request_error"
       indexes = [{
         keys   = ["_id"] # folderId + notice_item_id
         unique = true
