@@ -6,26 +6,28 @@ resource "azurerm_resource_group" "printit_rg" {
 }
 
 module "notices_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
 
-  name                            = replace("${var.domain}-notices", "-", "")
-  account_kind                    = var.notices_storage_account.account_kind
-  account_tier                    = var.notices_storage_account.account_tier
-  account_replication_type        = var.notices_storage_account.account_replication_type
-  access_tier                     = "Hot"
-  blob_versioning_enabled         = var.notices_storage_account.blob_versioning_enabled
-  resource_group_name             = azurerm_resource_group.printit_rg.name
-  location                        = var.location
-  advanced_threat_protection      = var.notices_storage_account.advanced_threat_protection
-  allow_nested_items_to_be_public = false
-  public_network_access_enabled   = var.notices_storage_account.public_network_access_enabled
-  enable_low_availability_alert   = var.notices_storage_account.enable_low_availability_alert
+  name                                       = replace("${var.domain}-notices", "-", "")
+  account_kind                               = var.notices_storage_account.account_kind
+  account_tier                               = var.notices_storage_account.account_tier
+  account_replication_type                   = var.notices_storage_account.account_replication_type
+  access_tier                                = "Hot"
+  blob_versioning_enabled                    = var.notices_storage_account.blob_versioning_enabled
+  resource_group_name                        = azurerm_resource_group.printit_rg.name
+  location                                   = var.location
+  advanced_threat_protection                 = var.notices_storage_account.advanced_threat_protection
+  enable_resource_advanced_threat_protection = var.institutions_storage_account.advanced_threat_protection
+  allow_nested_items_to_be_public            = false
+  public_network_access_enabled              = var.notices_storage_account.public_network_access_enabled
+  enable_low_availability_alert              = var.notices_storage_account.enable_low_availability_alert
 
   blob_delete_retention_days = var.notices_storage_account.blob_delete_retention_days
 
   blob_change_feed_enabled             = var.notices_storage_account.backup_enabled
   blob_change_feed_retention_in_days   = var.notices_storage_account.backup_enabled ? var.notices_storage_account.backup_retention + 1 : null
   blob_container_delete_retention_days = var.notices_storage_account.backup_retention
+  blob_last_access_time_enabled        = true
   blob_storage_policy = {
     enable_immutability_policy = false
     blob_restore_policy_days   = var.notices_storage_account.backup_retention
@@ -86,10 +88,11 @@ resource "azurerm_storage_management_policy" "st_blob_receipts_management_policy
     actions {
       # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy#delete_after_days_since_modification_greater_than
       base_blob {
-        tier_to_cool_after_days_since_last_access_time_greater_than    = var.notices_storage_account.blob_tier_to_cool_after_last_access
-        tier_to_archive_after_days_since_last_access_time_greater_than = var.notices_storage_account.blob_tier_to_archive_after_days_since_last_access_time_greater_than
-        delete_after_days_since_last_access_time_greater_than          = var.notices_storage_account.blob_delete_after_last_access
-        auto_tier_to_hot_from_cool_enabled                             = true
+        tier_to_cool_after_days_since_last_access_time_greater_than = var.notices_storage_account.blob_tier_to_cool_after_last_access
+        # TODO it does not supported yet
+        #         tier_to_archive_after_days_since_last_access_time_greater_than = var.notices_storage_account.blob_tier_to_archive_after_days_since_last_access_time_greater_than
+        delete_after_days_since_last_access_time_greater_than = var.notices_storage_account.blob_delete_after_last_access
+        auto_tier_to_hot_from_cool_enabled                    = true
       }
     }
   }

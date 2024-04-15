@@ -168,7 +168,7 @@ variable "notices_storage_account" {
     account_tier                                                        = "Standard"
     account_replication_type                                            = "LRS"
     blob_versioning_enabled                                             = false
-    advanced_threat_protection                                          = true
+    advanced_threat_protection                                          = false
     public_network_access_enabled                                       = false
     blob_delete_retention_days                                          = 30
     enable_low_availability_alert                                       = false
@@ -199,7 +199,7 @@ variable "templates_storage_account" {
     account_tier                  = "Standard"
     account_replication_type      = "LRS"
     blob_versioning_enabled       = false
-    advanced_threat_protection    = true
+    advanced_threat_protection    = false
     public_network_access_enabled = false
     blob_delete_retention_days    = 30
     enable_low_availability_alert = false
@@ -227,7 +227,7 @@ variable "institutions_storage_account" {
     account_tier                  = "Standard"
     account_replication_type      = "LRS"
     blob_versioning_enabled       = false
-    advanced_threat_protection    = true
+    advanced_threat_protection    = false
     public_network_access_enabled = false
     blob_delete_retention_days    = 30
     enable_low_availability_alert = false

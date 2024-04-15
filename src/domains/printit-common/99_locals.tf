@@ -6,10 +6,11 @@ locals {
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
 
-  vnet_name                = "${local.product}-itn-vnet"
-  vnet_resource_group_name = "${local.product}-itn-vnet-rg"
+  vnet_name                     = "${local.product}-itn-vnet"
+  vnet_resource_group_name      = "${local.product}-itn-vnet-rg"
+  vnet_core_resource_group_name = "${local.product}-vnet-rg"
 
-  aks_subnet_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
+  aks_subnet_name = "${local.product}-${var.location_short}-${var.env}-user-aks"
 
   ingress_hostname = "${var.location_short}${var.instance}.${var.domain}"
 

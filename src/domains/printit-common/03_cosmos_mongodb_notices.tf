@@ -6,8 +6,8 @@ resource "azurerm_resource_group" "db_rg" {
 }
 
 module "cosmosdb_account_mongodb" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.3.1"
-  domain              = null
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.77.0"
+  domain              = var.domain
   name                = "${local.project}-cosmos-account"
   location            = var.location
   resource_group_name = azurerm_resource_group.db_rg.name
@@ -18,12 +18,12 @@ module "cosmosdb_account_mongodb" {
   mongo_server_version = var.cosmos_mongo_db_notices_params.server_version
   enable_free_tier     = var.cosmos_mongo_db_notices_params.enable_free_tier
 
-  public_network_access_enabled      = var.cosmos_mongo_db_notices_params.public_network_access_enabled
-  private_endpoint_enabled           = var.cosmos_mongo_db_notices_params.private_endpoint_enabled
-  subnet_id                          = module.cosmosdb_printit_snet.id
-  private_dns_zone_ids               = [data.azurerm_private_dns_zone.cosmos.id]
-  is_virtual_network_filter_enabled  = var.cosmos_mongo_db_notices_params.is_virtual_network_filter_enabled
-  allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_notices_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
+  public_network_access_enabled     = var.cosmos_mongo_db_notices_params.public_network_access_enabled
+  private_endpoint_enabled          = var.cosmos_mongo_db_notices_params.private_endpoint_enabled
+  subnet_id                         = module.cosmosdb_printit_snet.id
+  private_dns_zone_sql_ids          = [data.azurerm_private_dns_zone.cosmos.id]
+  is_virtual_network_filter_enabled = var.cosmos_mongo_db_notices_params.is_virtual_network_filter_enabled
+  #   allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_notices_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
   consistency_policy               = var.cosmos_mongo_db_notices_params.consistency_policy
   main_geo_location_location       = var.location
@@ -83,7 +83,7 @@ locals {
 }
 
 module "cosmosdb_notices_collections" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.3.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v7.77.0"
 
   for_each = {
     for index, coll in local.collections :
