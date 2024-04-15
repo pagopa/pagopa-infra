@@ -64,12 +64,6 @@ resource "azurerm_data_factory_data_flow" "write_biz_events_to_biz_view" {
 
   # transformation(s)
   transformation {
-    name = "externalCallSameDebtorAndPayerTokenizer"
-    linked_service {
-      name = "${var.env}_TokenizerRestService"
-    }
-  }
-  transformation {
     name = "externalCallDebtorTokenizer"
     linked_service {
       name = "${var.env}_TokenizerRestService"
@@ -104,6 +98,23 @@ resource "azurerm_data_factory_data_flow" "write_biz_events_to_biz_view" {
   transformation {
     name        = "derivedPayerView"
     description = "Creating/updating the columns for user view container"
+  }
+  transformation {
+    name = "derivedSortTransferList"
+  }
+  transformation {
+    name = "derivedTransferListRemittanceInformation"
+  }
+  transformation {
+    name = "derivedCartViewSubjectAndDebtor"
+  }
+  transformation {
+    name        = "derivedColumnDebtorTaxCode"
+    description = "Creating/updating the columns for view containers"
+  }
+  transformation {
+    name        = "derivedColumnPayerTaxCode"
+    description = "Creating/updating the columns for view containers"
   }
 
   script = templatefile("datafactory/dataflows/writeBizEventsToBizView.dsl", {})
