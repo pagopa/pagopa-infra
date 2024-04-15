@@ -63,6 +63,20 @@ locals {
       shard_key = null
     },
     {
+      name = "payment_notice_user_folders"
+      indexes = [
+        {
+          keys   = ["_id"] # folderId + userId
+          unique = true
+        },
+        {
+          keys   = ["userId"] # userId
+          unique = false
+        }
+      ]
+      shard_key = null
+    },
+    {
       name = "payment_notice_request_error"
       indexes = [{
         keys   = ["_id"] # folderId + notice_item_id
