@@ -1,3 +1,9 @@
+
+locals {
+  npg_sdk_hostname                    = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
+  content_security_policy_header_name = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+}
+
 /**
  * Checkout resource group
  **/
@@ -13,7 +19,7 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
  * CDN
  */
 module "checkout_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.69.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.76.1"
 
   count                 = var.checkout_enabled ? 1 : 0
   name                  = "checkout"
@@ -53,32 +59,32 @@ module "checkout_cdn" {
       # Content-Security-Policy
       {
         action = "Overwrite"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = local.content_security_policy_header_name
         value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", var.dns_zone_prefix, var.external_domain)
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = local.content_security_policy_header_name
         value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = local.content_security_policy_header_name
         value  = "frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://www.google.com *.platform.pagopa.it *.sia.eu *.nexigroup.com *.recaptcha.net recaptcha.net https://recaptcha.google.com;"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "img-src 'self' https://cdn.cookielaw.org https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data:;"
+        name   = local.content_security_policy_header_name
+        value  = "img-src 'self' https://cdn.cookielaw.org https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it;"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
-        value  = "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/;"
+        name   = local.content_security_policy_header_name
+        value  = "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname};"
       },
       {
         action = "Append"
-        name   = "Content-Security-Policy-Report-Only"
+        name   = local.content_security_policy_header_name
         value  = "style-src 'self'  'unsafe-inline'; worker-src www.recaptcha.net blob:;"
       }
     ]
@@ -137,6 +143,47 @@ module "checkout_cdn" {
         destination             = "/ecommerce-fe/index.html"
         preserve_unmatched_path = false
       }
+    }
+  ]
+
+  delivery_rule = [
+    {
+      name  = "CorsFontForNPG"
+      order = 5
+
+      // conditions
+      url_path_conditions       = []
+      cookies_conditions        = []
+      device_conditions         = []
+      http_version_conditions   = []
+      post_arg_conditions       = []
+      query_string_conditions   = []
+      remote_address_conditions = []
+      request_body_conditions   = []
+      request_header_conditions = [{
+        selector         = "Origin"
+        operator         = "Equal"
+        match_values     = ["https://${local.npg_sdk_hostname}"]
+        transforms       = []
+        negate_condition = false
+      }]
+      request_method_conditions     = []
+      request_scheme_conditions     = []
+      request_uri_conditions        = []
+      url_file_extension_conditions = []
+      url_file_name_conditions      = []
+
+      // actions
+      modify_response_header_actions = [{
+        action = "Overwrite"
+        name   = "Access-Control-Allow-Origin"
+        value  = "https://${local.npg_sdk_hostname}"
+      }]
+      cache_expiration_actions       = []
+      cache_key_query_string_actions = []
+      modify_request_header_actions  = []
+      url_redirect_actions           = []
+      url_rewrite_actions            = []
     }
   ]
 

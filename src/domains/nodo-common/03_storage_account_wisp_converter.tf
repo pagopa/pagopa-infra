@@ -41,14 +41,14 @@ resource "azurerm_private_endpoint" "wispconv_private_endpoint_container" {
 
   private_dns_zone_group {
     name                 = "${local.project}-wisp-converter-private-dns-zone-group-container"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
   }
 
   private_service_connection {
     name                           = "${local.project}-wisp-converter-private-service-connection-container"
     private_connection_resource_id = module.wisp_converter_storage_account[0].id
     is_manual_connection           = false
-    subresource_names              = ["container"]
+    subresource_names              = ["blob"]
   }
 
   tags = var.tags
@@ -61,6 +61,7 @@ resource "azurerm_private_endpoint" "wispconv_private_endpoint_container" {
 
 # table wispconverter
 resource "azurerm_storage_table" "wisp_converter_table" {
+  count                = var.enable_wisp_converter ? 1 : 0
   name                 = "events"
   storage_account_name = module.wisp_converter_storage_account[0].name
 
@@ -71,6 +72,7 @@ resource "azurerm_storage_table" "wisp_converter_table" {
 
 # blob wispconverter
 resource "azurerm_storage_container" "wisp_converter_container" {
+  count                = var.enable_wisp_converter ? 1 : 0
   name                 = "payloads"
   storage_account_name = module.wisp_converter_storage_account[0].name
 
