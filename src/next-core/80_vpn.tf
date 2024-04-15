@@ -1,5 +1,5 @@
 module "vpn_snet" {
-  count = var.is_feature_enabled.vpn ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
 
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
   name                                      = "GatewaySubnet"
@@ -11,11 +11,12 @@ module "vpn_snet" {
 }
 
 data "azuread_application" "vpn_app" {
+  count = var.env_short == "d" ? 1 : 0
   display_name = "${local.product}-app-vpn"
 }
 
 module "vpn" {
-  count  = var.is_feature_enabled.vpn ? 1 : 0
+  count = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//vpn_gateway?ref=v7.76.0"
 
   name                  = "${local.product}-vpn"
@@ -30,7 +31,7 @@ module "vpn" {
     {
       address_space         = ["172.16.1.0/24"],
       vpn_client_protocols  = ["OpenVPN"],
-      aad_audience          = data.azuread_application.vpn_app.application_id
+      aad_audience          = data.azuread_application.vpn_app[0].application_id
       aad_issuer            = "https://sts.windows.net/${data.azurerm_subscription.current.tenant_id}/"
       aad_tenant            = "https://login.microsoftonline.com/${data.azurerm_subscription.current.tenant_id}"
       radius_server_address = null
