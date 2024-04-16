@@ -5,16 +5,16 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-    environment:
-      required: true
-      type: choice
-      description: Select the Environment
-      options:
-        - dev
-        - uat
-        - prod
-    domains:
+    inputs:
       environment:
+        required: true
+        type: choice
+        description: Select the Environment
+        options:
+          - dev
+          - uat
+          - prod
+      domains:
         required: true
         type: choice
         description: Select the domain
