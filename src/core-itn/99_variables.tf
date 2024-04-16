@@ -78,17 +78,6 @@ variable "vnet_ita_ddos_protection_plan" {
   default = null
 }
 
-variable "instance" {
-  type        = string
-  description = "One of beta, prod01, prod02"
-}
-
-variable "lock_enable" {
-  type        = bool
-  default     = false
-  description = "Apply locks to block accedentaly deletions."
-}
-
 variable "tags" {
   type = map(any)
   default = {
@@ -102,6 +91,11 @@ variable "cidr_vnet_italy" {
   description = "Address prefixes for vnet in italy."
 }
 
+variable "cidr_eventhubs_italy" {
+  type        = list(string)
+  description = "Address prefixes for all evenhubs in italy."
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -109,122 +103,69 @@ variable "monitor_resource_group_name" {
   description = "Monitor resource group name"
 }
 
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
-}
+# variable "log_analytics_workspace_name" {
+#   type        = string
+#   description = "Specifies the name of the Log Analytics Workspace."
+# }
+#
+# variable "log_analytics_workspace_resource_group_name" {
+#   type        = string
+#   description = "The name of the resource group in which the Log Analytics workspace is located in."
+# }
 
 # DNS
-variable "external_domain" {
-  type        = string
-  default     = "pagopa.it"
-  description = "Domain for delegation"
-}
-
-variable "dns_zone_internal_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain."
-}
-
-
-
-
-variable "dns_zone_prefix" {
-  type        = string
-  default     = null
-  description = "The dns subdomain."
-}
-
-variable "dns_zone_prefix_prf" {
-  type        = string
-  default     = "" # null
-  description = "The dns subdomain."
-}
-#
-# #
-# # Event hub
-# #
-# variable "ehns_auto_inflate_enabled" {
-#   type        = bool
-#   description = "Is Auto Inflate enabled for the EventHub Namespace?"
-#   default     = false
-# }
-#
-# variable "ehns_sku_name" {
+# variable "external_domain" {
 #   type        = string
-#   description = "Defines which tier to use."
-#   default     = "Standard"
+#   default     = "pagopa.it"
+#   description = "Domain for delegation"
 # }
 #
-# variable "ehns_capacity" {
-#   type        = number
-#   description = "Specifies the Capacity / Throughput Units for a Standard SKU namespace."
+# variable "dns_zone_internal_prefix" {
+#   type        = string
 #   default     = null
+#   description = "The dns subdomain."
 # }
+
 #
-# variable "ehns_maximum_throughput_units" {
-#   type        = number
-#   description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
-#   default     = null
-# }
+# Event hub
 #
-# variable "ehns_zone_redundant" {
-#   type        = bool
-#   description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
-#   default     = false
-# }
-#
-# variable "eventhubs_03" {
-#   description = "A list of event hubs to add to namespace."
-#   type = list(object({
-#     name              = string
-#     partitions        = number
-#     message_retention = number
-#     consumers         = list(string)
-#     keys = list(object({
-#       name   = string
-#       listen = bool
-#       send   = bool
-#       manage = bool
-#     }))
-#   }))
-#   default = []
-# }
-#
-# variable "eventhubs_04" {
-#   description = "A list of event hubs to add to namespace."
-#   type = list(object({
-#     name              = string
-#     partitions        = number
-#     message_retention = number
-#     consumers         = list(string)
-#     keys = list(object({
-#       name   = string
-#       listen = bool
-#       send   = bool
-#       manage = bool
-#     }))
-#   }))
-#   default = []
-# }
-#
+variable "ehns_auto_inflate_enabled" {
+  type        = bool
+  description = "Is Auto Inflate enabled for the EventHub Namespace?"
+  default     = false
+}
+
+variable "ehns_sku_name" {
+  type        = string
+  description = "Defines which tier to use."
+}
+
+variable "ehns_capacity" {
+  type        = number
+  description = "Specifies the Capacity / Throughput Units for a Standard SKU namespace."
+}
+
+variable "ehns_maximum_throughput_units" {
+  type        = number
+  description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
+}
+
+variable "ehns_zone_redundant" {
+  type        = bool
+  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
+}
+
 # variable "ehns_alerts_enabled" {
 #   type        = bool
 #   default     = false
 #   description = "Event hub alerts enabled?"
 # }
-#
-# variable "ehns_public_network_access" {
-#   type        = bool
-#   description = "(Required) enables public network access to the event hubs"
-# }
-#
+
+variable "ehns_public_network_access" {
+  type        = bool
+  description = "(Required) enables public network access to the event hubs"
+}
+
 # variable "ehns_metric_alerts" {
 #   default = {}
 #
