@@ -19,6 +19,7 @@
 | <a name="module_apim_payment_wallet_api_v1"></a> [apim\_payment\_wallet\_api\_v1](#module\_apim\_payment\_wallet\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
 | <a name="module_apim_payment_wallet_for_ecommerce_api_v1"></a> [apim\_payment\_wallet\_for\_ecommerce\_api\_v1](#module\_apim\_payment\_wallet\_for\_ecommerce\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
 | <a name="module_apim_payment_wallet_migrations_api_v1"></a> [apim\_payment\_wallet\_migrations\_api\_v1](#module\_apim\_payment\_wallet\_migrations\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
+| <a name="module_apim_payment_wallet_migrations_for_cstar_api_v1"></a> [apim\_payment\_wallet\_migrations\_for\_cstar\_api\_v1](#module\_apim\_payment\_wallet\_migrations\_for\_cstar\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
 | <a name="module_apim_payment_wallet_outcomes_api_v1"></a> [apim\_payment\_wallet\_outcomes\_api\_v1](#module\_apim\_payment\_wallet\_outcomes\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
 | <a name="module_apim_payment_wallet_product"></a> [apim\_payment\_wallet\_product](#module\_apim\_payment\_wallet\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.3.0 |
 | <a name="module_apim_wallet_service_notifications_api_v1"></a> [apim\_wallet\_service\_notifications\_api\_v1](#module\_apim\_wallet\_service\_notifications\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
@@ -42,6 +43,7 @@
 | [azurerm_api_management_api_version_set.payment_wallet_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.payment_wallet_for_ecommerce_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.payment_wallet_migrations_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.payment_wallet_migrations_for_cstar_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.wallet_outcomes_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.wallet_webview_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_group.payment-wallet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
