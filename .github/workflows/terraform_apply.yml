@@ -36,7 +36,6 @@ permissions:
 jobs:
 
   apply:
-    needs: [ deploy ]
     runs-on: ubuntu-latest
     name: terraform apply ${{ inputs.environment }}
     environment: ${{ inputs.environment }}
