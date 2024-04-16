@@ -39,3 +39,18 @@ module "vnet_ita_peering" {
   target_allow_gateway_transit     = true
 
 }
+
+#
+# AKS
+#
+resource "azurerm_public_ip" "aks_leonardo_public_ip" {
+  name                = "${local.product}-itn-${var.env}-aksoutbound-pip"
+  resource_group_name = azurerm_resource_group.rg_ita_vnet.name
+  location            = azurerm_resource_group.rg_ita_vnet.location
+  sku                 = "Standard"
+  allocation_method   = "Static"
+
+  zones = [1, 2, 3]
+
+  tags = var.tags
+}
