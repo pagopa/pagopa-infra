@@ -129,6 +129,23 @@
                     </set-body>
                 </return-response>
             </when>
+            <when condition="@(context.LastError.Source == "authorization")">
+                <return-response>
+                    <set-status code="401" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>
+                    @{
+                        JObject validationErrorResponse = new JObject();
+                        validationErrorResponse["status"] = 401;
+                        validationErrorResponse["title"] = "Unauthorized";
+                        validationErrorResponse["detail"] = "Unauthorized";
+                        return validationErrorResponse.ToString();
+                    }
+                    </set-body>
+                </return-response>
+            </when>
             <otherwise>
             <return-response>
                 <set-status code="500" />
