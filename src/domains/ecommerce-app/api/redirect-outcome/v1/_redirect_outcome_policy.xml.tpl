@@ -136,12 +136,10 @@
                         <value>application/json</value>
                     </set-header>
                     <set-body>
-                    @{
-                        JObject validationErrorResponse = new JObject();
-                        validationErrorResponse["status"] = 401;
-                        validationErrorResponse["title"] = "Unauthorized";
-                        validationErrorResponse["detail"] = "Unauthorized";
-                        return validationErrorResponse.ToString();
+                    {
+                        "status": 401,
+                        "title": "Unauthorized",
+                        "detail": "Unauthorized"
                     }
                     </set-body>
                 </return-response>
