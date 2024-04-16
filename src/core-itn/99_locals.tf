@@ -1,9 +1,9 @@
 locals {
-  product             = "${var.prefix}-${var.env_short}"
-  product_region      = "${var.prefix}-${var.env_short}-${var.location_short}"
-  product_ita         = "${var.prefix}-${var.env_short}-${var.location_short_ita}"
-  project             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_ita         = "${var.prefix}-${var.env_short}-${var.location_short_ita}-${var.domain}"
+  product        = "${var.prefix}-${var.env_short}"
+  product_region = "${var.prefix}-${var.env_short}-${var.location_short}"
+  product_ita    = "${var.prefix}-${var.env_short}-${var.location_short_ita}"
+  project        = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_ita    = "${var.prefix}-${var.env_short}-${var.location_short_ita}-${var.domain}"
 
   monitor_appinsights_name        = "${local.product}-appinsights"
   monitor_action_group_slack_name = "SlackPagoPA"

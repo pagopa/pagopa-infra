@@ -37,7 +37,7 @@ cidr_vnet_italy = ["10.3.0.0/16"]
 #
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
-dns_zone_prefix        = "uat.platform"
+dns_zone_prefix          = "uat.platform"
 dns_zone_prefix_prf      = "prf.platform"
 
 ### External resources
