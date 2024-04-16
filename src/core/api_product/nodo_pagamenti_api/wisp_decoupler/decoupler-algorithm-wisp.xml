@@ -50,7 +50,7 @@
     JArray sorted = new JArray(json_configuration.OrderBy(obj => (int)obj["list_priority"]));
     return sorted.ToString();
     }" />
-  <!-- read request info -->
+        <!-- read request info -->
 <choose>
 <!--<when condition="@(((string)context.Variables["soapAction"]).Equals("sendPaymentOutcome"))">-->
 <when condition="@{
@@ -116,9 +116,8 @@ new JProperty("ttl", 1)
 }
 }" />
 </otherwise>
-  </choose>
-
-  <!-- Execute cache lookup for default node ID if WISP dismantling is enabled -->
+        </choose>
+        <!-- Execute cache lookup for default node ID if WISP dismantling is enabled -->
 <choose>
 <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
 <!-- if fiscalcode and notice number belongs to wisp dismantling, set nodeId as default value ( {{default-nodo-id}} ) -->
@@ -139,13 +138,11 @@ return "wisp_" + ci + "_" + noticeNumber;
                                     var requestData = JObject.Parse((string) context.Variables["requestData"]);
                                     return (int) requestData["ttl"];
                                 }" caching-type="internal" />
-
 </when>
 </choose>
-  </when>
-  </choose>
-
-  <!-- check if key is cached -->
+        </when>
+        </choose>
+        <!-- check if key is cached -->
 <cache-lookup-value key="@{
                         var domain = (string)context.Variables["domain"];
                         var requestData = JObject.Parse((string)context.Variables["requestData"]);
@@ -209,7 +206,7 @@ new JProperty("ttl", requestData.GetValue("ttl"))
   <trace source="skip-set-base-user" severity="information">skipped set base url nm3</trace>
 </otherwise>
 </choose>
-  <!-- set node_id in cache -->
+        <!-- set node_id in cache -->
 <choose>
 <when condition="@{
                                 var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
@@ -227,9 +224,9 @@ new JProperty("ttl", requestData.GetValue("ttl"))
                                     return (int)requestData["ttl"];
                                 }" caching-type="internal" />
 </when>
-  </choose>
-  </when>
-  <!-- key in cache -->
+        </choose>
+        </when>
+        <!-- key in cache -->
 <otherwise>
 <trace source="retrieve-node-uri" severity="information">Node URI retrieved by cache</trace>
 <!-- retrieve url by node_id according to configuration -->
@@ -273,10 +270,10 @@ new JProperty("ttl", requestData.GetValue("ttl"))
   <trace source="skip-set-base-user" severity="information">skipped set base url nm3</trace>
 </otherwise>
 </choose>
-  </otherwise>
-  </choose>
-  </when>
-  <!-- evaluate wisp dismantling algorithm -->
+        </otherwise>
+        </choose>
+        </when>
+        <!-- evaluate wisp dismantling algorithm -->
 <when condition="@(((string)context.Variables["primitiveType"]).Equals("OTHER_WISPDISMANTLING"))">
 <set-variable name="wisp_whitelisted_brokers" value="{{wisp-brokerPSP-whitelist}}" />
 <set-variable name="wisp_whitelisted_channels" value="{{wisp-channel-whitelist}}" />
@@ -307,7 +304,7 @@ new JProperty("ttl", requestData.GetValue("ttl"))
                             bool isStationOk = true;
                             if (stations.Count() > 0) {
                                 XElement header = doc.Descendants(doc.Name.Namespace + "Header").FirstOrDefault();
-                                XElement primitiveHeader = (XElement) body.FirstNode;
+                                XElement primitiveHeader = (XElement) header.FirstNode;
                                 string stationId = (string) primitiveHeader.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
                                 isStationOk = stations.Contains(stationId);
                             }
@@ -327,6 +324,6 @@ new JProperty("ttl", requestData.GetValue("ttl"))
   <trace source="skip-set-base-url-whitelisted-broker-and-channel" severity="information">broker and channel not in whitelist or WISP dismantling disabled</trace>
 </otherwise>
 </choose>
-  </when>
-  </choose>
-  </fragment>
+        </when>
+        </choose>
+        </fragment>
