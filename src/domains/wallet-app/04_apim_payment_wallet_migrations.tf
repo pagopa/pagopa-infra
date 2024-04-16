@@ -12,7 +12,7 @@ locals {
   apim_payment_wallet_migrations_for_cstar_api = {
     display_name          = "pagoPA - payment wallet migrations API for CSTAR"
     description           = "API dedicated to migrate wallet from Payment Manager"
-    path                  = "payment-wallet-migrations"
+    path                  = "payment-wallet-migrations-for-cstar"
     subscription_required = true
     service_url           = null
   }
