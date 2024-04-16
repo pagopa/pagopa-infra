@@ -14,6 +14,13 @@ on:
           - dev
           - uat
           - prod
+      region:
+        required: true
+        type: choice
+        description: Select the Region
+        options:
+          - weu
+          - itn
       domain:
         required: true
         type: choice
@@ -72,5 +79,5 @@ jobs:
           export ARM_TENANT_ID=$(az account show --query tenantId --output tsv)
           export ARM_USE_OIDC=true
           export ARM_ACCESS_KEY=$(az storage account keys list --resource-group io-infra-rg --account-name pagopainfraterraform${{inputs.environment}} --query '[0].value' -o tsv)
-          bash ./terraform.sh init ${{ inputs.environment }}
-          bash ./terraform.sh apply ${{ inputs.environment }} -auto-approve
+          bash ./terraform.sh init ${{ inputs.region }}-${{ inputs.environment }}
+          bash ./terraform.sh apply ${{ inputs.region }}-${{ inputs.environment }} -auto-approve
