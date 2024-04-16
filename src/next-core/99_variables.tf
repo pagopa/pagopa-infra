@@ -117,7 +117,7 @@ variable "cidr_subnet_tools_cae" {
 variable "cidr_subnet_vpn" {
   type        = list(string)
   description = "VPN network address space."
-  default = [""]
+  default     = [""]
 }
 
 variable "cidr_subnet_apim" {

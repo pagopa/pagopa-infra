@@ -11,12 +11,12 @@ module "vpn_snet" {
 }
 
 data "azuread_application" "vpn_app" {
-  count = var.env_short == "d" ? 1 : 0
+  count        = var.env_short == "d" ? 1 : 0
   display_name = "${local.product}-app-vpn"
 }
 
 module "vpn" {
-  count = var.env_short == "d" ? 1 : 0
+  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//vpn_gateway?ref=v7.76.0"
 
   name                  = "${local.product}-vpn"
