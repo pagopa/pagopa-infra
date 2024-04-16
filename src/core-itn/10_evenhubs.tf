@@ -15,15 +15,18 @@ module "eventhub_meucci" {
   sku                      = var.ehns_sku_name
   capacity                 = var.ehns_capacity
   maximum_throughput_units = var.ehns_maximum_throughput_units
-  zone_redundant           = var.ehns_zone_redundant
+  #zone_redundat is always true
 
   virtual_network_ids           = [module.vnet_italy[0].id, data.azurerm_virtual_network.vnet_core.id]
-  subnet_id                     = azurerm_subnet.eventhubs_italy.id
+  private_endpoint_subnet_id    = azurerm_subnet.eventhubs_italy.id
   public_network_access_enabled = var.ehns_public_network_access
+  private_endpoint_created = var.ehns_public_network_access
   private_dns_zones = {
     id   = [data.azurerm_private_dns_zone.eventhub.id]
     name = [data.azurerm_private_dns_zone.eventhub.name]
+    resource_group_name = data.azurerm_resource_group.rg_event_private_dns_zone.name
   }
+
   private_dns_zone_record_A_name = "eventhub-meucci"
 
   action = [
