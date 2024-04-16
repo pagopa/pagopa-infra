@@ -81,7 +81,7 @@ module "aks_single_namespace_backup" {
   alert_severity   = 2
 
   ttl             = var.velero_backup_ttl
-  schedule        = var.velero_backup_schedule
+  schedule        = var.velero_backup_single_namespace_schedule
   volume_snapshot = false
 
   tags = var.tags

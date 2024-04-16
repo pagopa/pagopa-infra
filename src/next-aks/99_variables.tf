@@ -74,6 +74,12 @@ variable "velero_backup_schedule" {
   description = "(Optional) cron expression defining when to run the backups, expressed in UTC"
 }
 
+variable "velero_backup_single_namespace_schedule" {
+  type        = string
+  default     = "0 2 * * *"
+  description = "(Optional) cron expression defining when to run the backups, expressed in UTC"
+}
+
 variable "velero_backup_sa_replication_type" {
   type        = string
   default     = "GZRS"
