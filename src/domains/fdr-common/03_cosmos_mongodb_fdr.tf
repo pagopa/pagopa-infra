@@ -69,8 +69,8 @@ locals {
       name = "fdr_insert"
       indexes = [
         {
-        keys   = ["_id"] # reporting_flow_name
-        unique = true
+          keys   = ["_id"] # reporting_flow_name
+          unique = true
         },
         {
           keys   = ["fdr", "revision"] # reporting_flow_name revision
