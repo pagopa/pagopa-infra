@@ -66,7 +66,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   ]
 }
 
-# azure devops policy
+## ad group policy ##
 data "azuread_service_principal" "iac_principal" {
   count        = var.enable_iac_pipeline ? 1 : 0
   display_name = format("pagopaspa-pagoPA-iac-%s", data.azurerm_subscription.current.subscription_id)
@@ -118,45 +118,45 @@ module "letsencrypt_printit" {
   subscription_name = local.subscription_name
 }
 
-data "azurerm_eventhub_authorization_rule" "notices_evt_authorization_rule" {
-  name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notice-evt-rx"
-  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-msg-rg"
-  eventhub_name       = "${var.prefix}-printit-evh"
-  namespace_name      = "${var.prefix}-${var.env_short}-weu-core-evh-ns04"
-}
+# data "azurerm_eventhub_authorization_rule" "notices_evt_authorization_rule" {
+#   name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notice-evt-rx"
+#   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-msg-rg"
+#   eventhub_name       = "${var.prefix}-printit-evh"
+#   namespace_name      = "${var.prefix}-${var.env_short}-weu-core-evh-ns04"
+# }
 
-data "azurerm_eventhub_authorization_rule" "notices_complete_evt_authorization_rule" {
-  name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notice-complete-evt-tx"
-  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-msg-rg"
-  eventhub_name       = "${var.prefix}-printit-evh"
-  namespace_name      = "${var.prefix}-${var.env_short}-weu-core-evh-ns04"
-}
+# data "azurerm_eventhub_authorization_rule" "notices_complete_evt_authorization_rule" {
+#   name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notice-complete-evt-tx"
+#   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-msg-rg"
+#   eventhub_name       = "${var.prefix}-printit-evh"
+#   namespace_name      = "${var.prefix}-${var.env_short}-weu-core-evh-ns04"
+# }
 
-data "azurerm_eventhub_authorization_rule" "notices_error_evt_authorization_rule" {
-  name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notice-error-evt-tx"
-  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-msg-rg"
-  eventhub_name       = "${var.prefix}-printit-evh"
-  namespace_name      = "${var.prefix}-${var.env_short}-weu-core-evh-ns04"
-}
+# data "azurerm_eventhub_authorization_rule" "notices_error_evt_authorization_rule" {
+#   name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notice-error-evt-tx"
+#   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-msg-rg"
+#   eventhub_name       = "${var.prefix}-printit-evh"
+#   namespace_name      = "${var.prefix}-${var.env_short}-weu-core-evh-ns04"
+# }
 
 data "azurerm_cosmosdb_account" "notices_cosmos_account" {
-  name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-notices_mongo_db"
-  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-rg"
+  name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-cosmos-account"
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-db-rg"
 }
 
 data "azurerm_storage_account" "notices_storage_sa" {
   name                = replace("${var.domain}-notices", "-", "")
-  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-st-rg"
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-rg"
 }
 
 data "azurerm_storage_account" "templates_storage_sa" {
-  name                = "pagopa-${var.env_short}${var.location_short}${var.domain}fnsa"
-  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-st-rg"
+  name                = replace("${var.domain}-templates", "-", "")
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-rg"
 }
 
 data "azurerm_storage_account" "institutions_storage_sa" {
-  name                = "pagopa-${var.env_short}${var.location_short}${var.domain}fnsa"
-  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-st-rg"
+  name                = replace("${var.domain}-institutions", "-", "")
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-rg"
 }
 
 data "azurerm_application_insights" "application_insights" {
@@ -184,7 +184,7 @@ resource "azurerm_key_vault_secret" "notices_storage_account_connection_string" 
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
 }
-
+#
 resource "azurerm_key_vault_secret" "notices_storage_account_pkey" {
   name         = "notices-storage-account-pkey"
   value        = data.azurerm_storage_account.notices_storage_sa.primary_access_key
@@ -220,40 +220,24 @@ resource "azurerm_key_vault_secret" "institutions_storage_account_pkey" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "ehub_notice_connection_string" {
-  name         = format("ehub-%s-notice-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_key_vault_secret" "ehub_notice_complete_connection_string" {
-  name         = format("ehub-%s-notice-complete-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.notices_complete_evt_authorization_rule.primary_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_key_vault_secret" "ehub_notice_error_connection_string" {
-  name         = format("ehub-%s-notice-error-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.notices_error_evt_authorization_rule.primary_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
-  name         = "elastic-otel-token-header"
-  key_vault_id = module.key_vault.id
-  value        = "SET-MANUALLY"
-
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-
-}
+# resource "azurerm_key_vault_secret" "ehub_notice_connection_string" {
+#   name         = format("ehub-%s-notice-connection-string", var.env_short)
+#   value        = data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string
+#   content_type = "text/plain"
+#   key_vault_id = module.key_vault.id
+# }
+#
+# resource "azurerm_key_vault_secret" "ehub_notice_complete_connection_string" {
+#   name         = format("ehub-%s-notice-complete-connection-string", var.env_short)
+#   value        = data.azurerm_eventhub_authorization_rule.notices_complete_evt_authorization_rule.primary_connection_string
+#   content_type = "text/plain"
+#   key_vault_id = module.key_vault.id
+# }
+#
+# resource "azurerm_key_vault_secret" "ehub_notice_error_connection_string" {
+#   name         = format("ehub-%s-notice-error-connection-string", var.env_short)
+#   value        = data.azurerm_eventhub_authorization_rule.notices_error_evt_authorization_rule.primary_connection_string
+#   content_type = "text/plain"
+#
+#   key_vault_id = module.key_vault.id
+# }

@@ -11,19 +11,22 @@ if [ -z "$action" ]; then
 helpmessage=$(cat <<EOF
 
 ./sops.sh d env -> decrypt json file in specified environment
-    example: ./sops.sh d weu-dev
+    example: ./sops.sh d itn-dev
 
 ./sops.sh s env -> search in enc file in specified environment
-    example: ./sops.sh s weu-dev
+    example: ./sops.sh s itn-dev
 
 ./sops.sh n env -> create new file enc json template in specified environment
-    example: ./sops.sh n weu-dev
+    example: ./sops.sh n itn-dev
 
 ./sops.sh a env -> add new secret record to enc json in specified environment
-    example: ./sops.sh a weu-dev
+    example: ./sops.sh a itn-dev
 
 ./sops.sh e env -> edit enc json record in specified environment
-    example: ./sops.sh e weu-dev
+    example: ./sops.sh e itn-dev
+
+./sops.sh f env  -> enc a json file in a specified environment
+    example: ./sops.sh k itn-dev
 
 EOF
 )
@@ -40,12 +43,12 @@ source "./secret/$localenv/secret.ini"
 
 echo "az keyvault key show --name $prefix-$env_short-$domain-sops-key --vault-name $prefix-$env_short-$domain-kv --query key.kid"
 
-if echo "d a s n e" | grep -w $action > /dev/null; then
+if echo "d a s n e f" | grep -w $action > /dev/null; then
 
 
 
   azurekvurl=`az keyvault key show --name $prefix-$env_short-$domain-sops-key --vault-name $prefix-$env_short-$domain-kv --query key.kid | sed 's/"//g'`
-
+  echo $azurekvurl
 
 
     case $action in
@@ -87,6 +90,16 @@ if echo "d a s n e" | grep -w $action > /dev/null; then
         then
           sops  --azure-kv $azurekvurl ./secret/$localenv/$file_crypted
 
+        else
+          echo "file ./secret/$localenv/$file_crypted not found"
+
+        fi
+      ;;
+      "f")
+        if [ -f ./secret/$localenv/$file_crypted ]
+        then
+          read -p 'file: ' file
+          sops --encrypt --azure-kv $azurekvurl ./secret/$localenv/$file > ./secret/$localenv/$file_crypted
         else
           echo "file ./secret/$localenv/$file_crypted not found"
 
