@@ -50,6 +50,11 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
+}
+
 variable "enable_velero_backup" {
   type        = bool
   description = "(Optional) If true, installs velero on the aks cluster and schedules the automatic backups"
