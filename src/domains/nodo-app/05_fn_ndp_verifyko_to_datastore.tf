@@ -166,7 +166,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_verifyko_to_datastore_functio
       metric_trigger {
         metric_name        = "IncomingMessages"
         metric_namespace   = "microsoft.eventhub/namespaces"
-        metric_resource_id = data.azurerm_eventhub_namespace.pagopa-evh-ns01.id
+        metric_resource_id = var.enabled_features.eventhub_ha ? data.azurerm_eventhub_namespace.pagopa-evh-ns03.id : data.azurerm_eventhub_namespace.pagopa-evh-ns01.id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
@@ -193,7 +193,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_verifyko_to_datastore_functio
       metric_trigger {
         metric_name        = "IncomingMessages"
         metric_namespace   = "microsoft.eventhub/namespaces"
-        metric_resource_id = data.azurerm_eventhub_namespace.pagopa-evh-ns01.id
+        metric_resource_id = var.enabled_features.eventhub_ha ? data.azurerm_eventhub_namespace.pagopa-evh-ns03.id : data.azurerm_eventhub_namespace.pagopa-evh-ns01.id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
