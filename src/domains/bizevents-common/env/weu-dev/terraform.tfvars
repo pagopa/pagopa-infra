@@ -86,3 +86,8 @@ cidr_subnet_bizevents_datastore_cosmosdb = ["10.1.156.0/24"]
 
 enable_iac_pipeline = true
 redis_ha_enabled    = false
+
+enabled_features = {
+  eventhub_ha_tx = true
+  eventhub_ha_rx = false
+}
