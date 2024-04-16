@@ -31,6 +31,16 @@
         "summary": "Update wallet details by Payment Manager.",
         "description": "Update Wallet with its details by Payment Manager during the migration process. Also the Wallet goes to VALIDATED status.\n",
         "operationId": "updateWalletDetailsByPM",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-contract-hmac",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Wallet details by Payment Manager",
           "content": {
@@ -105,6 +115,16 @@
         "summary": "Remove existing Wallet from given ContractId",
         "description": "Remove an existing Wallet associated from given ContractId. The status of Wallet\nwill be move to DELETED.\n",
         "operationId": "removeWalletByPM",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-contract-hmac",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Contract Id associated to Wallet",
           "content": {
