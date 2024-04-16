@@ -22,6 +22,8 @@ is_feature_enabled = {
   vnet_ita                  = false,
   container_app_tools_cae   = false,
   node_forwarder_ha_enabled = false,
+  vpn                       = false,
+  dns_forwarder_lb          = true,
   postgres_private_dns      = true
 }
 
@@ -46,8 +48,7 @@ log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
 ### VPN
-dns_forwarder_backup_is_enabled = true
-dns_forwarder_vm_image_name     = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
+dns_forwarder_vm_image_name = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
 
 
 #
@@ -62,6 +63,7 @@ geo_replica_ddos_protection_plan = {
   enable = true
 }
 
+postgres_private_dns_enabled = true
 
 enable_logos_backup                              = true
 logos_backup_retention                           = 30
