@@ -28,6 +28,15 @@ resource "azurerm_api_management_api_version_set" "payment_wallet_migrations_api
   versioning_scheme   = "Segment"
 }
 
+resource "azurerm_api_management_api_version_set" "payment_wallet_migrations_for_cstar_api" {
+  count               = var.payment_wallet_migrations_enabled ? 1 : 0
+  name                = "${local.project}-migrations-for-cstar-api"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = local.apim_payment_wallet_migrations_for_cstar_api.display_name
+  versioning_scheme   = "Segment"
+}
+
 module "apim_payment_wallet_migrations_api_v1" {
   count  = var.payment_wallet_migrations_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
@@ -65,7 +74,7 @@ module "apim_payment_wallet_migrations_for_cstar_api_v1" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_payment_wallet_product.product_id]
   subscription_required = local.apim_payment_wallet_migrations_for_cstar_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.payment_wallet_migrations_api[0].id
+  version_set_id        = azurerm_api_management_api_version_set.payment_wallet_migrations_for_cstar_api[0].id
   api_version           = "v1"
 
   description  = local.apim_payment_wallet_migrations_for_cstar_api.description
