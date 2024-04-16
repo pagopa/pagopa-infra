@@ -14,7 +14,7 @@ on:
           - dev
           - uat
           - prod
-      domains:
+      domain:
         required: true
         type: choice
         description: Select the domain
@@ -66,7 +66,7 @@ jobs:
       - name: Terraform Apply
         shell: bash
         run: |
-          cd ./infra
+          cd ./src/domains/${{inputs.domain}}
           export ARM_CLIENT_ID="${{ secrets.CD_CLIENT_ID }}"
           export ARM_SUBSCRIPTION_ID=$(az account show --query id --output tsv)
           export ARM_TENANT_ID=$(az account show --query tenantId --output tsv)
