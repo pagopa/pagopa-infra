@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "sec_rg" {
-  name     = "${local.product}-${var.domain}-sec-rg"
+  name     = "${local.product}-${var.location_short}-${var.domain}-sec-rg"
   location = var.location
 
   tags = var.tags
@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "sec_rg" {
 module "key_vault" {
   source = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.13.1"
 
-  name                       = "${local.product}-${var.domain}-kv"
+  name                       = "${local.product}-${var.location_short}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
   resource_group_name        = azurerm_resource_group.sec_rg.name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
@@ -240,4 +240,24 @@ resource "azurerm_key_vault_secret" "institutions_storage_account_pkey" {
 #   content_type = "text/plain"
 #
 #   key_vault_id = module.key_vault.id
+# }
+
+
+# data "azurerm_api_management" "apim" {
+#   name                = "${var.prefix}-${var.env_short}-apim"
+#   resource_group_name = "${var.prefix}-${var.env_short}-api-rg"
+# }
+#
+#
+# data "azurerm_api_management_product" "example" {
+#   product_id          = "00000000-0000-0000-0000-000000000000"
+#   api_management_name = data.azurerm_api_management.example.name
+#   resource_group_name = data.azurerm_api_management.example.resource_group_name
+# }
+#
+# resource "azurerm_api_management_subscription" "example" {
+#   api_management_name = data.azurerm_api_management.apim.name
+#   resource_group_name = data.azurerm_api_management.apim.resource_group_name
+#   product_id          = data.azurerm_api_management_product.example.id
+#   display_name        = "PDF Engine JS for Java"
 # }

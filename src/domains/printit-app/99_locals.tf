@@ -6,8 +6,8 @@ locals {
   monitor_action_group_email_name = "PagoPA"
   monitor_appinsights_name        = "${local.product}-appinsights"
 
-  vnet_name                = "${local.product}-vnet"
-  vnet_resource_group_name = "${local.product}-vnet-rg"
+  vnet_name                = "${var.prefix}-${var.env_short}-${var.location_short}-vnet"
+  vnet_resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-vnet-rg"
 
   aks_name                = "${local.product}-${var.location_short}-${var.instance}-aks"
   aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
@@ -121,7 +121,7 @@ locals {
     OTEL_TRACES_SAMPLER               = "always_on"
     JAVA_TOOL_OPTIONS                 = "-javaagent:/home/site/wwwroot/jmx_prometheus_javaagent-0.19.0.jar=12345:/home/site/wwwroot/config.yaml -javaagent:/home/site/wwwroot/opentelemetry-javaagent.jar"
     OTEL_EXPORTER_OTLP_HEADERS        = data.azurerm_key_vault_secret.elastic_otel_token_header.value
-    PDF_ENGINE_NODE_SUBKEY            = data.azurerm_key_vault_secret.pdf_engine_node_subkey.value
+    #     PDF_ENGINE_NODE_SUBKEY            = data.azurerm_key_vault_secret.pdf_engine_node_subkey.value
 
   }
 

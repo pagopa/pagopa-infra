@@ -24,7 +24,7 @@ log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
 dns_zone_prefix          = "printit.itn"
-
+apim_dns_zone_prefix     = "platform"
 ### Aks
 
 ingress_load_balancer_ip = "10.3.2.250"

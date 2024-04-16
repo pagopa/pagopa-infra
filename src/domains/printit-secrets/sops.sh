@@ -35,19 +35,19 @@ EOF
 fi
 
 if [ -z "$localenv" ]; then
-  echo "env should be: dev, uat or prod."
+  echo "env should be: itn-dev, itn-uat or itn-prod."
   exit 0
 fi
 
 source "./secret/$localenv/secret.ini"
 
-echo "az keyvault key show --name $prefix-$env_short-$domain-sops-key --vault-name $prefix-$env_short-$domain-kv --query key.kid"
+echo "az keyvault key show --name $prefix-$env_short-$domain-sops-key --vault-name $prefix-$env_short-itn-$domain-kv --query key.kid"
 
 if echo "d a s n e f" | grep -w $action > /dev/null; then
 
 
 
-  azurekvurl=`az keyvault key show --name $prefix-$env_short-$domain-sops-key --vault-name $prefix-$env_short-$domain-kv --query key.kid | sed 's/"//g'`
+  azurekvurl=`az keyvault key show --name $prefix-$env_short-$domain-sops-key --vault-name $prefix-$env_short-itn-$domain-kv --query key.kid | sed 's/"//g'`
   echo $azurekvurl
 
 
@@ -73,7 +73,7 @@ if echo "d a s n e f" | grep -w $action > /dev/null; then
       "a")
         read -p 'key: ' key
         read -p 'valore: ' value
-        sops -i --set  '["'$key'"] "'$value'"' --azure-kv $azurekvurl ./secret/$localenv/$file_crypted
+        sops -i --set  '["'"$key"'"] "'"$value"'"' --azure-kv $azurekvurl ./secret/$localenv/$file_crypted
       ;;
       "n")
         if [ -f ./secret/$localenv/$file_crypted ]
@@ -96,14 +96,8 @@ if echo "d a s n e f" | grep -w $action > /dev/null; then
         fi
       ;;
       "f")
-        if [ -f ./secret/$localenv/$file_crypted ]
-        then
           read -p 'file: ' file
           sops --encrypt --azure-kv $azurekvurl ./secret/$localenv/$file > ./secret/$localenv/$file_crypted
-        else
-          echo "file ./secret/$localenv/$file_crypted not found"
-
-        fi
       ;;
     esac
 
