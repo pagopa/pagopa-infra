@@ -55,6 +55,7 @@ ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
 ehns_capacity                 = 5
 ehns_public_network_access    = true
+ehns_private_endpoint_is_present    = true
 ehns_sku_name = "Standard"
 
 ehns_metric_alerts = {

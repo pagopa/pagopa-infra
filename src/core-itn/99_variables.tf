@@ -166,6 +166,11 @@ variable "ehns_public_network_access" {
   description = "(Required) enables public network access to the event hubs"
 }
 
+variable "ehns_private_endpoint_is_present" {
+  type        = bool
+  description = "(Required) create private endpoint to the event hubs"
+}
+
 # variable "ehns_metric_alerts" {
 #   default = {}
 #

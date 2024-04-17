@@ -52,6 +52,7 @@ ehns_maximum_throughput_units = 1
 ehns_capacity                 = 1
 ehns_zone_redundant           = false
 ehns_public_network_access    = true
+ehns_private_endpoint_is_present    = false
 ehns_sku_name = "Standard"
 
 ehns_metric_alerts = {
