@@ -26,6 +26,8 @@ module "apim_nodo_dei_pagamenti_product_auth_wisp" {
 }
 
 
+
+
 resource "azurerm_api_management_api_version_set" "pm_per_nodo_api_wisp" {
 
   name                = "${local.project}-pm-per-nodo-api-wisp"
@@ -62,13 +64,6 @@ module "apim_pm_per_nodo_v2_wisp" {
     host                       = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name,
     ecommerce_ingress_hostname = var.ecommerce_ingress_hostname
   })
-
-  api_operation_policies = [
-    {
-      operation_id = "addUserReceipt"
-      xml_content  = file("./api/nodopagamenti_api/wisp/wisp-outbound-sendrt.xml")
-    }
-  ]
 }
 
 resource "azurerm_api_management_api_operation_policy" "sendpaymentoutcome_v2_wisp_policy" {
@@ -79,8 +74,58 @@ resource "azurerm_api_management_api_operation_policy" "sendpaymentoutcome_v2_wi
   operation_id        = "addUserReceipt"
 
   #tfsec:ignore:GEN005
-  xml_content = file("./api/nodopagamenti_api/wisp/wisp-outbound-sendrt.xml")
+  xml_content = file("./api/nodopagamenti_api/wisp/wisp-sendpaymentresult-outbound.xml")
 }
+
+
+
+
+
+resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_ndp_wisp" {
+
+  name                = format("%s-nodo-per-pm-api-ndp-wisp", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "WISP - Nodo per Payment Manager API NDP"
+  versioning_scheme   = "Segment"
+}
+
+module "apim_nodo_per_pm_api_v2_ndp_wisp" {
+
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+
+  name                  = format("%s-nodo-per-pm-api-ndp", local.project)
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = module.apim.name
+  subscription_required = true
+  version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api_ndp_wisp.id
+  api_version           = "v2"
+  service_url           = null
+
+  description  = "API to support Payment Manager"
+  display_name = "WISP - Nodo per Payment Manager API NDP"
+  path         = "nodo-ndp/nodo-per-pm-wisp"
+  protocols    = ["https"]
+
+  content_format = "swagger-json"
+  content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_swagger.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_base_policy.xml.tpl", {
+    base-url = "https://${azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name}/nodo"
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "close_payment_api_v2_ndp" {
+  api_name            = format("%s-nodo-per-pm-api-ndp-v2", local.project)
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  operation_id        = "closePayment"
+  xml_content         = file("api/nodopagamenti_api/wisp/wisp-closepayment-outbound.xml")
+}
+
+
 
 
 locals {

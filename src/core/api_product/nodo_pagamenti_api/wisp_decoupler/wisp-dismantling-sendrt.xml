@@ -7,13 +7,12 @@
 <fragment>
     <!-- check if payments are cached for WISP dismantling, searching by the key in format wisp_<paymentToken> -->
     <!-- If the key extracted from key object refers to a WISP dismantling payment, send a KO RT -->
-
     <!-- ############################## -->
     <!-- Number of token evaluated: 1/5 -->
     <!-- ############################## -->
     <set-variable name="current_payment_token" value="@{
         try {
-            return ((string) context.Variables["wisp_keys_objects"]).Split(';')[0];
+            return ((string) context.Variables["wisp_payment_tokens"]).Split(',')[0];
         } catch (Exception e) {
             return "NONE";
         }
@@ -40,14 +39,12 @@
     </choose>
 </when>
         </choose>
-
-
         <!-- ############################## -->
         <!-- Number of token evaluated: 2/5 -->
         <!-- ############################## -->
 <set-variable name="current_payment_token" value="@{
         try {
-            return ((string) context.Variables["wisp_keys_objects"]).Split(';')[1];
+            return ((string) context.Variables["wisp_payment_tokens"]).Split(',')[1];
         } catch (Exception e) {
             return "NONE";
         }
@@ -74,14 +71,12 @@
 </choose>
         </when>
         </choose>
-
-
         <!-- ############################## -->
         <!-- Number of token evaluated: 3/5 -->
         <!-- ############################## -->
 <set-variable name="current_payment_token" value="@{
         try {
-            return ((string) context.Variables["wisp_keys_objects"]).Split(';')[2];
+            return ((string) context.Variables["wisp_payment_tokens"]).Split(',')[2];
         } catch (Exception e) {
             return "NONE";
         }
@@ -108,14 +103,12 @@
 </choose>
         </when>
         </choose>
-
-
         <!-- ############################## -->
         <!-- Number of token evaluated: 4/5 -->
         <!-- ############################## -->
 <set-variable name="current_payment_token" value="@{
         try {
-            return ((string) context.Variables["wisp_keys_objects"]).Split(';')[3];
+            return ((string) context.Variables["wisp_payment_tokens"]).Split(',')[3];
         } catch (Exception e) {
             return "NONE";
         }
@@ -142,14 +135,12 @@
 </choose>
         </when>
         </choose>
-
-
         <!-- ############################## -->
         <!-- Number of token evaluated: 5/5 -->
         <!-- ############################## -->
 <set-variable name="current_payment_token" value="@{
         try {
-            return ((string) context.Variables["wisp_keys_objects"]).Split(';')[4];
+            return ((string) context.Variables["wisp_payment_tokens"]).Split(',')[4];
         } catch (Exception e) {
             return "NONE";
         }
