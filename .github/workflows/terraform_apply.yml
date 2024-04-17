@@ -1,0 +1,77 @@
+name: Terraform Apply
+
+# Controls when the workflow will run
+on:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    environment:
+      required: true
+      type: choice
+      description: Select the Environment
+      options:
+        - dev
+        - uat
+        - prod
+    domains:
+      environment:
+        required: true
+        type: choice
+        description: Select the domain
+        options:
+          - printit-app
+          - printit-common
+          - printit-secrets
+
+
+permissions:
+  packages: write
+  contents: write
+  issues: write
+  id-token: write
+  actions: read
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  apply:
+    needs: [ deploy ]
+    runs-on: ubuntu-latest
+    name: terraform apply ${{ inputs.environment }}
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Checkout
+        id: checkout
+        # from https://github.com/actions/checkout/commits/main
+        uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
+        with:
+          persist-credentials: false
+
+      - name: Setup Terraform
+        # from https://github.com/hashicorp/setup-terraform/commits/main
+        uses: hashicorp/setup-terraform@8feba2b913ea459066180f9cb177f58a881cf146
+        with:
+          terraform_version: "1.3.6"
+
+      - name: Login
+        id: login
+        # from https://github.com/Azure/login/commits/master
+        uses: azure/login@92a5484dfaf04ca78a94597f4f19fea633851fa2
+        with:
+          client-id: ${{ secrets.CD_CLIENT_ID }}
+          tenant-id: ${{ secrets.TENANT_ID }}
+          subscription-id: ${{ secrets.SUBSCRIPTION_ID }}
+
+
+      - name: Terraform Apply
+        shell: bash
+        run: |
+          cd ./infra
+          export ARM_CLIENT_ID="${{ secrets.CD_CLIENT_ID }}"
+          export ARM_SUBSCRIPTION_ID=$(az account show --query id --output tsv)
+          export ARM_TENANT_ID=$(az account show --query tenantId --output tsv)
+          export ARM_USE_OIDC=true
+          export ARM_ACCESS_KEY=$(az storage account keys list --resource-group io-infra-rg --account-name pagopainfraterraform${{inputs.environment}} --query '[0].value' -o tsv)
+          bash ./terraform.sh init ${{ inputs.environment }}
+          bash ./terraform.sh apply ${{ inputs.environment }} -auto-approve
