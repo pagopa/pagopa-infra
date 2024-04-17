@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "eventhub_ita_rg" {
 
 
 module "eventhub_meucci" {
-  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v8.0.0"
+  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v8.2.0"
   name                     = "${local.project}-evh-meucci"
   location                 = var.location
   resource_group_name      = azurerm_resource_group.eventhub_ita_rg.name
@@ -20,10 +20,10 @@ module "eventhub_meucci" {
   virtual_network_ids           = [module.vnet_italy[0].id, data.azurerm_virtual_network.vnet_core.id]
   private_endpoint_subnet_id    = azurerm_subnet.eventhubs_italy.id
   public_network_access_enabled = var.ehns_public_network_access
-  private_endpoint_created = var.ehns_private_endpoint_is_present
+  private_endpoint_created      = var.ehns_private_endpoint_is_present
   private_dns_zones = {
-    id   = [data.azurerm_private_dns_zone.eventhub.id]
-    name = [data.azurerm_private_dns_zone.eventhub.name]
+    id                  = [data.azurerm_private_dns_zone.eventhub.id]
+    name                = [data.azurerm_private_dns_zone.eventhub.name]
     resource_group_name = data.azurerm_resource_group.rg_event_private_dns_zone.name
   }
 
@@ -40,7 +40,8 @@ module "eventhub_meucci" {
     }
   ]
 
-  metric_alerts = var.ehns_metric_alerts
+  metric_alerts_create = var.ehns_metric_alerts_create
+  metric_alerts        = var.ehns_metric_alerts
 
   tags = var.tags
 }

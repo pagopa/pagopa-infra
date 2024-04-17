@@ -171,6 +171,11 @@ variable "ehns_private_endpoint_is_present" {
   description = "(Required) create private endpoint to the event hubs"
 }
 
+variable "ehns_metric_alerts_create" {
+  type        = bool
+  description = "Create metrics alerts for eventhub"
+}
+
 variable "ehns_metric_alerts" {
   default = {}
 
@@ -205,12 +210,12 @@ EOD
 # Container registry
 #
 variable "container_registry_sku" {
-  type = string
+  type        = string
   description = "Sku for ACR"
 }
 
 variable "container_registry_zone_redundancy_enabled" {
-  type = bool
+  type        = bool
   description = "Enabled AZ for container registry"
 }
 
