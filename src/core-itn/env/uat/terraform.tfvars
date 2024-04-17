@@ -105,3 +105,9 @@ ehns_metric_alerts = {
     ],
   },
 }
+
+#
+# Container registry ACR
+#
+container_registry_sku = "Standard"
+container_registry_zone_redundancy_enabled = false

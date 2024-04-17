@@ -58,7 +58,6 @@ ehns_public_network_access    = true
 ehns_private_endpoint_is_present    = true
 ehns_sku_name = "Standard"
 
-
 ehns_metric_alerts = {
   no_trx = {
     aggregation = "Total"
@@ -106,3 +105,9 @@ ehns_metric_alerts = {
     ],
   },
 }
+
+#
+# Container registry ACR
+#
+container_registry_sku = "Premium"
+container_registry_zone_redundancy_enabled = true

@@ -47,6 +47,9 @@ monitor_resource_group_name                 = "pagopa-d-monitor-rg"
 log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 
+#
+# Eventhub
+#
 ehns_auto_inflate_enabled     = false
 ehns_maximum_throughput_units = 1
 ehns_capacity                 = 1
@@ -105,3 +108,12 @@ ehns_metric_alerts = {
     ],
   },
 }
+
+#
+# Container registry ACR
+#
+container_registry_sku = "Basic"
+container_registry_zone_redundancy_enabled = false
+
+
+
