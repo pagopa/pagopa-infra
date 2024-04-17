@@ -26,6 +26,61 @@ module "apim_nodo_dei_pagamenti_product_auth_wisp" {
 }
 
 
+resource "azurerm_api_management_api_version_set" "pm_per_nodo_api_wisp" {
+
+  name                = "${local.project}-pm-per-nodo-api-wisp"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim.name
+  display_name        = "WISP Copy - PM per Nodo API"
+  versioning_scheme   = "Segment"
+}
+
+module "apim_pm_per_nodo_v2_wisp" {
+
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+
+  name                  = "${local.project}-pm-per-nodo-api-wisp"
+  api_management_name   = module.apim.name
+  resource_group_name   = azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_nodo_dei_pagamenti_product_auth_wisp.product_id]
+  subscription_required = local.apim_pm_per_nodo_api.subscription_required_v2
+  version_set_id        = azurerm_api_management_api_version_set.pm_per_nodo_api_wisp.id
+  api_version           = "v2"
+  service_url           = local.apim_pm_per_nodo_api.service_url
+
+  description  = "API PM for Nodo"
+  display_name = "WISP Copy - PM per Nodo API"
+  path         = "payment-manager/pm-per-nodo-wisp"
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/payment_manager_api/pm-per-nodo/v2/_openapi.json.tpl", {
+    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+  })
+
+  xml_content = templatefile("./api/payment_manager_api/pm-per-nodo/v2/_base_policy.xml.tpl", {
+    host                       = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name,
+    ecommerce_ingress_hostname = var.ecommerce_ingress_hostname
+  })
+
+  api_operation_policies = [
+    {
+      operation_id = "addUserReceipt"
+      xml_content  = file("./api/nodopagamenti_api/wisp/wisp-outbound-sendrt.xml")
+    }
+  ]
+}
+
+resource "azurerm_api_management_api_operation_policy" "sendpaymentoutcome_v2_wisp_policy" {
+
+  api_name            = "${local.project}-pm-per-nodo-api-wisp-v2"
+  api_management_name = module.apim.name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  operation_id        = "addUserReceipt"
+
+  #tfsec:ignore:GEN005
+  xml_content = file("./api/nodopagamenti_api/wisp/wisp-outbound-sendrt.xml")
+}
 
 
 locals {
@@ -38,7 +93,6 @@ locals {
     #azurerm_api_management_api.apim_node_for_pa_api_v1_auth.name,
     #azurerm_api_management_api.apim_nodo_per_psp_richiesta_avvisi_api_v1_auth.name
   ]
-
 }
 
 resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_api_auth_wisp" {
@@ -84,6 +138,25 @@ resource "azapi_resource" "decoupler_activate_outbound_wisp" {
       description = "[WISP] Outbound logic for Activate primitive of NDP decoupler"
       format      = "rawxml"
       value       = file("./api_product/nodo_pagamenti_api/wisp_decoupler/decoupler-activate-outbound-wisp.xml")
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
+
+resource "azapi_resource" "wisp_dismantling_sendrt" {
+
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "wisp-dismantling-sendrt"
+  parent_id = module.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Sending RT request if required for WISP dismantling"
+      format      = "rawxml"
+      value       = file("./api_product/nodo_pagamenti_api/wisp_decoupler/wisp-dismantling-sendrt.xml")
     }
   })
 
