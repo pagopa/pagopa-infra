@@ -29,9 +29,9 @@ is_feature_enabled = {
 ### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]
 
-cidr_aks_system = ["10.3.1.0/24"] #placeholder
-cidr_aks_user = ["10.3.2.0/24"] #placeholder
-cidr_cosmosdb_italy = ["10.3.3.0/24"] #placeholder
+cidr_aks_system      = ["10.3.1.0/24"] #placeholder
+cidr_aks_user        = ["10.3.2.0/24"] #placeholder
+cidr_cosmosdb_italy  = ["10.3.3.0/24"] #placeholder
 cidr_eventhubs_italy = ["10.3.4.0/24"]
 
 
@@ -50,13 +50,14 @@ log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 #
 # Eventhub
 #
-ehns_auto_inflate_enabled     = false
-ehns_maximum_throughput_units = 1
-ehns_capacity                 = 1
-ehns_zone_redundant           = false
-ehns_public_network_access    = true
-ehns_private_endpoint_is_present    = false
-ehns_sku_name = "Standard"
+ehns_auto_inflate_enabled        = false
+ehns_maximum_throughput_units    = 1
+ehns_capacity                    = 1
+ehns_zone_redundant              = false
+ehns_public_network_access       = true
+ehns_private_endpoint_is_present = false
+ehns_sku_name                    = "Standard"
+ehns_metric_alerts_create        = false
 
 ehns_metric_alerts = {
   no_trx = {
@@ -112,7 +113,7 @@ ehns_metric_alerts = {
 #
 # Container registry ACR
 #
-container_registry_sku = "Basic"
+container_registry_sku                     = "Basic"
 container_registry_zone_redundancy_enabled = false
 
 
