@@ -40,6 +40,8 @@ module "eventhub_meucci" {
     }
   ]
 
+  metric_alerts = var.ehns_metric_alerts
+
   tags = var.tags
 }
 
