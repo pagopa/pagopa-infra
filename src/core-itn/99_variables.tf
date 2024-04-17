@@ -171,35 +171,48 @@ variable "ehns_private_endpoint_is_present" {
   description = "(Required) create private endpoint to the event hubs"
 }
 
-# variable "ehns_metric_alerts" {
-#   default = {}
+variable "ehns_metric_alerts" {
+  default = {}
+
+  description = <<EOD
+Map of name = criteria objects
+EOD
+
+  type = map(object({
+    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
+    aggregation = string
+    metric_name = string
+    description = string
+    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
+    operator  = string
+    threshold = number
+    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
+    frequency = string
+    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
+    window_size = string
+
+    dimension = list(object(
+      {
+        name     = string
+        operator = string
+        values   = list(string)
+      }
+    ))
+  }))
+}
+
 #
-#   description = <<EOD
-# Map of name = criteria objects
-# EOD
+# Container registry
 #
-#   type = map(object({
-#     # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
-#     aggregation = string
-#     metric_name = string
-#     description = string
-#     # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
-#     operator  = string
-#     threshold = number
-#     # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
-#     frequency = string
-#     # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
-#     window_size = string
-#
-#     dimension = list(object(
-#       {
-#         name     = string
-#         operator = string
-#         values   = list(string)
-#       }
-#     ))
-#   }))
-# }
+variable "container_registry_sku" {
+  type = string
+  description = "Sku for ACR"
+}
+
+variable "container_registry_zone_redundancy_enabled" {
+  type = bool
+  description = "Enabled AZ for container registry"
+}
 
 variable "is_feature_enabled" {
   type = object({
