@@ -7,4 +7,6 @@
 
   <include file="./db.changelog-master-3.26.0.xml"/>
 
+  <include file="./${version}/db.changelog-20240417000000_v_position_payment_status_snapshot.xml" labels="${version}"/>
+
 </databaseChangeLog>
