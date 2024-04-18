@@ -66,7 +66,7 @@ resource "azurerm_subnet" "eventhubs_italy" {
 }
 
 resource "azurerm_subnet" "cosmosdb_italy_snet" {
-  name                 = "${local.project}-cosmosb-snet"
+  name                 = "${local.project}-cosmosdb-snet"
   resource_group_name  = module.vnet_italy[0].resource_group_name
   virtual_network_name = module.vnet_italy[0].name
   address_prefixes     = var.cidr_cosmosdb_italy
