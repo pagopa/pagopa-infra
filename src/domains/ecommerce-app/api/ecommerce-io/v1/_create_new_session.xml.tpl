@@ -26,8 +26,8 @@
               <set-method>GET</set-method>
           </send-request>
           <choose>
-            <when condition="@(((IResponse)context.Variables["pmSessionResponse"]).StatusCode != 200)">
-            <return-response>
+            <when condition="@(((IResponse)context.Variables["pmSessionResponse"]).StatusCode == 401)">
+              <return-response>
                     <set-status code="401" reason="Unauthorized" />
                     <set-header name="Content-Type" exists-action="override">
                       <value>application/json</value>
@@ -41,6 +41,21 @@
                     </set-body>
               </return-response>
             </when>
+            <when condition="@(((IResponse)context.Variables["pmSessionResponse"]).StatusCode != 200)">
+              <return-response>
+                <set-status code="502" reason="Bad Gateway" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>
+                    {
+                        "title": "Error starting session",
+                        "status": 502,
+                        "detail": "There was an error while getting pm session info"
+                    }
+                </set-body>
+              </return-response>
+            </when>
           </choose>
           <set-variable name="pmSessionBody" value="@(((IResponse)context.Variables["pmSessionResponse"]).Body.As<JObject>())" />
           <set-variable name="sessionToken"  value="@(((JObject)context.Variables["pmSessionBody"])["data"]["sessionToken"].ToString())" />
@@ -49,7 +64,7 @@
         <!-- Session Wallet START-->
         <otherwise>
             <!-- Get User IO START-->
-            <send-request ignore-error="true" timeout="10" response-variable-name="user-auth-body" mode="new">
+            <send-request ignore-error="true" timeout="10" response-variable-name="user-auth-response" mode="new">
                 <set-url>@("${io_backend_base_path}/pagopa/api/v1/user?version=20200114")</set-url> 
                 <set-method>GET</set-method>
                 <set-header name="Accept" exists-action="override">
@@ -60,13 +75,38 @@
                 </set-header>
             </send-request>
             <choose>
-              <when condition="@(((IResponse)context.Variables["user-auth-body"]).StatusCode != 200)">
-                <return-response>
-                  <set-status code="502" reason="Bad Gateway" />
-                </return-response>
+              <when condition="@(((IResponse)context.Variables["user-auth-response"]).StatusCode == 401)">
+                  <return-response>
+                      <set-status code="401" reason="Unauthorized" />
+                      <set-header name="Content-Type" exists-action="override">
+                          <value>application/json</value>
+                      </set-header>
+                      <set-body>
+                          {
+                              "title": "Unauthorized",
+                              "status": 401,
+                              "detail": "Invalid session token"
+                          }
+                      </set-body>
+                  </return-response>
+              </when>
+              <when condition="@(((IResponse)context.Variables["user-auth-response"]).StatusCode != 200)">
+                  <return-response>
+                      <set-status code="502" reason="Bad Gateway" />
+                      <set-header name="Content-Type" exists-action="override">
+                          <value>application/json</value>
+                      </set-header>
+                      <set-body>
+                          {
+                              "title": "Error starting session",
+                              "status": 502,
+                              "detail": "There was an error while getting user info"
+                          }
+                      </set-body>
+                  </return-response>
               </when>
             </choose>
-            <set-variable name="userAuth" value="@(((IResponse)context.Variables["user-auth-body"]).Body.As<JObject>())" />
+            <set-variable name="userAuthBody" value="@(((IResponse)context.Variables["user-auth-response"]).Body.As<JObject>())" />
             <!-- Get User IO END-->
             <!-- Post Token PDV START-->
             <send-request ignore-error="true" timeout="10" response-variable-name="pdv-token" mode="new">
@@ -76,7 +116,7 @@
                   <value>{{ecommerce-personal-data-vault-api-key}}</value>
               </set-header>
               <set-body>@{
-                JObject requestBody = (JObject)context.Variables["userAuth"];
+                JObject requestBody = (JObject)context.Variables["userAuthBody"];
                 return new JObject(
                         new JProperty("pii",  (string)requestBody["fiscal_code"])
                     ).ToString();
@@ -117,9 +157,9 @@
               var jwtHeaderBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(header))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
     
               //Read email and pass it to tje JWT. By now the email in shared as is. It MUST be encoded (by pdv) but POST transaction need to updated to not match email address as email field
-              JObject userAuth = (JObject)context.Variables["userAuth"];
-              String spidEmail = (String)userAuth["spid_email"];
-              String noticeEmail = (String)userAuth["notice_email"];
+              JObject userAuthBody = (JObject)context.Variables["userAuthBody"];
+              String spidEmail = (String)userAuthBody["spid_email"];
+              String noticeEmail = (String)userAuthBody["notice_email"];
               String email = String.IsNullOrEmpty(noticeEmail) ? spidEmail : noticeEmail;
 
               // 2) Construct the Base64Url-encoded payload 

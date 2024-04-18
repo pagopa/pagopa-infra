@@ -502,6 +502,11 @@
             "type": "string"
           },
           "rrn": {
+            "type": "string",
+            "description": "Transaction rrn"
+          },
+          "validationServiceId": {
+            "description": "Validation service id",
             "type": "string"
           }
         },
