@@ -39,7 +39,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/heads/main
+      ref: refs/tags/v6.1.0
       endpoint: "io-azure-devops-github-ro"
 
 
