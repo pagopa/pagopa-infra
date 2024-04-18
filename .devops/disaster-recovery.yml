@@ -10,6 +10,13 @@ parameters:
     values:
       - False
       - True
+  - name: 'DEV'
+    displayName: 'Run on DEV environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
 
 variables:
   TIME_OUT: 10
