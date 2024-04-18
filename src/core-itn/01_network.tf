@@ -59,8 +59,41 @@ resource "azurerm_public_ip" "aks_leonardo_public_ip" {
 # Subnet
 #
 resource "azurerm_subnet" "eventhubs_italy" {
-  name                 = "${local.product_ita}-eventhubs-snet"
+  name                 = "${local.project}-eventhubs-snet"
   resource_group_name  = module.vnet_italy[0].resource_group_name
   virtual_network_name = module.vnet_italy[0].name
   address_prefixes     = var.cidr_eventhubs_italy
+}
+
+resource "azurerm_subnet" "cosmosdb_italy_snet" {
+  name                 = "${local.project}-cosmosb-snet"
+  resource_group_name  = module.vnet_italy[0].resource_group_name
+  virtual_network_name = module.vnet_italy[0].name
+  address_prefixes     = var.cidr_cosmosdb_italy
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+  ]
+}
+
+resource "azurerm_subnet" "cidr_storage_italy" {
+  name                 = "${local.project}-storage-snet"
+  resource_group_name  = module.vnet_italy[0].resource_group_name
+  virtual_network_name = module.vnet_italy[0].name
+  address_prefixes     = var.cidr_storage_italy
+}
+
+resource "azurerm_subnet" "cidr_redis_italy" {
+  name                 = "${local.project}-redis-snet"
+  resource_group_name  = module.vnet_italy[0].resource_group_name
+  virtual_network_name = module.vnet_italy[0].name
+  address_prefixes     = var.cird_redis_italy
+}
+
+resource "azurerm_subnet" "cidr_postgres_italy" {
+  name                 = "${local.project}-postgresql-snet"
+  resource_group_name  = module.vnet_italy[0].resource_group_name
+  virtual_network_name = module.vnet_italy[0].name
+  address_prefixes     = var.cird_postgresql_italy
 }

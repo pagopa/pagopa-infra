@@ -96,6 +96,26 @@ variable "cidr_eventhubs_italy" {
   description = "Address prefixes for all evenhubs in italy."
 }
 
+variable "cidr_cosmosdb_italy" {
+  type        = list(string)
+  description = "Address prefixes for all cosmosdb in italy."
+}
+
+variable "cidr_storage_italy" {
+  type        = list(string)
+  description = "Address prefixes for all storage accounts in italy."
+}
+
+variable "cird_redis_italy" {
+  type = list(string)
+  description = "Address prefixes for all redis accounts in italy."
+}
+
+variable "cird_postgresql_italy" {
+  type = list(string)
+  description = "Address prefixes for all postgresql accounts in italy."
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {
