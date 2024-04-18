@@ -92,7 +92,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_ndp_wisp" {
 
 module "apim_nodo_per_pm_api_v2_ndp_wisp" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-per-pm-api-ndp", local.project)
   resource_group_name   = azurerm_resource_group.rg_api.name
@@ -117,7 +117,7 @@ module "apim_nodo_per_pm_api_v2_ndp_wisp" {
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "close_payment_api_v2_ndp" {
+resource "azurerm_api_management_api_operation_policy" "closepayment_v2_wisp_policy" {
   api_name            = format("%s-nodo-per-pm-api-ndp-v2", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = module.apim.name
