@@ -107,12 +107,12 @@ variable "cidr_storage_italy" {
 }
 
 variable "cird_redis_italy" {
-  type = list(string)
+  type        = list(string)
   description = "Address prefixes for all redis accounts in italy."
 }
 
 variable "cird_postgresql_italy" {
-  type = list(string)
+  type        = list(string)
   description = "Address prefixes for all postgresql accounts in italy."
 }
 

@@ -101,7 +101,7 @@ eventhub_enabled = true
 ehns_sku_name = "Standard"
 
 ehns_alerts_enabled = false
-ehns_metric_alerts = {}
+ehns_metric_alerts  = {}
 
 eventhubs = [
   {
