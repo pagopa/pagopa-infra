@@ -39,15 +39,19 @@ cosmos_mongo_db_notices_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
-  additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
+  additional_geo_locations = [{
+    location          = "germanywestcentral"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
   is_virtual_network_filter_enabled = false
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
   enable_serverless  = false
   enable_autoscaling = true
@@ -60,12 +64,12 @@ cosmos_mongo_db_notices_params = {
 notices_storage_account = {
   account_kind                                                        = "StorageV2"
   account_tier                                                        = "Standard"
-  account_replication_type                                            = "LRS"
-  blob_versioning_enabled                                             = false
+  account_replication_type                                            = "GZRS"
+  blob_versioning_enabled                                             = true
   advanced_threat_protection                                          = false
-  public_network_access_enabled                                       = true
+  public_network_access_enabled                                       = false
   blob_delete_retention_days                                          = 30
-  enable_low_availability_alert                                       = false
+  enable_low_availability_alert                                       = true
   blob_tier_to_cool_after_last_access                                 = 100
   blob_tier_to_archive_after_days_since_last_access_time_greater_than = 3650
   blob_delete_after_last_access                                       = 3650
@@ -74,28 +78,24 @@ notices_storage_account = {
 templates_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
-  account_replication_type      = "LRS"
-  blob_versioning_enabled       = false
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = true
   advanced_threat_protection    = false
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   blob_delete_retention_days    = 30
-  enable_low_availability_alert = false
+  enable_low_availability_alert = true
 }
 
 institutions_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
-  account_replication_type      = "LRS"
-  blob_versioning_enabled       = false
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = true
   advanced_threat_protection    = false
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   blob_delete_retention_days    = 30
-  enable_low_availability_alert = false
+  enable_low_availability_alert = true
 }
-
-cidr_subnet_cosmosdb_printit = ["10.3.3.0/24"]
-cidr_subnet_storage_account  = ["10.3.4.0/24"]
-cidr_subnet_eventhub   = ["10.3.5.64/26"]
 
 enable_iac_pipeline = true
 

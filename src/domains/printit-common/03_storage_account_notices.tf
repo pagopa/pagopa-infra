@@ -39,10 +39,10 @@ module "notices_sa" {
 resource "azurerm_private_endpoint" "notices_blob_private_endpoint" {
   count = var.env_short == "d" ? 0 : 1
 
-  name                = format("%s-blob-private-endpoint", local.project)
+  name                = "${local.project}-blob-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.printit_rg.name
-  subnet_id           = module.printit_storage_snet[0].id
+  subnet_id           = data.azurerm_subnet.storage_subnet.id
 
   private_dns_zone_group {
     name                 = "${local.project}-blob-sa-private-dns-zone-group"
@@ -79,7 +79,7 @@ resource "azurerm_storage_management_policy" "st_blob_receipts_management_policy
     enabled = true
     filters {
       prefix_match = [
-        format("%s/", azurerm_storage_container.notices_blob_file.name)
+        "${azurerm_storage_container.notices_blob_file.name}/"
       ]
       blob_types = ["blockBlob"]
     }

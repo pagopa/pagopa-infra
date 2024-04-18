@@ -1,6 +1,8 @@
 locals {
   project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   product = "${var.prefix}-${var.env_short}"
+  project_core_itn =  "${var.prefix}-${var.env_short}-${var.location_short}-core"
+
 
   monitor_appinsights_name        = "${local.product}-appinsights"
   monitor_action_group_slack_name = "SlackPagoPA"
@@ -11,6 +13,7 @@ locals {
   vnet_core_resource_group_name = "${local.product}-vnet-rg"
 
   aks_subnet_name = "${local.product}-${var.location_short}-${var.env}-user-aks"
+  cosmos_subnet_name = "${local.product}-${var.location_short}-${var.env}-user-aks"
 
   ingress_hostname = "${var.location_short}${var.instance}.${var.domain}"
 

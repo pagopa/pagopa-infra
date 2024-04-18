@@ -49,7 +49,7 @@ cosmos_mongo_db_notices_params = {
 
   backup_continuous_enabled = false
 
-  enable_serverless  = false
+  enable_serverless  = true
   enable_autoscaling = true
   max_throughput     = 2000
   throughput         = 1000
@@ -61,7 +61,7 @@ notices_storage_account = {
   account_kind                                                        = "StorageV2"
   account_tier                                                        = "Standard"
   account_replication_type                                            = "LRS"
-  blob_versioning_enabled                                             = false
+  blob_versioning_enabled                                             = true
   advanced_threat_protection                                          = false
   public_network_access_enabled                                       = true
   blob_delete_retention_days                                          = 30
@@ -75,7 +75,7 @@ templates_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "LRS"
-  blob_versioning_enabled       = false
+  blob_versioning_enabled       = true
   advanced_threat_protection    = false
   public_network_access_enabled = true
   blob_delete_retention_days    = 30
@@ -92,10 +92,6 @@ institutions_storage_account = {
   blob_delete_retention_days    = 30
   enable_low_availability_alert = false
 }
-
-cidr_subnet_cosmosdb_printit = ["10.3.3.0/24"]
-cidr_subnet_storage_account  = ["10.3.4.0/24"]
-cidr_subnet_eventhub   = ["10.3.5.64/26"]
 
 enable_iac_pipeline = true
 

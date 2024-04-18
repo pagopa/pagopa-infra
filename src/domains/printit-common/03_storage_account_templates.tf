@@ -32,10 +32,10 @@ module "templates_sa" {
 resource "azurerm_private_endpoint" "templates_blob_private_endpoint" {
   count = var.env_short == "d" ? 0 : 1
 
-  name                = format("%s-template-blob-private-endpoint", local.project)
+  name                = "${local.project}-template-blob-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.printit_rg.name
-  subnet_id           = module.printit_storage_snet[0].id
+  subnet_id           = data.azurerm_subnet.storage_subnet.id
 
   private_dns_zone_group {
     name                 = "${local.project}-template-blob-sa-private-dns-zone-group"
@@ -60,10 +60,10 @@ resource "azurerm_private_endpoint" "templates_blob_private_endpoint" {
 resource "azurerm_private_endpoint" "notices_table_private_endpoint" {
   count = var.env_short == "d" ? 0 : 1
 
-  name                = format("%s-table-private-endpoint", local.project)
+  name                = "${local.project}-table-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.printit_rg.name
-  subnet_id           = module.printit_storage_snet[0].id
+  subnet_id           = data.azurerm_subnet.storage_subnet.id
 
   private_dns_zone_group {
     name                 = "${local.project}-table-sa-private-dns-zone-group"

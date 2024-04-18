@@ -110,11 +110,6 @@ variable "ingress_load_balancer_ip" {
 }
 
 # CosmosDB
-variable "cidr_subnet_cosmosdb_printit" {
-  type        = list(string)
-  description = "Cosmos DB address space for printit."
-}
-
 variable "cosmos_mongo_db_notices_params" {
   type = object({
     enabled        = bool
@@ -163,21 +158,6 @@ variable "notices_storage_account" {
     blob_delete_after_last_access                                       = number
   })
 
-  default = {
-    account_kind                                                        = "StorageV2"
-    account_tier                                                        = "Standard"
-    account_replication_type                                            = "LRS"
-    blob_versioning_enabled                                             = false
-    advanced_threat_protection                                          = false
-    public_network_access_enabled                                       = false
-    blob_delete_retention_days                                          = 30
-    enable_low_availability_alert                                       = false
-    backup_enabled                                                      = false
-    backup_retention                                                    = 0
-    blob_tier_to_cool_after_last_access                                 = 0
-    blob_tier_to_archive_after_days_since_last_access_time_greater_than = 3650
-    blob_delete_after_last_access                                       = 3650
-  }
 }
 
 variable "templates_storage_account" {
@@ -193,19 +173,6 @@ variable "templates_storage_account" {
     backup_enabled                = optional(bool, false)
     backup_retention              = optional(number, 0)
   })
-
-  default = {
-    account_kind                  = "StorageV2"
-    account_tier                  = "Standard"
-    account_replication_type      = "LRS"
-    blob_versioning_enabled       = false
-    advanced_threat_protection    = false
-    public_network_access_enabled = false
-    blob_delete_retention_days    = 30
-    enable_low_availability_alert = false
-    backup_enabled                = false
-    backup_retention              = 0
-  }
 }
 
 variable "institutions_storage_account" {
@@ -222,24 +189,6 @@ variable "institutions_storage_account" {
     backup_retention              = optional(number, 0)
   })
 
-  default = {
-    account_kind                  = "StorageV2"
-    account_tier                  = "Standard"
-    account_replication_type      = "LRS"
-    blob_versioning_enabled       = false
-    advanced_threat_protection    = false
-    public_network_access_enabled = false
-    blob_delete_retention_days    = 30
-    enable_low_availability_alert = false
-    backup_enabled                = false
-    backup_retention              = 0
-  }
-}
-
-# Storage account
-variable "cidr_subnet_storage_account" {
-  type        = list(string)
-  description = "Storage account network address space."
 }
 
 # eventhub
@@ -247,12 +196,6 @@ variable "eventhub_enabled" {
   type        = bool
   default     = false
   description = "eventhub enable?"
-}
-
-variable "cidr_subnet_eventhub" {
-  type        = list(string)
-  description = "Address prefixes subnet eventhub"
-  default     = null
 }
 
 variable "ehns_sku_name" {
