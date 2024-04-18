@@ -28,6 +28,14 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-r
   resource_group_name = "${local.product}-msg-rg"
 }
 
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx" {
+  count               = var.enable_nodo_re ? 1 : 0
+  name                = "nodo-dei-pagamenti-re-to-datastore-rx"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
+  eventhub_name       = "nodo-dei-pagamenti-re"
+  resource_group_name = "${local.product}-msg-rg"
+}
+
 data "azurerm_container_registry" "acr" {
   name                = local.acr_name
   resource_group_name = local.acr_resource_group_name
@@ -70,7 +78,7 @@ locals {
     COSMOS_DB_NAME            = "nodo_re"
     COSMOS_DB_COLLECTION_NAME = "events"
 
-    EVENTHUB_CONN_STRING = var.enable_nodo_re ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx[0].primary_connection_string : ""
+    EVENTHUB_CONN_STRING = var.enable_nodo_re ? (var.enabled_features.eventhub_ha ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx[0].primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx[0].primary_connection_string) : ""
   }
 
   docker_settings = {

@@ -22,13 +22,19 @@ is_feature_enabled = {
   vnet_ita                  = true,
   container_app_tools_cae   = true,
   node_forwarder_ha_enabled = true,
+  vpn                       = true,
+  dns_forwarder_lb          = true
   postgres_private_dns      = true
 }
 
-### Network
+### Network west europe
+cidr_subnet_vpn                  = ["10.1.142.0/24"]
+cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
+cidr_subnet_tools_cae            = ["10.1.248.0/23"]
+
+### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]
 
-cidr_subnet_tools_cae = ["10.1.248.0/23"]
 
 #
 # Dns
@@ -42,8 +48,6 @@ monitor_resource_group_name                 = "pagopa-d-monitor-rg"
 log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 
-### VPN
-dns_forwarder_backup_is_enabled = false
 
 #
 # replica settings
@@ -622,4 +626,6 @@ eventhubs_04 = [
 node_forwarder_autoscale_enabled      = false
 node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "B1"
+
+dns_forwarder_vm_image_name = "pagopa-d-dns-forwarder-ubuntu2204-image-v1"
 

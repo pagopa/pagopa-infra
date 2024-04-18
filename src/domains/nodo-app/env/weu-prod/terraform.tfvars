@@ -262,4 +262,10 @@ nodo_auth_subscription_limit = 10000
 # node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.10.5"
 
+
+enabled_features = {
+  apim_v2     = false
+  eventhub_ha = false
+}
+
 enable_wisp_converter = false

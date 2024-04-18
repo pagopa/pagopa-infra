@@ -13,7 +13,21 @@ resource "kubernetes_secret_v1" "prometheus_basic_auth" {
   data = {
     "auth" = "${file("${var.prometheus_basic_auth_file}")}"
   }
+}
 
+module "monitoring_pod_identity" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v7.69.1"
+
+  cluster_name        = module.aks.name
+  resource_group_name = azurerm_resource_group.aks_rg.name
+  location            = var.location
+  tenant_id           = data.azurerm_subscription.current.tenant_id
+
+  identity_name = "monitoring-pod-identity"
+  namespace     = kubernetes_namespace.monitoring.metadata[0].name
+  key_vault_id  = data.azurerm_key_vault.kv.id
+
+  secret_permissions = ["Get"]
 }
 
 resource "helm_release" "kube_prometheus_stack" {

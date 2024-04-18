@@ -190,6 +190,6 @@ variable "storage_account_replication_type" {
 }
 
 variable "redis_ha_enabled" {
-  type = bool
+  type        = bool
   description = "(Required) enables usage of HA deployed redis instance"
 }

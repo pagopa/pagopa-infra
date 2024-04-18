@@ -608,6 +608,25 @@
           ]
         }
       },
+      "WalletApplicationInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/WalletApplicationId"
+          },
+          "status": {
+            "$ref": "#/components/schemas/WalletApplicationStatus"
+          },
+          "lastUsage": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "name",
+          "status"
+        ]
+      },
       "WalletInfo": {
         "type": "object",
         "description": "Wallet information",
@@ -636,7 +655,7 @@
             "description": "list of applications for which this wallet is created for",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/WalletApplication"
+              "$ref": "#/components/schemas/WalletApplicationInfo"
             }
           },
           "details": {
@@ -843,6 +862,9 @@
             "type": "string",
             "description": "Payment method type code"
           },
+          "methodManagement": {
+            "$ref": "#/components/schemas/PaymentMethodManagementType"
+          },
           "ranges": {
             "description": "Payment amount range in eurocents",
             "type": "array",
@@ -865,7 +887,8 @@
           "description",
           "status",
           "paymentTypeCode",
-          "ranges"
+          "ranges",
+          "methodManagement"
         ]
       },
       "PaymentMethodStatus": {
@@ -875,6 +898,15 @@
           "ENABLED",
           "DISABLED",
           "INCOMING"
+        ]
+      },
+      "PaymentMethodManagementType": {
+        "type": "string",
+        "description": "Payment method management type",
+        "enum": [
+          "ONBOARDABLE",
+          "NOT_ONBOARDABLE",
+          "REDIRECT"
         ]
       },
       "Range": {

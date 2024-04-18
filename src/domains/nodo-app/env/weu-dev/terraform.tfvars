@@ -199,7 +199,8 @@ storage_account_info = {
 
 
 enabled_features = {
-  apim_v2 = true
+  apim_v2     = true
+  eventhub_ha = false
 }
 
 enable_wisp_converter = true
