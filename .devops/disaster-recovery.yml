@@ -33,55 +33,87 @@ resources:
 
 
 stages:
-  - stage: PROD
-    displayName: Disaster recovery PROD
-    dependsOn: []
-    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+  - stage: DEV
+    displayName: Disaster recovery DEV
+    dependsOn: [ ]
+    condition: and(succeeded(), eq(${{parameters.DEV}}, true))
     pool:
-      name: "${{variables.poolNameProd}}"
+      name: "${{variables.poolNameDev}}"
     jobs:
-      - job: postgres_fdr_failover
-        displayName: FDR postgres flexible failover
+      - job: waitForValidation
+        condition: always()
+        displayName: Wait for external validation
+        pool: server
+        steps:
+          - task: ManualValidation@0
+            timeoutInMinutes: 1440 # task times out in 1 day
+            inputs:
+              notifyUsers: |
+                marco.mari@pagopa.it
+              instructions: 'Please validate the postgres failover and resume'
+              onTimeout: 'reject'
+      - job: fake_failover
+        displayName: fake failover
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
+        dependsOn: waitForValidation
         steps:
-          - template: templates/postgres-flexible-failover/template.yaml@terraform
-            parameters:
-              PRIVATE_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
-              PRIVATE_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
-              PRIVATE_DNS_ZONE_RECORD_NAME: "fdr-db"
-              FAILOVER_DB_RG: "pagopa-p-weu-fdr-db-rg"
-              FAILOVER_DB_NAME: "pagopa-p-neu-fdr-pgflex"
-              WORKINGDIR: ${{ variables.WORKING_DIR }}
-              AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
-      - job: postgres_gpd_failover
-        displayName: GPD/GPS postgres flexible failover
-        strategy:
-          parallel: 1
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - template: templates/postgres-flexible-failover/template.yaml@terraform
-            parameters:
-              PRIVATE_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
-              PRIVATE_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
-              PRIVATE_DNS_ZONE_RECORD_NAME: "gpd-db"
-              FAILOVER_DB_RG: "pagopa-p-pgres-flex-rg"
-              FAILOVER_DB_NAME: "pagopa-p-neu-gps-pgflex"
-              WORKINGDIR: ${{ variables.WORKING_DIR }}
-              AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
-      - job: postgres_nodo_failover
-        displayName: Nodo postgres flexible failover
-        strategy:
-          parallel: 1
-        timeoutInMinutes: $[variables.TIME_OUT]
-        steps:
-          - template: templates/postgres-flexible-failover/template.yaml@terraform
-            parameters:
-              PRIVATE_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
-              PRIVATE_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
-              PRIVATE_DNS_ZONE_RECORD_NAME: "nodo-db"
-              FAILOVER_DB_RG: "pagopa-p-weu-nodo-db-rg"
-              FAILOVER_DB_NAME: "pagopa-p-neu-nodo-flexible-postgresql"
-              WORKINGDIR: ${{ variables.WORKING_DIR }}
-              AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
+          - task: Bash@3
+            inputs:
+              targetType: inline
+              failOnStderr: true
+              script: |
+                echo "fake failover in progress"
+#  - stage: PROD
+#    displayName: Disaster recovery PROD
+#    dependsOn: []
+#    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+#    pool:
+#      name: "${{variables.poolNameProd}}"
+#    jobs:
+#      - job: postgres_fdr_failover
+#        displayName: FDR postgres flexible failover
+#        strategy:
+#          parallel: 1
+#        timeoutInMinutes: $[variables.TIME_OUT]
+#        steps:
+#          - template: templates/postgres-flexible-failover/template.yaml@terraform
+#            parameters:
+#              PRIVATE_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
+#              PRIVATE_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
+#              PRIVATE_DNS_ZONE_RECORD_NAME: "fdr-db"
+#              FAILOVER_DB_RG: "pagopa-p-weu-fdr-db-rg"
+#              FAILOVER_DB_NAME: "pagopa-p-neu-fdr-pgflex"
+#              WORKINGDIR: ${{ variables.WORKING_DIR }}
+#              AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
+#      - job: postgres_gpd_failover
+#        displayName: GPD/GPS postgres flexible failover
+#        strategy:
+#          parallel: 1
+#        timeoutInMinutes: $[variables.TIME_OUT]
+#        steps:
+#          - template: templates/postgres-flexible-failover/template.yaml@terraform
+#            parameters:
+#              PRIVATE_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
+#              PRIVATE_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
+#              PRIVATE_DNS_ZONE_RECORD_NAME: "gpd-db"
+#              FAILOVER_DB_RG: "pagopa-p-pgres-flex-rg"
+#              FAILOVER_DB_NAME: "pagopa-p-neu-gps-pgflex"
+#              WORKINGDIR: ${{ variables.WORKING_DIR }}
+#              AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
+#      - job: postgres_nodo_failover
+#        displayName: Nodo postgres flexible failover
+#        strategy:
+#          parallel: 1
+#        timeoutInMinutes: $[variables.TIME_OUT]
+#        steps:
+#          - template: templates/postgres-flexible-failover/template.yaml@terraform
+#            parameters:
+#              PRIVATE_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
+#              PRIVATE_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
+#              PRIVATE_DNS_ZONE_RECORD_NAME: "nodo-db"
+#              FAILOVER_DB_RG: "pagopa-p-weu-nodo-db-rg"
+#              FAILOVER_DB_NAME: "pagopa-p-neu-nodo-flexible-postgresql"
+#              WORKINGDIR: ${{ variables.WORKING_DIR }}
+#              AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
