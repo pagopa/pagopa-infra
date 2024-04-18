@@ -22,8 +22,12 @@ variables:
   TIME_OUT: 10
   # working dir
   WORKING_DIR: 'src'
+  poolNameDev: '$(TF_POOL_NAME_DEV)'
+  poolNameUat: '$(TF_POOL_NAME_UAT)'
   poolNameProd: '$(TF_POOL_NAME_PROD)'
   #APPLY
+  azureServiceConnectionApplyNameDev: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
+  azureServiceConnectionApplyNameUat: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
   azureServiceConnectionApplyNameProd: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
 
 
