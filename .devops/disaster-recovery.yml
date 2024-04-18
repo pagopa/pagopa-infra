@@ -17,6 +17,27 @@ parameters:
     values:
       - False
       - True
+  - name: 'FDR'
+    displayName: 'Execute FDR database failover'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'GPS'
+    displayName: 'Execute GPS/GPD database failover'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'NODO'
+    displayName: 'Execute Nodo database failover'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
 
 variables:
   TIME_OUT: 10
@@ -52,23 +73,38 @@ stages:
       name: "${{variables.poolNameDev}}"
     jobs:
       - job: waitForValidation
-        condition: always()
+        condition: succeeded()
         displayName: Wait for external validation
         pool: server
         steps:
           - task: ManualValidation@0
-            timeoutInMinutes: 1440 # task times out in 1 day
+            timeoutInMinutes: 240 # task times out in 4 hours
             inputs:
               notifyUsers: |
                 marco.mari@pagopa.it
-              instructions: 'Please validate the postgres failover and resume'
+              instructions: 'Please authorize the postgreSQL failover and resume'
               onTimeout: 'reject'
-      - job: fake_failover
-        displayName: fake failover
+      - job: fake_fdr_failover
+        displayName: fake fdr failover
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
         dependsOn: waitForValidation
+        condition: and(succeeded(), eq(${{parameters.FDR}}, true))
+        steps:
+          - task: Bash@3
+            inputs:
+              targetType: inline
+              failOnStderr: true
+              script: |
+                echo "fake failover in progress"
+      - job: fake_nodo_failover
+        displayName: fake nodo failover
+        strategy:
+          parallel: 1
+        timeoutInMinutes: $[variables.TIME_OUT]
+        dependsOn: waitForValidation
+        condition: and(succeeded(), eq(${{parameters.NODO}}, true))
         steps:
           - task: Bash@3
             inputs:
@@ -88,6 +124,7 @@ stages:
 #        strategy:
 #          parallel: 1
 #        timeoutInMinutes: $[variables.TIME_OUT]
+#        condition: and(succeeded(), eq(${{parameters.FDR}}, true))
 #        steps:
 #          - template: templates/postgres-flexible-failover/template.yaml@terraform
 #            parameters:
@@ -103,6 +140,7 @@ stages:
 #        strategy:
 #          parallel: 1
 #        timeoutInMinutes: $[variables.TIME_OUT]
+#        condition: and(succeeded(), eq(${{parameters.GPS}}, true))
 #        steps:
 #          - template: templates/postgres-flexible-failover/template.yaml@terraform
 #            parameters:
@@ -118,6 +156,7 @@ stages:
 #        strategy:
 #          parallel: 1
 #        timeoutInMinutes: $[variables.TIME_OUT]
+#        condition: and(succeeded(), eq(${{parameters.NODO}}, true))
 #        steps:
 #          - template: templates/postgres-flexible-failover/template.yaml@terraform
 #            parameters:
