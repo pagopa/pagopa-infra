@@ -26,8 +26,8 @@
               <set-method>GET</set-method>
           </send-request>
           <choose>
-            <when condition="@(((IResponse)context.Variables["pmSessionResponse"]).StatusCode != 200)">
-            <return-response>
+            <when condition="@(((IResponse)context.Variables["pmSessionResponse"]).StatusCode == 401)">
+              <return-response>
                     <set-status code="401" reason="Unauthorized" />
                     <set-header name="Content-Type" exists-action="override">
                       <value>application/json</value>
@@ -39,6 +39,21 @@
                         "detail": "Unauthorized"
                         }
                     </set-body>
+              </return-response>
+            </when>
+            <when condition="@(((IResponse)context.Variables["pmSessionResponse"]).StatusCode != 200)">
+              <return-response>
+                <set-status code="502" reason="Bad Gateway" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>
+                    {
+                        "title": "Error starting session",
+                        "status": 502,
+                        "detail": "There was an error while getting pm session info"
+                    }
+                </set-body>
               </return-response>
             </when>
           </choose>
