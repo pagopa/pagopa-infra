@@ -145,7 +145,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_payment_method
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[eCommerce] NPG order/build KO/slow api detected"
     custom_webhook_payload = "{}"
   }
