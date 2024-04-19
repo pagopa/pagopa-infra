@@ -2,7 +2,7 @@ module "tls_checker" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v6.3.0"
 
   https_endpoint                         = local.payment_wallet_hostname
-  alert_name                             = local.wallet_hostname
+  alert_name                             = local.payment_wallet_hostname
   alert_enabled                          = true
   helm_chart_present                     = true
   helm_chart_version                     = var.tls_cert_check_helm.chart_version
@@ -32,7 +32,7 @@ resource "helm_release" "cert_mounter" {
       templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
         NAMESPACE        = var.domain,
         DOMAIN           = var.domain
-        CERTIFICATE_NAME = replace(local.wallet_hostname, ".", "-"),
+        CERTIFICATE_NAME = replace(local.payment_wallet_hostname, ".", "-"),
         ENV_SHORT        = var.env_short,
       })
     }"
