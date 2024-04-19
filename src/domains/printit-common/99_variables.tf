@@ -104,3 +104,178 @@ variable "dns_zone_internal_prefix" {
   default     = null
   description = "The dns subdomain."
 }
+
+variable "ingress_load_balancer_ip" {
+  type = string
+}
+
+# CosmosDB
+variable "cosmos_mongo_db_notices_params" {
+  type = object({
+    enabled        = bool
+    capabilities   = list(string)
+    offer_type     = string
+    server_version = string
+    kind           = string
+    consistency_policy = object({
+      consistency_level       = string
+      max_interval_in_seconds = number
+      max_staleness_prefix    = number
+    })
+    main_geo_location_zone_redundant = bool
+    enable_free_tier                 = bool
+    additional_geo_locations = list(object({
+      location          = string
+      failover_priority = number
+      zone_redundant    = bool
+    }))
+    private_endpoint_enabled          = bool
+    public_network_access_enabled     = bool
+    is_virtual_network_filter_enabled = bool
+    backup_continuous_enabled         = bool
+    enable_serverless                 = bool
+    enable_autoscaling                = bool
+    throughput                        = number
+    max_throughput                    = number
+    container_default_ttl             = number
+  })
+}
+
+variable "notices_storage_account" {
+  type = object({
+    account_kind                                                        = string
+    account_tier                                                        = string
+    account_replication_type                                            = string
+    advanced_threat_protection                                          = bool
+    blob_versioning_enabled                                             = bool
+    public_network_access_enabled                                       = bool
+    blob_delete_retention_days                                          = number
+    enable_low_availability_alert                                       = bool
+    backup_enabled                                                      = optional(bool, false)
+    backup_retention                                                    = optional(number, 0)
+    blob_tier_to_cool_after_last_access                                 = number
+    blob_tier_to_archive_after_days_since_last_access_time_greater_than = number
+    blob_delete_after_last_access                                       = number
+  })
+
+}
+
+variable "templates_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    blob_delete_retention_days    = number
+    enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
+  })
+}
+
+variable "institutions_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    blob_delete_retention_days    = number
+    enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
+  })
+
+}
+
+# eventhub
+variable "eventhub_enabled" {
+  type        = bool
+  default     = false
+  description = "eventhub enable?"
+}
+
+variable "ehns_sku_name" {
+  type        = string
+  description = "Defines which tier to use."
+  default     = "Basic"
+}
+
+variable "ehns_capacity" {
+  type        = number
+  description = "Specifies the Capacity / Throughput Units for a Standard SKU namespace."
+  default     = null
+}
+
+variable "ehns_maximum_throughput_units" {
+  type        = number
+  description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
+  default     = null
+}
+
+variable "ehns_auto_inflate_enabled" {
+  type        = bool
+  description = "Is Auto Inflate enabled for the EventHub Namespace?"
+  default     = false
+}
+
+variable "ehns_zone_redundant" {
+  type        = bool
+  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
+  default     = false
+}
+
+variable "ehns_alerts_enabled" {
+  type        = bool
+  default     = true
+  description = "Event hub alerts enabled?"
+}
+variable "ehns_metric_alerts" {
+  default = {}
+
+  description = <<EOD
+Map of name = criteria objects
+EOD
+
+  type = map(object({
+    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
+    aggregation = string
+    metric_name = string
+    description = string
+    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
+    operator  = string
+    threshold = number
+    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
+    frequency = string
+    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
+    window_size = string
+
+    dimension = list(object(
+      {
+        name     = string
+        operator = string
+        values   = list(string)
+      }
+    ))
+  }))
+}
+
+variable "eventhubs" {
+  description = "A list of event hubs to add to namespace."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
+}
