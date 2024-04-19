@@ -24,7 +24,7 @@ log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
 dns_zone_prefix          = "printit.itn"
-
+apim_dns_zone_prefix     = "uat.platform"
 ### Aks
 
 ingress_load_balancer_ip = "10.3.2.250"
@@ -36,3 +36,7 @@ tls_cert_check_helm = {
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
+
+cidr_subnet_pdf_engine_app_service = ["10.3.5.0/24"]
+
+pdf_engine_app_ha_enabled = false
