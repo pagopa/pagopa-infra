@@ -156,7 +156,7 @@ variable "cosmos_mongo_db_pay_wallet_params" {
   })
 }
 
-### Redis 
+### Redis
 
 variable "cidr_subnet_redis_pay_wallet" {
   type        = list(string)
