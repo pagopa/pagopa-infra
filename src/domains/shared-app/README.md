@@ -185,6 +185,7 @@
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_pagopa_shared_toolbox_enabled"></a> [pagopa\_shared\_toolbox\_enabled](#input\_pagopa\_shared\_toolbox\_enabled) | pagoPA Shared Toolbox enabled | `bool` | `true` | no |
 | <a name="input_pagopa_shared_toolbox_singlepageapp"></a> [pagopa\_shared\_toolbox\_singlepageapp](#input\_pagopa\_shared\_toolbox\_singlepageapp) | Single Page Applications root directories | `list(string)` | <pre>[<br>  "ui"<br>]</pre> | no |
+| <a name="input_pdf_engine_app_ha_enabled"></a> [pdf\_engine\_app\_ha\_enabled](#input\_pdf\_engine\_app\_ha\_enabled) | (Required) enables the deployment of pdf engine in HA mode | `bool` | n/a | yes |
 | <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br>    name         = optional(string, null)<br>    minAvailable = optional(number, null)<br>    matchLabels  = optional(map(any), {})<br>  }))</pre> | `{}` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_robots_indexed_paths"></a> [robots\_indexed\_paths](#input\_robots\_indexed\_paths) | List of cdn paths to allow robots index | `list(string)` | n/a | yes |

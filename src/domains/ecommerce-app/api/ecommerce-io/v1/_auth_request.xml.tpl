@@ -2,6 +2,7 @@
     <inbound>
         <base />
         <set-header name="x-pgs-id" exists-action="delete" />
+        <set-header name="x-user-id" exists-action="delete" />
         <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
         <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
         <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["details"]["walletId"])" />
@@ -143,6 +144,9 @@
                         <send-request response-variable-name="walletResponse" timeout="10">
                             <set-url>@($"https://${wallet-basepath}/pagopa-wallet-service/wallets/{(string)context.Variables["walletId"]}")</set-url>
                             <set-method>GET</set-method>
+                            <set-header name="x-user-id" exists-action="override">
+                                <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
+                            </set-header>
                         </send-request>
                         <choose>
                             <when condition="@(((int)((IResponse)context.Variables["walletResponse"]).StatusCode) == 200)">

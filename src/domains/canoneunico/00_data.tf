@@ -1,3 +1,7 @@
+locals {
+  monitor_action_group_opsgenie_name = "Opsgenie"
+}
+
 # resource_group
 data "azurerm_resource_group" "rg_vnet" {
   name = "${local.project}-vnet-rg"
@@ -30,7 +34,6 @@ data "azurerm_subnet" "apim_snet" {
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
 }
 
-
 # application_insights
 data "azurerm_application_insights" "application_insights" {
   name                = "${local.project}-appinsights"
@@ -52,4 +55,10 @@ data "azurerm_monitor_action_group" "email" {
 data "azurerm_monitor_action_group" "slack" {
   name                = "SlackPagoPA"
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
+}
+
+data "azurerm_monitor_action_group" "opsgenie" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = var.monitor_resource_group_name
+  name                = local.monitor_action_group_opsgenie_name
 }

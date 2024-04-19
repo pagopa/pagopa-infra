@@ -19,9 +19,12 @@ tags = {
 
 ### Feature Flag
 is_feature_enabled = {
-  vnet_ita = false,
-  container_app_tools_cae = false,
-  node_forwarder_ha_enabled = false
+  vnet_ita                  = false,
+  container_app_tools_cae   = false,
+  node_forwarder_ha_enabled = false,
+  vpn                       = false,
+  dns_forwarder_lb          = true,
+  postgres_private_dns      = true
 }
 
 #
@@ -45,8 +48,7 @@ log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
 ### VPN
-dns_forwarder_backup_is_enabled = true
-dns_forwarder_vm_image_name     = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
+dns_forwarder_vm_image_name = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
 
 
 #
@@ -192,7 +194,7 @@ ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
 ehns_capacity                 = 5
 ehns_zone_redundant           = true
-ehns_public_network_access = true
+ehns_public_network_access    = true
 
 ehns_metric_alerts = {
   no_trx = {

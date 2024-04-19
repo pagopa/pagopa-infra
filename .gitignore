@@ -50,3 +50,4 @@ __import_apim
 /src/psql/nodo/liquibase/online.properties
 /src/psql/nodo/liquibase/re.properties
 /src/psql/nodo/liquibase/offline.properties
+**/secret.json

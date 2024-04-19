@@ -224,6 +224,7 @@ variable "function_app_storage_account_info" {
     access_tier                       = optional(string, "Hot")
     advanced_threat_protection_enable = optional(bool, true)
     use_legacy_defender_version       = optional(bool, true)
+    public_network_access_enabled     = optional(bool, false)
   })
 
   default = {
@@ -233,6 +234,7 @@ variable "function_app_storage_account_info" {
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
     use_legacy_defender_version       = true
+    public_network_access_enabled     = false
   }
 }
 
@@ -267,12 +269,19 @@ variable "pagopa_proxy_vnet_integration" {
 
 
 variable "pagopa_proxy_zone_balance_enabled" {
-  type = bool
+  type        = bool
   description = "(Optional) enables zone balancing for pagopa proxy app service"
-  default = true
+  default     = true
 }
 
 variable "pagopa_proxy_ha_enabled" {
-  type = bool
+  type        = bool
   description = "(Required) enables the deployment of pagopa proxy in HA"
+}
+
+
+variable "redis_ha_enabled" {
+  type        = bool
+  default     = true
+  description = "(Optional) enables the usage of redis in high availability"
 }

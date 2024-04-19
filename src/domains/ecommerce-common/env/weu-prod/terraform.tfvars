@@ -67,10 +67,16 @@ cosmos_mongo_db_ecommerce_params = {
 }
 
 redis_ecommerce_params = {
-  capacity = 0
-  sku_name = "Standard"
-  family   = "C"
-  version  = 6
+  capacity    = 0
+  sku_name    = "Standard"
+  family      = "C"
+  version     = 6
+  ha_enabled  = true
+  ha_usage    = true
+  capacity_ha = 1
+  family_ha   = "P"
+  sku_name_ha = "Premium"
+  zones       = [1, 2, 3]
 }
 
 ecommerce_storage_transient_params = {

@@ -113,6 +113,23 @@ variable "cidr_subnet_tools_cae" {
   description = "Tool container app env, network address space."
 }
 
+### VPN
+variable "cidr_subnet_vpn" {
+  type        = list(string)
+  description = "VPN network address space."
+  default     = [""]
+}
+
+variable "cidr_subnet_apim" {
+  type        = list(string)
+  description = "(Required) APIM v2 subnet cidr"
+}
+
+variable "cidr_subnet_appgateway_integration" {
+  type        = list(string)
+  description = "Address prefixes subnet integration appgateway."
+  default     = null
+}
 
 ### External resources
 
@@ -147,11 +164,6 @@ variable "dns_zone_internal_prefix" {
 #
 # dns forwarder
 #
-variable "dns_forwarder_backup_is_enabled" {
-  type        = bool
-  description = "Allow to enable or disable dns forwarder backup"
-}
-
 variable "dns_forwarder_vm_image_name" {
   type        = string
   description = "Image name for dns forwarder"
@@ -194,11 +206,6 @@ variable "geo_replica_ddos_protection_plan" {
   default = null
 }
 
-variable "postgres_private_dns_enabled" {
-  type        = bool
-  description = "(Optional) If true creates a private dns that can be used to access the postgres databases"
-  default     = false
-}
 
 
 variable "logos_donations_storage_account_replication_type" {
@@ -217,11 +224,6 @@ variable "logos_backup_retention" {
   type        = number
   default     = 7
   description = "(Optional) Blob backup retention"
-}
-
-variable "cidr_subnet_apim" {
-  type        = list(string)
-  description = "(Required) APIM v2 subnet cidr"
 }
 
 variable "apim_v2_zones" {
@@ -353,12 +355,6 @@ variable "app_gateway_waf_enabled" {
   type        = bool
   description = "Enable waf"
   default     = false
-}
-
-variable "cidr_subnet_appgateway_integration" {
-  type        = list(string)
-  description = "Address prefixes subnet integration appgateway."
-  default     = null
 }
 
 variable "app_gateway_api_certificate_name" {
@@ -610,7 +606,7 @@ variable "ehns_alerts_enabled" {
 }
 
 variable "ehns_public_network_access" {
-  type = bool
+  type        = bool
   description = "(Required) enables public network access to the event hubs"
 }
 
@@ -646,9 +642,12 @@ EOD
 
 variable "is_feature_enabled" {
   type = object({
-    vnet_ita = bool,
-    container_app_tools_cae = optional(bool, false),
+    vnet_ita                  = bool,
+    container_app_tools_cae   = optional(bool, false),
     node_forwarder_ha_enabled = bool
+    vpn                       = optional(bool, false)
+    dns_forwarder_lb          = optional(bool, false)
+    postgres_private_dns      = bool
   })
   description = "Features enabled in this domain"
 }
@@ -682,4 +681,3 @@ variable "node_forwarder_sku" {
   description = "(Required) The SKU for the plan. Possible values include B1, B2, B3, D1, F1, I1, I2, I3, I1v2, I2v2, I3v2, I4v2, I5v2, I6v2, P1v2, P2v2, P3v2, P0v3, P1v3, P2v3, P3v3, P1mv3, P2mv3, P3mv3, P4mv3, P5mv3, S1, S2, S3, SHARED, EP1, EP2, EP3, WS1, WS2, WS3, and Y1."
   default     = "P3v3"
 }
-
