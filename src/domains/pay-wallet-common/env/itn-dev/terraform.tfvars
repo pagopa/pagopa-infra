@@ -60,5 +60,16 @@ cosmos_mongo_db_pay_wallet_params = {
   throughput         = 1000
 }
 
-
 cidr_subnet_cosmosdb_pay_wallet = ["10.1.169.0/24"]
+
+### Redis
+
+redis_pay_wallet_params = {
+  capacity = 0
+  sku_name = "Basic"
+  family   = "C"
+  version  = 6
+  zones    = []
+}
+
+cidr_subnet_redis_pay_wallet = ["10.1.174.0/24"]
