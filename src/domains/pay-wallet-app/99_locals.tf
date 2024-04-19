@@ -35,7 +35,7 @@ locals {
   pagopa_vnet_rg          = "pagopa-${var.env_short}-vnet-rg"
 
   apim_hostname   = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
-  wallet_hostname = "${var.location_short}${var.env}.wallet.internal.${var.env}.platform.pagopa.it"
+  wallet_hostname = "${var.location_short}${var.env}.payment-wallet.internal.${var.env}.platform.pagopa.it"
 
   ecommerce_hostname = "${var.location_short}${var.env}.ecommerce.internal.${var.env}.platform.pagopa.it"
 }
