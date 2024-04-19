@@ -82,6 +82,7 @@ stages:
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
+        dependsOn: waitForValidation
         condition: and(succeeded(), eq(${{parameters.FDR}}, true))
         steps:
           - template: templates/postgres-flexible-failover/template.yaml@terraform
@@ -98,6 +99,7 @@ stages:
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
+        dependsOn: waitForValidation
         condition: and(succeeded(), eq(${{parameters.GPS}}, true))
         steps:
           - template: templates/postgres-flexible-failover/template.yaml@terraform
@@ -114,6 +116,7 @@ stages:
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
+        dependsOn: waitForValidation
         condition: and(succeeded(), eq(${{parameters.NODO}}, true))
         steps:
           - template: templates/postgres-flexible-failover/template.yaml@terraform
