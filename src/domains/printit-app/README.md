@@ -19,6 +19,7 @@
 |------|--------|---------|
 | <a name="module_kubernetes_service_account"></a> [kubernetes\_service\_account](#module\_kubernetes\_service\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_service_account | v7.67.1 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v7.67.1 |
+| <a name="module_printit_pdf_engine_app_service_snet"></a> [printit\_pdf\_engine\_app\_service\_snet](#module\_printit\_pdf\_engine\_app\_service\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.0 |
 
 ## Resources
 
@@ -40,13 +41,16 @@
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_container_registry.container_registry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/container_registry) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault_secret.elastic_otel_token_header](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_subnet.apim_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
@@ -55,6 +59,11 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
+| <a name="input_app_service_pdf_engine_always_on"></a> [app\_service\_pdf\_engine\_always\_on](#input\_app\_service\_pdf\_engine\_always\_on) | Always on property | `bool` | `true` | no |
+| <a name="input_app_service_pdf_engine_autoscale_enabled"></a> [app\_service\_pdf\_engine\_autoscale\_enabled](#input\_app\_service\_pdf\_engine\_autoscale\_enabled) | n/a | `bool` | `true` | no |
+| <a name="input_app_service_pdf_engine_sku_name"></a> [app\_service\_pdf\_engine\_sku\_name](#input\_app\_service\_pdf\_engine\_sku\_name) | app service plan size | `string` | `"S1"` | no |
+| <a name="input_app_service_pdf_engine_sku_name_java"></a> [app\_service\_pdf\_engine\_sku\_name\_java](#input\_app\_service\_pdf\_engine\_sku\_name\_java) | app service plan size | `string` | `"S1"` | no |
+| <a name="input_cidr_subnet_pdf_engine_app_service"></a> [cidr\_subnet\_pdf\_engine\_app\_service](#input\_cidr\_subnet\_pdf\_engine\_app\_service) | CIDR subnet for App Service | `list(string)` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The wallet dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
@@ -73,6 +82,7 @@
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_payment_wallet_migrations_enabled"></a> [payment\_wallet\_migrations\_enabled](#input\_payment\_wallet\_migrations\_enabled) | Payment wallet migrations enabled | `bool` | `false` | no |
 | <a name="input_payment_wallet_with_pm_enabled"></a> [payment\_wallet\_with\_pm\_enabled](#input\_payment\_wallet\_with\_pm\_enabled) | payment wallet using Payment Manager | `bool` | `false` | no |
+| <a name="input_pdf_engine_app_ha_enabled"></a> [pdf\_engine\_app\_ha\_enabled](#input\_pdf\_engine\_app\_ha\_enabled) | (Required) enables the deployment of pdf engine in HA mode | `bool` | n/a | yes |
 | <a name="input_pdv_api_base_path"></a> [pdv\_api\_base\_path](#input\_pdv\_api\_base\_path) | Personal data vault api base path | `string` | `null` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
