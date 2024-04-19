@@ -20,4 +20,4 @@ monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
-ingress_load_balancer_ip                    = "10.3.2.250"
+ingress_load_balancer_ip = "10.3.2.250"
