@@ -38,7 +38,7 @@ module "web_test_availability_alert_rules_for_api" {
   source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v6.20.2"
 
   subscription_id                   = data.azurerm_subscription.current.subscription_id
-  name                              = "${each.value.host}-test-avail"
+  name                              = "test-avail-${each.value.host}"
   location                          = data.azurerm_resource_group.monitor_rg.location
   resource_group                    = data.azurerm_resource_group.monitor_rg.name
   application_insight_name          = data.azurerm_application_insights.application_insights.name
