@@ -73,3 +73,17 @@ redis_pay_wallet_params = {
 }
 
 cidr_subnet_redis_pay_wallet = ["10.1.174.0/24"]
+
+### Storage
+
+pay_wallet_storage_params = {
+  enabled                       = true
+  tier                          = "Standard"
+  kind                          = "StorageV2"
+  account_replication_type      = "LRS",
+  advanced_threat_protection    = true,
+  retention_days                = 7,
+  public_network_access_enabled = true,
+}
+
+cidr_subnet_storage_pay_wallet  = ["10.1.175.0/24"]
