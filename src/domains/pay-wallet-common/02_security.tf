@@ -51,7 +51,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
 # azure devops policy
 data "azuread_service_principal" "iac_principal" {
   count        = var.enable_iac_pipeline ? 1 : 0
-  display_name = format("pagopaspa-pagoPA-iac-%s", data.azurerm_subscription.current.subscription_id)
+  display_name = "pagopaspa-pagoPA-iac-${data.azurerm_subscription.current.subscription_id}"
 }
 
 resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
