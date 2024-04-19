@@ -141,7 +141,6 @@ locals {
 
   ## pagopawfespwfesp
   ndp_pagopawfespwfesp_key = "pagopawfespwfesp"
-
   ndp_pagopawfespwfesp_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_pagopawfespwfesp_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_pagopawfespwfesp_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
     name        = local.ndp_pagopawfespwfesp_key,
@@ -159,8 +158,6 @@ locals {
     component_template_package = "${local.ndp_pagopawfespwfesp_key}@package"
     component_template_custom  = "${local.ndp_pagopawfespwfesp_key}@custom"
   }), "\""), "\""), "'", "'\\''")
-
-
   ndp_pagopawfespwfesp_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
     name = local.ndp_pagopawfespwfesp_key
   }), "\""), "\""), "'", "'\\''")
@@ -188,7 +185,6 @@ locals {
   ndp_wispconverter_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
     name = local.ndp_wispconverter_key
   }), "\""), "\""), "'", "'\\''")
-
 }
 
 ## space
@@ -1065,7 +1061,6 @@ resource "null_resource" "ndp_wispconverter_component_template_custom" {
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
-
 }
 
 resource "null_resource" "ndp_wispconverter_index_template" {
@@ -1086,23 +1081,6 @@ resource "null_resource" "ndp_wispconverter_index_template" {
   }
 }
 
-resource "null_resource" "ndp_wispconverter_data_stream_rollover" {
-  depends_on = [null_resource.ndp_wispconverter_index_template]
-
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-
-  provisioner "local-exec" {
-    command     = <<EOT
-      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_wispconverter_key}-default/_rollover/" \
-      -H 'kbn-xsrf: true' \
-      -H 'Content-Type: application/json'
-    EOT
-    interpreter = ["/bin/bash", "-c"]
-  }
-}
-
 resource "null_resource" "ndp_wispconverter_kibana_data_view" {
   depends_on = [null_resource.ndp_kibana_space]
 
@@ -1116,6 +1094,23 @@ resource "null_resource" "ndp_wispconverter_kibana_data_view" {
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
       -d '${local.ndp_wispconverter_data_view}'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
+resource "null_resource" "ndp_wispconverter_data_stream_rollover" {
+  depends_on = [null_resource.ndp_wispconverter_index_template]
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X POST "${local.elastic_url}/logs-${local.ndp_wispconverter_key}-default/_rollover/" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
