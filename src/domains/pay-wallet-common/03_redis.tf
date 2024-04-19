@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "redis_pay_wallet_rg" {
 module "pagopa_pay_wallet_redis_snet" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
 
-  name                                      = format("%s-redis-snet", local.project)
+  name                                      = "${local.project}-redis-snet"
   address_prefixes                          = var.cidr_subnet_redis_pay_wallet
   resource_group_name                       = local.vnet_resource_group_name
   virtual_network_name                      = local.vnet_name

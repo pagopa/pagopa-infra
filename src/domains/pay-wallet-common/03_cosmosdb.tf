@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "cosmosdb_pay_wallet_rg" {
-  name     = format("%s-cosmosdb-rg", local.project)
+  name     = format("${local.project}-cosmosdb-rg", )
   location = var.location
 
   tags = var.tags

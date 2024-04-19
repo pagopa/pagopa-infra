@@ -130,11 +130,11 @@ resource "azurerm_monitor_diagnostic_setting" "pay_wallet_queue_diagnostics" {
 locals {
   queue_alert_props = var.env_short == "p" ? [
     {
-      "queue_key"   = "usage-update-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 10
+      queue_key  = "usage-update-queue"
+      severity    = 1
+      time_window = 30
+      frequency   = 15
+      threshold   = 10
     },
   ] : []
 }
@@ -182,8 +182,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
 locals {
   storage_accounts_queue_message_count_alert_props = var.env_short == "p" ? [
     {
-      "storage_account_id"   = "${module.pay_wallet_storage.id}"
-      "storage_account_name" = "${module.pay_wallet_storage.name}"
+      "storage_account_id"   = module.pay_wallet_storage.id
+      "storage_account_name" = module.pay_wallet_storage.name
       "severity"             = 1
       "time_window"          = "PT1H"
       "frequency"            = "PT15M"
