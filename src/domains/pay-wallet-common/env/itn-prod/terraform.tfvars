@@ -16,15 +16,15 @@ tags = {
 
 ### FEATURES FLAGS
 is_feature_enabled = {
-  cosmos = false
-  redis = false
+  cosmos  = false
+  redis   = false
   storage = false
 }
 
 ### NETWORK
 
 cidr_subnet_cosmosdb_pay_wallet = ["10.3.8.0/24"]
-cidr_subnet_redis_pay_wallet = ["10.3.9.0/24"]
+cidr_subnet_redis_pay_wallet    = ["10.3.9.0/24"]
 cidr_subnet_storage_pay_wallet  = ["10.3.10.0/24"]
 
 ### External resources

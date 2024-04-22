@@ -21,12 +21,12 @@ module "cosmosdb_account_mongodb" {
   mongo_server_version = var.cosmos_mongo_db_params.server_version
   enable_free_tier     = var.cosmos_mongo_db_params.enable_free_tier
 
-  public_network_access_enabled      = var.cosmos_mongo_db_params.public_network_access_enabled
-  private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled
-  subnet_id                          = module.cosmosdb_pay_wallet_snet.id
-  private_dns_zone_mongo_ids               = [data.azurerm_private_dns_zone.cosmos.id]
-  is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
-#   allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
+  public_network_access_enabled     = var.cosmos_mongo_db_params.public_network_access_enabled
+  private_endpoint_enabled          = var.cosmos_mongo_db_params.private_endpoint_enabled
+  subnet_id                         = module.cosmosdb_pay_wallet_snet.id
+  private_dns_zone_mongo_ids        = [data.azurerm_private_dns_zone.cosmos.id]
+  is_virtual_network_filter_enabled = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
+  #   allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
   consistency_policy               = var.cosmos_mongo_db_params.consistency_policy
   main_geo_location_location       = azurerm_resource_group.cosmosdb_pay_wallet_rg.location
@@ -117,8 +117,8 @@ locals {
 
 module "cosmosdb_pay_wallet_collections" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.5.0"
-  for_each =   var.is_feature_enabled.cosmos ?  { for index, coll in local.collections : coll.name => coll} : {}
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.5.0"
+  for_each = var.is_feature_enabled.cosmos ? { for index, coll in local.collections : coll.name => coll } : {}
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.cosmosdb_pay_wallet_rg.name
@@ -136,7 +136,7 @@ module "cosmosdb_pay_wallet_collections" {
 # -----------------------------------------------
 
 resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
-    count = var.is_feature_enabled.cosmos && var.env_short == "p" ? 1 : 0
+  count = var.is_feature_enabled.cosmos && var.env_short == "p" ? 1 : 0
 
 
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb[0].name}] Normalized RU Exceeded"

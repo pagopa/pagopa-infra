@@ -62,7 +62,7 @@ module "pagopa_pay_wallet_redis" {
 # -----------------------------------------------
 
 resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
-    count = var.is_feature_enabled.redis && var.env_short == "p" ? 1 : 0
+  count = var.is_feature_enabled.redis && var.env_short == "p" ? 1 : 0
 
 
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.pagopa_pay_wallet_redis[0].name}] Used Memory close to the threshold"
