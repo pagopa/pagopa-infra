@@ -5,22 +5,6 @@ resource "azurerm_resource_group" "storage_pay_wallet_rg" {
 }
 
 
-module "pay_wallet_storage_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
-
-  name                 = "${local.project}-storage-snet"
-  address_prefixes     = var.cidr_subnet_storage_pay_wallet
-  resource_group_name  = local.vnet_resource_group_name
-  virtual_network_name = local.vnet_name
-
-  private_endpoint_network_policies_enabled = true
-
-  service_endpoints = [
-    "Microsoft.Storage",
-  ]
-}
-
-
 resource "azurerm_private_endpoint" "storage_private_endpoint" {
   count = var.env_short != "d" ? 1 : 0
 
@@ -30,7 +14,7 @@ resource "azurerm_private_endpoint" "storage_private_endpoint" {
   subnet_id           = module.pay_wallet_storage_snet.id
   private_dns_zone_group {
     name                 = "${local.project}-storage-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
   }
 
   private_service_connection {
