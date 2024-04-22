@@ -175,7 +175,9 @@
         "required": [
           "noticeNumber",
           "fiscalCode",
-          "amount"
+          "amount",
+          "companyName",
+          "description"
         ],
         "properties": {
           "noticeNumber": {
