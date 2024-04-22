@@ -13,7 +13,7 @@ source(output(
 		iur as string,
 		infoHolder as string,
 		totalNotice as string,
-		amount as double,
+		amount as string,
 		infoBrand as string,
 		modelType as short,
 		paymentRemittanceInformation as string,
@@ -25,7 +25,7 @@ source(output(
 		debtorFullName as string,
 		transactionRrn as string,
 		transactionCreationDate as string,
-		transferList as (idTransfer as boolean, fiscalCodePA as string, companyName as string, amount as double, transferCategory as string, remittanceInformation as string)[],
+		transferList as (idTransfer as boolean, fiscalCodePA as string, companyName as string, amount as string, transferCategory as string, remittanceInformation as string)[],
 		paymentDateTime as string,
 		psp as string,
 		numAut as string,
@@ -65,7 +65,7 @@ BizEventsSourceData call(mapColumn(
 	responseFormat: ['type' -> 'json', 'documentForm' -> 'documentPerLine'],
 	httpCompressionType: 'gzip') ~> externalCallDebtorTokenizer
 derivedColumnDebtorTaxCode call(mapColumn(
-		pii = payerEntityUniqueIdentifier
+		pii = {_viewPayerTaxCode}
 	),
 	skipDuplicateMapInputs: true,
 	skipDuplicateMapOutputs: true,
@@ -91,7 +91,6 @@ derivedColumnDebtorTaxCode call(mapColumn(
 derivedColumnPayerTaxCode derive({_viewTransactionId} = case(toString(totalNotice) != "1", toString(transactionId), id),
 		{_ viewTransactionDate} = case(isNull(transactionCreationDate),paymentDateTime,toString(transactionCreationDate)),
 		{_viewDebtorTaxCode} = debtorEntityUniqueIdentifier,
-		{_viewPayerTaxCode} = case(!isNull(userFiscalCode),userFiscalCode,payerEntityUniqueIdentifier),
 		{_viewHidden} = toBoolean("false"),
 		{_viewIsCart} = toInteger(toString(totalNotice)) > 1,
 		{_viewRrn} = case(!isNull(transactionRrn),transactionRrn,case(!isNull(paymentToken),paymentToken,iur)),
@@ -132,7 +131,8 @@ derivedSortTransferList derive(transferListRemittanceInformation = iif(instr(tra
 derivedTransferListRemittanceInformation derive({_viewSubject} = iif(contains(["pagamento multibeneficiario"], #item==paymentRemittanceInformation),transferListRemittanceInformation,paymentRemittanceInformation),
 		viewDebtor = @(taxCode=viewTokenizedDebtorTaxCode,
 		name=debtorFullName)) ~> derivedCartViewSubjectAndDebtor
-externalCallDebtorTokenizer derive(viewTokenizedDebtorTaxCode = bodyDebtor.token) ~> derivedColumnDebtorTaxCode
+externalCallDebtorTokenizer derive(viewTokenizedDebtorTaxCode = bodyDebtor.token,
+		{_viewPayerTaxCode} = case(!isNull(userFiscalCode),userFiscalCode,payerEntityUniqueIdentifier)) ~> derivedColumnDebtorTaxCode
 externalCallPayerTokenizer derive(viewTokenizedPayerTaxCode = bodyPayer.token) ~> derivedColumnPayerTaxCode
 derivedDebtorView sink(allowSchemaDrift: true,
 	validateSchema: false,
@@ -209,7 +209,7 @@ derivedCartViewSubjectAndDebtor sink(allowSchemaDrift: true,
 		transactionId = {_viewTransactionId},
 		eventId = {_viewEventId},
 		subject = {_viewSubject},
-		{amount } = {_viewAmount},
+		amount = {_viewAmount},
 		payee = viewPayee,
 		debtor = viewDebtor,
 		refNumberValue = {_viewRefNumberValue},
