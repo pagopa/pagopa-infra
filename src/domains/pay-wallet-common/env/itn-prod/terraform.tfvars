@@ -24,10 +24,8 @@ is_feature_enabled = {
 ### NETWORK
 
 cidr_subnet_cosmosdb_pay_wallet = ["10.3.8.0/24"]
-cidr_subnet_eventhubs_pay_wallet = ["10.3.9.0/24"]
+cidr_subnet_redis_pay_wallet = ["10.3.9.0/24"]
 cidr_subnet_storage_pay_wallet  = ["10.3.10.0/24"]
-cidr_subnet_redis_pay_wallet = ["10.3.11.0/24"]
-cidr_subnet_postgresql_pay_wallet = ["10.3.12.0/24"]
 
 ### External resources
 

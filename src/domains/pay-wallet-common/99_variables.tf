@@ -133,11 +133,6 @@ variable "cidr_subnet_cosmosdb_pay_wallet" {
   description = "Cosmos DB address space for wallet."
 }
 
-variable "cidr_subnet_eventhubs_pay_wallet" {
-  type        = list(string)
-  description = "Eventhubs address space for wallet."
-}
-
 variable "cidr_subnet_redis_pay_wallet" {
   type        = list(string)
   description = "Redis DB address space for wallet."
@@ -148,16 +143,10 @@ variable "cidr_subnet_storage_pay_wallet" {
   description = "Azure storage DB address space for pagoPA wallet."
 }
 
-variable "cidr_subnet_postgresql_pay_wallet" {
-  type        = list(string)
-  description = "Azure postgresql flexible address space for pagoPA wallet."
-}
-
 # CosmosDb
 
 variable "cosmos_mongo_db_params" {
   type = object({
-    enabled        = bool
     capabilities   = list(string)
     offer_type     = string
     server_version = string
@@ -212,7 +201,6 @@ variable "enable_iac_pipeline" {
 
 variable "pay_wallet_storage_params" {
   type = object({
-    enabled                       = bool,
     kind                          = string,
     tier                          = string,
     account_replication_type      = string,

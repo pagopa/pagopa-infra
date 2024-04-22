@@ -24,10 +24,8 @@ is_feature_enabled = {
 ### NETWORK
 
 cidr_subnet_cosmosdb_pay_wallet = ["10.3.8.0/24"]
-cidr_subnet_eventhubs_pay_wallet = ["10.3.9.0/24"]
+cidr_subnet_redis_pay_wallet = ["10.3.9.0/24"]
 cidr_subnet_storage_pay_wallet  = ["10.3.10.0/24"]
-cidr_subnet_redis_pay_wallet = ["10.3.11.0/24"]
-cidr_subnet_postgresql_pay_wallet = ["10.3.12.0/24"]
 
 ### External resources
 
@@ -73,7 +71,6 @@ cosmos_mongo_db_pay_wallet_params = {
   throughput         = 1000
 }
 
-cidr_subnet_cosmosdb_pay_wallet = ["10.1.169.0/24"]
 
 ### Redis
 
@@ -85,7 +82,6 @@ redis_pay_wallet_params = {
   zones    = []
 }
 
-cidr_subnet_redis_pay_wallet = ["10.1.174.0/24"]
 
 ### Storage
 
@@ -99,4 +95,3 @@ pay_wallet_storage_params = {
   public_network_access_enabled = false,
 }
 
-cidr_subnet_storage_pay_wallet  = ["10.1.175.0/24"]

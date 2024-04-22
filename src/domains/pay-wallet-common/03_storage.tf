@@ -28,7 +28,7 @@ module "pay_wallet_storage" {
   network_rules = var.env_short != "d" ? {
     default_action             = "Deny"
     ip_rules                   = []
-    virtual_network_subnet_ids = [module.pay_wallet_storage_snet.id]
+    virtual_network_subnet_ids = [module.storage_pay_wallet_snet.id]
     bypass                     = ["AzureServices"]
   } : null
   tags = var.tags
@@ -41,7 +41,7 @@ resource "azurerm_private_endpoint" "storage_private_endpoint" {
   name                = "${local.project}-tr-storage-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.storage_pay_wallet_rg.name
-  subnet_id           = module.pay_wallet_storage_snet.id
+  subnet_id           = module.storage_pay_wallet_snet.id
   private_dns_zone_group {
     name                 = "${local.project}-storage-private-dns-zone-group"
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]

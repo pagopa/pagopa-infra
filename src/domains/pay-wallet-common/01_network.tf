@@ -25,7 +25,7 @@ module "cosmosdb_pay_wallet_snet" {
   ]
 }
 
-module "pagopa_pay_wallet_redis_snet" {
+module "redis_pagopa_pay_wallet_snet" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
 
   name                                      = "${local.project}-redis-snet"
@@ -35,7 +35,7 @@ module "pagopa_pay_wallet_redis_snet" {
   private_endpoint_network_policies_enabled = true
 }
 
-module "pay_wallet_storage_snet" {
+module "storage_pay_wallet_snet" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
 
   name                 = "${local.project}-storage-snet"
@@ -50,12 +50,3 @@ module "pay_wallet_storage_snet" {
   ]
 }
 
-module "pagopa_pay_wallet_evenhub_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
-
-  name                                      = "${local.project}-eventhub-snet"
-  address_prefixes                          = var.cidr_subnet_
-  resource_group_name                       = local.vnet_resource_group_name
-  virtual_network_name                      = local.vnet_name
-  private_endpoint_network_policies_enabled = true
-}
