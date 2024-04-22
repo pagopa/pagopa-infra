@@ -21,6 +21,14 @@ is_feature_enabled = {
   storage = false
 }
 
+### NETWORK
+
+cidr_subnet_cosmosdb_pay_wallet = ["10.3.8.0/24"]
+cidr_subnet_eventhubs_pay_wallet = ["10.3.9.0/24"]
+cidr_subnet_storage_pay_wallet  = ["10.3.10.0/24"]
+cidr_subnet_redis_pay_wallet = ["10.3.11.0/24"]
+cidr_subnet_postgresql_pay_wallet = ["10.3.12.0/24"]
+
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"
@@ -38,9 +46,8 @@ dns_zone_internal_prefix = "internal.uat.platform"
 ### Cosmos
 
 cosmos_mongo_db_params = {
-  enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -52,18 +59,17 @@ cosmos_mongo_db_params = {
   enable_free_tier                 = false
 
   additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
   is_virtual_network_filter_enabled = false
 
-  backup_continuous_enabled = false
-
+  backup_continuous_enabled = true
 }
 
 cosmos_mongo_db_pay_wallet_params = {
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 2000
+  max_throughput     = 1000
   throughput         = 1000
 }
 
@@ -87,10 +93,10 @@ pay_wallet_storage_params = {
   enabled                       = true
   tier                          = "Standard"
   kind                          = "StorageV2"
-  account_replication_type      = "LRS",
+  account_replication_type      = "ZRS",
   advanced_threat_protection    = true,
   retention_days                = 7,
-  public_network_access_enabled = true,
+  public_network_access_enabled = false,
 }
 
 cidr_subnet_storage_pay_wallet  = ["10.1.175.0/24"]

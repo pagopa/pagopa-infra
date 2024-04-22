@@ -28,6 +28,16 @@ monitor_resource_group_name                 = "pagopa-d-monitor-rg"
 log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 
+### NETWORK
+
+cidr_subnet_cosmosdb_pay_wallet = ["10.3.8.0/24"]
+cidr_subnet_eventhubs_pay_wallet = ["10.3.9.0/24"]
+cidr_subnet_storage_pay_wallet  = ["10.3.10.0/24"]
+cidr_subnet_redis_pay_wallet = ["10.3.11.0/24"]
+cidr_subnet_postgresql_pay_wallet = ["10.3.12.0/24"]
+
+
+
 ingress_load_balancer_ip = "10.3.2.250"
 
 ### dns
@@ -39,7 +49,6 @@ dns_zone_internal_prefix = "internal.dev.platform"
 ### Cosmos
 
 cosmos_mongo_db_params = {
-  enabled      = true
   kind         = "MongoDB"
   capabilities = ["EnableMongo", "EnableServerless"]
   offer_type   = "Standard"
@@ -58,7 +67,6 @@ cosmos_mongo_db_params = {
   is_virtual_network_filter_enabled = false
 
   backup_continuous_enabled = false
-
 }
 
 cosmos_mongo_db_pay_wallet_params = {
@@ -68,7 +76,6 @@ cosmos_mongo_db_pay_wallet_params = {
   throughput         = 1000
 }
 
-cidr_subnet_cosmosdb_pay_wallet = ["10.1.169.0/24"]
 
 ### Redis
 
@@ -79,8 +86,6 @@ redis_pay_wallet_params = {
   version  = 6
   zones    = []
 }
-
-cidr_subnet_redis_pay_wallet = ["10.1.174.0/24"]
 
 ### Storage
 
@@ -94,4 +99,3 @@ pay_wallet_storage_params = {
   public_network_access_enabled = true,
 }
 
-cidr_subnet_storage_pay_wallet  = ["10.1.175.0/24"]

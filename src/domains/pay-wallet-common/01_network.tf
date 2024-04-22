@@ -49,3 +49,13 @@ module "pay_wallet_storage_snet" {
     "Microsoft.Storage",
   ]
 }
+
+module "pagopa_pay_wallet_evenhub_snet" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+
+  name                                      = "${local.project}-eventhub-snet"
+  address_prefixes                          = var.cidr_subnet_
+  resource_group_name                       = local.vnet_resource_group_name
+  virtual_network_name                      = local.vnet_name
+  private_endpoint_network_policies_enabled = true
+}

@@ -21,6 +21,14 @@ is_feature_enabled = {
   storage = false
 }
 
+### NETWORK
+
+cidr_subnet_cosmosdb_pay_wallet = ["10.3.8.0/24"]
+cidr_subnet_eventhubs_pay_wallet = ["10.3.9.0/24"]
+cidr_subnet_storage_pay_wallet  = ["10.3.10.0/24"]
+cidr_subnet_redis_pay_wallet = ["10.3.11.0/24"]
+cidr_subnet_postgresql_pay_wallet = ["10.3.12.0/24"]
+
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
@@ -38,9 +46,8 @@ dns_zone_internal_prefix = "internal.platform"
 ### Cosmos
 
 cosmos_mongo_db_params = {
-  enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -48,38 +55,40 @@ cosmos_mongo_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
-  additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
+  additional_geo_locations = [{
+    location          = "germanywestcentral"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
   is_virtual_network_filter_enabled = false
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
 }
 
 cosmos_mongo_db_pay_wallet_params = {
-  enable_serverless  = true
+  enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 2000
+  max_throughput     = 1000
   throughput         = 1000
 }
 
-cidr_subnet_cosmosdb_pay_wallet = ["10.1.169.0/24"]
 
 ### Redis
 
 redis_pay_wallet_params = {
   capacity = 0
-  sku_name = "Basic"
+  sku_name = "Premium"
   family   = "C"
   version  = 6
   zones    = []
 }
 
-cidr_subnet_redis_pay_wallet = ["10.1.174.0/24"]
 
 ### Storage
 
@@ -87,10 +96,9 @@ pay_wallet_storage_params = {
   enabled                       = true
   tier                          = "Standard"
   kind                          = "StorageV2"
-  account_replication_type      = "LRS",
+  account_replication_type      = "GZRS",
   advanced_threat_protection    = true,
-  retention_days                = 7,
-  public_network_access_enabled = true,
+  retention_days                = 30,
+  public_network_access_enabled = false,
 }
 
-cidr_subnet_storage_pay_wallet  = ["10.1.175.0/24"]
