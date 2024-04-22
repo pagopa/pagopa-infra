@@ -92,7 +92,7 @@ pay_wallet_storage_params = {
   tier                          = "Standard"
   kind                          = "StorageV2"
   account_replication_type      = "LRS",
-  advanced_threat_protection    = true,
+  advanced_threat_protection    = false,
   retention_days                = 7,
   public_network_access_enabled = true,
 }

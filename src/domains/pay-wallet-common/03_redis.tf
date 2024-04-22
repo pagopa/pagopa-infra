@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "redis_pay_wallet_rg" {
 module "pagopa_pay_wallet_redis" {
   count = var.is_feature_enabled.redis ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.72.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.5.0"
 
   name                          = "${local.project}-redis"
   resource_group_name           = azurerm_resource_group.redis_pay_wallet_rg.name
@@ -25,7 +25,7 @@ module "pagopa_pay_wallet_redis" {
 
   private_endpoint = {
     enabled              = var.env_short != "d"
-    virtual_network_id   = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-vnet-rg/providers/Microsoft.Network/virtualNetworks/pagopa-d-vnet"
+    virtual_network_id   = data.azurerm_virtual_network.vnet_italy.id
     subnet_id            = module.redis_pagopa_pay_wallet_snet.id
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
   }

@@ -90,7 +90,7 @@ pay_wallet_storage_params = {
   tier                          = "Standard"
   kind                          = "StorageV2"
   account_replication_type      = "ZRS",
-  advanced_threat_protection    = true,
+  advanced_threat_protection    = false,
   retention_days                = 7,
   public_network_access_enabled = false,
 }

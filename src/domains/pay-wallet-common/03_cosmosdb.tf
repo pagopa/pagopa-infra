@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "cosmosdb_pay_wallet_rg" {
 module "cosmosdb_account_mongodb" {
   count = var.is_feature_enabled.cosmos ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.3.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.5.0"
 
   name                = "${local.project}-cosmos-account"
   location            = var.location
@@ -24,7 +24,7 @@ module "cosmosdb_account_mongodb" {
   public_network_access_enabled      = var.cosmos_mongo_db_params.public_network_access_enabled
   private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled
   subnet_id                          = module.cosmosdb_pay_wallet_snet.id
-  private_dns_zone_ids               = [data.azurerm_private_dns_zone.cosmos.id]
+  private_dns_zone_mongo_ids               = [data.azurerm_private_dns_zone.cosmos.id]
   is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
 #   allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
@@ -40,7 +40,6 @@ module "cosmosdb_account_mongodb" {
 
 resource "azurerm_cosmosdb_mongo_database" "pay_wallet" {
   count = var.is_feature_enabled.cosmos ? 1 : 0
-
 
   name                = "payment-wallet"
   resource_group_name = azurerm_resource_group.cosmosdb_pay_wallet_rg.name
@@ -118,10 +117,7 @@ locals {
 
 module "cosmosdb_pay_wallet_collections" {
 
-
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
-
-
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.5.0"
   for_each =   var.is_feature_enabled.cosmos ?  { for index, coll in local.collections : coll.name => coll} : {}
 
   name                = each.value.name

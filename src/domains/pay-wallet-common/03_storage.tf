@@ -7,9 +7,7 @@ resource "azurerm_resource_group" "storage_pay_wallet_rg" {
 module "pay_wallet_storage" {
 
   count = var.is_feature_enabled.storage ? 1 : 0
-
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
-
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.5.0"
 
   name                            = replace("${local.project}-sa", "-", "")
   account_kind                    = var.pay_wallet_storage_params.kind
@@ -19,6 +17,7 @@ module "pay_wallet_storage" {
   blob_versioning_enabled         = true
   resource_group_name             = azurerm_resource_group.storage_pay_wallet_rg.name
   location                        = var.location
+  enable_resource_advanced_threat_protection = var.pay_wallet_storage_params.advanced_threat_protection
   advanced_threat_protection      = var.pay_wallet_storage_params.advanced_threat_protection
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = var.pay_wallet_storage_params.public_network_access_enabled
@@ -94,6 +93,7 @@ resource "azurerm_monitor_diagnostic_setting" "pay_wallet_queue_diagnostics" {
       enabled = false
     }
   }
+
   metric {
     category = "Transaction"
     enabled  = false
@@ -103,7 +103,6 @@ resource "azurerm_monitor_diagnostic_setting" "pay_wallet_queue_diagnostics" {
       enabled = false
     }
   }
-
 
   enabled_log {
     category = "StorageDelete"
