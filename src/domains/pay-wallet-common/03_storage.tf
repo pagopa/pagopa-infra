@@ -4,30 +4,10 @@ resource "azurerm_resource_group" "storage_pay_wallet_rg" {
   tags     = var.tags
 }
 
-
-resource "azurerm_private_endpoint" "storage_private_endpoint" {
-  count = var.env_short != "d" ? 1 : 0
-
-  name                = "${local.project}-tr-storage-private-endpoint"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.storage_pay_wallet_rg.name
-  subnet_id           = module.pay_wallet_storage_snet.id
-  private_dns_zone_group {
-    name                 = "${local.project}-storage-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
-  }
-
-  private_service_connection {
-    name                           = "${local.project}-storage-private-service-connection"
-    private_connection_resource_id = module.pay_wallet_storage.id
-    is_manual_connection           = false
-    subresource_names              = ["queue"]
-  }
-
-  tags = var.tags
-}
-
 module "pay_wallet_storage" {
+
+  count = var.is_feature_enabled.storage ? 1 : 0
+
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
 
 
@@ -54,23 +34,47 @@ module "pay_wallet_storage" {
   tags = var.tags
 }
 
+
+resource "azurerm_private_endpoint" "storage_private_endpoint" {
+  count = var.is_feature_enabled.storage && var.env_short != "d" ? 1 : 0
+
+  name                = "${local.project}-tr-storage-private-endpoint"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.storage_pay_wallet_rg.name
+  subnet_id           = module.pay_wallet_storage_snet.id
+  private_dns_zone_group {
+    name                 = "${local.project}-storage-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-storage-private-service-connection"
+    private_connection_resource_id = module.pay_wallet_storage[0].id
+    is_manual_connection           = false
+    subresource_names              = ["queue"]
+  }
+
+  tags = var.tags
+}
+
 resource "azurerm_storage_queue" "pay_wallet_usage_update_queue" {
+  count = var.is_feature_enabled.storage ? 1 : 0
   name                 = "${local.project}-usage-update-queue"
-  storage_account_name = module.pay_wallet_storage.name
+  storage_account_name = module.pay_wallet_storage[0].name
 }
 
 //storage queue for blue deployment
 resource "azurerm_storage_queue" "pay_wallet_usage_update_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
+  count                = var.is_feature_enabled.storage && var.env_short == "u" ? 1 : 0
   name                 = "${local.project}-usage-update-queue-b"
-  storage_account_name = module.pay_wallet_storage.name
+  storage_account_name = module.pay_wallet_storage[0].name
 }
 
 # wallet queue alert diagnostic settings
 resource "azurerm_monitor_diagnostic_setting" "pay_wallet_queue_diagnostics" {
-  count                      = var.env_short == "p" ? 1 : 0
-  name                       = "${module.pay_wallet_storage.name}-diagnostics"
-  target_resource_id         = "${module.pay_wallet_storage.id}/queueServices/default/"
+  count                      = var.is_feature_enabled.storage && var.env_short == "p" ? 1 : 0
+  name                       = "${module.pay_wallet_storage[0].name}-diagnostics"
+  target_resource_id         = "${module.pay_wallet_storage[0].id}/queueServices/default/"
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 
   enabled_log {
@@ -125,7 +129,7 @@ locals {
 
 # Queue size: wallet - wallet queues enqueues rate alert
 resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_alert" {
-  for_each            = { for q in local.queue_alert_props : q.queue_key => q }
+  for_each            = var.is_feature_enabled.storage ? { for q in local.queue_alert_props : q.queue_key => q } : {}
   name                = "${local.project}-${each.value.queue_key}-rate-alert"
   resource_group_name = azurerm_resource_group.storage_pay_wallet_rg.name
   location            = var.location
@@ -135,7 +139,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.pay_wallet_storage.id
+  data_source_id = module.pay_wallet_storage[0].id
   description    = format("Enqueuing rate for queue %s > ${each.value.threshold} during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
   enabled        = true
   query = format(<<-QUERY
@@ -152,7 +156,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
     MessageRateForQueue("%s")
     | where Count > ${each.value.threshold}
     QUERY
-    , "/${module.pay_wallet_storage.name}/${local.project}-${each.value.queue_key}"
+    , "/${module.pay_wallet_storage[0].name}/${local.project}-${each.value.queue_key}"
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
@@ -166,8 +170,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
 locals {
   storage_accounts_queue_message_count_alert_props = var.env_short == "p" ? [
     {
-      "storage_account_id"   = module.pay_wallet_storage.id
-      "storage_account_name" = module.pay_wallet_storage.name
+      "storage_account_id"   = can(module.pay_wallet_storage[0].id) ? module.pay_wallet_storage[0].id : ""
+      "storage_account_name" = can(module.pay_wallet_storage[0].name) ? module.pay_wallet_storage[0].name : ""
       "severity"             = 1
       "time_window"          = "PT1H"
       "frequency"            = "PT15M"
@@ -177,7 +181,7 @@ locals {
 }
 
 resource "azurerm_monitor_metric_alert" "queue_storage_account_average_message_count" {
-  for_each = { for q in local.storage_accounts_queue_message_count_alert_props : q.storage_account_id => q }
+  for_each = var.is_feature_enabled.storage ? { for q in local.storage_accounts_queue_message_count_alert_props : q.storage_account_id => q } : {}
 
   action {
     action_group_id = data.azurerm_monitor_action_group.email.id

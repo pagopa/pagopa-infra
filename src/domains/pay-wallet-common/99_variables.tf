@@ -62,6 +62,18 @@ variable "tags" {
   }
 }
 
+### FEATURE FLAGS
+
+variable "is_feature_enabled" {
+  type = object({
+    cosmos   = optional(bool, false),
+    redis   = optional(bool, false),
+    storage   = optional(bool, false),
+
+  })
+  description = "Features enabled in this domain"
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -191,15 +203,6 @@ variable "pay_wallet_storage_params" {
     retention_days                = number,
     public_network_access_enabled = bool,
   })
-#   default = {
-#     enabled                       = false,
-#     kind                          = "StorageV2"
-#     tier                          = "Standard",
-#     account_replication_type      = "LRS",
-#     advanced_threat_protection    = true,
-#     retention_days                = 7,
-#     public_network_access_enabled = false,
-#   }
   description = "Azure storage DB params for pagoPA wallet resources."
 }
 

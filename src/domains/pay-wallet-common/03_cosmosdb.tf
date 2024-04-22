@@ -6,6 +6,7 @@ resource "azurerm_resource_group" "cosmosdb_pay_wallet_rg" {
 }
 
 module "cosmosdb_account_mongodb" {
+  count = var.is_feature_enabled.cosmos ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.3.0"
 
@@ -25,7 +26,7 @@ module "cosmosdb_account_mongodb" {
   subnet_id                          = module.cosmosdb_pay_wallet_snet.id
   private_dns_zone_ids               = [data.azurerm_private_dns_zone.cosmos.id]
   is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
-  allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
+#   allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
   consistency_policy               = var.cosmos_mongo_db_params.consistency_policy
   main_geo_location_location       = azurerm_resource_group.cosmosdb_pay_wallet_rg.location
@@ -38,10 +39,12 @@ module "cosmosdb_account_mongodb" {
 }
 
 resource "azurerm_cosmosdb_mongo_database" "pay_wallet" {
+  count = var.is_feature_enabled.cosmos ? 1 : 0
+
 
   name                = "payment-wallet"
   resource_group_name = azurerm_resource_group.cosmosdb_pay_wallet_rg.name
-  account_name        = module.cosmosdb_account_mongodb.name
+  account_name        = module.cosmosdb_account_mongodb[0].name
 
   throughput = var.cosmos_mongo_db_pay_wallet_params.enable_autoscaling || var.cosmos_mongo_db_pay_wallet_params.enable_serverless ? null : var.cosmos_mongo_db_pay_wallet_params.throughput
 
@@ -115,19 +118,17 @@ locals {
 
 module "cosmosdb_pay_wallet_collections" {
 
+
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
 
 
-  for_each = {
-    for index, coll in local.collections :
-    coll.name => coll
-  }
+  for_each =   var.is_feature_enabled.cosmos ?  { for index, coll in local.collections : coll.name => coll} : {}
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.cosmosdb_pay_wallet_rg.name
 
-  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
-  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.pay_wallet.name
+  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb[0].name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.pay_wallet[0].name
 
   indexes     = each.value.indexes
   shard_key   = each.value.shard_key
@@ -139,11 +140,12 @@ module "cosmosdb_pay_wallet_collections" {
 # -----------------------------------------------
 
 resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
-  count = var.env_short == "p" ? 1 : 0
+    count = var.is_feature_enabled.cosmos && var.env_short == "p" ? 1 : 0
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb.name}] Normalized RU Exceeded"
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_mongodb[0].name}] Normalized RU Exceeded"
   resource_group_name = azurerm_resource_group.cosmosdb_pay_wallet_rg.name
-  scopes              = [module.cosmosdb_account_mongodb.id]
+  scopes              = [module.cosmosdb_account_mongodb[0].id]
   description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
   severity            = 0
   window_size         = "PT5M"

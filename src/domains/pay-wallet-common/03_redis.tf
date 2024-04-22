@@ -6,6 +6,8 @@ resource "azurerm_resource_group" "redis_pay_wallet_rg" {
 }
 
 module "pagopa_pay_wallet_redis" {
+  count = var.is_feature_enabled.redis ? 1 : 0
+
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.72.1"
 
   name                          = "${local.project}-redis"
@@ -60,11 +62,12 @@ module "pagopa_pay_wallet_redis" {
 # -----------------------------------------------
 
 resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
-  count = var.env_short == "p" ? 1 : 0
+    count = var.is_feature_enabled.redis && var.env_short == "p" ? 1 : 0
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.pagopa_pay_wallet_redis.name}] Used Memory close to the threshold"
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.pagopa_pay_wallet_redis[0].name}] Used Memory close to the threshold"
   resource_group_name = azurerm_resource_group.redis_pay_wallet_rg.name
-  scopes              = [module.pagopa_pay_wallet_redis.id]
+  scopes              = [module.pagopa_pay_wallet_redis[0].id]
   description         = "The amount of cache memory in MB that is used for key/value pairs in the cache during the specified reporting interval, this amount is close to 200 MB so close to the threshold (250 MB)"
   severity            = 0
   window_size         = "PT5M"
