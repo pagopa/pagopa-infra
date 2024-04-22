@@ -196,7 +196,7 @@
           "amount": {
             "type": "integer",
             "minimum": 1,
-            "description": "amount ( in euro cents ) of the payment notice"
+            "description": "amount (in euro cents) of the payment notice"
           },
           "companyName": {
             "type": "string",
