@@ -167,7 +167,7 @@
           "allCCP": {
             "type": "boolean",
             "example": "false",
-            "description": "transfers associated with postal iban"
+            "description": "Flag that indicates that all transfers are associated with a postal IBAN"
           }
         }
       },
