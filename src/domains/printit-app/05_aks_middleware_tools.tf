@@ -1,5 +1,5 @@
 #module "tls_checker" {
-#  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v7.67.1"
+#  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v8.5.0"
 #
 #  https_endpoint                         = local.domain_hostname
 #  alert_name                             = local.domain_hostname
@@ -18,25 +18,25 @@
 #  keyvault_tenant_id                      = data.azurerm_client_config.current.tenant_id
 #}
 
-resource "helm_release" "cert_mounter" {
-  name         = "cert-mounter-blueprint"
-  repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
-  chart        = "cert-mounter-blueprint"
-  version      = "1.0.4"
-  namespace    = var.domain
-  timeout      = 120
-  force_update = true
-
-  values = [
-    templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
-      NAMESPACE        = var.domain,
-      DOMAIN           = var.domain,
-      CERTIFICATE_NAME = replace(local.domain_hostname, ".", "-"),
-      ENV_SHORT        = var.env_short,
-      KV_NAME          = data.azurerm_key_vault.kv.name
-    })
-  ]
-}
+# resource "helm_release" "cert_mounter" {
+#   name         = "cert-mounter-blueprint"
+#   repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
+#   chart        = "cert-mounter-blueprint"
+#   version      = "1.0.4"
+#   namespace    = var.domain
+#   timeout      = 120
+#   force_update = true
+#
+#   values = [
+#     templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
+#       NAMESPACE        = var.domain,
+#       DOMAIN           = var.domain,
+#       CERTIFICATE_NAME = replace(local.domain_hostname, ".", "-"),
+#       ENV_SHORT        = var.env_short,
+#       KV_NAME          = data.azurerm_key_vault.kv.name
+#     })
+#   ]
+# }
 
 resource "helm_release" "reloader" {
   name       = "reloader"

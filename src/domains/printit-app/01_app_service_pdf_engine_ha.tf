@@ -4,7 +4,7 @@
 #
 #
 # module "printit_pdf_engine_app_service_ha" {
-#   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
+#   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.5.0"
 #   count               = var.pdf_engine_app_ha_enabled ? 1 : 0
 #   vnet_integration    = false
 #   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
@@ -38,7 +38,7 @@
 # module "printit_pdf_engine_slot_staging_ha" {
 #   count = var.env_short != "d" && var.pdf_engine_app_ha_enabled ? 1 : 0
 #
-#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.69.1"
+#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v8.5.0"
 #
 #   # App service plan
 #   # app_service_plan_id = module.printit_pdf_engine_app_service.plan_id
@@ -235,7 +235,7 @@
 # # java
 # ################
 # module "printit_pdf_engine_app_service_java_ha" {
-#   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
+#   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.5.0"
 #   count               = var.pdf_engine_app_ha_enabled ? 1 : 0
 #   vnet_integration    = false
 #   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
@@ -268,7 +268,7 @@
 # module "printit_pdf_engine_java_slot_staging_ha" {
 #   count = var.env_short != "d" && var.pdf_engine_app_ha_enabled ? 1 : 0
 #
-#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.69.1"
+#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v8.5.0"
 #
 #   # App service plan
 #   # app_service_plan_id = module.printit_pdf_engine_app_service.plan_id

@@ -1,6 +1,6 @@
 data "azurerm_key_vault" "kv" {
-  name                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-kv"
-  resource_group_name = "${var.prefix}-${var.env_short}-${var.domain}-sec-rg"
+  name                = "${local.project}-kv"
+  resource_group_name = "${local.project}-sec-rg"
 }
 
 data "azurerm_key_vault_secret" "elastic_otel_token_header" {
