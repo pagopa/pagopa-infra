@@ -8,5 +8,6 @@
   <include file="./db.changelog-master-3.27.0.xml"/>
 
   <include file="./${version}/db.changelog-20240410000000_metadata_ibanappoggio.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20240423000000_metadata_prova.xml" labels="${version}"/>
 
 </databaseChangeLog>
