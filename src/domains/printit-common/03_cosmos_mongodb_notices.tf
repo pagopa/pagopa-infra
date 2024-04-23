@@ -6,8 +6,8 @@ resource "azurerm_resource_group" "db_rg" {
 }
 
 module "cosmosdb_account_mongodb" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.77.0"
-  count = var.is_feature_enabled.cosmosdb_notice ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.77.0"
+  count  = var.is_feature_enabled.cosmosdb_notice ? 1 : 0
 
   domain              = var.domain
   name                = "${local.project}-cosmos-account"
@@ -38,7 +38,7 @@ module "cosmosdb_account_mongodb" {
 }
 
 resource "azurerm_cosmosdb_mongo_database" "notices_mongo_db" {
-    count = var.is_feature_enabled.cosmosdb_notice ? 1 : 0
+  count = var.is_feature_enabled.cosmosdb_notice ? 1 : 0
 
   name                = "noticesMongoDb"
   resource_group_name = azurerm_resource_group.db_rg.name
@@ -89,7 +89,7 @@ locals {
 module "cosmosdb_notices_collections" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v7.77.0"
 
-  for_each = var.is_feature_enabled.cosmosdb_notice ? {for index, coll in local.collections: coll.name => coll} : {}
+  for_each = var.is_feature_enabled.cosmosdb_notice ? { for index, coll in local.collections : coll.name => coll } : {}
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.db_rg.name

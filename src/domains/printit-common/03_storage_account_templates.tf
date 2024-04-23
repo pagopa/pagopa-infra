@@ -1,6 +1,6 @@
 module "templates_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
-  count = var.is_feature_enabled.storage_templates ? 1:0
+  count  = var.is_feature_enabled.storage_templates ? 1 : 0
 
   name                                       = replace("${var.domain}-templates", "-", "")
   account_kind                               = var.templates_storage_account.account_kind
@@ -86,14 +86,14 @@ resource "azurerm_private_endpoint" "notices_table_private_endpoint" {
 }
 
 resource "azurerm_storage_container" "template_blob_file" {
-  count = var.is_feature_enabled.storage_templates ? 1:0
+  count                 = var.is_feature_enabled.storage_templates ? 1 : 0
   name                  = "noticetemplateblob"
   storage_account_name  = module.templates_sa[0].name
   container_access_type = "private"
 }
 
 resource "azurerm_storage_table" "template_data_table" {
-  count = var.is_feature_enabled.storage_templates ? 1:0
+  count                = var.is_feature_enabled.storage_templates ? 1 : 0
   name                 = "noticetemplatedatatable"
   storage_account_name = module.templates_sa[0].name
 }

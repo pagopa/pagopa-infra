@@ -1,6 +1,6 @@
 module "institutions_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
-  count = var.is_feature_enabled.storage_institutions ? 1:0
+  count  = var.is_feature_enabled.storage_institutions ? 1 : 0
 
   name                                       = replace("${var.domain}-institutions", "-", "")
   account_kind                               = var.institutions_storage_account.account_kind

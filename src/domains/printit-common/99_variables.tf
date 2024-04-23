@@ -66,10 +66,10 @@ variable "tags" {
 
 variable "is_feature_enabled" {
   type = object({
-    cosmosdb_notice = bool
+    cosmosdb_notice      = bool
     storage_institutions = bool
-    storage_notice = bool
-    storage_templates = bool
+    storage_notice       = bool
+    storage_templates    = bool
   })
 }
 

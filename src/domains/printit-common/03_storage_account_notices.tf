@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "printit_rg" {
 
 module "notices_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
-  count = var.is_feature_enabled.storage_notice ? 1 : 0
+  count  = var.is_feature_enabled.storage_notice ? 1 : 0
 
   name                                       = replace("${var.domain}-notices", "-", "")
   account_kind                               = var.notices_storage_account.account_kind
@@ -67,7 +67,7 @@ resource "azurerm_private_endpoint" "notices_blob_private_endpoint" {
 
 ## share xml file
 resource "azurerm_storage_container" "notices_blob_file" {
-    count = var.is_feature_enabled.storage_notice ? 1 : 0
+  count = var.is_feature_enabled.storage_notice ? 1 : 0
 
   name                  = "notices"
   storage_account_name  = module.notices_sa[0].name
@@ -75,7 +75,7 @@ resource "azurerm_storage_container" "notices_blob_file" {
 }
 
 resource "azurerm_storage_management_policy" "st_blob_receipts_management_policy" {
-    count = var.is_feature_enabled.storage_notice ? 1 : 0
+  count = var.is_feature_enabled.storage_notice ? 1 : 0
 
   storage_account_id = module.notices_sa[0].id
 

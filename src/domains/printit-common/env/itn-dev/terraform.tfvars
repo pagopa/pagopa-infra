@@ -17,10 +17,10 @@ tags = {
 ### 🚩Feautures flags
 
 is_feature_enabled = {
-    cosmosdb_notice = true
-    storage_institutions = true
-    storage_notice = true
-    storage_templates = true
+  cosmosdb_notice      = true
+  storage_institutions = true
+  storage_notice       = true
+  storage_templates    = true
 }
 
 ### External resources
