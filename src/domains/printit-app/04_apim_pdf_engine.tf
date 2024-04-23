@@ -3,7 +3,7 @@
 # ##############
 #
 # module "apim_pdf_engine_product" {
-#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
+#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.5.0"
 #
 #   product_id   = "pdf-engine"
 #   display_name = "PDF Engine pagoPA"
@@ -54,7 +54,7 @@
 # }
 #
 # module "apim_api_pdf_engine_api_v1" {
-#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.5.0"
 #
 #   name                  = format("%s-pdf-engine-service-api", local.project)
 #   api_management_name   = local.pagopa_apim_name
@@ -93,7 +93,7 @@
 #   versioning_scheme   = "Segment"
 # }
 # module "apim_api_pdf_engine_node_api_v1" {
-#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.5.0"
 #
 #   name                  = format("%s-pdf-engine-node-service-api", local.project)
 #   api_management_name   = local.pagopa_apim_name

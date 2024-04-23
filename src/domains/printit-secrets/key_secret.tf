@@ -1,4 +1,3 @@
-
 resource "azurerm_key_vault_key" "generated" {
   name         = "${local.product}-${var.domain}-sops-key"
   key_vault_id = module.key_vault.id
