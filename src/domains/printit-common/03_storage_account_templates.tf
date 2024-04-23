@@ -1,5 +1,5 @@
 module "templates_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.5.0"
   count  = var.is_feature_enabled.storage_templates ? 1 : 0
 
   name                                       = replace("${var.domain}-templates", "-", "")
