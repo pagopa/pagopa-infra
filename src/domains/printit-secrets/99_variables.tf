@@ -47,7 +47,7 @@ variable "location_short" {
     )
     error_message = "Length must be 3 chars."
   }
-  description = "One of weu, neu"
+  description = "One of weu, itn"
 }
 
 variable "instance" {
