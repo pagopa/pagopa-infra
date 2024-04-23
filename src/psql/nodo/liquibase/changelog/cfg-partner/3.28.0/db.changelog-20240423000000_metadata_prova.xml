@@ -9,6 +9,7 @@
 
   <changeSet author="liquibase" id="202404230000">
     <insert tableName="DIZIONARIO_METADATI">
+      <column name="CHIAVE"  value="___Prova__IBANAPPOGGIO___Prova"/>
       <column name="DATA_INIZIO_VALIDITA"  value="${now}"/>
     </insert>
   </changeSet>
