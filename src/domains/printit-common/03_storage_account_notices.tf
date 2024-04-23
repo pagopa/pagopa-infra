@@ -7,6 +7,7 @@ resource "azurerm_resource_group" "printit_rg" {
 
 module "notices_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
+  count = var.is_feature_enabled.storage_notice ? 1 : 0
 
   name                                       = replace("${var.domain}-notices", "-", "")
   account_kind                               = var.notices_storage_account.account_kind
@@ -37,7 +38,7 @@ module "notices_sa" {
 }
 
 resource "azurerm_private_endpoint" "notices_blob_private_endpoint" {
-  count = var.env_short == "d" ? 0 : 1
+  count = var.is_feature_enabled.cosmosdb_notice && var.env_short != "d" ? 1 : 0
 
   name                = "${local.project}-blob-private-endpoint"
   location            = var.location
@@ -51,7 +52,7 @@ resource "azurerm_private_endpoint" "notices_blob_private_endpoint" {
 
   private_service_connection {
     name                           = "${local.project}-blob-sa-private-service-connection"
-    private_connection_resource_id = module.notices_sa.id
+    private_connection_resource_id = module.notices_sa[0].id
     is_manual_connection           = false
     subresource_names              = ["blob"]
   }
@@ -66,20 +67,24 @@ resource "azurerm_private_endpoint" "notices_blob_private_endpoint" {
 
 ## share xml file
 resource "azurerm_storage_container" "notices_blob_file" {
+    count = var.is_feature_enabled.storage_notice ? 1 : 0
+
   name                  = "notices"
-  storage_account_name  = module.notices_sa.name
+  storage_account_name  = module.notices_sa[0].name
   container_access_type = "private"
 }
 
 resource "azurerm_storage_management_policy" "st_blob_receipts_management_policy" {
-  storage_account_id = module.notices_sa.id
+    count = var.is_feature_enabled.storage_notice ? 1 : 0
+
+  storage_account_id = module.notices_sa[0].id
 
   rule {
     name    = "tier-to-cool-policy"
     enabled = true
     filters {
       prefix_match = [
-        "${azurerm_storage_container.notices_blob_file.name}/"
+        "${azurerm_storage_container.notices_blob_file[0].name}/"
       ]
       blob_types = ["blockBlob"]
     }
