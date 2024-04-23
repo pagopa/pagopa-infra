@@ -327,3 +327,10 @@ resource "azurerm_key_vault_secret" "cfg_for_node_subscription_key" {
   }
 }
 
+resource "azurerm_key_vault_secret" "db_postgres_nexi_cfg_password" {
+  count        = var.env_short == "d" ? 1 : 0
+  name         = "db-postgres-nexi-cfg-password"
+  value        = data.azurerm_key_vault_secret.key_vault_db_postgres_nexi_cfg_password.value
+  key_vault_id = module.key_vault.id
+}
+
