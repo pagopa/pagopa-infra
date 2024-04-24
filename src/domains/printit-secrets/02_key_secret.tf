@@ -61,6 +61,13 @@ resource "azurerm_key_vault_secret" "secret" {
 ## Manual secrets
 
 
+resource "azurerm_key_vault_secret" "application_insights_connection_string" {
+  name         = "app-insight-connection-string"
+  value        = data.azurerm_application_insights.application_insights.connection_string
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
 resource "azurerm_key_vault_secret" "notices_mongo_connection_string" {
   name         = "notices-mongo-connection-string"
   value        = "AccountEndpoint=https://pagopa-${var.env_short}-${var.location_short}-${var.domain}-ds-cosmos-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.notices_cosmos_account.primary_key};"

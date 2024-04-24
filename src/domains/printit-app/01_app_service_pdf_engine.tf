@@ -1,52 +1,53 @@
-#
-# resource "azurerm_resource_group" "printit_pdf_engine_app_service_rg" {
-#   name     = format("%s-pdf-engine-rg", local.project)
-#   location = var.location
-#
-#   tags = var.tags
-# }
-#
+
+resource "azurerm_resource_group" "printit_pdf_engine_app_service_rg" {
+  name     = format("%s-pdf-engine-rg", local.project)
+  location = var.location
+
+  tags = var.tags
+}
+
 data "azurerm_container_registry" "container_registry" {
   name                = "pagopa${var.env_short}commonacr"
   resource_group_name = "pagopa-${var.env_short}-container-registry-rg"
 }
-#
-# ################
-# # node
-# ################
-#
-# module "printit_pdf_engine_app_service" {
-#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.5.0"
-#
-#   vnet_integration    = false
-#   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
-#   location            = var.location
-#
-#   # App service plan vars
-#   plan_name = format("%s-plan-pdf-engine", local.project)
-#   plan_kind = "Linux"
-#   sku_name  = var.app_service_pdf_engine_sku_name
-#
-#   # App service plan
-#   name                = format("%s-app-pdf-engine", local.project)
-#   client_cert_enabled = false
-#   always_on           = var.app_service_pdf_engine_always_on
-#   # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-#   docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
-#   docker_image_tag = "latest"
-#
-#   health_check_path = "/info"
-#
-#   app_settings = local.printit_pdf_engine_app_settings
-#
-#   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
-#   allowed_ips     = []
-#
-#   subnet_id = module.printit_pdf_engine_app_service_snet.id
-#
-#   tags = var.tags
-# }
-#
+
+################
+# node
+################
+
+module "printit_pdf_engine_app_service" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.5.0"
+  count  = var.is_feature_enabled.pdf_engine ? 1 : 0
+
+  vnet_integration    = false
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
+  location            = var.location
+
+  # App service plan vars
+  plan_name = format("%s-plan-pdf-engine", local.project)
+
+  sku_name = var.app_service_pdf_engine_sku_name
+
+  # App service plan
+  name                = format("%s-app-pdf-engine", local.project)
+  client_cert_enabled = false
+  always_on           = var.app_service_pdf_engine_always_on
+  # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
+  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
+  docker_image_tag = "latest"
+
+  health_check_path = "/info"
+
+  app_settings = local.printit_pdf_engine_app_settings
+
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_ips     = []
+
+  subnet_id = module.printit_pdf_engine_app_service_snet[0].id
+
+  tags = var.tags
+}
+
 # module "printit_pdf_engine_slot_staging" {
 #   count = var.env_short != "d" ? 1 : 0
 #
@@ -78,7 +79,7 @@ data "azurerm_container_registry" "container_registry" {
 #
 #   tags = var.tags
 # }
-#
+
 # resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_autoscale" {
 #   count = var.env_short != "d" ? 1 : 0
 #
@@ -241,43 +242,43 @@ data "azurerm_container_registry" "container_registry" {
 #
 #   }
 # }
-#
-#
-# ################
-# # java
-# ################
-# module "printit_pdf_engine_app_service_java" {
-#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.5.0"
-#
-#   vnet_integration    = false
-#   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
-#   location            = var.location
-#
-#   # App service plan vars
-#   plan_name = format("%s-plan-pdf-engine-java", local.project)
-#   plan_kind = "Linux"
-#   sku_name  = var.app_service_pdf_engine_sku_name_java
-#
-#   # App service plan
-#   name                = format("%s-app-pdf-engine-java", local.project)
-#   client_cert_enabled = false
-#   always_on           = var.app_service_pdf_engine_always_on
-#   # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-#   docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
-#   docker_image_tag = "latest"
-#
-#   health_check_path = "/info"
-#
-#   app_settings = local.printit_pdf_engine_app_settings_java
-#
-#   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
-#   allowed_ips     = []
-#
-#   subnet_id = module.printit_pdf_engine_app_service_snet.id
-#
-#   tags = var.tags
-# }
-#
+
+
+################
+# java
+################
+module "printit_pdf_engine_app_service_java" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.5.0"
+  count  = var.is_feature_enabled.pdf_engine ? 1 : 0
+
+  vnet_integration    = false
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
+  location            = var.location
+
+  # App service plan vars
+  plan_name = format("%s-plan-pdf-engine-java", local.project)
+  sku_name  = var.app_service_pdf_engine_sku_name_java
+
+  # App service plan
+  name                = format("%s-app-pdf-engine-java", local.project)
+  client_cert_enabled = false
+  always_on           = var.app_service_pdf_engine_always_on
+  # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
+  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
+  docker_image_tag = "latest"
+
+  health_check_path = "/info"
+
+  app_settings = local.printit_pdf_engine_app_settings_java
+
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_ips     = []
+
+  subnet_id = module.printit_pdf_engine_app_service_snet[0].id
+
+  tags = var.tags
+}
+
 # module "printit_pdf_engine_java_slot_staging" {
 #   count = var.env_short != "d" ? 1 : 0
 #
