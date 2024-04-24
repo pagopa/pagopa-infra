@@ -43,7 +43,7 @@ variables:
   azureServiceConnectionApplyNameDev: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
   azureServiceConnectionApplyNameUat: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
   azureServiceConnectionApplyNameProd: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
-
+  APPROVE_NOTIFY_ADMIN: '[pagoPA-iac]\Project Administrators'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -74,7 +74,7 @@ stages:
             timeoutInMinutes: 240 # task times out in 4 hours
             inputs:
               notifyUsers: |
-                marco.mari@pagopa.it
+                $(APPROVE_NOTIFY_ADMIN)
               instructions: 'Please authorize the postgreSQL failover and resume'
               onTimeout: 'reject'
       - job: postgres_fdr_failover
