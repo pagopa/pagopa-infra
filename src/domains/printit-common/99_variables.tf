@@ -63,6 +63,17 @@ variable "tags" {
   }
 }
 
+### Features flags
+
+variable "is_feature_enabled" {
+  type = object({
+    cosmosdb_notice      = bool
+    storage_institutions = bool
+    storage_notice       = bool
+    storage_templates    = bool
+  })
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -113,7 +124,6 @@ variable "ingress_load_balancer_ip" {
 # CosmosDB
 variable "cosmos_mongo_db_notices_params" {
   type = object({
-    enabled        = bool
     capabilities   = list(string)
     offer_type     = string
     server_version = string

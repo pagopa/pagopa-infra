@@ -46,6 +46,7 @@ data "azurerm_application_insights" "application_insights" {
 }
 
 
+
 # data "azurerm_api_management" "apim" {
 #   name                = "${var.prefix}-${var.env_short}-apim"
 #   resource_group_name = "${var.prefix}-${var.env_short}-api-rg"

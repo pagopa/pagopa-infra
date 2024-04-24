@@ -71,10 +71,6 @@
 | [azurerm_storage_container.taxonomy_output_blob_file](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_table.poc_reporting_enrollment_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [azurerm_subnet.github_runner_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
-| [github_actions_environment_secret.github_environment_runner_secrets](https://registry.terraform.io/providers/integrations/github/5.18.3/docs/resources/actions_environment_secret) | resource |
-| [github_actions_environment_variable.github_environment_runner_variables](https://registry.terraform.io/providers/integrations/github/5.18.3/docs/resources/actions_environment_variable) | resource |
-| [github_actions_secret.repo_secrets](https://registry.terraform.io/providers/integrations/github/5.18.3/docs/resources/actions_secret) | resource |
-| [github_repository_environment.github_repository_environment](https://registry.terraform.io/providers/integrations/github/5.18.3/docs/resources/repository_environment) | resource |
 | [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
@@ -100,9 +96,7 @@
 | [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_user_assigned_identity.iac_federated_azdo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
-| [azurerm_user_assigned_identity.identity_cd_01](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
-| [github_organization_teams.all](https://registry.terraform.io/providers/integrations/github/5.18.3/docs/data-sources/organization_teams) | data source |
 
 ## Inputs
 

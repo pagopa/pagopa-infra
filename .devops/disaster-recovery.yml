@@ -10,15 +10,40 @@ parameters:
     values:
       - False
       - True
+  - name: 'FDR'
+    displayName: 'Execute FDR database failover'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'GPS'
+    displayName: 'Execute GPS/GPD database failover'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'NODO'
+    displayName: 'Execute Nodo database failover'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
 
 variables:
   TIME_OUT: 10
   # working dir
   WORKING_DIR: 'src'
+  poolNameDev: '$(TF_POOL_NAME_DEV)'
+  poolNameUat: '$(TF_POOL_NAME_UAT)'
   poolNameProd: '$(TF_POOL_NAME_PROD)'
   #APPLY
+  azureServiceConnectionApplyNameDev: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
+  azureServiceConnectionApplyNameUat: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
   azureServiceConnectionApplyNameProd: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
-
+  APPROVE_NOTIFY_ADMIN: '[pagoPA-iac]\Project Administrators'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -28,7 +53,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/heads/main
+      ref: refs/tags/v6.1.0
       endpoint: "io-azure-devops-github-ro"
 
 
@@ -40,11 +65,25 @@ stages:
     pool:
       name: "${{variables.poolNameProd}}"
     jobs:
+      - job: waitForValidation
+        condition: succeeded()
+        displayName: Wait for external validation
+        pool: server
+        steps:
+          - task: ManualValidation@0
+            timeoutInMinutes: 240 # task times out in 4 hours
+            inputs:
+              notifyUsers: |
+                $(APPROVE_NOTIFY_ADMIN)
+              instructions: 'Please authorize the postgreSQL failover and resume'
+              onTimeout: 'reject'
       - job: postgres_fdr_failover
         displayName: FDR postgres flexible failover
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
+        dependsOn: waitForValidation
+        condition: and(succeeded(), eq(${{parameters.FDR}}, true))
         steps:
           - template: templates/postgres-flexible-failover/template.yaml@terraform
             parameters:
@@ -60,6 +99,8 @@ stages:
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
+        dependsOn: waitForValidation
+        condition: and(succeeded(), eq(${{parameters.GPS}}, true))
         steps:
           - template: templates/postgres-flexible-failover/template.yaml@terraform
             parameters:
@@ -75,6 +116,8 @@ stages:
         strategy:
           parallel: 1
         timeoutInMinutes: $[variables.TIME_OUT]
+        dependsOn: waitForValidation
+        condition: and(succeeded(), eq(${{parameters.NODO}}, true))
         steps:
           - template: templates/postgres-flexible-failover/template.yaml@terraform
             parameters:

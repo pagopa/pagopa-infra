@@ -15,12 +15,12 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v7.77.0 |
-| <a name="module_cosmosdb_notices_collections"></a> [cosmosdb\_notices\_collections](#module\_cosmosdb\_notices\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v7.77.0 |
+| <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v8.5.0 |
+| <a name="module_cosmosdb_notices_collections"></a> [cosmosdb\_notices\_collections](#module\_cosmosdb\_notices\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v8.5.0 |
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v7.45.0 |
-| <a name="module_institutions_sa"></a> [institutions\_sa](#module\_institutions\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.77.0 |
-| <a name="module_notices_sa"></a> [notices\_sa](#module\_notices\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.77.0 |
-| <a name="module_templates_sa"></a> [templates\_sa](#module\_templates\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.77.0 |
+| <a name="module_institutions_sa"></a> [institutions\_sa](#module\_institutions\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.5.0 |
+| <a name="module_notices_sa"></a> [notices\_sa](#module\_notices\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.5.0 |
+| <a name="module_templates_sa"></a> [templates\_sa](#module\_templates\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.5.0 |
 
 ## Resources
 
@@ -66,7 +66,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cosmos_mongo_db_notices_params"></a> [cosmos\_mongo\_db\_notices\_params](#input\_cosmos\_mongo\_db\_notices\_params) | CosmosDB | <pre>object({<br>    enabled        = bool<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    kind           = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>    enable_serverless                 = bool<br>    enable_autoscaling                = bool<br>    throughput                        = number<br>    max_throughput                    = number<br>    container_default_ttl             = number<br>  })</pre> | n/a | yes |
+| <a name="input_cosmos_mongo_db_notices_params"></a> [cosmos\_mongo\_db\_notices\_params](#input\_cosmos\_mongo\_db\_notices\_params) | CosmosDB | <pre>object({<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    kind           = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>    enable_serverless                 = bool<br>    enable_autoscaling                = bool<br>    throughput                        = number<br>    max_throughput                    = number<br>    container_default_ttl             = number<br>  })</pre> | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_platform"></a> [dns\_zone\_platform](#input\_dns\_zone\_platform) | The platform dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The wallet dns subdomain. | `string` | `null` | no |
@@ -86,6 +86,7 @@
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_institutions_storage_account"></a> [institutions\_storage\_account](#input\_institutions\_storage\_account) | n/a | <pre>object({<br>    account_kind                  = string<br>    account_tier                  = string<br>    account_replication_type      = string<br>    advanced_threat_protection    = bool<br>    blob_versioning_enabled       = bool<br>    public_network_access_enabled = bool<br>    blob_delete_retention_days    = number<br>    enable_low_availability_alert = bool<br>    backup_enabled                = optional(bool, false)<br>    backup_retention              = optional(number, 0)<br>  })</pre> | n/a | yes |
+| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | n/a | <pre>object({<br>    cosmosdb_notice      = bool<br>    storage_institutions = bool<br>    storage_notice       = bool<br>    storage_templates    = bool<br>  })</pre> | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | `"itn"` | no |
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
