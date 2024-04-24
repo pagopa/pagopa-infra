@@ -1,5 +1,6 @@
 module "templates_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.5.0"
+  count  = var.is_feature_enabled.storage_templates ? 1 : 0
 
   name                                       = replace("${var.domain}-templates", "-", "")
   account_kind                               = var.templates_storage_account.account_kind
@@ -30,7 +31,7 @@ module "templates_sa" {
 }
 
 resource "azurerm_private_endpoint" "templates_blob_private_endpoint" {
-  count = var.env_short == "d" ? 0 : 1
+  count = var.is_feature_enabled.storage_templates && var.env_short != "d" ? 1 : 0
 
   name                = "${local.project}-template-blob-private-endpoint"
   location            = var.location
@@ -44,7 +45,7 @@ resource "azurerm_private_endpoint" "templates_blob_private_endpoint" {
 
   private_service_connection {
     name                           = "${local.project}-template-blob-sa-private-service-connection"
-    private_connection_resource_id = module.templates_sa.id
+    private_connection_resource_id = module.templates_sa[0].id
     is_manual_connection           = false
     subresource_names              = ["blob"]
   }
@@ -58,7 +59,7 @@ resource "azurerm_private_endpoint" "templates_blob_private_endpoint" {
 
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/5820
 resource "azurerm_private_endpoint" "notices_table_private_endpoint" {
-  count = var.env_short == "d" ? 0 : 1
+  count = var.is_feature_enabled.storage_templates && var.env_short != "d" ? 1 : 0
 
   name                = "${local.project}-table-private-endpoint"
   location            = var.location
@@ -72,7 +73,7 @@ resource "azurerm_private_endpoint" "notices_table_private_endpoint" {
 
   private_service_connection {
     name                           = "${local.project}-table-sa-private-service-connection"
-    private_connection_resource_id = module.templates_sa.id
+    private_connection_resource_id = module.templates_sa[0].id
     is_manual_connection           = false
     subresource_names              = ["table"]
   }
@@ -85,13 +86,15 @@ resource "azurerm_private_endpoint" "notices_table_private_endpoint" {
 }
 
 resource "azurerm_storage_container" "template_blob_file" {
+  count                 = var.is_feature_enabled.storage_templates ? 1 : 0
   name                  = "noticetemplateblob"
-  storage_account_name  = module.templates_sa.name
+  storage_account_name  = module.templates_sa[0].name
   container_access_type = "private"
 }
 
 resource "azurerm_storage_table" "template_data_table" {
+  count                = var.is_feature_enabled.storage_templates ? 1 : 0
   name                 = "noticetemplatedatatable"
-  storage_account_name = module.templates_sa.name
+  storage_account_name = module.templates_sa[0].name
 }
 
