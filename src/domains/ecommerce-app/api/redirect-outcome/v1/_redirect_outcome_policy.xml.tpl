@@ -129,6 +129,21 @@
                     </set-body>
                 </return-response>
             </when>
+            <when condition="@(context.LastError.Source == "authorization")">
+                <return-response>
+                    <set-status code="401" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>
+                    {
+                        "status": 401,
+                        "title": "Unauthorized",
+                        "detail": "Unauthorized"
+                    }
+                    </set-body>
+                </return-response>
+            </when>
             <otherwise>
             <return-response>
                 <set-status code="500" />
