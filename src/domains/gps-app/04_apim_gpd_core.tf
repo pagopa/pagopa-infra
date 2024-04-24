@@ -143,6 +143,7 @@ module "apim_api_debt_positions_api_v1" {
 }
 
 module "apim_api_debt_positions_api_v2" {
+  count  = var.env_short != "p" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
 
   name                  = format("%s-debt-positions-service-api", local.product)
