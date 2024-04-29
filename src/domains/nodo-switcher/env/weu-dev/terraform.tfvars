@@ -1,15 +1,15 @@
 prefix          = "pagopa"
-env_short       = "u"
-env             = "uat"
+env_short       = "d"
+env             = "dev"
 domain          = "nodo"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
-instance        = "uat"
+instance        = "dev"
 
 tags = {
   CreatedBy   = "Terraform"
-  Environment = "Uat"
+  Environment = "Dev"
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/nodo-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
@@ -17,13 +17,13 @@ tags = {
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-u-monitor-rg"
-log_analytics_workspace_name                = "pagopa-u-law"
-log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
+monitor_resource_group_name                 = "pagopa-d-monitor-rg"
+log_analytics_workspace_name                = "pagopa-d-law"
+log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 
 external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.uat.platform"
-apim_dns_zone_prefix     = "uat.platform"
+dns_zone_internal_prefix = "internal.dev.platform"
+apim_dns_zone_prefix     = "dev.platform"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
@@ -36,13 +36,14 @@ tls_cert_check_helm = {
 nodo_user_node_pool = {
   enabled         = true
   name            = "nodo01"
-  vm_size         = "Standard_D8ds_v5"
+  vm_size         = "Standard_B8ms"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
   node_count_min  = "2"
-  node_count_max  = "6"
+  node_count_max  = "4"
   node_labels = {
-  "nodo" = "true", },
+    "nodo" = "true",
+  },
   node_taints        = ["dedicated=nodo:NoSchedule"],
   node_tags          = { node_tag_1 : "1" },
   nodo_pool_max_pods = "250",
@@ -50,65 +51,51 @@ nodo_user_node_pool = {
 
 aks_cidr_subnet = ["10.1.0.0/17"]
 
-cidr_subnet_vmss               = ["10.230.9.144/28"]
-lb_frontend_private_ip_address = "10.230.9.150"
+cidr_subnet_vmss               = ["10.230.8.144/28"]
+lb_frontend_private_ip_address = "10.230.8.150"
 
 route_aks = [
   {
-    #  aks nodo to nexi proxy
+    # dev aks nodo oncloud
     name                   = "aks-outbound-to-nexy-sianet-subnet"
-    address_prefix         = "10.101.1.95/32"
+    address_prefix         = "10.97.20.33/32"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.230.9.150"
+    next_hop_in_ip_address = "10.230.8.150"
   },
   {
     # dev aks nodo oncloud
     name                   = "aks-outbound-to-nexy-proxy-subnet"
     address_prefix         = "10.79.20.33/32"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.230.9.150"
+    next_hop_in_ip_address = "10.230.8.150"
   },
   {
-    #  aks nodo to nexi sfg
+    # dev aks nodo oncloud
     name                   = "aks-outbound-to-nexi-sfg-subnet"
     address_prefix         = "10.101.38.180/32"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.230.9.150"
-  },
-  {
-    #  aks nodo to nexi sftp
-    name                   = "aks-outbound-to-nexi-sftp-subnet"
-    address_prefix         = "10.48.23.0/24"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.230.9.150"
+    next_hop_in_ip_address = "10.230.8.150"
   },
   {
     #  aks nodo to nexi oncloud oracle
     name                   = "aks-outbound-to-nexi-oracle-cloud-subnet"
-    address_prefix         = "10.70.73.0/24"
+    address_prefix         = "10.70.67.0/24"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.230.9.150"
+    next_hop_in_ip_address = "10.230.8.150"
   },
   {
-    #  aks nodo to nexi oncloud oracle
-    name                   = "aks-outbound-to-nexi-aks-cloud-subnet"
-    address_prefix         = "10.70.74.0/24"
+    #  aks nodo to nexi oncloud app
+    name                   = "aks-outbound-to-nexi-app-cloud-subnet"
+    address_prefix         = "10.70.66.0/24"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.230.9.150"
+    next_hop_in_ip_address = "10.230.8.150"
   },
   {
-    # uat aks nodo nexi postgres onprem
+    #  dev aks nodo nexi postgres onprem
     name                   = "aks-outbound-to-nexi-postgres-onprem-subnet"
-    address_prefix         = "10.222.214.174/32"
+    address_prefix         = "10.222.214.176/32"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.230.9.150"
-  },
-  {
-    #  prf aks nodo nexi postgres onprem
-    name                   = "aks-outbound-to-nexi-postgres-prf-onprem-subnet"
-    address_prefix         = "10.222.214.184/32"
-    next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.230.9.150"
+    next_hop_in_ip_address = "10.230.8.150"
   },
 ]
 
@@ -120,30 +107,29 @@ nodo_re_to_datastore_function = {
   kind                         = "Linux"
   sku_size                     = "B1"
   sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 0
+  maximum_elastic_worker_count = null
 }
 nodo_re_to_datastore_function_always_on       = true
 nodo_re_to_datastore_function_subnet          = ["10.1.178.0/24"]
-nodo_re_to_datastore_network_policies_enabled = true
+nodo_re_to_datastore_network_policies_enabled = false
 nodo_re_to_datastore_function_autoscale = {
   default = 1
   minimum = 1
-  maximum = 10
+  maximum = 3
 }
-
 nodo_re_to_tablestorage_function = {
   always_on                    = true
   kind                         = "Linux"
   sku_size                     = "B1"
   sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 0
+  maximum_elastic_worker_count = null
 }
 nodo_re_to_tablestorage_function_subnet          = ["10.1.184.0/24"]
-nodo_re_to_tablestorage_network_policies_enabled = true
+nodo_re_to_tablestorage_network_policies_enabled = false
 nodo_re_to_tablestorage_function_autoscale = {
   default = 1
   minimum = 1
-  maximum = 10
+  maximum = 3
 }
 
 nodo_verifyko_to_datastore_function = {
@@ -153,14 +139,15 @@ nodo_verifyko_to_datastore_function = {
   sku_tier                     = "Basic"
   maximum_elastic_worker_count = null
   zone_balancing_enabled       = false
+
 }
 nodo_verifyko_to_datastore_function_always_on       = true
 nodo_verifyko_to_datastore_function_subnet          = ["10.1.188.0/24"]
-nodo_verifyko_to_datastore_network_policies_enabled = true
+nodo_verifyko_to_datastore_network_policies_enabled = false
 nodo_verifyko_to_datastore_function_autoscale = {
   default = 1
   minimum = 1
-  maximum = 10
+  maximum = 3
 }
 
 nodo_verifyko_to_tablestorage_function = {
@@ -168,48 +155,38 @@ nodo_verifyko_to_tablestorage_function = {
   kind                         = "Linux"
   sku_size                     = "B1"
   sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 0
+  maximum_elastic_worker_count = null
   zone_balancing_enabled       = false
 }
 nodo_verifyko_to_tablestorage_function_subnet          = ["10.1.189.0/24"]
-nodo_verifyko_to_tablestorage_network_policies_enabled = true
+nodo_verifyko_to_tablestorage_network_policies_enabled = false
 nodo_verifyko_to_tablestorage_function_autoscale = {
   default = 1
   minimum = 1
-  maximum = 10
+  maximum = 3
 }
 
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
-    "/web-bo/.*",
-    "/bo-nodo/.*",
-    "/pp-admin-panel/.*",
-    "/tkm/tkmacquirermanager/.*",
-    "/nodo-monitoring/monitoring/.*",
-    "/nodo-ndp/monitoring/.*",
-    "/nodo-replica-ndp/monitoring/.*",
-    "/wfesp-ndp/.*",
-    "/wfesp-replica-ndp/.*",
-    "/web-bo-ndp/.*",
+    "/allowed/*",
   ]
   ips = [
-    "93.63.219.230",  # PagoPA on prem VPN
-    "93.63.219.234",  # PagoPA on prem VPN DR
-    "20.93.160.60",   # CSTAR
-    "213.215.138.80", # Softlab L1 Pagamenti VPN
-    "213.215.138.79", # Softlab L1 Pagamenti VPN
-    "82.112.220.178", # Softlab L1 Pagamenti VPN
-    "77.43.17.42",    # Softlab L1 Pagamenti VPN
-    "151.2.45.1",     # Softlab L1 Pagamenti VPN
-    "193.203.229.20", # VPN NEXI
-    "193.203.230.22", # VPN NEXI
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
   ]
 }
 
-nodo_auth_subscription_limit = 10000
 
 # node forwarder
-nodo_pagamenti_x_forwarded_for = "10.230.9.5"
+nodo_pagamenti_x_forwarded_for = "10.230.8.5"
 
 
 storage_account_info = {
@@ -220,9 +197,35 @@ storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
+
 enabled_features = {
-  apim_v2        = false
+  apim_v2        = true
   eventhub_ha_rx = true
 }
 
 
+
+nodo_switcher = {
+  pagopa_nodo_url                  = "https://httpbin.org/status/200"
+  trigger_max_age_minutes          = 30
+  enable_switch_approval           = true
+  force_execution_for_old_triggers = false
+  apim_variables = [
+    {
+      name  = "apim_enable_nm3_decoupler_switch"
+      value = "false"
+    },
+    {
+      name  = "apim_enable_routing_decoupler_switch"
+      value = "false"
+    },
+    {
+      name  = "default_node_id"
+      value = "NDP003PROD"
+    },
+    {
+      name  = "default-nodo-backend"
+      value = "http://10.70.66.200/nodo-sit"
+    }
+  ]
+}

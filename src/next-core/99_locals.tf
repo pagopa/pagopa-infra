@@ -29,5 +29,4 @@ locals {
   integration_appgateway_private_ip = ["10.230.10.200"]
 
   msg_resource_group_name = "${local.product}-msg-rg"
-
 }
