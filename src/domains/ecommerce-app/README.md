@@ -22,6 +22,7 @@
 | <a name="module_apim_ecommerce_io_product"></a> [apim\_ecommerce\_io\_product](#module\_apim\_ecommerce\_io\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.6.0 |
 | <a name="module_apim_ecommerce_io_webview_pay_v1"></a> [apim\_ecommerce\_io\_webview\_pay\_v1](#module\_apim\_ecommerce\_io\_webview\_pay\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
 | <a name="module_apim_ecommerce_payment_methods_service_api_v1"></a> [apim\_ecommerce\_payment\_methods\_service\_api\_v1](#module\_apim\_ecommerce\_payment\_methods\_service\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
+| <a name="module_apim_ecommerce_payment_methods_service_api_v2"></a> [apim\_ecommerce\_payment\_methods\_service\_api\_v2](#module\_apim\_ecommerce\_payment\_methods\_service\_api\_v2) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
 | <a name="module_apim_ecommerce_payment_requests_service_api_v1"></a> [apim\_ecommerce\_payment\_requests\_service\_api\_v1](#module\_apim\_ecommerce\_payment\_requests\_service\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
 | <a name="module_apim_ecommerce_product"></a> [apim\_ecommerce\_product](#module\_apim\_ecommerce\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.6.0 |
 | <a name="module_apim_ecommerce_redirect_outcome_api_v1"></a> [apim\_ecommerce\_redirect\_outcome\_api\_v1](#module\_apim\_ecommerce\_redirect\_outcome\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
@@ -53,6 +54,7 @@
 | [azurerm_api_management_api_operation_policy.get_card_data_information](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_carts_redirect](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_fees](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.get_fees_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_payment_request_info_api_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_transaction_info](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.helpdesk_pgs_vpos](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |

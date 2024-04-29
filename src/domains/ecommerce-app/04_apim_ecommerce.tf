@@ -312,7 +312,7 @@ module "apim_ecommerce_payment_methods_service_api_v1" {
   })
 }
 
-module "apim_ecommerce_payment_methods_service_api_v1" {
+module "apim_ecommerce_payment_methods_service_api_v2" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
 
   name                  = format("%s-payment-methods-service-api", local.project)
