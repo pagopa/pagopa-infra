@@ -125,31 +125,37 @@ resource "azurerm_key_vault_secret" "institutions_storage_account_pkey" {
 }
 
 
-# resource "azurerm_key_vault_secret" "ehub_notice_connection_string" {
-#   name         = format("ehub-%s-notice-connection-string", var.env_short)
-#   value        = data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string
-#   content_type = "text/plain"
-#   key_vault_id = module.key_vault.id
-# }
-#
-# resource "azurerm_key_vault_secret" "ehub_notice_complete_connection_string" {
-#   name         = format("ehub-%s-notice-complete-connection-string", var.env_short)
-#   value        = data.azurerm_eventhub_authorization_rule.notices_complete_evt_authorization_rule.primary_connection_string
-#   content_type = "text/plain"
-#   key_vault_id = module.key_vault.id
-# }
-#
-# resource "azurerm_key_vault_secret" "ehub_notice_error_connection_string" {
-#   name         = format("ehub-%s-notice-error-connection-string", var.env_short)
-#   value        = data.azurerm_eventhub_authorization_rule.notices_error_evt_authorization_rule.primary_connection_string
-#   content_type = "text/plain"
-#
-#   key_vault_id = module.key_vault.id
-# }
-#
-# resource "azurerm_api_management_subscription" "example" {
-#   api_management_name = data.azurerm_api_management.apim.name
-#   resource_group_name = data.azurerm_api_management.apim.resource_group_name
-#   product_id          = data.azurerm_api_management_product.example.id
-#   display_name        = "PDF Engine JS for Java"
-# }
+resource "azurerm_key_vault_secret" "ehub_notice_connection_string" {
+  name         = format("ehub-%s-notice-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_notice_complete_connection_string" {
+  name         = format("ehub-%s-notice-complete-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.notices_complete_evt_authorization_rule.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_notice_error_connection_string" {
+  name         = format("ehub-%s-notice-error-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.notices_error_evt_authorization_rule.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_subscription" "pdf_engine_node_subkey" {
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  product_id          = data.azurerm_api_management_product.pdf_engine_product.id
+  display_name        = "PDF Engine JS for Java"
+}
+
+resource "azurerm_key_vault_secret" "pdf_engine_node_subkey_secret" {
+  name         = "pdf-engine-node-subkey"
+  value        = azurerm_api_management_subscription.pdf_engine_node_subkey.primary_key
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}

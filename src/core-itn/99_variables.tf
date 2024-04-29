@@ -239,6 +239,23 @@ variable "container_registry_zone_redundancy_enabled" {
   description = "Enabled AZ for container registry"
 }
 
+variable "eventhubs" {
+  description = "A list of event hubs to add to namespace."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
+}
+
 variable "is_feature_enabled" {
   type = object({
     vnet_ita                  = bool,
