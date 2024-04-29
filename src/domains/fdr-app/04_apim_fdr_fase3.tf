@@ -54,7 +54,7 @@ module "apim_fdr_product_internal" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
 
   product_id   = "fdr_internal"
-  display_name = "FDR - Flussi di rendicontazione (INTERNAL)"
+  display_name = "FDR Fase 3 - Flussi di rendicontazione (INTERNAL)"
   description  = "Manage FDR (INTERNAL) ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC"
 
   api_management_name = local.pagopa_apim_name
