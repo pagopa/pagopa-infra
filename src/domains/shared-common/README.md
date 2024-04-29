@@ -1,5 +1,3 @@
-<!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
@@ -8,6 +6,14 @@
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.84.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | 5.18.3 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | = 3.1.1 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.21.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.84.0 |
+| <a name="provider_null"></a> [null](#provider\_null) | 3.1.1 |
 
 ## Modules
 
@@ -102,40 +108,39 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cidr_subnet_authorizer_cosmosdb"></a> [cidr\_subnet\_authorizer\_cosmosdb](#input\_cidr\_subnet\_authorizer\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
-| <a name="input_cidr_subnet_iuvgenerator_cosmosdb"></a> [cidr\_subnet\_iuvgenerator\_cosmosdb](#input\_cidr\_subnet\_iuvgenerator\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
-| <a name="input_cidr_subnet_loadtest_agent"></a> [cidr\_subnet\_loadtest\_agent](#input\_cidr\_subnet\_loadtest\_agent) | LoadTest Agent Pool address space | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_taxonomy_storage_account"></a> [cidr\_subnet\_taxonomy\_storage\_account](#input\_cidr\_subnet\_taxonomy\_storage\_account) | Storage account network address space. | `list(string)` | n/a | yes |
-| <a name="input_cidr_subnet_test_data_storage_account"></a> [cidr\_subnet\_test\_data\_storage\_account](#input\_cidr\_subnet\_test\_data\_storage\_account) | Storage account network address space. | `list(string)` | `null` | no |
 | <a name="input_cosmos_authorizer_db_params"></a> [cosmos\_authorizer\_db\_params](#input\_cosmos\_authorizer\_db\_params) | n/a | <pre>object({<br>    kind           = string<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>  })</pre> | n/a | yes |
 | <a name="input_cosmos_iuvgenerator_db_params"></a> [cosmos\_iuvgenerator\_db\_params](#input\_cosmos\_iuvgenerator\_db\_params) | n/a | <pre>object({<br>    kind           = string<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>  })</pre> | n/a | yes |
-| <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
-| <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
-| <a name="input_github_repository_environment"></a> [github\_repository\_environment](#input\_github\_repository\_environment) | GitHub Continuous Integration roles | <pre>object({<br>    protected_branches     = bool<br>    custom_branch_policies = bool<br>    reviewers_teams        = list(string)<br>  })</pre> | <pre>{<br>  "custom_branch_policies": true,<br>  "protected_branches": false,<br>  "reviewers_teams": [<br>    "pagopa-team-core"<br>  ]<br>}</pre> | no |
-| <a name="input_github_runner"></a> [github\_runner](#input\_github\_runner) | GitHub runner variables | <pre>object({<br>    subnet_address_prefixes = list(string)<br>  })</pre> | <pre>{<br>  "subnet_address_prefixes": [<br>    "10.1.164.0/23"<br>  ]<br>}</pre> | no |
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
-| <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
+| <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
+| <a name="input_redis_ha_enabled"></a> [redis\_ha\_enabled](#input\_redis\_ha\_enabled) | (Required) If true, enables the usage of HA redis instance | `bool` | n/a | yes |
+| <a name="input_taxonomy_storage_account"></a> [taxonomy\_storage\_account](#input\_taxonomy\_storage\_account) | n/a | <pre>object({<br>    account_kind                  = string<br>    account_tier                  = string<br>    account_replication_type      = string<br>    advanced_threat_protection    = bool<br>    blob_versioning_enabled       = bool<br>    public_network_access_enabled = bool<br>    blob_delete_retention_days    = number<br>    enable_low_availability_alert = bool<br>    backup_enabled                = optional(bool, false)<br>    backup_retention              = optional(number, 0)<br>  })</pre> | n/a | yes |
+| <a name="input_cidr_subnet_authorizer_cosmosdb"></a> [cidr\_subnet\_authorizer\_cosmosdb](#input\_cidr\_subnet\_authorizer\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
+| <a name="input_cidr_subnet_iuvgenerator_cosmosdb"></a> [cidr\_subnet\_iuvgenerator\_cosmosdb](#input\_cidr\_subnet\_iuvgenerator\_cosmosdb) | Cosmos DB address space | `list(string)` | `null` | no |
+| <a name="input_cidr_subnet_loadtest_agent"></a> [cidr\_subnet\_loadtest\_agent](#input\_cidr\_subnet\_loadtest\_agent) | LoadTest Agent Pool address space | `list(string)` | `null` | no |
+| <a name="input_cidr_subnet_test_data_storage_account"></a> [cidr\_subnet\_test\_data\_storage\_account](#input\_cidr\_subnet\_test\_data\_storage\_account) | Storage account network address space. | `list(string)` | `null` | no |
+| <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
+| <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
+| <a name="input_github_repository_environment"></a> [github\_repository\_environment](#input\_github\_repository\_environment) | GitHub Continuous Integration roles | <pre>object({<br>    protected_branches     = bool<br>    custom_branch_policies = bool<br>    reviewers_teams        = list(string)<br>  })</pre> | <pre>{<br>  "custom_branch_policies": true,<br>  "protected_branches": false,<br>  "reviewers_teams": [<br>    "pagopa-team-core"<br>  ]<br>}</pre> | no |
+| <a name="input_github_runner"></a> [github\_runner](#input\_github\_runner) | GitHub runner variables | <pre>object({<br>    subnet_address_prefixes = list(string)<br>  })</pre> | <pre>{<br>  "subnet_address_prefixes": [<br>    "10.1.164.0/23"<br>  ]<br>}</pre> | no |
+| <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
 | <a name="input_poc_advanced_threat_protection"></a> [poc\_advanced\_threat\_protection](#input\_poc\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
 | <a name="input_poc_delete_retention_days"></a> [poc\_delete\_retention\_days](#input\_poc\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
 | <a name="input_poc_versioning"></a> [poc\_versioning](#input\_poc\_versioning) | Enable sa versioning | `bool` | `false` | no |
-| <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_redis_ha_enabled"></a> [redis\_ha\_enabled](#input\_redis\_ha\_enabled) | (Required) If true, enables the usage of HA redis instance | `bool` | n/a | yes |
 | <a name="input_reporting_storage_public_access_enabled"></a> [reporting\_storage\_public\_access\_enabled](#input\_reporting\_storage\_public\_access\_enabled) | (Optional) Whether the public network access is enabled? | `bool` | `true` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 | <a name="input_taxonomy_network_rules"></a> [taxonomy\_network\_rules](#input\_taxonomy\_network\_rules) | Network configuration of Taxonomy storage account | <pre>object({<br>    default_action             = string<br>    ip_rules                   = list(string)<br>    virtual_network_subnet_ids = list(string)<br>    bypass                     = set(string)<br>  })</pre> | `null` | no |
-| <a name="input_taxonomy_storage_account"></a> [taxonomy\_storage\_account](#input\_taxonomy\_storage\_account) | n/a | <pre>object({<br>    account_kind                  = string<br>    account_tier                  = string<br>    account_replication_type      = string<br>    advanced_threat_protection    = bool<br>    blob_versioning_enabled       = bool<br>    public_network_access_enabled = bool<br>    blob_delete_retention_days    = number<br>    enable_low_availability_alert = bool<br>    backup_enabled                = optional(bool, false)<br>    backup_retention              = optional(number, 0)<br>  })</pre> | n/a | yes |
 | <a name="input_test_data_storage_account"></a> [test\_data\_storage\_account](#input\_test\_data\_storage\_account) | n/a | <pre>object({<br>    account_kind                  = string<br>    account_tier                  = string<br>    account_replication_type      = string<br>    advanced_threat_protection    = bool<br>    blob_versioning_enabled       = bool<br>    public_network_access_enabled = bool<br>    blob_delete_retention_days    = number<br>    enable_low_availability_alert = bool<br>  })</pre> | `null` | no |
 
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
