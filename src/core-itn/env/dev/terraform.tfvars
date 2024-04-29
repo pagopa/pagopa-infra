@@ -126,14 +126,14 @@ container_registry_zone_redundancy_enabled = false
 
 
 
-eventhubs_03 = [
+eventhubs_meucci = [
   {
     name              = "pagopa-printit-evh"
     partitions        = 1
     message_retention = 1
     consumers = [
       "pagopa-d-itn-printit-notice-evt-rx",
-      "pagopa-d-itn-printit-notice-complete-evt-t",
+      "pagopa-d-itn-printit-notice-complete-evt-tx",
       "pagopa-d-itn-printit-notice-error-evt-tx"
     ]
     keys = [
@@ -144,7 +144,7 @@ eventhubs_03 = [
         manage = false
       },
       {
-        name   = "pagopa-d-itn-printit-notice-complete-evt-t"
+        name   = "pagopa-d-itn-printit-notice-complete-evt-tx"
         listen = true
         send   = false
         manage = false

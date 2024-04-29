@@ -27,7 +27,7 @@ module "eventhub_meucci" {
     resource_group_name = data.azurerm_resource_group.rg_event_private_dns_zone.name
   }
 
-  eventhubs = var.eventhubs
+  eventhubs = var.eventhubs_meucci
 
   private_dns_zone_record_A_name = "eventhub-meucci"
 

@@ -239,7 +239,7 @@ variable "container_registry_zone_redundancy_enabled" {
   description = "Enabled AZ for container registry"
 }
 
-variable "eventhubs" {
+variable "eventhubs_meucci" {
   description = "A list of event hubs to add to namespace."
   type = list(object({
     name              = string
