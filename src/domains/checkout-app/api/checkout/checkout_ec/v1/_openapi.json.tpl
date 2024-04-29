@@ -166,7 +166,8 @@
           },
           "allCCP": {
             "type": "boolean",
-            "example": "false"
+            "example": "false",
+            "description": "Flag that indicates that all transfers are associated with a postal IBAN"
           }
         }
       },
@@ -175,30 +176,37 @@
         "required": [
           "noticeNumber",
           "fiscalCode",
-          "amount"
+          "amount",
+          "companyName",
+          "description"
         ],
         "properties": {
           "noticeNumber": {
             "type": "string",
             "minLength": 18,
-            "maxLength": 18
+            "maxLength": 18,
+            "description": "notice number"
           },
           "fiscalCode": {
             "type": "string",
             "minLength": 11,
-            "maxLength": 11
+            "maxLength": 11,
+            "description": "Public Administration tax code"
           },
           "amount": {
             "type": "integer",
-            "minimum": 1
+            "minimum": 1,
+            "description": "amount (in euro cents) of the payment notice"
           },
           "companyName": {
             "type": "string",
-            "maxLength": 140
+            "maxLength": 140,
+            "description": "Public Administration company name"
           },
           "description": {
             "type": "string",
-            "maxLength": 140
+            "maxLength": 140,
+            "description": "subject of payment"
           }
         }
       }
