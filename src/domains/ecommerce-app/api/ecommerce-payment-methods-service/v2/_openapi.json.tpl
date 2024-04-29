@@ -142,7 +142,7 @@
           "paymentNotices": {
             "type": "array",
             "minItems": 1,
-            "maxItems": 10,
+            "maxItems": 5,
             "items": {
               "type": "object",
               "properties": {
