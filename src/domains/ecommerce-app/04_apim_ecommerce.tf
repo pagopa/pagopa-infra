@@ -312,6 +312,33 @@ module "apim_ecommerce_payment_methods_service_api_v1" {
   })
 }
 
+module "apim_ecommerce_payment_methods_service_api_v1" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+
+  name                  = format("%s-payment-methods-service-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_ecommerce_product.product_id]
+  subscription_required = local.apim_ecommerce_payment_methods_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.ecommerce_payment_methods_service_api.id
+  api_version           = "v2"
+
+  description  = local.apim_ecommerce_payment_methods_service_api.description
+  display_name = local.apim_ecommerce_payment_methods_service_api.display_name
+  path         = local.apim_ecommerce_payment_methods_service_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_ecommerce_payment_methods_service_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/ecommerce-payment-methods-service/v2/_openapi.json.tpl", {
+    hostname = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/ecommerce-payment-methods-service/v2/_base_policy.xml.tpl", {
+    hostname = local.ecommerce_hostname
+  })
+}
+
 ##############################
 ## API notifications service ##
 ##############################
