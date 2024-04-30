@@ -178,6 +178,11 @@
             "description": "The ecommerce transaction id"
           }
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "$ref": "#/components/requestBodies/PostPaymentMethodPSP"
         },
@@ -990,6 +995,13 @@
             }
           }
         }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }
