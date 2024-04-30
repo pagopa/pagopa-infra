@@ -18,6 +18,13 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_fdr-re_fdr-re-rx" {
   resource_group_name = "${local.product}-msg-rg"
 }
 
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_fdr-re_fdr-re-rx" {
+  name                = "fdr-re-rx"
+  namespace_name      = "${local.product}-evh-ns01"
+  eventhub_name       = "fdr-re"
+  resource_group_name = "${local.product}-msg-rg"
+}
+
 # info for table storage
 data "azurerm_resource_group" "fdr_re_rg" {
   name = "${local.project}-re-rg"
