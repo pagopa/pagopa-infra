@@ -55,6 +55,8 @@ bizevents_datastore_cosmos_db_params = {
   backup_continuous_enabled = false
 
   container_default_ttl = 2629800 # 1 month in second
+
+  max_throughput = 1000
 }
 
 # CosmosDB Negative Biz Events Datastore
@@ -81,6 +83,8 @@ negative_bizevents_datastore_cosmos_db_params = {
   backup_continuous_enabled = false
 
   container_default_ttl = 2629800 # 1 month in second
+
+  max_throughput = 1000
 }
 
 cidr_subnet_bizevents_datastore_cosmosdb = ["10.1.156.0/24"]

@@ -52,7 +52,7 @@ locals {
       name               = "negative-biz-events",
       partition_key_path = "/id",
       default_ttl        = var.negative_bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = (var.env_short != "p" ? 2000 : 20000) }
+      autoscale_settings = { max_throughput = var.negative_bizevents_datastore_cosmos_db_params.max_throughput }
     },
   ]
 }
