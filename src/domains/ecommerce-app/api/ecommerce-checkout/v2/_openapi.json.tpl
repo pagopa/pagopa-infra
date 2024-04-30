@@ -184,7 +184,13 @@
           }
         ],
         "requestBody": {
-          "$ref": "#/components/requestBodies/PostPaymentMethodPSP"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalculateFeeRequest"
+              }
+            }
+          }
         },
         "responses": {
           "200": {
@@ -973,28 +979,6 @@
           "paymentMethodStatus",
           "asset"
         ]
-      }
-    },
-    "requestBodies": {
-      "PostPaymentMethodPSP": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/CalculateFeeRequest"
-            }
-          }
-        }
-      },
-      "NewTransactionRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/NewTransactionRequest"
-            }
-          }
-        }
       }
     },
     "securitySchemes": {
