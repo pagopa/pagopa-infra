@@ -20,7 +20,7 @@
           </when>
       </choose>
       <!-- Handle X-Client-Id END -->
-      <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-payment-methods-service" />
+      <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-payment-methods-service/v2" />
     </inbound>
     <outbound>
       <base />
