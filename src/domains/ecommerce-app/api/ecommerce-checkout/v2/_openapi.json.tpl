@@ -190,7 +190,8 @@
                 "$ref": "#/components/schemas/CalculateFeeRequest"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
