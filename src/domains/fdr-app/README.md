@@ -50,10 +50,13 @@
 | [azurerm_api_management_api.apim_fdr_per_pa_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api_operation_policy.fdr_pagopa_policy_nodoChiediElencoFlussiRendicontazione](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.fdr_pagopa_policy_nodoChiediElencoFlussiRendicontazione_auth](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.fdr_pagopa_policy_nodoChiediElencoFlussiRendicontazione_auth_eng](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.fdr_pagopa_policy_nodoChiediFlussoRendicontazione](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.fdr_pagopa_policy_nodoChiediFlussoRendicontazione_auth](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.fdr_pagopa_policy_nodoChiediFlussoRendicontazione_auth_eng](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.fdr_pagopa_policy_nodoInviaFlussoRendicontazione](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.fdr_pagopa_policy_nodoInviaFlussoRendicontazione_auth](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.fdr_pagopa_policy_nodoInviaFlussoRendicontazione_auth_eng](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_policy.apim_fdr_per_pa_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_version_set.api_fdr_api_internal](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_fdr_api_org](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/resources/api_management_api_version_set) | resource |
@@ -89,6 +92,8 @@
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
 | [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management) | data source |
+| [azurerm_api_management_api.apim_node_for_pa_api_v1_auth](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management_api) | data source |
+| [azurerm_api_management_api.apim_node_for_psp_api_v1_auth](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management_api) | data source |
 | [azurerm_api_management_api.apim_nodo_per_pa_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management_api) | data source |
 | [azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management_api) | data source |
 | [azurerm_api_management_api.apim_nodo_per_psp_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/api_management_api) | data source |
@@ -104,7 +109,6 @@
 | [azurerm_dns_zone.public](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/dns_zone) | data source |
 | [azurerm_eventhub_authorization_rule.events](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.events_03](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/eventhub_authorization_rule) | data source |
-| [azurerm_eventhub_authorization_rule.pagopa-evh-ns01_fdr-re_fdr-re-rx](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns03_fdr-re_fdr-re-rx](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_namespace.event_hub01_namespace](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/eventhub_namespace) | data source |
 | [azurerm_eventhub_namespace.event_hub03_namespace](https://registry.terraform.io/providers/hashicorp/azurerm/3.38.0/docs/data-sources/eventhub_namespace) | data source |

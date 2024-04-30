@@ -14,6 +14,8 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim_checkout_carts_auth"></a> [apim\_checkout\_carts\_auth](#module\_apim\_checkout\_carts\_auth) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v7.76.1 |
+| <a name="module_apim_checkout_carts_auth_v1"></a> [apim\_checkout\_carts\_auth\_v1](#module\_apim\_checkout\_carts\_auth\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.76.1 |
 | <a name="module_apim_checkout_ec_api_v1"></a> [apim\_checkout\_ec\_api\_v1](#module\_apim\_checkout\_ec\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.76.1 |
 | <a name="module_apim_checkout_ec_product"></a> [apim\_checkout\_ec\_product](#module\_apim\_checkout\_ec\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v7.76.1 |
 | <a name="module_apim_checkout_ecommerce_api_v1"></a> [apim\_checkout\_ecommerce\_api\_v1](#module\_apim\_checkout\_ecommerce\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.76.1 |
@@ -44,6 +46,7 @@
 | [azurerm_api_management_api_operation_policy.transaction_authorization_request](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_policy.apim_cd_info_wisp_policy_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_version_set.cd_info_wisp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.checkout_carts_auth_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.checkout_ec_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.checkout_ecommerce_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.checkout_payment_activations_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
