@@ -116,7 +116,7 @@
           }
         }
       }
-    },
+    }
   },
   "components": {
     "schemas": {
@@ -344,7 +344,7 @@
           "DISABLED",
           "INCOMING"
         ]
-      },
+      }
     },
     "requestBodies": {
       "PostPaymentMethodPSP": {
@@ -356,7 +356,7 @@
             }
           }
         }
-      },
+      }
     },
     "securitySchemes": {
       "ApiKeyAuth": {

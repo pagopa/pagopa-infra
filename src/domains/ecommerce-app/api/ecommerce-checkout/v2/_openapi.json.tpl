@@ -224,7 +224,7 @@
           }
         }
       }
-    },
+    }
   },
   "components": {
     "schemas": {
@@ -958,7 +958,7 @@
           "paymentMethodStatus",
           "asset"
         ]
-      },
+      }
     },
     "requestBodies": {
       "PostPaymentMethodPSP": {
