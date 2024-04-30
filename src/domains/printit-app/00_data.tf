@@ -40,17 +40,10 @@ data "azurerm_storage_account" "institutions_storage_sa" {
   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-rg"
 }
 
-data "azurerm_application_insights" "application_insights" {
-  name                = "pagopa-${var.env_short}-appinsights"
-  resource_group_name = var.monitor_resource_group_name
-}
-
-
 data "azurerm_api_management" "apim" {
   name                = "${var.prefix}-${var.env_short}-apim"
   resource_group_name = "${var.prefix}-${var.env_short}-api-rg"
 }
-
 
 data "azurerm_api_management_product" "pdf_engine_product" {
   product_id          = "pdf-engine-printit"

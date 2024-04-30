@@ -21,6 +21,7 @@ is_feature_enabled = {
   storage_institutions = true
   storage_notice       = true
   storage_templates    = true
+  eventhub             = true
 }
 
 ### External resources
@@ -116,7 +117,10 @@ eventhubs = [
     name              = "payment-notice-evt"
     partitions        = 1
     message_retention = 1
-    consumers         = ["pagopa-notice-evt-rx", "pagopa-notice-complete-evt-rx", "pagopa-notice-error-evt-rx"]
+    consumers = [
+      "pagopa-notice-evt-rx", "pagopa-notice-complete-evt-rx",
+      "pagopa-notice-error-evt-rx"
+    ]
     keys = [
       {
         name   = "pagopa-notice-evt-rx"

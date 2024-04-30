@@ -24,6 +24,7 @@ is_feature_enabled = {
   vpn                       = true,
   dns_forwarder_lb          = true
   postgres_private_dns      = true
+  appservice_subnet         = true
 }
 
 ### Network Italy
@@ -123,38 +124,3 @@ ehns_metric_alerts = {
 #
 container_registry_sku                     = "Basic"
 container_registry_zone_redundancy_enabled = false
-
-
-
-eventhubs_meucci = [
-  {
-    name              = "pagopa-printit-evh"
-    partitions        = 1
-    message_retention = 1
-    consumers = [
-      "pagopa-d-itn-printit-notice-evt-rx",
-      "pagopa-d-itn-printit-notice-complete-evt-tx",
-      "pagopa-d-itn-printit-notice-error-evt-tx"
-    ]
-    keys = [
-      {
-        name   = "pagopa-d-itn-printit-notice-evt-rx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "pagopa-d-itn-printit-notice-complete-evt-tx"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-d-itn-printit-notice-error-evt-tx"
-        listen = true
-        send   = false
-        manage = false
-      },
-    ]
-  },
-]

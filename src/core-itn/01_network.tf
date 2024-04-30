@@ -100,10 +100,10 @@ resource "azurerm_subnet" "cidr_postgres_italy" {
 
 
 module "printit_pdf_engine_app_service_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.0"
-  count  = var.is_feature_enabled.pdf_engine ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.7.0"
+  count  = var.is_feature_enabled.appservice_subnet ? 1 : 0
 
-  name                                      = format("%s-pdf-engine-snet", local.project)
+  name                                      = "${local.project}-pdf-engine-snet"
   address_prefixes                          = var.cidr_subnet_pdf_engine_app_service
   resource_group_name                       = local.vnet_resource_group_name
   virtual_network_name                      = local.vnet_name

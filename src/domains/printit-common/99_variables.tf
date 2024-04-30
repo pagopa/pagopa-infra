@@ -71,7 +71,15 @@ variable "is_feature_enabled" {
     storage_institutions = bool
     storage_notice       = bool
     storage_templates    = bool
+    eventhub             = bool
   })
+  default = {
+    cosmosdb_notice      = false
+    storage_institutions = false
+    storage_notice       = false
+    storage_templates    = false
+    eventhub             = false
+  }
 }
 
 ### External resources

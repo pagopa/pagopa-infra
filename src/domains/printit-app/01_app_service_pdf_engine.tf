@@ -44,6 +44,7 @@ module "printit_pdf_engine_app_service" {
   subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
   tags = var.tags
+
 }
 
 module "printit_pdf_engine_slot_staging" {
@@ -75,6 +76,8 @@ module "printit_pdf_engine_slot_staging" {
   subnet_id       = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
   tags = var.tags
+
+
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_autoscale" {
@@ -241,9 +244,9 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
 }
 
 
-################
-# java
-################
+###############
+#java
+###############
 module "printit_pdf_engine_app_service_java" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.5.0"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
@@ -273,6 +276,8 @@ module "printit_pdf_engine_app_service_java" {
   subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
   tags = var.tags
+
+
 }
 
 module "printit_pdf_engine_java_slot_staging" {
@@ -304,6 +309,8 @@ module "printit_pdf_engine_java_slot_staging" {
   subnet_id       = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
   tags = var.tags
+
+
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_java_autoscale" {

@@ -29,9 +29,10 @@ module "printit_pdf_engine_app_service_ha" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
-  subnet_id = module.printit_pdf_engine_app_service_snet[0].id
+  subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
   tags = var.tags
+
 }
 
 module "printit_pdf_engine_slot_staging_ha" {
@@ -60,9 +61,10 @@ module "printit_pdf_engine_slot_staging_ha" {
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
-  subnet_id       = module.printit_pdf_engine_app_service_snet[0].id
+  subnet_id       = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
   tags = var.tags
+
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_autoscale_ha" {
@@ -257,9 +259,10 @@ module "printit_pdf_engine_app_service_java_ha" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
-  subnet_id = module.printit_pdf_engine_app_service_snet[0].id
+  subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
   tags = var.tags
+
 }
 
 module "printit_pdf_engine_java_slot_staging_ha" {
@@ -288,9 +291,10 @@ module "printit_pdf_engine_java_slot_staging_ha" {
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
-  subnet_id       = module.printit_pdf_engine_app_service_snet[0].id
+  subnet_id       = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
   tags = var.tags
+
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_java_autoscale_ha" {
