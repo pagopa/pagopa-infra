@@ -48,7 +48,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "api_pdf_engine_api" {
   count = var.is_feature_enabled.pdf_engine ? 1 : 0
 
-  name                = format("%s-pdf-engine-service-api", var.env_short)
+  name                = "${var.env_short}-pdf-engine-service-api"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_pdf_engine_service_api.display_name
@@ -59,7 +59,7 @@ module "apim_api_pdf_engine_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.5.0"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
-  name                  = format("%s-pdf-engine-service-api", local.project)
+  name                  = "${local.project}-pdf-engine-service-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_pdf_engine_product[0].product_id]

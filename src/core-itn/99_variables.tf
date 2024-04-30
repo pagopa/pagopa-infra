@@ -267,3 +267,10 @@ variable "is_feature_enabled" {
   })
   description = "Features enabled in this domain"
 }
+
+# pdf-engine
+variable "cidr_subnet_pdf_engine_app_service" {
+  type        = list(string)
+  description = "CIDR subnet for App Service"
+  default     = null
+}
