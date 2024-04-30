@@ -44,9 +44,3 @@ data "azurerm_api_management" "apim" {
   name                = "${var.prefix}-${var.env_short}-apim"
   resource_group_name = "${var.prefix}-${var.env_short}-api-rg"
 }
-
-data "azurerm_api_management_product" "pdf_engine_product" {
-  product_id          = "pdf-engine-printit"
-  api_management_name = "${local.product}-apim"
-  resource_group_name = "${local.product}-api-rg"
-}
