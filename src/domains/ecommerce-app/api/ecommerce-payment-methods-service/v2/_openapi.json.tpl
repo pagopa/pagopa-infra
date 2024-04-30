@@ -120,6 +120,33 @@
   },
   "components": {
     "schemas": {
+      "PaymentNotice": {
+        "description": "Payment notice data",
+        "type": "object",
+        "properties": {
+          "paymentAmount": {
+            "description": "The transaction payment amount",
+            "type": "integer",
+            "format": "int64"
+          },
+          "primaryCreditorInstitution": {
+            "description": "The primary creditor institution",
+            "type": "string"
+          },
+          "transferList": {
+            "description": "Transfert list",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferListItem"
+            }
+          }
+        },
+        "required": [
+          "paymentAmount",
+          "primaryCreditorInstitution",
+          "transferList"
+        ]
+      },
       "CalculateFeeRequest": {
         "description": "Calculate fee request",
         "type": "object",
@@ -144,25 +171,7 @@
             "minItems": 1,
             "maxItems": 5,
             "items": {
-              "type": "object",
-              "properties": {
-                "paymentAmount": {
-                  "description": "The transaction payment amount",
-                  "type": "integer",
-                  "format": "int64"
-                },
-                "primaryCreditorInstitution": {
-                  "description": "The primary creditor institution",
-                  "type": "string"
-                },
-                "transferList": {
-                  "description": "Transfert list",
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TransferListItem"
-                  }
-                }
-              }
+              "$ref": "#/components/schemas/PaymentNotice"
             }
           },
           "isAllCCP": {
@@ -171,9 +180,7 @@
           }
         },
         "required": [
-          "paymentAmount",
-          "primaryCreditorInstitution",
-          "transferList",
+          "paymentNotices",
           "touchpoint",
           "isAllCCP"
         ]
