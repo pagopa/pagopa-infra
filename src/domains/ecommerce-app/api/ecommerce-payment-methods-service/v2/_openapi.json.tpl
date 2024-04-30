@@ -113,6 +113,16 @@
                 }
               }
             }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }
@@ -363,10 +373,6 @@
         "type": "apiKey",
         "name": "Ocp-Apim-Subscription-Key",
         "in": "header"
-      },
-      "BearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
       }
     }
   }
