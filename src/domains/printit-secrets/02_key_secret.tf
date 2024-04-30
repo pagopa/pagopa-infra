@@ -126,21 +126,21 @@ resource "azurerm_key_vault_secret" "institutions_storage_account_pkey" {
 
 
 resource "azurerm_key_vault_secret" "ehub_notice_connection_string" {
-  name         = format("ehub-%s-notice-connection-string", var.env_short)
+  name         = "ehub-${var.env_short}-notice-connection-string"
   value        = data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "ehub_notice_complete_connection_string" {
-  name         = format("ehub-%s-notice-complete-connection-string", var.env_short)
+  name         = "ehub-${var.env_short}-notice-complete-connection-string"
   value        = data.azurerm_eventhub_authorization_rule.notices_complete_evt_authorization_rule.primary_connection_string
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "ehub_notice_error_connection_string" {
-  name         = format("ehub-%s-notice-error-connection-string", var.env_short)
+  name         = "ehub-${var.env_short}-notice-error-connection-string"
   value        = data.azurerm_eventhub_authorization_rule.notices_error_evt_authorization_rule.primary_connection_string
   content_type = "text/plain"
   key_vault_id = module.key_vault.id

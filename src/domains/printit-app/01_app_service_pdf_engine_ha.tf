@@ -11,16 +11,15 @@ module "printit_pdf_engine_app_service_ha" {
   location            = var.location
 
   # App service plan vars
-  plan_name = format("%s-plan-pdf-engine-ha", local.project)
+  plan_name = "${local.project}-plan-pdf-engine-ha"
   sku_name  = var.app_service_pdf_engine_sku_name
 
   # App service plan
-  name                = format("%s-app-pdf-engine-ha", local.project)
+  name                = "${local.project}-app-pdf-engine-ha"
   client_cert_enabled = false
   always_on           = var.app_service_pdf_engine_always_on
-  # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
-  docker_image_tag = "latest"
+  docker_image        = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
+  docker_image_tag    = "latest"
 
   health_check_path = "/info"
 
@@ -50,8 +49,7 @@ module "printit_pdf_engine_slot_staging_ha" {
   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
   location            = var.location
 
-  always_on = true
-  # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
+  always_on         = true
   docker_image      = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
   docker_image_tag  = "latest"
   health_check_path = "/info"
@@ -70,7 +68,7 @@ module "printit_pdf_engine_slot_staging_ha" {
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_autoscale_ha" {
   count = var.env_short != "d" && var.is_feature_enabled.pdf_engine_ha ? 1 : 0
 
-  name                = format("%s-autoscale-pdf-engine-ha", local.project)
+  name                = "${local.project}-autoscale-pdf-engine-ha"
   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
   location            = azurerm_resource_group.printit_pdf_engine_app_service_rg.location
   target_resource_id  = module.printit_pdf_engine_app_service_ha[0].plan_id
@@ -242,16 +240,15 @@ module "printit_pdf_engine_app_service_java_ha" {
   location            = var.location
 
   # App service plan vars
-  plan_name = format("%s-plan-pdf-engine-java-ha", local.project)
+  plan_name = "${local.project}-plan-pdf-engine-java-ha"
   sku_name  = var.app_service_pdf_engine_sku_name_java
 
   # App service plan
-  name                = format("%s-app-pdf-engine-java-ha", local.project)
+  name                = "${local.project}-app-pdf-engine-java-ha"
   client_cert_enabled = false
   always_on           = var.app_service_pdf_engine_always_on
-  # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
-  docker_image_tag = "latest"
+  docker_image        = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
+  docker_image_tag    = "latest"
 
   health_check_path = "/info"
 
@@ -280,8 +277,7 @@ module "printit_pdf_engine_java_slot_staging_ha" {
   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
   location            = var.location
 
-  always_on = true
-  # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
+  always_on         = true
   docker_image      = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
   docker_image_tag  = "latest"
   health_check_path = "/info"
@@ -300,7 +296,7 @@ module "printit_pdf_engine_java_slot_staging_ha" {
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_java_autoscale_ha" {
   count = var.env_short != "d" && var.is_feature_enabled.pdf_engine_ha ? 1 : 0
 
-  name                = format("%s-autoscale-pdf-engine-java-ha", local.project)
+  name                = "${local.project}-autoscale-pdf-engine-java-ha"
   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
   location            = azurerm_resource_group.printit_pdf_engine_app_service_rg.location
   target_resource_id  = module.printit_pdf_engine_app_service_java_ha[0].plan_id
