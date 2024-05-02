@@ -127,5 +127,5 @@ ftp_organization = "55555555555,90000000002,88888888888,11111111111,paStress4,44
 
 
 enabled_features = {
-  eventhub_ha_rx = false
+  eventhub_ha_rx = true
 }

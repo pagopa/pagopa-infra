@@ -125,5 +125,5 @@ fdr_json_to_xml_function_autoscale = {
 ftp_organization = "99999999999,80078750587,88888888888,97532760580,12300020158,00488410010"
 
 enabled_features = {
-  eventhub_ha_rx = false
+  eventhub_ha_rx = true
 }
