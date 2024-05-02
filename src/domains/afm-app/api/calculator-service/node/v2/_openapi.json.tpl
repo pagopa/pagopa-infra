@@ -1,7 +1,7 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "PagoPA API Calculator Logic",
+    "title" : "PagoPA API Calculator Logic ${service}",
     "description" : "Calculator Logic microservice for pagoPA AFM",
     "termsOfService" : "https://www.pagopa.gov.it/",
     "version" : "2.10.19"
