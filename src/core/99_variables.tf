@@ -970,7 +970,7 @@ variable "dns_a_reconds_dbnodo_ips" {
 
 variable "dns_a_reconds_dbnodo_ips_dr" {
   type        = list(string)
-  description = "IPs address of DB Nodo"
+  description = "IPs address of DB Nodo DR"
   default     = []
 }
 
