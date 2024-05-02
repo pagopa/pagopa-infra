@@ -4,7 +4,7 @@
     "title": "FDR - Flussi di rendicontazione (PSP) ${service}",
     "description": "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC ${service}",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.0.15"
+    "version": "1.0.16"
   },
   "servers": [
     {
