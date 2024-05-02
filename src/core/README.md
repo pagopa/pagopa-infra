@@ -406,6 +406,7 @@
 | [azurerm_private_dns_a_record.platform_dns_a_private_apim](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_dns_a_record.platform_dns_a_private_prf](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_dns_a_record.private_dns_a_record_db_nodo](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
+| [azurerm_private_dns_a_record.private_dns_a_record_db_nodo_dr](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_dns_a_record.private_dns_a_record_db_nodo_nexi_postgres](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_dns_a_record.private_dns_a_record_db_nodo_nexi_postgres_prf](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_dns_a_record.private_dns_a_record_db_nodo_prf](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_a_record) | resource |
@@ -675,6 +676,7 @@
 | <a name="input_devops_agent_balance_zones"></a> [devops\_agent\_balance\_zones](#input\_devops\_agent\_balance\_zones) | (Optional) True if the devops agent instances must be evenly balanced between the configured zones | `bool` | `false` | no |
 | <a name="input_devops_agent_zones"></a> [devops\_agent\_zones](#input\_devops\_agent\_zones) | (Optional) List of zones in which the scale set for azdo agent will be deployed | `list(number)` | `null` | no |
 | <a name="input_dns_a_reconds_dbnodo_ips"></a> [dns\_a\_reconds\_dbnodo\_ips](#input\_dns\_a\_reconds\_dbnodo\_ips) | IPs address of DB Nodo | `list(string)` | `[]` | no |
+| <a name="input_dns_a_reconds_dbnodo_ips_dr"></a> [dns\_a\_reconds\_dbnodo\_ips\_dr](#input\_dns\_a\_reconds\_dbnodo\_ips\_dr) | IPs address of DB Nodo | `list(string)` | `[]` | no |
 | <a name="input_dns_a_reconds_dbnodo_prf_ips"></a> [dns\_a\_reconds\_dbnodo\_prf\_ips](#input\_dns\_a\_reconds\_dbnodo\_prf\_ips) | IPs address of DB Nodo | `list(string)` | `[]` | no |
 | <a name="input_dns_a_reconds_dbnodonexipostgres_ips"></a> [dns\_a\_reconds\_dbnodonexipostgres\_ips](#input\_dns\_a\_reconds\_dbnodonexipostgres\_ips) | IPs address of DB Nodo PostgreSQL Nexi | `list(string)` | `[]` | no |
 | <a name="input_dns_a_reconds_dbnodonexipostgres_prf_ips"></a> [dns\_a\_reconds\_dbnodonexipostgres\_prf\_ips](#input\_dns\_a\_reconds\_dbnodonexipostgres\_prf\_ips) | IPs address of DB Nodo PostgreSQL Nexi | `list(string)` | `[]` | no |
