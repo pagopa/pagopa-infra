@@ -4,7 +4,7 @@
     "title": "FDR - Flussi di rendicontazione (ORGS) ${service}",
     "description": "Manage FDR ( aka \"Flussi di Rendicontazione\" ) exchanged between PSP and EC ${service}",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "1.0.15"
+    "version": "1.0.16"
   },
   "servers": [
     {
@@ -879,7 +879,7 @@
             "example" : 0.01
           },
           "payStatus" : {
-            "description" : "[XML FlussoRiversamento]=[datiSingoliPagamenti.codiceEsitoSingoloPagamento] \n0 -> EXECUTED\n3 -> REVOKED\n9 -> NO_RPT\n4 -> STAND_IN",
+            "description" : "[XML FlussoRiversamento]=[datiSingoliPagamenti.codiceEsitoSingoloPagamento] \n0 -> EXECUTED\n3 -> REVOKED\n9 -> NO_RPT\n4 -> STAND_IN\n8 -> STAND_IN_NO_RPT",
             "type" : "string",
             "allOf" : [ {
               "$ref" : "#/components/schemas/PaymentStatusEnum"
@@ -897,7 +897,7 @@
         }
       },
       "PaymentStatusEnum" : {
-        "enum" : [ "EXECUTED", "REVOKED", "NO_RPT", "STAND_IN" ],
+        "enum" : [ "EXECUTED", "REVOKED", "NO_RPT", "STAND_IN", "STAND_IN_NO_RPT" ],
         "type" : "string"
       },
       "Receiver" : {
