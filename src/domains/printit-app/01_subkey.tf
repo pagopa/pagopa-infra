@@ -7,5 +7,6 @@ resource "azurerm_api_management_subscription" "pdf_engine_node_subkey" {
   product_id          = module.apim_pdf_engine_product[0].id
   display_name        = "PDF Engine NodeJS for Java"
   allow_tracing       = false
+  state               = "active"
 
 }
