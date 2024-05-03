@@ -188,11 +188,9 @@ variable "app_service_pdf_engine_sku_name_java" {
 
 variable "is_feature_enabled" {
   type = object({
-    pdf_engine    = bool
-    pdf_engine_ha = bool
+    pdf_engine = bool
   })
   default = {
-    pdf_engine    = false
-    pdf_engine_ha = false
+    pdf_engine = false
   }
 }
