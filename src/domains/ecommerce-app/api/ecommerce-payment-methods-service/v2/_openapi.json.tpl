@@ -270,10 +270,6 @@
             "description": "Channel id",
             "type": "string"
           },
-          "idCiBundle": {
-            "description": "CI bundle id",
-            "type": "string"
-          },
           "idPsp": {
             "description": "PSP id",
             "type": "string"
@@ -285,11 +281,6 @@
           "paymentMethod": {
             "description": "Payment method",
             "type": "string"
-          },
-          "primaryCiIncurredFee": {
-            "description": "Primary CI incurred fee",
-            "type": "integer",
-            "format": "int64"
           },
           "taxPayerFee": {
             "description": "Tax payer fee",
