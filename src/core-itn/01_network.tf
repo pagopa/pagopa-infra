@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "rg_ita_vnet" {
 }
 
 module "vnet_italy" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.62.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.77.0"
   count  = var.is_feature_enabled.vnet_ita ? 1 : 0
 
   name                = "${local.product_ita}-vnet"
@@ -24,7 +24,7 @@ module "vnet_italy" {
 
 ## Peering between the vnet(main) and italy vnet
 module "vnet_ita_peering" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.62.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.77.0"
   count  = var.is_feature_enabled.vnet_ita ? 1 : 0
 
   source_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
@@ -53,4 +53,47 @@ resource "azurerm_public_ip" "aks_leonardo_public_ip" {
   zones = [1, 2, 3]
 
   tags = var.tags
+}
+
+#
+# Subnet
+#
+resource "azurerm_subnet" "eventhubs_italy" {
+  name                 = "${local.project}-eventhubs-snet"
+  resource_group_name  = module.vnet_italy[0].resource_group_name
+  virtual_network_name = module.vnet_italy[0].name
+  address_prefixes     = var.cidr_eventhubs_italy
+}
+
+resource "azurerm_subnet" "cosmosdb_italy_snet" {
+  name                 = "${local.project}-cosmosdb-snet"
+  resource_group_name  = module.vnet_italy[0].resource_group_name
+  virtual_network_name = module.vnet_italy[0].name
+  address_prefixes     = var.cidr_cosmosdb_italy
+
+  service_endpoints = [
+    "Microsoft.Web",
+    "Microsoft.AzureCosmosDB",
+  ]
+}
+
+resource "azurerm_subnet" "cidr_storage_italy" {
+  name                 = "${local.project}-storage-snet"
+  resource_group_name  = module.vnet_italy[0].resource_group_name
+  virtual_network_name = module.vnet_italy[0].name
+  address_prefixes     = var.cidr_storage_italy
+}
+
+resource "azurerm_subnet" "cidr_redis_italy" {
+  name                 = "${local.project}-redis-snet"
+  resource_group_name  = module.vnet_italy[0].resource_group_name
+  virtual_network_name = module.vnet_italy[0].name
+  address_prefixes     = var.cird_redis_italy
+}
+
+resource "azurerm_subnet" "cidr_postgres_italy" {
+  name                 = "${local.project}-postgresql-snet"
+  resource_group_name  = module.vnet_italy[0].resource_group_name
+  virtual_network_name = module.vnet_italy[0].name
+  address_prefixes     = var.cird_postgresql_italy
 }
