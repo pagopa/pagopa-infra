@@ -73,7 +73,7 @@ locals {
   printit_pdf_engine_app_settings_java = {
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY                  = data.azurerm_application_insights.application_insights.instrumentation_key
-    APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", data.azurerm_application_insights.application_insights.instrumentation_key)
+    APPLICATIONINSIGHTS_CONNECTION_STRING           = "InstrumentationKey=${data.azurerm_application_insights.application_insights.instrumentation_key}"
     APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
     APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
     APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""
@@ -106,7 +106,7 @@ locals {
     MAX_CONNECTIONS_PER_ROUTE = 40
     CONN_TIMEOUT              = 8
 
-    # custom prop
+    #custom prop
     HTML_TEMPLATE_FILE_NAME           = "template"
     WORKING_DIRECTORY_PATH            = "/temp"
     PDF_ENGINE_NODE_INFO_ENDPOINT     = var.env_short != "p" ? "https://api.${var.env}.platform.pagopa.it/printit/pdf-engine-node/v1/info" : "https://api.platform.pagopa.it/printit/pdf-engine-node/v1/info"

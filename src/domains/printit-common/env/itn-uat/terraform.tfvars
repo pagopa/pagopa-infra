@@ -14,6 +14,15 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+### 🚩Feautures flags
+
+is_feature_enabled = {
+  cosmosdb_notice      = false
+  storage_institutions = false
+  storage_notice       = false
+  storage_templates    = false
+}
+
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"

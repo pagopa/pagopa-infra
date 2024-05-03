@@ -14,6 +14,15 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+### 🚩Feautures flags
+
+is_feature_enabled = {
+  cosmosdb_notice      = true
+  storage_institutions = true
+  storage_notice       = true
+  storage_templates    = true
+}
+
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
@@ -29,9 +38,8 @@ dns_zone_internal_prefix = "internal.dev.platform"
 
 # Cosmos MongoDB Notices Params
 cosmos_mongo_db_notices_params = {
-  enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo"]
+  capabilities = ["EnableMongo", "EnableServerless"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"

@@ -58,6 +58,30 @@ resource "azurerm_kusto_database" "re_db" {
 }
 
 
+data "azurerm_eventhub" "pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re" {
+  name                = "nodo-dei-pagamenti-re"
+  resource_group_name = "${local.product}-msg-rg"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
+}
+
+resource "azurerm_kusto_eventhub_data_connection" "eventhub_connection_for_re_event" {
+  count               = var.dexp_db.enable ? 1 : 0
+  name                = "dataexp-${var.env_short}-connection"
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  location            = azurerm_kusto_cluster.data_explorer_cluster[count.index].location
+  cluster_name        = azurerm_kusto_cluster.data_explorer_cluster[count.index].name
+  database_name       = azurerm_kusto_database.re_db[0].name
+
+  eventhub_id    = data.azurerm_eventhub.pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re.id
+  consumer_group = "nodo-dei-pagamenti-oper"
+
+  table_name        = "ReEvent"
+  mapping_rule_name = "ReMapping"
+  data_format       = "JSON"
+
+  identity_id = azurerm_kusto_cluster.data_explorer_cluster[count.index].id
+}
+
 # resource "azurerm_kusto_script" "create_tables" {
 
 #   count = var.dexp_re_db_linkes_service.enable ? 1 : 0
