@@ -124,6 +124,7 @@ variable "receipts_datastore_cosmos_db_params" {
     backup_continuous_enabled         = bool
     container_default_ttl             = number
     max_throughput                    = number
+    max_throughput_alt                = number
   })
 }
 

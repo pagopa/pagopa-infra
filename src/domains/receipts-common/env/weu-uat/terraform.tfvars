@@ -51,7 +51,8 @@ receipts_datastore_cosmos_db_params = {
 
   container_default_ttl = 2629800 # 1 month in second
 
-  max_throughput = 1000
+  max_throughput     = 1000
+  max_throughput_alt = 1000
 }
 
 cidr_subnet_receipts_datastore_cosmosdb = ["10.1.171.0/24"]

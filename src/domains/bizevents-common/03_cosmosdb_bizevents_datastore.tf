@@ -130,19 +130,19 @@ locals {
       name               = "biz-events-view-general",
       partition_key_path = "/transactionId",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_alt }
     },
     {
       name               = "biz-events-view-cart",
       partition_key_path = "/transactionId",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_alt }
     },
     {
       name               = "biz-events-view-user",
       partition_key_path = "/taxCode",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_alt }
     }
   ]
 
