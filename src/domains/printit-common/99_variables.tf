@@ -1,5 +1,23 @@
-# general
+### Features flags
 
+variable "is_feature_enabled" {
+  type = object({
+    cosmosdb_notice      = bool
+    storage_institutions = bool
+    storage_notice       = bool
+    storage_templates    = bool
+    eventhub             = bool
+  })
+  default = {
+    cosmosdb_notice      = false
+    storage_institutions = false
+    storage_notice       = false
+    storage_templates    = false
+    eventhub             = false
+  }
+}
+
+# general
 variable "prefix" {
   type = string
   validation {
@@ -63,23 +81,28 @@ variable "tags" {
   }
 }
 
-### Features flags
+#
+# CIRDs
+#
 
-variable "is_feature_enabled" {
-  type = object({
-    cosmosdb_notice      = bool
-    storage_institutions = bool
-    storage_notice       = bool
-    storage_templates    = bool
-    eventhub             = bool
-  })
-  default = {
-    cosmosdb_notice      = false
-    storage_institutions = false
-    storage_notice       = false
-    storage_templates    = false
-    eventhub             = false
-  }
+variable "cidr_printit_cosmosdb_italy" {
+  type        = list(string)
+  description = "Address prefixes for all cosmosdb in italy."
+}
+
+variable "cidr_printit_storage_italy" {
+  type        = list(string)
+  description = "Address prefixes for all storage accounts in italy."
+}
+
+variable "cidr_printit_redis_italy" {
+  type        = list(string)
+  description = "Address prefixes for all redis accounts in italy."
+}
+
+variable "cidr_printit_postgresql_italy" {
+  type        = list(string)
+  description = "Address prefixes for all postgresql accounts in italy."
 }
 
 ### External resources
