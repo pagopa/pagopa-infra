@@ -105,6 +105,11 @@ variable "cidr_printit_postgresql_italy" {
   description = "Address prefixes for all postgresql accounts in italy."
 }
 
+variable "cidr_printit_pdf_engine_italy" {
+  type        = list(string)
+  description = "Address prefixes for all pdf engine accounts in italy."
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {

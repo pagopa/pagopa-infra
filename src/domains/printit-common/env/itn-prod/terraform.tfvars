@@ -29,6 +29,8 @@ cidr_printit_cosmosdb_italy = ["10.3.12.0/27"]
 cidr_printit_storage_italy = ["10.3.12.32/27"]
 cidr_printit_redis_italy = ["10.3.12.64/27"]
 cidr_printit_postgresql_italy = ["10.3.12.96/27"]
+cidr_printit_pdf_engine_italy = ["10.3.12.128/27"]
+
 
 
 ### External resources
