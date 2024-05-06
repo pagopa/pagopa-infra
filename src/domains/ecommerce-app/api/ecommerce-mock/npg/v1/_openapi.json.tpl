@@ -25,6 +25,7 @@
     "paths": {
         "/psp/api/v1/orders/build": {
             "post": {
+                "operationId": "postOrdersBuild",
                 "tags": [
                     "Payment Services"
                 ],
