@@ -6,7 +6,6 @@ location           = "italynorth"
 location_short     = "itn"
 location_ita       = "italynorth"
 location_short_ita = "itn"
-instance           = "prod"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -42,6 +41,8 @@ cird_postgresql_italy = ["10.3.7.0/24"]
 cidr_cosmosdb_wallet_italy = ["10.3.8.0/24"]  #placeholder
 cird_redis_wallet_italy    = ["10.3.9.0/24"]  #placeholder
 cidr_storage_wallet_italy  = ["10.3.10.0/24"] #placeholder
+
+cidr_subnet_tools_cae = ["10.3.252.0/23"]
 
 #
 # Dns
