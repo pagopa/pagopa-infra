@@ -31,6 +31,24 @@ module "apim_ecommerce_product" {
   policy_xml = file("./api_product/_base_policy.xml")
 }
 
+module "apim_ecommerce_payment_methods_product" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
+
+  product_id   = "ecommerce-payment-methods"
+  display_name = "ecommerce pagoPA payment methods"
+  description  = "Product for ecommerce pagoPA payment methods service"
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/_base_policy.xml")
+}
+
 ##############################
 ## API transactions service ##
 ##############################
@@ -274,25 +292,6 @@ locals {
     subscription_required = true
     service_url           = null
   }
-}
-
-
-module "apim_ecommerce_payment_methods_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
-
-  product_id   = "ecommerce-payment-methods"
-  display_name = "ecommerce pagoPA payment methods"
-  description  = "Product for ecommerce pagoPA payment methods service"
-
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-
-  published             = true
-  subscription_required = true
-  approval_required     = true
-  subscriptions_limit   = 1000
-
-  policy_xml = file("./api_product/_base_policy.xml")
 }
 
 # Payment methods service APIs
