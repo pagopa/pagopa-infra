@@ -35,7 +35,7 @@ resource "azurerm_private_endpoint" "templates_blob_private_endpoint" {
   name                = "${local.project}-template-blob-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.printit_rg.name
-  subnet_id           = data.azurerm_subnet.storage_subnet.id
+  subnet_id           = azurerm_subnet.cidr_storage_italy.id
 
   private_dns_zone_group {
     name                 = "${local.project}-template-blob-sa-private-dns-zone-group"

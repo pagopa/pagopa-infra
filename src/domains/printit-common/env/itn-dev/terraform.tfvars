@@ -24,6 +24,14 @@ is_feature_enabled = {
   eventhub             = true
 }
 
+### CIRDs
+
+cidr_printit_cosmosdb_italy = ["10.3.12.0/27"]
+cidr_printit_storage_italy = ["10.3.12.32/27"]
+cidr_printit_redis_italy = ["10.3.12.64/27"]
+cidr_printit_postgresql_italy = ["10.3.12.96/27"]
+
+
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
