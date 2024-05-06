@@ -108,26 +108,6 @@ variable "cidr_eventhubs_italy" {
   description = "Address prefixes for all evenhubs in italy."
 }
 
-variable "cidr_cosmosdb_italy" {
-  type        = list(string)
-  description = "Address prefixes for all cosmosdb in italy."
-}
-
-variable "cidr_storage_italy" {
-  type        = list(string)
-  description = "Address prefixes for all storage accounts in italy."
-}
-
-variable "cird_redis_italy" {
-  type        = list(string)
-  description = "Address prefixes for all redis accounts in italy."
-}
-
-variable "cird_postgresql_italy" {
-  type        = list(string)
-  description = "Address prefixes for all postgresql accounts in italy."
-}
-
 variable "cidr_subnet_tools_cae" {
   type        = list(string)
   description = "Address prefixes for container apps Tools in italy."
@@ -254,18 +234,6 @@ variable "container_registry_sku" {
 variable "container_registry_zone_redundancy_enabled" {
   type        = bool
   description = "Enabled AZ for container registry"
-}
-
-variable "is_feature_enabled" {
-  type = object({
-    vnet_ita                  = bool,
-    container_app_tools_cae   = optional(bool, false),
-    node_forwarder_ha_enabled = bool
-    vpn                       = optional(bool, false)
-    dns_forwarder_lb          = optional(bool, false)
-    postgres_private_dns      = bool
-  })
-  description = "Features enabled in this domain"
 }
 
 # pdf-engine
