@@ -6,7 +6,6 @@ location           = "italynorth"
 location_short     = "itn"
 location_ita       = "italynorth"
 location_short_ita = "itn"
-instance           = "dev"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -43,6 +42,7 @@ cird_redis_wallet_italy            = ["10.3.9.0/24"]  #placeholder
 cidr_storage_wallet_italy          = ["10.3.10.0/24"] #placeholder
 cidr_subnet_pdf_engine_app_service = ["10.3.11.0/27"] #placeholder
 
+cidr_subnet_tools_cae = ["10.3.252.0/23"]
 
 #
 # Dns
