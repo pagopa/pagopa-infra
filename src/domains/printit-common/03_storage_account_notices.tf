@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "printit_rg" {
 }
 
 module "notices_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.9.1"
   count  = var.is_feature_enabled.storage_notice ? 1 : 0
 
   name                                       = replace("${var.domain}-notices", "-", "")
@@ -18,7 +18,6 @@ module "notices_sa" {
   resource_group_name                        = azurerm_resource_group.printit_rg.name
   location                                   = var.location
   advanced_threat_protection                 = var.notices_storage_account.advanced_threat_protection
-  enable_resource_advanced_threat_protection = var.institutions_storage_account.advanced_threat_protection
   allow_nested_items_to_be_public            = false
   public_network_access_enabled              = var.notices_storage_account.public_network_access_enabled
   enable_low_availability_alert              = var.notices_storage_account.enable_low_availability_alert
