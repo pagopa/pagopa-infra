@@ -56,7 +56,7 @@ resource "azurerm_public_ip" "aks_leonardo_public_ip" {
 }
 
 #
-# Subnet
+# 🕸️ Subnets
 #
 resource "azurerm_subnet" "eventhubs_italy" {
   name                 = "${local.project}-eventhubs-snet"
@@ -96,4 +96,11 @@ resource "azurerm_subnet" "cidr_postgres_italy" {
   resource_group_name  = module.vnet_italy[0].resource_group_name
   virtual_network_name = module.vnet_italy[0].name
   address_prefixes     = var.cird_postgresql_italy
+}
+
+resource "azurerm_subnet" "subnet_container_app_tools" {
+  name                 = "${local.project}-tools-cae-subnet"
+  resource_group_name  = module.vnet_italy[0].resource_group_name
+  virtual_network_name = module.vnet_italy[0].name
+  address_prefixes     = var.cidr_subnet_tools_cae
 }
