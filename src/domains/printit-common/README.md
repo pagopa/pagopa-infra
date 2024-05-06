@@ -117,13 +117,13 @@ No outputs.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v8.5.0 |
-| <a name="module_cosmosdb_notices_collections"></a> [cosmosdb\_notices\_collections](#module\_cosmosdb\_notices\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v8.5.0 |
-| <a name="module_eventhub_printit"></a> [eventhub\_printit](#module\_eventhub\_printit) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration | v8.9.0 |
-| <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v7.45.0 |
-| <a name="module_institutions_sa"></a> [institutions\_sa](#module\_institutions\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.5.0 |
-| <a name="module_notices_sa"></a> [notices\_sa](#module\_notices\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.5.0 |
-| <a name="module_templates_sa"></a> [templates\_sa](#module\_templates\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.5.0 |
+| <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v8.9.1 |
+| <a name="module_cosmosdb_notices_collections"></a> [cosmosdb\_notices\_collections](#module\_cosmosdb\_notices\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v8.9.1 |
+| <a name="module_eventhub_printit"></a> [eventhub\_printit](#module\_eventhub\_printit) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration | v8.9.1 |
+| <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v8.9.1 |
+| <a name="module_institutions_sa"></a> [institutions\_sa](#module\_institutions\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.9.1 |
+| <a name="module_notices_sa"></a> [notices\_sa](#module\_notices\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.9.1 |
+| <a name="module_templates_sa"></a> [templates\_sa](#module\_templates\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.9.1 |
 
 ## Resources
 
@@ -143,6 +143,11 @@ No outputs.
 | [azurerm_storage_container.template_blob_file](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_management_policy.st_blob_receipts_management_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
 | [azurerm_storage_table.template_data_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
+| [azurerm_subnet.cidr_postgres_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
+| [azurerm_subnet.cidr_redis_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
+| [azurerm_subnet.cidr_storage_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
+| [azurerm_subnet.cosmosdb_italy_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
+| [azurerm_subnet.pdf_engine_italy_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
@@ -158,17 +163,22 @@ No outputs.
 | [azurerm_private_dns_zone.privatelink_table_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_resource_group.identity_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
-| [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_resource_group.rg_vnet_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.cosmos_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.storage_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
-| [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
+| [azurerm_virtual_network.vnet_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_cidr_printit_cosmosdb_italy"></a> [cidr\_printit\_cosmosdb\_italy](#input\_cidr\_printit\_cosmosdb\_italy) | Address prefixes for all cosmosdb in italy. | `list(string)` | n/a | yes |
+| <a name="input_cidr_printit_pdf_engine_italy"></a> [cidr\_printit\_pdf\_engine\_italy](#input\_cidr\_printit\_pdf\_engine\_italy) | Address prefixes for all pdf engine accounts in italy. | `list(string)` | n/a | yes |
+| <a name="input_cidr_printit_postgresql_italy"></a> [cidr\_printit\_postgresql\_italy](#input\_cidr\_printit\_postgresql\_italy) | Address prefixes for all postgresql accounts in italy. | `list(string)` | n/a | yes |
+| <a name="input_cidr_printit_redis_italy"></a> [cidr\_printit\_redis\_italy](#input\_cidr\_printit\_redis\_italy) | Address prefixes for all redis accounts in italy. | `list(string)` | n/a | yes |
+| <a name="input_cidr_printit_storage_italy"></a> [cidr\_printit\_storage\_italy](#input\_cidr\_printit\_storage\_italy) | Address prefixes for all storage accounts in italy. | `list(string)` | n/a | yes |
 | <a name="input_cosmos_mongo_db_notices_params"></a> [cosmos\_mongo\_db\_notices\_params](#input\_cosmos\_mongo\_db\_notices\_params) | CosmosDB | <pre>object({<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    kind           = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>    enable_serverless                 = bool<br>    enable_autoscaling                = bool<br>    throughput                        = number<br>    max_throughput                    = number<br>    container_default_ttl             = number<br>  })</pre> | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_platform"></a> [dns\_zone\_platform](#input\_dns\_zone\_platform) | The platform dns subdomain. | `string` | `null` | no |
@@ -196,7 +206,7 @@ No outputs.
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_notices_storage_account"></a> [notices\_storage\_account](#input\_notices\_storage\_account) | n/a | <pre>object({<br>    account_kind                                                        = string<br>    account_tier                                                        = string<br>    account_replication_type                                            = string<br>    advanced_threat_protection                                          = bool<br>    blob_versioning_enabled                                             = bool<br>    public_network_access_enabled                                       = bool<br>    blob_delete_retention_days                                          = number<br>    enable_low_availability_alert                                       = bool<br>    backup_enabled                                                      = optional(bool, false)<br>    backup_retention                                                    = optional(number, 0)<br>    blob_tier_to_cool_after_last_access                                 = number<br>    blob_tier_to_archive_after_days_since_last_access_time_greater_than = number<br>    blob_delete_after_last_access                                       = number<br>  })</pre> | n/a | yes |
-| <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
+| <a name="input_prefix"></a> [prefix](#input\_prefix) | general | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 | <a name="input_templates_storage_account"></a> [templates\_storage\_account](#input\_templates\_storage\_account) | n/a | <pre>object({<br>    account_kind                  = string<br>    account_tier                  = string<br>    account_replication_type      = string<br>    advanced_threat_protection    = bool<br>    blob_versioning_enabled       = bool<br>    public_network_access_enabled = bool<br>    blob_delete_retention_days    = number<br>    enable_low_availability_alert = bool<br>    backup_enabled                = optional(bool, false)<br>    backup_retention              = optional(number, 0)<br>  })</pre> | n/a | yes |
 

@@ -2,15 +2,15 @@ module "templates_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.9.1"
   count  = var.is_feature_enabled.storage_templates ? 1 : 0
 
-  name                                       = replace("${var.domain}-templates", "-", "")
-  account_kind                               = var.templates_storage_account.account_kind
-  account_tier                               = var.templates_storage_account.account_tier
-  account_replication_type                   = var.templates_storage_account.account_replication_type
-  access_tier                                = "Hot"
-  blob_versioning_enabled                    = var.templates_storage_account.blob_versioning_enabled
-  resource_group_name                        = azurerm_resource_group.printit_rg.name
-  location                                   = var.location
-  advanced_threat_protection                 = var.templates_storage_account.advanced_threat_protection
+  name                       = replace("${var.domain}-templates", "-", "")
+  account_kind               = var.templates_storage_account.account_kind
+  account_tier               = var.templates_storage_account.account_tier
+  account_replication_type   = var.templates_storage_account.account_replication_type
+  access_tier                = "Hot"
+  blob_versioning_enabled    = var.templates_storage_account.blob_versioning_enabled
+  resource_group_name        = azurerm_resource_group.printit_rg.name
+  location                   = var.location
+  advanced_threat_protection = var.templates_storage_account.advanced_threat_protection
 
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = var.templates_storage_account.public_network_access_enabled

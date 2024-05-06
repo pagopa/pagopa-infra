@@ -38,9 +38,9 @@ resource "azurerm_subnet" "pdf_engine_italy_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
   address_prefixes     = var.cidr_printit_pdf_engine_italy
 
-  delegation  {
+  delegation {
     name = "delegation"
-    service_delegation  {
+    service_delegation {
       name    = "Microsoft.Web/serverFarms"
       actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
     }
