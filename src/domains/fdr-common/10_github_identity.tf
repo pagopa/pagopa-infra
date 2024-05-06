@@ -10,7 +10,8 @@ data "azurerm_kubernetes_cluster" "aks" {
 # repos must be lower than 20 items
 locals {
   repos_01 = [
-    "pagopa-fdr-nodo-dei-pagamenti"
+    "pagopa-fdr-nodo-dei-pagamenti", # FdR-1
+    "pagopa-fdr" # FdR-3
   ]
 
   federations_01 = [
