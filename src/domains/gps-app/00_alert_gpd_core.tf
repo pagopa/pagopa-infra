@@ -83,11 +83,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-int
     custom_webhook_payload = "{}"
   }
 
-  data_source_id = data.azurerm_application_insights.application_insights.app_id
+  data_source_id = data.azurerm_application_insights.application_insights.id
   description    = <<EOT
-  Availability for /gpd/api is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-debt-position
-  \n This alert identifies errors due to LockAcquisitionException that may occur during report transfer calls.
+  On /gpd/api identified errors due to LockAcquisitionException that may occur during report transfer calls.
   In these cases, it is necessary to verify that the retry attempt was correctly made, thus avoiding inconsistent states.
+  https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-debt-position
   EOT
   enabled        = true
   query = (<<-QUERY
