@@ -99,31 +99,34 @@ resource "azurerm_key_vault_secret" "cosmos_negative_biz_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+// SWITCHns01ns03
 resource "azurerm_key_vault_secret" "ehub_biz_connection_string" {
   name         = format("ehub-%s-biz-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx.primary_connection_string
+  value        = var.enabled_features.eventhub_ha_rx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
+// SWITCHns01ns03
 resource "azurerm_key_vault_secret" "ehub_biz_enrich_connection_string" {
   name         = format("ehub-%s-biz-enrich-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_connection_string
+  value        = var.enabled_features.eventhub_ha_tx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
+// SWITCHns01ns03
 resource "azurerm_key_vault_secret" "ehub_negative_biz_connection_string" {
   name         = format("ehub-%s-rx-negative-biz-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-rx.primary_connection_string
+  value        = var.enabled_features.eventhub_ha_rx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-rx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-rx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
-// PRODns02ns04
+// SWITCHns02ns04
 resource "azurerm_key_vault_secret" "ehub_awakable_negative_biz_connection_string" {
   name         = format("ehub-%s-tx-awakable-negative-biz-connection-string", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-tx.primary_connection_string
@@ -132,7 +135,7 @@ resource "azurerm_key_vault_secret" "ehub_awakable_negative_biz_connection_strin
   key_vault_id = module.key_vault.id
 }
 
-// PRODns02ns04
+// SWITCHns02ns04
 resource "azurerm_key_vault_secret" "ehub_final_negative_biz_connection_string" {
   name         = format("ehub-%s-tx-final-negative-biz-connection-string", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-tx.primary_connection_string
@@ -180,7 +183,7 @@ resource "azurerm_key_vault_secret" "ehub_tx_negative_biz_key" {
   key_vault_id = module.key_vault.id
 }
 
-// PRODns02ns04
+// SWITCHns02ns04
 resource "azurerm_key_vault_secret" "ehub_rx_negative_final_biz_conn_string" {
   name         = format("ehub-rx-%s-negative-final-biz-conn-string", var.env_short)
   value        = format("'%s'", data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-rx-pdnd.primary_connection_string)
@@ -189,7 +192,7 @@ resource "azurerm_key_vault_secret" "ehub_rx_negative_final_biz_conn_string" {
   key_vault_id = module.key_vault.id
 }
 
-// PRODns02ns04
+// SWITCHns02ns04
 resource "azurerm_key_vault_secret" "ehub_rx_negative_awakable_biz_conn_string" {
   name         = format("ehub-rx-%s-negative-awakable-biz-conn-string", var.env_short)
   value        = format("'%s'", data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-rx-pdnd.primary_connection_string)

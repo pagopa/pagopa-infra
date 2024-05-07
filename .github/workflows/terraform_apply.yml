@@ -5,16 +5,23 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-    environment:
-      required: true
-      type: choice
-      description: Select the Environment
-      options:
-        - dev
-        - uat
-        - prod
-    domains:
+    inputs:
       environment:
+        required: true
+        type: choice
+        description: Select the Environment
+        options:
+          - dev
+          - uat
+          - prod
+      region:
+        required: true
+        type: choice
+        description: Select the Region
+        options:
+          - weu
+          - itn
+      domain:
         required: true
         type: choice
         description: Select the domain
@@ -36,7 +43,6 @@ permissions:
 jobs:
 
   apply:
-    needs: [ deploy ]
     runs-on: ubuntu-latest
     name: terraform apply ${{ inputs.environment }}
     environment: ${{ inputs.environment }}
@@ -67,11 +73,11 @@ jobs:
       - name: Terraform Apply
         shell: bash
         run: |
-          cd ./infra
+          cd ./src/domains/${{inputs.domain}}
           export ARM_CLIENT_ID="${{ secrets.CD_CLIENT_ID }}"
           export ARM_SUBSCRIPTION_ID=$(az account show --query id --output tsv)
           export ARM_TENANT_ID=$(az account show --query tenantId --output tsv)
           export ARM_USE_OIDC=true
           export ARM_ACCESS_KEY=$(az storage account keys list --resource-group io-infra-rg --account-name pagopainfraterraform${{inputs.environment}} --query '[0].value' -o tsv)
-          bash ./terraform.sh init ${{ inputs.environment }}
-          bash ./terraform.sh apply ${{ inputs.environment }} -auto-approve
+          bash ./terraform.sh init ${{ inputs.region }}-${{ inputs.environment }}
+          bash ./terraform.sh apply ${{ inputs.region }}-${{ inputs.environment }} -auto-approve

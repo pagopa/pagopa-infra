@@ -54,10 +54,12 @@ No modules.
 | [azurerm_kusto_cluster.data_explorer_cluster](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/kusto_cluster) | resource |
 | [azurerm_kusto_database.re_db](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/kusto_database) | resource |
 | [azurerm_kusto_database_principal_assignment.qi_principal_assignment](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/kusto_database_principal_assignment) | resource |
+| [azurerm_kusto_eventhub_data_connection.eventhub_connection_for_re_event](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/kusto_eventhub_data_connection) | resource |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/client_config) | data source |
 | [azurerm_cosmosdb_account.bizevent_cosmos_account](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/cosmosdb_account) | data source |
 | [azurerm_data_factory.qi_data_factory](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/data_factory) | data source |
 | [azurerm_data_factory.qi_data_factory_cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/data_factory) | data source |
+| [azurerm_eventhub.pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/eventhub) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/resource_group) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/subscription) | data source |
 
