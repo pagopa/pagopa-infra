@@ -646,6 +646,7 @@
         },
         "/psp/api/v1/build/state": {
             "get": {
+                "operationId": "getState",
                 "tags": [
                     "Payment Services"
                 ],
