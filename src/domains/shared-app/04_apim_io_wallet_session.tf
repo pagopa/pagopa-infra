@@ -9,8 +9,8 @@ module "apim_session_wallet_product" {
   display_name = "session wallet token pagoPA"
   description  = "Product session wallet token pagoPA"
 
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 
   published             = true
   subscription_required = true
@@ -36,8 +36,8 @@ locals {
 # Session wallet token service APIs
 resource "azurerm_api_management_api_version_set" "session_wallet_api" {
   name                = "${local.project}-session-wallet-api"
-  api_management_name = module.apim.name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
   display_name        = local.apim_session_wallet_api.display_name
   versioning_scheme   = "Segment"
 }
@@ -46,8 +46,8 @@ module "apim_session_wallet_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
 
   name                  = "${local.project}-session-wallet-api"
-  api_management_name   = module.apim.name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_session_wallet_product.product_id]
   subscription_required = local.apim_session_wallet_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.session_wallet_api.id
@@ -65,6 +65,6 @@ module "apim_session_wallet_api_v1" {
   })
 
   xml_content = templatefile("./api/session-wallet/v1/_base_policy.xml.tpl", {
-    hostname = local.wallet_hostname
+    hostname = null
   })
 }
