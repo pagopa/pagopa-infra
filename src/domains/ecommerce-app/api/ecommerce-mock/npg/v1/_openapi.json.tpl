@@ -318,6 +318,7 @@
         },
         "/psp/api/v1/build/confirm_payment": {
             "post": {
+                "operationId": "confirmPayment",
                 "tags": [
                     "Payment Services"
                 ],

@@ -4,12 +4,10 @@
 
     <set-variable name="requestBody" value="@( (JObject) context.Request.Body.As<JObject>(preserveContent: true) )" />
     <set-variable name="paymentMethod" value="@( (string) ((JObject) ((JObject) context.Variables["requestBody"])["paymentSession"])["paymentService"] )" />
-<<<<<<< HEAD
-=======
+
     <set-variable name="sessionId" value="@( Guid.NewGuid().ToString("N") )" />
 
     <cache-store-value key="@( (string) context.Variables["sessionId"] )" value="@( (string) context.Variables["paymentMethod"] )" duration="600" />
->>>>>>> 057d7408 (fixup! feat(mock): add NPG mock for `POST orders/build`)
 
     <choose>
       <when condition="@( ((string) context.Variables["paymentMethod"]) == "CARDS")">

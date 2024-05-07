@@ -332,3 +332,13 @@ resource "azurerm_api_management_api_operation_policy" "post_orders_build" {
 
   xml_content = file("./api/ecommerce-mock/npg/v1/post_orders_build.xml.tpl")
 }
+
+resource "azurerm_api_management_api_operation_policy" "confirm_payment" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_npg_mock[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "confirmPayment"
+
+  xml_content = file("./api/ecommerce-mock/npg/v1/confirm_payment.xml.tpl")
+}
