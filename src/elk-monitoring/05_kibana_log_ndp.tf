@@ -140,7 +140,7 @@ locals {
   }), "\""), "\""), "'", "'\\''")
 
   ## pagopawfespwfesp
-  ndp_pagopawfespwfesp_key = "pagopawfespwfesp"
+  ndp_pagopawfespwfesp_key             = "pagopawfespwfesp"
   ndp_pagopawfespwfesp_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_pagopawfespwfesp_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_pagopawfespwfesp_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
     name        = local.ndp_pagopawfespwfesp_key,
@@ -163,7 +163,7 @@ locals {
   }), "\""), "\""), "'", "'\\''")
 
   ## wispsoapconverter
-  ndp_wispsoapconverter_key = "wispsoapconverter"
+  ndp_wispsoapconverter_key             = "wispsoapconverter"
   ndp_wispsoapconverter_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/ndp/${local.ndp_wispsoapconverter_key}/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_wispsoapconverter_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
     name        = local.ndp_wispsoapconverter_key,
@@ -186,7 +186,7 @@ locals {
   }), "\""), "\""), "'", "'\\''")
 
   ## wispconverter
-  ndp_wispconverter_key = "pagopawispconverter"
+  ndp_wispconverter_key             = "pagopawispconverter"
   ndp_wispconverter_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/log-template/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   ndp_wispconverter_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
     name        = local.ndp_wispconverter_key,

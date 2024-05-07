@@ -1,7 +1,7 @@
 #################################### [NDP] ####################################
 locals {
   dashboard_path         = "${path.module}/ndp/${local.ndp_nodo_key}/dashboard/*.ndjson"
-  wc_dashboard_path     = "${path.module}/ndp/${local.ndp_wispconverter_key}/dashboard/*.ndjson"
+  wc_dashboard_path      = "${path.module}/ndp/${local.ndp_wispconverter_key}/dashboard/*.ndjson"
   wsc_dashboard_path     = "${path.module}/ndp/${local.ndp_wispsoapconverter_key}/dashboard/*.ndjson"
   replica_dashboard_path = var.env_short != "p" ? "${path.module}/ndp/${local.ndp_nodoreplica_key}/dashboard/*.ndjson" : "/FAKE-NO-REPLICA"
   # replica_query_path     = var.env_short != "p" ? "${path.module}/ndp/${local.ndp_nodoreplica_key}/query/*.ndjson" : "/FAKE-NO-REPLICA"
