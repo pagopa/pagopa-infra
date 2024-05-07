@@ -362,3 +362,13 @@ resource "azurerm_api_management_api_operation_policy" "get_card_data" {
 
   xml_content = file("./api/ecommerce-mock/npg/v1/get_card_data.xml.tpl")
 }
+
+resource "azurerm_api_management_api_operation_policy" "refund_payment" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_npg_mock[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "refundPayment"
+
+  xml_content = file("./api/ecommerce-mock/npg/v1/refund_payment.xml.tpl")
+}

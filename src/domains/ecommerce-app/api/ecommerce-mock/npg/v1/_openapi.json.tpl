@@ -919,6 +919,7 @@
         },
         "/psp/api/v1/operations/{operationId}/refunds": {
             "post": {
+                "operationId": "refundPayment",
                 "tags": [
                     "Payment Services"
                 ],
