@@ -53,7 +53,8 @@ bizevents_datastore_cosmos_db_params = {
 
   container_default_ttl = 2629800 # 1 month in second
 
-  max_throughput = 5000
+  max_throughput     = 1000
+  max_throughput_alt = 1000
 }
 
 # CosmosDB Negative Biz Events Datastore
@@ -86,3 +87,8 @@ cidr_subnet_bizevents_datastore_cosmosdb = ["10.1.156.0/24"]
 
 enable_iac_pipeline = true
 redis_ha_enabled    = false
+
+enabled_features = {
+  eventhub_ha_tx = true
+  eventhub_ha_rx = true
+}

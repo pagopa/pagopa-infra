@@ -130,19 +130,19 @@ locals {
       name               = "biz-events-view-general",
       partition_key_path = "/transactionId",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_alt }
     },
     {
       name               = "biz-events-view-cart",
       partition_key_path = "/transactionId",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_alt }
     },
     {
       name               = "biz-events-view-user",
       partition_key_path = "/taxCode",
       default_ttl        = var.bizevents_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput }
+      autoscale_settings = { max_throughput = var.bizevents_datastore_cosmos_db_params.max_throughput_alt }
     }
   ]
 
@@ -197,4 +197,55 @@ module "bizevents_datastore_cosmosdb_containers_dev" {
   default_ttl         = lookup(each.value, "default_ttl", null)
 
   autoscale_settings = contains(var.bizevents_datastore_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
+}
+
+resource "azurerm_monitor_metric_alert" "cosmos_biz_db_normalized_ru_exceeded" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.bizevents_datastore_cosmosdb_account.name}] Normalized RU Exceeded"
+  resource_group_name = azurerm_resource_group.bizevents_rg.name
+  scopes              = [module.bizevents_datastore_cosmosdb_account.id]
+  description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
+  severity            = 0
+  window_size         = "PT5M"
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "NormalizedRUConsumption"
+    aggregation            = "Maximum"
+    operator               = "GreaterThan"
+    threshold              = "80"
+    skip_metric_validation = false
+
+
+    dimension {
+      name     = "Region"
+      operator = "Include"
+      values   = [azurerm_resource_group.bizevents_rg.location]
+    }
+
+    dimension {
+      name     = "CollectionName"
+      operator = "Include"
+      values   = ["*"]
+    }
+
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
+  }
+
+  tags = var.tags
 }

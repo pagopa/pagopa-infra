@@ -34,6 +34,15 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo" {
   records             = var.dns_a_reconds_dbnodo_ips
 }
 
+resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_dr" {
+  count               = var.env_short == "p" ? 1 : 0 # DR only in PROD env
+  name                = "db-nodo-pagamenti-dr"
+  zone_name           = azurerm_private_dns_zone.db_nodo_dns_zone.name
+  resource_group_name = azurerm_resource_group.data.name
+  ttl                 = 60
+  records             = var.dns_a_reconds_dbnodo_ips_dr
+}
+
 resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_nexi_postgres" {
   name                = "db-postgres-ndp"
   zone_name           = azurerm_private_dns_zone.db_nodo_dns_zone.name
