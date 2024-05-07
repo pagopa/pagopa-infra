@@ -848,6 +848,7 @@
         },
         "/psp/api/v1/build/cardData": {
             "get": {
+                "operationId": "getCardData",
                 "tags": [
                     "Payment Services"
                 ],
