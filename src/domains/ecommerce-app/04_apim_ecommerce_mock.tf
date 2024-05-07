@@ -199,8 +199,8 @@ resource "azurerm_api_management_api_policy" "apim_ecommerce_pdv_mock_policy" {
 ## API Mock GEC V1          ##
 ##############################
 locals {
-  apim_ecommerce_gec_mock_api = {
-    display_name          = "ecommerce pagoPA - GEC mock"
+  apim_ecommerce_gec_mock_api_v1 = {
+    display_name          = "ecommerce pagoPA - GEC V1 mock"
     description           = "API to support integration testing"
     path                  = "ecommerce/mock/gec"
     subscription_required = false
@@ -213,7 +213,7 @@ resource "azurerm_api_management_api_version_set" "apim_ecommerce_gec_mock_api_v
   name                = "${local.project}-gec-mock"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_ecommerce_gec_mock_api.display_name
+  display_name        = local.apim_ecommerce_gec_mock_api_v1.display_name
   versioning_scheme   = "Segment"
 }
 
@@ -223,16 +223,16 @@ resource "azurerm_api_management_api" "apim_ecommerce_gec_mock_v1" {
   name                  = "${local.project}-gec-mock"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  subscription_required = local.apim_ecommerce_gec_mock_api.subscription_required
+  subscription_required = local.apim_ecommerce_gec_mock_api_v1.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_ecommerce_gec_mock_api_v1[0].id
   version               = "v1"
   revision              = "1"
 
-  description  = local.apim_ecommerce_gec_mock_api.description
-  display_name = local.apim_ecommerce_gec_mock_api.display_name
-  path         = local.apim_ecommerce_gec_mock_api.path
+  description  = local.apim_ecommerce_gec_mock_api_v1.description
+  display_name = local.apim_ecommerce_gec_mock_api_v1.display_name
+  path         = local.apim_ecommerce_gec_mock_api_v1.path
   protocols    = ["https"]
-  service_url  = local.apim_ecommerce_gec_mock_api.service_url
+  service_url  = local.apim_ecommerce_gec_mock_api_v1.service_url
 
   import {
     content_format = "openapi"
@@ -261,15 +261,25 @@ resource "azurerm_api_management_api_policy" "apim_ecommerce_gec_mock_policy_v1"
 
 
 ##############################
-## API Mock GEC V1          ##
+## API Mock GEC V2          ##
 ##############################
+
+locals {
+  apim_ecommerce_gec_mock_api_v2 = {
+    display_name          = "ecommerce pagoPA - GEC V2 mock"
+    description           = "API to support integration testing"
+    path                  = "ecommerce/mock/gec"
+    subscription_required = false
+    service_url           = null
+  }
+}
 
 resource "azurerm_api_management_api_version_set" "apim_ecommerce_gec_mock_api_v2" {
   count               = var.env_short == "u" ? 1 : 0
   name                = "${local.project}-gec-mock"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_ecommerce_gec_mock_api.display_name
+  display_name        = local.apim_ecommerce_gec_mock_api_v2.display_name
   versioning_scheme   = "Segment"
 }
 
@@ -279,16 +289,16 @@ resource "azurerm_api_management_api" "apim_ecommerce_gec_mock_v2" {
   name                  = "${local.project}-gec-mock"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  subscription_required = local.apim_ecommerce_gec_mock_api.subscription_required
+  subscription_required = local.apim_ecommerce_gec_mock_api_v2.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_ecommerce_gec_mock_api_v2[0].id
   version               = "v1"
   revision              = "1"
 
-  description  = local.apim_ecommerce_gec_mock_api.description
-  display_name = local.apim_ecommerce_gec_mock_api.display_name
-  path         = local.apim_ecommerce_gec_mock_api.path
+  description  = local.apim_ecommerce_gec_mock_api_v2.description
+  display_name = local.apim_ecommerce_gec_mock_api_v2.display_name
+  path         = local.apim_ecommerce_gec_mock_api_v2.path
   protocols    = ["https"]
-  service_url  = local.apim_ecommerce_gec_mock_api.service_url
+  service_url  = local.apim_ecommerce_gec_mock_api_v2.service_url
 
   import {
     content_format = "openapi"
