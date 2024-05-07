@@ -303,7 +303,8 @@ resource "azurerm_api_management_api" "apim_ecommerce_gec_mock_v2" {
   import {
     content_format = "openapi"
     content_value = templatefile("./api/ecommerce-mock/gec/v2/_openapi.json.tpl", {
-      host = local.apim_hostname
+      host    = local.apim_hostname,
+      service = local.apim_ecommerce_gec_mock_api_v2.display_name
     })
   }
 }
