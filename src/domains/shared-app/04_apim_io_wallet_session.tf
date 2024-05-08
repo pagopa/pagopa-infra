@@ -98,3 +98,28 @@ module "apim_session_wallet_api_v1" {
     pdv_api_base_path    = var.pdv_api_base_path
   })
 }
+
+#######################################################################
+## Fragment policy to chk JWT session wallet token pagoPA for IO     ##
+#######################################################################
+
+resource "azapi_resource" "fragment_chk_jwt_session_token" {
+  # provider  = azapi.apim
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "jwt-chk-wallet-session"
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Component that permits to check JWT session wallet token pagoPA for IO"
+      format      = "rawxml"
+      value = templatefile("./api/session-wallet/v1/_fragment_policiy_chk_jwt.tpl.xml", {
+      })
+
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}

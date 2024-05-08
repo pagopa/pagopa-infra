@@ -63,6 +63,7 @@
 | Name | Type |
 |------|------|
 | [azapi_resource.authorizer_fragment](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
+| [azapi_resource.fragment_chk_jwt_session_token](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
 | [azurerm_api_management_api_version_set.api_authorizer_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_authorizer_config_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_enrolled_orgs_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.40.0/docs/resources/api_management_api_version_set) | resource |
