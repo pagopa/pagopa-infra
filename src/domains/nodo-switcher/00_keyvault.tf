@@ -13,6 +13,11 @@ data "azurerm_key_vault_secret" "nodo_switcher_slack_team_id" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "nodo_switcher_slack_channel_id" {
+  name         = "nodo-switcher-slack-channel-id"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 data "azurerm_key_vault_secret" "nodo_switcher_slack_app_id" {
   name         = "nodo-switcher-slack-app-id"
   key_vault_id = data.azurerm_key_vault.kv.id

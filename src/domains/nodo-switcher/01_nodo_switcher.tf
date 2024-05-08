@@ -32,6 +32,8 @@ resource "azurerm_logic_app_workflow" "nodo_switcher_step_1" {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.nodo_switcher_identity.id]
   }
+
+  tags = var.tags
 }
 
 
@@ -54,6 +56,13 @@ resource "azurerm_logic_app_workflow" "nodo_switcher_step_2" {
         "description" : "slack team id allowed to execute the switch"
       }
     })
+    "allowed_slack_channel" = jsonencode({
+      "type"         = "String"
+      "defaultValue" = data.azurerm_key_vault_secret.nodo_switcher_slack_channel_id.value
+      "metadata" : {
+        "description" : "slack channel id allowed to execute the switch"
+      }
+    })
     "allowed_slack_app" = jsonencode({
       "type"         = "String"
       "defaultValue" = data.azurerm_key_vault_secret.nodo_switcher_slack_app_id.value
@@ -73,6 +82,8 @@ resource "azurerm_logic_app_workflow" "nodo_switcher_step_2" {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.nodo_switcher_identity.id]
   }
+
+  tags = var.tags
 }
 
 
@@ -206,10 +217,21 @@ resource "azurerm_logic_app_action_custom" "checks" {
                   "blocks": [
                     {
                       "type": "section",
-                      "text": {
-                        "type": "mrkdwn",
-                        "text": ":warning: :exclamation: *${var.env}* - Procedere con lo switch verso il NdP di PagoPA?"
-                      }
+                      "fields": [
+                        {
+                          "type": "mrkdwn",
+                          "text": ":warning: :exclamation: *${var.env}* - Procedere con lo switch verso il NdP di PagoPA?"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "section",
+                      "fields": [
+                        {
+                          "type": "mrkdwn",
+                          "text": ":clock3: Azione valida per ${var.nodo_switcher.trigger_max_age_minutes} minuti"
+                        }
+                      ]
                     },
                     {
                       "type": "actions",
@@ -278,7 +300,7 @@ resource "azurerm_logic_app_action_custom" "checks" {
                     "$formdata": [
                       {
                         "key": "payload",
-                        "value": "{ \"type\": \"block_actions\", \"user\": {\"id\": \"${data.azurerm_key_vault_secret.nodo_switcher_static_slack_user_id.value}\",\"username\": \"AZ.logicApp\",\"name\": \"AZ.logicApp\",\"team_id\": \"${data.azurerm_key_vault_secret.nodo_switcher_slack_team_id.value}\" }, \"api_app_id\": \"${data.azurerm_key_vault_secret.nodo_switcher_slack_app_id.value}\", \"token\": \"\", \"container\": {}, \"trigger_id\": \"\", \"team\": {}, \"enterprise\": null, \"is_enterprise_install\": false, \"channel\": {}, \"message\": {}, \"state\": {}, \"response_url\": \"\", \"actions\": [{ \"action_id\": \"\", \"block_id\": \"\", \"text\": { \"type\": \"plain_text\", \"text\": \"Si\", \"emoji\": true }, \"value\": \"@utcNow()\", \"type\": \"button\", \"action_ts\": \"\"} ]}"
+                        "value": "{ \"type\": \"block_actions\", \"user\": {\"id\": \"${data.azurerm_key_vault_secret.nodo_switcher_static_slack_user_id.value}\",\"username\": \"AZ.logicApp\",\"name\": \"AZ.logicApp\",\"team_id\": \"${data.azurerm_key_vault_secret.nodo_switcher_slack_team_id.value}\" }, \"api_app_id\": \"${data.azurerm_key_vault_secret.nodo_switcher_slack_app_id.value}\", \"token\": \"\", \"container\": {}, \"trigger_id\": \"\", \"team\": {}, \"enterprise\": null, \"is_enterprise_install\": false, \"channel\": { \"id\": \"${data.azurerm_key_vault_secret.nodo_switcher_slack_channel_id.value}\"}, \"message\": {}, \"state\": {}, \"response_url\": \"\", \"actions\": [{ \"action_id\": \"\", \"block_id\": \"\", \"text\": { \"type\": \"plain_text\", \"text\": \"Si\", \"emoji\": true }, \"value\": \"@utcNow()\", \"type\": \"button\", \"action_ts\": \"\"} ]}"
                       }
                     ]
                   }
@@ -638,6 +660,12 @@ resource "azurerm_logic_app_action_custom" "elaborate_request" {
                   "@parameters('allowed_slack_app')",
                   "@body('parse-content')?['api_app_id']"
                 ]
+              },
+              {
+                "equals": [
+                  "@parameters('allowed_slack_channel')",
+                  "@body('parse-content')?['channel']?['id']"
+                ]
               }
             ]
           },
@@ -773,7 +801,7 @@ resource "azurerm_logic_app_action_custom" "elaborate_request" {
                                 "Content-Type": "application/json"
                               },
                               "body": {
-                                "text": ":clessidra: Approvazione inviata fuori tempo massimo (${var.nodo_switcher.trigger_max_age_minutes} minuti)"
+                                "text": ":hourglass: Approvazione inviata fuori tempo massimo (${var.nodo_switcher.trigger_max_age_minutes} minuti)"
                               }
                             },
                             "runtimeConfiguration": {
