@@ -7,6 +7,14 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-r
   resource_group_name = "${local.product}-msg-rg"
 }
 
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-tablestorage-rx" {
+  count               = var.enable_nodo_re ? 1 : 0
+  name                = "nodo-dei-pagamenti-re-to-tablestorage-rx"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
+  eventhub_name       = "nodo-dei-pagamenti-re"
+  resource_group_name = "${local.product}-msg-rg"
+}
+
 # info for table storage
 data "azurerm_storage_account" "nodo_re_storage" {
   count               = var.enable_nodo_re ? 1 : 0
@@ -32,7 +40,7 @@ locals {
 
     DOCKER_REGISTRY_SERVER_URL = local.ts_docker_settings.DOCKER_REGISTRY_SERVER_URL
 
-    EVENTHUB_CONN_STRING = var.enable_nodo_re ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-tablestorage-rx[0].primary_connection_string : ""
+    EVENTHUB_CONN_STRING = var.enable_nodo_re ? (var.enabled_features.eventhub_ha_rx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-tablestorage-rx[0].primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-tablestorage-rx[0].primary_connection_string) : ""
 
     TABLE_STORAGE_CONN_STRING = var.enable_nodo_re ? data.azurerm_storage_account.nodo_re_storage[0].primary_connection_string : ""
     TABLE_STORAGE_TABLE_NAME  = "events"
