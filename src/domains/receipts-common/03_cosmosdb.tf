@@ -109,14 +109,14 @@ locals {
       name                       = "receipts",
       partition_key_path         = "/id",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings         = { max_throughput = (var.env_short != "p" ? 6000 : 20000) },
+      autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput },
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
       name               = "cart-for-receipts",
       partition_key_path = "/id",
       default_ttl        = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings = { max_throughput = (var.env_short != "p" ? 6000 : 20000) },
+      autoscale_settings = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
       conflict_resolution_policy = {
         mode      = "Custom",
         path      = null,
@@ -127,14 +127,14 @@ locals {
       name                       = "receipts-message-errors",
       partition_key_path         = "/id",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings         = { max_throughput = (var.env_short != "p" ? 6000 : 20000) },
+      autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
     {
       name                       = "receipts-io-messages",
       partition_key_path         = "/messageId",
       default_ttl                = var.receipts_datastore_cosmos_db_params.container_default_ttl
-      autoscale_settings         = { max_throughput = (var.env_short != "p" ? 6000 : 20000) },
+      autoscale_settings         = { max_throughput = var.receipts_datastore_cosmos_db_params.max_throughput_alt },
       conflict_resolution_policy = { mode = "LastWriterWins", path = "/_ts", procedure = null }
     },
   ]
