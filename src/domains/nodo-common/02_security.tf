@@ -49,6 +49,14 @@ resource "azurerm_key_vault_secret" "wisp_converter_re_sa_connection_string" {
   ]
 }
 
+resource "azurerm_key_vault_secret" "verifyko_tablestorage_connection_string" {
+  name         = "verifyko-tablestorage-connection-string"
+  value        = module.nodo_verifyko_storage_account.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 /**********
 Event Hub
 ***********/
@@ -103,17 +111,20 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_tablest
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "verifyko_tablestorage_connection_string" {
-  name         = "verifyko-tablestorage-connection-string"
-  value        = module.nodo_verifyko_storage_account.primary_connection_string
+### dismissione WISP
+resource "azurerm_key_vault_secret" "evthub_dismissione_wisp_paaInviaRT_rx" {
+  count        = var.enable_wisp_converter ? 1 : 0
+  name         = "dismissione-wisp-paainviart-rx-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_dismissione-wisp-paainviart-rx[0].primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "verifyko_datastore_primary_key" {
-  name         = "verifyko-datastore-primary-key"
-  value        = module.cosmosdb_account_nodo_verifyko.primary_key
+resource "azurerm_key_vault_secret" "evthub_dismissione_wisp_paaInviaRT_tx" {
+  count        = var.enable_wisp_converter ? 1 : 0
+  name         = "dismissione-wisp-paainviart-tx-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_dismissione-wisp-paainviart-tx[0].primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
@@ -153,6 +164,14 @@ resource "azurerm_key_vault_secret" "cosmos_biz_account_key" {
 resource "azurerm_key_vault_secret" "cosmos_verifyko_account_key" {
   name         = "cosmos-verifyko-account-key"
   value        = module.cosmosdb_account_nodo_verifyko.secondary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "verifyko_datastore_primary_key" {
+  name         = "verifyko-datastore-primary-key"
+  value        = module.cosmosdb_account_nodo_verifyko.primary_key
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
