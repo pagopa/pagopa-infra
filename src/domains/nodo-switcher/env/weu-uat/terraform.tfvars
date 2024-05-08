@@ -226,3 +226,12 @@ enabled_features = {
 }
 
 
+nodo_switcher = {
+  pagopa_nodo_url                  = "https://httpbin.org/status/500" #TODO TBD
+  trigger_max_age_minutes          = 1
+  enable_switch_approval           = true
+  force_execution_for_old_triggers = false
+  apim_variables = [
+    #TODO TBD
+  ]
+}

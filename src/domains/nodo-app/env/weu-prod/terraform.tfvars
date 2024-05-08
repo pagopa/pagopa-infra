@@ -267,3 +267,4 @@ enabled_features = {
   apim_v2        = false
   eventhub_ha_rx = false
 }
+
