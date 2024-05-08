@@ -704,7 +704,7 @@ resource "azurerm_logic_app_action_custom" "elaborate_request" {
                           },
                           {
                             "equals": [
-                              "@parameters('force_execution_for_old_trigger')",
+                              "@parameters('force_execution_for_old_triggers')",
                               true
                             ]
                           }
