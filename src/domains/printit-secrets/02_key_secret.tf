@@ -57,4 +57,4 @@ resource "azurerm_key_vault_secret" "secret" {
   ]
 }
 
-
+# ⚠️ The secrets from resources are set in printit-app to avoid circular dependency

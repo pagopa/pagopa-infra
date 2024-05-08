@@ -38,7 +38,7 @@ resource "azurerm_key_vault_secret" "application_insights_connection_string" {
 
 resource "azurerm_key_vault_secret" "notices_mongo_connection_string" {
   name         = "notices-mongo-connection-string"
-  value        = "AccountEndpoint=https://pagopa-${var.env_short}-${var.location_short}-${var.domain}-ds-cosmos-account.documents.azure.com:443/;AccountKey=${data.azurerm_cosmosdb_account.notices_cosmos_account.primary_key}"
+  value        = data.azurerm_cosmosdb_account.notices_cosmos_account.primary_mongodb_connection_string
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
@@ -97,26 +97,18 @@ resource "azurerm_key_vault_secret" "ehub_notice_connection_string" {
   value        = data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
-
 }
 
-resource "azurerm_key_vault_secret" "ehub_notice_complete_connection_string" {
-  name         = "ehub-${var.env_short}-notice-complete-connection-string"
-  value        = data.azurerm_eventhub_authorization_rule.notices_complete_evt_authorization_rule.primary_connection_string
+resource "azurerm_key_vault_secret" "ehub_notice_jaas_config" {
+  name         = "ehub-${var.env_short}-notice-jaas-config"
+  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string}\";"
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-resource "azurerm_key_vault_secret" "ehub_notice_error_connection_string" {
-  name         = "ehub-${var.env_short}-notice-error-connection-string"
-  value        = data.azurerm_eventhub_authorization_rule.notices_error_evt_authorization_rule.primary_connection_string
-  content_type = "text/plain"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
 
 resource "azurerm_key_vault_secret" "pdf_engine_node_subkey_secret" {
-  count = var.is_feature_enabled.pdf_engine ? 1 : 0
-
+  count        = var.is_feature_enabled.pdf_engine ? 1 : 0
   name         = "pdf-engine-node-subkey"
   value        = azurerm_api_management_subscription.pdf_engine_node_subkey[0].primary_key
   content_type = "text/plain"

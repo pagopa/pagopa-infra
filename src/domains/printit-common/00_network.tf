@@ -16,18 +16,6 @@ data "azurerm_subnet" "aks_subnet" {
   resource_group_name  = local.vnet_italy_resource_group_name
 }
 
-data "azurerm_subnet" "cosmos_subnet" {
-  name                 = "${local.project_core_itn}-cosmosdb-snet"
-  virtual_network_name = local.vnet_italy_name
-  resource_group_name  = local.vnet_italy_resource_group_name
-}
-
-data "azurerm_subnet" "storage_subnet" {
-  name                 = "${local.project_core_itn}-storage-snet"
-  virtual_network_name = local.vnet_italy_name
-  resource_group_name  = local.vnet_italy_resource_group_name
-}
-
 #
 # Private DNS Zones
 #

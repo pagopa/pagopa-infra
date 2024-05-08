@@ -12,28 +12,14 @@ module "eventhub_printit" {
       message_retention = 1
       consumers = [
         "${local.project}-notice-evt-rx",
-        "${local.project}-notice-complete-evt-tx",
-        "${local.project}-notice-error-evt-tx"
       ]
       keys = [
         {
           name   = "${local.project}-notice-evt-rx"
-          listen = false
+          listen = true
           send   = true
           manage = false
-        },
-        {
-          name   = "${local.project}-notice-complete-evt-tx"
-          listen = true
-          send   = false
-          manage = false
-        },
-        {
-          name   = "${local.project}-notice-error-evt-tx"
-          listen = true
-          send   = false
-          manage = false
-        },
+        }
       ]
     },
   ]

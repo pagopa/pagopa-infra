@@ -17,7 +17,7 @@ data "azurerm_subnet" "apim_vnet" {
 data "azurerm_subnet" "printit_pdf_engine_app_service_snet" {
   count = var.is_feature_enabled.pdf_engine ? 1 : 0
 
-  name                 = "${var.prefix}-${var.env_short}-${var.location_short}-core-pdf-engine-snet"
+  name                 = "${local.project}-pdf-engine-snet"
   resource_group_name  = "${var.prefix}-${var.env_short}-${var.location_short}-vnet-rg"
   virtual_network_name = "${var.prefix}-${var.env_short}-${var.location_short}-vnet"
 

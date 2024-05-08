@@ -63,7 +63,7 @@ resource "azurerm_private_endpoint" "notices_table_private_endpoint" {
   name                = "${local.project}-table-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.printit_rg.name
-  subnet_id           = data.azurerm_subnet.storage_subnet.id
+  subnet_id           = azurerm_subnet.cidr_storage_italy.id
 
   private_dns_zone_group {
     name                 = "${local.project}-table-sa-private-dns-zone-group"
