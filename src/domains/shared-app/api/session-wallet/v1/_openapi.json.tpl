@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.3",
+  "openapi": "3.0.0",
   "info": {
     "title": "pagoPA Session Wallet API",
     "version": "0.0.1",
@@ -32,7 +32,7 @@
         "operationId": "generateSessionWallet",
         "security": [
           {
-            "bearerAuth": []
+            "Authorization": []
           }
         ],
         "responses": {
@@ -149,10 +149,10 @@
       }
     },
     "securitySchemes": {
-      "bearerAuth": {
+      "Authorization": {
         "type": "http",
         "scheme": "bearer",
-        "description": "wallet token"
+        "description": "Wallet token associated to the user"
       }
     }
   }

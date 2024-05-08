@@ -1,3 +1,31 @@
+data "azurerm_key_vault_secret" "personal_data_vault_api_key_secret" {
+  name         = "personal-data-vault-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "wallet_personal_data_vault_api_key" {
+  name                = "wallet-session-personal-data-vault-api-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "wallet-session-personal-data-vault-api-key"
+  value               = data.azurerm_key_vault_secret.personal_data_vault_api_key_secret.value
+  secret              = true
+}
+
+data "azurerm_key_vault_secret" "wallet_jwt_signing_key_secret" {
+  name         = "wallet-session-jwt-signing-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "wallet-jwt-signing-key" {
+  name                = "wallet-session-jwt-signing-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "wallet-session-jwt-signing-key"
+  value               = data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value
+  secret              = true
+}
+
 ##########################################
 ## Products session wallet token pagoPA ##
 ##########################################
@@ -28,7 +56,7 @@ locals {
     display_name          = "pagoPA - session wallet token pagoPA for IO APP"
     description           = "API session wallet token pagoPA for IO APP"
     path                  = "session-wallet"
-    subscription_required = true
+    subscription_required = false
     service_url           = null
   }
 }
@@ -65,6 +93,8 @@ module "apim_session_wallet_api_v1" {
   })
 
   xml_content = templatefile("./api/session-wallet/v1/_base_policy.xml.tpl", {
-    hostname = null
+    hostname             = null
+    io_backend_base_path = var.io_backend_base_path
+    pdv_api_base_path    = var.pdv_api_base_path
   })
 }
