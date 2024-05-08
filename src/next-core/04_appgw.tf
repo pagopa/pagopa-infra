@@ -108,6 +108,7 @@ module "app_gw_integration" {
       port               = 443
       ssl_profile_name   = format("%s-ssl-profile", local.product_region)
       firewall_policy_id = null
+      type               = "Private"
 
       certificate = {
         name = var.app_gateway_api_certificate_name
@@ -125,6 +126,8 @@ module "app_gw_integration" {
       port               = 443
       ssl_profile_name   = format("%s-ssl-profile", local.product_region)
       firewall_policy_id = null
+      type               = "Private"
+
 
       certificate = {
         name = var.app_gateway_portal_certificate_name
@@ -142,6 +145,8 @@ module "app_gw_integration" {
       port               = 443
       ssl_profile_name   = format("%s-ssl-profile", local.product_region)
       firewall_policy_id = null
+      type               = "Private"
+
 
       certificate = {
         name = var.app_gateway_management_certificate_name

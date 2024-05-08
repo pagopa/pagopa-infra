@@ -67,9 +67,14 @@ locals {
     },
     {
       name = "fdr_insert"
-      indexes = [{
-        keys   = ["_id"] # reporting_flow_name
-        unique = true
+      indexes = [
+        {
+          keys   = ["_id"] # reporting_flow_name
+          unique = true
+        },
+        {
+          keys   = ["fdr", "revision"] # reporting_flow_name revision
+          unique = true
         }
       ]
       shard_key = null
@@ -81,8 +86,8 @@ locals {
         unique = true
         },
         {
-          keys   = ["revision"] # reporting_flow_name revision
-          unique = false
+          keys   = ["fdr", "revision"] # reporting_flow_name revision
+          unique = true
         }
       ]
       shard_key = null
