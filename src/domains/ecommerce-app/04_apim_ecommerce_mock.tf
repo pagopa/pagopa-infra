@@ -205,7 +205,7 @@ locals {
     display_name          = "ecommerce pagoPA - GEC mock"
     description           = "API to support integration testing"
     path                  = "ecommerce/mock/gec"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }
@@ -431,7 +431,7 @@ locals {
     display_name          = "ecommerce pagoPA - Node Forwarder mock"
     description           = "API to support integration testing"
     path                  = "ecommerce/mock/node-forwader"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
     enabled               = var.env_short == "u" ? 1 : 0
   }
