@@ -1,3 +1,4 @@
+
 resource "azurerm_key_vault_key" "generated" {
   name         = "${local.product}-${var.domain}-sops-key"
   key_vault_id = module.key_vault.id
@@ -39,6 +40,7 @@ locals {
   all_secrets_value = concat(local.all_config_secrets_value, local.all_enc_secrets_value)
 }
 
+## SOPS secrets
 
 ## Upload all encrypted secrets
 resource "azurerm_key_vault_secret" "secret" {
@@ -55,3 +57,4 @@ resource "azurerm_key_vault_secret" "secret" {
   ]
 }
 
+# ⚠️ The secrets from resources are set in printit-app to avoid circular dependency
