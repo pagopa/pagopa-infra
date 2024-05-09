@@ -102,3 +102,29 @@ resource "azurerm_storage_management_policy" "st_blob_receipts_management_policy
   }
 
 }
+
+
+
+
+resource "azurerm_user_assigned_identity" "identity_blob_storage_pdf" {
+  resource_group_name = data.azurerm_resource_group.identity_rg.name
+  location            = data.azurerm_resource_group.identity_rg.location
+  name                = "${local.project}-service"
+
+  tags = var.tags
+}
+
+resource "azurerm_role_assignment" "role_blob_storage_pdf" {
+  principal_id = azurerm_user_assigned_identity.identity_blob_storage_pdf.principal_id
+  scope        = module.notices_sa[0].id
+
+  role_definition_name = "Storage Blob Data Contributor"
+}
+
+resource "azurerm_key_vault_secret" "blob_storage_pdf_client_id" {
+  name         = "blob-storage-pdf-client-id"
+  value        = azurerm_user_assigned_identity.identity_blob_storage_pdf.client_id
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
