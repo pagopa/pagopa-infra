@@ -195,6 +195,8 @@ resource "azurerm_api_management_api_policy" "apim_ecommerce_pdv_mock_policy" {
 }
 
 
+
+
 ##############################
 ## API Mock GEC V1          ##
 ##############################
