@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v2.13.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.11.0"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -110,7 +110,7 @@ resource "azurerm_key_vault_access_policy" "azdevops_pipe_policy" {
 # create json letsencrypt inside kv
 # requierd: Docker
 module "letsencrypt_receipt" {
-  source = "git::https://github.com/pagopa/azurerm.git//letsencrypt_credential?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//letsencrypt_credential?ref=v8.11.0"
 
   prefix            = var.prefix
   env               = var.env_short
