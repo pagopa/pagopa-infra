@@ -3,7 +3,7 @@
         <base />
         <!-- start validation policy -->
         <set-variable name="orderId" value="@(context.Request.MatchedParameters["orderId"])" />
-        <set-variable name="blueDeploymentPrefix" value="@( context.Request..Url.Query.GetValueOrDefault("deployment","green").Contains("blue") ? "/beta" : "" )" />
+        <set-variable name="blueDeploymentPrefix" value="@(context.Request.Url.Query.GetValueOrDefault("deployment","green").Contains("blue") ? "/beta" : "" )" />
         <validate-jwt query-parameter-name="sessionToken" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="jwtToken">
         <issuer-signing-keys>
             <key>{{npg-notification-jwt-secret}}</key>
