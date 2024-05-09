@@ -273,7 +273,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "apim_ecommerce_npg_mock_api" {
-  count               = var.env_short != "p" ? 1 : 0
+  count               = var.env_short == "u" ? 1 : 0
   name                = "${local.project}-npg-mock"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -282,7 +282,7 @@ resource "azurerm_api_management_api_version_set" "apim_ecommerce_npg_mock_api" 
 }
 
 resource "azurerm_api_management_api" "apim_ecommerce_npg_mock" {
-  count = var.env_short != "p" ? 1 : 0
+  count = var.env_short == "u" ? 1 : 0
 
   name                  = "${local.project}-npg-mock"
   api_management_name   = local.pagopa_apim_name
@@ -307,7 +307,7 @@ resource "azurerm_api_management_api" "apim_ecommerce_npg_mock" {
 }
 
 resource "azurerm_api_management_product_api" "apim_ecommerce_npg_mock_product_api" {
-  count               = var.env_short != "p" ? 1 : 0
+  count               = var.env_short == "u" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_ecommerce_npg_mock[0].name
   product_id          = module.apim_ecommerce_product.product_id
   resource_group_name = local.pagopa_apim_rg
@@ -315,7 +315,7 @@ resource "azurerm_api_management_product_api" "apim_ecommerce_npg_mock_product_a
 }
 
 resource "azurerm_api_management_api_policy" "apim_ecommerce_npg_mock_policy" {
-  count               = var.env_short != "p" ? 1 : 0
+  count               = var.env_short == "u" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_ecommerce_npg_mock[0].name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -324,7 +324,7 @@ resource "azurerm_api_management_api_policy" "apim_ecommerce_npg_mock_policy" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "post_orders_build" {
-  count               = var.env_short != "p" ? 1 : 0
+  count               = var.env_short == "u" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_ecommerce_npg_mock[0].name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -334,7 +334,7 @@ resource "azurerm_api_management_api_operation_policy" "post_orders_build" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "confirm_payment" {
-  count               = var.env_short != "p" ? 1 : 0
+  count               = var.env_short == "u" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_ecommerce_npg_mock[0].name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -344,7 +344,7 @@ resource "azurerm_api_management_api_operation_policy" "confirm_payment" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_state" {
-  count               = var.env_short != "p" ? 1 : 0
+  count               = var.env_short == "u" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_ecommerce_npg_mock[0].name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -354,7 +354,7 @@ resource "azurerm_api_management_api_operation_policy" "get_state" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_card_data" {
-  count               = var.env_short != "p" ? 1 : 0
+  count               = var.env_short == "u" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_ecommerce_npg_mock[0].name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -364,7 +364,7 @@ resource "azurerm_api_management_api_operation_policy" "get_card_data" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "refund_payment" {
-  count               = var.env_short != "p" ? 1 : 0
+  count               = var.env_short == "u" ? 1 : 0
   api_name            = azurerm_api_management_api.apim_ecommerce_npg_mock[0].name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
