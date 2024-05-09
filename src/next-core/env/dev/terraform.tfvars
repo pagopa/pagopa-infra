@@ -620,6 +620,26 @@ eventhubs_04 = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "dismissione-wisp-paaInviaRT"
+    partitions        = 1
+    message_retention = 7
+    consumers         = ["dismissione-wisp-paaInviaRT-rx"]
+    keys = [
+      {
+        name   = "dismissione-wisp-paaInviaRT-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "dismissione-wisp-paaInviaRT-rx" # paaInviaRT-agent
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 

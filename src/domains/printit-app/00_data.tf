@@ -1,3 +1,11 @@
+
+data "azurerm_eventhub_authorization_rule" "notices_evt_authorization_rule" {
+  name                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-notice-evt-rx"
+  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-evenhub-rg"
+  eventhub_name       = "${var.prefix}-${var.domain}-evh"
+  namespace_name      = "${var.prefix}-${var.env_short}-${var.location_short}-core-evh-meucci"
+}
+
 data "azurerm_cosmosdb_account" "notices_cosmos_account" {
   name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-cosmos-account"
   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-db-rg"
@@ -18,7 +26,7 @@ data "azurerm_storage_account" "institutions_storage_sa" {
   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-rg"
 }
 
-data "azurerm_application_insights" "application_insights" {
-  name                = "pagopa-${var.env_short}-appinsights"
-  resource_group_name = var.monitor_resource_group_name
+data "azurerm_api_management" "apim" {
+  name                = "${var.prefix}-${var.env_short}-apim"
+  resource_group_name = "${var.prefix}-${var.env_short}-api-rg"
 }

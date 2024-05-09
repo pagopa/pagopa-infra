@@ -37,6 +37,9 @@ tls_cert_check_helm = {
   image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
 
-cidr_subnet_pdf_engine_app_service = ["10.3.5.0/24"]
+cidr_subnet_pdf_engine_app_service = ["10.3.11.0/27"]
 
-pdf_engine_app_ha_enabled = false
+
+is_feature_enabled = {
+  pdf_engine = true
+}
