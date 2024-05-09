@@ -3,8 +3,9 @@
 ##############
 
 module "apim_mock_psp_service_product" {
-  count  = var.mock_psp_service_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  count = var.mock_psp_service_enabled ? 1 : 0
+
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.10.0"
 
   product_id   = "product-mock-psp-service"
   display_name = "product-mock-psp-service"
@@ -32,7 +33,7 @@ resource "azurerm_api_management_api_version_set" "mock_psp_service_api" {
 
 module "apim_mock_psp_service_api" {
   count  = var.mock_psp_service_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.11.0"
 
   name                  = format("%s-mock-psp-service-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
@@ -65,7 +66,7 @@ module "apim_mock_psp_service_api" {
 
 module "apim_mock_psp_service_product_secondary" {
   count  = var.mock_psp_secondary_service_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.11.0"
 
   product_id   = "product-secondary-mock-psp-service"
   display_name = "product-secondary-mock-psp-service"
@@ -93,7 +94,7 @@ resource "azurerm_api_management_api_version_set" "mock_psp_service_api_secondar
 
 module "apim_mock_psp_service_api_secondary" {
   count  = var.mock_psp_secondary_service_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.11.0"
 
   name                  = format("%s-secondary-mock-psp-service-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
