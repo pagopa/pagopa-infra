@@ -88,7 +88,6 @@
 | [azurerm_api_management_api_policy.apim_ecommerce_npg_notifications_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_ecommerce_pdv_mock_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_version_set.apim_ecommerce_gec_mock_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.apim_ecommerce_gec_mock_api_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_ecommerce_nodo_mock_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_ecommerce_nodo_per_pm_mock_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_ecommerce_npg_mock_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
