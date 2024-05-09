@@ -23,7 +23,6 @@ is_feature_enabled = {
   vpn                       = true,
   dns_forwarder_lb          = true
   postgres_private_dns      = true
-  appservice_subnet         = true
 }
 
 ### Network Italy
@@ -33,11 +32,9 @@ cidr_aks_system      = ["10.3.1.0/24"] #see aks-leonardo
 cidr_aks_user        = ["10.3.2.0/24"] #see aks-leonardo
 cidr_eventhubs_italy = ["10.3.4.0/24"]
 
-
 cidr_cosmosdb_wallet_italy         = ["10.3.8.0/24"]  #placeholder
 cird_redis_wallet_italy            = ["10.3.9.0/24"]  #placeholder
 cidr_storage_wallet_italy          = ["10.3.10.0/24"] #placeholder
-cidr_subnet_pdf_engine_app_service = ["10.3.11.0/27"] #placeholder
 
 cird_printit_domain = ["10.3.12.0/24"] #placeholder for domain printit
 
@@ -124,3 +121,11 @@ ehns_metric_alerts = {
 #
 container_registry_sku                     = "Basic"
 container_registry_zone_redundancy_enabled = false
+
+#
+# Monitoring
+#
+law_sku                    = "PerGB2018"
+law_retention_in_days      = 30
+law_daily_quota_gb         = 10
+law_internet_query_enabled = true

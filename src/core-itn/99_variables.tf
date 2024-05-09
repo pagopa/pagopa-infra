@@ -130,6 +130,26 @@ variable "log_analytics_workspace_resource_group_name" {
   description = "The name of the resource group in which the Log Analytics workspace is located in."
 }
 
+variable "law_sku" {
+  type        = string
+  description = "Sku of the Log Analytics Workspace"
+}
+
+variable "law_retention_in_days" {
+  type        = number
+  description = "The workspace data retention in days"
+}
+
+variable "law_daily_quota_gb" {
+  type        = number
+  description = "The workspace daily quota for ingestion in GB."
+}
+
+variable "law_internet_query_enabled" {
+  type        = bool
+  description = "Should the Log Analytics Workspace support querying over the Public Internet? Defaults to true."
+}
+
 # DNS
 # variable "external_domain" {
 #   type        = string
