@@ -777,7 +777,8 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
 
 ## monitor ##
 module "monitor" {
-  source              = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.11.0"
+
   name                = format("%s-monitor", var.env_short)
   api_management_name = module.apimv2.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
