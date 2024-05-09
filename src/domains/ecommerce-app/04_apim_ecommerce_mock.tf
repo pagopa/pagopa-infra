@@ -371,15 +371,3 @@ resource "azurerm_api_management_api_policy" "apim_ecommerce_redirect_mock_polic
 
   xml_content = file("./api/ecommerce-mock/redirect/v1/_base_policy.xml.tpl")
 }
-
-resource "azurerm_key_vault_secret" "ecommerce_redirect_mock_mapping_uris" {
-  count        = local.apim_ecommerce_redirect_mock_api.enabled
-  key_vault_id = data.azurerm_key_vault.kv.id
-  name         = "redirect-mock-url-mapping"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
