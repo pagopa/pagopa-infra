@@ -256,3 +256,9 @@ variable "container_registry_zone_redundancy_enabled" {
   description = "Enabled AZ for container registry"
 }
 
+# pdf-engine
+variable "cidr_subnet_pdf_engine_app_service" {
+  type        = list(string)
+  description = "CIDR subnet for App Service"
+  default     = null
+}

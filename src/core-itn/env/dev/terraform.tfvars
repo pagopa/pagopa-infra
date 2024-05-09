@@ -32,9 +32,12 @@ cidr_aks_system      = ["10.3.1.0/24"] #see aks-leonardo
 cidr_aks_user        = ["10.3.2.0/24"] #see aks-leonardo
 cidr_eventhubs_italy = ["10.3.4.0/24"]
 
-cidr_cosmosdb_wallet_italy = ["10.3.8.0/24"]  #placeholder
-cird_redis_wallet_italy    = ["10.3.9.0/24"]  #placeholder
-cidr_storage_wallet_italy  = ["10.3.10.0/24"] #placeholder
+cidr_cosmosdb_wallet_italy         = ["10.3.8.0/24"]  #placeholder
+cird_redis_wallet_italy            = ["10.3.9.0/24"]  #placeholder
+cidr_storage_wallet_italy          = ["10.3.10.0/24"] #placeholder
+
+cird_printit_domain = ["10.3.12.0/24"] #placeholder for domain printit
+
 
 cidr_subnet_tools_cae = ["10.3.252.0/23"]
 

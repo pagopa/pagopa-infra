@@ -31,7 +31,7 @@ locals {
 
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY                  = data.azurerm_application_insights.application_insights.instrumentation_key
-    APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", data.azurerm_application_insights.application_insights.instrumentation_key)
+    APPLICATIONINSIGHTS_CONNECTION_STRING           = "InstrumentationKey=${data.azurerm_application_insights.application_insights.instrumentation_key}"
     APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
     APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
     APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""
@@ -42,14 +42,12 @@ locals {
     XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled"
     XDT_MicrosoftApplicationInsights_Mode           = "recommended"
     XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
     TIMEOUT_DELAY                                   = 300
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
     WEBSITE_RUN_FROM_PACKAGE                        = "1"
-    WEBSITE_VNET_ROUTE_ALL                          = "1"
-    WEBSITE_DNS_SERVER                              = "168.63.129.16"
-    WEBSITE_ENABLE_SYNC_UPDATE_SITE                 = true
+    #     WEBSITE_VNET_ROUTE_ALL                          = "1"
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE = true
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 3000
@@ -84,14 +82,12 @@ locals {
     XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled"
     XDT_MicrosoftApplicationInsights_Mode           = "recommended"
     XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
     TIMEOUT_DELAY                                   = 300
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
     WEBSITE_RUN_FROM_PACKAGE                        = "1"
-    WEBSITE_VNET_ROUTE_ALL                          = "1"
-    WEBSITE_DNS_SERVER                              = "168.63.129.16"
-    WEBSITE_ENABLE_SYNC_UPDATE_SITE                 = true
+    #     WEBSITE_VNET_ROUTE_ALL                          = "1"
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE = true
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 80
@@ -121,7 +117,7 @@ locals {
     OTEL_TRACES_SAMPLER               = "always_on"
     JAVA_TOOL_OPTIONS                 = "-javaagent:/home/site/wwwroot/jmx_prometheus_javaagent-0.19.0.jar=12345:/home/site/wwwroot/config.yaml -javaagent:/home/site/wwwroot/opentelemetry-javaagent.jar"
     OTEL_EXPORTER_OTLP_HEADERS        = data.azurerm_key_vault_secret.elastic_otel_token_header.value
-    #     PDF_ENGINE_NODE_SUBKEY            = data.azurerm_key_vault_secret.pdf_engine_node_subkey.value
+    PDF_ENGINE_NODE_SUBKEY            = can(azurerm_api_management_subscription.pdf_engine_node_subkey[0].primary_key) ? azurerm_api_management_subscription.pdf_engine_node_subkey[0].primary_key : ""
 
   }
 
