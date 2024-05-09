@@ -7,10 +7,16 @@ data "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
 }
 
+data "azurerm_key_vault" "key_vault" {
+  name                = "${local.product}-${var.location_short}-${var.domain}-kv"
+  resource_group_name = "${local.product}-${var.location_short}-${var.domain}-sec-rg"
+}
+
 # repos must be lower than 20 items
 locals {
   repos_01 = [
-    "pagopa-shared-toolbox",
+    "pagopa-print-payment-notice-service",
+    "pagopa-print-payment-notice-generator",
   ]
 
   federations_01 = [
@@ -23,22 +29,22 @@ locals {
   # to avoid subscription Contributor -> https://github.com/microsoft/azure-container-apps/issues/35
   environment_cd_roles = {
     subscription = [
-      "Contributor"
+      "Contributor",
     ]
     resource_groups = {
-      "${local.product}-${var.domain}-sec-rg" = [
+      "${local.product}-${var.location_short}-${var.domain}-sec-rg" = [
         "Key Vault Reader"
       ],
       "${local.product}-${var.location_short}-${var.env}-aks-rg" = [
         "Contributor"
-      ]
+      ],
     }
   }
 }
 
 # create a module for each 20 repos
 module "identity_cd_01" {
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.60.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.9.1"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short
@@ -62,14 +68,16 @@ module "identity_cd_01" {
 
 
 resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.identity_cd_01.identity_principal_id
 
   secret_permissions = ["Get", "List", "Set", ]
 
   certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"]
+  key_permissions = [
+    "Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"
+  ]
 
   storage_permissions = []
 }
