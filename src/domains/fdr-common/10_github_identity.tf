@@ -79,6 +79,7 @@ module "identity_cd_01" {
 
 # create a module for each 20 repos
 module "identity_ci_01" {
+  count  = var.env_short == "p" ? 0 : 1
   source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.45.0"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
@@ -135,9 +136,10 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
 }
 
 resource "null_resource" "github_runner_app_permissions_to_namespace_ci_01" {
+  count  = var.env_short == "p" ? 0 : 1
   triggers = {
     aks_id               = data.azurerm_kubernetes_cluster.aks.id
-    service_principal_id = module.identity_ci_01.identity_client_id
+    service_principal_id = module.identity_ci_01[0].identity_client_id
     namespace            = var.domain
     version              = "v2"
   }
