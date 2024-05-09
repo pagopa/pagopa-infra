@@ -10,6 +10,9 @@ locals {
   vnet_core_name                = "${local.product}-vnet"
   vnet_core_resource_group_name = "${local.product}-vnet-rg"
 
+  vnet_name                = "${var.prefix}-${var.env_short}-${var.location_short}-vnet"
+  vnet_resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-vnet-rg"
+
   msg_resource_group_name      = "${local.product}-msg-rg"
   eventhub_resource_group_name = "${local.product_ita}-evenhub-rg"
 

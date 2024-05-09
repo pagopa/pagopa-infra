@@ -108,26 +108,6 @@ variable "cidr_eventhubs_italy" {
   description = "Address prefixes for all evenhubs in italy."
 }
 
-variable "cidr_cosmosdb_italy" {
-  type        = list(string)
-  description = "Address prefixes for all cosmosdb in italy."
-}
-
-variable "cidr_storage_italy" {
-  type        = list(string)
-  description = "Address prefixes for all storage accounts in italy."
-}
-
-variable "cird_redis_italy" {
-  type        = list(string)
-  description = "Address prefixes for all redis accounts in italy."
-}
-
-variable "cird_postgresql_italy" {
-  type        = list(string)
-  description = "Address prefixes for all postgresql accounts in italy."
-}
-
 variable "cidr_subnet_tools_cae" {
   type        = list(string)
   description = "Address prefixes for container apps Tools in italy."
@@ -148,6 +128,26 @@ variable "log_analytics_workspace_name" {
 variable "log_analytics_workspace_resource_group_name" {
   type        = string
   description = "The name of the resource group in which the Log Analytics workspace is located in."
+}
+
+variable "law_sku" {
+  type        = string
+  description = "Sku of the Log Analytics Workspace"
+}
+
+variable "law_retention_in_days" {
+  type        = number
+  description = "The workspace data retention in days"
+}
+
+variable "law_daily_quota_gb" {
+  type        = number
+  description = "The workspace daily quota for ingestion in GB."
+}
+
+variable "law_internet_query_enabled" {
+  type        = bool
+  description = "Should the Log Analytics Workspace support querying over the Public Internet? Defaults to true."
 }
 
 # DNS
@@ -256,3 +256,9 @@ variable "container_registry_zone_redundancy_enabled" {
   description = "Enabled AZ for container registry"
 }
 
+# pdf-engine
+variable "cidr_subnet_pdf_engine_app_service" {
+  type        = list(string)
+  description = "CIDR subnet for App Service"
+  default     = null
+}
