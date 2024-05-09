@@ -146,7 +146,7 @@ variable "law_daily_quota_gb" {
 }
 
 variable "law_internet_query_enabled" {
-  type = bool
+  type        = bool
   description = "Should the Log Analytics Workspace support querying over the Public Internet? Defaults to true."
 }
 

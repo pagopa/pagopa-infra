@@ -28,9 +28,9 @@ is_feature_enabled = {
 ### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]
 
-cidr_aks_system       = ["10.3.1.0/24"] #see aks-leonardo
-cidr_aks_user         = ["10.3.2.0/24"] #see aks-leonardo
-cidr_eventhubs_italy  = ["10.3.4.0/24"]
+cidr_aks_system      = ["10.3.1.0/24"] #see aks-leonardo
+cidr_aks_user        = ["10.3.2.0/24"] #see aks-leonardo
+cidr_eventhubs_italy = ["10.3.4.0/24"]
 
 cidr_cosmosdb_wallet_italy = ["10.3.8.0/24"]  #placeholder
 cird_redis_wallet_italy    = ["10.3.9.0/24"]  #placeholder
@@ -122,7 +122,7 @@ container_registry_zone_redundancy_enabled = false
 #
 # Monitoring
 #
-law_sku = "PerGB2018"
-law_retention_in_days = 30
-law_daily_quota_gb = 10
+law_sku                    = "PerGB2018"
+law_retention_in_days      = 30
+law_daily_quota_gb         = 10
 law_internet_query_enabled = true
