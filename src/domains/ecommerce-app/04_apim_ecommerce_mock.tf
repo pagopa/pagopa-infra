@@ -195,8 +195,10 @@ resource "azurerm_api_management_api_policy" "apim_ecommerce_pdv_mock_policy" {
 }
 
 
+
+
 ##############################
-## API Mock GEC             ##
+## API Mock GEC V1          ##
 ##############################
 locals {
   apim_ecommerce_gec_mock_api = {
@@ -208,23 +210,23 @@ locals {
   }
 }
 
-resource "azurerm_api_management_api_version_set" "apim_ecommerce_gec_mock_api" {
+resource "azurerm_api_management_api_version_set" "apim_ecommerce_gec_mock_api_v1" {
   count               = var.env_short == "u" ? 1 : 0
-  name                = "${local.project}-gec-mock"
+  name                = "${local.project}-gec-mock-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_ecommerce_gec_mock_api.display_name
   versioning_scheme   = "Segment"
 }
 
-resource "azurerm_api_management_api" "apim_ecommerce_gec_mock" {
+resource "azurerm_api_management_api" "apim_ecommerce_gec_mock_v1" {
   count = var.env_short == "u" ? 1 : 0
 
   name                  = "${local.project}-gec-mock"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   subscription_required = local.apim_ecommerce_gec_mock_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.apim_ecommerce_gec_mock_api[0].id
+  version_set_id        = azurerm_api_management_api_version_set.apim_ecommerce_gec_mock_api_v1[0].id
   version               = "v1"
   revision              = "1"
 
@@ -242,21 +244,69 @@ resource "azurerm_api_management_api" "apim_ecommerce_gec_mock" {
   }
 }
 
-resource "azurerm_api_management_product_api" "apim_ecommerce_gec_mock_product_api" {
+resource "azurerm_api_management_product_api" "apim_ecommerce_gec_mock_product_api_v1" {
   count               = var.env_short == "u" ? 1 : 0
-  api_name            = azurerm_api_management_api.apim_ecommerce_gec_mock[0].name
+  api_name            = azurerm_api_management_api.apim_ecommerce_gec_mock_v1[0].name
   product_id          = module.apim_ecommerce_product.product_id
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 }
 
-resource "azurerm_api_management_api_policy" "apim_ecommerce_gec_mock_policy" {
+resource "azurerm_api_management_api_policy" "apim_ecommerce_gec_mock_policy_v1" {
   count               = var.env_short == "u" ? 1 : 0
-  api_name            = azurerm_api_management_api.apim_ecommerce_gec_mock[0].name
+  api_name            = azurerm_api_management_api.apim_ecommerce_gec_mock_v1[0].name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
   xml_content = file("./api/ecommerce-mock/gec/v1/_base_policy.xml.tpl")
+}
+
+
+##############################
+## API Mock GEC V2          ##
+##############################
+
+resource "azurerm_api_management_api" "apim_ecommerce_gec_mock_v2" {
+  count = var.env_short == "u" ? 1 : 0
+
+  name                  = "${local.project}-gec-mock-v2"
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  subscription_required = local.apim_ecommerce_gec_mock_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.apim_ecommerce_gec_mock_api_v1[0].id
+  version               = "v2"
+  revision              = "1"
+
+  description  = local.apim_ecommerce_gec_mock_api.description
+  display_name = local.apim_ecommerce_gec_mock_api.display_name
+  path         = local.apim_ecommerce_gec_mock_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_ecommerce_gec_mock_api.service_url
+
+  import {
+    content_format = "openapi"
+    content_value = templatefile("./api/ecommerce-mock/gec/v2/_openapi.json.tpl", {
+      host    = local.apim_hostname,
+      service = local.apim_ecommerce_gec_mock_api.display_name
+    })
+  }
+}
+
+resource "azurerm_api_management_product_api" "apim_ecommerce_gec_mock_product_api_v2" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_gec_mock_v2[0].name
+  product_id          = module.apim_ecommerce_product.product_id
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+}
+
+resource "azurerm_api_management_api_policy" "apim_ecommerce_gec_mock_policy_v2" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_gec_mock_v2[0].name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  xml_content = file("./api/ecommerce-mock/gec/v2/_base_policy.xml.tpl")
 }
 
 ##############################
