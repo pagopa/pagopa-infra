@@ -21,7 +21,17 @@ is_feature_enabled = {
   storage_institutions = true
   storage_notice       = true
   storage_templates    = true
+  eventhub             = true
 }
+
+### CIRDs
+
+cidr_printit_cosmosdb_italy   = ["10.3.12.0/27"]
+cidr_printit_storage_italy    = ["10.3.12.32/27"]
+cidr_printit_redis_italy      = ["10.3.12.64/27"]
+cidr_printit_postgresql_italy = ["10.3.12.96/27"]
+cidr_printit_pdf_engine_italy = ["10.3.12.128/27"]
+
 
 ### External resources
 
@@ -116,7 +126,10 @@ eventhubs = [
     name              = "payment-notice-evt"
     partitions        = 1
     message_retention = 1
-    consumers         = ["pagopa-notice-evt-rx", "pagopa-notice-complete-evt-rx", "pagopa-notice-error-evt-rx"]
+    consumers = [
+      "pagopa-notice-evt-rx", "pagopa-notice-complete-evt-rx",
+      "pagopa-notice-error-evt-rx"
+    ]
     keys = [
       {
         name   = "pagopa-notice-evt-rx"
