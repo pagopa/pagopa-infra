@@ -1,0 +1,22 @@
+name: Release
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "CODEOWNERS"
+      - "**.md"
+      - ".**"
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release action
+        uses: pagopa/eng-github-actions-iac-template/global/release-action@release-action@6b8192a09750c44dde5a9a8d9ed72648547071c5 # v1.14.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
