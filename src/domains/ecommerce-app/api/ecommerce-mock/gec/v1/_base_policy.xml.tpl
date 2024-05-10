@@ -139,6 +139,22 @@
                             "idBrokerPsp": "00799960158",
                             "onUs": false,
                             "abi": "03069"
+                        },
+                        {
+                            "taxPayerFee": 100,
+                            "primaryCiIncurredFee": 0,
+                            "paymentMethod": "{{context.Variables["calculateFeePaymentMethod"]}}",
+                            "touchpoint": "CHECKOUT",
+                            "idBundle": "21813904-945b-4db0-b50b-10cf838111ae",
+                            "bundleName": "Pagamento con Carte",
+                            "pspBusinessName": "Pagamento con carte",
+                            "bundleDescription": "Clienti e non delle Banche del Gruppo Intesa Sanpaolo possono disporre pagamenti con carte di pagamento VISA-MASTERCARD",
+                            "idCiBundle": null,
+                            "idPsp": "POSOIT22XXX",
+                            "idChannel": "00799960158_10",
+                            "idBrokerPsp": "00799960158",
+                            "onUs": false,
+                            "abi": "03069"
                         }
                     ]
                 }

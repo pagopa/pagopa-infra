@@ -154,7 +154,24 @@
                             "abi": "03069",
                             "pspBusinessName": "Intesa Sanpaolo",
                             "fees": []
-                        }
+                        },
+                        {
+                          "taxPayerFee": 150,
+                          "actualPayerFee": 150,
+                          "paymentMethod": "{{context.Variables["calculateFeePaymentMethod"]}}",
+                          "touchpoint": "CHECKOUT",
+                          "idBundle": "21813904-945b-4db0-b50b-10cf838111ae",
+                          "bundleName": "PagaCPERRATO",
+                          "bundleDescription": "Il servizio consente di pagare da AppIO e CheckOut pagoPa ai titolari di Postepay senza necessariamente inserire i dati della carta.",
+                          "idsCiBundle": [],
+                          "idPsp": "POSOIT22XXX",
+                          "idChannel": "06874351007_08",
+                          "idBrokerPsp": "06874351007",
+                          "onUs": false,
+                          "abi": "36081",
+                          "pspBusinessName": "PagaCPERRATO",
+                          "fees": []
+                      },
                     ]
                 }
           </set-body>
