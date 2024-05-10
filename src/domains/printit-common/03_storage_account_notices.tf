@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "printit_rg" {
-  name     = "${local.project}-rg"
+  name     = "${local.project}-pdf-rg"
   location = var.location
 
   tags = var.tags
@@ -9,7 +9,7 @@ module "notices_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.9.1"
   count  = var.is_feature_enabled.storage_notice ? 1 : 0
 
-  name                            = replace("${var.domain}-notices", "-", "")
+  name                            = replace("${var.prefix}-${var.domain}-notices", "-", "")
   account_kind                    = var.notices_storage_account.account_kind
   account_tier                    = var.notices_storage_account.account_tier
   account_replication_type        = var.notices_storage_account.account_replication_type
