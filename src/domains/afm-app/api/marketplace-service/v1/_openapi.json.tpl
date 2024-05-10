@@ -4,7 +4,7 @@
     "title": "Marketplace API for PagoPA AFM",
     "description": "marketplace-be",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.13.3"
+    "version": "0.15.7"
   },
   "servers": [
     {
@@ -28,7 +28,7 @@
         "tags": [
           "CI"
         ],
-        "summary": "Get bundles by type",
+        "summary": "Get paginated list of bundles",
         "operationId": "getGlobalBundles",
         "parameters": [
           {
@@ -45,13 +45,13 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number. Page number value starts from 0. Default = 1",
+            "description": "Page number. Page number value starts from 0. Default = 0",
             "required": false,
             "schema": {
               "minimum": 0,
               "type": "integer",
               "format": "int32",
-              "default": 1
+              "default": 0
             }
           },
           {
@@ -72,6 +72,15 @@
               "default": [
                 "GLOBAL"
               ]
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Bundle name.",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -219,6 +228,24 @@
               "type": "integer",
               "format": "int32",
               "default": 1
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Filtering the ciBundles by type",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pspBusinessName",
+            "in": "query",
+            "description": "Filtering the ciBundles by pspBusinessName of the corresponding bundle",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1771,6 +1798,17 @@
               }
             }
           },
+          "409": {
+            "description": "Conflict",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Too many requests",
             "headers": {
@@ -2532,6 +2570,35 @@
             }
           },
           {
+            "name": "types",
+            "in": "query",
+            "description": "Bundle type. Default = GLOBAL",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "GLOBAL",
+                  "PUBLIC",
+                  "PRIVATE"
+                ]
+              },
+              "default": [
+                "GLOBAL"
+              ]
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Bundle name.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "limit",
             "in": "query",
             "description": "Number of items for page. Default = 50",
@@ -2545,13 +2612,13 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number. Page number value starts from 0. Default = 1",
+            "description": "Page number. Page number value starts from 0. Default = 0",
             "required": false,
             "schema": {
               "minimum": 0,
               "type": "integer",
               "format": "int32",
-              "default": 1
+              "default": 0
             }
           }
         ],
@@ -3334,6 +3401,40 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "ciFiscalCode",
+            "in": "query",
+            "description": "CI fiscal code",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items for page",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number. Page number value starts from 0",
+            "required": false,
+            "schema": {
+              "maximum": 10000,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
           }
         ],
         "responses": {
@@ -3350,7 +3451,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CiFiscalCodeList"
+                  "$ref": "#/components/schemas/BundleCreditorInstitutionResource"
                 }
               }
             }
@@ -3639,7 +3740,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CiFiscalCodeList"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BundleOffered"
+                  }
                 }
               }
             }
@@ -3781,11 +3885,7 @@
               }
             },
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CiFiscalCodeList"
-                }
-              }
+              "application/json": {}
             }
           },
           "400": {
@@ -4046,9 +4146,10 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "Number of items for page. Default = 50",
+            "description": "Number of items for page",
             "required": false,
             "schema": {
+              "maximum": 100,
               "type": "integer",
               "format": "int32",
               "default": 50
@@ -4057,29 +4158,29 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number. Page number value starts from 0. Default = 1",
+            "description": "Page number. Page number value starts from 0",
             "required": false,
             "schema": {
+              "maximum": 10000,
               "minimum": 0,
               "type": "integer",
               "format": "int32",
-              "default": 1
-            }
-          },
-          {
-            "name": "cursor",
-            "in": "query",
-            "description": "Cursor",
-            "required": false,
-            "schema": {
-              "minimum": 0,
-              "type": "string"
+              "default": 0
             }
           },
           {
             "name": "ciFiscalCode",
             "in": "query",
             "description": "Filter by creditor institution",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idBundle",
+            "in": "query",
+            "description": "Filter by bundle id",
             "required": false,
             "schema": {
               "type": "string"
@@ -4965,6 +5066,9 @@
           "pspBusinessName": {
             "type": "string"
           },
+          "urlPolicyPsp": {
+            "type": "string"
+          },
           "description": {
             "type": "string"
           },
@@ -5096,6 +5200,17 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "BundleOffered": {
+        "type": "object",
+        "properties": {
+          "ciFiscalCode": {
+            "type": "string"
+          },
+          "idBundleOffer": {
+            "type": "string"
           }
         }
       },
@@ -5400,8 +5515,31 @@
           "digitalStampRestriction": {
             "type": "boolean"
           },
+          "pspBusinessName": {
+            "type": "string"
+          },
+          "urlPolicyPsp": {
+            "type": "string"
+          },
           "idBundle": {
             "type": "string"
+          }
+        }
+      },
+      "BundleCreditorInstitutionResource": {
+        "required": [
+          "pageInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "ciTaxCodeList": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pageInfo": {
+            "$ref": "#/components/schemas/PageInfo"
           }
         }
       },
@@ -5725,6 +5863,12 @@
           },
           "digitalStampRestriction": {
             "type": "boolean"
+          },
+          "pspBusinessName": {
+            "type": "string"
+          },
+          "urlPolicyPsp": {
+            "type": "string"
           },
           "idPsp": {
             "type": "string"
