@@ -70,3 +70,8 @@ cidr_subnet_pdf_engine_app_service = ["10.1.187.0/24"]
 
 robots_indexed_paths      = []
 pdf_engine_app_ha_enabled = true
+
+// wallet session token
+io_backend_base_path = "http://{{aks-lb-nexi}}/pmmockservice/pmmockserviceapi"
+pdv_api_base_path    = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
+
