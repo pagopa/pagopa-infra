@@ -6,22 +6,21 @@ resource "azurerm_resource_group" "printit_rg" {
 }
 
 module "notices_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.9.1"
   count  = var.is_feature_enabled.storage_notice ? 1 : 0
 
-  name                                       = replace("${var.domain}-notices", "-", "")
-  account_kind                               = var.notices_storage_account.account_kind
-  account_tier                               = var.notices_storage_account.account_tier
-  account_replication_type                   = var.notices_storage_account.account_replication_type
-  access_tier                                = "Hot"
-  blob_versioning_enabled                    = var.notices_storage_account.blob_versioning_enabled
-  resource_group_name                        = azurerm_resource_group.printit_rg.name
-  location                                   = var.location
-  advanced_threat_protection                 = var.notices_storage_account.advanced_threat_protection
-  enable_resource_advanced_threat_protection = var.institutions_storage_account.advanced_threat_protection
-  allow_nested_items_to_be_public            = false
-  public_network_access_enabled              = var.notices_storage_account.public_network_access_enabled
-  enable_low_availability_alert              = var.notices_storage_account.enable_low_availability_alert
+  name                            = replace("${var.domain}-notices", "-", "")
+  account_kind                    = var.notices_storage_account.account_kind
+  account_tier                    = var.notices_storage_account.account_tier
+  account_replication_type        = var.notices_storage_account.account_replication_type
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = var.notices_storage_account.blob_versioning_enabled
+  resource_group_name             = azurerm_resource_group.printit_rg.name
+  location                        = var.location
+  advanced_threat_protection      = var.notices_storage_account.advanced_threat_protection
+  allow_nested_items_to_be_public = false
+  public_network_access_enabled   = var.notices_storage_account.public_network_access_enabled
+  enable_low_availability_alert   = var.notices_storage_account.enable_low_availability_alert
 
   blob_delete_retention_days = var.notices_storage_account.blob_delete_retention_days
 
@@ -43,7 +42,7 @@ resource "azurerm_private_endpoint" "notices_blob_private_endpoint" {
   name                = "${local.project}-blob-private-endpoint"
   location            = var.location
   resource_group_name = azurerm_resource_group.printit_rg.name
-  subnet_id           = data.azurerm_subnet.storage_subnet.id
+  subnet_id           = azurerm_subnet.cidr_storage_italy.id
 
   private_dns_zone_group {
     name                 = "${local.project}-blob-sa-private-dns-zone-group"
