@@ -1,11 +1,14 @@
 <policies>
   <inbound>
     <base />
+      <set-variable name="calculateFeeRequest" value="@((JObject)context.Request.Body.As<JObject>(true))" />
+      <set-variable name="calculateFeePaymentMethod" value="@((string)((JObject)context.Variables["calculateFeeRequest"])["paymentMethod"])" />
       <return-response>
           <set-status code="200" reason="OK" />
           <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
           </set-header>
+         
           <set-body template="liquid">
                 {
                     "belowThreshold": false,
@@ -13,7 +16,7 @@
                         {
                             "taxPayerFee": 150,
                             "actualPayerFee": 150,
-                            "paymentMethod": "CP",
+                            "paymentMethod": "{{context.Variables["calculateFeePaymentMethod"]}}",
                             "touchpoint": "CHECKOUT",
                             "idBundle": "fd399270-ef0b-40fe-badc-ba7905c852a8",
                             "bundleName": "PagaCPERRATO",
@@ -30,7 +33,7 @@
                         {
                             "taxPayerFee": 150,
                             "actualPayerFee": 150,
-                            "paymentMethod": "CP",
+                            "paymentMethod": "{{context.Variables["calculateFeePaymentMethod"]}}",
                             "touchpoint": "CHECKOUT",
                             "idBundle": "f0c9a2b6-bbb4-4681-bcdf-692a538d9af1",
                             "bundleName": "Paga con Postepay",
@@ -47,7 +50,7 @@
                         {
                             "taxPayerFee": 150,
                             "actualPayerFee": 150,
-                            "paymentMethod": "CP",
+                            "paymentMethod": "{{context.Variables["calculateFeePaymentMethod"]}}",
                             "touchpoint": "CHECKOUT",
                             "idBundle": "63794fc3-295d-4bd8-9f94-30f0831b58f9",
                             "bundleName": "Carta di credito",
@@ -65,7 +68,7 @@
                         {
                             "taxPayerFee": 100,
                             "actualPayerFee": 100,
-                            "paymentMethod": "CP",
+                            "paymentMethod": "{{context.Variables["calculateFeePaymentMethod"]}}",
                             "touchpoint": "CHECKOUT",
                             "idBundle": "7e9110cd-15c7-48a5-be4f-864684d78181",
                             "bundleName": "Pagamento con carta",
@@ -83,7 +86,7 @@
                         {
                             "taxPayerFee": 95,
                             "actualPayerFee": 95,
-                            "paymentMethod": "CP",
+                            "paymentMethod": "{{context.Variables["calculateFeePaymentMethod"]}}",
                             "touchpoint": "CHECKOUT",
                             "idBundle": "abfc6624-4526-4ae0-9e5c-c90ae63799ef",
                             "bundleName": "Pagamento con carte",
@@ -101,7 +104,7 @@
                         {
                             "taxPayerFee": 130,
                             "actualPayerFee": 130,
-                            "paymentMethod": "CP",
+                            "paymentMethod": "{{context.Variables["calculateFeePaymentMethod"]}}",
                             "touchpoint": "CHECKOUT",
                             "idBundle": "be76edc6-61d2-45c8-a1e8-a33f594501e2",
                             "bundleName": "Pagamento con carte",
@@ -119,7 +122,7 @@
                         {
                             "taxPayerFee": 90,
                             "actualPayerFee": 90,
-                            "paymentMethod": "CP",
+                            "paymentMethod": "{{context.Variables["calculateFeePaymentMethod"]}}",
                             "touchpoint": "CHECKOUT",
                             "idBundle": "55dce031-6a32-4990-970e-6effa0693f7c",
                             "bundleName": "Pagamento con carte",
@@ -137,7 +140,7 @@
                         {
                             "taxPayerFee": 100,
                             "actualPayerFee": 100,
-                            "paymentMethod": "CP",
+                            "paymentMethod": "{{context.Variables["calculateFeePaymentMethod"]}}",
                             "touchpoint": "CHECKOUT",
                             "idBundle": "537a3bd6-2770-44a7-a737-d06e1e05cc8c",
                             "bundleName": "Pagamento con Carte",
