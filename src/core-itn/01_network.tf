@@ -37,7 +37,7 @@ module "vnet_ita_peering" {
   target_virtual_network_name      = data.azurerm_virtual_network.vnet_core.name
   target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_core.id
   target_allow_gateway_transit     = true
-  target_allow_forwarded_traffic    = true
+  target_allow_forwarded_traffic   = true
 }
 
 module "vnet_ita_to_integration_peering" {
@@ -54,7 +54,7 @@ module "vnet_ita_to_integration_peering" {
   target_virtual_network_name      = data.azurerm_virtual_network.vnet_integration.name
   target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_integration.id
   target_allow_gateway_transit     = false
-  target_allow_forwarded_traffic    = true
+  target_allow_forwarded_traffic   = true
 }
 
 #
