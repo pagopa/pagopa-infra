@@ -11,13 +11,6 @@ locals {
   }
 }
 
-#fetch technical support api product APIM product
-data "azurerm_api_management_product" "technical_support_api_product" {
-  product_id          = "technical_support_api"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-}
-
 resource "azurerm_api_management_api_version_set" "api_config_iban_technical_support_api" {
 
   name                = format("%s-api-config-iban-service-technical-support-api", var.env_short)
