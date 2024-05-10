@@ -40,6 +40,23 @@ module "vnet_ita_peering" {
   target_allow_forwarded_traffic    = true
 }
 
+module "vnet_ita_to_integration_peering" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.77.0"
+  count  = var.is_feature_enabled.vnet_ita ? 1 : 0
+
+  source_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
+  source_virtual_network_name      = module.vnet_italy[0].name
+  source_remote_virtual_network_id = module.vnet_italy[0].id
+  source_use_remote_gateways       = false
+  source_allow_forwarded_traffic   = true
+
+  target_resource_group_name       = data.azurerm_resource_group.rg_vnet_integration.name
+  target_virtual_network_name      = data.azurerm_virtual_network.vnet_integration.name
+  target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_integration.id
+  target_allow_gateway_transit     = false
+  target_allow_forwarded_traffic    = true
+}
+
 #
 # AKS
 #
