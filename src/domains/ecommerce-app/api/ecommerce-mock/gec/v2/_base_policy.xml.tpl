@@ -171,7 +171,7 @@
                           "abi": "36081",
                           "pspBusinessName": "PagaCPERRATO",
                           "fees": []
-                      },
+                      }
                     ]
                 }
           </set-body>
