@@ -17,6 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Release action
-        uses: pagopa/eng-github-actions-iac-template/global/release-action@release-action@6b8192a09750c44dde5a9a8d9ed72648547071c5 # v1.14.1
+        uses: pagopa/eng-github-actions-iac-template/global/release-action@457f7ae4b537ae395dd0ccac9df1c27bb472e953 # v1.13.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
