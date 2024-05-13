@@ -13,6 +13,10 @@ jobs:
     - name: ⚡ Checkout code
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
+    - uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: "1.6.6"
+
     - name: 🏁 Init terraform folders
       id: init_terraform_folders
       shell: bash
@@ -46,7 +50,7 @@ jobs:
         for f in $FOLDERS; do
           pushd "$(pwd)/${f}"
             sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            TF_PLUGIN_CACHE_DIR=${{ runner.temp }}/.terraform.d/plugin-cache docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
+            terraform init &
             pids+=($!)
             break
           popd
