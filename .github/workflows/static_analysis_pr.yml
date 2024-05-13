@@ -17,7 +17,7 @@ jobs:
       id: init_terraform_folders
       shell: bash
       env:
-        TF_PLUGIN_CACHE_DIR: "$HOME/.terraform.d/plugin-cache"
+        TF_PLUGIN_CACHE_DIR: "/tmp/.terraform.d/plugin-cache"
       run: |
 
         echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
@@ -46,7 +46,7 @@ jobs:
         for f in $FOLDERS; do
           pushd "$(pwd)/${f}"
             sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache" docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
+            TF_PLUGIN_CACHE_DIR="/tmp/.terraform.d/plugin-cache" docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
             pids+=($!)
             break
           popd
