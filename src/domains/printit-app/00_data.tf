@@ -12,18 +12,18 @@ data "azurerm_cosmosdb_account" "notices_cosmos_account" {
 }
 
 data "azurerm_storage_account" "notices_storage_sa" {
-  name                = replace("${var.domain}-notices", "-", "")
-  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-rg"
+  name                = replace("${var.prefix}-${var.domain}-notices", "-", "")
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-pdf-rg"
 }
 
 data "azurerm_storage_account" "templates_storage_sa" {
-  name                = replace("${var.domain}-templates", "-", "")
-  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-rg"
+  name                = replace("${var.prefix}-${var.domain}-templates", "-", "")
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-pdf-rg"
 }
 
 data "azurerm_storage_account" "institutions_storage_sa" {
-  name                = replace("${var.domain}-institutions", "-", "")
-  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-rg"
+  name                = replace("${var.prefix}-${var.domain}-ci", "-", "")
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-pdf-rg"
 }
 
 data "azurerm_api_management" "apim" {

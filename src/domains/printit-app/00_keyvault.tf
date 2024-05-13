@@ -28,10 +28,9 @@ resource "azurerm_key_vault_secret" "aks_apiserver_url" {
 
 ## Manual secrets
 
-
 resource "azurerm_key_vault_secret" "application_insights_connection_string" {
   name         = "app-insight-connection-string"
-  value        = data.azurerm_application_insights.application_insights.connection_string
+  value        = data.azurerm_application_insights.application_insights_italy.connection_string
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
@@ -56,7 +55,7 @@ resource "azurerm_key_vault_secret" "notices_storage_account_connection_string" 
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
-#
+
 resource "azurerm_key_vault_secret" "notices_storage_account_pkey" {
   name         = "notices-storage-account-pkey"
   value        = data.azurerm_storage_account.notices_storage_sa.primary_access_key
@@ -105,7 +104,6 @@ resource "azurerm_key_vault_secret" "ehub_notice_jaas_config" {
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
-
 
 resource "azurerm_key_vault_secret" "pdf_engine_node_subkey_secret" {
   count        = var.is_feature_enabled.pdf_engine ? 1 : 0
