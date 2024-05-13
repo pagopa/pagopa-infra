@@ -10,25 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🏁 Init terraform folders
-        id: init_terraform_folders
-        shell: bash
-        env:
-          TF_PLUGIN_CACHE_DIR: "$HOME/.terraform.d/plugin-cache"
-        run: |
-
-          echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
-          echo    "+ 🔨 CREATE CACHE FOLDER         +"
-          echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-\n"
-
-          mkdir -p ${TF_PLUGIN_CACHE_DIR}
-
-          ls -la ${TF_PLUGIN_CACHE_DIR}
-
-          echo "📢 Show space"
-          df -h
-          du -h ${TF_PLUGIN_CACHE_DIR}
-#      - name: 🤔 PR Static Analysis v1
-#        uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@fix-space-limit # v1.14.1
-#        with:
-#          precommit_version: 'v1.89.1@sha256:1ea921bc4fe87651d41677218e537afdcdb8202e757e554b9866668eaba144c5'
+#      - name: 🏁 Init terraform folders
+#        id: init_terraform_folders
+#        shell: bash
+#        env:
+#          TF_PLUGIN_CACHE_DIR: "$HOME/.terraform.d/plugin-cache"
+#        run: |
+#
+#          echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
+#          echo    "+ 🔨 CREATE CACHE FOLDER         +"
+#          echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-\n"
+#
+#          mkdir -p ${TF_PLUGIN_CACHE_DIR}
+#
+#          ls -la ${TF_PLUGIN_CACHE_DIR}
+#
+#          echo "📢 Show space"
+#          df -h
+#          du -h ${TF_PLUGIN_CACHE_DIR}
+      - name: 🤔 PR Static Analysis v1
+        uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@fix-space-limit # v1.14.1
+        with:
+          precommit_version: 'v1.89.1@sha256:1ea921bc4fe87651d41677218e537afdcdb8202e757e554b9866668eaba144c5'
