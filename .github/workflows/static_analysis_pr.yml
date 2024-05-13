@@ -92,5 +92,7 @@ jobs:
         echo    "+- 🚨 PRECOMMIT TERRAFORM 🚨 -+"
         echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
 
+        export TF_PLUGIN_CACHE_DIR="${{ runner.temp }}/.terraform.d/plugin-cache"
+
         TAG=v1.89.1
         docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a

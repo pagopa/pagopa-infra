@@ -16,6 +16,7 @@ repos:
           - --init-args=-lockfile=readonly
           - --args=-json
           - --args=-no-color
+          - --hook-config=--retry-once-with-cleanup=true 
       # - id: terraform_providers_lock
       #   args:
       #     - --args=-platform=windows_amd64
