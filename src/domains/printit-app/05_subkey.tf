@@ -8,7 +8,6 @@ resource "azurerm_api_management_subscription" "pdf_engine_node_subkey" {
   display_name        = "PDF Engine NodeJS for Java"
   allow_tracing       = false
   state               = "active"
-
 }
 
 resource "azurerm_api_management_subscription" "generator_for_service_subkey" {
@@ -20,5 +19,4 @@ resource "azurerm_api_management_subscription" "generator_for_service_subkey" {
   display_name        = "Notice Generator for Notice Service"
   allow_tracing       = false
   state               = "active"
-
 }

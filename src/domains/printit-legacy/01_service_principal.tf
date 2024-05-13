@@ -12,6 +12,12 @@ resource "azurerm_role_assignment" "pdf_generator" {
   principal_id         = azuread_service_principal.pdf_generator.object_id
 }
 
+resource "azurerm_role_assignment" "pdf_generator_delegator_role" {
+  scope                = data.azurerm_storage_account.notifications.id
+  role_definition_name = "Storage Blob Delegator"
+  principal_id         = azuread_service_principal.pdf_generator.object_id
+}
+
 resource "time_rotating" "pdf_generator_application" {
   rotation_days = 300
 }
