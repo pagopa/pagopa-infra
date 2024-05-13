@@ -207,6 +207,32 @@ resource "azurerm_key_vault_secret" "migration_wallet_token_test_dev" {
   }
 }
 
+resource "azurerm_key_vault_secret" "wallet_migration_api_key_test_dev" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "wallet-migration-api-key-test-dev"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "wallet_migration_cstar_api_key_test_dev" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "wallet-migration-cstar-api-key-test-dev"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 resource "azurerm_key_vault_secret" "wallet_storage_connection_string" {
   name         = "wallet-storage-connection-string"
   value        = module.pay_wallet_storage[0].primary_connection_string
