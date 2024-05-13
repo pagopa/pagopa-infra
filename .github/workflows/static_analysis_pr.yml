@@ -67,7 +67,7 @@ jobs:
           wait "$pid"
         done
 
-        echo "📢 Show space 2"
+        echo "📢 Show space 3"
         df -h
         ls -la /tmp
         du -h ${TF_PLUGIN_CACHE_DIR}
