@@ -1,18 +1,17 @@
 locals {
-  apim_notices_service_pagopa_api = {
-    display_name = "Payment Notices Service Product pagoPA"
-    description  = "API for Payment Notices"
+  apim_notices_generator_pagopa_api = {
+    display_name = "Payment Notices Generator Product pagoPA"
+    description  = "API for Payment Notices Generator"
   }
 }
 
-
-module "apim_notices_service_product" {
+module "apim_notices_generator_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.5.0"
   count  = var.is_feature_enabled.printit ? 1 : 0
 
-  product_id   = "pagoa_notices_service"
-  display_name = local.apim_notices_service_pagopa_api.display_name
-  description  = local.apim_notices_service_pagopa_api.description
+  product_id   = "pagoa_notices_generator"
+  display_name = local.apim_notices_generator_pagopa_api.display_name
+  description  = local.apim_notices_generator_pagopa_api.description
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
