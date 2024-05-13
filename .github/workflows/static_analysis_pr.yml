@@ -16,20 +16,20 @@ jobs:
     - name: 🏁 Init terraform folders
       id: init_terraform_folders
       shell: bash
-      env:
-        TF_PLUGIN_CACHE_DIR: "/tmp/.terraform.d/plugin-cache"
       run: |
 
         echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
         echo    "+ 🔨 CREATE CACHE FOLDER         +"
         echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-\n"
 
+        export TF_PLUGIN_CACHE_DIR="${{ runner.temp }}/.terraform.d/plugin-cache"
         mkdir -p ${TF_PLUGIN_CACHE_DIR}
+        ls -la ${TF_PLUGIN_CACHE_DIR}
+        printenv
 
         echo "📢 Show space"
         df -h
         du -h ${TF_PLUGIN_CACHE_DIR}
-        printenv
 
         echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
         echo    "+ 🏁 INIT TERRAFORM FOLDERS 🏁   +"
@@ -46,7 +46,7 @@ jobs:
         for f in $FOLDERS; do
           pushd "$(pwd)/${f}"
             sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            TF_PLUGIN_CACHE_DIR="/tmp/.terraform.d/plugin-cache" docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
+            docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
             pids+=($!)
             break
           popd
@@ -69,7 +69,7 @@ jobs:
 
         echo "📢 Show space 3"
         df -h
-        ls -la /tmp
+        ls -la ${{ runner.temp }}
         du -h ${TF_PLUGIN_CACHE_DIR}
 
     - name: Show precommit version
