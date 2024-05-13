@@ -7,13 +7,13 @@ resource "azuread_service_principal" "pdf_generator" {
 }
 
 resource "azurerm_role_assignment" "pdf_generator" {
-  scope                = data.azurerm_storage_account.notifications.id
+  scope                = data.azurerm_storage_account.notices.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = azuread_service_principal.pdf_generator.object_id
 }
 
 resource "azurerm_role_assignment" "pdf_generator_delegator_role" {
-  scope                = data.azurerm_storage_account.notifications.id
+  scope                = data.azurerm_storage_account.notices.id
   role_definition_name = "Storage Blob Delegator"
   principal_id         = azuread_service_principal.pdf_generator.object_id
 }
