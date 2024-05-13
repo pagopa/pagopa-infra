@@ -67,8 +67,9 @@ jobs:
           wait "$pid"
         done
 
-        echo "📢 Show space"
+        echo "📢 Show space 2"
         df -h
+        ls -la $HOME
         du -h ${TF_PLUGIN_CACHE_DIR}
 
     - name: Show precommit version
