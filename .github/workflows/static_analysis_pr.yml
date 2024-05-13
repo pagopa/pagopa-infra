@@ -69,7 +69,7 @@ jobs:
 
         echo "📢 Show space 2"
         df -h
-        ls -la $HOME
+        ls -la /tmp
         du -h ${TF_PLUGIN_CACHE_DIR}
 
     - name: Show precommit version
