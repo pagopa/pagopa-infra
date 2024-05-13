@@ -123,6 +123,8 @@ variable "receipts_datastore_cosmos_db_params" {
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
     container_default_ttl             = number
+    max_throughput                    = number
+    max_throughput_alt                = number
   })
 }
 
@@ -215,6 +217,13 @@ variable "receipts_queue_delay_sec" {
   type        = number
   description = "The length of time during which the message will be invisible, starting when it is added to the queue."
   default     = 3600
+}
+
+
+variable "receipts_storage_account_replication_type" {
+  type        = string
+  default     = "LRS"
+  description = "(Optional) Receipts datastore storage account replication type"
 }
 
 

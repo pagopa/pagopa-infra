@@ -58,6 +58,7 @@ cosmos_mongo_db_params = {
 
 cidr_subnet_cosmosdb_wallet = ["10.1.169.0/24"]
 cidr_subnet_redis_wallet    = ["10.1.174.0/24"]
+cidr_subnet_storage_wallet  = ["10.1.175.0/24"]
 
 cosmos_mongo_db_wallet_params = {
   enable_serverless  = false
@@ -67,10 +68,21 @@ cosmos_mongo_db_wallet_params = {
 }
 
 redis_wallet_params = {
-  capacity = 0
-  sku_name = "Standard"
-  family   = "C"
+  capacity = 1
+  sku_name = "Premium"
+  family   = "P"
   version  = 6
+  zones    = [1, 2, 3]
 }
 
 enable_iac_pipeline = true
+
+wallet_storage_params = {
+  enabled                       = true
+  tier                          = "Standard"
+  kind                          = "StorageV2"
+  account_replication_type      = "GZRS",
+  advanced_threat_protection    = true,
+  retention_days                = 7,
+  public_network_access_enabled = false,
+}

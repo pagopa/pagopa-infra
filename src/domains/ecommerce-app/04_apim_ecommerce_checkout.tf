@@ -135,7 +135,6 @@ resource "azurerm_api_management_api_operation_policy" "transaction_authorizatio
   xml_content = templatefile("./api/ecommerce-checkout/v1/_auth_request.xml.tpl", {
     ecommerce_xpay_psps_list = var.ecommerce_xpay_psps_list
     ecommerce_vpos_psps_list = var.ecommerce_vpos_psps_list
-    ecommerce_npg_psps_list  = var.ecommerce_npg_psps_list
   })
 }
 
@@ -206,4 +205,13 @@ resource "azurerm_api_management_api_operation_policy" "transaction_activation_r
   operation_id        = "newTransaction"
 
   xml_content = file("./api/ecommerce-checkout/v2/_transaction_policy.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_fees_v2" {
+  api_name            = "${local.project}-ecommerce-checkout-api-v2"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "calculateFees"
+
+  xml_content = file("./api/ecommerce-checkout/v2/_validate_transactions_jwt_token.tpl")
 }

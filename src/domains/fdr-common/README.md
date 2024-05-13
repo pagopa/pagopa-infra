@@ -1,12 +1,13 @@
 # apiconfig-common
 
+<!-- markdownlint-disable -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.30.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | = 3.45.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.45.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | = 3.1.1 |
 
 ## Modules
@@ -20,8 +21,11 @@
 | <a name="module_cosmosdb_fdr_snet"></a> [cosmosdb\_fdr\_snet](#module\_cosmosdb\_fdr\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.1 |
 | <a name="module_fdr_conversion_sa"></a> [fdr\_conversion\_sa](#module\_fdr\_conversion\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 | <a name="module_fdr_flows_sa"></a> [fdr\_flows\_sa](#module\_fdr\_flows\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.17.0 |
+| <a name="module_fdr_history_sa"></a> [fdr\_history\_sa](#module\_fdr\_history\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 | <a name="module_fdr_re_sa"></a> [fdr\_re\_sa](#module\_fdr\_re\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 | <a name="module_fdr_storage_snet"></a> [fdr\_storage\_snet](#module\_fdr\_storage\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.7.0 |
+| <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v7.45.0 |
+| <a name="module_identity_ci_01"></a> [identity\_ci\_01](#module\_identity\_ci\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v7.45.0 |
 | <a name="module_postgres_flexible_server_fdr"></a> [postgres\_flexible\_server\_fdr](#module\_postgres\_flexible\_server\_fdr) | git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server | v7.23.0 |
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.2.1 |
 | <a name="module_postgres_flexible_snet_replica"></a> [postgres\_flexible\_snet\_replica](#module\_postgres\_flexible\_snet\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.2.1 |
@@ -31,64 +35,76 @@
 
 | Name | Type |
 |------|------|
-| [azurerm_cosmosdb_mongo_database.fdr](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/cosmosdb_mongo_database) | resource |
-| [azurerm_cosmosdb_mongo_database.fdr_re](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/cosmosdb_mongo_database) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.fdr_parsing_0_flows_alert](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_default_pool_size](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/postgresql_flexible_server_configuration) | resource |
-| [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_ignore_startup_parameters](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/postgresql_flexible_server_configuration) | resource |
-| [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_max_connection](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/postgresql_flexible_server_configuration) | resource |
-| [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_min_pool_size](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/postgresql_flexible_server_configuration) | resource |
-| [azurerm_postgresql_flexible_server_database.fdr_db](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/postgresql_flexible_server_database) | resource |
-| [azurerm_postgresql_flexible_server_database.fdr_replica_db](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/postgresql_flexible_server_database) | resource |
-| [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/private_dns_a_record) | resource |
-| [azurerm_private_endpoint.fdr_blob_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.fdr_queue_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.fdr_re_blob_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.fdr_re_table_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/private_endpoint) | resource |
-| [azurerm_private_endpoint.fdr_table_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/private_endpoint) | resource |
-| [azurerm_resource_group.data](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.db_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.fdr_re_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.fdr_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/resource_group) | resource |
-| [azurerm_role_assignment.data_contributor_role](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/role_assignment) | resource |
-| [azurerm_storage_container.fdr_rend_flow](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/storage_container) | resource |
-| [azurerm_storage_container.fdr_rend_flow_out](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/storage_container) | resource |
-| [azurerm_storage_container.payload_blob_file](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/storage_container) | resource |
-| [azurerm_storage_container.xml_blob_file](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/storage_container) | resource |
-| [azurerm_storage_management_policy.storage_account_fdr_management_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/storage_management_policy) | resource |
-| [azurerm_storage_queue.flow_id_send_queue](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/storage_queue) | resource |
-| [azurerm_storage_table.fdr_re_table](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/storage_table) | resource |
-| [azurerm_storage_table.xml_share_file_error_table](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/resources/storage_table) | resource |
+| [azurerm_cosmosdb_mongo_database.fdr](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
+| [azurerm_cosmosdb_mongo_database.fdr_re](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
+| [azurerm_key_vault_secret.fdr-re-tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.fdr_history_storage_account_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.fdr_mongodb_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.fdr_re_mongodb_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.fdr_re_storage_account_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.fdr_storage_account_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.fdr_parsing_0_flows_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_default_pool_size](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
+| [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_ignore_startup_parameters](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
+| [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_max_connection](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
+| [azurerm_postgresql_flexible_server_configuration.fdr_db_flex_min_pool_size](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_configuration) | resource |
+| [azurerm_postgresql_flexible_server_database.fdr_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_database) | resource |
+| [azurerm_postgresql_flexible_server_database.fdr_replica_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_database) | resource |
+| [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
+| [azurerm_private_endpoint.fdr_blob_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.fdr_history_blob_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.fdr_history_table_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.fdr_queue_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.fdr_re_blob_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.fdr_re_table_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_private_endpoint.fdr_table_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_resource_group.data](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.db_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.fdr_history_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.fdr_re_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.fdr_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_role_assignment.data_contributor_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_storage_container.fdr_history_blob_file](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
+| [azurerm_storage_container.fdr_rend_flow](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
+| [azurerm_storage_container.fdr_rend_flow_out](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
+| [azurerm_storage_container.payload_blob_file](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
+| [azurerm_storage_container.xml_blob_file](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
+| [azurerm_storage_management_policy.storage_account_fdr_management_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
+| [azurerm_storage_queue.flow_id_send_queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
+| [azurerm_storage_table.fdr_payment_publish_history_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
+| [azurerm_storage_table.fdr_publish_history_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
+| [azurerm_storage_table.fdr_re_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
+| [azurerm_storage_table.xml_share_file_error_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [null_resource.change_auth_fdr_blob_container](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
-| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
-| [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/api_management) | data source |
-| [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/application_insights) | data source |
-| [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/client_config) | data source |
-| [azurerm_key_vault.key_vault](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/key_vault) | data source |
-| [azurerm_key_vault_secret.pgres_flex_admin_login](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.pgres_flex_admin_pwd](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_key_vault_secret.slackemail](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/log_analytics_workspace) | data source |
-| [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/monitor_action_group) | data source |
-| [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/monitor_action_group) | data source |
-| [azurerm_private_dns_zone.cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/private_dns_zone) | data source |
-| [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/private_dns_zone) | data source |
-| [azurerm_private_dns_zone.postgres](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/private_dns_zone) | data source |
-| [azurerm_private_dns_zone.privatelink_blob_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/private_dns_zone) | data source |
-| [azurerm_private_dns_zone.privatelink_queue_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/private_dns_zone) | data source |
-| [azurerm_private_dns_zone.privatelink_table_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/private_dns_zone) | data source |
-| [azurerm_resource_group.data_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/resource_group) | data source |
-| [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/resource_group) | data source |
-| [azurerm_resource_group.reporting_fdr_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/resource_group) | data source |
-| [azurerm_resource_group.rg_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/resource_group) | data source |
-| [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/resource_group) | data source |
-| [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/subnet) | data source |
-| [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/subscription) | data source |
-| [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/virtual_network) | data source |
-| [azurerm_virtual_network.vnet_replica](https://registry.terraform.io/providers/hashicorp/azurerm/3.45.0/docs/data-sources/virtual_network) | data source |
+| [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [null_resource.github_runner_app_permissions_to_namespace_ci_01](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
+| [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
+| [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
+| [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns03_fdr-re-fdr-re-tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
+| [azurerm_key_vault.key_vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault_secret.pgres_flex_admin_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.pgres_flex_admin_pwd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.slackemail](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
+| [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
+| [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
+| [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
+| [azurerm_private_dns_zone.cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.postgres](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_blob_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_queue_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.privatelink_table_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_resource_group.identity_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_resource_group.reporting_fdr_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_resource_group.rg_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
+| [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
+| [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
+| [azurerm_virtual_network.vnet_replica](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
 ## Inputs
 
@@ -108,6 +124,7 @@
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_fdr_convertion_delete_retention_days"></a> [fdr\_convertion\_delete\_retention\_days](#input\_fdr\_convertion\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
+| <a name="input_fdr_history_storage_account"></a> [fdr\_history\_storage\_account](#input\_fdr\_history\_storage\_account) | n/a | <pre>object({<br>    account_kind                  = string<br>    account_tier                  = string<br>    account_replication_type      = string<br>    advanced_threat_protection    = bool<br>    blob_versioning_enabled       = bool<br>    public_network_access_enabled = bool<br>    blob_delete_retention_days    = number<br>    enable_low_availability_alert = bool<br>    backup_enabled                = optional(bool, false)<br>    backup_retention              = optional(number, 0)<br>  })</pre> | <pre>{<br>  "account_kind": "StorageV2",<br>  "account_replication_type": "LRS",<br>  "account_tier": "Standard",<br>  "advanced_threat_protection": true,<br>  "backup_enabled": false,<br>  "backup_retention": 0,<br>  "blob_delete_retention_days": 30,<br>  "blob_versioning_enabled": false,<br>  "enable_low_availability_alert": false,<br>  "public_network_access_enabled": false<br>}</pre> | no |
 | <a name="input_fdr_re_advanced_threat_protection"></a> [fdr\_re\_advanced\_threat\_protection](#input\_fdr\_re\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
 | <a name="input_fdr_re_delete_retention_days"></a> [fdr\_re\_delete\_retention\_days](#input\_fdr\_re\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
 | <a name="input_fdr_re_storage_account"></a> [fdr\_re\_storage\_account](#input\_fdr\_re\_storage\_account) | n/a | <pre>object({<br>    account_kind                  = string<br>    account_tier                  = string<br>    account_replication_type      = string<br>    advanced_threat_protection    = bool<br>    blob_versioning_enabled       = bool<br>    public_network_access_enabled = bool<br>    blob_delete_retention_days    = number<br>    enable_low_availability_alert = bool<br>    backup_enabled                = optional(bool, false)<br>    backup_retention              = optional(number, 0)<br>  })</pre> | <pre>{<br>  "account_kind": "StorageV2",<br>  "account_replication_type": "LRS",<br>  "account_tier": "Standard",<br>  "advanced_threat_protection": true,<br>  "backup_enabled": false,<br>  "backup_retention": 0,<br>  "blob_delete_retention_days": 30,<br>  "blob_versioning_enabled": false,<br>  "enable_low_availability_alert": false,<br>  "public_network_access_enabled": false<br>}</pre> | no |
@@ -127,10 +144,11 @@
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_pgres_flex_fdr_db_name"></a> [pgres\_flex\_fdr\_db\_name](#input\_pgres\_flex\_fdr\_db\_name) | FdR DB name | `string` | `"fdr"` | no |
-| <a name="input_pgres_flex_params"></a> [pgres\_flex\_params](#input\_pgres\_flex\_params) | Postgres Flexible | <pre>object({<br>    enabled                                = bool<br>    sku_name                               = string<br>    db_version                             = string<br>    storage_mb                             = string<br>    zone                                   = number<br>    backup_retention_days                  = number<br>    geo_redundant_backup_enabled           = bool<br>    create_mode                            = string<br>    pgres_flex_private_endpoint_enabled    = bool<br>    pgres_flex_ha_enabled                  = bool<br>    pgres_flex_pgbouncer_enabled           = bool<br>    pgres_flex_diagnostic_settings_enabled = bool<br>    max_connections                        = number<br>    pgbouncer_min_pool_size                = number<br>    pgbouncer_default_pool_size            = number<br>  })</pre> | n/a | yes |
+| <a name="input_pgres_flex_params"></a> [pgres\_flex\_params](#input\_pgres\_flex\_params) | Postgres Flexible | <pre>object({<br>    enabled                                = bool<br>    sku_name                               = string<br>    db_version                             = string<br>    storage_mb                             = string<br>    zone                                   = number<br>    standby_zone                           = optional(number, 1)<br>    backup_retention_days                  = number<br>    geo_redundant_backup_enabled           = bool<br>    create_mode                            = string<br>    pgres_flex_private_endpoint_enabled    = bool<br>    pgres_flex_ha_enabled                  = bool<br>    pgres_flex_pgbouncer_enabled           = bool<br>    pgres_flex_diagnostic_settings_enabled = bool<br>    max_connections                        = number<br>    pgbouncer_min_pool_size                = number<br>    pgbouncer_default_pool_size            = number<br>  })</pre> | n/a | yes |
+| <a name="input_postgres_dns_registration_enabled"></a> [postgres\_dns\_registration\_enabled](#input\_postgres\_dns\_registration\_enabled) | (Optional) If true, adds a CNAME record for the database FQDN in the db private dns | `bool` | `false` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_reporting_fdr_blobs_retention_days"></a> [reporting\_fdr\_blobs\_retention\_days](#input\_reporting\_fdr\_blobs\_retention\_days) | The number of day for storage\_management\_policy | `number` | `30` | no |
-| <a name="input_reporting_fdr_storage_account"></a> [reporting\_fdr\_storage\_account](#input\_reporting\_fdr\_storage\_account) | n/a | <pre>object({<br>    advanced_threat_protection = bool<br>    blob_versioning_enabled    = bool<br>    blob_delete_retention_days = number<br>  })</pre> | <pre>{<br>  "advanced_threat_protection": false,<br>  "blob_delete_retention_days": 30,<br>  "blob_versioning_enabled": false<br>}</pre> | no |
+| <a name="input_reporting_fdr_storage_account"></a> [reporting\_fdr\_storage\_account](#input\_reporting\_fdr\_storage\_account) | n/a | <pre>object({<br>    advanced_threat_protection = bool<br>    blob_versioning_enabled    = bool<br>    blob_delete_retention_days = number<br>    account_replication_type   = string<br>  })</pre> | <pre>{<br>  "account_replication_type": "LRS",<br>  "advanced_threat_protection": false,<br>  "blob_delete_retention_days": 30,<br>  "blob_versioning_enabled": false<br>}</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 
 ## Outputs

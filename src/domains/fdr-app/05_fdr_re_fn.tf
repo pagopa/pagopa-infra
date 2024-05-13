@@ -11,6 +11,13 @@ data "azurerm_cosmosdb_mongo_database" "fdr_re" {
 }
 
 # info for event hub
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_fdr-re_fdr-re-rx" {
+  name                = "fdr-re-rx"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
+  eventhub_name       = "fdr-re"
+  resource_group_name = "${local.product}-msg-rg"
+}
+
 data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_fdr-re_fdr-re-rx" {
   name                = "fdr-re-rx"
   namespace_name      = "${local.product}-evh-ns01"
@@ -50,7 +57,7 @@ locals {
     COSMOS_DB_NAME            = data.azurerm_cosmosdb_mongo_database.fdr_re.name
     COSMOS_DB_COLLECTION_NAME = "events"
 
-    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_fdr-re_fdr-re-rx.primary_connection_string
+    EVENTHUB_CONN_STRING = var.enabled_features.eventhub_ha_rx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_fdr-re_fdr-re-rx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_fdr-re_fdr-re-rx.primary_connection_string
 
     TABLE_STORAGE_CONN_STRING = data.azurerm_storage_account.fdr_re_storage_account.primary_connection_string
     TABLE_STORAGE_TABLE_NAME  = "events"
@@ -108,6 +115,8 @@ module "fdr_re_function" {
   }
 
   storage_account_name = replace(format("%s-re-fn-sa", local.project), "-", "")
+
+  storage_account_info = var.storage_account_info
 
   app_settings = local.function_re_to_datastore_app_settings
 

@@ -40,7 +40,7 @@ cosmos_mongo_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
   additional_geo_locations = [{
     location          = "northeurope"
@@ -62,15 +62,17 @@ cidr_subnet_storage_ecommerce  = ["10.1.154.0/24"]
 cosmos_mongo_db_ecommerce_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 1000
+  max_throughput     = 2000
   throughput         = 1000
 }
 
 redis_ecommerce_params = {
-  capacity = 0
-  sku_name = "Standard"
-  family   = "C"
-  version  = 6
+  capacity   = 1
+  sku_name   = "Premium"
+  family     = "P"
+  version    = 6
+  ha_enabled = true
+  zones      = [1, 2, 3]
 }
 
 ecommerce_storage_transient_params = {

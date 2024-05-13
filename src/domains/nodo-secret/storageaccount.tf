@@ -4,7 +4,7 @@ module "nodocerts_sa" {
   name                     = replace("${local.product}-${var.domain}-nodocerts-sa", "-", "") # nodocerts<dev|uat|prod>
   account_kind             = "StorageV2"
   account_tier             = "Standard"
-  account_replication_type = "LRS"
+  account_replication_type = var.certs_storage_account_replication_type
   access_tier              = "Hot"
   blob_versioning_enabled  = var.nodo_cert_storage_account.blob_versioning_enabled
 
@@ -16,7 +16,7 @@ module "nodocerts_sa" {
 
 
   blob_change_feed_enabled             = var.nodo_cert_storage_account.backup_enabled
-  blob_change_feed_retention_in_days   = var.nodo_cert_storage_account.backup_enabled ? var.nodo_cert_storage_account.backup_retention : null
+  blob_change_feed_retention_in_days   = var.nodo_cert_storage_account.backup_enabled ? var.nodo_cert_storage_account.backup_retention + 1 : null
   blob_container_delete_retention_days = var.nodo_cert_storage_account.backup_retention
   blob_storage_policy = {
     enable_immutability_policy = false

@@ -2,8 +2,8 @@ locals {
   pagopa_proxy_config = {
     WEBSITE_NODE_DEFAULT_VERSION = "18.16.0"
     WEBSITE_RUN_FROM_PACKAGE     = "1"
-    WEBSITE_VNET_ROUTE_ALL       = "1"
-    WEBSITE_DNS_SERVER           = "168.63.129.16"
+    #WEBSITE_VNET_ROUTE_ALL       = "1"
+    WEBSITE_DNS_SERVER = "168.63.129.16"
 
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -17,11 +17,12 @@ locals {
     NM3_ENABLED                = true
     NODE_CONNECTIONS_CONFIG    = data.azurerm_key_vault_secret.pagopaproxy_node_clients_config.value
 
-    REDIS_DB_URL      = format("redis://%s", data.azurerm_redis_cache.pagopa_proxy_redis.hostname)
-    REDIS_DB_PORT     = data.azurerm_redis_cache.pagopa_proxy_redis.ssl_port
-    REDIS_DB_PASSWORD = data.azurerm_redis_cache.pagopa_proxy_redis.primary_access_key
+    REDIS_DB_URL      = format("redis://%s", var.redis_ha_enabled ? data.azurerm_redis_cache.pagopa_proxy_redis_ha[0].hostname : data.azurerm_redis_cache.pagopa_proxy_redis.hostname)
+    REDIS_DB_PORT     = var.redis_ha_enabled ? data.azurerm_redis_cache.pagopa_proxy_redis_ha[0].ssl_port : data.azurerm_redis_cache.pagopa_proxy_redis.ssl_port
+    REDIS_DB_PASSWORD = var.redis_ha_enabled ? data.azurerm_redis_cache.pagopa_proxy_redis_ha[0].primary_access_key : data.azurerm_redis_cache.pagopa_proxy_redis.primary_access_key
     REDIS_USE_CLUSTER = false
   }
+  pagopa_proxy_node_version = "18-lts"
 }
 
 data "azurerm_key_vault_secret" "pagopaproxy_node_clients_config" {
@@ -38,8 +39,15 @@ data "azurerm_redis_cache" "pagopa_proxy_redis" {
   resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
 }
 
+data "azurerm_redis_cache" "pagopa_proxy_redis_ha" {
+  count               = var.redis_ha_enabled ? 1 : 0
+  name                = format("%s-pagopa-proxy-redis-ha", local.parent_project)
+  resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
+}
+
+
 module "pagopa_proxy_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.76.1"
 
   depends_on = [
     module.pagopa_proxy_snet
@@ -49,14 +57,13 @@ module "pagopa_proxy_app_service" {
   location            = var.location
 
   # App service plan vars
-  plan_name     = format("%s-plan-pagopa-proxy", local.parent_project)
-  plan_kind     = "Linux"
-  plan_type     = "internal"
-  plan_reserved = true
-  plan_sku_tier = var.pagopa_proxy_tier
-  plan_sku_size = var.pagopa_proxy_size
+  plan_name = format("%s-plan-pagopa-proxy", local.parent_project)
+  plan_type = "internal"
+  sku_name  = var.pagopa_proxy_plan_sku
 
-  linux_fx_version = "NODE|18-lts"
+  node_version = local.pagopa_proxy_node_version
+
+  vnet_integration = var.pagopa_proxy_vnet_integration
 
   # App service plan
   name                = format("%s-app-pagopa-proxy", local.parent_project)
@@ -78,24 +85,27 @@ module "pagopa_proxy_app_service" {
 module "pagopa_proxy_app_service_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v2.0.28"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.76.1"
 
   # App service plan
-  app_service_plan_id = module.pagopa_proxy_app_service.plan_id
-  app_service_id      = module.pagopa_proxy_app_service.id
-  app_service_name    = module.pagopa_proxy_app_service.name
+  #  app_service_plan_id = module.pagopa_proxy_app_service.plan_id
+  app_service_id   = module.pagopa_proxy_app_service.id
+  app_service_name = module.pagopa_proxy_app_service.name
 
   # App service
   name                = "staging"
   resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
   location            = data.azurerm_resource_group.pagopa_proxy_rg.location
 
-  always_on         = true
-  linux_fx_version  = "NODE|18-lts"
+  always_on = true
+  #  linux_fx_version  = "NODE|18-lts"
   health_check_path = "/ping"
+  node_version      = local.pagopa_proxy_node_version
 
   # App settings
   app_settings = local.pagopa_proxy_config
+
+  vnet_integration = var.pagopa_proxy_vnet_integration
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.azdoa_snet.id]
   allowed_ips     = []

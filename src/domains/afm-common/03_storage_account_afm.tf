@@ -16,7 +16,7 @@ module "afm_storage" {
   blob_delete_retention_days = var.afm_storage_params.retention_days
 
   blob_change_feed_enabled             = var.afm_storage_params.enable_backup
-  blob_change_feed_retention_in_days   = var.afm_storage_params.enable_backup ? var.afm_storage_params.backup_retention_days : null
+  blob_change_feed_retention_in_days   = var.afm_storage_params.enable_backup ? var.afm_storage_params.backup_retention_days + 1 : null
   blob_container_delete_retention_days = var.afm_storage_params.backup_retention_days
   blob_storage_policy = {
     enable_immutability_policy = false

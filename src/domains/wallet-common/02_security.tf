@@ -24,10 +24,10 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
 }
 
 ## ad group policy ##
@@ -84,12 +84,6 @@ resource "azurerm_key_vault_secret" "redis_wallet_password" {
   name         = "redis-wallet-password"
   value        = module.pagopa_wallet_redis.primary_access_key
   key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
 
 resource "azurerm_key_vault_secret" "personal-data-vault-api-key" {
@@ -141,6 +135,18 @@ resource "azurerm_key_vault_secret" "mongo_wallet_password" {
   }
 }
 
+resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
+  name         = "elastic-otel-token-header"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 resource "azurerm_key_vault_secret" "npg_service_api_key" {
   name         = "npg-service-api-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
@@ -152,7 +158,7 @@ resource "azurerm_key_vault_secret" "npg_service_api_key" {
     ]
   }
 }
-  
+
 resource "azurerm_key_vault_secret" "wallet-token-test-key" {
   count        = var.env_short != "p" ? 1 : 0
   name         = "wallet-token-test-key"
@@ -164,4 +170,51 @@ resource "azurerm_key_vault_secret" "wallet-token-test-key" {
       value,
     ]
   }
+}
+
+resource "azurerm_key_vault_secret" "paypal_psp_api_key" {
+  name         = "paypal-psp-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "npg_notifications_jwt_secret_key" {
+  name         = "npg-notifications-jwt-secret-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "migration_wallet_token_test_dev" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "migration-wallet-token-test-dev"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "wallet_storage_connection_string" {
+  name         = "wallet-storage-connection-string"
+  value        = module.wallet_storage.primary_connection_string
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "wallet_storage_account_key" {
+  name         = "wallet-storage-account-key"
+  value        = module.wallet_storage.primary_access_key
+  key_vault_id = module.key_vault.id
 }

@@ -1,5 +1,6 @@
 # receipts-app
 
+<!-- markdownlint-disable -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
@@ -16,7 +17,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_apim_api_receipts_api_v1"></a> [apim\_api\_receipts\_api\_v1](#module\_apim\_api\_receipts\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_receipts_datastore_api_v1"></a> [apim\_api\_receipts\_datastore\_api\_v1](#module\_apim\_api\_receipts\_datastore\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
+| <a name="module_apim_api_receipts_helpdesk_api_v1"></a> [apim\_api\_receipts\_helpdesk\_api\_v1](#module\_apim\_api\_receipts\_helpdesk\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
 | <a name="module_apim_receipts_product"></a> [apim\_receipts\_product](#module\_apim\_receipts\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.4.1 |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v6.7.0 |
@@ -26,7 +27,7 @@
 | Name | Type |
 |------|------|
 | [azurerm_api_management_api_version_set.api_receipts_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.api_receipts_datastore_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.api_receipts_helpdesk_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |

@@ -8,13 +8,13 @@ resource "azurerm_resource_group" "checkout_be_rg" {
 
 # Subnet to host checkout function
 module "checkout_function_snet" {
-  count                                          = var.checkout_enabled && var.cidr_subnet_checkout_be != null ? 1 : 0
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
-  name                                           = format("%s-checkout-be-snet", local.parent_project)
-  address_prefixes                               = var.cidr_subnet_checkout_be
-  resource_group_name                            = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  count                                     = var.checkout_enabled && var.cidr_subnet_checkout_be != null ? 1 : 0
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.1"
+  name                                      = format("%s-checkout-be-snet", local.parent_project)
+  address_prefixes                          = var.cidr_subnet_checkout_be
+  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Web",
@@ -29,9 +29,11 @@ module "checkout_function_snet" {
   }
 }
 
+
+
 module "checkout_function" {
   count  = var.checkout_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//function_app?ref=v3.2.5"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.76.1"
 
   resource_group_name = azurerm_resource_group.checkout_be_rg[0].name
   name                = format("%s-fn-checkout", local.parent_project)
@@ -39,8 +41,6 @@ module "checkout_function" {
   health_check_path   = "/info"
   subnet_id           = module.checkout_function_snet[0].id
   runtime_version     = "~4"
-  os_type             = "linux"
-  linux_fx_version    = "NODE|18"
 
   always_on                                = var.checkout_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
@@ -51,7 +51,11 @@ module "checkout_function" {
     sku_tier                     = var.checkout_function_sku_tier
     sku_size                     = var.checkout_function_sku_size
     maximum_elastic_worker_count = 0
+    zone_balancing_enabled       = var.checkout_function_zone_balancing_enabled
+    worker_count                 = var.checkout_function_worker_count
   }
+
+  node_version = "18"
 
   storage_account_name = replace(format("%s-st-fncheckout", local.parent_project), "-", "")
 
@@ -80,13 +84,7 @@ module "checkout_function" {
     PAY_PORTAL_RECAPTCHA_SECRET = data.azurerm_key_vault_secret.google_recaptcha_secret.value
   }
 
-  storage_account_info = {
-    account_kind                      = "StorageV2"
-    account_tier                      = "Standard"
-    account_replication_type          = "LRS"
-    access_tier                       = "Hot"
-    advanced_threat_protection_enable = true
-  }
+  storage_account_info = var.function_app_storage_account_info
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
 
@@ -167,17 +165,17 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "Email Header"
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    email_subject          = "Checkout Availability"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Availability greater than or equal 99%"
+  description    = "Checkout Availability less than 99%"
   enabled        = true
   query = (<<-QUERY
 requests
-    | where url startswith 'https://api.platform.pagopa.it/checkout/' or  url startswith 'https://api.platform.pagopa.it/api/checkout/'
-    | summarize Total=count(), Success=count( (toint(resultCode) >= 200 and toint(resultCode) < 500 or customDimensions['Response-Body'] contains 'detail_v2' ) and duration < 10000) by Time=bin(timestamp,15m)
+    | where url startswith 'https://api.platform.pagopa.it/checkout/' or  url startswith 'https://api.platform.pagopa.it/api/checkout/v1'
+    | summarize Total=count(), Success=count( (toint(resultCode) >= 200 and toint(resultCode) < 500 or customDimensions['Response-Body'] contains 'detail_v2' ) and duration < 10000) by Time=bin(timestamp,5m)
     | extend Availability=((Success*1.0)/Total)*100
     | where toint(Availability) < 99
   QUERY
@@ -186,7 +184,7 @@ requests
   frequency   = 30
   time_window = 30
   trigger {
-    operator  = "GreaterThanOrEqual"
+    operator  = "GreaterThan"
     threshold = 2
   }
 }

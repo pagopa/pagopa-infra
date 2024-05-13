@@ -38,6 +38,7 @@ module "reporting_fdr_function" {
   always_on                                = var.reporting_fdr_function_always_on
   application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
 
+  storage_account_info = var.reporting_fdr_storage_account_info
 
   app_service_plan_info = {
     kind                         = var.reporting_fdr_function_kind

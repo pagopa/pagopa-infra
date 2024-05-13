@@ -2,93 +2,15 @@ name: Static Analysis
 
 on:
   push:
+    branches:
+      - main
 
 jobs:
   static_analysis:
     runs-on: ubuntu-22.04
 
     steps:
-      # from https://github.com/actions/checkout/commits/main
-      - uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
+      - name: Static Analysis
+        uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@59c12b7a846423d62c27c9905686a7a1fd71c003 # v1.7.0
         with:
-          persist-credentials: false
-          fetch-depth: 0
-
-      - name: init_terraform_folders
-        env:
-          FOLDERS: >
-            src/aks-platform
-            src/core
-            src/elk-monitoring
-            src/grafana-monitoring
-            src/next-core
-            src/packer
-            src/domains/aca-app
-            src/domains/aca-common
-            src/domains/afm-app
-            src/domains/afm-common
-            src/domains/apiconfig-app
-            src/domains/apiconfig-common
-            src/domains/bizevents-app
-            src/domains/bizevents-common
-            src/domains/canoneunico
-            src/domains/checkout-app
-            src/domains/checkout-common
-            src/domains/ecommerce-app
-            src/domains/ecommerce-common
-            src/domains/fdr-app
-            src/domains/fdr-common
-            src/domains/fdr-secret
-            src/domains/gps-app
-            src/domains/gps-common
-            src/domains/load-test
-            src/domains/mock-app
-            src/domains/mock-common
-            src/domains/nodo-app
-            src/domains/nodo-common
-            src/domains/nodo-cron
-            src/domains/nodo-secret
-            src/domains/observability
-            src/domains/qi-app
-            src/domains/qi-common
-            src/domains/qi-secrets
-            src/domains/receipts-app
-            src/domains/receipts-common
-            src/domains/selfcare-app
-            src/domains/selfcare-common
-            src/domains/shared-app
-            src/domains/shared-common
-            src/domains/wallet-app
-            src/domains/wallet-common
-        run: |
-          pids=()
-
-          TAG=$(cat .terraform-version)
-          for f in $FOLDERS; do
-            pushd "$(pwd)/${f}"
-              sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-              docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
-              pids+=($!)
-            popd
-
-          done
-
-          # Wait for each specific process to terminate.
-          # Instead of this loop, a single call to 'wait' would wait for all the jobs
-          # to terminate, but it would not give us their exit status.
-          #
-          for pid in "${pids[@]}"; do
-            #
-            # Waiting on a specific PID makes the wait command return with the exit
-            # status of that process. Because of the 'set -e' setting, any exit status
-            # other than zero causes the current shell to terminate with that exit
-            # status as well.
-            #
-            wait "$pid"
-          done
-
-      - name: run_pre_commit_terraform
-        run: |
-          # from https://github.com/antonbabenko/pre-commit-terraform/pkgs/container/pre-commit-terraform
-          TAG=v1.83.5@sha256:fed35dd9347aa3dd3e59a870dbc4500245dae26910d84065a6f66fe61afceaa8
-          docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
+          precommit_version: 'v1.83.5@sha256:fed35dd9347aa3dd3e59a870dbc4500245dae26910d84065a6f66fe61afceaa8'

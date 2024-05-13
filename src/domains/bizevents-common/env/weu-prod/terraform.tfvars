@@ -40,11 +40,11 @@ bizevents_datastore_cosmos_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
   private_endpoint_enabled      = true
-  public_network_access_enabled = false
+  public_network_access_enabled = true
 
   additional_geo_locations = [{
     location          = "northeurope"
@@ -52,11 +52,17 @@ bizevents_datastore_cosmos_db_params = {
     zone_redundant    = false
   }]
 
-  is_virtual_network_filter_enabled = true
+  is_virtual_network_filter_enabled = false
+
+  //set ip_range_filter to allow azure services (0.0.0.0) and azure portal.
+  ip_range_filter = "104.42.195.92,40.76.54.131,52.176.6.30,52.169.50.45,52.187.184.26,0.0.0.0"
 
   backup_continuous_enabled = true
 
   container_default_ttl = 315576000 # 10 year in second
+
+  max_throughput     = 20000
+  max_throughput_alt = 2000
 }
 
 # CosmosDB Negative Biz Events Datastore
@@ -70,7 +76,7 @@ negative_bizevents_datastore_cosmos_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
   private_endpoint_enabled      = true
@@ -87,8 +93,17 @@ negative_bizevents_datastore_cosmos_db_params = {
   backup_continuous_enabled = true
 
   container_default_ttl = 315576000 # 10 year in second
+
+  max_throughput = 2000
 }
 
 cidr_subnet_bizevents_datastore_cosmosdb = ["10.1.156.0/24"]
 
-enable_iac_pipeline = true
+enable_iac_pipeline              = true
+storage_account_replication_type = "GZRS"
+redis_ha_enabled                 = false
+
+enabled_features = {
+  eventhub_ha_tx = false
+  eventhub_ha_rx = false
+}

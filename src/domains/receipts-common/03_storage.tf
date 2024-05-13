@@ -71,7 +71,7 @@ module "receipts_datastore_fn_sa" {
   name                       = replace(format("%s-fn-sa", local.project), "-", "")
   account_kind               = "StorageV2"
   account_tier               = "Standard"
-  account_replication_type   = "LRS"
+  account_replication_type   = var.receipts_storage_account_replication_type
   access_tier                = "Hot"
   blob_versioning_enabled    = var.enable_sa_backup
   resource_group_name        = azurerm_resource_group.st_receipts_rg.name
@@ -88,7 +88,7 @@ module "receipts_datastore_fn_sa" {
 
 
   blob_change_feed_enabled             = var.enable_sa_backup
-  blob_change_feed_retention_in_days   = var.enable_sa_backup ? var.receipts_datastore_fn_sa_backup_retention_days : null
+  blob_change_feed_retention_in_days   = var.enable_sa_backup ? var.receipts_datastore_fn_sa_backup_retention_days + 1 : null
   blob_container_delete_retention_days = var.receipts_datastore_fn_sa_backup_retention_days
   blob_storage_policy = {
     enable_immutability_policy = false

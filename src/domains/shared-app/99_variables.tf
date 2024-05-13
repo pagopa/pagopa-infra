@@ -256,6 +256,12 @@ variable "app_service_pdf_engine_sku_name_java" {
   default     = "S1"
 }
 
+variable "function_app_storage_account_replication_type" {
+  type        = string
+  default     = "ZRS"
+  description = "(Optional) Storage account replication type used for function apps"
+}
+
 variable "pod_disruption_budgets" {
   type = map(object({
     name         = optional(string, null)
@@ -264,4 +270,50 @@ variable "pod_disruption_budgets" {
   }))
   description = "Pod disruption budget for domain namespace"
   default     = {}
+}
+
+variable "pagopa_shared_toolbox_enabled" {
+  type        = bool
+  description = "pagoPA Shared Toolbox enabled"
+  default     = true
+}
+
+variable "cname_record_name" {
+  type    = string
+  default = "shared"
+}
+
+variable "cdn_storage_account_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) Cdn storage account replication type"
+}
+
+variable "pagopa_shared_toolbox_singlepageapp" {
+  type        = list(string)
+  description = "Single Page Applications root directories"
+  default     = ["ui"]
+}
+
+variable "robots_indexed_paths" {
+  type        = list(string)
+  description = "List of cdn paths to allow robots index"
+}
+
+variable "pdf_engine_app_ha_enabled" {
+  type        = bool
+  description = "(Required) enables the deployment of pdf engine in HA mode"
+}
+
+// wallet session token
+variable "io_backend_base_path" {
+  type        = string
+  default     = null
+  description = "io backend api base path"
+}
+
+variable "pdv_api_base_path" {
+  type        = string
+  default     = null
+  description = "Personal data vault api base path"
 }

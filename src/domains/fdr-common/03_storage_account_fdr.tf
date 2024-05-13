@@ -24,7 +24,7 @@ module "fdr_conversion_sa" {
   blob_delete_retention_days = var.fdr_storage_account.blob_delete_retention_days
 
   blob_change_feed_enabled             = var.fdr_storage_account.backup_enabled
-  blob_change_feed_retention_in_days   = var.fdr_storage_account.backup_enabled ? var.fdr_storage_account.backup_retention : null
+  blob_change_feed_retention_in_days   = var.fdr_storage_account.backup_enabled ? var.fdr_storage_account.backup_retention + 1 : null
   blob_container_delete_retention_days = var.fdr_storage_account.backup_retention
   blob_storage_policy = {
     enable_immutability_policy = false

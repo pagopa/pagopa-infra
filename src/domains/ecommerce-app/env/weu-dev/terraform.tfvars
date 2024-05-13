@@ -34,7 +34,10 @@ tls_cert_check_helm = {
 }
 
 ecommerce_xpay_psps_list = "XPAY,IDPSPFNZ,60000000001"
-ecommerce_vpos_psps_list = "BNLIITRR,PSPtest1,CHARITY_AMEX,CHARITY_IDPSPFNZ,CHARITY_ISP,40000000001,DINERS,MARIOGAM,73473473473,PAYTITM1,POSTE1,ProvaCDI,50000000001,70000000001,10000000001,idPsp2,irraggiungibile_wisp,prova_ila_1,pspStress50,pspStress79,pspStress80,pspStress81"
-ecommerce_npg_psps_list  = "BCITITMM,CIPBITMM,BIC36019,UNCRITMM"
+ecommerce_vpos_psps_list = "PSPtest1,CHARITY_AMEX,CHARITY_IDPSPFNZ,CHARITY_ISP,40000000001,DINERS,MARIOGAM,73473473473,PAYTITM1,POSTE1,ProvaCDI,50000000001,70000000001,10000000001,idPsp2,irraggiungibile_wisp,prova_ila_1,pspStress50,pspStress79,pspStress80,pspStress81"
 
 dns_zone_checkout = "dev.checkout"
+
+io_backend_base_path         = "http://{{aks-lb-nexi}}/pmmockservice/pmmockserviceapi"
+ecommerce_io_with_pm_enabled = false
+pdv_api_base_path            = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"

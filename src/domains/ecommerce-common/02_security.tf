@@ -25,10 +25,10 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
 }
 
 ## ad group policy ##
@@ -221,6 +221,18 @@ resource "azurerm_key_vault_secret" "redis_ecommerce_password" {
   }
 }
 
+resource "azurerm_key_vault_secret" "redis_ecommerce_access_key" {
+  name         = "redis-ecommerce-access-key"
+  value        = module.pagopa_ecommerce_redis.primary_access_key
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "redis_ecommerce_hostname" {
+  name         = "redis-ecommerce-hostname"
+  value        = module.pagopa_ecommerce_redis.hostname
+  key_vault_id = module.key_vault.id
+}
+
 resource "azurerm_key_vault_secret" "nodo_connection_string" {
   name         = "nodo-connection-string"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
@@ -408,6 +420,134 @@ resource "azurerm_key_vault_secret" "nodo_nodeforpm_api_key" {
 resource "azurerm_key_vault_secret" "wallet-token-test-key" {
   count        = var.env_short != "p" ? 1 : 0
   name         = "wallet-token-test-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce-io-jwt-signing-key" {
+  name         = "ecommerce-io-jwt-signing-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_storage_dead_letter_account_key" {
+  name         = "ecommerce-storage-dead-letter-account-key"
+  value        = module.ecommerce_storage_deadletter.primary_access_key
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "wallet-api-key" {
+  name         = "wallet-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+
+resource "azurerm_key_vault_secret" "npg_notification_signing_key" {
+  name         = "npg-notification-signing-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+
+resource "azurerm_key_vault_secret" "node_forwarder_api_key" {
+  name         = "node-forwarder-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "transactions_service_auth_update_api_key" {
+  name         = "transactions-service-auth-update-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "redirect_url_mapping" {
+  name         = "redirect-url-mapping"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "npg_paypal_psp_keys" {
+  name         = "npg-paypal-psp-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "npg_bancomatpay_psp_keys" {
+  name         = "npg-bancomatpay-psp-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "npg_mybank_psp_keys" {
+  name         = "npg-mybank-psp-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "wallet_storage_connection_string" {
+  name         = "wallet-storage-connection-string"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 

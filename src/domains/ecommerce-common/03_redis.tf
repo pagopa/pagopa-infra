@@ -16,9 +16,10 @@ module "pagopa_ecommerce_redis_snet" {
 }
 
 module "pagopa_ecommerce_redis" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.72.1"
 
-  name                          = "${local.project}-redis"
+  # name has been differentiated due to a migration instance created to handle the switch to an HA instance
+  name                          = var.redis_ecommerce_params.ha_enabled ? "${local.project}-redis-ha" : "${local.project}-redis"
   resource_group_name           = azurerm_resource_group.redis_ecommerce_rg.name
   location                      = azurerm_resource_group.redis_ecommerce_rg.location
   capacity                      = var.redis_ecommerce_params.capacity
@@ -28,6 +29,7 @@ module "pagopa_ecommerce_redis" {
   enable_authentication         = true
   redis_version                 = var.redis_ecommerce_params.version
   public_network_access_enabled = var.env_short == "d"
+  zones                         = var.redis_ecommerce_params.zones
 
   private_endpoint = {
     enabled              = var.env_short != "d"
@@ -62,6 +64,7 @@ module "pagopa_ecommerce_redis" {
 
   tags = var.tags
 }
+
 
 # -----------------------------------------------
 # Alerts
@@ -101,5 +104,11 @@ resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
     action_group_id = data.azurerm_monitor_action_group.slack.id
   }
 
+  action {
+    action_group_id = azurerm_monitor_action_group.ecommerce_opsgenie[0].id
+  }
+
   tags = var.tags
 }
+
+

@@ -23,7 +23,6 @@ locals {
 
   aks_name = "${local.project}-aks"
 
-
   vnet_integration_resource_group_name = "${local.product}-vnet-rg"
   vnet_integration_name                = "${local.product}-vnet-integration"
 
@@ -31,4 +30,205 @@ locals {
   vnet_core_resource_group_name = "${local.product}-vnet-rg"
   vnet_core_name                = "${local.product}-vnet"
 
+  aks_metrics_alerts = {
+    node_cpu = {
+      aggregation      = "Average"
+      metric_namespace = "Insights.Container/nodes"
+      metric_name      = "cpuUsagePercentage"
+      operator         = "GreaterThan"
+      threshold        = 80
+      frequency        = "PT15M"
+      window_size      = "PT1H"
+      dimension = [
+        {
+          name     = "host"
+          operator = "Include"
+          values   = ["*"]
+        }
+      ],
+    }
+    node_memory = {
+      aggregation      = "Average"
+      metric_namespace = "Insights.Container/nodes"
+      metric_name      = "memoryWorkingSetPercentage"
+      operator         = "GreaterThan"
+      threshold        = 80
+      frequency        = "PT15M"
+      window_size      = "PT1H"
+      dimension = [
+        {
+          name     = "host"
+          operator = "Include"
+          values   = ["*"]
+        }
+      ],
+    }
+    node_disk = {
+      aggregation      = "Average"
+      metric_namespace = "Insights.Container/nodes"
+      metric_name      = "DiskUsedPercentage"
+      operator         = "GreaterThan"
+      threshold        = 80
+      frequency        = "PT15M"
+      window_size      = "PT1H"
+      dimension = [
+        {
+          name     = "host"
+          operator = "Include"
+          values   = ["*"]
+        },
+        {
+          name     = "device"
+          operator = "Include"
+          values   = ["*"]
+        }
+      ],
+    }
+    node_not_ready = {
+      aggregation      = "Average"
+      metric_namespace = "Insights.Container/nodes"
+      metric_name      = "nodesCount"
+      operator         = "GreaterThan"
+      threshold        = 0
+      frequency        = "PT15M"
+      window_size      = "PT1H"
+      dimension = [
+        {
+          name     = "status"
+          operator = "Include"
+          values   = ["NotReady"]
+        }
+      ],
+    }
+    pods_failed = {
+      aggregation      = "Average"
+      metric_namespace = "Insights.Container/pods"
+      metric_name      = "podCount"
+      operator         = "GreaterThan"
+      threshold        = 0
+      frequency        = "PT15M"
+      window_size      = "PT1H"
+      dimension = [
+        {
+          name     = "phase"
+          operator = "Include"
+          values   = ["Failed"]
+        }
+      ]
+    }
+    pods_ready = {
+      aggregation      = "Average"
+      metric_namespace = "Insights.Container/pods"
+      metric_name      = "PodReadyPercentage"
+      operator         = "LessThan"
+      threshold        = 80
+      frequency        = "PT15M"
+      window_size      = "PT1H"
+      dimension = [
+        {
+          name     = "Kubernetes namespace"
+          operator = "Include"
+          values = [
+            "aca",
+            "afm",
+            "apiconfig",
+            "bizevents",
+            "ecommerce",
+            "elastic-system",
+            "fdr",
+            "gps",
+            "mock",
+            "nodo",
+            "nodo-cron",
+            "qi",
+            "receipts",
+            "selfcare",
+            "shared",
+            "wallet",
+          ]
+        }
+      ]
+    }
+    container_cpu = {
+      aggregation      = "Average"
+      metric_namespace = "Insights.Container/containers"
+      metric_name      = "cpuExceededPercentage"
+      operator         = "GreaterThan"
+      threshold        = 95
+      frequency        = "PT15M"
+      window_size      = "PT1H"
+      dimension = [
+        {
+          name     = "Kubernetes namespace"
+          operator = "Include"
+          values = [
+            "aca",
+            "afm",
+            "apiconfig",
+            "bizevents",
+            "ecommerce",
+            "elastic-system",
+            "fdr",
+            "gps",
+            "mock",
+            "nodo",
+            "nodo-cron",
+            "qi",
+            "receipts",
+            "selfcare",
+            "shared",
+            "wallet",
+          ]
+        },
+      ]
+    }
+    container_memory = {
+      aggregation      = "Average"
+      metric_namespace = "Insights.Container/containers"
+      metric_name      = "memoryWorkingSetExceededPercentage"
+      operator         = "GreaterThan"
+      threshold        = 95
+      frequency        = "PT15M"
+      window_size      = "PT1H"
+      dimension = [
+        {
+          name     = "Kubernetes namespace"
+          operator = "Include"
+          values   = ["*"]
+        },
+      ]
+    }
+    container_oom = {
+      aggregation      = "Average"
+      metric_namespace = "Insights.Container/pods"
+      metric_name      = "oomKilledContainerCount"
+      operator         = "GreaterThan"
+      threshold        = 0
+      frequency        = "PT15M"
+      window_size      = "PT1H"
+      dimension = [
+        {
+          name     = "Kubernetes namespace"
+          operator = "Include"
+          values   = ["*"]
+        },
+      ]
+    }
+    container_restart = {
+      aggregation      = "Average"
+      metric_namespace = "Insights.Container/pods"
+      metric_name      = "restartingContainerCount"
+      operator         = "GreaterThan"
+      threshold        = 0
+      frequency        = "PT15M"
+      window_size      = "PT1H"
+      dimension = [
+        {
+          name     = "Kubernetes namespace"
+          operator = "Include"
+          values   = ["*"]
+        },
+      ]
+    }
+  }
 }

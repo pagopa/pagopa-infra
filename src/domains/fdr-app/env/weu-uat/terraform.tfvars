@@ -30,6 +30,14 @@ fn_app_runtime_version = "~4"
 storage_account_info = {
   account_kind                      = "StorageV2"
   account_tier                      = "Standard"
+  account_replication_type          = "ZRS"
+  access_tier                       = "Hot"
+  advanced_threat_protection_enable = true
+}
+
+reporting_fdr_storage_account_info = {
+  account_kind                      = "StorageV2"
+  account_tier                      = "Standard"
   account_replication_type          = "LRS"
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
@@ -116,3 +124,6 @@ fdr_json_to_xml_function_autoscale = {
 
 ftp_organization = "99999999999,80078750587,88888888888,97532760580,12300020158,00488410010"
 
+enabled_features = {
+  eventhub_ha_rx = true
+}

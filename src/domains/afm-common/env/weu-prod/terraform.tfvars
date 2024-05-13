@@ -40,7 +40,7 @@ afm_marketplace_cosmos_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
   private_endpoint_enabled      = true
@@ -66,7 +66,7 @@ afm_storage_params = {
   enabled                       = true
   tier                          = "Standard"
   kind                          = "StorageV2"
-  account_replication_type      = "LRS",
+  account_replication_type      = "GZRS",
   advanced_threat_protection    = true,
   retention_days                = 31,
   public_network_access_enabled = true,

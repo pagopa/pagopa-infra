@@ -11,11 +11,12 @@ resource "azurerm_resource_group" "elk_rg" {
 }
 
 resource "azurerm_storage_account" "elk_snapshot_sa" {
-  name                     = replace(format("%s-sa", local.project), "-", "")
-  resource_group_name      = azurerm_resource_group.elk_rg.name
-  location                 = azurerm_resource_group.elk_rg.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
+  name                            = replace(format("%s-sa", local.project), "-", "")
+  resource_group_name             = azurerm_resource_group.elk_rg.name
+  location                        = azurerm_resource_group.elk_rg.location
+  account_tier                    = "Standard"
+  account_replication_type        = var.snapshot_storage_replication_type
+  allow_nested_items_to_be_public = false
 
   blob_properties {
     change_feed_enabled = var.elk_snapshot_sa.backup_enabled
@@ -39,9 +40,6 @@ resource "azurerm_storage_account" "elk_snapshot_sa" {
 
     }
   }
-
-
-
 
   #  blob_change_feed_enabled = var.elk_snapshot_sa.backup_enabled
   #  blob_change_feed_retention_in_days = var.elk_snapshot_sa.backup_enabled ? var.elk_snapshot_sa.blob_delete_retention_days : null
@@ -67,8 +65,6 @@ data "azurerm_storage_account" "snapshot_account" {
   resource_group_name = azurerm_resource_group.elk_rg.name
 }
 
-
-
 resource "kubernetes_secret" "snapshot_secret" {
   metadata {
     name      = local.snapshot_secret_name
@@ -87,20 +83,21 @@ module "elastic_stack" {
     kubernetes_secret.snapshot_secret
   ]
 
-  source = "git::https://github.com/pagopa/azurerm.git//elastic_stack?ref=v4.21.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_stack?ref=v7.72.2"
+
+  eck_version = "2.9"
 
   namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config
 
   dedicated_log_instance_name = [
-    /* nodo */ "nodo", "nodoreplica", "nodocron", "nodocronreplica", "pagopawebbo", "pagopawfespwfesp", "pagopafdr", "pagopafdrnodo",
+    /* nodo */ "nodo", "nodoreplica", "nodocron", "nodocronreplica", "pagopawebbo", "pagopawfespwfesp", "pagopafdr", "pagopafdrnodo", "wispsoapconverter", "pagopawispconverter",
     /* afm */ "pagopaafmcalculator-microservice-chart", "pagopaafmmarketplacebe-microservice-chart", "pagopaafmutils-microservice-chart",
     /* bizevents */ "pagopabizeventsdatastore-microservice-chart", "pagopabizeventsservice-microservice-chart", "pagopanegativebizeventsdatastore-microservice-chart",
     /* apiconfig */ "pagopaapiconfig-postgresql", "pagopaapiconfig-oracle", "apiconfig-selfcare-integration-microservice-chart", "cache-oracle", "cache-postgresql", "cache-replica-oracle", "cache-replica-postgresql",
     /* ecommerce */ "pagopaecommerceeventdispatcherservice-microservice-chart", "pagopaecommercepaymentmethodsservice-microservice-chart", "pagopaecommercepaymentrequestsservice-microservice-chart", "pagopaecommercetransactionsservice-microservice-chart", "pagopaecommercetxschedulerservice-microservice-chart", "pagopanotificationsservice-microservice-chart",
-    /* selfcare */ "pagopaselfcaremsbackofficebackend-microservice-chart",
-    /* gps */ "gpd-core-microservice-chart", "pagopagpdpayments-microservice-chart", "pagopareportingorgsenrollment-microservice-chart", "pagopaspontaneouspayments-microservice-chart"
-
+    /* selfcare */ "pagopaselfcaremsbackofficebackend-microservice-chart", "backoffice-external",
+    /* gps */ "gpd-core-microservice-chart", "pagopagpdpayments-microservice-chart", "pagopareportingorgsenrollment-microservice-chart", "pagopaspontaneouspayments-microservice-chart", "gpd-payments-pull", "gpd-upload-microservice-chart"
   ]
 
   eck_license = file("${path.module}/env/eck_license/pagopa-spa-4a1285e5-9c2c-4f9f-948a-9600095edc2f-orchestration.json")
@@ -181,6 +178,7 @@ data "kubernetes_secret" "get_apm_token" {
     namespace = local.elk_namespace
   }
 }
+
 resource "kubectl_manifest" "otel_collector" {
   depends_on = [
     data.kubernetes_secret.get_apm_token

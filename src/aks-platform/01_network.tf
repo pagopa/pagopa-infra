@@ -1,14 +1,16 @@
 module "aks_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.12.0"
-  name                                           = "${local.project}-aks-snet"
-  address_prefixes                               = var.aks_cidr_subnet
-  resource_group_name                            = data.azurerm_virtual_network.vnet.resource_group_name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.58.0"
+
+  name                                      = "${local.project}-aks-snet"
+  address_prefixes                          = var.aks_cidr_subnet
+  resource_group_name                       = data.azurerm_virtual_network.vnet.resource_group_name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet.name
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.AzureCosmosDB",
     "Microsoft.EventHub",
+    "Microsoft.Storage",
   ]
 
 }
@@ -21,7 +23,7 @@ resource "azurerm_public_ip" "aks_outbound" {
   location            = azurerm_resource_group.aks_rg.location
   sku                 = "Standard"
   allocation_method   = "Static"
-  availability_zone   = "Zone-Redundant"
+  zones               = [1, 2, 3]
 
   tags = var.tags
 }

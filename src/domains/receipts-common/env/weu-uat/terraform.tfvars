@@ -34,7 +34,7 @@ receipts_datastore_cosmos_db_params = {
   capabilities = []
   offer_type   = "Standard"
   consistency_policy = {
-    consistency_level       = "BoundedStaleness"
+    consistency_level       = "Strong"
     max_interval_in_seconds = 300
     max_staleness_prefix    = 100000
   }
@@ -50,6 +50,9 @@ receipts_datastore_cosmos_db_params = {
   backup_continuous_enabled = false
 
   container_default_ttl = 2629800 # 1 month in second
+
+  max_throughput     = 1000
+  max_throughput_alt = 1000
 }
 
 cidr_subnet_receipts_datastore_cosmosdb = ["10.1.171.0/24"]

@@ -65,7 +65,7 @@ cosmos_authorizer_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
+  main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
   private_endpoint_enabled      = true
@@ -79,7 +79,7 @@ cosmos_authorizer_db_params = {
 
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 }
 
 
@@ -108,3 +108,5 @@ taxonomy_network_rules = {
   virtual_network_subnet_ids = []
   bypass                     = ["AzureServices"]
 }
+
+redis_ha_enabled = false

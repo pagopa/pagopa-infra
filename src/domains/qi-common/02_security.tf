@@ -25,10 +25,10 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
 }
 
 ## ad group policy ##
@@ -116,33 +116,37 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+// SWITCHns02ns04
 resource "azurerm_key_vault_secret" "ehub_alert_qi_rx_connection_string" {
   name         = format("ehub-%s-rx-qi-alert-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_quality-improvement-alerts_pagopa-qi-alert-rx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_quality-improvement-alerts_pagopa-qi-alert-rx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
+// SWITCHns02ns04
 resource "azurerm_key_vault_secret" "ehub_alert_qi_tx_connection_string" {
   name         = format("ehub-%s-tx-qi-alert-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_quality-improvement-alerts_pagopa-qi-alert-tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_quality-improvement-alerts_pagopa-qi-alert-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
+// SWITCHns02ns04
 resource "azurerm_key_vault_secret" "ehub_alert_qi_rx_pdnd_connection_string" {
   name         = format("ehub-%s-rx-qi-alert-pdnd-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_quality-improvement-alerts_pagopa-qi-alert-rx-pdnd.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_quality-improvement-alerts_pagopa-qi-alert-rx-pdnd.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
+// SWITCHns02ns04
 resource "azurerm_key_vault_secret" "ehub_alert_qi_rx_debug_connection_string" {
   name         = format("ehub-%s-rx-qi-alert-debug-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns02_quality-improvement-alerts_pagopa-qi-alert-rx-debug.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_quality-improvement-alerts_pagopa-qi-alert-rx-debug.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

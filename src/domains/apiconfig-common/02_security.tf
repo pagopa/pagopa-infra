@@ -24,10 +24,10 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions      = ["Get", "List", "Set", "Delete", ]
+  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
+  secret_permissions      = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
   storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover", ]
+  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
 }
 
 ## ad group policy ##
@@ -209,9 +209,23 @@ data "azurerm_redis_cache" "redis_cache" {
   resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
 }
 
+data "azurerm_redis_cache" "redis_cache_ha" {
+  count               = var.redis_ha_enabled ? 1 : 0
+  name                = format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short)
+  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
+}
+
 resource "azurerm_key_vault_secret" "redis_password" {
   name         = "redis-password"
-  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
+  value        = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].primary_access_key : data.azurerm_redis_cache.redis_cache.primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "redis_hostname" {
+  name         = "redis-hostname"
+  value        = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].hostname : data.azurerm_redis_cache.redis_cache.hostname
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -220,7 +234,7 @@ resource "azurerm_key_vault_secret" "redis_password" {
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "github_token_read_packages" {
   name         = "github-token-read-packages"
-  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -280,3 +294,36 @@ resource "azurerm_key_vault_secret" "nodo5_slack_webhook_url" {
     ]
   }
 }
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "apicfg_cache_subscription_key" {
+  name         = "api-config-cache-subscription-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "apicfg_cache_tx_connection_string" {
+  name         = "nodo-dei-pagamenti-cache-tx-connection-string-key"
+  value        = data.azurerm_eventhub_authorization_rule.nodo_dei_pagamenti_cache_tx.primary_connection_string
+  key_vault_id = module.key_vault.id
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "cfg_for_node_subscription_key" {
+  name         = "cfg-for-node-subscription-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+

@@ -1,0 +1,26 @@
+<policies>
+    <inbound>
+        <base />
+        <include-fragment fragment-id="jwt-chk-wallet-session" />
+        <choose>
+            <when condition="@((string)context.Variables.GetValueOrDefault("xUserId","") != "")">            
+                <set-header name="Ocp-Apim-Subscription-Keykey" exists-action="override">
+                    <value>{{list-trx-for-io-api-key}}</value>
+                </set-header>
+                <set-header name="x-fiscal-code" exists-action="override">
+                    <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
+                </set-header>
+            </when>
+        </choose>
+        <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

@@ -114,6 +114,27 @@ locals {
         {
           keys   = ["paymentNotices.paymentToken"]
           unique = false
+        },
+        {
+          keys   = ["email.data"]
+          unique = false
+        }
+      ]
+      shard_key = "_id"
+    },
+    {
+      name = "dead-letter-events"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["insertionDate", "queueName"]
+          unique = false
+        },
+        {
+          keys   = ["insertionDate"]
+          unique = false
         }
       ]
       shard_key = "_id"
@@ -190,6 +211,10 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
 
   action {
     action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.ecommerce_opsgenie[0].id
   }
 
   tags = var.tags
