@@ -46,7 +46,7 @@ jobs:
         for f in $FOLDERS; do
           pushd "$(pwd)/${f}"
             sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
+            TF_PLUGIN_CACHE_DIR=${{ runner.temp }}/.terraform.d/plugin-cache docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
             pids+=($!)
             break
           popd
