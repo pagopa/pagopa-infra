@@ -184,7 +184,13 @@ variable "app_service_pdf_engine_sku_name_java" {
   default     = "S1"
 }
 
-variable "pdf_engine_app_ha_enabled" {
-  type        = bool
-  description = "(Required) enables the deployment of pdf engine in HA mode"
+### Features flags
+
+variable "is_feature_enabled" {
+  type = object({
+    pdf_engine = bool
+  })
+  default = {
+    pdf_engine = false
+  }
 }
