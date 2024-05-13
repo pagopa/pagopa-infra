@@ -1,6 +1,8 @@
 locals {
   project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   product = "${var.prefix}-${var.env_short}"
+  product_italy = "${var.prefix}-${var.env_short}-${var.location_short}"
+
 
   app_insights_ips_west_europe = [
     "51.144.56.96/28",
@@ -11,6 +13,7 @@ locals {
     "51.144.56.176/28",
   ]
 
+  monitor_appinsights_italy_name  = "${local.product_italy}-core-appinsights"
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
   monitor_appinsights_name        = "${local.product}-appinsights"
