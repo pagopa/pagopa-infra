@@ -70,7 +70,7 @@ jobs:
         echo "📢 Show space 3"
         df -h
         ls -la ${{ runner.temp }}
-        du -h ${TF_PLUGIN_CACHE_DIR}
+        du -h -d 5 ${TF_PLUGIN_CACHE_DIR}
 
     - name: Show precommit version
       shell: bash
