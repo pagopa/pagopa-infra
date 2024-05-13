@@ -912,9 +912,11 @@ CREATE INDEX i_fk_rpt_1_parted ON ${schema}.token_utility_parted USING btree (fk
 CREATE INDEX i_fk_rpt_2_parted ON ${schema}.token_utility_parted USING btree (fk_rpt2);
 
 --
+DROP TABLE IF EXISTS ${schema}.tab_part;
 
 CREATE TABLE IF NOT EXISTS ${schema}.tab_part
 (
-    tabella character varying(100) COLLATE pg_catalog."default",
-    schema character varying(100) COLLATE pg_catalog."default"
+  tabella character varying(100) COLLATE pg_catalog."default",
+  schema character varying(100) COLLATE pg_catalog."default",
+  campi_indice character varying(100) COLLATE pg_catalog."default"
 );

@@ -36,8 +36,4 @@ CREATE TABLE IF NOT EXISTS ${schema}.re_parted
 
 --
 
-CREATE TABLE IF NOT EXISTS ${schema}.tab_part
-(
-    tabella character varying(100) COLLATE pg_catalog."default",
-    schema character varying(100) COLLATE pg_catalog."default"
-);
+DROP TABLE IF EXISTS ${schema}.tab_part; -- TODO remove

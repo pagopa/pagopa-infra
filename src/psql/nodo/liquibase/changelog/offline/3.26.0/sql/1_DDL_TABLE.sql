@@ -43,12 +43,3 @@ CREATE TABLE IF NOT EXISTS ${schema}.rendicontazione_sftp_send_queue_parted
     retry numeric(19,0),
     CONSTRAINT rendicontazione_sftp_send_queue_parted_pk PRIMARY KEY (id,inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-
---
-
-CREATE TABLE IF NOT EXISTS ${schema}.tab_part
-(
-    tabella character varying(100) COLLATE pg_catalog."default",
-    schema character varying(100) COLLATE pg_catalog."default"
-);
-

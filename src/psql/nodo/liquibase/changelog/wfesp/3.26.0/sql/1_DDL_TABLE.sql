@@ -183,8 +183,4 @@ CREATE INDEX IF NOT EXISTS rpt_parted_idx03
 
 --
 
-CREATE TABLE IF NOT EXISTS ${schema}.tab_part
-(
-    tabella character varying(100) COLLATE pg_catalog."default",
-    schema character varying(100) COLLATE pg_catalog."default"
-);
+DROP TABLE IF EXISTS ${schema}.tab_part; -- TODO remove
