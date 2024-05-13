@@ -29,7 +29,6 @@ jobs:
         export TF_PLUGIN_CACHE_DIR="${{ runner.temp }}/.terraform.d/plugin-cache"
         mkdir -p ${TF_PLUGIN_CACHE_DIR}
         ls -la ${TF_PLUGIN_CACHE_DIR}
-        printenv
 
         echo "📢 Show space"
         df -h
@@ -83,7 +82,7 @@ jobs:
         echo    "+ 1️⃣  SHOW PRECOMMIT VERSION 1️⃣  +"
         echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
 
-        TAG=${{ inputs.precommit_version }}
+        TAG=1.89.1
         docker run --rm --entrypoint cat ghcr.io/antonbabenko/pre-commit-terraform:$TAG /usr/bin/tools_versions_info
 
     - name: 🚨 Run precommit
@@ -94,5 +93,5 @@ jobs:
         echo    "+- 🚨 PRECOMMIT TERRAFORM 🚨 -+"
         echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
 
-        TAG=${{ inputs.precommit_version }}
+        TAG=1.89.1
         docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
