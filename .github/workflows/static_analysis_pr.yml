@@ -69,7 +69,7 @@ jobs:
 
         echo "📢 Show space 3"
         df -h
-        ls -la ${{ runner.temp }}
+        ls -la ${{ runner.temp }}/.terraform.d/plugin-cache
         du -h -d 5 ${TF_PLUGIN_CACHE_DIR}
 
     - name: Show precommit version
