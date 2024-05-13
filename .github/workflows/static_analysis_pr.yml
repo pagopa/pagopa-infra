@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: PR Static Analysis
+      - name: 🤔 PR Static Analysis
         uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@fix-space-limit # v1.14.1
         with:
           precommit_version: 'v1.89.1@sha256:1ea921bc4fe87651d41677218e537afdcdb8202e757e554b9866668eaba144c5'
