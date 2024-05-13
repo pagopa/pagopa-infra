@@ -69,6 +69,8 @@ variable "tags" {
 
 ### External resources
 
+### External resources
+
 variable "monitor_resource_group_name" {
   type        = string
   description = "Monitor resource group name"
@@ -82,6 +84,21 @@ variable "log_analytics_workspace_name" {
 variable "log_analytics_workspace_resource_group_name" {
   type        = string
   description = "The name of the resource group in which the Log Analytics workspace is located in."
+}
+
+variable "monitor_italy_resource_group_name" {
+  type        = string
+  description = "Monitor Italy resource group name"
+}
+
+variable "log_analytics_italy_workspace_name" {
+  type        = string
+  description = "Specifies the name of the Log Analytics Workspace Italy."
+}
+
+variable "log_analytics_italy_workspace_resource_group_name" {
+  type        = string
+  description = "The name of the resource group in which the Log Analytics workspace Italy is located in."
 }
 
 
@@ -184,7 +201,13 @@ variable "app_service_pdf_engine_sku_name_java" {
   default     = "S1"
 }
 
-variable "pdf_engine_app_ha_enabled" {
-  type        = bool
-  description = "(Required) enables the deployment of pdf engine in HA mode"
+### Features flags
+
+variable "is_feature_enabled" {
+  type = object({
+    pdf_engine = bool
+  })
+  default = {
+    pdf_engine = false
+  }
 }

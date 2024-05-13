@@ -30,14 +30,31 @@ module "vnet_ita_peering" {
   source_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
   source_virtual_network_name      = module.vnet_italy[0].name
   source_remote_virtual_network_id = module.vnet_italy[0].id
-  source_use_remote_gateways       = false
+  source_use_remote_gateways       = true
   source_allow_forwarded_traffic   = true
 
   target_resource_group_name       = data.azurerm_resource_group.rg_vnet_core.name
   target_virtual_network_name      = data.azurerm_virtual_network.vnet_core.name
   target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_core.id
   target_allow_gateway_transit     = true
+  target_allow_forwarded_traffic   = true
+}
 
+module "vnet_ita_to_integration_peering" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.77.0"
+  count  = var.is_feature_enabled.vnet_ita ? 1 : 0
+
+  source_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
+  source_virtual_network_name      = module.vnet_italy[0].name
+  source_remote_virtual_network_id = module.vnet_italy[0].id
+  source_use_remote_gateways       = false
+  source_allow_forwarded_traffic   = true
+
+  target_resource_group_name       = data.azurerm_resource_group.rg_vnet_integration.name
+  target_virtual_network_name      = data.azurerm_virtual_network.vnet_integration.name
+  target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_integration.id
+  target_allow_gateway_transit     = false
+  target_allow_forwarded_traffic   = true
 }
 
 #
@@ -56,7 +73,7 @@ resource "azurerm_public_ip" "aks_leonardo_public_ip" {
 }
 
 #
-# Subnet
+# 🕸️ Subnets
 #
 resource "azurerm_subnet" "eventhubs_italy" {
   name                 = "${local.project}-eventhubs-snet"
@@ -65,35 +82,9 @@ resource "azurerm_subnet" "eventhubs_italy" {
   address_prefixes     = var.cidr_eventhubs_italy
 }
 
-resource "azurerm_subnet" "cosmosdb_italy_snet" {
-  name                 = "${local.project}-cosmosdb-snet"
+resource "azurerm_subnet" "subnet_container_app_tools" {
+  name                 = "${local.project}-tools-cae-subnet"
   resource_group_name  = module.vnet_italy[0].resource_group_name
   virtual_network_name = module.vnet_italy[0].name
-  address_prefixes     = var.cidr_cosmosdb_italy
-
-  service_endpoints = [
-    "Microsoft.Web",
-    "Microsoft.AzureCosmosDB",
-  ]
-}
-
-resource "azurerm_subnet" "cidr_storage_italy" {
-  name                 = "${local.project}-storage-snet"
-  resource_group_name  = module.vnet_italy[0].resource_group_name
-  virtual_network_name = module.vnet_italy[0].name
-  address_prefixes     = var.cidr_storage_italy
-}
-
-resource "azurerm_subnet" "cidr_redis_italy" {
-  name                 = "${local.project}-redis-snet"
-  resource_group_name  = module.vnet_italy[0].resource_group_name
-  virtual_network_name = module.vnet_italy[0].name
-  address_prefixes     = var.cird_redis_italy
-}
-
-resource "azurerm_subnet" "cidr_postgres_italy" {
-  name                 = "${local.project}-postgresql-snet"
-  resource_group_name  = module.vnet_italy[0].resource_group_name
-  virtual_network_name = module.vnet_italy[0].name
-  address_prefixes     = var.cird_postgresql_italy
+  address_prefixes     = var.cidr_subnet_tools_cae
 }
