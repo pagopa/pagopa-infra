@@ -1,13 +1,13 @@
 locals {
-  product = "${var.prefix}-${var.env_short}"
-  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-    project_core_itn = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+  product          = "${var.prefix}-${var.env_short}"
+  project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_core_itn = "${var.prefix}-${var.env_short}-${var.location_short}-core"
 
 
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
   monitor_appinsights_name        = "${local.product}-appinsights"
-    monitor_appinsights_italy_name        = "${local.project_core_itn}-appinsights"
+  monitor_appinsights_italy_name  = "${local.project_core_itn}-appinsights"
 
 
   vnet_name                = "${var.prefix}-${var.env_short}-${var.location_short}-vnet"

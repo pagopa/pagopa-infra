@@ -10,7 +10,7 @@ data "azurerm_key_vault" "kv_printit" {
 # Storage
 #
 data "azurerm_storage_account" "notifications" {
-  name = replace("${var.domain}-notices", "-", "")
+  name                = replace("${var.domain}-notices", "-", "")
   resource_group_name = "${local.project}-rg"
 }
 

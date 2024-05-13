@@ -17,9 +17,9 @@ resource "time_rotating" "pdf_generator_application" {
 }
 
 resource "azuread_application_password" "pdf_generator" {
-  application_id = azuread_application.pdf_generator.id
-  display_name          = "managed by terraform"
-  end_date_relative     = "8640h" # 360 days
+  application_id    = azuread_application.pdf_generator.id
+  display_name      = "managed by terraform"
+  end_date_relative = "8640h" # 360 days
   rotate_when_changed = {
     rotation = time_rotating.pdf_generator_application.id
   }
