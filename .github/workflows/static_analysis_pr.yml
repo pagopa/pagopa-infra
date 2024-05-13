@@ -27,7 +27,7 @@ jobs:
 
           echo "📢 Show space"
           df -h
-          du -h $HOME/.terraform.d/plugin-cache
+          du -h ${TF_PLUGIN_CACHE_DIR}
 #      - name: 🤔 PR Static Analysis v1
 #        uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@fix-space-limit # v1.14.1
 #        with:
