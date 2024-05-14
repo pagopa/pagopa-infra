@@ -21,6 +21,7 @@
             <key>{{ecommerce-webview-jwt-signing-key}}</key>
             <key>{{ecommerce-checkout-transaction-jwt-signing-key}}</key> <!-- TODO Need to review the key management for validation of the token used in this call as currently for payment wallet cards and apm tokens are signed differently -->
         </issuer-signing-keys>
+    </validate-jwt>
         <set-variable name="xUserId" value="@{
           var jwt = (Jwt)context.Variables["jwtToken"];
           if(jwt.Claims.ContainsKey("userId")){
@@ -35,7 +36,6 @@
                 </set-header>
             </when>
         </choose>
-    </validate-jwt>
     <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
     <choose>
       <when condition="@( context.Request.Url.Path.Contains("transactions") )">
