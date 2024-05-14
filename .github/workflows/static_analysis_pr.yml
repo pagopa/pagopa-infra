@@ -13,7 +13,7 @@ jobs:
     - name: ⚡ Checkout code
       uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
-    - name: 📖 Read current terraform version 
+    - name: 📖 Read current terraform version
       run: |
         VER=$(cat .terraform-version)
         echo "TERRAFORM_VERSION=$VER" >> $GITHUB_ENV
@@ -50,13 +50,13 @@ jobs:
 
         pids=()
 
-        TAG=$(cat .terraform-version)
-        docker pull hashicorp/terraform:$TAG
+        # TAG=$(cat .terraform-version)
+        # docker pull hashicorp/terraform:$TAG
 
         for f in $FOLDERS; do
           pushd "$(pwd)/${f}"
             sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            terraform init &
+            terraform init -upgrade &
             pids+=($!)
           popd
 
