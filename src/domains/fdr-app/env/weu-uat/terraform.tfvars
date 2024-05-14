@@ -70,7 +70,7 @@ tls_cert_check_helm = {
 image_name = "reporting-fdr"
 image_tag  = "latest"
 
-apim_fdr_nodo_pagopa_enable = true # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
+apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 
 # fdr re
 fdr_re_function = {
