@@ -2,7 +2,7 @@ module "templates_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.9.1"
   count  = var.is_feature_enabled.storage_templates ? 1 : 0
 
-  name                       = replace("${var.domain}-templates", "-", "")
+  name                       = replace("${var.prefix}-${var.domain}-templates", "-", "")
   account_kind               = var.templates_storage_account.account_kind
   account_tier               = var.templates_storage_account.account_tier
   account_replication_type   = var.templates_storage_account.account_replication_type

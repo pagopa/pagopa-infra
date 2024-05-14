@@ -11,7 +11,7 @@ data "azurerm_kubernetes_cluster" "aks" {
 locals {
   repos_01 = [
     "pagopa-fdr-nodo-dei-pagamenti", # FdR-1
-    "pagopa-fdr" # FdR-3
+    "pagopa-fdr"                     # FdR-3
   ]
 
   federations_01 = [
@@ -136,7 +136,7 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
 }
 
 resource "null_resource" "github_runner_app_permissions_to_namespace_ci_01" {
-  count  = var.env_short == "p" ? 0 : 1
+  count = var.env_short == "p" ? 0 : 1
   triggers = {
     aks_id               = data.azurerm_kubernetes_cluster.aks.id
     service_principal_id = module.identity_ci_01[0].identity_client_id
