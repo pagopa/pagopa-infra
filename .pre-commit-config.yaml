@@ -18,13 +18,13 @@ repos:
           - --args=-json
           - --args=-no-color
           - --args=-compact-warnings
-      - id: terraform_providers_lock
-        args:
-          - --args=-platform=windows_amd64
-          - --args=-platform=darwin_amd64
-          - --args=-platform=darwin_arm64
-          - --args=-platform=linux_amd64
-          - --args=-platform=linux_arm64
+      # - id: terraform_providers_lock
+      #   args:
+      #     - --args=-platform=windows_amd64
+      #     - --args=-platform=darwin_amd64
+      #     - --args=-platform=darwin_arm64
+      #     - --args=-platform=linux_amd64
+      #     - --args=-platform=linux_arm64
   ## general
   # - repo: https://github.com/pre-commit/pre-commit-hooks
   #   rev: v4.0.1
