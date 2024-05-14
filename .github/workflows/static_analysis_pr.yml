@@ -26,7 +26,7 @@ jobs:
         echo    "+ 🔨 CREATE CACHE FOLDER         +"
         echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-\n"
 
-        export TF_PLUGIN_CACHE_DIR="${{ runner.temp }}/.terraform.d/plugin-cache"
+        export TF_PLUGIN_CACHE_DIR="/tmp/.terraform.d/plugin-cache"
         mkdir -p ${TF_PLUGIN_CACHE_DIR}
         ls -la ${TF_PLUGIN_CACHE_DIR}
 
@@ -71,7 +71,7 @@ jobs:
 
         echo "📢 Show space 3"
         df -h
-        ls -la ${{ runner.temp }}/.terraform.d/plugin-cache
+        ls -la /tmp/.terraform.d/plugin-cache
         du -h -d 5 ${TF_PLUGIN_CACHE_DIR}
 
     - name: Show precommit version
@@ -92,7 +92,12 @@ jobs:
         echo    "+- 🚨 PRECOMMIT TERRAFORM 🚨 -+"
         echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
 
-        export TF_PLUGIN_CACHE_DIR="${{ runner.temp }}/.terraform.d/plugin-cache"
+        export TF_PLUGIN_CACHE_DIR="/tmp/.terraform.d/plugin-cache"
 
         TAG=v1.89.1
-        docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
+        docker run \
+          -v $(pwd):/lint \
+          -v /tmp/.terraform.d/plugin-cache:/tmp/.terraform.d/plugin-cache \
+          -w /lint \
+          ghcr.io/antonbabenko/pre-commit-terraform:$TAG \
+          run -a
