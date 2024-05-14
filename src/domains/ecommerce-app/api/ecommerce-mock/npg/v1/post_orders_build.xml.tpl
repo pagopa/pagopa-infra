@@ -67,7 +67,7 @@
             "{\n" +
             "  \"sessionId\": \"" + context.Variables["sessionId"] +"\",\n" +
             "  \"securityToken\": \"SECURITY_TOKEN\",\n" +
-            "  \"state\": \"REDIRECT_TO_EXTERNAL_DOMAIN\",\n" +
+            "  \"state\": \"REDIRECTED_TO_EXTERNAL_DOMAIN\",\n" +
             "  \"url\": \"https://example.com\"\n" +
             "}\n";
 
