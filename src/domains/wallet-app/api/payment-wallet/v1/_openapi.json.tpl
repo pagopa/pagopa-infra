@@ -634,10 +634,6 @@
       "WalletClient": {
         "type": "object",
         "properties": {
-          "name": {
-            "type": "string",
-            "description": "Name of the client"
-          },
           "status": {
             "$ref": "#/components/schemas/WalletClientStatus"
           },
@@ -648,7 +644,6 @@
           }
         },
         "required": [
-          "name",
           "status"
         ]
       },
