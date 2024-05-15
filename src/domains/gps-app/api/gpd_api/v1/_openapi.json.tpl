@@ -4,7 +4,7 @@
     "title": "PagoPA API Debt Position",
     "description": "Progetto Gestione Posizioni Debitorie",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.11.19"
+    "version": "0.11.28"
   },
   "servers": [
     {
@@ -138,10 +138,10 @@
             "description": "Number of elements on one page. Default = 50",
             "required": false,
             "schema": {
-              "maximum": 100,
+              "maximum": 50,
               "type": "integer",
               "format": "int32",
-              "default": 50
+              "default": 10
             }
           },
           {
@@ -1128,6 +1128,129 @@
         }
       ]
     },
+        "/organizations/{organizationfiscalcode}/paymentoptions/{iuv}/debtposition" : {
+          "get" : {
+            "tags" : [ "Debt Positions API" ],
+            "summary" : "The organization retrieves a debt position by payment option IUV",
+            "operationId" : "getDebtPositionByIUV",
+            "parameters" : [ {
+              "name" : "organizationfiscalcode",
+              "in" : "path",
+              "description" : "Organization fiscal code, the fiscal code of the Organization.",
+              "required" : true,
+              "schema" : {
+                "pattern" : "\\d{11}",
+                "type" : "string"
+              }
+            }, {
+              "name" : "iuv",
+              "in" : "path",
+              "description" : "Payment Option IUV",
+              "required" : true,
+              "schema" : {
+                "pattern" : "^\\d{1,30}$",
+                "type" : "string"
+              }
+            } ],
+            "responses" : {
+              "500" : {
+                "description" : "Service unavailable.",
+                "headers" : {
+                  "X-Request-Id" : {
+                    "description" : "This header identifies the call",
+                    "schema" : {
+                      "type" : "string"
+                    }
+                  }
+                },
+                "content" : {
+                  "application/json" : { }
+                }
+              },
+              "400" : {
+                "description" : "Malformed request.",
+                "headers" : {
+                  "X-Request-Id" : {
+                    "description" : "This header identifies the call",
+                    "schema" : {
+                      "type" : "string"
+                    }
+                  }
+                },
+                "content" : {
+                  "application/json" : { }
+                }
+              },
+              "429" : {
+                "description" : "Too many requests.",
+                "headers" : {
+                  "X-Request-Id" : {
+                    "description" : "This header identifies the call",
+                    "schema" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              },
+              "404" : {
+                "description" : "Payment Position not found.",
+                "headers" : {
+                  "X-Request-Id" : {
+                    "description" : "This header identifies the call",
+                    "schema" : {
+                      "type" : "string"
+                    }
+                  }
+                },
+                "content" : {
+                  "application/json" : { }
+                }
+              },
+              "200" : {
+                "description" : "Debt Positions updated.",
+                "headers" : {
+                  "X-Request-Id" : {
+                    "description" : "This header identifies the call",
+                    "schema" : {
+                      "type" : "string"
+                    }
+                  }
+                },
+                "content" : {
+                  "application/json" : {
+                    "schema" : {
+                      "$ref" : "#/components/schemas/PaymentPositionModelBaseResponse"
+                    }
+                  }
+                }
+              },
+              "401" : {
+                "description" : "Wrong or missing function key.",
+                "headers" : {
+                  "X-Request-Id" : {
+                    "description" : "This header identifies the call",
+                    "schema" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            },
+            "security" : [ {
+              "ApiKey" : [ ]
+            }, {
+              "Authorization" : [ ]
+            } ]
+          },
+          "parameters" : [ {
+            "name" : "X-Request-Id",
+            "in" : "header",
+            "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+            "schema" : {
+              "type" : "string"
+            }
+          } ]
+        },
     "/organizations/{organizationfiscalcode}/paymentoptions/{iuv}/transfers/{transferid}/report": {
       "post": {
         "tags": [
