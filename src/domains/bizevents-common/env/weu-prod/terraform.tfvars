@@ -104,6 +104,6 @@ storage_account_replication_type = "GZRS"
 redis_ha_enabled                 = false
 
 enabled_features = {
-  eventhub_ha_tx = false
-  eventhub_ha_rx = false
+  eventhub_ha_tx = true
+  eventhub_ha_rx = true
 }
