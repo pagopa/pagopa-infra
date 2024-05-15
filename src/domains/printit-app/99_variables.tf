@@ -206,8 +206,10 @@ variable "app_service_pdf_engine_sku_name_java" {
 variable "is_feature_enabled" {
   type = object({
     pdf_engine = bool
+    printit    = bool
   })
   default = {
     pdf_engine = false
+    printit    = false
   }
 }
