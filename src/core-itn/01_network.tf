@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "rg_ita_vnet" {
 }
 
 module "vnet_italy" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.77.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v8.12.2"
   count  = var.is_feature_enabled.vnet_ita ? 1 : 0
 
   name                = "${local.product_ita}-vnet"
@@ -24,7 +24,7 @@ module "vnet_italy" {
 
 ## Peering between the vnet(main) and italy vnet
 module "vnet_ita_peering" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.77.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v8.12.2"
   count  = var.is_feature_enabled.vnet_ita ? 1 : 0
 
   source_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
@@ -41,7 +41,7 @@ module "vnet_ita_peering" {
 }
 
 module "vnet_ita_to_integration_peering" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.77.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v8.12.2"
   count  = var.is_feature_enabled.vnet_ita ? 1 : 0
 
   source_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
