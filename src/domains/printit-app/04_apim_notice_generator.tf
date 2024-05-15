@@ -9,7 +9,7 @@ module "apim_notices_generator_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.5.0"
   count  = var.is_feature_enabled.printit ? 1 : 0
 
-  product_id   = "pagoa_notices_generator"
+  product_id   = "pagopa_notices_generator"
   display_name = local.apim_notices_generator_pagopa_api.display_name
   description  = local.apim_notices_generator_pagopa_api.description
 
