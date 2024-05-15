@@ -906,7 +906,9 @@
         "enum": [
           "ONBOARDABLE",
           "NOT_ONBOARDABLE",
-          "REDIRECT"
+          "REDIRECT",
+          "ONBOARDABLE_ONLY",
+          "ONBOARDABLE_WITH_PAYMENT"
         ]
       },
       "Range": {
