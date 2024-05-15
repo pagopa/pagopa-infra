@@ -1,15 +1,3 @@
-data "template_file" "monitoring_configuration" {
-  template = file("${path.module}/monitoring_configuration.json.tpl")
-  vars = {
-    env_name                   = var.env,
-    env_short                  = var.env_short,
-    api_dot_env_name           = var.env == "prod" ? "api" : "api.${var.env}"
-    internal_api_domain_prefix = "weu${var.env}"
-    internal_api_domain_suffix = var.env == "prod" ? "internal.platform.pagopa.it" : "internal.${var.env}.platform.pagopa.it"
-  }
-}
-
-
 module "monitoring_function" {
 
   depends_on = [azurerm_application_insights.application_insights]
@@ -47,5 +35,11 @@ module "monitoring_function" {
   self_alert_configuration = {
     enabled = var.self_alert_enabled
   }
-  monitoring_configuration_encoded = data.template_file.monitoring_configuration.rendered
+  monitoring_configuration_encoded = templatefile("${path.module}/monitoring_configuration.json.tpl",{
+    env_name                   = var.env,
+    env_short                  = var.env_short,
+    api_dot_env_name           = var.env == "prod" ? "api" : "api.${var.env}"
+    internal_api_domain_prefix = "weu${var.env}"
+    internal_api_domain_suffix = var.env == "prod" ? "internal.platform.pagopa.it" : "internal.${var.env}.platform.pagopa.it"
+  })
 }
