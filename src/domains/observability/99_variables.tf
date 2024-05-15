@@ -104,3 +104,9 @@ variable "dexp_re_db_linkes_service" {
     enable = bool
   })
 }
+
+variable "app_forwarder_enabled" {
+  type        = bool
+  description = "Enable app_forwarder"
+  default     = false
+}
