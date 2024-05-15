@@ -84,3 +84,8 @@ resource "azurerm_storage_queue" "gpd_valid_positions_queue" {
   name                 = "gpd-valid-debt-position-queue"
   storage_account_name = module.gpd_sa_sftp.name
 }
+
+resource "azurerm_storage_queue" "gpd_receipt_poison" {
+  name                 = "gpd-receipt-poison-queue"
+  storage_account_name = module.gpd_sa_sftp.name
+}

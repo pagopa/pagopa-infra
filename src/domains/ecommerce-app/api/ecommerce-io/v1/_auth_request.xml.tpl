@@ -2,7 +2,6 @@
     <inbound>
         <base />
         <set-header name="x-pgs-id" exists-action="delete" />
-        <set-header name="x-user-id" exists-action="delete" />
         <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
         <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
         <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["details"]["walletId"])" />
@@ -145,7 +144,7 @@
                             <set-url>@($"https://${wallet-basepath}/pagopa-wallet-service/wallets/{(string)context.Variables["walletId"]}")</set-url>
                             <set-method>GET</set-method>
                             <set-header name="x-user-id" exists-action="override">
-                                <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
+                                <value>@((string)context.Request.Headers.GetValueOrDefault("x-user-id",""))</value>
                             </set-header>
                         </send-request>
                         <choose>
