@@ -46,3 +46,5 @@ dexp_db = {
 dexp_re_db_linkes_service = {
   enable = true
 }
+
+app_forwarder_enabled = true
