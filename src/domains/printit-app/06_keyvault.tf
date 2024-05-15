@@ -105,3 +105,11 @@ resource "azurerm_key_vault_secret" "generator_for_service_subkey_secret" {
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+resource "azurerm_key_vault_secret" "pdf_engine_subkey_secret" {
+  count        = var.is_feature_enabled.printit ? 1 : 0
+  name         = "pdf-engine-subkey"
+  value        = azurerm_api_management_subscription.pdf_engine_subkey[0].primary_key
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
