@@ -10,51 +10,55 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Clean workspace
-        run: |
+      - run: |
           rm -rf *
 
-      # - name: Checkout Modified Paths
-      #   uses: actions/checkout@v4
-      #   with:
-      #     sparse-checkout: |
-      #       .github
+      - name: Checkout Modified Paths
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            .github
 
       - run: |
           ls -la
           pwd
 
-      - name: 'PR commits + 1'
-        run: echo "PR_FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> "${GITHUB_ENV}"
-
-      - name: 'Checkout PR branch and all PR commits'
+      - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: ${{ env.PR_FETCH_DEPTH }}
+          fetch-depth: 1
 
       - name: Get Modified Paths
         id: get-paths
         run: |
-          # Ottieni i percorsi modificati rispetto al riferimento
-          modified_paths_source=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq)
+          echo "get current branch"
+          current_branch=${GITHUB_HEAD_REF}
+
+          echo "get modified paths from source"
+          modified_paths_source=$(git diff --name-only $current_branch origin/main | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq )
           echo "$modified_paths_source"
 
-          modified_paths_domains=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq)
+          echo "get modified paths from domains"
+          modified_paths_domains=$(git diff --name-only $current_branch origin/main | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq )
           echo "$modified_paths_domains"
 
-          # Unisci i percorsi modificati e aggiungi il percorso ".github"
+          echo "merge paths"
           modified_paths="$modified_paths_source $modified_paths_domains .github"
-
           echo "📌 modified_paths"
+          #
+          # This is the only way to pass a string with paths to other step without error, usign env the paths force an error
+          #
           echo "$modified_paths" > "/tmp/paths.txt"
+
         shell: bash
 
       - name: 👀 See folders downloaded
         id: download
         shell: bash
         run: |
-          cat /tmp/paths.txt
+          #
+          # This allow to read all the paths and download only the changed folders
+          #
           PAGOPA_MULTIPLE_FOLDERS=$(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
           echo $PAGOPA_MULTIPLE_FOLDERS
           git sparse-checkout init --cone
