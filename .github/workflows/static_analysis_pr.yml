@@ -26,11 +26,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Get Modified Paths
         id: get-paths
         run: |
+          #
+          # Discover only the paths changed inside src and src/domains, between my current branch and origin/main
+          #
           echo "get current branch"
           current_branch=${GITHUB_HEAD_REF}
 
