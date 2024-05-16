@@ -14,9 +14,9 @@ runs:
         echo "get current branch"
         current_branch=${GITHUB_HEAD_REF}
         echo "get modified paths from source"
-        modified_paths_source=$(git diff --name-only --relative="$PWD" $current_branch origin/main | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq | tr '\n' ' ')
+        modified_paths_source=$(git diff --name-only $current_branch origin/main | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq | tr '\n' ' ')
         echo "get modified paths from domains"
-        modified_paths_domains=$(git diff --name-only --relative="$PWD" $current_branch origin/main | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq | tr '\n' ' ')
+        modified_paths_domains=$(git diff --name-only $current_branch origin/main | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq | tr '\n' ' ')
         echo "merge paths"
         modified_paths="$modified_paths_source $modified_paths_domains"
         echo "${modified_paths}"
