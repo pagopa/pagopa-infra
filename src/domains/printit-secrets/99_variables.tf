@@ -62,23 +62,7 @@ variable "tags" {
   }
 }
 
-
-### External resources
-
-variable "monitor_resource_group_name" {
-  type        = string
-  description = "Monitor resource group name"
-}
-
-variable "log_analytics_workspace_name" {
-  type        = string
-  description = "Specifies the name of the Log Analytics Workspace."
-}
-
-variable "log_analytics_workspace_resource_group_name" {
-  type        = string
-  description = "The name of the resource group in which the Log Analytics workspace is located in."
-}
+###
 
 variable "input_file" {
   type        = string

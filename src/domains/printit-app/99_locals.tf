@@ -1,10 +1,14 @@
 locals {
-  project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  product = "${var.prefix}-${var.env_short}"
+  product          = "${var.prefix}-${var.env_short}"
+  project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_core_itn = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+
 
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
   monitor_appinsights_name        = "${local.product}-appinsights"
+  monitor_appinsights_italy_name  = "${local.project_core_itn}-appinsights"
+
 
   vnet_name                = "${var.prefix}-${var.env_short}-${var.location_short}-vnet"
   vnet_resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-vnet-rg"
@@ -30,8 +34,8 @@ locals {
   printit_pdf_engine_app_settings = {
 
     # Monitoring
-    APPINSIGHTS_INSTRUMENTATIONKEY                  = data.azurerm_application_insights.application_insights.instrumentation_key
-    APPLICATIONINSIGHTS_CONNECTION_STRING           = "InstrumentationKey=${data.azurerm_application_insights.application_insights.instrumentation_key}"
+    APPINSIGHTS_INSTRUMENTATIONKEY                  = data.azurerm_application_insights.application_insights_italy.instrumentation_key
+    APPLICATIONINSIGHTS_CONNECTION_STRING           = "InstrumentationKey=${data.azurerm_application_insights.application_insights_italy.instrumentation_key}"
     APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
     APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
     APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""
@@ -70,8 +74,8 @@ locals {
 
   printit_pdf_engine_app_settings_java = {
     # Monitoring
-    APPINSIGHTS_INSTRUMENTATIONKEY                  = data.azurerm_application_insights.application_insights.instrumentation_key
-    APPLICATIONINSIGHTS_CONNECTION_STRING           = "InstrumentationKey=${data.azurerm_application_insights.application_insights.instrumentation_key}"
+    APPINSIGHTS_INSTRUMENTATIONKEY                  = data.azurerm_application_insights.application_insights_italy.instrumentation_key
+    APPLICATIONINSIGHTS_CONNECTION_STRING           = "InstrumentationKey=${data.azurerm_application_insights.application_insights_italy.instrumentation_key}"
     APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
     APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
     APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""

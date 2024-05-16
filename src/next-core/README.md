@@ -17,12 +17,17 @@
 | <a name="module_apimv2"></a> [apimv2](#module\_apimv2) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management | v7.67.1 |
 | <a name="module_apimv2_snet"></a> [apimv2\_snet](#module\_apimv2\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.50.0 |
 | <a name="module_app_gw_integration"></a> [app\_gw\_integration](#module\_app\_gw\_integration) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway | v7.50.0 |
+| <a name="module_azdoa_li_app"></a> [azdoa\_li\_app](#module\_azdoa\_li\_app) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent | v8.13.0 |
+| <a name="module_azdoa_li_infra"></a> [azdoa\_li\_infra](#module\_azdoa\_li\_infra) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent | v8.13.0 |
+| <a name="module_azdoa_loadtest_li"></a> [azdoa\_loadtest\_li](#module\_azdoa\_loadtest\_li) | git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent | v8.13.0 |
+| <a name="module_azdoa_snet"></a> [azdoa\_snet](#module\_azdoa\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.13.0 |
 | <a name="module_dns_forwarder_backup_snet"></a> [dns\_forwarder\_backup\_snet](#module\_dns\_forwarder\_backup\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.76.0 |
 | <a name="module_dns_forwarder_backup_vmss_li"></a> [dns\_forwarder\_backup\_vmss\_li](#module\_dns\_forwarder\_backup\_vmss\_li) | git::https://github.com/pagopa/terraform-azurerm-v3.git//dns_forwarder_scale_set_vm | v7.76.0 |
 | <a name="module_domain_key_vault_secrets_query"></a> [domain\_key\_vault\_secrets\_query](#module\_domain\_key\_vault\_secrets\_query) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault_secrets_query | v7.50.0 |
 | <a name="module_event_hub03"></a> [event\_hub03](#module\_event\_hub03) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub | v7.62.0 |
 | <a name="module_event_hub04"></a> [event\_hub04](#module\_event\_hub04) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub | v7.62.0 |
 | <a name="module_integration_appgateway_snet"></a> [integration\_appgateway\_snet](#module\_integration\_appgateway\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.50.0 |
+| <a name="module_loadtest_agent_snet"></a> [loadtest\_agent\_snet](#module\_loadtest\_agent\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.13.0 |
 | <a name="module_logos_donation_flows_sa"></a> [logos\_donation\_flows\_sa](#module\_logos\_donation\_flows\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.50.0 |
 | <a name="module_monitor"></a> [monitor](#module\_monitor) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_node_forwarder_app_service"></a> [node\_forwarder\_app\_service](#module\_node\_forwarder\_app\_service) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v7.69.1 |
@@ -99,6 +104,8 @@
 | [azurerm_container_app_environment.tools_cae](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/container_app_environment) | resource |
 | [azurerm_key_vault_access_policy.api_management_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.app_gateway_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_access_policy.azdevops_iac_legacy_policies](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_access_policy.azdevops_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_monitor_autoscale_setting.node_forwarder_app_service_autoscale](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_metric_alert.app_service_over_cpu_usage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.app_service_over_mem_usage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
@@ -108,6 +115,7 @@
 | [azurerm_private_dns_zone_virtual_network_link.private_db_zone_to_core_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_public_ip.apimv2_public_ip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_public_ip.integration_appgateway_public_ip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
+| [azurerm_resource_group.azdo_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.tools_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.data_contributor_role_donations](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_storage_blob.donation_logo10](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_blob) | resource |
@@ -132,6 +140,8 @@
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_service_principal.iac_deploy_legacy](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
+| [azuread_service_principal.iac_plan_legacy](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
 | [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
@@ -178,6 +188,7 @@
 | [azurerm_subnet.node_forwarder_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.redis_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
+| [azurerm_user_assigned_identity.iac_federated_azdo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [azurerm_virtual_network.vnet_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_integration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
@@ -219,12 +230,16 @@
 | <a name="input_checkout_enabled"></a> [checkout\_enabled](#input\_checkout\_enabled) | apim named values | `bool` | `true` | no |
 | <a name="input_cidr_subnet_apim"></a> [cidr\_subnet\_apim](#input\_cidr\_subnet\_apim) | (Required) APIM v2 subnet cidr | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_appgateway_integration"></a> [cidr\_subnet\_appgateway\_integration](#input\_cidr\_subnet\_appgateway\_integration) | Address prefixes subnet integration appgateway. | `list(string)` | `null` | no |
+| <a name="input_cidr_subnet_azdoa"></a> [cidr\_subnet\_azdoa](#input\_cidr\_subnet\_azdoa) | Azure DevOps agent network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_dns_forwarder_backup"></a> [cidr\_subnet\_dns\_forwarder\_backup](#input\_cidr\_subnet\_dns\_forwarder\_backup) | Address prefixes subnet dns forwarder backup. | `list(string)` | `null` | no |
+| <a name="input_cidr_subnet_loadtest_agent"></a> [cidr\_subnet\_loadtest\_agent](#input\_cidr\_subnet\_loadtest\_agent) | LoadTest Agent Pool address space | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_tools_cae"></a> [cidr\_subnet\_tools\_cae](#input\_cidr\_subnet\_tools\_cae) | Tool container app env, network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_vpn"></a> [cidr\_subnet\_vpn](#input\_cidr\_subnet\_vpn) | VPN network address space. | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | <a name="input_cidr_vnet_italy"></a> [cidr\_vnet\_italy](#input\_cidr\_vnet\_italy) | Address prefixes for vnet in italy. | `list(string)` | n/a | yes |
 | <a name="input_create_redis_multiaz"></a> [create\_redis\_multiaz](#input\_create\_redis\_multiaz) | (Optional) true if a multi az premium instance of redis is required | `bool` | `false` | no |
 | <a name="input_default_node_id"></a> [default\_node\_id](#input\_default\_node\_id) | Default NodeId according to default base url | `string` | n/a | yes |
+| <a name="input_devops_agent_balance_zones"></a> [devops\_agent\_balance\_zones](#input\_devops\_agent\_balance\_zones) | (Optional) True if the devops agent instances must be evenly balanced between the configured zones | `bool` | `false` | no |
+| <a name="input_devops_agent_zones"></a> [devops\_agent\_zones](#input\_devops\_agent\_zones) | (Optional) List of zones in which the scale set for azdo agent will be deployed | `list(number)` | `null` | no |
 | <a name="input_dns_forwarder_vm_image_name"></a> [dns\_forwarder\_vm\_image\_name](#input\_dns\_forwarder\_vm\_image\_name) | Image name for dns forwarder | `string` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The dns subdomain. | `string` | `null` | no |
@@ -254,7 +269,7 @@
 | <a name="input_integration_appgateway_private_ip"></a> [integration\_appgateway\_private\_ip](#input\_integration\_appgateway\_private\_ip) | Integration app gateway private ip | `string` | n/a | yes |
 | <a name="input_integration_appgateway_zones"></a> [integration\_appgateway\_zones](#input\_integration\_appgateway\_zones) | Integration app gateway private ip | `list(number)` | n/a | yes |
 | <a name="input_ip_nodo"></a> [ip\_nodo](#input\_ip\_nodo) | Nodo pagamenti ip | `string` | n/a | yes |
-| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | Features enabled in this domain | <pre>object({<br>    vnet_ita                  = bool,<br>    container_app_tools_cae   = optional(bool, false),<br>    node_forwarder_ha_enabled = bool<br>    vpn                       = optional(bool, false)<br>    dns_forwarder_lb          = optional(bool, false)<br>    postgres_private_dns      = bool<br>  })</pre> | n/a | yes |
+| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | Features enabled in this domain | <pre>object({<br>    vnet_ita                  = bool,<br>    container_app_tools_cae   = optional(bool, false),<br>    node_forwarder_ha_enabled = bool<br>    vpn                       = optional(bool, false)<br>    dns_forwarder_lb          = optional(bool, false)<br>    postgres_private_dns      = bool<br>    azdoa                     = optional(bool, true)<br>  })</pre> | n/a | yes |
 | <a name="input_lb_aks"></a> [lb\_aks](#input\_lb\_aks) | IP load balancer AKS Nexi/SIA | `string` | `"0.0.0.0"` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_ita"></a> [location\_ita](#input\_location\_ita) | Main location | `string` | `"italynorth"` | no |

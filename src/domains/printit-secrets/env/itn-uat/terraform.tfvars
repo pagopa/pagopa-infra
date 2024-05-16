@@ -16,9 +16,9 @@ tags = {
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-u-monitor-rg"
-log_analytics_workspace_name                = "pagopa-u-law"
-log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
+monitor_italy_resource_group_name                 = "pagopa-d-itn-core-monitor-rg"
+log_analytics_italy_workspace_name                = "pagopa-d-itn-core-law"
+log_analytics_italy_workspace_resource_group_name = "pagopa-d-itn-core-monitor-rg"
 
 input_file = "./secret/weu-uat/configs.json"
 

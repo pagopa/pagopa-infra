@@ -3,6 +3,7 @@
   <inbound>
     <base />
     <set-header name="x-client-id" exists-action="delete" />
+    <set-header name="x-user-id" exists-action="delete" />
     <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
     <!-- Session eCommerce START-->
     <choose>
