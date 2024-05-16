@@ -41,7 +41,7 @@ jobs:
           modified_paths="$modified_paths_source $modified_paths_domains .github"
           variabile_multiline=$(echo "$modified_paths" | tr ' ' '\n')
 
-          echo "PAGOPA_MULTIPLE_FOLDERS=$( echo "$variabile_multiline"| base64) >> "$GITHUB_ENV"
+          echo "PAGOPA_MULTIPLE_FOLDERS=$(echo ${variabile_multiline}| base64) >> "$GITHUB_ENV"
         shell: bash
 
       - name: See folders downloaded
