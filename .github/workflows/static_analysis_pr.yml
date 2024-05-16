@@ -52,7 +52,7 @@ jobs:
         shell: bash
         run: |
           PAGOPA_MULTIPLE_FOLDERS=$(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
-
+          echo $PAGOPA_MULTIPLE_FOLDERS
           git sparse-checkout init --cone
           git sparse-checkout set $PAGOPA_MULTIPLE_FOLDERS
           git checkout
