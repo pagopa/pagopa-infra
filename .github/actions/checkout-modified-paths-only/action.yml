@@ -25,5 +25,6 @@ runs:
 
     - name: See folders downloaded
       id: see
+      shell: bash
       run: |
         du -h -d 3 .
