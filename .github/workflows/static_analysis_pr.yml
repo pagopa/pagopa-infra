@@ -38,15 +38,23 @@ jobs:
           # Ottieni il commit di origine del branch corrente
           base_commit=$(git rev-parse --first-parent "$current_branch^1" 2>/dev/null || git rev-parse "$current_branch")
 
-          # Ottieni i percorsi modificati rispetto al commit di origine del branch
-          modified_paths_source=$(git diff --name-only $base_commit | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq)
+          # Imposta il riferimento per il diff
+          if [ -z "$base_commit" ]; then
+              diff_ref="HEAD"
+          else
+              diff_ref="$base_commit"
+          fi
+
+          # Ottieni i percorsi modificati rispetto al riferimento
+          modified_paths_source=$(git diff --name-only $diff_ref | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq)
           echo "$modified_paths_source"
 
-          modified_paths_domains=$(git diff --name-only $base_commit | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq)
+          modified_paths_domains=$(git diff --name-only $diff_ref | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq)
           echo "$modified_paths_domains"
 
           # Unisci i percorsi modificati e aggiungi il percorso ".github"
           modified_paths="$modified_paths_source $modified_paths_domains .github"
+          variabile_multiline=$(echo "$modified_paths" | tr ' ' '\\n')
 
           echo "📌 modified_paths"
           echo "$modified_paths" > "/tmp/paths.txt"
