@@ -10,5 +10,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - run: |
+          ls -la
+
       - name: Checkout Modified Paths
         uses: .github/actions/checkout-modified-paths.yml
