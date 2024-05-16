@@ -40,6 +40,7 @@ jobs:
           echo "merge paths"
           modified_paths="$modified_paths_source $modified_paths_domains .github"
           variabile_multiline=$(echo "$modified_paths" | tr ' ' '\n')
+          echo "📌 $variabile_multiline"
           echo "$variabile_multiline" > "/tmp/paths.txt"
         shell: bash
 
@@ -49,10 +50,11 @@ jobs:
         run: |
           PAGOPA_MULTIPLE_FOLDERS=$(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
           for path in ${PAGOPA_MULTIPLE_FOLDERS}; do
-            git checkout "$path"
+            git checkout -- "$path"
 
             echo "Checkout eseguito in: $path"
           done
+          git reset --hard HEAD~1
 
 #      - name: Checkout Modified Paths
 #        uses: actions/checkout@v4
