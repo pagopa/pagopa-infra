@@ -38,13 +38,11 @@ jobs:
           modified_paths_domains=$(git diff --name-only $current_branch origin/main | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq )
           echo "$modified_paths_domains"
           echo "merge paths"
-          modified_paths="$modified_paths_source
-          $modified_paths_domains
-          .github
-          "
+          modified_paths="$modified_paths_source $modified_paths_domains .github"
+          variabile_multiline=$(echo "$modified_paths" | tr ' ' '\n')
 
-          echo "${modified_paths}"
-          echo "::set-output name=paths::$modified_paths_source"
+          echo "${variabile_multiline}"
+          echo "::set-output name=paths::variabile_multiline"
         shell: bash
 
       - name: Checkout Modified Paths
