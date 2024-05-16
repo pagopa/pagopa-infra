@@ -13,10 +13,11 @@ jobs:
       - name: Checkout Modified Paths
         uses: actions/checkout@v3
         with:
-          paths: .github
+          sparse-checkout: |
+            .github
 
       - run: |
           ls -la
 
       - name: Checkout Modified Paths
-        uses: ./.github/actions/checkout-modified-paths/action.yml
+        uses: ../.github/actions/checkout-modified-paths/action.yml
