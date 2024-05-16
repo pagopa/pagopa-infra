@@ -18,6 +18,7 @@
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v6.7.0 |
 | <a name="module_mongdb_collection_brokeribans"></a> [mongdb\_collection\_brokeribans](#module\_mongdb\_collection\_brokeribans) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v6.7.0 |
 | <a name="module_mongdb_collection_brokerinstitutions"></a> [mongdb\_collection\_brokerinstitutions](#module\_mongdb\_collection\_brokerinstitutions) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v6.7.0 |
+| <a name="module_mongdb_collection_maintenance"></a> [mongdb\_collection\_maintenance](#module\_mongdb\_collection\_maintenance) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v6.7.0 |
 | <a name="module_mongdb_collection_products"></a> [mongdb\_collection\_products](#module\_mongdb\_collection\_products) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v6.7.0 |
 
 ## Resources
