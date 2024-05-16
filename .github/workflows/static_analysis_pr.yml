@@ -22,4 +22,4 @@ jobs:
           ls -la ./.github/actions
 
       - name: Checkout Modified Paths
-        uses: ./.github/actions/checkout-modified-paths
+        uses: ./.github/actions/checkout-modified-paths-only
