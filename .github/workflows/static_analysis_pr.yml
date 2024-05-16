@@ -32,9 +32,9 @@ jobs:
           echo "get current branch"
           current_branch=${GITHUB_HEAD_REF}
           echo "get modified paths from source"
-          modified_paths_source=$(git diff --name-only $current_branch origin/main | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq | tr '\n' ' ')
+          modified_paths_source=$(git diff --name-only $current_branch origin/main | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq )
           echo "get modified paths from domains"
-          modified_paths_domains=$(git diff --name-only $current_branch origin/main | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq | tr '\n' ' ')
+          modified_paths_domains=$(git diff --name-only $current_branch origin/main | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq )
           echo "merge paths"
           modified_paths="$modified_paths_source $modified_paths_domains .github"
           echo "${modified_paths}"
@@ -44,11 +44,14 @@ jobs:
       - name: Checkout Modified Paths
         uses: actions/checkout@v3
         with:
-          sparse-checkout: ${{ steps.get-paths.outputs.paths }}
+          sparse-checkout: |
+            ${{ steps.get-paths.outputs.paths }}
 
       - name: See folders downloaded
         id: see
         shell: bash
         run: |
+          ls -la
           du -h -d 3 .
+
 
