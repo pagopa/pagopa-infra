@@ -40,27 +40,25 @@ jobs:
           echo "merge paths"
           modified_paths="$modified_paths_source $modified_paths_domains .github"
           variabile_multiline=$(echo "$modified_paths" | tr ' ' '\n')
-          echo "📌 $variabile_multiline"
-          echo "$variabile_multiline" > "/tmp/paths.txt"
+          echo "📌 modified_paths"
+          echo "modified_paths" > "/tmp/paths.txt"
         shell: bash
 
-#      - name: See folders downloaded
-#        id: download
-#        shell: bash
-#        run: |
-#          PAGOPA_MULTIPLE_FOLDERS=$(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
-#          for path in ${PAGOPA_MULTIPLE_FOLDERS}; do
-#            git checkout -- "$path"
-#
-#            echo "Checkout eseguito in: $path"
-#          done
-#          git reset --hard HEAD~1
+      - name: 👀 See folders downloaded
+        id: download
+        shell: bash
+        run: |
+          PAGOPA_MULTIPLE_FOLDERS=$(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
 
-      - name: Checkout Modified Paths
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            $(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
+          git sparse-checkout init --cone
+          git sparse-checkout set $PAGOPA_MULTIPLE_FOLDERS
+          git checkout
+
+#      - name: Checkout Modified Paths
+#        uses: actions/checkout@v4
+#        with:
+#          sparse-checkout: |
+#            $(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
 
       - name: See folders downloaded
         id: see
