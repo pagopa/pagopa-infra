@@ -44,7 +44,7 @@ jobs:
           modified_paths="$modified_paths_source $modified_paths_domains .github"
           variabile_multiline=$(echo "$modified_paths" | tr ' ' '\n')
           echo "📌 modified_paths"
-          echo "modified_paths" > "/tmp/paths.txt"
+          echo "$modified_paths" > "/tmp/paths.txt"
         shell: bash
 
       - name: 👀 See folders downloaded
