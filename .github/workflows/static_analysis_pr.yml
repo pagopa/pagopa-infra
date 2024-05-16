@@ -39,11 +39,14 @@ jobs:
           # Ottieni il nome del branch corrente
           current_branch=${GITHUB_HEAD_REF}
 
-          # Ottieni il commit di origine del branch corrente
-          base_commit=$(git rev-parse --first-parent "$current_branch^1" 2>/dev/null || git rev-parse "$current_branch")
+          # Ottieni il commit di testa del branch corrente
+          head_commit=$(git rev-parse HEAD)
+
+          # Ottieni il commit di origine del branch corrente, se disponibile
+          base_commit=$(git rev-parse --first-parent "$current_branch^1" 2>/dev/null || echo "$head_commit")
 
           # Imposta il riferimento per il diff
-          if [ -z "$base_commit" ]; then
+          if [ "$base_commit" = "$head_commit" ]; then
               diff_ref="HEAD"
           else
               diff_ref="$base_commit"
