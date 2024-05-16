@@ -47,7 +47,8 @@ jobs:
       - name: Checkout Modified Paths
         uses: actions/checkout@v3
         with:
-          sparse-checkout: ${{ steps.get-paths.outputs.paths }}
+          sparse-checkout: |
+            ${{ steps.get-paths.outputs.paths }}
 
       - name: See folders downloaded
         id: see
