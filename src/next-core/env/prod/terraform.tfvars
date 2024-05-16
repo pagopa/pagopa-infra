@@ -34,6 +34,7 @@ cidr_vnet_italy = ["10.3.0.0/16"]
 
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
 cidr_subnet_tools_cae            = ["10.1.248.0/23"]
+cidr_subnet_azdoa                = ["10.1.130.0/24"]
 
 #
 # Dns
@@ -639,4 +640,5 @@ eventhubs_04 = [
 
 node_forwarder_zone_balancing_enabled = true
 node_forwarder_sku                    = "P3v3"
-
+devops_agent_zones                    = [1, 2, 3]
+devops_agent_balance_zones            = false
