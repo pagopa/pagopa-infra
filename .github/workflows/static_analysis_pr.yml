@@ -36,7 +36,7 @@ jobs:
           current_branch=${GITHUB_HEAD_REF}
 
           # Ottieni il commit di origine del branch corrente
-          base_commit=$(git rev-parse $current_branch^1)
+          base_commit=$(git rev-parse --first-parent "$current_branch^1" 2>/dev/null || git rev-parse "$current_branch")
 
           # Ottieni i percorsi modificati rispetto al commit di origine del branch
           modified_paths_source=$(git diff --name-only $base_commit | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq)
