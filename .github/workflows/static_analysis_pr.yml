@@ -11,4 +11,4 @@ jobs:
 
     steps:
       - name: Checkout Modified Paths
-        uses: ./.github/actions/checkout-modified-paths.yml
+        uses: .github/actions/checkout-modified-paths.yml
