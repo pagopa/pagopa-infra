@@ -1,10 +1,10 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "Biz-Events Transaction Service",
-    "description": "Microservice for exposing REST APIs about payment transaction.",
-    "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.1.25"
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Biz-Events Transaction Service",
+    "description" : "Microservice for exposing REST APIs about payment receipts.",
+    "termsOfService" : "https://www.pagopa.gov.it/",
+    "version" : "0.1.26"
   },
   "servers" : [ {
     "url": "${host}/bizevents/bizevents/tx-service/v1",
@@ -33,31 +33,6 @@
           }
         } ],
         "responses" : {
-          "429" : {
-            "description" : "Too many requests.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "200" : {
-            "description" : "Disabled Transactions.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            },
-            "content" : {
-              "application/json" : { }
-            }
-          },
           "404" : {
             "description" : "Not found the transaction.",
             "headers" : {
@@ -72,6 +47,17 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
@@ -103,6 +89,20 @@
                   "type" : "string"
                 }
               }
+            }
+          },
+          "200" : {
+            "description" : "Disabled Transactions.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : { }
             }
           }
         },
@@ -149,6 +149,24 @@
           }
         } ],
         "responses" : {
+          "404" : {
+            "description" : "Not found the transaction.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "429" : {
             "description" : "Too many requests.",
             "headers" : {
@@ -156,6 +174,24 @@
                 "description" : "This header identifies the call",
                 "schema" : {
                   "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -184,42 +220,6 @@
                   "items" : {
                     "$ref" : "#/components/schemas/TransactionListItem"
                   }
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not found the transaction.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            },
-            "content" : {
-              "*/*" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500" : {
-            "description" : "Service unavailable.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -271,13 +271,20 @@
           }
         } ],
         "responses" : {
-          "429" : {
-            "description" : "Too many requests.",
+          "404" : {
+            "description" : "Not found the transaction.",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
                 "schema" : {
                   "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -300,20 +307,13 @@
               }
             }
           },
-          "404" : {
-            "description" : "Not found the transaction.",
+          "429" : {
+            "description" : "Too many requests.",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
                 "schema" : {
                   "type" : "string"
-                }
-              }
-            },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -383,19 +383,8 @@
           }
         } ],
         "responses" : {
-          "429" : {
-            "description" : "Too many requests.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "422" : {
-            "description" : "Unprocessable recipt.",
+          "404" : {
+            "description" : "Not found the receipt.",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
@@ -412,8 +401,19 @@
               }
             }
           },
-          "404" : {
-            "description" : "Not found the receipt.",
+          "429" : {
+            "description" : "Too many requests.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "Unprocessable receipt.",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
@@ -459,10 +459,10 @@
               }
             },
             "content" : {
-              "application/json" : {
+              "*/*" : {
                 "schema" : {
                   "type" : "string",
-                  "format" : "byte"
+                  "format" : "binary"
                 }
               }
             }
@@ -499,6 +499,24 @@
         "description" : "Return OK if application is started",
         "operationId" : "healthCheck",
         "responses" : {
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "401" : {
             "description" : "Unauthorized",
             "headers" : {
@@ -517,35 +535,6 @@
                 "description" : "This header identifies the call",
                 "schema" : {
                   "type" : "string"
-                }
-              }
-            }
-          },
-          "429" : {
-            "description" : "Too many requests",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Bad Request",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -582,6 +571,17 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/AppInfo"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
@@ -644,6 +644,9 @@
             "type" : "string"
           },
           "isCart" : {
+            "type" : "boolean"
+          },
+          "isPayer" : {
             "type" : "boolean"
           }
         }

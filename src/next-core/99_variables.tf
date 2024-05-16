@@ -648,6 +648,7 @@ variable "is_feature_enabled" {
     vpn                       = optional(bool, false)
     dns_forwarder_lb          = optional(bool, false)
     postgres_private_dns      = bool
+    azdoa                     = optional(bool, true)
   })
   description = "Features enabled in this domain"
 }
@@ -682,4 +683,26 @@ variable "node_forwarder_sku" {
   default     = "P3v3"
 }
 
+variable "devops_agent_zones" {
+  type        = list(number)
+  default     = null
+  description = "(Optional) List of zones in which the scale set for azdo agent will be deployed"
+}
+
+variable "devops_agent_balance_zones" {
+  type        = bool
+  default     = false
+  description = "(Optional) True if the devops agent instances must be evenly balanced between the configured zones"
+}
+
+variable "cidr_subnet_azdoa" {
+  type        = list(string)
+  description = "Azure DevOps agent network address space."
+}
+
+variable "cidr_subnet_loadtest_agent" {
+  type        = list(string)
+  description = "LoadTest Agent Pool address space"
+  default     = null
+}
 

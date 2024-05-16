@@ -4,7 +4,7 @@
     "title": "Biz-Events Transaction Service JWT",
     "description": "Microservice for exposing REST APIs about payment transaction.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.1.25"
+    "version": "0.1.26"
   },
   "servers" : [ {
     "url": "${host}/bizevents/bizevents/tx-service-jwt/v1",
@@ -644,6 +644,9 @@
             "type" : "string"
           },
           "isCart" : {
+            "type" : "boolean"
+          },
+          "isPayer" : {
             "type" : "boolean"
           }
         }
