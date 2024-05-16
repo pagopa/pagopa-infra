@@ -8,11 +8,11 @@
   },
   "servers": [
     {
-      "url": "https://api.uat.platform.pagopa.it/gpd/api/v1/",
+      "url": "https://api.uat.platform.pagopa.it/gpd/debt-positions-service/v1/",
       "description": "Test environment"
     },
     {
-      "url": "https://api.platform.pagopa.it/gpd/api/v1/",
+      "url": "https://api.platform.pagopa.it/gpd/debt-positions-service/v1/",
       "description": "Production environment"
     }
   ],
@@ -1243,6 +1243,12 @@
           "payStandIn": {
             "type": "boolean",
             "description": "feature flag to enable a debt position in stand-in mode",
+            "example": true,
+            "default": true
+          },
+          "pull": {
+            "type": "boolean",
+            "description": "feature flag to enable the debt position retrieval in pull mode",
             "example": true,
             "default": true
           },
