@@ -2243,7 +2243,7 @@
       },
       "PaymentMethodManagementType": {
         "type": "string",
-        "description": "Payment method management type",
+        "description": "Describes how to manage the payment method authorization flow in wallet and eCommerce domain REDIRECT if it must be managed with a redirect flow, ONBOARDABLE if it must be managed with NPG and it is possible to save the payment method in the wallet, but also guest payment is accepted NOT_ONBOARDABLE if it must be managed with NPG but the method cannot be saved, only guest payment is accepted ONBOARDABLE_ONLY if it must be managed with NPG and it is mandatory to save the payment method in the wallet to use it. Guest payment isn't accepted ONBORDABLE_WITH_PAYMENT if it must be managed with NPG and it is possible to save it, to use it as guest payment, and to onboard it during the payment",
         "enum": [
           "ONBOARDABLE",
           "NOT_ONBOARDABLE",
