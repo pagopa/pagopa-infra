@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "azdo_rg" {
   count    = var.is_feature_enabled.azdoa ? 1 : 0
-  name     = "${local.project}-azdoa-rg"
+  name     = "${local.product}-azdoa-rg"
   location = var.location
 
   tags = var.tags
