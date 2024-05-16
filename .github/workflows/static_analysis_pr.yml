@@ -20,4 +20,4 @@ jobs:
           ls -la
 
       - name: Checkout Modified Paths
-        uses: ../.github/actions/checkout-modified-paths/action.yml
+        uses: ./.github/actions/checkout-modified-paths
