@@ -44,7 +44,7 @@ jobs:
           "
 
           echo "${modified_paths}"
-          echo "::set-output name=paths::$modified_paths"
+          echo "::set-output name=paths::$modified_paths_source"
         shell: bash
 
       - name: Checkout Modified Paths
