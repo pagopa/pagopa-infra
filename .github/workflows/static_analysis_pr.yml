@@ -39,17 +39,16 @@ jobs:
           echo "$modified_paths_domains"
           echo "merge paths"
           modified_paths="$modified_paths_source $modified_paths_domains .github"
-          variabile_multiline=$(echo "$modified_paths" | tr ' ' '\n')
 
-          echo "${variabile_multiline}"
-          echo "::set-output name=paths::$variabile_multiline"
+          echo "PAGOPA_MULTIPLE_FOLDERS=${modified_paths}" >> "$GITHUB_ENV"
         shell: bash
 
       - name: See folders downloaded
         id: download
         shell: bash
         run: |
-          for path in ${{ steps.get-paths.outputs.paths }}; do
+          echo "${PAGOPA_MULTIPLE_FOLDERS}"
+          for path in ${PAGOPA_MULTIPLE_FOLDERS}; do
             git checkout "$path"
 
             echo "Checkout eseguito in: $path"
