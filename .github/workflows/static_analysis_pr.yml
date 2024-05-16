@@ -14,20 +14,24 @@ jobs:
         run: |
           rm -rf *
 
-      - name: Checkout Modified Paths
-        uses: actions/checkout@v3
-        with:
-          sparse-checkout: |
-            .github
+      # - name: Checkout Modified Paths
+      #   uses: actions/checkout@v4
+      #   with:
+      #     sparse-checkout: |
+      #       .github
 
       - run: |
           ls -la
           pwd
 
-      - name: Checkout Repository
+      - name: 'PR commits + 1'
+        run: echo "PR_FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> "${GITHUB_ENV}"
+
+      - name: 'Checkout PR branch and all PR commits'
         uses: actions/checkout@v4
-        # with:
-        #   fetch-depth: 0
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: ${{ env.PR_FETCH_DEPTH }}
 
       - name: Get Modified Paths
         id: get-paths
