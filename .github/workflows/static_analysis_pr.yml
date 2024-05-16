@@ -45,10 +45,20 @@ jobs:
           echo "::set-output name=paths::$variabile_multiline"
         shell: bash
 
-      - name: Checkout Modified Paths
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: ${{ steps.get-paths.outputs.paths }}
+      - name: See folders downloaded
+        id: download
+        shell: bash
+        run: |
+          for path in ${{ steps.get-paths.outputs.paths }}; do
+            git checkout "$path"
+
+            echo "Checkout eseguito in: $path"
+          done
+
+#      - name: Checkout Modified Paths
+#        uses: actions/checkout@v4
+#        with:
+#          sparse-checkout: ${{ steps.get-paths.outputs.paths }}
 
       - name: See folders downloaded
         id: see
