@@ -39,7 +39,7 @@ jobs:
           echo "$modified_paths_domains"
           echo "merge paths"
           modified_paths="$modified_paths_source $modified_paths_domains .github"
-          variabile_multiline=$(echo "$modified_paths" | tr ' ' '\n')
+          variabile_multiline=$(echo "\n$modified_paths" | tr ' ' '\n')
 
           echo "${variabile_multiline}"
           echo "::set-output name=paths::$variabile_multiline"
