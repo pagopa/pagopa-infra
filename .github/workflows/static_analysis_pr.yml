@@ -10,39 +10,42 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: |
+      - name: Clean workspace
+        run: |
           rm -rf *
 
-      - name: Checkout Modified Paths
-        uses: actions/checkout@v3
-        with:
-          sparse-checkout: |
-            .github
+      # - name: Checkout Modified Paths
+      #   uses: actions/checkout@v4
+      #   with:
+      #     sparse-checkout: |
+      #       .github
 
       - run: |
           ls -la
           pwd
-          ls -la ./.github/actions
 
-      - name: Checkout Repository
+      - name: 'PR commits + 1'
+        run: echo "PR_FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> "${GITHUB_ENV}"
+
+      - name: 'Checkout PR branch and all PR commits'
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: ${{ env.PR_FETCH_DEPTH }}
 
       - name: Get Modified Paths
         id: get-paths
         run: |
-          echo "get current branch"
-          current_branch=${GITHUB_HEAD_REF}
-          echo "get modified paths from source"
-          modified_paths_source=$(git diff --name-only $current_branch origin/main | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq )
+          # Ottieni i percorsi modificati rispetto al riferimento
+          modified_paths_source=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq)
           echo "$modified_paths_source"
-          echo "get modified paths from domains"
-          modified_paths_domains=$(git diff --name-only $current_branch origin/main | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq )
+
+          modified_paths_domains=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq)
           echo "$modified_paths_domains"
-          echo "merge paths"
+
+          # Unisci i percorsi modificati e aggiungi il percorso ".github"
           modified_paths="$modified_paths_source $modified_paths_domains .github"
-          variabile_multiline=$(echo "$modified_paths" | tr ' ' '\n')
+
           echo "📌 modified_paths"
           echo "$modified_paths" > "/tmp/paths.txt"
         shell: bash
@@ -51,6 +54,7 @@ jobs:
         id: download
         shell: bash
         run: |
+          cat /tmp/paths.txt
           PAGOPA_MULTIPLE_FOLDERS=$(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
           echo $PAGOPA_MULTIPLE_FOLDERS
           git sparse-checkout init --cone
@@ -70,9 +74,9 @@ jobs:
           ls -la
           du -h -d 3 .
 
-      - name: Static Analysis
-        uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@v1.14.1
-        with:
-          precommit_version: 'v1.89.1@sha256:1ea921bc4fe87651d41677218e537afdcdb8202e757e554b9866668eaba144c5'
+      # - name: Static Analysis
+      #   uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@v1.14.1
+      #   with:
+      #     precommit_version: 'v1.89.1@sha256:1ea921bc4fe87651d41677218e537afdcdb8202e757e554b9866668eaba144c5'
 
 
