@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - run: |
+          rm -rf *
+
       - name: Checkout Modified Paths
         uses: actions/checkout@v3
         with:
