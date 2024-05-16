@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Modified Paths
+        uses: actions/checkout@v3
+        with:
+          paths: .github
+
       - run: |
           ls -la
 
