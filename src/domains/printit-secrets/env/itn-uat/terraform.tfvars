@@ -24,7 +24,4 @@ input_file = "./secret/weu-uat/configs.json"
 
 enable_iac_pipeline = true
 
-
-
-
-
+force = "v1"
