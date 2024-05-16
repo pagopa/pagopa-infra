@@ -35,7 +35,7 @@ module "monitoring_function" {
   self_alert_configuration = {
     enabled = var.self_alert_enabled
   }
-  monitoring_configuration_encoded = templatefile("${path.module}/monitoring_configuration.json.tpl",{
+  monitoring_configuration_encoded = templatefile("${path.module}/monitoring_configuration.json.tpl", {
     env_name                   = var.env,
     env_short                  = var.env_short,
     api_dot_env_name           = var.env == "prod" ? "api" : "api.${var.env}"
