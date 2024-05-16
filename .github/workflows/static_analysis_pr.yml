@@ -23,7 +23,6 @@ jobs:
       - run: |
           ls -la
           pwd
-          ls -la ./.github/actions
 
       - name: Checkout Repository
         uses: actions/checkout@v4
