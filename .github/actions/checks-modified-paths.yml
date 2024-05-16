@@ -1,0 +1,29 @@
+name: 'Checkout Modified Paths'
+description: 'Checkout modified paths with depth 2 and 3 based on the current branch'
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Get Modified Paths
+      id: get-paths
+      run: |
+        current_branch=$(git rev-parse --abbrev-ref HEAD)
+        modified_paths_source=$(git diff --name-only --relative="$PWD" $current_branch origin/main | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq | tr '\n' ' ')
+        modified_paths_domains=$(git diff --name-only --relative="$PWD" $current_branch origin/main | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq | tr '\n' ' ')
+        modified_paths="$modified_paths_source $modified_paths_domains"
+        echo "::set-output name=paths::$modified_paths"
+      shell: bash
+
+    - name: Checkout Modified Paths
+      uses: actions/checkout@v3
+      with:
+        paths: ${{ steps.get-paths.outputs.paths }}
+
+    - name: See folders downloaded
+      id: see
+      run: |
+        du -h -d 3 .
