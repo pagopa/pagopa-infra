@@ -132,8 +132,8 @@ module "aks_storage_class" {
 }
 
 data "azurerm_container_registry" "acr" {
-  name                = local.acr_name
-  resource_group_name = local.acr_resource_group_name
+  name                = local.acr_name_ita
+  resource_group_name = local.acr_resource_group_name_ita
 }
 
 # add the role to the identity the kubernetes cluster was assigned

@@ -16,8 +16,8 @@ locals {
   public_ip_aks_leonardo_outbound_name = "pagopa-${var.env_short}-itn-${var.env}-aksoutbound-pip"
 
   # ACR DOCKER
-  acr_name                = replace("${local.product}itncoreacr", "-", "")
-  acr_resource_group_name = "${local.product}-itn-acr-rg"
+  acr_name_ita                = replace("${local.product}itncoreacr", "-", "")
+  acr_resource_group_name_ita = "${local.product}-itn-acr-rg"
   
   # monitor
   monitor_rg_name                      = "${local.product}-monitor-rg"
