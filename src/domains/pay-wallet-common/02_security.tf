@@ -238,3 +238,16 @@ resource "azurerm_key_vault_secret" "wallet_migration_cstar_api_key_test_dev" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "migration_wallet_token_test_dev" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "migration-wallet-token-test-dev"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
