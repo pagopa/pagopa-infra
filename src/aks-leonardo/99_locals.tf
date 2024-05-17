@@ -18,7 +18,7 @@ locals {
   # ACR DOCKER
   acr_name_ita                = replace("${local.product}itncoreacr", "-", "")
   acr_resource_group_name_ita = "${local.product}-itn-acr-rg"
-  
+
   # monitor
   monitor_rg_name                      = "${local.product}-monitor-rg"
   monitor_log_analytics_workspace_name = "${local.product}-law"
