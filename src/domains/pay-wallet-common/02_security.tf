@@ -79,6 +79,13 @@ resource "azurerm_key_vault_access_policy" "cdn_wallet_kv" {
   certificate_permissions = ["Get", ]
 }
 
+resource "azurerm_key_vault_secret" "ai_connection_string" {
+  name         = "ai-${var.env_short}-connection-string"
+  value        = data.azurerm_application_insights.application_insights_italy.connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
 
 resource "azurerm_key_vault_secret" "redis_wallet_password" {
   name         = "redis-wallet-password"
