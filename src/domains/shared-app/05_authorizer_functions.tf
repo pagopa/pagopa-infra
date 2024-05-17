@@ -2,8 +2,8 @@
 locals {
 
   authorizer_functions_app_settings = {
-    linux_fx_version                    = "JAVA|11"
-    FUNCTIONS_WORKER_RUNTIME            = "java"
+#    linux_fx_version                    = "JAVA|11"
+#    FUNCTIONS_WORKER_RUNTIME            = "java"
     FUNCTIONS_WORKER_PROCESS_COUNT      = 4
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
