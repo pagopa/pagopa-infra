@@ -459,12 +459,7 @@
               }
             },
             "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "string",
-                  "format" : "byte"
-                }
-              }
+              "application/pdf" : { }
             }
           },
           "401" : {
