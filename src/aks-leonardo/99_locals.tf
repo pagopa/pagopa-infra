@@ -16,9 +16,9 @@ locals {
   public_ip_aks_leonardo_outbound_name = "pagopa-${var.env_short}-itn-${var.env}-aksoutbound-pip"
 
   # ACR DOCKER
-  docker_rg_name       = "${local.product}-container-registry-rg"
-  docker_registry_name = replace("${var.prefix}-${var.env_short}-common-acr", "-", "")
-
+  acr_name                = "${local.product}itncoreacr"
+  acr_resource_group_name = "${local.product}-itn-acr-rg"
+  
   # monitor
   monitor_rg_name                      = "${local.product}-monitor-rg"
   monitor_log_analytics_workspace_name = "${local.product}-law"
