@@ -163,7 +163,7 @@ variable "dns_zone_internal_prefix" {
 }
 
 variable "platform_dns_zone_prefix" {
-  type = string
+  type        = string
   description = "platform dns prefix"
 }
 

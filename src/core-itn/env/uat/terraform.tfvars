@@ -48,10 +48,10 @@ cidr_subnet_tools_cae = ["10.3.252.0/23"]
 #
 # Dns
 #
-platform_dns_zone_prefix   = "uat.platform"
-dns_zone_internal_prefix   = "internal.uat.platform"
-external_domain            = "pagopa.it"
-dns_default_ttl_sec = 3600
+platform_dns_zone_prefix = "uat.platform"
+dns_zone_internal_prefix = "internal.uat.platform"
+external_domain          = "pagopa.it"
+dns_default_ttl_sec      = 3600
 
 ### External resources
 
