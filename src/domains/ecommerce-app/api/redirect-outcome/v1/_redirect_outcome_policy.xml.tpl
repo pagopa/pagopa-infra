@@ -1,7 +1,20 @@
 <policies>
     <inbound>
         <base /> 
-        <set-variable name="transactionId" value="@(context.Request.MatchedParameters["idTransaction"])" />
+         <set-variable name="transactionId" value="@(context.Request.MatchedParameters["idTransaction"])" />
+         <set-variable name="base64EncodedTransactionId" value="@{
+                var transactionId = (string)context.Variables["transactionId"];
+                byte[] transactionIdBase64 = new byte[transactionId.Length / 2];
+                for (int i = 0; i < transactionIdBase64.Length; i++)
+                {
+                   transactionIdBase64[i] = Convert.ToByte(transactionId.Substring(i * 2, 2), 16);
+                }
+               return Convert.ToBase64String(transactionIdBase64)
+                   .Replace('+', '-')
+                   .Replace('/', '_')
+                   .Replace("=", "");
+            }" 
+        />
         <!-- start request validation
         <validate-content unspecified-content-type-action="prevent" max-size="102400" size-exceeded-action="prevent" errors-variable-name="requestBodyValidation">
            <content type="application/json" validate-as="json" action="prevent" />
@@ -13,7 +26,7 @@
         <!-- end set policy variables -->
         <!-- send transactions service PATCH request -->
         <send-request mode="new" response-variable-name="transactionServiceAuthorizationPatchResponse" timeout="10" ignore-error="false">
-            <set-url>@(String.Format((string)context.Variables["transactionServiceBackendUri"]+"/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))</set-url>
+            <set-url>@(String.Format((string)context.Variables["transactionServiceBackendUri"]+"/transactions/{0}/auth-requests", (string)context.Variables["base64EncodedTransactionId"]))</set-url>
             <set-method>PATCH</set-method>
             <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
@@ -112,6 +125,21 @@
                         validationErrorResponse["detail"] = "Invalid input request";
                         validationErrorResponse["idTransaction"] = transactionId;
                         return validationErrorResponse.ToString();
+                    }
+                    </set-body>
+                </return-response>
+            </when>
+            <when condition="@(context.LastError.Source == "authorization")">
+                <return-response>
+                    <set-status code="401" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>
+                    {
+                        "status": 401,
+                        "title": "Unauthorized",
+                        "detail": "Unauthorized"
                     }
                     </set-body>
                 </return-response>

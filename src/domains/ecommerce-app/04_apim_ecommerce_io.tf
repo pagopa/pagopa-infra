@@ -201,7 +201,7 @@ resource "azurerm_api_management_api_operation_policy" "io_delete_transaction" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "requestTransactionUserCancellation"
 
-  xml_content = file("./api/ecommerce-io/v1/_validate_transactions_jwt_token.tpl")
+  xml_content = templatefile("./api/ecommerce-io/v1/_delete_transaction.xml.tpl", { ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled })
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_transaction_authorization_request" {

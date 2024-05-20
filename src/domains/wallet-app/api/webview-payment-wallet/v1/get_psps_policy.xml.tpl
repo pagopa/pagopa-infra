@@ -9,6 +9,9 @@
         <send-request ignore-error="false" timeout="10" response-variable-name="walletResponse">
             <set-url>@("https://${wallet_hostname}/pagopa-wallet-service/wallets/" + context.Variables["walletId"])</set-url>
             <set-method>GET</set-method>
+            <set-header name="x-user-id" exists-action="override">
+                <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
+            </set-header>
         </send-request>
 
         <choose>

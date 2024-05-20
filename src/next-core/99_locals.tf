@@ -1,7 +1,9 @@
 locals {
   product             = "${var.prefix}-${var.env_short}"
   product_region      = "${var.prefix}-${var.env_short}-${var.location_short}"
+  product_ita         = "${var.prefix}-${var.env_short}-${var.location_short_ita}"
   project             = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_ita         = "${var.prefix}-${var.env_short}-${var.location_short_ita}-${var.domain}"
   geo_replica_project = "${var.prefix}-${var.env_short}-${var.geo_replica_location_short}-${var.domain}-replica"
 
   monitor_appinsights_name        = "${local.product}-appinsights"
@@ -27,5 +29,8 @@ locals {
   integration_appgateway_private_ip = ["10.230.10.200"]
 
   msg_resource_group_name = "${local.product}-msg-rg"
+
+  azdo_iac_managed_identities   = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
+  azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
 
 }

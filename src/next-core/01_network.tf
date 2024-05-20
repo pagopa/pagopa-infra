@@ -1,6 +1,8 @@
-# vnet
+#
+# Vnet Replica
+#
 module "vnet_replica" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.50.0"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v7.62.0"
   count               = var.geo_replica_enabled ? 1 : 0
   name                = "${local.geo_replica_project}-vnet"
   location            = var.geo_replica_location
@@ -14,7 +16,7 @@ module "vnet_replica" {
 
 ## Peering between the vnet(main) and replica vnet
 module "vnet_peering" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.50.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.62.0"
   count  = var.geo_replica_enabled ? 1 : 0
 
   source_resource_group_name       = data.azurerm_resource_group.rg_vnet_core.name
@@ -28,33 +30,17 @@ module "vnet_peering" {
   target_use_remote_gateways       = false # needed by vnet peering with SIA
 }
 
-
-
-# db dns
-
-resource "azurerm_private_dns_zone" "private_db_dns_zone" {
-  count               = var.postgres_private_dns_enabled ? 1 : 0
-  name                = "${var.env_short}.internal.postgresql.pagopa.it"
-  resource_group_name = data.azurerm_resource_group.rg_vnet_core.name
-
-  tags = var.tags
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "private_db_zone_to_core_vnet" {
-  count = var.postgres_private_dns_enabled ? 1 : 0
-
-  name                  = data.azurerm_virtual_network.vnet_core.name
-  resource_group_name   = data.azurerm_resource_group.rg_vnet_core.name
-  private_dns_zone_name = azurerm_private_dns_zone.private_db_dns_zone[0].name
-  virtual_network_id    = data.azurerm_virtual_network.vnet_core.id
-  registration_enabled  = false
-
-  tags = var.tags
-}
-
-
 # RT sia associated to new apim v2 snet
 resource "azurerm_subnet_route_table_association" "rt_sia_for_apim_v2" {
   subnet_id      = module.apimv2_snet.id
   route_table_id = data.azurerm_route_table.rt_sia.id
 }
+
+# RT sia associated to app gw integration
+resource "azurerm_subnet_route_table_association" "rt_sia_for_appgw_integration" {
+  subnet_id      = module.integration_appgateway_snet.id
+  route_table_id = data.azurerm_route_table.rt_sia.id
+}
+
+
+

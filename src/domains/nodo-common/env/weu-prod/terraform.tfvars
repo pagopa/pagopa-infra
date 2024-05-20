@@ -42,9 +42,9 @@ pgres_flex_params = {
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                             = 1048576
-  zone                                   = 1
-  standby_ha_zone                        = 3
-  backup_retention_days                  = 7
+  zone                                   = 3
+  standby_ha_zone                        = 1
+  backup_retention_days                  = 30
   geo_redundant_backup_enabled           = true
   create_mode                            = "Default"
   pgres_flex_private_endpoint_enabled    = true
@@ -194,9 +194,36 @@ standin_cosmos_nosql_db_params = {
   max_throughput = 2000
 }
 
-cidr_subnet_cosmosdb_nodo_re       = ["10.1.170.0/24"]
-cidr_subnet_cosmosdb_nodo_verifyko = ["10.1.173.0/24"]
-cidr_subnet_cosmosdb_standin       = ["10.1.190.0/24"]
+enable_wisp_converter = false
+
+wisp_converter_cosmos_nosql_db_params = {
+  enabled      = true
+  kind         = "GlobalDocumentDB"
+  capabilities = []
+  offer_type   = "Standard"
+  consistency_policy = {
+    consistency_level       = "BoundedStaleness"
+    max_interval_in_seconds = 300
+    max_staleness_prefix    = 100000
+  }
+  server_version                    = "4.0"
+  main_geo_location_zone_redundant  = false
+  enable_free_tier                  = false
+  additional_geo_locations          = []
+  private_endpoint_enabled          = true
+  public_network_access_enabled     = false
+  is_virtual_network_filter_enabled = true
+
+  backup_continuous_enabled = false
+
+  events_ttl     = 604800 # 7 days in second
+  max_throughput = 1000
+}
+
+cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
+cidr_subnet_cosmosdb_nodo_verifyko  = ["10.1.173.0/24"]
+cidr_subnet_cosmosdb_standin        = ["10.1.190.0/24"]
+cidr_subnet_cosmosdb_wisp_converter = ["10.1.191.0/24"]
 
 nodo_storico_allowed_ips = ["93.63.219.230"]
 
@@ -263,4 +290,23 @@ nodo_cfg_sync_storage_account = {
   public_network_access_enabled = false
   backup_enabled                = true
   backup_retention_days         = 30
+}
+
+wisp_converter_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
+  blob_delete_retention_days    = 90
+  public_network_access_enabled = false
+  backup_enabled                = true
+  backup_retention_days         = 30
+}
+
+redis_ha_enabled = false
+
+enabled_features = {
+  eventhub_ha_tx = true
+  eventhub_ha_rx = true
 }

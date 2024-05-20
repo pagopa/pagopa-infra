@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "= 2.99.0"
+      version = "<= 3.94.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -10,11 +10,11 @@ terraform {
     }
     null = {
       source  = "hashicorp/null"
-      version = "= 3.1.1"
+      version = "<= 3.2.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "= 2.17.0"
+      version = "<= 2.27.0"
     }
     helm = {
       source  = "hashicorp/helm"
@@ -24,10 +24,13 @@ terraform {
       source  = "hashicorp/http"
       version = "3.2.1"
     }
-
     kubectl = {
       source  = "gavinbunney/kubectl"
       version = "1.14.0"
+    }
+    alekc-kubectl = {
+      source  = "alekc/kubectl"
+      version = "2.0.4"
     }
   }
 

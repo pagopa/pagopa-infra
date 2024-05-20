@@ -1,11 +1,13 @@
-prefix          = "pagopa"
-env_short       = "p"
-env             = "prod"
-domain          = "core"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "prod"
+prefix             = "pagopa"
+env_short          = "p"
+env                = "prod"
+domain             = "core"
+location           = "westeurope"
+location_short     = "weu"
+location_string    = "West Europe"
+location_ita       = "italynorth"
+location_short_ita = "itn"
+instance           = "prod"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -15,11 +17,24 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-### External resources
+### Feature Flag
+is_feature_enabled = {
+  vnet_ita                  = false,
+  container_app_tools_cae   = false,
+  node_forwarder_ha_enabled = false,
+  vpn                       = false,
+  dns_forwarder_lb          = true,
+  postgres_private_dns      = true
+}
 
-monitor_resource_group_name                 = "pagopa-p-monitor-rg"
-log_analytics_workspace_name                = "pagopa-p-law"
-log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
+#
+# CIRDs
+#
+cidr_vnet_italy = ["10.3.0.0/16"]
+
+cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
+cidr_subnet_tools_cae            = ["10.1.248.0/23"]
+cidr_subnet_azdoa                = ["10.1.130.0/24"]
 
 #
 # Dns
@@ -27,14 +42,14 @@ log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
 
-#
-# CIRDs
-#
-cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
-cidr_subnet_tools_cae            = ["10.1.248.0/23"]
+### External resources
 
-dns_forwarder_backup_is_enabled = true
-dns_forwarder_vm_image_name     = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
+monitor_resource_group_name                 = "pagopa-p-monitor-rg"
+log_analytics_workspace_name                = "pagopa-p-law"
+log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
+
+### VPN
+dns_forwarder_vm_image_name = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
 
 
 #
@@ -131,7 +146,7 @@ apim_v2_subnet_nsg_security_rules = [
 ]
 
 apim_v2_publisher_name = "pagoPA Platform UAT"
-apim_v2_sku            = "Premium_1"
+apim_v2_sku            = "Premium_3"
 apim_v2_alerts_enabled = true
 dns_zone_prefix        = "platform"
 apim_v2_zones          = ["1", "2", "3"]
@@ -174,19 +189,13 @@ dns_zone_wisp2                = "wisp2"
 base_path_nodo_oncloud        = "/nodo-prd"
 
 
-#
-# Feature Flags
-#
-enabled_resource = {
-  container_app_tools_cae = false
-}
-
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
 ehns_capacity                 = 5
 ehns_zone_redundant           = true
+ehns_public_network_access    = true
 
 ehns_metric_alerts = {
   no_trx = {
@@ -628,3 +637,8 @@ eventhubs_04 = [
     ]
   }
 ]
+
+node_forwarder_zone_balancing_enabled = true
+node_forwarder_sku                    = "P3v3"
+devops_agent_zones                    = [1, 2, 3]
+devops_agent_balance_zones            = false

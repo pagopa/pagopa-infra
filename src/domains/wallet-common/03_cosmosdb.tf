@@ -115,6 +115,33 @@ locals {
       ]
       shard_key = null
     },
+    {
+      name = "wallets-migration-pm",
+      indexes = [
+        {
+          keys   = ["_id"] # wallet id pm
+          unique = true
+        },
+        {
+          keys   = ["contractId"],
+          unique = true
+        }
+      ],
+      shard_key = null
+    },
+    {
+      name = "payment-wallets"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["userId"]
+          unique = false
+        }
+      ]
+      shard_key = "userId"
+    },
   ]
 }
 

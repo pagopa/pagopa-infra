@@ -69,7 +69,7 @@ pgres_flex_params = {
   # https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compute-storage#storage
   storage_mb                      = 1048576 # 1Tib
   zone                            = 1
-  backup_retention_days           = 7
+  backup_retention_days           = 30
   geo_redundant_backup_enabled    = true
   create_mode                     = "Default"
   high_availability_enabled       = true
@@ -110,12 +110,12 @@ cosmos_gpd_payments_db_params = {
 
   payments_receipts_table = {
     autoscale  = true
-    throughput = 3000
+    throughput = 2000
   }
 
   payments_pp_table = {
     autoscale  = true
-    throughput = 4000
+    throughput = 2000
   }
 }
 

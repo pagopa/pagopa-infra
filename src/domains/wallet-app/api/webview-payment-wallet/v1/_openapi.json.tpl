@@ -3,7 +3,7 @@
   "info": {
     "title": "pagoPA Wallet API for Webview",
     "version": "0.0.1",
-    "description": "API to handle webview of wallets PagoPA, where a wallet is triple between user identifier, payment instrument and services (i.e pagoPA, bpd).",
+    "description": "API to handle webview of wallets PagoPA, where a wallet is triple between user identifier, payment instrument and applications (i.e pagoPA, bpd).",
     "termsOfService": "https://pagopa.it/terms/"
   },
   "tags": [

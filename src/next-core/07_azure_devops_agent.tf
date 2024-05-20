@@ -1,33 +1,31 @@
 resource "azurerm_resource_group" "azdo_rg" {
-  count    = var.enable_azdoa ? 1 : 0
-  name     = "${local.project}-azdoa-rg"
+  count    = var.is_feature_enabled.azdoa ? 1 : 0
+  name     = "${local.product}-azdoa-rg"
   location = var.location
 
   tags = var.tags
 }
 
 module "azdoa_snet" {
-  source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v3.5.0"
-  count                                          = var.enable_azdoa ? 1 : 0
-  name                                           = "${local.project}-azdoa-snet"
-  address_prefixes                               = var.cidr_subnet_azdoa
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
-  enforce_private_link_endpoint_network_policies = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.13.0"
+  count                                     = var.is_feature_enabled.azdoa ? 1 : 0
+  name                                      = "${local.product}-azdoa-snet"
+  address_prefixes                          = var.cidr_subnet_azdoa
+  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_core.name
+  private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
     "Microsoft.Storage",
   ]
 }
 
-
 module "azdoa_li_app" {
-  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v4.20.0"
-  count               = var.enable_azdoa ? 1 : 0
-  name                = "${local.project}-azdoa-vmss-ubuntu-app"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v8.13.0"
+  count               = var.is_feature_enabled.azdoa ? 1 : 0
+  name                = "${local.product}-azdoa-vmss-ubuntu-app"
   resource_group_name = azurerm_resource_group.azdo_rg[0].name
   subnet_id           = module.azdoa_snet[0].id
-  subscription_name   = data.azurerm_subscription.current.display_name
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
@@ -41,12 +39,11 @@ module "azdoa_li_app" {
 }
 
 module "azdoa_li_infra" {
-  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v4.20.0"
-  count               = var.enable_azdoa ? 1 : 0
-  name                = "${local.project}-azdoa-vmss-ubuntu-infra"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v8.13.0"
+  count               = var.is_feature_enabled.azdoa ? 1 : 0
+  name                = "${local.product}-azdoa-vmss-ubuntu-infra"
   resource_group_name = azurerm_resource_group.azdo_rg[0].name
   subnet_id           = module.azdoa_snet[0].id
-  subscription_name   = data.azurerm_subscription.current.display_name
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
@@ -64,13 +61,13 @@ module "azdoa_li_infra" {
 #
 
 module "loadtest_agent_snet" {
-  count                = var.env_short != "p" ? 1 : 0
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v3.5.0"
-  name                 = "${local.project}-loadtest-agent-snet"
-  address_prefixes     = var.cidr_subnet_loadtest_agent
-  resource_group_name  = azurerm_resource_group.rg_vnet.name
-  virtual_network_name = module.vnet.name
-
+  count                                     = var.env_short != "p" ? 1 : 0
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.13.0"
+  name                                      = "${local.product}-loadtest-agent-snet"
+  address_prefixes                          = var.cidr_subnet_loadtest_agent
+  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_core.name
+  private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
     "Microsoft.Web",
@@ -79,13 +76,13 @@ module "loadtest_agent_snet" {
   ]
 }
 
+
 module "azdoa_loadtest_li" {
-  source              = "git::https://github.com/pagopa/azurerm.git//azure_devops_agent?ref=v4.20.0"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//azure_devops_agent?ref=v8.13.0"
   count               = var.env_short != "p" ? 1 : 0
-  name                = "${local.project}-azdoa-vmss-loadtest-li"
+  name                = "${local.product}-azdoa-vmss-loadtest-li"
   resource_group_name = azurerm_resource_group.azdo_rg[0].name
   subnet_id           = module.azdoa_snet[0].id
-  subscription_name   = data.azurerm_subscription.current.display_name
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
@@ -98,6 +95,7 @@ module "azdoa_loadtest_li" {
 
   tags = var.tags
 }
+
 
 #
 # Policy
@@ -112,7 +110,7 @@ data "azurerm_user_assigned_identity" "iac_federated_azdo" {
 resource "azurerm_key_vault_access_policy" "azdevops_iac_managed_identities" {
   for_each = local.azdo_iac_managed_identities
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.kv_core.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = data.azurerm_user_assigned_identity.iac_federated_azdo[each.key].principal_id
 
@@ -142,7 +140,7 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_legacy_policies" {
     data.azuread_service_principal.iac_plan_legacy.object_id,
     data.azuread_service_principal.iac_deploy_legacy.object_id
   ])
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.kv_core.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = each.key
 
@@ -152,3 +150,4 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_legacy_policies" {
 
   storage_permissions = []
 }
+

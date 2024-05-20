@@ -41,9 +41,9 @@ pgres_flex_params = {
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                             = 32768
-  zone                                   = 1
-  standby_zone                           = 2
-  backup_retention_days                  = 7
+  zone                                   = 2
+  standby_zone                           = 1
+  backup_retention_days                  = 30
   geo_redundant_backup_enabled           = true
   create_mode                            = "Default"
   pgres_flex_private_endpoint_enabled    = true
@@ -141,7 +141,7 @@ cosmos_mongo_db_fdr_params = {
 
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 5000
+  max_throughput     = 2000
   throughput         = 1000
 }
 
@@ -175,7 +175,7 @@ cosmos_mongo_db_fdr_re_params = {
 
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 5000
+  max_throughput     = 2000
   throughput         = 1000
 }
 

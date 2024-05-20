@@ -86,7 +86,7 @@
           }
         }
       }
-    }
+    },
   },
   "components": {
     "schemas": {

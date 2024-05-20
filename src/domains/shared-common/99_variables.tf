@@ -256,3 +256,23 @@ variable "cidr_subnet_test_data_storage_account" {
   description = "Storage account network address space."
   default     = null
 }
+
+variable "redis_ha_enabled" {
+  type        = bool
+  description = "(Required) If true, enables the usage of HA redis instance"
+}
+
+
+variable "github_repository_environment" {
+  type = object({
+    protected_branches     = bool
+    custom_branch_policies = bool
+    reviewers_teams        = list(string)
+  })
+  description = "GitHub Continuous Integration roles"
+  default = {
+    protected_branches     = false
+    custom_branch_policies = true
+    reviewers_teams        = ["pagopa-team-core"]
+  }
+}

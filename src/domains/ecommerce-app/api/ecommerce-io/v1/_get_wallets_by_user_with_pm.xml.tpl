@@ -109,6 +109,7 @@
                                 result["walletId"] = walletIdToUuid;
                                 string pmWalletType = (string) wallet["walletType"];
                                 string eCommerceWalletType = eCommerceWalletTypes[pmWalletType];
+                                string paymentMethodAsset = null;
                                 result["paymentMethodId"] = eCommercePaymentMethodIds[eCommerceWalletType];
                                 result["status"] = "VALIDATED";
 
@@ -121,38 +122,41 @@
                                 result["updateDate"] = result["creationDate"];
 
                                 var convertedServices = new List<JObject>();
-                                foreach(JValue service in wallet["enableableFunctions"]){
-                                    string serviceName = service.ToString().ToUpper();
-                                    if(walletServices.Contains(serviceName)){
+                                foreach(JValue application in wallet["enableableFunctions"]){
+                                    string applicationName = application.ToString().ToUpper();
+                                    if(walletServices.Contains(applicationName)){
                                         JObject converted = new JObject();
-                                        converted["name"] = serviceName;
+                                        converted["name"] = applicationName;
                                         converted["status"] = "ENABLED";
                                         converted["updateDate"] = result["creationDate"];
                                         convertedServices.Add(converted);
                                     }
                                 }
-                                result["services"] = JArray.FromObject(convertedServices);
+                                result["applications"] = JArray.FromObject(convertedServices);
                                 JObject details = new JObject();
                                 details["type"] = eCommerceWalletType;
                                 if (eCommerceWalletType == "CARDS") {
-                                    details["maskedPan"] = $"{wallet["info"]["blurredNumber"]}";
+                                    details["lastFourDigits"] = $"{wallet["info"]["blurredNumber"]}";
                                     details["expiryDate"] = $"{(string)wallet["info"]["expireYear"]}{(string)wallet["info"]["expireMonth"]}";
-                                    details["holder"] = wallet["info"]["holder"];
                                     details["brand"] = wallet["info"]["brand"];
+                                    paymentMethodAsset = (string)wallet["info"]["brandLogo"];
                                 }
                                 if (eCommerceWalletType == "PAYPAL") {
                                     var info = (JObject)(wallet["info"]);
                                     var pspArray = (JArray)(info["pspInfo"]);
                                     var pspInfo = (JObject)(pspArray[0]);
-                                    details["abi"] = pspInfo["abi"];
+                                    details["pspId"] = pspInfo["abi"];
                                     details["maskedEmail"] = pspInfo["email"];
+                                    paymentMethodAsset = "https://assets.cdn.platform.pagopa.it/apm/paypal.png";
                                 }
                                 if (eCommerceWalletType == "BANCOMATPAY") {
                                     details["maskedNumber"] = wallet["info"]["numberObfuscated"];
                                     details["instituteCode"] = wallet["info"]["instituteCode"];
                                     details["bankName"] = wallet["info"]["bankName"];
+                                    paymentMethodAsset = (string)wallet["info"]["brandLogo"];
                                 }
                                 result["details"] = details;
+                                result["paymentMethodAsset"] = paymentMethodAsset;
 
                                 return result;
                         }).ToArray();

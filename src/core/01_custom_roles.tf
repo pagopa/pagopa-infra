@@ -107,6 +107,17 @@ resource "azurerm_role_definition" "iac_reader" {
       # "Microsoft.Cdn/profiles/endpoints/read",
       "Microsoft.DataFactory/factories/*/read",
       # "Microsoft.DataFactory/factories/datasets/read",
+      "Microsoft.ApiManagement/service/portalsettings/listSecrets/action",
+      "Microsoft.ApiManagement/service/tenant/listSecrets/action",
+      "Microsoft.Compute/virtualMachineScaleSets/write", #scale the VMSS
+      "Microsoft.AppConfiguration/configurationStores/*/read",
+      "Microsoft.AppConfiguration/configurationStores/*/action"
+
+    ]
+
+    data_actions = [
+      "Microsoft.AppConfiguration/configurationStores/*/read",
+      "Microsoft.AppConfiguration/configurationStores/*/action"
     ]
   }
 }

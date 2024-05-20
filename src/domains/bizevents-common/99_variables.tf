@@ -124,6 +124,8 @@ variable "bizevents_datastore_cosmos_db_params" {
     backup_continuous_enabled         = bool
     container_default_ttl             = number
     ip_range_filter                   = string
+    max_throughput                    = number
+    max_throughput_alt                = number
   })
 }
 
@@ -150,6 +152,7 @@ variable "negative_bizevents_datastore_cosmos_db_params" {
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
     container_default_ttl             = number
+    max_throughput                    = number
   })
 }
 
@@ -187,4 +190,21 @@ variable "storage_account_replication_type" {
   type        = string
   default     = "LRS"
   description = "(Optional) biz event fn storage account replication type"
+}
+
+variable "redis_ha_enabled" {
+  type        = bool
+  description = "(Required) enables usage of HA deployed redis instance"
+}
+
+variable "enabled_features" {
+  type = object({
+    eventhub_ha_rx = bool
+    eventhub_ha_tx = bool
+  })
+  default = {
+    eventhub_ha_rx = false
+    eventhub_ha_tx = false
+  }
+  description = "Features enabled in this domain"
 }

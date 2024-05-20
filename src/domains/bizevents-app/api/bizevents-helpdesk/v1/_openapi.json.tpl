@@ -4,1033 +4,996 @@
     "title": "Biz-Events Helpdesk",
     "description": "Microservice for exposing REST APIs for bizevent helpdesk.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.1.12"
+    "version": "0.1.24"
   },
-  "servers": [
-    {
-      "url": "${host}/bizevents/helpdesk/v1",
-      "description": "Generated server url"
-    }
-  ],
-  "paths": {
-    "/info": {
-      "get": {
-        "tags": [
-          "Home"
-        ],
-        "summary": "health check",
-        "description": "Return OK if application is started",
-        "operationId": "healthCheck",
-        "responses": {
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+  "servers" : [ {
+    "url": "${host}/bizevents/helpdesk/v1",
+    "description" : "Generated server url"
+  } ],
+  "paths" : {
+    "/info" : {
+      "get" : {
+        "tags" : [ "Home" ],
+        "summary" : "health check",
+        "description" : "Return OK if application is started",
+        "operationId" : "healthCheck",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AppInfo"
                 }
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Unauthorized",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           },
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "403" : {
+            "description" : "Forbidden",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Service unavailable",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.AppInfo"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "400" : {
+            "description" : "Bad Request",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429" : {
+            "description" : "Too many requests",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     },
-    "/events/{biz-event-id}": {
-      "get": {
-        "tags": [
-          "Biz-Events Helpdesk"
-        ],
-        "summary": "Retrieve the biz-event given its id.",
-        "operationId": "getBizEvent",
-        "parameters": [
-          {
-            "name": "biz-event-id",
-            "in": "path",
-            "description": "The id of the biz-event.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+    "/events/{biz-event-id}" : {
+      "get" : {
+        "tags" : [ "Biz-Events Helpdesk" ],
+        "summary" : "Retrieve the biz-event given its id.",
+        "operationId" : "getBizEvent",
+        "parameters" : [ {
+          "name" : "biz-event-id",
+          "in" : "path",
+          "description" : "The id of the biz-event.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "Obtained biz-event.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Obtained biz-event.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.BizEvent"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BizEvent"
                 }
               }
             }
           },
-          "422": {
-            "description": "Unable to process the request.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Wrong or missing function key.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "Unable to process the request.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not found the biz-event.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "404" : {
+            "description" : "Not found the biz-event.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     },
-    "/events/organizations/{organization-fiscal-code}/iuvs/{iuv}": {
-      "get": {
-        "tags": [
-          "Biz-Events Helpdesk"
-        ],
-        "summary": "Retrieve the biz-event given the organization fiscal code and IUV.",
-        "operationId": "getBizEventByOrganizationFiscalCodeAndIuv",
-        "parameters": [
-          {
-            "name": "organization-fiscal-code",
-            "in": "path",
-            "description": "The fiscal code of the Organization.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "iuv",
-            "in": "path",
-            "description": "The unique payment identification. Alphanumeric code that uniquely associates and identifies three key elements of a payment: reason, payer, amount",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+    "/events/organizations/{organization-fiscal-code}/iuvs/{iuv}" : {
+      "get" : {
+        "tags" : [ "Biz-Events Helpdesk" ],
+        "summary" : "Retrieve the biz-event given the organization fiscal code and IUV.",
+        "operationId" : "getBizEventByOrganizationFiscalCodeAndIuv",
+        "parameters" : [ {
+          "name" : "organization-fiscal-code",
+          "in" : "path",
+          "description" : "The fiscal code of the Organization.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "Obtained biz-event.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+        }, {
+          "name" : "iuv",
+          "in" : "path",
+          "description" : "The unique payment identification. Alphanumeric code that uniquely associates and identifies three key elements of a payment: reason, payer, amount",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Obtained biz-event.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.BizEvent"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BizEvent"
                 }
               }
             }
           },
-          "422": {
-            "description": "Unable to process the request.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "401" : {
+            "description" : "Wrong or missing function key.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "Unable to process the request.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not found the biz-event.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "500" : {
+            "description" : "Service unavailable.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "500": {
-            "description": "Service unavailable.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "404" : {
+            "description" : "Not found the biz-event.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.ProblemJson"
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
           },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
+          "429" : {
+            "description" : "Too many requests.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "ApiKey": []
-          }
-        ]
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
       },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
         }
-      ]
+      } ]
     }
   },
-  "components": {
-    "schemas": {
-      "it.gov.pagopa.bizeventsservice.model.ProblemJson": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "description": "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
+  "components" : {
+    "schemas" : {
+      "AppInfo" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
           },
-          "status": {
-            "maximum": 600,
-            "minimum": 100,
-            "type": "integer",
-            "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
-            "format": "int32",
-            "example": 200
+          "version" : {
+            "type" : "string"
           },
-          "detail": {
-            "type": "string",
-            "description": "A human readable explanation specific to this occurrence of the problem.",
-            "example": "There was an error processing the request"
+          "environment" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.model.AppInfo": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
+      "ProblemJson" : {
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string",
+            "description" : "A short, summary of the problem type. Written in english and readable for engineers (usually not suited for non technical stakeholders and not localized); example: Service Unavailable"
           },
-          "version": {
-            "type": "string"
+          "status" : {
+            "maximum" : 600,
+            "minimum" : 100,
+            "type" : "integer",
+            "description" : "The HTTP status code generated by the origin server for this occurrence of the problem.",
+            "format" : "int32",
+            "example" : 200
           },
-          "environment": {
-            "type": "string"
+          "detail" : {
+            "type" : "string",
+            "description" : "A human readable explanation specific to this occurrence of the problem.",
+            "example" : "There was an error processing the request"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.AuthRequest": {
-        "type": "object",
-        "properties": {
-          "authOutcome": {
-            "type": "string"
+      "AuthRequest" : {
+        "type" : "object",
+        "properties" : {
+          "authOutcome" : {
+            "type" : "string"
           },
-          "guid": {
-            "type": "string"
+          "guid" : {
+            "type" : "string"
           },
-          "correlationId": {
-            "type": "string"
+          "correlationId" : {
+            "type" : "string"
           },
-          "error": {
-            "type": "string"
+          "error" : {
+            "type" : "string"
           },
-          "auth_code": {
-            "type": "string"
+          "auth_code" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.BizEvent": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
+      "BizEvent" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
           },
-          "version": {
-            "type": "string"
+          "version" : {
+            "type" : "string"
           },
-          "idPaymentManager": {
-            "type": "string"
+          "idPaymentManager" : {
+            "type" : "string"
           },
-          "complete": {
-            "type": "string"
+          "complete" : {
+            "type" : "string"
           },
-          "receiptId": {
-            "type": "string"
+          "receiptId" : {
+            "type" : "string"
           },
-          "missingInfo": {
-            "type": "array",
-            "items": {
-              "type": "string"
+          "missingInfo" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
             }
           },
-          "debtorPosition": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.DebtorPosition"
+          "debtorPosition" : {
+            "$ref" : "#/components/schemas/DebtorPosition"
           },
-          "creditor": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.Creditor"
+          "creditor" : {
+            "$ref" : "#/components/schemas/Creditor"
           },
-          "psp": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.Psp"
+          "psp" : {
+            "$ref" : "#/components/schemas/Psp"
           },
-          "debtor": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.Debtor"
+          "debtor" : {
+            "$ref" : "#/components/schemas/Debtor"
           },
-          "payer": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.Payer"
+          "payer" : {
+            "$ref" : "#/components/schemas/Payer"
           },
-          "paymentInfo": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.PaymentInfo"
+          "paymentInfo" : {
+            "$ref" : "#/components/schemas/PaymentInfo"
           },
-          "transferList": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.Transfer"
+          "transferList" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Transfer"
             }
           },
-          "transactionDetails": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.TransactionDetails"
+          "transactionDetails" : {
+            "$ref" : "#/components/schemas/TransactionDetails"
           },
-          "eventStatus": {
-            "type": "string",
-            "enum": [
-              "NA",
-              "RETRY",
-              "FAILED",
-              "DONE"
-            ]
+          "eventStatus" : {
+            "type" : "string",
+            "enum" : [ "NA", "RETRY", "FAILED", "DONE" ]
           },
-          "eventRetryEnrichmentCount": {
-            "type": "integer",
-            "format": "int32"
+          "eventRetryEnrichmentCount" : {
+            "type" : "integer",
+            "format" : "int32"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.Creditor": {
-        "type": "object",
-        "properties": {
-          "idPA": {
-            "type": "string"
+      "Creditor" : {
+        "type" : "object",
+        "properties" : {
+          "idPA" : {
+            "type" : "string"
           },
-          "idBrokerPA": {
-            "type": "string"
+          "idBrokerPA" : {
+            "type" : "string"
           },
-          "idStation": {
-            "type": "string"
+          "idStation" : {
+            "type" : "string"
           },
-          "companyName": {
-            "type": "string"
+          "companyName" : {
+            "type" : "string"
           },
-          "officeName": {
-            "type": "string"
+          "officeName" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.Debtor": {
-        "type": "object",
-        "properties": {
-          "fullName": {
-            "type": "string"
+      "Debtor" : {
+        "type" : "object",
+        "properties" : {
+          "fullName" : {
+            "type" : "string"
           },
-          "entityUniqueIdentifierType": {
-            "type": "string"
+          "entityUniqueIdentifierType" : {
+            "type" : "string"
           },
-          "entityUniqueIdentifierValue": {
-            "type": "string"
+          "entityUniqueIdentifierValue" : {
+            "type" : "string"
           },
-          "streetName": {
-            "type": "string"
+          "streetName" : {
+            "type" : "string"
           },
-          "civicNumber": {
-            "type": "string"
+          "civicNumber" : {
+            "type" : "string"
           },
-          "postalCode": {
-            "type": "string"
+          "postalCode" : {
+            "type" : "string"
           },
-          "city": {
-            "type": "string"
+          "city" : {
+            "type" : "string"
           },
-          "stateProvinceRegion": {
-            "type": "string"
+          "stateProvinceRegion" : {
+            "type" : "string"
           },
-          "country": {
-            "type": "string"
+          "country" : {
+            "type" : "string"
           },
-          "eMail": {
-            "type": "string"
+          "eMail" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.DebtorPosition": {
-        "type": "object",
-        "properties": {
-          "modelType": {
-            "type": "string"
+      "DebtorPosition" : {
+        "type" : "object",
+        "properties" : {
+          "modelType" : {
+            "type" : "string"
           },
-          "noticeNumber": {
-            "type": "string"
+          "noticeNumber" : {
+            "type" : "string"
           },
-          "iuv": {
-            "type": "string"
+          "iuv" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.Details": {
-        "type": "object",
-        "properties": {
-          "blurredNumber": {
-            "type": "string"
+      "Details" : {
+        "type" : "object",
+        "properties" : {
+          "blurredNumber" : {
+            "type" : "string"
           },
-          "holder": {
-            "type": "string"
+          "holder" : {
+            "type" : "string"
           },
-          "circuit": {
-            "type": "string"
+          "circuit" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.Info": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string"
+      "Info" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string"
           },
-          "blurredNumber": {
-            "type": "string"
+          "blurredNumber" : {
+            "type" : "string"
           },
-          "holder": {
-            "type": "string"
+          "holder" : {
+            "type" : "string"
           },
-          "expireMonth": {
-            "type": "string"
+          "expireMonth" : {
+            "type" : "string"
           },
-          "expireYear": {
-            "type": "string"
+          "expireYear" : {
+            "type" : "string"
           },
-          "brand": {
-            "type": "string"
+          "brand" : {
+            "type" : "string"
           },
-          "issuerAbi": {
-            "type": "string"
+          "issuerAbi" : {
+            "type" : "string"
           },
-          "issuerName": {
-            "type": "string"
+          "issuerName" : {
+            "type" : "string"
           },
-          "label": {
-            "type": "string"
+          "label" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.InfoTransaction": {
-        "type": "object",
-        "properties": {
-          "brand": {
-            "type": "string"
+      "InfoTransaction" : {
+        "type" : "object",
+        "properties" : {
+          "brand" : {
+            "type" : "string"
           },
-          "brandLogo": {
-            "type": "string"
+          "brandLogo" : {
+            "type" : "string"
           },
-          "clientId": {
-            "type": "string"
+          "clientId" : {
+            "type" : "string"
           },
-          "paymentMethodName": {
-            "type": "string"
+          "paymentMethodName" : {
+            "type" : "string"
           },
-          "type": {
-            "type": "string"
+          "type" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.MBD": {
-        "type": "object",
-        "properties": {
-          "IUBD": {
-            "type": "string"
+      "MBD" : {
+        "type" : "object",
+        "properties" : {
+          "IUBD" : {
+            "type" : "string"
           },
-          "oraAcquisto": {
-            "type": "string"
+          "oraAcquisto" : {
+            "type" : "string"
           },
-          "importo": {
-            "type": "string"
+          "importo" : {
+            "type" : "string"
           },
-          "tipoBollo": {
-            "type": "string"
+          "tipoBollo" : {
+            "type" : "string"
           },
-          "MBDAttachment": {
-            "type": "string"
+          "MBDAttachment" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.Payer": {
-        "type": "object",
-        "properties": {
-          "fullName": {
-            "type": "string"
+      "MapEntry" : {
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string"
           },
-          "entityUniqueIdentifierType": {
-            "type": "string"
-          },
-          "entityUniqueIdentifierValue": {
-            "type": "string"
-          },
-          "streetName": {
-            "type": "string"
-          },
-          "civicNumber": {
-            "type": "string"
-          },
-          "postalCode": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "stateProvinceRegion": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-          "eMail": {
-            "type": "string"
+          "value" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.PaymentAuthorizationRequest": {
-        "type": "object",
-        "properties": {
-          "authOutcome": {
-            "type": "string"
+      "Payer" : {
+        "type" : "object",
+        "properties" : {
+          "fullName" : {
+            "type" : "string"
           },
-          "requestId": {
-            "type": "string"
+          "entityUniqueIdentifierType" : {
+            "type" : "string"
           },
-          "correlationId": {
-            "type": "string"
+          "entityUniqueIdentifierValue" : {
+            "type" : "string"
           },
-          "authCode": {
-            "type": "string"
+          "streetName" : {
+            "type" : "string"
           },
-          "paymentMethodType": {
-            "type": "string"
+          "civicNumber" : {
+            "type" : "string"
           },
-          "details": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.Details"
+          "postalCode" : {
+            "type" : "string"
+          },
+          "city" : {
+            "type" : "string"
+          },
+          "stateProvinceRegion" : {
+            "type" : "string"
+          },
+          "country" : {
+            "type" : "string"
+          },
+          "eMail" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.PaymentInfo": {
-        "type": "object",
-        "properties": {
-          "paymentDateTime": {
-            "type": "string"
+      "PaymentAuthorizationRequest" : {
+        "type" : "object",
+        "properties" : {
+          "authOutcome" : {
+            "type" : "string"
           },
-          "applicationDate": {
-            "type": "string"
+          "requestId" : {
+            "type" : "string"
           },
-          "transferDate": {
-            "type": "string"
+          "correlationId" : {
+            "type" : "string"
           },
-          "dueDate": {
-            "type": "string"
+          "authCode" : {
+            "type" : "string"
           },
-          "paymentToken": {
-            "type": "string"
+          "paymentMethodType" : {
+            "type" : "string"
           },
-          "amount": {
-            "type": "string"
+          "details" : {
+            "$ref" : "#/components/schemas/Details"
+          }
+        }
+      },
+      "PaymentInfo" : {
+        "type" : "object",
+        "properties" : {
+          "paymentDateTime" : {
+            "type" : "string"
           },
-          "fee": {
-            "type": "string"
+          "applicationDate" : {
+            "type" : "string"
           },
-          "primaryCiIncurredFee": {
-            "type": "string"
+          "transferDate" : {
+            "type" : "string"
           },
-          "idBundle": {
-            "type": "string"
+          "dueDate" : {
+            "type" : "string"
           },
-          "idCiBundle": {
-            "type": "string"
+          "paymentToken" : {
+            "type" : "string"
           },
-          "totalNotice": {
-            "type": "string"
+          "amount" : {
+            "type" : "string"
           },
-          "paymentMethod": {
-            "type": "string"
+          "fee" : {
+            "type" : "string"
           },
-          "touchpoint": {
-            "type": "string"
+          "primaryCiIncurredFee" : {
+            "type" : "string"
           },
-          "remittanceInformation": {
-            "type": "string"
+          "idBundle" : {
+            "type" : "string"
           },
-          "description": {
-            "type": "string"
+          "idCiBundle" : {
+            "type" : "string"
           },
-          "metadata": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.MapEntry"
+          "totalNotice" : {
+            "type" : "string"
+          },
+          "paymentMethod" : {
+            "type" : "string"
+          },
+          "touchpoint" : {
+            "type" : "string"
+          },
+          "remittanceInformation" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "metadata" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MapEntry"
             }
           },
-          "IUR": {
-            "type": "string"
+          "IUR" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.Psp": {
-        "type": "object",
-        "properties": {
-          "idPsp": {
-            "type": "string"
+      "Psp" : {
+        "type" : "object",
+        "properties" : {
+          "idPsp" : {
+            "type" : "string"
           },
-          "idBrokerPsp": {
-            "type": "string"
+          "idBrokerPsp" : {
+            "type" : "string"
           },
-          "idChannel": {
-            "type": "string"
+          "idChannel" : {
+            "type" : "string"
           },
-          "psp": {
-            "type": "string"
+          "psp" : {
+            "type" : "string"
           },
-          "pspPartitaIVA": {
-            "type": "string"
+          "pspPartitaIVA" : {
+            "type" : "string"
           },
-          "pspFiscalCode": {
-            "type": "string"
+          "pspFiscalCode" : {
+            "type" : "string"
           },
-          "channelDescription": {
-            "type": "string"
+          "channelDescription" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.Transaction": {
-        "type": "object",
-        "properties": {
-          "idTransaction": {
-            "type": "string"
+      "Transaction" : {
+        "type" : "object",
+        "properties" : {
+          "idTransaction" : {
+            "type" : "string"
           },
-          "transactionId": {
-            "type": "string"
+          "transactionId" : {
+            "type" : "string"
           },
-          "grandTotal": {
-            "type": "integer",
-            "format": "int64"
+          "grandTotal" : {
+            "type" : "integer",
+            "format" : "int64"
           },
-          "amount": {
-            "type": "integer",
-            "format": "int64"
+          "amount" : {
+            "type" : "integer",
+            "format" : "int64"
           },
-          "fee": {
-            "type": "integer",
-            "format": "int64"
+          "fee" : {
+            "type" : "integer",
+            "format" : "int64"
           },
-          "transactionStatus": {
-            "type": "string"
+          "transactionStatus" : {
+            "type" : "string"
           },
-          "accountingStatus": {
-            "type": "string"
+          "accountingStatus" : {
+            "type" : "string"
           },
-          "rrn": {
-            "type": "string"
+          "rrn" : {
+            "type" : "string"
           },
-          "authorizationCode": {
-            "type": "string"
+          "authorizationCode" : {
+            "type" : "string"
           },
-          "creationDate": {
-            "type": "string"
+          "creationDate" : {
+            "type" : "string"
           },
-          "numAut": {
-            "type": "string"
+          "numAut" : {
+            "type" : "string"
           },
-          "accountCode": {
-            "type": "string"
+          "accountCode" : {
+            "type" : "string"
           },
-          "psp": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.TransactionPsp"
+          "psp" : {
+            "$ref" : "#/components/schemas/TransactionPsp"
           },
-          "origin": {
-            "type": "string"
+          "origin" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.TransactionDetails": {
-        "type": "object",
-        "properties": {
-          "user": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.User"
+      "TransactionDetails" : {
+        "type" : "object",
+        "properties" : {
+          "user" : {
+            "$ref" : "#/components/schemas/User"
           },
-          "paymentAuthorizationRequest": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.PaymentAuthorizationRequest"
+          "paymentAuthorizationRequest" : {
+            "$ref" : "#/components/schemas/PaymentAuthorizationRequest"
           },
-          "wallet": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.WalletItem"
+          "wallet" : {
+            "$ref" : "#/components/schemas/WalletItem"
           },
-          "origin": {
-            "type": "string"
+          "origin" : {
+            "type" : "string"
           },
-          "transaction": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.Transaction"
+          "transaction" : {
+            "$ref" : "#/components/schemas/Transaction"
           },
-          "info": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.InfoTransaction"
+          "info" : {
+            "$ref" : "#/components/schemas/InfoTransaction"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.TransactionPsp": {
-        "type": "object",
-        "properties": {
-          "idChannel": {
-            "type": "string"
+      "TransactionPsp" : {
+        "type" : "object",
+        "properties" : {
+          "idChannel" : {
+            "type" : "string"
           },
-          "businessName": {
-            "type": "string"
+          "businessName" : {
+            "type" : "string"
           },
-          "serviceName": {
-            "type": "string"
+          "serviceName" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.Transfer": {
-        "type": "object",
-        "properties": {
-          "idTransfer": {
-            "type": "string"
+      "Transfer" : {
+        "type" : "object",
+        "properties" : {
+          "idTransfer" : {
+            "type" : "string"
           },
-          "fiscalCodePA": {
-            "type": "string"
+          "fiscalCodePA" : {
+            "type" : "string"
           },
-          "companyName": {
-            "type": "string"
+          "companyName" : {
+            "type" : "string"
           },
-          "amount": {
-            "type": "string"
+          "amount" : {
+            "type" : "string"
           },
-          "transferCategory": {
-            "type": "string"
+          "transferCategory" : {
+            "type" : "string"
           },
-          "remittanceInformation": {
-            "type": "string"
+          "remittanceInformation" : {
+            "type" : "string"
           },
-          "metadata": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.model.MapEntry"
+          "metadata" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MapEntry"
             }
           },
-          "IBAN": {
-            "type": "string"
+          "IBAN" : {
+            "type" : "string"
           },
-          "MBD": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.MBD"
+          "MBD" : {
+            "$ref" : "#/components/schemas/MBD"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.User": {
-        "type": "object",
-        "properties": {
-          "fullName": {
-            "type": "string"
+      "User" : {
+        "type" : "object",
+        "properties" : {
+          "fullName" : {
+            "type" : "string"
           },
-          "type": {
-            "type": "string",
-            "enum": [
-              "F",
-              "G"
-            ]
+          "type" : {
+            "type" : "string",
+            "enum" : [ "F", "G" ]
           },
-          "fiscalCode": {
-            "type": "string"
+          "fiscalCode" : {
+            "type" : "string"
           },
-          "notificationEmail": {
-            "type": "string"
+          "notificationEmail" : {
+            "type" : "string"
           },
-          "userId": {
-            "type": "string"
+          "userId" : {
+            "type" : "string"
           },
-          "userStatus": {
-            "type": "string"
+          "userStatus" : {
+            "type" : "string"
           },
-          "userStatusDescription": {
-            "type": "string"
+          "userStatusDescription" : {
+            "type" : "string"
           }
         }
       },
-      "it.gov.pagopa.bizeventsservice.entity.WalletItem": {
-        "type": "object",
-        "properties": {
-          "idWallet": {
-            "type": "string"
+      "WalletItem" : {
+        "type" : "object",
+        "properties" : {
+          "idWallet" : {
+            "type" : "string"
           },
-          "walletType": {
-            "type": "string",
-            "enum": [
-              "CARD",
-              "PAYPAL",
-              "BANCOMATPAY"
-            ]
+          "walletType" : {
+            "type" : "string",
+            "enum" : [ "CARD", "PAYPAL", "BANCOMATPAY" ]
           },
-          "enableableFunctions": {
-            "type": "array",
-            "items": {
-              "type": "string"
+          "enableableFunctions" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
             }
           },
-          "pagoPa": {
-            "type": "boolean"
+          "pagoPa" : {
+            "type" : "boolean"
           },
-          "onboardingChannel": {
-            "type": "string"
+          "onboardingChannel" : {
+            "type" : "string"
           },
-          "favourite": {
-            "type": "boolean"
+          "favourite" : {
+            "type" : "boolean"
           },
-          "createDate": {
-            "type": "string"
+          "createDate" : {
+            "type" : "string"
           },
-          "info": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.Info"
+          "info" : {
+            "$ref" : "#/components/schemas/Info"
           },
-          "authRequest": {
-            "$ref": "#/components/schemas/it.gov.pagopa.bizeventsservice.entity.AuthRequest"
-          }
-        }
-      },
-      "it.gov.pagopa.bizeventsservice.model.MapEntry": {
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
+          "authRequest" : {
+            "$ref" : "#/components/schemas/AuthRequest"
           }
         }
       }
     },
-    "securitySchemes": {
-      "ApiKey": {
-        "type": "apiKey",
-        "description": "The API key to access this function app.",
-        "name": "Ocp-Apim-Subscription-Key",
-        "in": "header"
+    "securitySchemes" : {
+      "ApiKey" : {
+        "type" : "apiKey",
+        "description" : "The API key to access this function app.",
+        "name" : "Ocp-Apim-Subscription-Key",
+        "in" : "header"
       }
     }
   }

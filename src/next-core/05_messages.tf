@@ -15,6 +15,8 @@ module "event_hub03" {
 
   eventhubs = var.eventhubs_03
 
+  public_network_access_enabled = var.ehns_public_network_access
+
   private_dns_zones = {
     id   = [data.azurerm_private_dns_zone.eventhub.id]
     name = [data.azurerm_private_dns_zone.eventhub.name]
@@ -49,9 +51,9 @@ module "event_hub04" {
   maximum_throughput_units = var.ehns_maximum_throughput_units
   zone_redundant           = var.ehns_zone_redundant
 
-  virtual_network_ids = [data.azurerm_virtual_network.vnet_integration.id, data.azurerm_virtual_network.vnet_core.id]
-  subnet_id           = data.azurerm_subnet.eventhub_snet.id
-
+  virtual_network_ids           = [data.azurerm_virtual_network.vnet_integration.id, data.azurerm_virtual_network.vnet_core.id]
+  subnet_id                     = data.azurerm_subnet.eventhub_snet.id
+  public_network_access_enabled = var.ehns_public_network_access
   private_dns_zones = {
     id   = [data.azurerm_private_dns_zone.eventhub.id]
     name = [data.azurerm_private_dns_zone.eventhub.name]

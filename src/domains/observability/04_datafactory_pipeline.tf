@@ -338,12 +338,12 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_TPNP" {
   }
 
   activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_TPNP.json", {
-    inputdataset  = "SMO_ReEvent_DataSet"
+    inputdataset = "SMO_ReEvent_DataSet"
   })}]"
 
-#  depends_on = [
-#    azurerm_data_factory_custom_dataset.qi_datasets
-#  ]
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
 }
 
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_TPNP" {
@@ -355,10 +355,10 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_TPNP" {
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
-    schedule {
-      days_of_month = [5]
-      hours         = [8]
-      minutes       = [0]
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
   }
 
   description   = "Trigger for PDND_KPI_TPNP pipeline"
@@ -380,12 +380,12 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_DASPO" {
   }
 
   activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_DASPO.json", {
-    inputdataset  = "SMO_ReEvent_DataSet"
+    inputdataset = "SMO_ReEvent_DataSet"
   })}]"
 
-#  depends_on = [
-#    azurerm_data_factory_custom_dataset.qi_datasets
-#  ]
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
 }
 
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_DASPO" {
@@ -397,10 +397,10 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_DASPO" {
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
-    schedule {
-      days_of_month = [5]
-      hours         = [8]
-      minutes       = [0]
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
   }
 
   description   = "Trigger for PDND_KPI_DASPO pipeline"
@@ -422,12 +422,12 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_LFDR" {
   }
 
   activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_LFDR.json", {
-    inputdataset  = "SMO_KPI_RENDICONTAZIONI_DataSet"
+    inputdataset = "SMO_KPI_RENDICONTAZIONI_DataSet"
   })}]"
 
-#  depends_on = [
-#    azurerm_data_factory_custom_dataset.qi_datasets
-#  ]
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
 }
 
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_LFDR" {
@@ -439,10 +439,10 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_LFDR" {
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
-    schedule {
-      days_of_month = [5]
-      hours         = [8]
-      minutes       = [0]
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
   }
 
   description   = "Trigger for PDND_KPI_LFDR pipeline"
@@ -464,12 +464,12 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_LSPO" {
   }
 
   activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_LSPO.json", {
-    inputdataset  = "SMO_ReEvent_DataSet"
+    inputdataset = "SMO_ReEvent_DataSet"
   })}]"
 
-#  depends_on = [
-#    azurerm_data_factory_custom_dataset.qi_datasets
-#  ]
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
 }
 
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_LSPO" {
@@ -481,10 +481,10 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_LSPO" {
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
-    schedule {
-      days_of_month = [5]
-      hours         = [8]
-      minutes       = [0]
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
   }
 
   description   = "Trigger for PDND_KPI_LSPO pipeline"
@@ -506,12 +506,12 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_NRFDR" {
   }
 
   activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_NRFDR.json", {
-    inputdataset  = "SMO_KPI_RENDICONTAZIONI_DataSet"
+    inputdataset = "SMO_KPI_RENDICONTAZIONI_DataSet"
   })}]"
 
-#  depends_on = [
-#    azurerm_data_factory_custom_dataset.qi_datasets
-#  ]
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
 }
 
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_NRFDR" {
@@ -523,10 +523,10 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_NRFDR" {
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
-    schedule {
-      days_of_month = [5]
-      hours         = [8]
-      minutes       = [0]
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
   }
 
   description   = "Trigger for PDND_KPI_NRFDR pipeline"
@@ -548,12 +548,12 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_TNSPO" {
   }
 
   activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_TNSPO.json", {
-    inputdataset  = "SMO_ReEvent_DataSet"
+    inputdataset = "SMO_ReEvent_DataSet"
   })}]"
 
-#  depends_on = [
-#    azurerm_data_factory_custom_dataset.qi_datasets
-#  ]
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
 }
 
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_TNSPO" {
@@ -565,10 +565,10 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_TNSPO" {
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
-    schedule {
-      days_of_month = [5]
-      hours         = [8]
-      minutes       = [0]
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
   }
 
   description   = "Trigger for PDND_KPI_TNSPO pipeline"
@@ -590,12 +590,12 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_WAFDR" {
   }
 
   activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_WAFDR.json", {
-    inputdataset  = "SMO_KPI_RENDICONTAZIONI_DataSet"
+    inputdataset = "SMO_KPI_RENDICONTAZIONI_DataSet"
   })}]"
 
-#  depends_on = [
-#    azurerm_data_factory_custom_dataset.qi_datasets
-#  ]
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
 }
 
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_WAFDR" {
@@ -607,10 +607,10 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_WAFDR" {
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
-    schedule {
-      days_of_month = [5]
-      hours         = [8]
-      minutes       = [0]
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
   }
 
   description   = "Trigger for PDND_KPI_WAFDR pipeline"
@@ -632,12 +632,12 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_KPI_WPNFDR" {
   }
 
   activities_json = "[${templatefile("datafactory/pipelines/PDND_KPI_WPNFDR.json", {
-    inputdataset  = "SMO_KPI_RENDICONTAZIONI_DataSet"
+    inputdataset = "SMO_KPI_RENDICONTAZIONI_DataSet"
   })}]"
 
-#  depends_on = [
-#    azurerm_data_factory_custom_dataset.qi_datasets
-#  ]
+  #  depends_on = [
+  #    azurerm_data_factory_custom_dataset.qi_datasets
+  #  ]
 }
 
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_WPNFDR" {
@@ -649,10 +649,10 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_WPNFDR" {
   frequency = "Month"
   activated = true
   time_zone = "W. Europe Standard Time"
-    schedule {
-      days_of_month = [5]
-      hours         = [8]
-      minutes       = [0]
+  schedule {
+    days_of_month = [5]
+    hours         = [8]
+    minutes       = [0]
   }
 
   description   = "Trigger for PDND_KPI_WPNFDR pipeline"

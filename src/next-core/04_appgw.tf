@@ -33,6 +33,7 @@ resource "azurerm_public_ip" "integration_appgateway_public_ip" {
   location            = data.azurerm_resource_group.rg_vnet_integration.location
   sku                 = "Standard"
   allocation_method   = "Static"
+  zones               = var.integration_appgateway_zones
 
   tags = var.tags
 }
@@ -107,6 +108,7 @@ module "app_gw_integration" {
       port               = 443
       ssl_profile_name   = format("%s-ssl-profile", local.product_region)
       firewall_policy_id = null
+      type               = "Private"
 
       certificate = {
         name = var.app_gateway_api_certificate_name
@@ -124,6 +126,8 @@ module "app_gw_integration" {
       port               = 443
       ssl_profile_name   = format("%s-ssl-profile", local.product_region)
       firewall_policy_id = null
+      type               = "Private"
+
 
       certificate = {
         name = var.app_gateway_portal_certificate_name
@@ -141,6 +145,8 @@ module "app_gw_integration" {
       port               = 443
       ssl_profile_name   = format("%s-ssl-profile", local.product_region)
       firewall_policy_id = null
+      type               = "Private"
+
 
       certificate = {
         name = var.app_gateway_management_certificate_name

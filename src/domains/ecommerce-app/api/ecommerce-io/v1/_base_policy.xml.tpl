@@ -3,6 +3,7 @@
   <inbound>
     <base />
     <set-header name="x-client-id" exists-action="delete" />
+    <set-header name="x-user-id" exists-action="delete" />
     <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
     <!-- Session eCommerce START-->
     <choose>
@@ -45,6 +46,13 @@
               <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) != 200)">
                 <return-response>
                   <set-status code="401" reason="Unauthorized" />
+                  <set-body>
+                    {
+                        "status": 401,
+                        "title": "Unauthorized",
+                        "detail": "Invalid token"
+                    }
+                  </set-body>
                 </return-response>
               </when>
             </choose>
@@ -68,7 +76,7 @@
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
       </when>
       <when condition="@( context.Request.Url.Path.Contains("wallets") )">
-        <set-backend-service base-url="@("https://${wallet_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/wallets-service")"/>
+        <set-backend-service base-url="@("https://${wallet_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")"/>
       </when>
     </choose>
   </inbound>
