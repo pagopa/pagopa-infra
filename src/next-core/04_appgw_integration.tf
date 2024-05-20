@@ -36,6 +36,9 @@ resource "azurerm_public_ip" "integration_appgateway_public_ip" {
   tags = var.tags
 }
 
+#
+# 🔱 APP GW Integration
+#
 module "app_gw_integration" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v7.50.0"
 
@@ -62,7 +65,7 @@ module "app_gw_integration" {
       protocol                    = "Https"
       host                        = "api.${var.dns_zone_prefix}.${var.external_domain}"
       port                        = 443
-      ip_addresses                = module.apimv2.private_ip_addresses
+      ip_addresses                = data.azurerm_api_management.apim.private_ip_addresses
       fqdns                       = ["api.${var.dns_zone_prefix}.${var.external_domain}."]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
