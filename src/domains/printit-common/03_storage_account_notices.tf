@@ -103,9 +103,6 @@ resource "azurerm_storage_management_policy" "st_blob_receipts_management_policy
 
 }
 
-
-
-
 resource "azurerm_user_assigned_identity" "identity_blob_storage_pdf" {
   resource_group_name = data.azurerm_resource_group.identity_rg.name
   location            = data.azurerm_resource_group.identity_rg.location
