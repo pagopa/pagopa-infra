@@ -1,0 +1,67 @@
+<policies>
+    <inbound>
+        <base />
+        <set-variable name="fiscalCode"  value="@(context.Request.Headers.GetValueOrDefault("x-fiscal-code", ""))"  />
+
+        <!-- rate limit by subscription key -->
+        <!-- <rate-limit calls="300" renewal-period="10" remaining-calls-variable-name="remainingCallsPerSubscription"/> -->
+
+        <!-- Post Token PDV : START-->
+        <send-request ignore-error="true" timeout="10" response-variable-name="pdv-token" mode="new">
+          <set-url>${pdv_api_base_path}/tokens</set-url>
+          <set-method>PUT</set-method>
+          <set-header name="x-api-key" exists-action="override">
+              <value>{{lst-trx-personal-data-vault-api-key}}</value>
+          </set-header>
+          <set-body>@{
+            JObject requestBody = (JObject)context.Variables["fiscalCode"];
+            return new JObject(
+                    new JProperty("pii",  (string)requestBody["fiscal_code"])
+                ).ToString();
+              }</set-body>
+        </send-request>
+        <choose>
+          <when condition="@(((IResponse)context.Variables["pdv-token"]).StatusCode != 200)">
+            <return-response>
+              <set-status code="502" reason="Bad Gateway" />
+            </return-response>
+          </when>
+        </choose>
+
+        <set-variable name="pdvToken" value="@(((IResponse)context.Variables["pdv-token"]).Body.As<JObject>())" />
+        <set-variable name="userId" value="@((string)((JObject)context.Variables["pdvToken"])["token"])" />
+
+        <choose>
+          <when condition="@(String.IsNullOrEmpty((string)context.Variables["userId"]))">
+              <return-response>
+                  <set-status code="502" />
+                  <set-header name="Content-Type" exists-action="override">
+                      <value>application/json</value>
+                  </set-header>
+                  <set-body>@{
+              return new JObject(
+                new JProperty("title", "Bad gateway - Invalid PDV response"),
+                new JProperty("status", 502),
+                new JProperty("detail", "Cannot tokenize fiscal code")
+              ).ToString();
+            }</set-body>
+              </return-response>
+          </when>
+        </choose>
+        <!-- Post Token PDV : END-->
+      
+        <set-header name="x-fiscal-code" exists-action="override">
+            <value>@((string)context.Variables["userId"])</value>
+        </set-header>
+        <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

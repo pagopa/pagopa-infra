@@ -12,6 +12,19 @@ resource "azurerm_api_management_named_value" "list_trx_for_io_api_key_secret" {
   secret              = true
 }
 
+data "azurerm_key_vault_secret" "tokenizer_api_key_secret" {
+  name         = "tokenizer-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "wallet_personal_data_vault_api_key" {
+  name                = "pdv_tokenizer_api_key_secret"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "pdv_tokenizer_api_key_secret"
+  value               = data.azurerm_key_vault_secret.tokenizer_api_key_secret.value
+  secret              = true
+}
 
 #####################################
 ##    API Biz Events & Transaction ##
@@ -223,8 +236,9 @@ module "apim_api_bizevents_transactions_api_v1" {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/transaction-service/v1/_base_policy.xml", {
-    hostname = local.bizevents_hostname
+  xml_content = templatefile("./api/transaction-service/v1/_base_policy-apikey.xml", {
+    hostname          = local.bizevents_hostname
+    pdv_api_base_path = var.pdv_api_base_path
   })
 }
 module "apim_api_bizevents_transactions_api_jwt_v1" {
