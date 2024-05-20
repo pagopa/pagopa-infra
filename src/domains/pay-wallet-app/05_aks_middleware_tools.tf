@@ -1,5 +1,5 @@
 module "tls_checker" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v7.70.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v8.13.0"
 
   https_endpoint                                            = local.payment_wallet_hostname
   alert_name                                                = local.payment_wallet_hostname
@@ -38,7 +38,7 @@ resource "helm_release" "cert_mounter" {
 }
 
 resource "helm_release" "reloader" {
-  name       = "reloader"
+  name       = "pagopa-pay-wallet"
   repository = "https://stakater.github.io/stakater-charts"
   chart      = "reloader"
   version    = "v1.0.48"
