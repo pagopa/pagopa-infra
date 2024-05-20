@@ -751,6 +751,7 @@ module "monitor" {
 
 # apicfg cache path(s) configuration
 
+
 resource "azurerm_api_management_named_value" "apicfg_core_service_path" { // https://${url_aks}/pagopa-api-config-core-service/<o|p>/
   name                = "apicfg-core-service-path"
   api_management_name = module.apim.name
