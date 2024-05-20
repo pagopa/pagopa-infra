@@ -308,3 +308,55 @@ resource "azurerm_key_vault_secret" "list_trx_4_io_api_key" {
 }
 
 
+# PDF engine nodejs for PDF engine Java
+
+data "azurerm_api_management_product" "apim_pdf_engine_product" {
+  product_id          = "pdf-engine"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+data "azurerm_api_management_product" "apim_pdf_receipt_service_product" {
+  product_id          = "receipts"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+// apikey to generate PDF
+resource "azurerm_api_management_subscription" "pdf_engine_node_4_list_trx_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_pdf_engine_product.id
+  display_name  = "PDF Engine NodeJS Java for List Transactions"
+  allow_tracing = false
+  state         = "active"
+}
+// apikey to retrive PDF
+resource "azurerm_api_management_subscription" "pdf_receipt_service_4_list_trx_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_pdf_receipt_service_product.id
+  display_name  = "Receipts Service PDF for List Transactions"
+  allow_tracing = false
+  state         = "active"
+}
+
+resource "azurerm_key_vault_secret" "bizevent_pdf_engine_4_list_trx_subscription_key" {
+  depends_on   = [azurerm_api_management_subscription.pdf_engine_node_4_list_trx_subkey]
+  name         = format("bizevent-%s-pdfengine-subscription-key", var.env_short)
+  value        = azurerm_api_management_subscription.pdf_engine_node_4_list_trx_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "bizevent_receiptpdfservice_4_list_trx_subscription_key" {
+  depends_on   = [azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey]
+  name         = format("bizevent-%s-receiptpdfservice-subscription-key", var.env_short)
+  value        = azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+
