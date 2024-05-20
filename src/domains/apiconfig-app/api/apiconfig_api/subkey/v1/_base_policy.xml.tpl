@@ -28,7 +28,7 @@
             </allowed-headers>
         </cors>
         <base />
-        <set-backend-service base-url="https://${hostname}/{{apicfg-core-cache-path}}" />
+        <set-backend-service base-url="https://${hostname}/{{apicfg-core-service-path}}" />
     </inbound>
     <outbound>
         <base />
