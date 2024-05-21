@@ -207,13 +207,14 @@ stages:
                 --admin-password '$(db-partition-password)' --database-name "$(DATABASE_NAME)" \
                 --querytext "
                 do \$\$
-                CREATE TABLE IF NOT EXISTS $(PARTITION_SCHEMA).tab_part
-                  (
-                    tabella character varying(100) COLLATE pg_catalog."default",
-                    schema character varying(100) COLLATE pg_catalog."default",
-                    prefisso_nome_indice character varying(100) COLLATE pg_catalog."default",
-                    campi_indice character varying(100) COLLATE pg_catalog."default"
-                  );
-
+                BEGIN
+                  CREATE TABLE IF NOT EXISTS $(PARTITION_SCHEMA).tab_part
+                    (
+                      tabella character varying(100) COLLATE pg_catalog."default",
+                      schema character varying(100) COLLATE pg_catalog."default",
+                      prefisso_nome_indice character varying(100) COLLATE pg_catalog."default",
+                      campi_indice character varying(100) COLLATE pg_catalog."default"
+                    );
+                END
                 \$\$;
                 "
