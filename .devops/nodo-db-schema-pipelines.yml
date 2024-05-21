@@ -78,6 +78,7 @@ stages:
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password, db-partition-password'
           - task: AzureCLI@2
+            condition: false # TODO remove
             displayName: "create all schemas"
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
@@ -137,6 +138,7 @@ stages:
 
           - task: AzureCLI@2
             displayName: "create partition"
+            condition: false # TODO remove
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               scriptLocation: inlineScript
