@@ -166,7 +166,7 @@ stages:
 
                     ALTER ROLE partition PASSWORD '$(db-partition-password)';
                   END IF;
-                END
+                END;
 
                 CREATE SCHEMA IF NOT EXISTS \"$PARTITION_SCHEMA\";
 
