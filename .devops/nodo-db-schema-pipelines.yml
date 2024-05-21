@@ -162,8 +162,9 @@ stages:
                     NOBYPASSRLS
                     CONNECTION LIMIT -1;
 
-                    ALTER ROLE $PARTITION_USERNAME PASSWORD '$(db-partition-password)';
                   END IF;
+
+                  ALTER ROLE $PARTITION_USERNAME PASSWORD '$(db-partition-password)';
 
                   CREATE SCHEMA IF NOT EXISTS $PARTITION_SCHEMA;
 
