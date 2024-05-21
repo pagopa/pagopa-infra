@@ -161,7 +161,6 @@ stages:
                     NOREPLICATION
                     NOBYPASSRLS
                     CONNECTION LIMIT -1;
-
                   END IF;
 
                   ALTER ROLE $PARTITION_USERNAME PASSWORD '$(db-partition-password)';

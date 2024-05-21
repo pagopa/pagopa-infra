@@ -5,6 +5,6 @@
 
   <property name="version" value="3.26.0" global="false"/>
 
-  <include file="./${version}/db.changelog-20240410000000_metadata_ibanappoggio.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20240518000000_insert_tab_part.xml" labels="${version}"/>
 
 </databaseChangeLog>
