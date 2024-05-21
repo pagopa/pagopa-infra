@@ -77,6 +77,7 @@ stages:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password, db-partition-password'
+
           - task: AzureCLI@2
             condition: false # TODO remove
             displayName: "create all schemas"
@@ -116,6 +117,7 @@ stages:
 
           - task: AzureCLI@2
             displayName: "create online trunc function"
+            condition: false # TODO remove
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               scriptLocation: inlineScript
@@ -138,7 +140,6 @@ stages:
 
           - task: AzureCLI@2
             displayName: "create partition"
-            condition: false # TODO remove
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               scriptLocation: inlineScript
