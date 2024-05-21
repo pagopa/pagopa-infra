@@ -149,17 +149,25 @@ stages:
                 --querytext "
                 do \$\$
 
-                CREATE ROLE $PARTITION_USERNAME WITH
-                NOSUPERUSER
-                CREATEDB
-                CREATEROLE
-                INHERIT
-                LOGIN
-                NOREPLICATION
-                NOBYPASSRLS
-                CONNECTION LIMIT -1;
+                BEGIN
+                  IF EXISTS (
+                      SELECT FROM pg_catalog.pg_roles WHERE  rolname = '$PARTITION_USERNAME') THEN
+                    ) THEN
+                      RAISE NOTICE 'Role "$PARTITION_USERNAME" already exists. Skipping.';
+                  ELSE
+                    CREATE ROLE $PARTITION_USERNAME WITH
+                    NOSUPERUSER
+                    CREATEDB
+                    CREATEROLE
+                    INHERIT
+                    LOGIN
+                    NOREPLICATION
+                    NOBYPASSRLS
+                    CONNECTION LIMIT -1;
 
-                ALTER ROLE partition PASSWORD '$(db-partition-password)';
+                    ALTER ROLE partition PASSWORD '$(db-partition-password)';
+                  ENDIF
+                END
 
                 CREATE SCHEMA IF NOT EXISTS \"$PARTITION_SCHEMA\";
 
