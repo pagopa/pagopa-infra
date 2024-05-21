@@ -162,7 +162,7 @@ stages:
                     CONNECTION LIMIT -1;
 
                     ALTER ROLE partition PASSWORD '$(db-partition-password)';
-                  ENDIF
+                  END IF;
                 END
 
                 CREATE SCHEMA IF NOT EXISTS \"$PARTITION_SCHEMA\";
