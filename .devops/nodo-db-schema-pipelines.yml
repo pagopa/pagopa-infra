@@ -340,8 +340,7 @@ stages:
                       -- use job id to cancel the schedule
                       PERFORM cron.unschedule(job_id);
                     END;
-
-                    SELECT cron.schedule_in_database('$DATABASE_NAME', '00 23 * * *', \$\$call partition.modify_partition(7);\$\$,'$DATABASE_NAME');
-                END
+                END;
+                SELECT cron.schedule_in_database('$DATABASE_NAME', '00 23 * * *', 'call partition.modify_partition(7);','$DATABASE_NAME');
                 \$\$;
                 "
