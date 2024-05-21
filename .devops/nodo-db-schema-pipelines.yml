@@ -207,12 +207,12 @@ stages:
                 --querytext "
                 do \$\$
                 CREATE TABLE IF NOT EXISTS $(PARTITION_SCHEMA).tab_part
-                (
-                tabella character varying(100) COLLATE pg_catalog."default",
-                schema character varying(100) COLLATE pg_catalog."default",
-                prefisso_nome_indice character varying(100) COLLATE pg_catalog."default",
-                campi_indice character varying(100) COLLATE pg_catalog."default"
-                );
+                  (
+                  tabella character varying(100) COLLATE pg_catalog."default",
+                  schema character varying(100) COLLATE pg_catalog."default",
+                  prefisso_nome_indice character varying(100) COLLATE pg_catalog."default",
+                  campi_indice character varying(100) COLLATE pg_catalog."default"
+                  );
 
                 ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $ONLINE_SCHEMA
                 GRANT ALL ON TABLES TO $PARTITION_USERNAME;
@@ -336,13 +336,11 @@ stages:
                 DECLARE
                 job_id INT;
                 BEGIN
-                SELECT j.jobid INTO job_id
-                FROM cron.job j
-                WHERE j.jobname = '$DATABASE_NAME';
+                  SELECT j.jobid INTO job_id FROM cron.job j WHERE j.jobname = '$DATABASE_NAME';
 
-                -- use job id to cancel the schedule
-                PERFORM cron.unschedule(job_id);
-                END
+                  -- use job id to cancel the schedule
+                  PERFORM cron.unschedule(job_id);
+                END;
 
                 SELECT cron.schedule_in_database('$DATABASE_NAME', '00 23 * * *', $$call partition.modify_partition(7);$$,'$DATABASE_NAME');
 
