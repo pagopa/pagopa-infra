@@ -140,6 +140,7 @@ stages:
 
           - task: AzureCLI@2
             displayName: "create partition"
+            condition: false # TODO remove
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               scriptLocation: inlineScript
@@ -208,141 +209,11 @@ stages:
                 do \$\$
                 CREATE TABLE IF NOT EXISTS $(PARTITION_SCHEMA).tab_part
                   (
-                  tabella character varying(100) COLLATE pg_catalog."default",
-                  schema character varying(100) COLLATE pg_catalog."default",
-                  prefisso_nome_indice character varying(100) COLLATE pg_catalog."default",
-                  campi_indice character varying(100) COLLATE pg_catalog."default"
+                    tabella character varying(100) COLLATE pg_catalog."default",
+                    schema character varying(100) COLLATE pg_catalog."default",
+                    prefisso_nome_indice character varying(100) COLLATE pg_catalog."default",
+                    campi_indice character varying(100) COLLATE pg_catalog."default"
                   );
-
-                ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $ONLINE_SCHEMA
-                GRANT ALL ON TABLES TO $PARTITION_USERNAME;
-
-                ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO "$PARTITION_USERNAME";
-                ALTER DEFAULT PRIVILEGES IN SCHEMA $ONLINE_SCHEMA GRANT ALL ON TABLES TO "$PARTITION_USERNAME";
-                ALTER DEFAULT PRIVILEGES IN SCHEMA $RE_SCHEMA GRANT ALL ON TABLES TO "$PARTITION_USERNAME";
-                ALTER DEFAULT PRIVILEGES IN SCHEMA $WFESP_SCHEMA GRANT ALL ON TABLES TO "$PARTITION_USERNAME";
-                ALTER DEFAULT PRIVILEGES IN SCHEMA $OFFLINE_SCHEMA GRANT ALL ON TABLES TO "$PARTITION_USERNAME";
-                ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA
-                GRANT ALL ON SEQUENCES TO $PARTITION_USERNAME;
-                ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA
-                GRANT EXECUTE ON FUNCTIONS TO $PARTITION_USERNAME;
-                ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA
-                GRANT USAGE ON TYPES TO $PARTITION_USERNAME;
-                GRANT ALL ON SCHEMA public TO $PARTITION_USERNAME;
-                ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA public GRANT ALL ON SEQUENCES TO $PARTITION_USERNAME;
-                ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA public GRANT EXECUTE ON FUNCTIONS TO $PARTITION_USERNAME;
-                ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA public GRANT USAGE ON TYPES TO $PARTITION_USERNAME;
-                ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA GRANT ALL ON TABLES TO $ADMIN_USERNAME;
-                ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA GRANT ALL ON SEQUENCES TO $ADMIN_USERNAME;
-                ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA GRANT EXECUTE ON FUNCTIONS TO $ADMIN_USERNAME;
-                ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA GRANT USAGE ON TYPES TO $ADMIN_USERNAME;
-                GRANT ALL ON TABLE $PARTITION_SCHEMA.tab_part TO $ADMIN_USERNAME;
-
-                CREATE OR REPLACE PROCEDURE $PARTITION_SCHEMA.modify_partition(a integer)
-                LANGUAGE 'plpgsql'
-                AS $BODY$
-
-                DECLARE
-
-                l_partname TEXT;
-                l_part_list date;
-                l_part_listb date;
-                l_partab TEXT;
-                L_INDEX_NAME TEXT;
-                l_campi_indice TEXT;
-                l_prefisso_indice TEXT;
-                l_sql text;
-                l_exist text;
-                l_var_exist integer;
-                loop_counter INTEGER;
-
-                tab_cursor CURSOR FOR
-                SELECT lower(tabella) as tabella, lower(schema) as schema, lower(prefisso_nome_indice) as prefisso_indice, lower(campi_indice) as campi_indice
-                FROM partition.TAB_PART;
-                tab_record TEXT;
-                tab_schema TEXT;
-
-                BEGIN
-
-                IF A is null
-                THEN A=1;
-                END IF;
-
-                for loop_counter in 0..a loop
-
-                OPEN tab_cursor;
-                LOOP
-                FETCH NEXT FROM tab_cursor INTO tab_record, tab_schema,l_prefisso_indice, l_campi_indice;
-                EXIT WHEN NOT FOUND;
-
-                ------------------------------------------------------------------------------------------------------
-
-                IF loop_counter=0 THEN
-                L_PART_LIST  = DATE_TRUNC('DAY', CURRENT_DATE+loop_counter-1500)::DATE;
-                L_PART_LISTB = DATE_TRUNC('DAY', CURRENT_DATE+loop_counter+1)::DATE;
-                L_PARTNAME  := TAB_RECORD||'_PMINVALUE';
-                ELSE
-                L_PART_LIST = date_trunc('day', CURRENT_DATE+loop_counter)::date;
-                L_PART_LISTB = date_trunc('day', CURRENT_DATE+loop_counter+1)::date;
-                L_PARTNAME := tab_record||'_P'||to_char(CURRENT_DATE+loop_counter, 'yyyymmdd');
-                END IF;
-
-                L_INDEX_NAME := l_prefisso_indice||'_'||L_PARTNAME;
-
-                IF NOT EXISTS
-                ( SELECT 1
-                FROM   information_schema.tables
-                WHERE  table_name=l_partname and table_schema=tab_schema
-                union all
-                SELECT
-                1
-                FROM pg_inherits
-                JOIN pg_class parent            ON pg_inherits.inhparent = parent.oid
-                JOIN pg_class child             ON pg_inherits.inhrelid   = child.oid
-                JOIN pg_namespace nmsp_parent   ON nmsp_parent.oid  = parent.relnamespace
-                JOIN pg_namespace nmsp_child    ON nmsp_child.oid   = child.relnamespace
-                WHERE child.relname=l_partname and nmsp_child.nspname =tab_schema
-                )
-                THEN
-
-                l_sql := format('CREATE TABLE  %I.%I PARTITION OF %I.%I FOR VALUES FROM (%L) TO (%L)',  tab_schema, l_partname,  tab_schema, tab_record, l_part_list, l_part_listb);
-                execute l_sql;
-
-                END IF;
-
-                IF NOT EXISTS
-                (SELECT *
-                FROM pg_stat_all_indexes
-                WHERE indexrelname=L_INDEX_NAME and schemaname=tab_schema)
-                THEN
-                if l_campi_indice is not null then
-                l_sql := format('CREATE UNIQUE INDEX %I ON %I.%I USING BTREE(%s)',  L_INDEX_NAME,  tab_schema, l_partname, l_campi_indice);
-                execute l_sql;
-                end if;
-                END IF;
-                ------------------------------------------------------------------------------------------------------
-
-                END LOOP;
-
-                CLOSE tab_cursor;
-
-                END LOOP;
-
-                END;
-                $BODY$;
-
-                ALTER PROCEDURE $PARTITION_SCHEMA.modify_partition(integer) OWNER TO $PARTITION_USERNAME;
-
-                DECLARE
-                job_id INT;
-                BEGIN
-                  SELECT j.jobid INTO job_id FROM cron.job j WHERE j.jobname = '$DATABASE_NAME';
-
-                  -- use job id to cancel the schedule
-                  PERFORM cron.unschedule(job_id);
-                END;
-
-                SELECT cron.schedule_in_database('$DATABASE_NAME', '00 23 * * *', $$call partition.modify_partition(7);$$,'$DATABASE_NAME');
 
                 \$\$;
                 "
