@@ -240,98 +240,95 @@ stages:
                     ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA GRANT USAGE ON TYPES TO $ADMIN_USERNAME;
                     GRANT ALL ON TABLE $PARTITION_SCHEMA.tab_part TO $ADMIN_USERNAME;
 
-                    CREATE OR REPLACE PROCEDURE $PARTITION_SCHEMA.modify_partition(a integer)
-                    LANGUAGE 'plpgsql'
-                    AS $BODY$
+                    CREATE OR REPLACE PROCEDURE $PARTITION_SCHEMA.modify_partition(a integer) LANGUAGE 'plpgsql' AS $BODY$
 
                     DECLARE
+                      l_partname TEXT;
+                      l_part_list date;
+                      l_part_listb date;
+                      l_partab TEXT;
+                      L_INDEX_NAME TEXT;
+                      l_campi_indice TEXT;
+                      l_prefisso_indice TEXT;
+                      l_sql text;
+                      l_exist text;
+                      l_var_exist integer;
+                      loop_counter INTEGER;
 
-                    l_partname TEXT;
-                    l_part_list date;
-                    l_part_listb date;
-                    l_partab TEXT;
-                    L_INDEX_NAME TEXT;
-                    l_campi_indice TEXT;
-                    l_prefisso_indice TEXT;
-                    l_sql text;
-                    l_exist text;
-                    l_var_exist integer;
-                    loop_counter INTEGER;
-
-                    tab_cursor CURSOR FOR
-                    SELECT lower(tabella) as tabella, lower(schema) as schema, lower(prefisso_nome_indice) as prefisso_indice, lower(campi_indice) as campi_indice
-                    FROM partition.TAB_PART;
-                    tab_record TEXT;
-                    tab_schema TEXT;
+                      tab_cursor CURSOR FOR
+                        SELECT lower(tabella) as tabella, lower(schema) as schema, lower(prefisso_nome_indice) as prefisso_indice, lower(campi_indice) as campi_indice
+                        FROM $PARTITION_SCHEMA.TAB_PART;
+                      tab_record TEXT;
+                      tab_schema TEXT;
 
                     BEGIN
 
                     IF A is null
-                    THEN A=1;
+                      THEN A=1;
                     END IF;
 
-                    for loop_counter in 0..a loop
+                    FOR loop_counter in 0..a
+                      LOOP
 
-                    OPEN tab_cursor;
-                    LOOP
-                    FETCH NEXT FROM tab_cursor INTO tab_record, tab_schema,l_prefisso_indice, l_campi_indice;
-                    EXIT WHEN NOT FOUND;
+                        OPEN tab_cursor;
+                        LOOP
+                          FETCH NEXT FROM tab_cursor INTO tab_record, tab_schema,l_prefisso_indice, l_campi_indice;
+                          EXIT WHEN NOT FOUND;
 
-                    ------------------------------------------------------------------------------------------------------
+                          ------------------------------------------------------------------------------------------------------
 
-                    IF loop_counter=0 THEN
-                    L_PART_LIST  = DATE_TRUNC('DAY', CURRENT_DATE+loop_counter-1500)::DATE;
-                    L_PART_LISTB = DATE_TRUNC('DAY', CURRENT_DATE+loop_counter+1)::DATE;
-                    L_PARTNAME  := TAB_RECORD||'_PMINVALUE';
-                    ELSE
-                    L_PART_LIST = date_trunc('day', CURRENT_DATE+loop_counter)::date;
-                    L_PART_LISTB = date_trunc('day', CURRENT_DATE+loop_counter+1)::date;
-                    L_PARTNAME := tab_record||'_P'||to_char(CURRENT_DATE+loop_counter, 'yyyymmdd');
-                    END IF;
+                          IF loop_counter=0 THEN
+                            L_PART_LIST  = DATE_TRUNC('DAY', CURRENT_DATE+loop_counter-1500)::DATE;
+                            L_PART_LISTB = DATE_TRUNC('DAY', CURRENT_DATE+loop_counter+1)::DATE;
+                            L_PARTNAME  := TAB_RECORD||'_PMINVALUE';
+                          ELSE
+                            L_PART_LIST = date_trunc('day', CURRENT_DATE+loop_counter)::date;
+                            L_PART_LISTB = date_trunc('day', CURRENT_DATE+loop_counter+1)::date;
+                            L_PARTNAME := tab_record||'_P'||to_char(CURRENT_DATE+loop_counter, 'yyyymmdd');
+                          END IF;
 
-                    L_INDEX_NAME := l_prefisso_indice||'_'||L_PARTNAME;
+                          L_INDEX_NAME := l_prefisso_indice||'_'||L_PARTNAME;
 
-                    IF NOT EXISTS
-                    ( SELECT 1
-                    FROM   information_schema.tables
-                    WHERE  table_name=l_partname and table_schema=tab_schema
-                    union all
-                    SELECT
-                    1
-                    FROM pg_inherits
-                    JOIN pg_class parent            ON pg_inherits.inhparent = parent.oid
-                    JOIN pg_class child             ON pg_inherits.inhrelid   = child.oid
-                    JOIN pg_namespace nmsp_parent   ON nmsp_parent.oid  = parent.relnamespace
-                    JOIN pg_namespace nmsp_child    ON nmsp_child.oid   = child.relnamespace
-                    WHERE child.relname=l_partname and nmsp_child.nspname =tab_schema
-                    )
-                    THEN
+                          IF NOT EXISTS
+                            ( SELECT 1
+                                FROM   information_schema.tables
+                                WHERE  table_name=l_partname and table_schema=tab_schema
+                                union all
+                                  SELECT 1
+                                  FROM pg_inherits
+                                  JOIN pg_class parent            ON pg_inherits.inhparent = parent.oid
+                                  JOIN pg_class child             ON pg_inherits.inhrelid   = child.oid
+                                  JOIN pg_namespace nmsp_parent   ON nmsp_parent.oid  = parent.relnamespace
+                                  JOIN pg_namespace nmsp_child    ON nmsp_child.oid   = child.relnamespace
+                                  WHERE child.relname=l_partname and nmsp_child.nspname =tab_schema
+                            )
+                              THEN
 
-                    l_sql := format('CREATE TABLE  %I.%I PARTITION OF %I.%I FOR VALUES FROM (%L) TO (%L)',  tab_schema, l_partname,  tab_schema, tab_record, l_part_list, l_part_listb);
-                    execute l_sql;
+                                l_sql := format('CREATE TABLE  %I.%I PARTITION OF %I.%I FOR VALUES FROM (%L) TO (%L)',  tab_schema, l_partname,  tab_schema, tab_record, l_part_list, l_part_listb);
+                                execute l_sql;
 
-                    END IF;
+                            END IF;
 
-                    IF NOT EXISTS
-                    (SELECT *
-                    FROM pg_stat_all_indexes
-                    WHERE indexrelname=L_INDEX_NAME and schemaname=tab_schema)
-                    THEN
-                    if l_campi_indice is not null then
-                    l_sql := format('CREATE UNIQUE INDEX %I ON %I.%I USING BTREE(%s)',  L_INDEX_NAME,  tab_schema, l_partname, l_campi_indice);
-                    execute l_sql;
-                    end if;
-                    END IF;
-                    ------------------------------------------------------------------------------------------------------
+                            IF NOT EXISTS
+                              (SELECT *
+                                FROM pg_stat_all_indexes
+                                WHERE indexrelname=L_INDEX_NAME and schemaname=tab_schema)
+                              THEN
+                                if l_campi_indice is not null then
+                                l_sql := format('CREATE UNIQUE INDEX %I ON %I.%I USING BTREE(%s)',  L_INDEX_NAME,  tab_schema, l_partname, l_campi_indice);
+                                execute l_sql;
+                            END IF;
+                          END IF;
+                          ------------------------------------------------------------------------------------------------------
 
-                    END LOOP;
+                        END LOOP;
 
-                    CLOSE tab_cursor;
+                        CLOSE tab_cursor;
 
-                    END LOOP;
+                      END LOOP;
 
                     END;
-                    $BODY$;
+                    \$BODY\$;
 
                     ALTER PROCEDURE $PARTITION_SCHEMA.modify_partition(integer) OWNER TO $PARTITION_USERNAME;
 
