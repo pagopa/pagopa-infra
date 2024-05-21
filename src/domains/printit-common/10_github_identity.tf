@@ -146,3 +146,19 @@ module "identity_pr_01" {
     data.azurerm_resource_group.identity_rg
   ]
 }
+
+
+resource "azurerm_key_vault_access_policy" "gha_pr_iac_managed_identities" {
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = module.identity_pr_01.identity_principal_id
+
+  secret_permissions = ["Get", "List", "Set", ]
+
+  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
+  key_permissions = [
+    "Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"
+  ]
+
+  storage_permissions = []
+}
