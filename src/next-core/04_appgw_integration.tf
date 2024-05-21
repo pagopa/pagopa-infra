@@ -1,17 +1,16 @@
 module "integration_appgateway_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.50.0"
-  name                                      = format("%s-integration-appgateway-snet", local.product_region)
+  name                                      = "${local.product_region}-integration-appgateway-snet"
   resource_group_name                       = data.azurerm_resource_group.rg_vnet_integration.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet_integration.name
   address_prefixes                          = var.cidr_subnet_appgateway_integration
   private_endpoint_network_policies_enabled = true
-
 }
 
 resource "azurerm_user_assigned_identity" "appgateway" {
   resource_group_name = data.azurerm_resource_group.sec_rg.name
   location            = data.azurerm_resource_group.sec_rg.location
-  name                = format("%s-integration-appgateway-identity", local.product_region)
+  name                = "${local.product_region}-integration-appgateway-identity"
 
   tags = var.tags
 }
@@ -26,7 +25,6 @@ resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
   storage_permissions     = []
 }
 
-
 resource "azurerm_public_ip" "integration_appgateway_public_ip" {
   name                = "${local.product_region}-integration-appgateway-pip"
   resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
@@ -38,6 +36,9 @@ resource "azurerm_public_ip" "integration_appgateway_public_ip" {
   tags = var.tags
 }
 
+#
+# 🔱 APP GW Integration
+#
 module "app_gw_integration" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v7.50.0"
 
@@ -52,7 +53,6 @@ module "app_gw_integration" {
   # WAF
   waf_enabled = var.app_gateway_waf_enabled
 
-
   # Networking
   subnet_id          = module.integration_appgateway_snet.id
   public_ip_id       = azurerm_public_ip.integration_appgateway_public_ip.id
@@ -63,22 +63,20 @@ module "app_gw_integration" {
   backends = {
     apim = {
       protocol                    = "Https"
-      host                        = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
+      host                        = "api.${var.dns_zone_prefix}.${var.external_domain}"
       port                        = 443
-      ip_addresses                = module.apimv2.private_ip_addresses
-      fqdns                       = [format("api.%s.%s.", var.dns_zone_prefix, var.external_domain)]
+      ip_addresses                = data.azurerm_api_management.apim.private_ip_addresses
+      fqdns                       = ["api.${var.dns_zone_prefix}.${var.external_domain}."]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
       request_timeout             = 60
       pick_host_name_from_backend = false
     }
-
-
   }
 
   ssl_profiles = [
     {
-      name                             = format("%s-ssl-profile", local.product_region)
+      name                             = "${local.product_region}-ssl-profile"
       trusted_client_certificate_names = null
       verify_client_cert_issuer_dn     = false
       ssl_policy = {
@@ -97,16 +95,15 @@ module "app_gw_integration" {
     }
   ]
 
-  trusted_client_certificates = [
-  ]
+  trusted_client_certificates = []
 
   # Configure listeners
   listeners = {
     api = {
       protocol           = "Https"
-      host               = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
+      host               = "api.${var.dns_zone_prefix}.${var.external_domain}"
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.product_region)
+      ssl_profile_name   = "${local.product_region}-ssl-profile"
       firewall_policy_id = null
       type               = "Private"
 
@@ -122,12 +119,11 @@ module "app_gw_integration" {
 
     portal = {
       protocol           = "Https"
-      host               = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
+      host               = "portal.${var.dns_zone_prefix}.${var.external_domain}"
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.product_region)
+      ssl_profile_name   = "${local.product_region}-ssl-profile"
       firewall_policy_id = null
       type               = "Private"
-
 
       certificate = {
         name = var.app_gateway_portal_certificate_name
@@ -141,12 +137,11 @@ module "app_gw_integration" {
 
     management = {
       protocol           = "Https"
-      host               = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
+      host               = "management.${var.dns_zone_prefix}.${var.external_domain}"
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.product_region)
+      ssl_profile_name   = "${local.product_region}-ssl-profile"
       firewall_policy_id = null
       type               = "Private"
-
 
       certificate = {
         name = var.app_gateway_management_certificate_name
@@ -157,25 +152,19 @@ module "app_gw_integration" {
         )
       }
     }
-
-
   }
 
   # maps listener to backend
   routes = {
-
     api = {
       listener              = "api"
       backend               = "apim"
       rewrite_rule_set_name = null
       priority              = 10
-
     }
-
   }
 
-  rewrite_rule_sets = [
-  ]
+  rewrite_rule_sets = []
 
   # TLS
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]

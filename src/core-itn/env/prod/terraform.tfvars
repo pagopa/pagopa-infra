@@ -48,8 +48,10 @@ cidr_subnet_tools_cae = ["10.3.252.0/23"]
 #
 # Dns
 #
-external_domain          = "pagopa.it"
+platform_dns_zone_prefix = "platform"
 dns_zone_internal_prefix = "internal.platform"
+external_domain          = "pagopa.it"
+dns_default_ttl_sec      = 3600
 
 ### External resources
 
@@ -121,3 +123,11 @@ ehns_metric_alerts = {
 #
 container_registry_sku                     = "Premium"
 container_registry_zone_redundancy_enabled = true
+
+#
+# Monitoring
+#
+law_sku                    = "PerGB2018"
+law_retention_in_days      = 30
+law_daily_quota_gb         = 10
+law_internet_query_enabled = true
