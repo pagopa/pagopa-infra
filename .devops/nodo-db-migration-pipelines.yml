@@ -316,7 +316,7 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-passworddb-re-password,db-wfesp-password,db-partition-password'
+              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password'
           - script: |
               liquibase \
               --url="$(JDBC_URL)" \
