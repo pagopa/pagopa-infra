@@ -76,7 +76,7 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
+              secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password, db-partition-password'
           - task: AzureCLI@2
             displayName: "create all schemas"
             inputs:
@@ -150,11 +150,7 @@ stages:
                 do \$\$
 
                 BEGIN
-                  IF EXISTS (
-                      SELECT FROM pg_catalog.pg_roles WHERE  rolname = '$PARTITION_USERNAME') THEN
-                    ) THEN
-                      RAISE NOTICE 'Role "$PARTITION_USERNAME" already exists. Skipping.';
-                  ELSE
+                  IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '$PARTITION_USERNAME') THEN
                     CREATE ROLE $PARTITION_USERNAME WITH
                     NOSUPERUSER
                     CREATEDB
