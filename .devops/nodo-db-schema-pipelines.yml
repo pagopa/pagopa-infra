@@ -240,7 +240,7 @@ stages:
                     ALTER DEFAULT PRIVILEGES FOR ROLE $PARTITION_USERNAME IN SCHEMA $PARTITION_SCHEMA GRANT USAGE ON TYPES TO $ADMIN_USERNAME;
                     GRANT ALL ON TABLE $PARTITION_SCHEMA.tab_part TO $ADMIN_USERNAME;
 
-                    CREATE OR REPLACE PROCEDURE $PARTITION_SCHEMA.modify_partition(a integer) LANGUAGE 'plpgsql' AS $BODY$
+                    CREATE OR REPLACE PROCEDURE $PARTITION_SCHEMA.modify_partition(a integer) LANGUAGE 'plpgsql' AS \$BODY\$
 
                     DECLARE
                       l_partname TEXT;
