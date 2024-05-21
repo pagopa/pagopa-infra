@@ -61,7 +61,7 @@ variables:
   WFESP_USERNAME: wfesp
   WFESP_SCHEMA: wfesp
   PARTITION_SCHEMA: partition
-  PARTITION_USERNAME: partitioner
+  PARTITION_USERNAME: partition
 
 stages:
   - stage: initialization_jobs
@@ -79,7 +79,6 @@ stages:
               secretsFilter: 'db-administrator-login-password,db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password, db-partition-password'
 
           - task: AzureCLI@2
-            condition: false # TODO remove
             displayName: "create all schemas"
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
@@ -117,7 +116,6 @@ stages:
 
           - task: AzureCLI@2
             displayName: "create online trunc function"
-            condition: false # TODO remove
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               scriptLocation: inlineScript
@@ -140,7 +138,6 @@ stages:
 
           - task: AzureCLI@2
             displayName: "create partition"
-            condition: false # TODO remove
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               scriptLocation: inlineScript
@@ -337,7 +334,7 @@ stages:
                 "
 
           - task: AzureCLI@2
-            displayName: "schedule partitioning"
+            displayName: "partition scheduling"
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               scriptLocation: inlineScript
