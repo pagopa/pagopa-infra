@@ -61,7 +61,7 @@ variables:
   WFESP_USERNAME: wfesp
   WFESP_SCHEMA: wfesp
   PARTITION_SCHEMA: partition
-  PARTITION_USERNAME: partition
+  PARTITION_USERNAME: partitioner
 
 stages:
   - stage: initialization_jobs
