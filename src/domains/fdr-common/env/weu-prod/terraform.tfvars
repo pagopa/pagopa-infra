@@ -251,5 +251,3 @@ reporting_fdr_storage_account = {
   blob_delete_retention_days = 30
   account_replication_type   = "GZRS"
 }
-
-enable_fdr_qi = false

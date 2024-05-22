@@ -474,10 +474,3 @@ variable "geo_replica_cidr_subnet_postgresql" {
   description = "Address prefixes replica subnet postgresql"
   default     = null
 }
-
-
-variable "enable_fdr_qi" {
-  type        = bool
-  default     = false
-  description = "Enable FdR Quality Improvement"
-}

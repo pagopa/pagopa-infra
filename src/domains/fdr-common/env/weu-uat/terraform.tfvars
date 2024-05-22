@@ -211,5 +211,3 @@ fdr_history_storage_account = {
 #
 geo_replica_enabled               = false
 postgres_dns_registration_enabled = true
-
-enable_fdr_qi = true
