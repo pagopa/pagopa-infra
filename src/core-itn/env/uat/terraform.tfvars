@@ -17,10 +17,9 @@ tags = {
 
 ### Feature Flag
 is_feature_enabled = {
-  vnet_ita                  = false,
   container_app_tools_cae   = true,
   node_forwarder_ha_enabled = false,
-  vpn                       = false,
+  vpn                       = true,
   dns_forwarder_lb          = true,
   postgres_private_dns      = true
 }
@@ -129,3 +128,5 @@ law_sku                    = "PerGB2018"
 law_retention_in_days      = 30
 law_daily_quota_gb         = 10
 law_internet_query_enabled = true
+
+ehns_zone_redundant = false
