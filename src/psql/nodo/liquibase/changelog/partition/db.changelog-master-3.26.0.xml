@@ -5,6 +5,6 @@
 
   <property name="version" value="3.26.0" global="false"/>
 
-  <include file="./db.changelog-master-3.25.0.xml"/>
+  <include file="./${version}/db.changelog-20240518000000_insert_tab_part.xml" labels="${version}"/>
 
 </databaseChangeLog>
