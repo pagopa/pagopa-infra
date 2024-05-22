@@ -49,7 +49,7 @@ locals {
 // public storage used to serve FE
 #tfsec:ignore:azure-storage-default-action-deny
 module "selfcare_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v8.15.1"
   count  = var.selfcare_fe_enabled ? 1 : 0
 
   name                = "selfcare"
@@ -59,7 +59,6 @@ module "selfcare_cdn" {
   #                       selfcare.<ENV>.platform.pagopa.it
   hostname              = "${local.dns_zone_selfcare}.${local.dns_zone_platform}.${local.external_domain}"
   https_rewrite_enabled = true
-  lock_enabled          = false
 
   index_document     = "index.html"
   error_404_document = "error.html"
@@ -271,7 +270,8 @@ module "selfcare_cdn" {
       url_rewrite_actions            = []
   }]
 
-  tags = var.tags
+  tags                       = var.tags
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry
@@ -296,6 +296,24 @@ resource "azurerm_key_vault_secret" "selfcare_web_storage_connection_string" {
 resource "azurerm_key_vault_secret" "selfcare_web_storage_blob_connection_string" {
   name         = "web-storage-blob-connection-string"
   value        = module.selfcare_cdn[0].storage_primary_blob_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+
+resource "azurerm_static_web_app" "selfcare_backoffice_static_web_app" {
+  name                = "${var.prefix}-${var.env_short}-${var.domain}-backoffice-fe"
+  resource_group_name = azurerm_resource_group.selfcare_fe_rg[0].name
+  location            = var.location
+
+  sku_tier = "Standard"
+  sku_size = "Standard"
+}
+
+resource "azurerm_key_vault_secret" "selfcare_backoffice_static_app_key" {
+  name         = "backoffice-static-app-key"
+  value        = azurerm_static_web_app.selfcare_backoffice_static_web_app.api_key
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv.id
