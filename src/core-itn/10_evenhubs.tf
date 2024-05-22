@@ -21,6 +21,9 @@ module "eventhub_meucci" {
   private_endpoint_subnet_id    = azurerm_subnet.eventhubs_italy.id
   public_network_access_enabled = var.ehns_public_network_access
   private_endpoint_created      = var.ehns_private_endpoint_is_present
+
+  private_endpoint_resource_group_name = azurerm_resource_group.eventhub_ita_rg.name
+
   private_dns_zones = {
     id                  = [data.azurerm_private_dns_zone.eventhub.id]
     name                = [data.azurerm_private_dns_zone.eventhub.name]
