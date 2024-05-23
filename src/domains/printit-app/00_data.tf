@@ -5,13 +5,13 @@ data "azurerm_eventhub_authorization_rule" "notices_evt_authorization_rule" {
   namespace_name      = "${var.prefix}-${var.env_short}-${var.location_short}-core-evh-meucci"
 }
 data "azurerm_eventhub_authorization_rule" "notices_evt_complete_authorization_rule" {
-  name                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-notice-complete-evt-rx"
+  name                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-notice-evt-complete-rx"
   resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-evenhub-rg"
   eventhub_name       = "${var.prefix}-${var.domain}-complete-evh"
   namespace_name      = "${var.prefix}-${var.env_short}-${var.location_short}-core-evh-meucci"
 }
 data "azurerm_eventhub_authorization_rule" "notices_evt_errors_authorization_rule" {
-  name                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-notice-errors-evt-rx"
+  name                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-notice-evt-errors-rx"
   resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-evenhub-rg"
   eventhub_name       = "${var.prefix}-${var.domain}-errors-evh"
   namespace_name      = "${var.prefix}-${var.env_short}-${var.location_short}-core-evh-meucci"
