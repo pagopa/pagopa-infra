@@ -79,10 +79,6 @@ locals {
           unique = true
         },
         {
-          keys   = ["fdr", "revision"] # reporting_flow_name revision TODO verify if necessary
-          unique = true
-        },
-        {
           keys   = ["fdr"]
           unique = false
         },
@@ -100,15 +96,15 @@ locals {
         unique = true
         },
         {
-          keys   = ["fdr", "revision"] # reporting_flow_name revision
-          unique = true
-        },
-        {
           keys   = ["fdr"]
           unique = false
         },
         {
           keys   = ["sender.psp_id"]
+          unique = false
+        },
+        {
+          keys   = ["receiver.organization_id"]
           unique = false
         }
       ]
