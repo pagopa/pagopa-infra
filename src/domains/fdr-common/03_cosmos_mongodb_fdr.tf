@@ -54,6 +54,12 @@ resource "azurerm_cosmosdb_mongo_database" "fdr" {
 # fdr_payment_publish
 
 # Collections
+
+# https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/indexing#compound-indexes-mongodb-server-version-36
+# Compound indexes are required if your query needs the ability to sort on multiple fields at once.
+# For queries with multiple filters that don't need to sort, create multiple single field indexes instead
+# of a compound index to save on indexing costs.
+
 locals {
   collections = [
     {
@@ -73,8 +79,16 @@ locals {
           unique = true
         },
         {
-          keys   = ["fdr", "revision"] # reporting_flow_name revision
+          keys   = ["fdr", "revision"] # reporting_flow_name revision TODO verify if necessary
           unique = true
+        },
+        {
+          keys   = ["fdr"]
+          unique = false
+        },
+        {
+          keys   = ["sender.psp_id"]
+          unique = false
         }
       ]
       shard_key = null
@@ -103,10 +117,15 @@ locals {
     },
     {
       name = "fdr_payment_insert"
-      indexes = [{
-        keys   = ["_id"] # index + ref_fdr_reporting_flow_name + ref_fdr_id
-        unique = true
-        }
+      indexes = [
+        {
+          keys   = ["_id"] # index + ref_fdr_reporting_flow_name + ref_fdr_id
+          unique = true
+        },
+        {
+          keys   = ["ref_fdr"]
+          unique = false
+        },
       ]
       shard_key = null
     },
