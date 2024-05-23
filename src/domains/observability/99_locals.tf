@@ -3,6 +3,11 @@ locals {
   project_legacy = "${var.prefix}-${var.env_short}"
   product        = "${var.prefix}-${var.env_short}"
 
+  apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
+
+  pagopa_apim_name = "${local.product}-apim"
+  pagopa_apim_rg   = "${local.product}-api-rg"
+  pagopa_apim_snet = "${local.product}-apim-snet"
 
   # app_insights_ips_west_europe = [
   #   "51.144.56.96/28",
