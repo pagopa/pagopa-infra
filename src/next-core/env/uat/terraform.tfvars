@@ -34,7 +34,8 @@ cidr_vnet_italy = ["10.3.0.0/16"]
 
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
 cidr_subnet_tools_cae            = ["10.1.248.0/23"]
-
+cidr_subnet_azdoa                = ["10.1.130.0/24"]
+cidr_subnet_loadtest_agent       = ["10.1.159.0/24"]
 #
 # Dns
 #
@@ -603,6 +604,46 @@ eventhubs_04 = [
       },
       {
         name   = "nodo-dei-pagamenti-stand-in-sync-rx" # node-cfg-sync
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "fdr-qi-reported-iuv"
+    partitions        = 3
+    message_retention = 1
+    consumers         = ["fdr-qi-reported-iuv-rx"]
+    keys = [
+      {
+        name   = "fdr-qi-reported-iuv-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-qi-reported-iuv-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "fdr-qi-flows"
+    partitions        = 3
+    message_retention = 1
+    consumers         = ["fdr-qi-flows-rx"]
+    keys = [
+      {
+        name   = "fdr-qi-flows-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-qi-flows-rx"
         listen = true
         send   = false
         manage = false

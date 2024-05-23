@@ -75,6 +75,8 @@ variables:
   RE_SCHEMA: re
   WFESP_USERNAME: wfesp
   WFESP_SCHEMA: wfesp
+  PARTITION_USERNAME: partition
+  PARTITION_SCHEMA: partition
 
 stages:
   - stage: liquibase_status
@@ -109,7 +111,7 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
+              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password'
           - script: |
               liquibase \
               --url="$(JDBC_URL)" \
@@ -178,6 +180,19 @@ stages:
           - script: |
               liquibase \
               --url="$(JDBC_URL)" \
+              --username="$(PARTITION_USERNAME)" \
+              --password="$(db-partition-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/partition \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(PARTITION_SCHEMA)" \
+              --defaultSchemaName="$(PARTITION_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              status -Dschema=$(PARTITION_SCHEMA)
+            displayName: "partition db status"
+          - script: |
+              liquibase \
+              --url="$(JDBC_URL)" \
               --username="$(CFG_USERNAME)" \
               --password="$(db-cfg-password)" \
               --classpath=src/psql/nodo/liquibase/changelog/cfg \
@@ -240,6 +255,19 @@ stages:
               --log-level=${{ parameters.lbLogLevel }} \
               validate -Dschema=$(WFESP_SCHEMA)
             displayName: "wfeps db validate"
+          - script: |
+              liquibase \
+              --url="$(JDBC_URL)" \
+              --username="$(PARTITION_USERNAME)" \
+              --password="$(db-partition-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/partition \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(PARTITION_SCHEMA)" \
+              --defaultSchemaName="$(PARTITION_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              validate -Dschema=$(PARTITION_SCHEMA)
+            displayName: "partition db validate"
       - job: approval
         dependsOn: liquibase_status_job
         condition: eq('${{ parameters.k8sEnv }}', 'prd')
@@ -288,7 +316,7 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password'
+              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password'
           - script: |
               liquibase \
               --url="$(JDBC_URL)" \
@@ -419,3 +447,29 @@ stages:
               --log-level=${{ parameters.lbLogLevel }} \
               tag ${{ parameters.dbVersion }}
             displayName: "Tag wfesp"
+          - script: |
+              liquibase \
+              --url="$(JDBC_URL)" \
+              --username="$(PARTITION_USERNAME)" \
+              --password="$(db-partition-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/partition \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(PARTITION_SCHEMA)" \
+              --defaultSchemaName="$(PARTITION_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              update -Dschema=$(PARTITION_SCHEMA)
+            displayName: "Run Liquibase partition"
+          - script: |
+              liquibase \
+              --url="$(JDBC_URL)" \
+              --username="$(PARTITION_USERNAME)" \
+              --password="$(db-partition-password)" \
+              --classpath=src/psql/nodo/liquibase/changelog/partition \
+              --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+              --liquibaseSchemaName="$(PARTITION_SCHEMA)" \
+              --defaultSchemaName="$(PARTITION_SCHEMA)" \
+              --contexts="${{ parameters.lbContexts }}" \
+              --log-level=${{ parameters.lbLogLevel }} \
+              tag ${{ parameters.dbVersion }}
+            displayName: "Tag partition"

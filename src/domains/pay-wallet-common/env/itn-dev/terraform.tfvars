@@ -24,9 +24,9 @@ is_feature_enabled = {
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-d-monitor-rg"
-log_analytics_workspace_name                = "pagopa-d-law"
-log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
+monitor_italy_resource_group_name                 = "pagopa-d-itn-core-monitor-rg"
+log_analytics_italy_workspace_name                = "pagopa-d-itn-core-law"
+log_analytics_italy_workspace_resource_group_name = "pagopa-d-itn-core-monitor-rg"
 
 ### NETWORK
 

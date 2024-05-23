@@ -46,4 +46,5 @@ cidr_subnet_pdf_engine_app_service = ["10.3.11.0/27"]
 
 is_feature_enabled = {
   pdf_engine = true
+  printit    = true
 }
