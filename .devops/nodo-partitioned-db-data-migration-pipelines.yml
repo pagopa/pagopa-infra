@@ -1,0 +1,101 @@
+#pr: none
+#trigger: none
+#
+#pool:
+#  vmImage: 'ubuntu-latest'
+#
+#parameters:
+#  - name: k8sEnv
+#    displayName: K8s Environment
+#    type: string
+#    default: dev
+#    values:
+#      - dev
+#      - it
+#      - prf
+#      - uat
+#      - prd
+#
+#variables:
+#  ${{ if eq(parameters.k8sEnv, 'dev') }}:
+#    DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
+#    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+#    KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
+#    DATABASE_NAME: nodo
+#    poolImage: 'pagopa-dev-linux-infra'
+#  ${{ if eq(parameters.k8sEnv, 'it') }}:
+#    DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
+#    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+#    KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
+#    DATABASE_NAME: 'nodo-replica'
+#    poolImage: 'pagopa-dev-linux-infra'
+#  ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
+#    DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
+#    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+#    KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
+#    DATABASE_NAME: nodo
+#    poolImage: 'pagopa-uat-linux-infra'
+#  ${{ elseif eq(parameters.k8sEnv, 'prf') }}:
+#    DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
+#    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+#    KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
+#    DATABASE_NAME: 'nodo-replica'
+#    poolImage: 'pagopa-uat-linux-infra'
+#  ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
+#    DB_HOST: pagopa-p-weu-nodo-flexible-postgresql
+#    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+#    KEY_VAULT_NAME: 'pagopa-p-nodo-kv'
+#    DATABASE_NAME: nodo
+#    poolImage: 'pagopa-prod-linux-infra'
+#
+#  OFFLINE_USERNAME: offline
+#  OFFLINE_SCHEMA: offline
+#  ONLINE_USERNAME: online
+#  ONLINE_SCHEMA: online
+#  RE_USERNAME: re
+#  RE_SCHEMA: re
+#  WFESP_USERNAME: wfesp
+#  WFESP_SCHEMA: wfesp
+#
+#stages:
+#  - stage: initialization_jobs
+#    displayName: "Init ${{ parameters.k8sEnv }}"
+#    jobs:
+#      - job: initialization
+#        pool: $(poolImage)
+#        displayName: "Schemas creation job"
+#        steps:
+#          - task: AzureKeyVault@2
+#            displayName: "Get secrets"
+#            inputs:
+#              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+#              keyVaultName: $(KEY_VAULT_NAME)
+#              secretsFilter: 'db-online-password,db-offline-password,db-re-password,db-wfesp-password'
+#
+#          - task: AzureCLI@2
+#            displayName: "offline - migrate data from old to parted table"
+#            inputs:
+#              azureSubscription: $(AZURE_SERVICE_CONNECTION)
+#              scriptLocation: inlineScript
+#              scriptType: bash
+#              inlineScript: |
+#
+#                az config set extension.use_dynamic_install=yes_without_prompt
+#                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(OFFLINE_USERNAME) \
+#                --admin-password '$(db-offline-password)' --database-name "$(DATABASE_NAME)" \
+#                --querytext "
+#                do \$\$
+#
+#                BEGIN
+#                  INSERT INTO $OFFLINE_SCHEMA.rendicontazione_sftp_receive_queue
+#                    SELECT *
+#                    FROM $OFFLINE_SCHEMA.rendicontazione_sftp_receive_queue_old;
+#
+#                  INSERT INTO $OFFLINE_SCHEMA.rendicontazione_sftp_send_queue
+#                    SELECT *
+#                    FROM $OFFLINE_SCHEMA.rendicontazione_sftp_send_queue_old;
+#
+#                END;
+#
+#                \$\$;
+#                "
