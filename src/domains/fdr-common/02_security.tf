@@ -12,6 +12,39 @@ resource "azurerm_key_vault_secret" "fdr-re-tx" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
+### FdR Quality Improvement
+resource "azurerm_key_vault_secret" "evthub_fdr-qi-flows_tx" {
+  name         = "fdr-qi-flows-tx-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_fdr-qi-flows-tx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "evthub_fdr-qi-flows_rx" {
+  name         = "fdr-qi-flows-rx-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_fdr-qi-flows-rx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "evthub_fdr-qi-reported-iuv_tx" {
+  name         = "fdr-qi-reported-iuv-tx-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_fdr-qi-reported-iuv-tx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "evthub_fdr-qi-reported-iuv_rx" {
+  name         = "fdr-qi-reported-iuv-rx-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_fdr-qi-reported-iuv-rx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 ############
 ## Cosmos ##
 ############
