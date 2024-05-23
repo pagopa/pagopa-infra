@@ -85,6 +85,10 @@ locals {
         {
           keys   = ["sender.psp_id"]
           unique = false
+        },
+        {
+          keys   = ["fdr", "revision"]
+          unique = true
         }
       ]
       shard_key = null
@@ -106,6 +110,10 @@ locals {
         {
           keys   = ["receiver.organization_id"]
           unique = false
+        },
+        {
+          keys   = ["fdr", "revision"]
+          unique = true
         }
       ]
       shard_key = null
