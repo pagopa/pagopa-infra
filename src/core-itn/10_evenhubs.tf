@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "eventhub_ita_rg" {
 
 
 module "eventhub_meucci" {
-  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v8.2.0"
+  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v8.13.0"
   name                     = "${local.project}-evh-meucci"
   location                 = var.location
   resource_group_name      = azurerm_resource_group.eventhub_ita_rg.name
@@ -21,6 +21,9 @@ module "eventhub_meucci" {
   private_endpoint_subnet_id    = azurerm_subnet.eventhubs_italy.id
   public_network_access_enabled = var.ehns_public_network_access
   private_endpoint_created      = var.ehns_private_endpoint_is_present
+
+  private_endpoint_resource_group_name = azurerm_resource_group.eventhub_ita_rg.name
+
   private_dns_zones = {
     id                  = [data.azurerm_private_dns_zone.eventhub.id]
     name                = [data.azurerm_private_dns_zone.eventhub.name]

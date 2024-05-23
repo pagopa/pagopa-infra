@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.13.0"
 
   name                       = "${local.project}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -63,12 +63,47 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
 #
 # Secrets
 #
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "monitor_notification_email" {
+  name         = "monitor-notification-email"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "monitor_notification_slack_email" {
+  name         = "monitor-notification-slack-email"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 data "azurerm_key_vault_secret" "monitor_notification_email" {
   name         = "monitor-notification-email"
   key_vault_id = module.key_vault.id
+
+  depends_on = [azurerm_key_vault_secret.monitor_notification_email]
 }
 
 data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
   name         = "monitor-notification-slack-email"
   key_vault_id = module.key_vault.id
+
+  depends_on = [azurerm_key_vault_secret.monitor_notification_slack_email]
 }
