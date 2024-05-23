@@ -102,6 +102,14 @@ locals {
         {
           keys   = ["fdr", "revision"] # reporting_flow_name revision
           unique = true
+        },
+        {
+          keys   = ["fdr"]
+          unique = false
+        },
+        {
+          keys   = ["sender.psp_id"]
+          unique = false
         }
       ]
       shard_key = null
@@ -126,14 +134,27 @@ locals {
           keys   = ["ref_fdr"]
           unique = false
         },
+        {
+          keys   = ["ref_fdr_sender_psp_id"]
+          unique = false
+        },
       ]
       shard_key = null
     },
     {
       name = "fdr_payment_publish"
-      indexes = [{
-        keys   = ["_id"] # index + ref_fdr_reporting_flow_name + ref_fdr_id
-        unique = true
+      indexes = [
+        {
+          keys   = ["_id"] # index + ref_fdr_reporting_flow_name + ref_fdr_id
+          unique = true
+        },
+        {
+          keys   = ["ref_fdr"]
+          unique = false
+        },
+        {
+          keys   = ["ref_fdr_sender_psp_id"]
+          unique = false
         }
       ]
       shard_key = null
