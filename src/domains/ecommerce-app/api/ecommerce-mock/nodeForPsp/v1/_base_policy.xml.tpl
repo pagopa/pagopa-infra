@@ -2,6 +2,7 @@
   <inbound>
     <base />
     <!-- verifyPaymentNotice -->
+    <retry condition="@(true)" count="1" interval="3" />
     <choose>
       <when condition="@(((string)context.Request.Headers.GetValueOrDefault("SOAPAction","")).Equals("verifyPaymentNotice"))">
         <return-response>

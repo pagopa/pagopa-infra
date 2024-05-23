@@ -1,6 +1,7 @@
 <policies>
   <inbound>
     <base />
+    <retry condition="@(true)" count="1" interval="3" />
     <choose>
       <when condition="@(((string)(context.Request.Url.Path)).Contains("checkPosition"))">
         <return-response>

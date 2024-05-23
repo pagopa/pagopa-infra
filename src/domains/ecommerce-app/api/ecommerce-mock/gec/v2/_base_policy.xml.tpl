@@ -3,6 +3,7 @@
     <base />
       <set-variable name="calculateFeeRequest" value="@((JObject)context.Request.Body.As<JObject>(true))" />
       <set-variable name="calculateFeePaymentMethod" value="@((string)((JObject)context.Variables["calculateFeeRequest"])["paymentMethod"])" />
+      <retry condition="@(true)" count="1" interval="1" />
       <return-response>
           <set-status code="200" reason="OK" />
           <set-header name="Content-Type" exists-action="override">

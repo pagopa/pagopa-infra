@@ -18,7 +18,6 @@
         </allowed-headers>
       </cors>
       <base />
-      <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
       <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
       <set-header name="X-Client-Id" exists-action="override" >
       <value>CHECKOUT</value>
