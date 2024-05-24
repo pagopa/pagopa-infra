@@ -22,12 +22,12 @@ data "external" "external" {
 }
 
 locals {
-  all_enc_secrets_value = flatten([
+  all_enc_secrets_value = can(data.external.external.result) ? flatten([
     for k, v in data.external.external.result : {
       valore = v
       chiave = k
     }
-  ])
+  ]) : []
 
   config_secret_data = jsondecode(file(var.input_file))
   all_config_secrets_value = flatten([
