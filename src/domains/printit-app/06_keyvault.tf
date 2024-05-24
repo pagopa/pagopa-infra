@@ -108,8 +108,37 @@ resource "azurerm_key_vault_secret" "ehub_notice_connection_string" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+resource "azurerm_key_vault_secret" "ehub_notice_errors_connection_string" {
+  name         = "ehub-${var.env_short}-notice-errors-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.notices_evt_errors_authorization_rule.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_notice_complete_connection_string" {
+  name         = "ehub-${var.env_short}-notice-complete-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.notices_evt_complete_authorization_rule.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 resource "azurerm_key_vault_secret" "ehub_notice_jaas_config" {
   name         = "ehub-${var.env_short}-notice-jaas-config"
+  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string}\";"
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+
+resource "azurerm_key_vault_secret" "ehub_notice_errors_jaas_config" {
+  name         = "ehub-${var.env_short}-notice-errors-jaas-config"
+  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string}\";"
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_notice_complete_jaas_config" {
+  name         = "ehub-${var.env_short}-notice-complete-jaas-config"
   value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string}\";"
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
