@@ -305,7 +305,7 @@ wisp_converter_storage_account = {
   backup_retention_days         = 30
 }
 
-redis_ha_enabled = false
+redis_ha_enabled = true
 
 enabled_features = {
   eventhub_ha_tx = true
