@@ -1,6 +1,5 @@
 variable "is_feature_enabled" {
   type = object({
-    vnet_ita                  = bool,
     container_app_tools_cae   = optional(bool, false),
     node_forwarder_ha_enabled = bool
     vpn                       = optional(bool, false)
@@ -151,17 +150,26 @@ variable "law_internet_query_enabled" {
 }
 
 # DNS
-# variable "external_domain" {
-#   type        = string
-#   default     = "pagopa.it"
-#   description = "Domain for delegation"
-# }
-#
-# variable "dns_zone_internal_prefix" {
-#   type        = string
-#   default     = null
-#   description = "The dns subdomain."
-# }
+variable "external_domain" {
+  type        = string
+  default     = "pagopa.it"
+  description = "Domain for delegation"
+}
+
+variable "dns_zone_internal_prefix" {
+  type        = string
+  description = "The dns subdomain."
+}
+
+variable "platform_dns_zone_prefix" {
+  type        = string
+  description = "platform dns prefix"
+}
+
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "Dns default ttl secs"
+}
 
 #
 # Event hub
