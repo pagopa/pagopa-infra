@@ -681,11 +681,6 @@
           "clients": {
             "description": "Client-specific state (e.g. last usage) and configuration (enabled/disabled)",
             "type": "object",
-            "properties": {
-              "IO": {
-                "$ref": "#/components/schemas/WalletClient"
-              }
-            },
             "additionalProperties": {
               "$ref": "#/components/schemas/WalletClient"
             }
