@@ -398,7 +398,7 @@
         ],
         "security": [
           {
-            "eCommerceSessionToken": []
+            "pagoPAPlatformSessionToken": []
           }
         ],
         "summary": "Performs the transaction cancellation",
