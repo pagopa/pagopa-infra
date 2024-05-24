@@ -649,6 +649,7 @@ variable "is_feature_enabled" {
     dns_forwarder_lb          = optional(bool, false)
     postgres_private_dns      = bool
     azdoa                     = optional(bool, true)
+    azdoa_extension           = optional(bool, false)
   })
   description = "Features enabled in this domain"
 }
