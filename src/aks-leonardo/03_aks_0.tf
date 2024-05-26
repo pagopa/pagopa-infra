@@ -13,7 +13,7 @@ module "aks_leonardo" {
   dns_prefix                 = local.project
   resource_group_name        = azurerm_resource_group.rg_aks.name
   kubernetes_version         = var.aks_kubernetes_version
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
+  log_analytics_workspace_id = var.env_short != "d" ? data.azurerm_log_analytics_workspace.log_analytics_italy.id : data.azurerm_log_analytics_workspace.log_analytics.id
   sku_tier                   = var.aks_sku_tier
 
   #
