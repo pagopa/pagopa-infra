@@ -130,14 +130,14 @@ variable "apim_dns_zone_prefix" {
   description = "The dns subdomain for apim."
 }
 
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
+# variable "tls_cert_check_helm" {
+#   type = object({
+#     chart_version = string,
+#     image_name    = string,
+#     image_tag     = string
+#   })
+#   description = "tls cert helm chart configuration"
+# }
 
 variable "payment_wallet_with_pm_enabled" {
   type        = bool
