@@ -15,4 +15,10 @@ resource "azurerm_subnet" "user_aks_subnet" {
 
   private_endpoint_network_policies_enabled     = true
   private_link_service_network_policies_enabled = true
+
+  service_endpoints = [
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.EventHub",
+    "Microsoft.Storage",
+  ]
 }
