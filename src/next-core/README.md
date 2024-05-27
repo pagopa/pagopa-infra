@@ -131,6 +131,8 @@
 | [azurerm_subnet_route_table_association.rt_sia_for_apim_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_route_table_association) | resource |
 | [azurerm_subnet_route_table_association.rt_sia_for_appgw_integration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_route_table_association) | resource |
 | [azurerm_user_assigned_identity.appgateway](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/user_assigned_identity) | resource |
+| [azurerm_virtual_machine_scale_set_extension.custom_script_extension_app](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_scale_set_extension) | resource |
+| [azurerm_virtual_machine_scale_set_extension.custom_script_extension_infra](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_scale_set_extension) | resource |
 | [null_resource.change_auth_donations_blob_container_logo10](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [null_resource.change_auth_donations_blob_container_logo7](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [null_resource.change_auth_donations_blob_container_logo8](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
@@ -214,6 +216,7 @@
 | <a name="input_app_gateway_sku_name"></a> [app\_gateway\_sku\_name](#input\_app\_gateway\_sku\_name) | The Name of the SKU to use for this Application Gateway. Possible values are Standard\_Small, Standard\_Medium, Standard\_Large, Standard\_v2, WAF\_Medium, WAF\_Large, and WAF\_v2 | `string` | n/a | yes |
 | <a name="input_app_gateway_sku_tier"></a> [app\_gateway\_sku\_tier](#input\_app\_gateway\_sku\_tier) | The Tier of the SKU to use for this Application Gateway. Possible values are Standard, Standard\_v2, WAF and WAF\_v2 | `string` | n/a | yes |
 | <a name="input_app_gateway_waf_enabled"></a> [app\_gateway\_waf\_enabled](#input\_app\_gateway\_waf\_enabled) | Enable waf | `bool` | `false` | no |
+| <a name="input_azdo_agent_vm_image_name"></a> [azdo\_agent\_vm\_image\_name](#input\_azdo\_agent\_vm\_image\_name) | (Required) Azure devops agent image name | `string` | n/a | yes |
 | <a name="input_base_path_nodo_fatturazione"></a> [base\_path\_nodo\_fatturazione](#input\_base\_path\_nodo\_fatturazione) | base nodo on cloud | `string` | n/a | yes |
 | <a name="input_base_path_nodo_fatturazione_dev"></a> [base\_path\_nodo\_fatturazione\_dev](#input\_base\_path\_nodo\_fatturazione\_dev) | base nodo on cloud | `string` | `"/fatturazione-dev"` | no |
 | <a name="input_base_path_nodo_oncloud"></a> [base\_path\_nodo\_oncloud](#input\_base\_path\_nodo\_oncloud) | base nodo on cloud | `string` | n/a | yes |
@@ -269,7 +272,7 @@
 | <a name="input_integration_appgateway_private_ip"></a> [integration\_appgateway\_private\_ip](#input\_integration\_appgateway\_private\_ip) | Integration app gateway private ip | `string` | n/a | yes |
 | <a name="input_integration_appgateway_zones"></a> [integration\_appgateway\_zones](#input\_integration\_appgateway\_zones) | Integration app gateway private ip | `list(number)` | n/a | yes |
 | <a name="input_ip_nodo"></a> [ip\_nodo](#input\_ip\_nodo) | Nodo pagamenti ip | `string` | n/a | yes |
-| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | Features enabled in this domain | <pre>object({<br>    vnet_ita                  = bool,<br>    container_app_tools_cae   = optional(bool, false),<br>    node_forwarder_ha_enabled = bool<br>    vpn                       = optional(bool, false)<br>    dns_forwarder_lb          = optional(bool, false)<br>    postgres_private_dns      = bool<br>    azdoa                     = optional(bool, true)<br>  })</pre> | n/a | yes |
+| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | Features enabled in this domain | <pre>object({<br>    vnet_ita                  = bool,<br>    container_app_tools_cae   = optional(bool, false),<br>    node_forwarder_ha_enabled = bool<br>    vpn                       = optional(bool, false)<br>    dns_forwarder_lb          = optional(bool, false)<br>    postgres_private_dns      = bool<br>    azdoa                     = optional(bool, true)<br>    azdoa_extension           = optional(bool, false)<br>  })</pre> | n/a | yes |
 | <a name="input_lb_aks"></a> [lb\_aks](#input\_lb\_aks) | IP load balancer AKS Nexi/SIA | `string` | `"0.0.0.0"` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_ita"></a> [location\_ita](#input\_location\_ita) | Main location | `string` | `"italynorth"` | no |
