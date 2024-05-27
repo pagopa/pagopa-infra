@@ -20,11 +20,17 @@ tags = {
 cidr_subnet_system_aks = ["10.3.1.0/24"]
 cidr_subnet_user_aks   = ["10.3.2.0/24"]
 
-### External resources
+### Monitor
+monitor_italy_resource_group_name                 = "pagopa-p-itn-core-monitor-rg"
+log_analytics_italy_workspace_name                = "pagopa-p-itn-core-law"
+log_analytics_italy_workspace_resource_group_name = "pagopa-p-itn-core-monitor-rg"
+monitor_appinsights_italy_name                    = "pagopa-p-itn-core-appinsights"
 
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
+monitor_appinsights_name                    = "pagopa-p-appinsights"
+
 
 ### Aks
 
