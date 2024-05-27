@@ -649,6 +649,7 @@ variable "is_feature_enabled" {
     dns_forwarder_lb          = optional(bool, false)
     postgres_private_dns      = bool
     azdoa                     = optional(bool, true)
+    azdoa_extension           = optional(bool, false)
   })
   description = "Features enabled in this domain"
 }
@@ -704,5 +705,10 @@ variable "cidr_subnet_loadtest_agent" {
   type        = list(string)
   description = "LoadTest Agent Pool address space"
   default     = null
+}
+
+variable "azdo_agent_vm_image_name" {
+  type        = string
+  description = "(Required) Azure devops agent image name"
 }
 
