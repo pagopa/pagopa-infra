@@ -9,8 +9,7 @@
   http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
     <changeSet author="liquibase" id="20240527000000">
 
-        <createView fullDefinition="false" viewName="elenco_servizi_view_master_fixed" replaceIfExists="true">
-            WITH cte AS (
+        <createView fullDefinition="false" viewName="elenco_servizi_view_master_fixed" replaceIfExists="true">WITH cte AS (
                 SELECT p_1.id_psp,
                 p_1.obj_id,
                 p_1.ragione_sociale AS psp_rag_soc,
@@ -63,7 +62,7 @@
             d.logo_servizio AS "LOGO_SERVIZIO",
             (
                 CASE
-                    WHEN (d.canale_app = (0)::numeric OR d.canale_app IS NULL) THEN 'N'::text
+                    WHEN ((d.canale_app = (0)::numeric) OR (d.canale_app IS NULL)) THEN 'N'::text
                     ELSE 'Y'::text
                 END)::character(1) AS "CANALE_APP",
             cn.on_us AS "ON_US",
@@ -83,8 +82,7 @@
                 JOIN canali_nodo cn ON ((c.fk_canali_nodo = cn.obj_id)))
                 JOIN intermediari_psp ip ON ((c.fk_intermediario_psp = ip.obj_id)))
                 JOIN tipi_versamento tv ON ((ctv.fk_tipo_versamento = tv.obj_id)))
-            WHERE ((c.enabled = 'Y'::bpchar) AND (ip.enabled = 'Y'::bpchar));
-        </createView>
+            WHERE ((c.enabled = 'Y'::bpchar) AND (ip.enabled = 'Y'::bpchar));</createView>
 
         <renameView
                 newViewName="elenco_servizi_view_master_fixed"
