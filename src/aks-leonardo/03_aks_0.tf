@@ -127,6 +127,6 @@ resource "azurerm_role_assignment" "managed_identity_operator_vs_aks_managed_ide
   principal_id         = module.aks_leonardo.identity_principal_id
 }
 
-# module "aks_storage_class" {
-#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_storage_class?ref=v8.16.0"
-# }
+module "aks_storage_class" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_storage_class?ref=v8.17.1"
+}
