@@ -4,7 +4,7 @@
 # aks terraform module doesn't export private dns zone
 
 data "external" "get_dns_zone" {
-  count = var.aks_private_cluster_enabled ? 1 : 0
+  count      = var.aks_private_cluster_enabled ? 1 : 0
   depends_on = [module.aks_leonardo]
   program = ["bash", "-c", <<-EOH
     dns_zone_name=$(az network private-dns zone list --output tsv --query "[?contains(id,'${module.aks_leonardo.name}')].{name:name}")

@@ -538,7 +538,7 @@ variable "log_analytics_workspace_resource_group_name" {
 }
 
 variable "monitor_appinsights_italy_name" {
-  type = string
+  type        = string
   description = "App insight in Italy name"
 }
 
@@ -558,6 +558,6 @@ variable "log_analytics_italy_workspace_resource_group_name" {
 }
 
 variable "monitor_appinsights_name" {
-  type = string
+  type        = string
   description = "App insight in europe name"
 }
