@@ -1,11 +1,12 @@
-data "azurerm_resource_group" "nodo_switcher" {
-  name = "${local.project}-nodo-switcher-rg"
+resource "azurerm_resource_group" "nodo_switcher" {
+  name     = "${local.project}-nodo-switcher-rg"
+  location = var.location
 }
 
 resource "azurerm_user_assigned_identity" "nodo_switcher_identity" {
   location            = var.location
   name                = "${local.project}-nodo-switcher-identity"
-  resource_group_name = data.azurerm_resource_group.nodo_switcher.name
+  resource_group_name = azurerm_resource_group.nodo_switcher.name
 }
 
 
@@ -18,7 +19,7 @@ resource "azurerm_role_assignment" "apim_values_editor_to_switcher_identity" {
 resource "azurerm_logic_app_workflow" "nodo_switcher_step_1" {
   name                = "${local.project}-switcher-step-1"
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.nodo_switcher.name
+  resource_group_name = azurerm_resource_group.nodo_switcher.name
   workflow_parameters = {
     "enable_switch_approval" = jsonencode({
       "type"         = "bool",
@@ -40,7 +41,7 @@ resource "azurerm_logic_app_workflow" "nodo_switcher_step_1" {
 resource "azurerm_logic_app_workflow" "nodo_switcher_step_2" {
   name                = "${local.project}-switcher-step-2"
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.nodo_switcher.name
+  resource_group_name = azurerm_resource_group.nodo_switcher.name
   workflow_parameters = {
     "allowed_slack_users" = jsonencode({
       "type"         = "Array"

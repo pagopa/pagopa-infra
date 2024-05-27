@@ -44,7 +44,7 @@
         "type": "long"
     },
     {
-        "name": "OUTCOME",
+        "name": "OUTCOME_SPO_REQ",
         "type": "string"
     },
     {
@@ -53,6 +53,26 @@
     },
     {
         "name": "pipelineRunID",
+        "type": "string"
+    },
+    {
+        "name": "NODE_METHOD",
+        "type": "string"
+    },
+    {
+        "name": "PSP_METHOD",
+        "type": "string"
+    },
+    {
+        "name": "OUTCOME_PSP_RESP",
+        "type": "string"
+    },
+    {
+        "name": "FAULT_CODE_PSP",
+        "type": "string"
+    },
+    {
+        "name": "FAULT_CODE_SPO",
         "type": "string"
     }
 ]
