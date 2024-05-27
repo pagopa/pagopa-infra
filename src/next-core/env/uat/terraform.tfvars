@@ -609,6 +609,46 @@ eventhubs_04 = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "fdr-qi-reported-iuv"
+    partitions        = 3
+    message_retention = 1
+    consumers         = ["fdr-qi-reported-iuv-rx"]
+    keys = [
+      {
+        name   = "fdr-qi-reported-iuv-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-qi-reported-iuv-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "fdr-qi-flows"
+    partitions        = 3
+    message_retention = 1
+    consumers         = ["fdr-qi-flows-rx"]
+    keys = [
+      {
+        name   = "fdr-qi-flows-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-qi-flows-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 

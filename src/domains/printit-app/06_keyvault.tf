@@ -20,6 +20,17 @@ resource "azurerm_key_vault_secret" "application_insights_connection_string" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+
+resource "azurerm_key_vault_secret" "tenant_id" {
+  name         = "tenant-id"
+  value        = data.azurerm_subscription.current.tenant_id
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+
+# Mongo DB
+
 resource "azurerm_key_vault_secret" "notices_mongo_connection_string" {
   name         = "notices-mongo-connection-string"
   value        = data.azurerm_cosmosdb_account.notices_cosmos_account.primary_mongodb_connection_string
@@ -30,6 +41,15 @@ resource "azurerm_key_vault_secret" "notices_mongo_connection_string" {
 resource "azurerm_key_vault_secret" "notices_mongo_primary_key" {
   name         = "notices-mongo-primary-key"
   value        = data.azurerm_cosmosdb_account.notices_cosmos_account.primary_key
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+# Notices
+
+resource "azurerm_key_vault_secret" "notices_storage_account_endpoint" {
+  name         = "notices-storage-account-blob-endpoint"
+  value        = data.azurerm_storage_account.notices_storage_sa.primary_blob_endpoint
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
@@ -48,6 +68,8 @@ resource "azurerm_key_vault_secret" "notices_storage_account_pkey" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+# Templates
+
 resource "azurerm_key_vault_secret" "templates_storage_account_connection_string" {
   name         = "templates-storage-account-connection-string"
   value        = data.azurerm_storage_account.templates_storage_sa.primary_connection_string
@@ -61,6 +83,8 @@ resource "azurerm_key_vault_secret" "templates_storage_account_pkey" {
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+# Institutions
 
 resource "azurerm_key_vault_secret" "institutions_storage_account_connection_string" {
   name         = "institutions-storage-account-connection-string"
@@ -76,9 +100,24 @@ resource "azurerm_key_vault_secret" "institutions_storage_account_pkey" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+# Event Hub
 resource "azurerm_key_vault_secret" "ehub_notice_connection_string" {
   name         = "ehub-${var.env_short}-notice-connection-string"
   value        = data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_notice_errors_connection_string" {
+  name         = "ehub-${var.env_short}-notice-errors-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.notices_evt_errors_authorization_rule.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_notice_complete_connection_string" {
+  name         = "ehub-${var.env_short}-notice-complete-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.notices_evt_complete_authorization_rule.primary_connection_string
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
@@ -89,6 +128,23 @@ resource "azurerm_key_vault_secret" "ehub_notice_jaas_config" {
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+
+resource "azurerm_key_vault_secret" "ehub_notice_errors_jaas_config" {
+  name         = "ehub-${var.env_short}-notice-errors-jaas-config"
+  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string}\";"
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_notice_complete_jaas_config" {
+  name         = "ehub-${var.env_short}-notice-complete-jaas-config"
+  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.notices_evt_authorization_rule.primary_connection_string}\";"
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+# SubKey
 
 resource "azurerm_key_vault_secret" "pdf_engine_node_subkey_secret" {
   count        = var.is_feature_enabled.pdf_engine ? 1 : 0
