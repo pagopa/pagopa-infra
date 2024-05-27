@@ -39,9 +39,6 @@
 | <a name="module_apim_statuspage_product"></a> [apim\_statuspage\_product](#module\_apim\_statuspage\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
 | <a name="module_apim_taxonomy_product"></a> [apim\_taxonomy\_product](#module\_apim\_taxonomy\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.3.0 |
 | <a name="module_apim_technical_support_product"></a> [apim\_technical\_support\_product](#module\_apim\_technical\_support\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.20.0 |
-| <a name="module_authorizer_function_app"></a> [authorizer\_function\_app](#module\_authorizer\_function\_app) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v7.29.0 |
-| <a name="module_authorizer_function_app_slot_staging"></a> [authorizer\_function\_app\_slot\_staging](#module\_authorizer\_function\_app\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v6.9.0 |
-| <a name="module_authorizer_functions_snet"></a> [authorizer\_functions\_snet](#module\_authorizer\_functions\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.6.0 |
 | <a name="module_pagopa_shared_toolbox_cdn"></a> [pagopa\_shared\_toolbox\_cdn](#module\_pagopa\_shared\_toolbox\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn | v6.4.1 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.6.0 |
 | <a name="module_shared_pdf_engine_app_service"></a> [shared\_pdf\_engine\_app\_service](#module\_shared\_pdf\_engine\_app\_service) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v6.3.0 |
@@ -85,13 +82,11 @@
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.pagopa_shared_toolbox_storage_account_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.pagopa_shared_toolbox_web_storage_blob_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_monitor_autoscale_setting.authorizer_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.autoscale_app_service_shared_pdf_engine_autoscale](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.autoscale_app_service_shared_pdf_engine_autoscale_ha](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.autoscale_app_service_shared_pdf_engine_java_autoscale](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.autoscale_app_service_shared_pdf_engine_java_autoscale_ha](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.taxonomy_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
-| [azurerm_monitor_metric_alert.function_app_health_check_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_generate-pdf-engine-generate-responsetime](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-pdf-engine-pdf-availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-platform-authorizer-availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -121,7 +116,6 @@
 | [azurerm_api_management_product.apim_pn_integration_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
-| [azurerm_container_registry.acr](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/container_registry) | data source |
 | [azurerm_container_registry.container_registry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/container_registry) | data source |
 | [azurerm_dns_zone.public](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/dns_zone) | data source |
 | [azurerm_function_app.authorizer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/function_app) | data source |
@@ -148,7 +142,6 @@
 | [azurerm_monitor_action_group.opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
-| [azurerm_resource_group.shared_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.taxonomy_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_storage_account.pagopa_apiconfig_fe_sa](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 | [azurerm_storage_account.pagopa_selfcare_fe_sa](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
