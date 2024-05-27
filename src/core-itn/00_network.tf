@@ -33,3 +33,10 @@ data "azurerm_resource_group" "rg_event_private_dns_zone" {
   name = local.msg_resource_group_name
 }
 
+#
+# App GW integration
+#
+data "azurerm_application_gateway" "app_gw_integration" {
+  name                = "pagopa-${var.env_short}-weu-integration-app-gw"
+  resource_group_name = "pagopa-${var.env_short}-vnet-rg"
+}

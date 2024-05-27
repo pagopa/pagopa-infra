@@ -23,8 +23,10 @@ is_feature_enabled = {
   container_app_tools_cae   = true,
   node_forwarder_ha_enabled = true,
   vpn                       = true,
-  dns_forwarder_lb          = true
-  postgres_private_dns      = true
+  dns_forwarder_lb          = true,
+  postgres_private_dns      = true,
+  apim_core_import          = false,
+  use_new_apim              = true
 }
 
 ### Network west europe
@@ -641,6 +643,46 @@ eventhubs_04 = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "fdr-qi-reported-iuv"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["fdr-qi-reported-iuv-rx"]
+    keys = [
+      {
+        name   = "fdr-qi-reported-iuv-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-qi-reported-iuv-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "fdr-qi-flows"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["fdr-qi-flows-rx"]
+    keys = [
+      {
+        name   = "fdr-qi-flows-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-qi-flows-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 
@@ -649,4 +691,4 @@ node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "B1"
 
 dns_forwarder_vm_image_name = "pagopa-d-dns-forwarder-ubuntu2204-image-v1"
-
+azdo_agent_vm_image_name    = "pagopa-d-azdo-agent-ubuntu2204-image-v3"
