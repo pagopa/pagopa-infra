@@ -6,11 +6,11 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | = 1.3.0 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.6.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.30.0, <= 3.94.0 |
-| <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.2.3 |
-| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.0 |
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.3.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.6.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.94.0 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | <= 2.5.1 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | <= 0.11.1 |
 
 ## Modules
 

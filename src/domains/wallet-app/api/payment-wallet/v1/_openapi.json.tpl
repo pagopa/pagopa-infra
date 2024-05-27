@@ -616,14 +616,34 @@
           },
           "status": {
             "$ref": "#/components/schemas/WalletApplicationStatus"
-          },
-          "lastUsage": {
-            "type": "string",
-            "format": "date-time"
           }
         },
         "required": [
           "name",
+          "status"
+        ]
+      },
+      "WalletClientStatus": {
+        "type": "string",
+        "description": "Enumeration of wallet client statuses",
+        "enum": [
+          "ENABLED",
+          "DISABLED"
+        ]
+      },
+      "WalletClient": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/WalletClientStatus"
+          },
+          "lastUsage": {
+            "type": "string",
+            "description": "Time of last usage of this wallet by the client",
+            "format": "date-time"
+          }
+        },
+        "required": [
           "status"
         ]
       },
@@ -658,6 +678,18 @@
               "$ref": "#/components/schemas/WalletApplicationInfo"
             }
           },
+          "clients": {
+            "description": "Client-specific state (e.g. last usage) and configuration (enabled/disabled)",
+            "type": "object",
+            "properties": {
+              "IO": {
+                "$ref": "#/components/schemas/WalletClient"
+              }
+            },
+            "additionalProperties": {
+              "$ref": "#/components/schemas/WalletClient"
+            }
+          },
           "details": {
             "$ref": "#/components/schemas/WalletInfoDetails"
           },
@@ -675,6 +707,7 @@
           "creationDate",
           "updateDate",
           "applications",
+          "clients",
           "paymentMethodAsset"
         ]
       },
@@ -902,11 +935,13 @@
       },
       "PaymentMethodManagementType": {
         "type": "string",
-        "description": "Payment method management type",
+        "description": "Describes how to manage the payment method authorization flow in wallet and eCommerce domain:\n- REDIRECT if it must be managed with a redirect flow;\n- ONBOARDABLE if it must be managed with NPG and it is possible to save the payment method in the wallet, but also guest payment is accepted;\n- NOT_ONBOARDABLE if it must be managed with NPG but the method cannot be saved, only guest payment is accepted;\n- ONBOARDABLE_ONLY if it must be managed with NPG and it is mandatory to save the payment method in the wallet to use it. Guest payment isn't accepted;\n- ONBORDABLE_WITH_PAYMENT if it must be managed with NPG and it is possible to save it, to use it as guest payment, and to onboard it during the payment;",
         "enum": [
           "ONBOARDABLE",
           "NOT_ONBOARDABLE",
-          "REDIRECT"
+          "REDIRECT",
+          "ONBOARDABLE_ONLY",
+          "ONBOARDABLE_WITH_PAYMENT"
         ]
       },
       "Range": {

@@ -74,7 +74,7 @@ resource "azurerm_monitor_diagnostic_setting" "pay_wallet_queue_diagnostics" {
   count                      = var.is_feature_enabled.storage && var.env_short == "p" ? 1 : 0
   name                       = "${module.pay_wallet_storage[0].name}-diagnostics"
   target_resource_id         = "${module.pay_wallet_storage[0].id}/queueServices/default/"
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics_italy.id
 
   enabled_log {
     category = "StorageWrite"

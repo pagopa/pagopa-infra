@@ -23,15 +23,18 @@ is_feature_enabled = {
   container_app_tools_cae   = true,
   node_forwarder_ha_enabled = true,
   vpn                       = true,
-  dns_forwarder_lb          = true
-  postgres_private_dns      = true
+  dns_forwarder_lb          = true,
+  postgres_private_dns      = true,
+  apim_core_import          = false,
+  use_new_apim              = true
 }
 
 ### Network west europe
 cidr_subnet_vpn                  = ["10.1.142.0/24"]
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
 cidr_subnet_tools_cae            = ["10.1.248.0/23"]
-
+cidr_subnet_azdoa                = ["10.1.130.0/24"]
+cidr_subnet_loadtest_agent       = ["10.1.159.0/24"]
 ### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]
 
@@ -640,6 +643,46 @@ eventhubs_04 = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "fdr-qi-reported-iuv"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["fdr-qi-reported-iuv-rx"]
+    keys = [
+      {
+        name   = "fdr-qi-reported-iuv-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-qi-reported-iuv-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "fdr-qi-flows"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["fdr-qi-flows-rx"]
+    keys = [
+      {
+        name   = "fdr-qi-flows-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-qi-flows-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 
@@ -648,4 +691,4 @@ node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "B1"
 
 dns_forwarder_vm_image_name = "pagopa-d-dns-forwarder-ubuntu2204-image-v1"
-
+azdo_agent_vm_image_name    = "pagopa-d-azdo-agent-ubuntu2204-image-v3"
