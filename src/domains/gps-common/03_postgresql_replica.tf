@@ -74,7 +74,7 @@ resource "null_resource" "virtual_endpoint" {
 
 resource "azurerm_private_dns_cname_record" "cname_record" {
   count               = var.geo_replica_enabled && var.pgres_flex_params.enable_private_dns_registration_virtual_endpoint ? 1 : 0
-  name                = "nodo-db"
+  name                = "gpd-db"
   zone_name           = "${var.env_short}.internal.postgresql.pagopa.it"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
   ttl                 = 300
