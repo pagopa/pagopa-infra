@@ -29,7 +29,7 @@ module "azdoa_li_app" {
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
-  source_image_name   = "pagopa-${var.env_short}-azdo-agent-ubuntu2204-image-v3"
+  source_image_name   = var.azdo_agent_vm_image_name
   vm_sku              = "Standard_B2ms"
 
   zones        = var.devops_agent_zones
@@ -47,7 +47,7 @@ module "azdoa_li_infra" {
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
-  source_image_name   = "pagopa-${var.env_short}-azdo-agent-ubuntu2204-image-v3"
+  source_image_name   = var.azdo_agent_vm_image_name
   vm_sku              = "Standard_B2ms"
 
   zones        = var.devops_agent_zones

@@ -707,3 +707,8 @@ variable "cidr_subnet_loadtest_agent" {
   default     = null
 }
 
+variable "azdo_agent_vm_image_name" {
+  type = string
+  description = "(Required) Azure devops agent image name"
+}
+
