@@ -19,7 +19,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "dev_platform_pagopa_it
 #
 resource "azurerm_private_dns_a_record" "platform_dns_a_private_apim" {
 
-  for_each            = toset(["api", "portal", "management"])
+  for_each            = toset(["api", "portal", "management","kibana"])
   name                = each.key
   zone_name           = azurerm_private_dns_zone.italy_platform_private_dns_zone.name
   resource_group_name = azurerm_private_dns_zone.italy_platform_private_dns_zone.resource_group_name
