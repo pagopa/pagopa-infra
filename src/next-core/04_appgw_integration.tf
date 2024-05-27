@@ -65,7 +65,7 @@ module "app_gw_integration" {
       protocol                    = "Https"
       host                        = "api.${var.dns_zone_prefix}.${var.external_domain}"
       port                        = 443
-      ip_addresses                = var.is_feature_enabled.use_new_apim ?  module.apimv2.private_ip_addresses : data.azurerm_api_management.apim.private_ip_addresses
+      ip_addresses                = var.is_feature_enabled.use_new_apim ? module.apimv2.private_ip_addresses : data.azurerm_api_management.apim.private_ip_addresses
       fqdns                       = ["api.${var.dns_zone_prefix}.${var.external_domain}."]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"

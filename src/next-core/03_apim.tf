@@ -868,7 +868,7 @@ resource "azurerm_network_security_rule" "apim_snet_nsg_rules" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "apim_snet_sg_association" {
-  count               = var.is_feature_enabled.apim_core_import ? 1 : 0
+  count                     = var.is_feature_enabled.apim_core_import ? 1 : 0
   subnet_id                 = data.azurerm_subnet.apim_subnet.id
   network_security_group_id = azurerm_network_security_group.apim_snet_nsg[0].id
 }
