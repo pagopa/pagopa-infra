@@ -109,4 +109,4 @@ taxonomy_network_rules = {
   bypass                     = ["AzureServices"]
 }
 
-redis_ha_enabled = false
+redis_ha_enabled = true
