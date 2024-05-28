@@ -20,11 +20,17 @@ tags = {
 cidr_subnet_system_aks = ["10.3.1.0/24"]
 cidr_subnet_user_aks   = ["10.3.2.0/24"]
 
-### External resources
+### Monitor
+monitor_italy_resource_group_name                 = "pagopa-u-itn-core-monitor-rg"
+log_analytics_italy_workspace_name                = "pagopa-u-itn-core-law"
+log_analytics_italy_workspace_resource_group_name = "pagopa-u-itn-core-monitor-rg"
+monitor_appinsights_italy_name                    = "pagopa-u-itn-core-appinsights"
 
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"
 log_analytics_workspace_name                = "pagopa-u-law"
 log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
+monitor_appinsights_name                    = "pagopa-u-appinsights"
+
 
 ### Aks
 
@@ -50,8 +56,8 @@ aks_user_node_pool = {
   vm_size         = "Standard_D8ds_v5",
   os_disk_type    = "Ephemeral",
   os_disk_size_gb = 300,
-  node_count_min  = 0,
-  node_count_max  = 0,
+  node_count_min  = 1,
+  node_count_max  = 1,
   node_labels     = { node_name : "aks-uat01-user", node_type : "user" },
   node_taints     = [],
   node_tags       = { node_tag_2 : "2" },
