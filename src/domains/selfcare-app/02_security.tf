@@ -19,17 +19,3 @@ resource "azurerm_key_vault_secret" "forwarder_subscription_key" {
     ]
   }
 }
-
-resource "azurerm_key_vault_secret" "notices_subscription_key" {
-  name         = "pagopa-${var.env_short}-apim-notices-key"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.kv.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
