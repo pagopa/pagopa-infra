@@ -21,9 +21,4 @@ resource "azurerm_key_vault_secret" "notices_subscription_key" {
 
   key_vault_id = data.azurerm_key_vault.kv.id
 
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
