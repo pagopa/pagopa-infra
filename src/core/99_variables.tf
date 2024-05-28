@@ -1810,3 +1810,15 @@ variable "fdr_flow_sa_replication_type" {
   default     = "LRS"
   description = "(Optional) Fdr flow storage account replication type"
 }
+
+variable "apicfg_core_service_path_value" {
+  type        = string
+  description = "apicfg core cache path"
+  # default     = "pagopa-api-config-core-service/o"
+}
+
+variable "apicfg_selfcare_integ_service_path_value" {
+  type        = string
+  description = "apicfg selfcare integ cache path"
+  # default     = "pagopa-api-config-selfcare-integration/o" // at moment blocked to ORA 👀 https://github.com/pagopa/pagopa-api-config-selfcare-integration/pull/36
+}
