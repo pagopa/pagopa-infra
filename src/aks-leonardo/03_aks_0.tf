@@ -130,3 +130,18 @@ resource "azurerm_role_assignment" "managed_identity_operator_vs_aks_managed_ide
 module "aks_storage_class" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_storage_class?ref=v8.17.1"
 }
+
+#
+# 📦 ACR
+#
+data "azurerm_container_registry" "acr" {
+  name                = local.acr_name_ita
+  resource_group_name = local.acr_resource_group_name_ita
+}
+
+# add the role to the identity the kubernetes cluster was assigned
+resource "azurerm_role_assignment" "aks_to_acr" {
+  scope                = data.azurerm_container_registry.acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = module.aks_leonardo.kubelet_identity_id
+}
