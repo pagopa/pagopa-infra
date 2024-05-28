@@ -255,6 +255,10 @@ variable "nodo_pagamenti_x_forwarded_for" {
   type        = string
   description = "X-Forwarded-For IP address used for nodo-auth"
 }
+variable "nodo_pagamenti_x_forwarded_for_apim_v2" {
+  type        = string
+  description = "X-Forwarded-For IP address used for nodo-auth"
+}
 
 
 # nodo dei pagamenti - test
