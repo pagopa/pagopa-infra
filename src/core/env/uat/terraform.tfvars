@@ -789,3 +789,5 @@ node_forwarder_logging_level   = "DEBUG"
 # lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
+apicfg_core_service_path_value           = "pagopa-api-config-core-service/o"
+apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/o"

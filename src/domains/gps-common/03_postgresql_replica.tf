@@ -49,3 +49,35 @@ module "postgresql_gpd_replica_db" {
   tags                       = var.tags
 }
 
+resource "null_resource" "virtual_endpoint" {
+  count = var.geo_replica_enabled ? 1 : 0
+  triggers = {
+    rg_name             = data.azurerm_resource_group.flex_data[0].name
+    primary_server_name = module.postgres_flexible_server_private[0].name
+    ve_name             = "${local.project}-pgflex-ve"
+    member_name         = module.postgresql_gpd_replica_db[0].name
+  }
+
+  provisioner "local-exec" {
+    command = <<EOT
+    az postgres flexible-server virtual-endpoint create --resource-group ${self.triggers.rg_name} --server-name ${self.triggers.primary_server_name} --name ${self.triggers.ve_name} --endpoint-type ReadWrite --members ${self.triggers.member_name}
+    EOT
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = <<EOT
+    az postgres flexible-server virtual-endpoint delete --resource-group ${self.triggers.rg_name} --server-name ${self.triggers.primary_server_name} --name ${self.triggers.ve_name}
+    EOT
+  }
+}
+
+resource "azurerm_private_dns_cname_record" "cname_record" {
+  count               = var.geo_replica_enabled && var.pgres_flex_params.enable_private_dns_registration_virtual_endpoint ? 1 : 0
+  name                = "gpd-db"
+  zone_name           = "${var.env_short}.internal.postgresql.pagopa.it"
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+  ttl                 = 300
+  record              = "${null_resource.virtual_endpoint[0].triggers.ve_name}.writer.postgres.database.azure.com"
+}
+
