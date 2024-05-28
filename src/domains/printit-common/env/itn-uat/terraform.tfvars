@@ -14,13 +14,14 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-### 🚩Feautures flags
+### 🚩Features flags
 
 is_feature_enabled = {
-  cosmosdb_notice      = false
-  storage_institutions = false
-  storage_notice       = false
-  storage_templates    = false
+  cosmosdb_notice      = true
+  storage_institutions = true
+  storage_notice       = true
+  storage_templates    = true
+  eventhub             = true
 }
 
 ### CIRDs
@@ -34,6 +35,10 @@ cidr_printit_pdf_engine_italy = ["10.3.12.128/27"]
 
 
 ### External resources
+
+monitor_italy_resource_group_name                 = "pagopa-u-itn-core-monitor-rg"
+log_analytics_italy_workspace_name                = "pagopa-u-itn-core-law"
+log_analytics_italy_workspace_resource_group_name = "pagopa-u-itn-core-monitor-rg"
 
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"
 log_analytics_workspace_name                = "pagopa-u-law"
@@ -114,6 +119,8 @@ institutions_storage_account = {
 
 enable_iac_pipeline = true
 
+# eventhub
+eventhub_enabled = true
 
 ehns_sku_name = "Standard"
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
