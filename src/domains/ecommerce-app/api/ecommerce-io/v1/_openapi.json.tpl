@@ -2124,6 +2124,30 @@
           }
         }
       },
+      "WalletClientStatus": {
+        "type": "string",
+        "description": "Enumeration of wallet client statuses",
+        "enum": [
+          "ENABLED",
+          "DISABLED"
+        ]
+      },
+      "WalletClient": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/WalletClientStatus"
+          },
+          "lastUsage": {
+            "type": "string",
+            "description": "Time of last usage of this wallet by the client",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
       "WalletInfo": {
         "type": "object",
         "description": "Wallet information",
@@ -2155,6 +2179,13 @@
               "$ref": "#/components/schemas/WalletApplication"
             }
           },
+          "clients": {
+            "description": "Client-specific state (e.g. last usage) and configuration (enabled/disabled)",
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/WalletClient"
+            }
+          },
           "details": {
             "$ref": "#/components/schemas/WalletInfoDetails"
           },
@@ -2172,6 +2203,7 @@
           "creationDate",
           "updateDate",
           "applications",
+          "clients",
           "paymentMethodAsset"
         ]
       },
