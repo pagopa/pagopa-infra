@@ -782,6 +782,7 @@ storage_queue_private_endpoint_enabled = true
 
 # node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.9.5"
+nodo_pagamenti_x_forwarded_for_apim_v2 = "10.230.9.164"
 node_forwarder_tier            = "PremiumV3"
 node_forwarder_size            = "P1v3"
 node_forwarder_logging_level   = "DEBUG"
