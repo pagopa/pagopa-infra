@@ -24,7 +24,9 @@ is_feature_enabled = {
   node_forwarder_ha_enabled = false,
   vpn                       = false,
   dns_forwarder_lb          = true,
-  postgres_private_dns      = true
+  postgres_private_dns      = true,
+  apim_core_import          = false
+
 }
 
 #
@@ -682,3 +684,4 @@ node_forwarder_zone_balancing_enabled = true
 node_forwarder_sku                    = "P3v3"
 devops_agent_zones                    = [1, 2, 3]
 devops_agent_balance_zones            = false
+azdo_agent_vm_image_name              = "pagopa-p-azdo-agent-ubuntu2204-image-v4"

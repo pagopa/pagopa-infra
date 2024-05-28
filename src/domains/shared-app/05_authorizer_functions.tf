@@ -1,6 +1,5 @@
-
+// todo: remove and destroy
 locals {
-
   authorizer_functions_app_settings = {
     linux_fx_version                    = "JAVA|11"
     FUNCTIONS_WORKER_RUNTIME            = "java"
@@ -22,7 +21,7 @@ locals {
     IS_EC_ENROLLED_SQL_QUERY = "SELECT VALUE COUNT(i) FROM c JOIN i IN c.authorization WHERE c.domain = {domain} AND ARRAY_CONTAINS(c.authorization, {organizationFiscalCode})"
   }
 }
-
+// todo: remove and destroy
 # Subnet to host authorizer function
 module "authorizer_functions_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.6.0"
@@ -44,11 +43,11 @@ module "authorizer_functions_snet" {
     }
   }
 }
-
+// todo: remove and destroy
 data "azurerm_resource_group" "shared_rg" {
   name = "${local.project}-rg"
 }
-
+// todo: remove and destroy
 module "authorizer_function_app" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.29.0"
 
@@ -105,7 +104,7 @@ module "authorizer_function_app" {
 
   tags = var.tags
 }
-
+// todo: remove and destroy
 module "authorizer_function_app_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
@@ -140,7 +139,7 @@ module "authorizer_function_app_slot_staging" {
 
   tags = var.tags
 }
-
+// todo: remove and destroy
 resource "azurerm_monitor_autoscale_setting" "authorizer_function" {
   count = var.env_short != "d" ? 1 : 0
 
@@ -203,7 +202,7 @@ resource "azurerm_monitor_autoscale_setting" "authorizer_function" {
     }
   }
 }
-
+// todo: remove and destroy
 data "azurerm_container_registry" "acr" {
   name                = local.acr_name
   resource_group_name = local.acr_resource_group_name
