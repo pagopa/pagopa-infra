@@ -131,6 +131,9 @@ module "aks_storage_class" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_storage_class?ref=v8.17.1"
 }
 
+#
+# 📦 ACR
+#
 data "azurerm_container_registry" "acr" {
   name                = local.acr_name_ita
   resource_group_name = local.acr_resource_group_name_ita
