@@ -17,6 +17,7 @@ locals {
   repos_01 = [
     "pagopa-print-payment-notice-service",
     "pagopa-print-payment-notice-generator",
+    "pagopa-print-payment-notice-functions",
   ]
 
   federations_01 = [
