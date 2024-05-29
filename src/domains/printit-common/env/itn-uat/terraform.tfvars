@@ -53,7 +53,6 @@ dns_zone_internal_prefix = "internal.uat.platform"
 
 # Cosmos MongoDB Notices Params
 cosmos_mongo_db_notices_params = {
-  enable       = true
   kind         = "MongoDB"
   capabilities = ["EnableMongo"]
   offer_type   = "Standard"
@@ -119,14 +118,11 @@ institutions_storage_account = {
 
 enable_iac_pipeline = true
 
-# eventhub
-eventhub_enabled = true
 
 ehns_sku_name = "Standard"
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
-ehns_capacity                 = 5
 
 ehns_alerts_enabled = false
 
