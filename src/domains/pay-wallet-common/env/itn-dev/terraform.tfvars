@@ -55,7 +55,7 @@ cosmos_mongo_db_params = {
     max_interval_in_seconds = 5
     max_staleness_prefix    = 100000
   }
-  server_version                   = "4.0"
+  server_version                   = "4.2"
   main_geo_location_zone_redundant = false
   enable_free_tier                 = false
 
