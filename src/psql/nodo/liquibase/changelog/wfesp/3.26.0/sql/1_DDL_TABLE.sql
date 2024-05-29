@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS ${schema}.carrello_rpt_parted
   CONSTRAINT carrello_rpt_parted_pk PRIMARY KEY (obj_id,inserted_timestamp)
   ) partition by range ("inserted_timestamp");
 
-CREATE UNIQUE INDEX nodo_online_carrello_parted_idx1_uni ON ${schema}.carrello_rpt_parted USING btree(parametri_pagamento_immediato, psp, codice_carrello,inserted_timestamp);
+CREATE UNIQUE INDEX IF NOT EXISTS nodo_online_carrello_parted_idx1_uni ON ${schema}.carrello_rpt_parted USING btree(parametri_pagamento_immediato, psp, codice_carrello,inserted_timestamp);
 
 -- Index: carrello_rpt_idx01
 
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS ${schema}.rpt_parted
   CONSTRAINT rpt_parted_pk PRIMARY KEY (obj_id,inserted_timestamp)
   ) partition by range ("inserted_timestamp");
 
-CREATE UNIQUE INDEX nodo_online_rpt_parted_idx1_uni ON ${schema}.rpt_parted USING btree(parametri_pagamento_immediato, psp, codice_carrello,inserted_timestamp);
+CREATE UNIQUE INDEX IF NOT EXISTS nodo_online_rpt_parted_idx1_uni ON ${schema}.rpt_parted USING btree(parametri_pagamento_immediato, psp, codice_carrello,inserted_timestamp);
 
 -- Index: nodo_online_rpt_idx1
 
