@@ -2,7 +2,7 @@ module "institutions_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.9.1"
   count  = var.is_feature_enabled.storage_institutions ? 1 : 0
 
-  name                            = replace("${var.prefix}-${var.domain}-ci", "-", "")
+  name                            = replace("${local.project_short}-ci", "-", "")
   account_kind                    = var.institutions_storage_account.account_kind
   account_tier                    = var.institutions_storage_account.account_tier
   account_replication_type        = var.institutions_storage_account.account_replication_type
