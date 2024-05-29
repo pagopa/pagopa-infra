@@ -468,6 +468,12 @@ variable "postgres_dns_registration_enabled" {
   default     = false
 }
 
+variable "postgres_dns_registration_virtual_endpoint_enabled" {
+  type        = bool
+  description = "(Optional) If true, adds a CNAME record for the database VE in the db private dns"
+  default     = false
+}
+
 
 variable "geo_replica_cidr_subnet_postgresql" {
   type        = list(string)

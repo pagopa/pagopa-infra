@@ -53,7 +53,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-      ref: refs/tags/v6.1.0
+      ref: refs/tags/6.2.0
       endpoint: "io-azure-devops-github-ro"
 
 
@@ -87,11 +87,8 @@ stages:
         steps:
           - template: templates/postgres-flexible-failover/template.yaml@terraform
             parameters:
-              PRIVATE_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
-              PRIVATE_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
-              PRIVATE_DNS_ZONE_RECORD_NAME: "fdr-db"
               FAILOVER_DB_RG: "pagopa-p-weu-fdr-db-rg"
-              FAILOVER_DB_NAME: "pagopa-p-neu-fdr-pgflex"
+              FAILOVER_DB_NAME: "pagopa-p-neu-fdr-flexible-postgresql"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
               AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
       - job: postgres_gpd_failover
@@ -104,9 +101,6 @@ stages:
         steps:
           - template: templates/postgres-flexible-failover/template.yaml@terraform
             parameters:
-              PRIVATE_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
-              PRIVATE_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
-              PRIVATE_DNS_ZONE_RECORD_NAME: "gpd-db"
               FAILOVER_DB_RG: "pagopa-p-pgres-flex-rg"
               FAILOVER_DB_NAME: "pagopa-p-neu-gps-pgflex"
               WORKINGDIR: ${{ variables.WORKING_DIR }}
@@ -121,9 +115,6 @@ stages:
         steps:
           - template: templates/postgres-flexible-failover/template.yaml@terraform
             parameters:
-              PRIVATE_DNS_ZONE_NAME: "p.internal.postgresql.pagopa.it"
-              PRIVATE_DNS_ZONE_RG_NAME: "pagopa-p-vnet-rg"
-              PRIVATE_DNS_ZONE_RECORD_NAME: "nodo-db"
               FAILOVER_DB_RG: "pagopa-p-weu-nodo-db-rg"
               FAILOVER_DB_NAME: "pagopa-p-neu-nodo-flexible-postgresql"
               WORKINGDIR: ${{ variables.WORKING_DIR }}

@@ -773,8 +773,13 @@ platform_private_dns_zone_records = ["api", "portal", "management"]
 
 # node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.8.5"
+nodo_pagamenti_x_forwarded_for_apim_v2 = "10.230.8.164"
 
 # lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
 node_forwarder_autoscale_enabled = false
+
+
+apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
+apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"

@@ -649,6 +649,8 @@ variable "is_feature_enabled" {
     dns_forwarder_lb          = optional(bool, false)
     postgres_private_dns      = bool
     azdoa                     = optional(bool, true)
+    apim_core_import          = optional(bool, false)
+    use_new_apim              = optional(bool, false)
     azdoa_extension           = optional(bool, false)
   })
   description = "Features enabled in this domain"

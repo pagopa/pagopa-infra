@@ -772,6 +772,7 @@ platform_private_dns_zone_records = ["api", "portal", "management"]
 
 # node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.10.5"
+nodo_pagamenti_x_forwarded_for_apim_v2 = "10.230.10.164"
 node_forwarder_tier            = "PremiumV3"
 node_forwarder_size            = "P1v3"
 
@@ -796,3 +797,6 @@ buyer_banks_storage_account_replication_type = "GZRS"
 cdn_storage_account_replication_type         = "GRS"
 backup_storage_replication_type              = "GRS"
 fdr_flow_sa_replication_type                 = "ZRS"
+
+apicfg_core_service_path_value           = "pagopa-api-config-core-service/o"
+apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/o"
