@@ -11,7 +11,7 @@ module "institutions_sa" {
   resource_group_name             = azurerm_resource_group.printit_rg.name
   location                        = var.location
   advanced_threat_protection      = var.institutions_storage_account.advanced_threat_protection
-  allow_nested_items_to_be_public = false
+  allow_nested_items_to_be_public = true
   public_network_access_enabled   = var.institutions_storage_account.public_network_access_enabled
   enable_low_availability_alert   = var.institutions_storage_account.enable_low_availability_alert
 
@@ -60,5 +60,5 @@ resource "azurerm_storage_container" "institutions_blob_file" {
 
   name                  = "institutionsdatablob"
   storage_account_name  = module.institutions_sa[0].name
-  container_access_type = "private"
+  container_access_type = "blob"
 }
