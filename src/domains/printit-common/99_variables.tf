@@ -253,13 +253,6 @@ variable "institutions_storage_account" {
 
 }
 
-# eventhub
-variable "eventhub_enabled" {
-  type        = bool
-  default     = false
-  description = "eventhub enable?"
-}
-
 variable "ehns_sku_name" {
   type        = string
   description = "Defines which tier to use."

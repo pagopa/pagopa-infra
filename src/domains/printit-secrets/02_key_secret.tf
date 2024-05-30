@@ -9,6 +9,11 @@ resource "azurerm_key_vault_key" "generated" {
     "decrypt",
     "encrypt",
   ]
+
+  depends_on = [
+    azurerm_key_vault_access_policy.adgroup_developers_policy,
+    azurerm_key_vault_access_policy.ad_group_policy,
+  ]
 }
 
 data "external" "external" {
@@ -22,12 +27,12 @@ data "external" "external" {
 }
 
 locals {
-  all_enc_secrets_value = flatten([
+  all_enc_secrets_value = can(data.external.external.result) ? flatten([
     for k, v in data.external.external.result : {
       valore = v
       chiave = k
     }
-  ])
+  ]) : []
 
   config_secret_data = jsondecode(file(var.input_file))
   all_config_secrets_value = flatten([
@@ -53,7 +58,43 @@ resource "azurerm_key_vault_secret" "secret" {
   depends_on = [
     module.key_vault,
     azurerm_key_vault_key.generated,
-    data.external.external
+    data.external.external,
+    azurerm_key_vault_access_policy.adgroup_developers_policy,
+    azurerm_key_vault_access_policy.ad_group_policy,
+  ]
+}
+
+resource "random_string" "random_aes_key" {
+  length  = 16
+  special = true
+  upper   = true
+}
+resource "azurerm_key_vault_secret" "aes_key_secret" {
+  key_vault_id = module.key_vault.id
+  name         = "aes-key"
+  value        = random_string.random_aes_key.result
+
+  depends_on = [
+    module.key_vault,
+    azurerm_key_vault_access_policy.adgroup_developers_policy,
+    azurerm_key_vault_access_policy.ad_group_policy,
+  ]
+}
+
+resource "random_string" "random_aes_salt" {
+  length  = 16
+  special = true
+  upper   = true
+}
+resource "azurerm_key_vault_secret" "aes_salt_secret" {
+  key_vault_id = module.key_vault.id
+  name         = "aes-salt"
+  value        = random_string.random_aes_salt.result
+
+  depends_on = [
+    module.key_vault,
+    azurerm_key_vault_access_policy.adgroup_developers_policy,
+    azurerm_key_vault_access_policy.ad_group_policy,
   ]
 }
 

@@ -14,13 +14,14 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-### 🚩Feautures flags
+### 🚩Features flags
 
 is_feature_enabled = {
   cosmosdb_notice      = false
   storage_institutions = false
   storage_notice       = false
   storage_templates    = false
+  eventhub             = false
 }
 
 ### CIRDs
@@ -35,6 +36,10 @@ cidr_printit_pdf_engine_italy = ["10.3.12.128/27"]
 
 ### External resources
 
+monitor_italy_resource_group_name                 = "pagopa-p-itn-core-monitor-rg"
+log_analytics_italy_workspace_name                = "pagopa-p-itn-core-law"
+log_analytics_italy_workspace_resource_group_name = "pagopa-p-itn-core-monitor-rg"
+
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
@@ -48,7 +53,6 @@ dns_zone_internal_prefix = "internal.platform"
 
 # Cosmos MongoDB Notices Params
 cosmos_mongo_db_notices_params = {
-  enabled      = true
   kind         = "MongoDB"
   capabilities = ["EnableMongo"]
   offer_type   = "Standard"

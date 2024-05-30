@@ -7,8 +7,8 @@
   <set-variable name="application_domain" value="gpd" />
   <choose>
     <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
-    <when condition="@(context.Request.MatchedParameters.ContainsKey("organizationId"))">
-    <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organizationId"])" />
+    <when condition="@(context.Request.MatchedParameters.ContainsKey("organization-fiscal-code") && !context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "").Equals(""))">
+    <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organization-fiscal-code"])" />
     <include-fragment fragment-id="authorizer" />
   </when>
 </choose>
