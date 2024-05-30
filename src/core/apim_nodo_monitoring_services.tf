@@ -33,6 +33,7 @@ locals {
     subscription_required = false
     service_url           = null
   }
+  apim_x_node_product_id  = "apim_for_node"
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_monitoring_api" {
@@ -49,7 +50,7 @@ module "apim_nodo_monitoring_api" {
   name                  = format("%s-nodo-monitoring-api", var.env_short)
   api_management_name   = module.apim.name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_dei_pagamenti_monitoring_product.product_id]
+  product_ids           = [module.apim_nodo_dei_pagamenti_monitoring_product.product_id, local.apim_x_node_product_id]
   subscription_required = local.apim_nodo_monitoring_api.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api.id
