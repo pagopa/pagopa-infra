@@ -2180,7 +2180,7 @@
             }
           },
           "clients": {
-            "description": "Client-specific state (e.g. last usage) and configuration (enabled/disabled)",
+            "description": "Client-specific state (e.g. last usage) and configuration (enabled/disabled). Currently the only supported client is `IO`.",
             "type": "object",
             "additionalProperties": {
               "$ref": "#/components/schemas/WalletClient"
