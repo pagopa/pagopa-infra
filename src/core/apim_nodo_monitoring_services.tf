@@ -33,7 +33,7 @@ locals {
     subscription_required = false
     service_url           = null
   }
-  apim_x_node_product_id  = "apim_for_node"
+
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_monitoring_api" {
