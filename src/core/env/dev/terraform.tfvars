@@ -21,6 +21,7 @@ lock_enable = false
 #
 enabled_features = {
   apim_v2  = true
+  apim_migrated = true
   vnet_ita = true
 }
 
@@ -772,7 +773,8 @@ platform_private_dns_zone_records = ["api", "portal", "management"]
 
 
 # node forwarder
-nodo_pagamenti_x_forwarded_for = "10.230.8.5"
+nodo_pagamenti_x_forwarded_for         = "10.230.8.5"
+nodo_pagamenti_x_forwarded_for_apim_v2 = "10.230.8.164"
 
 # lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
@@ -782,3 +784,6 @@ node_forwarder_autoscale_enabled = false
 
 apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
 apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"
+
+
+apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/loggers/pagopa-d-apim-logger"

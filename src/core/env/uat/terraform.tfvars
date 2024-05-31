@@ -781,13 +781,16 @@ platform_private_dns_zone_records = ["api", "portal", "management"]
 storage_queue_private_endpoint_enabled = true
 
 # node forwarder
-nodo_pagamenti_x_forwarded_for = "10.230.9.5"
-node_forwarder_tier            = "PremiumV3"
-node_forwarder_size            = "P1v3"
-node_forwarder_logging_level   = "DEBUG"
+nodo_pagamenti_x_forwarded_for         = "10.230.9.5"
+nodo_pagamenti_x_forwarded_for_apim_v2 = "10.230.9.164"
+node_forwarder_tier                    = "PremiumV3"
+node_forwarder_size                    = "P1v3"
+node_forwarder_logging_level           = "DEBUG"
 
 # lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
 
 apicfg_core_service_path_value           = "pagopa-api-config-core-service/o"
 apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/o"
+
+apim_logger_resource_id = "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/loggers/pagopa-u-apim-logger"
