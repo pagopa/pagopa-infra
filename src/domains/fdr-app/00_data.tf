@@ -48,6 +48,12 @@ data "azurerm_subnet" "apim_snet" {
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
 }
 
+data "azurerm_subnet" "apim_v2_snet" {
+  name                 = "${local.product}-${var.location_short}-core-apimv2-snet"
+  virtual_network_name = data.azurerm_virtual_network.vnet_integration.name
+  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+}
+
 data "azurerm_virtual_network" "vnet_integration" {
   name                = "${local.product}-vnet-integration"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name

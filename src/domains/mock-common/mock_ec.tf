@@ -78,7 +78,7 @@ module "mock_ec" {
 
   }
 
-  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   subnet_id = module.mock_ec_snet[0].id

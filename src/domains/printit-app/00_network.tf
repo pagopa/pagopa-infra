@@ -14,6 +14,12 @@ data "azurerm_subnet" "apim_vnet" {
   virtual_network_name = local.pagopa_vnet_integration
 }
 
+data "azurerm_subnet" "apim_v2_snet" {
+  name                 = "${local.product}-${var.location_short}-core-apimv2-snet"
+  resource_group_name  = local.pagopa_vnet_rg
+  virtual_network_name = local.pagopa_vnet_integration
+}
+
 data "azurerm_subnet" "printit_pdf_engine_app_service_snet" {
   count = var.is_feature_enabled.pdf_engine ? 1 : 0
 

@@ -12,6 +12,7 @@ locals {
 
 
   pagopa_apim_v2_name = "${local.project}-${var.location_short}-core-apim-v2"
+  pagopa_apim_v2_subnet_name = "${local.project}-${var.location_short}-core-apimv2-snet"
   pagopa_apim_v2_rg   = "${local.project}-api-rg"
 
   pagopa_apim_migrated_name = "${local.project}-apim"

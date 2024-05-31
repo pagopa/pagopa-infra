@@ -106,7 +106,7 @@ module "nodo_re_to_tablestorage_function" {
 
   app_settings = local.function_re_to_tablestorage_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   tags = var.tags
@@ -141,7 +141,7 @@ module "nodo_re_to_tablestorage_function_slot_staging" {
     registry_password = null
   }
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   tags = var.tags

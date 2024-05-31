@@ -75,7 +75,7 @@ module "reporting_fdr_function" {
 
   }
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = var.enabled_features.apim_v2 ? [module.apim_snet.id, data.azurerm_subnet.apim_v2_subnet[0].id] : [module.apim_snet.id]
 
   allowed_ips = []
 

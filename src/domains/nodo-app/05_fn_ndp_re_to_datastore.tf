@@ -53,6 +53,14 @@ data "azurerm_subnet" "apim_vnet" {
   virtual_network_name = local.vnet_integration_name
 }
 
+
+data "azurerm_subnet" "apim_v2_snet" {
+  name                 = "${local.product}-${var.location_short}-core-apimv2-snet"
+  resource_group_name  = local.vnet_resource_group_name
+  virtual_network_name = local.vnet_integration_name
+}
+
+
 resource "azurerm_resource_group" "nodo_re_to_datastore_rg" {
   count = var.enable_nodo_re || var.env_short != "d" ? 1 : 0
 
@@ -149,7 +157,7 @@ module "nodo_re_to_datastore_function" {
 
   app_settings = local.function_re_to_datastore_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   tags = var.tags
@@ -184,7 +192,7 @@ module "nodo_re_to_datastore_function_slot_staging" {
     registry_password = null
   }
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   tags = var.tags

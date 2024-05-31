@@ -71,7 +71,7 @@ module "node_forwarder_app_service" {
   docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopanodeforwarder"
   docker_image_tag = "latest"
 
-  allowed_subnets = [data.azurerm_subnet.apim_subnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_subnet.id, module.apimv2_snet.id]
   allowed_ips     = []
 
   sku_name = var.node_forwarder_sku
@@ -104,7 +104,7 @@ module "node_forwarder_slot_staging" {
   # App settings
   app_settings = local.node_forwarder_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_subnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_subnet.id, module.apimv2_snet.id]
   allowed_ips     = []
   subnet_id       = data.azurerm_subnet.node_forwarder_snet.id
 

@@ -38,7 +38,7 @@ module "printit_pdf_engine_app_service" {
 
   app_settings = local.printit_pdf_engine_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
@@ -71,7 +71,7 @@ module "printit_pdf_engine_slot_staging" {
   # App settings
   app_settings = local.printit_pdf_engine_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
   subnet_id       = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 

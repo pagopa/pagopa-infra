@@ -86,7 +86,7 @@ module "checkout_function" {
 
   storage_account_info = var.function_app_storage_account_info
 
-  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
 
   allowed_ips = []
 

@@ -34,6 +34,12 @@ data "azurerm_subnet" "apim_snet" {
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
 }
 
+data "azurerm_subnet" "apim_v2_snet" {
+  name                 = "${local.project}-weu-core-apimv2-snet"
+  virtual_network_name = data.azurerm_virtual_network.vnet_integration.name
+  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+}
+
 # application_insights
 data "azurerm_application_insights" "application_insights" {
   name                = "${local.project}-appinsights"

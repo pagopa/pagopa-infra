@@ -120,7 +120,7 @@ module "fdr_re_function" {
 
   app_settings = local.function_re_to_datastore_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   tags = var.tags
@@ -155,7 +155,7 @@ module "fdr_re_function_slot_staging" {
     registry_password = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
   }
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   tags = var.tags

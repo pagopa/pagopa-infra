@@ -75,7 +75,7 @@ module "buyerbanks_function" {
     PAGOPA_BUYERBANKS_THUMBPRINT_PEER = var.env_short == "p" ? data.azurerm_key_vault_secret.pagopa_buyerbank_thumbprint_peer[0].value : null
   }
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = var.enabled_features.apim_v2 ? [module.apim_snet.id, data.azurerm_subnet.apim_v2_subnet[0].id] : [module.apim_snet.id]
 
   allowed_ips = []
 

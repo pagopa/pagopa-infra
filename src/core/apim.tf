@@ -10,6 +10,13 @@ module "apim_snet" {
   service_endpoints                              = ["Microsoft.Web"]
 }
 
+data "azurerm_subnet" "apim_v2_subnet" {
+  count = var.enabled_features.apim_v2 ? 1 : 0
+  name                 = local.pagopa_apim_v2_subnet_name
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  virtual_network_name = module.vnet_integration.name
+}
+
 resource "azurerm_resource_group" "rg_api" {
   name     = format("%s-api-rg", local.project)
   location = var.location

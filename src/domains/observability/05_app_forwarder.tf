@@ -74,6 +74,12 @@ data "azurerm_subnet" "subnet_apim" {
   resource_group_name  = "pagopa-${var.env_short}-vnet-rg"
 }
 
+data "azurerm_subnet" "apim_v2_snet" {
+  name                 = "${local.product}-${var.location_short}-core-apimv2-snet"
+  virtual_network_name = "pagopa-${var.env_short}-vnet-integration"
+  resource_group_name  = "pagopa-${var.env_short}-vnet-rg"
+}
+
 data "azurerm_container_registry" "acr" {
   name                = "pagopa${var.env_short}commonacr"
   resource_group_name = "pagopa-${var.env_short}-container-registry-rg"
@@ -105,7 +111,7 @@ module "app_forwarder_app_service" {
 
   app_settings = local.app_forwarder_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.subnet_apim.id]
+  allowed_subnets = [data.azurerm_subnet.subnet_apim.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   subnet_id = data.azurerm_subnet.subnet_node_forwarder.id
@@ -137,7 +143,7 @@ module "app_forwarder_slot_staging" {
   # App settings
   app_settings = local.app_forwarder_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.subnet_apim.id]
+  allowed_subnets = [data.azurerm_subnet.subnet_apim.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
   subnet_id       = data.azurerm_subnet.subnet_node_forwarder.id
 

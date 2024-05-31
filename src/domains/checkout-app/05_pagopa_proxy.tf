@@ -74,7 +74,7 @@ module "pagopa_proxy_app_service" {
   # App settings
   app_settings = local.pagopa_proxy_config
 
-  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
   subnet_id       = module.pagopa_proxy_snet.id
 

@@ -105,7 +105,7 @@ module "nodo_verifyko_to_datastore_function" {
 
   app_settings = local.function_verifyko_to_datastore_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   tags = var.tags
@@ -140,7 +140,7 @@ module "nodo_verifyko_to_datastore_function_slot_staging" {
     registry_password = null
   }
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   tags = var.tags

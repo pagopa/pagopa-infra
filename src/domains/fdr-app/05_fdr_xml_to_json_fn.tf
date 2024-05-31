@@ -88,7 +88,7 @@ module "fdr_xml_to_json_function" {
 
   app_settings = local.function_xml_to_json_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   tags = var.tags
@@ -123,7 +123,7 @@ module "fdr_xml_to_json_function_slot_staging" {
     registry_password = null
   }
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   tags = var.tags
