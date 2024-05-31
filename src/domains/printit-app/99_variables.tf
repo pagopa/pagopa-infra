@@ -130,15 +130,6 @@ variable "apim_dns_zone_prefix" {
   description = "The dns subdomain for apim."
 }
 
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
-
 variable "payment_wallet_with_pm_enabled" {
   type        = bool
   default     = false
@@ -169,14 +160,6 @@ variable "payment_wallet_migrations_enabled" {
   type        = bool
   default     = false
   description = "Payment wallet migrations enabled"
-}
-
-
-# pdf-engine
-variable "cidr_subnet_pdf_engine_app_service" {
-  type        = list(string)
-  description = "CIDR subnet for App Service"
-  default     = null
 }
 
 variable "app_service_pdf_engine_autoscale_enabled" {

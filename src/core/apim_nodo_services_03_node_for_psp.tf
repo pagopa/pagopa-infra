@@ -15,14 +15,14 @@ locals {
 resource "azurerm_api_management_api_version_set" "node_for_psp_api" {
   name                = format("%s-node-for-psp-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   display_name        = local.apim_node_for_psp_api.display_name
   versioning_scheme   = "Segment"
 }
 
 resource "azurerm_api_management_api" "apim_node_for_psp_api_v1" {
   name                  = format("%s-node-for-psp-api", var.env_short)
-  api_management_name   = module.apim.name
+  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_node_for_psp_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.node_for_psp_api.id
@@ -50,7 +50,7 @@ resource "azurerm_api_management_api" "apim_node_for_psp_api_v1" {
 
 resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy" {
   api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1.name
-  api_management_name = module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/_base_policy.xml.tpl", {
@@ -62,7 +62,7 @@ resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy" {
 resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_policy" { # activatePaymentNoticeV1 verificatore
 
   api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1.name
-  api_management_name = module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = var.env_short == "d" ? "637601f8c257810fc0ecfe01" : var.env_short == "u" ? "61dedb1872975e13800fd7ff" : "61dedafc2a92e81a0c7a58fc"
 
@@ -77,7 +77,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
 resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_policy" { # activatePaymentNoticeV2 verificatore
 
   api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1.name
-  api_management_name = module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = var.env_short == "d" ? "637601f8c257810fc0ecfe06" : var.env_short == "u" ? "636e6ca51a11929386f0b101" : "63c559672a92e811a8f33a00"
 

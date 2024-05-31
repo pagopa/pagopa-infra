@@ -21,6 +21,7 @@ lock_enable = false
 #
 enabled_features = {
   apim_v2  = true
+  apim_migrated = true
   vnet_ita = true
 }
 
@@ -783,3 +784,6 @@ node_forwarder_autoscale_enabled = false
 
 apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
 apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"
+
+
+apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/loggers/pagopa-d-apim-logger"

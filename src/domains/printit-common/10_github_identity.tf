@@ -17,6 +17,7 @@ locals {
   repos_01 = [
     "pagopa-print-payment-notice-service",
     "pagopa-print-payment-notice-generator",
+    "pagopa-print-payment-notice-functions",
   ]
 
   federations_01 = [
@@ -52,7 +53,7 @@ locals {
 
 # create a module for each 20 repos
 module "identity_cd_01" {
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.9.1"
+  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.18.0"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short
@@ -73,7 +74,6 @@ module "identity_cd_01" {
     data.azurerm_resource_group.identity_rg
   ]
 }
-
 
 resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
@@ -123,10 +123,9 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
   ]
 }
 
-
 # create a module for each 20 repos
 module "identity_pr_01" {
-  source    = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=fix-github-federated-identity"
+  source    = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.18.0"
   prefix    = var.prefix
   env_short = var.env_short
   domain    = "${var.domain}-01-pr"
@@ -146,7 +145,6 @@ module "identity_pr_01" {
     data.azurerm_resource_group.identity_rg
   ]
 }
-
 
 resource "azurerm_key_vault_access_policy" "gha_pr_iac_managed_identities" {
   key_vault_id = data.azurerm_key_vault.key_vault.id

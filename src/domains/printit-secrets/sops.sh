@@ -48,7 +48,6 @@ if echo "d a s n e f" | grep -w $action > /dev/null; then
 
 
   azurekvurl=`az keyvault key show --name $prefix-$env_short-$domain-sops-key --vault-name $prefix-$env_short-itn-$domain-kv --query key.kid | sed 's/"//g'`
-  echo $azurekvurl
 
 
     case $action in

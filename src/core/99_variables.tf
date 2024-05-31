@@ -92,6 +92,7 @@ variable "tags" {
 variable "enabled_features" {
   type = object({
     apim_v2  = bool
+    apim_migrated = optional(bool, false)
     vnet_ita = bool
   })
   default = {
@@ -1825,4 +1826,11 @@ variable "apicfg_selfcare_integ_service_path_value" {
   type        = string
   description = "apicfg selfcare integ cache path"
   # default     = "pagopa-api-config-selfcare-integration/o" // at moment blocked to ORA 👀 https://github.com/pagopa/pagopa-api-config-selfcare-integration/pull/36
+}
+
+
+variable "apim_logger_resource_id" {
+  type        = string
+  description = "Resource id for the APIM logger"
+  default     = null
 }
