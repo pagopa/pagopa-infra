@@ -342,6 +342,8 @@ resource "azurerm_api_management_subscription" "pdf_receipt_service_4_list_trx_s
   state         = "active"
 }
 
+// save keys on KV
+
 resource "azurerm_key_vault_secret" "bizevent_pdf_engine_4_list_trx_subscription_key" {
   depends_on   = [azurerm_api_management_subscription.pdf_engine_node_4_list_trx_subkey]
   name         = format("bizevent-%s-pdfengine-subscription-key", var.env_short)
@@ -350,9 +352,17 @@ resource "azurerm_key_vault_secret" "bizevent_pdf_engine_4_list_trx_subscription
 
   key_vault_id = module.key_vault.id
 }
-resource "azurerm_key_vault_secret" "bizevent_receiptpdfservice_4_list_trx_subscription_key" {
+resource "azurerm_key_vault_secret" "bizevent_receiptpdfservice_4_list_trx_subscription_key" { // product apim "receipts"
   depends_on   = [azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey]
   name         = format("bizevent-%s-receiptpdfservice-subscription-key", var.env_short)
+  value        = azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "bizevent_receiptpdfhelpdesk_4_list_trx_subscription_key" { // product apim "receipts"
+  depends_on   = [azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey]
+  name         = format("bizevent-%s-generatepdfservice-subscription-key", var.env_short)
   value        = azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey.primary_key
   content_type = "text/plain"
 

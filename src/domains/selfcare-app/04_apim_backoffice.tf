@@ -10,7 +10,7 @@ locals {
 
 
 module "apim_selfcare_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.15.1"
 
   product_id   = "selfcare-be"
   display_name = local.apim_selfcare_pagopa_api.display_name

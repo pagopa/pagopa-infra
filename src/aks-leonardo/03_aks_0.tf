@@ -6,14 +6,14 @@ resource "azurerm_resource_group" "rg_aks" {
 }
 
 module "aks_leonardo" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v7.67.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.17.1"
 
   name                       = local.aks_cluster_name
   location                   = var.location
   dns_prefix                 = local.project
   resource_group_name        = azurerm_resource_group.rg_aks.name
   kubernetes_version         = var.aks_kubernetes_version
-  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics_workspace.id
+  log_analytics_workspace_id = var.env_short != "d" ? data.azurerm_log_analytics_workspace.log_analytics_italy.id : data.azurerm_log_analytics_workspace.log_analytics.id
   sku_tier                   = var.aks_sku_tier
 
   #
@@ -128,5 +128,20 @@ resource "azurerm_role_assignment" "managed_identity_operator_vs_aks_managed_ide
 }
 
 module "aks_storage_class" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_storage_class?ref=v7.67.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_storage_class?ref=v8.17.1"
+}
+
+#
+# 📦 ACR
+#
+data "azurerm_container_registry" "acr" {
+  name                = local.acr_name_ita
+  resource_group_name = local.acr_resource_group_name_ita
+}
+
+# add the role to the identity the kubernetes cluster was assigned
+resource "azurerm_role_assignment" "aks_to_acr" {
+  scope                = data.azurerm_container_registry.acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = module.aks_leonardo.kubelet_identity_id
 }
