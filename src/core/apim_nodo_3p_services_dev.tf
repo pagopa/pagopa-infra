@@ -10,7 +10,7 @@ module "apim_nodo_sync_dev_product" {
   display_name = "product-nodo-sync-dev"
   description  = "product-nodo-sync-dev"
 
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
@@ -28,7 +28,7 @@ resource "azurerm_api_management_api_version_set" "nodo_sync_dev_api" {
 
   name                = format("%s-nodo-sync-dev-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   display_name        = "Nodo OnCloud SYNC DEV"
   versioning_scheme   = "Segment"
 }
@@ -38,7 +38,7 @@ module "apim_nodo_sync_dev_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-sync-dev-api", var.env_short)
-  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_sync_dev_product[0].product_id]
   subscription_required = false
@@ -77,7 +77,7 @@ module "apim_nodo_wfesp_dev_product" {
   display_name = "product-nodo-wfesp-dev"
   description  = "product-nodo-wfesp-dev"
 
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
@@ -95,7 +95,7 @@ resource "azurerm_api_management_api_version_set" "nodo_wfesp_dev_api" {
 
   name                = format("%s-nodo-wfesp-dev-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   display_name        = "Nodo OnCloud WFESP DEV"
   versioning_scheme   = "Segment"
 }
@@ -105,7 +105,7 @@ module "apim_nodo_wfesp_dev_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-wfesp-dev-api", var.env_short)
-  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_wfesp_dev_product[0].product_id]
   subscription_required = false
@@ -144,7 +144,7 @@ module "apim_nodo_fatturazione_dev_product" {
   display_name = "product-nodo-fatturazione-dev"
   description  = "product-nodo-fatturazione-dev"
 
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
@@ -162,7 +162,7 @@ resource "azurerm_api_management_api_version_set" "nodo_fatturazione_dev_api" {
 
   name                = format("%s-nodo-fatturazione-dev-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   display_name        = "Nodo OnCloud FATTURAZIONE DEV"
   versioning_scheme   = "Segment"
 }
@@ -172,7 +172,7 @@ module "apim_nodo_fatturazione_dev_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-fatturazione-dev-api", var.env_short)
-  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_fatturazione_dev_product[0].product_id]
   subscription_required = false
@@ -212,7 +212,7 @@ module "apim_nodo_web_bo_dev_product" {
   display_name = "product-nodo-web-bo-dev"
   description  = "product-nodo-web-bo-dev"
 
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
@@ -230,7 +230,7 @@ module "apim_nodo_web_bo_dev_product" {
 
 #   name                = format("%s-nodo-web-bo-api", var.env_short)
 #   resource_group_name = azurerm_resource_group.rg_api.name
-#   api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+#   api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
 #   display_name        = "Nodo OnCloud WEB-BO"
 #   versioning_scheme   = "Segment"
 # }
@@ -241,7 +241,7 @@ module "apim_nodo_web_bo_dev_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-web-bo-dev-api", var.env_short)
-  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_web_bo_dev_product[0].product_id]
   subscription_required = false
@@ -290,7 +290,7 @@ module "apim_nodo_web_bo_dev_product_history" {
   display_name = "product-nodo-web-bo-history-dev"
   description  = "product-nodo-web-bo-history-dev"
 
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
@@ -308,7 +308,7 @@ module "apim_nodo_web_bo_dev_product_history" {
 
 #   name                = format("%s-nodo-web-bo-api", var.env_short)
 #   resource_group_name = azurerm_resource_group.rg_api.name
-#   api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+#   api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
 #   display_name        = "Nodo OnCloud WEB-BO"
 #   versioning_scheme   = "Segment"
 # }
@@ -319,7 +319,7 @@ module "apim_nodo_web_bo_dev_api_history" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-web-bo-dev-api-history", var.env_short)
-  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
+  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_web_bo_dev_product_history[0].product_id]
   subscription_required = false

@@ -70,7 +70,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_integration_netwo
 # Already apply forcing redis_connection_string on apim_module
 resource "azurerm_api_management_redis_cache" "apim_external_cache_redis" {
   name              = "apim-external-cache-redis"
-  api_management_id = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].id : module.apim.id
+  api_management_id = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].id : module.apim[0].id
   connection_string = module.redis.primary_connection_string
   description       = "APIM external cache Redis"
   redis_cache_id    = module.redis.id
