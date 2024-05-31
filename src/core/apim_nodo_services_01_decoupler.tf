@@ -4,7 +4,7 @@
 # named value containing primitive names for routing algorithm
 resource "azurerm_api_management_named_value" "node_decoupler_primitives" {
   name                = "node-decoupler-primitives"
-  api_management_name = module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim.name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "node-decoupler-primitives"
   value               = var.node_decoupler_primitives
@@ -31,7 +31,7 @@ resource "azapi_resource" "decoupler_configuration" {
 
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-configuration"
-  parent_id = module.apim.id
+  parent_id = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].id : module.apim.id
 
   body = jsonencode({
     properties = {
@@ -50,7 +50,7 @@ resource "azapi_resource" "decoupler_configuration" {
 resource "azapi_resource" "decoupler_algorithm" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-algorithm"
-  parent_id = module.apim.id
+  parent_id = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].id : module.apim.id
 
   body = jsonencode({
     properties = {
@@ -69,7 +69,7 @@ resource "azapi_resource" "decoupler_algorithm" {
 resource "azapi_resource" "decoupler_activate_outbound" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-activate-outbound"
-  parent_id = module.apim.id
+  parent_id = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].id : module.apim.id
 
   body = jsonencode({
     properties = {
@@ -87,7 +87,7 @@ resource "azapi_resource" "decoupler_activate_outbound" {
 resource "azapi_resource" "on_erro_soap_handler" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "onerror-soap-req"
-  parent_id = module.apim.id
+  parent_id = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].id : module.apim.id
 
   body = jsonencode({
     properties = {

@@ -25,7 +25,7 @@ is_feature_enabled = {
   vpn                       = true,
   dns_forwarder_lb          = true,
   postgres_private_dns      = true,
-  apim_core_import          = false,
+  apim_core_import          = true,
   use_new_apim              = true
 }
 
