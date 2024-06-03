@@ -55,11 +55,6 @@ resource "azurerm_api_management_api_version_set" "api_statuspage_api" {
   versioning_scheme   = "Segment"
 }
 
-data "azurerm_function_app" "authorizer" {
-  name                = format("%s-%s-%s-shared-authorizer-fn", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-%s-shared-rg", var.prefix, var.env_short, var.location_short)
-}
-
 data "azurerm_function_app" "canone_unico" {
   name                = format("%s-%s-fn-canoneunico", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-canoneunico-rg", var.prefix, var.env_short)
