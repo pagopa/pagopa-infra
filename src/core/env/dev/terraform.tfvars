@@ -20,7 +20,7 @@ lock_enable = false
 # Feature flag
 #
 enabled_features = {
-  apim_v2  = true
+  apim_v2  = false
   apim_migrated = true
   vnet_ita = true
 }

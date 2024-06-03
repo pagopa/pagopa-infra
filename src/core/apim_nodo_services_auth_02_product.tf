@@ -72,5 +72,5 @@ resource "azurerm_api_management_named_value" "x_forwarded_for_value" {
   api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "xForwardedFor"
-  value               = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses[0] : module.apim[0].private_ip_addresses[0]
+  value               = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses[0] : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses[0] :  module.apim[0].private_ip_addresses[0])
 }
