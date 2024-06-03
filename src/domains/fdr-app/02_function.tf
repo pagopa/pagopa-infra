@@ -80,7 +80,7 @@ module "reporting_fdr_function" {
 
   }
 
-  allowed_subnets =  [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets =  local.function_allowed_subnets
 
   allowed_ips = []
 

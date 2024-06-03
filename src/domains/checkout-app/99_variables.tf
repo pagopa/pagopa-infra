@@ -285,3 +285,12 @@ variable "redis_ha_enabled" {
   default     = true
   description = "(Optional) enables the usage of redis in high availability"
 }
+
+
+
+variable "enabled_features" {
+  type = object({
+        apim_v2 = optional(bool, true)
+  })
+  description = "Features enabled in this domain"
+}

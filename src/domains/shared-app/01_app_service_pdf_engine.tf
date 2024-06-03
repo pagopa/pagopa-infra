@@ -39,7 +39,7 @@ module "shared_pdf_engine_app_service" {
 
   app_settings = local.shared_pdf_engine_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = local.function_allowed_subnets
   allowed_ips     = []
 
   subnet_id = module.shared_pdf_engine_app_service_snet.id
@@ -72,7 +72,7 @@ module "shared_pdf_engine_slot_staging" {
   # App settings
   app_settings = local.shared_pdf_engine_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = local.function_allowed_subnets
   allowed_ips     = []
   subnet_id       = module.shared_pdf_engine_app_service_snet.id
 
@@ -270,7 +270,7 @@ module "shared_pdf_engine_app_service_java" {
 
   app_settings = local.shared_pdf_engine_app_settings_java
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = local.function_allowed_subnets
   allowed_ips     = []
 
   subnet_id = module.shared_pdf_engine_app_service_snet.id
@@ -303,7 +303,7 @@ module "shared_pdf_engine_java_slot_staging" {
   # App settings
   app_settings = local.shared_pdf_engine_app_settings_java
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = local.function_allowed_subnets
   allowed_ips     = []
   subnet_id       = module.shared_pdf_engine_app_service_snet.id
 

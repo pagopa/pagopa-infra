@@ -447,9 +447,11 @@ variable "pod_disruption_budgets" {
 variable "enabled_features" {
   type = object({
     eventhub_ha_rx = bool
+    apim_v2 = optional(bool, true)
   })
   default = {
     eventhub_ha_rx = false
+    apim_v2 = true
   }
   description = "Features enabled in this domain"
 }

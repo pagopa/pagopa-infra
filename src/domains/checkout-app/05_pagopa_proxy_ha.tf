@@ -28,7 +28,7 @@ module "pagopa_proxy_app_service_ha" {
   # App settings
   app_settings = local.pagopa_proxy_config
 
-  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = local.function_allowed_subnets
   allowed_ips     = []
   subnet_id       = module.pagopa_proxy_snet_ha.id
 
@@ -60,8 +60,8 @@ module "pagopa_proxy_app_service_slot_staging_ha" {
   app_settings = local.pagopa_proxy_config
 
   vnet_integration = var.pagopa_proxy_vnet_integration
+  allowed_subnets = concat(local.function_allowed_subnets, data.azurerm_subnet.azdoa_snet.id)
 
-  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.azdoa_snet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
   subnet_id       = module.pagopa_proxy_snet_ha.id
 

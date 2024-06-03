@@ -317,3 +317,10 @@ variable "pdv_api_base_path" {
   default     = null
   description = "Personal data vault api base path"
 }
+
+variable "enabled_features" {
+  type = object({
+        apim_v2 = optional(bool, true)
+  })
+  description = "Features enabled in this domain"
+}

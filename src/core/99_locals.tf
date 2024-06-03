@@ -21,4 +21,6 @@ locals {
   vnet_ita_name                = "pagopa-${var.env_short}-itn-vnet"
   vnet_ita_resource_group_name = "pagopa-${var.env_short}-itn-vnet-rg"
 
+  function_allowed_subnets = var.enabled_features.apim_v2_subnet ? [module.apim_snet.id, data.azurerm_subnet.apim_v2_subnet[0].id] : [module.apim_snet.id]
+
 }

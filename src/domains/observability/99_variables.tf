@@ -122,3 +122,10 @@ variable "apim_dns_zone_prefix" {
   default     = null
   description = "The dns subdomain for apim."
 }
+
+variable "enabled_features" {
+  type = object({
+        apim_v2 = optional(bool, true)
+  })
+  description = "Features enabled in this domain"
+}

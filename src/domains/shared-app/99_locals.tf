@@ -43,6 +43,9 @@ locals {
 
   authorizer_config_hostname = "${local.shared_hostname}/authorizer-config"
 
+    function_allowed_subnets = var.enabled_features.apim_v2 ? [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id] : [data.azurerm_subnet.apim_vnet.id]
+
+
   # DOMAINS
   system_domain_namespace = kubernetes_namespace.system_domain_namespace.metadata[0].name
   domain_namespace        = kubernetes_namespace.namespace.metadata[0].name

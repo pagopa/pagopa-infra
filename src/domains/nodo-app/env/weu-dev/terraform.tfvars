@@ -199,6 +199,6 @@ storage_account_info = {
 
 
 enabled_features = {
-  apim_v2        = false
+  apim_v2        = true
   eventhub_ha_rx = true
 }

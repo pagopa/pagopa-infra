@@ -9,6 +9,9 @@ locals {
   pagopa_apim_rg   = "${local.product}-api-rg"
   pagopa_apim_snet = "${local.product}-apim-snet"
 
+  function_allowed_subnets = var.enabled_features.apim_v2 ? [data.azurerm_subnet.subnet_apim.id, data.azurerm_subnet.apim_v2_snet.id] : [data.azurerm_subnet.subnet_apim.id]
+
+
   # app_insights_ips_west_europe = [
   #   "51.144.56.96/28",
   #   "51.144.56.112/28",

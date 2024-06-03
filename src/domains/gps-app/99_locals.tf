@@ -56,4 +56,7 @@ locals {
 
   # Product APIM for Node
   apim_x_node_product_id = "apim_for_node"
+
+  function_allowed_subnets = var.enabled_features.apim_v2 ? [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id] : [data.azurerm_subnet.apim_snet.id]
+
 }

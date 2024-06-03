@@ -441,7 +441,7 @@ variable "enabled_features" {
     eventhub_ha_rx = bool
   })
   default = {
-    apim_v2        = false
+    apim_v2        = true
     eventhub_ha_rx = false
   }
   description = "Features enabled in this domain"

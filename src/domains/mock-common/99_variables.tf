@@ -242,3 +242,10 @@ variable "redis_ha_enabled" {
   default     = false
 }
 
+variable "enabled_features" {
+  type = object({
+        apim_v2 = optional(bool, true)
+  })
+  description = "Features enabled in this domain"
+}
+

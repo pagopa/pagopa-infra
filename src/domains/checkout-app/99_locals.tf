@@ -12,4 +12,7 @@ locals {
 
   log_analytics_workspace_name                = "pagopa-${var.env_short}-law"
   log_analytics_workspace_resource_group_name = "pagopa-${var.env_short}-monitor-rg"
+
+  function_allowed_subnets = var.enabled_features.apim_v2 ? [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id] : [data.azurerm_subnet.apim_snet.id]
+
 }

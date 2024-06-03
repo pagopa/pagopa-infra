@@ -190,9 +190,11 @@ variable "is_feature_enabled" {
   type = object({
     pdf_engine = bool
     printit    = bool
+    apim_v2    = optional(bool, true)
   })
   default = {
     pdf_engine = false
     printit    = false
+    apim_v2    = true
   }
 }

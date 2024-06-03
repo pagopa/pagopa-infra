@@ -163,7 +163,7 @@ module "reporting_batch_function" {
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings                             = local.function_batch_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = local.function_allowed_subnets
   allowed_ips     = []
 
   tags = var.tags
@@ -201,7 +201,7 @@ module "reporting_batch_function_slot_staging" {
     registry_password = null
   }
 
-  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = local.function_allowed_subnets
   allowed_ips     = []
   subnet_id       = module.reporting_function_snet.id
 
@@ -247,7 +247,7 @@ module "reporting_service_function" {
     registry_password = local.function_service_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
   }
 
-  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = local.function_allowed_subnets
   allowed_ips     = []
 
   tags = var.tags
@@ -285,7 +285,7 @@ module "reporting_service_function_slot_staging" {
     registry_password = local.function_service_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
   }
 
-  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = local.function_allowed_subnets
   allowed_ips     = []
   subnet_id       = module.reporting_function_snet.id
 
@@ -327,7 +327,7 @@ module "reporting_analysis_function" {
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   app_settings                             = local.function_analysis_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = local.function_allowed_subnets
   allowed_ips     = []
 
   tags = var.tags
@@ -366,7 +366,7 @@ module "reporting_analysis_function_slot_staging" {
     registry_password = local.function_analysis_app_settings.DOCKER_REGISTRY_SERVER_PASSWORD
   }
 
-  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = local.function_allowed_subnets
   allowed_ips     = []
   subnet_id       = module.reporting_function_snet.id
 

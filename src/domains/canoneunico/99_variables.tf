@@ -222,3 +222,11 @@ variable "monitor_resource_group_name" {
   type        = string
   description = "Monitor resource group name"
 }
+
+
+variable "enabled_features" {
+  type = object({
+        apim_v2 = optional(bool, true)
+  })
+  description = "Features enabled in this domain"
+}

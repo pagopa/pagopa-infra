@@ -50,7 +50,7 @@ module "mock_payment_gateway" {
     XPAY_SECRET_KEY   = data.azurerm_key_vault_secret.mock_pgs_xpay_secret_key[0].value
   }
 
-  allowed_subnets = [data.azurerm_subnet.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = local.function_allowed_subnets
   allowed_ips     = []
 
   subnet_id = module.mock_payment_gateway_snet[0].id

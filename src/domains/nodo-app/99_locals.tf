@@ -76,4 +76,8 @@ locals {
   # clientId            by KV
   # clientSecret        by KV
   # subscriptionKey     by KV # ecommerce pagoPA - transaction user receipts service API
+
+
+  function_allowed_subnets = var.enabled_features.apim_v2 ? [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id] : [data.azurerm_subnet.apim_vnet.id]
+
 }

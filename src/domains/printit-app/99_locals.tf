@@ -32,6 +32,9 @@ locals {
 
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
 
+  function_allowed_subnets = var.is_feature_enabled.apim_v2 ? [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_snet.id] : [data.azurerm_subnet.apim_vnet.id]
+
+
   printit_pdf_engine_app_settings = {
 
     # Monitoring

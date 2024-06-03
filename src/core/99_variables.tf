@@ -91,13 +91,16 @@ variable "tags" {
 #
 variable "enabled_features" {
   type = object({
+    apim_v2_subnet = optional(bool, true)
     apim_v2  = bool
     apim_migrated = optional(bool, false)
     vnet_ita = bool
   })
   default = {
+    apim_v2_subnet = true
     apim_v2  = false
     vnet_ita = false
+    apim_migrated = false
   }
   description = "Features enabled in this domain"
 }

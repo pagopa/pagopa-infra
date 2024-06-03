@@ -11,7 +11,7 @@ module "apim_snet" {
 }
 
 data "azurerm_subnet" "apim_v2_subnet" {
-  count = var.enabled_features.apim_v2 ? 1 : 0
+  count = var.enabled_features.apim_v2_subnet ? 1 : 0
   name                 = local.pagopa_apim_v2_subnet_name
   resource_group_name  = azurerm_resource_group.rg_vnet.name
   virtual_network_name = module.vnet_integration.name
