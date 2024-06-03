@@ -147,6 +147,7 @@
                                     var pspInfo = (JObject)(pspArray[0]);
                                     details["pspId"] = pspInfo["abi"];
                                     details["maskedEmail"] = pspInfo["email"];
+                                    details["pspBusinessName"] = pspInfo["ragioneSociale"];
                                     paymentMethodAsset = "https://assets.cdn.platform.pagopa.it/apm/paypal.png";
                                 }
                                 if (eCommerceWalletType == "BANCOMATPAY") {
