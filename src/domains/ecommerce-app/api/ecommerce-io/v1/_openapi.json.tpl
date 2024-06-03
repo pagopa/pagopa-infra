@@ -2250,7 +2250,11 @@
                 "description": "Wallet details discriminator field. Fixed valued 'PAYPAL'"
               },
               "pspId": {
-                "description": "bank idetifier",
+                "description": "bank identifier",
+                "type": "string"
+              },
+              "pspBusinessName": {
+                "description": "PSP business name",
                 "type": "string"
               },
               "maskedEmail": {
@@ -2262,6 +2266,7 @@
             "required": [
               "type",
               "pspId",
+              "pspBusinessName",
               "maskedEmail"
             ]
           },
