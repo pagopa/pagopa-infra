@@ -75,7 +75,7 @@ resource "azurerm_storage_management_policy" "storage_account_fdr_management_pol
 resource "azurerm_role_assignment" "data_contributor_role" {
   scope                = module.fdr_flows_sa.id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = module.apim.principal_id
+  principal_id         = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].identity[0].principal_id : module.apim[0].principal_id
 
   depends_on = [
     module.fdr_flows_sa
@@ -86,7 +86,7 @@ resource "azurerm_role_assignment" "data_contributor_role" {
 resource "null_resource" "change_auth_fdr_blob_container" {
 
   triggers = {
-    apim_principal_id = module.apim.principal_id
+    apim_principal_id = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].identity[0].principal_id : module.apim[0].principal_id
   }
 
   provisioner "local-exec" {

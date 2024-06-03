@@ -15,7 +15,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api" {
 
   name                = format("%s-nodo-per-pm-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   display_name        = local.apim_nodo_per_pm_api.display_name
   versioning_scheme   = "Segment"
 }
@@ -25,7 +25,7 @@ module "apim_nodo_per_pm_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
   name                  = format("%s-nodo-per-pm-api", local.project)
-  api_management_name   = module.apim.name
+  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_nodo_per_pm_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api.id
@@ -50,7 +50,7 @@ module "apim_nodo_per_pm_api_v1" {
 
 resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
   api_name            = format("%s-nodo-per-pm-api-v1", local.project)
-  api_management_name = module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "closePayment"
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
@@ -60,7 +60,7 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
 
 resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1" {
   api_name            = format("%s-nodo-per-pm-api-v1", local.project)
-  api_management_name = module.apim.name
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "parkedList"
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
@@ -72,7 +72,7 @@ module "apim_nodo_per_pm_api_v2" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
   name                  = format("%s-nodo-per-pm-api", local.project)
-  api_management_name   = module.apim.name
+  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   subscription_required = local.apim_nodo_per_pm_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api.id

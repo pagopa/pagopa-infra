@@ -828,14 +828,13 @@ data "azurerm_subnet" "apim_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet_integration.name
 }
 
-#TODO check names
+
 resource "azurerm_public_ip" "apim_pip" {
-  count               = var.is_feature_enabled.apim_core_import ? 1 : 0
-  name                = "${local.product}-apim-pip"
+  name                = "${local.project}-apim-pip"
   resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
   location            = data.azurerm_resource_group.rg_vnet_integration.location
   sku                 = "Standard"
-  domain_name_label   = "apim-${var.env_short}-pagopa"
+  domain_name_label   = "apim-${var.env_short}-pagopa-migrated"
   allocation_method   = "Static"
 
   zones = var.apim_v2_zones
@@ -844,38 +843,15 @@ resource "azurerm_public_ip" "apim_pip" {
 }
 
 
-resource "azurerm_network_security_group" "apim_snet_nsg" {
-  count               = var.is_feature_enabled.apim_core_import ? 1 : 0
-  name                = "${local.product}-apim-snet-nsg"
-  location            = var.location
-  resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
-}
-
-resource "azurerm_network_security_rule" "apim_snet_nsg_rules" {
-  count = var.is_feature_enabled.apim_core_import ? length(var.apim_v2_subnet_nsg_security_rules) : 0
-
-  network_security_group_name = azurerm_network_security_group.apim_snet_nsg[0].name
-  name                        = var.apim_v2_subnet_nsg_security_rules[count.index].name
-  resource_group_name         = data.azurerm_resource_group.rg_vnet_integration.name
-  priority                    = var.apim_v2_subnet_nsg_security_rules[count.index].priority
-  direction                   = var.apim_v2_subnet_nsg_security_rules[count.index].direction
-  access                      = var.apim_v2_subnet_nsg_security_rules[count.index].access
-  protocol                    = var.apim_v2_subnet_nsg_security_rules[count.index].protocol
-  source_port_range           = var.apim_v2_subnet_nsg_security_rules[count.index].source_port_range
-  destination_port_range      = var.apim_v2_subnet_nsg_security_rules[count.index].destination_port_range
-  source_address_prefix       = var.apim_v2_subnet_nsg_security_rules[count.index].source_address_prefix
-  destination_address_prefix  = var.apim_v2_subnet_nsg_security_rules[count.index].destination_address_prefix
-}
-
 resource "azurerm_subnet_network_security_group_association" "apim_snet_sg_association" {
   count                     = var.is_feature_enabled.apim_core_import ? 1 : 0
   subnet_id                 = data.azurerm_subnet.apim_subnet.id
-  network_security_group_id = azurerm_network_security_group.apim_snet_nsg[0].id
+  network_security_group_id = azurerm_network_security_group.apimv2_snet_nsg.id
 }
 
 module "apim" {
   count               = var.is_feature_enabled.apim_core_import ? 1 : 0
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v7.67.1"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v8.19.0"
   subnet_id           = data.azurerm_subnet.apim_subnet.id
   location            = data.azurerm_resource_group.rg_api.location
   name                = "${local.product}-apim"
@@ -884,7 +860,7 @@ module "apim" {
   publisher_email     = data.azurerm_key_vault_secret.apim_publisher_email.value
   sku_name            = var.apim_v2_sku
 
-  public_ip_address_id = azurerm_public_ip.apim_pip[0].id
+  public_ip_address_id = azurerm_public_ip.apim_pip.id
 
   virtual_network_type = "Internal"
 
@@ -897,7 +873,7 @@ module "apim" {
     instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   }
   zones = startswith(var.apim_v2_sku, "Premium") ? var.apim_v2_zones : null
-
+  management_logger_applicaiton_insight_enabled = false
 
 
   # This enables the Username and Password Identity Provider
