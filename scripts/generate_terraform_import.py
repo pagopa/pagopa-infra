@@ -11,11 +11,11 @@ env = sys.argv[1]
 # change this with you terraform log
 log = """
 ╷
-│ Error: A resource with the ID "https://pagopa-u-itn-printit-kv.vault.azure.net/secrets/elastic-apm-secret-token/58c0f4f74331496ea079135cde4b99ba" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_key_vault_secret" for more information.
+│ Error: A resource with the ID "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-weu-core-apim-v2/apis/u-pagopa-selfcare-ms-backoffice-backend-v1/policies/xml" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_api_management_api_policy" for more information.
 │
-│   with azurerm_key_vault_secret.secret["elastic-apm-secret-token"],
-│   on 02_key_secret.tf line 51, in resource "azurerm_key_vault_secret" "secret":
-│   51: resource "azurerm_key_vault_secret" "secret" {
+│   with module.apim_api_backoffice_api_v1_weu_core[0].azurerm_api_management_api_policy.this[0],
+│   on .terraform/modules/apim_api_backoffice_api_v1_weu_core/api_management_api/main.tf line 31, in resource "azurerm_api_management_api_policy" "this":
+│   31: resource "azurerm_api_management_api_policy" "this" {
 │
 ╵
 
