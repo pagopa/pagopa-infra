@@ -11,5 +11,6 @@
   <include file="./${version}/db.changelog-20240517000000_elenco_servizi_view.xml" labels="${version}"/>
   <include file="./${version}/db.changelog-20240517010000_cdi_preferences_view.xml" labels="${version}"/>
   <include file="./${version}/db.changelog-20240527000000_update_elenco_servizi_view_master.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20240605000000_update_float4.xml" labels="${version}"/>
 
 </databaseChangeLog>

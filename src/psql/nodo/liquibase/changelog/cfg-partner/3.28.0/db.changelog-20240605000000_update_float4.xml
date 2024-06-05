@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+  http://www.liquibase.org/xml/ns/pro
+  http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+  <changeSet author="liquibase" id="20240605000000">
+
+    <modifyDataType
+      tableName="cdi_fascia_costo_servizio"
+      columnName="importo_minimo"
+      newDataType="float8" />
+
+    <modifyDataType
+      tableName="cdi_fascia_costo_servizio"
+      columnName="importo_massimo"
+      newDataType="float8" />
+
+    <modifyDataType
+      tableName="cdi_fascia_costo_servizio"
+      columnName="costo_fisso"
+      newDataType="float8" />
+
+    <modifyDataType
+      tableName="cdi_fascia_costo_servizio"
+      columnName="valore_commissione"
+      newDataType="float8" />
+
+  </changeSet>
+
+  <changeSet author="liquibase" id="20240605010000">
+
+    <modifyDataType
+      tableName="elenco_servizi"
+      columnName="importo_minimo"
+      newDataType="float8" />
+
+    <modifyDataType
+      tableName="elenco_servizi"
+      columnName="importo_massimo"
+      newDataType="float8" />
+
+    <modifyDataType
+      tableName="elenco_servizi"
+      columnName="costo_fisso"
+      newDataType="float8" />
+
+  </changeSet>
+
+  <changeSet author="liquibase" id="20240605010000">
+
+    <modifyDataType
+      tableName="elenco_servizi_view"
+      columnName="importo_minimo"
+      newDataType="float8" />
+
+    <modifyDataType
+      tableName="elenco_servizi_view"
+      columnName="importo_massimo"
+      newDataType="float8" />
+
+    <modifyDataType
+      tableName="elenco_servizi_view"
+      columnName="costo_fisso"
+      newDataType="float8" />
+
+  </changeSet>
+</databaseChangeLog>
