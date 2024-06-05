@@ -50,7 +50,7 @@
 
   </changeSet>
 
-  <changeSet author="liquibase" id="20240605010000">
+  <changeSet author="liquibase" id="20240605020000">
 
     <modifyDataType
       tableName="elenco_servizi_view"
