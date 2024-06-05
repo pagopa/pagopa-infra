@@ -218,15 +218,3 @@ resource "azurerm_key_vault_secret" "wallet_storage_account_key" {
   value        = module.wallet_storage.primary_access_key
   key_vault_id = module.key_vault.id
 }
-
-resource "azurerm_key_vault_secret" "afm_api_key" {
-  name         = "afm-api-key"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}

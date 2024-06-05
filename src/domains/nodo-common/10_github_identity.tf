@@ -13,6 +13,8 @@ locals {
     "pagopa-stand-in-manager",
     "pagopa-stand-in-technical-support",
     "pagopa-node-cfg-sync",
+    "pagopa-nodo-verifyko-to-tablestorage",
+    "pagopa-nodo-verifyko-to-datastore",
     "pagopa-nodo-verifyko-aux",
     "pagopa-wisp-soap-converter",
     "pagopa-wisp-converter",

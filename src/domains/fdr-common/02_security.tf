@@ -100,3 +100,72 @@ resource "azurerm_key_vault_secret" "fdr_history_storage_account_connection_stri
     module.fdr_history_sa
   ]
 }
+
+##########
+## APIM ##
+##########
+resource "azurerm_key_vault_secret" "opex_psp_subscription_key" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "opex-psp-subscription-key"
+  value        = azurerm_api_management_subscription.opex_psp_subscription_key[0].primary_key
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  depends_on = [
+    azurerm_api_management_subscription.opex_psp_subscription_key
+  ]
+}
+
+resource "azurerm_key_vault_secret" "opex_org_subscription_key" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "opex-org-subscription-key"
+  value        = azurerm_api_management_subscription.opex_org_subscription_key[0].primary_key
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  depends_on = [
+    azurerm_api_management_subscription.opex_org_subscription_key
+  ]
+}
+
+resource "azurerm_key_vault_secret" "opex_internal_subscription_key" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "opex-internal-subscription-key"
+  value        = azurerm_api_management_subscription.opex_internal_subscription_key[0].primary_key
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  depends_on = [
+    azurerm_api_management_subscription.opex_internal_subscription_key
+  ]
+}
+
+resource "azurerm_key_vault_secret" "test_psp_subscription_key" {
+  count        = var.env_short == "p" ? 0 : 1
+  name         = "integration-test-psp-subscription-key"
+  value        = azurerm_api_management_subscription.test_psp_subscription_key[0].primary_key
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  depends_on = [
+    azurerm_api_management_subscription.test_psp_subscription_key
+  ]
+}
+
+resource "azurerm_key_vault_secret" "test_org_subscription_key" {
+  count        = var.env_short == "p" ? 0 : 1
+  name         = "integration-test-org-subscription-key"
+  value        = azurerm_api_management_subscription.test_org_subscription_key[0].primary_key
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  depends_on = [
+    azurerm_api_management_subscription.test_org_subscription_key
+  ]
+}
+
+resource "azurerm_key_vault_secret" "test_internal_subscription_key" {
+  count        = var.env_short == "p" ? 0 : 1
+  name         = "integration-test-internal-subscription-key"
+  value        = azurerm_api_management_subscription.test_internal_subscription_key[0].primary_key
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  depends_on = [
+    azurerm_api_management_subscription.test_internal_subscription_key
+  ]
+}
