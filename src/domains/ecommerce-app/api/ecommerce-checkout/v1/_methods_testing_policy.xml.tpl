@@ -6,7 +6,7 @@
         <base />
         <!-- APM test START -->
         <choose>
-            <when condition="@(!((string)context.Request.Headers.GetValueOrDefault("X-Forwarded-For","")).Equals("PLACEHOLDER") && ((string)context.Request.Headers.GetValueOrDefault("origin","")).Equals("https://checkout.pagopa.it"))">
+            <when condition="@(!((string)context.Request.Headers.GetValueOrDefault("X-Forwarded-For","")).Contains("PLACEHOLDER") && ((string)context.Request.Headers.GetValueOrDefault("origin","")).Equals("https://checkout.pagopa.it"))">
                 <set-variable name="responseBody" value="@(context.Response.Body.As<JObject>(preserveContent: true))" />
                     <set-body>@{ 
 
