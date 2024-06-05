@@ -69,7 +69,7 @@ taxonomy_function_autoscale = {
 cidr_subnet_pdf_engine_app_service = ["10.1.187.0/24"]
 
 robots_indexed_paths      = []
-pdf_engine_app_ha_enabled = true
+pdf_engine_app_ha_enabled = false
 
 // wallet session token
 io_backend_base_path = "http://{{aks-lb-nexi}}/pmmockservice/pmmockserviceapi"
