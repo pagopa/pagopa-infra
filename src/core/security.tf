@@ -19,7 +19,7 @@ module "key_vault" {
 resource "azurerm_key_vault_access_policy" "api_management_policy" {
   key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = module.apim.principal_id
+  object_id    = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].identity[0].principal_id : module.apim[0].principal_id
 
   key_permissions         = []
   secret_permissions      = ["Get", "List"]

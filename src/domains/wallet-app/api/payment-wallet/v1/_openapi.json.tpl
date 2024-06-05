@@ -679,13 +679,8 @@
             }
           },
           "clients": {
-            "description": "Client-specific state (e.g. last usage) and configuration (enabled/disabled)",
+            "description": "Client-specific state (e.g. last usage) and configuration (enabled/disabled). Currently the only supported client is `IO`.",
             "type": "object",
-            "properties": {
-              "IO": {
-                "$ref": "#/components/schemas/WalletClient"
-              }
-            },
             "additionalProperties": {
               "$ref": "#/components/schemas/WalletClient"
             }
@@ -754,7 +749,11 @@
                 "description": "Wallet details discriminator field. Fixed valued 'PAYPAL'"
               },
               "pspId": {
-                "description": "bank idetifier",
+                "description": "bank identifier",
+                "type": "string"
+              },
+              "pspBusinessName": {
+                "description": "PSP business name",
                 "type": "string"
               },
               "maskedEmail": {
@@ -765,7 +764,8 @@
             },
             "required": [
               "type",
-              "pspId"
+              "pspId",
+              "pspBusinessName"
             ]
           },
           {
