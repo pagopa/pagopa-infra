@@ -107,6 +107,7 @@ module "apimv2" {
     portal-domain         = local.portal_domain
     management-api-domain = local.management_domain
     apim-name             = "${local.project}-apim-v2"
+    old-apim-name         = "${local.product}-apim"
   })
 
   autoscale = var.apim_v2_autoscale
@@ -885,6 +886,7 @@ module "apim" {
     portal-domain         = local.portal_domain
     management-api-domain = local.management_domain
     apim-name             = "${local.product}-apim"
+    old-apim-name             = "${local.project}-apim-v2"
   })
 
   autoscale = var.apim_v2_autoscale
