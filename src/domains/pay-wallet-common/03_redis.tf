@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "redis_pay_wallet_rg" {
 module "pagopa_pay_wallet_redis" {
   count = var.is_feature_enabled.redis ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.20.1"
 
   name                          = "${local.project}-redis"
   resource_group_name           = azurerm_resource_group.redis_pay_wallet_rg.name
