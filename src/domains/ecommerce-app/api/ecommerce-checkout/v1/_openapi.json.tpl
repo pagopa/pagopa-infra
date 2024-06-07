@@ -449,6 +449,16 @@
               }
             }
           },
+          "422": {
+            "description": "Transaction cannot be processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "content": {

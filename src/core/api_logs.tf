@@ -27,9 +27,9 @@ resource "azurerm_api_management_api_diagnostic" "apim_logs" {
 
   identifier               = "applicationinsights"
   resource_group_name      = azurerm_resource_group.rg_api.name
-  api_management_name      = module.apim.name
+  api_management_name      = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   api_name                 = each.key
-  api_management_logger_id = module.apim.logger_id
+  api_management_logger_id = var.apim_logger_resource_id
 
   sampling_percentage       = 100
   always_log_errors         = true
@@ -60,9 +60,9 @@ resource "azurerm_api_management_api_diagnostic" "apim_info_logs" {
 
   identifier               = "applicationinsights"
   resource_group_name      = azurerm_resource_group.rg_api.name
-  api_management_name      = module.apim.name
+  api_management_name      = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   api_name                 = each.key
-  api_management_logger_id = module.apim.logger_id
+  api_management_logger_id = var.apim_logger_resource_id
 
   sampling_percentage       = 100
   always_log_errors         = true

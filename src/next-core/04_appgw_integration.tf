@@ -36,6 +36,82 @@ resource "azurerm_public_ip" "integration_appgateway_public_ip" {
   tags = var.tags
 }
 
+locals {
+   listeners_apiprf = {
+    apiprf = {
+      protocol           = "Https"
+      host               = "api.${var.dns_zone_prefix_prf}.${var.external_domain}"
+      port               = 443
+      ssl_profile_name   = "${local.product_region}-ssl-profile"
+      firewall_policy_id = null
+      certificate = {
+        name = var.app_gateway_prf_certificate_name
+        id = var.app_gateway_prf_certificate_name == "" ? null : replace(
+          data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
+          ""
+        )
+      }
+    }
+  }
+
+  listeners = {
+    api = {
+      protocol           = "Https"
+      host               = "api.${var.dns_zone_prefix}.${var.external_domain}"
+      port               = 443
+      ssl_profile_name   = "${local.product_region}-ssl-profile"
+      firewall_policy_id = null
+      type               = "Private"
+
+      certificate = {
+        name = var.app_gateway_api_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
+          "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
+          ""
+        )
+      }
+    }
+
+    portal = {
+      protocol           = "Https"
+      host               = "portal.${var.dns_zone_prefix}.${var.external_domain}"
+      port               = 443
+      ssl_profile_name   = "${local.product_region}-ssl-profile"
+      firewall_policy_id = null
+      type               = "Private"
+
+      certificate = {
+        name = var.app_gateway_portal_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.portal_platform.secret_id,
+          "/${data.azurerm_key_vault_certificate.portal_platform.version}",
+          ""
+        )
+      }
+    }
+
+    management = {
+      protocol           = "Https"
+      host               = "management.${var.dns_zone_prefix}.${var.external_domain}"
+      port               = 443
+      ssl_profile_name   = "${local.product_region}-ssl-profile"
+      firewall_policy_id = null
+      type               = "Private"
+
+      certificate = {
+        name = var.app_gateway_management_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.management_platform.secret_id,
+          "/${data.azurerm_key_vault_certificate.management_platform.version}",
+          ""
+        )
+      }
+    }
+  }
+}
+
 #
 # 🔱 APP GW Integration
 #
@@ -98,61 +174,10 @@ module "app_gw_integration" {
   trusted_client_certificates = []
 
   # Configure listeners
-  listeners = {
-    api = {
-      protocol           = "Https"
-      host               = "api.${var.dns_zone_prefix}.${var.external_domain}"
-      port               = 443
-      ssl_profile_name   = "${local.product_region}-ssl-profile"
-      firewall_policy_id = null
-      type               = "Private"
-
-      certificate = {
-        name = var.app_gateway_api_certificate_name
-        id = replace(
-          data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
-          "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
-          ""
-        )
-      }
-    }
-
-    portal = {
-      protocol           = "Https"
-      host               = "portal.${var.dns_zone_prefix}.${var.external_domain}"
-      port               = 443
-      ssl_profile_name   = "${local.product_region}-ssl-profile"
-      firewall_policy_id = null
-      type               = "Private"
-
-      certificate = {
-        name = var.app_gateway_portal_certificate_name
-        id = replace(
-          data.azurerm_key_vault_certificate.portal_platform.secret_id,
-          "/${data.azurerm_key_vault_certificate.portal_platform.version}",
-          ""
-        )
-      }
-    }
-
-    management = {
-      protocol           = "Https"
-      host               = "management.${var.dns_zone_prefix}.${var.external_domain}"
-      port               = 443
-      ssl_profile_name   = "${local.product_region}-ssl-profile"
-      firewall_policy_id = null
-      type               = "Private"
-
-      certificate = {
-        name = var.app_gateway_management_certificate_name
-        id = replace(
-          data.azurerm_key_vault_certificate.management_platform.secret_id,
-          "/${data.azurerm_key_vault_certificate.management_platform.version}",
-          ""
-        )
-      }
-    }
-  }
+  listeners = merge(
+    local.listeners,
+    var.dns_zone_prefix_prf != "" ? local.listeners_apiprf : {}
+  )
 
   # maps listener to backend
   routes = {

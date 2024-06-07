@@ -251,6 +251,7 @@ module "apim_api_bizevents_transactions_api_jwt_v1" {
   })
 
   xml_content = templatefile("./api/transaction-service/v1/_base_policy-jwt.xml", {
-    hostname = local.bizevents_hostname
+    hostname          = local.bizevents_hostname
+    pdv_api_base_path = var.pdv_api_base_path
   })
 }
