@@ -119,7 +119,7 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
 
 # create a module for each 20 repos
 module "identity_pr_01" {
-  source    = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=fix-github-federated-identity"
+  source    = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.18.0"
   prefix    = var.prefix
   env_short = var.env_short
   domain    = "${var.domain}-01-pr"
