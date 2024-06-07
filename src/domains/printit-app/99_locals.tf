@@ -1,7 +1,7 @@
 locals {
-  product          = "${var.prefix}-${var.env_short}"
+  product       = "${var.prefix}-${var.env_short}"
   project_short = "${var.prefix}-${var.env_short}-${var.domain}"
-  project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project       = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
 
   project_core_itn = "${var.prefix}-${var.env_short}-${var.location_short}-core"
 
