@@ -3,9 +3,10 @@
 ################
 
 
+
 module "shared_pdf_engine_app_service_ha" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
-  count               = var.pdf_engine_app_ha_enabled ? 1 : 0
+
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
   location            = var.location
@@ -26,7 +27,7 @@ module "shared_pdf_engine_app_service_ha" {
 
   app_settings = local.shared_pdf_engine_app_settings
 
-
+  zone_balancing_enabled = var.pdf_engine_zone_balancing_enabled
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 

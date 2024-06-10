@@ -20,6 +20,7 @@ tags = {
 enabled_features = {
   apim_v2  = true
   vnet_ita = false
+  node_forwarder_ha = true
   apim_migrated = false
 }
 
