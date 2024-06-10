@@ -5,10 +5,12 @@
 action=$1
 env=$2
 shift 2
-other=$@
+# shellcheck disable=SC2034
+other=( "$@" )
 
 if [ -z "$action" ]; then
   helpmessage=$(cat <<EOF
+  ℹ️ Please follow this example on how to use the script
 
 ./sops.sh d env -> decrypt json file in specified environment
     example: ./sops.sh d itn-dev
@@ -101,19 +103,20 @@ if echo "d decrypt a add s search n new e edit f" | grep -w "$action" > /dev/nul
       if [ -f "$encrypted_file_path" ]; then
         echo "⚠️ file $encrypted_file_path already exists"
         exit 0
-      else
-        echo "{}" > "$encrypted_file_path"
-        sops --encrypt -i --azure-kv "$kv_key_url" "$encrypted_file_path"
-        echo "✅ created new file for sops"
       fi
+      echo "{}" > "$encrypted_file_path"
+      sops --encrypt -i --azure-kv "$kv_key_url" "$encrypted_file_path"
+      echo "✅ created new file for sops"
       ;;
     "e"|"edit")
-      if [ -f "$encrypted_file_path" ]; then
-        sops --azure-kv "$kv_key_url" "$encrypted_file_path"
-        echo "✅ edit file completed"
-      else
+      if [ ! -f "$encrypted_file_path" ]; then
         echo "⚠️ file $encrypted_file_path not found"
+        exit 1
       fi
+
+      sops --azure-kv "$kv_key_url" "$encrypted_file_path"
+      echo "✅ edit file completed"
+
       ;;
     "f")
       read -r -p 'file: ' file
