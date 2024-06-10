@@ -92,16 +92,16 @@ nginx_helm = {
 }
 
 nodeset_config = {
-  balancer-nodes = {
-    count            = "2"
-    roles            = []
-    storage          = "20Gi"
-    storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-hot"
-    requestMemory    = "1Gi"
-    requestCPU       = "1"
-    limitsMemory     = "2Gi"
-    limitsCPU        = "1"
-  },
+  # balancer-nodes = {
+  #   count            = "0"
+  #   roles            = []
+  #   storage          = "20Gi"
+  #   storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-hot"
+  #   requestMemory    = "1Gi"
+  #   requestCPU       = "1"
+  #   limitsMemory     = "2Gi"
+  #   limitsCPU        = "1"
+  # },
   master-nodes = {
     count            = "2"
     roles            = ["master"]
@@ -115,11 +115,11 @@ nodeset_config = {
   data-hot-nodes = {
     count            = "2"
     roles            = ["ingest", "data_content", "data_hot"]
-    storage          = "100Gi"
+    storage          = "128Gi"
     storageClassName = "pagopa-d-weu-elk-elastic-aks-storage-hot"
     requestMemory    = "3Gi"
     requestCPU       = "1"
-    limitsMemory     = "4Gi"
+    limitsMemory     = "6Gi"
     limitsCPU        = "2"
   },
   data-warm-nodes = {
