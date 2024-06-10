@@ -1,7 +1,7 @@
 prefix         = "pagopa"
 env_short      = "p"
 env            = "prod"
-domain         = "printit"
+domain         = "core-itn"
 location       = "italynorth"
 location_short = "itn"
 instance       = "prod"

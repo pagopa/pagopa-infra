@@ -1,21 +1,3 @@
-
-resource "azurerm_key_vault_key" "generated" {
-  name         = "${local.product}-${var.domain}-sops-key"
-  key_vault_id = module.key_vault.id
-  key_type     = "RSA"
-  key_size     = 2048
-
-  key_opts = [
-    "decrypt",
-    "encrypt",
-  ]
-
-  depends_on = [
-    azurerm_key_vault_access_policy.adgroup_developers_policy,
-    azurerm_key_vault_access_policy.ad_group_policy,
-  ]
-}
-
 data "external" "external" {
   program = [
     "bash", "terrasops.sh"
@@ -51,16 +33,14 @@ locals {
 resource "azurerm_key_vault_secret" "secret" {
   for_each = { for i, v in local.all_secrets_value : local.all_secrets_value[i].chiave => i }
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.kv.id
   name         = local.all_secrets_value[each.value].chiave
   value        = local.all_secrets_value[each.value].valore
 
   depends_on = [
-    module.key_vault,
-    azurerm_key_vault_key.generated,
+    data.azurerm_key_vault.kv,
+    azurerm_key_vault_key.generate_key_sops,
     data.external.external,
-    azurerm_key_vault_access_policy.adgroup_developers_policy,
-    azurerm_key_vault_access_policy.ad_group_policy,
   ]
 }
 

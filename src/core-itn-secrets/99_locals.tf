@@ -7,6 +7,9 @@ locals {
 
   subscription_name = "${var.env}-${var.prefix}"
 
+  key_vault_name="pagopa-${var.env_short}-itn-core-kv"
+  key_vault_rg_name="pagopa-${var.env_short}-itn-core-sec-rg"
+
   azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
   azdo_iac_managed_identities   = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
 

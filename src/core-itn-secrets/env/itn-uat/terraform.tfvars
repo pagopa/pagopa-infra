@@ -1,7 +1,7 @@
 prefix         = "pagopa"
 env_short      = "u"
 env            = "uat"
-domain         = "printit"
+domain         = "core-itn"
 location       = "italynorth"
 location_short = "itn"
 instance       = "uat"
