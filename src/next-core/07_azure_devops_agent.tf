@@ -29,7 +29,7 @@ module "azdoa_li_app" {
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
-  source_image_name   = "pagopa-${var.env_short}-azdo-agent-ubuntu2204-image-v2"
+  source_image_name   = var.azdo_agent_vm_image_name
   vm_sku              = "Standard_B2ms"
 
   zones        = var.devops_agent_zones
@@ -47,7 +47,7 @@ module "azdoa_li_infra" {
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
-  source_image_name   = "pagopa-${var.env_short}-azdo-agent-ubuntu2204-image-v2"
+  source_image_name   = var.azdo_agent_vm_image_name
   vm_sku              = "Standard_B2ms"
 
   zones        = var.devops_agent_zones
@@ -55,6 +55,36 @@ module "azdoa_li_infra" {
 
   tags = var.tags
 }
+
+resource "azurerm_virtual_machine_scale_set_extension" "custom_script_extension_infra" {
+  count                        = var.is_feature_enabled.azdoa && var.is_feature_enabled.azdoa_extension ? 1 : 0
+  name                         = "CustomScript"
+  virtual_machine_scale_set_id = module.azdoa_li_infra[0].scale_set_id
+  publisher                    = "Microsoft.Azure.Extensions"
+  type                         = "CustomScript"
+  type_handler_version         = "2.1"
+  settings = jsonencode({
+    "commandToExecute" = <<EOL
+    echo "nothing to do"
+    EOL
+  })
+}
+
+
+resource "azurerm_virtual_machine_scale_set_extension" "custom_script_extension_app" {
+  count                        = var.is_feature_enabled.azdoa && var.is_feature_enabled.azdoa_extension ? 1 : 0
+  name                         = "CustomScript"
+  virtual_machine_scale_set_id = module.azdoa_li_app[0].scale_set_id
+  publisher                    = "Microsoft.Azure.Extensions"
+  type                         = "CustomScript"
+  type_handler_version         = "2.1"
+  settings = jsonencode({
+    "commandToExecute" = <<EOL
+    echo "nothing to do"
+    EOL
+  })
+}
+
 
 #
 # Load Tests

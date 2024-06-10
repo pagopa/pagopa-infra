@@ -1,6 +1,5 @@
 variable "is_feature_enabled" {
   type = object({
-    vnet_ita                  = bool,
     container_app_tools_cae   = optional(bool, false),
     node_forwarder_ha_enabled = bool
     vpn                       = optional(bool, false)

@@ -4,7 +4,7 @@
     "title": "PagoPA API configuration ${service}",
     "description": "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei Pagamenti",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.58.7"
+    "version": "0.58.24"
   },
   "servers": [
     {
@@ -9438,6 +9438,168 @@
         }
       ]
     },
+    "/creditorinstitutions/cbill": {
+      "post": {
+        "tags": [
+          "Creditor Institutions"
+        ],
+        "summary": "Upload a CSV file containing the cbill codes",
+        "operationId": "massiveUploadCbillCsv",
+        "parameters": [
+          {
+            "name": "incremental",
+            "in": "query",
+            "description": "Loading mode (true = incremental|false = full): incremental sets only PA entry with no cbill code, full replace the cbill code for all the CI in the PA table",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "description": "CSV file regarding cbill codes to load",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "/creditorinstitutions/ibans": {
       "post": {
         "tags": [
@@ -11290,162 +11452,6 @@
         }
       ]
     },
-    "/creditorinstitutions/{creditorinstitutioncode}/ibans/enhanced": {
-      "get": {
-        "tags": [
-          "Ibans"
-        ],
-        "summary": "Get creditor institution ibans enhanced",
-        "operationId": "getCreditorInstitutionsIbansEnhanced",
-        "parameters": [
-          {
-            "name": "creditorinstitutioncode",
-            "in": "path",
-            "description": "Organization fiscal code, the fiscal code of the Organization.",
-            "required": true,
-            "schema": {
-              "maxLength": 50,
-              "minLength": 0,
-              "type": "string"
-            }
-          },
-          {
-            "name": "label",
-            "in": "query",
-            "description": "Filter by label",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/IbansEnhanced"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
-    },
     "/creditorinstitutions/{creditorinstitutioncode}/ibans/list": {
       "get": {
         "tags": [
@@ -11454,6 +11460,29 @@
         "summary": "Get creditor institution ibans list",
         "operationId": "getIbans",
         "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of elements on one page. Default = 50",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number. Page value starts from 0",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
           {
             "name": "creditorinstitutioncode",
             "in": "path",
@@ -15817,142 +15846,6 @@
         }
       ]
     },
-    "/refresh/config/{configtype}": {
-      "get": {
-        "tags": [
-          "Refresh Operation"
-        ],
-        "summary": "Refresh Configuration activation for a specific domain",
-        "operationId": "getRefreshConfig",
-        "parameters": [
-          {
-            "name": "configtype",
-            "in": "path",
-            "description": "Configuration domain",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "FTP_SERVER",
-                "INFORMATIVA_CDI",
-                "INFORMATIVA_PA",
-                "PA",
-                "PDD",
-                "PSP",
-                "GLOBAL"
-              ]
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "ApiKey": []
-          },
-          {
-            "Authorization": []
-          }
-        ]
-      },
-      "parameters": [
-        {
-          "name": "X-Request-Id",
-          "in": "header",
-          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
-    },
     "/refresh/job/{jobtype}": {
       "get": {
         "tags": [
@@ -17253,9 +17146,9 @@
             }
           },
           {
-            "name": "ciName",
+            "name": "ciNameOrCF",
             "in": "query",
-            "description": "Filter by creditor institution name",
+            "description": "Filter by name or tax code of the creditor institution",
             "required": false,
             "schema": {
               "type": "string"
@@ -17742,6 +17635,11 @@
             "description": "number version",
             "format": "int64"
           },
+          "is_connection_sync": {
+            "type": "boolean",
+            "description": "Describe the station connection's type, true synchronous, false asynchronous",
+            "readOnly": true
+          },
           "ip": {
             "type": "string"
           },
@@ -18017,6 +17915,10 @@
             "minLength": 0,
             "type": "string",
             "example": "Comune di Lorem Ipsum"
+          },
+          "cbill_code": {
+            "type": "string",
+            "example": "1234567890100"
           },
           "address": {
             "$ref": "#/components/schemas/CreditorInstitutionAddress"
@@ -18859,6 +18761,11 @@
             "type": "integer",
             "description": "number version",
             "format": "int64"
+          },
+          "is_connection_sync": {
+            "type": "boolean",
+            "description": "Describe the station connection's type, true synchronous, false asynchronous",
+            "readOnly": true
           }
         }
       },
@@ -19376,6 +19283,11 @@
             "description": "number version",
             "format": "int64"
           },
+          "is_connection_sync": {
+            "type": "boolean",
+            "description": "Describe the station connection's type, true synchronous, false asynchronous",
+            "readOnly": true
+          },
           "application_code": {
             "minimum": 0,
             "type": "integer",
@@ -19454,7 +19366,8 @@
       },
       "IbansEnhanced": {
         "required": [
-          "ibans_enhanced"
+          "ibans_enhanced",
+          "page_info"
         ],
         "type": "object",
         "properties": {
@@ -19463,6 +19376,9 @@
             "items": {
               "$ref": "#/components/schemas/IbanEnhanced"
             }
+          },
+          "page_info": {
+            "$ref": "#/components/schemas/PageInfo"
           }
         }
       },
@@ -19520,6 +19436,9 @@
             "format": "int64"
           },
           "mod4": {
+            "type": "boolean"
+          },
+          "station_enabled": {
             "type": "boolean"
           }
         }
@@ -19706,7 +19625,8 @@
           "business_name",
           "enabled",
           "payment_types",
-          "psp_code"
+          "psp_code",
+          "tax_code"
         ],
         "type": "object",
         "properties": {
@@ -19724,6 +19644,9 @@
             "items": {
               "type": "string"
             }
+          },
+          "tax_code": {
+            "type": "string"
           }
         }
       },

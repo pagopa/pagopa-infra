@@ -20,7 +20,7 @@ monitor_italy_resource_group_name                 = "pagopa-d-itn-core-monitor-r
 log_analytics_italy_workspace_name                = "pagopa-d-itn-core-law"
 log_analytics_italy_workspace_resource_group_name = "pagopa-d-itn-core-monitor-rg"
 
-input_file = "./secret/weu-uat/configs.json"
+input_file = "./secret/itn-uat/configs.json"
 
 enable_iac_pipeline = true
 
