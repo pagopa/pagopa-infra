@@ -31,3 +31,14 @@ resource "azurerm_api_management_subscription" "pdf_engine_subkey" {
   allow_tracing       = false
   state               = "active"
 }
+
+resource "azurerm_api_management_subscription" "service_perf_subkey" {
+  count = var.is_feature_enabled.pdf_engine ? 1 : 0
+
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  product_id          = module.apim_notices_service_product[0].id
+  display_name        = "Notice Service for Perf Test"
+  allow_tracing       = false
+  state               = "active"
+}
