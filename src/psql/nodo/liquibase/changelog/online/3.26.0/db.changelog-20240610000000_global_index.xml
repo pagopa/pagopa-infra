@@ -8,22 +8,14 @@
   http://www.liquibase.org/xml/ns/pro
   http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
 
-  <changeSet author="liquibase" id="20240318000001">
-
-  </changeSet>
-
   <changeSet author="liquibase" id="20240610000000-1">
     <createTable tableName="VERIFICA_BOLLETTINO_GI">
       <column name="NOTICE_ID" type="VARCHAR2(50)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="vb_gi_pk"/>
       </column>
       <column name="PA_FISCAL_CODE" type="VARCHAR2(50)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="vb_gi_pk"/>
       </column>
-      <constraints primaryKey="true" primaryKeyName="vb_gi_pk">
-        <primaryKeyColumn name="NOTICE_ID"/>
-        <primaryKeyColumn name="PA_FISCAL_CODE"/>
-      </constraints>
     </createTable>
   </changeSet>
 
@@ -38,83 +30,64 @@
   <changeSet author="liquibase" id="20240610000000-3">
     <createTable tableName="RT_GI">
       <column name="IDENT_DOMINIO" type="VARCHAR2(35)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="rt_gi_pk"/>
       </column>
       <column name="IUV" type="VARCHAR2(35)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="rt_gi_pk"/>
       </column>
       <column name="CCP" type="VARCHAR2(35)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="rt_gi_pk"/>
       </column>
-      <constraints primaryKey="true" primaryKeyName="rt_gi_pk">
-        <primaryKeyColumn name="IDENT_DOMINIO"/>
-        <primaryKeyColumn name="IUV"/>
-        <primaryKeyColumn name="CCP"/>
-      </constraints>
     </createTable>
   </changeSet>
 
   <changeSet author="liquibase" id="20240610000000-4">
     <createTable tableName="POSITION_SERVICE_GI">
-      <column name="PA_FISCAL_CODE" type="VARCHAR2(50)"/>
-      <column name="NOTICE_ID" type="VARCHAR2(50)"/>
-      <constraints primaryKey="true" primaryKeyName="ps_gi_pk">
-        <primaryKeyColumn name="PA_FISCAL_CODE"/>
-        <primaryKeyColumn name="NOTICE_ID"/>
-      </constraints>
+      <column name="PA_FISCAL_CODE" type="VARCHAR2(50)">
+        <constraints nullable="true" primaryKey="true" primaryKeyName="ps_gi_pk"/>
+      </column>
+      <column name="NOTICE_ID" type="VARCHAR2(50)">
+        <constraints nullable="true" primaryKey="true" primaryKeyName="ps_gi_pk"/>
+      </column>
     </createTable>
   </changeSet>
 
   <changeSet author="liquibase" id="20240610000000-5">
     <createTable tableName="STATI_RPT_SNAPSHOT_GI">
       <column name="ID_DOMINIO" type="VARCHAR2(35)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="sps_gi_pk"/>
       </column>
       <column name="IUV" type="VARCHAR2(35)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="sps_gi_pk"/>
       </column>
       <column name="CCP" type="VARCHAR2(35)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="sps_gi_pk"/>
       </column>
-      <constraints primaryKey="true" primaryKeyName="sps_gi_pk">
-        <primaryKeyColumn name="ID_DOMINIO"/>
-        <primaryKeyColumn name="IUV"/>
-        <primaryKeyColumn name="CCP"/>
-      </constraints>
     </createTable>
   </changeSet>
 
   <changeSet author="liquibase" id="20240610000000-6">
     <createTable tableName="RPT_SOGGETTI_GI">
       <column name="RPT_ID" type="NUMBER(19, 0)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="rs_gi_pk"/>
       </column>
       <column name="TIPO_SOGGETTO" type="CHAR(1)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="rs_gi_pk"/>
       </column>
-      <constraints primaryKey="true" primaryKeyName="rs_gi_pk">
-        <primaryKeyColumn name="RPT_ID"/>
-        <primaryKeyColumn name="TIPO_SOGGETTO"/>
-      </constraints>
     </createTable>
   </changeSet>
 
   <changeSet author="liquibase" id="20240610000000-7">
     <createTable tableName="RETRY_PA_INVIA_RT_GI">
       <column name="ID_DOMINIO" type="VARCHAR2(35)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="rpir_gi_pk"/>
       </column>
       <column name="IUV" type="VARCHAR2(35)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="rpir_gi_pk"/>
       </column>
       <column name="CCP" type="VARCHAR2(35)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="rpir_gi_pk"/>
       </column>
-      <constraints primaryKey="true" primaryKeyName="rpir_gi_pk">
-        <primaryKeyColumn name="ID_DOMINIO"/>
-        <primaryKeyColumn name="IUV"/>
-        <primaryKeyColumn name="CCP"/>
-      </constraints>
     </createTable>
   </changeSet>
 

@@ -15,15 +15,11 @@
   <changeSet author="liquibase" id="20240610000000-1">
     <createTable tableName="ELENCO_SERVIZI_PSP_GI">
       <column name="ID" type="NUMBER">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="esp_gi_pk"/>
       </column>
       <column name="FK_SNAPSHOT_VERSION" type="NUMBER(19, 0)">
-        <constraints nullable="false"/>
+        <constraints nullable="false" primaryKey="true" primaryKeyName="esp_gi_pk"/>
       </column>
-      <constraints primaryKey="true" primaryKeyName="esp_gi_pk">
-        <primaryKeyColumn name="ID"/>
-        <primaryKeyColumn name="FK_SNAPSHOT_VERSION"/>
-      </constraints>
     </createTable>
   </changeSet>
 
