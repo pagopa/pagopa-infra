@@ -3,7 +3,7 @@
 # set -x  # Uncomment this line to enable debug mode
 
 action=$1
-local_env=$2
+env=$2
 shift 2
 other=$@
 
@@ -39,90 +39,88 @@ EOF
   exit 0
 fi
 
-if [ -z "$local_env" ]; then
+if [ -z "$env" ]; then
   echo "env should be something like: itn-dev, itn-uat or itn-prod."
   exit 0
 fi
 
 echo "✅ Mandatory variables are correct"
-kv_name=""
 file_crypted=""
-key_vault_sops_key_name=""
+kv_name=""
+kv_sops_key_name=""
 
 # shellcheck disable=SC1090
-source "./secret/$local_env/secret.ini"
+source "./secret/$env/secret.ini"
 
 echo "🔨 All variables loaded"
 
 # Check if kv_name and file_crypted variables are not empty
 if [ -z "${kv_name}" ]; then
-  echo "Error: kv_name variable is not defined correctly."
+  echo "❌ Error: kv_name variable is not defined correctly."
   exit 1
 fi
 
 if [ -z "$file_crypted" ]; then
-  echo "Error: file_crypted variable is not defined correctly."
+  echo "❌ Error: file_crypted variable is not defined correctly."
   exit 1
 fi
 
-encrypted_file_path="./secret/$local_env/$file_crypted"
-echo "encrypted_file_path: $encrypted_file_path"
+encrypted_file_path="./secret/$env/$file_crypted"
 
 # Check if the key exists in the Key Vault
 # shellcheck disable=SC2154
-kv_key_url=$(az keyvault key show --vault-name "$kv_name" --name "$key_vault_sops_key_name" --query "key.kid" -o tsv)
-
-if [ -n "$kv_key_url" ]; then
-  echo "Key URL: $kv_key_url"
-else
-  echo "The key does not exist."
+kv_key_url=$(az keyvault key show --vault-name "$kv_name" --name "$kv_sops_key_name" --query "key.kid" -o tsv)
+if [ -z "$kv_key_url" ]; then
+  echo "❌ The key does not exist."
   exit 1
 fi
+echo "[INFO] Key URL: $kv_key_url"
 
 echo "🔨 Key URL loaded correctly"
 
-if echo "d a s n e f" | grep -w "$action" > /dev/null; then
+if echo "d decrypt a add s search n new e edit f" | grep -w "$action" > /dev/null; then
   case $action in
-    "d")
-      filesecret="$encrypted_file_path"
+    "d"|"decrypt")
       sops --decrypt --azure-kv "$kv_key_url" "$encrypted_file_path"
       if [ $? -eq 1 ]; then
-        echo "-------------------------------"
-        echo "--->>> File $filesecret NOT encrypted"
+        echo "❌ File $encrypted_file_path NOT encrypted"
         exit 0
       fi
       ;;
-    "s")
+    "s"|"search")
       read -r -p 'key: ' key
       sops --decrypt --azure-kv "$kv_key_url" "$encrypted_file_path" | grep -i "$key"
       ;;
-    "a")
+    "a"|"add")
       read -r -p 'key: ' key
       read -r -p 'value: ' value
       sops -i --set '["'"$key"'"] "'"$value"'"' --azure-kv "$kv_key_url" "$encrypted_file_path"
+      echo "✅ Added key"
       ;;
-    "n")
+    "n"|"new")
       if [ -f "$encrypted_file_path" ]; then
-        echo "file $encrypted_file_path already exists"
+        echo "⚠️ file $encrypted_file_path already exists"
         exit 0
       else
         echo "{}" > "$encrypted_file_path"
         sops --encrypt -i --azure-kv "$kv_key_url" "$encrypted_file_path"
+        echo "✅ created new file for sops"
       fi
       ;;
-    "e")
+    "e"|"edit")
       if [ -f "$encrypted_file_path" ]; then
         sops --azure-kv "$kv_key_url" "$encrypted_file_path"
+        echo "✅ edit file completed"
       else
-        echo "file $encrypted_file_path not found"
+        echo "⚠️ file $encrypted_file_path not found"
       fi
       ;;
     "f")
       read -r -p 'file: ' file
-      sops --encrypt --azure-kv "$kv_key_url" "./secret/$local_env/$file" > "$encrypted_file_path"
+      sops --encrypt --azure-kv "$kv_key_url" "./secret/$env/$file" > "$encrypted_file_path"
       ;;
   esac
 else
-  echo "Action not allowed."
+  echo "⚠️ Action not allowed."
   exit 1
 fi
