@@ -1,14 +1,14 @@
 #!/bin/bash
 
-#set -x
+# set -x  # Uncomment this line to enable debug mode
 
 action=$1
 local_env=$2
 shift 2
-
+other=$@
 
 if [ -z "$action" ]; then
-helpmessage=$(cat <<EOF
+  helpmessage=$(cat <<EOF
 
 ./sops.sh d env -> decrypt json file in specified environment
     example: ./sops.sh d itn-dev
@@ -45,14 +45,13 @@ if [ -z "$local_env" ]; then
 fi
 
 echo "✅ Mandatory variables are correct"
-
 kv_name=""
 file_crypted=""
-# shellcheck disable=SC2034
 key_vault_sops_key_name=""
 
 # shellcheck disable=SC1090
 source "./secret/$local_env/secret.ini"
+
 echo "🔨 All variables loaded"
 
 # Check if kv_name and file_crypted variables are not empty
@@ -69,77 +68,61 @@ fi
 encrypted_file_path="./secret/$local_env/$file_crypted"
 echo "encrypted_file_path: $encrypted_file_path"
 
-# Controlla se la chiave esiste nel Key Vault
+# Check if the key exists in the Key Vault
 # shellcheck disable=SC2154
-kv_key_url=$(az keyvault key show --vault-name "$kv_name" --name "$kv_sops_key_name" --query "key.kid" -o tsv)
+kv_key_url=$(az keyvault key show --vault-name "$kv_name" --name "$key_vault_sops_key_name" --query "key.kid" -o tsv)
 
-echo "url: $kv_key_url"
-if [[ $kv_key_url ]]; then
-  echo "URL della chiave: $kv_key_url"
+if [ -n "$kv_key_url" ]; then
+  echo "Key URL: $kv_key_url"
 else
-  echo "La chiave non esiste."
+  echo "The key does not exist."
   exit 1
 fi
 
-echo "🔨 Key url loaded correctly"
+echo "🔨 Key URL loaded correctly"
 
 if echo "d a s n e f" | grep -w "$action" > /dev/null; then
-
-    case $action in
-      "d")
-
-        filesecret="$encrypted_file_path"
-        sops --decrypt --azure-kv "${kv_name}" "$encrypted_file_path"
-        if [ $? -eq 1 ]
-        then
-          echo "-------------------------------"
-          echo "--->>> File $filesecret NOT encrypted"
-          exit 0
-        fi
-
+  case $action in
+    "d")
+      filesecret="$encrypted_file_path"
+      sops --decrypt --azure-kv "$kv_key_url" "$encrypted_file_path"
+      if [ $? -eq 1 ]; then
+        echo "-------------------------------"
+        echo "--->>> File $filesecret NOT encrypted"
+        exit 0
+      fi
       ;;
-      "s")
+    "s")
       read -r -p 'key: ' key
-      sops --decrypt --azure-kv "${kv_name}" "$encrypted_file_path" | grep -i "$key"
-
+      sops --decrypt --azure-kv "$kv_key_url" "$encrypted_file_path" | grep -i "$key"
       ;;
-      "a")
-        read -r -p 'key: ' key
-        read -r -p 'valore: ' value
-        sops -i --set  '["'"$key"'"] "'"$value"'"' --azure-kv "${kv_name}" "$encrypted_file_path"
+    "a")
+      read -r -p 'key: ' key
+      read -r -p 'value: ' value
+      sops -i --set '["'"$key"'"] "'"$value"'"' --azure-kv "$kv_key_url" "$encrypted_file_path"
       ;;
-      "n")
-        if [ -f "$encrypted_file_path" ]
-        then
-          echo "file $encrypted_file_path already exists"
-          exit 0
-        else
-          echo "{}" > "$encrypted_file_path"
-          echo "kv_key_url: $kv_key_url"
-          sops --encrypt -i --azure-kv "$kv_key_url" "$encrypted_file_path"
-        fi
+    "n")
+      if [ -f "$encrypted_file_path" ]; then
+        echo "file $encrypted_file_path already exists"
+        exit 0
+      else
+        echo "{}" > "$encrypted_file_path"
+        sops --encrypt -i --azure-kv "$kv_key_url" "$encrypted_file_path"
+      fi
       ;;
-      "e")
-        if [ -f "$encrypted_file_path" ]
-        then
-          sops  --azure-kv "${kv_name}"€ "$encrypted_file_path"
-
-        else
-          echo "file $encrypted_file_path not found"
-
-        fi
+    "e")
+      if [ -f "$encrypted_file_path" ]; then
+        sops --azure-kv "$kv_key_url" "$encrypted_file_path"
+      else
+        echo "file $encrypted_file_path not found"
+      fi
       ;;
-      "f")
-          read -r -p 'file: ' file
-          sops --encrypt --azure-kv "${kv_name}" "./secret/$local_env/$file" > "$encrypted_file_path"
+    "f")
+      read -r -p 'file: ' file
+      sops --encrypt --azure-kv "$kv_key_url" "./secret/$local_env/$file" > "$encrypted_file_path"
       ;;
-    esac
-
+  esac
 else
-    echo "Action not allowed."
-    exit 1
+  echo "Action not allowed."
+  exit 1
 fi
-
-
-
-
