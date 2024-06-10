@@ -1,31 +1,27 @@
 #!/bin/bash
+# set -x  # Uncomment this line to enable debug mode
 
 if [ -z "${1:-}" ]; then
-  echo "Errore: Devi fornire il valore di terrasops_env come primo argomento" >&2
+  echo "❌ Error: You must provide the env value as the first argument" >&2
   exit 1
 fi
 
-terrasops_env="$1"
-file_crypted="noedit_secret_enc.json"
-encrypted_file_path="./secret/$terrasops_env/$file_crypted"
+env="$1"
 
 # shellcheck disable=SC1090
-source "./secret/$terrasops_env/secret.ini"
-
-echo "🔨 Loading variables"
+source "./secret/$env/secret.ini"
+encrypted_file_path="./secret/$env/$file_crypted"
 
 if [ -f "$encrypted_file_path" ]; then
-  # Carica i valori di azure_kv.vault_url e azure_kv.name dal file JSON
+  # Load the values of azure_kv.vault_url and azure_kv.name from the JSON file
   azure_kv_vault_url=$(jq -r '.sops.azure_kv[0].vault_url' "$encrypted_file_path")
   azure_kv_name=$(jq -r '.sops.azure_kv[0].name' "$encrypted_file_path")
 
-  if [ -n "$azure_kv_vault_url" ] && [ -n "$azure_kv_name" ]; then
-    echo "🔨 start decript file"
-    sops -d --azure-kv "azure_kv_vault_url" "$encrypted_file_path" | jq -c
-  else
-    echo "Errore: Impossibile caricare i valori di azure_kv.vault_url e azure_kv.name dal file JSON" >&2
+  if [ -z "$azure_kv_vault_url" ] || [ -z "$azure_kv_name" ]; then
+    echo "❌ Error: Unable to load the values of azure_kv.vault_url and azure_kv.name from the JSON file" >&2
     exit 1
   fi
+  sops -d --azure-kv "azure_kv_vault_url" "$encrypted_file_path" | jq -c
 else
   echo "{}" | jq -c
 fi
