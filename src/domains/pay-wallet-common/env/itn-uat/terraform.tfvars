@@ -34,7 +34,6 @@ cidr_subnet_redis_pay_wallet    = ["10.3.9.0/24"]
 cidr_subnet_storage_pay_wallet  = ["10.3.10.0/24"]
 
 
-
 ingress_load_balancer_ip = "10.3.2.250"
 
 ### dns
