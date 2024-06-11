@@ -103,6 +103,8 @@ module "node_forwarder_slot_staging" {
 
   # App settings
   app_settings = local.node_forwarder_app_settings
+  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopanodeforwarder"
+  docker_image_tag = "latest"
 
   allowed_subnets = [data.azurerm_subnet.apim_subnet.id]
   allowed_ips     = []
