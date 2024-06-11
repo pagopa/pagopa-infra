@@ -74,10 +74,10 @@ apim_fdr_nodo_pagopa_enable = true # 👀 https://pagopa.atlassian.net/wiki/spac
 
 # fdr re
 fdr_re_function = {
-  always_on                    = true
-  kind                         = "Linux"
-  sku_size                     = "P1v3" #"B1"
-#  sku_tier                     = "Basic"
+  always_on = true
+  kind      = "Linux"
+  sku_size  = "P1v3" #"B1"
+  #  sku_tier                     = "Basic"
   maximum_elastic_worker_count = 0
 }
 fdr_re_function_subnet                   = ["10.1.181.0/24"]
