@@ -12,22 +12,6 @@ resource "azurerm_servicebus_namespace" "wisp-converter-servicebus" {
     azurerm_resource_group.wisp_converter_rg
   ]
 }
-resource "azurerm_servicebus_namespace_authorization_rule" "res-2" {
-  listen       = true
-  manage       = true
-  name         = "RootManageSharedAccessKey"
-  namespace_id = azurerm_servicebus_namespace.wisp-converter-servicebus.id
-  send         = true
-  depends_on = [
-    azurerm_servicebus_namespace.wisp-converter-servicebus
-  ]
-}
-resource "azurerm_servicebus_namespace_network_rule_set" "res-3" {
-  namespace_id = azurerm_servicebus_namespace.wisp-converter-servicebus.id
-  depends_on = [
-    azurerm_servicebus_namespace.wisp-converter-servicebus,
-  ]
-}
 
 resource "azurerm_servicebus_queue" "paainviartqueue" {
   name         = "paainviart"
@@ -37,6 +21,3 @@ resource "azurerm_servicebus_queue" "paainviartqueue" {
   ]
 }
 
-# output "id" {
-#   value = data.azurerm_servicebus_queue.paaInviaRT.id
-# }
