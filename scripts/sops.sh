@@ -2,6 +2,14 @@
 
 # set -x  # Uncomment this line to enable debug mode
 
+#
+# how to use `sh sops.sh`
+# ℹ️ This script allows you to create a sops file with the relative azure key,
+# it also allows you to edit the secrets and add them with the script.
+# ℹ️ This script also uses an inventory file under the "./secret/<env>/secret.ini"
+# directory to load environment variables.
+#
+
 action=$1
 env=$2
 shift 2
@@ -12,27 +20,27 @@ if [ -z "$action" ]; then
   helpmessage=$(cat <<EOF
   ℹ️ Please follow this example on how to use the script
 
-./sops.sh d env -> decrypt json file in specified environment
+./sops.sh d <env> -> decrypt json file in specified environment
     example: ./sops.sh d itn-dev
     example: ./sops.sh decrypt itn-dev
 
-./sops.sh s env -> search in enc file in specified environment
+./sops.sh s <env> -> search in enc file in specified environment
     example: ./sops.sh s itn-dev
     example: ./sops.sh search itn-dev
 
-./sops.sh n env -> create new file enc json template in specified environment
+./sops.sh n <env> -> create new file enc json template in specified environment
     example: ./sops.sh n itn-dev
     example: ./sops.sh new itn-dev
 
-./sops.sh a env -> add new secret record to enc json in specified environment
+./sops.sh a <env> -> add new secret record to enc json in specified environment
     example: ./sops.sh a itn-dev
     example: ./sops.sh add itn-dev
 
-./sops.sh e env -> edit enc json record in specified environment
+./sops.sh e <env> -> edit enc json record in specified environment
     example: ./sops.sh e itn-dev
     example: ./sops.sh edit itn-dev
 
-./sops.sh f env  -> enc a json file in a specified environment
+./sops.sh f <env>  -> enc a json file in a specified environment
     example: ./sops.sh f itn-dev
 
 EOF

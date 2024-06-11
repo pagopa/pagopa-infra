@@ -1,6 +1,13 @@
 #!/bin/bash
 # set -x  # Uncomment this line to enable debug mode
 
+#
+# ℹ️ This script is used by terraform, to decrypt all secrets on sops and export them to json.
+#    This way it can loop through them and use them to insert them inside the KV
+# ⚠️ Do not add additional echos to the script in case of golden path,
+#    as the script only needs to return a json
+#
+
 eval "$(jq -r '@sh "export terrasops_env=\(.env)"')"
 
 # shellcheck disable=SC1090
