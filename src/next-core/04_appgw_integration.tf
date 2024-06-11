@@ -37,7 +37,7 @@ resource "azurerm_public_ip" "integration_appgateway_public_ip" {
 }
 
 locals {
-   listeners_apiprf = {
+  listeners_apiprf = {
     apiprf = {
       protocol           = "Https"
       host               = "api.${var.dns_zone_prefix_prf}.${var.external_domain}"

@@ -37,8 +37,8 @@ data "azurerm_storage_account" "fdr_re_storage_account" {
 
 locals {
   function_re_to_datastore_app_settings = {
-#    linux_fx_version               = "JAVA|17"
-#    FUNCTIONS_WORKER_RUNTIME       = "java"
+    #    linux_fx_version               = "JAVA|17"
+    #    FUNCTIONS_WORKER_RUNTIME       = "java"
     FUNCTIONS_WORKER_PROCESS_COUNT = 4
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
@@ -101,7 +101,7 @@ module "fdr_re_function" {
   sticky_connection_string_names = [
     "COSMOS_CONN_STRING"
   ]
-  client_certificate_mode        = "Optional"
+  client_certificate_mode = "Optional"
 
   cors = {
     allowed_origins = []
