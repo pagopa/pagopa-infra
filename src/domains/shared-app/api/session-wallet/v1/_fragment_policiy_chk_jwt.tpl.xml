@@ -11,8 +11,11 @@
             <key>{{wallet-session-jwt-signing-key}}</key>
         </issuer-signing-keys>
         <required-claims>
-          <claim name="walletId" match="all">
-            <value>@((string)context.Variables.GetValueOrDefault("walletId",""))</value>
+          <claim name="userId" match="all">
+            <value>@((string)context.Variables.GetValueOrDefault("userId",""))</value>
+          </claim>
+          <claim name="email" match="all">
+            <value>@((string)context.Variables.GetValueOrDefault("email",""))</value>
           </claim>
         </required-claims>
       </validate-jwt>
@@ -20,6 +23,13 @@
         var jwt = (Jwt)context.Variables["jwtToken"];
         if(jwt.Claims.ContainsKey("userId")){
             return jwt.Claims["userId"][0];
+        }
+        return "";
+        }" />
+      <set-variable name="email" value="@{
+        var jwt = (Jwt)context.Variables["jwtToken"];
+        if(jwt.Claims.ContainsKey("email")){
+            return jwt.Claims["email"][0];
         }
         return "";
         }" />
