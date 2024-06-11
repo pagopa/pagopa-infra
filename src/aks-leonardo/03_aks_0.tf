@@ -70,7 +70,7 @@ module "aks_leonardo" {
     }
   ]
 
-  microsoft_defender_log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics_italy.id
+  microsoft_defender_log_analytics_workspace_id = var.env == "prod" ? data.azurerm_log_analytics_workspace.log_analytics_italy.id : null
 
   tags = var.tags
 }
