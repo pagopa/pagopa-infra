@@ -27,6 +27,8 @@ resource "azurerm_app_configuration_feature" "maintenance_banner_flag" {
   lifecycle {
     ignore_changes = [
       enabled,
+      targeting_filter,
+      timewindow_filter
     ]
   }
 }
@@ -40,6 +42,8 @@ resource "azurerm_app_configuration_feature" "maintenance_flag" {
   lifecycle {
     ignore_changes = [
       enabled,
+      targeting_filter,
+      timewindow_filter
     ]
   }
 }
@@ -60,6 +64,8 @@ resource "azurerm_app_configuration_feature" "is_operation_flag" {
   lifecycle {
     ignore_changes = [
       enabled,
+      targeting_filter,
+      timewindow_filter
     ]
   }
 }
@@ -73,6 +79,8 @@ resource "azurerm_app_configuration_feature" "commission_bundles_flag" {
   lifecycle {
     ignore_changes = [
       enabled,
+      targeting_filter,
+      timewindow_filter
     ]
   }
 }
@@ -86,6 +94,8 @@ resource "azurerm_app_configuration_feature" "commission_bundles_private_flag" {
   lifecycle {
     ignore_changes = [
       enabled,
+      targeting_filter,
+      timewindow_filter
     ]
   }
 }
@@ -99,6 +109,8 @@ resource "azurerm_app_configuration_feature" "commission_bundles_public_flag" {
   lifecycle {
     ignore_changes = [
       enabled,
+      targeting_filter,
+      timewindow_filter
     ]
   }
 }
@@ -112,6 +124,8 @@ resource "azurerm_app_configuration_feature" "delegations_list_flag" {
   lifecycle {
     ignore_changes = [
       enabled,
+      targeting_filter,
+      timewindow_filter
     ]
   }
 }
@@ -125,6 +139,8 @@ resource "azurerm_app_configuration_feature" "payments_receipts_flag" {
   lifecycle {
     ignore_changes = [
       enabled,
+      targeting_filter,
+      timewindow_filter
     ]
   }
 }
@@ -138,6 +154,23 @@ resource "azurerm_app_configuration_feature" "test_stations_flag" {
   lifecycle {
     ignore_changes = [
       enabled,
+      targeting_filter,
+      timewindow_filter
+    ]
+  }
+}
+
+resource "azurerm_app_configuration_feature" "payment_notices_flag" {
+  configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
+  description            = "It enables the payment notice section"
+  name                   = "payment-notices"
+  enabled                = false
+
+  lifecycle {
+    ignore_changes = [
+      enabled,
+      targeting_filter,
+      timewindow_filter
     ]
   }
 }

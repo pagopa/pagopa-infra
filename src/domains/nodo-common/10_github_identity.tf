@@ -13,11 +13,14 @@ locals {
     "pagopa-stand-in-manager",
     "pagopa-stand-in-technical-support",
     "pagopa-node-cfg-sync",
+    "pagopa-nodo-verifyko-to-tablestorage",
+    "pagopa-nodo-verifyko-to-datastore",
     "pagopa-nodo-verifyko-aux",
     "pagopa-wisp-soap-converter",
     "pagopa-wisp-converter",
     "pagopa-wisp-converter-technical-support",
-    "pagopa-node-technical-support-worker"
+    "pagopa-node-technical-support-worker",
+    "pagopa-mbd"
   ]
 
   federations_01 = [

@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "cosmosdb_pay_wallet_rg" {
 module "cosmosdb_account_mongodb" {
   count = var.is_feature_enabled.cosmos ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.20.1"
 
   name                = "${local.project}-cosmos-account"
   location            = var.location
@@ -117,7 +117,7 @@ locals {
 
 module "cosmosdb_pay_wallet_collections" {
 
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.5.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.20.1"
   for_each = var.is_feature_enabled.cosmos ? { for index, coll in local.collections : coll.name => coll } : {}
 
   name                = each.value.name

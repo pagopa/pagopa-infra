@@ -1,18 +1,18 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "PagoPA API Debt Position",
+    "title": "PagoPA API Debt Position ${service}",
     "description": "Progetto Gestione Posizioni Debitorie",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.11.19"
+    "version": "0.11.27"
   },
   "servers": [
     {
-      "url": "https://api.uat.platform.pagopa.it/gpd/api/v1/",
+      "url": "https://api.uat.platform.pagopa.it/gpd/debt-positions-service/v1/",
       "description": "Test environment"
     },
     {
-      "url": "https://api.platform.pagopa.it/gpd/api/v1/",
+      "url": "https://api.platform.pagopa.it/gpd/debt-positions-service/v1/",
       "description": "Production environment"
     }
   ],
@@ -48,10 +48,10 @@
             "description": "Number of elements on one page. Default = 50",
             "required": false,
             "schema": {
-              "maximum": 100,
+              "maximum": 50,
               "type": "integer",
               "format": "int32",
-              "default": 50
+              "default": 10
             }
           },
           {
@@ -1243,6 +1243,12 @@
           "payStandIn": {
             "type": "boolean",
             "description": "feature flag to enable a debt position in stand-in mode",
+            "example": true,
+            "default": true
+          },
+          "pull": {
+            "type": "boolean",
+            "description": "feature flag to enable the debt position retrieval in pull mode",
             "example": true,
             "default": true
           },

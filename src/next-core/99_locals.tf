@@ -29,4 +29,8 @@ locals {
   integration_appgateway_private_ip = ["10.230.10.200"]
 
   msg_resource_group_name = "${local.product}-msg-rg"
+
+  azdo_iac_managed_identities   = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
+  azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
+
 }
