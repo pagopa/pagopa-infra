@@ -29,4 +29,11 @@
       stripComments="true"/>
   </changeSet>
 
+  <changeSet author="liquibase" id="20240318000002">
+    <sql>
+      GRANT USAGE ON SCHEMA ${schema} TO ${usernameOffline};
+      GRANT SELECT ON ALL TABLES IN SCHEMA ${schema} TO ${usernameOffline};
+    </sql>
+  </changeSet>
+
 </databaseChangeLog>
