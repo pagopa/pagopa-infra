@@ -1,7 +1,7 @@
 locals {
   product          = "${var.prefix}-${var.env_short}"
-  project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   product_location = "${var.prefix}-${var.env_short}-${var.location_short}"
+  project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
 
   # AKS
   aks_rg_name      = "${local.project}-aks-rg"
