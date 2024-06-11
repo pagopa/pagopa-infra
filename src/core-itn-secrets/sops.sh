@@ -46,7 +46,7 @@ if [ -z "$env" ]; then
   exit 0
 fi
 
-echo "✅ Mandatory variables are correct"
+echo "🔨 Mandatory variables are correct"
 file_crypted=""
 kv_name=""
 kv_sops_key_name=""
