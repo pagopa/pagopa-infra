@@ -11,7 +11,7 @@ locals {
   all_enc_secrets_value = can(data.external.terrasops.result) ? flatten([
     for k, v in data.external.terrasops.result : {
       value = v
-      key = k
+      key   = k
     }
   ]) : []
 
@@ -19,7 +19,7 @@ locals {
   all_config_secrets_value = flatten([
     for kc, vc in local.config_secret_data : {
       value = vc
-      key = kc
+      key   = kc
     }
   ])
 
