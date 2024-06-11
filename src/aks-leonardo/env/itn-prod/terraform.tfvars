@@ -1,11 +1,11 @@
 # general
-prefix          = "pagopa"
-env_short       = "p"
-env             = "prod"
-domain          = "prod"
-location        = "italynorth"
-location_string = "Italy North"
-location_short  = "itn"
+prefix              = "pagopa"
+env_short           = "p"
+env                 = "prod"
+domain              = "prod"
+location            = "italynorth"
+location_string     = "Italy North"
+location_short      = "itn"
 location_westeurope = "westeurope"
 
 

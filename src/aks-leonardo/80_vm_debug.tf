@@ -24,12 +24,12 @@ resource "azurerm_network_interface" "vm_debug_italy" {
 
 # Creazione della macchina virtuale
 resource "azurerm_linux_virtual_machine" "vm_debug_italy" {
-  name                = "${local.project}-vm-debug-italy"
-  resource_group_name = azurerm_resource_group.rg_aks.name
-  location            = azurerm_resource_group.rg_aks.location
-  size                = "Standard_B2ms"
-  admin_username      = data.azurerm_key_vault_secret.vm_debug_ssh_user.value
-  admin_password      = data.azurerm_key_vault_secret.vm_debug_ssh_pass.value
+  name                            = "${local.project}-vm-debug-italy"
+  resource_group_name             = azurerm_resource_group.rg_aks.name
+  location                        = azurerm_resource_group.rg_aks.location
+  size                            = "Standard_B2ms"
+  admin_username                  = data.azurerm_key_vault_secret.vm_debug_ssh_user.value
+  admin_password                  = data.azurerm_key_vault_secret.vm_debug_ssh_pass.value
   disable_password_authentication = false
   network_interface_ids = [
     azurerm_network_interface.vm_debug_italy.id,
