@@ -157,7 +157,7 @@ resource "azurerm_private_dns_a_record" "platform_dns_a_private_prf" {
   zone_name           = azurerm_private_dns_zone.platform_private_dns_zone_prf[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
-  records             = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses :  module.apim[0].private_ip_addresses)
+  records             = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses  : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses :  module.apim[0].private_ip_addresses)
   tags                = var.tags
 }
 
