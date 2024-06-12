@@ -50,7 +50,7 @@ cosmos_mongo_db_params = {
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 5
+    max_interval_in_seconds = 300
     max_staleness_prefix    = 100000
   }
   server_version                   = "6.0"
