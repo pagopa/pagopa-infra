@@ -336,8 +336,8 @@ module "apim_ecommerce_io_api_v2" {
   })
 
   xml_content = templatefile("./api/ecommerce-io/v2/_base_policy.xml.tpl", {
-    ecommerce_ingress_hostname   = local.ecommerce_hostname
-    wallet_ingress_hostname      = local.wallet_hostname
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+    wallet_ingress_hostname    = local.wallet_hostname
   })
 }
 
@@ -359,7 +359,7 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_authoriza
   operation_id        = "requestTransactionAuthorizationForIO"
 
   xml_content = templatefile("./api/ecommerce-io/v2/_auth_request.xml.tpl", {
-    wallet-basepath              = local.wallet_hostname
+    wallet-basepath = local.wallet_hostname
   })
 }
 
@@ -371,8 +371,8 @@ resource "azurerm_api_management_api_operation_policy" "io_calculate_fee_v2" {
 
   xml_content = templatefile("./api/ecommerce-io/v2/_calculate_fees_policy.xml.tpl",
     {
-      ecommerce-basepath           = local.ecommerce_hostname
-      wallet-basepath              = local.wallet_hostname
+      ecommerce-basepath = local.ecommerce_hostname
+      wallet-basepath    = local.wallet_hostname
     }
   )
 }
