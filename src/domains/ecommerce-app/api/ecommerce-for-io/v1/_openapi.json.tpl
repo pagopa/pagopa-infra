@@ -521,6 +521,16 @@
               }
             }
           },
+           "422": {
+            "description": "Transaction cannot be processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal server error",
             "content": {
@@ -2003,6 +2013,30 @@
           }
         }
       },
+      "WalletClientStatus": {
+        "type": "string",
+        "description": "Enumeration of wallet client statuses",
+        "enum": [
+          "ENABLED",
+          "DISABLED"
+        ]
+      },
+      "WalletClient": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/WalletClientStatus"
+          },
+          "lastUsage": {
+            "type": "string",
+            "description": "Time of last usage of this wallet by the client",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
       "WalletInfo": {
         "type": "object",
         "description": "Wallet information",
@@ -2034,6 +2068,13 @@
               "$ref": "#/components/schemas/WalletApplication"
             }
           },
+          "clients": {
+            "description": "Client-specific state (e.g. last usage) and configuration (enabled/disabled). Currently the only supported client is `IO`.",
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/WalletClient"
+            }
+          },
           "details": {
             "$ref": "#/components/schemas/WalletInfoDetails"
           },
@@ -2051,6 +2092,7 @@
           "creationDate",
           "updateDate",
           "applications",
+          "clients",
           "paymentMethodAsset"
         ]
       },
@@ -2097,7 +2139,11 @@
                 "description": "Wallet details discriminator field. Fixed valued 'PAYPAL'"
               },
               "pspId": {
-                "description": "bank idetifier",
+                "description": "bank identifier",
+                "type": "string"
+              },
+              "pspBusinessName": {
+                "description": "PSP business name",
                 "type": "string"
               },
               "maskedEmail": {
@@ -2109,6 +2155,7 @@
             "required": [
               "type",
               "pspId",
+              "pspBusinessName",
               "maskedEmail"
             ]
           },
