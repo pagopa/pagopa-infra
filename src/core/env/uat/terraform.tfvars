@@ -20,6 +20,7 @@ tags = {
 enabled_features = {
   apim_v2  = true
   vnet_ita = false
+  apim_migrated = true
 }
 
 lock_enable = true
