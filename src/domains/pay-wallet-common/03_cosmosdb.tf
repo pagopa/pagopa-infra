@@ -15,11 +15,11 @@ module "cosmosdb_account_mongodb" {
   resource_group_name = azurerm_resource_group.cosmosdb_pay_wallet_rg.name
   domain              = var.domain
 
-  offer_type           = var.cosmos_mongo_db_params.offer_type
-  kind                 = var.cosmos_mongo_db_params.kind
-  capabilities         = var.cosmos_mongo_db_params.capabilities
+  offer_type   = var.cosmos_mongo_db_params.offer_type
+  kind         = var.cosmos_mongo_db_params.kind
+  capabilities = var.cosmos_mongo_db_params.capabilities
   #mongo_server_version = var.cosmos_mongo_db_params.server_version
-  enable_free_tier     = var.cosmos_mongo_db_params.enable_free_tier
+  enable_free_tier = var.cosmos_mongo_db_params.enable_free_tier
 
   public_network_access_enabled     = var.cosmos_mongo_db_params.public_network_access_enabled
   private_endpoint_enabled          = var.cosmos_mongo_db_params.private_endpoint_enabled
