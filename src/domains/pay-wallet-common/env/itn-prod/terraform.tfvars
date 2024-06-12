@@ -64,7 +64,7 @@ cosmos_mongo_db_params = {
   }]
   private_endpoint_enabled                     = true
   public_network_access_enabled                = false
-  is_virtual_network_filter_enabled            = true
+  is_virtual_network_filter_enabled            = false
   backup_continuous_enabled                    = true
   enable_provisioned_throughput_exceeded_alert = false
 
