@@ -145,7 +145,7 @@
             "pagoPAPlatformSessionToken": []
           }
         ],
-        "operationId": "createIOPaymentWalletForTransactions",
+        "operationId": "createWalletForTransactionsForIO",
         "parameters": [
           {
             "name": "transactionId",
