@@ -18,7 +18,7 @@ tags = {
 is_feature_enabled = {
   cosmos  = true
   redis   = true
-  storage = false
+  storage = true
 }
 
 ### External resources
@@ -96,7 +96,7 @@ pay_wallet_storage_params = {
   enabled                       = true
   tier                          = "Standard"
   kind                          = "StorageV2"
-  account_replication_type      = "GZRS",
+  account_replication_type      = "ZRS",
   advanced_threat_protection    = false,
   retention_days                = 30,
   public_network_access_enabled = false,
