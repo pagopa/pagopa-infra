@@ -18,8 +18,9 @@ tags = {
 # Feature flag
 #
 enabled_features = {
-  apim_v2  = false
+  apim_v2  = true
   vnet_ita = false
+  apim_migrated = false
 }
 
 lock_enable = true
