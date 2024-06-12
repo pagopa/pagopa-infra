@@ -106,7 +106,7 @@
           var userId = ((string)context.Variables.GetValueOrDefault("userId","")); 
           var walleToken = ((string)context.Variables.GetValueOrDefault("walletToken",""));
 
-          //Read email and pass it to tje JWT. By now the email in shared as is. It MUST be encoded (by pdv) but POST transaction need to updated to not match email address as email field
+          //Read email and pass it to the JWT. By now the email in shared as is. It MUST be encoded (by pdv) but POST transaction need to updated to not match email address as email field
           JObject userAuthBody = (JObject)context.Variables["userAuthBody"];
           String spidEmail = (String)userAuthBody["spid_email"];
           String noticeEmail = (String)userAuthBody["notice_email"];
