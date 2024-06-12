@@ -14,6 +14,7 @@
           <when condition="@("false".Equals("${ecommerce_io_with_pm_enabled}"))">
             <!-- Check JWT START-->
             <include-fragment fragment-id="jwt-chk-wallet-session" />
+            <!-- Check JWT END-->
             <!-- Headers settings required for backend service START -->
             <set-header name="x-user-id" exists-action="override">
                 <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
@@ -22,7 +23,6 @@
               <value>IO</value>
             </set-header>
             <!-- Headers settings required for backend service END -->
-            <!-- Check JWT END-->
           </when>
           <otherwise>
           <!-- Check sessiontoken START-->
