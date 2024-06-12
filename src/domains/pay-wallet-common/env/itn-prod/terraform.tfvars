@@ -16,16 +16,16 @@ tags = {
 
 ### FEATURES FLAGS
 is_feature_enabled = {
-  cosmos  = false
-  redis   = false
-  storage = false
+  cosmos  = true
+  redis   = true
+  storage = true
 }
 
 ### External resources
 
-monitor_italy_resource_group_name                 = "pagopa-u-itn-core-monitor-rg"
-log_analytics_italy_workspace_name                = "pagopa-u-itn-core-law"
-log_analytics_italy_workspace_resource_group_name = "pagopa-u-itn-core-monitor-rg"
+monitor_italy_resource_group_name                 = "pagopa-p-itn-core-monitor-rg"
+log_analytics_italy_workspace_name                = "pagopa-p-itn-core-law"
+log_analytics_italy_workspace_resource_group_name = "pagopa-p-itn-core-monitor-rg"
 
 ### NETWORK
 
@@ -46,14 +46,14 @@ dns_zone_internal_prefix = "internal.platform"
 
 cosmos_mongo_db_params = {
   kind         = "MongoDB"
-  capabilities = ["EnableMongo"]
+  capabilities = ["EnableMongo", "DisableRateLimitingResponses"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
     max_interval_in_seconds = 5
     max_staleness_prefix    = 100000
   }
-  server_version                   = "4.2"
+  server_version                   = "6.0"
   main_geo_location_zone_redundant = true
   enable_free_tier                 = false
 
@@ -62,18 +62,18 @@ cosmos_mongo_db_params = {
     failover_priority = 1
     zone_redundant    = false
   }]
-  private_endpoint_enabled          = true
-  public_network_access_enabled     = false
-  is_virtual_network_filter_enabled = false
-
-  backup_continuous_enabled = true
+  private_endpoint_enabled                     = true
+  public_network_access_enabled                = false
+  is_virtual_network_filter_enabled            = true
+  backup_continuous_enabled                    = true
+  enable_provisioned_throughput_exceeded_alert = false
 
 }
 
 cosmos_mongo_db_pay_wallet_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 1000
+  max_throughput     = 10000
   throughput         = 1000
 }
 
@@ -81,11 +81,12 @@ cosmos_mongo_db_pay_wallet_params = {
 ### Redis
 
 redis_pay_wallet_params = {
-  capacity = 0
-  sku_name = "Premium"
-  family   = "C"
-  version  = 6
-  zones    = []
+  capacity   = 1
+  sku_name   = "Premium"
+  family     = "P"
+  version    = 6
+  ha_enabled = true
+  zones      = [1, 2, 3]
 }
 
 
