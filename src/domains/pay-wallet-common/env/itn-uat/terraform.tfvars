@@ -16,10 +16,16 @@ tags = {
 
 ### FEATURES FLAGS
 is_feature_enabled = {
-  cosmos  = false
-  redis   = false
-  storage = false
+  cosmos  = true
+  redis   = true
+  storage = true
 }
+
+### External resources
+
+monitor_italy_resource_group_name                 = "pagopa-u-itn-core-monitor-rg"
+log_analytics_italy_workspace_name                = "pagopa-u-itn-core-law"
+log_analytics_italy_workspace_resource_group_name = "pagopa-u-itn-core-monitor-rg"
 
 ### NETWORK
 
@@ -27,11 +33,6 @@ cidr_subnet_cosmosdb_pay_wallet = ["10.3.8.0/24"]
 cidr_subnet_redis_pay_wallet    = ["10.3.9.0/24"]
 cidr_subnet_storage_pay_wallet  = ["10.3.10.0/24"]
 
-### External resources
-
-monitor_resource_group_name                 = "pagopa-u-monitor-rg"
-log_analytics_workspace_name                = "pagopa-u-law"
-log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 
 ingress_load_balancer_ip = "10.3.2.250"
 
@@ -52,7 +53,7 @@ cosmos_mongo_db_params = {
     max_interval_in_seconds = 5
     max_staleness_prefix    = 100000
   }
-  server_version                   = "4.0"
+  server_version                   = "4.2"
   main_geo_location_zone_redundant = false
   enable_free_tier                 = false
 
@@ -82,7 +83,6 @@ redis_pay_wallet_params = {
   zones    = []
 }
 
-
 ### Storage
 
 pay_wallet_storage_params = {
@@ -94,4 +94,3 @@ pay_wallet_storage_params = {
   retention_days                = 7,
   public_network_access_enabled = false,
 }
-

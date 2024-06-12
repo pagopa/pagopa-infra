@@ -6,23 +6,23 @@
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.6 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.47.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.96.0 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.106.1 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.3.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v8.5.0 |
-| <a name="module_cosmosdb_pay_wallet_collections"></a> [cosmosdb\_pay\_wallet\_collections](#module\_cosmosdb\_pay\_wallet\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v8.5.0 |
-| <a name="module_cosmosdb_pay_wallet_snet"></a> [cosmosdb\_pay\_wallet\_snet](#module\_cosmosdb\_pay\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.5.0 |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.5.0 |
-| <a name="module_pagopa_pay_wallet_redis"></a> [pagopa\_pay\_wallet\_redis](#module\_pagopa\_pay\_wallet\_redis) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v8.5.0 |
-| <a name="module_pay_wallet_storage"></a> [pay\_wallet\_storage](#module\_pay\_wallet\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.5.0 |
-| <a name="module_redis_pagopa_pay_wallet_snet"></a> [redis\_pagopa\_pay\_wallet\_snet](#module\_redis\_pagopa\_pay\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.5.0 |
-| <a name="module_storage_pay_wallet_snet"></a> [storage\_pay\_wallet\_snet](#module\_storage\_pay\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.5.0 |
-| <a name="module_web_test_availability_alert_rules_for_api"></a> [web\_test\_availability\_alert\_rules\_for\_api](#module\_web\_test\_availability\_alert\_rules\_for\_api) | git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview | v8.5.0 |
+| <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v8.20.1 |
+| <a name="module_cosmosdb_pay_wallet_collections"></a> [cosmosdb\_pay\_wallet\_collections](#module\_cosmosdb\_pay\_wallet\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v8.20.1 |
+| <a name="module_cosmosdb_pay_wallet_snet"></a> [cosmosdb\_pay\_wallet\_snet](#module\_cosmosdb\_pay\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.20.1 |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.20.1 |
+| <a name="module_pagopa_pay_wallet_redis"></a> [pagopa\_pay\_wallet\_redis](#module\_pagopa\_pay\_wallet\_redis) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v8.20.1 |
+| <a name="module_pay_wallet_storage"></a> [pay\_wallet\_storage](#module\_pay\_wallet\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.20.1 |
+| <a name="module_redis_pagopa_pay_wallet_snet"></a> [redis\_pagopa\_pay\_wallet\_snet](#module\_redis\_pagopa\_pay\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.20.1 |
+| <a name="module_storage_pay_wallet_snet"></a> [storage\_pay\_wallet\_snet](#module\_storage\_pay\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.20.1 |
 
 ## Resources
 
@@ -34,6 +34,22 @@
 | [azurerm_key_vault_access_policy.azdevops_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.azdevops_iac_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.cdn_wallet_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_secret.ai_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.elastic_otel_token_header](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.migration_wallet_token_test_dev](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.mongo_wallet_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.npg_notifications_jwt_secret_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.npg_service_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.payment-method-api-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.paypal_psp_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.personal-data-vault-api-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.redis_wallet_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.wallet-jwt-signing-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.wallet-token-test-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.wallet_migration_api_key_test_dev](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.wallet_migration_cstar_api_key_test_dev](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.wallet_storage_account_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.wallet_storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_diagnostic_setting.pay_wallet_queue_diagnostics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
 | [azurerm_monitor_metric_alert.cosmos_db_normalized_ru_exceeded](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.queue_storage_account_average_message_count](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |

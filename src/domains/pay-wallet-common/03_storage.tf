@@ -7,20 +7,19 @@ resource "azurerm_resource_group" "storage_pay_wallet_rg" {
 module "pay_wallet_storage" {
 
   count  = var.is_feature_enabled.storage ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.20.1"
 
-  name                                       = replace("${local.project}-sa", "-", "")
-  account_kind                               = var.pay_wallet_storage_params.kind
-  account_tier                               = var.pay_wallet_storage_params.tier
-  account_replication_type                   = var.pay_wallet_storage_params.account_replication_type
-  access_tier                                = "Hot"
-  blob_versioning_enabled                    = true
-  resource_group_name                        = azurerm_resource_group.storage_pay_wallet_rg.name
-  location                                   = var.location
-  enable_resource_advanced_threat_protection = var.pay_wallet_storage_params.advanced_threat_protection
-  advanced_threat_protection                 = var.pay_wallet_storage_params.advanced_threat_protection
-  allow_nested_items_to_be_public            = false
-  public_network_access_enabled              = var.pay_wallet_storage_params.public_network_access_enabled
+  name                            = replace("${local.project}-sa", "-", "")
+  account_kind                    = var.pay_wallet_storage_params.kind
+  account_tier                    = var.pay_wallet_storage_params.tier
+  account_replication_type        = var.pay_wallet_storage_params.account_replication_type
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = true
+  resource_group_name             = azurerm_resource_group.storage_pay_wallet_rg.name
+  location                        = var.location
+  advanced_threat_protection      = var.pay_wallet_storage_params.advanced_threat_protection
+  allow_nested_items_to_be_public = false
+  public_network_access_enabled   = var.pay_wallet_storage_params.public_network_access_enabled
 
   blob_delete_retention_days = var.pay_wallet_storage_params.retention_days
 
@@ -43,7 +42,7 @@ resource "azurerm_private_endpoint" "storage_private_endpoint" {
   subnet_id           = module.storage_pay_wallet_snet.id
   private_dns_zone_group {
     name                 = "${local.project}-storage-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_queue_azure_com.id]
   }
 
   private_service_connection {

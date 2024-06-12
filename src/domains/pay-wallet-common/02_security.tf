@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.20.1"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -77,4 +77,177 @@ resource "azurerm_key_vault_access_policy" "cdn_wallet_kv" {
   secret_permissions      = ["Get", ]
   storage_permissions     = []
   certificate_permissions = ["Get", ]
+}
+
+resource "azurerm_key_vault_secret" "ai_connection_string" {
+  name         = "ai-${var.env_short}-connection-string"
+  value        = data.azurerm_application_insights.application_insights_italy.connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "redis_wallet_password" {
+  name         = "redis-wallet-password"
+  value        = module.pagopa_pay_wallet_redis[0].primary_access_key
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "personal-data-vault-api-key" {
+  name         = "personal-data-vault-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "wallet-jwt-signing-key" {
+  name         = "wallet-jwt-signing-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "payment-method-api-key" {
+  name         = "payment-method-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+
+resource "azurerm_key_vault_secret" "mongo_wallet_password" {
+  name         = "mongo-wallet-password"
+  value        = module.cosmosdb_account_mongodb[0].primary_master_key
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
+  name         = "elastic-otel-token-header"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "npg_service_api_key" {
+  name         = "npg-service-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "wallet-token-test-key" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "wallet-token-test-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "paypal_psp_api_key" {
+  name         = "paypal-psp-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "npg_notifications_jwt_secret_key" {
+  name         = "npg-notifications-jwt-secret-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "wallet_storage_connection_string" {
+  name         = "wallet-storage-connection-string"
+  value        = module.pay_wallet_storage[0].primary_connection_string
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "wallet_storage_account_key" {
+  name         = "wallet-storage-account-key"
+  value        = module.pay_wallet_storage[0].primary_access_key
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "wallet_migration_api_key_test_dev" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "wallet-migration-api-key-test-dev"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "wallet_migration_cstar_api_key_test_dev" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "wallet-migration-cstar-api-key-test-dev"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "migration_wallet_token_test_dev" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "migration-wallet-token-test-dev"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }

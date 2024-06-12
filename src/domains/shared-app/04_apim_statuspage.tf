@@ -55,11 +55,6 @@ resource "azurerm_api_management_api_version_set" "api_statuspage_api" {
   versioning_scheme   = "Segment"
 }
 
-data "azurerm_function_app" "authorizer" {
-  name                = format("%s-%s-%s-shared-authorizer-fn", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-%s-shared-rg", var.prefix, var.env_short, var.location_short)
-}
-
 data "azurerm_function_app" "canone_unico" {
   name                = format("%s-%s-fn-canoneunico", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-canoneunico-rg", var.prefix, var.env_short)
@@ -119,11 +114,11 @@ module "apim_api_statuspage_api_v1" {
       "afmcalculator"            = format("%s/pagopa-afm-calculator-service", format(local.aks_path, "afm"))
       "afmmarketplace"           = format("%s/pagopa-afm-marketplace-service", format(local.aks_path, "afm"))
       "afmutils"                 = format("%s/pagopa-afm-utils-service", format(local.aks_path, "afm"))
-      "apiconfig"                = format("%s/pagopa-api-config-core-service/o", format(local.aks_path, "apiconfig"))
+      "apiconfig"                = format("%s/{{apicfg-core-service-path}}", format(local.aks_path, "apiconfig")) // show status only one instances Ora OR Pgflex
       "apiconfig-fe"             = format("%s", local.fe_apiconfig_path)
       "apiconfigcacheo"          = format("%s/api-config-cache/o", format(local.aks_path, "apiconfig"))
       "apiconfigcachep"          = format("%s/api-config-cache/p", format(local.aks_path, "apiconfig"))
-      "apiconfigselfcare"        = format("%s/pagopa-api-config-selfcare-integration", format(local.aks_path, "apiconfig"))
+      "apiconfigselfcare"        = format("%s/{{apicfg-selfcare-integ-service-path}}", format(local.aks_path, "apiconfig")) // show status only one instances Ora OR Pgflex
       "authorizer"               = format("%s//authorizer-functions", format(local.aks_path, "shared"))
       "authorizerconfig"         = format("%s//authorizer-config", format(local.aks_path, "shared"))
       "bizevents"                = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))

@@ -272,6 +272,8 @@
 | [azurerm_api_management_group.piattaforma_notifiche](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_group.readonly](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_named_value.aks_lb_nexi](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.apicfg_core_service_path](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.apicfg_selfcare_integ_service_path](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.base_path_nodo_fatturazione](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.base_path_nodo_fatturazione_dev](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.base_path_nodo_oncloud](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
@@ -474,6 +476,7 @@
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azurerm_api_management.apim_migrated](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/api_management) | data source |
 | [azurerm_api_management.apim_v2](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/api_management) | data source |
 | [azurerm_api_management_api.apim_aca_api_v1_](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/api_management_api) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/client_config) | data source |
@@ -539,11 +542,14 @@
 | <a name="input_advanced_fees_management_tier"></a> [advanced\_fees\_management\_tier](#input\_advanced\_fees\_management\_tier) | advanced fees management plan tier | `string` | `"Standard"` | no |
 | <a name="input_afm_marketplace_cname_record_name"></a> [afm\_marketplace\_cname\_record\_name](#input\_afm\_marketplace\_cname\_record\_name) | DNS canonical name | `string` | `"marketplace"` | no |
 | <a name="input_allow_blob_public_access"></a> [allow\_blob\_public\_access](#input\_allow\_blob\_public\_access) | Allow or disallow public access to all blobs or containers in the storage account. | `bool` | `false` | no |
+| <a name="input_apicfg_core_service_path_value"></a> [apicfg\_core\_service\_path\_value](#input\_apicfg\_core\_service\_path\_value) | apicfg core cache path | `string` | n/a | yes |
+| <a name="input_apicfg_selfcare_integ_service_path_value"></a> [apicfg\_selfcare\_integ\_service\_path\_value](#input\_apicfg\_selfcare\_integ\_service\_path\_value) | apicfg selfcare integ cache path | `string` | n/a | yes |
 | <a name="input_apim_alerts_enabled"></a> [apim\_alerts\_enabled](#input\_apim\_alerts\_enabled) | Enable alerts | `bool` | `true` | no |
 | <a name="input_apim_autoscale"></a> [apim\_autoscale](#input\_apim\_autoscale) | Configure Apim autoscale on capacity metric | <pre>object(<br>    {<br>      enabled                       = bool<br>      default_instances             = number<br>      minimum_instances             = number<br>      maximum_instances             = number<br>      scale_out_capacity_percentage = number<br>      scale_out_time_window         = string<br>      scale_out_value               = string<br>      scale_out_cooldown            = string<br>      scale_in_capacity_percentage  = number<br>      scale_in_time_window          = string<br>      scale_in_value                = string<br>      scale_in_cooldown             = string<br>    }<br>  )</pre> | <pre>{<br>  "default_instances": 1,<br>  "enabled": false,<br>  "maximum_instances": 5,<br>  "minimum_instances": 1,<br>  "scale_in_capacity_percentage": 30,<br>  "scale_in_cooldown": "PT30M",<br>  "scale_in_time_window": "PT30M",<br>  "scale_in_value": "1",<br>  "scale_out_capacity_percentage": 60,<br>  "scale_out_cooldown": "PT45M",<br>  "scale_out_time_window": "PT10M",<br>  "scale_out_value": "2"<br>}</pre> | no |
 | <a name="input_apim_enable_nm3_decoupler_switch"></a> [apim\_enable\_nm3\_decoupler\_switch](#input\_apim\_enable\_nm3\_decoupler\_switch) | Enable switch backend address in NM3 algorithm logic | `bool` | `false` | no |
 | <a name="input_apim_enable_routing_decoupler_switch"></a> [apim\_enable\_routing\_decoupler\_switch](#input\_apim\_enable\_routing\_decoupler\_switch) | Enable switch backend address in Routing algorithm logic | `bool` | `false` | no |
 | <a name="input_apim_fdr_nodo_pagopa_enable"></a> [apim\_fdr\_nodo\_pagopa\_enable](#input\_apim\_fdr\_nodo\_pagopa\_enable) | Enable Fdr Service Nodo pagoPA side | `bool` | `false` | no |
+| <a name="input_apim_logger_resource_id"></a> [apim\_logger\_resource\_id](#input\_apim\_logger\_resource\_id) | Resource id for the APIM logger | `string` | `null` | no |
 | <a name="input_apim_nodo_auth_decoupler_enable"></a> [apim\_nodo\_auth\_decoupler\_enable](#input\_apim\_nodo\_auth\_decoupler\_enable) | Apply decoupler to nodo-auth product apim policy | `bool` | `false` | no |
 | <a name="input_apim_nodo_decoupler_enable"></a> [apim\_nodo\_decoupler\_enable](#input\_apim\_nodo\_decoupler\_enable) | Apply decoupler to nodo product apim policy | `bool` | `false` | no |
 | <a name="input_apim_publisher_name"></a> [apim\_publisher\_name](#input\_apim\_publisher\_name) | apim | `string` | n/a | yes |
@@ -677,7 +683,7 @@
 | <a name="input_ehns_zone_redundant"></a> [ehns\_zone\_redundant](#input\_ehns\_zone\_redundant) | Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones). | `bool` | `false` | no |
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Enable Azure DevOps agent. | `bool` | n/a | yes |
 | <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
-| <a name="input_enabled_features"></a> [enabled\_features](#input\_enabled\_features) | Features enabled in this domain | <pre>object({<br>    apim_v2  = bool<br>    vnet_ita = bool<br>  })</pre> | <pre>{<br>  "apim_v2": false,<br>  "vnet_ita": false<br>}</pre> | no |
+| <a name="input_enabled_features"></a> [enabled\_features](#input\_enabled\_features) | Features enabled in this domain | <pre>object({<br>    apim_v2       = bool<br>    apim_migrated = optional(bool, false)<br>    vnet_ita      = bool<br>  })</pre> | <pre>{<br>  "apim_v2": false,<br>  "vnet_ita": false<br>}</pre> | no |
 | <a name="input_env"></a> [env](#input\_env) | Contains env description in extend format (dev,uat,prod) | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | Environment shot version | `string` | n/a | yes |
 | <a name="input_eventhub_enabled"></a> [eventhub\_enabled](#input\_eventhub\_enabled) | eventhub enable? | `bool` | `false` | no |
@@ -749,6 +755,7 @@
 | <a name="input_nodo_pagamenti_test_enabled"></a> [nodo\_pagamenti\_test\_enabled](#input\_nodo\_pagamenti\_test\_enabled) | test del nodo dei pagamenti enabled | `bool` | `false` | no |
 | <a name="input_nodo_pagamenti_url"></a> [nodo\_pagamenti\_url](#input\_nodo\_pagamenti\_url) | Nodo pagamenti url | `string` | `"https://"` | no |
 | <a name="input_nodo_pagamenti_x_forwarded_for"></a> [nodo\_pagamenti\_x\_forwarded\_for](#input\_nodo\_pagamenti\_x\_forwarded\_for) | X-Forwarded-For IP address used for nodo-auth | `string` | n/a | yes |
+| <a name="input_nodo_pagamenti_x_forwarded_for_apim_v2"></a> [nodo\_pagamenti\_x\_forwarded\_for\_apim\_v2](#input\_nodo\_pagamenti\_x\_forwarded\_for\_apim\_v2) | X-Forwarded-For IP address used for nodo-auth | `string` | n/a | yes |
 | <a name="input_pagopa_proxy_autoscale_default"></a> [pagopa\_proxy\_autoscale\_default](#input\_pagopa\_proxy\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `5` | no |
 | <a name="input_pagopa_proxy_autoscale_maximum"></a> [pagopa\_proxy\_autoscale\_maximum](#input\_pagopa\_proxy\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `10` | no |
 | <a name="input_pagopa_proxy_autoscale_minimum"></a> [pagopa\_proxy\_autoscale\_minimum](#input\_pagopa\_proxy\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |

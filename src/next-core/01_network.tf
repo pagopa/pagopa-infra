@@ -16,19 +16,26 @@ module "vnet_replica" {
 
 ## Peering between the vnet(main) and replica vnet
 module "vnet_peering" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v7.62.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v8.13.0"
   count  = var.geo_replica_enabled ? 1 : 0
 
   source_resource_group_name       = data.azurerm_resource_group.rg_vnet_core.name
-  source_virtual_network_name      = data.azurerm_virtual_network.vnet_core.name
-  source_remote_virtual_network_id = data.azurerm_virtual_network.vnet_core.id
+  source_virtual_network_name      = module.vnet_replica[0].name
+  source_remote_virtual_network_id = module.vnet_replica[0].id
   source_allow_gateway_transit     = true # needed by vpn gateway for enabling routing from vnet core to vnet replica
+  source_use_remote_gateways       = true
+  source_allow_forwarded_traffic   = true
 
   target_resource_group_name       = data.azurerm_resource_group.rg_vnet_core.name
-  target_virtual_network_name      = module.vnet_replica[0].name
-  target_remote_virtual_network_id = module.vnet_replica[0].id
-  target_use_remote_gateways       = false # needed by vnet peering with SIA
+  target_virtual_network_name      = data.azurerm_virtual_network.vnet_core.name
+  target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_core.id
+  target_allow_gateway_transit     = true
+  target_allow_forwarded_traffic   = true
 }
+
+
+
+
 
 # RT sia associated to new apim v2 snet
 resource "azurerm_subnet_route_table_association" "rt_sia_for_apim_v2" {

@@ -14,6 +14,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management | v8.19.0 |
 | <a name="module_apimv2"></a> [apimv2](#module\_apimv2) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management | v7.67.1 |
 | <a name="module_apimv2_snet"></a> [apimv2\_snet](#module\_apimv2\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.50.0 |
 | <a name="module_app_gw_integration"></a> [app\_gw\_integration](#module\_app\_gw\_integration) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway | v7.50.0 |
@@ -33,7 +34,7 @@
 | <a name="module_node_forwarder_app_service"></a> [node\_forwarder\_app\_service](#module\_node\_forwarder\_app\_service) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v7.69.1 |
 | <a name="module_node_forwarder_slot_staging"></a> [node\_forwarder\_slot\_staging](#module\_node\_forwarder\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v7.60.0 |
 | <a name="module_redis"></a> [redis](#module\_redis) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v7.50.0 |
-| <a name="module_vnet_peering"></a> [vnet\_peering](#module\_vnet\_peering) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering | v7.62.0 |
+| <a name="module_vnet_peering"></a> [vnet\_peering](#module\_vnet\_peering) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering | v8.13.0 |
 | <a name="module_vnet_replica"></a> [vnet\_replica](#module\_vnet\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network | v7.62.0 |
 | <a name="module_vpn"></a> [vpn](#module\_vpn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//vpn_gateway | v7.76.0 |
 | <a name="module_vpn_snet"></a> [vpn\_snet](#module\_vpn\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.76.0 |
@@ -112,7 +113,9 @@
 | [azurerm_network_security_group.apimv2_snet_nsg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
 | [azurerm_network_security_rule.apimv2_snet_nsg_rules](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule) | resource |
 | [azurerm_private_dns_zone.private_db_dns_zone](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
+| [azurerm_private_dns_zone_virtual_network_link.postgres_vnet_replica](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.private_db_zone_to_core_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
+| [azurerm_public_ip.apim_pip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_public_ip.apimv2_public_ip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_public_ip.integration_appgateway_public_ip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_resource_group.azdo_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -127,6 +130,7 @@
 | [azurerm_storage_container.donation_logo8](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.donation_logo9](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_subnet.tools_cae_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
+| [azurerm_subnet_network_security_group_association.apim_snet_sg_association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_network_security_group_association) | resource |
 | [azurerm_subnet_network_security_group_association.apim_stv2_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_network_security_group_association) | resource |
 | [azurerm_subnet_route_table_association.rt_sia_for_apim_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_route_table_association) | resource |
 | [azurerm_subnet_route_table_association.rt_sia_for_appgw_integration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_route_table_association) | resource |
@@ -173,6 +177,7 @@
 | [azurerm_monitor_action_group.new_conn_srv_opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_private_dns_zone.eventhub](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.postgres](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_private_dns_zone.privatelink_redis_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_redis_cache.redis](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/redis_cache) | data source |
 | [azurerm_resource_group.data](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
@@ -185,6 +190,7 @@
 | [azurerm_route_table.rt_sia](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/route_table) | data source |
 | [azurerm_storage_account.fdr_flows_sa](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 | [azurerm_storage_container.fdr_rend_flow](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_container) | data source |
+| [azurerm_subnet.apim_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.apim_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.eventhub_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
 | [azurerm_subnet.node_forwarder_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
@@ -272,7 +278,7 @@
 | <a name="input_integration_appgateway_private_ip"></a> [integration\_appgateway\_private\_ip](#input\_integration\_appgateway\_private\_ip) | Integration app gateway private ip | `string` | n/a | yes |
 | <a name="input_integration_appgateway_zones"></a> [integration\_appgateway\_zones](#input\_integration\_appgateway\_zones) | Integration app gateway private ip | `list(number)` | n/a | yes |
 | <a name="input_ip_nodo"></a> [ip\_nodo](#input\_ip\_nodo) | Nodo pagamenti ip | `string` | n/a | yes |
-| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | Features enabled in this domain | <pre>object({<br>    vnet_ita                  = bool,<br>    container_app_tools_cae   = optional(bool, false),<br>    node_forwarder_ha_enabled = bool<br>    vpn                       = optional(bool, false)<br>    dns_forwarder_lb          = optional(bool, false)<br>    postgres_private_dns      = bool<br>    azdoa                     = optional(bool, true)<br>    azdoa_extension           = optional(bool, false)<br>  })</pre> | n/a | yes |
+| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | Features enabled in this domain | <pre>object({<br>    vnet_ita                  = bool,<br>    container_app_tools_cae   = optional(bool, false),<br>    node_forwarder_ha_enabled = bool<br>    vpn                       = optional(bool, false)<br>    dns_forwarder_lb          = optional(bool, false)<br>    postgres_private_dns      = bool<br>    azdoa                     = optional(bool, true)<br>    apim_core_import          = optional(bool, false)<br>    use_new_apim              = optional(bool, false)<br>    azdoa_extension           = optional(bool, false)<br>  })</pre> | n/a | yes |
 | <a name="input_lb_aks"></a> [lb\_aks](#input\_lb\_aks) | IP load balancer AKS Nexi/SIA | `string` | `"0.0.0.0"` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_ita"></a> [location\_ita](#input\_location\_ita) | Main location | `string` | `"italynorth"` | no |

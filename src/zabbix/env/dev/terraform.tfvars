@@ -25,3 +25,5 @@ is_resource = {
   zabbix_kv_enabled      = true
 }
 
+force = "v1"
+

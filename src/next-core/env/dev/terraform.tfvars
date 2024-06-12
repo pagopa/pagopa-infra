@@ -23,8 +23,10 @@ is_feature_enabled = {
   container_app_tools_cae   = true,
   node_forwarder_ha_enabled = true,
   vpn                       = true,
-  dns_forwarder_lb          = true
-  postgres_private_dns      = true
+  dns_forwarder_lb          = true,
+  postgres_private_dns      = true,
+  apim_core_import          = true,
+  use_new_apim              = false
 }
 
 ### Network west europe
