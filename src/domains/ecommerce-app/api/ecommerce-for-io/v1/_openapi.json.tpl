@@ -10,14 +10,6 @@
   },
   "tags": [
     {
-      "name": "ecommerce-sessions",
-      "description": "Api's for initiate a payment session",
-      "externalDocs": {
-        "url": "https://TODO",
-        "description": "Technical specifications"
-      }
-    },
-    {
       "name": "ecommerce-payment-requests",
       "description": "Api's for initiate a transaction given an array of payment tokens",
       "externalDocs": {
