@@ -18,7 +18,7 @@ tags = {
 is_feature_enabled = {
   cosmos  = true
   redis   = true
-  storage = true
+  storage = false
 }
 
 ### External resources
