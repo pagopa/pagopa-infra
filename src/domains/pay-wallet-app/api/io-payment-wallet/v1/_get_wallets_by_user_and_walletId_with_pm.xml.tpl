@@ -1,6 +1,5 @@
 <policies>
     <inbound>
-      <set-variable  name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
       <set-variable name="walletId" value="@{
             string walletIdUUID = (string)context.Request.MatchedParameters["walletId"];
             string walletIdHex = walletIdUUID.Substring(walletIdUUID.Length-17 , 17).Replace("-" , "");

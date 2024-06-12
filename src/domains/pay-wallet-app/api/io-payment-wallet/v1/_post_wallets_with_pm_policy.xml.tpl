@@ -1,7 +1,6 @@
 <policies>
     <inbound>
       <!-- Session PM START-->
-      <set-variable  name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
       <send-request ignore-error="true" timeout="10" response-variable-name="pm-session-body" mode="new">
           <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/actions/start-session?token={(string)context.Variables["walletToken"]}")</set-url>
           <set-method>GET</set-method>
