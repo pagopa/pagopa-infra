@@ -24,4 +24,6 @@
         }
         return "";
         }" />
+      <trace source="jwt-wallet-session-stop" severity="information">jwt-wallet-session-stop</trace>
+
 </fragment>      

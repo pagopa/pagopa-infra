@@ -293,7 +293,6 @@
           var iat = new DateTimeOffset(date).ToUnixTimeSeconds(); // sets the issued time of the token now
           var exp = new DateTimeOffset(date.AddMinutes(20)).ToUnixTimeSeconds();  // sets the expiration of the token to be 20 minutes from now
           var userId = ((string)context.Variables.GetValueOrDefault("userId","")); 
-          var walleToken = ((string)context.Variables.GetValueOrDefault("walletToken",""));
 
           //Read email and pass it to the JWT. By now the email in shared as is. It MUST be encoded (by pdv) but POST transaction need to updated to not match email address as email field
           JObject userAuthBody = (JObject)context.Variables["userAuthBody"];
@@ -301,7 +300,7 @@
           String noticeEmail = (String)userAuthBody["notice_email"];
           String email = String.IsNullOrEmpty(noticeEmail) ? spidEmail : noticeEmail;
 
-          var payload = new { iat, exp, jti, exp, userId, email, walletToken }; 
+          var payload = new { iat, exp, jti, exp, userId, email }; 
           var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
 
           // 3) Construct the Base64Url-encoded signature                
