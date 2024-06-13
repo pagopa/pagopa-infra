@@ -100,7 +100,7 @@ module "apim_session_wallet_api_v1" {
     hostname = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/session-wallet/v1/_base_policy_complete.xml.tpl", {
+  xml_content = templatefile("./api/session-wallet/v1/_base_policy.xml.tpl", {
     hostname             = null
     io_backend_base_path = var.io_backend_base_path
     pdv_api_base_path    = var.pdv_api_base_path
