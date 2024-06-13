@@ -38,7 +38,7 @@
         "operationId": "getAllPaymentMethodsForIO",
         "security": [
           {
-            "bearerAuth": []
+            "pagoPAPlatformSessionToken": []
           }
         ],
         "summary": "Retrieve all Payment Methods for IO",
@@ -130,7 +130,7 @@
         "operationId": "createIOPaymentWallet",
         "security": [
           {
-            "bearerAuth": []
+            "pagoPAPlatformSessionToken": []
           }
         ],
         "requestBody": {
@@ -209,7 +209,7 @@
         "operationId": "getIOPaymentWalletsByIdUser",
         "security": [
           {
-            "bearerAuth": []
+            "pagoPAPlatformSessionToken": []
           }
         ],
         "responses": {
@@ -265,7 +265,7 @@
         "operationId": "getIOPaymentWalletById",
         "security": [
           {
-            "bearerAuth": []
+            "pagoPAPlatformSessionToken": []
           }
         ],
         "parameters": [
@@ -327,7 +327,7 @@
         "operationId": "deleteIOPaymentWalletById",
         "security": [
           {
-            "bearerAuth": []
+            "pagoPAPlatformSessionToken": []
           }
         ],
         "parameters": [
@@ -394,7 +394,7 @@
         },
         "security": [
           {
-            "bearerAuth": []
+            "pagoPAPlatformSessionToken": []
           }
         ],
         "parameters": [
@@ -963,7 +963,7 @@
       }
     },
     "securitySchemes": {
-      "bearerAuth": {
+      "pagoPAPlatformSessionToken": {
         "type": "http",
         "scheme": "bearer",
         "description": "session token according to pagoPA platform for IO"
