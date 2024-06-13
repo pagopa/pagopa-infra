@@ -51,6 +51,14 @@ module "apim_session_wallet_product" {
 #################################################
 ## API session wallet token pagoPA for IO      ##
 #################################################
+resource "azurerm_api_management_named_value" "ecommerce_io_pm_enabled" {
+  name                = "ecommerce-io-pm-enabled"
+  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "Enable PM for ecommerce for io"
+  value               = var.ecommerce_io_pm_enabled
+}
+
 locals {
   apim_session_wallet_api = {
     display_name          = "pagoPA - session wallet token pagoPA for IO APP"
@@ -92,7 +100,7 @@ module "apim_session_wallet_api_v1" {
     hostname = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/session-wallet/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./api/session-wallet/v1/_base_policy_complete.xml.tpl", {
     hostname             = null
     io_backend_base_path = var.io_backend_base_path
     pdv_api_base_path    = var.pdv_api_base_path
