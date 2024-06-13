@@ -143,6 +143,11 @@ variable "cidr_subnet_storage_pay_wallet" {
   description = "Azure storage DB address space for pagoPA wallet."
 }
 
+variable "cidr_subnet_pay_wallet_user_aks" {
+  type        = list(string)
+  description = "AKS user address space for pagoPA pay-wallet."
+}
+
 # CosmosDb
 
 variable "cosmos_mongo_db_params" {
@@ -209,4 +214,25 @@ variable "pay_wallet_storage_params" {
     public_network_access_enabled = bool,
   })
   description = "Azure storage DB params for pagoPA wallet resources."
+}
+
+variable "aks_user_node_pool" {
+  type = object({
+    enabled                    = optional(bool, true),
+    name                       = string,
+    vm_size                    = string,
+    os_disk_type               = string,
+    os_disk_size_gb            = string,
+    node_count_min             = number,
+    node_count_max             = number,
+    node_labels                = map(any),
+    node_taints                = list(string),
+    node_tags                  = map(any),
+    ultra_ssd_enabled          = optional(bool, false),
+    enable_host_encryption     = optional(bool, true),
+    max_pods                   = optional(number, 250),
+    upgrade_settings_max_surge = optional(string, "30%"),
+    zones                      = optional(list(any), [1, 2, 3]),
+  })
+  description = "AKS node pool user configuration"
 }

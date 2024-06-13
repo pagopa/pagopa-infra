@@ -50,6 +50,7 @@
 | [azurerm_key_vault_secret.wallet_migration_cstar_api_key_test_dev](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.wallet_storage_account_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.wallet_storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_kubernetes_cluster_node_pool.user_nodepool_pay_wallet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster_node_pool) | resource |
 | [azurerm_monitor_diagnostic_setting.pay_wallet_queue_diagnostics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_diagnostic_setting) | resource |
 | [azurerm_monitor_metric_alert.cosmos_db_normalized_ru_exceeded](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.queue_storage_account_average_message_count](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
@@ -65,6 +66,7 @@
 | [azurerm_storage_queue.pay_wallet_usage_update_queue_blue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.pay_wallet_wallet_expiration_queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.pay_wallet_wallet_expiration_queue_blue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
+| [azurerm_subnet.pay_wallet_user_aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -72,6 +74,7 @@
 | [azuread_service_principal.iac_principal](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
 | [azurerm_application_insights.application_insights_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
 | [azurerm_log_analytics_workspace.log_analytics_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
@@ -91,7 +94,9 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_aks_user_node_pool"></a> [aks\_user\_node\_pool](#input\_aks\_user\_node\_pool) | AKS node pool user configuration | <pre>object({<br>    enabled                    = optional(bool, true),<br>    name                       = string,<br>    vm_size                    = string,<br>    os_disk_type               = string,<br>    os_disk_size_gb            = string,<br>    node_count_min             = number,<br>    node_count_max             = number,<br>    node_labels                = map(any),<br>    node_taints                = list(string),<br>    node_tags                  = map(any),<br>    ultra_ssd_enabled          = optional(bool, false),<br>    enable_host_encryption     = optional(bool, true),<br>    max_pods                   = optional(number, 250),<br>    upgrade_settings_max_surge = optional(string, "30%"),<br>    zones                      = optional(list(any), [1, 2, 3]),<br>  })</pre> | n/a | yes |
 | <a name="input_cidr_subnet_cosmosdb_pay_wallet"></a> [cidr\_subnet\_cosmosdb\_pay\_wallet](#input\_cidr\_subnet\_cosmosdb\_pay\_wallet) | Cosmos DB address space for wallet. | `list(string)` | n/a | yes |
+| <a name="input_cidr_subnet_pay_wallet_user_aks"></a> [cidr\_subnet\_pay\_wallet\_user\_aks](#input\_cidr\_subnet\_pay\_wallet\_user\_aks) | AKS user address space for pagoPA pay-wallet. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_redis_pay_wallet"></a> [cidr\_subnet\_redis\_pay\_wallet](#input\_cidr\_subnet\_redis\_pay\_wallet) | Redis DB address space for wallet. | `list(string)` | n/a | yes |
 | <a name="input_cidr_subnet_storage_pay_wallet"></a> [cidr\_subnet\_storage\_pay\_wallet](#input\_cidr\_subnet\_storage\_pay\_wallet) | Azure storage DB address space for pagoPA wallet. | `list(string)` | n/a | yes |
 | <a name="input_cosmos_mongo_db_params"></a> [cosmos\_mongo\_db\_params](#input\_cosmos\_mongo\_db\_params) | n/a | <pre>object({<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    kind           = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    enable_free_tier                 = bool<br>    main_geo_location_zone_redundant = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>  })</pre> | n/a | yes |

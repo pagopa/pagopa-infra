@@ -33,8 +33,7 @@ log_analytics_italy_workspace_resource_group_name = "pagopa-d-itn-core-monitor-r
 cidr_subnet_cosmosdb_pay_wallet = ["10.3.8.0/24"]
 cidr_subnet_redis_pay_wallet    = ["10.3.9.0/24"]
 cidr_subnet_storage_pay_wallet  = ["10.3.10.0/24"]
-
-
+cidr_subnet_pay_wallet_user_aks = ["10.3.6.0/24"]
 
 ingress_load_balancer_ip = "10.3.2.250"
 
@@ -97,3 +96,16 @@ pay_wallet_storage_params = {
   public_network_access_enabled = true,
 }
 
+# AKS
+aks_user_node_pool = {
+  enabled         = true,
+  name            = "padakswalusr",
+  vm_size         = "Standard_B8ms",
+  os_disk_type    = "Managed",
+  os_disk_size_gb = 75,
+  node_count_min  = 1,
+  node_count_max  = 3,
+  node_labels     = { node_name : "aks-pay-wallet-user", node_type : "user", domain : "paywallet" },
+  node_taints     = ["paymentWalletOnly=true:NoSchedule"],
+  node_tags       = { payWallet : "true" },
+}
