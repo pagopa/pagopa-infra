@@ -21,12 +21,12 @@ module "cosmosdb_account_mongodb" {
   #mongo_server_version = var.cosmos_mongo_db_params.server_version
   enable_free_tier = var.cosmos_mongo_db_params.enable_free_tier
 
-  public_network_access_enabled     = var.cosmos_mongo_db_params.public_network_access_enabled
-  private_endpoint_enabled          = var.cosmos_mongo_db_params.private_endpoint_enabled
-  subnet_id                         = module.cosmosdb_pay_wallet_snet.id
-  private_dns_zone_mongo_ids        = [data.azurerm_private_dns_zone.cosmos.id]
-  is_virtual_network_filter_enabled = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
-  #   allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
+  public_network_access_enabled      = var.cosmos_mongo_db_params.public_network_access_enabled
+  private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled
+  subnet_id                          = module.cosmosdb_pay_wallet_snet.id
+  private_dns_zone_mongo_ids         = [data.azurerm_private_dns_zone.cosmos.id]
+  is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
+  allowed_virtual_network_subnet_ids = var.env_short == "d" ? [] : [azurerm_subnet.pay_wallet_user_aks_subnet.id, data.azurerm_subnet.vpn_subnet.id]
 
   consistency_policy               = var.cosmos_mongo_db_params.consistency_policy
   main_geo_location_location       = azurerm_resource_group.cosmosdb_pay_wallet_rg.location

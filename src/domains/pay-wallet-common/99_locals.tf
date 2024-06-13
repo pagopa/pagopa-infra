@@ -23,6 +23,8 @@ locals {
   vnet_italy_name                = "${local.product_italy}-vnet"
   vnet_italy_resource_group_name = "${local.product_italy}-vnet-rg"
 
+  vpn_subnet_name = "GatewaySubnet"
+
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
