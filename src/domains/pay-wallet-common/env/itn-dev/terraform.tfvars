@@ -30,15 +30,14 @@ log_analytics_italy_workspace_resource_group_name = "pagopa-d-itn-core-monitor-r
 
 ### NETWORK
 
-cidr_subnet_cosmosdb_pay_wallet = ["10.3.8.0/24"]
-cidr_subnet_redis_pay_wallet    = ["10.3.9.0/24"]
-cidr_subnet_storage_pay_wallet  = ["10.3.10.0/24"]
+cidr_subnet_cosmosdb_pay_wallet = ["10.3.5.0/27"]
+cidr_subnet_redis_pay_wallet    = ["10.3.5.64/27"]
+cidr_subnet_storage_pay_wallet  = ["10.3.5.96/27"]
 
-
-
+### AKS
 ingress_load_balancer_ip = "10.3.2.250"
 
-### dns
+### DNS
 
 external_domain          = "pagopa.it"
 dns_zone_prefix          = "dev.payment-wallet"
