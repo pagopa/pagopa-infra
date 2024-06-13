@@ -34,6 +34,7 @@ module "cosmosdb_account_mongodb" {
   additional_geo_locations         = var.cosmos_mongo_db_params.additional_geo_locations
 
   backup_continuous_enabled = var.cosmos_mongo_db_params.backup_continuous_enabled
+  ip_range = var.cosmos_mongo_db_params.ip_range_filter
 
   tags = var.tags
 }

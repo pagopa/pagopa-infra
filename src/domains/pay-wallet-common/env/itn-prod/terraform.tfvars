@@ -63,10 +63,11 @@ cosmos_mongo_db_params = {
     zone_redundant    = false
   }]
   private_endpoint_enabled                     = true
-  public_network_access_enabled                = false
-  is_virtual_network_filter_enabled            = false
+  public_network_access_enabled                = true
+  is_virtual_network_filter_enabled            = true
   backup_continuous_enabled                    = true
   enable_provisioned_throughput_exceeded_alert = false
+  ip_range_filter = "104.42.195.92,40.76.54.131,52.176.6.30,52.169.50.45,52.187.184.26,13.88.56.148,40.91.218.243,13.91.105.215,4.210.172.107,40.80.152.199,13.95.130.121,20.245.81.54,40.118.23.126"
 
 }
 
