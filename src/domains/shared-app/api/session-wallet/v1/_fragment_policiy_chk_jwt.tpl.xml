@@ -33,13 +33,6 @@
         }
         return "";
         }" />
-      <set-variable name="walletToken" value="@{
-        var jwt = (Jwt)context.Variables["jwtToken"];
-        if(jwt.Claims.ContainsKey("walletToken")){
-            return jwt.Claims["walletToken"][0];
-        }
-        return "";
-        }" />
       <trace source="jwt-wallet-session-stop" severity="information">jwt-wallet-session-stop</trace>
 
 </fragment>      
