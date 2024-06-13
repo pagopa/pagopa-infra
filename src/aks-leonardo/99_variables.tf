@@ -34,6 +34,11 @@ variable "location" {
   description = "Location name complete"
 }
 
+variable "location_westeurope" {
+  type        = string
+  description = "Location name complete"
+}
+
 variable "location_short" {
   type        = string
   description = "Location short like eg: itn, weu.."

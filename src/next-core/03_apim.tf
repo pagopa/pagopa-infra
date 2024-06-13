@@ -873,7 +873,7 @@ module "apim" {
     enabled             = true
     instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   }
-  zones = startswith(var.apim_v2_sku, "Premium") ? var.apim_v2_zones : null
+  zones                                         = startswith(var.apim_v2_sku, "Premium") ? var.apim_v2_zones : null
   management_logger_applicaiton_insight_enabled = false
 
 
@@ -886,7 +886,7 @@ module "apim" {
     portal-domain         = local.portal_domain
     management-api-domain = local.management_domain
     apim-name             = "${local.product}-apim"
-    old-apim-name             = "${local.project}-apim-v2"
+    old-apim-name         = "${local.project}-apim-v2"
   })
 
   autoscale = var.apim_v2_autoscale

@@ -9,17 +9,17 @@ module "pay_wallet_storage" {
   count  = var.is_feature_enabled.storage ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.20.1"
 
-  name                                       = replace("${local.project}-sa", "-", "")
-  account_kind                               = var.pay_wallet_storage_params.kind
-  account_tier                               = var.pay_wallet_storage_params.tier
-  account_replication_type                   = var.pay_wallet_storage_params.account_replication_type
-  access_tier                                = "Hot"
-  blob_versioning_enabled                    = true
-  resource_group_name                        = azurerm_resource_group.storage_pay_wallet_rg.name
-  location                                   = var.location
-  advanced_threat_protection                 = var.pay_wallet_storage_params.advanced_threat_protection
-  allow_nested_items_to_be_public            = false
-  public_network_access_enabled              = var.pay_wallet_storage_params.public_network_access_enabled
+  name                            = replace("${local.project}-sa", "-", "")
+  account_kind                    = var.pay_wallet_storage_params.kind
+  account_tier                    = var.pay_wallet_storage_params.tier
+  account_replication_type        = var.pay_wallet_storage_params.account_replication_type
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = true
+  resource_group_name             = azurerm_resource_group.storage_pay_wallet_rg.name
+  location                        = var.location
+  advanced_threat_protection      = var.pay_wallet_storage_params.advanced_threat_protection
+  allow_nested_items_to_be_public = false
+  public_network_access_enabled   = var.pay_wallet_storage_params.public_network_access_enabled
 
   blob_delete_retention_days = var.pay_wallet_storage_params.retention_days
 
@@ -65,6 +65,18 @@ resource "azurerm_storage_queue" "pay_wallet_usage_update_queue" {
 resource "azurerm_storage_queue" "pay_wallet_usage_update_queue_blue" {
   count                = var.is_feature_enabled.storage && var.env_short == "u" ? 1 : 0
   name                 = "${local.project}-usage-update-queue-b"
+  storage_account_name = module.pay_wallet_storage[0].name
+}
+
+resource "azurerm_storage_queue" "pay_wallet_wallet_expiration_queue" {
+  name                 = "${local.project}-expiration-queue"
+  storage_account_name = module.pay_wallet_storage[0].name
+}
+
+//storage queue for blue deployment
+resource "azurerm_storage_queue" "pay_wallet_wallet_expiration_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-expiration-queue-b"
   storage_account_name = module.pay_wallet_storage[0].name
 }
 
@@ -117,6 +129,13 @@ locals {
   queue_alert_props = var.env_short == "p" ? [
     {
       queue_key   = "usage-update-queue"
+      severity    = 1
+      time_window = 30
+      frequency   = 15
+      threshold   = 10
+    },
+    {
+      queue_key   = "expiration-queue"
       severity    = 1
       time_window = 30
       frequency   = 15

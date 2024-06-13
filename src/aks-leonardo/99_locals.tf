@@ -1,7 +1,7 @@
 locals {
   product          = "${var.prefix}-${var.env_short}"
-  project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
   product_location = "${var.prefix}-${var.env_short}-${var.location_short}"
+  project          = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
 
   # AKS
   aks_rg_name      = "${local.project}-aks-rg"
@@ -30,6 +30,9 @@ locals {
   monitor_action_group_email_name = "PagoPA"
   alert_action_group_ita_name     = "${var.prefix}${var.env_short}ita"
   alert_action_group_error_name   = "${var.prefix}${var.env_short}error"
+
+  kv_italy_name    = "pagopa-${var.env_short}-itn-core-kv"
+  kv_italy_rg_name = "pagopa-${var.env_short}-itn-core-sec-rg"
 
   aks_metrics_alerts = {
     node_cpu = {
