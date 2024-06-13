@@ -61,7 +61,7 @@ cosmos_mongo_db_params = {
   additional_geo_locations          = []
   private_endpoint_enabled          = true
   public_network_access_enabled     = false
-  is_virtual_network_filter_enabled = false
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = true
 }
