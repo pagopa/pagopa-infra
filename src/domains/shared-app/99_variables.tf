@@ -317,3 +317,9 @@ variable "pdv_api_base_path" {
   default     = null
   description = "Personal data vault api base path"
 }
+
+variable "ecommerce_io_pm_enabled" {
+  type        = bool
+  description = "eCommerce vs pm enabled"
+  default     = false
+}
