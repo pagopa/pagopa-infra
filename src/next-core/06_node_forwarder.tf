@@ -67,7 +67,7 @@ module "node_forwarder_ha_snet" {
   }
 }
 
-resource "azurerm_subnet_nat_gateway_association" "this" {
+resource "azurerm_subnet_nat_gateway_association" "nodefw_ha_snet_nat_association" {
   count                                         = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
   subnet_id      = module.node_forwarder_ha_snet[0].id
   nat_gateway_id = data.azurerm_nat_gateway.nat_gw.id
@@ -111,7 +111,7 @@ module "node_forwarder_app_service" {
 }
 
 module "node_forwarder_slot_staging" {
-  count = var.env_short != "d" && var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
+  count = var.env_short == "p" && var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.60.0"
 
