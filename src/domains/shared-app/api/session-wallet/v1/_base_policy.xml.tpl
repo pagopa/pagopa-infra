@@ -92,7 +92,7 @@
                   </return-response>
               </when>
             </choose>
-            <set-variable name="userAuth" value="@(((IResponse)context.Variables["user-auth-body"]).Body.As<JObject>())" />
+            <set-variable name="userAuthBody" value="@(((IResponse)context.Variables["user-auth-body"]).Body.As<JObject>())" />
             <!-- Get User IO : END-->
             <!-- Post Token PDV : START-->
             <send-request ignore-error="true" timeout="10" response-variable-name="pdv-token" mode="new">
@@ -102,7 +102,7 @@
                   <value>{{wallet-session-personal-data-vault-api-key}}</value>
               </set-header>
               <set-body>@{
-                JObject requestBody = (JObject)context.Variables["userAuth"];
+                JObject requestBody = (JObject)context.Variables["userAuthBody"];
                 return new JObject(
                         new JProperty("pii",  (string)requestBody["fiscal_code"])
                     ).ToString();
