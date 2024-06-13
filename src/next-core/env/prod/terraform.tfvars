@@ -685,3 +685,5 @@ node_forwarder_sku                    = "P3v3"
 devops_agent_zones                    = [1, 2, 3]
 devops_agent_balance_zones            = false
 azdo_agent_vm_image_name              = "pagopa-p-azdo-agent-ubuntu2204-image-v4"
+app_gateway_min_capacity              = 2
+app_gateway_max_capacity              = 25
