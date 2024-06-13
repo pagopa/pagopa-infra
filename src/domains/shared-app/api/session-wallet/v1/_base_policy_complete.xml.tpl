@@ -4,7 +4,7 @@
       <set-variable name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
      
       <choose>
-        <when condition="@("true".Equals("{{ecommerce_io_pm_enabled}}"))">
+        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
           <!-- Session PM START-->
           <send-request ignore-error="true" timeout="10" response-variable-name="pm-session-body" mode="new">
               <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/actions/start-session?token={(string)context.Variables["walletToken"]}")</set-url>
@@ -140,34 +140,34 @@
 
             <!-- pagoPA platform wallet JWT session token : START -->
             <!-- Token JWT START-->
-            <set-variable name="x-jwt-token" value="@{
-                // Construct the Base64Url-encoded header
-                var header = new { typ = "JWT", alg = "HS512" };
-                var jwtHeaderBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(header))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
+                  <set-variable name="x-jwt-token" value="@{
+                    //Construct the Base64Url-encoded header
+                    var header = new { typ = "JWT", alg = "HS512" };
+                    var jwtHeaderBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(header))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
+                    
+                    // Construct the Base64Url-encoded payload 
+                    var jti = Guid.NewGuid().ToString(); //sets the iat claim. Random uuid added to prevent the reuse of this token
+                    var date = DateTime.Now;
+                    var iat = new DateTimeOffset(date).ToUnixTimeSeconds(); // sets the issued time of the token now
+                    var exp = new DateTimeOffset(date.AddMinutes(20)).ToUnixTimeSeconds();  // sets the expiration of the token to be 20 minutes from now
+                    String userId = ((string)context.Variables.GetValueOrDefault("userId","")); 
+                    
+                    // Read email and pass it to the JWT. By now the email in shared as is. It MUST be encoded (by pdv) but POST transaction need to updated to not match email address as email field
+                    JObject userAuth = (JObject)context.Variables["userAuthBody"];
+                    String spidEmail = (String)userAuth["spid_email"];
+                    String noticeEmail = (String)userAuth["notice_email"];
+                    String email = String.IsNullOrEmpty(noticeEmail) ? spidEmail : noticeEmail;
+                    
+                    var payload = new { iat, exp, jti, email, userId}; 
+                    var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
+                    
+                    // Construct the Base64Url-encoded signature                
+                    var signature = new HMACSHA512(Convert.FromBase64String("{{wallet-session-jwt-signing-key}}")).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
+                    var jwtSignatureBase64UrlEncoded = Convert.ToBase64String(signature).Replace("/", "_").Replace("+", "-"). Replace("=", "");
 
-                // 2) Construct the Base64Url-encoded payload 
-                var jti = Guid.NewGuid().ToString(); //sets the iat claim. Random uuid added to prevent the reuse of this token
-                var date = DateTime.Now;
-                var iat = new DateTimeOffset(date).ToUnixTimeSeconds(); // sets the issued time of the token now
-                var exp = new DateTimeOffset(date.AddMinutes(20)).ToUnixTimeSeconds();  // sets the expiration of the token to be 20 minutes from now
-                var userId = ((string)context.Variables.GetValueOrDefault("userId","")); 
-
-                //Read email and pass it to the JWT. By now the email in shared as is. It MUST be encoded (by pdv) but POST transaction need to updated to not match email address as email field
-                JObject userAuthBody = (JObject)context.Variables["userAuthBody"];
-                String spidEmail = (String)userAuthBody["spid_email"];
-                String noticeEmail = (String)userAuthBody["notice_email"];
-                String email = String.IsNullOrEmpty(noticeEmail) ? spidEmail : noticeEmail;
-
-                var payload = new { iat, exp, jti, exp, userId, email }; 
-                var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-
-                // 3) Construct the Base64Url-encoded signature                
-                var signature = new HMACSHA512(Convert.FromBase64String("{{wallet-session-jwt-signing-key}}")).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
-                var jwtSignatureBase64UrlEncoded = Convert.ToBase64String(signature).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-
-                // 4) Return the HMAC SHA512-signed JWT as the value for the Authorization header
-                return $"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}.{jwtSignatureBase64UrlEncoded}"; 
-            }" />
+                    // Return the HMAC SHA512-signed JWT as the value for the Authorization header
+                    return $"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}.{jwtSignatureBase64UrlEncoded}"; 
+                }" />
             <!-- Token JWT END-->
             <!-- pagoPA platform wallet JWT session token : END -->
         </otherwise>

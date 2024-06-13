@@ -52,7 +52,7 @@ module "apim_session_wallet_product" {
 ## API session wallet token pagoPA for IO      ##
 #################################################
 resource "azurerm_api_management_named_value" "ecommerce_io_pm_enabled" {
-  name                = "ecommerce-io-pm-enabled"
+  name                = "enable-pm-ecommerce-io"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   display_name        = "enable-pm-ecommerce-io"
