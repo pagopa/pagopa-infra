@@ -2,7 +2,7 @@
     <inbound>
         <base />
         <choose>
-        <when condition="@("true".Equals("${ecommerce_io_with_pm_enabled}"))">
+        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
             <set-variable  name="sessionToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
             <set-variable name="requestTransactionId" value="@{
                 var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");

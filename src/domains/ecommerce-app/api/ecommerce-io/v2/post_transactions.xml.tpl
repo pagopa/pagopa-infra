@@ -3,7 +3,7 @@
         <base />
         <set-header name="X-Client-Id" exists-action="delete" />
         <choose>
-          <when condition="@("true".Equals("${ecommerce_io_with_pm_enabled}"))">
+          <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
             <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
             <rewrite-uri template="/payment-activations" />
             <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
@@ -103,7 +103,7 @@
     <outbound>
         <base />
         <choose>
-          <when condition="@("true".Equals("${ecommerce_io_with_pm_enabled}"))">
+          <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
             <set-variable name="pagopaProxyResponseBody" value="@(context.Response.Body.As<JObject>())" />
             <choose>
               <when condition="@(context.Response.StatusCode == 200)">
@@ -154,7 +154,7 @@
     <on-error>
         <base />
         <choose>
-          <when condition="@("true".Equals("${ecommerce_io_with_pm_enabled}"))">
+          <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
             <set-body>
             {
               "status": 502,

@@ -11,7 +11,7 @@
     <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
     <!-- Session eCommerce START-->
         <choose>
-          <when condition="@("false".Equals("${ecommerce_io_with_pm_enabled}"))">
+          <when condition="@("false".Equals("{{enable-pm-ecommerce-io}}"))">
             <!-- Check JWT START-->
             <include-fragment fragment-id="jwt-chk-wallet-session" />
             <!-- Check JWT END-->

@@ -20,7 +20,7 @@
         </choose>
 
         <choose>
-            <when condition="@("true".Equals("${ecommerce_io_with_pm_enabled}"))">
+            <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
                 <set-variable name="idPsp" value="@((string)((JObject) context.Variables["body"])["pspId"])" />
                 <set-variable name="idWallet" value="@{
                     string walletIdUUID = (string)context.Variables["walletId"];
@@ -218,7 +218,7 @@
     <outbound>
         <base />
         <choose>
-            <when condition="@("false".Equals("${ecommerce_io_with_pm_enabled}") && context.Response.StatusCode == 200)">
+            <when condition="@("false".Equals("{{enable-pm-ecommerce-io}}") && context.Response.StatusCode == 200)">
                 <set-body>@{
                     JObject inBody = context.Response.Body.As<JObject>(preserveContent: true);
                     var authorizationUrl = (string)inBody["authorizationUrl"];
