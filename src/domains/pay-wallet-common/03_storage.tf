@@ -91,8 +91,8 @@ resource "azurerm_monitor_diagnostic_setting" "pay_wallet_queue_diagnostics" {
     category = "StorageWrite"
 
     retention_policy {
-      enabled = true
-      days    = 3
+      enabled = false
+      days    = 0
     }
   }
   metric {
@@ -119,8 +119,8 @@ resource "azurerm_monitor_diagnostic_setting" "pay_wallet_queue_diagnostics" {
     category = "StorageDelete"
 
     retention_policy {
-      enabled = true
-      days    = 3
+      enabled = false
+      days    = 0
     }
   }
 }
