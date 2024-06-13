@@ -53,9 +53,9 @@ module "apim_session_wallet_product" {
 #################################################
 resource "azurerm_api_management_named_value" "ecommerce_io_pm_enabled" {
   name                = "ecommerce-io-pm-enabled"
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  display_name        = "Enable PM for ecommerce for io"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "enable-pm-ecommerce-io"
   value               = var.ecommerce_io_pm_enabled
 }
 
