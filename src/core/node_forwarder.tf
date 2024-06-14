@@ -42,7 +42,7 @@ locals {
     # Connection Pool
     MAX_CONNECTIONS           = 80
     MAX_CONNECTIONS_PER_ROUTE = 40
-    CONN_TIMEOUT              = 8
+    CONN_TIMEOUT              = var.env_short == "u" ? 30 : 8
 
   }
 
