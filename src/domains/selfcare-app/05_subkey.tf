@@ -1,5 +1,5 @@
 data "azurerm_api_management_product" "apim_notices_product" {
-  product_id          = "pagoa_notices_service"
+  product_id          = "pagopa_notices_service_internal"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
