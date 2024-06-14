@@ -13,16 +13,16 @@ resource "azurerm_api_management_named_value" "wallet_personal_data_vault_api_ke
 }
 
 data "azurerm_key_vault_secret" "wallet_jwt_signing_key_secret" {
-  name         = "wallet-session-jwt-signing-key"
+  name         = "pagopa-wallet-session-jwt-signature-key-private-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 resource "azurerm_api_management_named_value" "wallet-jwt-signing-key" {
-  name                = "wallet-session-jwt-signing-key"
+  name                = "pagopa-wallet-session-jwt-signing-key"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = "wallet-session-jwt-signing-key"
-  value               = data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value
+  display_name        = "pagopa-wallet-session-jwt-signing-key"
+  value               = trimspace(data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value)
   secret              = true
 }
 
