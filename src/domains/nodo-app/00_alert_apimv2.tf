@@ -91,7 +91,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert-nodo-auth-responsetime-v2" {
   for_each            = { for c in local.api_nodo_auth_alerts : c.operationId_s => c }
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-nodo-auth-api-${each.value.primitiva}-responsetime-v2"
+  name                = "pagopa-${var.env_short}-nodo-auth-api-${each.value.primitiva}-${each.value.operationId_s}-responsetime-v2"
   location            = var.location
 
   action {
@@ -127,10 +127,10 @@ QUERY
   }
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "alert-nodo-auth-availability" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "alert-nodo-auth-availability-v2" {
   for_each            = { for c in local.api_nodo_auth_alerts : c.operationId_s => c }
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-nodo-auth-api-${each.value.primitiva}-availability-v2"
+  name                = "pagopa-${var.env_short}-nodo-auth-api-${each.value.primitiva}-${each.value.operationId_s}-availability-v2"
   location            = var.location
 
   action {
