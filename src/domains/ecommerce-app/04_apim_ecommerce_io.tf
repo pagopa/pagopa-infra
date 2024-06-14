@@ -359,8 +359,8 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_authoriza
   operation_id        = "requestTransactionAuthorizationForIO"
 
   xml_content = templatefile("./api/ecommerce-io/v2/_auth_request.xml.tpl", {
-    authurl-basepath             = var.env_short == "d" ? local.apim_hostname : "{{wisp2-gov-it}}"
-    wallet-basepath              = local.wallet_hostname
+    authurl-basepath = var.env_short == "d" ? local.apim_hostname : "{{wisp2-gov-it}}"
+    wallet-basepath  = local.wallet_hostname
   })
 }
 
@@ -407,7 +407,7 @@ resource "azurerm_api_management_api_operation_policy" "create_transactions_v2" 
   operation_id        = "newTransactionForIO"
 
   xml_content = templatefile("./api/ecommerce-io/v2/post_transactions.xml.tpl", {
-    ecommerce_ingress_hostname  = local.ecommerce_hostname
+    ecommerce_ingress_hostname = local.ecommerce_hostname
   })
 }
 
