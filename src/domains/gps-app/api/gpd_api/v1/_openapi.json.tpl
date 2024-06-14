@@ -145,15 +145,15 @@
             }
           },
           {
-            "name": "page",
-            "in": "query",
-            "description": "Page number. Page value starts from 0",
-            "required": false,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-              "default": 0
+            "name" : "page",
+            "in" : "query",
+            "description" : "Page number. Page value starts from 0",
+            "required" : false,
+            "schema" : {
+              "minimum" : 0,
+              "type" : "integer",
+              "format" : "int32",
+              "default" : 0
             }
           },
           {
