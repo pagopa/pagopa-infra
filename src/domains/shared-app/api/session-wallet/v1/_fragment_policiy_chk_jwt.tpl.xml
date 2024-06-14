@@ -1,21 +1,12 @@
 <fragment>
-
-      <trace source="jwt-wallet-session-start" severity="information">jwt-wallet-session-start</trace>
-
-      <set-variable name="walletId" value="@{
-          return context.Request.Headers.GetValueOrDefault("walletId","");
-      }" />
-
       <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
         <issuer-signing-keys>
             <key>{{wallet-session-jwt-signing-key}}</key>
         </issuer-signing-keys>
         <required-claims>
           <claim name="userId" match="all">
-            <value>@((string)context.Variables.GetValueOrDefault("userId",""))</value>
           </claim>
           <claim name="email" match="all">
-            <value>@((string)context.Variables.GetValueOrDefault("email",""))</value>
           </claim>
         </required-claims>
       </validate-jwt>
@@ -33,6 +24,4 @@
         }
         return "";
         }" />
-      <trace source="jwt-wallet-session-stop" severity="information">jwt-wallet-session-stop</trace>
-
 </fragment>      
