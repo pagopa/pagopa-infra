@@ -8,21 +8,41 @@
   http://www.liquibase.org/xml/ns/pro
   http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
 
+<!--  <changeSet author="liquibase" id="20240610000000-1">-->
+<!--    <createTable tableName="VERIFICA_BOLLETTINO_GI">-->
+<!--      <column name="NOTICE_ID" type="VARCHAR2(50)">-->
+<!--        <constraints nullable="false" primaryKey="true" primaryKeyName="vb_gi_pk"/>-->
+<!--      </column>-->
+<!--      <column name="PA_FISCAL_CODE" type="VARCHAR2(50)">-->
+<!--        <constraints nullable="false" primaryKey="true" primaryKeyName="vb_gi_pk"/>-->
+<!--      </column>-->
+<!--    </createTable>-->
+<!--  </changeSet>-->
+
   <changeSet author="liquibase" id="20240610000000-1">
-    <createTable tableName="VERIFICA_BOLLETTINO_GI">
-      <column name="NOTICE_ID" type="VARCHAR2(50)">
-        <constraints nullable="false" primaryKey="true" primaryKeyName="vb_gi_pk"/>
+    <createTable tableName="STATI_CARRELLO_SNAPSHOT_GI">
+      <column name="ID_CARRELLO" type="VARCHAR2(35)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="scs_gi_pk"/>
       </column>
-      <column name="PA_FISCAL_CODE" type="VARCHAR2(50)">
-        <constraints nullable="false" primaryKey="true" primaryKeyName="vb_gi_pk"/>
+      <column name="INSERTED_TIMESTAMP" type="TIMESTAMP(6)">
+        <constraints nullable="false"/>
       </column>
     </createTable>
   </changeSet>
 
   <changeSet author="liquibase" id="20240610000000-2">
-    <createTable tableName="STATI_CARRELLO_SNAPSHOT_GI">
-      <column name="ID_CARRELLO" type="VARCHAR2(35)">
-        <constraints nullable="false" primaryKey="true" primaryKeyName="scs_gi_pk"/>
+    <createTable tableName="RPT_GI">
+      <column name="IDENT_DOMINIO" type="VARCHAR2(35)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="rpt_gi_pk"/>
+      </column>
+      <column name="IUV" type="VARCHAR2(35)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="rpt_gi_pk"/>
+      </column>
+      <column name="CCP" type="VARCHAR2(35)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="rpt_gi_pk"/>
+      </column>
+      <column name="INSERTED_TIMESTAMP" type="TIMESTAMP(6)">
+        <constraints nullable="false"/>
       </column>
     </createTable>
   </changeSet>
@@ -38,6 +58,9 @@
       <column name="CCP" type="VARCHAR2(35)">
         <constraints nullable="false" primaryKey="true" primaryKeyName="rt_gi_pk"/>
       </column>
+      <column name="INSERTED_TIMESTAMP" type="TIMESTAMP(6)">
+        <constraints nullable="false"/>
+      </column>
     </createTable>
   </changeSet>
 
@@ -48,6 +71,9 @@
       </column>
       <column name="NOTICE_ID" type="VARCHAR2(50)">
         <constraints nullable="true" primaryKey="true" primaryKeyName="ps_gi_pk"/>
+      </column>
+      <column name="INSERTED_TIMESTAMP" type="TIMESTAMP(6)">
+        <constraints nullable="false"/>
       </column>
     </createTable>
   </changeSet>
@@ -63,6 +89,9 @@
       <column name="CCP" type="VARCHAR2(35)">
         <constraints nullable="false" primaryKey="true" primaryKeyName="sps_gi_pk"/>
       </column>
+      <column name="INSERTED_TIMESTAMP" type="TIMESTAMP(6)">
+        <constraints nullable="false"/>
+      </column>
     </createTable>
   </changeSet>
 
@@ -73,6 +102,9 @@
       </column>
       <column name="TIPO_SOGGETTO" type="CHAR(1)">
         <constraints nullable="false" primaryKey="true" primaryKeyName="rs_gi_pk"/>
+      </column>
+      <column name="INSERTED_TIMESTAMP" type="TIMESTAMP(6)">
+        <constraints nullable="false"/>
       </column>
     </createTable>
   </changeSet>
@@ -87,6 +119,9 @@
       </column>
       <column name="CCP" type="VARCHAR2(35)">
         <constraints nullable="false" primaryKey="true" primaryKeyName="rpir_gi_pk"/>
+      </column>
+      <column name="INSERTED_TIMESTAMP" type="TIMESTAMP(6)">
+        <constraints nullable="false"/>
       </column>
     </createTable>
   </changeSet>
