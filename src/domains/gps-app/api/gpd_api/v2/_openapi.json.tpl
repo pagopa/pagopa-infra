@@ -152,7 +152,7 @@
             "schema": {
               "minimum": 0,
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
               "default": 0
             }
           },
