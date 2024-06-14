@@ -23,10 +23,10 @@ module "nat_gw" {
 resource "azurerm_monitor_metric_alert" "snat_connection_over_10K" {
   count = (var.env_short == "p" && var.nat_gateway_enabled) ? 1 : 0
 
-  name                = "${local.project}-natgw-connetion-over-10k"
+  name                = "${local.project}-natgw-connetion-over-30k"
   resource_group_name = azurerm_resource_group.monitor_rg.name
   scopes              = [module.nat_gw[0].id]
-  description         = "Total SNAT connections over 10K"
+  description         = "Total SNAT connections over 30K"
   severity            = 3
   frequency           = "PT5M"
   window_size         = "PT5M"
@@ -34,13 +34,13 @@ resource "azurerm_monitor_metric_alert" "snat_connection_over_10K" {
   target_resource_type     = "Microsoft.Network/natGateways"
   target_resource_location = var.location
 
-
+  # https://learn.microsoft.com/it-it/azure/load-balancer/load-balancer-outbound-connections#what-are-snat-ports
   criteria {
     metric_namespace       = "Microsoft.Network/natGateways"
     metric_name            = "SNATConnectionCount"
     aggregation            = "Total"
     operator               = "GreaterThan"
-    threshold              = "10000"
+    threshold              = "30000" # Each NAT gateway public IP address provides 64,512 SNAT ports to make outbound connections
     skip_metric_validation = false
   }
 
