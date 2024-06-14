@@ -17,12 +17,22 @@ data "azurerm_key_vault_secret" "wallet_jwt_signing_key_secret" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-resource "azurerm_api_management_named_value" "wallet-jwt-signing-key" {
+resource "azurerm_api_management_named_value" "pagopa-wallet-jwt-signing-key" {
   name                = "pagopa-wallet-session-jwt-signing-key"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   display_name        = "pagopa-wallet-session-jwt-signing-key"
-  value               = trimspace(data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value)
+  value               = replace(trim(trim(trimspace(data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value), "-----BEGIN RSA PRIVATE KEY-----"), "-----END RSA PRIVATE KEY-----"), "\n", " /")
+  secret              = true
+}
+
+## DEPRECATED TO REMOVE use 👆👆
+resource "azurerm_api_management_named_value" "wallet-jwt-signing-key" {
+  name                = "wallet-session-jwt-signing-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "wallet-session-jwt-signing-key"
+  value               = replace(trim(trim(trimspace(data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value), "-----BEGIN RSA PRIVATE KEY-----"), "-----END RSA PRIVATE KEY-----"), "\n", " /")
   secret              = true
 }
 
@@ -112,6 +122,8 @@ module "apim_session_wallet_api_v1" {
 #######################################################################
 
 resource "azapi_resource" "fragment_chk_jwt_session_token" {
+  depends_on = [azurerm_api_management_named_value.wallet-jwt-signing-key]
+
   # provider  = azapi.apim
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "jwt-chk-wallet-session"
@@ -130,4 +142,5 @@ resource "azapi_resource" "fragment_chk_jwt_session_token" {
   lifecycle {
     ignore_changes = [output]
   }
+
 }
