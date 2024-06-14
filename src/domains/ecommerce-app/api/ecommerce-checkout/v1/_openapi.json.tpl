@@ -1666,8 +1666,7 @@
             "enum": [
               "IO",
               "CHECKOUT",
-              "CHECKOUT_CART",
-              "UNKNOWN"
+              "CHECKOUT_CART"
             ]
           },
           "authToken": {
@@ -1704,7 +1703,8 @@
         "required": [
           "transactionId",
           "status",
-          "payments"
+          "payments",
+          "clientId"
         ]
       },
       "RequestAuthorizationRequest": {
