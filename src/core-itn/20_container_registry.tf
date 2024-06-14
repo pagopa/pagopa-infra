@@ -20,5 +20,11 @@ module "container_registry_ita" {
   admin_enabled          = false
   anonymous_pull_enabled = false
 
+  network_rule_set = [{
+    default_action  = "Allow"
+    ip_rule         = []
+    virtual_network = []
+  }]
+
   tags = var.tags
 }
