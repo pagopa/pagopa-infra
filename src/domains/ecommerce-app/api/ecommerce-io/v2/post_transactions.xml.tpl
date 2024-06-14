@@ -1,7 +1,6 @@
 <policies>
     <inbound>
         <base />
-        <set-header name="X-Client-Id" exists-action="delete" />
         <choose>
           <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
             <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
@@ -95,7 +94,7 @@
               <value>@(Guid.NewGuid().ToString())</value>
             </set-header>
             <set-header name="x-user-id" exists-action="override">
-              <value>@((String)context.Variables["userId"])</value>
+              <value>@((String)context.Variables["xUserId"])</value>
             </set-header>
           </otherwise>
         </choose>
