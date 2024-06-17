@@ -96,7 +96,7 @@
                 var date = DateTime.Now;
                 var iat = new DateTimeOffset(date).ToUnixTimeSeconds(); // sets the issued time of the token now
                 var exp = new DateTimeOffset(date.AddMinutes(10)).ToUnixTimeSeconds();  // sets the expiration of the token to be 10 minutes from now
-                var userId = ((string)context.Variables.GetValueOrDefault("userId","")); 
+                var userId = ((string)context.Variables.GetValueOrDefault("xUserId","")); 
                 var walletId = ((string)context.Variables.GetValueOrDefault("walletId",""));
                 var payload = new { iat, exp, jti, userId, walletId }; 
                 var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
