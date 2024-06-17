@@ -62,7 +62,7 @@ locals {
     },
     {
       name               = "receipt",
-      partition_key_path = "/partitionKey", # contains brokerEC_sessionId
+      partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
       default_ttl        = var.wisp_converter_cosmos_nosql_db_params.events_ttl
       autoscale_settings = {
         max_throughput = var.wisp_converter_cosmos_nosql_db_params.max_throughput

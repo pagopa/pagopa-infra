@@ -553,3 +553,8 @@ variable "enabled_features" {
   description = "Features enabled in this domain"
 }
 
+variable "wisp_converter_service_bus" {
+  type = object({
+    sku = string
+  })
+}

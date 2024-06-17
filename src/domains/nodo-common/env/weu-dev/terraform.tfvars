@@ -270,3 +270,7 @@ enabled_features = {
   eventhub_ha_tx = true
   eventhub_ha_rx = true
 }
+
+wisp_converter_service_bus = {
+  sku = "Basic"
+}
