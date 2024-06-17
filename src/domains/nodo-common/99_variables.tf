@@ -555,6 +555,15 @@ variable "enabled_features" {
 
 variable "wisp_converter_service_bus" {
   type = object({
-    sku = string
+    sku                                  = string
+    requires_duplicate_detection         = bool
+    dead_lettering_on_message_expiration = bool
+    enable_partitioning                  = bool
   })
+  default = {
+    sku                                  = "Standard"
+    requires_duplicate_detection         = false
+    dead_lettering_on_message_expiration = false
+    enable_partitioning                  = false
+  }
 }
