@@ -1,11 +1,12 @@
 # general
-prefix          = "pagopa"
-env_short       = "u"
-env             = "uat"
-domain          = "uat"
-location        = "italynorth"
-location_string = "Italy North"
-location_short  = "itn"
+prefix              = "pagopa"
+env_short           = "u"
+env                 = "uat"
+domain              = "uat"
+location            = "italynorth"
+location_string     = "Italy North"
+location_short      = "itn"
+location_westeurope = "westeurope"
 
 tags = {
   CreatedBy   = "Terraform"

@@ -91,9 +91,9 @@ variable "tags" {
 #
 variable "enabled_features" {
   type = object({
-    apim_v2  = bool
+    apim_v2       = bool
     apim_migrated = optional(bool, false)
-    vnet_ita = bool
+    vnet_ita      = bool
   })
   default = {
     apim_v2  = false

@@ -18,8 +18,9 @@ tags = {
 # Feature flag
 #
 enabled_features = {
-  apim_v2  = false
-  vnet_ita = false
+  apim_v2       = false
+  vnet_ita      = false
+  apim_migrated = true
 }
 
 lock_enable = true
@@ -27,7 +28,7 @@ lock_enable = true
 # monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
-law_daily_quota_gb    = 10
+law_daily_quota_gb    = 30
 
 # networking
 # main vnet

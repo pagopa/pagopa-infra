@@ -61,8 +61,9 @@ geo_replica_enabled = false
 #
 # apim v2
 #
-cidr_subnet_apim = ["10.230.8.160/27"]
-apim_v2_zones    = ["1"]
+redis_cache_enabled = true
+cidr_subnet_apim    = ["10.230.8.160/27"]
+apim_v2_zones       = ["1"]
 apim_v2_subnet_nsg_security_rules = [
   {
     name                       = "inbound-management-3443"

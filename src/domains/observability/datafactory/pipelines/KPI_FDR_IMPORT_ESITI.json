@@ -111,7 +111,7 @@
         "source": {
             "type": "CosmosDbSqlApiSource",
             "query": {
-                "value": "@concat('SELECT c.debtorPosition.noticeNumber as NOTICE_ID,       c.debtorPosition.iuv as IUV,       \nc.debtorPosition.iur as IUR, c.creditor.idPA as PA_EMITTENTE, c.creditor.idBrokerPA as PT_EMITTENTE, \nc.psp.idPsp as ID_PSP,c.psp.idBrokerPsp as ID_BROKER_PSP, c.paymentInfo.amount as AMOUNT, c.timestamp as TIMESTAMP,   \n    c.eventStatus as EVENT_STATUS, t.fiscalCodePA as PA_TRANSFER,  t.amount as AMOUNT_TRANSFER, t.IBAN, t.idTransfer as ID_TRANSFER, c.debtorPosition.modelType as MOD_TYPE,       \nc.paymentInfo.paymentDateTime as DATA_PAGAMENTO FROM c JOIN t in c.transferList WHERE ( c.paymentInfo.paymentDateTime between \"', variables('date_start'), '\" and \"', variables('date_end'), '\")')",
+                "value": "@concat('SELECT c.debtorPosition.noticeNumber as NOTICE_ID,       c.debtorPosition.iuv as IUV,       IS_DEFINED(t.IUR) ? t.IUR : c.debtorPosition.iur as IUR, c.creditor.idPA as PA_EMITTENTE, c.creditor.idBrokerPA as PT_EMITTENTE, \nc.psp.idPsp as ID_PSP,c.psp.idBrokerPsp as ID_BROKER_PSP, c.paymentInfo.amount as AMOUNT, c.timestamp as TIMESTAMP,   \n    c.eventStatus as EVENT_STATUS, t.fiscalCodePA as PA_TRANSFER,  t.amount as AMOUNT_TRANSFER, t.IBAN, t.idTransfer as ID_TRANSFER, c.debtorPosition.modelType as MOD_TYPE,       \nc.paymentInfo.paymentDateTime as DATA_PAGAMENTO FROM c JOIN t in c.transferList WHERE ( c.paymentInfo.paymentDateTime between \"', variables('date_start'), '\" and \"', variables('date_end'), '\")')",
                 "type": "Expression"
             },
             "preferredRegions": [],

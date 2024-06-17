@@ -69,7 +69,7 @@ resource "null_resource" "virtual_endpoint" {
   provisioner "local-exec" {
     when    = destroy
     command = <<EOT
-    az postgres flexible-server virtual-endpoint delete --resource-group ${self.triggers.rg_name} --server-name ${self.triggers.primary_server_name} --name ${self.triggers.ve_name}
+    az postgres flexible-server virtual-endpoint delete --resource-group ${self.triggers.rg_name} --server-name ${self.triggers.primary_server_name} --name ${self.triggers.ve_name} --yes
     EOT
   }
 }
