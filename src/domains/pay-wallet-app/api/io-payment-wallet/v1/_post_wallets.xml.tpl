@@ -109,16 +109,15 @@
                 return $"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}.{jwtSignatureBase64UrlEncoded}"; 
             }" />
                 <!-- Token JWT END-->
-                <set-body>@{ 
+            </when>
+        </choose>
+        <set-body>@{ 
                     JObject inBody = context.Response.Body.As<JObject>(preserveContent: true); 
                     var redirectUrl = inBody["redirectUrl"];
                     inBody["redirectUrl"] = redirectUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("x-jwt-token",""));
                     inBody.Remove("walletId");
                     return inBody.ToString(); 
                 }</set-body>
-            </when>
-        </choose>
-
     </outbound>
     <backend>
       <base />
