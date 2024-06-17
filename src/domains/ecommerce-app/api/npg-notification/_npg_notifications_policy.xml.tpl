@@ -103,11 +103,13 @@
                         string authorizationCode = null;
                         string errorCode = null;
                         string rrn = null;
+                        string validationServiceId = null;
                         if(additionalData != null && additionalData.Type != JTokenType.Null){
                             JObject receivedAdditionalData = (JObject)additionalData;
                             authorizationCode = (string)receivedAdditionalData["authorizationCode"];
                             errorCode = (string)receivedAdditionalData["authorizationStatus"];
                             rrn = (string)receivedAdditionalData["rrn"];
+                            validationServiceId = (string)receivedAdditionalData["validationServiceId"];
                         }
                         string paymentEndToEndId = (string)operation["paymentEndToEndId"];
                         string operationTime = (string)operation["operationTime"];
@@ -128,6 +130,7 @@
                         outcomeGateway["authorizationCode"] = authorizationCode;
                         outcomeGateway["paymentEndToEndId"] = paymentEndToEndId;
                         outcomeGateway["rrn"] = rrn;
+                        outcomeGateway["validationServiceId"] = validationServiceId;
                         JObject response = new JObject();
                         response["timestampOperation"] = timestampOperation;
                         response["outcomeGateway"] = outcomeGateway;

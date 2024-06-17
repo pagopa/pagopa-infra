@@ -6,12 +6,12 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | = 1.3.0 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.30.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.30.0, <= 3.53.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.5.1 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | = 2.11.0 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | = 3.1.1 |
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.3.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.30.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.44.1 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.5.1 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.11.0 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
 
 ## Modules
 
@@ -176,6 +176,7 @@
 | [azurerm_monitor_scheduled_query_rules_alert.alert-nodo-responsetime](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.node_cfg_sync_dump_problem](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.node_cfg_sync_generic_problem](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.node_cfg_sync_sync_dumping_generic_problem](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.node_cfg_sync_trigger_problem](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.nodo_verifyko_to_datastore_appexception](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.nodo_verifyko_to_datastore_appexception_lastretry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -187,20 +188,21 @@
 | [azurerm_resource_group.vmss_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_subnet_route_table_association.snet_vmss_to_sia](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_route_table_association) | resource |
 | [azurerm_virtual_machine_scale_set_extension.vmss-extension](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_scale_set_extension) | resource |
-| [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
-| [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
-| [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
-| [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
-| [kubernetes_pod_disruption_budget_v1.nodo](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/pod_disruption_budget_v1) | resource |
-| [kubernetes_role_binding.deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
-| [kubernetes_role_binding.deployer_binding_2](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
-| [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
-| [kubernetes_role_binding.system_deployer_binding_2](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
-| [kubernetes_service_account.azure_devops](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/service_account) | resource |
-| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/data-sources/group) | data source |
+| [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
+| [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
+| [kubernetes_pod_disruption_budget_v1.nodo](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/pod_disruption_budget_v1) | resource |
+| [kubernetes_role_binding.deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
+| [kubernetes_role_binding.deployer_binding_2](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
+| [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
+| [kubernetes_role_binding.system_deployer_binding_2](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
+| [kubernetes_service_account.azure_devops](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_account) | resource |
+| [null_resource.decoupler_configuration_from_json_2_xml](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_api_management.apim_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_api_management_group.group_developers](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_group) | data source |
@@ -212,6 +214,7 @@
 | [azurerm_cosmosdb_sql_database.nodo_re_cosmosdb_nosql_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/cosmosdb_sql_database) | data source |
 | [azurerm_cosmosdb_sql_database.nodo_verifyko_cosmosdb_nosql_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/cosmosdb_sql_database) | data source |
 | [azurerm_eventhub.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub) | data source |
+| [azurerm_eventhub.pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-datastore-rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re-to-tablestorage-rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
@@ -248,7 +251,7 @@
 | [azurerm_user_assigned_identity.uai_nodo_pod_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_integration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
-| [kubernetes_secret.azure_devops_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/data-sources/secret) | data source |
+| [kubernetes_secret.azure_devops_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/data-sources/secret) | data source |
 
 ## Inputs
 
@@ -264,8 +267,8 @@
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_nodo_re"></a> [enable\_nodo\_re](#input\_enable\_nodo\_re) | Enables dumping nodo re | `bool` | `false` | no |
+| <a name="input_enabled_features"></a> [enabled\_features](#input\_enabled\_features) | Features enabled in this domain | <pre>object({<br>    apim_v2        = bool<br>    eventhub_ha_rx = bool<br>  })</pre> | <pre>{<br>  "apim_v2": false,<br>  "eventhub_ha_rx": false<br>}</pre> | no |
 | <a name="input_enable_wisp_converter"></a> [enable\_wisp\_converter](#input\_enable\_wisp\_converter) | Enable WISP converter system, replacing old WISP handling | `bool` | `false` | no |
-| <a name="input_enabled_features"></a> [enabled\_features](#input\_enabled\_features) | Features enabled in this domain | <pre>object({<br>    apim_v2     = bool<br>    eventhub_ha = bool<br>  })</pre> | <pre>{<br>  "apim_v2": false,<br>  "eventhub_ha": false<br>}</pre> | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |

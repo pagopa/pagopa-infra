@@ -20,7 +20,6 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-v
   resource_group_name = "${local.product}-msg-rg"
 }
 
-
 data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko-tx" {
   name                = "nodo-dei-pagamenti-verify-ko-tx"
   namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"

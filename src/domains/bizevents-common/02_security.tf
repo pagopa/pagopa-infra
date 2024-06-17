@@ -99,31 +99,34 @@ resource "azurerm_key_vault_secret" "cosmos_negative_biz_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+// SWITCHns01ns03
 resource "azurerm_key_vault_secret" "ehub_biz_connection_string" {
   name         = format("ehub-%s-biz-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx.primary_connection_string
+  value        = var.enabled_features.eventhub_ha_rx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
+// SWITCHns01ns03
 resource "azurerm_key_vault_secret" "ehub_biz_enrich_connection_string" {
   name         = format("ehub-%s-biz-enrich-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_connection_string
+  value        = var.enabled_features.eventhub_ha_tx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
+// SWITCHns01ns03
 resource "azurerm_key_vault_secret" "ehub_negative_biz_connection_string" {
   name         = format("ehub-%s-rx-negative-biz-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-rx.primary_connection_string
+  value        = var.enabled_features.eventhub_ha_rx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-rx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-rx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
-// PRODns02ns04
+// SWITCHns02ns04
 resource "azurerm_key_vault_secret" "ehub_awakable_negative_biz_connection_string" {
   name         = format("ehub-%s-tx-awakable-negative-biz-connection-string", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-tx.primary_connection_string
@@ -132,7 +135,7 @@ resource "azurerm_key_vault_secret" "ehub_awakable_negative_biz_connection_strin
   key_vault_id = module.key_vault.id
 }
 
-// PRODns02ns04
+// SWITCHns02ns04
 resource "azurerm_key_vault_secret" "ehub_final_negative_biz_connection_string" {
   name         = format("ehub-%s-tx-final-negative-biz-connection-string", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-tx.primary_connection_string
@@ -157,8 +160,9 @@ resource "azurerm_key_vault_secret" "cosmos_biz_key" {
   key_vault_id = module.key_vault.id
 }
 resource "azurerm_key_vault_secret" "ehub_tx_biz_key" {
-  name         = format("ehub-tx-%s-biz-key", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-tx.primary_key
+  name = format("ehub-tx-%s-biz-key", var.env_short)
+  # value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-tx.primary_key
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -173,14 +177,15 @@ resource "azurerm_key_vault_secret" "cosmos_negative_biz_key" {
   key_vault_id = module.key_vault.id
 }
 resource "azurerm_key_vault_secret" "ehub_tx_negative_biz_key" {
-  name         = format("ehub-tx-%s-negative-biz-key", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-tx.primary_key
+  name = format("ehub-tx-%s-negative-biz-key", var.env_short)
+  # value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-tx.primary_key
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-tx.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
-// PRODns02ns04
+// SWITCHns02ns04
 resource "azurerm_key_vault_secret" "ehub_rx_negative_final_biz_conn_string" {
   name         = format("ehub-rx-%s-negative-final-biz-conn-string", var.env_short)
   value        = format("'%s'", data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_nodo-dei-pagamenti-negative-final-biz-evt_pagopa-biz-evt-rx-pdnd.primary_connection_string)
@@ -189,7 +194,7 @@ resource "azurerm_key_vault_secret" "ehub_rx_negative_final_biz_conn_string" {
   key_vault_id = module.key_vault.id
 }
 
-// PRODns02ns04
+// SWITCHns02ns04
 resource "azurerm_key_vault_secret" "ehub_rx_negative_awakable_biz_conn_string" {
   name         = format("ehub-rx-%s-negative-awakable-biz-conn-string", var.env_short)
   value        = format("'%s'", data.azurerm_eventhub_authorization_rule.pagopa-evh-ns04_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-rx-pdnd.primary_connection_string)
@@ -286,3 +291,82 @@ resource "azurerm_key_vault_secret" "webhook-slack-token" {
     ]
   }
 }
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "list_trx_4_io_api_key" {
+  name         = "list-trx-4-io-api-key"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+
+# PDF engine nodejs for PDF engine Java
+
+data "azurerm_api_management_product" "apim_pdf_engine_product" {
+  product_id          = "pdf-engine"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+data "azurerm_api_management_product" "apim_pdf_receipt_service_product" {
+  product_id          = "receipts"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+// apikey to generate PDF
+resource "azurerm_api_management_subscription" "pdf_engine_node_4_list_trx_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_pdf_engine_product.id
+  display_name  = "PDF Engine NodeJS Java for List Transactions"
+  allow_tracing = false
+  state         = "active"
+}
+// apikey to retrive PDF
+resource "azurerm_api_management_subscription" "pdf_receipt_service_4_list_trx_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_pdf_receipt_service_product.id
+  display_name  = "Receipts Service PDF for List Transactions"
+  allow_tracing = false
+  state         = "active"
+}
+
+// save keys on KV
+
+resource "azurerm_key_vault_secret" "bizevent_pdf_engine_4_list_trx_subscription_key" {
+  depends_on   = [azurerm_api_management_subscription.pdf_engine_node_4_list_trx_subkey]
+  name         = format("bizevent-%s-pdfengine-subscription-key", var.env_short)
+  value        = azurerm_api_management_subscription.pdf_engine_node_4_list_trx_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "bizevent_receiptpdfservice_4_list_trx_subscription_key" { // product apim "receipts"
+  depends_on   = [azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey]
+  name         = format("bizevent-%s-receiptpdfservice-subscription-key", var.env_short)
+  value        = azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "bizevent_receiptpdfhelpdesk_4_list_trx_subscription_key" { // product apim "receipts"
+  depends_on   = [azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey]
+  name         = format("bizevent-%s-generatepdfservice-subscription-key", var.env_short)
+  value        = azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+

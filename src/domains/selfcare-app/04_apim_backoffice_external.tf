@@ -18,7 +18,7 @@ locals {
 
 
 module "apim_selfcare_backoffice_external_psp_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.15.1"
 
   product_id   = "selfcare-bo-external-psp"
   display_name = local.apim_selfcare_backoffice_external_api_psp.display_name
@@ -36,7 +36,7 @@ module "apim_selfcare_backoffice_external_psp_product" {
 }
 
 module "apim_selfcare_backoffice_external_ec_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.15.1"
 
   product_id   = "selfcare-bo-external-ec"
   display_name = local.apim_selfcare_backoffice_external_api_ec.display_name
@@ -54,7 +54,7 @@ module "apim_selfcare_backoffice_external_ec_product" {
 }
 
 module "apim_selfcare_backoffice_helpdesk_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.15.1"
 
   product_id   = "selfcare-bo-helpdesk"
   display_name = local.apim_selfcare_backoffice_helpdesk_api.display_name

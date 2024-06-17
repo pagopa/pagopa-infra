@@ -18,6 +18,13 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_fdr-re_fdr-re-rx" {
   resource_group_name = "${local.product}-msg-rg"
 }
 
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_fdr-re_fdr-re-rx" {
+  name                = "fdr-re-rx"
+  namespace_name      = "${local.product}-evh-ns01"
+  eventhub_name       = "fdr-re"
+  resource_group_name = "${local.product}-msg-rg"
+}
+
 # info for table storage
 data "azurerm_resource_group" "fdr_re_rg" {
   name = "${local.project}-re-rg"
@@ -30,8 +37,8 @@ data "azurerm_storage_account" "fdr_re_storage_account" {
 
 locals {
   function_re_to_datastore_app_settings = {
-    linux_fx_version               = "JAVA|11"
-    FUNCTIONS_WORKER_RUNTIME       = "java"
+    #    linux_fx_version               = "JAVA|17"
+    #    FUNCTIONS_WORKER_RUNTIME       = "java"
     FUNCTIONS_WORKER_PROCESS_COUNT = 4
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
@@ -50,7 +57,7 @@ locals {
     COSMOS_DB_NAME            = data.azurerm_cosmosdb_mongo_database.fdr_re.name
     COSMOS_DB_COLLECTION_NAME = "events"
 
-    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_fdr-re_fdr-re-rx.primary_connection_string
+    EVENTHUB_CONN_STRING = var.enabled_features.eventhub_ha_rx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_fdr-re_fdr-re-rx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_fdr-re_fdr-re-rx.primary_connection_string
 
     TABLE_STORAGE_CONN_STRING = data.azurerm_storage_account.fdr_re_storage_account.primary_connection_string
     TABLE_STORAGE_TABLE_NAME  = "events"
@@ -67,7 +74,7 @@ locals {
 
 ## Function fdr_re
 module "fdr_re_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.2"
 
   resource_group_name = data.azurerm_resource_group.fdr_re_rg.name
   name                = "${local.project}-re-fn"
@@ -91,8 +98,10 @@ module "fdr_re_function" {
     registry_password = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
   }
 
-  sticky_connection_string_names = ["COSMOS_CONN_STRING"]
-  client_certificate_mode        = "Optional"
+  sticky_connection_string_names = [
+    "COSMOS_CONN_STRING"
+  ]
+  client_certificate_mode = "Optional"
 
   cors = {
     allowed_origins = []
@@ -103,7 +112,7 @@ module "fdr_re_function" {
     kind                         = var.fdr_re_function.kind
     sku_size                     = var.fdr_re_function.sku_size
     maximum_elastic_worker_count = var.fdr_re_function.maximum_elastic_worker_count
-    worker_count                 = 1
+    worker_count                 = 3
     zone_balancing_enabled       = false
   }
 

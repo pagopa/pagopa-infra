@@ -37,7 +37,7 @@ module "apim_mock_psp_service_api" {
   name                  = format("%s-mock-psp-service-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_mock_psp_service_product[0].product_id]
+  product_ids           = [module.apim_mock_psp_service_product[0].product_id, local.apim_x_node_product_id]
   subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.mock_psp_service_api[0].id
@@ -98,7 +98,7 @@ module "apim_mock_psp_service_api_secondary" {
   name                  = format("%s-secondary-mock-psp-service-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_mock_psp_service_product_secondary[0].product_id]
+  product_ids           = [module.apim_mock_psp_service_product_secondary[0].product_id, local.apim_x_node_product_id]
   subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.mock_psp_service_api_secondary[0].id

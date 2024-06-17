@@ -4,10 +4,10 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | = 1.3.0 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.21.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.45.0 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | = 3.1.1 |
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.3.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.21.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.45.0 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
 
 ## Modules
 
@@ -46,7 +46,7 @@
 
 | Name | Type |
 |------|------|
-| [azapi_resource.azure_postgresql_ls](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
+| [azapi_resource.azure_postgresql_ls](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azurerm_data_factory.data_factory](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory) | resource |
 | [azurerm_data_factory_custom_dataset.datasets](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_custom_dataset) | resource |
 | [azurerm_data_factory_data_flow.dataflow_online](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/data_factory_data_flow) | resource |
@@ -84,6 +84,7 @@
 | [azurerm_postgresql_flexible_server_database.nodo_replica_db](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/postgresql_flexible_server_database) | resource |
 | [azurerm_private_dns_a_record.data_factory_a_record](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
+| [azurerm_private_dns_cname_record.cname_record](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_cname_record) | resource |
 | [azurerm_private_dns_zone.adf](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.adf_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_endpoint.data_factory_pe](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
@@ -112,11 +113,12 @@
 | [azurerm_storage_table.nodo_re_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [azurerm_storage_table.nodo_verifyko_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [azurerm_storage_table.wisp_converter_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
-| [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
-| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
+| [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.virtual_endpoint](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_cosmosdb_account.bizevents_datastore_cosmosdb_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/cosmosdb_account) | data source |
 | [azurerm_cosmosdb_account.bizevents_neg_datastore_cosmosdb_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/cosmosdb_account) | data source |
@@ -195,7 +197,7 @@
 | <a name="input_nodo_storico_storage_account"></a> [nodo\_storico\_storage\_account](#input\_nodo\_storico\_storage\_account) | n/a | <pre>object({<br>    account_kind                  = string<br>    account_tier                  = string<br>    account_replication_type      = string<br>    advanced_threat_protection    = bool<br>    blob_versioning_enabled       = bool<br>    public_network_access_enabled = bool<br>    backup_enabled                = bool<br>    blob_delete_retention_days    = number<br>    backup_retention              = optional(number, 0)<br><br>  })</pre> | <pre>{<br>  "account_kind": "StorageV2",<br>  "account_replication_type": "LRS",<br>  "account_tier": "Standard",<br>  "advanced_threat_protection": true,<br>  "backup_enabled": false,<br>  "backup_retention": 0,<br>  "blob_delete_retention_days": 0,<br>  "blob_versioning_enabled": false,<br>  "public_network_access_enabled": true<br>}</pre> | no |
 | <a name="input_nodo_verifyko_storage_account"></a> [nodo\_verifyko\_storage\_account](#input\_nodo\_verifyko\_storage\_account) | n/a | <pre>object({<br>    account_kind                  = string<br>    account_tier                  = string<br>    account_replication_type      = string<br>    advanced_threat_protection    = bool<br>    blob_delete_retention_days    = number<br>    blob_versioning_enabled       = bool<br>    public_network_access_enabled = bool<br>    backup_enabled                = bool<br>    backup_retention_days         = number<br>  })</pre> | n/a | yes |
 | <a name="input_pgres_flex_nodo_db_name"></a> [pgres\_flex\_nodo\_db\_name](#input\_pgres\_flex\_nodo\_db\_name) | Nodo DB name | `string` | `"nodo"` | no |
-| <a name="input_pgres_flex_params"></a> [pgres\_flex\_params](#input\_pgres\_flex\_params) | Postgres Flexible | <pre>object({<br>    enabled                                = bool<br>    sku_name                               = string<br>    db_version                             = string<br>    storage_mb                             = string<br>    zone                                   = number<br>    standby_ha_zone                        = number<br>    backup_retention_days                  = number<br>    geo_redundant_backup_enabled           = bool<br>    create_mode                            = string<br>    pgres_flex_private_endpoint_enabled    = bool<br>    pgres_flex_ha_enabled                  = bool<br>    pgres_flex_pgbouncer_enabled           = bool<br>    pgres_flex_diagnostic_settings_enabled = bool<br>    max_connections                        = number<br>    enable_private_dns_registration        = optional(bool, false)<br>  })</pre> | n/a | yes |
+| <a name="input_pgres_flex_params"></a> [pgres\_flex\_params](#input\_pgres\_flex\_params) | Postgres Flexible | <pre>object({<br>    enabled                                          = bool<br>    sku_name                                         = string<br>    db_version                                       = string<br>    storage_mb                                       = string<br>    zone                                             = number<br>    standby_ha_zone                                  = number<br>    backup_retention_days                            = number<br>    geo_redundant_backup_enabled                     = bool<br>    create_mode                                      = string<br>    pgres_flex_private_endpoint_enabled              = bool<br>    pgres_flex_ha_enabled                            = bool<br>    pgres_flex_pgbouncer_enabled                     = bool<br>    pgres_flex_diagnostic_settings_enabled           = bool<br>    max_connections                                  = number<br>    enable_private_dns_registration                  = optional(bool, false)<br>    enable_private_dns_registration_virtual_endpoint = optional(bool, false)<br>  })</pre> | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_redis_ha_enabled"></a> [redis\_ha\_enabled](#input\_redis\_ha\_enabled) | (Required) If true, enables the usage of HA redis instance | `bool` | n/a | yes |
 | <a name="input_sftp_account_replication_type"></a> [sftp\_account\_replication\_type](#input\_sftp\_account\_replication\_type) | Defines the type of replication to use for this storage account. Valid options are LRS, GRS, RAGRS, ZRS, GZRS and RAGZRS. Changing this forces a new resource to be created when types LRS, GRS and RAGRS are changed to ZRS, GZRS or RAGZRS and vice versa | `string` | n/a | yes |

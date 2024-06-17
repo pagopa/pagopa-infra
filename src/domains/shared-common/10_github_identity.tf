@@ -10,7 +10,10 @@ data "azurerm_kubernetes_cluster" "aks" {
 # repos must be lower than 20 items
 locals {
   repos_01 = [
-    "pagopa-shared-toolbox"
+    "pagopa-shared-toolbox",
+    "pagopa-platform-authorizer",
+    "pagopa-platform-authorizer-config",
+    "pagopa-infra"
   ]
 
   federations_01 = [

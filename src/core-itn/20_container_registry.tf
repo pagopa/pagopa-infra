@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "acr_ita_rg" {
 }
 
 module "container_registry_ita" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_registry?ref=v8.1.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_registry?ref=v8.13.0"
 
   name                = replace("${local.project}-acr", "-", "")
   resource_group_name = azurerm_resource_group.acr_ita_rg.name
@@ -19,6 +19,12 @@ module "container_registry_ita" {
 
   admin_enabled          = false
   anonymous_pull_enabled = false
+
+  network_rule_set = [{
+    default_action  = "Allow"
+    ip_rule         = []
+    virtual_network = []
+  }]
 
   tags = var.tags
 }

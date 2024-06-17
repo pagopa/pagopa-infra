@@ -49,6 +49,14 @@ resource "azurerm_key_vault_secret" "wisp_converter_re_sa_connection_string" {
   ]
 }
 
+resource "azurerm_key_vault_secret" "verifyko_tablestorage_connection_string" {
+  name         = "verifyko-tablestorage-connection-string"
+  value        = module.nodo_verifyko_storage_account.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 /**********
 Event Hub
 ***********/
@@ -103,22 +111,6 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_tablest
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "verifyko_tablestorage_connection_string" {
-  name         = "verifyko-tablestorage-connection-string"
-  value        = module.nodo_verifyko_storage_account.primary_connection_string
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
-resource "azurerm_key_vault_secret" "verifyko_datastore_primary_key" {
-  name         = "verifyko-datastore-primary-key"
-  value        = module.cosmosdb_account_nodo_verifyko.primary_key
-  content_type = "text/plain"
-
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
 /*****************
 CosmosDB
 *****************/
@@ -153,6 +145,14 @@ resource "azurerm_key_vault_secret" "cosmos_biz_account_key" {
 resource "azurerm_key_vault_secret" "cosmos_verifyko_account_key" {
   name         = "cosmos-verifyko-account-key"
   value        = module.cosmosdb_account_nodo_verifyko.secondary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "verifyko_datastore_primary_key" {
+  name         = "verifyko-datastore-primary-key"
+  value        = module.cosmosdb_account_nodo_verifyko.primary_key
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id

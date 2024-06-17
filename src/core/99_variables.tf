@@ -91,8 +91,9 @@ variable "tags" {
 #
 variable "enabled_features" {
   type = object({
-    apim_v2  = bool
-    vnet_ita = bool
+    apim_v2       = bool
+    apim_migrated = optional(bool, false)
+    vnet_ita      = bool
   })
   default = {
     apim_v2  = false
@@ -252,6 +253,10 @@ variable "nodo_pagamenti_auth_password" {
   default     = "PLACEHOLDER"
 }
 variable "nodo_pagamenti_x_forwarded_for" {
+  type        = string
+  description = "X-Forwarded-For IP address used for nodo-auth"
+}
+variable "nodo_pagamenti_x_forwarded_for_apim_v2" {
   type        = string
   description = "X-Forwarded-For IP address used for nodo-auth"
 }
@@ -965,6 +970,12 @@ variable "acr_enabled" {
 variable "dns_a_reconds_dbnodo_ips" {
   type        = list(string)
   description = "IPs address of DB Nodo"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodo_ips_dr" {
+  type        = list(string)
+  description = "IPs address of DB Nodo DR"
   default     = []
 }
 
@@ -1803,4 +1814,23 @@ variable "fdr_flow_sa_replication_type" {
   type        = string
   default     = "LRS"
   description = "(Optional) Fdr flow storage account replication type"
+}
+
+variable "apicfg_core_service_path_value" {
+  type        = string
+  description = "apicfg core cache path"
+  # default     = "pagopa-api-config-core-service/o"
+}
+
+variable "apicfg_selfcare_integ_service_path_value" {
+  type        = string
+  description = "apicfg selfcare integ cache path"
+  # default     = "pagopa-api-config-selfcare-integration/o" // at moment blocked to ORA 👀 https://github.com/pagopa/pagopa-api-config-selfcare-integration/pull/36
+}
+
+
+variable "apim_logger_resource_id" {
+  type        = string
+  description = "Resource id for the APIM logger"
+  default     = null
 }
