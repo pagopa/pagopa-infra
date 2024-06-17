@@ -1,5 +1,6 @@
 <policies>
     <inbound>
+    <base />
       <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
         <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/check-session?sessionToken={(string)context.Variables["sessionToken"]}")</set-url>
         <set-method>GET</set-method>

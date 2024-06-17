@@ -1,5 +1,6 @@
 <policies>
     <inbound>
+    <base />
         <choose>
             <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
                 <!-- START get user wallets -->
