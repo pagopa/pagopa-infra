@@ -38,6 +38,6 @@ locals {
   pagopa_vnet_rg          = "pagopa-${var.env_short}-vnet-rg"
 
   apim_hostname           = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
-  payment_wallet_hostname = var.env_short != "p" ? "${var.location_short}${var.env}.pay-wallet.internal.${var.env}.platform.pagopa.it" : "${var.location_short}.pay-wallet.internal.platform.pagopa.it"
+  payment_wallet_hostname = var.env_short != "p" ? "${var.location_short}${var.env}.pay-wallet.internal.${var.env}.platform.pagopa.it" : "${var.location_short}${var.env}.pay-wallet.internal.platform.pagopa.it"
   ecommerce_hostname      = var.env_short == "p" ? "weu${var.env}.ecommerce.internal.platform.pagopa.it" : "weu${var.env}.ecommerce.internal.${var.env}.platform.pagopa.it"
 }
