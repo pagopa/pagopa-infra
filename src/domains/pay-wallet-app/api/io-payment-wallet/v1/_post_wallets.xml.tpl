@@ -83,7 +83,7 @@
     <outbound>
       <base />
         <choose>
-            <when condition="@(("true".Equals("{{enable-pm-ecommerce-io}}")) && (context.Response.StatusCode == 201))">
+            <when condition="@(("false".Equals("{{enable-pm-ecommerce-io}}")) && (context.Response.StatusCode == 201))">
                 <!-- Token JWT START-->
                 <set-variable name="walletId" value="@((string)((context.Response.Body.As<JObject>(preserveContent: true))["walletId"]))" />
                 <set-variable name="x-jwt-token" value="@{
@@ -109,15 +109,15 @@
                 return $"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}.{jwtSignatureBase64UrlEncoded}"; 
             }" />
                 <!-- Token JWT END-->
-            </when>
-        </choose>
-        <set-body>@{ 
+                <set-body>@{ 
                     JObject inBody = context.Response.Body.As<JObject>(preserveContent: true); 
                     var redirectUrl = inBody["redirectUrl"];
                     inBody["redirectUrl"] = redirectUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("x-jwt-token",""));
                     inBody.Remove("walletId");
                     return inBody.ToString(); 
                 }</set-body>
+            </when>
+        </choose>
     </outbound>
     <backend>
       <base />
