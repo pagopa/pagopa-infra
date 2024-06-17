@@ -3,6 +3,7 @@ env_short      = "d"
 env            = "dev"
 domain         = "pay-wallet"
 location       = "italynorth"
+cdn_location   = "westeurope"
 location_short = "itn"
 instance       = "dev"
 

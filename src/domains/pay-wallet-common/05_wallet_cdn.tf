@@ -18,8 +18,11 @@ module "wallet_fe_cdn" {
   prefix                = local.project
   resource_group_name   = azurerm_resource_group.wallet_fe_rg.name
   location              = var.location
+  cdn_location          = var.cdn_location
   hostname              = "${var.dns_zone_prefix}.${var.external_domain}"
   https_rewrite_enabled = true
+
+  storage_account_replication_type = "ZRS"
 
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics_italy.id
 

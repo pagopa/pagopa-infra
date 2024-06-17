@@ -4,6 +4,7 @@ env            = "uat"
 domain         = "pay-wallet"
 location       = "italynorth"
 location_short = "itn"
+cdn_location   = "westeurope"
 instance       = "uat"
 
 tags = {

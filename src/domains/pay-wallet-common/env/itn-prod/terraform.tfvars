@@ -4,6 +4,7 @@ env            = "prod"
 domain         = "pay-wallet"
 location       = "italynorth"
 location_short = "itn"
+cdn_location   = "westeurope"
 instance       = "prod"
 
 tags = {
