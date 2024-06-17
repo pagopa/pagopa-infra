@@ -4,6 +4,7 @@ env            = "prod"
 domain         = "pay-wallet"
 location       = "italynorth"
 location_short = "itn"
+cdn_location   = "westeurope"
 instance       = "prod"
 
 tags = {
@@ -41,6 +42,7 @@ ingress_load_balancer_ip = "10.3.2.250"
 external_domain          = "pagopa.it"
 dns_zone_prefix          = "payment-wallet"
 dns_zone_internal_prefix = "internal.platform"
+dns_zone_platform        = "prod.platform"
 
 ### Cosmos
 
