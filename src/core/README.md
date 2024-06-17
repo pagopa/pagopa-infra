@@ -149,13 +149,13 @@
 
 | Name | Type |
 |------|------|
-| [azapi_resource.decoupler_activate_outbound](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
-| [azapi_resource.decoupler_activate_outbound_wisp](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
-| [azapi_resource.decoupler_algorithm](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
-| [azapi_resource.decoupler_algorithm_wisp](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
-| [azapi_resource.decoupler_configuration](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
-| [azapi_resource.on_erro_soap_handler](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
-| [azapi_resource.wisp_dismantling_sendrt](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
+| [azapi_resource.decoupler_activate_outbound](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
+| [azapi_resource.decoupler_activate_outbound_wisp](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
+| [azapi_resource.decoupler_algorithm](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
+| [azapi_resource.decoupler_algorithm_wisp](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
+| [azapi_resource.decoupler_configuration](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
+| [azapi_resource.on_erro_soap_handler](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
+| [azapi_resource.wisp_dismantling_sendrt](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azurerm_api_management_api.apim_api_donazioni_ucraina_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api.apim_node_for_io_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api.apim_node_for_io_api_v1_auth](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api) | resource |

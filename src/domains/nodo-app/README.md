@@ -82,7 +82,7 @@
 
 | Name | Type |
 |------|------|
-| [azapi_resource.wisp_cache_4_decoupler](https://registry.terraform.io/providers/Azure/azapi/1.3.0/docs/resources/resource) | resource |
+| [azapi_resource.wisp_cache_4_decoupler](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azurerm_api_management_api.apim_node_for_io_api_v1_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api.apim_node_for_io_api_v1_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api.apim_node_for_psp_api_v1_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api) | resource |
@@ -198,7 +198,6 @@
 | [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
 | [kubernetes_role_binding.system_deployer_binding_2](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
 | [kubernetes_service_account.azure_devops](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_account) | resource |
-| [null_resource.decoupler_configuration_from_json_2_xml](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -267,8 +266,8 @@
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_nodo_re"></a> [enable\_nodo\_re](#input\_enable\_nodo\_re) | Enables dumping nodo re | `bool` | `false` | no |
-| <a name="input_enabled_features"></a> [enabled\_features](#input\_enabled\_features) | Features enabled in this domain | <pre>object({<br>    apim_v2        = bool<br>    eventhub_ha_rx = bool<br>  })</pre> | <pre>{<br>  "apim_v2": false,<br>  "eventhub_ha_rx": false<br>}</pre> | no |
 | <a name="input_enable_wisp_converter"></a> [enable\_wisp\_converter](#input\_enable\_wisp\_converter) | Enable WISP converter system, replacing old WISP handling | `bool` | `false` | no |
+| <a name="input_enabled_features"></a> [enabled\_features](#input\_enabled\_features) | Features enabled in this domain | <pre>object({<br>    apim_v2        = bool<br>    eventhub_ha_rx = bool<br>  })</pre> | <pre>{<br>  "apim_v2": false,<br>  "eventhub_ha_rx": false<br>}</pre> | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
