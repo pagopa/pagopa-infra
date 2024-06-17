@@ -37,6 +37,7 @@
         <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
         <choose>
           <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+          <!-- TODO expirationTime -->
           <cache-store-value key="@("wisp_" + (string)context.Variables["paymentToken"])" value="@{
                                         var requestData = JObject.Parse((string) context.Variables["requestData"]);
                                         var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
