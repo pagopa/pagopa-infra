@@ -1,7 +1,7 @@
 resource "azurerm_dns_zone" "payment_wallet_public" {
   name                = "${var.dns_zone_prefix}.${var.external_domain}"
   resource_group_name = local.vnet_core_resource_group_name
-  tags = var.tags
+  tags                = var.tags
 }
 
 //Prod ONLY record to DEV public DNS delegation
