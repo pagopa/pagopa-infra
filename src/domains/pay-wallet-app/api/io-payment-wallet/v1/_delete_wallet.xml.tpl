@@ -11,7 +11,7 @@
                     <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/wallet/{(string)context.Variables["idWalletPM"]}")</set-url>
                     <set-method>DELETE</set-method>
                     <set-header name="Authorization" exists-action="override">
-                        <value>@($"Bearer {((JObject)context.Variables["sessionToken"].ToString()}")</value>
+                        <value>@($"Bearer {((JObject)context.Variables["sessionToken"]).ToString()}")</value>
                     </set-header>
                 </send-request>
                 <!-- END delete wallet -->

@@ -15,7 +15,7 @@
                         <value>application/json</value>
                     </set-header>
                     <set-header name="Authorization" exists-action="override">
-                        <value>@($"Bearer {((JObject)context.Variables["sessionToken"].ToString()}")</value>
+                        <value>@($"Bearer {((JObject)context.Variables["sessionToken"]).ToString()}")</value>
                     </set-header>
                     <set-body>@{
                         JObject requestBody = (JObject)context.Variables["requestBody"]; 
