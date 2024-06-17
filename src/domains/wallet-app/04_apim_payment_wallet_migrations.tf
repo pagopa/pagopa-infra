@@ -1,7 +1,7 @@
 #################################################
 ## API payment wallet for migration            ##
 #################################################
-locals {
+/*locals {
   apim_payment_wallet_migrations_api = {
     display_name          = "pagoPA - payment wallet migrations API"
     description           = "API dedicated to migrate wallet from Payment Manager"
@@ -105,4 +105,4 @@ resource "azurerm_api_management_api_operation_policy" "create_wallet_pm" {
     pdv_api_base_path = var.pdv_api_base_path
     }
   )
-}
+}*/

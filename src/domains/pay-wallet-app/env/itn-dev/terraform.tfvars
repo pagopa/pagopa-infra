@@ -40,3 +40,5 @@ tls_cert_check_helm = {
 
 pdv_api_base_path    = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
 io_backend_base_path = "http://{{aks-lb-nexi}}/pmmockservice/pmmockserviceapi"
+
+payment_wallet_migrations_enabled = true

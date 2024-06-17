@@ -61,7 +61,7 @@ module "apim_payment_wallet_migrations_api_v1" {
   })
 
   xml_content = templatefile("./api/payment-wallet-migrations/v1/_base_policy.xml.tpl", {
-    hostname = local.payment_wallet_hostname
+    hostname = local.wallet_service_hostname
   })
 }
 
@@ -89,7 +89,7 @@ module "apim_payment_wallet_migrations_for_cstar_api_v1" {
   })
 
   xml_content = templatefile("./api/payment-wallet-migrations-for-cstar/v1/_base_policy.xml.tpl", {
-    hostname = local.payment_wallet_hostname
+    hostname = local.wallet_service_hostname
   })
 }
 
