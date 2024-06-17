@@ -6,6 +6,9 @@
     <!-- Delete headers required for backend service START -->
     <set-header name="x-client-id" exists-action="delete" />
     <set-header name="x-user-id" exists-action="delete" />
+    <set-header name="x-client-id" exists-action="override">
+        <value>IO</value>
+    </set-header>
     <!-- Delete headers required for backend service END -->
 
     <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
