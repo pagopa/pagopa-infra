@@ -31,13 +31,12 @@ resource "azurerm_api_management_product_group" "access_control_developers_for_w
 #################
 ## Named Value ##
 #################
-resource "azurerm_api_management_named_value" "is_wisp_converter_enabled_named_value" {
-  name                = "is-wisp-converter-enabled"
+resource "azurerm_api_management_named_value" "enable_wisp_dismantling_switch_named_value" {
+  name                = "enable-wisp-dismantling-switch"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = "is-wisp-converter-enabled"
-  #value               = var.enable_wisp_converter
-  value = false
+  display_name        = "enable-wisp-dismantling-switch"
+  value               = var.enable_wisp_converter
 }
 
 resource "azurerm_api_management_named_value" "wisp_brokerPSP_whitelist_named_value" {
@@ -85,5 +84,5 @@ resource "azurerm_api_management_named_value" "wisp_dismantling_converter_base_u
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   display_name        = "wisp-dismantling-converter-base-url"
-  value               = "https://${local.nodo_hostname}/wisp-converter"
+  value               = "https://${local.nodo_hostname}/pagopa-wisp-converter"
 }
