@@ -20,7 +20,7 @@
         </choose>
 
         <choose>
-            <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
+            <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}" || !"{{pay-wallet-family-friends-users}}".Contains((string)context.Request.Headers.GetValueOrDefault("x-user-id","")) )">
                 <set-variable name="idPsp" value="@((string)((JObject) context.Variables["body"])["pspId"])" />
                 <set-variable name="idWallet" value="@{
                     string walletIdUUID = (string)context.Variables["walletId"];

@@ -2,9 +2,9 @@
     <inbound>
       <base />
       <set-variable name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
-     
+      <!-- Maybe to add backend-io get user to check family & friends -->
       <choose>
-        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
+          <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}" || !"{{pay-wallet-family-friends-users}}".Contains((string)context.Request.Headers.GetValueOrDefault("x-user-id","")) )">
           <!-- Session PM START-->
           <send-request ignore-error="true" timeout="10" response-variable-name="pm-session-body" mode="new">
               <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/actions/start-session?token={(string)context.Variables["walletToken"]}")</set-url>
