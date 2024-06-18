@@ -8,7 +8,7 @@
                     <set-url>{{pm-host}}/pp-restapi-CD/v3/wallet</set-url>
                     <set-method>GET</set-method>
                     <set-header name="Authorization" exists-action="override">
-                        <value>@($"Bearer {((JObject)context.Variables["sessionToken"]).ToString()}")</value>
+                        <value>@($"Bearer {((String)context.Variables["sessionToken"])}")</value>
                     </set-header>
                 </send-request>
                 <choose>

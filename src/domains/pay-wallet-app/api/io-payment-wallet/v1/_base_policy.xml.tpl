@@ -18,13 +18,13 @@
           <set-header name="x-user-id" exists-action="override">
               <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
           </set-header>
-          <set-header name="x-client-id" exists-action="override" >
-            <value>IO</value>
-          </set-header>
           <!-- Headers settings required for backend service END -->
           <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
         </otherwise>
       </choose>
+      <set-header name="x-client-id" exists-action="override" >
+        <value>IO</value>
+      </set-header>
     </inbound>
     <outbound>
       <base />

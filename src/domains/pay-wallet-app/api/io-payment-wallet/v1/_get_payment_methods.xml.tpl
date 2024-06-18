@@ -7,7 +7,7 @@
         <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/check-session?sessionToken={(string)context.Variables["sessionToken"]}")</set-url>
         <set-method>GET</set-method>
         <set-header name="Authorization" exists-action="override">
-          <value>@("Bearer " + (string)context.Variables["sessionToken"])</value>
+          <value>@($"Bearer {((String)context.Variables["sessionToken"])}")</value>
         </set-header>
       </send-request>
       <choose>
