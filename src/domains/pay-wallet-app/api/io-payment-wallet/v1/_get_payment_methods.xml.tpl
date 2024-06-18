@@ -1,6 +1,8 @@
 <policies>
     <inbound>
     <base />
+    <choose>
+        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
       <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
         <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/check-session?sessionToken={(string)context.Variables["sessionToken"]}")</set-url>
         <set-method>GET</set-method>
@@ -39,6 +41,8 @@
                 </set-body>
             </return-response>
         </when>
+      </choose>
+      </when>
       </choose>
       <set-backend-service base-url="https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-service"/>
     </inbound>
