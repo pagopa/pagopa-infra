@@ -31,31 +31,9 @@
                             var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
                             return (int)requestData["ttl"];
                         }" caching-type="internal" />
-      <!-- Caching wisp_paymenttoken key if WISP dismantling is enabled and the payment belongs to WISP dismantling -->
-      <choose>
-        <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
-        <choose>
-          <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
-          <!-- TODO expirationTime -->
-          <cache-store-value key="@("wisp_" + (string)context.Variables["paymentToken"])" value="@{
-                                        var requestData = JObject.Parse((string) context.Variables["requestData"]);
-                                        var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
-          var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
-          var paymentToken = (string)context.Variables["paymentToken"];
-          return new JObject(
-          new JProperty("fiscalCode", ci),
-          new JProperty("noticeNumber", noticeNumber),
-          new JProperty("paymentToken", paymentToken)
-          ).ToString();
-          }" duration="172800" caching-type="external" />
-          <!-- TODO to change type to internal -->
-        </when>
-      </choose>
     </when>
   </choose>
 </when>
-  </choose>
-  </when>
   </choose>
 
 <choose>
