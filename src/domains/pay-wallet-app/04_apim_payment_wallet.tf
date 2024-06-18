@@ -76,7 +76,7 @@ module "apim_payment_wallet_api_v1" {
   })
 
   xml_content = templatefile("./api/payment-wallet/v1/_base_policy.xml.tpl", {
-    hostname = local.wallet_service_hostname
+    hostname = local.payment_wallet_hostname
   })
 }
 
@@ -191,7 +191,7 @@ module "apim_wallet_service_notifications_api_v1" {
   })
 
   xml_content = templatefile("./api/npg-notifications/v1/_base_policy.xml.tpl", {
-    hostname = local.wallet_service_hostname
+    hostname = local.payment_wallet_hostname
   })
 }
 
@@ -241,7 +241,7 @@ module "apim_webview_payment_wallet_api_v1" {
   })
 
   xml_content = templatefile("./api/webview-payment-wallet/v1/_base_policy.xml.tpl", {
-    hostname              = local.wallet_service_hostname
+    hostname              = local.payment_wallet_hostname
     payment_wallet_origin = "https://${var.dns_zone_prefix}.${var.external_domain}/"
   })
 }
@@ -284,7 +284,7 @@ resource "azurerm_api_management_api_operation_policy" "get_psps_for_wallet" {
     payment_wallet_origin = "https://${var.dns_zone_prefix}.${var.external_domain}/"
     gec_hostname          = var.env_short == "p" ? "weuprod.afm.internal.platform.pagopa.it" : "weu${var.env}.afm.internal.${var.env}.platform.pagopa.it"
     ecommerce_hostname    = local.ecommerce_hostname
-    wallet_hostname       = local.wallet_service_hostname
+    wallet_hostname       = local.payment_wallet_hostname
   })
 }
 
