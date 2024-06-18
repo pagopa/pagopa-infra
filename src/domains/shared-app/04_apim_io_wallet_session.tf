@@ -22,7 +22,7 @@ resource "azurerm_api_management_named_value" "pagopa-wallet-jwt-signing-key" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   display_name        = "pagopa-wallet-session-jwt-signing-key"
-  value               = replace(trim(trim(trimspace(data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value), "-----BEGIN RSA PRIVATE KEY-----"), "-----END RSA PRIVATE KEY-----"), "\n", " /")
+  value               = replace(trim(trim(trimspace(data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value), "-----BEGIN RSA PRIVATE KEY-----"), "-----END RSA PRIVATE KEY-----"), "\n", "")
   secret              = true
 }
 
@@ -32,7 +32,7 @@ resource "azurerm_api_management_named_value" "wallet-jwt-signing-key" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   display_name        = "wallet-session-jwt-signing-key"
-  value               = replace(trim(trim(trimspace(data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value), "-----BEGIN RSA PRIVATE KEY-----"), "-----END RSA PRIVATE KEY-----"), "\n", " /")
+  value               = replace(trim(trim(trimspace(data.azurerm_key_vault_secret.wallet_jwt_signing_key_secret.value), "-----BEGIN RSA PRIVATE KEY-----"), "-----END RSA PRIVATE KEY-----"), "\n", "")
   secret              = true
 }
 
