@@ -94,7 +94,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     capacity {
       default = 3
       minimum = var.env_short == "p" ? 3 : 1
-      maximum = 10
+      maximum = 12
     }
 
     # Requests 
@@ -156,7 +156,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 5 #sec
+        threshold                = 3 #sec
         divide_by_instance_count = false
       }
 
@@ -325,7 +325,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     capacity {
       default = 3
       minimum = var.env_short == "p" ? 3 : 1
-      maximum = 10
+      maximum = 12
     }
 
     # Requests 
@@ -387,7 +387,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 5 #sec
+        threshold                = 3 #sec
         divide_by_instance_count = false
       }
 

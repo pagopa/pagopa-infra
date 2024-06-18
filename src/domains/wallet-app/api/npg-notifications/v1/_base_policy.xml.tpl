@@ -1,33 +1,33 @@
 <policies>
     <inbound>
-      <base />
-      <set-variable name="orderIdPathParam" value="@(context.Request.MatchedParameters["orderId"])" />
-      <set-variable name="walletId" value="@(context.Request.MatchedParameters["walletId"])" />
-      <set-variable name="npgNotificationRequestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
-      <set-variable name="orderIdBodyParam" value="@((string)((JObject)((JObject)context.Variables["npgNotificationRequestBody"])["operation"])["orderId"])" />
-      <choose>  
-        <when condition="@(((string)context.Variables["orderIdPathParam"]).Equals((string)context.Variables["orderIdBodyParam"]) != true)">
-          <return-response>
-            <set-status code="400" reason="orderId mismatch" />
-            <set-header name="Content-Type" exists-action="override">
-                <value>application/json</value>
-            </set-header>
-            <set-body>{
+        <base />
+        <set-variable name="orderIdPathParam" value="@(context.Request.MatchedParameters["orderId"])" />
+        <set-variable name="walletId" value="@(context.Request.MatchedParameters["walletId"])" />
+        <set-variable name="npgNotificationRequestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
+        <set-variable name="orderIdBodyParam" value="@((string)((JObject)((JObject)context.Variables["npgNotificationRequestBody"])["operation"])["orderId"])" />
+        <choose>
+            <when condition="@(((string)context.Variables["orderIdPathParam"]).Equals((string)context.Variables["orderIdBodyParam"]) != true)">
+                <return-response>
+                    <set-status code="400" reason="orderId mismatch" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>{
                     "title": "Unable to handle notification",
                     "status": 400,
                     "detail": "orderId mismatch",
                 }</set-body>
-          </return-response>
-        </when>
-      </choose>
-      <set-header name="Authorization" exists-action="override">
+                </return-response>
+            </when>
+        </choose>
+        <set-header name="Authorization" exists-action="override">
       <value> 
           @{
               JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
               return "Bearer " + (string)requestBody["securityToken"];
           }
       </value>
-      </set-header>  
+        </set-header>
       <set-body>
           @{
             JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
@@ -53,12 +53,13 @@
             }
             string paymentCircuit = (string)operation["paymentCircuit"];
             string paymentMethod = (string)operation["paymentMethod"];
+            string paymentInstrumentInfo = (string)operation["paymentInstrumentInfo"];
             JObject details = null;
-            if(paymentCircuit == "PAYPAL"){
+            if(paymentCircuit == "PAYPAL" && !String.IsNullOrEmpty(paymentInstrumentInfo)){
                 details = new JObject();
                 details["type"] = "PAYPAL";
-                details["maskedEmail"] = (string)operation["paymentInstrumentInfo"];
-            } else if(paymentMethod == "CARD"){
+                details["maskedEmail"] = paymentInstrumentInfo;
+            } else if(paymentMethod == "CARD" && !String.IsNullOrEmpty(cardId4)){
                 details = new JObject();
                 details["type"] = "CARD";
                 details["paymentInstrumentGatewayId"] = cardId4;
@@ -75,11 +76,15 @@
       </set-body>
       <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
     </inbound>
+
     <backend>
         <base />
     </backend>
+
     <outbound />
+
     <on-error>
         <base />
     </on-error>
+    
 </policies>

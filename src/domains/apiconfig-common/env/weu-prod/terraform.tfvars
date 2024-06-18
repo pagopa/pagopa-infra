@@ -78,4 +78,4 @@ enable_apiconfig_sa_backup                 = true
 api_config_reporting_delete_retention_days = 31
 api_config_reporting_backup_retention_days = 30
 api_config_enable_versioning               = true
-redis_ha_enabled                           = false
+redis_ha_enabled                           = true

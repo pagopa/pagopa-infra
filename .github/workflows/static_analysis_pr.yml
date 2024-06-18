@@ -7,10 +7,73 @@ on:
 
 jobs:
   static_analysis:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Static Analysis
-        uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@59c12b7a846423d62c27c9905686a7a1fd71c003 # v1.7.0
+      - run: |
+          rm -rf *
+
+      - name: ⏬ Checkout Repository
+        uses: actions/checkout@v4
         with:
-          precommit_version: 'v1.83.5@sha256:fed35dd9347aa3dd3e59a870dbc4500245dae26910d84065a6f66fe61afceaa8'
+          fetch-depth: 0
+
+      - name: 🔨 Get Modified Paths
+        id: get-paths
+        run: |
+          #
+          # Discover only the paths changed inside src and src/domains, between my current branch and origin/main
+          #
+          echo "get current branch"
+          current_branch=${GITHUB_HEAD_REF}
+
+          echo "get modified paths from source"
+          modified_paths_source=$(git diff --name-only $current_branch origin/main | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq )
+          echo "$modified_paths_source"
+
+          echo "get modified paths from domains"
+          modified_paths_domains=$(git diff --name-only $current_branch origin/main | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq )
+          echo "$modified_paths_domains"
+
+          echo "merge paths"
+          modified_paths="$modified_paths_source $modified_paths_domains .github"
+          echo "📌 modified_paths"
+          #
+          # This is the only way to pass a string with paths to other step without error, usign env the paths force an error
+          #
+          echo "$modified_paths" > "/tmp/paths.txt"
+
+        shell: bash
+
+      - name: ⏬ Download only changed folders
+        id: download
+        shell: bash
+        run: |
+          #
+          # This allow to read all the paths and download only the changed folders
+          #
+          PAGOPA_MULTIPLE_FOLDERS=$(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
+          echo $PAGOPA_MULTIPLE_FOLDERS
+          git sparse-checkout init --cone
+          git sparse-checkout set $PAGOPA_MULTIPLE_FOLDERS
+          git checkout
+
+#      - name: Checkout Modified Paths
+#        uses: actions/checkout@v4
+#        with:
+#          sparse-checkout: |
+#            $(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
+
+      - name: 👀 See folders downloaded
+        id: see
+        shell: bash
+        run: |
+          ls -la
+          du -h -d 3 .
+
+      - name: Static Analysis
+        uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@v1.14.1
+        with:
+          precommit_version: 'v1.89.1@sha256:1ea921bc4fe87651d41677218e537afdcdb8202e757e554b9866668eaba144c5'
+
+

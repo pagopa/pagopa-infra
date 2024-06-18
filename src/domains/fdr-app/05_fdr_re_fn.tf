@@ -37,8 +37,8 @@ data "azurerm_storage_account" "fdr_re_storage_account" {
 
 locals {
   function_re_to_datastore_app_settings = {
-    linux_fx_version               = "JAVA|11"
-    FUNCTIONS_WORKER_RUNTIME       = "java"
+    #    linux_fx_version               = "JAVA|17"
+    #    FUNCTIONS_WORKER_RUNTIME       = "java"
     FUNCTIONS_WORKER_PROCESS_COUNT = 4
     // Keepalive fields are all optionals
     FETCH_KEEPALIVE_ENABLED             = "true"
@@ -74,7 +74,7 @@ locals {
 
 ## Function fdr_re
 module "fdr_re_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.2"
 
   resource_group_name = data.azurerm_resource_group.fdr_re_rg.name
   name                = "${local.project}-re-fn"
@@ -98,8 +98,10 @@ module "fdr_re_function" {
     registry_password = local.docker_settings.DOCKER_REGISTRY_SERVER_PASSWORD
   }
 
-  sticky_connection_string_names = ["COSMOS_CONN_STRING"]
-  client_certificate_mode        = "Optional"
+  sticky_connection_string_names = [
+    "COSMOS_CONN_STRING"
+  ]
+  client_certificate_mode = "Optional"
 
   cors = {
     allowed_origins = []
@@ -110,7 +112,7 @@ module "fdr_re_function" {
     kind                         = var.fdr_re_function.kind
     sku_size                     = var.fdr_re_function.sku_size
     maximum_elastic_worker_count = var.fdr_re_function.maximum_elastic_worker_count
-    worker_count                 = 1
+    worker_count                 = 3
     zone_balancing_enabled       = false
   }
 

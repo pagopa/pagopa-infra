@@ -327,3 +327,16 @@ resource "azurerm_key_vault_secret" "cfg_for_node_subscription_key" {
   }
 }
 
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "db_postgres_nexi_cfg_password" {
+  count        = var.env_short == "p" ? 0 : 1
+  name         = "db-postgres-nexi-cfg-password"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
