@@ -2,6 +2,22 @@
     <inbound>
         <base />
         <include-fragment fragment-id="jwt-chk-wallet-session" />
+
+
+        <!-- ForIO start =============== "x-continuation-token:undefined" -H "x-request-id:undefined" -->
+        <choose>
+            <when condition="@( ((string)context.Request.Headers.GetValueOrDefault("x-continuation-token","")).Equals("") || ((string)context.Request.Headers.GetValueOrDefault("x-continuation-token","")).Equals("undefined") )">
+                <set-header name="x-continuation-token" exists-action="delete" />
+            </when>
+        </choose>
+        <choose>
+            <when condition="@( ((string)context.Request.Headers.GetValueOrDefault("x-request-id","")).Equals("") || ((string)context.Request.Headers.GetValueOrDefault("x-request-id","")).Equals("undefined"))">
+                <set-header name="x-request-id" exists-action="delete" />
+            </when>
+        </choose>
+        <!-- ForIO stop =============== "x-continuation-token:undefined" -H "x-request-id:undefined" -->
+
+
         <choose>
             <when condition="@((string)context.Variables.GetValueOrDefault("xUserId","") != "")">
 

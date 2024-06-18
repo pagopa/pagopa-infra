@@ -166,6 +166,7 @@ No outputs.
 | <a name="module_iuvgenerator_cosmosdb_account"></a> [iuvgenerator\_cosmosdb\_account](#module\_iuvgenerator\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v7.60.0 |
 | <a name="module_iuvgenerator_cosmosdb_snet"></a> [iuvgenerator\_cosmosdb\_snet](#module\_iuvgenerator\_cosmosdb\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.60.0 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v7.60.0 |
+| <a name="module_pagopa_wallet_jwt"></a> [pagopa\_wallet\_jwt](#module\_pagopa\_wallet\_jwt) | github.com/pagopa/terraform-azurerm-v3//jwt_keys | v8.21.0 |
 | <a name="module_poc_reporting_enrollment_sa"></a> [poc\_reporting\_enrollment\_sa](#module\_poc\_reporting\_enrollment\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.60.0 |
 | <a name="module_taxonomy_sa"></a> [taxonomy\_sa](#module\_taxonomy\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.60.0 |
 | <a name="module_taxonomy_storage_snet"></a> [taxonomy\_storage\_snet](#module\_taxonomy\_storage\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.60.0 |
@@ -205,7 +206,6 @@ No outputs.
 | [azurerm_key_vault_secret.redis_hostname](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.redis_password](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.wallet_session_jwt_signing_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.wallet_session_pdv_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_endpoint.taxonomy_blob_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
