@@ -4,6 +4,7 @@ env            = "uat"
 domain         = "pay-wallet"
 location       = "italynorth"
 location_short = "itn"
+cdn_location   = "westeurope"
 instance       = "uat"
 
 tags = {
@@ -42,6 +43,7 @@ ingress_load_balancer_ip = "10.3.2.250"
 external_domain          = "pagopa.it"
 dns_zone_prefix          = "uat.payment-wallet"
 dns_zone_internal_prefix = "internal.uat.platform"
+dns_zone_platform        = "uat.platform"
 
 ### Cosmos
 
