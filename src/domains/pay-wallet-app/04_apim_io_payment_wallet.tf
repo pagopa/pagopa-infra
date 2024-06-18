@@ -65,7 +65,7 @@ module "apim_io_payment_wallet_api_v1" {
   })
 
   xml_content = templatefile("./api/io-payment-wallet/v1/_base_policy.xml.tpl", {
-    hostname = local.wallet_service_hostname
+    hostname = local.payment_wallet_hostname
   })
 }
 

@@ -43,6 +43,6 @@ module "apim_payment_wallet_for_ecommerce_api_v1" {
   })
 
   xml_content = templatefile("./api/payment-wallet-for-ecommerce/v1/_base_policy.xml.tpl", {
-    hostname = local.wallet_service_hostname
+    hostname = local.payment_wallet_hostname
   })
 }
