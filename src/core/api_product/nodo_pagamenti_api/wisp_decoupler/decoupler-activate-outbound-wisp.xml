@@ -102,7 +102,7 @@
                                 return expirationTime.ToString();
                             }" />
     <send-one-way-request mode="new">
-      <set-url>{{wisp-dismantling-backend-url}}/receipt/timer</set-url>
+      <set-url>{{wisp-dismantling-converter-base-url}}/receipt/timer</set-url>
       <set-method>POST</set-method>
       <set-body>@{
         var paymentTokenObj = JObject.Parse((string)context.Variables["wisp-paymentToken-obj"]);
