@@ -63,10 +63,10 @@ module "apim_api_iuvgenerator_api_v1" {
   content_format = "openapi"
   content_value = templatefile("./api/iuv-generator-service/v1/_openapi.json.tpl", {
     host    = local.apim_hostname
-    service = "${module.apim_iuvgenerator_product.product_id}"
+    service = module.apim_iuvgenerator_product.product_id
   })
 
   xml_content = templatefile("./api/iuv-generator-service/v1/_base_policy.xml", {
-    hostname = local.shared_hostname
+    hostname = local.iuvgenerator_hostname
   })
 }
