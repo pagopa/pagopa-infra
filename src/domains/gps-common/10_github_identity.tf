@@ -12,7 +12,9 @@ locals {
   repos_01 = [
     "pagopa-gpd-upload",
     "pagopa-gpd-upload-function",
-    "pagopa-gpd-payments-pull"
+    "pagopa-gpd-payments-pull",
+    "pagopa-gps-donation-service",
+    "pagopa-gpd-payments",
   ]
 
   federations_01 = [

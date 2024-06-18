@@ -145,8 +145,9 @@
                                     var info = (JObject)(wallet["info"]);
                                     var pspArray = (JArray)(info["pspInfo"]);
                                     var pspInfo = (JObject)(pspArray[0]);
-                                    details["abi"] = pspInfo["abi"];
+                                    details["pspId"] = pspInfo["abi"];
                                     details["maskedEmail"] = pspInfo["email"];
+                                    details["pspBusinessName"] = pspInfo["ragioneSociale"];
                                     paymentMethodAsset = "https://assets.cdn.platform.pagopa.it/apm/paypal.png";
                                 }
                                 if (eCommerceWalletType == "BANCOMATPAY") {
@@ -157,6 +158,18 @@
                                 }
                                 result["details"] = details;
                                 result["paymentMethodAsset"] = paymentMethodAsset;
+
+                                Boolean favourite = (Boolean) wallet["favourite"];
+                                JObject clients = new JObject();
+                                JObject clientIO = new JObject();
+                                clientIO["status"] = "ENABLED";
+                                if(favourite == true) {
+                                    DateTime localDateUtc = DateTime.UtcNow;
+                                    DateTimeOffset lastUsageDateTimeOffset = new DateTimeOffset(localDateUtc);
+                                    clientIO["lastUsage"] = lastUsageDateTimeOffset.ToString("o");
+                                }
+                                clients["IO"] = clientIO;
+                                result["clients"] = clients;
 
                                 return result;
                         }).ToArray();

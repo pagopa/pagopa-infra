@@ -2,19 +2,23 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">= 3.40.0"
+      version = "<= 3.71.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "= 2.21.0"
+      version = "<= 2.21.0"
     }
     null = {
       source  = "hashicorp/null"
-      version = "= 3.1.1"
+      version = "<= 3.2.1"
     }
     local = {
       source  = "hashicorp/local"
-      version = "= 2.2.3"
+      version = "<= 2.2.3"
+    }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "<= 2.25.1"
     }
   }
 
@@ -32,3 +36,7 @@ provider "azurerm" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
+
+provider "kubernetes" {
+  config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
+}

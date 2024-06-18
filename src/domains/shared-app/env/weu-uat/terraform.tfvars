@@ -69,5 +69,10 @@ cidr_subnet_pdf_engine_app_service   = ["10.1.187.0/24"]
 app_service_pdf_engine_sku_name      = "P1v3"
 app_service_pdf_engine_sku_name_java = "P1v3"
 
-robots_indexed_paths = []
+robots_indexed_paths      = []
 pdf_engine_app_ha_enabled = false
+
+// wallet session token
+io_backend_base_path = "https://api-app.io.pagopa.it"
+pdv_api_base_path    = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
+

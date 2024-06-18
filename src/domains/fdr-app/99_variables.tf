@@ -301,18 +301,18 @@ variable "fdr_re_function_network_policies_enabled" {
 
 variable "fdr_re_function" {
   type = object({
-    always_on                    = bool
-    kind                         = string
-    sku_size                     = string
-    sku_tier                     = string
+    always_on = bool
+    kind      = string
+    sku_size  = string
+    #    sku_tier                     = string
     maximum_elastic_worker_count = number
   })
   description = "FdR RE function"
   default = {
-    always_on                    = true
-    kind                         = "Linux"
-    sku_size                     = "B1"
-    sku_tier                     = "Basic"
+    always_on = true
+    kind      = "Linux"
+    sku_size  = "B1"
+    #    sku_tier                     = "Basic"
     maximum_elastic_worker_count = 1
   }
 }
@@ -442,4 +442,14 @@ variable "pod_disruption_budgets" {
   }))
   description = "Pod disruption budget for domain namespace"
   default     = {}
+}
+
+variable "enabled_features" {
+  type = object({
+    eventhub_ha_rx = bool
+  })
+  default = {
+    eventhub_ha_rx = false
+  }
+  description = "Features enabled in this domain"
 }

@@ -24,6 +24,7 @@
 | <a name="module_apim_api_afm_calculator_api_v1"></a> [apim\_api\_afm\_calculator\_api\_v1](#module\_apim\_api\_afm\_calculator\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
 | <a name="module_apim_api_afm_calculator_api_v2"></a> [apim\_api\_afm\_calculator\_api\_v2](#module\_apim\_api\_afm\_calculator\_api\_v2) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v6.11.2 |
 | <a name="module_apim_api_afm_marketplace_api_v1"></a> [apim\_api\_afm\_marketplace\_api\_v1](#module\_apim\_api\_afm\_marketplace\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
+| <a name="module_apim_api_afm_marketplace_technical_support_api_v1"></a> [apim\_api\_afm\_marketplace\_technical\_support\_api\_v1](#module\_apim\_api\_afm\_marketplace\_technical\_support\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
 | <a name="module_apim_api_afm_utils_v1"></a> [apim\_api\_afm\_utils\_v1](#module\_apim\_api\_afm\_utils\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.5.0 |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v5.5.2 |
@@ -35,6 +36,7 @@
 | [azurerm_api_management_api_version_set.api_afm_calculator_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_afm_calculator_node_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_afm_marketplace_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.api_afm_marketplace_technical_support_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_afm_utils_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_group.api_afm_calculator_node_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
 | [azurerm_api_management_named_value.afm_marketplace_sub_key_internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
@@ -47,6 +49,10 @@
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-afm-calculator-availability-feesbypsp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-afm-calculator-responsetime-fees](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-afm-calculator-responsetime-feesbypsp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-afm-calculator-v2-availability-fees](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-afm-calculator-v2-availability-feesbypsp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-afm-calculator-v2-responsetime-fees](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-afm-calculator-v2-responsetime-feesbypsp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
@@ -61,6 +67,7 @@
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
 | [azurerm_api_management_group.api_afm_calculator_node_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_group) | data source |
+| [azurerm_api_management_product.technical_support_api_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |

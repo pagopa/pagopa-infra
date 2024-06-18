@@ -69,6 +69,8 @@ variable "tags" {
 
 ### External resources
 
+### External resources
+
 variable "monitor_resource_group_name" {
   type        = string
   description = "Monitor resource group name"
@@ -82,6 +84,21 @@ variable "log_analytics_workspace_name" {
 variable "log_analytics_workspace_resource_group_name" {
   type        = string
   description = "The name of the resource group in which the Log Analytics workspace is located in."
+}
+
+variable "monitor_italy_resource_group_name" {
+  type        = string
+  description = "Monitor Italy resource group name"
+}
+
+variable "log_analytics_italy_workspace_name" {
+  type        = string
+  description = "Specifies the name of the Log Analytics Workspace Italy."
+}
+
+variable "log_analytics_italy_workspace_resource_group_name" {
+  type        = string
+  description = "The name of the resource group in which the Log Analytics workspace Italy is located in."
 }
 
 
@@ -111,15 +128,6 @@ variable "apim_dns_zone_prefix" {
   type        = string
   default     = null
   description = "The dns subdomain for apim."
-}
-
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
 }
 
 variable "payment_wallet_with_pm_enabled" {
@@ -152,4 +160,39 @@ variable "payment_wallet_migrations_enabled" {
   type        = bool
   default     = false
   description = "Payment wallet migrations enabled"
+}
+
+variable "app_service_pdf_engine_autoscale_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "app_service_pdf_engine_always_on" {
+  type        = bool
+  description = "Always on property"
+  default     = true
+}
+
+variable "app_service_pdf_engine_sku_name" {
+  type        = string
+  description = "app service plan size"
+  default     = "S1"
+}
+variable "app_service_pdf_engine_sku_name_java" {
+  type        = string
+  description = "app service plan size"
+  default     = "S1"
+}
+
+### Features flags
+
+variable "is_feature_enabled" {
+  type = object({
+    pdf_engine = bool
+    printit    = bool
+  })
+  default = {
+    pdf_engine = false
+    printit    = false
+  }
 }

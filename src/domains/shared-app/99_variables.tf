@@ -301,6 +301,25 @@ variable "robots_indexed_paths" {
 }
 
 variable "pdf_engine_app_ha_enabled" {
-  type = bool
+  type        = bool
   description = "(Required) enables the deployment of pdf engine in HA mode"
+}
+
+// wallet session token
+variable "io_backend_base_path" {
+  type        = string
+  default     = null
+  description = "io backend api base path"
+}
+
+variable "pdv_api_base_path" {
+  type        = string
+  default     = null
+  description = "Personal data vault api base path"
+}
+
+variable "ecommerce_io_pm_enabled" {
+  type        = bool
+  description = "eCommerce vs pm enabled"
+  default     = false
 }

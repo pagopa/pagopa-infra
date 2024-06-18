@@ -30,7 +30,7 @@ fn_app_runtime_version = "~4"
 storage_account_info = {
   account_kind                      = "StorageV2"
   account_tier                      = "Standard"
-  account_replication_type          = "LRS"
+  account_replication_type          = "ZRS"
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
 }
@@ -74,10 +74,10 @@ apim_fdr_nodo_pagopa_enable = true # 👀 https://pagopa.atlassian.net/wiki/spac
 
 # fdr re
 fdr_re_function = {
-  always_on                    = true
-  kind                         = "Linux"
-  sku_size                     = "B1"
-  sku_tier                     = "Basic"
+  always_on = true
+  kind      = "Linux"
+  sku_size  = "P1v3" #"B1"
+  #  sku_tier                     = "Basic"
   maximum_elastic_worker_count = 0
 }
 fdr_re_function_subnet                   = ["10.1.181.0/24"]
@@ -124,3 +124,6 @@ fdr_json_to_xml_function_autoscale = {
 
 ftp_organization = "99999999999,80078750587,88888888888,97532760580,12300020158,00488410010"
 
+enabled_features = {
+  eventhub_ha_rx = true
+}

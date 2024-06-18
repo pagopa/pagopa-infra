@@ -655,8 +655,10 @@ eventhubs_02 = [
 acr_enabled = true
 
 # db nodo dei pagamenti
-dns_a_reconds_dbnodo_ips             = ["10.102.35.58", "10.102.35.57"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
-dns_a_reconds_dbnodonexipostgres_ips = ["10.222.209.84"]                # db onPrem PostgreSQL
+# Before DR switch 👉  dns_a_reconds_dbnodo_ips             = ["10.102.35.58", "10.102.35.57"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
+dns_a_reconds_dbnodo_ips             = ["10.101.35.37", "10.101.35.38"]                                     # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
+dns_a_reconds_dbnodo_ips_dr          = ["10.250.45.145", "10.250.45.146", "10.250.45.147", "10.250.45.148"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
+dns_a_reconds_dbnodonexipostgres_ips = ["10.222.209.84"]                                                    # db onPrem PostgreSQL
 private_dns_zone_db_nodo_pagamenti   = "p.db-nodo-pagamenti.com"
 
 # buyerbanks functions
@@ -769,9 +771,10 @@ storage_queue_private_endpoint_enabled = true
 platform_private_dns_zone_records = ["api", "portal", "management"]
 
 # node forwarder
-nodo_pagamenti_x_forwarded_for = "10.230.10.5"
-node_forwarder_tier            = "PremiumV3"
-node_forwarder_size            = "P1v3"
+nodo_pagamenti_x_forwarded_for         = "10.230.10.5"
+nodo_pagamenti_x_forwarded_for_apim_v2 = "10.230.10.164"
+node_forwarder_tier                    = "PremiumV3"
+node_forwarder_size                    = "P1v3"
 
 # lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
@@ -794,3 +797,8 @@ buyer_banks_storage_account_replication_type = "GZRS"
 cdn_storage_account_replication_type         = "GRS"
 backup_storage_replication_type              = "GRS"
 fdr_flow_sa_replication_type                 = "ZRS"
+
+apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
+apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"
+
+apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/loggers/pagopa-p-apim-logger"

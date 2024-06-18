@@ -444,3 +444,25 @@ resource "azurerm_key_vault_secret" "gpd_archive_sa_connection_string" {
 
 }
 
+# GPD Payments queue retry connection string
+
+resource "azurerm_key_vault_secret" "gpd_payments_retry_sa_connection_string" {
+  name         = "gpd-payments-${var.env_short}-queue-connection-string"
+  value        = module.gpd_sa_sftp.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+}
+
+resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
+  name         = "elastic-apm-secret-token" #"elastic-otel-token-header" 
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

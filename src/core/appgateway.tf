@@ -235,7 +235,7 @@ locals {
       protocol                    = "Https"
       host                        = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
       port                        = 443
-      ip_addresses                = var.enabled_features.apim_v2 ? concat(module.apim.private_ip_addresses, data.azurerm_api_management.apim_v2[0].private_ip_addresses) : module.apim.private_ip_addresses
+      ip_addresses                = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : module.apim[0].private_ip_addresses)
       fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
@@ -247,7 +247,7 @@ locals {
       protocol                    = "Https"
       host                        = trim(azurerm_dns_a_record.dns_a_portal.fqdn, ".")
       port                        = 443
-      ip_addresses                = var.enabled_features.apim_v2 ? concat(module.apim.private_ip_addresses, data.azurerm_api_management.apim_v2[0].private_ip_addresses) : module.apim.private_ip_addresses
+      ip_addresses                = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : module.apim[0].private_ip_addresses)
       fqdns                       = [azurerm_dns_a_record.dns_a_portal.fqdn]
       probe                       = "/signin"
       probe_name                  = "probe-portal"
@@ -259,7 +259,7 @@ locals {
       protocol     = "Https"
       host         = trim(azurerm_dns_a_record.dns_a_management.fqdn, ".")
       port         = 443
-      ip_addresses = var.enabled_features.apim_v2 ? concat(module.apim.private_ip_addresses, data.azurerm_api_management.apim_v2[0].private_ip_addresses) : module.apim.private_ip_addresses
+      ip_addresses = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : module.apim[0].private_ip_addresses)
       fqdns        = [azurerm_dns_a_record.dns_a_management.fqdn]
 
       probe                       = "/ServiceStatus"
@@ -286,7 +286,7 @@ locals {
       protocol                    = "Https"
       host                        = trim(var.upload_endpoint_enabled ? azurerm_dns_a_record.dns_a_upload[0].fqdn : "", ".")
       port                        = 443
-      ip_addresses                = var.enabled_features.apim_v2 ? concat(module.apim.private_ip_addresses, data.azurerm_api_management.apim_v2[0].private_ip_addresses) : module.apim.private_ip_addresses
+      ip_addresses                = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : module.apim[0].private_ip_addresses)
       fqdns                       = var.upload_endpoint_enabled ? [azurerm_dns_a_record.dns_a_upload[0].fqdn] : []
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"

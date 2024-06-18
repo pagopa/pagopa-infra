@@ -19,9 +19,14 @@ tags = {
 
 ### Feature Flag
 is_feature_enabled = {
-  vnet_ita = false,
-  container_app_tools_cae = false,
-  node_forwarder_ha_enabled = false
+  vnet_ita                  = false,
+  container_app_tools_cae   = false,
+  node_forwarder_ha_enabled = false,
+  vpn                       = false,
+  dns_forwarder_lb          = true,
+  postgres_private_dns      = true,
+  apim_core_import          = false
+
 }
 
 #
@@ -31,6 +36,7 @@ cidr_vnet_italy = ["10.3.0.0/16"]
 
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
 cidr_subnet_tools_cae            = ["10.1.248.0/23"]
+cidr_subnet_azdoa                = ["10.1.130.0/24"]
 
 #
 # Dns
@@ -45,8 +51,7 @@ log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
 ### VPN
-dns_forwarder_backup_is_enabled = true
-dns_forwarder_vm_image_name     = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
+dns_forwarder_vm_image_name = "pagopa-p-dns-forwarder-ubuntu2204-image-v1"
 
 
 #
@@ -192,7 +197,7 @@ ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
 ehns_capacity                 = 5
 ehns_zone_redundant           = true
-ehns_public_network_access = true
+ehns_public_network_access    = true
 
 ehns_metric_alerts = {
   no_trx = {
@@ -632,9 +637,51 @@ eventhubs_04 = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "fdr-qi-reported-iuv"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["fdr-qi-reported-iuv-rx"]
+    keys = [
+      {
+        name   = "fdr-qi-reported-iuv-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-qi-reported-iuv-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "fdr-qi-flows"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["fdr-qi-flows-rx"]
+    keys = [
+      {
+        name   = "fdr-qi-flows-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-qi-flows-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 
 node_forwarder_zone_balancing_enabled = true
 node_forwarder_sku                    = "P3v3"
-
+devops_agent_zones                    = [1, 2, 3]
+devops_agent_balance_zones            = false
+azdo_agent_vm_image_name              = "pagopa-p-azdo-agent-ubuntu2204-image-v4"

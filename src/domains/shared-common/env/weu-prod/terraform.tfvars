@@ -108,3 +108,5 @@ taxonomy_network_rules = {
   virtual_network_subnet_ids = []
   bypass                     = ["AzureServices"]
 }
+
+redis_ha_enabled = true

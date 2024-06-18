@@ -53,3 +53,5 @@ pod_disruption_budgets = {
     }
   },
 }
+
+pdv_api_base_path = "https://disabled"

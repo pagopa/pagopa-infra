@@ -143,6 +143,9 @@
                         <send-request response-variable-name="walletResponse" timeout="10">
                             <set-url>@($"https://${wallet-basepath}/pagopa-wallet-service/wallets/{(string)context.Variables["walletId"]}")</set-url>
                             <set-method>GET</set-method>
+                            <set-header name="x-user-id" exists-action="override">
+                                <value>@((string)context.Request.Headers.GetValueOrDefault("x-user-id",""))</value>
+                            </set-header>
                         </send-request>
                         <choose>
                             <when condition="@(((int)((IResponse)context.Variables["walletResponse"]).StatusCode) == 200)">

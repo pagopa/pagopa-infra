@@ -19,15 +19,25 @@ tags = {
 
 ### Feature Flag
 is_feature_enabled = {
-  vnet_ita = true,
-  container_app_tools_cae = true,
-  node_forwarder_ha_enabled = true
+  vnet_ita                  = true,
+  container_app_tools_cae   = true,
+  node_forwarder_ha_enabled = true,
+  vpn                       = true,
+  dns_forwarder_lb          = true,
+  postgres_private_dns      = true,
+  apim_core_import          = true,
+  use_new_apim              = false
 }
 
-### Network
+### Network west europe
+cidr_subnet_vpn                  = ["10.1.142.0/24"]
+cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
+cidr_subnet_tools_cae            = ["10.1.248.0/23"]
+cidr_subnet_azdoa                = ["10.1.130.0/24"]
+cidr_subnet_loadtest_agent       = ["10.1.159.0/24"]
+### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]
 
-cidr_subnet_tools_cae = ["10.1.248.0/23"]
 
 #
 # Dns
@@ -41,21 +51,19 @@ monitor_resource_group_name                 = "pagopa-d-monitor-rg"
 log_analytics_workspace_name                = "pagopa-d-law"
 log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 
-### VPN
-dns_forwarder_backup_is_enabled = false
 
 #
 # replica settings
 #
-geo_replica_enabled          = false
-postgres_private_dns_enabled = false
+geo_replica_enabled = false
 
 
 #
 # apim v2
 #
-cidr_subnet_apim = ["10.230.8.160/27"]
-apim_v2_zones    = ["1"]
+redis_cache_enabled = true
+cidr_subnet_apim    = ["10.230.8.160/27"]
+apim_v2_zones       = ["1"]
 apim_v2_subnet_nsg_security_rules = [
   {
     name                       = "inbound-management-3443"
@@ -140,7 +148,7 @@ app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
 integration_appgateway_zones            = []
 
-nodo_pagamenti_psp            = "06529501006,97735020584,97249640588,06874351007,08301100015,00194450219,02113530345,01369030935,07783020725"
+nodo_pagamenti_psp            = "06529501006,97249640588,06874351007,08301100015,00194450219,02113530345,01369030935,07783020725"
 nodo_pagamenti_ec             = "00493410583,77777777777,00113430573,00184260040,00103110573,00939820726,00109190579,00122520570,82501690018,80001220773,84515520017,03509990788,84002410540,00482510542,00326070166,01350940019,00197530298,00379480031,06396970482,00460900038,82005250285,82002770236,80013960036,83000970018,84002970162,82500110158,00429530546,01199250158,80003370477,00111190575,81001650548,00096090550,95001650167,00451080063,80038190163,00433320033,00449050061,82002270724,00682280284,00448140541,00344700034,81000550673,00450150065,80002860775,83001970017,00121490577,00383120037,00366270031,80023530167,01504430016,00221940364,00224320366,00246880397,01315320489,00354730392,00357850395,80008270375,00218770394,00226010395,00202300398,81002910396,00360090393,84002010365,00242920395,80005570561,80015230347,00236340477,92035800488,03428581205,00114510571"
 nodo_pagamenti_url            = "http://10.70.66.200/nodo-sit/webservices/input"
 ip_nodo                       = "x.x.x.x"      # disabled 10.79.20.32/sit/webservices/input shall use lb_aks
@@ -616,6 +624,46 @@ eventhubs_04 = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "fdr-qi-reported-iuv"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["fdr-qi-reported-iuv-rx"]
+    keys = [
+      {
+        name   = "fdr-qi-reported-iuv-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-qi-reported-iuv-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "fdr-qi-flows"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["fdr-qi-flows-rx"]
+    keys = [
+      {
+        name   = "fdr-qi-flows-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "fdr-qi-flows-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 
@@ -623,3 +671,5 @@ node_forwarder_autoscale_enabled      = false
 node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "B1"
 
+dns_forwarder_vm_image_name = "pagopa-d-dns-forwarder-ubuntu2204-image-v1"
+azdo_agent_vm_image_name    = "pagopa-d-azdo-agent-ubuntu2204-image-v3"

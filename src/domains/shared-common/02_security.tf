@@ -3,6 +3,13 @@ data "azurerm_redis_cache" "redis_cache" {
   resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
 }
 
+data "azurerm_redis_cache" "redis_cache_ha" {
+  count               = var.redis_ha_enabled ? 1 : 0
+  name                = format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short)
+  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
+}
+
+
 resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
@@ -132,8 +139,19 @@ resource "azurerm_key_vault_secret" "authorizer_cosmos_key" {
 }
 
 resource "azurerm_key_vault_secret" "redis_password" {
-  name         = "redis-password"
-  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
+  name  = "redis-password"
+  value = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].primary_access_key : data.azurerm_redis_cache.redis_cache.primary_access_key
+
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+
+resource "azurerm_key_vault_secret" "redis_hostname" {
+  name  = "redis-hostname"
+  value = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].hostname : data.azurerm_redis_cache.redis_cache.hostname
+
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -317,6 +335,33 @@ resource "azurerm_key_vault_secret" "elastic_apm_secret_token" {
 
 resource "azurerm_key_vault_secret" "nodo5_slack_webhook_url" {
   name         = "nodo5-slack-webhook-url"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+
+
+resource "azurerm_key_vault_secret" "wallet_session_pdv_api_key" {
+  name         = "personal-data-vault-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+
+resource "azurerm_key_vault_secret" "wallet_session_jwt_signing_key" {
+  name         = "wallet-session-jwt-signing-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
