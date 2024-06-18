@@ -535,7 +535,7 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v2_ndp
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "closePaymentV2"
-  xml_content         = file("api/nodopagamenti_api/wisp/wisp-closepayment-outbound.xml")
+  xml_content         = file("api/nodopagamenti_api/wisp/wisp-closepayment.xml")
 }
 
 
