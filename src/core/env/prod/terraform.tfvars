@@ -23,6 +23,7 @@ enabled_features = {
   apim_migrated = false
 }
 
+upload_endpoint_enabled = false
 lock_enable = true
 
 # monitoring
