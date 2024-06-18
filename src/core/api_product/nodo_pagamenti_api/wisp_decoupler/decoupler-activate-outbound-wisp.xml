@@ -82,6 +82,9 @@
     <send-one-way-request mode="new">
       <set-url>{{wisp-dismantling-converter-base-url}}/receipt/timer</set-url>
       <set-method>POST</set-method>
+      <set-header name="Content-Type" exists-action="override">
+        <value>application/json</value>
+      </set-header>
       <set-body>@{
         var paymentTokenObj = JObject.Parse((string)context.Variables["wisp-paymentToken-obj"]);
         paymentTokenObj["expirationTime"] = JToken.FromObject(context.Variables["paymentToken-expirationTime"]);
