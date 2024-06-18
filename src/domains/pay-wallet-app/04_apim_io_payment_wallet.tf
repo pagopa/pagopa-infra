@@ -65,17 +65,17 @@ module "apim_io_payment_wallet_api_v1" {
   })
 
   xml_content = templatefile("./api/io-payment-wallet/v1/_base_policy.xml.tpl", {
-    hostname = local.wallet_service_hostname
+    hostname = local.payment_wallet_hostname
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "post_io_wallets" {
+resource "azurerm_api_management_api_operation_policy" "delete_io_wallets" {
   api_name            = "${local.project}-io-payment-wallet-api-v1"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  operation_id        = "createIOPaymentWallet"
+  operation_id        = "deleteIOPaymentWalletById"
 
-  xml_content = file("./api/io-payment-wallet/v1/_post_wallets_policy.xml.tpl")
+  xml_content = file("./api/io-payment-wallet/v1/_delete_wallet.xml.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_payment_methods_for_io" {
@@ -84,7 +84,45 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_methods_for_
   api_management_name = local.pagopa_apim_name
   operation_id        = "getAllPaymentMethodsForIO"
 
-  xml_content = templatefile("./api/io-payment-wallet/v1/_get_payment_methods_policy.xml.tpl", { ecommerce_hostname = local.ecommerce_hostname }
+  xml_content = templatefile("./api/io-payment-wallet/v1/_get_payment_methods.xml.tpl", { ecommerce_hostname = local.ecommerce_hostname }
   )
 }
 
+resource "azurerm_api_management_api_operation_policy" "get_wallets_by_user_and_walletId_for_io" {
+  api_name            = "${local.project}-io-payment-wallet-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getIOPaymentWalletById"
+
+  xml_content = templatefile("./api/io-payment-wallet/v1/_get_wallets_by_user_and_walletId.xml.tpl", { ecommerce_hostname = local.ecommerce_hostname })
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_wallets_by_user_for_io" {
+  api_name            = "${local.project}-io-payment-wallet-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getIOPaymentWalletsByIdUser"
+
+  xml_content = templatefile("./api/io-payment-wallet/v1/_get_wallets_by_user.xml.tpl", { ecommerce_hostname = local.ecommerce_hostname })
+}
+
+resource "azurerm_api_management_api_operation_policy" "post_io_wallets" {
+  api_name            = "${local.project}-io-payment-wallet-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "createIOPaymentWallet"
+
+  xml_content = templatefile("./api/io-payment-wallet/v1/_post_wallets.xml.tpl", {
+    env                = var.env,
+    ecommerce_hostname = local.ecommerce_hostname
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "update_applications_for_io" {
+  api_name            = "${local.project}-io-payment-wallet-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "updateIOPaymentWalletApplicationsById"
+
+  xml_content = file("./api/io-payment-wallet/v1/_update_applications.xml.tpl")
+}

@@ -1,16 +1,14 @@
 <policies>
     <inbound>
-        <base />
+    <base />
         <choose>
             <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
-                <set-variable  name="sessionToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
-
                 <!-- START get user wallets -->
                 <send-request ignore-error="false" timeout="10" response-variable-name="pmWalletResponse">
                     <set-url>{{pm-host}}/pp-restapi-CD/v3/wallet</set-url>
                     <set-method>GET</set-method>
                     <set-header name="Authorization" exists-action="override">
-                        <value>@($"Bearer {((string)context.Variables["sessionToken"])}")</value>
+                        <value>@($"Bearer {((String)context.Variables["sessionToken"])}")</value>
                     </set-header>
                 </send-request>
                 <choose>
@@ -50,10 +48,9 @@
                     </when>
                 </choose>
                 <!-- END get user wallets -->
-        
                 <!-- START get payment methods -->
                 <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
-                    <set-url>https://${ecommerce-hostname}/pagopa-ecommerce-payment-methods-service/payment-methods</set-url>
+                    <set-url>https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-service/payment-methods</set-url>
                     <set-method>GET</set-method>
                     <set-header name="X-Client-id" exists-action="override">
                         <value>IO</value>
@@ -78,7 +75,6 @@
                 </choose>
                 <set-variable name="paymentMethodsResponseBody" value="@(((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
                 <!-- END get payment methods -->
-        
                 <return-response>
                     <set-status code="200" />
                     <set-header name="Content-Type" exists-action="override">
@@ -87,7 +83,7 @@
                     <set-body>
                         @{
                             JObject pmWalletResponse = (JObject)context.Variables["pmUserWalletResponseBody"];
-                            var walletServices = new List<String>{"PAGOPA"};
+                            var walletApplications = new List<String>{"PAGOPA"};
                             var eCommerceWalletTypes = new Dictionary<string, string>
                                 {
                                     { "Card", "CARDS" },
@@ -112,32 +108,32 @@
                                         result["walletId"] = walletIdToUuid;
                                         string pmWalletType = (string) wallet["walletType"];
                                         string eCommerceWalletType = eCommerceWalletTypes[pmWalletType];
-                                        string paymentMethodAsset = null;
                                         result["paymentMethodId"] = eCommercePaymentMethodIds[eCommerceWalletType];
                                         result["status"] = "VALIDATED";
-        
+            
                                         TimeZoneInfo zone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-        
+            
                                         DateTime creationDateTime = DateTime.Parse(((string)wallet["createDate"]).Replace(" ","T"));
                                         DateTime utcCreationDateTime = TimeZoneInfo.ConvertTimeToUtc(creationDateTime, zone);
                                         DateTimeOffset creationDateTimeOffset = new DateTimeOffset(utcCreationDateTime);
                                         result["creationDate"] = creationDateTimeOffset.ToString("o");
                                         result["updateDate"] = result["creationDate"];
-        
-                                        var convertedServices = new List<JObject>();
+            
+                                        var convertedApplications = new List<JObject>();
                                         foreach(JValue application in wallet["enableableFunctions"]){
                                             string applicationName = application.ToString().ToUpper();
-                                            if(walletServices.Contains(applicationName)){
+                                            if(walletApplications.Contains(applicationName) && wallet[application.ToString()] != null){
                                                 JObject converted = new JObject();
                                                 converted["name"] = applicationName;
-                                                converted["status"] = "ENABLED";
+                                                converted["status"] = Convert.ToBoolean(wallet[application.ToString()]) == true ? "ENABLED" : "DISABLED";
                                                 converted["updateDate"] = result["creationDate"];
-                                                convertedServices.Add(converted);
+                                                convertedApplications.Add(converted);
                                             }
                                         }
-                                        result["applications"] = JArray.FromObject(convertedServices);
+                                        result["applications"] = JArray.FromObject(convertedApplications);
                                         JObject details = new JObject();
                                         details["type"] = eCommerceWalletType;
+                                        string paymentMethodAsset = null;
                                         if (eCommerceWalletType == "CARDS") {
                                             details["lastFourDigits"] = $"{wallet["info"]["blurredNumber"]}";
                                             details["expiryDate"] = $"{(string)wallet["info"]["expireYear"]}{(string)wallet["info"]["expireMonth"]}";
@@ -161,7 +157,7 @@
                                         }
                                         result["details"] = details;
                                         result["paymentMethodAsset"] = paymentMethodAsset;
-        
+            
                                         Boolean favourite = (Boolean) wallet["favourite"];
                                         JObject clients = new JObject();
                                         JObject clientIO = new JObject();
@@ -173,10 +169,10 @@
                                         }
                                         clients["IO"] = clientIO;
                                         result["clients"] = clients;
-        
+            
                                         return result;
                                 }).ToArray();
-        
+            
                         JObject response = new JObject();
                         response["wallets"] = JArray.FromObject(wallets);
                         return response.ToString();
