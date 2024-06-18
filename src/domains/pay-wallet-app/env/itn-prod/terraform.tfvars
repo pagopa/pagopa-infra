@@ -42,3 +42,5 @@ pdv_api_base_path    = "https://api.tokenizer.pdv.pagopa.it/tokenizer/v1"
 io_backend_base_path = "https://api-app.io.pagopa.it"
 
 payment_wallet_with_pm_enabled = true
+
+payment_wallet_migrations_enabled = true
