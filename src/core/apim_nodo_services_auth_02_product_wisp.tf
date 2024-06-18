@@ -1,7 +1,7 @@
 ##############
 ## Products ##
 ##############
-
+// TODO remove all file after merge
 module "apim_nodo_dei_pagamenti_product_auth_wisp" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
 
@@ -9,7 +9,8 @@ module "apim_nodo_dei_pagamenti_product_auth_wisp" {
   display_name = "Nodo dei Pagamenti WISP (Nuova Connettività)"
   description  = "Product for Nodo dei Pagamenti WISP (Nuova Connettività)"
 
-  api_management_name = module.apim.name
+#  api_management_name = module.apim[0].name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
@@ -26,23 +27,24 @@ module "apim_nodo_dei_pagamenti_product_auth_wisp" {
 }
 
 
-
-
 resource "azurerm_api_management_api_version_set" "pm_per_nodo_api_wisp" {
 
   name                = "${local.project}-pm-per-nodo-api-wisp"
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+#  api_management_name = module.apim[0].name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = "WISP Copy - PM per Nodo API"
   versioning_scheme   = "Segment"
 }
+
 
 module "apim_pm_per_nodo_v2_wisp" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = "${local.project}-pm-per-nodo-api-wisp"
-  api_management_name   = module.apim.name
+#  api_management_name   = module.apim[0].name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_dei_pagamenti_product_auth_wisp.product_id]
   subscription_required = local.apim_pm_per_nodo_api.subscription_required_v2
@@ -66,10 +68,12 @@ module "apim_pm_per_nodo_v2_wisp" {
   })
 }
 
+
 resource "azurerm_api_management_api_operation_policy" "sendpaymentoutcome_v2_wisp_policy" {
 
   api_name            = "${local.project}-pm-per-nodo-api-wisp-v2"
-  api_management_name = module.apim.name
+#  api_management_name = module.apim[0].name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
   operation_id        = "addUserReceipt"
 
@@ -77,15 +81,12 @@ resource "azurerm_api_management_api_operation_policy" "sendpaymentoutcome_v2_wi
   xml_content = file("./api/nodopagamenti_api/wisp/wisp-sendpaymentresult-outbound.xml")
 }
 
-
-
-
-
 resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_ndp_wisp" {
 
   name                = format("%s-nodo-per-pm-api-ndp-wisp", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+#  api_management_name = module.apim[0].name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = "WISP - Nodo per Payment Manager API NDP"
   versioning_scheme   = "Segment"
 }
@@ -96,7 +97,8 @@ module "apim_nodo_per_pm_api_v2_ndp_wisp" {
 
   name                  = format("%s-nodo-per-pm-api-ndp", local.project)
   resource_group_name   = azurerm_resource_group.rg_api.name
-  api_management_name   = module.apim.name
+#  api_management_name   = module.apim[0].name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   subscription_required = true
   version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api_ndp_wisp.id
   api_version           = "v2"
@@ -117,16 +119,15 @@ module "apim_nodo_per_pm_api_v2_ndp_wisp" {
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "closepayment_v2_wisp_policy" {
-  api_name            = format("%s-nodo-per-pm-api-ndp-v2", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
-  operation_id        = "closePayment"
-  xml_content         = file("api/nodopagamenti_api/wisp/wisp-closepayment-outbound.xml")
-}
-
-
-
+// TODO copied in nodo-app for NDP
+#resource "azurerm_api_management_api_operation_policy" "closepayment_v2_wisp_policy" {
+#  api_name            = format("%s-%s-nodo-nodo-per-pm-api-ndp-v2", local.project, var.location_short)
+#  resource_group_name = azurerm_resource_group.rg_api.name
+##  api_management_name = module.apim[0].name
+#  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+#  operation_id        = "closePaymentV2"
+#  xml_content         = file("api/nodopagamenti_api/wisp/wisp-closepayment-outbound.xml")
+#}
 
 locals {
 
@@ -145,7 +146,8 @@ resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_a
 
   api_name            = each.key
   product_id          = module.apim_nodo_dei_pagamenti_product_auth_wisp.product_id
-  api_management_name = module.apim.name
+#  api_management_name = module.apim[0].name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
 }
 
@@ -155,7 +157,8 @@ resource "azapi_resource" "decoupler_algorithm_wisp" {
 
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-algorithm-wisp"
-  parent_id = module.apim.id
+#  parent_id = module.apim[0].id
+  parent_id = data.azurerm_api_management.apim_migrated[0].id
 
   body = jsonencode({
     properties = {
@@ -176,7 +179,8 @@ resource "azapi_resource" "decoupler_activate_outbound_wisp" {
 
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-activate-outbound-wisp"
-  parent_id = module.apim.id
+#  parent_id = module.apim[0].id
+  parent_id = data.azurerm_api_management.apim_migrated[0].id
 
   body = jsonencode({
     properties = {
@@ -195,7 +199,8 @@ resource "azapi_resource" "wisp_dismantling_sendrt" {
 
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "wisp-dismantling-sendrt"
-  parent_id = module.apim.id
+#  parent_id = module.apim[0].id
+  parent_id = data.azurerm_api_management.apim_migrated[0].id
 
   body = jsonencode({
     properties = {

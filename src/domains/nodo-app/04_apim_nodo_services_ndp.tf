@@ -472,7 +472,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_ndp" {
-
+  // TODO remove nodo from name because it is included in local.project
   name                = format("%s-nodo-per-pm-api-ndp", local.project)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -527,6 +527,17 @@ resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1_ndp" 
     base-url = "https://${local.nodo_hostname}/nodo"
   })
 }
+
+resource "azurerm_api_management_api_operation_policy" "close_payment_api_v2_ndp_wisp_policy" {
+  count               = var.enable_wisp_converter ? 1 : 0
+  // TODO remove redundant nodo
+  api_name            = format("%s-nodo-per-pm-api-ndp-v2", local.project)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "closePaymentV2"
+  xml_content         = file("api/nodopagamenti_api/wisp/wisp-closepayment-outbound.xml")
+}
+
 
 module "apim_nodo_per_pm_api_v2_ndp" {
 

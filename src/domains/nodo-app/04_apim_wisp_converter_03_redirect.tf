@@ -41,4 +41,3 @@ module "wisp_converter_redirect_api_v1" {
     hostname = "https://${local.nodo_hostname}/pagopa-wisp-converter"
   })
 }
-
