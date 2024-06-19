@@ -28,13 +28,13 @@ jobs:
           current_branch=${GITHUB_HEAD_REF}
           echo "current branch: $current_branch"
           echo "get modified paths from source"
-          git diff --name-only $current_branch origin/main | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq
-          echo "executed command"
           modified_paths_source=$(git diff --name-only $current_branch origin/main | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq )
+          echo "executed command"
           echo "$modified_paths_source"
 
           echo "get modified paths from domains"
           modified_paths_domains=$(git diff --name-only $current_branch origin/main | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq )
+          echo "executed command"
           echo "$modified_paths_domains"
 
           echo "merge paths"
