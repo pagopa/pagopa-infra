@@ -26,7 +26,7 @@ is_feature_enabled = {
   dns_forwarder_lb          = true,
   postgres_private_dns      = true,
   apim_core_import          = false
-
+  use_new_apim              = true
 }
 
 #
@@ -155,6 +155,22 @@ apim_v2_zones          = ["1", "2", "3"]
 create_redis_multiaz   = true
 redis_zones            = ["1", "2", "3"]
 redis_cache_enabled    = true
+apim_v2_autoscale = {
+  enabled                       = true
+  default_instances             = 3
+  minimum_instances             = 3
+  maximum_instances             = 5
+  scale_out_capacity_percentage = 45
+  scale_out_time_window         = "PT10M"
+  scale_out_value               = "2"
+  scale_out_cooldown            = "PT45M"
+  scale_in_capacity_percentage  = 30
+  scale_in_time_window          = "PT30M"
+  scale_in_value                = "1"
+  scale_in_cooldown             = "PT4H"
+}
+
+
 # redis apim
 
 redis_cache_params = {
@@ -167,7 +183,7 @@ redis_cache_params = {
 
 app_gateway_sku_name                    = "Standard_v2"
 app_gateway_sku_tier                    = "Standard_v2"
-cidr_subnet_appgateway_integration      = ["10.230.10.192/27"]
+cidr_subnet_appgateway_integration      = ["10.230.10.192/26"]
 integration_appgateway_private_ip       = "10.230.10.200"
 app_gateway_api_certificate_name        = "api-platform-pagopa-it"
 app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
@@ -685,3 +701,5 @@ node_forwarder_sku                    = "P3v3"
 devops_agent_zones                    = [1, 2, 3]
 devops_agent_balance_zones            = false
 azdo_agent_vm_image_name              = "pagopa-p-azdo-agent-ubuntu2204-image-v4"
+app_gateway_min_capacity              = 2
+app_gateway_max_capacity              = 50

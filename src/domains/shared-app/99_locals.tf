@@ -43,6 +43,8 @@ locals {
 
   authorizer_config_hostname = "${local.shared_hostname}/authorizer-config"
 
+  iuvgenerator_hostname = "${local.shared_hostname}/pagopa-iuvgenerator"
+
   # DOMAINS
   system_domain_namespace = kubernetes_namespace.system_domain_namespace.metadata[0].name
   domain_namespace        = kubernetes_namespace.namespace.metadata[0].name
