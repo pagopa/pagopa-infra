@@ -311,3 +311,10 @@ enabled_features = {
   eventhub_ha_tx = true
   eventhub_ha_rx = true
 }
+
+wisp_converter_service_bus = {
+  sku                                  = "Premium"
+  requires_duplicate_detection         = false
+  dead_lettering_on_message_expiration = false
+  enable_partitioning                  = true
+}

@@ -272,5 +272,8 @@ enabled_features = {
 }
 
 wisp_converter_service_bus = {
-  sku = "Basic"
+  sku                                  = "Basic"
+  requires_duplicate_detection         = false
+  dead_lettering_on_message_expiration = false
+  enable_partitioning                  = true
 }

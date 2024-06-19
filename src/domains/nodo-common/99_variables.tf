@@ -377,7 +377,6 @@ variable "enable_wisp_converter" {
   type        = bool
   default     = false
   description = "Enables WISP Converter"
-
 }
 
 # Nodo RE Storage Account
@@ -564,6 +563,6 @@ variable "wisp_converter_service_bus" {
     sku                                  = "Standard"
     requires_duplicate_detection         = false
     dead_lettering_on_message_expiration = false
-    enable_partitioning                  = false
+    enable_partitioning                  = true
   }
 }

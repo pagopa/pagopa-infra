@@ -183,7 +183,8 @@ resource "azurerm_key_vault_secret" "redis_hostname" {
 Service Bus
 *****************/
 resource "azurerm_key_vault_secret" "wisp_converter_service_bus" {
-  count        = var.enable_wisp_converter ? 1 : 0
+  count = var.enable_wisp_converter ? 1 : 0
+
   name         = "wisp-converter-sb-connection-string"
   value        = var.enable_wisp_converter ? azurerm_servicebus_namespace.wisp_converter_servicebus[0].default_primary_connection_string : "undefined"
   content_type = "text/plain"
