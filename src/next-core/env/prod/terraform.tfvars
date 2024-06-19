@@ -21,7 +21,7 @@ tags = {
 is_feature_enabled = {
   vnet_ita                  = false,
   container_app_tools_cae   = false,
-  node_forwarder_ha_enabled = false,
+  node_forwarder_ha_enabled = true,
   vpn                       = false,
   dns_forwarder_lb          = true,
   postgres_private_dns      = true,
@@ -698,6 +698,7 @@ eventhubs_04 = [
 
 node_forwarder_zone_balancing_enabled = true
 node_forwarder_sku                    = "P3v3"
+node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
 devops_agent_zones                    = [1, 2, 3]
 devops_agent_balance_zones            = false
 azdo_agent_vm_image_name              = "pagopa-p-azdo-agent-ubuntu2204-image-v4"
