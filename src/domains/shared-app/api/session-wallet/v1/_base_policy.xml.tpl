@@ -3,47 +3,121 @@
       <base />
       <set-variable name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
       <!-- Maybe to add backend-io get user to check family & friends -->
+      <!-- Session PM START-->
+      <send-request ignore-error="true" timeout="10" response-variable-name="pm-session-body" mode="new">
+          <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/actions/start-session?token={(string)context.Variables["walletToken"]}")</set-url>
+          <set-method>GET</set-method>
+      </send-request>
       <choose>
-          <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}" || !"{{pay-wallet-family-friends-users}}".Contains((string)context.Request.Headers.GetValueOrDefault("x-user-id","")) )">
+          <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode == 401)">
+              <return-response>
+                  <set-status code="401" reason="Unauthorized" />
+                  <set-header name="Content-Type" exists-action="override">
+                      <value>application/json</value>
+                  </set-header>
+                  <set-body>
+                      {
+                          "title": "Unauthorized",
+                          "status": 401,
+                          "detail": "Invalid session token"
+                      }
+                  </set-body>
+              </return-response>
+          </when>
+          <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode != 200)">
+              <return-response>
+                  <set-status code="502" reason="Bad Gateway" />
+                  <set-header name="Content-Type" exists-action="override">
+                      <value>application/json</value>
+                  </set-header>
+                  <set-body>
+                      {
+                          "title": "Error starting session",
+                          "status": 502,
+                          "detail": "There was an error starting session for input wallet token"
+                      }
+                  </set-body>
+              </return-response>
+          </when>
+      </choose>
+      <set-variable name="pmSession" value="@(((IResponse)context.Variables["pm-session-body"]).Body.As<JObject>())" />
+      <!-- Session PM END-->
+      <set-variable name="userFiscalCode" value="@{
+          String userFiscalCode = ((JObject)context.Variables["pmSession"])?["data"]?["user"]?["fiscalCode"]?.ToString();
+          return userFiscalCode;
+      }" 
+      />
+      <choose>
+          <when condition="@(String.IsNullOrEmpty((String)context.Variables["userFiscalCode"]))">
+              <return-response>
+                <set-status code="502" reason="Bad Gateway" />
+                <set-header name="Content-Type" exists-action="override">
+                  <value>application/json</value>
+                </set-header>
+                <set-body>
+                    {
+                        "title": "Error starting session",
+                        "status": 502,
+                        "detail": "Cannot tokenize user fiscal code: PM start-session fiscalCode is null"
+                    }
+                </set-body>
+              </return-response>
+          </when>
+          <otherwise>
+              <!-- Post Token PDV : START-->
+              <send-request ignore-error="true" timeout="10" response-variable-name="pdv-token" mode="new">
+                <set-url>${pdv_api_base_path}/tokens</set-url>
+                <set-method>PUT</set-method>
+                <set-header name="x-api-key" exists-action="override">
+                    <value>{{wallet-session-personal-data-vault-api-key}}</value>
+                </set-header>
+                <set-body>@{
+                  return new JObject(
+                          new JProperty("pii", (string)context.Variables["userFiscalCode"])
+                      ).ToString();
+                    }</set-body>
+              </send-request>
+              <choose>
+                <when condition="@(((IResponse)context.Variables["pdv-token"]).StatusCode != 200)">
+                  <return-response>
+                    <set-status code="502" reason="Bad Gateway" />
+                     <set-body>
+                      {
+                          "title": "Error starting session",
+                          "status": 502,
+                          "detail": "Error during fiscal code tokenization"
+                      }
+                  </set-body>
+                  </return-response>
+                </when>
+              </choose>
+
+              <set-variable name="pdvToken" value="@(((IResponse)context.Variables["pdv-token"]).Body.As<JObject>())" />
+              <!-- used as jwt claims  https://auth0.com/docs/secure/tokens/json-web-tokens/json-web-token-claims -->      
+              <set-variable name="userId" value="@((string)((JObject)context.Variables["pdvToken"])["token"])" />
+              <choose>
+                <when condition="@(String.IsNullOrEmpty((string)context.Variables["userId"]))">
+                    <return-response>
+                        <set-status code="502" />
+                        <set-header name="Content-Type" exists-action="override">
+                            <value>application/json</value>
+                        </set-header>
+                        <set-body>@{
+                    return new JObject(
+                      new JProperty("title", "Bad gateway - Invalid PDV response"),
+                      new JProperty("status", 502),
+                      new JProperty("detail", "Cannot tokenize fiscal code")
+                    ).ToString();
+                  }</set-body>
+                    </return-response>
+                </when>
+              </choose>
+              <!-- Post Token PDV : END-->
+            </otherwise>
+      </choose>
+      <choose>
+          <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["userId"])))">
           <!-- Session PM START-->
-          <send-request ignore-error="true" timeout="10" response-variable-name="pm-session-body" mode="new">
-              <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/actions/start-session?token={(string)context.Variables["walletToken"]}")</set-url>
-              <set-method>GET</set-method>
-          </send-request>
-          <choose>
-              <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode == 401)">
-                  <return-response>
-                      <set-status code="401" reason="Unauthorized" />
-                      <set-header name="Content-Type" exists-action="override">
-                          <value>application/json</value>
-                      </set-header>
-                      <set-body>
-                          {
-                              "title": "Unauthorized",
-                              "status": 401,
-                              "detail": "Invalid session token"
-                          }
-                      </set-body>
-                  </return-response>
-              </when>
-              <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode != 200)">
-                  <return-response>
-                      <set-status code="502" reason="Bad Gateway" />
-                      <set-header name="Content-Type" exists-action="override">
-                          <value>application/json</value>
-                      </set-header>
-                      <set-body>
-                          {
-                              "title": "Error starting session",
-                              "status": 502,
-                              "detail": "There was an error starting session for input wallet token"
-                          }
-                      </set-body>
-                  </return-response>
-              </when>
-          </choose>
-          <set-variable name="pmSession" value="@(((IResponse)context.Variables["pm-session-body"]).Body.As<JObject>())" />
-          <!-- Session PM END-->
           <!-- pagoPA platform wallet JWT session token : START -->
           <set-variable name="x-jwt-token" value="@(((JObject)context.Variables["pmSession"])["data"]["sessionToken"].ToString())" />
           <!-- pagoPA platform wallet JWT session token : END -->
@@ -94,50 +168,6 @@
             </choose>
             <set-variable name="userAuthBody" value="@(((IResponse)context.Variables["user-auth-body"]).Body.As<JObject>())" />
             <!-- Get User IO : END-->
-            <!-- Post Token PDV : START-->
-            <send-request ignore-error="true" timeout="10" response-variable-name="pdv-token" mode="new">
-              <set-url>${pdv_api_base_path}/tokens</set-url>
-              <set-method>PUT</set-method>
-              <set-header name="x-api-key" exists-action="override">
-                  <value>{{wallet-session-personal-data-vault-api-key}}</value>
-              </set-header>
-              <set-body>@{
-                JObject requestBody = (JObject)context.Variables["userAuthBody"];
-                return new JObject(
-                        new JProperty("pii",  (string)requestBody["fiscal_code"])
-                    ).ToString();
-                  }</set-body>
-            </send-request>
-            <choose>
-              <when condition="@(((IResponse)context.Variables["pdv-token"]).StatusCode != 200)">
-                <return-response>
-                  <set-status code="502" reason="Bad Gateway" />
-                </return-response>
-              </when>
-            </choose>
-
-            <set-variable name="pdvToken" value="@(((IResponse)context.Variables["pdv-token"]).Body.As<JObject>())" />
-            <!-- used as jwt claims  https://auth0.com/docs/secure/tokens/json-web-tokens/json-web-token-claims -->      
-            <set-variable name="userId" value="@((string)((JObject)context.Variables["pdvToken"])["token"])" />
-            <choose>
-              <when condition="@(String.IsNullOrEmpty((string)context.Variables["userId"]))">
-                  <return-response>
-                      <set-status code="502" />
-                      <set-header name="Content-Type" exists-action="override">
-                          <value>application/json</value>
-                      </set-header>
-                      <set-body>@{
-                  return new JObject(
-                    new JProperty("title", "Bad gateway - Invalid PDV response"),
-                    new JProperty("status", 502),
-                    new JProperty("detail", "Cannot tokenize fiscal code")
-                  ).ToString();
-                }</set-body>
-                  </return-response>
-              </when>
-            </choose>
-            <!-- Post Token PDV : END-->
-
             <!-- pagoPA platform wallet JWT session token : START -->
             <!-- Token JWT START-->
                   <set-variable name="x-jwt-token" value="@{
