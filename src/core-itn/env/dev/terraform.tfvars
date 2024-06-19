@@ -28,13 +28,11 @@ is_feature_enabled = {
 ### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]
 
-cidr_aks_system      = ["10.3.1.0/24"] #see aks-leonardo
-cidr_aks_user        = ["10.3.2.0/24"] #see aks-leonardo
-cidr_eventhubs_italy = ["10.3.4.0/24"]
-
-cidr_cosmosdb_wallet_italy = ["10.3.8.0/24"]  #placeholder
-cird_redis_wallet_italy    = ["10.3.9.0/24"]  #placeholder
-cidr_storage_wallet_italy  = ["10.3.10.0/24"] #placeholder
+cidr_aks_system            = ["10.3.1.0/24"] #see aks-leonardo
+cidr_aks_user              = ["10.3.2.0/24"] #see aks-leonardo
+cidr_eventhubs_italy       = ["10.3.4.0/24"]
+cird_pay_wallet_domain     = ["10.3.5.0/24"] #placeholder for domain pay wallet
+cird_pay_wallet_domain_aks = ["10.3.6.0/24"] #placeholder for domain pay wallet
 
 cird_printit_domain = ["10.3.12.0/24"] #placeholder for domain printit
 
