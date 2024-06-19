@@ -8,7 +8,8 @@
                 byte[] data = Convert.FromBase64String(sessionTokenBody);
                 string decodedString = System.Text.Encoding.UTF8.GetString(data);
                 Dictionary<string,string> parsed = JsonConvert.DeserializeObject<Dictionary<string,string>>(decodedString);
-                return parsed?["userId"];
+                string userId = (string)parsed?["userId"];
+                return String.IsNullOrEmpty(userId) ? "session-token-not-found" : userId;
             } catch(Exception){
             return "session-token-not-found";
             }

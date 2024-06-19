@@ -83,7 +83,7 @@
     <outbound>
       <base />
         <choose>
-            <when condition="@(("false".Equals("{{enable-pm-ecommerce-io}}")  || "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) ) && (context.Response.StatusCode == 201))">
+            <when condition="@(("false".Equals("{{enable-pm-ecommerce-io}}") && "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) ) && (context.Response.StatusCode == 201))">
                 <!-- Token JWT START-->
                 <set-variable name="walletId" value="@((string)((context.Response.Body.As<JObject>(preserveContent: true))["walletId"]))" />
                 <set-variable name="x-jwt-token" value="@{

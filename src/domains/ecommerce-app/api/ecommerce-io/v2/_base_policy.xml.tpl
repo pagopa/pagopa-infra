@@ -17,7 +17,7 @@
     <include-fragment fragment-id="pay-wallet-user-id-from-session-token" />
     <!-- Session eCommerce START-->
         <choose>
-          <when condition="@("false".Equals("{{enable-pm-ecommerce-io}}") || "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+          <when condition="@("false".Equals("{{enable-pm-ecommerce-io}}") && "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
             <!-- Check JWT START-->
             <include-fragment fragment-id="jwt-chk-wallet-session" />
             <!-- Check JWT END-->
