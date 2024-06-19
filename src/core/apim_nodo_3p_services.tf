@@ -278,6 +278,7 @@ module "apim_nodo_web_bo_api" {
     allowed_ip_7        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7] # Softlab L1 Pagamenti VPN
     allowed_ip_8        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8] # NEXI VPN
     allowed_ip_9        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9] # NEXI VPN
+    allowed_ip_11        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[11] # Softlab L1 Pagamenti VPN backup
   })
 }
 
@@ -320,6 +321,7 @@ module "apim_nodo_web_bo_api_onprem" {
     allowed_ip_7        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7] # Softlab L1 Pagamenti VPN
     allowed_ip_8        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8] # NEXI VPN
     allowed_ip_9        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9] # NEXI VPN
+    allowed_ip_11        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[11] # Softlab L1 Pagamenti VPN backup
   })
 
 }
@@ -397,6 +399,7 @@ module "apim_nodo_web_bo_api_history" {
     allowed_ip_7        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7] # Softlab L1 Pagamenti VPN
     allowed_ip_8        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8] # NEXI VPN
     allowed_ip_9        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9] # NEXI VPN
+    allowed_ip_11        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[11] # Softlab L1 Pagamenti VPN backup
   })
 
 }
@@ -439,6 +442,7 @@ module "apim_nodo_web_bo_api_onprem_history" {
     allowed_ip_7        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[7] # Softlab L1 Pagamenti VPN
     allowed_ip_8        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[8] # NEXI VPN
     allowed_ip_9        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[9] # NEXI VPN
+    allowed_ip_11        = var.app_gateway_allowed_paths_pagopa_onprem_only.ips[11] # Softlab L1 Pagamenti VPN backup
   })
 
 }
