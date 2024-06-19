@@ -170,11 +170,7 @@ resource "azurerm_key_vault_secret" "pdf_engine_subkey_secret" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-data "azurerm_api_management_product" "apim_api_config_product" {
-  product_id          = "product-api-config"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-}
+
 
 resource "azurerm_api_management_subscription" "api_config_subkey" {
   api_management_name = data.azurerm_api_management.apim.name
