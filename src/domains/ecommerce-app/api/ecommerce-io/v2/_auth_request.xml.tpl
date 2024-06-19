@@ -19,7 +19,7 @@
             </otherwise>
         </choose>
         <choose>
-            <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}" || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+            <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
                 <set-variable name="idPsp" value="@((string)((JObject) context.Variables["body"])["pspId"])" />
                 <set-variable name="idWallet" value="@{
                     string walletIdUUID = (string)context.Variables["walletId"];
