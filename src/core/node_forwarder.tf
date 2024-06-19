@@ -56,6 +56,12 @@ resource "azurerm_resource_group" "node_forwarder_rg" {
   tags = var.tags
 }
 
+data "azurerm_subnet" "apim_v2_snet" {
+  name                 = local.pagopa_apim_v2_snet
+  resource_group_name  = local.pagopa_vnet_rg
+  virtual_network_name = local.pagopa_vnet_integration
+}
+
 # Subnet to host the node forwarder
 module "node_forwarder_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
@@ -97,7 +103,7 @@ module "node_forwarder_app_service" {
 
   app_settings = local.node_forwarder_app_settings
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [module.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
   allowed_ips     = []
 
   subnet_id = module.node_forwarder_snet.id

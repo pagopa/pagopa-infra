@@ -32,7 +32,7 @@ module "shared_pdf_engine_app_service_ha" {
   app_settings = local.shared_pdf_engine_app_settings
 
   zone_balancing_enabled = var.pdf_engine_zone_balancing_enabled
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_vnet.id]
   allowed_ips     = []
 
   subnet_id = module.shared_pdf_engine_app_service_snet.id
@@ -263,7 +263,7 @@ module "shared_pdf_engine_app_service_java_ha" {
 
   app_settings = local.shared_pdf_engine_app_settings_java
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_vnet.id]
   allowed_ips     = []
 
   subnet_id = module.shared_pdf_engine_app_service_snet.id
