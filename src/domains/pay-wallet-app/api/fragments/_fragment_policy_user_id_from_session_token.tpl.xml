@@ -1,0 +1,16 @@
+<fragment>
+    <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
+    <set-variable name="sessionTokenUserId" value="@{
+        string sessionToken = (string)context.Variables["sessionToken"];
+            try {
+                string[] sessionTokenParts = sessionToken.Split('.');
+                string sessionTokenBody = sessionTokenParts.Length >1 ? sessionTokenParts[1] : "";
+                byte[] data = Convert.FromBase64String(sessionTokenBody);
+                string decodedString = System.Text.Encoding.UTF8.GetString(data);
+                Dictionary<string,string> parsed = JsonConvert.DeserializeObject<Dictionary<string,string>>(decodedString);
+                return parsed?["userId"];
+            } catch(Exception){
+            return "session-token-not-found";
+            }
+    }" />
+</fragment>

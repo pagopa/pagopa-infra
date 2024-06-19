@@ -2,7 +2,7 @@
     <inbound>
     <base />
     <choose>
-      <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))"> 
+      <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )"> 
         <include-fragment fragment-id="pm-chk-wallet-session" />
       </when>
     </choose>
