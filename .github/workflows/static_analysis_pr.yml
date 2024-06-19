@@ -25,17 +25,14 @@ jobs:
           # Discover only the paths changed inside src and src/domains, between my current branch and origin/main
           #
           echo "get current branch"
-          current_branch=${GITHUB_HEAD_REF}
-          echo "GITHUB_REF: ${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
+          current_branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           echo "current branch: $current_branch"
           echo "get modified paths from source"
           modified_paths_source=$(git diff --name-only $current_branch origin/main | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq )
-          echo "executed command"
           echo "$modified_paths_source"
 
           echo "get modified paths from domains"
           modified_paths_domains=$(git diff --name-only $current_branch origin/main | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq )
-          echo "executed command"
           echo "$modified_paths_domains"
 
           echo "merge paths"
