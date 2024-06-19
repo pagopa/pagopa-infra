@@ -76,11 +76,15 @@
       </set-body>
       <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
     </inbound>
+
     <backend>
         <base />
     </backend>
+
     <outbound />
+
     <on-error>
         <base />
     </on-error>
+    
 </policies>

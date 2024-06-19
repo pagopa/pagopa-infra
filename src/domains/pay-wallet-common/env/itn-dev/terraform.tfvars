@@ -3,6 +3,7 @@ env_short      = "d"
 env            = "dev"
 domain         = "pay-wallet"
 location       = "italynorth"
+cdn_location   = "westeurope"
 location_short = "itn"
 instance       = "dev"
 
@@ -43,6 +44,7 @@ ingress_load_balancer_ip = "10.3.2.250"
 external_domain          = "pagopa.it"
 dns_zone_prefix          = "dev.payment-wallet"
 dns_zone_internal_prefix = "internal.dev.platform"
+dns_zone_platform        = "dev.platform"
 
 ### Cosmos
 
