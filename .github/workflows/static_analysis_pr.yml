@@ -26,6 +26,7 @@ jobs:
           #
           echo "get current branch"
           current_branch=${GITHUB_HEAD_REF}
+          echo "GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
           echo "current branch: $current_branch"
           echo "get modified paths from source"
           modified_paths_source=$(git diff --name-only $current_branch origin/main | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq )
