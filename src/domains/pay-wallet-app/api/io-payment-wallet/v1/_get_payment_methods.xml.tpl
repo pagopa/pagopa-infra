@@ -10,6 +10,35 @@
     </inbound>
     <outbound>
       <base />
+      <choose>
+        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
+          <set-body>@{
+            JObject response = context.Response.Body.As<JObject>();
+
+            if (context.Response.StatusCode != 200) {
+              return response.ToString();
+            }
+
+            HashSet<string> pmEnabledMethods = new HashSet<string>();
+            pmEnabledMethods.Add("CP");
+            pmEnabledMethods.Add("BPAY");
+            pmEnabledMethods.Add("PPAL");
+
+            foreach (var method in ((JArray) response["paymentMethods"])) {
+              string typeCode = (string) method["paymentTypeCode"];
+              if (pmEnabledMethods.Contains(typeCode)) {
+                method["status"] = "ENABLED";
+                method["methodManagement"] = "ONBOARDING_ONLY";
+              } else {
+                method["status"] = "DISABLED";
+              }
+            }
+
+            return response.ToString();
+          }
+          </set-body>
+        </when>
+      </choose>
     </outbound>
     <backend>
       <base />
