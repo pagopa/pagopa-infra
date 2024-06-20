@@ -44,23 +44,24 @@ jobs:
           echo "get modified paths from domains"
           domains_count=$(grep -c 'domains' /tmp/diff.txt)
           echo "domains count: $domains_count"
-          if [[ "$domains_count" == 0 ]]
-          then
-            echo "in domains if true"
-            modified_paths_domains=""
-          else
-            echo "in domains if false"
-            modified_paths_domains=$( grep 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2,3 | uniq )
-          fi
-          echo "$modified_paths_domains"
+          echo "done"
+        # if [[ "$domains_count" == 0 ]]
+        # then
+        #   echo "in domains if true"
+        #   modified_paths_domains=""
+        # else
+        #   echo "in domains if false"
+        #   modified_paths_domains=$( grep 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2,3 | uniq )
+        # fi
+        # echo "$modified_paths_domains"
 
-          echo "merge paths"
-          modified_paths="$modified_paths_source $modified_paths_domains .github"
-          echo "📌 modified_paths"
-          #
-          # This is the only way to pass a string with paths to other step without error, usign env the paths force an error
-          #
-          echo "$modified_paths" > "/tmp/paths.txt"
+        # echo "merge paths"
+        # modified_paths="$modified_paths_source $modified_paths_domains .github"
+        # echo "📌 modified_paths"
+        # #
+        # # This is the only way to pass a string with paths to other step without error, usign env the paths force an error
+        # #
+        # echo "$modified_paths" > "/tmp/paths.txt"
 
         shell: bash
 
