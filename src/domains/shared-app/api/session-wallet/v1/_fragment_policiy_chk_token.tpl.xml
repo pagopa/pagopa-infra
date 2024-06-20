@@ -41,4 +41,6 @@
     </choose>
     <set-variable name="pmSession" value="@(((IResponse)context.Variables["checkSessionResponse"]).Body.As<JObject>())" />
     <set-variable name="fiscalCode" value="@(((JObject)context.Variables["pmSession"])["data"]["user"]["fiscalCode"].ToString())" />
+    <set-variable name="name" value="@(((JObject)context.Variables["pmSession"])["data"]["user"]["name"].ToString())" />
+    <set-variable name="surname" value="@(((JObject)context.Variables["pmSession"])["data"]["user"]["surname"].ToString())" />
 </fragment>      

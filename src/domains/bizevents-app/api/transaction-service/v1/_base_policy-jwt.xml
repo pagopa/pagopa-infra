@@ -92,6 +92,12 @@
         <set-header name="x-fiscal-code" exists-action="override">
             <value>@((string)context.Variables.GetValueOrDefault("fiscalCode",""))</value>
         </set-header>
+        <set-header name="x-name" exists-action="override">
+            <value>@((string)context.Variables.GetValueOrDefault("name",""))</value>
+        </set-header>
+        <set-header name="x-surname" exists-action="override">
+            <value>@((string)context.Variables.GetValueOrDefault("surname",""))</value>
+        </set-header>
         <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
     </inbound>
     <outbound>

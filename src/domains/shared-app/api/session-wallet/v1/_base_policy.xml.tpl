@@ -154,11 +154,11 @@
                     
                     // Read email and pass it to the JWT. By now the email in shared as is. It MUST be encoded (by pdv) but POST transaction need to updated to not match email address as email field
                     JObject userAuth = (JObject)context.Variables["userAuthBody"];
-                    String spidEmail = (String)userAuth["spid_email"];
-                    String noticeEmail = (String)userAuth["notice_email"];
-                    String email = String.IsNullOrEmpty(noticeEmail) ? spidEmail : noticeEmail;
+                    String email = (String)userAuth["notice_email"];
+                    String name = (String)userAuth["name"];
+                    String surname = (String)userAuth["family_name"];
                     
-                    var payload = new { iat, exp, jti, email, userId}; 
+                    var payload = new { iat, exp, jti, email, userId, name, surname}; 
                     var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
                     
                     // Construct the Base64Url-encoded signature                
