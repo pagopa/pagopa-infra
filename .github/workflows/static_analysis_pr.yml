@@ -45,8 +45,10 @@ jobs:
           domains_count=$(grep -c 'domains' /tmp/diff.txt)
           if [[ "$domains_count" == 0 ]]
           then
+            echo "in domains if true"
             modified_paths_domains=""
           else
+            echo "in domains if false"
             modified_paths_domains=$( grep 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2,3 | uniq )
           fi
           echo "$modified_paths_domains"
