@@ -24,7 +24,6 @@ jobs:
           #
           # Discover only the paths changed inside src and src/domains, between my current branch and origin/main
           #
-          set -x
           echo "get current branch"
           current_branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           echo "current branch: $current_branch"
@@ -45,7 +44,7 @@ jobs:
           echo "modified_paths_source: $modified_paths_source"
 
           echo "get modified paths from domains"
-          domains_count=$(grep -c 'domains' /tmp/diff.txt)
+          domains_count=$(grep -c 'domains' /tmp/diff.txt || echo 0)
           echo "domains count: $domains_count"
           if [[ "$domains_count" -eq 0 ]]
           then
