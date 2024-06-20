@@ -35,7 +35,7 @@ jobs:
           echo "$modified_paths_source"
 
           echo "get modified paths from domains"
-          grep 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2,3 | uniq
+          grep 'domains' /tmp/diff.txt
           modified_paths_domains=$(grep 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2,3 | uniq )
           echo "$modified_paths_domains"
 
