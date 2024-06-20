@@ -45,15 +45,15 @@ jobs:
           echo "modified_paths_source: $modified_paths_source"
 
           echo "get modified paths from domains"
-          domains_match=$(grep -q 'domains' /tmp/diff.txt)
-          echo "domains count: $domains_match"
-          if [[ "$domains_match" -eq 0 ]]
+          domains_count=$(grep -c 'domains' /tmp/diff.txt || echo 0)
+          echo "domains count: $domains_count"
+          if [[ "$domains_count" -eq 0 ]]
           then
             echo "in domains if true"
-            modified_paths_domains=$( grep 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2,3 | uniq )
+            modified_paths_domains=""
           else
             echo "in domains if false"
-            modified_paths_domains=""
+            modified_paths_domains=$( grep 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2,3 | uniq )
           fi
           echo "modified_paths_domains: $modified_paths_domains"
 
