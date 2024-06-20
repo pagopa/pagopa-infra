@@ -32,10 +32,12 @@ jobs:
           echo "get modified paths from source"
           source_count=$(grep -vc 'domains' /tmp/diff.txt || echo "0")
           echo "source count: $source_count"
-          if [[ "$source_count" eq 0 ]]
+          if [[ "$source_count" -eq 0 ]]
           then
+            echo "in source if true"
             modified_paths_source=""
           else
+            echo "in source if false"
             modified_paths_source=$(grep -v 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2 | uniq )
           fi
 
@@ -44,7 +46,7 @@ jobs:
           echo "get modified paths from domains"
           domains_count=$(grep -c 'domains' /tmp/diff.txt || echo "0")
           echo "domains count: $domains_count"
-          if [[ "$domains_count" eq 0 ]]
+          if [[ "$domains_count" -eq 0 ]]
           then
             echo "in domains if true"
             modified_paths_domains=""
