@@ -49,7 +49,6 @@ jobs:
           else
             modified_paths_domains=$( grep 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2,3 | uniq )
           fi
-          git diff --name-only $current_branch origin/main
           echo "$modified_paths_domains"
 
           echo "merge paths"
