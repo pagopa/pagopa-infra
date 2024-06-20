@@ -1,5 +1,6 @@
 <fragment>
     <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
+    <!--try to retrieve user id from session token if the session token is a JWT token and have userId claim-->
     <set-variable name="sessionTokenUserId" value="@{
         string sessionToken = (string)context.Variables["sessionToken"];
             try {

@@ -2,7 +2,11 @@
     <inbound>
       <base />
       <set-variable name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
-      <!-- Maybe to add backend-io get user to check family & friends -->
+      <!-- Perform PM start api call: for family&friends handling NPG flow must be activated only for 
+        users that have been enabled in pay-wallet-family-friends-user-ids named value (list of user id = PDV fiscal code tokenization)
+        For family&friends flow we expect that all clients will go with PM flow except the ones in the above list, that will be restricted
+        to few selected users. Anticipating PM start session will prevent further api calls.
+       -->
       <!-- Session PM START-->
       <send-request ignore-error="true" timeout="10" response-variable-name="pm-session-body" mode="new">
           <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/actions/start-session?token={(string)context.Variables["walletToken"]}")</set-url>
@@ -42,6 +46,7 @@
       </choose>
       <set-variable name="pmSession" value="@(((IResponse)context.Variables["pm-session-body"]).Body.As<JObject>())" />
       <!-- Session PM END-->
+      <!-- user fiscal code tokenization with PDV START -->
       <set-variable name="userFiscalCode" value="@{
           String userFiscalCode = ((JObject)context.Variables["pmSession"])?["data"]?["user"]?["fiscalCode"]?.ToString();
           return userFiscalCode;
@@ -115,9 +120,9 @@
               <!-- Post Token PDV : END-->
             </otherwise>
       </choose>
+      <!-- user fiscal code tokenization with PDV END -->
       <choose>
           <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["userId"])))">
-          <!-- Session PM START-->
           <!-- pagoPA platform wallet JWT session token : START -->
           <set-variable name="x-jwt-token" value="@(((JObject)context.Variables["pmSession"])["data"]["sessionToken"].ToString())" />
           <!-- pagoPA platform wallet JWT session token : END -->
