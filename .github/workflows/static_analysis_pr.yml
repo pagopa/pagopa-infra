@@ -24,7 +24,6 @@ jobs:
           #
           # Discover only the paths changed inside src and src/domains, between my current branch and origin/main
           #
-          set -x
           echo "get current branch"
           current_branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           echo "current branch: $current_branch"
