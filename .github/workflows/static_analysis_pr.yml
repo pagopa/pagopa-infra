@@ -33,6 +33,7 @@ jobs:
           echo "$modified_paths_source"
 
           echo "get modified paths from domains"
+          git diff --name-only $current_branch origin/main
           modified_paths_domains=$(git diff --name-only $current_branch origin/main | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq )
           echo "$modified_paths_domains"
 
