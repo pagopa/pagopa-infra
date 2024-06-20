@@ -30,7 +30,7 @@ jobs:
           echo "current branch: $current_branch"
           echo "get git diff"
           git diff --name-only $current_branch origin/main --output=/tmp/diff.txt
-          echo "get modified paths from source""
+          echo "get modified paths from source"
           source_count=$(grep -vc 'domains' /tmp/diff.txt || echo "0")
           echo "source count: $source_count"
           if [[ "$source_count" == 0 ]]
