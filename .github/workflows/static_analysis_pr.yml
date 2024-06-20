@@ -46,7 +46,7 @@ jobs:
 
           echo "get modified paths from domains"
           #domains_count="$(grep -o 'domains' /tmp/diff.txt | wc -l )"
-          echo "domains count: $(grep -o 'domains' /tmp/diff.txt | wc -l )"
+          echo "domains count: $(grep -o 'domains' /tmp/diff.txt | wc -l )xxx"
           if [ $domains_count -eq 0 ]
           then
             echo "in domains if true"
