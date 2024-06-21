@@ -60,5 +60,13 @@ resource "azurerm_storage_container" "institutions_blob_file" {
 
   name                  = "institutionsdatablob"
   storage_account_name  = module.institutions_sa[0].name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_container" "institutions_blob_logo_file" {
+  count = var.is_feature_enabled.storage_institutions ? 1 : 0
+
+  name                  = "institutionslogoblob"
+  storage_account_name  = module.institutions_sa[0].name
   container_access_type = "blob"
 }
