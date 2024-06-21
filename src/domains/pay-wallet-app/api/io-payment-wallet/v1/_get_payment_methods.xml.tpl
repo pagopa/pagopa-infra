@@ -11,7 +11,7 @@
     <outbound>
       <base />
       <choose>
-        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
+        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}")  || !"{{pay-wallet-family-friends-user-ids}}".Contains((string)context.Variables["sessionTokenUserId"]))">
           <set-body>@{
             JObject response = context.Response.Body.As<JObject>();
 
