@@ -10,101 +10,93 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: ⚡ Checkout code
-      uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - run: |
+          rm -rf *
 
-    - name: 📖 Read current terraform version
-      run: |
-        VER=$(cat .terraform-version)
-        echo "TERRAFORM_VERSION=$VER" >> $GITHUB_ENV
+      - name: ⏬ Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: 🔨 Setup Terraform
-      # from https://github.com/hashicorp/setup-terraform/commits/main
-      uses: hashicorp/setup-terraform@97f030cf6dc0b4f5e0da352c7bca9cca34579800 #v3.1.0
-      with:
-        terraform_version: "${{ env.TERRAFORM_VERSION }}"
-
-    - name: 🏁 Init terraform folders
-      id: init_terraform_folders
-      shell: bash
-      run: |
-
-        echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
-        echo    "+ 🔨 CREATE CACHE FOLDER         +"
-        echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-\n"
-
-        export TF_PLUGIN_CACHE_DIR="/tmp/.terraform.d/plugin-cache"
-        mkdir -p ${TF_PLUGIN_CACHE_DIR}
-        ls -la ${TF_PLUGIN_CACHE_DIR}
-
-        echo "📢 Show space"
-        df -h
-        du -h ${TF_PLUGIN_CACHE_DIR}
-
-        echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
-        echo    "+ 🏁 INIT TERRAFORM FOLDERS 🏁   +"
-        echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-\n"
-
-        FOLDERS=$(grep -rl --include='*.tf' --exclude-dir='.terraform' '^' . | xargs -I{} dirname {} | sort -u)
-        echo "FOLDERS=${FOLDERS}"
-
-        pids=()
-
-        # TAG=$(cat .terraform-version)
-        # docker pull hashicorp/terraform:$TAG
-
-        for f in $FOLDERS; do
-          pushd "$(pwd)/${f}"
-            sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            terraform init -upgrade &
-            pids+=($!)
-          popd
-
-        done
-
-        # Wait for each specific process to terminate.
-        # Instead of this loop, a single call to 'wait' would wait for all the jobs
-        # to terminate, but it would not give us their exit status.
-        #
-        for pid in "${pids[@]}"; do
+      - name: 🔨 Get Modified Paths
+        id: get-paths
+        run: |
           #
-          # Waiting on a specific PID makes the wait command return with the exit
-          # status of that process. Because of the 'set -e' setting, any exit status
-          # other than zero causes the current shell to terminate with that exit
-          # status as well.
+          # Discover only the paths changed inside src and src/domains, between my current branch and origin/main
           #
-          wait "$pid"
-        done
+          echo "get current branch"
+          current_branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          echo "current branch: $current_branch"
+          echo "get git diff"
+          git diff --name-only $current_branch origin/main --output=/tmp/diff.txt
+          echo "get modified paths from source"
+          # i'm using echo because using grep directly fails. it produces an invalid output that breaks the variable assignment
+          source_count=$(echo "$(grep -v 'domains' /tmp/diff.txt | wc -l )")
+          echo "source count: $source_count"
+          if [[ $source_count -eq 0 ]]
+          then
+            echo "in source if true"
+            modified_paths_source=""
+          else
+            echo "in source if false"
+            modified_paths_source=$(grep -v 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2 | uniq )
+          fi
 
-        echo "📢 Show space 3"
-        df -h
-        ls -la /tmp/.terraform.d/plugin-cache
-        du -h -d 5 ${TF_PLUGIN_CACHE_DIR}
+          echo "modified_paths_source: $modified_paths_source"
 
-    - name: Show precommit version
-      shell: bash
-      run: |
-        echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
-        echo    "+ 1️⃣  SHOW PRECOMMIT VERSION 1️⃣  +"
-        echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
+          echo "get modified paths from domains"
+          # i'm using echo because using grep directly fails. it produces an invalid output that breaks the variable assignment
+          domains_count=$(echo "$(grep 'domains' /tmp/diff.txt | wc -l )")
+          echo "domains count: $domains_count"
+          if [ $domains_count -eq 0 ]
+          then
+            echo "in domains if true"
+            modified_paths_domains=""
+          else
+            echo "in domains if false"
+            modified_paths_domains=$( grep 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2,3 | uniq )
+          fi
+          echo "modified_paths_domains: $modified_paths_domains"
 
-        TAG=v1.89.1
-        docker run --rm --entrypoint cat ghcr.io/antonbabenko/pre-commit-terraform:$TAG /usr/bin/tools_versions_info
+          echo "merge paths"
+          modified_paths="$modified_paths_source $modified_paths_domains .github"
+          echo "📌 modified_paths"
+          #
+          # This is the only way to pass a string with paths to other step without error, usign env the paths force an error
+          #
+          echo "$modified_paths" > "/tmp/paths.txt"
 
-    - name: 🚨 Run precommit
-      id: run_precommit
-      shell: bash
-      run: |
-        echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+"
-        echo    "+- 🚨 PRECOMMIT TERRAFORM 🚨 -+"
-        echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
+        shell: bash
 
-        export TF_PLUGIN_CACHE_DIR="/tmp/.terraform.d/plugin-cache"
+      - name: ⏬ Download only changed folders
+        id: download
+        shell: bash
+        run: |
+          #
+          # This allow to read all the paths and download only the changed folders
+          #
+          PAGOPA_MULTIPLE_FOLDERS=$(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
+          echo $PAGOPA_MULTIPLE_FOLDERS
+          git sparse-checkout init --cone
+          git sparse-checkout set $PAGOPA_MULTIPLE_FOLDERS
+          git checkout
 
-        TAG=v1.89.1
-        docker run \
-          -v $(pwd):/lint \
-          -v /tmp/.terraform.d/plugin-cache:/tmp/.terraform.d/plugin-cache \
-          -w /lint \
-          ghcr.io/antonbabenko/pre-commit-terraform:$TAG \
-          run -a
+#      - name: Checkout Modified Paths
+#        uses: actions/checkout@v4
+#        with:
+#          sparse-checkout: |
+#            $(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
+
+      - name: 👀 See folders downloaded
+        id: see
+        shell: bash
+        run: |
+          ls -la
+          du -h -d 3 .
+
+      - name: Static Analysis
+        uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@v1.14.1
+        with:
+          precommit_version: 'v1.89.1@sha256:1ea921bc4fe87651d41677218e537afdcdb8202e757e554b9866668eaba144c5'
+
+

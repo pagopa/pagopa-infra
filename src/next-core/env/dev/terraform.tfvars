@@ -21,7 +21,7 @@ tags = {
 is_feature_enabled = {
   vnet_ita                  = true,
   container_app_tools_cae   = true,
-  node_forwarder_ha_enabled = true,
+  node_forwarder_ha_enabled = false,
   vpn                       = true,
   dns_forwarder_lb          = true,
   postgres_private_dns      = true,
@@ -61,8 +61,9 @@ geo_replica_enabled = false
 #
 # apim v2
 #
-cidr_subnet_apim = ["10.230.8.160/27"]
-apim_v2_zones    = ["1"]
+redis_cache_enabled = true
+cidr_subnet_apim    = ["10.230.8.160/27"]
+apim_v2_zones       = ["1"]
 apim_v2_subnet_nsg_security_rules = [
   {
     name                       = "inbound-management-3443"
@@ -618,26 +619,6 @@ eventhubs_04 = [
       },
       {
         name   = "nodo-dei-pagamenti-stand-in-sync-rx" # node-cfg-sync
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "dismissione-wisp-paaInviaRT"
-    partitions        = 1
-    message_retention = 7
-    consumers         = ["dismissione-wisp-paaInviaRT-rx"]
-    keys = [
-      {
-        name   = "dismissione-wisp-paaInviaRT-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "dismissione-wisp-paaInviaRT-rx" # paaInviaRT-agent
         listen = true
         send   = false
         manage = false

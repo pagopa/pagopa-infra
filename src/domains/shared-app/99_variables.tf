@@ -317,3 +317,15 @@ variable "pdv_api_base_path" {
   default     = null
   description = "Personal data vault api base path"
 }
+
+variable "pdf_engine_zone_balancing_enabled" {
+  type = bool
+  description = "(Required) if true, enables zone balancing to pdf engine app service plans"
+}
+
+
+variable "ecommerce_io_pm_enabled" {
+  type        = bool
+  description = "eCommerce vs pm enabled"
+  default     = false
+}

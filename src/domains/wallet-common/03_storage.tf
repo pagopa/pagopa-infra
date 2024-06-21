@@ -82,6 +82,18 @@ resource "azurerm_storage_queue" "wallet_usage_update_queue_blue" {
   storage_account_name = module.wallet_storage.name
 }
 
+resource "azurerm_storage_queue" "wallet_expiration_queue" {
+  name                 = "${local.project}-expiration-queue"
+  storage_account_name = module.wallet_storage.name
+}
+
+//storage queue for blue deployment
+resource "azurerm_storage_queue" "wallet_expiration_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-expiration-queue-b"
+  storage_account_name = module.wallet_storage.name
+}
+
 # wallet queue alert diagnostic settings
 resource "azurerm_monitor_diagnostic_setting" "wallet_queue_diagnostics" {
   count                      = var.env_short == "p" ? 1 : 0
@@ -131,6 +143,13 @@ locals {
   queue_alert_props = var.env_short == "p" ? [
     {
       "queue_key"   = "usage-update-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "expiration-queue"
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15

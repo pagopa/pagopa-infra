@@ -21,12 +21,12 @@ tags = {
 is_feature_enabled = {
   vnet_ita                  = false,
   container_app_tools_cae   = true,
-  node_forwarder_ha_enabled = false,
+  node_forwarder_ha_enabled = true,
   vpn                       = false,
   dns_forwarder_lb          = true,
   postgres_private_dns      = true,
-  apim_core_import          = false
-  use_new_apim              = true
+  apim_core_import          = true
+  use_new_apim              = false
 
 }
 
@@ -63,8 +63,9 @@ geo_replica_enabled = false
 #
 # apim v2
 #
-cidr_subnet_apim = ["10.230.9.160/27"]
-apim_v2_zones    = ["1"]
+redis_cache_enabled = true
+cidr_subnet_apim    = ["10.230.9.160/27"]
+apim_v2_zones       = ["1"]
 apim_v2_subnet_nsg_security_rules = [
   {
     name                       = "inbound-management-3443"
@@ -658,5 +659,6 @@ eventhubs_04 = [
 node_forwarder_logging_level          = "DEBUG"
 node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "B1"
+node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
 azdo_agent_vm_image_name              = "pagopa-u-azdo-agent-ubuntu2204-image-v3"
 

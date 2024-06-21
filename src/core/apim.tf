@@ -37,8 +37,8 @@ moved {
 }
 
 module "apim" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.5.0"
-  count = var.enabled_features.apim_migrated ? 0 : 1
+  source               = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.5.0"
+  count                = var.enabled_features.apim_migrated ? 0 : 1
   subnet_id            = module.apim_snet.id
   location             = azurerm_resource_group.rg_api.location
   name                 = format("%s-apim", local.project)

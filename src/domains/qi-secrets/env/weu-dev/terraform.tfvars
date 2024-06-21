@@ -20,3 +20,5 @@ tags = {
 input_file = "./secret/weu-dev/configs.json"
 
 enable_iac_pipeline = true
+
+force = "v1"

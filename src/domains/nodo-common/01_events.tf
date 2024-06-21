@@ -68,19 +68,3 @@ data "azurerm_eventhub_authorization_rule" "pagopa-weu-core-evh-ns04_nodo-dei-pa
   eventhub_name       = "nodo-dei-pagamenti-stand-in"
   resource_group_name = "${local.product}-msg-rg"
 }
-
-data "azurerm_eventhub_authorization_rule" "pagopa-weu-core-evh-ns04_dismissione-wisp-paainviart-rx" {
-  count               = var.enable_wisp_converter ? 1 : 0
-  name                = "dismissione-wisp-paainviart-rx"
-  namespace_name      = "${local.product}-${local.evt_hub_location}-evh-ns04"
-  eventhub_name       = "dismissione-wisp-paainviart"
-  resource_group_name = "${local.product}-msg-rg"
-}
-
-data "azurerm_eventhub_authorization_rule" "pagopa-weu-core-evh-ns04_dismissione-wisp-paainviart-tx" {
-  count               = var.enable_wisp_converter ? 1 : 0
-  name                = "dismissione-wisp-paainviart-tx"
-  namespace_name      = "${local.product}-${local.evt_hub_location}-evh-ns04"
-  eventhub_name       = "dismissione-wisp-paainviart"
-  resource_group_name = "${local.product}-msg-rg"
-}
