@@ -21,7 +21,7 @@ tags = {
 is_feature_enabled = {
   vnet_ita                  = true,
   container_app_tools_cae   = true,
-  node_forwarder_ha_enabled = true,
+  node_forwarder_ha_enabled = false,
   vpn                       = true,
   dns_forwarder_lb          = true,
   postgres_private_dns      = true,
@@ -619,26 +619,6 @@ eventhubs_04 = [
       },
       {
         name   = "nodo-dei-pagamenti-stand-in-sync-rx" # node-cfg-sync
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "dismissione-wisp-paaInviaRT"
-    partitions        = 1
-    message_retention = 7
-    consumers         = ["dismissione-wisp-paaInviaRT-rx"]
-    keys = [
-      {
-        name   = "dismissione-wisp-paaInviaRT-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "dismissione-wisp-paaInviaRT-rx" # paaInviaRT-agent
         listen = true
         send   = false
         manage = false
