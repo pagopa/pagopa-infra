@@ -363,6 +363,7 @@ module "pagopa_wallet_jwt" {
 # JWT_SIGNATURE_KEY   = trimspace(module.pagopa_wallet_jwt.jwt_private_key_pem) # to avoid unwanted changes
 
 
+# DEPRECATED the real one is called personal-data-vault-api-key-wallet-session and is located in shared-secrets domain
 resource "azurerm_key_vault_secret" "wallet_session_pdv_api_key" {
   name         = "personal-data-vault-api-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
