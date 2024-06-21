@@ -51,7 +51,7 @@
                 <!-- END get user wallets -->
                 <!-- START get payment methods -->
                 <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
-                    <set-url>https://weuuat.ecommerce.internal.uat.platform.pagopa.it/pagopa-ecommerce-payment-methods-service/payment-methods</set-url>
+                    <set-url>https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-service/payment-methods</set-url>
                     <set-method>GET</set-method>
                     <set-header name="X-Client-id" exists-action="override">
                         <value>IO</value>
