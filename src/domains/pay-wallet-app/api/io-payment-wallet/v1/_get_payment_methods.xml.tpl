@@ -28,7 +28,7 @@
               string typeCode = (string) method["paymentTypeCode"];
               if (pmEnabledMethods.Contains(typeCode)) {
                 method["status"] = "ENABLED";
-                method["methodManagement"] = "ONBOARDING_ONLY";
+                method["methodManagement"] = "ONBOARDABLE_ONLY";
               } else {
                 method["status"] = "DISABLED";
               }
