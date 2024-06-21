@@ -220,8 +220,5 @@ storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
-enabled_features = {
-  eventhub_ha_rx = true
-}
 
 
