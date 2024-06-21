@@ -149,3 +149,9 @@ variable "payment_wallet_migrations_enabled" {
   default     = false
   description = "Payment wallet migrations enabled"
 }
+
+variable "enabled_payment_wallet_method_ids_pm" {
+  type        = string
+  default     = ""
+  description = "Comma separated list of eCommerce payment method ids that are enabled with PM APIs"
+}
