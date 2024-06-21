@@ -95,19 +95,19 @@
     </createTable>
   </changeSet>
 
-  <changeSet author="liquibase" id="20240610000000-6">
-    <createTable tableName="RPT_SOGGETTI_GI">
-      <column name="RPT_ID" type="NUMBER(19, 0)">
-        <constraints nullable="false" primaryKey="true" primaryKeyName="rs_gi_pk"/>
-      </column>
-      <column name="TIPO_SOGGETTO" type="CHAR(1)">
-        <constraints nullable="false" primaryKey="true" primaryKeyName="rs_gi_pk"/>
-      </column>
-      <column name="INSERTED_TIMESTAMP" type="TIMESTAMP(6)">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
-  </changeSet>
+<!--  <changeSet author="liquibase" id="20240610000000-6">-->
+<!--    <createTable tableName="RPT_SOGGETTI_GI">-->
+<!--      <column name="RPT_ID" type="NUMBER(19, 0)">-->
+<!--        <constraints nullable="false" primaryKey="true" primaryKeyName="rs_gi_pk"/>-->
+<!--      </column>-->
+<!--      <column name="TIPO_SOGGETTO" type="CHAR(1)">-->
+<!--        <constraints nullable="false" primaryKey="true" primaryKeyName="rs_gi_pk"/>-->
+<!--      </column>-->
+<!--      <column name="INSERTED_TIMESTAMP" type="TIMESTAMP(6)">-->
+<!--        <constraints nullable="false"/>-->
+<!--      </column>-->
+<!--    </createTable>-->
+<!--  </changeSet>-->
 
   <changeSet author="liquibase" id="20240610000000-7">
     <createTable tableName="RETRY_PA_INVIA_RT_GI">
