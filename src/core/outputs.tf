@@ -60,12 +60,3 @@ output "application_insights_instrumentation_key" {
   sensitive = true
 }
 
-output "ehub_biz_event_rx_conn_str" {
-  value     = module.event_hub01.keys["nodo-dei-pagamenti-biz-evt.pagopa-biz-evt-rx"].primary_connection_string
-  sensitive = true
-}
-
-output "ehub_biz_event_tx_primary_key" {
-  value     = module.event_hub01.keys["nodo-dei-pagamenti-biz-evt.pagopa-biz-evt-tx"].primary_key
-  sensitive = true
-}
