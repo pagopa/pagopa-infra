@@ -128,7 +128,7 @@
           <!-- pagoPA platform wallet JWT session token : END -->
         </when>
         <otherwise>
-            <!-- Get User IO : START-->
+            <!-- Get User IO 
             <send-request ignore-error="true" timeout="10" response-variable-name="user-auth-body" mode="new">
               <set-url>@("${io_backend_base_path}/pagopa/api/v1/user?version=20200114")</set-url> 
               <set-method>GET</set-method>
@@ -172,7 +172,7 @@
               </when>
             </choose>
             <set-variable name="userAuthBody" value="@(((IResponse)context.Variables["user-auth-body"]).Body.As<JObject>())" />
-            <!-- Get User IO : END-->
+            Get User IO : END-->
             <!-- pagoPA platform wallet JWT session token : START -->
             <!-- Token JWT START-->
                   <set-variable name="x-jwt-token" value="@{
@@ -188,11 +188,11 @@
                     String userId = ((string)context.Variables.GetValueOrDefault("userId","")); 
                     
                     // Read email and pass it to the JWT. By now the email in shared as is. It MUST be encoded (by pdv) but POST transaction need to updated to not match email address as email field
-                    JObject userAuth = (JObject)context.Variables["userAuthBody"];
-                    String spidEmail = (String)userAuth["spid_email"];
-                    String noticeEmail = (String)userAuth["notice_email"];
-                    String email = String.IsNullOrEmpty(noticeEmail) ? spidEmail : noticeEmail;
-                    
+                    // JObject userAuth = (JObject)context.Variables["userAuthBody"];
+                    // String spidEmail = (String)userAuth["spid_email"];
+                    // String noticeEmail = (String)userAuth["notice_email"];
+                    // String email = String.IsNullOrEmpty(noticeEmail) ? spidEmail : noticeEmail;
+                    String email = ((JObject)context.Variables["pmSession"])["data"]["user"]["notificationEmail"].ToString();
                     var payload = new { iat, exp, jti, email, userId}; 
                     var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
                     
