@@ -16,7 +16,7 @@
                 <choose>
                     <when condition="@(((IResponse)context.Variables["pmWalletResponse"]).StatusCode == 401)">
                         <return-response>
-                            <set-status code="502" reason="Bad Gateway" />
+                            <set-status code="401" reason="Unauthorized" />
                             <set-header name="Content-Type" exists-action="override">
                                 <value>application/json</value>
                             </set-header>
