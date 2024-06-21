@@ -89,3 +89,5 @@ pod_disruption_budgets = {
 io_backend_base_path         = "https://disabled"
 ecommerce_io_with_pm_enabled = false
 pdv_api_base_path            = "https://disabled"
+
+enabled_payment_wallet_method_ids_pm = "6920b555-c972-4e2b-980c-b0e0037a111a,0ff153c2-4c5e-49a5-8720-788b6f190264,b63dbc2b-0b89-4431-a196-a5d73ff7ce9c"
