@@ -25,15 +25,38 @@ jobs:
           # Discover only the paths changed inside src and src/domains, between my current branch and origin/main
           #
           echo "get current branch"
-          current_branch=${GITHUB_HEAD_REF}
-
+          current_branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          echo "current branch: $current_branch"
+          echo "get git diff"
+          git diff --name-only $current_branch origin/main --output=/tmp/diff.txt
           echo "get modified paths from source"
-          modified_paths_source=$(git diff --name-only $current_branch origin/main | grep -v 'domains' | grep '/' | cut -d '/' -f 1,2 | uniq )
-          echo "$modified_paths_source"
+          # i'm using echo because using grep directly fails. it produces an invalid output that breaks the variable assignment
+          source_count=$(echo "$(grep -v 'domains' /tmp/diff.txt | wc -l )")
+          echo "source count: $source_count"
+          if [[ $source_count -eq 0 ]]
+          then
+            echo "in source if true"
+            modified_paths_source=""
+          else
+            echo "in source if false"
+            modified_paths_source=$(grep -v 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2 | uniq )
+          fi
+
+          echo "modified_paths_source: $modified_paths_source"
 
           echo "get modified paths from domains"
-          modified_paths_domains=$(git diff --name-only $current_branch origin/main | grep 'domains' | grep '/' | cut -d '/' -f 1,2,3 | uniq )
-          echo "$modified_paths_domains"
+          # i'm using echo because using grep directly fails. it produces an invalid output that breaks the variable assignment
+          domains_count=$(echo "$(grep 'domains' /tmp/diff.txt | wc -l )")
+          echo "domains count: $domains_count"
+          if [ $domains_count -eq 0 ]
+          then
+            echo "in domains if true"
+            modified_paths_domains=""
+          else
+            echo "in domains if false"
+            modified_paths_domains=$( grep 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2,3 | uniq )
+          fi
+          echo "modified_paths_domains: $modified_paths_domains"
 
           echo "merge paths"
           modified_paths="$modified_paths_source $modified_paths_domains .github"
