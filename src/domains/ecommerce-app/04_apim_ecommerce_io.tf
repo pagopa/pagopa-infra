@@ -230,6 +230,17 @@ resource "azurerm_api_management_api_operation_policy" "io_create_session" {
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "io_get_payment_methods" {
+  api_name            = "${local.project}-ecommerce-io-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getAllPaymentMethods"
+
+  xml_content = templatefile("./api/ecommerce-io/v1/_get_payment_methods.xml.tpl", {
+    enabled_payment_wallet_method_ids_pm = var.enabled_payment_wallet_method_ids_pm
+  })
+}
+
 resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
   api_name            = "${local.project}-ecommerce-io-api-v1"
   resource_group_name = local.pagopa_apim_rg
@@ -243,7 +254,6 @@ resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
       wallet-basepath              = local.wallet_hostname
     }
   )
-
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_transaction_outcome" {
