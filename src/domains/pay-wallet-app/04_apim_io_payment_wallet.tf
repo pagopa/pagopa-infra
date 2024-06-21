@@ -84,7 +84,11 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_methods_for_
   api_management_name = local.pagopa_apim_name
   operation_id        = "getAllPaymentMethodsForIO"
 
-  xml_content = templatefile("./api/io-payment-wallet/v1/_get_payment_methods.xml.tpl", { ecommerce_hostname = local.ecommerce_hostname }
+  xml_content = templatefile("./api/io-payment-wallet/v1/_get_payment_methods.xml.tpl",
+    {
+      ecommerce_hostname                   = local.ecommerce_hostname
+      enabled_payment_wallet_method_ids_pm = var.enabled_payment_wallet_method_ids_pm
+    }
   )
 }
 

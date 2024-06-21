@@ -98,6 +98,7 @@
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The wallet dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
+| <a name="input_enabled_payment_wallet_method_ids_pm"></a> [enabled\_payment\_wallet\_method\_ids\_pm](#input\_enabled\_payment\_wallet\_method\_ids\_pm) | Comma separated list of eCommerce payment method ids that are enabled with PM APIs | `string` | `""` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
