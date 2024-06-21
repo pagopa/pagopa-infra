@@ -446,10 +446,8 @@ variable "pod_disruption_budgets" {
 
 variable "enabled_features" {
   type = object({
-    eventhub_ha_rx = bool
   })
   default = {
-    eventhub_ha_rx = false
   }
   description = "Features enabled in this domain"
 }
