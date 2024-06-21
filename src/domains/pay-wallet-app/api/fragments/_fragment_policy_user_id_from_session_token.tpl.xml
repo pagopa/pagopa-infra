@@ -6,13 +6,13 @@
             try {
                 string[] sessionTokenParts = sessionToken.Split('.');
                 string sessionTokenBody = sessionTokenParts.Length >1 ? sessionTokenParts[1] : "";
-                byte[] data = Convert.FromBase64String(sessionTokenBody);
+                byte[] data = Convert.FromBase64String(sessionTokenBody + "==");
                 string decodedString = System.Text.Encoding.UTF8.GetString(data);
                 Dictionary<string,string> parsed = JsonConvert.DeserializeObject<Dictionary<string,string>>(decodedString);
                 string userId = (string)parsed?["userId"];
-                return String.IsNullOrEmpty(userId) ? "session-token-not-found" : userId;
+                return String.IsNullOrEmpty(userId) ? "user-id-not-found" : userId;
             } catch(Exception){
-            return "session-token-not-found";
+            return "user-id-not-found";
             }
     }" />
 </fragment>
