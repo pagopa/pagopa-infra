@@ -19,16 +19,15 @@
               return response.ToString();
             }
 
-            HashSet<string> pmEnabledMethods = new HashSet<string>();
-            pmEnabledMethods.Add("CP");
-            pmEnabledMethods.Add("BPAY");
-            pmEnabledMethods.Add("PPAL");
+            string enabled_payment_wallet_method_ids_pm = "${enabled_payment_wallet_method_ids_pm}";
+            string[] values = enabled_payment_wallet_method_ids_pm.Split(',');
+            HashSet<string> pmEnabledMethods = new HashSet<string>(values);
 
             foreach (var method in ((JArray) response["paymentMethods"])) {
-              string typeCode = (string) method["paymentTypeCode"];
-              if (pmEnabledMethods.Contains(typeCode)) {
+              string id = (string) method["id"];
+              if (pmEnabledMethods.Contains(id)) {
                 method["status"] = "ENABLED";
-                method["methodManagement"] = "ONBOARDING_ONLY";
+                method["methodManagement"] = "ONBOARDABLE_ONLY";
               } else {
                 method["status"] = "DISABLED";
               }
