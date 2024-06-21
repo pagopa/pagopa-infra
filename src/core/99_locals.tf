@@ -21,7 +21,7 @@ locals {
   vnet_ita_resource_group_name = "pagopa-${var.env_short}-itn-vnet-rg"
 
 
-  pagopa_apim_v2_snet        = "${local.project}-weu-core-apimv2-snet"
+  pagopa_apim_v2_snet     = "${local.project}-weu-core-apimv2-snet"
   pagopa_vnet_integration = "pagopa-${var.env_short}-vnet-integration"
   pagopa_vnet_rg          = "pagopa-${var.env_short}-vnet-rg"
 }
