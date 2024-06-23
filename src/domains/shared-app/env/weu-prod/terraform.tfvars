@@ -90,6 +90,7 @@ pod_disruption_budgets = {
 pagopa_shared_toolbox_enabled = false
 robots_indexed_paths          = []
 pdf_engine_app_ha_enabled     = true
+pdf_engine_zone_balancing_enabled = true
 
 // wallet session token
 io_backend_base_path = "https://disabled"

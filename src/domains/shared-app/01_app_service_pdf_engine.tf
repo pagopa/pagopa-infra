@@ -39,7 +39,7 @@ module "shared_pdf_engine_app_service" {
 
   app_settings = local.shared_pdf_engine_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_vnet.id]
   allowed_ips     = []
 
   subnet_id = module.shared_pdf_engine_app_service_snet.id
@@ -97,7 +97,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
       maximum = 12
     }
 
-    # Requests 
+    # Requests
     rule {
       metric_trigger {
         metric_name              = "Requests"
@@ -142,9 +142,9 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
       }
     }
 
-    # HttpResponseTime 
+    # HttpResponseTime
 
-    # Supported metrics for Microsoft.Web/sites 
+    # Supported metrics for Microsoft.Web/sites
     # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
     rule {
       metric_trigger {
@@ -190,9 +190,9 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
       }
     }
 
-    # CpuPercentage 
+    # CpuPercentage
 
-    # Supported metrics for Microsoft.Web/sites 
+    # Supported metrics for Microsoft.Web/sites
     # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
     rule {
       metric_trigger {
@@ -270,7 +270,7 @@ module "shared_pdf_engine_app_service_java" {
 
   app_settings = local.shared_pdf_engine_app_settings_java
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_vnet.id]
   allowed_ips     = []
 
   subnet_id = module.shared_pdf_engine_app_service_snet.id
@@ -328,7 +328,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
       maximum = 12
     }
 
-    # Requests 
+    # Requests
     rule {
       metric_trigger {
         metric_name              = "Requests"
@@ -373,9 +373,9 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
       }
     }
 
-    # HttpResponseTime 
+    # HttpResponseTime
 
-    # Supported metrics for Microsoft.Web/sites 
+    # Supported metrics for Microsoft.Web/sites
     # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
     rule {
       metric_trigger {
@@ -421,9 +421,9 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
       }
     }
 
-    # CpuPercentage 
+    # CpuPercentage
 
-    # Supported metrics for Microsoft.Web/sites 
+    # Supported metrics for Microsoft.Web/sites
     # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
     rule {
       metric_trigger {
