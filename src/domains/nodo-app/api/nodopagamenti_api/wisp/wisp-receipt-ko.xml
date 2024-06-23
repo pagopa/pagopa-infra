@@ -42,7 +42,7 @@
               <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
               <choose>
                 <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
-                  <send-one-way-request timeout="1" mode="new">
+                  <send-one-way-request mode="new">
                     <set-url>{{wisp-dismantling-converter-base-url}}/receipts/ko</set-url>
                     <set-method>POST</set-method>
                     <set-header name="Content-Type" exists-action="override">
@@ -74,7 +74,7 @@
               <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
               <choose>
                 <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
-                  <send-one-way-request timeout="1" mode="new">
+                  <send-one-way-request mode="new">
                     <set-url>{{wisp-dismantling-converter-base-url}}/receipts/ko</set-url>
                     <set-method>POST</set-method>
                     <set-header name="Content-Type" exists-action="override">
@@ -106,7 +106,7 @@
               <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
               <choose>
                 <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
-                  <send-one-way-request timeout="1" mode="new">
+                  <send-one-way-request mode="new">
                     <set-url>{{wisp-dismantling-converter-base-url}}/receipts/ko</set-url>
                     <set-method>POST</set-method>
                     <set-header name="Content-Type" exists-action="override">
@@ -138,7 +138,7 @@
               <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
               <choose>
                 <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
-                  <send-one-way-request timeout="1" mode="new">
+                  <send-one-way-request mode="new">
                     <set-url>{{wisp-dismantling-converter-base-url}}/receipts/ko</set-url>
                     <set-method>POST</set-method>
                     <set-header name="Content-Type" exists-action="override">
@@ -170,7 +170,7 @@
               <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
               <choose>
                 <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
-                  <send-one-way-request timeout="1" mode="new">
+                  <send-one-way-request mode="new">
                     <set-url>{{wisp-dismantling-converter-base-url}}/receipts/ko</set-url>
                     <set-method>POST</set-method>
                     <set-header name="Content-Type" exists-action="override">
