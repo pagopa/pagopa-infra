@@ -14,75 +14,16 @@
   <inbound>
     <base />
     <set-variable name="request-body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
-    <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
-    <choose>
-      <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
-      <set-variable name="wisp-first-payment-token" value="@{
-                            JObject request = (JObject) context.Variables["request-body"];
-                            JArray paymentsTokens = (JArray) request.Property("paymentTokens").Value;
-                            return "wisp_" + paymentsTokens.First.ToString();
-                }" />
-      <cache-lookup-value key="@((string) context.Variables["wisp-first-payment-token"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
-      <choose>
-        <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
-        <set-variable name="wisp-payment-tokens" value="@{
-                            JObject request = (JObject) context.Variables["request-body"];
-                            JArray paymentsTokens = (JArray) request.Property("paymentTokens").Value;
-                            return string.Join(",", paymentsTokens.Select(token => token.ToString()));
-        }" />
-        <set-variable name="wisp-base-url" value="{{wisp-dismantling-converter-base-url}}" />
-        <send-one-way-request mode="new">
-          <set-url>@{
-            var baseUrl = context.Variables["wisp-base-url"];
-            var paymentTokens = context.Variables["wisp-payment-tokens"];
-            return $"{baseUrl}/receipt/timer?paymentTokens={paymentTokens}";
-            }</set-url>
-          <set-method>DELETE</set-method>
-          <set-header name="Content-Type" exists-action="override">
-            <value>application/json</value>
-          </set-header>
-        </send-one-way-request>
-      </when>
-    </choose>
-    <trace source="debug-payment-tokens" severity="information">@((string)context.Variables["wisp-payment-tokens"])</trace>
-  </when>
-</choose>
+    <include-fragment fragment-id="wisp-disable-payment-token-timer" />
   </inbound>
-<backend>
-<base />
-</backend>
-<outbound>
-<base />
-<set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
-<set-variable name="status_code" value="@(context.Response.StatusCode)" />
-<!--<set-variable name="status_code" value="@((int) 200)" />-->
-<choose>
-  <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && context.Variables.GetValueOrDefault<int>("status_code", 0).Equals(200))">
-  <!-- check if outcome in request is KO -->
-  <set-variable name="is_outcome_ko" value="@{
-                    try {
-                        JObject requestBody = (JObject) context.Variables["request-body"];
-                        return ((string) requestBody["outcome"]).ToUpper();
-                    } catch (Exception e) {
-                        return "NONE";
-                    }
-                }" />
-  <choose>
-    <when condition="@(context.Variables.GetValueOrDefault<string>("is_outcome_ko", "NONE").Equals("KO"))">
-    <set-variable name="wisp_payment_tokens" value="@{
-                            JObject request = (JObject) context.Variables["request-body"];
-                            JArray paymentsTokens = (JArray) request.Property("paymentTokens").Value;
-                            return string.Join(",", paymentsTokens.Select(token => token.ToString()));
-    }" />
-    <!-- check if payments are cached for WISP dismantling, searching by the key in format wisp_<paymentToken>_<noticeNumber> -->
-    <!-- If the key extracted from key object refers to a WISP dismantling payment, send a KO RT -->
-    <include-fragment fragment-id="wisp-dismantling-sendrt" />
-  </when>
-</choose>
-</when>
-  </choose>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+    <include-fragment fragment-id="wisp-receipt-ko" />
   </outbound>
-<on-error>
-<base />
-</on-error>
-  </policies>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
