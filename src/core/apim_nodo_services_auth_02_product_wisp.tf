@@ -78,7 +78,7 @@ resource "azurerm_api_management_api_operation_policy" "sendpaymentoutcome_v2_wi
   operation_id        = "addUserReceipt"
 
   #tfsec:ignore:GEN005
-  xml_content = file("./api/nodopagamenti_api/wisp/wisp-sendpaymentresult-outbound.xml")
+  xml_content = file("./api/nodopagamenti_api/wisp/wisp-sendpaymentresult.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_ndp_wisp" {
