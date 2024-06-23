@@ -126,7 +126,7 @@ module "apim_nodo_per_pm_api_v2_ndp_wisp" {
 ##  api_management_name = module.apim[0].name
 #  api_management_name = data.azurerm_api_management.apim_migrated[0].name
 #  operation_id        = "closePaymentV2"
-#  xml_content         = file("api/nodopagamenti_api/wisp/wisp-closepayment-outbound.xml")
+#  xml_content         = file("api/nodopagamenti_api/wisp/wisp-closepayment.xml")
 #}
 
 locals {

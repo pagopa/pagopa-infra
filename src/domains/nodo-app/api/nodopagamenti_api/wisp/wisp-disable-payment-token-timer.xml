@@ -1,0 +1,34 @@
+<fragment>
+  <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
+  <choose>
+    <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
+      <set-variable name="wisp-first-payment-token" value="@{
+                              JObject request = (JObject) context.Variables["request-body"];
+                              JArray paymentsTokens = (JArray) request.Property("paymentTokens").Value;
+                              return "wisp_" + paymentsTokens.First.ToString();
+                  }" />
+      <cache-lookup-value key="@((string) context.Variables["wisp-first-payment-token"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
+      <choose>
+        <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+          <set-variable name="wisp-payment-tokens" value="@{
+                              JObject request = (JObject) context.Variables["request-body"];
+                              JArray paymentsTokens = (JArray) request.Property("paymentTokens").Value;
+                              return string.Join(",", paymentsTokens.Select(token => token.ToString()));
+          }" />
+          <set-variable name="wisp-base-url" value="{{wisp-dismantling-converter-base-url}}" />
+          <send-one-way-request mode="new">
+            <set-url>@{
+              var baseUrl = context.Variables["wisp-base-url"];
+              var paymentTokens = context.Variables["wisp-payment-tokens"];
+              return $"{baseUrl}/receipt/timer?paymentTokens={paymentTokens}";
+              }</set-url>
+            <set-method>DELETE</set-method>
+            <set-header name="Content-Type" exists-action="override">
+              <value>application/json</value>
+            </set-header>
+          </send-one-way-request>
+        </when>
+      </choose>
+    </when>
+  </choose>
+</fragment>
