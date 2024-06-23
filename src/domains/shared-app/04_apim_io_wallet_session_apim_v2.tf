@@ -25,7 +25,7 @@ data "azurerm_key_vault_secret" "wallet_jwt_signing_key_secret_apim_v2" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-resource "azurerm_api_management_named_value" "pagopa-wallet-jwt-signing-key_aoim_v2_apim_v2" {
+resource "azurerm_api_management_named_value" "pagopa-wallet-jwt-signing-key_apim_v2_apim_v2" {
   count = var.env_short == "p" ? 1 : 0 # only PROD and only for version V2 
 
   name                = "pagopa-wallet-session-jwt-signing-key"
@@ -37,7 +37,7 @@ resource "azurerm_api_management_named_value" "pagopa-wallet-jwt-signing-key_aoi
 }
 
 ## DEPRECATED TO REMOVE use 👆👆
-resource "azurerm_api_management_named_value" "wallet-jwt-signing-key_aoim_v2" {
+resource "azurerm_api_management_named_value" "wallet-jwt-signing-key_apim_v2" {
   count = var.env_short == "p" ? 1 : 0 # only PROD and only for version V2 
 
   name                = "wallet-session-jwt-signing-key"
@@ -144,7 +144,7 @@ module "apim_session_wallet_api_v1_apim_v2" {
 resource "azapi_resource" "fragment_chk_jwt_session_token_apim_v2" {
   count = var.env_short == "p" ? 1 : 0 # only PROD and only for version V2 
 
-  depends_on = [azurerm_api_management_named_value.wallet-jwt-signing-key_aoim_v2]
+  depends_on = [azurerm_api_management_named_value.wallet-jwt-signing-key_apim_v2]
 
   # provider  = azapi.apim
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
