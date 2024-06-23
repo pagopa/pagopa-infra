@@ -195,22 +195,3 @@ resource "azapi_resource" "decoupler_activate_outbound_wisp" {
   }
 }
 
-resource "azapi_resource" "wisp_dismantling_sendrt" {
-
-  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
-  name      = "wisp-dismantling-sendrt"
-#  parent_id = module.apim[0].id
-  parent_id = data.azurerm_api_management.apim_migrated[0].id
-
-  body = jsonencode({
-    properties = {
-      description = "Sending RT request if required for WISP dismantling"
-      format      = "rawxml"
-      value       = file("./api_product/nodo_pagamenti_api/wisp_decoupler/wisp-dismantling-sendrt.xml")
-    }
-  })
-
-  lifecycle {
-    ignore_changes = [output]
-  }
-}
