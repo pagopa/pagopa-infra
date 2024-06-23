@@ -48,7 +48,7 @@ data "azurerm_storage_account" "institutions_storage_sa" {
 
 
 data "azurerm_api_management_product" "apim_api_config_product" {
-  product_id          = "product-api-config"
+  product_id          = "product-api-config-auth"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
