@@ -38,7 +38,7 @@
             <!-- Continue only if passed object is not equals to 'NONE' -->
             <when condition="@(!((string) context.Variables["current_payment_token"]).Equals("NONE"))">
               <!-- generate key in format key_<paymentToken> and use it to search in cache -->
-              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" />
+              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" /> <!-- TODO set internal -->
               <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
               <choose>
                 <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
@@ -70,7 +70,7 @@
             <!-- Continue only if passed object is not equals to 'NONE' -->
             <when condition="@(!((string) context.Variables["current_payment_token"]).Equals("NONE"))">
               <!-- generate key in format key_<paymentToken> and use it to search in cache -->
-              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" />
+              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" /> <!-- TODO set internal -->
               <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
               <choose>
                 <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
@@ -102,7 +102,7 @@
             <!-- Continue only if passed object is not equals to 'NONE' -->
             <when condition="@(!((string) context.Variables["current_payment_token"]).Equals("NONE"))">
               <!-- generate key in format key_<paymentToken> and use it to search in cache -->
-              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" />
+              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" /> <!-- TODO set internal -->
               <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
               <choose>
                 <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
@@ -134,7 +134,7 @@
             <!-- Continue only if passed object is not equals to 'NONE' -->
             <when condition="@(!((string) context.Variables["current_payment_token"]).Equals("NONE"))">
               <!-- generate key in format key_<paymentToken> and use it to search in cache -->
-              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" />
+              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" /> <!-- TODO set internal -->
               <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
               <choose>
                 <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
@@ -166,7 +166,7 @@
             <!-- Continue only if passed object is not equals to 'NONE' -->
             <when condition="@(!((string) context.Variables["current_payment_token"]).Equals("NONE"))">
               <!-- generate key in format key_<paymentToken> and use it to search in cache -->
-              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" />
+              <cache-lookup-value key="@("wisp_" + (string) context.Variables["current_payment_token"])" default-value="NONE" variable-name="payment_mapping" caching-type="external" /> <!-- TODO set internal -->
               <!-- if the payments was executed by WISP dismantling, execute a call to 'receipt/ko' API with paymentToken, identificativoDominio and identificativoUnivocoVersamento -->
               <choose>
                 <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
