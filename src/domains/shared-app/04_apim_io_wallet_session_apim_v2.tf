@@ -5,7 +5,7 @@
 ############################
 
 data "azurerm_key_vault_secret" "personal_data_vault_api_key_secret_apim_v2" {
-  name         = "personal-data-vault-api-key"
+  name         = "personal-data-vault-api-key-wallet-session"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
@@ -167,6 +167,32 @@ resource "azapi_resource" "fragment_chk_jwt_session_token_apim_v2" {
 
 }
 
+resource "azapi_resource" "fragment_jwt_session_token_apim_v2" {
+  count = var.env_short == "p" ? 1 : 0 # only PROD and only for version V2 
+
+  depends_on = [azurerm_api_management_named_value.wallet-jwt-signing-key_apim_v2]
+
+  # provider  = azapi.apim
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "jwt-chk-wallet-session"
+  parent_id = data.azurerm_api_management.apim_v2.id
+
+  body = jsonencode({
+    properties = {
+      description = "Component that permits to check JWT session wallet token pagoPA for IO"
+      format      = "rawxml"
+      value = templatefile("./api/session-wallet/v1/_fragment_policiy_chk_jwt.tpl.xml", {
+      })
+
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+
+}
+
 #######################################################################
 ## Fragment policy to chk PM token pagoPA for IO                     ##
 #######################################################################
@@ -178,6 +204,29 @@ resource "azapi_resource" "fragment_chk_pm_session_token_apim_v2" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "pm-chk-wallet-session"
   parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Component that permits to check PM session wallet token pagoPA for IO"
+      format      = "rawxml"
+      value = templatefile("./api/session-wallet/v1/_fragment_policiy_chk_token.tpl.xml", {
+      })
+
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
+
+resource "azapi_resource" "fragment_pm_session_token_apim_v2" {
+  count = var.env_short == "p" ? 1 : 0 # only PROD and only for version V2   
+
+  # provider  = azapi.apim
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "pm-chk-wallet-session"
+  parent_id = data.azurerm_api_management.apim_v2.id
 
   body = jsonencode({
     properties = {

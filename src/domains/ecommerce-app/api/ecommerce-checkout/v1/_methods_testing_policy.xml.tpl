@@ -12,14 +12,17 @@
 
                         JObject inResponseBody = (JObject)context.Variables["responseBody"]; 
                         JArray methods = (JArray)(inResponseBody["paymentMethods"]);
-
+                        HashSet<String> allowedPaymentTypeCodes = new HashSet<String>();
+                        allowedPaymentTypeCodes.Add("CP"); //CARTE
+                        allowedPaymentTypeCodes.Add("RBPB");//Conto BancoPosta Impresa BPIOL
+                        allowedPaymentTypeCodes.Add("RBPP");//Paga con Postepay
+                        allowedPaymentTypeCodes.Add("RBPR");//Conto BancoPosta
                         for(int i = methods.Count - 1; i >= 0; i--) {
-                            String methodName = (string)((JObject)methods[i])["name"];
-                            if( !methodName.Equals("CARDS") ) {
+                            String paymentTypeCode = (string)((JObject)methods[i])["paymentTypeCode"];
+                            if( !allowedPaymentTypeCodes.Contains(paymentTypeCode) ) {
                                 methods.RemoveAt(i);
                             }
                         }
-
                         inResponseBody["paymentMethods"] = (JArray) methods;
                         return inResponseBody.ToString(); 
 
