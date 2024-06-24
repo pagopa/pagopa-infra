@@ -2,7 +2,7 @@
   <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
   <set-variable name="status_code" value="@(context.Response.StatusCode)" />
   <choose>
-    <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && context.Variables.GetValueOrDefault<int>("status_code", 0).Equals(200))">
+    <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true")">
       <!-- check if outcome in request is KO -->
       <set-variable name="is_outcome_ko" value="@{
                     try {
@@ -48,8 +48,14 @@
                     <set-header name="Content-Type" exists-action="override">
                       <value>application/json</value>
                     </set-header>
+                    <set-header name="X-Primitive" exists-action="override">
+                      <value>@(context.Variables.GetValueOrDefault<string>("primitive_ko", "0"))</value>
+                    </set-header>
+                    <set-header name="X-HTTP-Status-Code" exists-action="override">
+                      <value>@(context.Variables.GetValueOrDefault<string>("status_code", "0"))</value>
+                    </set-header>
                     <set-body>
-                      @{ return (string) context.Variables["payment_mapping"]; }
+                      @{ return (string) context.Variables["status_code"]; }
                     </set-body>
                   </send-one-way-request>
                 </when>

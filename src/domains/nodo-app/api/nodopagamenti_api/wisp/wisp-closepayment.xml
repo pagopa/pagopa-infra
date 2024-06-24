@@ -21,6 +21,7 @@
   </backend>
   <outbound>
     <base />
+    <set-variable name="primitive_ko" value="closePaymentV2" />
     <include-fragment fragment-id="wisp-receipt-ko" />
   </outbound>
   <on-error>
