@@ -319,7 +319,7 @@ variable "pdv_api_base_path" {
 }
 
 variable "pdf_engine_zone_balancing_enabled" {
-  type = bool
+  type        = bool
   description = "(Required) if true, enables zone balancing to pdf engine app service plans"
 }
 

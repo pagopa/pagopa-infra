@@ -3,14 +3,14 @@
 ################
 
 resource "azurerm_resource_group" "pdf_engine_ha_rg" {
-  count = var.pdf_engine_app_ha_enabled ? 1 : 0
+  count    = var.pdf_engine_app_ha_enabled ? 1 : 0
   name     = "${local.project}-ha-rg"
   location = var.location
 }
 
 module "shared_pdf_engine_app_service_ha" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
-  count = var.pdf_engine_app_ha_enabled ? 1 : 0
+  count               = var.pdf_engine_app_ha_enabled ? 1 : 0
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.pdf_engine_ha_rg[0].name
   location            = var.location
@@ -32,8 +32,8 @@ module "shared_pdf_engine_app_service_ha" {
   app_settings = local.shared_pdf_engine_app_settings
 
   zone_balancing_enabled = var.pdf_engine_zone_balancing_enabled
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_vnet.id]
-  allowed_ips     = []
+  allowed_subnets        = [data.azurerm_subnet.apim_vnet.id, data.azurerm_subnet.apim_v2_vnet.id]
+  allowed_ips            = []
 
   subnet_id = module.shared_pdf_engine_app_service_snet.id
 
@@ -247,8 +247,8 @@ module "shared_pdf_engine_app_service_java_ha" {
   location            = var.location
 
   # App service plan vars
-  plan_name = format("%s-plan-pdf-engine-java-ha", local.project)
-  sku_name  = var.app_service_pdf_engine_sku_name_java
+  plan_name              = format("%s-plan-pdf-engine-java-ha", local.project)
+  sku_name               = var.app_service_pdf_engine_sku_name_java
   zone_balancing_enabled = var.pdf_engine_zone_balancing_enabled
 
   # App service plan
