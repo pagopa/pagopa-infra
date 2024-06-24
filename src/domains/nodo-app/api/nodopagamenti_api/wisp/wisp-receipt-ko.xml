@@ -43,7 +43,7 @@
               <choose>
                 <when condition="@(!((string) context.Variables["payment_mapping"]).Equals("NONE"))">
                   <send-one-way-request mode="new">
-                    <set-url>{{wisp-dismantling-converter-base-url}}/receipts/ko</set-url>
+                    <set-url>{{wisp-dismantling-converter-base-url}}/receipt/ko</set-url>
                     <set-method>POST</set-method>
                     <set-header name="Content-Type" exists-action="override">
                       <value>application/json</value>
