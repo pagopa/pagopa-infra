@@ -27,7 +27,7 @@
         <cache-lookup-value key="@((string) context.Variables["paSendRT-fiscalCode-noticeNumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
         <choose>
           <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
-            <send-request mode="new" response-variable-name="wisp-forward">
+            <send-one-way-request mode="new">
               <set-url>{{wisp-dismantling-converter-base-url}}/receipt/ok</set-url>
               <set-method>POST</set-method>
               <set-header name="Content-Type" exists-action="override">
@@ -38,7 +38,7 @@
                 new JProperty("content", (string) context.Variables["paSendRTV2-request-body"])
                 ).ToString();
                 }</set-body>
-            </send-request>
+            </send-one-way-request>
           </when>
         </choose>
       </when>
