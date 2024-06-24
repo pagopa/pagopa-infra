@@ -13,10 +13,10 @@
     <!-- evaluate routing algorithm -->
     <when condition="@(((string)context.Variables["primitiveType"]).Equals("ROUTING"))">
     <set-variable name="configuration" value="@{
-    JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
-    JArray sorted = new JArray(json_configuration.OrderByDescending(obj => (int)obj["routing"]));
-    return sorted.ToString();
-    }" />
+                JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
+                JArray sorted = new JArray(json_configuration.OrderByDescending(obj => (int)obj["routing"]));
+                return sorted.ToString();
+                }" />
     <choose>
       <when condition="@(context.Variables.GetValueOrDefault<string>("enable_routing_switch", "").Equals("true"))">
       <set-variable name="baseUrl" value="@{
@@ -50,13 +50,13 @@
     JArray sorted = new JArray(json_configuration.OrderBy(obj => (int)obj["list_priority"]));
     return sorted.ToString();
     }" />
-        <!-- read request info -->
+  <!-- read request info -->
 <choose>
 <!--<when condition="@(((string)context.Variables["soapAction"]).Equals("sendPaymentOutcome"))">-->
 <when condition="@{
-  string[] sendPaymentOutcome = new string[] {"sendPaymentOutcome", "sendPaymentOutcomeV2"};
-  return sendPaymentOutcome.Contains((string)context.Variables["soapAction"]);
-}">
+                    string[] sendPaymentOutcome = new string[] {"sendPaymentOutcome", "sendPaymentOutcomeV2"};
+                    return sendPaymentOutcome.Contains((string)context.Variables["soapAction"]);
+                    }">
 <set-variable name="requestData" value="@{
                             // retrieve data from request body
                             XElement request = context.Request.Body.As<XElement>(preserveContent: true);
@@ -98,8 +98,8 @@ new JProperty("ttl", 1)
                                 var ci = idCi.Value;
                                 // ttl in seconds
                                 return new JObject(
-                                    new JProperty("brokerPsp", idBrokerPSP.Value),
-                                    new JProperty("ci", idCi.Value),
+                                    new JProperty("brokerPsp", brokerPsp),
+                                    new JProperty("ci", ci),
                                     new JProperty("noticeNumber", noticeNumber.Value),
                                     new JProperty("key", brokerPsp + "_" + ci + "_" + noticeNumber.Value),
                                     new JProperty("ttl", 3600)
@@ -116,33 +116,9 @@ new JProperty("ttl", 1)
 }
 }" />
 </otherwise>
-        </choose>
-        <!-- Execute cache lookup for default node ID if WISP dismantling is enabled -->
-<choose>
-<when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
-<!-- if fiscalcode and notice number belongs to wisp dismantling, set nodeId as default value ( {{default-nodo-id}} ) -->
-<set-variable name="wisp_fiscalcode_noticenumber" value="@{
-                        var requestData = JObject.Parse((string)context.Variables["requestData"]);
-                        var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
-var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
-return "wisp_" + ci + "_" + noticeNumber;
-}" />
-<cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
-<choose>
-  <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
-  <cache-store-value key="@{
-                                    var domain = (string) context.Variables["domain"];
-                                    var requestData = JObject.Parse((string) context.Variables["requestData"]);
-                                    return domain + "_" + (string) requestData["key"];
-                                }" value="@((string) context.Variables["baseNodeId"])" duration="@{
-                                    var requestData = JObject.Parse((string) context.Variables["requestData"]);
-                                    return (int) requestData["ttl"];
-                                }" caching-type="internal" />
-</when>
-</choose>
-        </when>
-        </choose>
-        <!-- check if key is cached -->
+  </choose>
+
+  <!-- check if key is cached -->
 <cache-lookup-value key="@{
                         var domain = (string)context.Variables["domain"];
                         var requestData = JObject.Parse((string)context.Variables["requestData"]);
@@ -151,12 +127,42 @@ return "wisp_" + ci + "_" + noticeNumber;
 <choose>
 <!-- if key not in cache -->
 <when condition="@(context.Variables.GetValueOrDefault<string>("nodeId", "").Equals("LIST"))">
+<!-- Execute cache lookup for default node ID if WISP dismantling is enabled -->
+<set-variable name="set_cache" value="true" />
+<choose>
+  <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
+  <!-- if fiscalcode and notice number belongs to wisp dismantling, set nodeId as default value ( {{default-nodo-id}} ) -->
+  <set-variable name="wisp_fiscalcode_noticenumber" value="@{
+                                var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                                var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
+  var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
+  return "wisp_" + ci + "_" + noticeNumber;
+  }" />
+  <cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
+  <choose>
+    <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+    <cache-store-value key="@{
+                                            var domain = (string) context.Variables["domain"];
+                                            var requestData = JObject.Parse((string) context.Variables["requestData"]);
+                                            return domain + "_" + (string) requestData["key"];
+                                        }" value="@((string) context.Variables["baseNodeId"])" duration="@{
+                                            var requestData = JObject.Parse((string) context.Variables["requestData"]);
+                                            return (int) requestData["ttl"];
+                                        }" caching-type="internal" />
+    <set-variable name="set_cache" value="false" />
+  </when>
+</choose>
+</when>
+  </choose>
+
+<choose>
+<when condition="@(context.Variables.GetValueOrDefault<bool>("set_cache", true))">
 <!-- evaluate list algorithm -->
 <set-variable name="dataToSet" value="@{
-                            var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
+                                    var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
 
-                            var requestData = JObject.Parse((string)context.Variables["requestData"]);
-                            bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true");
+                                    var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                                    bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true");
 if (enable_nm3_switch) {
 foreach (JObject item in configuration) {
 bool brokerPspFound = false;
@@ -196,9 +202,9 @@ new JProperty("ttl", requestData.GetValue("ttl"))
   <!-- if enable_nm3_decoupler_switch == true -->
   <when condition="@(context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true"))">
   <set-variable name="baseUrl" value="@{
-                                  var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
-                                  var target = dataToSet.GetValue("nodeUri").ToString();
-                                  var defaultBaseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "");
+                                        var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
+                                        var target = dataToSet.GetValue("nodeUri").ToString();
+                                        var defaultBaseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "");
   return target.Equals("NONE") ? defaultBaseUrl : target;
   }" />
 </when>
@@ -206,27 +212,29 @@ new JProperty("ttl", requestData.GetValue("ttl"))
   <trace source="skip-set-base-user" severity="information">skipped set base url nm3</trace>
 </otherwise>
 </choose>
-        <!-- set node_id in cache -->
+  <!-- set node_id in cache -->
 <choose>
 <when condition="@{
-                                var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
-                                return !dataToSet.GetValue("nodeId").ToString().Equals("NONE");
-                            }">
+                                        var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
+                                        return !dataToSet.GetValue("nodeId").ToString().Equals("NONE");
+                                    }">
 <cache-store-value key="@{
-                                    var domain = (string)context.Variables["domain"];
-                                    var requestData = JObject.Parse((string)context.Variables["requestData"]);
-                                    return domain + "_" + (string)requestData["key"];
-                                }" value="@{
-                                    var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
-                                    return (string)requestData["nodeId"];
-                                }" duration="@{
-                                    var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
-                                    return (int)requestData["ttl"];
-                                }" caching-type="internal" />
+                                            var domain = (string)context.Variables["domain"];
+                                            var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                                            return domain + "_" + (string)requestData["key"];
+                                        }" value="@{
+                                            var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
+                                            return (string)requestData["nodeId"];
+                                        }" duration="@{
+                                            var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
+                                            return (int)requestData["ttl"];
+                                        }" caching-type="internal" />
 </when>
-        </choose>
-        </when>
-        <!-- key in cache -->
+  </choose>
+  </when>
+  </choose>
+  </when>
+  <!-- key in cache -->
 <otherwise>
 <trace source="retrieve-node-uri" severity="information">Node URI retrieved by cache</trace>
 <!-- retrieve url by node_id according to configuration -->
@@ -270,10 +278,10 @@ new JProperty("ttl", requestData.GetValue("ttl"))
   <trace source="skip-set-base-user" severity="information">skipped set base url nm3</trace>
 </otherwise>
 </choose>
-        </otherwise>
-        </choose>
-        </when>
-        <!-- evaluate wisp dismantling algorithm -->
+  </otherwise>
+  </choose>
+  </when>
+  <!-- evaluate wisp dismantling algorithm -->
 <when condition="@(((string)context.Variables["primitiveType"]).Equals("OTHER_WISPDISMANTLING"))">
 <set-variable name="wisp_whitelisted_brokers" value="{{wisp-brokerPSP-whitelist}}" />
 <set-variable name="wisp_whitelisted_channels" value="{{wisp-channel-whitelist}}" />
@@ -324,6 +332,6 @@ new JProperty("ttl", requestData.GetValue("ttl"))
   <trace source="skip-set-base-url-whitelisted-broker-and-channel" severity="information">broker and channel not in whitelist or WISP dismantling disabled</trace>
 </otherwise>
 </choose>
-        </when>
-        </choose>
-        </fragment>
+  </when>
+  </choose>
+  </fragment>
