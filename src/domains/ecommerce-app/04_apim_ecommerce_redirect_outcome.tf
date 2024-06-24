@@ -66,7 +66,7 @@ module "apim_ecommerce_redirect_outcome_api_v1" {
     {
       operation_id = "CallbackOutcome",
       xml_content = templatefile("./api/redirect-outcome/v1/_redirect_outcome_policy.xml.tpl", {
-        hostname = var.env_short ==  local.ecommerce_hostname
+        hostname = local.ecommerce_hostname
       })
     }
   ]
