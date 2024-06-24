@@ -198,6 +198,3 @@ storage_account_info = {
 }
 
 
-enabled_features = {
-  eventhub_ha_rx = true
-}

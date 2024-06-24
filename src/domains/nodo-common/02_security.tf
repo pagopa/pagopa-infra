@@ -89,7 +89,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_stand_in_sync_rx"
 ### verify ko
 resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_tx" {
   name         = "azure-event-hub-verify-ko-evt-connection-string"
-  value        = var.enabled_features.eventhub_ha_tx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko-tx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko-tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
@@ -97,7 +97,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_tx" {
 
 resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_datastore_rx" {
   name         = "ehub-verifyko-datastore-rx-connection-string"
-  value        = var.enabled_features.eventhub_ha_rx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko-datastore-rx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko-datastore-rx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko-datastore-rx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
@@ -105,7 +105,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_datasto
 
 resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_tablestorage_rx" {
   name         = "ehub-verifyko-tablestorage-rx-connection-string"
-  value        = var.enabled_features.eventhub_ha_rx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko-tablestorage-rx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko-tablestorage-rx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko-tablestorage-rx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
