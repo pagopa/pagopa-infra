@@ -177,7 +177,7 @@ resource "azapi_resource" "fragment_chk_pm_session_token_apim_v2" {
   # provider  = azapi.apim
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "pm-chk-wallet-session"
-  parent_id = data.azurerm_api_management.apim.id
+  parent_id = data.azurerm_api_management.apim_v2.id
 
   body = jsonencode({
     properties = {
