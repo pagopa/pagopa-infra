@@ -12,7 +12,7 @@ resource "azurerm_api_management_api_version_set" "apim_v2_ecommerce_io_api_v1" 
   versioning_scheme   = "Segment"
 }
 
-resource "azurerm_api_management_named_value" "apim_v2pay_wallet_family_friends_user_ids" {
+resource "azurerm_api_management_named_value" "apim_v2_pay_wallet_family_friends_user_ids" {
   name                = "pay-wallet-family-friends-user-ids"
   api_management_name = local.pagopa_apim_v2
   resource_group_name = local.pagopa_apim_rg
