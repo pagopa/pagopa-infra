@@ -107,6 +107,19 @@ resource "azurerm_api_management_product_api" "apim_api_gpd_payments_soap_produc
   api_name   = azurerm_api_management_api.apim_api_gpd_payments_soap_api_v1.name
 }
 
+# Add policy API to paSendRTV2 for WISP dismantling
+resource "azurerm_api_management_api_operation_policy" "paSendRT_v2_wisp_api_policy" {
+  count  = var.enable_wisp_converter ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_api_gpd_payments_soap_api_v1.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = var.env_short == "d" ? "647f29ab3b3a67085861dd4e" : var.env_short == "u" ? "64803ea3affcab1af451559a" : "648084deed366019b015f1b8"
+
+  #tfsec:ignore:GEN005
+  xml_content = file("./api/payments-service/v1/soap/wisp-paSendRTV2.xml")
+}
+
+
 ###################
 ## REST Products ##
 ###################

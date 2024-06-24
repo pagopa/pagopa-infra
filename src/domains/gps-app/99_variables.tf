@@ -378,7 +378,6 @@ variable "fn_app_storage_account_info" {
   }
 }
 
-
 variable "pod_disruption_budgets" {
   type = map(object({
     name         = optional(string, null)
@@ -387,4 +386,10 @@ variable "pod_disruption_budgets" {
   }))
   description = "Pod disruption budget for domain namespace"
   default     = {}
+}
+
+variable "enable_wisp_converter" {
+  type        = bool
+  default     = false
+  description = "Enable WISP converter system, replacing old WISP handling"
 }
