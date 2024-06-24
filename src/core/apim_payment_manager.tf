@@ -933,6 +933,8 @@ module "apim_pm_per_nodo_v2" {
   })
 }
 
+# TODO add here sendPaymentResultV2 WISP policy
+
 ########################
 ## client IO bpd API  ##
 ########################

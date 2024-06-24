@@ -1835,3 +1835,9 @@ variable "apim_logger_resource_id" {
   description = "Resource id for the APIM logger"
   default     = null
 }
+
+variable "enable_wisp_converter" {
+  type        = bool
+  default     = false
+  description = "Enable WISP converter system, replacing old WISP handling"
+}

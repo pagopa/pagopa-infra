@@ -29,7 +29,6 @@
 | <a name="module_apim_nodo_dei_pagamenti_monitoring_product"></a> [apim\_nodo\_dei\_pagamenti\_monitoring\_product](#module\_apim\_nodo\_dei\_pagamenti\_monitoring\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_dei_pagamenti_product"></a> [apim\_nodo\_dei\_pagamenti\_product](#module\_apim\_nodo\_dei\_pagamenti\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_dei_pagamenti_product_auth"></a> [apim\_nodo\_dei\_pagamenti\_product\_auth](#module\_apim\_nodo\_dei\_pagamenti\_product\_auth) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
-| <a name="module_apim_nodo_dei_pagamenti_product_auth_wisp"></a> [apim\_nodo\_dei\_pagamenti\_product\_auth\_wisp](#module\_apim\_nodo\_dei\_pagamenti\_product\_auth\_wisp) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_dei_pagamenti_product_dev"></a> [apim\_nodo\_dei\_pagamenti\_product\_dev](#module\_apim\_nodo\_dei\_pagamenti\_product\_dev) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
 | <a name="module_apim_nodo_fatturazione_api"></a> [apim\_nodo\_fatturazione\_api](#module\_apim\_nodo\_fatturazione\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_fatturazione_dev_api"></a> [apim\_nodo\_fatturazione\_dev\_api](#module\_apim\_nodo\_fatturazione\_dev\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
@@ -41,7 +40,6 @@
 | <a name="module_apim_nodo_per_pm_api_v1_dev"></a> [apim\_nodo\_per\_pm\_api\_v1\_dev](#module\_apim\_nodo\_per\_pm\_api\_v1\_dev) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_nodo_per_pm_api_v2"></a> [apim\_nodo\_per\_pm\_api\_v2](#module\_apim\_nodo\_per\_pm\_api\_v2) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
 | <a name="module_apim_nodo_per_pm_api_v2_dev"></a> [apim\_nodo\_per\_pm\_api\_v2\_dev](#module\_apim\_nodo\_per\_pm\_api\_v2\_dev) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
-| <a name="module_apim_nodo_per_pm_api_v2_ndp_wisp"></a> [apim\_nodo\_per\_pm\_api\_v2\_ndp\_wisp](#module\_apim\_nodo\_per\_pm\_api\_v2\_ndp\_wisp) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_sync_api"></a> [apim\_nodo\_sync\_api](#module\_apim\_nodo\_sync\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_sync_dev_api"></a> [apim\_nodo\_sync\_dev\_api](#module\_apim\_nodo\_sync\_dev\_api) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_nodo_sync_dev_product"></a> [apim\_nodo\_sync\_dev\_product](#module\_apim\_nodo\_sync\_dev\_product) | git::https://github.com/pagopa/azurerm.git//api_management_product | v1.0.90 |
@@ -79,7 +77,6 @@
 | <a name="module_apim_pm_paypalpsp_api_v1"></a> [apim\_pm\_paypalpsp\_api\_v1](#module\_apim\_pm\_paypalpsp\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_per_nodo_v1"></a> [apim\_pm\_per\_nodo\_v1](#module\_apim\_pm\_per\_nodo\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_per_nodo_v2"></a> [apim\_pm\_per\_nodo\_v2](#module\_apim\_pm\_per\_nodo\_v2) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_apim_pm_per_nodo_v2_wisp"></a> [apim\_pm\_per\_nodo\_v2\_wisp](#module\_apim\_pm\_per\_nodo\_v2\_wisp) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
 | <a name="module_apim_pm_ptg_api_v1"></a> [apim\_pm\_ptg\_api\_v1](#module\_apim\_pm\_ptg\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_pm_restapi_api_old_v4"></a> [apim\_pm\_restapi\_api\_old\_v4](#module\_apim\_pm\_restapi\_api\_old\_v4) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
 | <a name="module_apim_pm_restapi_api_v4"></a> [apim\_pm\_restapi\_api\_v4](#module\_apim\_pm\_restapi\_api\_v4) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.18.3 |
@@ -147,12 +144,9 @@
 | Name | Type |
 |------|------|
 | [azapi_resource.decoupler_activate_outbound](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
-| [azapi_resource.decoupler_activate_outbound_wisp](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.decoupler_algorithm](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
-| [azapi_resource.decoupler_algorithm_wisp](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.decoupler_configuration](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azapi_resource.on_erro_soap_handler](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
-| [azapi_resource.wisp_dismantling_sendrt](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azurerm_api_management_api.apim_api_donazioni_ucraina_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api.apim_node_for_io_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api) | resource |
 | [azurerm_api_management_api.apim_node_for_io_api_v1_auth](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api) | resource |
@@ -175,7 +169,7 @@
 | [azurerm_api_management_api_operation_policy.activateIO_reservation_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.close_payment_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.close_payment_api_v1_dev](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
-| [azurerm_api_management_api_operation_policy.closepayment_v2_wisp_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.close_payment_api_v2_wisp_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.donazioni_activate_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.donazioni_sendrt_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.donazioni_verify_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
@@ -186,7 +180,6 @@
 | [azurerm_api_management_api_operation_policy.nm3_activate_verify_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.parked_list_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.parked_list_api_v1_dev](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
-| [azurerm_api_management_api_operation_policy.sendpaymentoutcome_v2_wisp_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_policy.apim_node_for_donazioni_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_node_for_io_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_node_for_io_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_policy) | resource |
@@ -232,7 +225,6 @@
 | [azurerm_api_management_api_version_set.nodo_per_pa_api_dev](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_pm_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_pm_api_dev](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.nodo_per_pm_api_ndp_wisp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_psp_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_psp_api_auth](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_psp_api_dev](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
@@ -251,7 +243,6 @@
 | [azurerm_api_management_api_version_set.pm_auth_rtd_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pm_events_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pm_per_nodo_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.pm_per_nodo_api_wisp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pm_ptg_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pm_restapi_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pm_restapi_old_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_version_set) | resource |
@@ -330,7 +321,6 @@
 | [azurerm_api_management_named_value.x_forwarded_for_value](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_product_api.apim_nodo_dei_pagamenti_product_api](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_product_api) | resource |
 | [azurerm_api_management_product_api.apim_nodo_dei_pagamenti_product_api_auth](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_product_api) | resource |
-| [azurerm_api_management_product_api.apim_nodo_dei_pagamenti_product_api_auth_wisp](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_product_api) | resource |
 | [azurerm_api_management_product_api.apim_nodo_dei_pagamenti_product_api_dev](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_product_api) | resource |
 | [azurerm_api_management_redis_cache.apim_external_cache_redis](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_redis_cache) | resource |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/application_insights) | resource |
@@ -685,6 +675,7 @@
 | <a name="input_ehns_zone_redundant"></a> [ehns\_zone\_redundant](#input\_ehns\_zone\_redundant) | Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones). | `bool` | `false` | no |
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Enable Azure DevOps agent. | `bool` | n/a | yes |
 | <a name="input_enable_iac_pipeline"></a> [enable\_iac\_pipeline](#input\_enable\_iac\_pipeline) | If true create the key vault policy to allow used by azure devops iac pipelines. | `bool` | `false` | no |
+| <a name="input_enable_wisp_converter"></a> [enable\_wisp\_converter](#input\_enable\_wisp\_converter) | Enable WISP converter system, replacing old WISP handling | `bool` | `false` | no |
 | <a name="input_enabled_features"></a> [enabled\_features](#input\_enabled\_features) | Features enabled in this domain | <pre>object({<br>    apim_v2           = bool<br>    apim_migrated     = optional(bool, false)<br>    vnet_ita          = bool<br>    node_forwarder_ha = optional(bool, false)<br>  })</pre> | <pre>{<br>  "apim_v2": false,<br>  "vnet_ita": false<br>}</pre> | no |
 | <a name="input_env"></a> [env](#input\_env) | Contains env description in extend format (dev,uat,prod) | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | Environment shot version | `string` | n/a | yes |

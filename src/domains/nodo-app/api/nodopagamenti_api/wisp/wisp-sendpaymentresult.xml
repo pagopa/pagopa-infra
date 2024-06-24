@@ -10,10 +10,22 @@
     - Policies are applied in the order of their appearance, from the top down.
     - Comments within policy elements are not supported and may disappear. Place your comments between policy elements or at a higher level scope.
 -->
+
+<!-- policy closePaymentV2 & sendPaymentResultV2 :
+- On outbound call /receipt/KO wisp-conv 
+- On inbound  call /receipt/timer wisp-conv
+--> 
+
 <policies>
   <inbound>
     <base />
+    <set-variable name="primitive_ko" value="sendPaymentResultV2" />
     <set-variable name="request-body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
+    <set-variable name="wisp-payment-tokens" value="@{
+                        JObject request = (JObject) context.Variables["request-body"];
+                        JArray payments = (JArray) request.Property("payments").Value;
+                        return string.Join(",", payments.Select(token => token.Property("paymentToken").Value.ToString()));
+    }" />    
     <include-fragment fragment-id="wisp-disable-payment-token-timer" />
   </inbound>
   <backend>
@@ -21,7 +33,6 @@
   </backend>
   <outbound>
     <base />
-    <set-variable name="primitive_ko" value="sendPaymentResultV2" />
     <include-fragment fragment-id="wisp-receipt-ko" />
   </outbound>
   <on-error>
