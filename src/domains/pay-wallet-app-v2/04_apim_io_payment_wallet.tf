@@ -1,3 +1,8 @@
+data "azurerm_key_vault_secret" "personal_data_vault_api_key_secret" {
+  name         = "personal-data-vault-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 resource "azurerm_api_management_named_value" "wallet_personal_data_vault_api_key" {
   name                = "wallet-personal-data-vault-api-key"
   api_management_name = local.pagopa_apim_name
