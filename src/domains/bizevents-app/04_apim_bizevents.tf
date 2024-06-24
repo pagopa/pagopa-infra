@@ -268,3 +268,45 @@ module "apim_api_bizevents_transactions_api_jwt_v1" {
     pdv_api_base_path = var.pdv_api_base_path
   })
 }
+
+
+resource "azurerm_api_management_api_version_set" "api_bizevents_transactions_api_apim_v2" {
+  count               = var.env_short == "p" ? 1 : 0 
+  name                = format("%s-bizevents-transaction-service-api", var.env_short)
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = "${local.product}-weu-core-apim-v2"
+  display_name        = local.apim_transaction_service_api.display_name
+  versioning_scheme   = "Segment"
+}
+
+
+module "apim_api_bizevents_transactions_api_jwt_v1_apim_v2" {
+
+  count  = var.env_short == "p" ? 1 : 0 
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+
+  name                = format("%s-bizevents-transaction-service-api-jwt", local.project)
+  api_management_name = "${local.product}-weu-core-apim-v2"
+  resource_group_name = local.pagopa_apim_rg
+  product_ids         = [module.apim_transactions_product.product_id]
+  # subscription_required = local.apim_transaction_service_api.subscription_required
+  subscription_required = false # use jwt
+  version_set_id        = azurerm_api_management_api_version_set.api_bizevents_transactions_api_apim_v2[0].id
+  api_version           = "v1"
+
+  description  = "${local.apim_transaction_service_api.description} JWT"
+  display_name = "${local.apim_transaction_service_api.display_name} JWT"
+  path         = "${local.apim_transaction_service_api.path}-jwt"
+  protocols    = ["https"]
+  service_url  = local.apim_transaction_service_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/transaction-service/v1/_openapi-jwt.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/transaction-service/v1/_base_policy-jwt.xml", {
+    hostname          = local.bizevents_hostname
+    pdv_api_base_path = var.pdv_api_base_path
+  })
+}

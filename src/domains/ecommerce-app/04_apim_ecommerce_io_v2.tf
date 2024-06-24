@@ -33,7 +33,7 @@ module "apim_v2_ecommerce_io_api_v2" {
   api_management_name   = local.pagopa_apim_v2
   product_ids           = [module.apim_ecommerce_io_product.product_id]
   subscription_required = local.apim_ecommerce_io_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.ecommerce_io_api_v1.id
+  version_set_id        = azurerm_api_management_api_version_set.apim_v2_ecommerce_io_api_v1.id
   api_version           = "v2"
   service_url           = local.apim_ecommerce_io_api.service_url
 
