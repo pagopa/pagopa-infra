@@ -148,3 +148,4 @@ resource "azurerm_monitor_autoscale_setting" "reporting_fdr_function" {
     }
   }
 }
+
