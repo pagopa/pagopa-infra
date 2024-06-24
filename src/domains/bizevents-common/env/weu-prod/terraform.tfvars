@@ -103,7 +103,3 @@ enable_iac_pipeline              = true
 storage_account_replication_type = "GZRS"
 redis_ha_enabled                 = true
 
-enabled_features = {
-  eventhub_ha_tx = true
-  eventhub_ha_rx = true
-}
