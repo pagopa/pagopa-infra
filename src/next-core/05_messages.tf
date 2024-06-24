@@ -1,3 +1,32 @@
+resource "azurerm_private_dns_zone" "privatelink_servicebus_windows_net" {
+  name                = "privatelink.servicebus.windows.net"
+  resource_group_name = local.msg_resource_group_name
+  tags                = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "vnet_core_link_privatelink_servicebus_windows_net" {
+
+  name                  = "${local.product}-evh-ns01-private-dns-zone-link-02"
+  resource_group_name   = local.msg_resource_group_name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_servicebus_windows_net.name
+  virtual_network_id    = data.azurerm_virtual_network.vnet_core.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "vnet_integration_link_privatelink_servicebus_windows_net" {
+
+  name                  = "${local.product}-evh-ns01-private-dns-zone-link-01"
+  resource_group_name   = local.msg_resource_group_name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_servicebus_windows_net.name
+  virtual_network_id    = data.azurerm_virtual_network.vnet_integration.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+
 //replaces ns01
 module "event_hub03" {
   source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v7.62.0"
@@ -18,8 +47,8 @@ module "event_hub03" {
   public_network_access_enabled = var.ehns_public_network_access
 
   private_dns_zones = {
-    id   = [data.azurerm_private_dns_zone.eventhub.id]
-    name = [data.azurerm_private_dns_zone.eventhub.name]
+    id   = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
+    name = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
   }
   private_dns_zone_record_A_name = "event_hub03"
 
@@ -55,8 +84,8 @@ module "event_hub04" {
   subnet_id                     = data.azurerm_subnet.eventhub_snet.id
   public_network_access_enabled = var.ehns_public_network_access
   private_dns_zones = {
-    id   = [data.azurerm_private_dns_zone.eventhub.id]
-    name = [data.azurerm_private_dns_zone.eventhub.name]
+    id   = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
+    name = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
   }
   private_dns_zone_record_A_name = "event_hub04"
 

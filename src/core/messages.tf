@@ -31,7 +31,7 @@ module "event_hub01" {
   virtual_network_ids = [module.vnet_integration.id, module.vnet.id]
   subnet_id           = module.eventhub_snet[0].id
 
-  eventhubs = var.eventhubs
+  eventhubs = []
 
   alerts_enabled = var.ehns_alerts_enabled
   metric_alerts  = var.ehns_metric_alerts
