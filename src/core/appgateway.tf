@@ -239,7 +239,7 @@ locals {
       fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
-      request_timeout             = 30
+      request_timeout             = 120
       pick_host_name_from_backend = false
     }
 
@@ -463,60 +463,60 @@ module "app_gw" {
           response_header_configurations = []
           url                            = null
         },
-        {
-          name          = "http-deny-path-only-to-upload-allowed-path"
-          rule_sequence = 4
-          conditions = [
-            {
-              variable    = "var_host"
-              pattern     = format("upload.%s.%s", var.dns_zone_prefix, var.external_domain)
-              ignore_case = true
-              negate      = false
-            },
-            {
-              variable    = "var_uri_path"
-              pattern     = join("|", var.app_gateway_allowed_paths_upload)
-              ignore_case = true
-              negate      = true
-            },
-          ]
-          request_header_configurations  = []
-          response_header_configurations = []
-          url = {
-            path         = "notfound"
-            query_string = null
-          }
-        },
-        {
-          name          = "http-deny-path-only-upload-soap-fdr"
-          rule_sequence = 4
-          conditions = [
-            {
-              variable    = "var_host"
-              pattern     = format("upload.%s.%s", var.dns_zone_prefix, var.external_domain)
-              ignore_case = true
-              negate      = false
-            },
-            {
-              variable    = "http_req_Content-Type"
-              pattern     = "application/xml"
-              ignore_case = true
-              negate      = false
-            },
-            {
-              variable    = "http_req_SOAPAction"
-              pattern     = join("|", var.app_gateway_allowed_fdr_soap_action)
-              ignore_case = true
-              negate      = true
-            },
-          ]
-          request_header_configurations  = []
-          response_header_configurations = []
-          url = {
-            path         = "notfound"
-            query_string = null
-          }
-        },
+        #        {
+        #          name          = "http-deny-path-only-to-upload-allowed-path"
+        #          rule_sequence = 4
+        #          conditions = [
+        #            {
+        #              variable    = "var_host"
+        #              pattern     = format("upload.%s.%s", var.dns_zone_prefix, var.external_domain)
+        #              ignore_case = true
+        #              negate      = false
+        #            },
+        #            {
+        #              variable    = "var_uri_path"
+        #              pattern     = join("|", var.app_gateway_allowed_paths_upload)
+        #              ignore_case = true
+        #              negate      = true
+        #            },
+        #          ]
+        #          request_header_configurations  = []
+        #          response_header_configurations = []
+        #          url = {
+        #            path         = "notfound"
+        #            query_string = null
+        #          }
+        #        },
+        #        {
+        #          name          = "http-deny-path-only-upload-soap-fdr"
+        #          rule_sequence = 4
+        #          conditions = [
+        #            {
+        #              variable    = "var_host"
+        #              pattern     = format("upload.%s.%s", var.dns_zone_prefix, var.external_domain)
+        #              ignore_case = true
+        #              negate      = false
+        #            },
+        #            {
+        #              variable    = "http_req_Content-Type"
+        #              pattern     = "application/xml"
+        #              ignore_case = true
+        #              negate      = false
+        #            },
+        #            {
+        #              variable    = "http_req_SOAPAction"
+        #              pattern     = join("|", var.app_gateway_allowed_fdr_soap_action)
+        #              ignore_case = true
+        #              negate      = true
+        #            },
+        #          ]
+        #          request_header_configurations  = []
+        #          response_header_configurations = []
+        #          url = {
+        #            path         = "notfound"
+        #            query_string = null
+        #          }
+        #        },
       ]
     },
     {

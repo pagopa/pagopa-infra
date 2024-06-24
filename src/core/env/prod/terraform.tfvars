@@ -18,11 +18,14 @@ tags = {
 # Feature flag
 #
 enabled_features = {
-  apim_v2  = false
-  vnet_ita = false
+  apim_v2           = true
+  vnet_ita          = false
+  node_forwarder_ha = true
+  apim_migrated     = true
 }
 
-lock_enable = true
+upload_endpoint_enabled = false
+lock_enable             = true
 
 # monitoring
 law_sku               = "CapacityReservation" # TODO verify why it is changed from PerGB2018 to CapacityReservation
@@ -176,6 +179,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
     "193.203.230.21", # VPN NEXI
+    "151.1.203.68"    # Softlab backup support line
   ]
 }
 

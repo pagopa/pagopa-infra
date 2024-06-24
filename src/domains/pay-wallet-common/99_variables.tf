@@ -50,6 +50,10 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "cdn_location" {
+  type = string
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"

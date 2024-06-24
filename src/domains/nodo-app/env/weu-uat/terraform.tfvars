@@ -220,9 +220,5 @@ storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
-enabled_features = {
-  apim_v2        = false
-  eventhub_ha_rx = true
-}
 
 enable_wisp_converter = false

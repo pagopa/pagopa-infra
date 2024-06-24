@@ -198,11 +198,6 @@ storage_account_info = {
 }
 
 
-enabled_features = {
-  apim_v2        = false
-  eventhub_ha_rx = true
-}
-
 enable_wisp_converter = true
 wisp_converter = {
   brokerPSP_whitelist    = "97735020584" # AGID

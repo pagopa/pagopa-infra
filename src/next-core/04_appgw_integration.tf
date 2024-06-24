@@ -145,7 +145,7 @@ module "app_gw_integration" {
       fqdns                       = ["api.${var.dns_zone_prefix}.${var.external_domain}."]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
-      request_timeout             = 60
+      request_timeout             = 120
       pick_host_name_from_backend = false
     }
   }
