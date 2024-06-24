@@ -5,7 +5,7 @@
 ############################
 
 data "azurerm_key_vault_secret" "personal_data_vault_api_key_secret_apim_v2" {
-  name         = "personal-data-vault-api-key"
+  name         = "personal-data-vault-api-key-wallet-session"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
