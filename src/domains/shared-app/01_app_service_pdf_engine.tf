@@ -21,7 +21,7 @@ moved {
 
 
 resource "azurerm_resource_group" "shared_pdf_engine_app_service_rg" {
-  count = var.pdf_engine_app_ha_enabled ? 0 : 1
+  count    = var.pdf_engine_app_ha_enabled ? 0 : 1
   name     = format("%s-pdf-engine-rg", local.project)
   location = var.location
 
@@ -38,7 +38,7 @@ data "azurerm_container_registry" "container_registry" {
 ################
 
 module "shared_pdf_engine_app_service" {
-  count = var.pdf_engine_app_ha_enabled ? 0 : 1
+  count  = var.pdf_engine_app_ha_enabled ? 0 : 1
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.3.0"
 
   vnet_integration    = false
@@ -71,7 +71,7 @@ module "shared_pdf_engine_app_service" {
 }
 
 module "shared_pdf_engine_slot_staging" {
-  count = var.env_short != "d" && !var.pdf_engine_app_ha_enabled? 1 : 0
+  count = var.env_short != "d" && !var.pdf_engine_app_ha_enabled ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v6.6.0"
 
@@ -84,7 +84,7 @@ module "shared_pdf_engine_slot_staging" {
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
   location            = var.location
 
-  always_on = true
+  always_on         = true
   docker_image      = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
   docker_image_tag  = "latest"
   health_check_path = "/info"
@@ -268,8 +268,8 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
 # java
 ################
 module "shared_pdf_engine_app_service_java" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.3.0"
-  count = var.pdf_engine_app_ha_enabled ? 0 : 1
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.3.0"
+  count               = var.pdf_engine_app_ha_enabled ? 0 : 1
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
   location            = var.location
