@@ -689,7 +689,9 @@ service_bus_01 = {
   dead_lettering_on_message_expiration = false
   enable_partitioning                  = true
 }
-
+# queue_name shall be <domain>_<service>_<name>
+# producer shall have only send authorization
+# consumer shall have only listen authorization
 service_bus_01_queues = [
   {
     name                = "nodo_wisp_paainviart_queue"
