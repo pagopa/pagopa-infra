@@ -1,5 +1,9 @@
+moved {
+  from = azurerm_key_vault_key.generated
+  to   = azurerm_key_vault_key.sops_key
+}
 
-resource "azurerm_key_vault_key" "generated" {
+resource "azurerm_key_vault_key" "sops_key" {
   name         = "${local.product}-${var.domain}-sops-key"
   key_vault_id = module.key_vault.id
   key_type     = "RSA"
@@ -16,7 +20,12 @@ resource "azurerm_key_vault_key" "generated" {
   ]
 }
 
-data "external" "external" {
+moved {
+  from = data.external.external2
+  to   = data.external.terrasops
+}
+
+data "external" "terrasops" {
   program = [
     "bash", "terrasops.sh"
   ]
@@ -27,8 +36,8 @@ data "external" "external" {
 }
 
 locals {
-  all_enc_secrets_value = can(data.external.external.result) ? flatten([
-    for k, v in data.external.external.result : {
+  all_enc_secrets_value = can(data.external.terrasops.result) ? flatten([
+    for k, v in data.external.terrasops.result : {
       valore = v
       chiave = k
     }
@@ -57,8 +66,8 @@ resource "azurerm_key_vault_secret" "secret" {
 
   depends_on = [
     module.key_vault,
-    azurerm_key_vault_key.generated,
-    data.external.external,
+    azurerm_key_vault_key.sops_key,
+    data.external.terrasops,
     azurerm_key_vault_access_policy.adgroup_developers_policy,
     azurerm_key_vault_access_policy.ad_group_policy,
   ]
