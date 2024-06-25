@@ -668,24 +668,26 @@ service_bus_01 = {
 
 service_bus_01_queues = [
   {
-    name = "nodo_wisp_paainviart_queue"
+    name                = "nodo_wisp_paainviart_queue"
+    enable_partitioning = true
     keys = [
       {
         name   = "wisp_converter_paainviart"
         listen = true
         send   = true
-        manage = true
+        manage = false
       }
     ]
   },
   {
-    name = "nodo_wisp_payment_timeout_queue"
+    name                = "nodo_wisp_payment_timeout_queue"
+    enable_partitioning = true
     keys = [
       {
         name   = "wisp_converter_payment_timeout"
         listen = true
         send   = true
-        manage = true
+        manage = false
       }
     ]
   }

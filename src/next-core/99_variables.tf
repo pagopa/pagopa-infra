@@ -735,7 +735,8 @@ variable "service_bus_01" {
 variable "service_bus_01_queues" {
   description = "A list of Service Bus Queues to add to namespace service_bus_01."
   type = list(object({
-    name = string
+    name                = string
+    enable_partitioning = bool
     keys = list(object({
       name   = string
       listen = bool

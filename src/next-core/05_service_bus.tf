@@ -4,6 +4,8 @@ locals {
 
   # List of queue names
   queue_names = keys(local.queues)
+  # List of queue values
+  queue_values = values(local.queues)
 
   # Map of <authorization_key, authorization(queue, properties)>
   key_queue_map = {
@@ -25,8 +27,13 @@ locals {
       manage     = qk.manage
     }
   }
+
+  # Local variable to store the map of queue names to related resource ids
+  # queue_map enables access to queue_id by queue_name -> <queue_name, queue_id>
+  queue_map = { for idx, name in local.queue_names : name => azurerm_servicebus_queue.service_bus_01_queue[idx].id }
 }
 
+# https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quotas
 resource "azurerm_servicebus_namespace" "service_bus_01" {
   name                = "${local.project}-servicebus-01"
   location            = var.location
@@ -37,19 +44,16 @@ resource "azurerm_servicebus_namespace" "service_bus_01" {
 }
 
 resource "azurerm_servicebus_queue" "service_bus_01_queue" {
-  count = length(local.queue_names)
+  count = length(local.queue_values)
 
-  name         = local.queue_names[count.index]
+  name         = local.queue_values[count.index].name
   namespace_id = azurerm_servicebus_namespace.service_bus_01.id
+
+  enable_partitioning = local.queue_values[count.index].enable_partitioning
 
   depends_on = [
     azurerm_servicebus_namespace.service_bus_01
   ]
-}
-
-# Local variable to store the map of queue names to related resource ids
-locals {
-  queue_map = { for idx, name in local.queue_names : name => azurerm_servicebus_queue.service_bus_01_queue[idx].id }
 }
 
 resource "azurerm_servicebus_queue_authorization_rule" "service_bus_01_queue_authorization_rule" {

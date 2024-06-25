@@ -676,27 +676,31 @@ service_bus_01 = {
   dead_lettering_on_message_expiration = false
   enable_partitioning                  = true
 }
-
+# queue_name shall be <domain>_<service>_<name>
+# producer shall have only send authorization
+# consumer shall have only listen authorization
 service_bus_01_queues = [
   {
-    name = "nodo_wisp_paainviart_queue"
+    name                = "nodo_wisp_paainviart_queue"
+    enable_partitioning = true
     keys = [
       {
         name   = "wisp_converter_paainviart"
         listen = true
         send   = true
-        manage = true
+        manage = false
       }
     ]
   },
   {
-    name = "nodo_wisp_payment_timeout_queue"
+    name                = "nodo_wisp_payment_timeout_queue"
+    enable_partitioning = true
     keys = [
       {
         name   = "wisp_converter_payment_timeout"
         listen = true
         send   = true
-        manage = true
+        manage = false
       }
     ]
   }
