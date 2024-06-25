@@ -723,12 +723,15 @@ variable "service_bus_01" {
     requires_duplicate_detection         = bool
     dead_lettering_on_message_expiration = bool
     enable_partitioning                  = bool
+    # https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-expiration#entity-level-expiration
+    queue_default_message_ttl = string # ISO 8601 timespan duration as P(n)Y(n)M(n)DT(n)H(n)M(n)S e.g. P7D seven days, P1M one month, P1Y one year
   })
   default = {
     sku                                  = "Standard"
     requires_duplicate_detection         = false
     dead_lettering_on_message_expiration = false
     enable_partitioning                  = true
+    queue_default_message_ttl            = null # default is good
   }
 }
 

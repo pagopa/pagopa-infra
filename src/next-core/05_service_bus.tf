@@ -50,6 +50,7 @@ resource "azurerm_servicebus_queue" "service_bus_01_queue" {
   namespace_id = azurerm_servicebus_namespace.service_bus_01.id
 
   enable_partitioning = local.queue_values[count.index].enable_partitioning
+  default_message_ttl = var.service_bus_01.queue_default_message_ttl
 
   depends_on = [
     azurerm_servicebus_namespace.service_bus_01

@@ -664,6 +664,7 @@ service_bus_01 = {
   requires_duplicate_detection         = false
   dead_lettering_on_message_expiration = false
   enable_partitioning                  = true
+  queue_default_message_ttl            = null # default is good
 }
 # queue_name shall be <domain>_<service>_<name>
 # producer shall have only send authorization
