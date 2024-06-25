@@ -317,7 +317,7 @@
 | <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image_name    = string,<br>    image_tag     = string<br>  })</pre> | n/a | yes |
 | <a name="input_vmss_instance_number"></a> [vmss\_instance\_number](#input\_vmss\_instance\_number) | availability zones for vmss | `number` | n/a | yes |
 | <a name="input_vmss_zones"></a> [vmss\_zones](#input\_vmss\_zones) | availability zones for vmss | `list(string)` | n/a | yes |
-| <a name="input_wisp_converter"></a> [wisp\_converter](#input\_wisp\_converter) | n/a | <pre>object({<br>    brokerPSP_whitelist    = string<br>    channel_whitelist      = string<br>    station_whitelist      = string<br>    dismantling_primitives = string<br>  })</pre> | <pre>{<br>  "brokerPSP_whitelist": "97735020584",<br>  "channel_whitelist": "97735020584_02,97735020584_03,97735020584_06",<br>  "dismantling_primitives": "nodoInviaRPT,nodoInviaCarrelloRPT",<br>  "station_whitelist": ""<br>}</pre> | no |
+| <a name="input_wisp_converter"></a> [wisp\_converter](#input\_wisp\_converter) | n/a | <pre>object({<br>    brokerPSP_whitelist    = string<br>    channel_whitelist      = string<br>    station_whitelist      = string<br>    dismantling_primitives = string<br>  })</pre> | n/a | yes |
 
 ## Outputs
 

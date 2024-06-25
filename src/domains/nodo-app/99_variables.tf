@@ -449,12 +449,6 @@ variable "wisp_converter" {
     station_whitelist      = string
     dismantling_primitives = string
   })
-  default = {
-    brokerPSP_whitelist    = "97735020584" # AGID
-    channel_whitelist      = "97735020584_02,97735020584_03,97735020584_06"
-    station_whitelist      = ""
-    dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
-  }
 }
 
 # https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/654541075/RFC+Gestione+clientId+per+integrazione+Software+Client

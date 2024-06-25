@@ -35,4 +35,67 @@
       </choose>
     </when>
   </choose>
-</fragment>
+
+<choose>
+<when condition="@{
+            string[] activatePayment = new string[] {"activatePaymentNoticeV2"};
+            var soapAction = (string)context.Variables["soapAction"];
+            return activatePayment.Contains(soapAction);
+        }">
+<choose>
+  <!-- Caching wisp_paymenttoken key if WISP dismantling is enabled and the payment belongs to WISP dismantling -->
+  <when condition="@( !((string)context.Variables["paymentToken"]).Equals("NONE") && context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") )">
+
+  <choose>
+    <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+    <set-variable name="wisp-paymentToken-obj" value="@{
+                                var requestData = JObject.Parse((string) context.Variables["requestData"]);
+                                var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
+    var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
+    var paymentToken = (string)context.Variables["paymentToken"];
+    return new JObject(
+    new JProperty("fiscalCode", ci),
+    new JProperty("noticeNumber", noticeNumber),
+    new JProperty("paymentToken", paymentToken)
+    ).ToString();
+    }" />
+
+    <cache-store-value key="@("wisp_" + (string)context.Variables["paymentToken"])" value="@((string) context.Variables["wisp-paymentToken-obj"])" duration="172800" caching-type="external" /> <!-- TODO to change type to internal -->
+    <set-variable name="paymentToken-expirationTime" value="@{
+                                var expirationTime = 30 * 60000; // 30 minutes to milliseconds
+                                // get request body content
+                                XElement request = context.Request.Body.As<XElement>(preserveContent: true);
+                                XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
+                                try {
+                                    XElement primitive = (XElement) body.FirstNode;
+                                    XElement expTimeElement = primitive.Descendants("expirationTime").FirstOrDefault();
+                                    if (expTimeElement != null) {
+                                        expirationTime = Convert.ToInt32(expTimeElement.Value);
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+                                    //  do nothing
+                                }
+                                return expirationTime.ToString();
+                            }" />
+    <send-one-way-request mode="new">
+      <set-url>{{wisp-dismantling-converter-base-url}}/receipt/timer</set-url>
+      <set-method>POST</set-method>
+      <set-header name="Content-Type" exists-action="override">
+        <value>application/json</value>
+      </set-header>
+      <set-body>@{
+        var paymentTokenObj = JObject.Parse((string)context.Variables["wisp-paymentToken-obj"]);
+        paymentTokenObj["expirationTime"] = JToken.FromObject(context.Variables["paymentToken-expirationTime"]);
+        return paymentTokenObj.ToString();
+        }</set-body>
+    </send-one-way-request>
+  </when>
+</choose>
+</when>
+  </choose>
+  </when>
+  </choose>
+
+  </fragment>
