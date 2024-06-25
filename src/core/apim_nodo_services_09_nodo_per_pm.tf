@@ -94,6 +94,7 @@ module "apim_nodo_per_pm_api_v2" {
   })
 }
 
+# WISP closePaymentV2 
 resource "azurerm_api_management_api_operation_policy" "close_payment_api_v2_wisp_policy" {
   count               = var.enable_wisp_converter ? 1 : 0
   api_name            = "${local.project}-nodo-per-pm-api-v2"
