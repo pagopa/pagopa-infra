@@ -24,6 +24,19 @@ data "azurerm_cosmosdb_account" "bizevents_neg_datastore_cosmosdb_account" {
   resource_group_name = format("%s-%s-%s-bizevents-rg", var.prefix, var.env_short, var.location_short)
 }
 
+data "azurerm_servicebus_queue_authorization_rule" "wisp_payment_timeout_authorization" {
+  name                = "wisp_converter_payment_timeout"
+  resource_group_name = "${local.product}-msg-rg"
+  queue_name          = "nodo_wisp_payment_timeout_queue"
+  namespace_name      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+}
+
+data "azurerm_servicebus_queue_authorization_rule" "wisp_paainviart_authorization" {
+  name                = "wisp_converter_paainviart"
+  resource_group_name = "${local.product}-msg-rg"
+  queue_name          = "nodo_wisp_paainviart_queue"
+  namespace_name      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+}
 
 /*****************
 Storage Account
@@ -182,11 +195,21 @@ resource "azurerm_key_vault_secret" "redis_hostname" {
 /*****************
 Service Bus
 *****************/
-resource "azurerm_key_vault_secret" "nodo_wisp_service_bus" {
+resource "azurerm_key_vault_secret" "wisp_payment_timeout_key" {
   count = var.enable_wisp_converter ? 1 : 0
 
-  name         = "nodo-wisp-sb-connection-string"
-  value        = var.enable_wisp_converter ? azurerm_servicebus_namespace.wisp_converter_servicebus[0].default_primary_connection_string : "undefined"
+  name         = "wisp-payment-timeout-queue-connection-string"
+  value        = data.azurerm_servicebus_queue_authorization_rule.wisp_payment_timeout_authorization.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "wisp_paainviart_key" {
+  count = var.enable_wisp_converter ? 1 : 0
+
+  name         = "wisp-paainviart-queue-connection-string"
+  value        = data.azurerm_servicebus_queue_authorization_rule.wisp_paainviart_authorization.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id

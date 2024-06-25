@@ -714,3 +714,34 @@ variable "azdo_agent_vm_image_name" {
   description = "(Required) Azure devops agent image name"
 }
 
+/*****************
+Service Bus
+*****************/
+variable "service_bus_01" {
+  type = object({
+    sku                                  = string
+    requires_duplicate_detection         = bool
+    dead_lettering_on_message_expiration = bool
+    enable_partitioning                  = bool
+  })
+  default = {
+    sku                                  = "Standard"
+    requires_duplicate_detection         = false
+    dead_lettering_on_message_expiration = false
+    enable_partitioning                  = true
+  }
+}
+
+variable "service_bus_01_queues" {
+  description = "A list of Service Bus Queues to add to namespace service_bus_01."
+  type = list(object({
+    name = string
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
+}

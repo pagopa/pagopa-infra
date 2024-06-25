@@ -667,6 +667,41 @@ eventhubs_04 = [
   }
 ]
 
+/*****************
+Service Bus
+*****************/
+service_bus_01 = {
+  sku                                  = "Standard"
+  requires_duplicate_detection         = false
+  dead_lettering_on_message_expiration = false
+  enable_partitioning                  = true
+}
+
+service_bus_01_queues = [
+  {
+    name = "nodo_wisp_paainviart_queue"
+    keys = [
+      {
+        name   = "wisp_converter_paainviart"
+        listen = true
+        send   = true
+        manage = true
+      }
+    ]
+  },
+  {
+    name = "nodo_wisp_payment_timeout_queue"
+    keys = [
+      {
+        name   = "wisp_converter_payment_timeout"
+        listen = true
+        send   = true
+        manage = true
+      }
+    ]
+  }
+]
+
 node_forwarder_autoscale_enabled      = false
 node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "B1"
