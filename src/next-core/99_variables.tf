@@ -715,7 +715,7 @@ variable "azdo_agent_vm_image_name" {
 }
 
 variable "node_fw_ha_snet_cidr" {
-  type = list(string)
-  default = null
+  type        = list(string)
+  default     = null
   description = "(Required) node forwarder ha subnet cidr block"
 }
