@@ -33,15 +33,26 @@ locals {
   queue_map = { for idx, name in local.queue_names : name => azurerm_servicebus_queue.service_bus_01_queue[idx].id }
 }
 
+resource "azurerm_resource_group" "service_bus_rg" {
+  name     = local.sb_resource_group_name
+  location = var.location
+
+  tags = var.tags
+}
+
 # https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quotas
 resource "azurerm_servicebus_namespace" "service_bus_01" {
   name                = "${local.project}-servicebus-01"
   location            = var.location
-  resource_group_name = local.msg_resource_group_name
+  resource_group_name = local.sb_resource_group_name
   sku                 = var.service_bus_01.sku
   zone_redundant      = var.service_bus_01.sku == "Premium" # https://learn.microsoft.com/en-us/azure/well-architected/service-guides/service-bus/reliability
 
   tags = var.tags
+
+  depends_on = [
+    azurerm_resource_group.service_bus_rg
+  ]
 }
 
 resource "azurerm_servicebus_queue" "service_bus_01_queue" {
