@@ -948,7 +948,7 @@ resource "azurerm_api_management_api_operation_policy" "send_payment_result_api_
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
   operation_id        = "addUserReceipt"
-  xml_content         = file("./api/nodopagamenti_api/nodoPerPM/v2/wisp-closepayment.xml")
+  xml_content         = file("./api/payment_manager_api/pm-per-nodo/v2/wisp-sendpaymentresult.xml")
 }
 
 
