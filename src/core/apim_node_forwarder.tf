@@ -46,7 +46,7 @@ module "apim_node_forwarder_api" {
   path         = "pagopa-node-forwarder/api"
   protocols    = ["https"]
 
-  service_url = var.enabled_features.node_forwarder_ha ? "https://${data.azurerm_app_service.node_forwarder_ha[0].default_site_hostname}" : "https://${module.node_forwarder_app_service.default_site_hostname}"
+  service_url = var.enabled_features.node_forwarder_ha ? "https://${data.azurerm_app_service.node_forwarder_ha[0].default_site_hostname}" : "https://${module.node_forwarder_app_service[0].default_site_hostname}"
 
   content_format = "openapi"
   content_value = templatefile("./api/node_forwarder_api/v1/_openapi.json.tpl", {
@@ -54,11 +54,9 @@ module "apim_node_forwarder_api" {
   })
 
   xml_content = templatefile("./api/node_forwarder_api/v1/_base_policy.xml", {
-    node_forwarder_host_path = var.enabled_features.node_forwarder_ha ? "https://${data.azurerm_app_service.node_forwarder_ha[0].default_site_hostname}" : "https://${module.node_forwarder_app_service.default_site_hostname}"
+    node_forwarder_host_path = var.enabled_features.node_forwarder_ha ? "https://${data.azurerm_app_service.node_forwarder_ha[0].default_site_hostname}" : "https://${module.node_forwarder_app_service[0].default_site_hostname}"
   })
 
-  depends_on = [
-    module.node_forwarder_app_service
-  ]
+
 
 }
