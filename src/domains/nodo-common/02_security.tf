@@ -26,16 +26,16 @@ data "azurerm_cosmosdb_account" "bizevents_neg_datastore_cosmosdb_account" {
 
 data "azurerm_servicebus_queue_authorization_rule" "wisp_payment_timeout_authorization" {
   name                = "wisp_converter_payment_timeout"
-  resource_group_name = "${local.product}-msg-rg"
+  resource_group_name = "${local.product}-sb-rg"
   queue_name          = "nodo_wisp_payment_timeout_queue"
-  namespace_name      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+  namespace_name      = "${var.prefix}-${var.env_short}-${var.location_short}-core-servicebus-01"
 }
 
 data "azurerm_servicebus_queue_authorization_rule" "wisp_paainviart_authorization" {
   name                = "wisp_converter_paainviart"
-  resource_group_name = "${local.product}-msg-rg"
+  resource_group_name = "${local.product}-sb-rg"
   queue_name          = "nodo_wisp_paainviart_queue"
-  namespace_name      = "${var.prefix}-${var.env_short}-${var.location_short}-core"
+  namespace_name      = "${var.prefix}-${var.env_short}-${var.location_short}-core-servicebus-01"
 }
 
 /*****************
