@@ -94,8 +94,8 @@ moved {
 }
 
 module "node_forwarder_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.4.0"
-  count = var.enabled_features.node_forwarder_ha ? 0 : 1
+  source              = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.4.0"
+  count               = var.enabled_features.node_forwarder_ha ? 0 : 1
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
   location            = var.location
@@ -155,7 +155,7 @@ module "node_forwarder_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autoscale" {
-  count = var.enabled_features.node_forwarder_ha ? 0 : 1
+  count               = var.enabled_features.node_forwarder_ha ? 0 : 1
   name                = format("%s-autoscale-node-forwarder", local.project)
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
   location            = azurerm_resource_group.node_forwarder_rg.location
