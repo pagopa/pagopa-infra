@@ -253,6 +253,13 @@
         <when condition="@(((IResponse)context.Variables["pdv-email-token"]).StatusCode != 200)">
           <return-response>
             <set-status code="502" reason="Bad Gateway" />
+            <set-body>@{
+            return new JObject(
+              new JProperty("title", "Bad gateway - Invalid PDV response"),
+              new JProperty("status", 502),
+              new JProperty("detail", "Cannot tokenize user email")
+            ).ToString();
+          }</set-body>
           </return-response>
         </when>
       </choose>
