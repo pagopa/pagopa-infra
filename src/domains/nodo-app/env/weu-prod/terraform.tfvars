@@ -265,3 +265,5 @@ nodo_pagamenti_x_forwarded_for = "10.230.10.5"
 
 
 enable_wisp_converter = false
+
+enable_sendPaymentResultV2_SWClient = false

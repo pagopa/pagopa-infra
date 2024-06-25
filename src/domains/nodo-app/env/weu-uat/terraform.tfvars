@@ -130,7 +130,6 @@ nodo_re_to_datastore_function_autoscale = {
   minimum = 1
   maximum = 10
 }
-
 nodo_re_to_tablestorage_function = {
   always_on                    = true
   kind                         = "Linux"
@@ -222,3 +221,5 @@ storage_account_info = {
 
 
 enable_wisp_converter = false
+
+enable_sendPaymentResultV2_SWClient = true

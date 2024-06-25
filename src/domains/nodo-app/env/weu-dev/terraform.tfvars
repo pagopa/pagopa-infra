@@ -34,13 +34,13 @@ tls_cert_check_helm = {
 }
 
 nodo_user_node_pool = {
-  enabled         = true
+  enabled         = false # PSFC-TODO da ripristinare prima del merge a true
   name            = "nodo01"
   vm_size         = "Standard_B8ms"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "2"
-  node_count_max  = "4"
+  node_count_min  = "0" # PSFC-TODO da ripristinare prima del merge a 2
+  node_count_max  = "0" # PSFC-TODO da ripristinare prima del merge a 4
   node_labels = {
     "nodo" = "true",
   },
@@ -205,3 +205,6 @@ wisp_converter = {
   station_whitelist      = "66666666666_05"
   dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
 }
+
+
+enable_sendPaymentResultV2_SWClient = true

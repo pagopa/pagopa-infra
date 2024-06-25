@@ -456,3 +456,11 @@ variable "wisp_converter" {
     dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
   }
 }
+
+# https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/654541075/RFC+Gestione+clientId+per+integrazione+Software+Client
+variable "enable_sendPaymentResultV2_SWClient" {
+  type        = bool
+  default     = false
+  description = "Gestione clientId per integrazione Software Client"
+}
+
