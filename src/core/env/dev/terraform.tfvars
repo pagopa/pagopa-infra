@@ -23,6 +23,8 @@ enabled_features = {
   apim_v2       = false
   apim_migrated = true
   vnet_ita      = true
+  node_forwarder_ha = false
+
 }
 
 # monitoring
