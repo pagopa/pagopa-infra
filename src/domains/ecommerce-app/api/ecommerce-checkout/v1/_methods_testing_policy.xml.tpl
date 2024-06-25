@@ -14,9 +14,9 @@
                         JArray methods = (JArray)(inResponseBody["paymentMethods"]);
                         HashSet<String> allowedPaymentTypeCodes = new HashSet<String>();
                         allowedPaymentTypeCodes.Add("CP"); //CARTE
-                        allowedPaymentTypeCodes.Add("RBPB");//Conto BancoPosta Impresa BPIOL
-                        allowedPaymentTypeCodes.Add("RBPP");//Paga con Postepay
-                        allowedPaymentTypeCodes.Add("RBPR");//Conto BancoPosta
+                        //allowedPaymentTypeCodes.Add("RBPB");//Conto BancoPosta Impresa BPIOL
+                        //allowedPaymentTypeCodes.Add("RBPP");//Paga con Postepay
+                        //allowedPaymentTypeCodes.Add("RBPR");//Conto BancoPosta
                         for(int i = methods.Count - 1; i >= 0; i--) {
                             String paymentTypeCode = (string)((JObject)methods[i])["paymentTypeCode"];
                             if( !allowedPaymentTypeCodes.Contains(paymentTypeCode) ) {
