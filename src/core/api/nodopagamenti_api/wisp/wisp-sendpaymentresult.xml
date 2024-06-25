@@ -12,9 +12,9 @@
 -->
 
 <!-- policy closePaymentV2 & sendPaymentResultV2 :
-- On outbound call /receipt/KO wisp-conv 
+- On outbound call /receipt/KO wisp-conv
 - On inbound  call /receipt/timer wisp-conv
---> 
+-->
 
 <policies>
   <inbound>
@@ -24,8 +24,8 @@
     <set-variable name="wisp-payment-tokens" value="@{
                         JObject request = (JObject) context.Variables["request-body"];
                         JArray payments = (JArray) request.Property("payments").Value;
-                        return string.Join(",", payments.Select(token => token.Property("paymentToken").Value.ToString()));
-    }" />    
+                        return string.Join(",", payments.Select(token => (string)token["paymentToken"]));
+    }" />
     <include-fragment fragment-id="wisp-disable-payment-token-timer" />
   </inbound>
   <backend>
