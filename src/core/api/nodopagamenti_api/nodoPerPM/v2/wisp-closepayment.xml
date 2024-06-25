@@ -13,14 +13,14 @@
 
 
 <!-- policy closePaymentV2 & sendPaymentResultV2 :
-- On outbound call /receipt/KO wisp-conv 
+- On outbound call /receipt/KO wisp-conv
 - On inbound  call /receipt/timer wisp-conv
---> 
+-->
 
 <policies>
   <inbound>
     <base />
-    <set-variable name="primitive_ko" value="closePaymentV2" />
+    <set-variable name="primitive-ko" value="closePaymentV2" />
     <set-variable name="request-body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
     <set-variable name="wisp-payment-tokens" value="@{
                         JObject request = (JObject) context.Variables["request-body"];
