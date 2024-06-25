@@ -39,6 +39,7 @@ resource "azurerm_servicebus_namespace" "service_bus_01" {
   location            = var.location
   resource_group_name = local.msg_resource_group_name
   sku                 = var.service_bus_01.sku
+  zone_redundant      = var.service_bus_01.sku == "Premium" # https://learn.microsoft.com/en-us/azure/well-architected/service-guides/service-bus/reliability
 
   tags = var.tags
 }
