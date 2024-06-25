@@ -34,7 +34,7 @@ tls_cert_check_helm = {
 }
 
 nodo_user_node_pool = {
-  enabled         = false # PSFC-TODO da ripristinare prima del merge a true
+  enabled         = true
   name            = "nodo01"
   vm_size         = "Standard_B8ms"
   os_disk_type    = "Managed"
