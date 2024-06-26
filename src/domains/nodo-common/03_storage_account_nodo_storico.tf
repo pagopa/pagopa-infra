@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "nodo_storico_rg" {
 }
 
 module "nodo_storico_storage_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
   count  = var.env_short == "d" ? 0 : 1
 
   enable_low_availability_alert = false

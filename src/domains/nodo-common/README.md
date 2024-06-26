@@ -6,41 +6,41 @@
 |------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.3.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.21.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.45.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.97.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cosmosdb_account_nodo_re"></a> [cosmosdb\_account\_nodo\_re](#module\_cosmosdb\_account\_nodo\_re) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v6.7.0 |
-| <a name="module_cosmosdb_account_nodo_re_containers"></a> [cosmosdb\_account\_nodo\_re\_containers](#module\_cosmosdb\_account\_nodo\_re\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v6.7.0 |
-| <a name="module_cosmosdb_account_nodo_re_db"></a> [cosmosdb\_account\_nodo\_re\_db](#module\_cosmosdb\_account\_nodo\_re\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v6.7.0 |
-| <a name="module_cosmosdb_account_nodo_verifyko"></a> [cosmosdb\_account\_nodo\_verifyko](#module\_cosmosdb\_account\_nodo\_verifyko) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v6.7.0 |
-| <a name="module_cosmosdb_account_nodo_verifyko_containers"></a> [cosmosdb\_account\_nodo\_verifyko\_containers](#module\_cosmosdb\_account\_nodo\_verifyko\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v6.7.0 |
-| <a name="module_cosmosdb_account_nodo_verifyko_db"></a> [cosmosdb\_account\_nodo\_verifyko\_db](#module\_cosmosdb\_account\_nodo\_verifyko\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v6.7.0 |
-| <a name="module_cosmosdb_account_standin"></a> [cosmosdb\_account\_standin](#module\_cosmosdb\_account\_standin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v6.7.0 |
-| <a name="module_cosmosdb_account_standin_containers"></a> [cosmosdb\_account\_standin\_containers](#module\_cosmosdb\_account\_standin\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v6.7.0 |
-| <a name="module_cosmosdb_account_standin_db"></a> [cosmosdb\_account\_standin\_db](#module\_cosmosdb\_account\_standin\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v6.7.0 |
-| <a name="module_cosmosdb_account_wispconv"></a> [cosmosdb\_account\_wispconv](#module\_cosmosdb\_account\_wispconv) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v6.7.0 |
-| <a name="module_cosmosdb_account_wispconv_containers"></a> [cosmosdb\_account\_wispconv\_containers](#module\_cosmosdb\_account\_wispconv\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v6.7.0 |
-| <a name="module_cosmosdb_account_wispconv_db"></a> [cosmosdb\_account\_wispconv\_db](#module\_cosmosdb\_account\_wispconv\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v6.7.0 |
-| <a name="module_cosmosdb_nodo_re_snet"></a> [cosmosdb\_nodo\_re\_snet](#module\_cosmosdb\_nodo\_re\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.1 |
-| <a name="module_cosmosdb_nodo_verifyko_snet"></a> [cosmosdb\_nodo\_verifyko\_snet](#module\_cosmosdb\_nodo\_verifyko\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.1 |
-| <a name="module_cosmosdb_standin_snet"></a> [cosmosdb\_standin\_snet](#module\_cosmosdb\_standin\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.1 |
-| <a name="module_cosmosdb_wisp_converter_snet"></a> [cosmosdb\_wisp\_converter\_snet](#module\_cosmosdb\_wisp\_converter\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.1 |
-| <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v7.45.0 |
-| <a name="module_nodo_cfg_sync_re_storage_account"></a> [nodo\_cfg\_sync\_re\_storage\_account](#module\_nodo\_cfg\_sync\_re\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.60.0 |
-| <a name="module_nodo_re_storage_account"></a> [nodo\_re\_storage\_account](#module\_nodo\_re\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
-| <a name="module_nodo_storico_storage_account"></a> [nodo\_storico\_storage\_account](#module\_nodo\_storico\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
-| <a name="module_nodo_verifyko_storage_account"></a> [nodo\_verifyko\_storage\_account](#module\_nodo\_verifyko\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
-| <a name="module_postgres_flexible_server"></a> [postgres\_flexible\_server](#module\_postgres\_flexible\_server) | git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server | v7.23.0 |
-| <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.2.1 |
-| <a name="module_postgres_flexible_snet_replica"></a> [postgres\_flexible\_snet\_replica](#module\_postgres\_flexible\_snet\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.22.0 |
-| <a name="module_postgresql_nodo_replica_db"></a> [postgresql\_nodo\_replica\_db](#module\_postgresql\_nodo\_replica\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server_replica | v7.22.0 |
-| <a name="module_sftp"></a> [sftp](#module\_sftp) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
-| <a name="module_storage_account_snet"></a> [storage\_account\_snet](#module\_storage\_account\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.2.1 |
-| <a name="module_wisp_converter_storage_account"></a> [wisp\_converter\_storage\_account](#module\_wisp\_converter\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.60.0 |
+| <a name="module_cosmosdb_account_nodo_re"></a> [cosmosdb\_account\_nodo\_re](#module\_cosmosdb\_account\_nodo\_re) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v7.77.0 |
+| <a name="module_cosmosdb_account_nodo_re_containers"></a> [cosmosdb\_account\_nodo\_re\_containers](#module\_cosmosdb\_account\_nodo\_re\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v7.77.0 |
+| <a name="module_cosmosdb_account_nodo_re_db"></a> [cosmosdb\_account\_nodo\_re\_db](#module\_cosmosdb\_account\_nodo\_re\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v7.77.0 |
+| <a name="module_cosmosdb_account_nodo_verifyko"></a> [cosmosdb\_account\_nodo\_verifyko](#module\_cosmosdb\_account\_nodo\_verifyko) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v7.77.0 |
+| <a name="module_cosmosdb_account_nodo_verifyko_containers"></a> [cosmosdb\_account\_nodo\_verifyko\_containers](#module\_cosmosdb\_account\_nodo\_verifyko\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v7.77.0 |
+| <a name="module_cosmosdb_account_nodo_verifyko_db"></a> [cosmosdb\_account\_nodo\_verifyko\_db](#module\_cosmosdb\_account\_nodo\_verifyko\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v7.77.0 |
+| <a name="module_cosmosdb_account_standin"></a> [cosmosdb\_account\_standin](#module\_cosmosdb\_account\_standin) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v7.77.0 |
+| <a name="module_cosmosdb_account_standin_containers"></a> [cosmosdb\_account\_standin\_containers](#module\_cosmosdb\_account\_standin\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v7.77.0 |
+| <a name="module_cosmosdb_account_standin_db"></a> [cosmosdb\_account\_standin\_db](#module\_cosmosdb\_account\_standin\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v7.77.0 |
+| <a name="module_cosmosdb_account_wispconv"></a> [cosmosdb\_account\_wispconv](#module\_cosmosdb\_account\_wispconv) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v7.77.0 |
+| <a name="module_cosmosdb_account_wispconv_containers"></a> [cosmosdb\_account\_wispconv\_containers](#module\_cosmosdb\_account\_wispconv\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | v7.77.0 |
+| <a name="module_cosmosdb_account_wispconv_db"></a> [cosmosdb\_account\_wispconv\_db](#module\_cosmosdb\_account\_wispconv\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v7.77.0 |
+| <a name="module_cosmosdb_nodo_re_snet"></a> [cosmosdb\_nodo\_re\_snet](#module\_cosmosdb\_nodo\_re\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.77.0 |
+| <a name="module_cosmosdb_nodo_verifyko_snet"></a> [cosmosdb\_nodo\_verifyko\_snet](#module\_cosmosdb\_nodo\_verifyko\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.77.0 |
+| <a name="module_cosmosdb_standin_snet"></a> [cosmosdb\_standin\_snet](#module\_cosmosdb\_standin\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.77.0 |
+| <a name="module_cosmosdb_wisp_converter_snet"></a> [cosmosdb\_wisp\_converter\_snet](#module\_cosmosdb\_wisp\_converter\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.77.0 |
+| <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v7.77.0 |
+| <a name="module_nodo_cfg_sync_re_storage_account"></a> [nodo\_cfg\_sync\_re\_storage\_account](#module\_nodo\_cfg\_sync\_re\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.77.0 |
+| <a name="module_nodo_re_storage_account"></a> [nodo\_re\_storage\_account](#module\_nodo\_re\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.77.0 |
+| <a name="module_nodo_storico_storage_account"></a> [nodo\_storico\_storage\_account](#module\_nodo\_storico\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.77.0 |
+| <a name="module_nodo_verifyko_storage_account"></a> [nodo\_verifyko\_storage\_account](#module\_nodo\_verifyko\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.77.0 |
+| <a name="module_postgres_flexible_server"></a> [postgres\_flexible\_server](#module\_postgres\_flexible\_server) | git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server | v7.77.0 |
+| <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.77.0 |
+| <a name="module_postgres_flexible_snet_replica"></a> [postgres\_flexible\_snet\_replica](#module\_postgres\_flexible\_snet\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.77.0 |
+| <a name="module_postgresql_nodo_replica_db"></a> [postgresql\_nodo\_replica\_db](#module\_postgresql\_nodo\_replica\_db) | git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server_replica | v7.77.0 |
+| <a name="module_sftp"></a> [sftp](#module\_sftp) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.77.0 |
+| <a name="module_storage_account_snet"></a> [storage\_account\_snet](#module\_storage\_account\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.77.0 |
+| <a name="module_wisp_converter_storage_account"></a> [wisp\_converter\_storage\_account](#module\_wisp\_converter\_storage\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.77.0 |
 
 ## Resources
 
