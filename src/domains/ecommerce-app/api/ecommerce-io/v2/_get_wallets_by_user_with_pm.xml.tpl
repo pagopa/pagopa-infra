@@ -14,6 +14,21 @@
                     </set-header>
                 </send-request>
                 <choose>
+                    <when condition="@(((IResponse)context.Variables["pmWalletResponse"]).StatusCode == 401)">
+                        <return-response>
+                            <set-status code="401" reason="Unauthorized" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-body>
+                                {
+                                "title": "Unauthorized",
+                                "status": 401,
+                                "detail": "Unauthorized"
+                                }
+                            </set-body>
+                        </return-response>
+                    </when>
                     <when condition="@(((IResponse)context.Variables["pmWalletResponse"]).StatusCode != 200)">
                         <return-response>
                             <set-status code="502" reason="Bad Gateway" />

@@ -543,12 +543,8 @@ variable "wisp_converter_storage_account" {
 
 variable "enabled_features" {
   type = object({
-    eventhub_ha_tx = bool
-    eventhub_ha_rx = bool
   })
   default = {
-    eventhub_ha_tx = false
-    eventhub_ha_rx = false
   }
   description = "Features enabled in this domain"
 }

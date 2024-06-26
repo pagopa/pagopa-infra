@@ -18,13 +18,13 @@ tags = {
 # Feature flag
 #
 enabled_features = {
-  apim_v2           = true
+  apim_v2           = false
   vnet_ita          = false
   node_forwarder_ha = true
   apim_migrated     = true
 }
 
-upload_endpoint_enabled = false
+upload_endpoint_enabled = true
 lock_enable             = true
 
 # monitoring
