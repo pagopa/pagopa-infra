@@ -23,7 +23,7 @@ module "cosmosdb_account_mongodb" {
   public_network_access_enabled     = var.cosmos_mongo_db_notices_params.public_network_access_enabled
   private_endpoint_enabled          = var.cosmos_mongo_db_notices_params.private_endpoint_enabled
   subnet_id                         = azurerm_subnet.cosmosdb_italy_snet.id
-  private_dns_zone_sql_ids          = [data.azurerm_private_dns_zone.cosmos.id]
+  private_dns_zone_mongo_ids          = [data.azurerm_private_dns_zone.cosmos.id]
   is_virtual_network_filter_enabled = var.cosmos_mongo_db_notices_params.is_virtual_network_filter_enabled
 
   consistency_policy               = var.cosmos_mongo_db_notices_params.consistency_policy
