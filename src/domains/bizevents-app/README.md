@@ -17,6 +17,7 @@
 | <a name="module_apim_api_bizevents_api_v1"></a> [apim\_api\_bizevents\_api\_v1](#module\_apim\_api\_bizevents\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
 | <a name="module_apim_api_bizevents_helpdesk_api_v1"></a> [apim\_api\_bizevents\_helpdesk\_api\_v1](#module\_apim\_api\_bizevents\_helpdesk\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
 | <a name="module_apim_api_bizevents_transactions_api_jwt_v1"></a> [apim\_api\_bizevents\_transactions\_api\_jwt\_v1](#module\_apim\_api\_bizevents\_transactions\_api\_jwt\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
+| <a name="module_apim_api_bizevents_transactions_api_jwt_v1_apim_v2"></a> [apim\_api\_bizevents\_transactions\_api\_jwt\_v1\_apim\_v2](#module\_apim\_api\_bizevents\_transactions\_api\_jwt\_v1\_apim\_v2) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
 | <a name="module_apim_api_bizevents_transactions_api_v1"></a> [apim\_api\_bizevents\_transactions\_api\_v1](#module\_apim\_api\_bizevents\_transactions\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
 | <a name="module_apim_bizevents_helpdesk_product"></a> [apim\_bizevents\_helpdesk\_product](#module\_apim\_bizevents\_helpdesk\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
 | <a name="module_apim_bizevents_product"></a> [apim\_bizevents\_product](#module\_apim\_bizevents\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
@@ -31,6 +32,7 @@
 | [azurerm_api_management_api_version_set.api_bizevents_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_bizevents_helpdesk_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_bizevents_transactions_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.api_bizevents_transactions_api_apim_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_bizevents_transactions_jwt_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_named_value.list_trx_for_io_api_key_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.list_trx_for_io_api_key_secret_apim_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |

@@ -271,7 +271,7 @@ module "apim_api_bizevents_transactions_api_jwt_v1" {
 
 
 resource "azurerm_api_management_api_version_set" "api_bizevents_transactions_api_apim_v2" {
-  count               = var.env_short == "p" ? 1 : 0 
+  count               = var.env_short == "p" ? 1 : 0
   name                = format("%s-bizevents-transaction-service-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = "${local.product}-weu-core-apim-v2"
@@ -282,7 +282,7 @@ resource "azurerm_api_management_api_version_set" "api_bizevents_transactions_ap
 
 module "apim_api_bizevents_transactions_api_jwt_v1_apim_v2" {
 
-  count  = var.env_short == "p" ? 1 : 0 
+  count  = var.env_short == "p" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
   name                = format("%s-bizevents-transaction-service-api-jwt", local.project)
