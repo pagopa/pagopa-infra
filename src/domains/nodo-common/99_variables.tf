@@ -548,17 +548,40 @@ variable "enabled_features" {
   description = "Features enabled in this domain"
 }
 
-variable "wisp_converter_service_bus" {
+/*****************
+Service Bus
+*****************/
+variable "service_bus_01" {
   type = object({
     sku                                  = string
     requires_duplicate_detection         = bool
     dead_lettering_on_message_expiration = bool
-    enable_partitioning                  = bool
+    capacity                             = number
+    # https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-expiration#entity-level-expiration
+    queue_default_message_ttl    = string # ISO 8601 timespan duration as P(n)Y(n)M(n)DT(n)H(n)M(n)S e.g. P7D seven days, P1M one month, P1Y one year
+    premium_messaging_partitions = number
   })
   default = {
     sku                                  = "Standard"
     requires_duplicate_detection         = false
     dead_lettering_on_message_expiration = false
-    enable_partitioning                  = true
+    capacity                             = 0
+    queue_default_message_ttl            = null # default is good
+    premium_messaging_partitions         = 0
   }
+}
+
+variable "service_bus_01_queues" {
+  description = "A list of Service Bus Queues to add to namespace service_bus_01."
+  type = list(object({
+    name                = string
+    enable_partitioning = bool
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
 }

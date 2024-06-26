@@ -1,70 +1,100 @@
-resource "azurerm_servicebus_namespace" "wisp_converter_servicebus" {
-  count = var.enable_wisp_converter ? 1 : 0
+locals {
+  # Map of <queue_names, queue>
+  queues = { for q in var.service_bus_01_queues : q.name => q }
 
-  name                = "${local.project}-servicebus"
-  location            = azurerm_resource_group.wisp_converter_rg[0].location
-  resource_group_name = azurerm_resource_group.wisp_converter_rg[0].name
-  sku                 = var.wisp_converter_service_bus.sku
+  # List of queue names
+  queue_names = keys(local.queues)
+  # List of queue values
+  queue_values = values(local.queues)
+
+  # Map of <authorization_key, authorization(queue, properties)>
+  key_queue_map = {
+    for qk in flatten([
+      for q in var.service_bus_01_queues :
+      [
+        for k in q.keys : {
+          key_name   = k.name
+          queue_name = q.name
+          listen     = k.listen
+          send       = k.send
+          manage     = k.manage
+        }
+      ]
+      ]) : "${qk.key_name}" => {
+      queue_name = qk.queue_name
+      listen     = qk.listen
+      send       = qk.send
+      manage     = qk.manage
+    }
+  }
+
+  # Local variable to store the map of queue names to related resource ids
+  # queue_map enables access to queue_id by queue_name -> <queue_name, queue_id>
+  queue_map = { for idx, name in local.queue_names : name => azurerm_servicebus_queue.service_bus_01_queue[idx].id }
+}
+
+resource "azurerm_resource_group" "service_bus_rg" {
+  name     = local.sb_resource_group_name
+  location = var.location
+
+  tags = var.tags
+}
+
+# https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quotas
+resource "azurerm_servicebus_namespace" "service_bus_01" {
+  name                = "${local.project}-servicebus-01"
+  location            = var.location
+  resource_group_name = local.sb_resource_group_name
+  sku                 = var.service_bus_01.sku
+  zone_redundant      = var.service_bus_01.sku == "Premium" # https://learn.microsoft.com/en-us/azure/well-architected/service-guides/service-bus/reliability
+
+  capacity = try(var.service_bus_01.capacity, null)
+  # premium_messaging_partitions = var.service_bus_01.premium_messaging_partitions
+
+  network_rule_set {
+    trusted_services_allowed = true
+
+    default_action                = "Deny"
+    public_network_access_enabled = true
+    network_rules {
+      subnet_id                            = data.azurerm_subnet.aks_subnet.id
+      ignore_missing_vnet_service_endpoint = false
+    }
+  }
 
   tags = var.tags
 
   depends_on = [
-    azurerm_resource_group.wisp_converter_rg
+    azurerm_resource_group.service_bus_rg
   ]
 }
 
-resource "azurerm_servicebus_namespace_authorization_rule" "wisp_converter_servicebus_ns_auth" {
-  count = var.enable_wisp_converter ? 1 : 0
+resource "azurerm_servicebus_queue" "service_bus_01_queue" {
+  count = length(local.queue_values)
 
-  name         = "${local.project}-servicebus-ns-manager"
-  namespace_id = azurerm_servicebus_namespace.wisp_converter_servicebus[0].id
+  name         = local.queue_values[count.index].name
+  namespace_id = azurerm_servicebus_namespace.service_bus_01.id
 
-  listen = true
-  send   = true
-  manage = true
-}
-
-# QUEUE Payment Timeout
-resource "azurerm_servicebus_queue" "wisp_converter_payment_timeout" {
-  count = var.enable_wisp_converter ? 1 : 0
-
-  name         = "wisp_payment_timeout"
-  namespace_id = azurerm_servicebus_namespace.wisp_converter_servicebus[0].id
-
-  requires_duplicate_detection         = var.wisp_converter_service_bus.requires_duplicate_detection
-  dead_lettering_on_message_expiration = var.wisp_converter_service_bus.dead_lettering_on_message_expiration
-  enable_partitioning                  = var.wisp_converter_service_bus.enable_partitioning
+  enable_partitioning = var.service_bus_01.sku == "Premium" ? null : local.queue_values[count.index].enable_partitioning
+  default_message_ttl = var.service_bus_01.queue_default_message_ttl
 
   depends_on = [
-    azurerm_servicebus_namespace.wisp_converter_servicebus,
-    azurerm_servicebus_namespace_authorization_rule.wisp_converter_servicebus_ns_auth
+    azurerm_servicebus_namespace.service_bus_01
   ]
 }
 
-# QUEUE paainviart retry
-resource "azurerm_servicebus_queue" "wisp_converter_paainviart" {
-  count = var.enable_wisp_converter ? 1 : 0
+resource "azurerm_servicebus_queue_authorization_rule" "service_bus_01_queue_authorization_rule" {
+  for_each = local.key_queue_map
 
-  name         = "paainviart"
-  namespace_id = azurerm_servicebus_namespace.wisp_converter_servicebus[0].id
+  name     = each.key
+  queue_id = local.queue_map[each.value.queue_name]
 
-  requires_duplicate_detection         = var.wisp_converter_service_bus.requires_duplicate_detection
-  dead_lettering_on_message_expiration = var.wisp_converter_service_bus.dead_lettering_on_message_expiration
-  enable_partitioning                  = var.wisp_converter_service_bus.enable_partitioning
+  listen = each.value.listen
+  send   = each.value.send
+  manage = each.value.manage
 
   depends_on = [
-    azurerm_servicebus_namespace.wisp_converter_servicebus,
-    azurerm_servicebus_namespace_authorization_rule.wisp_converter_servicebus_ns_auth
+    azurerm_servicebus_namespace.service_bus_01,
+    azurerm_servicebus_queue.service_bus_01_queue
   ]
-}
-
-resource "azurerm_servicebus_queue_authorization_rule" "wisp_converter_payment_timeout_consumer" {
-  count = var.enable_wisp_converter ? 1 : 0
-
-  name     = "wisp-payment-timeout-consumer"
-  queue_id = azurerm_servicebus_queue.wisp_converter_payment_timeout[0].id
-
-  listen = true
-  send   = false
-  manage = false
 }
