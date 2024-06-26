@@ -68,7 +68,7 @@ module "node_forwarder_ha_snet" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "nodefw_ha_snet_nat_association" {
-  count                                         = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
+  count          = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
   subnet_id      = module.node_forwarder_ha_snet[0].id
   nat_gateway_id = data.azurerm_nat_gateway.nat_gw.id
 }
@@ -128,7 +128,7 @@ module "node_forwarder_slot_staging" {
   health_check_path = "/actuator/info"
 
   # App settings
-  app_settings = local.node_forwarder_app_settings
+  app_settings     = local.node_forwarder_app_settings
   docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopanodeforwarder"
   docker_image_tag = "latest"
 

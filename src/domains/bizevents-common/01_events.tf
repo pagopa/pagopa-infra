@@ -1,3 +1,4 @@
+
 // ns3 ( new ns1 )
 data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx" {
   name                = "${var.prefix}-biz-evt-rx"

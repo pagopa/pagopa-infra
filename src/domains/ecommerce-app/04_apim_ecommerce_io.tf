@@ -54,7 +54,7 @@ locals {
     display_name          = "eCommerce API for IO App"
     description           = "eCommerce pagoPA API dedicated to IO App for pagoPA payment"
     path                  = "ecommerce/io"
-    subscription_required = var.env_short == "p"
+    subscription_required = false
     service_url           = null
   }
 
