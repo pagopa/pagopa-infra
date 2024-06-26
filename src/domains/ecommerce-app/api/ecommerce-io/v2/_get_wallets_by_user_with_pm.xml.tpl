@@ -102,7 +102,7 @@
                     <set-body>
                         @{
                             JObject pmWalletResponse = (JObject)context.Variables["pmUserWalletResponseBody"];
-                            var walletServices = new List<String>{"PAGOPA"};
+                            var walletApplications = new List<String>{"PAGOPA"};
                             var eCommerceWalletTypes = new Dictionary<string, string>
                                 {
                                     { "Card", "CARDS" },
@@ -150,7 +150,7 @@
                                                 convertedApplications.Add(converted);
                                             }
                                         }
-                                        result["applications"] = JArray.FromObject(convertedServices);
+                                        result["applications"] = JArray.FromObject(convertedApplications);
                                         JObject details = new JObject();
                                         details["type"] = eCommerceWalletType;
                                         if (eCommerceWalletType == "CARDS") {
