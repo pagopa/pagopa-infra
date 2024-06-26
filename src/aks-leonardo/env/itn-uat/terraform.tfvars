@@ -41,6 +41,7 @@ monitor_appinsights_name                    = "pagopa-u-appinsights"
 aks_private_cluster_enabled = true
 aks_alerts_enabled          = false
 aks_kubernetes_version      = "1.29.4"
+aks_sku_tier                = "Standard"
 aks_system_node_pool = {
   name            = "pauaksleosys",
   vm_size         = "Standard_D2ds_v5",

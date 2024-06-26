@@ -12,9 +12,12 @@
     <!-- Delete headers required for backend service END -->
 
     <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
+    <!-- fragment to read user id from session token jwt claims. it return userId as sessionTokenUserId variable taken from jwt claims. if the session token
+             is an opaque token a "session-token-not-found" string is returned-->  
+    <include-fragment fragment-id="pay-wallet-user-id-from-session-token" />
     <!-- Session eCommerce START-->
         <choose>
-          <when condition="@("false".Equals("{{enable-pm-ecommerce-io}}"))">
+          <when condition="@("false".Equals("{{enable-pm-ecommerce-io}}") && "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
             <!-- Check JWT START-->
             <include-fragment fragment-id="jwt-chk-wallet-session" />
             <!-- Check JWT END-->
