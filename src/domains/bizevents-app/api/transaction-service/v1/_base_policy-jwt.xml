@@ -1,7 +1,6 @@
 <policies>
     <inbound>
         <base />
-
             <!-- ForIO start =============== "x-continuation-token:undefined" -H "x-request-id:undefined" -->
             <choose>
                 <when condition="@( ((string)context.Request.Headers.GetValueOrDefault("x-continuation-token","")).Equals("") || ((string)context.Request.Headers.GetValueOrDefault("x-continuation-token","")).Equals("undefined") )">
@@ -14,10 +13,11 @@
                 </when>
             </choose>
             <!-- ForIO stop =============== "x-continuation-token:undefined" -H "x-request-id:undefined" -->
-
-
+            <!-- fragment to read user id from session token jwt claims. it return userId as sessionTokenUserId variable taken from jwt claims. if the session token
+             is an opaque token a "session-token-not-found" string is returned-->                
+            <include-fragment fragment-id="pay-wallet-user-id-from-session-token" />
             <choose>
-                <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))"> 
+                <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )"> 
                     <include-fragment fragment-id="pm-chk-wallet-session" />
                 </when>
                 <otherwise>

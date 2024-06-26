@@ -6,7 +6,6 @@
         <include-fragment fragment-id="pm-chk-wallet-session" />
       </when>
     </choose>
-    <set-backend-service base-url="https://${ecommerce_hostname}/pagopa-ecommerce-payment-methods-service"/>
     </inbound>
     <outbound>
       <base />
