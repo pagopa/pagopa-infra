@@ -3,7 +3,7 @@
 ###################################
 
 resource "azurerm_api_management_api_version_set" "api_version_set_wisp_converter_redirect" {
-  count = var.enable_wisp_converter ? 1 : 0
+  count = var.create_wisp_converter ? 1 : 0
 
   name                = "${var.prefix}-${var.env_short}-${var.location_short}-wisp-converter-redirect"
   resource_group_name = local.pagopa_apim_rg
@@ -14,7 +14,7 @@ resource "azurerm_api_management_api_version_set" "api_version_set_wisp_converte
 
 module "wisp_converter_redirect_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.7.0"
-  count  = var.enable_wisp_converter ? 1 : 0
+  count  = var.create_wisp_converter ? 1 : 0
 
   name                  = format("%s-wisp-converter-redirect-api", var.env_short)
   api_management_name   = local.pagopa_apim_name

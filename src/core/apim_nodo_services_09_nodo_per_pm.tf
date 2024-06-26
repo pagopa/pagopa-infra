@@ -96,7 +96,7 @@ module "apim_nodo_per_pm_api_v2" {
 
 # WISP closePaymentV2 
 resource "azurerm_api_management_api_operation_policy" "close_payment_api_v2_wisp_policy" {
-  count               = var.enable_wisp_converter ? 1 : 0
+  count               = var.create_wisp_converter ? 1 : 0
   api_name            = "${local.project}-nodo-per-pm-api-v2"
   resource_group_name = azurerm_resource_group.rg_api.name
   api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name

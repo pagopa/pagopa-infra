@@ -197,14 +197,14 @@ storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
-
-enable_wisp_converter = true
+# WISP-dismantling-cfg
+create_wisp_converter = true
 wisp_converter = {
+  enable_apim_switch     = true
   brokerPSP_whitelist    = "97735020584" # AGID
   channel_whitelist      = "97735020584_02,97735020584_03,97735020584_06"
   station_whitelist      = "66666666666_05"
   dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
 }
-
 
 enable_sendPaymentResultV2_SWClient = true

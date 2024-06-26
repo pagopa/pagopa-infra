@@ -388,8 +388,9 @@ variable "pod_disruption_budgets" {
   default     = {}
 }
 
-variable "enable_wisp_converter" {
+variable "create_wisp_converter" {
   type        = bool
   default     = false
-  description = "Enable WISP converter system, replacing old WISP handling"
+  description = "CREATE WISP dismantling system infra"
 }
+

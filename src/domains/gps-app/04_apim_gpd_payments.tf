@@ -109,7 +109,7 @@ resource "azurerm_api_management_product_api" "apim_api_gpd_payments_soap_produc
 
 # Add policy API to paSendRTV2 for WISP dismantling
 resource "azurerm_api_management_api_operation_policy" "paSendRT_v2_wisp_api_policy" {
-  count               = var.enable_wisp_converter ? 1 : 0
+  count               = var.create_wisp_converter ? 1 : 0
   api_name            = azurerm_api_management_api.apim_api_gpd_payments_soap_api_v1.name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg

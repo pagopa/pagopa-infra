@@ -436,14 +436,15 @@ variable "storage_account_info" {
 }
 
 
-variable "enable_wisp_converter" {
+variable "create_wisp_converter" {
   type        = bool
   default     = false
-  description = "Enable WISP converter system, replacing old WISP handling"
+  description = "CREATE WISP dismantling system infra"
 }
 
 variable "wisp_converter" {
   type = object({
+    enable_apim_switch     = bool # enable WISP dismantling
     brokerPSP_whitelist    = string
     channel_whitelist      = string
     station_whitelist      = string

@@ -219,7 +219,14 @@ storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
-
-enable_wisp_converter = false
+# WISP-dismantling-cfg
+create_wisp_converter = false
+wisp_converter = {
+  enable_apim_switch     = false
+  brokerPSP_whitelist    = ""
+  channel_whitelist      = ""
+  station_whitelist      = ""
+  dismantling_primitives = ""
+}
 
 enable_sendPaymentResultV2_SWClient = true

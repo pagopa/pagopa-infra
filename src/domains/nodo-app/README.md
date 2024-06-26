@@ -264,11 +264,11 @@
 | <a name="input_app_gateway_allowed_paths_pagopa_onprem_only"></a> [app\_gateway\_allowed\_paths\_pagopa\_onprem\_only](#input\_app\_gateway\_allowed\_paths\_pagopa\_onprem\_only) | Allowed paths from pagopa onprem only | <pre>object({<br>    paths = list(string)<br>    ips   = list(string)<br>  })</pre> | n/a | yes |
 | <a name="input_cidr_subnet_vmss"></a> [cidr\_subnet\_vmss](#input\_cidr\_subnet\_vmss) | VMSS network address space. | `list(string)` | n/a | yes |
 | <a name="input_cname_record_name"></a> [cname\_record\_name](#input\_cname\_record\_name) | n/a | `string` | `"config"` | no |
+| <a name="input_create_wisp_converter"></a> [create\_wisp\_converter](#input\_create\_wisp\_converter) | CREATE WISP dismantling system infra | `bool` | `false` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_nodo_re"></a> [enable\_nodo\_re](#input\_enable\_nodo\_re) | Enables dumping nodo re | `bool` | `false` | no |
 | <a name="input_enable_sendPaymentResultV2_SWClient"></a> [enable\_sendPaymentResultV2\_SWClient](#input\_enable\_sendPaymentResultV2\_SWClient) | Gestione clientId per integrazione Software Client | `bool` | `false` | no |
-| <a name="input_enable_wisp_converter"></a> [enable\_wisp\_converter](#input\_enable\_wisp\_converter) | Enable WISP converter system, replacing old WISP handling | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
@@ -317,7 +317,7 @@
 | <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image_name    = string,<br>    image_tag     = string<br>  })</pre> | n/a | yes |
 | <a name="input_vmss_instance_number"></a> [vmss\_instance\_number](#input\_vmss\_instance\_number) | availability zones for vmss | `number` | n/a | yes |
 | <a name="input_vmss_zones"></a> [vmss\_zones](#input\_vmss\_zones) | availability zones for vmss | `list(string)` | n/a | yes |
-| <a name="input_wisp_converter"></a> [wisp\_converter](#input\_wisp\_converter) | n/a | <pre>object({<br>    brokerPSP_whitelist    = string<br>    channel_whitelist      = string<br>    station_whitelist      = string<br>    dismantling_primitives = string<br>  })</pre> | n/a | yes |
+| <a name="input_wisp_converter"></a> [wisp\_converter](#input\_wisp\_converter) | n/a | <pre>object({<br>    enable_apim_switch     = bool # enable WISP dismantling<br>    brokerPSP_whitelist    = string<br>    channel_whitelist      = string<br>    station_whitelist      = string<br>    dismantling_primitives = string<br>  })</pre> | n/a | yes |
 
 ## Outputs
 

@@ -62,5 +62,5 @@ cname_record_name = "config"
 # gpd database config for gpd-app-service
 pgbouncer_enabled = false
 
-# enable wisp dismantling
-enable_wisp_converter = true
+# WISP-dismantling-cfg
+create_wisp_converter = true

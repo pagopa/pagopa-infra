@@ -63,3 +63,6 @@ apim_logger_resource_id = "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/r
 
 # gpd database config for gpd-app-service
 pgbouncer_enabled = true
+
+# WISP-dismantling-cfg
+create_wisp_converter = false

@@ -3,7 +3,7 @@
 ##############
 module "apim_wisp_converter_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v5.1.0"
-  count  = var.enable_wisp_converter ? 1 : 0
+  count  = var.create_wisp_converter ? 1 : 0
 
   product_id   = "pagopa-wisp-converter"
   display_name = "WISP Converter"
@@ -21,7 +21,7 @@ module "apim_wisp_converter_product" {
 }
 
 resource "azurerm_api_management_product_group" "access_control_developers_for_wisp_converter" {
-  count               = var.enable_wisp_converter ? 1 : 0
+  count               = var.create_wisp_converter ? 1 : 0
   product_id          = module.apim_wisp_converter_product[0].product_id
   group_name          = data.azurerm_api_management_group.group_developers.name
   api_management_name = local.pagopa_apim_name
@@ -36,7 +36,7 @@ resource "azurerm_api_management_named_value" "enable_wisp_dismantling_switch_na
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   display_name        = "enable-wisp-dismantling-switch"
-  value               = var.enable_wisp_converter
+  value               = var.create_wisp_converter && var.wisp_converter.enable_apim_switch
 }
 
 resource "azurerm_api_management_named_value" "wisp_brokerPSP_whitelist_named_value" {

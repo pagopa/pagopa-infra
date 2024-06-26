@@ -529,7 +529,7 @@ resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1_ndp" 
 }
 
 resource "azurerm_api_management_api_operation_policy" "close_payment_api_v2_ndp_wisp_policy" {
-  count = var.enable_wisp_converter ? 1 : 0
+  count = var.create_wisp_converter ? 1 : 0
   // TODO remove redundant nodo
   api_name            = format("%s-nodo-per-pm-api-ndp-v2", local.project)
   resource_group_name = local.pagopa_apim_rg
