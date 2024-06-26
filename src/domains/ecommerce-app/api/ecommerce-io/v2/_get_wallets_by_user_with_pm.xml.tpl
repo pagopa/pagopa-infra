@@ -139,15 +139,15 @@
                                         result["creationDate"] = creationDateTimeOffset.ToString("o");
                                         result["updateDate"] = result["creationDate"];
         
-                                        var convertedServices = new List<JObject>();
+                                        var convertedApplications = new List<JObject>();
                                         foreach(JValue application in wallet["enableableFunctions"]){
                                             string applicationName = application.ToString().ToUpper();
-                                            if(walletServices.Contains(applicationName)){
+                                            if(walletApplications.Contains(applicationName) && wallet[application.ToString()] != null){
                                                 JObject converted = new JObject();
                                                 converted["name"] = applicationName;
-                                                converted["status"] = "ENABLED";
+                                                converted["status"] = Convert.ToBoolean(wallet[application.ToString()]) == true ? "ENABLED" : "DISABLED";
                                                 converted["updateDate"] = result["creationDate"];
-                                                convertedServices.Add(converted);
+                                                convertedApplications.Add(converted);
                                             }
                                         }
                                         result["applications"] = JArray.FromObject(convertedServices);
