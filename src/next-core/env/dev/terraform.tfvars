@@ -674,8 +674,8 @@ service_bus_01 = {
   sku                                  = "Standard"
   requires_duplicate_detection         = false
   dead_lettering_on_message_expiration = false
-  enable_partitioning                  = true
   queue_default_message_ttl            = "P7D" # default for Standard P10675199DT2H48M5.4775807S
+  capacity                             = 0
 }
 # queue_name shall be <domain>_<service>_<name>
 # producer shall have only send authorization

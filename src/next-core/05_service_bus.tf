@@ -48,6 +48,9 @@ resource "azurerm_servicebus_namespace" "service_bus_01" {
   sku                 = var.service_bus_01.sku
   zone_redundant      = var.service_bus_01.sku == "Premium" # https://learn.microsoft.com/en-us/azure/well-architected/service-guides/service-bus/reliability
 
+  capacity = try(var.service_bus_01.capacity, null)
+  # premium_messaging_partitions = var.service_bus_01.premium_messaging_partitions # from azurerm version 3.9.3
+
   tags = var.tags
 
   depends_on = [
@@ -61,7 +64,7 @@ resource "azurerm_servicebus_queue" "service_bus_01_queue" {
   name         = local.queue_values[count.index].name
   namespace_id = azurerm_servicebus_namespace.service_bus_01.id
 
-  enable_partitioning = local.queue_values[count.index].enable_partitioning
+  enable_partitioning = var.service_bus_01.sku == "Premium" ? null : local.queue_values[count.index].enable_partitioning
   default_message_ttl = var.service_bus_01.queue_default_message_ttl
 
   depends_on = [
