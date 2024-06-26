@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "printit_rg" {
 }
 
 module "notices_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.9.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.22.0"
   count  = var.is_feature_enabled.storage_notice ? 1 : 0
 
   name                            = replace("${local.project_short}-notices", "-", "")
