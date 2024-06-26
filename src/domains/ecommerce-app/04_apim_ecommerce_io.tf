@@ -54,7 +54,7 @@ locals {
     display_name          = "eCommerce API for IO App"
     description           = "eCommerce pagoPA API dedicated to IO App for pagoPA payment"
     path                  = "ecommerce/io"
-    subscription_required = var.env_short == "p"
+    subscription_required = false
     service_url           = null
   }
 
@@ -243,7 +243,6 @@ resource "azurerm_api_management_api_operation_policy" "io_calculate_fee" {
       wallet-basepath              = local.wallet_hostname
     }
   )
-
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_transaction_outcome" {
@@ -359,7 +358,8 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_authoriza
   operation_id        = "requestTransactionAuthorizationForIO"
 
   xml_content = templatefile("./api/ecommerce-io/v2/_auth_request.xml.tpl", {
-    wallet-basepath = local.wallet_hostname
+    authurl-basepath = var.env_short == "d" ? local.apim_hostname : "{{wisp2-gov-it}}"
+    wallet-basepath  = local.wallet_hostname
   })
 }
 
@@ -377,4 +377,57 @@ resource "azurerm_api_management_api_operation_policy" "io_calculate_fee_v2" {
   )
 }
 
+resource "azurerm_api_management_api_operation_policy" "delete_transactions_v2" {
+  api_name            = "${local.project}-ecommerce-io-api-v2"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "requestTransactionUserCancellationForIO"
 
+  xml_content = templatefile("./api/ecommerce-io/v2/_delete_transaction.xml.tpl", {
+    wallet-basepath = local.wallet_hostname
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_transactions_v2" {
+  api_name            = "${local.project}-ecommerce-io-api-v2"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getTransactionInfoForIO"
+
+  xml_content = templatefile("./api/ecommerce-io/v2/get_transaction.xml.tpl", {
+    wallet-basepath = local.wallet_hostname
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "create_transactions_v2" {
+  api_name            = "${local.project}-ecommerce-io-api-v2"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "newTransactionForIO"
+
+  xml_content = templatefile("./api/ecommerce-io/v2/post_transactions.xml.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "io_wallets_by_user_v2" {
+  api_name            = "${local.project}-ecommerce-io-api-v2"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getWalletsByIdIOUser"
+
+  xml_content = templatefile("./api/ecommerce-io/v2/_get_wallets_by_user_with_pm.xml.tpl", {
+    ecommerce-hostname = local.ecommerce_hostname
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "io_get_all_payment_methods" {
+  api_name            = "${local.project}-ecommerce-io-api-v2"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getAllPaymentMethodsForIO"
+
+  xml_content = templatefile("./api/ecommerce-io/v2/_get_payment_methods.xml.tpl", {
+    enabled_payment_wallet_method_ids_pm = var.enabled_payment_wallet_method_ids_pm
+  })
+}

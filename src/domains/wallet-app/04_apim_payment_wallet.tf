@@ -1,18 +1,18 @@
 ##############
 ## Groups ##
 ##############
-
+/*
 resource "azurerm_api_management_group" "payment-wallet" {
   name                = "payment-wallet"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = "Payment Wallet"
 }
-
+*/
 ##############
 ## Products ##
 ##############
-
+/*
 module "apim_payment_wallet_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
 
@@ -334,4 +334,4 @@ module "apim_payment_wallet_outcomes_api_v1" {
 
   xml_content = file("./api/payment-wallet-outcomes-for-io/v1/_base_policy.xml.tpl")
 }
-
+*/

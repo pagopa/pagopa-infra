@@ -28,10 +28,12 @@ locals {
   ingress_hostname       = "${var.location_short}${var.instance}.${var.domain}"
   internal_dns_zone_name = "${var.dns_zone_internal_prefix}.${var.external_domain}"
 
-  pagopa_apim_name = "${local.product}-apim"
-  pagopa_apim_rg   = "${local.product}-api-rg"
+  pagopa_apim_name    = "${local.product}-apim"
+  pagopa_apim_rg      = "${local.product}-api-rg"
+  pagopa_apim_v2_name = "${local.product}-weu-core-apim-v2"
 
   pagopa_apim_snet        = "${local.product}-apim-snet"
+  pagopa_apim_v2_snet     = "${local.product}-weu-core-apimv2-snet"
   pagopa_vnet_integration = "pagopa-${var.env_short}-vnet-integration"
   pagopa_vnet_rg          = "pagopa-${var.env_short}-vnet-rg"
 
@@ -42,6 +44,8 @@ locals {
   cache_generator_hostname_2 = "${local.shared_hostname}/authorizer-functions"
 
   authorizer_config_hostname = "${local.shared_hostname}/authorizer-config"
+
+  iuvgenerator_hostname = "${local.shared_hostname}/pagopa-iuvgenerator"
 
   # DOMAINS
   system_domain_namespace = kubernetes_namespace.system_domain_namespace.metadata[0].name

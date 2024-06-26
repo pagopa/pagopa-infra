@@ -21,7 +21,7 @@ tags = {
 is_feature_enabled = {
   vnet_ita                  = false,
   container_app_tools_cae   = true,
-  node_forwarder_ha_enabled = false,
+  node_forwarder_ha_enabled = true,
   vpn                       = false,
   dns_forwarder_lb          = true,
   postgres_private_dns      = true,
@@ -700,5 +700,6 @@ service_bus_01_queues = [
 node_forwarder_logging_level          = "DEBUG"
 node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "B1"
+node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
 azdo_agent_vm_image_name              = "pagopa-u-azdo-agent-ubuntu2204-image-v3"
 

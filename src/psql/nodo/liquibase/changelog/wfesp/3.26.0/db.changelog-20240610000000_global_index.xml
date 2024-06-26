@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+  http://www.liquibase.org/xml/ns/pro
+  http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+
+  <changeSet author="liquibase" id="20240610000000-1">
+    <createTable tableName="RPT_GI">
+      <column name="CODICE_CARRELLO" type="VARCHAR2(128)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="r_gi_pk"/>
+      </column>
+      <column name="PSP" type="VARCHAR2(35)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="r_gi_pk"/>
+      </column>
+      <column name="PARAMETRI_PAGAMENTO_IMMEDIATO" type="VARCHAR2(255)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="r_gi_pk"/>
+      </column>
+      <column name="INSERTED_TIMESTAMP" type="TIMESTAMP(6)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="liquibase" id="20240610000000-2">
+    <createTable tableName="CARRELLO_RPT_GI">
+      <column name="CODICE_CARRELLO" type="VARCHAR2(128 )">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="cr_gi_pk"/>
+      </column>
+      <column name="PSP" type="VARCHAR2(35 )">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="cr_gi_pk"/>
+      </column>
+      <column name="PARAMETRI_PAGAMENTO_IMMEDIATO" type="VARCHAR2(255)">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="cr_gi_pk"/>
+      </column>
+      <column name="INSERTED_TIMESTAMP" type="TIMESTAMP(6)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+</databaseChangeLog>

@@ -714,6 +714,12 @@ variable "azdo_agent_vm_image_name" {
   description = "(Required) Azure devops agent image name"
 }
 
+variable "node_fw_ha_snet_cidr" {
+  type        = list(string)
+  default     = null
+  description = "(Required) node forwarder ha subnet cidr block"
+}
+
 /*****************
 Service Bus
 *****************/

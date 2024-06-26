@@ -41,6 +41,11 @@ data "azurerm_private_dns_zone" "postgres" {
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 }
 
+data "azurerm_nat_gateway" "nat_gw" {
+  name                = "${local.product}-natgw"
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+}
+
 data "azurerm_subnet" "aks_subnet" {
   name                 = "${local.product_region}-${var.env}-aks-snet"
   virtual_network_name = data.azurerm_virtual_network.vnet_core.name

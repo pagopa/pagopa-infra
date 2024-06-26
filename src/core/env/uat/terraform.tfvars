@@ -18,9 +18,10 @@ tags = {
 # Feature flag
 #
 enabled_features = {
-  apim_v2       = false
-  vnet_ita      = false
-  apim_migrated = true
+  apim_v2           = false
+  vnet_ita          = false
+  apim_migrated     = true
+  node_forwarder_ha = false
 }
 
 lock_enable = true
@@ -124,7 +125,6 @@ app_gateway_deny_paths = [
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
   "/gps/donation-service/.*",             # internal use no sub-keys
-  "/shared/iuv-generator-service/.*",     # internal use no sub-keys
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [

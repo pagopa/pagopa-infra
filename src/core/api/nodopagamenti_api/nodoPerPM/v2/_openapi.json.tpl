@@ -207,7 +207,7 @@
           },
           "timestampOperation": {
             "type": "string",
-            "format": "date-time",
+            "format": "yyyy-MM-ddThh:mm:ss",
             "description": "Transaction timestamp"
           },
           "authorizationCode": {
@@ -249,7 +249,7 @@
           },
           "timestampOperation": {
             "type": "string",
-            "format": "date-time",
+            "format": "yyyy-MM-ddThh:mm:ss",
             "description": "Transaction timestamp"
           },
           "email": {
@@ -295,7 +295,7 @@
           },
           "timestampOperation": {
             "type": "string",
-            "format": "date-time",
+            "format": "yyyy-MM-ddThh:mm:ss",
             "description": "Transaction timestamp"
           },
           "authorizationCode": {
@@ -346,7 +346,7 @@
           },
           "timestampOperation": {
             "type": "string",
-            "format": "date-time",
+            "format": "yyyy-MM-ddThh:mm:ss",
             "description": "Transaction timestamp"
           },
           "email": {
