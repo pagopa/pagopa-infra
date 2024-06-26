@@ -689,6 +689,7 @@ service_bus_01 = {
   dead_lettering_on_message_expiration = false
   queue_default_message_ttl            = null # default is good
   capacity                             = 2
+  premium_messaging_partitions         = 2
 }
 # queue_name shall be <domain>_<service>_<name>
 # producer shall have only send authorization

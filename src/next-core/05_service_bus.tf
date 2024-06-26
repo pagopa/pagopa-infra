@@ -49,7 +49,18 @@ resource "azurerm_servicebus_namespace" "service_bus_01" {
   zone_redundant      = var.service_bus_01.sku == "Premium" # https://learn.microsoft.com/en-us/azure/well-architected/service-guides/service-bus/reliability
 
   capacity = try(var.service_bus_01.capacity, null)
-  # premium_messaging_partitions = var.service_bus_01.premium_messaging_partitions # from azurerm version 3.9.3
+  # premium_messaging_partitions = var.service_bus_01.premium_messaging_partitions
+
+  network_rule_set {
+    trusted_services_allowed = true
+
+    default_action                = "Deny"
+    public_network_access_enabled = true
+    network_rules {
+      subnet_id                            = data.azurerm_subnet.aks_subnet.id
+      ignore_missing_vnet_service_endpoint = false
+    }
+  }
 
   tags = var.tags
 

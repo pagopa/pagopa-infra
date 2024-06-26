@@ -40,3 +40,9 @@ data "azurerm_private_dns_zone" "postgres" {
   name                = "private.postgres.database.azure.com"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 }
+
+data "azurerm_subnet" "aks_subnet" {
+  name                 = "${local.product_region}-${var.env}-aks-snet"
+  virtual_network_name = data.azurerm_virtual_network.vnet_core.name
+  resource_group_name  = data.azurerm_virtual_network.vnet_core.resource_group_name
+}

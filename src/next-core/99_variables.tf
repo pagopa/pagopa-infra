@@ -724,7 +724,8 @@ variable "service_bus_01" {
     dead_lettering_on_message_expiration = bool
     capacity                             = number
     # https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-expiration#entity-level-expiration
-    queue_default_message_ttl = string # ISO 8601 timespan duration as P(n)Y(n)M(n)DT(n)H(n)M(n)S e.g. P7D seven days, P1M one month, P1Y one year
+    queue_default_message_ttl    = string # ISO 8601 timespan duration as P(n)Y(n)M(n)DT(n)H(n)M(n)S e.g. P7D seven days, P1M one month, P1Y one year
+    premium_messaging_partitions = number
   })
   default = {
     sku                                  = "Standard"
@@ -732,6 +733,7 @@ variable "service_bus_01" {
     dead_lettering_on_message_expiration = false
     capacity                             = 0
     queue_default_message_ttl            = null # default is good
+    premium_messaging_partitions         = 0
   }
 }
 
