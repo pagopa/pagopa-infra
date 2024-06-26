@@ -84,7 +84,11 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_methods_for_
   api_management_name = local.pagopa_apim_name
   operation_id        = "getAllPaymentMethodsForIO"
 
-  xml_content = templatefile("./api/io-payment-wallet/v1/_get_payment_methods.xml.tpl", { ecommerce_hostname = local.ecommerce_hostname }
+  xml_content = templatefile("./api/io-payment-wallet/v1/_get_payment_methods.xml.tpl",
+    {
+      ecommerce_hostname                   = local.ecommerce_hostname
+      enabled_payment_wallet_method_ids_pm = var.enabled_payment_wallet_method_ids_pm
+    }
   )
 }
 
@@ -113,7 +117,7 @@ resource "azurerm_api_management_api_operation_policy" "post_io_wallets" {
   operation_id        = "createIOPaymentWallet"
 
   xml_content = templatefile("./api/io-payment-wallet/v1/_post_wallets.xml.tpl", {
-    env                = var.env,
+    env                = var.env == "prod" ? "" : "${var.env}.",
     ecommerce_hostname = local.ecommerce_hostname
   })
 }
@@ -125,4 +129,45 @@ resource "azurerm_api_management_api_operation_policy" "update_applications_for_
   operation_id        = "updateIOPaymentWalletApplicationsById"
 
   xml_content = file("./api/io-payment-wallet/v1/_update_applications.xml.tpl")
+}
+
+
+resource "azurerm_api_management_named_value" "pay_wallet_family_friends_user_ids" {
+  name                = "pay-wallet-family-friends-user-ids"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "pay-wallet-family-friends-user-ids"
+  value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+
+#######################################################################
+## Fragment policy to extract user id from session token             ##
+#######################################################################
+
+resource "azapi_resource" "pay_wallet_fragment_user_id_from_session_token" {
+
+  # provider  = azapi.apim
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "pay-wallet-user-id-from-session-token"
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Component that extract userId from JWT session token"
+      format      = "rawxml"
+      value = templatefile("./api/fragments/_fragment_policy_user_id_from_session_token.tpl.xml", {
+      })
+
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
 }

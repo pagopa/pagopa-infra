@@ -2,7 +2,7 @@
     <inbound>
         <base />
         <choose>
-        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
+        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
             <set-variable name="requestTransactionId" value="@{
                 var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");
                 return transactionId;
