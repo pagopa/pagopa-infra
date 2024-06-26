@@ -21,7 +21,7 @@ enabled_features = {
   apim_v2           = false
   vnet_ita          = false
   apim_migrated     = true
-  node_forwarder_ha = true
+  node_forwarder_ha = false
 }
 
 lock_enable = true
