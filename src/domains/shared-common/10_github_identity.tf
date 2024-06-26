@@ -11,6 +11,9 @@ data "azurerm_kubernetes_cluster" "aks" {
 locals {
   repos_01 = [
     "pagopa-shared-toolbox",
+    "pagopa-platform-authorizer",
+    "pagopa-platform-authorizer-config",
+    "pagopa-infra"
   ]
 
   federations_01 = [

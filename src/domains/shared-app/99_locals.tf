@@ -28,20 +28,24 @@ locals {
   ingress_hostname       = "${var.location_short}${var.instance}.${var.domain}"
   internal_dns_zone_name = "${var.dns_zone_internal_prefix}.${var.external_domain}"
 
-  pagopa_apim_name = "${local.product}-apim"
-  pagopa_apim_rg   = "${local.product}-api-rg"
+  pagopa_apim_name    = "${local.product}-apim"
+  pagopa_apim_rg      = "${local.product}-api-rg"
+  pagopa_apim_v2_name = "${local.product}-weu-core-apim-v2"
 
   pagopa_apim_snet        = "${local.product}-apim-snet"
+  pagopa_apim_v2_snet     = "${local.product}-weu-core-apimv2-snet"
   pagopa_vnet_integration = "pagopa-${var.env_short}-vnet-integration"
   pagopa_vnet_rg          = "pagopa-${var.env_short}-vnet-rg"
 
   apim_hostname   = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   shared_hostname = var.env == "prod" ? "weuprod.shared.internal.platform.pagopa.it" : "weu${var.env}.shared.internal.${var.env}.platform.pagopa.it"
 
-  cache_generator_hostname   = "${var.prefix}-${var.env_short}-${var.location_short}-shared-authorizer-fn.azurewebsites.net/api"
-  cache_generator_hostname_2 = "${var.prefix}-${var.env_short}-${var.location_short}-shared-authorizer-fn.azurewebsites.net"
+  cache_generator_hostname   = "${local.shared_hostname}/authorizer-functions/api"
+  cache_generator_hostname_2 = "${local.shared_hostname}/authorizer-functions"
 
   authorizer_config_hostname = "${local.shared_hostname}/authorizer-config"
+
+  iuvgenerator_hostname = "${local.shared_hostname}/pagopa-iuvgenerator"
 
   # DOMAINS
   system_domain_namespace = kubernetes_namespace.system_domain_namespace.metadata[0].name

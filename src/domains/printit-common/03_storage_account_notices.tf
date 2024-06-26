@@ -9,7 +9,7 @@ module "notices_sa" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.9.1"
   count  = var.is_feature_enabled.storage_notice ? 1 : 0
 
-  name                            = replace("${var.prefix}-${var.domain}-notices", "-", "")
+  name                            = replace("${local.project_short}-notices", "-", "")
   account_kind                    = var.notices_storage_account.account_kind
   account_tier                    = var.notices_storage_account.account_tier
   account_replication_type        = var.notices_storage_account.account_replication_type
@@ -102,9 +102,6 @@ resource "azurerm_storage_management_policy" "st_blob_receipts_management_policy
   }
 
 }
-
-
-
 
 resource "azurerm_user_assigned_identity" "identity_blob_storage_pdf" {
   resource_group_name = data.azurerm_resource_group.identity_rg.name

@@ -223,7 +223,7 @@ locals {
   routes_apiupload = {
     upload = {
       listener              = "upload"
-      backend               = "apim"
+      backend               = "apimupload"
       rewrite_rule_set_name = "rewrite-rule-set-api"
     }
   }
@@ -235,11 +235,11 @@ locals {
       protocol                    = "Https"
       host                        = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
       port                        = 443
-      ip_addresses                = var.enabled_features.apim_v2 ? concat(module.apim.private_ip_addresses, data.azurerm_api_management.apim_v2[0].private_ip_addresses) : module.apim.private_ip_addresses
+      ip_addresses                = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : module.apim[0].private_ip_addresses)
       fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
-      request_timeout             = 30
+      request_timeout             = 120
       pick_host_name_from_backend = false
     }
 
@@ -247,7 +247,7 @@ locals {
       protocol                    = "Https"
       host                        = trim(azurerm_dns_a_record.dns_a_portal.fqdn, ".")
       port                        = 443
-      ip_addresses                = var.enabled_features.apim_v2 ? concat(module.apim.private_ip_addresses, data.azurerm_api_management.apim_v2[0].private_ip_addresses) : module.apim.private_ip_addresses
+      ip_addresses                = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : module.apim[0].private_ip_addresses)
       fqdns                       = [azurerm_dns_a_record.dns_a_portal.fqdn]
       probe                       = "/signin"
       probe_name                  = "probe-portal"
@@ -259,7 +259,7 @@ locals {
       protocol     = "Https"
       host         = trim(azurerm_dns_a_record.dns_a_management.fqdn, ".")
       port         = 443
-      ip_addresses = var.enabled_features.apim_v2 ? concat(module.apim.private_ip_addresses, data.azurerm_api_management.apim_v2[0].private_ip_addresses) : module.apim.private_ip_addresses
+      ip_addresses = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : module.apim[0].private_ip_addresses)
       fqdns        = [azurerm_dns_a_record.dns_a_management.fqdn]
 
       probe                       = "/ServiceStatus"
@@ -284,12 +284,12 @@ locals {
   backends_upload = {
     apimupload = {
       protocol                    = "Https"
-      host                        = trim(var.upload_endpoint_enabled ? azurerm_dns_a_record.dns_a_upload[0].fqdn : "", ".")
+      host                        = trim(var.upload_endpoint_enabled ? azurerm_dns_a_record.dns_a_api.fqdn : "", ".")
       port                        = 443
-      ip_addresses                = var.enabled_features.apim_v2 ? concat(module.apim.private_ip_addresses, data.azurerm_api_management.apim_v2[0].private_ip_addresses) : module.apim.private_ip_addresses
-      fqdns                       = var.upload_endpoint_enabled ? [azurerm_dns_a_record.dns_a_upload[0].fqdn] : []
+      ip_addresses                = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : module.apim[0].private_ip_addresses)
+      fqdns                       = var.upload_endpoint_enabled ? [azurerm_dns_a_record.dns_a_api.fqdn] : []
       probe                       = "/status-0123456789abcdef"
-      probe_name                  = "probe-apim"
+      probe_name                  = "probe-apimupload"
       request_timeout             = 300 # long timeout for heavy api request ( ex. FDR flow managment, GPD upload, ... )
       pick_host_name_from_backend = false
     }
@@ -540,37 +540,7 @@ module "app_gw" {
         },
       ]
     },
-    # {
-    #   name = "rewrite-rule-set-fdr"
-    #   rewrite_rules = [
-    #     {
-    #       name          = "http-deny-path-only-fdr"
-    #       rule_sequence = 4
-    #       conditions = [
-    #         {
-    #           variable    = "var_host"
-    #           # pattern     = join("|", var.app_gateway_deny_paths)
-    #           pattern     = "fdr.dev.platform.pagopa.it"
-    #           ignore_case = true
-    #           negate      = false
-    #         },
-    #         {
-    #           variable    = "var_uri_path"
-    #           # pattern     = join("|", var.app_gateway_deny_paths)
-    #           pattern     = "/nodo/node-for-psp/*"
-    #           ignore_case = true
-    #           negate      = false
-    #         },
-    #       ]
-    #       request_header_configurations  = []
-    #       response_header_configurations = []
-    #       url = {
-    #         path         = "notfound"
-    #         query_string = null
-    #       }
-    #     },
-    #   ]
-    # },
+
   ]
   # TLS
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]

@@ -1,23 +1,45 @@
-# 🔭 Monitor
-data "azurerm_resource_group" "rg_monitor" {
-  name = local.monitor_rg_name
+#
+# 🇮🇹 Monitor Italy
+#
+data "azurerm_resource_group" "monitor_italy_rg" {
+  name = var.monitor_italy_resource_group_name
 }
 
-data "azurerm_log_analytics_workspace" "log_analytics_workspace" {
-  name                = local.monitor_log_analytics_workspace_name
-  resource_group_name = data.azurerm_resource_group.rg_monitor.name
+data "azurerm_log_analytics_workspace" "log_analytics_italy" {
+  name                = var.log_analytics_italy_workspace_name
+  resource_group_name = var.log_analytics_italy_workspace_resource_group_name
 }
 
-# ⚡️ monitor action groups
+data "azurerm_application_insights" "application_insights_italy" {
+  name                = var.monitor_appinsights_italy_name
+  resource_group_name = data.azurerm_resource_group.monitor_italy_rg.name
+}
 
+### 🇪🇺
+data "azurerm_resource_group" "monitor_rg" {
+  name = var.monitor_resource_group_name
+}
+
+data "azurerm_log_analytics_workspace" "log_analytics" {
+  name                = var.log_analytics_workspace_name
+  resource_group_name = var.log_analytics_workspace_resource_group_name
+}
+
+data "azurerm_application_insights" "application_insights" {
+  name                = var.monitor_appinsights_name
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+}
+
+#
+# Action Groups
+#
 data "azurerm_monitor_action_group" "slack" {
-  resource_group_name = local.monitor_rg_name
+  resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_slack_name
 }
 
 data "azurerm_monitor_action_group" "email" {
-  resource_group_name = local.monitor_rg_name
+  resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_email_name
 }
-
 

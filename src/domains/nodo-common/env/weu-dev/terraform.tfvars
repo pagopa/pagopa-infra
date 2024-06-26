@@ -41,18 +41,19 @@ pgres_flex_params = {
   db_version = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                             = 32768
-  zone                                   = 1
-  standby_ha_zone                        = 2
-  backup_retention_days                  = 7
-  geo_redundant_backup_enabled           = false
-  create_mode                            = "Default"
-  pgres_flex_private_endpoint_enabled    = false
-  pgres_flex_ha_enabled                  = false
-  pgres_flex_pgbouncer_enabled           = true
-  pgres_flex_diagnostic_settings_enabled = false
-  max_connections                        = 1700
-  enable_private_dns_registration        = true
+  storage_mb                                       = 32768
+  zone                                             = 1
+  standby_ha_zone                                  = 2
+  backup_retention_days                            = 7
+  geo_redundant_backup_enabled                     = false
+  create_mode                                      = "Default"
+  pgres_flex_private_endpoint_enabled              = false
+  pgres_flex_ha_enabled                            = false
+  pgres_flex_pgbouncer_enabled                     = true
+  pgres_flex_diagnostic_settings_enabled           = false
+  max_connections                                  = 1700
+  enable_private_dns_registration                  = true
+  enable_private_dns_registration_virtual_endpoint = false
 }
 
 sftp_account_replication_type = "LRS"
@@ -265,7 +266,3 @@ wisp_converter_storage_account = {
 
 redis_ha_enabled = false
 
-enabled_features = {
-  eventhub_ha_tx = true
-  eventhub_ha_rx = true
-}

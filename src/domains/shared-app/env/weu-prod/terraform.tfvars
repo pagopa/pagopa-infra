@@ -87,10 +87,11 @@ pod_disruption_budgets = {
   },
 }
 
-pagopa_shared_toolbox_enabled = false
-robots_indexed_paths          = []
-pdf_engine_app_ha_enabled     = false
+pagopa_shared_toolbox_enabled     = false
+robots_indexed_paths              = []
+pdf_engine_app_ha_enabled         = true
+pdf_engine_zone_balancing_enabled = true
 
 // wallet session token
-io_backend_base_path = "https://disabled"
-pdv_api_base_path    = "https://disabled"
+io_backend_base_path = "https://api-app.io.pagopa.it"
+pdv_api_base_path    = "https://api.tokenizer.pdv.pagopa.it/tokenizer/v1"

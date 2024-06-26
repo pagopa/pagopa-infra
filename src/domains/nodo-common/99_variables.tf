@@ -103,21 +103,22 @@ variable "cidr_subnet_flex_dbms" {
 # Postgres Flexible
 variable "pgres_flex_params" {
   type = object({
-    enabled                                = bool
-    sku_name                               = string
-    db_version                             = string
-    storage_mb                             = string
-    zone                                   = number
-    standby_ha_zone                        = number
-    backup_retention_days                  = number
-    geo_redundant_backup_enabled           = bool
-    create_mode                            = string
-    pgres_flex_private_endpoint_enabled    = bool
-    pgres_flex_ha_enabled                  = bool
-    pgres_flex_pgbouncer_enabled           = bool
-    pgres_flex_diagnostic_settings_enabled = bool
-    max_connections                        = number
-    enable_private_dns_registration        = optional(bool, false)
+    enabled                                          = bool
+    sku_name                                         = string
+    db_version                                       = string
+    storage_mb                                       = string
+    zone                                             = number
+    standby_ha_zone                                  = number
+    backup_retention_days                            = number
+    geo_redundant_backup_enabled                     = bool
+    create_mode                                      = string
+    pgres_flex_private_endpoint_enabled              = bool
+    pgres_flex_ha_enabled                            = bool
+    pgres_flex_pgbouncer_enabled                     = bool
+    pgres_flex_diagnostic_settings_enabled           = bool
+    max_connections                                  = number
+    enable_private_dns_registration                  = optional(bool, false)
+    enable_private_dns_registration_virtual_endpoint = optional(bool, false)
   })
 
 }
@@ -542,12 +543,8 @@ variable "wisp_converter_storage_account" {
 
 variable "enabled_features" {
   type = object({
-    eventhub_ha_tx = bool
-    eventhub_ha_rx = bool
   })
   default = {
-    eventhub_ha_tx = false
-    eventhub_ha_rx = false
   }
   description = "Features enabled in this domain"
 }

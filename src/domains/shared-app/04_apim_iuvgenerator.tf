@@ -12,12 +12,12 @@ module "apim_iuvgenerator_product" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  published             = false
-  subscription_required = false
+  published             = true
+  subscription_required = true
   approval_required     = false
-  # subscriptions_limit   = 1000
+  subscriptions_limit   = 1000
 
-  policy_xml = file("./api_product/_base_policy_forbid.xml")
+  policy_xml = file("./api_product/_base_policy.xml")
 }
 
 #########################
@@ -62,10 +62,11 @@ module "apim_api_iuvgenerator_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/iuv-generator-service/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = module.apim_iuvgenerator_product.product_id
   })
 
   xml_content = templatefile("./api/iuv-generator-service/v1/_base_policy.xml", {
-    hostname = local.shared_hostname
+    hostname = local.iuvgenerator_hostname
   })
 }

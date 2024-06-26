@@ -30,12 +30,13 @@ locals {
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"
   pagopa_apim_snet = "${local.product}-apim-snet"
+  pagopa_apim_v2   = "${local.product}-weu-core-apim-v2"
 
   pagopa_vnet_integration = "pagopa-${var.env_short}-vnet-integration"
   pagopa_vnet_rg          = "pagopa-${var.env_short}-vnet-rg"
 
   apim_hostname      = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   ecommerce_hostname = "${var.location_short}${var.env}.ecommerce.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
-  wallet_hostname    = "${var.location_short}${var.env}.wallet.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
+  wallet_hostname    = "itn${var.env}.pay-wallet.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
 
 }

@@ -263,8 +263,4 @@ nodo_auth_subscription_limit = 10000
 nodo_pagamenti_x_forwarded_for = "10.230.10.5"
 
 
-enabled_features = {
-  apim_v2        = false
-  eventhub_ha_rx = true
-}
 
