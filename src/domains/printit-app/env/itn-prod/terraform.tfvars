@@ -42,5 +42,10 @@ is_feature_enabled = {
 }
 
 app_service_pdf_engine_sku_name      = "P2v3"
+app_service_pdf_engine_autoscale_enabled = true
+app_service_pdf_engine_always_on = true
+app_service_pdf_engine_zone_balancing_enabled = true
+
 app_service_pdf_engine_sku_name_java = "P1v3"
+app_service_pdf_engine_sku_name_java_zone_balancing_enabled = true
 
