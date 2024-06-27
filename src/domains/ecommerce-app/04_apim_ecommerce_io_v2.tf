@@ -5,6 +5,7 @@
 ###########################
 
 resource "azurerm_api_management_api_version_set" "apim_v2_ecommerce_io_api_v1" {
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.project}-ecommerce-io-api"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_v2
@@ -13,6 +14,7 @@ resource "azurerm_api_management_api_version_set" "apim_v2_ecommerce_io_api_v1" 
 }
 
 resource "azurerm_api_management_named_value" "apim_v2_pay_wallet_family_friends_user_ids" {
+  count               = var.env_short == "p" ? 1 : 0
   name                = "pay-wallet-family-friends-user-ids"
   api_management_name = local.pagopa_apim_v2
   resource_group_name = local.pagopa_apim_rg
@@ -26,6 +28,7 @@ resource "azurerm_api_management_named_value" "apim_v2_pay_wallet_family_friends
 }
 
 module "apim_v2_ecommerce_io_api_v2" {
+  count  = var.env_short == "p" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
 
   name                  = "${local.project}-ecommerce-io-api"
@@ -33,7 +36,7 @@ module "apim_v2_ecommerce_io_api_v2" {
   api_management_name   = local.pagopa_apim_v2
   product_ids           = [module.apim_ecommerce_io_product.product_id]
   subscription_required = local.apim_ecommerce_io_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.apim_v2_ecommerce_io_api_v1.id
+  version_set_id        = azurerm_api_management_api_version_set.apim_v2_ecommerce_io_api_v1[0].id
   api_version           = "v2"
   service_url           = local.apim_ecommerce_io_api.service_url
 
@@ -54,6 +57,7 @@ module "apim_v2_ecommerce_io_api_v2" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "apim_v2_io_post_wallet_transactions_v2" {
+  count               = var.env_short == "p" ? 1 : 0
   api_name            = "${local.project}-ecommerce-io-api-v2"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_v2
@@ -65,6 +69,7 @@ resource "azurerm_api_management_api_operation_policy" "apim_v2_io_post_wallet_t
 }
 
 resource "azurerm_api_management_api_operation_policy" "apim_v2_io_transaction_authorization_request_v2" {
+  count               = var.env_short == "p" ? 1 : 0
   api_name            = "${local.project}-ecommerce-io-api-v2"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_v2
@@ -77,6 +82,7 @@ resource "azurerm_api_management_api_operation_policy" "apim_v2_io_transaction_a
 }
 
 resource "azurerm_api_management_api_operation_policy" "apim_v2_io_calculate_fee_v2" {
+  count               = var.env_short == "p" ? 1 : 0
   api_name            = "${local.project}-ecommerce-io-api-v2"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_v2
@@ -91,6 +97,7 @@ resource "azurerm_api_management_api_operation_policy" "apim_v2_io_calculate_fee
 }
 
 resource "azurerm_api_management_api_operation_policy" "apim_v2_delete_transactions_v2" {
+  count               = var.env_short == "p" ? 1 : 0
   api_name            = "${local.project}-ecommerce-io-api-v2"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_v2
@@ -102,6 +109,7 @@ resource "azurerm_api_management_api_operation_policy" "apim_v2_delete_transacti
 }
 
 resource "azurerm_api_management_api_operation_policy" "apim_v2_get_transactions_v2" {
+  count               = var.env_short == "p" ? 1 : 0
   api_name            = "${local.project}-ecommerce-io-api-v2"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_v2
@@ -113,6 +121,7 @@ resource "azurerm_api_management_api_operation_policy" "apim_v2_get_transactions
 }
 
 resource "azurerm_api_management_api_operation_policy" "apim_v2_create_transactions_v2" {
+  count               = var.env_short == "p" ? 1 : 0
   api_name            = "${local.project}-ecommerce-io-api-v2"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_v2
@@ -124,6 +133,7 @@ resource "azurerm_api_management_api_operation_policy" "apim_v2_create_transacti
 }
 
 resource "azurerm_api_management_api_operation_policy" "apim_v2_io_wallets_by_user_v2" {
+  count               = var.env_short == "p" ? 1 : 0
   api_name            = "${local.project}-ecommerce-io-api-v2"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_v2
@@ -135,6 +145,7 @@ resource "azurerm_api_management_api_operation_policy" "apim_v2_io_wallets_by_us
 }
 
 resource "azurerm_api_management_api_operation_policy" "apim_v2_io_get_all_payment_methods" {
+  count               = var.env_short == "p" ? 1 : 0
   api_name            = "${local.project}-ecommerce-io-api-v2"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_v2

@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "sftp" {
 }
 
 module "sftp" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
   #source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=add-SFTP-to-sa"
 
   name                = replace("${local.project}-sftp", "-", "")
@@ -74,7 +74,7 @@ resource "azurerm_storage_container" "sogei" {
 
 resource "azurerm_storage_blob" "sogei_dirs" {
   for_each               = toset(["Inbox", "output"])
-  name                   = format("%s/.test", each.key)
+  name                   = "${each.key}/.test"
   storage_account_name   = module.sftp.name
   storage_container_name = azurerm_storage_container.sogei.name
   type                   = "Block"
