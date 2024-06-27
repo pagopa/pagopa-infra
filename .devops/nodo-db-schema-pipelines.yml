@@ -411,6 +411,8 @@ stages:
                   ALTER ROLE $CFG_READ_USERNAME PASSWORD '$(db-cfg-password-read)';
 
                   GRANT SELECT ON ALL TABLES IN SCHEMA $CFG_SCHEMA TO $CFG_READ_USERNAME;
+                  GRANT USAGE ON SCHEMA $CFG_SCHEMA FROM $CFG_READ_USERNAME;
+
                 END;
 
                 \$\$;
