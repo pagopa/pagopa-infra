@@ -162,26 +162,37 @@ variable "payment_wallet_migrations_enabled" {
   description = "Payment wallet migrations enabled"
 }
 
+#
+# APP Service PDF
+#
 variable "app_service_pdf_engine_autoscale_enabled" {
-  type    = bool
-  default = true
+  type = bool
 }
 
 variable "app_service_pdf_engine_always_on" {
   type        = bool
   description = "Always on property"
-  default     = true
 }
 
 variable "app_service_pdf_engine_sku_name" {
   type        = string
   description = "app service plan size"
-  default     = "S1"
 }
+
+variable "app_service_pdf_engine_zone_balancing_enabled" {
+  type        = bool
+  description = "Enable HA multi az balancing"
+}
+
+### PDF JAVA
 variable "app_service_pdf_engine_sku_name_java" {
   type        = string
   description = "app service plan size"
-  default     = "S1"
+}
+
+variable "app_service_pdf_engine_sku_name_java_zone_balancing_enabled" {
+  type        = bool
+  description = "Enable HA multi az balancing"
 }
 
 ### Features flags

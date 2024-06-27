@@ -96,6 +96,6 @@ module "letsencrypt_printit" {
 
   prefix            = var.prefix
   env               = var.env_short
-  key_vault_name    = "${local.product}-${var.domain}-kv"
+  key_vault_name    = module.key_vault.name
   subscription_name = local.subscription_name
 }
