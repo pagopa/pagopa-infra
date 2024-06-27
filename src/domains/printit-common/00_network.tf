@@ -43,3 +43,15 @@ data "azurerm_private_dns_zone" "privatelink_queue_azure_com" {
   name                = "privatelink.queue.core.windows.net"
   resource_group_name = local.vnet_core_resource_group_name
 }
+
+#
+# Eventhub
+#
+data "azurerm_private_dns_zone" "eventhub" {
+  name                = "privatelink.servicebus.windows.net"
+  resource_group_name = local.msg_resource_group_name
+}
+
+data "azurerm_resource_group" "rg_event_private_dns_zone" {
+  name = local.msg_resource_group_name
+}
