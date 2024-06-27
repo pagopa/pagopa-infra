@@ -72,7 +72,7 @@ locals {
   personal_data_vault_secret_name = "personal-data-vault-api-key-wallet-session"
 
   //search for PDV api key that will be pushed to both Wallet and eCommerce KV on each update in order to synchronize api key updates
-  personal_data_vault_secret_key = tolist([for each in local.all_secrets_value : each.valore if each.chiave == local.personal_data_vault_secret_name])[0]
+  personal_data_vault_secret_value = tolist([for each in local.all_secrets_value : each.valore if each.chiave == local.personal_data_vault_secret_name])[0]
 }
 
 
@@ -94,7 +94,7 @@ resource "azurerm_key_vault_secret" "secret" {
 resource "azurerm_key_vault_secret" "pay_wallet_pdv_secret" {
   key_vault_id = data.azurerm_key_vault.pay_wallet_kv.id
   name         = local.personal_data_vault_secret_name
-  value        = local.personal_data_vault_secret_key
+  value        = local.personal_data_vault_secret_value
 
   depends_on = [
     azurerm_key_vault_key.generated,
@@ -106,7 +106,7 @@ resource "azurerm_key_vault_secret" "pay_wallet_pdv_secret" {
 resource "azurerm_key_vault_secret" "ecommerce_pdv_secret" {
   key_vault_id = data.azurerm_key_vault.ecommerce_kv.id
   name         = local.personal_data_vault_secret_name
-  value        = local.personal_data_vault_secret_key
+  value        = local.personal_data_vault_secret_value
 
   depends_on = [
     azurerm_key_vault_key.generated,
