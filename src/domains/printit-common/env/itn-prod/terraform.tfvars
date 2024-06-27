@@ -17,11 +17,11 @@ tags = {
 ### 🚩Features flags
 
 is_feature_enabled = {
-  cosmosdb_notice      = false
-  storage_institutions = false
-  storage_notice       = false
-  storage_templates    = false
-  eventhub             = false
+  cosmosdb_notice      = true
+  storage_institutions = true
+  storage_notice       = true
+  storage_templates    = true
+  eventhub             = true
 }
 
 ### CIRDs
@@ -31,8 +31,6 @@ cidr_printit_storage_italy    = ["10.3.12.32/27"]
 cidr_printit_redis_italy      = ["10.3.12.64/27"]
 cidr_printit_postgresql_italy = ["10.3.12.96/27"]
 cidr_printit_pdf_engine_italy = ["10.3.12.128/27"]
-
-
 
 ### External resources
 
@@ -58,7 +56,7 @@ cosmos_mongo_db_notices_params = {
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 5
+    max_interval_in_seconds = 300
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
@@ -87,7 +85,7 @@ cosmos_mongo_db_notices_params = {
 notices_storage_account = {
   account_kind                                                        = "StorageV2"
   account_tier                                                        = "Standard"
-  account_replication_type                                            = "GZRS"
+  account_replication_type                                            = "ZRS"
   blob_versioning_enabled                                             = true
   advanced_threat_protection                                          = false
   public_network_access_enabled                                       = false
@@ -101,7 +99,7 @@ notices_storage_account = {
 templates_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
-  account_replication_type      = "GZRS"
+  account_replication_type      = "ZRS"
   blob_versioning_enabled       = true
   advanced_threat_protection    = false
   public_network_access_enabled = false
@@ -112,16 +110,13 @@ templates_storage_account = {
 institutions_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
-  account_replication_type      = "GZRS"
+  account_replication_type      = "ZRS"
   blob_versioning_enabled       = true
   advanced_threat_protection    = false
   public_network_access_enabled = false
   blob_delete_retention_days    = 30
   enable_low_availability_alert = true
 }
-
-enable_iac_pipeline = true
-
 
 ehns_sku_name = "Standard"
 
