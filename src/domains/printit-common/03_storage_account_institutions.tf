@@ -1,5 +1,5 @@
 module "institutions_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.9.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.22.0"
   count  = var.is_feature_enabled.storage_institutions ? 1 : 0
 
   name                            = replace("${local.project_short}-ci", "-", "")
@@ -59,6 +59,14 @@ resource "azurerm_storage_container" "institutions_blob_file" {
   count = var.is_feature_enabled.storage_institutions ? 1 : 0
 
   name                  = "institutionsdatablob"
+  storage_account_name  = module.institutions_sa[0].name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_container" "institutions_blob_logo_file" {
+  count = var.is_feature_enabled.storage_institutions ? 1 : 0
+
+  name                  = "institutionslogoblob"
   storage_account_name  = module.institutions_sa[0].name
   container_access_type = "blob"
 }

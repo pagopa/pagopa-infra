@@ -123,7 +123,7 @@ No outputs.
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.6.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.47.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.101.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.106.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.29.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
@@ -144,7 +144,7 @@ No outputs.
 | <a name="module_printit_pdf_engine_app_service_java"></a> [printit\_pdf\_engine\_app\_service\_java](#module\_printit\_pdf\_engine\_app\_service\_java) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v8.18.0 |
 | <a name="module_printit_pdf_engine_java_slot_staging"></a> [printit\_pdf\_engine\_java\_slot\_staging](#module\_printit\_pdf\_engine\_java\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v8.18.0 |
 | <a name="module_printit_pdf_engine_slot_staging"></a> [printit\_pdf\_engine\_slot\_staging](#module\_printit\_pdf\_engine\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v8.18.0 |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v8.18.0 |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v8.22.0 |
 
 ## Resources
 
@@ -152,10 +152,12 @@ No outputs.
 |------|------|
 | [azurerm_api_management_api_version_set.api_pdf_engine_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.api_pdf_engine_node_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_subscription.api_config_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.generator_for_service_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.pdf_engine_node_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.pdf_engine_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.api_config_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.application_insights_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -189,6 +191,7 @@ No outputs.
 | [kubernetes_role_binding.deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
 | [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
 | [azurerm_api_management.apim](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management) | data source |
+| [azurerm_api_management_product.apim_api_config_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_application_insights.application_insights_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_container_registry.container_registry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/container_registry) | data source |
@@ -217,10 +220,12 @@ No outputs.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
-| <a name="input_app_service_pdf_engine_always_on"></a> [app\_service\_pdf\_engine\_always\_on](#input\_app\_service\_pdf\_engine\_always\_on) | Always on property | `bool` | `true` | no |
-| <a name="input_app_service_pdf_engine_autoscale_enabled"></a> [app\_service\_pdf\_engine\_autoscale\_enabled](#input\_app\_service\_pdf\_engine\_autoscale\_enabled) | n/a | `bool` | `true` | no |
-| <a name="input_app_service_pdf_engine_sku_name"></a> [app\_service\_pdf\_engine\_sku\_name](#input\_app\_service\_pdf\_engine\_sku\_name) | app service plan size | `string` | `"S1"` | no |
-| <a name="input_app_service_pdf_engine_sku_name_java"></a> [app\_service\_pdf\_engine\_sku\_name\_java](#input\_app\_service\_pdf\_engine\_sku\_name\_java) | app service plan size | `string` | `"S1"` | no |
+| <a name="input_app_service_pdf_engine_always_on"></a> [app\_service\_pdf\_engine\_always\_on](#input\_app\_service\_pdf\_engine\_always\_on) | Always on property | `bool` | n/a | yes |
+| <a name="input_app_service_pdf_engine_autoscale_enabled"></a> [app\_service\_pdf\_engine\_autoscale\_enabled](#input\_app\_service\_pdf\_engine\_autoscale\_enabled) | APP Service PDF | `bool` | n/a | yes |
+| <a name="input_app_service_pdf_engine_sku_name"></a> [app\_service\_pdf\_engine\_sku\_name](#input\_app\_service\_pdf\_engine\_sku\_name) | app service plan size | `string` | n/a | yes |
+| <a name="input_app_service_pdf_engine_sku_name_java"></a> [app\_service\_pdf\_engine\_sku\_name\_java](#input\_app\_service\_pdf\_engine\_sku\_name\_java) | app service plan size | `string` | n/a | yes |
+| <a name="input_app_service_pdf_engine_sku_name_java_zone_balancing_enabled"></a> [app\_service\_pdf\_engine\_sku\_name\_java\_zone\_balancing\_enabled](#input\_app\_service\_pdf\_engine\_sku\_name\_java\_zone\_balancing\_enabled) | Enable HA multi az balancing | `bool` | n/a | yes |
+| <a name="input_app_service_pdf_engine_zone_balancing_enabled"></a> [app\_service\_pdf\_engine\_zone\_balancing\_enabled](#input\_app\_service\_pdf\_engine\_zone\_balancing\_enabled) | Enable HA multi az balancing | `bool` | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The wallet dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |

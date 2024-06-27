@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "nodo_cfg_sync_rg" {
 }
 
 module "nodo_cfg_sync_re_storage_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.60.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
 
   name                            = replace(format("%s-cfg-syn-re-st", local.project), "-", "")
   account_kind                    = var.nodo_cfg_sync_storage_account.account_kind

@@ -264,9 +264,64 @@ wisp_converter_storage_account = {
   backup_retention_days         = 0
 }
 
+nodo_storico_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = true
+  public_network_access_enabled = true
+  backup_enabled                = false
+  blob_delete_retention_days    = 0
+  backup_retention              = 0
+}
+
 redis_ha_enabled = false
+
 
 enabled_features = {
   eventhub_ha_tx = true
   eventhub_ha_rx = true
 }
+
+/*****************
+Service Bus
+*****************/
+service_bus_wisp = {
+  sku                                  = "Standard"
+  requires_duplicate_detection         = false
+  dead_lettering_on_message_expiration = false
+  queue_default_message_ttl            = "P7D" # default for Standard P10675199DT2H48M5.4775807S
+  capacity                             = 0
+  premium_messaging_partitions         = 0
+}
+# queue_name shall be <domain>_<service>_<name>
+# producer shall have only send authorization
+# consumer shall have only listen authorization
+service_bus_wisp_queues = [
+  {
+    name                = "nodo_wisp_paainviart_queue"
+    enable_partitioning = true
+    keys = [
+      {
+        name   = "wisp_converter_paainviart"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name                = "nodo_wisp_payment_timeout_queue"
+    enable_partitioning = true
+    keys = [
+      {
+        name   = "wisp_converter_payment_timeout"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  }
+]
+
