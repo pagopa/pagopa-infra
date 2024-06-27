@@ -39,8 +39,8 @@ nodo_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "2"
-  node_count_max  = "6"
+  node_count_min  = "0" # PSFC-TODO da ripristinare prima del merge a 2
+  node_count_max  = "0" # PSFC-TODO da ripristinare prima del merge a 6
   node_labels = {
   "nodo" = "true", },
   node_taints        = ["dedicated=nodo:NoSchedule"],
@@ -220,13 +220,13 @@ storage_account_info = {
 }
 
 # WISP-dismantling-cfg
-create_wisp_converter = false
+create_wisp_converter = true
 wisp_converter = {
   enable_apim_switch     = false
-  brokerPSP_whitelist    = ""
-  channel_whitelist      = ""
-  station_whitelist      = ""
-  dismantling_primitives = ""
+  brokerPSP_whitelist    = "97735020584"    # AGID
+  channel_whitelist      = "97735020584_03" # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/135924270/Canali+Particolari
+  station_whitelist      = "15376371009_09" # https://config.uat.platform.pagopa.it/stations/15376371009_09
+  dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
 }
 
 enable_sendPaymentResultV2_SWClient = true
