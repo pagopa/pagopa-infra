@@ -1,6 +1,6 @@
 locals {
   # Map of <queue_names, queue>
-  queues = { for q in var.service_bus_01_queues : q.name => q }
+  queues = { for q in var.service_bus_wisp_queues : q.name => q }
 
   # List of queue names
   queue_names = keys(local.queues)
@@ -10,7 +10,7 @@ locals {
   # Map of <authorization_key, authorization(queue, properties)>
   key_queue_map = {
     for qk in flatten([
-      for q in var.service_bus_01_queues :
+      for q in var.service_bus_wisp_queues :
       [
         for k in q.keys : {
           key_name   = k.name
@@ -30,7 +30,7 @@ locals {
 
   # Local variable to store the map of queue names to related resource ids
   # queue_map enables access to queue_id by queue_name -> <queue_name, queue_id>
-  queue_map = { for idx, name in local.queue_names : name => azurerm_servicebus_queue.service_bus_01_queue[idx].id }
+  queue_map = { for idx, name in local.queue_names : name => azurerm_servicebus_queue.service_bus_wisp_queue[idx].id }
 }
 
 resource "azurerm_resource_group" "service_bus_rg" {
@@ -41,15 +41,15 @@ resource "azurerm_resource_group" "service_bus_rg" {
 }
 
 # https://learn.microsoft.com/en-us/azure/service-bus-messaging/service-bus-quotas
-resource "azurerm_servicebus_namespace" "service_bus_01" {
-  name                = "${local.project}-servicebus-01"
+resource "azurerm_servicebus_namespace" "service_bus_wisp" {
+  name                = "${local.project}-servicebus-wisp"
   location            = var.location
   resource_group_name = local.sb_resource_group_name
-  sku                 = var.service_bus_01.sku
-  zone_redundant      = var.service_bus_01.sku == "Premium" # https://learn.microsoft.com/en-us/azure/well-architected/service-guides/service-bus/reliability
+  sku                 = var.service_bus_wisp.sku
+  zone_redundant      = var.service_bus_wisp.sku == "Premium" # https://learn.microsoft.com/en-us/azure/well-architected/service-guides/service-bus/reliability
 
-  capacity = try(var.service_bus_01.capacity, null)
-  # premium_messaging_partitions = var.service_bus_01.premium_messaging_partitions
+  capacity                     = try(var.service_bus_wisp.capacity, null)
+  premium_messaging_partitions = var.service_bus_wisp.premium_messaging_partitions
 
   network_rule_set {
     trusted_services_allowed = true
@@ -69,21 +69,21 @@ resource "azurerm_servicebus_namespace" "service_bus_01" {
   ]
 }
 
-resource "azurerm_servicebus_queue" "service_bus_01_queue" {
+resource "azurerm_servicebus_queue" "service_bus_wisp_queue" {
   count = length(local.queue_values)
 
   name         = local.queue_values[count.index].name
-  namespace_id = azurerm_servicebus_namespace.service_bus_01.id
+  namespace_id = azurerm_servicebus_namespace.service_bus_wisp.id
 
-  enable_partitioning = var.service_bus_01.sku == "Premium" ? null : local.queue_values[count.index].enable_partitioning
-  default_message_ttl = var.service_bus_01.queue_default_message_ttl
+  enable_partitioning = local.queue_values[count.index].enable_partitioning
+  default_message_ttl = var.service_bus_wisp.queue_default_message_ttl
 
   depends_on = [
-    azurerm_servicebus_namespace.service_bus_01
+    azurerm_servicebus_namespace.service_bus_wisp
   ]
 }
 
-resource "azurerm_servicebus_queue_authorization_rule" "service_bus_01_queue_authorization_rule" {
+resource "azurerm_servicebus_queue_authorization_rule" "service_bus_wisp_queue_authorization_rule" {
   for_each = local.key_queue_map
 
   name     = each.key
@@ -94,7 +94,7 @@ resource "azurerm_servicebus_queue_authorization_rule" "service_bus_01_queue_aut
   manage = each.value.manage
 
   depends_on = [
-    azurerm_servicebus_namespace.service_bus_01,
-    azurerm_servicebus_queue.service_bus_01_queue
+    azurerm_servicebus_namespace.service_bus_wisp,
+    azurerm_servicebus_queue.service_bus_wisp_queue
   ]
 }

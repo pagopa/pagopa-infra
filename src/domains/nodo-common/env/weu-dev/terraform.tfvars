@@ -287,7 +287,7 @@ enabled_features = {
 /*****************
 Service Bus
 *****************/
-service_bus_01 = {
+service_bus_wisp = {
   sku                                  = "Standard"
   requires_duplicate_detection         = false
   dead_lettering_on_message_expiration = false
@@ -298,7 +298,7 @@ service_bus_01 = {
 # queue_name shall be <domain>_<service>_<name>
 # producer shall have only send authorization
 # consumer shall have only listen authorization
-service_bus_01_queues = [
+service_bus_wisp_queues = [
   {
     name                = "nodo_wisp_paainviart_queue"
     enable_partitioning = true

@@ -14,12 +14,13 @@ module "cosmosdb_account_nodo_re" {
   subnet_id                     = module.cosmosdb_nodo_re_snet[0].id
   public_network_access_enabled = var.cosmos_nosql_db_params.public_network_access_enabled
   # private endpoint
-  private_endpoint_enabled           = var.cosmos_nosql_db_params.private_endpoint_enabled
-  private_endpoint_sql_name          = "${local.project}-re-cosmos-nosql-endpoint"
-  private_dns_zone_sql_ids           = [data.azurerm_private_dns_zone.cosmos_nosql.id]
-  is_virtual_network_filter_enabled  = var.cosmos_nosql_db_params.is_virtual_network_filter_enabled
-  allowed_virtual_network_subnet_ids = var.cosmos_nosql_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id, data.azurerm_subnet.nodo_re_to_datastore_function_snet[0].id]
-  ip_range                           = ""
+  private_service_connection_sql_name = "${local.project}-re-cosmos-nosql-endpoint"
+  private_endpoint_enabled            = var.cosmos_nosql_db_params.private_endpoint_enabled
+  private_endpoint_sql_name           = "${local.project}-re-cosmos-nosql-endpoint"
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos_nosql.id]
+  is_virtual_network_filter_enabled   = var.cosmos_nosql_db_params.is_virtual_network_filter_enabled
+  allowed_virtual_network_subnet_ids  = var.cosmos_nosql_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id, data.azurerm_subnet.nodo_re_to_datastore_function_snet[0].id]
+  ip_range                            = ""
 
   enable_automatic_failover = true
 

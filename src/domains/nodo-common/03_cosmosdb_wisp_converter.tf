@@ -15,11 +15,12 @@ module "cosmosdb_account_wispconv" {
   subnet_id                     = module.cosmosdb_wisp_converter_snet[0].id
   public_network_access_enabled = var.wisp_converter_cosmos_nosql_db_params.public_network_access_enabled
   # private endpoint
-  private_endpoint_enabled          = var.wisp_converter_cosmos_nosql_db_params.private_endpoint_enabled
-  private_endpoint_sql_name         = "${local.project}-wispconv-cosmos-nosql-endpoint"
-  private_dns_zone_sql_ids          = [data.azurerm_private_dns_zone.cosmos_nosql.id]
-  is_virtual_network_filter_enabled = var.wisp_converter_cosmos_nosql_db_params.is_virtual_network_filter_enabled
-  ip_range                          = ""
+  private_service_connection_sql_name = "${local.project}-wispconv-cosmos-nosql-endpoint"
+  private_endpoint_enabled            = var.wisp_converter_cosmos_nosql_db_params.private_endpoint_enabled
+  private_endpoint_sql_name           = "${local.project}-wispconv-cosmos-nosql-endpoint"
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos_nosql.id]
+  is_virtual_network_filter_enabled   = var.wisp_converter_cosmos_nosql_db_params.is_virtual_network_filter_enabled
+  ip_range                            = ""
 
   allowed_virtual_network_subnet_ids = var.wisp_converter_cosmos_nosql_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 

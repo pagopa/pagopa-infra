@@ -539,7 +539,7 @@ variable "enabled_features" {
 /*****************
 Service Bus
 *****************/
-variable "service_bus_01" {
+variable "service_bus_wisp" {
   type = object({
     sku                                  = string
     requires_duplicate_detection         = bool
@@ -559,8 +559,8 @@ variable "service_bus_01" {
   }
 }
 
-variable "service_bus_01_queues" {
-  description = "A list of Service Bus Queues to add to namespace service_bus_01."
+variable "service_bus_wisp_queues" {
+  description = "A list of Service Bus Queues to add to namespace service_bus_wisp."
   type = list(object({
     name                = string
     enable_partitioning = bool

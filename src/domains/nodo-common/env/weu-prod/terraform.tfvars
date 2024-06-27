@@ -43,7 +43,7 @@ pgres_flex_params = {
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                                       = 1048576
   zone                                             = 1
-  standby_ha_zone                                  = 3
+  standby_ha_zone                                  = 2
   backup_retention_days                            = 30
   geo_redundant_backup_enabled                     = true
   create_mode                                      = "Default"
@@ -259,7 +259,7 @@ nodo_verifyko_storage_account = {
 nodo_storico_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
-  account_replication_type      = "LRS"
+  account_replication_type      = "GZRS"
   blob_versioning_enabled       = true
   advanced_threat_protection    = true
   public_network_access_enabled = true
@@ -315,7 +315,7 @@ enabled_features = {
 /*****************
 Service Bus
 *****************/
-service_bus_01 = {
+service_bus_wisp = {
   sku                                  = "Premium"
   requires_duplicate_detection         = false
   dead_lettering_on_message_expiration = false
@@ -326,7 +326,7 @@ service_bus_01 = {
 # queue_name shall be <domain>_<service>_<name>
 # producer shall have only send authorization
 # consumer shall have only listen authorization
-service_bus_01_queues = [
+service_bus_wisp_queues = [
   {
     name                = "nodo_wisp_paainviart_queue"
     enable_partitioning = true
