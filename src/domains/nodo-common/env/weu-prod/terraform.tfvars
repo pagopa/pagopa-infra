@@ -320,8 +320,8 @@ service_bus_wisp = {
   requires_duplicate_detection         = false
   dead_lettering_on_message_expiration = false
   queue_default_message_ttl            = null # default is good
-  capacity                             = 2
-  premium_messaging_partitions         = 2
+  capacity                             = 1
+  premium_messaging_partitions         = 1
 }
 # queue_name shall be <domain>_<service>_<name>
 # producer shall have only send authorization
@@ -329,7 +329,7 @@ service_bus_wisp = {
 service_bus_wisp_queues = [
   {
     name                = "nodo_wisp_paainviart_queue"
-    enable_partitioning = true
+    enable_partitioning = false
     keys = [
       {
         name   = "wisp_converter_paainviart"
@@ -341,7 +341,7 @@ service_bus_wisp_queues = [
   },
   {
     name                = "nodo_wisp_payment_timeout_queue"
-    enable_partitioning = true
+    enable_partitioning = false
     keys = [
       {
         name   = "wisp_converter_payment_timeout"
