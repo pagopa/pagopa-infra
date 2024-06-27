@@ -5,7 +5,6 @@ locals {
 
   project_core_itn = "${var.prefix}-${var.env_short}-${var.location_short}-core"
 
-
   monitor_appinsights_name        = "${local.product}-appinsights"
   monitor_appinsights_italy_name  = "${local.project_core_itn}-appinsights"
   monitor_action_group_slack_name = "SlackPagoPA"
@@ -31,4 +30,7 @@ locals {
     ["azdo-${var.env}-pagopa-iac-deploy",
     "azdo-${var.env}-pagopa-iac-plan"]
   )
+
+  msg_resource_group_name      = "${local.product}-msg-rg"
+  eventhub_resource_group_name = "${local.project}-evh-rg"
 }
