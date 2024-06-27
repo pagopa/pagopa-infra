@@ -24,23 +24,23 @@ module "printit_pdf_engine_app_service" {
 
   # App service plan vars
   plan_name = "${local.project}-plan-pdf-engine"
-  sku_name = var.app_service_pdf_engine_sku_name
+  sku_name  = var.app_service_pdf_engine_sku_name
 
   # App service plan
   name                = "${local.project}-app-pdf-engine"
   client_cert_enabled = false
   always_on           = var.app_service_pdf_engine_always_on
 
-  docker_image        = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
-  docker_image_tag    = "latest"
+  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
+  docker_image_tag = "latest"
 
   health_check_path = "/info"
 
   app_settings = local.printit_pdf_engine_app_settings
 
   zone_balancing_enabled = var.app_service_pdf_engine_autoscale_enabled
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
-  allowed_ips     = []
+  allowed_subnets        = [data.azurerm_subnet.apim_vnet.id]
+  allowed_ips            = []
 
   subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
@@ -82,8 +82,8 @@ module "printit_pdf_engine_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_autoscale" {
-  count = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
-  enabled             = var.app_service_pdf_engine_autoscale_enabled
+  count   = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
+  enabled = var.app_service_pdf_engine_autoscale_enabled
 
   name                = "${local.project}-autoscale-pdf-engine"
   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
@@ -257,8 +257,8 @@ module "printit_pdf_engine_app_service_java" {
   location            = var.location
 
   # App service plan vars
-  plan_name = "${local.project}-plan-pdf-engine-java"
-  sku_name  = var.app_service_pdf_engine_sku_name_java
+  plan_name              = "${local.project}-plan-pdf-engine-java"
+  sku_name               = var.app_service_pdf_engine_sku_name_java
   zone_balancing_enabled = var.app_service_pdf_engine_sku_name_java_zone_balancing_enabled
 
   # App service plan

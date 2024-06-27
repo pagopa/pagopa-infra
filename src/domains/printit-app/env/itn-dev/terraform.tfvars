@@ -39,7 +39,7 @@ is_feature_enabled = {
 }
 
 app_service_pdf_engine_autoscale_enabled = true
-app_service_pdf_engine_always_on = true
-app_service_pdf_engine_sku_name = "S1"
+app_service_pdf_engine_always_on         = true
+app_service_pdf_engine_sku_name          = "S1"
 
 app_service_pdf_engine_sku_name_java = "S1"

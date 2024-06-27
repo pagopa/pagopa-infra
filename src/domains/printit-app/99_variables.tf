@@ -166,7 +166,7 @@ variable "payment_wallet_migrations_enabled" {
 # APP Service PDF
 #
 variable "app_service_pdf_engine_autoscale_enabled" {
-  type    = bool
+  type = bool
 }
 
 variable "app_service_pdf_engine_always_on" {
@@ -180,7 +180,7 @@ variable "app_service_pdf_engine_sku_name" {
 }
 
 variable "app_service_pdf_engine_zone_balancing_enabled" {
-  type = bool
+  type        = bool
   description = "Enable HA multi az balancing"
 }
 
@@ -191,7 +191,7 @@ variable "app_service_pdf_engine_sku_name_java" {
 }
 
 variable "app_service_pdf_engine_sku_name_java_zone_balancing_enabled" {
-  type = bool
+  type        = bool
   description = "Enable HA multi az balancing"
 }
 
