@@ -1,5 +1,5 @@
 module "eventhub_printit" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration?ref=v8.9.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration?ref=v8.22.0"
   count  = var.is_feature_enabled.eventhub ? 1 : 0
 
   event_hub_namespace_name                = "${var.prefix}-${var.env_short}-${var.location_short}-core-evh-meucci"
