@@ -31,7 +31,7 @@ cidr_printit_storage_italy    = ["10.3.12.32/27"]
 cidr_printit_redis_italy      = ["10.3.12.64/27"]
 cidr_printit_postgresql_italy = ["10.3.12.96/27"]
 cidr_printit_pdf_engine_italy = ["10.3.12.128/27"]
-cidr_printit_eventhub_italy = ["10.3.12.160/27"]
+cidr_printit_eventhub_italy   = ["10.3.12.160/27"]
 
 ### External resources
 
@@ -123,11 +123,11 @@ ehns_sku_name = "Standard"
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
-ehns_capacity = 1
-ehns_alerts_enabled = false
-ehns_zone_redundant = false
+ehns_capacity                 = 1
+ehns_alerts_enabled           = false
+ehns_zone_redundant           = false
 
-ehns_public_network_access = false
+ehns_public_network_access       = false
 ehns_private_endpoint_is_present = true
 
 ehns_metric_alerts = {
