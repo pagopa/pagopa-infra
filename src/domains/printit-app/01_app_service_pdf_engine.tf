@@ -6,8 +6,8 @@ resource "azurerm_resource_group" "printit_pdf_engine_app_service_rg" {
 }
 
 data "azurerm_container_registry" "container_registry" {
-  name                = "pagopa${var.env_short}commonacr"
-  resource_group_name = "pagopa-${var.env_short}-container-registry-rg"
+  name                = "pagopa${var.env_short}itncoreacr"
+  resource_group_name = "pagopa-${var.env_short}-itn-acr-rg"
 }
 
 ################
