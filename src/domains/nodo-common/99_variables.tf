@@ -435,18 +435,6 @@ variable "nodo_storico_storage_account" {
     backup_retention              = optional(number, 0)
 
   })
-  default = {
-    account_kind                  = "StorageV2"
-    account_tier                  = "Standard"
-    account_replication_type      = "LRS"
-    blob_versioning_enabled       = false
-    advanced_threat_protection    = true
-    public_network_access_enabled = true
-    backup_enabled                = false
-    blob_delete_retention_days    = 0
-    backup_retention              = 0
-
-  }
 }
 
 variable "nodo_storico_allowed_ips" {

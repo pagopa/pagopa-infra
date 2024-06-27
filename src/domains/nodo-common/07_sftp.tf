@@ -74,7 +74,7 @@ resource "azurerm_storage_container" "sogei" {
 
 resource "azurerm_storage_blob" "sogei_dirs" {
   for_each               = toset(["Inbox", "output"])
-  name                   = format("sftp/%s/.test", each.key)
+  name                   = "${each.key}/.test"
   storage_account_name   = module.sftp.name
   storage_container_name = azurerm_storage_container.sogei.name
   type                   = "Block"

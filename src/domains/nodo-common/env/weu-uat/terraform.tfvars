@@ -230,17 +230,6 @@ nodo_re_storage_account = {
   backup_enabled                = false
 }
 
-nodo_storico_storage_account = {
-  account_kind                  = "StorageV2"
-  account_tier                  = "Standard"
-  account_replication_type      = "LRS"
-  blob_versioning_enabled       = false
-  advanced_threat_protection    = true
-  public_network_access_enabled = false
-  backup_enabled                = false
-  blob_delete_retention_days    = 0
-}
-
 nodo_verifyko_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
@@ -277,8 +266,20 @@ wisp_converter_storage_account = {
   backup_retention_days         = 0
 }
 
+nodo_storico_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = true
+  public_network_access_enabled = false
+  backup_enabled                = false
+  blob_delete_retention_days    = 0
+  backup_retention              = 0
+}
 
 redis_ha_enabled = false
+
 
 enabled_features = {
   eventhub_ha_tx = true
