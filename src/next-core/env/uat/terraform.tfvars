@@ -656,47 +656,6 @@ eventhubs_04 = [
   }
 ]
 
-/*****************
-Service Bus
-*****************/
-service_bus_01 = {
-  sku                                  = "Premium"
-  requires_duplicate_detection         = false
-  dead_lettering_on_message_expiration = false
-  queue_default_message_ttl            = null # default is good
-  capacity                             = 2
-  premium_messaging_partitions         = 2
-}
-# queue_name shall be <domain>_<service>_<name>
-# producer shall have only send authorization
-# consumer shall have only listen authorization
-service_bus_01_queues = [
-  {
-    name                = "nodo_wisp_paainviart_queue"
-    enable_partitioning = true
-    keys = [
-      {
-        name   = "wisp_converter_paainviart"
-        listen = true
-        send   = true
-        manage = false
-      }
-    ]
-  },
-  {
-    name                = "nodo_wisp_payment_timeout_queue"
-    enable_partitioning = true
-    keys = [
-      {
-        name   = "wisp_converter_payment_timeout"
-        listen = true
-        send   = true
-        manage = false
-      }
-    ]
-  }
-]
-
 node_forwarder_logging_level          = "DEBUG"
 node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "B1"
