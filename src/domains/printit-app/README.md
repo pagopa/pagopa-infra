@@ -144,7 +144,7 @@ No outputs.
 | <a name="module_printit_pdf_engine_app_service_java"></a> [printit\_pdf\_engine\_app\_service\_java](#module\_printit\_pdf\_engine\_app\_service\_java) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v8.18.0 |
 | <a name="module_printit_pdf_engine_java_slot_staging"></a> [printit\_pdf\_engine\_java\_slot\_staging](#module\_printit\_pdf\_engine\_java\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v8.18.0 |
 | <a name="module_printit_pdf_engine_slot_staging"></a> [printit\_pdf\_engine\_slot\_staging](#module\_printit\_pdf\_engine\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v8.18.0 |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v8.18.0 |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v8.22.0 |
 
 ## Resources
 
@@ -220,10 +220,12 @@ No outputs.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
-| <a name="input_app_service_pdf_engine_always_on"></a> [app\_service\_pdf\_engine\_always\_on](#input\_app\_service\_pdf\_engine\_always\_on) | Always on property | `bool` | `true` | no |
-| <a name="input_app_service_pdf_engine_autoscale_enabled"></a> [app\_service\_pdf\_engine\_autoscale\_enabled](#input\_app\_service\_pdf\_engine\_autoscale\_enabled) | n/a | `bool` | `true` | no |
-| <a name="input_app_service_pdf_engine_sku_name"></a> [app\_service\_pdf\_engine\_sku\_name](#input\_app\_service\_pdf\_engine\_sku\_name) | app service plan size | `string` | `"S1"` | no |
-| <a name="input_app_service_pdf_engine_sku_name_java"></a> [app\_service\_pdf\_engine\_sku\_name\_java](#input\_app\_service\_pdf\_engine\_sku\_name\_java) | app service plan size | `string` | `"S1"` | no |
+| <a name="input_app_service_pdf_engine_always_on"></a> [app\_service\_pdf\_engine\_always\_on](#input\_app\_service\_pdf\_engine\_always\_on) | Always on property | `bool` | n/a | yes |
+| <a name="input_app_service_pdf_engine_autoscale_enabled"></a> [app\_service\_pdf\_engine\_autoscale\_enabled](#input\_app\_service\_pdf\_engine\_autoscale\_enabled) | APP Service PDF | `bool` | n/a | yes |
+| <a name="input_app_service_pdf_engine_sku_name"></a> [app\_service\_pdf\_engine\_sku\_name](#input\_app\_service\_pdf\_engine\_sku\_name) | app service plan size | `string` | n/a | yes |
+| <a name="input_app_service_pdf_engine_sku_name_java"></a> [app\_service\_pdf\_engine\_sku\_name\_java](#input\_app\_service\_pdf\_engine\_sku\_name\_java) | app service plan size | `string` | n/a | yes |
+| <a name="input_app_service_pdf_engine_sku_name_java_zone_balancing_enabled"></a> [app\_service\_pdf\_engine\_sku\_name\_java\_zone\_balancing\_enabled](#input\_app\_service\_pdf\_engine\_sku\_name\_java\_zone\_balancing\_enabled) | Enable HA multi az balancing | `bool` | n/a | yes |
+| <a name="input_app_service_pdf_engine_zone_balancing_enabled"></a> [app\_service\_pdf\_engine\_zone\_balancing\_enabled](#input\_app\_service\_pdf\_engine\_zone\_balancing\_enabled) | Enable HA multi az balancing | `bool` | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The wallet dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |

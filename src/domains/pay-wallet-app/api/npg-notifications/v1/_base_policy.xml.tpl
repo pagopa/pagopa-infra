@@ -5,6 +5,16 @@
         <set-variable name="walletId" value="@(context.Request.MatchedParameters["walletId"])" />
         <set-variable name="npgNotificationRequestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
         <set-variable name="orderIdBodyParam" value="@((string)((JObject)((JObject)context.Variables["npgNotificationRequestBody"])["operation"])["orderId"])" />
+        <validate-jwt query-parameter-name="sessionToken" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="jwtToken">
+            <issuer-signing-keys>
+                <key>{{npg-notification-jwt-secret}}</key>
+            </issuer-signing-keys>
+            <required-claims>
+                <claim name="walletId" match="all">
+                    <value>@((string)context.Variables.GetValueOrDefault("walletId",""))</value>
+                </claim>
+            </required-claims>
+        </validate-jwt>
         <choose>
             <when condition="@(((string)context.Variables["orderIdPathParam"]).Equals((string)context.Variables["orderIdBodyParam"]) != true)">
                 <return-response>
