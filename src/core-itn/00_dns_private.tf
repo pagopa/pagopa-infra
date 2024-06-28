@@ -9,7 +9,7 @@ data "azurerm_private_dns_zone" "internal_postgresql_pagopa_it" {
 }
 
 data "azurerm_private_dns_zone" "env_platform_pagopa_it" {
-  name                = "${var.dns_zone_internal_prefix}.${var.external_domain}"
+  name                = "${var.platform_dns_zone_prefix}.${var.external_domain}"
   resource_group_name = "pagopa-${var.env_short}-vnet-rg"
 }
 

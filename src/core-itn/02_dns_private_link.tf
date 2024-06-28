@@ -22,7 +22,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "env_platform_pagopa_it
   tags                  = var.tags
 }
 
-resource "azurerm_private_dns_zone_virtual_network_link" "internal_dev_platform_pagopa_it_vnet_link" {
+resource "azurerm_private_dns_zone_virtual_network_link" "internal_env_platform_pagopa_it_vnet_link" {
   name                  = module.vnet_italy[0].name
   private_dns_zone_name = data.azurerm_private_dns_zone.internal_env_platform_pagopa_it.name
   resource_group_name   = data.azurerm_private_dns_zone.internal_env_platform_pagopa_it.resource_group_name
