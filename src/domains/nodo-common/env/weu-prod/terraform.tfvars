@@ -198,7 +198,7 @@ standin_cosmos_nosql_db_params = {
 create_wisp_converter = false
 
 wisp_converter_cosmos_nosql_db_params = {
-  enabled      = true
+  # enabled      = true
   kind         = "GlobalDocumentDB"
   capabilities = []
   offer_type   = "Standard"

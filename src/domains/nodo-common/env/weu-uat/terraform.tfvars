@@ -115,7 +115,7 @@ custom_metric_alerts = {
 }
 
 cosmos_nosql_db_params = {
-  enabled      = true
+  # enabled      = true
   kind         = "GlobalDocumentDB"
   capabilities = ["EnableServerless"]
   offer_type   = "Standard"
@@ -139,7 +139,7 @@ cosmos_nosql_db_params = {
 }
 
 verifyko_cosmos_nosql_db_params = {
-  enabled      = true
+  # enabled      = true
   kind         = "GlobalDocumentDB"
   capabilities = []
   offer_type   = "Standard"
@@ -163,7 +163,7 @@ verifyko_cosmos_nosql_db_params = {
 }
 
 standin_cosmos_nosql_db_params = {
-  enabled      = true
+  # enabled      = true
   kind         = "GlobalDocumentDB"
   capabilities = []
   offer_type   = "Standard"
@@ -189,7 +189,7 @@ standin_cosmos_nosql_db_params = {
 create_wisp_converter = true
 
 wisp_converter_cosmos_nosql_db_params = {
-  enabled      = true
+  # enabled      = true
   kind         = "GlobalDocumentDB"
   capabilities = []
   offer_type   = "Standard"
