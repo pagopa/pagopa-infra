@@ -56,17 +56,33 @@ locals {
     {
       name               = "data",
       partition_key_path = "/id", # contains brokerEC_sessionId
-      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.events_ttl
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.data_ttl
       autoscale_settings = {
-        max_throughput = var.wisp_converter_cosmos_nosql_db_params.max_throughput
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.data_max_throughput
       }
     },
     {
       name               = "receipt",
       partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
-      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.events_ttl
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.receipt_ttl
       autoscale_settings = {
-        max_throughput = var.wisp_converter_cosmos_nosql_db_params.max_throughput
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.receipt_max_throughput
+      }
+    },
+    {
+      name               = "idempotency_key",
+      partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.idempotency_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.idempotency_max_throughput
+      }
+    },
+    {
+      name               = "re",
+      partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.re_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.re_max_throughput
       }
     }
   ]

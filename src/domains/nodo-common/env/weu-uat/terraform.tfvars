@@ -186,7 +186,7 @@ standin_cosmos_nosql_db_params = {
   max_throughput = 1000
 }
 
-enable_wisp_converter = false
+enable_wisp_converter = true
 
 wisp_converter_cosmos_nosql_db_params = {
   enabled      = true
@@ -208,8 +208,14 @@ wisp_converter_cosmos_nosql_db_params = {
 
   backup_continuous_enabled = false
 
-  events_ttl     = 604800 # 7 days in second
-  max_throughput = 1000
+  data_ttl                   = 604800 # 7 days in second
+  data_max_throughput        = 1000
+  re_ttl                     = 604800 # 7 days in second
+  re_max_throughput          = 1000
+  receipt_ttl                = 604800 # 7 days in second
+  receipt_max_throughput     = 1000
+  idempotency_ttl            = 604800 # 7 days in second
+  idempotency_max_throughput = 1000
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
