@@ -195,10 +195,10 @@ standin_cosmos_nosql_db_params = {
   max_throughput = 2000
 }
 
-enable_wisp_converter = false
+create_wisp_converter = false
 
 wisp_converter_cosmos_nosql_db_params = {
-  enabled      = true
+  # enabled      = true
   kind         = "GlobalDocumentDB"
   capabilities = []
   offer_type   = "Standard"
@@ -219,6 +219,15 @@ wisp_converter_cosmos_nosql_db_params = {
 
   events_ttl     = 604800 # 7 days in second
   max_throughput = 1000
+
+  data_ttl                   = 604800 # 30 days in second
+  data_max_throughput        = 1000
+  re_ttl                     = 31536000 # 1 year in second
+  re_max_throughput          = 1000
+  receipt_ttl                = -1 # max
+  receipt_max_throughput     = 1000
+  idempotency_ttl            = 604800 # 7 days in second
+  idempotency_max_throughput = 1000
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
