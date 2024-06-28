@@ -1,5 +1,5 @@
 module "cosmosdb_account_wispconv" {
-  count = var.enable_wisp_converter ? 1 : 0
+  count = var.create_wisp_converter ? 1 : 0
 
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.77.0"
   domain              = var.domain
@@ -43,7 +43,7 @@ module "cosmosdb_account_wispconv" {
 
 # cosmosdb database for wispconv
 module "cosmosdb_account_wispconv_db" {
-  count               = var.enable_wisp_converter ? 1 : 0
+  count               = var.create_wisp_converter ? 1 : 0
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v7.77.0"
   name                = "wispconverter"
   resource_group_name = azurerm_resource_group.wisp_converter_rg[0].name
@@ -56,17 +56,33 @@ locals {
     {
       name               = "data",
       partition_key_path = "/id", # contains brokerEC_sessionId
-      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.events_ttl
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.data_ttl
       autoscale_settings = {
-        max_throughput = var.wisp_converter_cosmos_nosql_db_params.max_throughput
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.data_max_throughput
       }
     },
     {
       name               = "receipt",
       partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
-      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.events_ttl
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.receipt_ttl
       autoscale_settings = {
-        max_throughput = var.wisp_converter_cosmos_nosql_db_params.max_throughput
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.receipt_max_throughput
+      }
+    },
+    {
+      name               = "idempotency_key",
+      partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.idempotency_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.idempotency_max_throughput
+      }
+    },
+    {
+      name               = "re",
+      partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.re_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.re_max_throughput
       }
     }
   ]
@@ -75,7 +91,7 @@ locals {
 # cosmosdb container for stand-in datastore
 module "cosmosdb_account_wispconv_containers" {
   source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.77.0"
-  for_each = { for c in local.wispconv_containers : c.name => c if var.enable_wisp_converter }
+  for_each = { for c in local.wispconv_containers : c.name => c if var.create_wisp_converter }
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.wisp_converter_rg[0].name
