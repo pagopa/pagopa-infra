@@ -404,49 +404,49 @@ variable "platform_private_dns_zone_records" {
 
 ## integration app gateway
 
-variable "app_gateway_sku_name" {
+variable "integration_app_gateway_sku_name" {
   type        = string
   description = "The Name of the SKU to use for this Application Gateway. Possible values are Standard_Small, Standard_Medium, Standard_Large, Standard_v2, WAF_Medium, WAF_Large, and WAF_v2"
 }
 
-variable "app_gateway_sku_tier" {
+variable "integration_app_gateway_sku_tier" {
   type        = string
   description = "The Tier of the SKU to use for this Application Gateway. Possible values are Standard, Standard_v2, WAF and WAF_v2"
 }
 
-variable "app_gateway_waf_enabled" {
+variable "integration_app_gateway_waf_enabled" {
   type        = bool
   description = "Enable waf"
   default     = false
 }
 
-variable "app_gateway_api_certificate_name" {
+variable "integration_app_gateway_api_certificate_name" {
   type        = string
   description = "Application gateway api certificate name on Key Vault"
 }
 
-variable "app_gateway_min_capacity" {
+variable "integration_app_gateway_min_capacity" {
   type    = number
   default = 0
 }
 
-variable "app_gateway_max_capacity" {
+variable "integration_app_gateway_max_capacity" {
   type    = number
   default = 2
 }
 
-variable "app_gateway_alerts_enabled" {
+variable "integration_app_gateway_alerts_enabled" {
   type        = bool
   description = "Enable alerts"
   default     = true
 }
 
-variable "app_gateway_portal_certificate_name" {
+variable "integration_app_gateway_portal_certificate_name" {
   type        = string
   description = "Application gateway developer portal certificate name on Key Vault"
 }
 
-variable "app_gateway_management_certificate_name" {
+variable "integration_app_gateway_management_certificate_name" {
   type        = string
   description = "Application gateway api management certificate name on Key Vault"
 }

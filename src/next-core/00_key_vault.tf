@@ -23,17 +23,17 @@ data "azurerm_key_vault_secret" "apim_publisher_email" {
 }
 
 data "azurerm_key_vault_certificate" "app_gw_platform" {
-  name         = var.app_gateway_api_certificate_name
+  name         = var.integration_app_gateway_api_certificate_name
   key_vault_id = data.azurerm_key_vault.kv_core.id
 }
 
 data "azurerm_key_vault_certificate" "portal_platform" {
-  name         = var.app_gateway_portal_certificate_name
+  name         = var.integration_app_gateway_portal_certificate_name
   key_vault_id = data.azurerm_key_vault.kv_core.id
 }
 
 data "azurerm_key_vault_certificate" "management_platform" {
-  name         = var.app_gateway_management_certificate_name
+  name         = var.integration_app_gateway_management_certificate_name
   key_vault_id = data.azurerm_key_vault.kv_core.id
 }
 

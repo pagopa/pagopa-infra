@@ -186,14 +186,14 @@ redis_cache_params = {
 }
 
 
-app_gateway_sku_name                    = "Standard_v2"
-app_gateway_sku_tier                    = "Standard_v2"
-cidr_subnet_appgateway_integration      = ["10.230.10.192/26"]
-integration_appgateway_private_ip       = "10.230.10.200"
-app_gateway_api_certificate_name        = "api-platform-pagopa-it"
-app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
-app_gateway_management_certificate_name = "management-platform-pagopa-it"
-integration_appgateway_zones            = [1, 2, 3]
+integration_app_gateway_sku_name                    = "Standard_v2"
+integration_app_gateway_sku_tier                    = "Standard_v2"
+cidr_subnet_appgateway_integration                  = ["10.230.10.192/26"]
+integration_appgateway_private_ip                   = "10.230.10.200"
+integration_app_gateway_api_certificate_name        = "api-platform-pagopa-it"
+integration_app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
+integration_app_gateway_management_certificate_name = "management-platform-pagopa-it"
+integration_appgateway_zones                        = [1, 2, 3]
 
 nodo_pagamenti_psp            = "97249640588,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec             = "00493410583,09633951000,06655971007,00856930102,02478610583,97169170822,01266290996,01248040998,01429910183,80007270376,01142420056,80052310580,83000730297,80082160013,94050080038,01032450072,01013130073,10718570012,01013210073,87007530170,01242340998,80012150274,02508710585,80422850588,94032590278,94055970480,92001600524,80043570482,92000530532,80094780378,80016430045,80011170505,80031650486,00337870406,09227921005,01928010683,00608810057,03299640163,82002730487,02928200241"
@@ -707,5 +707,5 @@ node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
 devops_agent_zones                    = [1, 2, 3]
 devops_agent_balance_zones            = false
 azdo_agent_vm_image_name              = "pagopa-p-azdo-agent-ubuntu2204-image-v4"
-app_gateway_min_capacity              = 2
-app_gateway_max_capacity              = 50
+integration_app_gateway_min_capacity  = 2
+integration_app_gateway_max_capacity  = 50
