@@ -195,7 +195,7 @@ standin_cosmos_nosql_db_params = {
   max_throughput = 2000
 }
 
-enable_wisp_converter = false
+create_wisp_converter = false
 
 wisp_converter_cosmos_nosql_db_params = {
   enabled      = true
