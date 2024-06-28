@@ -148,14 +148,14 @@ new JProperty("ttl", 1)
                                             var requestData = JObject.Parse((string) context.Variables["requestData"]);
                                             return (int) requestData["ttl"];
                                         }" caching-type="internal" />
-    <set-variable name="set_cache" value="false" />
+    <set-variable name="set_cache" value="false" /> <!-- set_cache to false indicates to skip LIST list algorithm -->
   </when>
 </choose>
 </when>
   </choose>
 
 <choose>
-<when condition="@(context.Variables.GetValueOrDefault<bool>("set_cache", true))">
+<when condition="@(context.Variables.GetValueOrDefault<string>("set_cache", "true")=="true")">
 <!-- evaluate list algorithm -->
 <set-variable name="dataToSet" value="@{
                             var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
