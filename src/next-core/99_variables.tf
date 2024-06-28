@@ -460,6 +460,87 @@ variable "integration_appgateway_zones" {
   description = "Integration app gateway private ip"
 }
 
+variable "integration_app_gateway_prf_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
+
+# public app gateway
+
+variable "app_gateway_api_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+variable "app_gateway_upload_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault ( 'upload' is used for heavy payload size)"
+}
+
+variable "upload_endpoint_enabled" {
+  type        = bool
+  description = "Enable upload for heavy payload size on appgw"
+  default     = false
+}
+
+variable "app_gateway_prf_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
+
+variable "app_gateway_portal_certificate_name" {
+  type        = string
+  description = "Application gateway developer portal certificate name on Key Vault"
+}
+
+variable "app_gateway_management_certificate_name" {
+  type        = string
+  description = "Application gateway api management certificate name on Key Vault"
+}
+
+variable "app_gateway_wisp2_certificate_name" {
+  type        = string
+  description = "Application gateway wisp2 certificate name on Key Vault"
+}
+
+variable "app_gateway_wisp2govit_certificate_name" {
+  type        = string
+  description = "Application gateway wisp2govit certificate name on Key Vault"
+}
+
+variable "app_gateway_wfespgovit_certificate_name" {
+  type        = string
+  description = "Application gateway wfespgovit certificate name on Key Vault"
+}
+variable "app_gateway_kibana_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
+
+variable "app_gateway_sku_name" {
+  type        = string
+  description = "The Name of the SKU to use for this Application Gateway. Possible values are Standard_Small, Standard_Medium, Standard_Large, Standard_v2, WAF_Medium, WAF_Large, and WAF_v2"
+}
+
+variable "app_gateway_sku_tier" {
+  type        = string
+  description = "The Tier of the SKU to use for this Application Gateway. Possible values are Standard, Standard_v2, WAF and WAF_v2"
+}
+
+variable "app_gateway_waf_enabled" {
+  type        = bool
+  description = "Enable waf"
+  default     = true
+}
+
+variable "app_gateway_alerts_enabled" {
+  type        = bool
+  description = "Enable alerts"
+  default     = true
+}
+
 # apim named values
 variable "checkout_enabled" {
   type    = bool
@@ -588,11 +669,12 @@ variable "dns_zone_wisp2" {
   description = "The wisp2 dns subdomain."
 }
 
-variable "app_gateway_prf_certificate_name" {
+variable "dns_zone_wfesp" {
   type        = string
-  description = "Application gateway api certificate name on Key Vault"
-  default     = ""
+  default     = null
+  description = "The wfesp dns subdomain."
 }
+
 
 
 #

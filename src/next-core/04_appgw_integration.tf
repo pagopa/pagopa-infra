@@ -45,8 +45,8 @@ locals {
       ssl_profile_name   = "${local.product_region}-ssl-profile"
       firewall_policy_id = null
       certificate = {
-        name = var.app_gateway_prf_certificate_name
-        id = var.app_gateway_prf_certificate_name == "" ? null : replace(
+        name = var.integration_app_gateway_prf_certificate_name
+        id = var.integration_app_gateway_prf_certificate_name == "" ? null : replace(
           data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
           ""

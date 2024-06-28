@@ -44,6 +44,8 @@ cidr_vnet_italy = ["10.3.0.0/16"]
 #
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
+dns_zone_wfesp    = ""
+
 dns_a_reconds_dbnodo_ips             = ["10.70.67.18"]    # db onCloud
 dns_a_reconds_dbnodonexipostgres_ips = ["10.222.214.176"] # db onPrem PostgreSQL
 private_dns_zone_db_nodo_pagamenti   = "d.db-nodo-pagamenti.com"
@@ -675,3 +677,47 @@ node_forwarder_sku                    = "B1"
 
 dns_forwarder_vm_image_name = "pagopa-d-dns-forwarder-ubuntu2204-image-v1"
 azdo_agent_vm_image_name    = "pagopa-d-azdo-agent-ubuntu2204-image-v3"
+
+
+# public app gateway
+# app_gateway
+app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
+app_gateway_upload_certificate_name     = "upload-dev-platform-pagopa-it"
+upload_endpoint_enabled                 = true
+app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
+app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
+app_gateway_wisp2_certificate_name      = "dev-wisp2-pagopa-it"
+app_gateway_wisp2govit_certificate_name = ""
+app_gateway_wfespgovit_certificate_name = ""
+app_gateway_kibana_certificate_name     = "kibana-dev-platform-pagopa-it"
+app_gateway_sku_name                    = "Standard_v2"
+app_gateway_sku_tier                    = "Standard_v2"
+app_gateway_waf_enabled                 = false
+app_gateway_alerts_enabled              = false
+app_gateway_deny_paths = [
+  "/notfound/*",
+]
+app_gateway_kibana_deny_paths = [
+  "/notfound/*",
+]
+app_gateway_deny_paths_2 = [
+  "/notfound2/*",
+]
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/allowed/*",
+  ]
+  ips = [
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+  ]
+}

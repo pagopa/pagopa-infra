@@ -43,6 +43,7 @@ cidr_subnet_azdoa                = ["10.1.130.0/24"]
 #
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
+dns_zone_wfesp    = "wfesp"
 private_dns_zone_db_nodo_pagamenti   = "p.db-nodo-pagamenti.com"
 dns_a_reconds_dbnodo_ips             = ["10.101.35.37", "10.101.35.38"]                                     # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
 dns_a_reconds_dbnodo_ips_dr          = ["10.250.45.145", "10.250.45.146", "10.250.45.147", "10.250.45.148"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
@@ -709,3 +710,78 @@ devops_agent_balance_zones            = false
 azdo_agent_vm_image_name              = "pagopa-p-azdo-agent-ubuntu2204-image-v4"
 integration_app_gateway_min_capacity  = 2
 integration_app_gateway_max_capacity  = 50
+
+# public app gateway
+# app_gateway
+app_gateway_api_certificate_name        = "api-platform-pagopa-it"
+app_gateway_upload_certificate_name     = "upload-platform-pagopa-it"
+app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
+app_gateway_management_certificate_name = "management-platform-pagopa-it"
+app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
+app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
+app_gateway_kibana_certificate_name     = "kibana-platform-pagopa-it"
+app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
+app_gateway_min_capacity                = 8 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
+app_gateway_max_capacity                = 50
+app_gateway_sku_name                    = "WAF_v2"
+app_gateway_sku_tier                    = "WAF_v2"
+app_gateway_waf_enabled                 = true
+app_gateway_alerts_enabled              = true
+app_gateway_deny_paths = [
+  "/nodo/.*",
+  # "/nodo-auth/.*", # non serve in quanto queste API sono con subkey required 🔐
+  "/payment-manager/clients/.*",
+  "/payment-manager/pp-restapi-rtd/.*",
+  "/payment-manager/db-logging/.*",
+  "/payment-manager/payment-gateway/.*",
+  "/payment-manager/internal*",
+  #  "/payment-manager/pm-per-nodo/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #  "/checkout/io-for-node/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #"/gpd-payments/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  "/tkm/tkmcardmanager/.*",
+  "/tkm/tkmacquirermanager/.*",
+  "/tkm/internal/.*",
+  "/payment-transactions-gateway/internal/.*",
+]
+app_gateway_deny_paths_2 = [
+  "/nodo-pagamenti/.*",
+  "/sync-cron/.*",
+  "/wfesp/.*",
+  "/fatturazione/.*",
+  "/payment-manager/pp-restapi-server/.*",
+  "/gps/donation-service/.*",             # internal use no sub-keys
+  "/shared/iuv-generator-service/.*",     # internal use no sub-keys
+  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
+  "/shared/authorizer/.*",                # internal use no sub-keys
+  "/gpd/api/.*",                          # internal use no sub-keys
+]
+app_gateway_kibana_deny_paths = [
+  "/kibana/*",
+]
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/web-bo/.*",
+    "/bo-nodo/.*",
+    "/pp-admin-panel/.*",
+    "/nodo-monitoring/monitoring/.*",
+    "/nodo-ndp/monitoring/.*",
+    "/nodo-replica-ndp/monitoring/.*",
+    "/wfesp-ndp/.*",
+    "/wfesp-replica-ndp/.*",
+    "/web-bo-ndp/.*",
+  ]
+  ips = [
+    "93.63.219.230",  # PagoPA on prem VPN
+    "93.63.219.234",  # PagoPA on prem VPN DR
+    "20.86.161.243",  # CSTAR
+    "213.215.138.80", # Softlab L1 Pagamenti VPN
+    "213.215.138.79", # Softlab L1 Pagamenti VPN
+    "82.112.220.178", # Softlab L1 Pagamenti VPN
+    "77.43.17.42",    # Softlab L1 Pagamenti VPN
+    "151.2.45.1",     # Softlab L1 Pagamenti VPN
+    "193.203.229.20", # VPN NEXI
+    "193.203.230.22", # VPN NEXI
+    "193.203.230.21", # VPN NEXI
+    "151.1.203.68"    # Softlab backup support line
+  ]
+}

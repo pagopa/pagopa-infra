@@ -45,6 +45,8 @@ cidr_subnet_loadtest_agent       = ["10.1.159.0/24"]
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
 dns_zone_prefix_prf      = "prf.platform"
+dns_zone_wfesp      = "wfesp.test"
+
 private_dns_zone_db_nodo_pagamenti       = "u.db-nodo-pagamenti.com"
 dns_a_reconds_dbnodo_ips                 = ["10.70.73.10"]    # db onCloud
 dns_a_reconds_dbnodo_prf_ips             = ["10.70.73.20"]    # db onCloud prf
@@ -167,7 +169,7 @@ base_path_nodo_fatturazione      = "/fatturazione-uat"
 base_path_nodo_web_bo            = "/web-bo-uat"
 base_path_nodo_web_bo_history    = "/web-bo-history-uat"
 dns_zone_wisp2                   = "uat.wisp2"
-app_gateway_prf_certificate_name = "api-prf-platform-pagopa-it"
+integration_app_gateway_prf_certificate_name = "api-prf-platform-pagopa-it"
 base_path_nodo_oncloud           = "/nodo-uat"
 
 
@@ -666,3 +668,76 @@ node_forwarder_sku                    = "B1"
 node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
 azdo_agent_vm_image_name              = "pagopa-u-azdo-agent-ubuntu2204-image-v3"
 
+# public app gateway
+# app_gateway
+app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
+app_gateway_upload_certificate_name     = "upload-uat-platform-pagopa-it"
+upload_endpoint_enabled                 = true
+app_gateway_prf_certificate_name        = "api-prf-platform-pagopa-it"
+app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it"
+app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
+app_gateway_wisp2_certificate_name      = "uat-wisp2-pagopa-it"
+app_gateway_wisp2govit_certificate_name = "uat-wisp2-pagopa-gov-it"
+app_gateway_wfespgovit_certificate_name = "wfesp-test-pagopa-gov-it"
+app_gateway_kibana_certificate_name     = "kibana-uat-platform-pagopa-it"
+app_gateway_sku_name                    = "WAF_v2"
+app_gateway_sku_tier                    = "WAF_v2"
+app_gateway_waf_enabled                 = true
+# app_gateway_sku_name                    = "Standard_v2"
+# app_gateway_sku_tier                    = "Standard_v2"
+# app_gateway_waf_enabled                 = false
+app_gateway_alerts_enabled = false
+app_gateway_deny_paths = [
+  # "/nodo/.*", # TEMP currently leave UAT public for testing, we should add subkeys here as well ( ➕ 🔓 forbid policy api_product/nodo_pagamenti_api/_base_policy.xml)
+  # "/nodo-auth/.*" # non serve in quanto queste API sono con subkey required 🔐
+  "/payment-manager/clients/.*",
+  "/payment-manager/pp-restapi-rtd/.*",
+  "/payment-manager/db-logging/.*",
+  "/payment-manager/payment-gateway/.*",
+  "/payment-manager/internal/.*",
+  #  "/payment-manager/pm-per-nodo/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #  "/checkout/io-for-node/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #  "/gpd-payments/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  "/tkm/internal/.*",
+  "/payment-transactions-gateway/internal/.*",
+  "/gps/donation-service/.*",             # internal use no sub-keys
+  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
+]
+app_gateway_deny_paths_2 = [
+  # "/nodo-pagamenti*", - used to test UAT nodo onCloud
+  "/sync-cron/.*",
+  "/wfesp/.*",
+  "/fatturazione/.*",
+  "/payment-manager/pp-restapi-server/.*",
+  "/shared/authorizer/.*", # internal use no sub-keys
+]
+app_gateway_kibana_deny_paths = [
+  "/kibana/*",
+]
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/web-bo/.*",
+    "/bo-nodo/.*",
+    "/pp-admin-panel/.*",
+    "/tkm/tkmacquirermanager/.*",
+    "/nodo-monitoring/monitoring/.*",
+    "/nodo-ndp/monitoring/.*",
+    "/nodo-replica-ndp/monitoring/.*",
+    "/wfesp-ndp/.*",
+    "/wfesp-replica-ndp/.*",
+    "/web-bo-ndp/.*",
+  ]
+  ips = [
+    "93.63.219.230",  # PagoPA on prem VPN
+    "93.63.219.234",  # PagoPA on prem VPN DR
+    "20.93.160.60",   # CSTAR
+    "213.215.138.80", # Softlab L1 Pagamenti VPN
+    "213.215.138.79", # Softlab L1 Pagamenti VPN
+    "82.112.220.178", # Softlab L1 Pagamenti VPN
+    "77.43.17.42",    # Softlab L1 Pagamenti VPN
+    "151.2.45.1",     # Softlab L1 Pagamenti VPN
+    "193.203.229.20", # VPN NEXI
+    "193.203.230.22", # VPN NEXI
+    "193.203.230.21", # VPN NEXI
+  ]
+}

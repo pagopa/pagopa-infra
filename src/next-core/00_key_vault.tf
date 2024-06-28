@@ -75,8 +75,35 @@ data "azurerm_key_vault_secret" "pm_host_prf" {
 
 data "azurerm_key_vault_certificate" "app_gw_platform_prf" {
   count = (var.dns_zone_prefix_prf == "") ? 0 : 1
+  name         = var.integration_app_gateway_prf_certificate_name
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
 
-  name         = var.app_gateway_prf_certificate_name
+data "azurerm_key_vault_certificate" "wisp2" {
+  name         = var.app_gateway_wisp2_certificate_name
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+
+data "azurerm_key_vault_certificate" "kibana" {
+  name         = var.app_gateway_kibana_certificate_name
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+
+data "azurerm_key_vault_certificate" "wisp2govit" {
+  count = (var.app_gateway_wisp2govit_certificate_name == "") ? 0 : 1
+
+  name         = var.app_gateway_wisp2govit_certificate_name
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+
+data "azurerm_key_vault_certificate" "wfespgovit" {
+  count        = (var.app_gateway_wfespgovit_certificate_name == "") ? 0 : 1
+  name         = var.app_gateway_wfespgovit_certificate_name
+  key_vault_id = data.azurerm_key_vault.kv_core.id
+}
+
+data "azurerm_key_vault_certificate" "app_gw_platform_upload" {
+  name         = var.app_gateway_upload_certificate_name
   key_vault_id = data.azurerm_key_vault.kv_core.id
 }
 
