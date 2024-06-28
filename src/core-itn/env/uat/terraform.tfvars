@@ -18,10 +18,6 @@ tags = {
 ### Feature Flag
 is_feature_enabled = {
   container_app_tools_cae   = true,
-  node_forwarder_ha_enabled = false,
-  vpn                       = true,
-  dns_forwarder_lb          = true,
-  postgres_private_dns      = true
 }
 
 #
