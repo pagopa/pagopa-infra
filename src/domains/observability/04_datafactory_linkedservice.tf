@@ -73,23 +73,23 @@ resource "azurerm_data_factory_linked_service_key_vault" "qi_df_linked_kv" {
 
 # recupero le info del db del nodo flexible
 data "azurerm_postgresql_flexible_server" "qi_nodo_flexible" {
-  name                = "pagopa-d-weu-nodo-flexible-postgresql"
-  resource_group_name = "pagopa-d-weu-nodo-db-rg"
+  name                = "pagopa-${var.env_short}-weu-nodo-flexible-postgresql"
+  resource_group_name = "pagopa-${var.env_short}-weu-nodo-db-rg"
 }
 
 # recupero la chiave nel key vault
 
 data "azurerm_key_vault_secret" "qi_kv_nodo_flexible_cfg" {
-  name         = "db-cfg-password"
+  name         = "db-cfg-password-read"
   key_vault_id = data.azurerm_key_vault.qi_nodo_kv.id
 }
 
 locals {
-  host_flexible_db          = data.azurerm_postgresql_flexible_server.qi_nodo_flexible.fqdn
-  password_flexible_cfg     = data.azurerm_key_vault_secret.qi_kv_nodo_flexible_cfg.value
-  user_flexible_cfg         = "cfg"
-  port_flexible_cfg         = "5432"
-  database_flexible_cfg     = "nodo"
+  host_flexible_db      = data.azurerm_postgresql_flexible_server.qi_nodo_flexible.fqdn
+  password_flexible_cfg = data.azurerm_key_vault_secret.qi_kv_nodo_flexible_cfg.value
+  user_flexible_cfg     = "cfgr"
+  port_flexible_cfg     = "5432"
+  database_flexible_cfg = "nodo"
 }
 
 
