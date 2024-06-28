@@ -1,6 +1,6 @@
 variable "is_feature_enabled" {
   type = object({
-    container_app_tools_cae   = optional(bool, false),
+    container_app_tools_cae = optional(bool, false),
   })
   description = "Features enabled in this domain"
 }

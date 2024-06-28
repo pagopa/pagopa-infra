@@ -17,7 +17,7 @@ tags = {
 
 ### Feature Flag
 is_feature_enabled = {
-  container_app_tools_cae   = true,
+  container_app_tools_cae = true,
 }
 
 #
