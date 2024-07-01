@@ -31,7 +31,7 @@ cidr_printit_storage_italy    = ["10.3.12.32/27"]
 cidr_printit_redis_italy      = ["10.3.12.64/27"]
 cidr_printit_postgresql_italy = ["10.3.12.96/27"]
 cidr_printit_pdf_engine_italy = ["10.3.12.128/27"]
-
+cidr_printit_eventhub_italy   = ["10.3.12.160/27"]
 
 ### External resources
 
@@ -115,44 +115,66 @@ institutions_storage_account = {
   enable_low_availability_alert = false
 }
 
-enable_iac_pipeline = true
-
-# eventhub
-eventhub_enabled = true
-
+#
+# EventHub
+#
 ehns_sku_name = "Standard"
 
-ehns_alerts_enabled = false
-ehns_metric_alerts  = {}
+# to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
+ehns_auto_inflate_enabled     = false
+ehns_maximum_throughput_units = 5
+ehns_capacity                 = 1
+ehns_alerts_enabled           = false
+ehns_zone_redundant           = false
 
-eventhubs = [
-  {
-    name              = "payment-notice-evt"
-    partitions        = 1
-    message_retention = 1
-    consumers = [
-      "pagopa-notice-evt-rx", "pagopa-notice-complete-evt-rx",
-      "pagopa-notice-error-evt-rx"
-    ]
-    keys = [
+ehns_public_network_access       = true
+ehns_private_endpoint_is_present = false
+
+ehns_metric_alerts = {
+  no_trx = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "No transactions received from acquirer in the last 24h"
+    operator    = "LessThanOrEqual"
+    threshold   = 1000
+    frequency   = "PT1H"
+    window_size = "P1D"
+    dimension = [
       {
-        name   = "pagopa-notice-evt-rx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "pagopa-notice-complete-evt-rx"
-        listen = true
-        send   = false
-        manage = false
-      },
-      {
-        name   = "pagopa-notice-error-evt-rxv"
-        listen = true
-        send   = false
-        manage = false
+        name     = "EntityName"
+        operator = "Include"
+        values   = ["rtd-trx"]
       }
-    ]
+    ],
   },
-]
+  active_connections = {
+    aggregation = "Average"
+    metric_name = "ActiveConnections"
+    description = null
+    operator    = "LessThanOrEqual"
+    threshold   = 0
+    frequency   = "PT5M"
+    window_size = "PT15M"
+    dimension   = [],
+  },
+  error_trx = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "Transactions rejected from one acquirer file received. trx write on eventhub. check immediately"
+    operator    = "GreaterThan"
+    threshold   = 0
+    frequency   = "PT5M"
+    window_size = "PT30M"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values = [
+          "nodo-dei-pagamenti-log",
+          "nodo-dei-pagamenti-re"
+        ]
+      }
+    ],
+  },
+}
+

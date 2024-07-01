@@ -1,6 +1,6 @@
 module "wisp_converter_storage_account" {
-  count  = var.enable_wisp_converter ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.60.0"
+  count  = var.create_wisp_converter ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
 
   name                            = replace(format("%s-wisp-conv-st", local.project), "-", "")
   account_kind                    = var.wisp_converter_storage_account.account_kind
@@ -32,7 +32,7 @@ module "wisp_converter_storage_account" {
 }
 
 resource "azurerm_private_endpoint" "wispconv_private_endpoint_container" {
-  count = var.env_short == "d" ? 0 : var.enable_wisp_converter ? 1 : 0
+  count = var.env_short == "d" ? 0 : var.create_wisp_converter ? 1 : 0
 
   name                = "${local.project}-wisp-converter-private-endpoint-container"
   location            = var.location
@@ -61,7 +61,7 @@ resource "azurerm_private_endpoint" "wispconv_private_endpoint_container" {
 
 # table wispconverter
 resource "azurerm_storage_table" "wisp_converter_table" {
-  count                = var.enable_wisp_converter ? 1 : 0
+  count                = var.create_wisp_converter ? 1 : 0
   name                 = "events"
   storage_account_name = module.wisp_converter_storage_account[0].name
 
@@ -72,7 +72,7 @@ resource "azurerm_storage_table" "wisp_converter_table" {
 
 # blob wispconverter
 resource "azurerm_storage_container" "wisp_converter_container" {
-  count                = var.enable_wisp_converter ? 1 : 0
+  count                = var.create_wisp_converter ? 1 : 0
   name                 = "payloads"
   storage_account_name = module.wisp_converter_storage_account[0].name
 

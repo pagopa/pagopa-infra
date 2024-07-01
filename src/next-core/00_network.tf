@@ -45,4 +45,3 @@ data "azurerm_nat_gateway" "nat_gw" {
   name                = "${local.product}-natgw"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 }
-
