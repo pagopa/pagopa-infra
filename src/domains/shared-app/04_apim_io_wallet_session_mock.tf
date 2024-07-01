@@ -8,12 +8,13 @@ locals {
     path                  = "session-wallet/mock"
     subscription_required = false
     service_url           = null
+    enabled               = var.env_short == "u" ? 1 : 0
   }
 }
 
 # Session wallet token service APIs
 resource "azurerm_api_management_api_version_set" "session_wallet_api_mock" {
-  count               = var.env_short == "d" ? 1 : 0
+  count               = local.apim_session_wallet_api_mock.enabled
   name                = "${local.project}-session-wallet-api-mock"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -22,7 +23,7 @@ resource "azurerm_api_management_api_version_set" "session_wallet_api_mock" {
 }
 
 resource "azurerm_api_management_api" "apim_session_wallet_api_mock" {
-  count = var.env_short == "d" ? 1 : 0
+  count = local.apim_session_wallet_api_mock.enabled
 
   name                  = "${local.project}-session-wallet-api-mock"
   api_management_name   = local.pagopa_apim_name
@@ -47,7 +48,7 @@ resource "azurerm_api_management_api" "apim_session_wallet_api_mock" {
 }
 
 resource "azurerm_api_management_api_policy" "apim_session_wallet_api_mock_policy" {
-  count               = var.env_short == "d" ? 1 : 0
+  count               = local.apim_session_wallet_api_mock.enabled
   api_name            = azurerm_api_management_api.apim_session_wallet_api_mock[0].name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
