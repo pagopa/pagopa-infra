@@ -180,7 +180,7 @@
               <set-url>${pdv_api_base_path}/tokens</set-url>
               <set-method>PUT</set-method>
               <set-header name="x-api-key" exists-action="override">
-                  <value>{{wallet-session-personal-data-vault-api-key}}</value>
+                  <value>{{ecommerce-personal-data-vault-api-key}}</value>
               </set-header>
               <set-body>@{
                 JObject userAuthBody = (JObject)context.Variables["userAuth"];
