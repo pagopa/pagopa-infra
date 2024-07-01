@@ -24,4 +24,18 @@
         }
         return "";
         }" />
+      <set-variable name="name" value="@{
+        var jwt = (Jwt)context.Variables["jwtToken"];
+        if(jwt.Claims.ContainsKey("name")){
+            return jwt.Claims["name"][0];
+        }
+        return "";
+        }" />
+      <set-variable name="surname" value="@{
+        var jwt = (Jwt)context.Variables["jwtToken"];
+        if(jwt.Claims.ContainsKey("surname")){
+            return jwt.Claims["surname"][0];
+        }
+        return "";
+        }" />
 </fragment>      
