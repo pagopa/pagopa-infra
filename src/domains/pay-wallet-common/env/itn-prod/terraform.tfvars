@@ -105,7 +105,9 @@ pay_wallet_storage_params = {
   public_network_access_enabled = false,
 }
 
+#
 # AKS
+#
 aks_user_node_pool = {
   enabled         = true,
   name            = "padakswalusr",
@@ -113,7 +115,7 @@ aks_user_node_pool = {
   os_disk_type    = "Ephemeral",
   os_disk_size_gb = 300,
   node_count_min  = 1,
-  node_count_max  = 1,
+  node_count_max  = 3,
   zones           = [1, 2, 3]
   node_labels     = { node_name : "aks-pay-wallet-user", node_type : "user", domain : "paywallet" },
   node_taints     = ["paymentWalletOnly=true:NoSchedule"],
