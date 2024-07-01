@@ -24,6 +24,23 @@ data "azurerm_cosmosdb_account" "bizevents_neg_datastore_cosmosdb_account" {
   resource_group_name = format("%s-%s-%s-bizevents-rg", var.prefix, var.env_short, var.location_short)
 }
 
+data "azurerm_servicebus_queue_authorization_rule" "wisp_payment_timeout_authorization" {
+  name                = "wisp_converter_payment_timeout"
+  resource_group_name = local.sb_resource_group_name
+  queue_name          = "nodo_wisp_payment_timeout_queue"
+  namespace_name      = "${local.project}-servicebus-wisp"
+
+  depends_on = [azurerm_servicebus_queue.service_bus_wisp_queue]
+}
+
+data "azurerm_servicebus_queue_authorization_rule" "wisp_paainviart_authorization" {
+  name                = "wisp_converter_paainviart"
+  resource_group_name = local.sb_resource_group_name
+  queue_name          = "nodo_wisp_paainviart_queue"
+  namespace_name      = "${local.project}-servicebus-wisp"
+
+  depends_on = [azurerm_servicebus_queue.service_bus_wisp_queue]
+}
 
 /*****************
 Storage Account
@@ -39,7 +56,7 @@ resource "azurerm_key_vault_secret" "node_cfg_sync_re_sa_connection_string" {
 }
 
 resource "azurerm_key_vault_secret" "wisp_converter_re_sa_connection_string" {
-  count        = var.enable_wisp_converter ? 1 : 0
+  count        = var.create_wisp_converter ? 1 : 0
   name         = "wisp-converter-re-sa-connection-string-key"
   value        = module.wisp_converter_storage_account[0].primary_connection_string
   key_vault_id = data.azurerm_key_vault.key_vault.id
@@ -116,7 +133,7 @@ CosmosDB
 *****************/
 
 resource "azurerm_key_vault_secret" "wisp_converter_cosmosdb_account_key" {
-  count        = var.enable_wisp_converter ? 1 : 0
+  count        = var.create_wisp_converter ? 1 : 0
   name         = "cosmosdb-wisp-converter-account-key"
   value        = module.cosmosdb_account_wispconv[0].primary_key
   key_vault_id = data.azurerm_key_vault.key_vault.id
@@ -174,6 +191,29 @@ resource "azurerm_key_vault_secret" "redis_primary_key" {
 resource "azurerm_key_vault_secret" "redis_hostname" {
   name         = "redis-hostname"
   value        = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].hostname : data.azurerm_redis_cache.redis_cache.hostname
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+/*****************
+Service Bus
+*****************/
+resource "azurerm_key_vault_secret" "wisp_payment_timeout_key" {
+  count = var.create_wisp_converter ? 1 : 0
+
+  name         = "wisp-payment-timeout-queue-connection-string"
+  value        = data.azurerm_servicebus_queue_authorization_rule.wisp_payment_timeout_authorization.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "wisp_paainviart_key" {
+  count = var.create_wisp_converter ? 1 : 0
+
+  name         = "wisp-paainviart-queue-connection-string"
+  value        = data.azurerm_servicebus_queue_authorization_rule.wisp_paainviart_authorization.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id

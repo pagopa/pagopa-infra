@@ -22,7 +22,8 @@
               <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
           </set-header>
           <!-- Headers settings required for backend service END -->
-          <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
+          <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
+          <set-backend-service base-url="@("https://${hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")" />
         </otherwise>
       </choose>
       <set-header name="x-client-id" exists-action="override" >
