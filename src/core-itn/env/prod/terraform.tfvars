@@ -17,12 +17,7 @@ tags = {
 
 ### Feature Flag
 is_feature_enabled = {
-  vnet_ita                  = false,
-  container_app_tools_cae   = false,
-  node_forwarder_ha_enabled = false,
-  vpn                       = false,
-  dns_forwarder_lb          = true,
-  postgres_private_dns      = true
+  container_app_tools_cae = true,
 }
 
 #
