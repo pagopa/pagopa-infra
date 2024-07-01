@@ -175,7 +175,6 @@
             <!-- Get User IO : END-->
 
             <!-- user email tokenization with PDV START -->
-            <set-variable name="userAuth" value="@(((IResponse)context.Variables["user-auth-body"]).Body.As<JObject>())" />
             <send-request ignore-error="true" timeout="10" response-variable-name="pdv-email-token" mode="new">
               <set-url>${pdv_api_base_path}/tokens</set-url>
               <set-method>PUT</set-method>
@@ -183,7 +182,7 @@
                   <value>{{ecommerce-personal-data-vault-api-key}}</value>
               </set-header>
               <set-body>@{
-                JObject userAuthBody = (JObject)context.Variables["userAuth"];
+                JObject userAuthBody = (JObject)context.Variables["userAuthBody"];
                 string spidEmail = (String)userAuthBody["spid_email"];
                 string noticeEmail = (String)userAuthBody["notice_email"];
                 string email = String.IsNullOrEmpty(noticeEmail) ? spidEmail : noticeEmail;
