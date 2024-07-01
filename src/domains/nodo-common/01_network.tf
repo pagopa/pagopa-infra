@@ -164,7 +164,7 @@ module "cosmosdb_standin_snet" {
 
 # Wisp converter
 resource "azurerm_resource_group" "wisp_converter_rg" {
-  count    = var.enable_wisp_converter ? 1 : 0
+  count    = var.create_wisp_converter ? 1 : 0
   name     = "${local.project}-wisp-converter-rg"
   location = var.location
 
@@ -172,7 +172,7 @@ resource "azurerm_resource_group" "wisp_converter_rg" {
 }
 
 module "cosmosdb_wisp_converter_snet" {
-  count                = var.enable_wisp_converter ? 1 : 0
+  count                = var.create_wisp_converter ? 1 : 0
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.77.0"
   name                 = "${local.project}-wisp-converter-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_wisp_converter
