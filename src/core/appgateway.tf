@@ -284,10 +284,10 @@ locals {
   backends_upload = {
     apimupload = {
       protocol                    = "Https"
-      host                        = trim(var.upload_endpoint_enabled ? data.azurerm_dns_a_record.dns_a_api.fqdn : "", ".")
+      host                        = trim(var.upload_endpoint_enabled ? data.azurerm_dns_a_record.dns_a_upload[0].fqdn : "", ".")
       port                        = 443
       ip_addresses                = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : module.apim[0].private_ip_addresses)
-      fqdns                       = var.upload_endpoint_enabled ? [data.azurerm_dns_a_record.dns_a_api.fqdn] : []
+      fqdns                       = var.upload_endpoint_enabled ? [data.azurerm_dns_a_record.dns_a_upload[0].fqdn] : []
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apimupload"
       request_timeout             = 300 # long timeout for heavy api request ( ex. FDR flow managment, GPD upload, ... )
