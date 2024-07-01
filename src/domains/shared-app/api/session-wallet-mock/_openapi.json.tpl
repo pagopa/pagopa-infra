@@ -30,6 +30,16 @@
         "summary": "Generate a JWT wallet session for AppIO",
         "description": "Generate a JWT wallet session for AppIO",
         "operationId": "generateSessionWallet",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MockTokenRequest"
+              }
+            }
+          }
+        },
         "security": [
           {
             "Authorization": []
@@ -90,12 +100,26 @@
             "description": "Timeout serving request"
           }
         }
-      },
-    },
+      }
+    }
   },
   "components": {
     "schemas": {
-      "SessionTokenResponse" : {
+      "MockTokenRequest": {
+        "description": "Request to mock JWT wallet token",
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "Token's userId"
+          },
+          "expiryInMinutes": {
+            "type": "integer",
+            "description": "Expiration in minutes for JWT"
+          }
+        }
+      },
+      "SessionTokenResponse": {
         "description": "Body JWT wallet session token pagoPa_4_AppIO",
         "type": "object",
         "properties": {
