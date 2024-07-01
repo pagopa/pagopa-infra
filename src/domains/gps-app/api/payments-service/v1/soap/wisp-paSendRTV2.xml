@@ -1,7 +1,7 @@
 <policies>
   <inbound>
     <base />
-    <set-variable name="paSendRTV2-request-body" value="@((string)context.Request.Body.As<XElement>(preserveContent: true))" />
+    <set-variable name="paSendRTV2-request-body" value="@((string)context.Request.Body.As<string>(preserveContent: true))" />
   </inbound>
   <backend>
     <base />
