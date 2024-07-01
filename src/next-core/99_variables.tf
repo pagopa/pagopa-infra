@@ -161,6 +161,50 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "value"
+  default     = 3600
+}
+
+variable "private_dns_zone_db_nodo_pagamenti" {
+  type    = string
+  default = "dev.db-nodo-pagamenti.com"
+}
+
+
+# DNS private
+variable "dns_a_reconds_dbnodo_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodo_ips_dr" {
+  type        = list(string)
+  description = "IPs address of DB Nodo DR"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodo_prf_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_prf_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
+
 #
 # dns forwarder
 #
@@ -337,6 +381,25 @@ variable "redis_version" {
   type        = string
   description = "The version of Redis to use: 4 (deprecated) or 6"
   default     = "6"
+}
+
+variable "redis_private_endpoint_enabled" {
+  type        = bool
+  description = "Enable private endpoints for redis instances?"
+  default     = true
+}
+
+
+variable "storage_queue_private_endpoint_enabled" {
+  type        = bool
+  description = "Whether private endpoint for Azure Storage Queues is enabled"
+  default     = true
+}
+
+variable "platform_private_dns_zone_records" {
+  type        = list(string)
+  default     = ["api", "portal", "management"]
+  description = "List of records to add into the platform.pagopa.it dns private"
 }
 
 ## integration app gateway
@@ -718,4 +781,17 @@ variable "node_fw_ha_snet_cidr" {
   type        = list(string)
   default     = null
   description = "(Required) node forwarder ha subnet cidr block"
+}
+
+# nat gateway
+variable "nat_gateway_enabled" {
+  type        = bool
+  default     = true
+  description = "Nat Gateway enabled"
+}
+
+variable "nat_gateway_public_ips" {
+  type        = number
+  default     = 1
+  description = "Number of public outbound ips"
 }

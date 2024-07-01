@@ -3,7 +3,7 @@
 resource "azurerm_dns_txt_record" "dns-txt-backoffice-platform-pagopa-it-aws-ses" { # To access your legacy TXT records
   count               = var.env_short == "p" ? 1 : 0
   name                = "_amazonses.platform.pagopa.it"
-  zone_name           = azurerm_dns_zone.public[0].name
+  zone_name           = data.azurerm_dns_zone.public[0].name
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   record {
@@ -33,7 +33,7 @@ resource "azurerm_dns_cname_record" "dkim-aws-ses-backoffice-platform-pagopa-it"
   for_each = { for d in local.dkim_aws_ses_backoffice_platform_pagopa_it : d.name => d }
   # name                = join(".", [each.value.name, "platform.pagopa.it"])
   name                = each.value.name
-  zone_name           = azurerm_dns_zone.public[0].name # platform.pagopa.it
+  zone_name           = data.azurerm_dns_zone.public[0].name # platform.pagopa.it
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   record              = each.value.value
@@ -45,7 +45,7 @@ resource "azurerm_dns_cname_record" "dkim-aws-ses-backoffice-platform-pagopa-it"
 resource "azurerm_dns_mx_record" "dns-mx-backoffice-platform-pagopa-it" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "backoffice"                    # backoffice.platform.pagopa.it
-  zone_name           = azurerm_dns_zone.public[0].name # platform.pagopa.it
+  zone_name           = data.azurerm_dns_zone.public[0].name # platform.pagopa.it
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
 
@@ -57,11 +57,11 @@ resource "azurerm_dns_mx_record" "dns-mx-backoffice-platform-pagopa-it" {
   tags = var.tags
 }
 
-# TXT record 
+# TXT record
 resource "azurerm_dns_txt_record" "dns-txt-backoffice-platform-pagopa-it-aws-ses-txt" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "backoffice"                    # backoffice.platform.pagopa.it
-  zone_name           = azurerm_dns_zone.public[0].name # platform.pagopa.it
+  zone_name           = data.azurerm_dns_zone.public[0].name # platform.pagopa.it
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   record {
