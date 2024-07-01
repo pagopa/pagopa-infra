@@ -98,7 +98,7 @@
         requestBody.Remove("email");
         requestBody["emailToken"] = emailToken;
 
-        return requestBody.toString();
+        return requestBody.ToString();
     }
     </set-body>
     <base />
