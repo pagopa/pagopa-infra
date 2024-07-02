@@ -2,7 +2,7 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+            <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
                 <set-variable name="walletId" value="@{
                     string walletIdUUID = (string)context.Request.MatchedParameters["walletId"];
                     string walletIdHex = walletIdUUID.Substring(walletIdUUID.Length-17 , 17).Replace("-" , "");
