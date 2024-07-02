@@ -315,30 +315,30 @@ resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv" {
 
   key_vault_id = module.key_vault.id
 }
-data "azurerm_api_management_product" "apim_biz_lst_trx_product_apim_v2" {
-  product_id          = "bizevent-transactions"
-  api_management_name = local.pagopa_apim_v2_name
-  resource_group_name = local.pagopa_apim_rg
-}
+# data "azurerm_api_management_product" "apim_biz_lst_trx_product_apim_v2" {
+#   product_id          = "bizevent-transactions"
+#   api_management_name = local.pagopa_apim_v2_name
+#   resource_group_name = local.pagopa_apim_rg
+# }
 
-resource "azurerm_api_management_subscription" "list_trx_4_io_api_key_subkey_apim_v2" {
-  api_management_name = local.pagopa_apim_v2_name
-  resource_group_name = local.pagopa_apim_rg
+# resource "azurerm_api_management_subscription" "list_trx_4_io_api_key_subkey_apim_v2" {
+#   api_management_name = local.pagopa_apim_v2_name
+#   resource_group_name = local.pagopa_apim_rg
 
-  product_id    = data.azurerm_api_management_product.apim_biz_lst_trx_product_apim_v2.id
-  display_name  = "Biz Events list-trx-4-io-api-key"
-  allow_tracing = false
-  state         = "active"
-}
+#   product_id    = data.azurerm_api_management_product.apim_biz_lst_trx_product_apim_v2.id
+#   display_name  = "Biz Events list-trx-4-io-api-key"
+#   allow_tracing = false
+#   state         = "active"
+# }
 
-resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv_apim_v2" {
-  depends_on   = [azurerm_api_management_subscription.list_trx_4_io_api_key_subkey_apim_v2]
-  name         = "list-trx-4-io-api-key-apim-v2"
-  value        = azurerm_api_management_subscription.list_trx_4_io_api_key_subkey_apim_v2.primary_key
-  content_type = "text/plain"
+# resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv_apim_v2" {
+#   depends_on   = [azurerm_api_management_subscription.list_trx_4_io_api_key_subkey_apim_v2]
+#   name         = "list-trx-4-io-api-key-apim-v2"
+#   value        = azurerm_api_management_subscription.list_trx_4_io_api_key_subkey_apim_v2.primary_key
+#   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
-}
+#   key_vault_id = module.key_vault.id
+# }
 
 # PDF engine nodejs for PDF engine Java
 
