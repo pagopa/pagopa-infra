@@ -100,7 +100,6 @@
                         string orderId = (string)operation["orderId"];
                         string operationId = (string)operation["operationId"];
                         string paymentCircuit = (string)operation["paymentCircuit"];
-                        string paymentCircuit = (string)operation["paymentCircuit"];
                         var additionalData = operation["additionalData"];
                         string authorizationCode = null;
                         string errorCode = null;
