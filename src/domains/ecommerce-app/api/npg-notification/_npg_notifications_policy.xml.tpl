@@ -114,7 +114,7 @@
                             rrn = (string)receivedAdditionalData["rrn"];
                             validationServiceId = (string)receivedAdditionalData["validationServiceId"];
                             bpayEndToEndId = (string)receivedAdditionalData["bpayEndToEndId"];
-                            mybankEndToEndId = (string)receivedAdditionalData["mybankEndToEndId"];
+                            mybankEndToEndId = (string)receivedAdditionalData["myBankEndToEndId"];
                         }
                         string paymentEndToEndId = null; 
                         switch(paymentCircuit){
