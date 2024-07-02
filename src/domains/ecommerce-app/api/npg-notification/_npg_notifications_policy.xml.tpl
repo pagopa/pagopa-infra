@@ -106,6 +106,7 @@
                         string rrn = null;
                         string validationServiceId = null;
                         string bpayEndToEndId = null;
+                        string mybankEndToEndId = null;
                         if(additionalData != null && additionalData.Type != JTokenType.Null){
                             JObject receivedAdditionalData = (JObject)additionalData;
                             authorizationCode = (string)receivedAdditionalData["authorizationCode"];
@@ -113,11 +114,15 @@
                             rrn = (string)receivedAdditionalData["rrn"];
                             validationServiceId = (string)receivedAdditionalData["validationServiceId"];
                             bpayEndToEndId = (string)receivedAdditionalData["bpayEndToEndId"];
+                            mybankEndToEndId = (string)receivedAdditionalData["mybankEndToEndId"];
                         }
                         string paymentEndToEndId = null; 
                         switch(paymentCircuit){
                             case "BANCOMATPAY":
                                 paymentEndToEndId = bpayEndToEndId;
+                                break;
+                            case "MYBANK":
+                                paymentEndToEndId = mybankEndToEndId;
                                 break;
                             default:
                                 paymentEndToEndId =  (string)operation["paymentEndToEndId"];
