@@ -1,7 +1,7 @@
 
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forwarder-responsetime-upd-v2" {
-  count               = var.env_short == "p" ? 1 : 0
+  count               = (var.env_short == "p" && var.enabled_features.apim_v2) ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-opex_pagopa-node-forwarder-responsetime @ _forward2-v2"
   location            = var.location
@@ -35,7 +35,7 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forwarder-availability-upd-v2" {
-  count               = var.env_short == "p" ? 1 : 0
+  count               = (var.env_short == "p" && var.enabled_features.apim_v2) ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-opex_pagopa-node-forwarder-availability @ _forward2-v2"
   location            = var.location
