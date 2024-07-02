@@ -163,6 +163,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
     "193.203.230.21", # VPN NEXI
+    "151.1.203.68"    # Softlab backup support line # PSFC-TODO serve ?
   ]
 }
 
@@ -795,3 +796,6 @@ apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
 apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"
 
 apim_logger_resource_id = "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/loggers/pagopa-u-apim-logger"
+
+# WISP-dismantling-cfg
+create_wisp_converter = true

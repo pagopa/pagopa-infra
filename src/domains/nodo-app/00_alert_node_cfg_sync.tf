@@ -100,7 +100,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "node_cfg_sync_trigger_pr
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "[${var.env}] No trigger received at midnight"
-  enabled        = true
+  enabled        = false # PSFC should per active and apply on 23.59
   query          = format(local.pagopa_node_cfg_sync.dumpTrigger.query, local.pagopa_node_cfg_sync.name)
 
   severity    = local.pagopa_node_cfg_sync.dumpTrigger.severity

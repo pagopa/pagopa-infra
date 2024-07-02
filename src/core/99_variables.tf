@@ -1745,7 +1745,7 @@ variable "github_runner" {
 variable "node_decoupler_primitives" {
   type        = string
   description = "Node decoupler primitives"
-  default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
+  default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
 }
 
 variable "apim_fdr_nodo_pagopa_enable" {
@@ -1834,4 +1834,10 @@ variable "apim_logger_resource_id" {
   type        = string
   description = "Resource id for the APIM logger"
   default     = null
+}
+
+variable "create_wisp_converter" {
+  type        = bool
+  default     = false
+  description = "CREATE WISP dismantling system infra"
 }
