@@ -225,7 +225,6 @@ No outputs.
 | <a name="input_app_service_pdf_engine_sku_name"></a> [app\_service\_pdf\_engine\_sku\_name](#input\_app\_service\_pdf\_engine\_sku\_name) | app service plan size | `string` | n/a | yes |
 | <a name="input_app_service_pdf_engine_sku_name_java"></a> [app\_service\_pdf\_engine\_sku\_name\_java](#input\_app\_service\_pdf\_engine\_sku\_name\_java) | app service plan size | `string` | n/a | yes |
 | <a name="input_app_service_pdf_engine_sku_name_java_zone_balancing_enabled"></a> [app\_service\_pdf\_engine\_sku\_name\_java\_zone\_balancing\_enabled](#input\_app\_service\_pdf\_engine\_sku\_name\_java\_zone\_balancing\_enabled) | Enable HA multi az balancing | `bool` | n/a | yes |
-| <a name="input_app_service_pdf_engine_zone_balancing_enabled"></a> [app\_service\_pdf\_engine\_zone\_balancing\_enabled](#input\_app\_service\_pdf\_engine\_zone\_balancing\_enabled) | Enable HA multi az balancing | `bool` | n/a | yes |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The wallet dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
