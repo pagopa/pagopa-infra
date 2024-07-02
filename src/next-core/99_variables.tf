@@ -480,7 +480,7 @@ variable "app_gateway_upload_certificate_name" {
 variable "upload_endpoint_enabled" {
   type        = bool
   description = "Enable upload for heavy payload size on appgw"
-  default     = false
+  default     = true
 }
 
 variable "app_gateway_prf_certificate_name" {

@@ -169,35 +169,35 @@ locals {
       listener              = "api"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
-      priority              = 40
+      priority              = 30
     }
 
     portal = {
       listener              = "portal"
       backend               = "portal"
       rewrite_rule_set_name = null
-      priority              = 60
+      priority              = 50
     }
 
     mangement = {
       listener              = "management"
       backend               = "management"
       rewrite_rule_set_name = null
-      priority              = 90
+      priority              = 80
     }
 
     wisp2 = {
       listener              = "wisp2"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
-      priority              = 70
+      priority              = 60
     }
 
     kibana = {
       listener              = "kibana"
       backend               = "kibana"
       rewrite_rule_set_name = "rewrite-rule-set-kibana"
-      priority              = 50
+      priority              = 40
     }
   }
 
@@ -206,7 +206,7 @@ locals {
       listener              = "apiprf"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
-      priority              = 20
+      priority              = 90
     }
   }
 
@@ -215,7 +215,7 @@ locals {
       listener              = "wisp2govit"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
-      priority              = 30
+      priority              = 20
     }
   }
 
@@ -224,7 +224,7 @@ locals {
       listener              = "wfespgovit"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
-      priority              = 80
+      priority              = 70
     }
   }
 
@@ -382,7 +382,7 @@ module "app_gw" {
   # Configure listeners
   listeners = merge(
     local.public_listeners,
-    var.dns_zone_prefix_prf != "" ? local.listeners_apiprf : {},
+    var.dns_zone_prefix_prf != "" ? local.public_listeners_apiprf : {},
     var.app_gateway_wisp2govit_certificate_name != "" ? local.public_listeners_wisp2govit : {},
     var.app_gateway_wfespgovit_certificate_name != "" ? local.public_listeners_wfespgovit : {},
     var.upload_endpoint_enabled ? local.public_listeners_apiupload : {},
