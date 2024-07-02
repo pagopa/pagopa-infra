@@ -894,6 +894,9 @@
           "origin": {
             "type": "string"
           },
+          "idTransaction": {
+            "type": "string"
+          },
           "details": {
             "type": "array",
             "items": {
@@ -915,8 +918,8 @@
           "rptId": {
             "type": "string"
           },
-          "idTransaction": {
-            "type": "string"
+          "amount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
           },
           "paymentToken": {
             "type": "string"
