@@ -6,10 +6,11 @@
             try {
                 string[] sessionTokenParts = sessionToken.Split('.');
                 string sessionTokenBody = sessionTokenParts.Length >1 ? sessionTokenParts[1] : "";
+
                 int reminder = sessionTokenBody.Length % 4;
                 int toPad = reminder > 1 ? (4-reminder) : 0;
-				string padded = string.Concat(sessionTokenBody,string.Concat(Enumerable.Repeat("=", toPad)));
-		  		byte[] data = Convert.FromBase64String(padded);
+				        string padded = string.Concat(sessionTokenBody,string.Concat(Enumerable.Repeat("=", toPad)));
+		  		      byte[] data = Convert.FromBase64String(padded);
                 string decodedString = System.Text.Encoding.UTF8.GetString(data);
                 Dictionary<string,string> parsed = JsonConvert.DeserializeObject<Dictionary<string,string>>(decodedString);
                 string userId = (string)parsed?["userId"];
