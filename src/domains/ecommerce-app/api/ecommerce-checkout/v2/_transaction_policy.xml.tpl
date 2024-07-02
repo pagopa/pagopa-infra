@@ -65,15 +65,6 @@
     </send-request>
     <choose>
         <when condition="@(((IResponse)context.Variables["pdv-token"]).StatusCode != 200)">
-        <return-response>
-            <set-status code="502" reason="Bad Gateway" />
-        </return-response>
-        </when>
-    </choose>
-    <set-variable name="pdvToken" value="@(((IResponse)context.Variables["pdv-token"]).Body.As<JObject>())" />
-    <set-variable name="emailToken" value="@((string)((JObject)context.Variables["pdvToken"])["token"])" />
-    <choose>
-        <when condition="@(String.IsNullOrEmpty((string)context.Variables["emailToken"]))">
             <return-response>
                 <set-status code="502" />
                 <set-header name="Content-Type" exists-action="override">
@@ -89,6 +80,9 @@
             </return-response>
         </when>
     </choose>
+
+    <set-variable name="pdvToken" value="@(((IResponse)context.Variables["pdv-token"]).Body.As<JObject>())" />
+    <set-variable name="emailToken" value="@((string)((JObject)context.Variables["pdvToken"])["token"])" />
     <!-- Post Token PDV END-->
     <set-body>@{
         JObject requestBody = (JObject)context.Request.Body.As<JObject>(true);
