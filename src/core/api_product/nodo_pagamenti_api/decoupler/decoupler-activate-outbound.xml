@@ -60,6 +60,7 @@
     ).ToString();
     }" />
 
+    <!-- etichetta wisp_paymentToken -->
     <cache-store-value key="@("wisp_" + (string)context.Variables["paymentToken"])" value="@((string) context.Variables["wisp-paymentToken-obj"])" duration="172800" caching-type="external" /> <!-- TODO to change type to internal -->
     <set-variable name="paymentToken-expirationTime" value="@{
                                 var expirationTime = 30 * 60000; // 30 minutes to milliseconds
