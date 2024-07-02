@@ -33,6 +33,8 @@ tls_cert_check_helm = {
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
 
+pdv_api_base_path = "https://api.tokenizer.pdv.pagopa.it/tokenizer/v1"
+
 pod_disruption_budgets = {
   "pagopabizeventsdatastore" = {
     minAvailable = 1
@@ -54,4 +56,4 @@ pod_disruption_budgets = {
   },
 }
 
-pdv_api_base_path = "https://disabled"
+
