@@ -3,6 +3,7 @@
 
 # Availability: ecommerce for checkout
 data "azurerm_api_management" "apim_v2" {
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.product}-weu-core-apim-v2"
   resource_group_name = local.pagopa_apim_rg
 }
@@ -19,7 +20,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_checkout_a
     email_subject          = "[eCommerce] Availability Alert"
     custom_webhook_payload = "{}"
   }
-  data_source_id = data.azurerm_api_management.apim_v2.id
+  data_source_id = data.azurerm_api_management.apim_v2[0].id
   description    = "eCommerce Availability less than or equal 99%"
   enabled        = true
   query = (<<-QUERY
@@ -57,7 +58,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_s
     email_subject          = "[eCommerce] Transactions service PATCH auth request KO"
     custom_webhook_payload = "{}"
   }
-  data_source_id = data.azurerm_api_management.apim_v2.id
+  data_source_id = data.azurerm_api_management.apim_v2[0].id
   description    = "eCommerce Transactions service PATCH auth request KO detected, more than 10 KO in 30 minute time window"
   enabled        = true
   query = (<<-QUERY
@@ -90,7 +91,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_s
     email_subject          = "[eCommerce] Transactions service POST user receipts (sendPaymentResultV2) KO"
     custom_webhook_payload = "{}"
   }
-  data_source_id = data.azurerm_api_management.apim_v2.id
+  data_source_id = data.azurerm_api_management.apim_v2[0].id
   description    = "eCommerce Transactions service POST user receipts KO detected, more than 10 KO in 30 minutes time window"
   enabled        = true
   query = (<<-QUERY
@@ -124,7 +125,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_payment_method
     email_subject          = "[eCommerce] NPG order/build KO/slow api detected"
     custom_webhook_payload = "{}"
   }
-  data_source_id = data.azurerm_api_management.apim_v2.id
+  data_source_id = data.azurerm_api_management.apim_v2[0].id
   description    = "eCommerce Payment methods service POST session KO/slow api detected, more than 10 KO or above 2 seconds as response time in 30 minutes time window"
   enabled        = true
   query = (<<-QUERY
@@ -157,7 +158,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_authorization_
     email_subject          = "[eCommerce] NPG POST notification KO api detected"
     custom_webhook_payload = "{}"
   }
-  data_source_id = data.azurerm_api_management.apim_v2.id
+  data_source_id = data.azurerm_api_management.apim_v2[0].id
   description    = "eCommerce POST notification KO detected, more than 10 KO in 30 minutes time window"
   enabled        = true
   query = (<<-QUERY
