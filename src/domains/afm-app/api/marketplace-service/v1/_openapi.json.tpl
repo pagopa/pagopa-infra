@@ -4,7 +4,7 @@
     "title": "Marketplace API for PagoPA AFM",
     "description": "marketplace-be",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.17.5"
+    "version": "0.18.0"
   },
   "servers": [
     {
@@ -5297,6 +5297,11 @@
           "idBrokerPsp": {
             "type": "string"
           },
+          "cart": {
+            "type": "boolean",
+            "description": "is the bundle valid for cart payments?",
+            "default": true
+          },
           "idCdi": {
             "type": "string"
           },
@@ -5767,6 +5772,12 @@
             "type": "string"
           },
           "urlPolicyPsp": {
+            "type": "string"
+          },
+          "cart": {
+            "type": "boolean"
+          },
+          "abi": {
             "type": "string"
           },
           "idBundle": {
