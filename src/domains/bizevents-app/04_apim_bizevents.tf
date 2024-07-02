@@ -3,10 +3,10 @@ data "azurerm_key_vault_secret" "list_trx_for_io_api_key_secret" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-data "azurerm_key_vault_secret" "list_trx_for_io_api_key_secret_apim_v2" {
-  name         = "list-trx-4-io-api-key"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
+# data "azurerm_key_vault_secret" "list_trx_for_io_api_key_secret_apim_v2" {
+#   name         = "list-trx-4-io-api-key"
+#   key_vault_id = data.azurerm_key_vault.kv.id
+# }
 
 resource "azurerm_api_management_named_value" "list_trx_for_io_api_key_secret" {
   name                = "list-trx-for-io-api-key"
@@ -16,14 +16,14 @@ resource "azurerm_api_management_named_value" "list_trx_for_io_api_key_secret" {
   value               = data.azurerm_key_vault_secret.list_trx_for_io_api_key_secret.value
   secret              = true
 }
-resource "azurerm_api_management_named_value" "list_trx_for_io_api_key_secret_apim_v2" {
-  name                = "list-trx-for-io-api-key"
-  api_management_name = local.pagopa_apim_v2_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "list-trx-for-io-api-key"
-  value               = data.azurerm_key_vault_secret.list_trx_for_io_api_key_secret_apim_v2.value
-  secret              = true
-}
+# resource "azurerm_api_management_named_value" "list_trx_for_io_api_key_secret_apim_v2" {
+#   name                = "list-trx-for-io-api-key"
+#   api_management_name = local.pagopa_apim_v2_name
+#   resource_group_name = local.pagopa_apim_rg
+#   display_name        = "list-trx-for-io-api-key"
+#   value               = data.azurerm_key_vault_secret.list_trx_for_io_api_key_secret_apim_v2.value
+#   secret              = true
+# }
 
 
 #####################################
@@ -270,43 +270,43 @@ module "apim_api_bizevents_transactions_api_jwt_v1" {
 }
 
 
-resource "azurerm_api_management_api_version_set" "api_bizevents_transactions_api_apim_v2" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = format("%s-bizevents-transaction-service-api", var.env_short)
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = "${local.product}-weu-core-apim-v2"
-  display_name        = local.apim_transaction_service_api.display_name
-  versioning_scheme   = "Segment"
-}
+# resource "azurerm_api_management_api_version_set" "api_bizevents_transactions_api_apim_v2" {
+#   count               = var.env_short == "p" ? 1 : 0
+#   name                = format("%s-bizevents-transaction-service-api", var.env_short)
+#   resource_group_name = local.pagopa_apim_rg
+#   api_management_name = "${local.product}-weu-core-apim-v2"
+#   display_name        = local.apim_transaction_service_api.display_name
+#   versioning_scheme   = "Segment"
+# }
 
 
-module "apim_api_bizevents_transactions_api_jwt_v1_apim_v2" {
+# module "apim_api_bizevents_transactions_api_jwt_v1_apim_v2" {
 
-  count  = var.env_short == "p" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+#   count  = var.env_short == "p" ? 1 : 0
+#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
 
-  name                = format("%s-bizevents-transaction-service-api-jwt", local.project)
-  api_management_name = "${local.product}-weu-core-apim-v2"
-  resource_group_name = local.pagopa_apim_rg
-  product_ids         = [module.apim_transactions_product.product_id]
-  # subscription_required = local.apim_transaction_service_api.subscription_required
-  subscription_required = false # use jwt
-  version_set_id        = azurerm_api_management_api_version_set.api_bizevents_transactions_api_apim_v2[0].id
-  api_version           = "v1"
+#   name                = format("%s-bizevents-transaction-service-api-jwt", local.project)
+#   api_management_name = "${local.product}-weu-core-apim-v2"
+#   resource_group_name = local.pagopa_apim_rg
+#   product_ids         = [module.apim_transactions_product.product_id]
+#   # subscription_required = local.apim_transaction_service_api.subscription_required
+#   subscription_required = false # use jwt
+#   version_set_id        = azurerm_api_management_api_version_set.api_bizevents_transactions_api_apim_v2[0].id
+#   api_version           = "v1"
 
-  description  = "${local.apim_transaction_service_api.description} JWT"
-  display_name = "${local.apim_transaction_service_api.display_name} JWT"
-  path         = "${local.apim_transaction_service_api.path}-jwt"
-  protocols    = ["https"]
-  service_url  = local.apim_transaction_service_api.service_url
+#   description  = "${local.apim_transaction_service_api.description} JWT"
+#   display_name = "${local.apim_transaction_service_api.display_name} JWT"
+#   path         = "${local.apim_transaction_service_api.path}-jwt"
+#   protocols    = ["https"]
+#   service_url  = local.apim_transaction_service_api.service_url
 
-  content_format = "openapi"
-  content_value = templatefile("./api/transaction-service/v1/_openapi-jwt.json.tpl", {
-    host = local.apim_hostname
-  })
+#   content_format = "openapi"
+#   content_value = templatefile("./api/transaction-service/v1/_openapi-jwt.json.tpl", {
+#     host = local.apim_hostname
+#   })
 
-  xml_content = templatefile("./api/transaction-service/v1/_base_policy-jwt.xml", {
-    hostname          = local.bizevents_hostname
-    pdv_api_base_path = var.pdv_api_base_path
-  })
-}
+#   xml_content = templatefile("./api/transaction-service/v1/_base_policy-jwt.xml", {
+#     hostname          = local.bizevents_hostname
+#     pdv_api_base_path = var.pdv_api_base_path
+#   })
+# }
