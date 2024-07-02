@@ -2,12 +2,12 @@
 locals {
 
   # 1.listeners
-  listeners = {
+  public_listeners = {
     api = {
       protocol           = "Https"
       host               = format("api.%s.%s", var.dns_zone_prefix, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", local.product)
       firewall_policy_id = null
 
       certificate = {
@@ -24,7 +24,7 @@ locals {
       protocol           = "Https"
       host               = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", local.product)
       firewall_policy_id = null
 
       certificate = {
@@ -41,7 +41,7 @@ locals {
       protocol           = "Https"
       host               = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", local.product)
       firewall_policy_id = null
 
       certificate = {
@@ -58,7 +58,7 @@ locals {
       protocol           = "Https"
       host               = format("%s.%s", var.dns_zone_wisp2, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", local.product)
       firewall_policy_id = null
 
       certificate = {
@@ -75,7 +75,7 @@ locals {
       protocol           = "Https"
       host               = format("kibana.%s.%s", var.dns_zone_prefix, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", local.product)
       firewall_policy_id = null
 
       certificate = {
@@ -88,12 +88,12 @@ locals {
       }
     }
   }
-  listeners_apiprf = {
+  public_listeners_apiprf = {
     apiprf = {
       protocol           = "Https"
       host               = format("api.%s.%s", var.dns_zone_prefix_prf, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", local.product)
       firewall_policy_id = null
       certificate = {
         name = var.integration_app_gateway_prf_certificate_name
@@ -107,12 +107,12 @@ locals {
   }
 
 
-  listeners_wisp2govit = {
+  public_listeners_wisp2govit = {
     wisp2govit = {
       protocol           = "Https"
       host               = format("%s.%s", var.dns_zone_wisp2, "pagopa.gov.it")
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", local.product)
       firewall_policy_id = null
       certificate = {
         name = var.app_gateway_wisp2govit_certificate_name
@@ -125,12 +125,12 @@ locals {
     }
   }
 
-  listeners_wfespgovit = {
+  public_listeners_wfespgovit = {
     wfespgovit = {
       protocol           = "Https"
       host               = format("%s.%s", var.dns_zone_wfesp, "pagopa.gov.it")
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", local.product)
       firewall_policy_id = null
       certificate = {
         name = var.app_gateway_wfespgovit_certificate_name
@@ -143,12 +143,12 @@ locals {
     }
   }
 
-  listeners_apiupload = {
+  public_listeners_apiupload = {
     upload = {
       protocol           = "Https"
       host               = format("upload.%s.%s", var.dns_zone_prefix, var.external_domain)
       port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.project)
+      ssl_profile_name   = format("%s-ssl-profile", local.product)
       firewall_policy_id = null
 
       certificate = {
@@ -164,73 +164,82 @@ locals {
 
   # 2.routes
 
-  routes = {
+  public_routes = {
     api = {
       listener              = "api"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 40
     }
 
     portal = {
       listener              = "portal"
       backend               = "portal"
       rewrite_rule_set_name = null
+      priority              = 60
     }
 
     mangement = {
       listener              = "management"
       backend               = "management"
       rewrite_rule_set_name = null
+      priority              = 90
     }
 
     wisp2 = {
       listener              = "wisp2"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 70
     }
 
     kibana = {
       listener              = "kibana"
       backend               = "kibana"
       rewrite_rule_set_name = "rewrite-rule-set-kibana"
+      priority              = 50
     }
   }
 
-  routes_apiprf = {
+  public_routes_apiprf = {
     apiprf = {
       listener              = "apiprf"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 20
     }
   }
 
-  routes_wisp2govit = {
+  public_routes_wisp2govit = {
     wisp2govit = {
       listener              = "wisp2govit"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 30
     }
   }
 
-  routes_wfespgovit = {
+  public_routes_wfespgovit = {
     wfespgovit = {
       listener              = "wfespgovit"
       backend               = "apim"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 80
     }
   }
 
-  routes_apiupload = {
+  public_routes_apiupload = {
     upload = {
       listener              = "upload"
       backend               = "apimupload"
       rewrite_rule_set_name = "rewrite-rule-set-api"
+      priority              = 10
     }
   }
 
   # 3.backends
 
-  backends = {
+  public_backends = {
     apim = {
       protocol                    = "Https"
       host                        = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
@@ -281,7 +290,7 @@ locals {
     }
   }
 
-  backends_upload = {
+  public_backends_upload = {
     apimupload = {
       protocol                    = "Https"
       host                        = trim(var.upload_endpoint_enabled ? azurerm_dns_a_record.dns_a_api.fqdn : "", ".")
@@ -297,33 +306,41 @@ locals {
 
 }
 
+data "azurerm_user_assigned_identity" "public_appgateway" {
+  resource_group_name = data.azurerm_resource_group.sec_rg.name
+  name                = format("%s-appgateway-identity", local.product)
+
+}
+
 ## Application gateway public ip ##
 resource "azurerm_public_ip" "appgateway_public_ip" {
-  name                = format("%s-appgateway-pip", local.project)
+  name                = format("%s-appgateway-pip", local.product)
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
   location            = data.azurerm_resource_group.rg_vnet.location
   sku                 = "Standard"
   allocation_method   = "Static"
+  zones               = [1, 2, 3]
 
   tags = var.tags
 }
 
 # Subnet to host the application gateway
 module "appgateway_snet" {
-  source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
-  name                 = format("%s-appgateway-snet", local.project)
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.8.0"
+  name                 = format("%s-appgateway-snet", local.product)
   address_prefixes     = var.cidr_subnet_appgateway
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
   virtual_network_name = data.azurerm_virtual_network.vnet_core.name
+  private_endpoint_network_policies_enabled = true
 }
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.20.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.8.0"
 
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
   location            = data.azurerm_resource_group.rg_vnet.location
-  name                = format("%s-app-gw", local.project)
+  name                = format("%s-app-gw", local.product)
 
   # SKU
   sku_name = var.app_gateway_sku_name
@@ -340,12 +357,12 @@ module "app_gw" {
 
   # Configure 3.backends
   backends = merge(
-    local.backends,
-    var.upload_endpoint_enabled ? local.backends_upload : {},
+    local.public_backends,
+    var.upload_endpoint_enabled ? local.public_backends_upload : {},
   )
 
   ssl_profiles = [{
-    name                             = format("%s-ssl-profile", local.project)
+    name                             = format("%s-ssl-profile", local.product)
     trusted_client_certificate_names = null
     verify_client_cert_issuer_dn     = false
     ssl_policy = {
@@ -364,20 +381,20 @@ module "app_gw" {
 
   # Configure listeners
   listeners = merge(
-    local.listeners,
+    local.public_listeners,
     var.dns_zone_prefix_prf != "" ? local.listeners_apiprf : {},
-    var.app_gateway_wisp2govit_certificate_name != "" ? local.listeners_wisp2govit : {},
-    var.app_gateway_wfespgovit_certificate_name != "" ? local.listeners_wfespgovit : {},
-    var.upload_endpoint_enabled ? local.listeners_apiupload : {},
+    var.app_gateway_wisp2govit_certificate_name != "" ? local.public_listeners_wisp2govit : {},
+    var.app_gateway_wfespgovit_certificate_name != "" ? local.public_listeners_wfespgovit : {},
+    var.upload_endpoint_enabled ? local.public_listeners_apiupload : {},
   )
 
   # maps listener to backend
   routes = merge(
-    local.routes,
-    var.dns_zone_prefix_prf != "" ? local.routes_apiprf : {},
-    var.app_gateway_wisp2govit_certificate_name != "" ? local.routes_wisp2govit : {},
-    var.app_gateway_wfespgovit_certificate_name != "" ? local.routes_wfespgovit : {},
-    var.upload_endpoint_enabled ? local.routes_apiupload : {},
+    local.public_routes,
+    var.dns_zone_prefix_prf != "" ? local.public_routes_apiprf : {},
+    var.app_gateway_wisp2govit_certificate_name != "" ? local.public_routes_wisp2govit : {},
+    var.app_gateway_wfespgovit_certificate_name != "" ? local.public_routes_wfespgovit : {},
+    var.upload_endpoint_enabled ? local.public_routes_apiupload : {},
   )
 
   rewrite_rule_sets = [
@@ -543,7 +560,7 @@ module "app_gw" {
 
   ]
   # TLS
-  identity_ids = [azurerm_user_assigned_identity.appgateway.id]
+  identity_ids = [data.azurerm_user_assigned_identity.public_appgateway.id]
 
   # Scaling
   app_gateway_min_capacity = var.app_gateway_min_capacity
