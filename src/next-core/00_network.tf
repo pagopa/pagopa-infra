@@ -47,13 +47,13 @@ data "azurerm_nat_gateway" "nat_gw" {
 }
 
 
-data "azurerm_public_ip" "appgateway_public_ip"{
-  name = "${local.product}-appgateway-pip"
+data "azurerm_public_ip" "appgateway_public_ip" {
+  name                = "${local.product}-appgateway-pip"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 }
 
-data "azurerm_public_ip" "natgateway_public_ip"{
-  count = var.nat_gateway_public_ips
-  name = "${local.product}-natgw-pip-0${count.index+1}"
+data "azurerm_public_ip" "natgateway_public_ip" {
+  count               = var.nat_gateway_public_ips
+  name                = "${local.product}-natgw-pip-0${count.index + 1}"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 }

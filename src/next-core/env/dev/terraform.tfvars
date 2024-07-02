@@ -45,7 +45,7 @@ cidr_vnet_italy = ["10.3.0.0/16"]
 #
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
-dns_zone_wfesp    = ""
+dns_zone_wfesp           = ""
 
 dns_a_reconds_dbnodo_ips             = ["10.70.67.18"]    # db onCloud
 dns_a_reconds_dbnodonexipostgres_ips = ["10.222.214.176"] # db onPrem PostgreSQL

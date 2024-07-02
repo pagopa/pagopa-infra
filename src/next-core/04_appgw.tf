@@ -326,11 +326,11 @@ resource "azurerm_public_ip" "appgateway_public_ip" {
 
 # Subnet to host the application gateway
 module "appgateway_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.8.0"
-  name                 = format("%s-appgateway-snet", local.product)
-  address_prefixes     = var.cidr_subnet_appgateway
-  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_core.name
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.8.0"
+  name                                      = format("%s-appgateway-snet", local.product)
+  address_prefixes                          = var.cidr_subnet_appgateway
+  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_core.name
   private_endpoint_network_policies_enabled = true
 }
 

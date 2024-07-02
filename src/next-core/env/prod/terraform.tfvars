@@ -32,8 +32,8 @@ is_feature_enabled = {
 #
 # CIRDs
 #
-cidr_vnet_italy = ["10.3.0.0/16"]
-cidr_subnet_appgateway               = ["10.1.128.0/24"]
+cidr_vnet_italy                  = ["10.3.0.0/16"]
+cidr_subnet_appgateway           = ["10.1.128.0/24"]
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
 cidr_subnet_tools_cae            = ["10.1.248.0/23"]
 cidr_subnet_azdoa                = ["10.1.130.0/24"]
@@ -41,9 +41,9 @@ cidr_subnet_azdoa                = ["10.1.130.0/24"]
 #
 # Dns
 #
-external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.platform"
-dns_zone_wfesp    = "wfesp"
+external_domain                      = "pagopa.it"
+dns_zone_internal_prefix             = "internal.platform"
+dns_zone_wfesp                       = "wfesp"
 private_dns_zone_db_nodo_pagamenti   = "p.db-nodo-pagamenti.com"
 dns_a_reconds_dbnodo_ips             = ["10.101.35.37", "10.101.35.38"]                                     # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
 dns_a_reconds_dbnodo_ips_dr          = ["10.250.45.145", "10.250.45.146", "10.250.45.147", "10.250.45.148"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
