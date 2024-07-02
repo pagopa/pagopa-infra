@@ -2,7 +2,7 @@
     <inbound>
     <base />
         <choose>
-            <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+            <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
                 <!-- Extract payment method name for create redirectUrl -->
                 <set-variable name="requestBody" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
                 <set-variable name="paymentMethodId" value="@((string)((JObject) context.Variables["requestBody"])["paymentMethodId"])" />
@@ -83,7 +83,7 @@
     <outbound>
       <base />
         <choose>
-            <when condition="@(("false".Equals("{{enable-pm-ecommerce-io}}") && "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) ) && (context.Response.StatusCode == 201))">
+            <when condition="@(("false".Equals("{{enable-pm-ecommerce-io}}") && (context.Response.StatusCode == 201))">
                 <!-- Token JWT START-->
                 <set-variable name="walletId" value="@((string)((context.Response.Body.As<JObject>(preserveContent: true))["walletId"]))" />
                 <set-variable name="x-jwt-token" value="@{
