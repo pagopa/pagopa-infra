@@ -22,3 +22,7 @@ input_file = "./secret/weu-dev/configs.json"
 enable_iac_pipeline = true
 
 force = "v1"
+
+ecommerce_domain = "ecommerce"
+
+pay_wallet_domain = "pay-wallet"

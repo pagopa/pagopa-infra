@@ -4,7 +4,7 @@
     "title": "Biz-Events Transaction Service JWT",
     "description": "Microservice for exposing REST APIs about payment receipts.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.1.36"
+    "version": "0.1.41"
   },
   "servers": [
     {
@@ -131,26 +131,7 @@
         ],
         "summary": "Retrieve the paged transaction list from biz events.",
         "operationId": "getTransactionList",
-        "parameters": [
-          {
-            "name": "x-continuation-token",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          },
-          {
+        "parameters" : [ {
             "name": "X-Request-Id",
             "in": "header",
             "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
@@ -158,8 +139,59 @@
             "schema": {
               "type": "string"
             }
+        }, {
+          "name" : "is_payer",
+          "in" : "query",
+          "description" : "Filter by payer",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
           }
-        ],
+        }, {
+          "name" : "is_debtor",
+          "in" : "query",
+          "description" : "Filter by debtor",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          }
+        }, {
+          "name" : "x-continuation-token",
+          "in" : "header",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        }, {
+          "name" : "orderby",
+          "in" : "query",
+          "description" : "Order by TRANSACTION_DATE",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "TRANSACTION_DATE",
+            "enum" : [ "TRANSACTION_DATE" ]
+          }
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Direction of ordering",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "DESC",
+            "enum" : [ "ASC", "DESC" ]
+          }
+        } ],
         "responses": {
           "429": {
             "description": "Too many requests.",
@@ -502,28 +534,69 @@
         ],
         "summary": "Retrieve the paged transaction list from biz events.",
         "operationId": "getTransactionList_1",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
+        "parameters" : [ {
+            "name": "X-Request-Id",
+            "in": "header",
+            "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
             "required": false,
             "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 0
+              "type": "string"
             }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
+        }, {
+          "name" : "is_payer",
+          "in" : "query",
+          "description" : "Filter by payer",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
           }
-        ],
+        }, {
+          "name" : "is_debtor",
+          "in" : "query",
+          "description" : "Filter by debtor",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        }, {
+          "name" : "orderby",
+          "in" : "query",
+          "description" : "Order by TRANSACTION_DATE",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "TRANSACTION_DATE",
+            "enum" : [ "TRANSACTION_DATE" ]
+          }
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Direction of ordering",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "DESC",
+            "enum" : [ "ASC", "DESC" ]
+          }
+        } ],
         "responses": {
           "200": {
             "description": "Obtained transaction list.",
@@ -955,7 +1028,7 @@
         "type": "http",
         "scheme": "bearer",
         "description": "JWT token associated to the user"
-      }      
+      }
     }
   }
 }
