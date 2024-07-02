@@ -3,6 +3,7 @@
         <base />
         <!-- start validation policy -->
         <set-variable name="orderId" value="@(context.Request.MatchedParameters["orderId"])" />
+        <set-variable name="blueDeploymentPrefix" value="@(context.Request.Url.Query.GetValueOrDefault("deployment","green").Contains("blue") ? "/beta" : "" )" />
         <validate-jwt query-parameter-name="sessionToken" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="jwtToken">
         <issuer-signing-keys>
             <key>{{npg-notification-jwt-secret}}</key>
@@ -46,7 +47,7 @@
                 </return-response>
             </when>
         </choose>
-        <set-variable name="paymentMethodBackendUri" value="https://${hostname}/pagopa-ecommerce-payment-methods-service" />
+        <set-variable name="paymentMethodBackendUri" value="https://${hostname}/pagopa-ecommerce-payment-methods-service" />       
         <set-variable name="transactionServiceBackendUri" value="https://${hostname}/pagopa-ecommerce-transactions-service" />
         <set-variable name="npgNotificationRequestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
         <!-- end policy variables -->
@@ -84,7 +85,7 @@
         <!-- end payment method verify session -->
         <!-- send transactions service PATCH request -->
         <send-request mode="new" response-variable-name="transactionServiceAuthorizationPatchResponse" timeout="10" ignore-error="true">
-            <set-url>@(String.Format((string)context.Variables["transactionServiceBackendUri"]+"/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))</set-url>
+            <set-url>@(String.Format((string)context.Variables["transactionServiceBackendUri"]+context.Variables["blueDeploymentPrefix"] + "/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))</set-url>
             <set-method>PATCH</set-method>
             <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
