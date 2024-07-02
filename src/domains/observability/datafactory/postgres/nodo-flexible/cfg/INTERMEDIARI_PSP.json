@@ -1,0 +1,32 @@
+[
+    {
+        "name": "obj_id",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "id_intermediario_psp",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "enabled",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "codice_intermediario",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "fault_bean_esteso",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    }
+]

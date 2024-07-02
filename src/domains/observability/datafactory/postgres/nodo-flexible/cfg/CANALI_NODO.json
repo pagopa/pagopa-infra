@@ -1,0 +1,152 @@
+[
+    {
+        "name": "obj_id",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "redirect_ip",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "redirect_path",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "redirect_porta",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "redirect_query_string",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "modello_pagamento",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "multi_payment",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "ragione_sociale",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "rpt_rt_compliant",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "wsapi",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "redirect_protocollo",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "id_serv_plugin",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "id_cluster",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "id_fesp_instance",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "lento",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "rt_push",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "agid_channel",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "on_us",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "carrello_carte",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "recovery",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "marca_bollo_digitale",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "flag_io",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "versione_primitive",
+        "type": "numeric",
+        "precision": 2,
+        "scale": 0
+    },
+    {
+        "name": "flag_travaso",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "flag_standin",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    }
+]
