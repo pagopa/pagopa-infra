@@ -235,7 +235,7 @@ locals {
       protocol                    = "Https"
       host                        = trim(azurerm_dns_a_record.dns_a_api.fqdn, ".")
       port                        = 443
-      ip_addresses                = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : module.apim[0].private_ip_addresses)
+      ip_addresses                = module.apim[0].private_ip_addresses
       fqdns                       = [azurerm_dns_a_record.dns_a_api.fqdn]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
@@ -247,7 +247,7 @@ locals {
       protocol                    = "Https"
       host                        = trim(azurerm_dns_a_record.dns_a_portal.fqdn, ".")
       port                        = 443
-      ip_addresses                = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : module.apim[0].private_ip_addresses)
+      ip_addresses                = module.apim[0].private_ip_addresses
       fqdns                       = [azurerm_dns_a_record.dns_a_portal.fqdn]
       probe                       = "/signin"
       probe_name                  = "probe-portal"
@@ -259,7 +259,7 @@ locals {
       protocol     = "Https"
       host         = trim(azurerm_dns_a_record.dns_a_management.fqdn, ".")
       port         = 443
-      ip_addresses = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : module.apim[0].private_ip_addresses)
+      ip_addresses = module.apim[0].private_ip_addresses
       fqdns        = [azurerm_dns_a_record.dns_a_management.fqdn]
 
       probe                       = "/ServiceStatus"
@@ -286,7 +286,7 @@ locals {
       protocol                    = "Https"
       host                        = trim(var.upload_endpoint_enabled ? azurerm_dns_a_record.dns_a_api.fqdn : "", ".")
       port                        = 443
-      ip_addresses                = var.enabled_features.apim_v2 ? data.azurerm_api_management.apim_v2[0].private_ip_addresses : (var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].private_ip_addresses : module.apim[0].private_ip_addresses)
+      ip_addresses                = module.apim[0].private_ip_addresses
       fqdns                       = var.upload_endpoint_enabled ? [azurerm_dns_a_record.dns_a_api.fqdn] : []
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apimupload"
@@ -300,8 +300,8 @@ locals {
 ## Application gateway public ip ##
 resource "azurerm_public_ip" "appgateway_public_ip" {
   name                = format("%s-appgateway-pip", local.project)
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  location            = azurerm_resource_group.rg_vnet.location
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+  location            = data.azurerm_resource_group.rg_vnet.location
   sku                 = "Standard"
   allocation_method   = "Static"
 
@@ -313,16 +313,16 @@ module "appgateway_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                 = format("%s-appgateway-snet", local.project)
   address_prefixes     = var.cidr_subnet_appgateway
-  resource_group_name  = azurerm_resource_group.rg_vnet.name
-  virtual_network_name = module.vnet.name
+  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name = data.azurerm_virtual_network.vnet_core.name
 }
 
 # Application gateway: Multilistener configuraiton
 module "app_gw" {
   source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.20.0"
 
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  location            = azurerm_resource_group.rg_vnet.location
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+  location            = data.azurerm_resource_group.rg_vnet.location
   name                = format("%s-app-gw", local.project)
 
   # SKU
@@ -553,11 +553,11 @@ module "app_gw" {
 
   action = [
     {
-      action_group_id    = azurerm_monitor_action_group.slack.id
+      action_group_id    = data.azurerm_monitor_action_group.slack.id
       webhook_properties = null
     },
     {
-      action_group_id    = azurerm_monitor_action_group.email.id
+      action_group_id    = data.azurerm_monitor_action_group.email.id
       webhook_properties = null
     }
   ]
@@ -605,27 +605,6 @@ module "app_gw" {
       ]
       dynamic_criteria = []
     }
-
-    # response_time = {
-    #   description   = "Backends response time is too high"
-    #   frequency     = "PT5M"
-    #   window_size   = "PT5M"
-    #   severity      = 2
-    #   auto_mitigate = true
-
-    #   criteria = []
-    #   dynamic_criteria = [
-    #     {
-    #       aggregation              = "Average"
-    #       metric_name              = "BackendLastByteResponseTime"
-    #       operator                 = "GreaterThan"
-    #       alert_sensitivity        = "High"
-    #       evaluation_total_count   = 2
-    #       evaluation_failure_count = 2
-    #       dimension                = []
-    #     }
-    #   ]
-    # }
 
     total_requests = {
       description   = "Traffic is raising"

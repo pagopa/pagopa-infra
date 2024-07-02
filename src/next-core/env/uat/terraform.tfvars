@@ -34,7 +34,7 @@ is_feature_enabled = {
 # CIRDs
 #
 cidr_vnet_italy = ["10.3.0.0/16"]
-
+cidr_subnet_appgateway               = ["10.1.128.0/24"]
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
 cidr_subnet_tools_cae            = ["10.1.248.0/23"]
 cidr_subnet_azdoa                = ["10.1.130.0/24"]
@@ -741,3 +741,5 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "193.203.230.21", # VPN NEXI
   ]
 }
+
+
