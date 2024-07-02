@@ -24,8 +24,8 @@ module "assets_cdn_platform" {
   https_rewrite_enabled = true
   lock_enabled          = false
 
-  dns_zone_name                = azurerm_dns_zone.public[0].name
-  dns_zone_resource_group_name = azurerm_dns_zone.public[0].resource_group_name
+  dns_zone_name                = data.azurerm_dns_zone.public[0].name
+  dns_zone_resource_group_name = data.azurerm_dns_zone.public[0].resource_group_name
 
   keyvault_resource_group_name = module.key_vault.resource_group_name
   keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
