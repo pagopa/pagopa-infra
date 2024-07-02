@@ -79,3 +79,24 @@ variable "enable_iac_pipeline" {
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
 }
+
+
+variable "ecommerce_domain" {
+  type = string
+  validation {
+    condition = (
+      length(var.ecommerce_domain) <= 12
+    )
+    error_message = "Max length is 12 chars."
+  }
+}
+
+variable "pay_wallet_domain" {
+  type = string
+  validation {
+    condition = (
+      length(var.pay_wallet_domain) <= 12
+    )
+    error_message = "Max length is 12 chars."
+  }
+}
