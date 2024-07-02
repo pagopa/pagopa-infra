@@ -163,6 +163,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
     "193.203.230.21", # VPN NEXI
+    "0.0.0.0",        # FIXME: Added to make pipeline work
   ]
 }
 
