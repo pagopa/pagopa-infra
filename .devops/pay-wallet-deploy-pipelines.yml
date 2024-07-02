@@ -1,0 +1,153 @@
+# only manual
+trigger: none
+pr: none
+
+parameters:
+  - name: 'DEV'
+    displayName: 'Run on DEV environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'UAT'
+    displayName: 'Run on UAT environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'PROD'
+    displayName: 'Run on PROD environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+
+variables:
+  TIME_OUT: 10
+  # working dir
+  WORKING_DIR_APP: 'src/domains/pay-wallet-app'
+  WORKING_DIR_COMMON: 'src/domains/pay-wallet-common'
+  DOMAIN_NAME: pay-wallet
+  poolNameDev: '$(TF_POOL_NAME_DEV)'
+  poolNameUat: '$(TF_POOL_NAME_UAT)'
+  poolNameProd: '$(TF_POOL_NAME_PROD)'
+  #PLAN
+  azureServiceConnectionPlanNameDev: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+  azureServiceConnectionPlanNameUat: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+  azureServiceConnectionPlanNameProd: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+  #APPLY
+  azureServiceConnectionApplyNameDev: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
+  azureServiceConnectionApplyNameUat: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
+  azureServiceConnectionApplyNameProd: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
+  githubEndpointName: '$(TF_GITHUB_SERVICE_ENDPOINT_NAME)'
+
+  DEV_AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
+  DEV_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
+  DEV_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
+  AKS_DEV_NAME: '$(TF_AKS_DEV_NAME)'
+
+  UAT_AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
+  UAT_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
+  UAT_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
+  AKS_UAT_NAME: '$(TF_AKS_UAT_NAME)'
+
+  PROD_AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
+  PROD_AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
+  PROD_AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
+  AKS_PROD_NAME: '$(TF_AKS_PROD_NAME)'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+    - repository: terraform
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v6.0.0
+      endpoint: "io-azure-devops-github-ro"
+
+stages:
+#DEV
+  - ${{ if eq(parameters['DEV'], true) }}:
+    #APP
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        TF_ENVIRONMENT_FOLDER: "itn-dev"
+        ENVIRONMENT: "DEV"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameDev}}"
+        WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameDev}}"
+        AKS_NAME: ${{ variables.AKS_DEV_NAME }}
+        AKS_API_SERVER_URL: ${{ variables.DEV_AKS_APISERVER_URL }}
+        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_CACRT }}
+        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.DEV_AKS_AZURE_DEVOPS_SA_TOKEN }}
+    #COMMON
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        TF_ENVIRONMENT_FOLDER: "itn-dev"
+        ENVIRONMENT: "DEV"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameDev}}"
+        WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameDev}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameDev}}"
+
+#UAT
+  - ${{ if eq(parameters['UAT'], true) }}:
+    #APP
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        TF_ENVIRONMENT_FOLDER: "itn-uat"
+        ENVIRONMENT: "UAT"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
+        WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameUat}}"
+        AKS_NAME: ${{ variables.AKS_UAT_NAME }}
+        AKS_API_SERVER_URL: ${{ variables.UAT_AKS_APISERVER_URL }}
+        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_CACRT }}
+        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.UAT_AKS_AZURE_DEVOPS_SA_TOKEN }}
+    #COMMON
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        TF_ENVIRONMENT_FOLDER: "itn-uat"
+        ENVIRONMENT: "UAT"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
+        WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameUat}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameUat}}"
+
+#PROD
+  - ${{ if eq(parameters['PROD'], true) }}:
+    #APP
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        TF_ENVIRONMENT_FOLDER: "itn-prod"
+        ENVIRONMENT: "PROD"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameProd}}"
+        WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
+        AKS_NAME: ${{ variables.AKS_PROD_NAME }}
+        AKS_API_SERVER_URL: ${{ variables.PROD_AKS_APISERVER_URL }}
+        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_CACRT }}
+        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ variables.PROD_AKS_AZURE_DEVOPS_SA_TOKEN }}
+    #COMMON
+    - template: templates/terraform-plan-apply/template.yaml@terraform
+      parameters:
+        FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}"
+        TF_ENVIRONMENT_FOLDER: "itn-prod"
+        ENVIRONMENT: "PROD"
+        AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameProd}}"
+        WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
+        AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{variables.azureServiceConnectionPlanNameProd}}"
+        AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{variables.azureServiceConnectionApplyNameProd}}"
