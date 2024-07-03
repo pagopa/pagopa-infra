@@ -82,8 +82,8 @@ data "azurerm_linux_function_app" "mockec" {
 }
 
 data "azurerm_linux_web_app" "pdf_engine" {
-  name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java"
-  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-pdf-engine-rg"
+  name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java${var.env_short == "p" ? "-ha" : ""}"
+  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-${var.env_short == "p" ? "ha" : "pdf-engine"}-rg"
 }
 
 module "apim_api_statuspage_api_v1" {
