@@ -33,7 +33,6 @@ locals {
   pagopa_apim_v2_name = "${local.product}-weu-core-apim-v2"
 
   pagopa_apim_snet        = "${local.product}-apim-snet"
-  pagopa_apim_v2_snet     = "${local.product}-weu-core-apimv2-snet"
   pagopa_vnet_integration = "pagopa-${var.env_short}-vnet-integration"
   pagopa_vnet_rg          = "pagopa-${var.env_short}-vnet-rg"
 
