@@ -1,7 +1,7 @@
 <policies>
   <inbound>
     <base />
-
+    <retry condition="@(true)" count="1" interval="2" />
     <return-response>
       <set-status code="200" reason="OK" />
       <set-header name="Content-Type" exists-action="override">
