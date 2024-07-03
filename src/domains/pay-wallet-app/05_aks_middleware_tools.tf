@@ -38,7 +38,7 @@ resource "helm_release" "cert_mounter" {
 }
 
 resource "helm_release" "reloader" {
-  name       = "pagopa-pay-wallet"
+  name       = "reloader-pay-wallet"
   repository = "https://stakater.github.io/stakater-charts"
   chart      = "reloader"
   version    = "v1.0.48"

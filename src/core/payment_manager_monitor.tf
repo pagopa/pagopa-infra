@@ -17,7 +17,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pm_restapi_availability"
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.app_gw.id
+  data_source_id = data.azurerm_application_gateway.app_gw.id
   description    = "Availability pm-restapi (for pagopa - checkout) greater than or equal 99%"
   enabled        = true
   query = (<<-QUERY
@@ -54,7 +54,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pm_restapi_cd_availabili
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.app_gw.id
+  data_source_id = data.azurerm_application_gateway.app_gw.id
   description    = "Availability pm-restapi-cd greater than or equal 99%"
   enabled        = true
   query = (<<-QUERY
@@ -92,7 +92,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pm_wallet_availability" 
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.app_gw.id
+  data_source_id = data.azurerm_application_gateway.app_gw.id
   description    = "Availability pm-wallet greater than or equal 99%"
   enabled        = true
   query = (<<-QUERY

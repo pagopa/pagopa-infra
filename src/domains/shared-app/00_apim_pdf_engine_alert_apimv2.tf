@@ -13,7 +13,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_generate-pdf-engine
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = data.azurerm_api_management.apim_v2.id
+  data_source_id = data.azurerm_api_management.apim_v2[0].id
   description    = "Response time for /generate-pdf is less than or equal to 5s"
   enabled        = true
   query = (<<-QUERY
@@ -47,7 +47,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-pdf-engine-p
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = data.azurerm_api_management.apim_v2.id
+  data_source_id = data.azurerm_api_management.apim_v2[0].id
   description    = "Availability for /generate-pdf is less than or equal to 99%"
   enabled        = true
   query = (<<-QUERY

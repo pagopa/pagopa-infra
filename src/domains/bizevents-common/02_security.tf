@@ -315,30 +315,30 @@ resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv" {
 
   key_vault_id = module.key_vault.id
 }
-data "azurerm_api_management_product" "apim_biz_lst_trx_product_apim_v2" {
-  product_id          = "bizevent-transactions"
-  api_management_name = local.pagopa_apim_v2_name
-  resource_group_name = local.pagopa_apim_rg
-}
+# data "azurerm_api_management_product" "apim_biz_lst_trx_product_apim_v2" {
+#   product_id          = "bizevent-transactions"
+#   api_management_name = local.pagopa_apim_v2_name
+#   resource_group_name = local.pagopa_apim_rg
+# }
 
-resource "azurerm_api_management_subscription" "list_trx_4_io_api_key_subkey_apim_v2" {
-  api_management_name = local.pagopa_apim_v2_name
-  resource_group_name = local.pagopa_apim_rg
+# resource "azurerm_api_management_subscription" "list_trx_4_io_api_key_subkey_apim_v2" {
+#   api_management_name = local.pagopa_apim_v2_name
+#   resource_group_name = local.pagopa_apim_rg
 
-  product_id    = data.azurerm_api_management_product.apim_biz_lst_trx_product_apim_v2.id
-  display_name  = "Biz Events list-trx-4-io-api-key"
-  allow_tracing = false
-  state         = "active"
-}
+#   product_id    = data.azurerm_api_management_product.apim_biz_lst_trx_product_apim_v2.id
+#   display_name  = "Biz Events list-trx-4-io-api-key"
+#   allow_tracing = false
+#   state         = "active"
+# }
 
-resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv_apim_v2" {
-  depends_on   = [azurerm_api_management_subscription.list_trx_4_io_api_key_subkey_apim_v2]
-  name         = "list-trx-4-io-api-key-apim-v2"
-  value        = azurerm_api_management_subscription.list_trx_4_io_api_key_subkey_apim_v2.primary_key
-  content_type = "text/plain"
+# resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv_apim_v2" {
+#   depends_on   = [azurerm_api_management_subscription.list_trx_4_io_api_key_subkey_apim_v2]
+#   name         = "list-trx-4-io-api-key-apim-v2"
+#   value        = azurerm_api_management_subscription.list_trx_4_io_api_key_subkey_apim_v2.primary_key
+#   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
-}
+#   key_vault_id = module.key_vault.id
+# }
 
 # PDF engine nodejs for PDF engine Java
 
@@ -396,6 +396,18 @@ resource "azurerm_key_vault_secret" "bizevent_receiptpdfhelpdesk_4_list_trx_subs
   depends_on   = [azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey]
   name         = format("bizevent-%s-generatepdfservice-subscription-key", var.env_short)
   value        = azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+// examples extraction query:
+// select TOP 10000 * FROM c WHERE c.eventStatus = 'DONE' and c.timestamp < DateTimeToTimestamp('2024-05-05T16:00:00') order by c.timestamp DESC
+// select * FROM c WHERE c.eventStatus = 'DONE' and c.timestamp < DateTimeToTimestamp('2024-05-05T16:00:00') and (c.payer.entityUniqueIdentifierValue IN ('AAAAAA00A00A000A', 'AAAAAA00A00A000B')  or c.debtor.entityUniqueIdentifierValue IN ('AAAAAA00A00A000A', 'AAAAAA00A00A000B') or c.transactionDetails.user.fiscalCode IN ('AAAAAA00A00A000A', 'AAAAAA00A00A000B')) order by c.timestamp DESC
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "cosmos-biz-view-trigger-sql-query-string" {
+  name         = format("cosmos-%s-biz-view-trigger-sql-query-string", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
