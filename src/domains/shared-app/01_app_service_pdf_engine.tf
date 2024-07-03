@@ -21,7 +21,7 @@ moved {
 
 
 resource "azurerm_resource_group" "shared_pdf_engine_app_service_rg" {
-  count    = var.pdf_engine_app_ha_enabled ? 0 : 1
+  count    = var.env_short != "p" ? 1 : 0 # only DEV and UAT
   name     = format("%s-pdf-engine-rg", local.project)
   location = var.location
 
@@ -38,7 +38,7 @@ data "azurerm_container_registry" "container_registry" {
 ################
 
 module "shared_pdf_engine_app_service" {
-  count  = var.pdf_engine_app_ha_enabled ? 0 : 1
+  count  = var.env_short != "p" ? 1 : 0 # only DEV and UAT
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.3.0"
 
   vnet_integration    = false
@@ -71,7 +71,7 @@ module "shared_pdf_engine_app_service" {
 }
 
 module "shared_pdf_engine_slot_staging" {
-  count = var.env_short != "d" && !var.pdf_engine_app_ha_enabled ? 1 : 0
+  count = var.env_short == "u" ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v6.6.0"
 
@@ -101,7 +101,7 @@ module "shared_pdf_engine_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_autoscale" {
-  count = var.env_short != "d" && !var.pdf_engine_app_ha_enabled ? 1 : 0
+  count = var.env_short == "u" ? 1 : 0
 
   name                = format("%s-autoscale-pdf-engine", local.project)
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
@@ -113,9 +113,9 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     name = "default"
 
     capacity {
-      default = 3
-      minimum = var.env_short == "p" ? 3 : 1
-      maximum = 12
+      default = 1
+      minimum = 1
+      maximum = 1
     }
 
     # Requests
@@ -269,7 +269,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
 ################
 module "shared_pdf_engine_app_service_java" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.3.0"
-  count               = var.pdf_engine_app_ha_enabled ? 0 : 1
+  count               = var.env_short != "p" ? 1 : 0 # only DEV and UAT
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
   location            = var.location
@@ -300,7 +300,7 @@ module "shared_pdf_engine_app_service_java" {
 }
 
 module "shared_pdf_engine_java_slot_staging" {
-  count = var.env_short != "d" && !var.pdf_engine_app_ha_enabled ? 1 : 0
+  count = var.env_short == "u" ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v6.6.0"
 
@@ -332,7 +332,7 @@ module "shared_pdf_engine_java_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_java_autoscale" {
-  count = var.env_short != "d" && !var.pdf_engine_app_ha_enabled ? 1 : 0
+  count = var.env_short == "u" ? 1 : 0
 
   name                = format("%s-autoscale-pdf-engine-java", local.project)
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
@@ -344,9 +344,9 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     name = "default"
 
     capacity {
-      default = 3
-      minimum = var.env_short == "p" ? 3 : 1
-      maximum = 12
+      default = 1
+      minimum = 1
+      maximum = 1
     }
 
     # Requests

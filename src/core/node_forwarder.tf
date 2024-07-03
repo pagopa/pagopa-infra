@@ -56,11 +56,6 @@ resource "azurerm_resource_group" "node_forwarder_rg" {
   tags = var.tags
 }
 
-data "azurerm_subnet" "apim_v2_snet" {
-  name                 = local.pagopa_apim_v2_snet
-  resource_group_name  = local.pagopa_vnet_rg
-  virtual_network_name = local.pagopa_vnet_integration
-}
 
 # Subnet to host the node forwarder
 module "node_forwarder_snet" {
@@ -116,7 +111,7 @@ module "node_forwarder_app_service" {
 
   app_settings = local.node_forwarder_app_settings
 
-  allowed_subnets = [module.apim_snet.id, data.azurerm_subnet.apim_v2_snet.id]
+  allowed_subnets = [module.apim_snet.id]
   allowed_ips     = []
 
   subnet_id = module.node_forwarder_snet.id
@@ -342,7 +337,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].id : module.apim[0].id
+  data_source_id = data.azurerm_api_management.apim_migrated[0].id
   description    = "Response time for /forward is less than or equal to 9s - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
   enabled        = true
   query = (<<-QUERY
@@ -376,7 +371,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].id : module.apim[0].id
+  data_source_id = data.azurerm_api_management.apim_migrated[0].id
   description    = "Availability for /forward is less than or equal to 99% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
   enabled        = true
   query = (<<-QUERY

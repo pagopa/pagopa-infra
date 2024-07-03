@@ -29,9 +29,8 @@ locals {
   ingress_hostname       = "${var.location_short}${var.instance}.${var.domain}"
   internal_dns_zone_name = "${var.dns_zone_internal_prefix}.${var.external_domain}"
 
-  pagopa_apim_name    = "${local.product}-apim"
-  pagopa_apim_rg      = "${local.product}-api-rg"
-  pagopa_apim_v2_name = "${local.product}-weu-core-apim-v2"
+  pagopa_apim_name = "${local.product}-apim"
+  pagopa_apim_rg   = "${local.product}-api-rg"
 
 
   apim_hostname      = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
