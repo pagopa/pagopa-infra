@@ -80,7 +80,7 @@
             </set-header>
           </when>
           <otherwise>
-          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v3")"/>
+          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2.1")"/>
             <set-body>@{
               JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
               requestBody["orderId"] = "ORDER_ID"; //To be removed since it is mandatory for transaction request body, but it should not be

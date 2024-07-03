@@ -81,7 +81,7 @@
             </set-header>
           </when>
           <otherwise>
-          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2")"/>
+          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2.1")"/>
           <!-- Read email from JWT START-->
           <set-variable name="email" value="@{
             var authHeader = context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ","");
