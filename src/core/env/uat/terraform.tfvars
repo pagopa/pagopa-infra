@@ -18,9 +18,7 @@ tags = {
 # Feature flag
 #
 enabled_features = {
-  apim_v2           = false
   vnet_ita          = false
-  apim_migrated     = true
   node_forwarder_ha = false
 }
 
