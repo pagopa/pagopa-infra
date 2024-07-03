@@ -225,7 +225,7 @@ wisp_converter = {
   enable_apim_switch     = true
   brokerPSP_whitelist    = "97735020584"    # AGID
   channel_whitelist      = "97735020584_02" # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/135924270/Canali+Particolari
-  station_whitelist      = "15376371009_09" # https://config.uat.platform.pagopa.it/stations/15376371009_09 in UAT x i test quella di MockEC
+  station_whitelist      = "15376371009_09,00799960158_05" # https://config.uat.platform.pagopa.it/stations/15376371009_09 in UAT x i test quella di MockEC
   dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
 }
 
