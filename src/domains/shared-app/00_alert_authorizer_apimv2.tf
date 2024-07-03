@@ -1,4 +1,5 @@
 data "azurerm_api_management" "apim_v2" {
+  count               = var.env_short == "p" ? 1 : 0
   name                = "${local.product}-weu-core-apim-v2"
   resource_group_name = "${local.product}-api-rg"
 }
@@ -15,7 +16,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-platform-aut
     custom_webhook_payload = "{}"
   }
 
-  data_source_id = data.azurerm_api_management.apim_v2.id
+  data_source_id = data.azurerm_api_management.apim_v2[0].id
   description    = "Availability for /shared/authorizer-config is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-platform-authorizer-config"
   enabled        = true
   query = (<<-QUERY
@@ -51,7 +52,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-platform-aut
     custom_webhook_payload = "{}"
   }
 
-  data_source_id = data.azurerm_api_management.apim_v2.id
+  data_source_id = data.azurerm_api_management.apim_v2[0].id
   description    = "Availability for /shared/authorizer is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-platform-authorizer"
   enabled        = true
   query = (<<-QUERY
@@ -87,7 +88,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-platform-aut
     custom_webhook_payload = "{}"
   }
 
-  data_source_id = data.azurerm_api_management.apim_v2.id
+  data_source_id = data.azurerm_api_management.apim_v2[0].id
   description    = "Response time for /shared/authorizer is greater than or equal to 1.5s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-platform-authorizer"
   enabled        = true
   query = (<<-QUERY
