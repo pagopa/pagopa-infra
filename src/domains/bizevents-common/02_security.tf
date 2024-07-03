@@ -102,7 +102,7 @@ resource "azurerm_key_vault_secret" "cosmos_negative_biz_connection_string" {
 // SWITCHns01ns03
 resource "azurerm_key_vault_secret" "ehub_biz_connection_string" {
   name         = format("ehub-%s-biz-connection-string", var.env_short)
-  value        = var.enabled_features.eventhub_ha_rx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -111,7 +111,7 @@ resource "azurerm_key_vault_secret" "ehub_biz_connection_string" {
 // SWITCHns01ns03
 resource "azurerm_key_vault_secret" "ehub_biz_enrich_connection_string" {
   name         = format("ehub-%s-biz-enrich-connection-string", var.env_short)
-  value        = var.enabled_features.eventhub_ha_tx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -120,7 +120,7 @@ resource "azurerm_key_vault_secret" "ehub_biz_enrich_connection_string" {
 // SWITCHns01ns03
 resource "azurerm_key_vault_secret" "ehub_negative_biz_connection_string" {
   name         = format("ehub-%s-rx-negative-biz-connection-string", var.env_short)
-  value        = var.enabled_features.eventhub_ha_rx ? data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-rx.primary_connection_string : data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-rx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-rx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -160,8 +160,7 @@ resource "azurerm_key_vault_secret" "cosmos_biz_key" {
   key_vault_id = module.key_vault.id
 }
 resource "azurerm_key_vault_secret" "ehub_tx_biz_key" {
-  name = format("ehub-tx-%s-biz-key", var.env_short)
-  # value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-tx.primary_key
+  name         = format("ehub-tx-%s-biz-key", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_key
   content_type = "text/plain"
 
@@ -177,8 +176,7 @@ resource "azurerm_key_vault_secret" "cosmos_negative_biz_key" {
   key_vault_id = module.key_vault.id
 }
 resource "azurerm_key_vault_secret" "ehub_tx_negative_biz_key" {
-  name = format("ehub-tx-%s-negative-biz-key", var.env_short)
-  # value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-tx.primary_key
+  name         = format("ehub-tx-%s-negative-biz-key", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-tx.primary_key
   content_type = "text/plain"
 
@@ -292,21 +290,55 @@ resource "azurerm_key_vault_secret" "webhook-slack-token" {
   }
 }
 
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "list_trx_4_io_api_key" {
+// apikey list-trx-4-io-api-key and save keys on KV
+data "azurerm_api_management_product" "apim_biz_lst_trx_product" {
+  product_id          = "bizevent-transactions"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+resource "azurerm_api_management_subscription" "list_trx_4_io_api_key_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_biz_lst_trx_product.id
+  display_name  = "Biz Events list-trx-4-io-api-key"
+  allow_tracing = false
+  state         = "active"
+}
+
+resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv" {
+  depends_on   = [azurerm_api_management_subscription.list_trx_4_io_api_key_subkey]
   name         = "list-trx-4-io-api-key"
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  value        = azurerm_api_management_subscription.list_trx_4_io_api_key_subkey.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
 }
+# data "azurerm_api_management_product" "apim_biz_lst_trx_product_apim_v2" {
+#   product_id          = "bizevent-transactions"
+#   api_management_name = local.pagopa_apim_v2_name
+#   resource_group_name = local.pagopa_apim_rg
+# }
 
+# resource "azurerm_api_management_subscription" "list_trx_4_io_api_key_subkey_apim_v2" {
+#   api_management_name = local.pagopa_apim_v2_name
+#   resource_group_name = local.pagopa_apim_rg
+
+#   product_id    = data.azurerm_api_management_product.apim_biz_lst_trx_product_apim_v2.id
+#   display_name  = "Biz Events list-trx-4-io-api-key"
+#   allow_tracing = false
+#   state         = "active"
+# }
+
+# resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv_apim_v2" {
+#   depends_on   = [azurerm_api_management_subscription.list_trx_4_io_api_key_subkey_apim_v2]
+#   name         = "list-trx-4-io-api-key-apim-v2"
+#   value        = azurerm_api_management_subscription.list_trx_4_io_api_key_subkey_apim_v2.primary_key
+#   content_type = "text/plain"
+
+#   key_vault_id = module.key_vault.id
+# }
 
 # PDF engine nodejs for PDF engine Java
 
@@ -364,6 +396,18 @@ resource "azurerm_key_vault_secret" "bizevent_receiptpdfhelpdesk_4_list_trx_subs
   depends_on   = [azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey]
   name         = format("bizevent-%s-generatepdfservice-subscription-key", var.env_short)
   value        = azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+// examples extraction query:
+// select TOP 10000 * FROM c WHERE c.eventStatus = 'DONE' and c.timestamp < DateTimeToTimestamp('2024-05-05T16:00:00') order by c.timestamp DESC
+// select * FROM c WHERE c.eventStatus = 'DONE' and c.timestamp < DateTimeToTimestamp('2024-05-05T16:00:00') and (c.payer.entityUniqueIdentifierValue IN ('AAAAAA00A00A000A', 'AAAAAA00A00A000B')  or c.debtor.entityUniqueIdentifierValue IN ('AAAAAA00A00A000A', 'AAAAAA00A00A000B') or c.transactionDetails.user.fiscalCode IN ('AAAAAA00A00A000A', 'AAAAAA00A00A000B')) order by c.timestamp DESC
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "cosmos-biz-view-trigger-sql-query-string" {
+  name         = format("cosmos-%s-biz-view-trigger-sql-query-string", var.env_short)
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

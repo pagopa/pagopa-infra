@@ -18,8 +18,10 @@ tags = {
 # Feature flag
 #
 enabled_features = {
-  apim_v2  = true
-  vnet_ita = false
+  apim_v2           = false
+  vnet_ita          = false
+  apim_migrated     = true
+  node_forwarder_ha = false
 }
 
 lock_enable = true
@@ -123,7 +125,6 @@ app_gateway_deny_paths = [
   "/tkm/internal/.*",
   "/payment-transactions-gateway/internal/.*",
   "/gps/donation-service/.*",             # internal use no sub-keys
-  "/shared/iuv-generator-service/.*",     # internal use no sub-keys
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
 ]
 app_gateway_deny_paths_2 = [
@@ -162,6 +163,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
     "193.203.230.21", # VPN NEXI
+    "151.1.203.68"    # Softlab backup support line
   ]
 }
 

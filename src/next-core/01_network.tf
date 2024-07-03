@@ -16,7 +16,7 @@ module "vnet_replica" {
 
 ## Peering between the vnet(main) and replica vnet
 module "vnet_peering" {
-  source                           = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v8.13.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v8.13.0"
   count  = var.geo_replica_enabled ? 1 : 0
 
   source_resource_group_name       = data.azurerm_resource_group.rg_vnet_core.name

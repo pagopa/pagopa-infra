@@ -37,7 +37,7 @@ resource "azurerm_public_ip" "integration_appgateway_public_ip" {
 }
 
 locals {
-   listeners_apiprf = {
+  listeners_apiprf = {
     apiprf = {
       protocol           = "Https"
       host               = "api.${var.dns_zone_prefix_prf}.${var.external_domain}"
@@ -45,8 +45,8 @@ locals {
       ssl_profile_name   = "${local.product_region}-ssl-profile"
       firewall_policy_id = null
       certificate = {
-        name = var.app_gateway_prf_certificate_name
-        id = var.app_gateway_prf_certificate_name == "" ? null : replace(
+        name = var.integration_app_gateway_prf_certificate_name
+        id = var.integration_app_gateway_prf_certificate_name == "" ? null : replace(
           data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
           ""
@@ -65,7 +65,7 @@ locals {
       type               = "Private"
 
       certificate = {
-        name = var.app_gateway_api_certificate_name
+        name = var.integration_app_gateway_api_certificate_name
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
@@ -83,7 +83,7 @@ locals {
       type               = "Private"
 
       certificate = {
-        name = var.app_gateway_portal_certificate_name
+        name = var.integration_app_gateway_portal_certificate_name
         id = replace(
           data.azurerm_key_vault_certificate.portal_platform.secret_id,
           "/${data.azurerm_key_vault_certificate.portal_platform.version}",
@@ -101,7 +101,7 @@ locals {
       type               = "Private"
 
       certificate = {
-        name = var.app_gateway_management_certificate_name
+        name = var.integration_app_gateway_management_certificate_name
         id = replace(
           data.azurerm_key_vault_certificate.management_platform.secret_id,
           "/${data.azurerm_key_vault_certificate.management_platform.version}",
@@ -123,11 +123,11 @@ module "app_gw_integration" {
   name                = "${local.product_region}-integration-app-gw"
 
   # SKU
-  sku_name = var.app_gateway_sku_name
-  sku_tier = var.app_gateway_sku_tier
+  sku_name = var.integration_app_gateway_sku_name
+  sku_tier = var.integration_app_gateway_sku_tier
 
   # WAF
-  waf_enabled = var.app_gateway_waf_enabled
+  waf_enabled = var.integration_app_gateway_waf_enabled
 
   # Networking
   subnet_id          = module.integration_appgateway_snet.id
@@ -145,7 +145,7 @@ module "app_gw_integration" {
       fqdns                       = ["api.${var.dns_zone_prefix}.${var.external_domain}."]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
-      request_timeout             = 60
+      request_timeout             = 120
       pick_host_name_from_backend = false
     }
   }
@@ -195,10 +195,10 @@ module "app_gw_integration" {
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
 
   # Scaling
-  app_gateway_min_capacity = var.app_gateway_min_capacity
-  app_gateway_max_capacity = var.app_gateway_max_capacity
+  app_gateway_min_capacity = var.integration_app_gateway_min_capacity
+  app_gateway_max_capacity = var.integration_app_gateway_max_capacity
 
-  alerts_enabled = var.app_gateway_alerts_enabled
+  alerts_enabled = var.integration_app_gateway_alerts_enabled
 
   action = [
     {

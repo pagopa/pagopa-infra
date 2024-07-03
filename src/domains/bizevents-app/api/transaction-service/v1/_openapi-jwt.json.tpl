@@ -4,7 +4,7 @@
     "title": "Biz-Events Transaction Service JWT",
     "description": "Microservice for exposing REST APIs about payment receipts.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.1.32"
+    "version": "0.1.41"
   },
   "servers": [
     {
@@ -21,14 +21,6 @@
         "summary": "Disable the transaction details given its id.",
         "operationId": "disableTransaction",
         "parameters": [
-          {
-            "name": "walletId",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "transaction-id",
             "in": "path",
@@ -58,6 +50,9 @@
                   "type": "string"
                 }
               }
+            },
+            "content": {
+              "application/json": {}
             }
           },
           "200": {
@@ -136,34 +131,7 @@
         ],
         "summary": "Retrieve the paged transaction list from biz events.",
         "operationId": "getTransactionList",
-        "parameters": [
-          {
-            "name": "walletId",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "x-continuation-token",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          },
-          {
+        "parameters" : [ {
             "name": "X-Request-Id",
             "in": "header",
             "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
@@ -171,8 +139,59 @@
             "schema": {
               "type": "string"
             }
+        }, {
+          "name" : "is_payer",
+          "in" : "query",
+          "description" : "Filter by payer",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
           }
-        ],
+        }, {
+          "name" : "is_debtor",
+          "in" : "query",
+          "description" : "Filter by debtor",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          }
+        }, {
+          "name" : "x-continuation-token",
+          "in" : "header",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        }, {
+          "name" : "orderby",
+          "in" : "query",
+          "description" : "Order by TRANSACTION_DATE",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "TRANSACTION_DATE",
+            "enum" : [ "TRANSACTION_DATE" ]
+          }
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Direction of ordering",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "DESC",
+            "enum" : [ "ASC", "DESC" ]
+          }
+        } ],
         "responses": {
           "429": {
             "description": "Too many requests.",
@@ -273,14 +292,6 @@
         "summary": "Retrieve the transaction details given its id.",
         "operationId": "getTransactionDetails",
         "parameters": [
-          {
-            "name": "walletId",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "transaction-id",
             "in": "path",
@@ -394,14 +405,6 @@
         "operationId": "getPDFReceipt",
         "parameters": [
           {
-            "name": "walletId",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "event-id",
             "in": "path",
             "description": "The id of the event.",
@@ -418,7 +421,7 @@
             "schema": {
               "type": "string"
             }
-          }          
+          }
         ],
         "responses": {
           "429": {
@@ -512,6 +515,161 @@
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/transactions/cached": {
+      "get": {
+        "tags": [
+          "IO Transactions REST APIs"
+        ],
+        "summary": "Retrieve the paged transaction list from biz events.",
+        "operationId": "getTransactionList_1",
+        "parameters" : [ {
+            "name": "X-Request-Id",
+            "in": "header",
+            "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+        }, {
+          "name" : "is_payer",
+          "in" : "query",
+          "description" : "Filter by payer",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          }
+        }, {
+          "name" : "is_debtor",
+          "in" : "query",
+          "description" : "Filter by debtor",
+          "required" : false,
+          "schema" : {
+            "type" : "boolean"
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 10
+          }
+        }, {
+          "name" : "orderby",
+          "in" : "query",
+          "description" : "Order by TRANSACTION_DATE",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "TRANSACTION_DATE",
+            "enum" : [ "TRANSACTION_DATE" ]
+          }
+        }, {
+          "name" : "ordering",
+          "in" : "query",
+          "description" : "Direction of ordering",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "default" : "DESC",
+            "enum" : [ "ASC", "DESC" ]
+          }
+        } ],
+        "responses": {
+          "200": {
+            "description": "Obtained transaction list.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionListWrapResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found the transaction.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -653,6 +811,37 @@
           }
         }
       },
+      "PageInfo": {
+        "required": [
+          "items_found",
+          "limit",
+          "page",
+          "total_pages"
+        ],
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number",
+            "format": "int32"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Required number of items per page",
+            "format": "int32"
+          },
+          "items_found": {
+            "type": "integer",
+            "description": "Number of items found. (The last page may have fewer elements than required)",
+            "format": "int32"
+          },
+          "total_pages": {
+            "type": "integer",
+            "description": "Total number of pages",
+            "format": "int32"
+          }
+        }
+      },
       "TransactionListItem": {
         "type": "object",
         "properties": {
@@ -690,6 +879,9 @@
             "items": {
               "$ref": "#/components/schemas/TransactionListItem"
             }
+          },
+          "page_info": {
+            "$ref": "#/components/schemas/PageInfo"
           }
         }
       },
@@ -832,12 +1024,6 @@
       }
     },
     "securitySchemes": {
-      "ApiKey": {
-        "type": "apiKey",
-        "description": "The API key to access this function app.",
-        "name": "Ocp-Apim-Subscription-Key",
-        "in": "header"
-      },
       "Authorization": {
         "type": "http",
         "scheme": "bearer",

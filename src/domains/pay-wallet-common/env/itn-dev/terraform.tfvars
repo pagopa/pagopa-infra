@@ -3,6 +3,7 @@ env_short      = "d"
 env            = "dev"
 domain         = "pay-wallet"
 location       = "italynorth"
+cdn_location   = "westeurope"
 location_short = "itn"
 instance       = "dev"
 
@@ -30,19 +31,20 @@ log_analytics_italy_workspace_resource_group_name = "pagopa-d-itn-core-monitor-r
 
 ### NETWORK
 
-cidr_subnet_cosmosdb_pay_wallet = ["10.3.8.0/24"]
-cidr_subnet_redis_pay_wallet    = ["10.3.9.0/24"]
-cidr_subnet_storage_pay_wallet  = ["10.3.10.0/24"]
+cidr_subnet_cosmosdb_pay_wallet = ["10.3.5.0/27"]
+cidr_subnet_redis_pay_wallet    = ["10.3.5.64/27"]
+cidr_subnet_storage_pay_wallet  = ["10.3.5.96/27"]
+cidr_subnet_pay_wallet_user_aks = ["10.3.6.0/24"]
 
-
-
+### AKS
 ingress_load_balancer_ip = "10.3.2.250"
 
-### dns
+### DNS
 
 external_domain          = "pagopa.it"
 dns_zone_prefix          = "dev.payment-wallet"
 dns_zone_internal_prefix = "internal.dev.platform"
+dns_zone_platform        = "dev.platform"
 
 ### Cosmos
 
@@ -55,7 +57,7 @@ cosmos_mongo_db_params = {
     max_interval_in_seconds = 5
     max_staleness_prefix    = 100000
   }
-  server_version                   = "4.2"
+  server_version                   = "6.0"
   main_geo_location_zone_redundant = false
   enable_free_tier                 = false
 
@@ -65,6 +67,7 @@ cosmos_mongo_db_params = {
   is_virtual_network_filter_enabled = false
 
   backup_continuous_enabled = false
+  ip_range_filter           = "104.42.195.92,40.76.54.131,52.176.6.30,52.169.50.45,52.187.184.26,13.88.56.148,40.91.218.243,13.91.105.215,4.210.172.107,40.80.152.199,13.95.130.121,20.245.81.54,40.118.23.126"
 }
 
 cosmos_mongo_db_pay_wallet_params = {
@@ -97,3 +100,16 @@ pay_wallet_storage_params = {
   public_network_access_enabled = true,
 }
 
+# AKS
+aks_user_node_pool = {
+  enabled         = true,
+  name            = "padakswalusr",
+  vm_size         = "Standard_B8ms",
+  os_disk_type    = "Managed",
+  os_disk_size_gb = 75,
+  node_count_min  = 1,
+  node_count_max  = 3,
+  node_labels     = { node_name : "aks-pay-wallet-user", node_type : "user", domain : "paywallet" },
+  node_taints     = ["paymentWalletOnly=true:NoSchedule"],
+  node_tags       = { payWallet : "true" },
+}

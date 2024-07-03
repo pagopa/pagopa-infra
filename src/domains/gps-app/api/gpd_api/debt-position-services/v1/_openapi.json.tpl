@@ -4,7 +4,7 @@
     "title": "PagoPA API Debt Position ${service}",
     "description": "Progetto Gestione Posizioni Debitorie",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.11.27"
+    "version": "0.11.36"
   },
   "servers": [
     {
@@ -58,11 +58,12 @@
             "name": "page",
             "in": "query",
             "description": "Page number. Page value starts from 0",
-            "required": true,
+            "required": false,
             "schema": {
               "minimum": 0,
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 0
             }
           },
           {

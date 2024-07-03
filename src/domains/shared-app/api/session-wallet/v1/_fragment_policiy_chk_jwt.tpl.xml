@@ -1,18 +1,12 @@
 <fragment>
-
-      <trace source="jwt-wallet-session-start" severity="information">jwt-wallet-session-start</trace>
-
-      <set-variable name="walletId" value="@{
-          return context.Request.Headers.GetValueOrDefault("walletId","");
-      }" />
-
       <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
         <issuer-signing-keys>
-            <key>{{wallet-session-jwt-signing-key}}</key>
+            <key>{{pagopa-wallet-session-jwt-signing-key}}</key>
         </issuer-signing-keys>
         <required-claims>
-          <claim name="walletId" match="all">
-            <value>@((string)context.Variables.GetValueOrDefault("walletId",""))</value>
+          <claim name="userId" match="all">
+          </claim>
+          <claim name="email" match="all">
           </claim>
         </required-claims>
       </validate-jwt>
@@ -23,6 +17,11 @@
         }
         return "";
         }" />
-      <trace source="jwt-wallet-session-stop" severity="information">jwt-wallet-session-stop</trace>
-
+      <set-variable name="email" value="@{
+        var jwt = (Jwt)context.Variables["jwtToken"];
+        if(jwt.Claims.ContainsKey("email")){
+            return jwt.Claims["email"][0];
+        }
+        return "";
+        }" />
 </fragment>      

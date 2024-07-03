@@ -20,9 +20,11 @@ lock_enable = false
 # Feature flag
 #
 enabled_features = {
-  apim_v2  = false
-  apim_migrated = true
-  vnet_ita = true
+  apim_v2           = false
+  apim_migrated     = true
+  vnet_ita          = true
+  node_forwarder_ha = false
+
 }
 
 # monitoring
@@ -129,6 +131,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "0.0.0.0",
     "0.0.0.0",
     "0.0.0.0",
+    "0.0.0.0"
   ]
 }
 

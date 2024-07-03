@@ -115,7 +115,7 @@ custom_metric_alerts = {
 }
 
 cosmos_nosql_db_params = {
-  enabled      = true
+  # enabled      = true
   kind         = "GlobalDocumentDB"
   capabilities = ["EnableServerless"]
   offer_type   = "Standard"
@@ -139,7 +139,7 @@ cosmos_nosql_db_params = {
 }
 
 verifyko_cosmos_nosql_db_params = {
-  enabled      = true
+  # enabled      = true
   kind         = "GlobalDocumentDB"
   capabilities = ["EnableServerless"]
   offer_type   = "Standard"
@@ -163,7 +163,7 @@ verifyko_cosmos_nosql_db_params = {
 }
 
 standin_cosmos_nosql_db_params = {
-  enabled      = true
+  # enabled      = true
   kind         = "GlobalDocumentDB"
   capabilities = ["EnableServerless"]
   offer_type   = "Standard"
@@ -186,10 +186,10 @@ standin_cosmos_nosql_db_params = {
   max_throughput = 1000
 }
 
-enable_wisp_converter = true
+create_wisp_converter = true
 
 wisp_converter_cosmos_nosql_db_params = {
-  enabled      = true
+  # enabled      = true
   kind         = "GlobalDocumentDB"
   capabilities = ["EnableServerless"]
   offer_type   = "Standard"
@@ -208,8 +208,14 @@ wisp_converter_cosmos_nosql_db_params = {
 
   backup_continuous_enabled = false
 
-  events_ttl     = 259200 # 3 days in second
-  max_throughput = 1000
+  data_ttl                   = 259200 # 3 days in second
+  data_max_throughput        = 400
+  re_ttl                     = 259200 # 3 days in second
+  re_max_throughput          = 400
+  receipt_ttl                = 259200 # 3 days in second
+  receipt_max_throughput     = 400
+  idempotency_ttl            = 259200 # 3 days in second
+  idempotency_max_throughput = 400
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
@@ -264,9 +270,64 @@ wisp_converter_storage_account = {
   backup_retention_days         = 0
 }
 
+nodo_storico_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = true
+  public_network_access_enabled = true
+  backup_enabled                = false
+  blob_delete_retention_days    = 0
+  backup_retention              = 0
+}
+
 redis_ha_enabled = false
+
 
 enabled_features = {
   eventhub_ha_tx = true
   eventhub_ha_rx = true
 }
+
+/*****************
+Service Bus
+*****************/
+service_bus_wisp = {
+  sku                                  = "Standard"
+  requires_duplicate_detection         = false
+  dead_lettering_on_message_expiration = false
+  queue_default_message_ttl            = "P7D" # default for Standard P10675199DT2H48M5.4775807S
+  capacity                             = 0
+  premium_messaging_partitions         = 0
+}
+# queue_name shall be <domain>_<service>_<name>
+# producer shall have only send authorization
+# consumer shall have only listen authorization
+service_bus_wisp_queues = [
+  {
+    name                = "nodo_wisp_paainviart_queue"
+    enable_partitioning = true
+    keys = [
+      {
+        name   = "wisp_converter_paainviart"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name                = "nodo_wisp_payment_timeout_queue"
+    enable_partitioning = true
+    keys = [
+      {
+        name   = "wisp_converter_payment_timeout"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  }
+]
+

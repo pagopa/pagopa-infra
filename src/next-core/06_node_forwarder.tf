@@ -48,12 +48,38 @@ locals {
 }
 
 
+
+module "node_forwarder_ha_snet" {
+  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
+  count                                         = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
+  name                                          = "${local.project}-node-forwarder-ha-snet"
+  address_prefixes                              = var.node_fw_ha_snet_cidr
+  resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                          = data.azurerm_virtual_network.vnet_core.name
+  private_link_service_network_policies_enabled = true
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
+
+resource "azurerm_subnet_nat_gateway_association" "nodefw_ha_snet_nat_association" {
+  count          = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
+  subnet_id      = module.node_forwarder_ha_snet[0].id
+  nat_gateway_id = data.azurerm_nat_gateway.nat_gw.id
+}
+
+
 module "node_forwarder_app_service" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
 
   count = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
 
-  vnet_integration    = false
+  vnet_integration    = true
   resource_group_name = "${local.product}-node-forwarder-rg"
   location            = var.location
 
@@ -71,12 +97,12 @@ module "node_forwarder_app_service" {
   docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopanodeforwarder"
   docker_image_tag = "latest"
 
-  allowed_subnets = [data.azurerm_subnet.apim_subnet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_subnet.id, module.apimv2_snet.id]
   allowed_ips     = []
 
   sku_name = var.node_forwarder_sku
 
-  subnet_id                    = data.azurerm_subnet.node_forwarder_snet.id
+  subnet_id                    = module.node_forwarder_ha_snet[0].id
   health_check_maxpingfailures = 10
 
   zone_balancing_enabled = var.node_forwarder_zone_balancing_enabled
@@ -85,7 +111,7 @@ module "node_forwarder_app_service" {
 }
 
 module "node_forwarder_slot_staging" {
-  count = var.env_short != "d" && var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
+  count = var.env_short == "p" && var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.60.0"
 
@@ -102,11 +128,13 @@ module "node_forwarder_slot_staging" {
   health_check_path = "/actuator/info"
 
   # App settings
-  app_settings = local.node_forwarder_app_settings
+  app_settings     = local.node_forwarder_app_settings
+  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopanodeforwarder"
+  docker_image_tag = "latest"
 
   allowed_subnets = [data.azurerm_subnet.apim_subnet.id]
   allowed_ips     = []
-  subnet_id       = data.azurerm_subnet.node_forwarder_snet.id
+  subnet_id       = module.node_forwarder_ha_snet[0].id
 
   tags = var.tags
 }

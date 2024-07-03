@@ -99,19 +99,30 @@
                         string operationResult = (string)operation["operationResult"];
                         string orderId = (string)operation["orderId"];
                         string operationId = (string)operation["operationId"];
+                        string paymentCircuit = (string)operation["paymentCircuit"];
                         var additionalData = operation["additionalData"];
                         string authorizationCode = null;
                         string errorCode = null;
                         string rrn = null;
                         string validationServiceId = null;
+                        string bpayEndToEndId = null;
                         if(additionalData != null && additionalData.Type != JTokenType.Null){
                             JObject receivedAdditionalData = (JObject)additionalData;
                             authorizationCode = (string)receivedAdditionalData["authorizationCode"];
                             errorCode = (string)receivedAdditionalData["authorizationStatus"];
                             rrn = (string)receivedAdditionalData["rrn"];
                             validationServiceId = (string)receivedAdditionalData["validationServiceId"];
+                            bpayEndToEndId = (string)receivedAdditionalData["bpayEndToEndId"];
                         }
-                        string paymentEndToEndId = (string)operation["paymentEndToEndId"];
+                        string paymentEndToEndId = null; 
+                        switch(paymentCircuit){
+                            case "BANCOMATPAY":
+                                paymentEndToEndId = bpayEndToEndId;
+                                break;
+                            default:
+                                paymentEndToEndId =  (string)operation["paymentEndToEndId"];
+                                break;
+                        }
                         string operationTime = (string)operation["operationTime"];
                         string timestampOperation = null;
                         if(operationTime != null) {

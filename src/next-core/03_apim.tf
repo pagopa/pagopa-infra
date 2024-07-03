@@ -65,7 +65,7 @@ locals {
 }
 
 module "apimv2" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v7.67.1"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v8.22.0"
   depends_on          = [azurerm_subnet_network_security_group_association.apim_stv2_snet]
   subnet_id           = module.apimv2_snet.id
   location            = data.azurerm_resource_group.rg_api.location
@@ -852,7 +852,7 @@ resource "azurerm_subnet_network_security_group_association" "apim_snet_sg_assoc
 
 module "apim" {
   count               = var.is_feature_enabled.apim_core_import ? 1 : 0
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v8.19.0"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v8.23.0"
   subnet_id           = data.azurerm_subnet.apim_subnet.id
   location            = data.azurerm_resource_group.rg_api.location
   name                = "${local.product}-apim"
@@ -873,7 +873,7 @@ module "apim" {
     enabled             = true
     instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
   }
-  zones = startswith(var.apim_v2_sku, "Premium") ? var.apim_v2_zones : null
+  zones                                         = startswith(var.apim_v2_sku, "Premium") ? var.apim_v2_zones : null
   management_logger_applicaiton_insight_enabled = false
 
 
@@ -886,7 +886,7 @@ module "apim" {
     portal-domain         = local.portal_domain
     management-api-domain = local.management_domain
     apim-name             = "${local.product}-apim"
-    old-apim-name             = "${local.project}-apim-v2"
+    old-apim-name         = "${local.project}-apim-v2"
   })
 
   autoscale = var.apim_v2_autoscale

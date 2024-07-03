@@ -51,7 +51,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", ]
   secret_permissions  = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
   storage_permissions = []
   certificate_permissions = [
@@ -345,8 +345,25 @@ resource "azurerm_key_vault_secret" "nodo5_slack_webhook_url" {
   }
 }
 
+# Wallet secrets ( JWT_SIGNATURE_KEY and PDV Tokenizer key )
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry:exp:2022-05-01 # already ignored, maybe a bug in tfsec
+module "pagopa_wallet_jwt" {
+  source = "github.com/pagopa/terraform-azurerm-v3//jwt_keys?ref=v8.21.0"
+  # Save on KV : 
+  #  - pagopa-wallet-session-jwt-signature-key-private-key
+  #  - pagopa-wallet-session-jwt-signature-key-public-key
+  jwt_name         = "pagopa-wallet-session-jwt-signature-key"
+  key_vault_id     = module.key_vault.id
+  cert_common_name = "pagoPA platform session wallet token for IO"
+  cert_password    = ""
+
+  tags = var.tags
+}
+# JWT_SIGNATURE_KEY   = trimspace(module.pagopa_wallet_jwt.jwt_private_key_pem) # to avoid unwanted changes
 
 
+# DEPRECATED the real one is called personal-data-vault-api-key-wallet-session and is located in shared-secrets domain
 resource "azurerm_key_vault_secret" "wallet_session_pdv_api_key" {
   name         = "personal-data-vault-api-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
@@ -359,15 +376,3 @@ resource "azurerm_key_vault_secret" "wallet_session_pdv_api_key" {
   }
 }
 
-
-resource "azurerm_key_vault_secret" "wallet_session_jwt_signing_key" {
-  name         = "wallet-session-jwt-signing-key"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}

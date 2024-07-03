@@ -1,11 +1,12 @@
 # general
-prefix          = "pagopa"
-env_short       = "u"
-env             = "uat"
-domain          = "uat"
-location        = "italynorth"
-location_string = "Italy North"
-location_short  = "itn"
+prefix              = "pagopa"
+env_short           = "u"
+env                 = "uat"
+domain              = "uat"
+location            = "italynorth"
+location_string     = "Italy North"
+location_short      = "itn"
+location_westeurope = "westeurope"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -39,7 +40,8 @@ monitor_appinsights_name                    = "pagopa-u-appinsights"
 #
 aks_private_cluster_enabled = true
 aks_alerts_enabled          = false
-aks_kubernetes_version      = "1.27.9"
+aks_kubernetes_version      = "1.29.4"
+aks_sku_tier                = "Standard"
 aks_system_node_pool = {
   name            = "pauaksleosys",
   vm_size         = "Standard_D2ds_v5",
@@ -74,4 +76,4 @@ ingress_load_balancer_ip = "10.3.2.250"
 ingress_replica_count    = "2"
 nginx_helm_version       = "4.10.0"
 
-keda_helm_version = "2.12.1"
+keda_helm_version = "2.14.0"

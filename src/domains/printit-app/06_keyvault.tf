@@ -169,3 +169,14 @@ resource "azurerm_key_vault_secret" "pdf_engine_subkey_secret" {
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+
+
+resource "azurerm_key_vault_secret" "api_config_subscription_key" {
+  name         = "api-config-sub-key"
+  value        = azurerm_api_management_subscription.api_config_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+

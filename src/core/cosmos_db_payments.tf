@@ -49,7 +49,7 @@ module "cosmos_payments_account" {
   private_endpoint_name    = "${local.project}-cosmos-payments-sql-endpoint"
   private_endpoint_enabled = var.cosmos_document_db_params.private_endpoint_enabled
   subnet_id                = module.cosmosdb_paymentsdb_snet.id
-  private_dns_zone_ids     = [azurerm_private_dns_zone.privatelink_documents_azure_com.id]
+  private_dns_zone_ids     = [data.azurerm_private_dns_zone.privatelink_documents_azure_com.id]
 
   tags = var.tags
 

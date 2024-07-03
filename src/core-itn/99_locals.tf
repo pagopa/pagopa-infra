@@ -17,8 +17,4 @@ locals {
   vnet_integration_name                = "${local.product}-vnet-integration"
   vnet_integration_resource_group_name = "${local.product}-vnet-rg"
 
-
-  msg_resource_group_name      = "${local.product}-msg-rg"
-  eventhub_resource_group_name = "${local.product_ita}-evenhub-rg"
-
 }

@@ -49,6 +49,7 @@ authorizer_functions_autoscale = {
   maximum = 3
 }
 
+
 # taxonomy
 taxonomy_function_subnet                   = ["10.1.183.0/24"]
 taxonomy_function_network_policies_enabled = true
@@ -69,8 +70,9 @@ cidr_subnet_pdf_engine_app_service   = ["10.1.187.0/24"]
 app_service_pdf_engine_sku_name      = "P1v3"
 app_service_pdf_engine_sku_name_java = "P1v3"
 
-robots_indexed_paths      = []
-pdf_engine_app_ha_enabled = false
+robots_indexed_paths              = []
+pdf_engine_app_ha_enabled         = false
+pdf_engine_zone_balancing_enabled = false
 
 // wallet session token
 io_backend_base_path = "https://api-app.io.pagopa.it"

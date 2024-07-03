@@ -37,8 +37,8 @@ moved {
 }
 
 module "apim" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.5.0"
-  count = var.enabled_features.apim_migrated ? 0 : 1
+  source               = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.5.0"
+  count                = var.enabled_features.apim_migrated ? 0 : 1
   subnet_id            = module.apim_snet.id
   location             = azurerm_resource_group.rg_api.location
   name                 = format("%s-apim", local.project)
@@ -561,22 +561,7 @@ resource "azurerm_api_management_named_value" "wisp2_it" {
   value               = "${var.dns_zone_wisp2}.${var.external_domain}"
 }
 
-# fdr
-resource "azurerm_api_management_named_value" "fdrsaname" {
-  name                = "fdrsaname"
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  display_name        = "fdrsaname"
-  value               = module.fdr_flows_sa.name
-}
 
-resource "azurerm_api_management_named_value" "fdrcontainername" {
-  name                = "fdrcontainername"
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  display_name        = "fdrcontainername"
-  value               = azurerm_storage_container.fdr_rend_flow.name
-}
 
 data "azurerm_key_vault_secret" "mock_services_api_key" {
   count        = var.env_short == "d" ? 1 : 0
