@@ -9,7 +9,6 @@ data "azurerm_subnet" "apim_vnet" {
   virtual_network_name = local.pagopa_vnet_integration
 }
 
-
 data "azurerm_dns_zone" "public" {
   name = join(".", [var.apim_dns_zone_prefix, var.external_domain])
 }
