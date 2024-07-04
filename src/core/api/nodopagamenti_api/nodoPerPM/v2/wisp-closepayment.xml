@@ -20,14 +20,19 @@
 <policies>
   <inbound>
     <base />
-    <set-variable name="primitive-ko" value="closePaymentV2" />
-    <set-variable name="request-body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
-    <set-variable name="wisp-payment-tokens" value="@{
-                        JObject request = (JObject) context.Variables["request-body"];
-                        JArray paymentsTokens = (JArray) request.Property("paymentTokens").Value;
-                        return string.Join(",", paymentsTokens.Select(token => token.ToString()));
-    }" />
-    <include-fragment fragment-id="wisp-disable-payment-token-timer" />
+    <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
+    <choose>
+      <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
+        <set-variable name="primitive-ko" value="closePaymentV2" />
+        <set-variable name="request-body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
+        <set-variable name="wisp-payment-tokens" value="@{
+                            JObject request = (JObject) context.Variables["request-body"];
+                            JArray paymentsTokens = (JArray) request.Property("paymentTokens").Value;
+                            return string.Join(",", paymentsTokens.Select(token => token.ToString()));
+        }" />
+        <include-fragment fragment-id="wisp-disable-payment-token-timer" />
+      </when>
+    </choose>
   </inbound>
   <backend>
     <base />
