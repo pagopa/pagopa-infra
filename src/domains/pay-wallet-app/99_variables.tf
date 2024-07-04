@@ -155,3 +155,13 @@ variable "enabled_payment_wallet_method_ids_pm" {
   default     = ""
   description = "Comma separated list of eCommerce payment method ids that are enabled with PM APIs"
 }
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
+}

@@ -32,8 +32,8 @@ is_feature_enabled = {
 #
 # CIRDs
 #
-cidr_vnet_italy = ["10.3.0.0/16"]
-
+cidr_vnet_italy                  = ["10.3.0.0/16"]
+cidr_subnet_appgateway           = ["10.1.128.0/24"]
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
 cidr_subnet_tools_cae            = ["10.1.248.0/23"]
 cidr_subnet_azdoa                = ["10.1.130.0/24"]
@@ -41,8 +41,13 @@ cidr_subnet_azdoa                = ["10.1.130.0/24"]
 #
 # Dns
 #
-external_domain          = "pagopa.it"
-dns_zone_internal_prefix = "internal.platform"
+external_domain                      = "pagopa.it"
+dns_zone_internal_prefix             = "internal.platform"
+dns_zone_wfesp                       = "wfesp"
+private_dns_zone_db_nodo_pagamenti   = "p.db-nodo-pagamenti.com"
+dns_a_reconds_dbnodo_ips             = ["10.101.35.37", "10.101.35.38"]                                     # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
+dns_a_reconds_dbnodo_ips_dr          = ["10.250.45.145", "10.250.45.146", "10.250.45.147", "10.250.45.148"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
+dns_a_reconds_dbnodonexipostgres_ips = ["10.222.209.84"]
 
 ### External resources
 
@@ -72,7 +77,8 @@ enable_logos_backup                              = true
 logos_backup_retention                           = 30
 logos_donations_storage_account_replication_type = "GZRS"
 
-
+# nat gateway
+nat_gateway_public_ips = 2
 
 #
 # apim v2
@@ -181,14 +187,14 @@ redis_cache_params = {
 }
 
 
-app_gateway_sku_name                    = "Standard_v2"
-app_gateway_sku_tier                    = "Standard_v2"
-cidr_subnet_appgateway_integration      = ["10.230.10.192/26"]
-integration_appgateway_private_ip       = "10.230.10.200"
-app_gateway_api_certificate_name        = "api-platform-pagopa-it"
-app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
-app_gateway_management_certificate_name = "management-platform-pagopa-it"
-integration_appgateway_zones            = [1, 2, 3]
+integration_app_gateway_sku_name                    = "Standard_v2"
+integration_app_gateway_sku_tier                    = "Standard_v2"
+cidr_subnet_appgateway_integration                  = ["10.230.10.192/26"]
+integration_appgateway_private_ip                   = "10.230.10.200"
+integration_app_gateway_api_certificate_name        = "api-platform-pagopa-it"
+integration_app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
+integration_app_gateway_management_certificate_name = "management-platform-pagopa-it"
+integration_appgateway_zones                        = [1, 2, 3]
 
 nodo_pagamenti_psp            = "97249640588,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec             = "00493410583,09633951000,06655971007,00856930102,02478610583,97169170822,01266290996,01248040998,01429910183,80007270376,01142420056,80052310580,83000730297,80082160013,94050080038,01032450072,01013130073,10718570012,01013210073,87007530170,01242340998,80012150274,02508710585,80422850588,94032590278,94055970480,92001600524,80043570482,92000530532,80094780378,80016430045,80011170505,80031650486,00337870406,09227921005,01928010683,00608810057,03299640163,82002730487,02928200241"
@@ -702,5 +708,80 @@ node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
 devops_agent_zones                    = [1, 2, 3]
 devops_agent_balance_zones            = false
 azdo_agent_vm_image_name              = "pagopa-p-azdo-agent-ubuntu2204-image-v4"
-app_gateway_min_capacity              = 2
-app_gateway_max_capacity              = 50
+integration_app_gateway_min_capacity  = 2
+integration_app_gateway_max_capacity  = 50
+
+# public app gateway
+# app_gateway
+app_gateway_api_certificate_name        = "api-platform-pagopa-it"
+app_gateway_upload_certificate_name     = "upload-platform-pagopa-it"
+app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
+app_gateway_management_certificate_name = "management-platform-pagopa-it"
+app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
+app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
+app_gateway_kibana_certificate_name     = "kibana-platform-pagopa-it"
+app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
+app_gateway_min_capacity                = 8 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
+app_gateway_max_capacity                = 50
+app_gateway_sku_name                    = "WAF_v2"
+app_gateway_sku_tier                    = "WAF_v2"
+app_gateway_waf_enabled                 = true
+app_gateway_alerts_enabled              = true
+app_gateway_deny_paths = [
+  "/nodo/.*",
+  # "/nodo-auth/.*", # non serve in quanto queste API sono con subkey required 🔐
+  "/payment-manager/clients/.*",
+  "/payment-manager/pp-restapi-rtd/.*",
+  "/payment-manager/db-logging/.*",
+  "/payment-manager/payment-gateway/.*",
+  "/payment-manager/internal*",
+  #  "/payment-manager/pm-per-nodo/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #  "/checkout/io-for-node/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  #"/gpd-payments/.*", # non serve in quanto queste API sono con subkey required 🔐 APIM-for-Node
+  "/tkm/tkmcardmanager/.*",
+  "/tkm/tkmacquirermanager/.*",
+  "/tkm/internal/.*",
+  "/payment-transactions-gateway/internal/.*",
+]
+app_gateway_deny_paths_2 = [
+  "/nodo-pagamenti/.*",
+  "/sync-cron/.*",
+  "/wfesp/.*",
+  "/fatturazione/.*",
+  "/payment-manager/pp-restapi-server/.*",
+  "/gps/donation-service/.*",             # internal use no sub-keys
+  "/shared/iuv-generator-service/.*",     # internal use no sub-keys
+  "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
+  "/shared/authorizer/.*",                # internal use no sub-keys
+  "/gpd/api/.*",                          # internal use no sub-keys
+]
+app_gateway_kibana_deny_paths = [
+  "/kibana/*",
+]
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/web-bo/.*",
+    "/bo-nodo/.*",
+    "/pp-admin-panel/.*",
+    "/nodo-monitoring/monitoring/.*",
+    "/nodo-ndp/monitoring/.*",
+    "/nodo-replica-ndp/monitoring/.*",
+    "/wfesp-ndp/.*",
+    "/wfesp-replica-ndp/.*",
+    "/web-bo-ndp/.*",
+  ]
+  ips = [
+    "93.63.219.230",  # PagoPA on prem VPN
+    "93.63.219.234",  # PagoPA on prem VPN DR
+    "20.86.161.243",  # CSTAR
+    "213.215.138.80", # Softlab L1 Pagamenti VPN
+    "213.215.138.79", # Softlab L1 Pagamenti VPN
+    "82.112.220.178", # Softlab L1 Pagamenti VPN
+    "77.43.17.42",    # Softlab L1 Pagamenti VPN
+    "151.2.45.1",     # Softlab L1 Pagamenti VPN
+    "193.203.229.20", # VPN NEXI
+    "193.203.230.22", # VPN NEXI
+    "193.203.230.21", # VPN NEXI
+    "151.1.203.68"    # Softlab backup support line
+  ]
+}

@@ -35,7 +35,3 @@ data "azurerm_postgresql_flexible_server" "postgres_flexible_server_private" {
 }
 
 
-data "azurerm_api_management" "apim_v2" {
-  name                = "${local.product}-weu-core-apim-v2"
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-}
