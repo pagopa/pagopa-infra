@@ -56,7 +56,6 @@ cidr_subnet_loadtest_agent           = ["10.1.159.0/24"]
 
 
 # specific
-cidr_subnet_redis = ["10.1.163.0/24"]
 # zabbix
 cidr_subnet_tools_cae      = ["10.1.248.0/23"] #placeholders
 cidr_subnet_pg_flex_zabbix = ["10.1.254.0/24"] #placeholders
@@ -81,9 +80,6 @@ azdo_sp_tls_cert_enabled = true
 enable_azdoa             = true
 enable_iac_pipeline      = true
 
-# redis private endpoint
-redis_private_endpoint_enabled = true
-redis_cache_enabled            = true
 
 # apim
 apim_publisher_name = "pagoPA Platform DEV"
@@ -649,13 +645,6 @@ pagopa_proxy_tier           = "Standard"
 pagopa_proxy_size           = "S1"
 nodo_ip_filter              = "10.70.66.200"
 
-# redis apim
-redis_cache_params = {
-  public_access = true
-  capacity      = 0
-  sku_name      = "Basic"
-  family        = "C"
-}
 
 # nodo-dei-pagamenti-test
 nodo_pagamenti_test_enabled = true
