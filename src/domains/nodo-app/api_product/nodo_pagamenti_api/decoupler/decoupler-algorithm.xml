@@ -282,23 +282,34 @@ new JProperty("ttl", 1)
   </when>
   <!-- evaluate wisp dismantling algorithm -->
 <when condition="@(((string)context.Variables["primitiveType"]).Equals("OTHER_WISPDISMANTLING"))">
-<set-variable name="wisp_whitelisted_brokers" value="{{wisp-brokerPSP-whitelist}}" />
-<set-variable name="wisp_whitelisted_channels" value="{{wisp-channel-whitelist}}" />
-<set-variable name="wisp_whitelisted_stations" value="{{wisp-station-whitelist}}" />
-<set-variable name="is_whitelisted" value="@{
+			<set-variable name="wisp_whitelisted_brokers" value="{{wisp-brokerPSP-whitelist}}" />
+			<set-variable name="wisp_whitelisted_channels" value="{{wisp-channel-whitelist}}" />
+			<set-variable name="wisp_whitelisted_stations" value="{{wisp-station-whitelist}}" />
+      <set-variable name="wisp_whitelisted_cis" value="{{wisp-cis-whitelist}}" />
+			<set-variable name="is_whitelisted" value="@{
                         // isWhiteListed if:
                         // - lists are empties
-                        // - channelId, brokerPSP and stationId belong to relative lists
+                        // - channelId, brokerPSP, stationId and creditorInstitutionId belong to relative lists
 
+                        string brokersList = (string) context.Variables["wisp_whitelisted_brokers"];
+                        string channelsList = (string) context.Variables["wisp_whitelisted_channels"];
+                        string stationsList = (string) context.Variables["wisp_whitelisted_stations"];
+                        string cisList = (string) context.Variables["wisp_whitelisted_cis"];
+                        bool brokersWhitelisted = brokersList.Equals("*");
+                        bool channelsWhitelisted = channelsList.Equals("*");
+                        bool stationsWhitelisted = stationsList.Equals("*");
+                        bool cisWhitelisted = cisList.Equals("*");
                         bool isWhitelisted = false;
-                        string[] brokers = ((string) context.Variables["wisp_whitelisted_brokers"]).Split(',');
-                        string[] channels = ((string) context.Variables["wisp_whitelisted_channels"]).Split(',');
-                        string[] stations = ((string) context.Variables["wisp_whitelisted_stations"]).Split(',');
 
-                        if (brokers.Count() == 0 && channels.Count() == 0 && stations.Count() == 0) {
+                        if (brokersWhitelisted && channelsWhitelisted && stationsWhitelisted && cisWhitelisted) {
                             isWhitelisted = true;
                             return isWhitelisted;
                         }
+
+                        string[] brokers = !brokersWhitelisted ((string) context.Variables["wisp_whitelisted_brokers"]).Split(',') : [];
+                        string[] channels = !channelsWhitelisted ((string) context.Variables["wisp_whitelisted_channels"]).Split(',') : [];
+                        string[] stations =  !stationsWhitelisted ((string) context.Variables["wisp_whitelisted_stations"]).Split(',') : [];
+                        string[] cis = !cisWhitelisted ((string) context.Variables["wisp_whitelisted_cis"]).Split(',') : [];
 
                         XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
                         try {
@@ -307,29 +318,51 @@ new JProperty("ttl", 1)
                             string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
                             string pspBrokerId = (string) primitive.Descendants("identificativoIntermediarioPSP").FirstOrDefault();
 
-                            // check stations only if whitelist contains at least one element
-                            bool isStationOk = true;
-                            if (stations.Count() > 0) {
-                                XElement header = doc.Descendants(doc.Name.Namespace + "Header").FirstOrDefault();
-                                XElement primitiveHeader = (XElement) header.FirstNode;
-                                string stationId = (string) primitiveHeader.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
-                                isStationOk = stations.Contains(stationId);
+                            // check if nodoInviaRPT or nodoInviaCarrelloRPT, to set ci value correctly
+                            XElement header = doc.Descendants(doc.Name.Namespace + "Header").FirstOrDefault();
+                            string ciId = "";
+                            if(primitive.Descendants("listaRPT").FirstOrDefault() == null) {
+                                XElement listaRPT = primitive.Descendants("listaRPT").FirstOrDefault();
+                                XElement firstRPT = listaRPT.Descendants("elementoListaRPT").FirstOrDefault();
+                                ciId = (string) firstRPT.Descendants("identificativoDominio").FirstOrDefault();
+                            } else {
+                                ciId = (string) primitiveHeader.Descendants("identificativoDominio").FirstOrDefault();
                             }
 
-                            isWhitelisted = brokers.Contains(pspBrokerId) && channels.Contains(channelId) && isStationOk;
+                            // check cis only if whitelist contains at least one element
+                            bool isCiAndStationOk = true;
+                            if (cis.Count() > 0) {
+                                // check if ciId is whitelisted
+                                if(cis.Contains(ciId)) {
+                                    // check if ci relation with some station is present
+                                    if((string) context.Variables["wisp_whitelisted_stations"].Contains(ciId + "-")) {
+                                        // if present, check if ci-station relation is whitelisted
+                                        string stationId = (string) primitiveHeader.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
+                                        if(!stations.Contains(ciId + "-" + stationId)) {
+                                            isCiAndStationOk = false;
+                                        }
+                                    }
+                                } else {
+                                    isCiAndStationOk = false;
+                                }
+                            }
+
+                            isWhitelisted = (brokersWhitelisted || brokers.Contains(pspBrokerId)) && 
+                                            (channelsWhitelisted || channels.Contains(channelId)) && 
+                                            isCiAndStationOk;
                         } catch (Exception e) {
                             // do nothing
                         }
                         return isWhitelisted;
                     }" />
-<choose>
-<when condition="@( context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && context.Variables.GetValueOrDefault<bool>("is_whitelisted", false) )">
-  <set-variable name="baseUrl" value="{{wisp-dismantling-backend-url}}" />
-</when>
-<otherwise>
-  <trace source="skip-set-base-url-whitelisted-broker-and-channel" severity="information">broker and channel not in whitelist or WISP dismantling disabled</trace>
-  </otherwise>
-  </choose>
-  </when>
+			<choose>
+				<when condition="@( context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && context.Variables.GetValueOrDefault<bool>("is_whitelisted", false) )">
+					<set-variable name="baseUrl" value="{{wisp-dismantling-backend-url}}" />
+				</when>
+				<otherwise>
+					<trace source="skip-set-base-url-whitelisted-broker-and-channel" severity="information">broker and channel not in whitelist or WISP dismantling disabled</trace>
+				</otherwise>
+			</choose>
+		</when>
   </choose>
   </fragment>
