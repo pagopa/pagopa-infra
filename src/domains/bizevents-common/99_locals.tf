@@ -24,7 +24,6 @@ locals {
 
   pagopa_apim_name = "${local.product}-apim"
   pagopa_apim_rg   = "${local.product}-api-rg"
-  # pagopa_apim_v2_name = "${local.product}-weu-core-apim-v2"
 
 
   ingress_hostname                      = "${var.location_short}${var.instance}.${var.domain}"
