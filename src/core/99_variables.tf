@@ -472,39 +472,7 @@ variable "default_node_id" {
   description = "Default NodeId according to default base url"
 }
 
-## Redis cache
-variable "redis_cache_params" {
-  type = object({
-    public_access = bool
-    capacity      = number
-    sku_name      = string
-    family        = string
-  })
-  default = {
-    public_access = false
-    capacity      = 1
-    sku_name      = "Basic"
-    family        = "C"
-  }
-}
 
-variable "redis_cache_enabled" {
-  type        = bool
-  description = "redis cache enabled"
-  default     = false
-}
-
-variable "cidr_subnet_redis" {
-  type        = list(string)
-  description = "Redis network address space."
-  default     = ["10.1.162.0/24"]
-}
-
-variable "redis_private_endpoint_enabled" {
-  type        = bool
-  description = "Enable private endpoints for redis instances?"
-  default     = true
-}
 
 variable "app_gateway_api_certificate_name" {
   type        = string

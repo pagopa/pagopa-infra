@@ -945,3 +945,10 @@ variable "app_gateway_allowed_paths_upload" {
     "/nodo-auth/node-for-pa/.*",
   "/nodo/node-for-psp/.*"]
 }
+
+
+variable "cidr_subnet_redis" {
+  type        = list(string)
+  description = "Redis network address space."
+  default     = ["10.1.163.0/24"]
+}
