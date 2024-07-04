@@ -32,7 +32,7 @@ pagopa_proxy_plan_sku             = "P1v3"
 pagopa_proxy_zone_balance_enabled = true
 pagopa_proxy_ha_enabled           = false
 
-redis_ha_enabled = false
+
 # Networking
 
 cidr_subnet_checkout_be = ["10.1.133.0/24"]

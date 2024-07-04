@@ -1,11 +1,5 @@
 data "azurerm_redis_cache" "redis_cache" {
-  name                = "${var.prefix}-${var.env_short}-redis"
-  resource_group_name = "${var.prefix}-${var.env_short}-data-rg"
-}
-
-data "azurerm_redis_cache" "redis_cache_ha" {
-  count               = var.redis_ha_enabled ? 1 : 0
-  name                = "${var.prefix}-${var.env_short}-${var.location_short}-redis"
+  name                = var.redis_ha_enabled ? "${var.prefix}-${var.env_short}-${var.location_short}-redis" : "${var.prefix}-${var.env_short}-redis"
   resource_group_name = "${var.prefix}-${var.env_short}-data-rg"
 }
 
@@ -95,7 +89,7 @@ resource "azurerm_key_vault_secret" "mocker_cosmosdb_connection_string" {
 
 resource "azurerm_key_vault_secret" "redis_password" {
   name  = "redis-password"
-  value = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].primary_access_key : data.azurerm_redis_cache.redis_cache.primary_access_key
+  value = data.azurerm_redis_cache.redis_cache.primary_access_key
 
   content_type = "text/plain"
 
@@ -105,7 +99,7 @@ resource "azurerm_key_vault_secret" "redis_password" {
 
 resource "azurerm_key_vault_secret" "redis_hostname" {
   name  = "redis-hostname"
-  value = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].hostname : data.azurerm_redis_cache.redis_cache.hostname
+  value = data.azurerm_redis_cache.redis_cache.hostname
 
   content_type = "text/plain"
 
