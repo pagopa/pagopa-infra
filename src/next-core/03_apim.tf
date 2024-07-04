@@ -31,8 +31,8 @@ locals {
   portal_domain     = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
   management_domain = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
 
-  redis_connection_string = var.create_redis_multiaz ? module.redis[0].primary_connection_string : data.azurerm_redis_cache.redis.primary_connection_string
-  redis_cache_id          = var.create_redis_multiaz ? module.redis[0].id : data.azurerm_redis_cache.redis.id
+  redis_connection_string = module.redis[0].primary_connection_string
+  redis_cache_id          = module.redis[0].id
 }
 
 

@@ -115,7 +115,6 @@
 | <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v1.0.90 |
 | <a name="module_monitor"></a> [monitor](#module\_monitor) | git::https://github.com/pagopa/azurerm.git//api_management_api | v1.0.90 |
-| <a name="module_nat_gw"></a> [nat\_gw](#module\_nat\_gw) | git::https://github.com/pagopa/azurerm.git//nat_gateway | v1.0.90 |
 | <a name="module_node_forwarder_app_service"></a> [node\_forwarder\_app\_service](#module\_node\_forwarder\_app\_service) | git::https://github.com/pagopa/azurerm.git//app_service | v3.4.0 |
 | <a name="module_node_forwarder_slot_staging"></a> [node\_forwarder\_slot\_staging](#module\_node\_forwarder\_slot\_staging) | git::https://github.com/pagopa/azurerm.git//app_service_slot | v3.4.0 |
 | <a name="module_node_forwarder_snet"></a> [node\_forwarder\_snet](#module\_node\_forwarder\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
@@ -355,7 +354,6 @@
 | [azurerm_monitor_diagnostic_setting.activity_log](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_diagnostic_setting) | resource |
 | [azurerm_monitor_metric_alert.app_service_over_cpu_usage](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.app_service_over_mem_usage](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_metric_alert) | resource |
-| [azurerm_monitor_metric_alert.snat_connection_over_10K](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.buyerbanks_update_alert](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-node-forwarder-availability-upd](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-node-forwarder-responsetime-upd](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -657,8 +655,6 @@
 | <a name="input_logic_app_biz_evt_plan_sku_size"></a> [logic\_app\_biz\_evt\_plan\_sku\_size](#input\_logic\_app\_biz\_evt\_plan\_sku\_size) | App service plan sku size | `string` | `"WS1"` | no |
 | <a name="input_logic_app_biz_evt_plan_sku_tier"></a> [logic\_app\_biz\_evt\_plan\_sku\_tier](#input\_logic\_app\_biz\_evt\_plan\_sku\_tier) | App service plan sku tier | `string` | `"WorkflowStandard"` | no |
 | <a name="input_logic_app_storage_account_replication_type"></a> [logic\_app\_storage\_account\_replication\_type](#input\_logic\_app\_storage\_account\_replication\_type) | (Optional) Storage account replication type used for function apps | `string` | `"LRS"` | no |
-| <a name="input_nat_gateway_enabled"></a> [nat\_gateway\_enabled](#input\_nat\_gateway\_enabled) | Nat Gateway enabled | `bool` | `false` | no |
-| <a name="input_nat_gateway_public_ips"></a> [nat\_gateway\_public\_ips](#input\_nat\_gateway\_public\_ips) | Number of public outbound ips | `number` | `1` | no |
 | <a name="input_node_decoupler_primitives"></a> [node\_decoupler\_primitives](#input\_node\_decoupler\_primitives) | Node decoupler primitives | `string` | `"nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"` | no |
 | <a name="input_node_forwarder_always_on"></a> [node\_forwarder\_always\_on](#input\_node\_forwarder\_always\_on) | Node Forwarder always on property | `bool` | `true` | no |
 | <a name="input_node_forwarder_autoscale_enabled"></a> [node\_forwarder\_autoscale\_enabled](#input\_node\_forwarder\_autoscale\_enabled) | n/a | `bool` | `true` | no |
@@ -732,7 +728,6 @@
 | <a name="output_container_registry_admin_password"></a> [container\_registry\_admin\_password](#output\_container\_registry\_admin\_password) | n/a |
 | <a name="output_container_registry_admin_username"></a> [container\_registry\_admin\_username](#output\_container\_registry\_admin\_username) | n/a |
 | <a name="output_container_registry_login_server"></a> [container\_registry\_login\_server](#output\_container\_registry\_login\_server) | # Container registry ## |
-| <a name="output_nat_gw_outbound_ip_addresses"></a> [nat\_gw\_outbound\_ip\_addresses](#output\_nat\_gw\_outbound\_ip\_addresses) | n/a |
 | <a name="output_nodo_test_sa_blob_connection_string"></a> [nodo\_test\_sa\_blob\_connection\_string](#output\_nodo\_test\_sa\_blob\_connection\_string) | n/a |
 | <a name="output_nodo_test_sa_blob_host"></a> [nodo\_test\_sa\_blob\_host](#output\_nodo\_test\_sa\_blob\_host) | Blob storage |
 | <a name="output_nodo_test_sa_connection_string"></a> [nodo\_test\_sa\_connection\_string](#output\_nodo\_test\_sa\_connection\_string) | n/a |

@@ -161,8 +161,6 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
   ]
 }
 
-# nat_gateway
-nat_gateway_enabled = true
 
 # postgresql
 postgresql_sku_name                      = "GP_Gen5_2" # todo fixme verify

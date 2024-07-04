@@ -177,9 +177,6 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
   ]
 }
 
-# nat_gateway
-nat_gateway_enabled    = true
-nat_gateway_public_ips = 2
 
 # todo change to Premium before launch
 # redis_sku_name = "Premium"

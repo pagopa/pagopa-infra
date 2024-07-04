@@ -12,7 +12,7 @@ module "nat_gw" {
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
   location            = data.azurerm_resource_group.rg_vnet.location
   public_ips_count    = var.nat_gateway_public_ips
-  zones                = ["1"]
+  zones               = ["1"]
   subnet_ids          = local.subnet_in_nat_gw_ids
 
 
@@ -24,7 +24,7 @@ module "nat_gw" {
 resource "azurerm_monitor_metric_alert" "snat_connection_over_10K" {
   count = (var.env_short == "p" && var.nat_gateway_enabled) ? 1 : 0
 
-  name                = "${local.project}-natgw-connetion-over-30k"
+  name                = "${local.product}-natgw-connetion-over-30k"
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
   scopes              = [module.nat_gw[0].id]
   description         = "Total SNAT connections over 30K"
