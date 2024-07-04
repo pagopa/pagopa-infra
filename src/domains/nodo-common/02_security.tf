@@ -4,15 +4,10 @@ data "azurerm_key_vault" "key_vault" {
 }
 
 data "azurerm_redis_cache" "redis_cache" {
-  name                = format("%s-%s-redis", var.prefix, var.env_short)
+  name                = var.redis_ha_enabled ? format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short) : format("%s-%s-redis", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
 }
 
-data "azurerm_redis_cache" "redis_cache_ha" {
-  count               = var.redis_ha_enabled ? 1 : 0
-  name                = format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
-}
 
 data "azurerm_cosmosdb_account" "bizevents_datastore_cosmosdb_account" {
   name                = format("%s-%s-%s-bizevents-ds-cosmos-account", var.prefix, var.env_short, var.location_short)
@@ -181,7 +176,7 @@ Redis
 
 resource "azurerm_key_vault_secret" "redis_primary_key" {
   name         = "redis-primary-key"
-  value        = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].primary_access_key : data.azurerm_redis_cache.redis_cache.primary_access_key
+  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
@@ -190,7 +185,7 @@ resource "azurerm_key_vault_secret" "redis_primary_key" {
 
 resource "azurerm_key_vault_secret" "redis_hostname" {
   name         = "redis-hostname"
-  value        = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].hostname : data.azurerm_redis_cache.redis_cache.hostname
+  value        = data.azurerm_redis_cache.redis_cache.hostname
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
