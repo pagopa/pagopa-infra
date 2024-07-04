@@ -19,23 +19,32 @@
 <policies>
   <inbound>
     <base />
-    <set-variable name="primitive-ko" value="sendPaymentResultV2" />
-    <set-variable name="request-body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
-    <set-variable name="wisp-payment-tokens" value="@{
-                        JObject request = (JObject) context.Variables["request-body"];
-                        JArray payments = (JArray) request.Property("payments").Value;
-                        return string.Join(",", payments.Select(token => (string)token["paymentToken"]));
-    }" />
-    <include-fragment fragment-id="wisp-disable-payment-token-timer" />
-  </inbound>
-  <backend>
-    <base />
-  </backend>
-  <outbound>
-    <base />
-    <include-fragment fragment-id="wisp-receipt-ko" />
-  </outbound>
-  <on-error>
-    <base />
-  </on-error>
-</policies>
+    <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
+    <choose>
+      <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
+      <set-variable name="primitive-ko" value="sendPaymentResultV2" />
+      <set-variable name="request-body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
+      <set-variable name="wisp-payment-tokens" value="@{
+              try {
+                            JObject request = (JObject) context.Variables["request-body"];
+                            JArray paymentsTokens = (JArray) request.Property("paymentTokens").Value;
+                            return string.Join(",", paymentsTokens.Select(token => token.ToString()));
+      } catch (Exception e) {
+      return "";
+      }
+      }" />
+      <include-fragment fragment-id="wisp-disable-payment-token-timer" />
+    </when>
+  </choose>
+</inbound>
+<backend>
+<base />
+</backend>
+<outbound>
+<base />
+<include-fragment fragment-id="wisp-receipt-ko" />
+</outbound>
+<on-error>
+<base />
+</on-error>
+  </policies>
