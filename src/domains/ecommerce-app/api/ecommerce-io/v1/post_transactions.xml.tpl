@@ -81,7 +81,7 @@
             </set-header>
           </when>
           <otherwise>
-          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2")"/>
+          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2.1")"/>
           <!-- Read email from JWT START-->
           <set-variable name="email" value="@{
             var authHeader = context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ","");
@@ -97,7 +97,7 @@
             <set-body>@{
               JObject requestBody = context.Request.Body.As<JObject>(preserveContent: true);
               requestBody["orderId"] = "ORDER_ID"; //To be removed since it is mandatory for transaction request body, but it should not be
-              requestBody["email"] = (String)context.Variables["email"];
+              requestBody["emailToken"] = (String)context.Variables["email"];
               return requestBody.ToString();
             }</set-body>
             <set-header name="X-Client-Id" exists-action="override">
