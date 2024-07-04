@@ -232,20 +232,15 @@ resource "azurerm_key_vault_secret" "elastic_otl_secret_token" {
 }
 
 data "azurerm_redis_cache" "redis_cache" {
-  name                = format("%s-%s-redis", var.prefix, var.env_short)
+  name                = var.redis_ha_enabled ? format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short) : format("%s-%s-redis", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
 }
 
 
-data "azurerm_redis_cache" "redis_cache_ha" {
-  count               = var.redis_ha_enabled ? 1 : 0
-  name                = format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
-}
 
 resource "azurerm_key_vault_secret" "redis_password" {
   name         = "redis-password"
-  value        = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].primary_access_key : data.azurerm_redis_cache.redis_cache.primary_access_key
+  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -253,7 +248,7 @@ resource "azurerm_key_vault_secret" "redis_password" {
 
 resource "azurerm_key_vault_secret" "redis_hostname" {
   name         = "redis-hostname"
-  value        = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].hostname : data.azurerm_redis_cache.redis_cache.hostname
+  value        = data.azurerm_redis_cache.redis_cache.hostname
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -315,30 +310,8 @@ resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv" {
 
   key_vault_id = module.key_vault.id
 }
-# data "azurerm_api_management_product" "apim_biz_lst_trx_product_apim_v2" {
-#   product_id          = "bizevent-transactions"
-#   api_management_name = local.pagopa_apim_v2_name
-#   resource_group_name = local.pagopa_apim_rg
-# }
 
-# resource "azurerm_api_management_subscription" "list_trx_4_io_api_key_subkey_apim_v2" {
-#   api_management_name = local.pagopa_apim_v2_name
-#   resource_group_name = local.pagopa_apim_rg
 
-#   product_id    = data.azurerm_api_management_product.apim_biz_lst_trx_product_apim_v2.id
-#   display_name  = "Biz Events list-trx-4-io-api-key"
-#   allow_tracing = false
-#   state         = "active"
-# }
-
-# resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv_apim_v2" {
-#   depends_on   = [azurerm_api_management_subscription.list_trx_4_io_api_key_subkey_apim_v2]
-#   name         = "list-trx-4-io-api-key-apim-v2"
-#   value        = azurerm_api_management_subscription.list_trx_4_io_api_key_subkey_apim_v2.primary_key
-#   content_type = "text/plain"
-
-#   key_vault_id = module.key_vault.id
-# }
 
 # PDF engine nodejs for PDF engine Java
 

@@ -9,7 +9,7 @@ module "apim_nodo_dei_pagamenti_product" {
   display_name = "Nodo dei Pagamenti"
   description  = "Product for Nodo dei Pagamenti"
 
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
@@ -43,6 +43,6 @@ resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_a
 
   api_name            = each.key
   product_id          = module.apim_nodo_dei_pagamenti_product.product_id
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
 }
