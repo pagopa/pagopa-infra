@@ -26,9 +26,13 @@
         <set-variable name="primitive-ko" value="closePaymentV2" />
         <set-variable name="request-body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
         <set-variable name="wisp-payment-tokens" value="@{
+              try {
                             JObject request = (JObject) context.Variables["request-body"];
                             JArray paymentsTokens = (JArray) request.Property("paymentTokens").Value;
                             return string.Join(",", paymentsTokens.Select(token => token.ToString()));
+              } catch (Exception e) {
+                return "";
+              }
         }" />
         <include-fragment fragment-id="wisp-disable-payment-token-timer" />
       </when>
