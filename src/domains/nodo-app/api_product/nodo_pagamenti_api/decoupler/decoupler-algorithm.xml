@@ -321,21 +321,25 @@ new JProperty("ttl", 1)
                             // check if nodoInviaRPT or nodoInviaCarrelloRPT, to set ci value correctly
                             XElement header = doc.Descendants(doc.Name.Namespace + "Header").FirstOrDefault();
                             string ciId = "";
+                            // listaRPT is set only in nodoInviaCarrelloRPT
+                            // in this case we retrieve the ci from the first RPT (primaryCI)
                             if(primitive.Descendants("listaRPT").FirstOrDefault() == null) {
                                 XElement listaRPT = primitive.Descendants("listaRPT").FirstOrDefault();
                                 XElement firstRPT = listaRPT.Descendants("elementoListaRPT").FirstOrDefault();
                                 ciId = (string) firstRPT.Descendants("identificativoDominio").FirstOrDefault();
                             } else {
-                                ciId = (string) primitiveHeader.Descendants("identificativoDominio").FirstOrDefault();
+                                ciId = (string) header.Descendants("identificativoDominio").FirstOrDefault();
                             }
 
                             // check cis only if whitelist contains at least one element
+                            // variable isCiAndStationOk set to true, if ci and station not whitelisted then will 
+                            // be set to false 
                             bool isCiAndStationOk = true;
                             if (cis.Count() > 0) {
                                 // check if ciId is whitelisted
                                 if(cis.Contains(ciId)) {
                                     // check if ci relation with some station is present
-                                    if((string) context.Variables["wisp_whitelisted_stations"].Contains(ciId + "-")) {
+                                    if(stationsList.Contains(ciId + "-")) {
                                         // if present, check if ci-station relation is whitelisted
                                         string stationId = (string) primitiveHeader.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
                                         if(!stations.Contains(ciId + "-" + stationId)) {
