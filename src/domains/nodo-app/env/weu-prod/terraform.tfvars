@@ -270,6 +270,7 @@ wisp_converter = {
   brokerPSP_whitelist    = "97735020584"
   channel_whitelist      = "97735020584_02"
   station_whitelist      = "ABCDblabla" # subsets of EC friends # PSFC
+  ci_whitelist           = "ABCDblabla"
   dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
 }
 
