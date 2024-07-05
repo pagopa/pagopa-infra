@@ -987,7 +987,7 @@
             "$ref": "#/components/schemas/TransactionDetails"
           },
           "additionalPaymentInformations": {
-            "$ref": "#/components/schemas/MyBankAdditionalPaymentInformations"
+            "$ref": "#/components/schemas/ApplePayAdditionalPaymentInformations"
           }
         }
       },
@@ -1076,7 +1076,7 @@
             "$ref": "#/components/schemas/TransactionDetails"
           },
           "additionalPaymentInformations": {
-            "$ref": "#/components/schemas/MyBankAdditionalPaymentInformations"
+            "$ref": "#/components/schemas/SatispayAdditionalPaymentInformations"
           }
         }
       },
