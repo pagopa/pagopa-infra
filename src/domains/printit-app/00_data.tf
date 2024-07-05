@@ -1,3 +1,26 @@
+### EVH
+data "azurerm_eventhub_authorization_rule" "notices_evt_authorization_rule" {
+  name                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-notice-evt-rx"
+  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-evh-rg"
+  eventhub_name       = "${var.prefix}-${var.domain}-evh"
+  namespace_name      = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-evh"
+}
+
+data "azurerm_eventhub_authorization_rule" "notices_evt_complete_authorization_rule" {
+  name                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-notice-evt-complete-rx"
+  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-evh-rg"
+  eventhub_name       = "${var.prefix}-${var.domain}-complete-evh"
+  namespace_name      = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-evh"
+}
+
+data "azurerm_eventhub_authorization_rule" "notices_evt_errors_authorization_rule" {
+  name                = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-notice-evt-errors-rx"
+  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-evh-rg"
+  eventhub_name       = "${var.prefix}-${var.domain}-errors-evh"
+  namespace_name      = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}-evh"
+}
+
+### COSMOS
 data "azurerm_cosmosdb_account" "notices_cosmos_account" {
   name                = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-cosmos-account"
   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-${var.domain}-db-rg"
