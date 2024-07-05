@@ -82,8 +82,8 @@ data "azurerm_linux_function_app" "mockec" {
 }
 
 data "azurerm_linux_web_app" "pdf_engine" {
-  name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java"
-  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-pdf-engine-rg"
+  name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java${var.env_short == "p" ? "-ha" : ""}"
+  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-${var.env_short == "p" ? "ha" : "pdf-engine"}-rg"
 }
 
 module "apim_api_statuspage_api_v1" {
@@ -129,6 +129,9 @@ module "apim_api_statuspage_api_v1" {
       "backofficeexternalpagopa" = format("%s/backoffice-external", format(local.aks_path, "selfcare"))
       "canoneunico"              = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
       "fdrndpnew"                = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
+      "wispconverter"            = format("%s/pagopa-wisp-converter", format(local.aks_path, "nodo"))
+      "wispsoapconverter"        = format("%s/wisp-soap-converter", format(local.aks_path, "nodo"))
+      "wispconverterts"          = format("%s/pagopa-wisp-converter-technical-support", format(local.aks_path, "nodo"))
       "gpd"                      = format("%s/pagopa-gpd-core", format(local.aks_path, "gps"))
       "gpdpayments"              = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
       "gpdenrollment"            = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))

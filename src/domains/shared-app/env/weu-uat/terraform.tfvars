@@ -49,6 +49,7 @@ authorizer_functions_autoscale = {
   maximum = 3
 }
 
+
 # taxonomy
 taxonomy_function_subnet                   = ["10.1.183.0/24"]
 taxonomy_function_network_policies_enabled = true

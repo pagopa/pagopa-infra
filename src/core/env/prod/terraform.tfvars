@@ -18,10 +18,8 @@ tags = {
 # Feature flag
 #
 enabled_features = {
-  apim_v2           = false
   vnet_ita          = false
   node_forwarder_ha = true
-  apim_migrated     = true
 }
 
 upload_endpoint_enabled = true
@@ -62,7 +60,6 @@ cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder = ["10.1.158.0/24"]
 
 # specific
-cidr_subnet_redis                = ["10.1.163.0/24"]
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
 
 # integration vnet
@@ -90,9 +87,6 @@ apim_publisher_name = "pagoPA Platform PROD"
 apim_sku            = "Premium_1"
 apim_alerts_enabled = true
 
-# redis private endpoint
-redis_private_endpoint_enabled = true
-redis_cache_enabled            = true
 
 apim_autoscale = {
   enabled                       = true
@@ -183,9 +177,6 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
   ]
 }
 
-# nat_gateway
-nat_gateway_enabled    = true
-nat_gateway_public_ips = 2
 
 # todo change to Premium before launch
 # redis_sku_name = "Premium"
@@ -683,13 +674,6 @@ pagopa_proxy_size           = "P1v3"
 # TODO this is dev value ... replace with uat value.
 nodo_ip_filter = "10.79.20.32"
 
-# redis apim
-redis_cache_params = {
-  public_access = false
-  capacity      = 0
-  sku_name      = "Standard"
-  family        = "C"
-}
 
 # payment-manager clients
 io_bpd_hostname    = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname

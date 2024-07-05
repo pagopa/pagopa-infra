@@ -34,15 +34,6 @@ module "vnet_peering" {
 }
 
 
-
-
-
-# RT sia associated to new apim v2 snet
-resource "azurerm_subnet_route_table_association" "rt_sia_for_apim_v2" {
-  subnet_id      = module.apimv2_snet.id
-  route_table_id = data.azurerm_route_table.rt_sia.id
-}
-
 # RT sia associated to app gw integration
 resource "azurerm_subnet_route_table_association" "rt_sia_for_appgw_integration" {
   subnet_id      = module.integration_appgateway_snet.id
