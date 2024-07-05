@@ -67,8 +67,18 @@ variable "tags" {
   }
 }
 
-### External resources
+### Features flags
 
+variable "is_feature_enabled" {
+  type = object({
+    pdf_engine = bool
+    printit    = bool
+  })
+  default = {
+    pdf_engine = false
+    printit    = false
+  }
+}
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -195,15 +205,14 @@ variable "app_service_pdf_engine_sku_name_java_zone_balancing_enabled" {
   description = "Enable HA multi az balancing"
 }
 
-### Features flags
 
-variable "is_feature_enabled" {
-  type = object({
-    pdf_engine = bool
-    printit    = bool
-  })
-  default = {
-    pdf_engine = false
-    printit    = false
-  }
+### PDB
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
 }
