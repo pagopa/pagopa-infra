@@ -1100,7 +1100,6 @@
           {
             "$ref": "#/components/schemas/ApplePayClosePaymentRequestV2"
           },
-          ,
           {
             "$ref": "#/components/schemas/SatispayClosePaymentRequestV2"
           }
@@ -1116,7 +1115,9 @@
             "RBPS": "#/components/schemas/RedirectClosePaymentRequestV2",
             "PPAL": "#/components/schemas/PayPalClosePaymentRequestV2",
             "BPAY": "#/components/schemas/BancomatPayClosePaymentRequestV2",
-            "MYBK": "#/components/schemas/MyBankClosePaymentRequestV2"
+            "MYBK": "#/components/schemas/MyBankClosePaymentRequestV2",
+            "APPL": "#/components/schemas/ApplePayClosePaymentRequestV2",
+            "SATY": "#/components/schemas/SatisayClosePaymentRequestV2"
           }
         }
       },
