@@ -58,7 +58,6 @@ cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
 
 
 # specific
-cidr_subnet_redis = ["10.1.163.0/24"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -87,9 +86,6 @@ apim_publisher_name = "pagoPA Platform UAT"
 apim_sku            = "Developer_1"
 apim_alerts_enabled = false
 
-# redis private endpoint
-redis_private_endpoint_enabled = true
-redis_cache_enabled            = true
 
 # app_gateway
 app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
@@ -165,8 +161,6 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
   ]
 }
 
-# nat_gateway
-nat_gateway_enabled = true
 
 # postgresql
 postgresql_sku_name                      = "GP_Gen5_2" # todo fixme verify
@@ -670,13 +664,6 @@ pagopa_proxy_size           = "S1"
 # TODO this is dev value ... replace with uat value.
 nodo_ip_filter = "10.79.20.32"
 
-# redis apim
-redis_cache_params = {
-  public_access = false
-  capacity      = 0
-  sku_name      = "Basic"
-  family        = "C"
-}
 
 # nodo-dei-pagamenti-test
 nodo_pagamenti_test_enabled = true

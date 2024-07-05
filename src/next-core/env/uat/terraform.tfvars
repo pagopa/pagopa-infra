@@ -744,3 +744,10 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
 }
 
 
+redis_cache_params = {
+  public_access = false
+  capacity      = 0
+  sku_name      = "Basic"
+  family        = "C"
+}
+
