@@ -13,16 +13,19 @@ module "aks_prometheus_install" {
 
 module "elastic_agent" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_agent?ref=e46941fb2999b7902cd61582e27cc059e7a579a3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_agent?ref=introducing-agent-module"
 
-  es_host = "https://weu${env}.kibana.internal.${env}.platform.pagopa.it/elastic"
+  es_host = var.env == "p" ? "https://weu${var.env}.kibana.internal.platform.pagopa.it/elastic" : "https://weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it/elastic"
 
   eck_version = "2.9"
 
-  namespace      = kubernetes_namespace.monitoring.id
+  namespace = kubernetes_namespace.monitoring.id
 
   dedicated_log_instance_name = [
     /* printit */ "print-payment-notice-service-microservice-chart", "print-payment-notice-generator-microservice-chart", "print-payment-notice-functions-microservice-chart"
   ]
 
 }
+
+// TODO mettere nel kv il secret quickstart-es-elastic-user tramite sops
+
