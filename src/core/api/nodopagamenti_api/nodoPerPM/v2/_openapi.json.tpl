@@ -1117,7 +1117,7 @@
             "BPAY": "#/components/schemas/BancomatPayClosePaymentRequestV2",
             "MYBK": "#/components/schemas/MyBankClosePaymentRequestV2",
             "APPL": "#/components/schemas/ApplePayClosePaymentRequestV2",
-            "SATY": "#/components/schemas/SatisayClosePaymentRequestV2"
+            "SATY": "#/components/schemas/SatispayClosePaymentRequestV2"
           }
         }
       },
