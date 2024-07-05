@@ -378,12 +378,6 @@ resource "azurerm_key_vault_secret" "bizevent_receiptpdfhelpdesk_4_list_trx_subs
 // select TOP 10000 * FROM c WHERE c.eventStatus = 'DONE' and c.timestamp < DateTimeToTimestamp('2024-05-05T16:00:00') order by c.timestamp DESC
 // select * FROM c WHERE c.eventStatus = 'DONE' and c.timestamp < DateTimeToTimestamp('2024-05-05T16:00:00') and (c.payer.entityUniqueIdentifierValue IN ('AAAAAA00A00A000A', 'AAAAAA00A00A000B')  or c.debtor.entityUniqueIdentifierValue IN ('AAAAAA00A00A000A', 'AAAAAA00A00A000B') or c.transactionDetails.user.fiscalCode IN ('AAAAAA00A00A000A', 'AAAAAA00A00A000B')) order by c.timestamp DESC
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
-resource "azurerm_key_vault_secret" "cosmos-biz-view-trigger-sql-query-string" {
-  name         = format("cosmos-%s-biz-view-trigger-sql-query-string", var.env_short)
-  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-  content_type = "text/plain"
-
-  key_vault_id = module.key_vault.id
-}
-
+# >> shift into secrets domains
+# name  = format("cosmos-%s-biz-view-trigger-sql-query-string", var.env_short)
 
