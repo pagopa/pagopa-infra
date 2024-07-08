@@ -148,6 +148,15 @@ new JProperty("ttl", 1)
                                             var requestData = JObject.Parse((string) context.Variables["requestData"]);
                                             return (int) requestData["ttl"];
                                         }" caching-type="internal" />
+									<set-variable name="dataToSet" value="@{
+											var baseNodeId = context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
+											var baseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "NONE");
+											return new JObject(
+												new JProperty("nodeId", baseNodeId),
+												new JProperty("nodeUri", baseUrl),
+												new JProperty("ttl", 3600)
+											).ToString();
+										}" />
 									<set-variable name="set_cache" value="false" />
 									<!-- set_cache to false indicates to skip LIST list algorithm -->
 								</when>
