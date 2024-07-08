@@ -2,7 +2,6 @@
     <inbound>
       <base />
       <set-variable name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
-      <set-variable name="usePM" value="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["userId"])))" />
       <!-- Perform PM start api call: for family&friends handling NPG flow must be activated only for 
         users that have been enabled in pay-wallet-family-friends-user-ids named value (list of user id = PDV fiscal code tokenization)
         For family&friends flow we expect that all clients will go with PM flow except the ones in the above list, that will be restricted
@@ -14,7 +13,8 @@
           <set-method>GET</set-method>
       </send-request>
       <choose>
-          <when condition="@( ((bool) context.Variables["usePM"]) && ((IResponse)context.Variables["pm-session-body"]).StatusCode == 401)">
+          <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode != 200)">
+              <!-- PM answers with 500 if the token is invalid -->
               <return-response>
                   <set-status code="401" reason="Unauthorized" />
                   <set-header name="Content-Type" exists-action="override">
@@ -25,21 +25,6 @@
                           "title": "Unauthorized",
                           "status": 401,
                           "detail": "Invalid session token"
-                      }
-                  </set-body>
-              </return-response>
-          </when>
-          <when condition="@( ((bool) context.Variables["usePM"]) && ((IResponse)context.Variables["pm-session-body"]).StatusCode != 200)">
-              <return-response>
-                  <set-status code="502" reason="Bad Gateway" />
-                  <set-header name="Content-Type" exists-action="override">
-                      <value>application/json</value>
-                  </set-header>
-                  <set-body>
-                      {
-                          "title": "Error starting session",
-                          "status": 502,
-                          "detail": "There was an error starting session for input wallet token"
                       }
                   </set-body>
               </return-response>
@@ -123,7 +108,7 @@
       </choose>
       <!-- user fiscal code tokenization with PDV END -->
       <choose>
-        <when condition="@((bool) context.Variables["usePM"])">
+        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["userId"])))">
           <!-- pagoPA platform wallet JWT session token : START -->
           <set-variable name="x-jwt-token" value="@(((JObject)context.Variables["pmSession"])["data"]["sessionToken"].ToString())" />
           <!-- pagoPA platform wallet JWT session token : END -->
