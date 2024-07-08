@@ -6,7 +6,19 @@
         <base />
         <!-- APM test START -->
         <choose>
-            <when condition="@(!((string)context.Request.Headers.GetValueOrDefault("X-Forwarded-For","")).Contains("PLACEHOLDER") && ((string)context.Request.Headers.GetValueOrDefault("origin","")).Equals("https://checkout.pagopa.it"))">
+            <set-variable name="allowedIps" value="PLACEHOLDER1|PLACEHOLDER2" />
+            <set-variable name="x-forwarded-for" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
+            <set-variable name="isAllowed" value="@{
+                var allowedIps = new HashSet<string>(context.Variables.GetValueOrDefault("allowedIps","").Split('|'));
+                string[] callerIps = context.Variables.GetValueOrDefault("x-forwarded-for","").Split(',');
+                foreach (string callerIp in callerIps){
+                    if(allowedIps.Contains(callerIp)){
+                        return true;
+                    }
+                }
+                return false;
+            }" />
+            <when condition="@(!((bool)context.Variables.GetValueOrDefault("isAllowed",""))) && ((string)context.Request.Headers.GetValueOrDefault("origin","")).Equals("https://checkout.pagopa.it"))">
                 <set-variable name="responseBody" value="@(context.Response.Body.As<JObject>(preserveContent: true))" />
                     <set-body>@{ 
 
