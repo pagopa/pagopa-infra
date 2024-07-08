@@ -952,3 +952,10 @@ variable "cidr_subnet_redis" {
   description = "Redis network address space."
   default     = ["10.1.163.0/24"]
 }
+
+
+variable "cdn_storage_account_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) Cdn storage account replication type"
+}
