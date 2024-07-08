@@ -173,30 +173,57 @@
             </choose>
             <set-variable name="userAuthBody" value="@(((IResponse)context.Variables["user-auth-body"]).Body.As<JObject>())" />
             <!-- Get User IO : END-->
+
+            <!-- user email tokenization with PDV START -->
+            <send-request ignore-error="true" timeout="10" response-variable-name="pdv-email-token" mode="new">
+              <set-url>${pdv_api_base_path}/tokens</set-url>
+              <set-method>PUT</set-method>
+              <set-header name="x-api-key" exists-action="override">
+                  <value>{{ecommerce-personal-data-vault-api-key}}</value>
+              </set-header>
+              <set-body>@{
+                JObject userAuthBody = (JObject)context.Variables["userAuthBody"];
+                string spidEmail = (String)userAuthBody["spid_email"];
+                string noticeEmail = (String)userAuthBody["notice_email"];
+                string email = String.IsNullOrEmpty(noticeEmail) ? spidEmail : noticeEmail;
+                return new JObject(
+                        new JProperty("pii",  email)
+                    ).ToString();
+                  }</set-body>
+            </send-request>
+            <choose>
+              <when condition="@(((IResponse)context.Variables["pdv-email-token"]).StatusCode != 200)">
+                <return-response>
+                  <set-status code="502" reason="Bad Gateway" />
+                </return-response>
+              </when>
+            </choose>
+
+            <set-variable name="pdvEmailToken" value="@(((IResponse)context.Variables["pdv-email-token"]).Body.As<JObject>())" />
+            <set-variable name="email" value="@((string)((JObject)context.Variables["pdvEmailToken"])["token"])" />
+            <!-- user email tokenization with PDV END -->
+
             <!-- pagoPA platform wallet JWT session token : START -->
             <!-- Token JWT START-->
                   <set-variable name="x-jwt-token" value="@{
                     //Construct the Base64Url-encoded header
                     var header = new { typ = "JWT", alg = "HS512" };
                     var jwtHeaderBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(header))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-                    
-                    // Construct the Base64Url-encoded payload 
+
+                    // Construct the Base64Url-encoded payload
                     var jti = Guid.NewGuid().ToString(); //sets the iat claim. Random uuid added to prevent the reuse of this token
                     var date = DateTime.Now;
                     var iat = new DateTimeOffset(date).ToUnixTimeSeconds(); // sets the issued time of the token now
                     var exp = new DateTimeOffset(date.AddMinutes(20)).ToUnixTimeSeconds();  // sets the expiration of the token to be 20 minutes from now
-                    String userId = ((string)context.Variables.GetValueOrDefault("userId","")); 
-                    
+                    String userId = ((string)context.Variables.GetValueOrDefault("userId",""));
+
                     // Read email and pass it to the JWT. By now the email in shared as is. It MUST be encoded (by pdv) but POST transaction need to updated to not match email address as email field
-                    JObject userAuth = (JObject)context.Variables["userAuthBody"];
-                    String spidEmail = (String)userAuth["spid_email"];
-                    String noticeEmail = (String)userAuth["notice_email"];
-                    String email = String.IsNullOrEmpty(noticeEmail) ? spidEmail : noticeEmail;
+                    string email = (string) context.Variables["email"];
                     
-                    var payload = new { iat, exp, jti, email, userId}; 
+                    var payload = new { iat, exp, jti, email, userId};
                     var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-                    
-                    // Construct the Base64Url-encoded signature                
+
+                    // Construct the Base64Url-encoded signature
                     var signature = new HMACSHA512(Convert.FromBase64String("{{pagopa-wallet-session-jwt-signing-key}}")).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
                     var jwtSignatureBase64UrlEncoded = Convert.ToBase64String(signature).Replace("/", "_").Replace("+", "-"). Replace("=", "");
 
@@ -207,8 +234,6 @@
             <!-- pagoPA platform wallet JWT session token : END -->
         </otherwise>
       </choose>
-      
-
       <return-response>
           <set-status code="201" />
           <set-header name="Content-Type" exists-action="override">

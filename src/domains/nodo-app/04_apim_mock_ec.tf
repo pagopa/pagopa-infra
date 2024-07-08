@@ -4,7 +4,7 @@
 
 module "apim_mock_ec_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short != "p" ? 1 : 0
 
   product_id   = "mock_ec"
   display_name = "Mock EC for NDP"
@@ -35,7 +35,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "api_mock_ec_api" {
-  count = var.env_short == "d" ? 1 : 0
+  count = var.env_short != "p" ? 1 : 0
 
   name                = format("%s-mock-ec-service-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
@@ -47,7 +47,7 @@ resource "azurerm_api_management_api_version_set" "api_mock_ec_api" {
 
 module "apim_api_mock_ec_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.env_short != "p" ? 1 : 0
 
   name                  = format("%s-mock-ec-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
