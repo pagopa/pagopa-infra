@@ -5,10 +5,10 @@
     <outbound>
         <base />
         <!-- APM test START -->
-        <set-variable name="allowedIps" value="PLACEHOLDER1|PLACEHOLDER2" />
+        <set-variable name="allowedIps" value="PLACEHOLDER1,PLACEHOLDER2" />
         <set-variable name="callerIps" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
         <set-variable name="isTesterIp" value="@{
-            var allowedIps = new HashSet<string>(context.Variables.GetValueOrDefault("allowedIps","").Split('|'));
+            var allowedIps = new HashSet<string>(context.Variables.GetValueOrDefault("allowedIps","").Split(','));
             string[] callerIps = context.Variables.GetValueOrDefault("callerIps","").Split(',');
             foreach (string callerIp in callerIps){
                 if(allowedIps.Contains(callerIp)){
