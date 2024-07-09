@@ -42,14 +42,14 @@
           </required-claims>
         </validate-jwt>
         <set-variable name="xUserId" value="@{
-          var jwt = (Jwt)context.Variables["sessionToken"];
+          var jwt = (Jwt)context.Variables["jwtToken"];
           if(jwt.Claims.ContainsKey("userId")){
               return jwt.Claims["userId"][0];
           }
           return "";
           }" />
         <set-variable name="email" value="@{
-          var jwt = (Jwt)context.Variables["sessionToken"];
+          var jwt = (Jwt)context.Variables["jwtToken"];
           if(jwt.Claims.ContainsKey("email")){
               return jwt.Claims["email"][0];
           }
@@ -83,6 +83,10 @@
         <!-- Check sessiontoken END-->
       </otherwise>
     </choose>
+
+    <set-header name="x-user-id" exists-action="override">
+        <value>@((string)context.Variables["sessionTokenUserId"])</value>
+    </set-header>
 
     <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
     <choose>
