@@ -1379,9 +1379,6 @@
           "status": {
             "$ref": "#/components/schemas/TransactionStatus"
           },
-          "feeTotal": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          },
           "clientId": {
             "description": "transaction client id",
             "type": "string",
@@ -1389,27 +1386,7 @@
               "IO"
             ]
           },
-          "sendPaymentResultOutcome": {
-            "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
             "type": "string",
-            "enum": [
-              "OK",
-              "KO",
-              "NOT_RECEIVED"
-            ]
-          },
-          "authorizationCode": {
-            "type": "string",
-            "description": "Payment gateway-specific authorization code related to the transaction"
-          },
-          "errorCode": {
-            "type": "string",
-            "description": "Payment gateway-specific error code from the gateway"
-          },
-          "gateway": {
-            "type": "string",
-            "pattern": "XPAY|VPOS|NPG",
-            "description": "Pgs identifier"
           }
         },
         "required": [
