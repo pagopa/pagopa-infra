@@ -24,10 +24,10 @@ module "nat_gw" {
 resource "azurerm_monitor_metric_alert" "snat_connection_over_10K" {
   count = (var.env_short == "p" && var.nat_gateway_enabled) ? 1 : 0
 
-  name                = "${local.product}-natgw-connetion-over-30k"
+  name                = "${local.product}-natgw-connetion-over-45k"
   resource_group_name = data.azurerm_resource_group.monitor_rg.name
   scopes              = [module.nat_gw[0].id]
-  description         = "Total SNAT connections over 30K"
+  description         = "Total SNAT connections over 45K"
   severity            = 3
   frequency           = "PT5M"
   window_size         = "PT5M"
@@ -41,7 +41,7 @@ resource "azurerm_monitor_metric_alert" "snat_connection_over_10K" {
     metric_name            = "SNATConnectionCount"
     aggregation            = "Total"
     operator               = "GreaterThan"
-    threshold              = "30000" # Each NAT gateway public IP address provides 64,512 SNAT ports to make outbound connections
+    threshold              = "45000" # Each NAT gateway public IP address provides 64,512 SNAT ports to make outbound connections
     skip_metric_validation = false
   }
 
