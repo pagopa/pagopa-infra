@@ -223,10 +223,10 @@ storage_account_info = {
 create_wisp_converter = true
 wisp_converter = {
   enable_apim_switch     = true
-  brokerPSP_whitelist    = "97735020584"                                                                                                                                                                                                                                                                                                                                                    # AGID
-  channel_whitelist      = "97735020584_02"                                                                                                                                                                                                                                                                                                                                                 # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/135924270/Canali+Particolari
-  station_whitelist      = "15376371009-15376371009_09,80005570561-00799960158_05,80023530167-00799960158_03,12621570154-00053810149_01,77777777777-97735020584_01,80207790587-02327910580_02,80185690585-02327910580_02,00833920150-02327910580_02,09982061005-02327910580_02,06363391001-02327910580_02,97210890584-02327910580_02,80415740580-02327910580_02,13756881002-02327910580_02" # https://config.uat.platform.pagopa.it/stations/15376371009_09 in UAT x i test quella di MockEC
-  ci_whitelist           = "15376371009,80005570561,80023530167,12621570154,77777777777,80207790587,80185690585,00833920150,09982061005,06363391001,97210890584,80415740580,13756881002"
+  brokerPSP_whitelist    = "97735020584"                                                                                                                            # AGID
+  channel_whitelist      = "97735020584_02"                                                                                                                         # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/135924270/Canali+Particolari
+  station_whitelist      = "15376371009-15376371009_09,80005570561-00799960158_05,80023530167-00799960158_03,12621570154-00053810149_01,77777777777-97735020584_01" # https://config.uat.platform.pagopa.it/stations/15376371009_09 in UAT x i test quella di MockEC
+  ci_whitelist           = "15376371009,80005570561,80023530167,12621570154,77777777777"
   dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
 }
 
