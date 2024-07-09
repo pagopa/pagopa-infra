@@ -74,7 +74,6 @@ cidr_subnet_api_config = ["10.230.10.128/29"]
 external_domain   = "pagopa.it"
 dns_zone_prefix   = "platform"
 dns_zone_checkout = "checkout"
-dns_zone_wisp2    = "wisp2"
 dns_zone_wfesp    = "wfesp"
 
 # azure devops
@@ -195,26 +194,10 @@ apim_nodo_auth_decoupler_enable = true
 apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 
-apim_enable_nm3_decoupler_switch     = false
-apim_enable_routing_decoupler_switch = false
-default_node_id                      = "NDP003PROD"
-
 nodo_pagamenti_enabled = true
-nodo_pagamenti_psp     = "97249640588,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
-nodo_pagamenti_ec      = "00493410583,09633951000,06655971007,00856930102,02478610583,97169170822,01266290996,01248040998,01429910183,80007270376,01142420056,80052310580,83000730297,80082160013,94050080038,01032450072,01013130073,10718570012,01013210073,87007530170,01242340998,80012150274,02508710585,80422850588,94032590278,94055970480,92001600524,80043570482,92000530532,80094780378,80016430045,80011170505,80031650486,00337870406,09227921005,01928010683,00608810057,03299640163,82002730487,02928200241"
-nodo_pagamenti_url     = "https://10.79.20.34/webservices/input"
-ip_nodo                = "10.79.20.34"   # TEMP Nodo On Premises
 lb_aks                 = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
-schema_ip_nexi = "https://10.79.20.34"
 
-base_path_nodo_oncloud        = "/nodo-prd"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-prd-NOT-FOUND"
-base_path_nodo_sync           = "/sync-cron-prd/syncWisp"
-base_path_nodo_wfesp          = "/wfesp-prd"
-base_path_nodo_fatturazione   = "/fatturazione-prd"
-base_path_nodo_web_bo         = "/web-bo-prd"
-base_path_nodo_web_bo_history = "/web-bo-history-prd"
 
 base_path_nodo_postgresql_nexi_onprem = "/"
 
