@@ -1,6 +1,7 @@
 <policies>
     <inbound>
-        <base />
+        <include-fragment fragment-id="ecommerce-jwt-base" />
+
         <set-variable name="paymentMethodId" value="@(context.Request.MatchedParameters["id"])" />
         <send-request ignore-error="false" timeout="10" response-variable-name="paymentMethodsResponse">
             <set-url>@($"https://${ecommerce-basepath}/pagopa-ecommerce-payment-methods-service/payment-methods/{(string)context.Variables["paymentMethodId"]}")</set-url>

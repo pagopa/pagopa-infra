@@ -340,6 +340,36 @@ module "apim_ecommerce_io_api_v2" {
   })
 }
 
+data "azurerm_api_management" "apim" {
+  name                = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+resource "azapi_resource" "fragment_ecommerce_jwt_base" {
+  depends_on = [
+    # azurerm_api_management_named_value.wallet-jwt-signing-key,
+    azurerm_api_management_named_value.ecommerce_checkout_transaction_jwt_signing_key
+  ]
+
+  # provider  = azapi.apim
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "ecommerce-jwt-base"
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Component that permits to check eCommerce-issued JWT session tokens and PM-issued tokens"
+      format      = "rawxml"
+      value = templatefile("./api/ecommerce-io/v2/fragment_ecommerce_jwt_base.xml.tpl", {
+        ecommerce_ingress_hostname = local.ecommerce_hostname
+      })
+    }
+  })
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
+
 resource "azurerm_api_management_api_operation_policy" "io_post_wallet_transactions_v2" {
   api_name            = "${local.project}-ecommerce-io-api-v2"
   resource_group_name = local.pagopa_apim_rg
@@ -361,6 +391,8 @@ resource "azurerm_api_management_api_operation_policy" "io_transaction_authoriza
     authurl-basepath = var.env_short == "d" ? local.apim_hostname : "{{wisp2-gov-it}}"
     wallet-basepath  = local.wallet_hostname
   })
+
+  depends_on = [azapi_resource.fragment_ecommerce_jwt_base]
 }
 
 resource "azurerm_api_management_api_operation_policy" "io_calculate_fee_v2" {
@@ -375,6 +407,8 @@ resource "azurerm_api_management_api_operation_policy" "io_calculate_fee_v2" {
       wallet-basepath    = local.wallet_hostname
     }
   )
+
+  depends_on = [azapi_resource.fragment_ecommerce_jwt_base]
 }
 
 resource "azurerm_api_management_api_operation_policy" "delete_transactions_v2" {
@@ -386,6 +420,8 @@ resource "azurerm_api_management_api_operation_policy" "delete_transactions_v2" 
   xml_content = templatefile("./api/ecommerce-io/v2/_delete_transaction.xml.tpl", {
     wallet-basepath = local.wallet_hostname
   })
+
+  depends_on = [azapi_resource.fragment_ecommerce_jwt_base]
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_transactions_v2" {
@@ -397,6 +433,8 @@ resource "azurerm_api_management_api_operation_policy" "get_transactions_v2" {
   xml_content = templatefile("./api/ecommerce-io/v2/get_transaction.xml.tpl", {
     wallet-basepath = local.wallet_hostname
   })
+
+  depends_on = [azapi_resource.fragment_ecommerce_jwt_base]
 }
 
 resource "azurerm_api_management_api_operation_policy" "create_transactions_v2" {

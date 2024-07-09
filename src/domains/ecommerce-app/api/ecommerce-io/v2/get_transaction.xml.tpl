@@ -1,6 +1,7 @@
 <policies>
     <inbound>
-        <base />
+        <include-fragment fragment-id="ecommerce-jwt-base" />
+
         <choose>
         <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
             <set-variable name="requestTransactionId" value="@{

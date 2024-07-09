@@ -8,6 +8,10 @@ terraform {
       source  = "hashicorp/azuread"
       version = "= 2.38.0"
     }
+    azapi = {
+      source  = "azure/azapi"
+      version = "<= 1.3.0"
+    }
     null = {
       source  = "hashicorp/null"
       version = "= 3.2.1"

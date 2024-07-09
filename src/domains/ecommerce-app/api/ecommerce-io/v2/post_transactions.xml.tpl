@@ -119,6 +119,7 @@
                   eCommerceResponseBody["status"] = "ACTIVATION_REQUESTED";
                   eCommerceResponseBody["payments"] = payments;
                   eCommerceResponseBody["clientId"] = "IO";
+                  eCommerceResponseBody["authToken"] = (string) context.Variables["sessionToken"];
 
                   return eCommerceResponseBody.ToString();
                 }" />

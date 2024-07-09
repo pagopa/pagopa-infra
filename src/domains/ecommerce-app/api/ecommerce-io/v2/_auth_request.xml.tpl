@@ -1,6 +1,7 @@
 <policies>
     <inbound>
-        <base />
+        <include-fragment fragment-id="ecommerce-jwt-base" />
+
         <set-header name="x-pgs-id" exists-action="delete" />
         <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
         <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
