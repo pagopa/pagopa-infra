@@ -53,7 +53,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/io-payment-wallet/v1'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500)
+    Success=countif(responseCode_d < 500 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
@@ -91,7 +91,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/webview-payment-wallet/v1'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500)
+    Success=countif(responseCode_d < 500 and DurationMs < 2000)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
@@ -132,7 +132,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/payment-wallet-for-ecommerce/v1'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500)
+    Success=countif(responseCode_d < 500 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
@@ -169,7 +169,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/payment-wallet-notifications/v1'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500)
+    Success=countif(responseCode_d < 500 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
@@ -206,7 +206,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/payment-wallet-outcomes/v1'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500)
+    Success=countif(responseCode_d < 500 and DurationMs < 100)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
