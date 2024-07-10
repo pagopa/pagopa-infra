@@ -26,14 +26,14 @@
         <otherwise>
           <trace source="on_soap_error" severity="error">
             <message>@{
-              string error = "[ALERT][ON-SOAP-ERROR]A policy error has occurred, " +
+              string error = "[ALERT][ON-SOAP-ERROR][REASON] A policy error has occurred, " +
               "Reason: " + context.LastError.Reason;
               return error;
               }</message>
           </trace>
           <trace source="on_soap_error" severity="error">
             <message>@{
-              string error = "[ALERT][ON-SOAP-ERROR] A policy error has occurred, " +
+              string error = "[ALERT][ON-SOAP-ERROR][STACK-TRACE] A policy error has occurred, " +
               "Source: " + context.LastError.Source + ", " +
               "Reason: " + context.LastError.Reason + ", " +
               "Message: " + context.LastError.Message + ", " +
