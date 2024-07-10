@@ -785,3 +785,5 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "151.1.203.68"    # Softlab backup support line
   ]
 }
+
+cdn_storage_account_replication_type = "GZRS"
