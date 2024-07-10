@@ -15,7 +15,7 @@ module "monitor" {
 
   content_format = "openapi"
   content_value = templatefile("./api/monitor/openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/base_policy.xml")
