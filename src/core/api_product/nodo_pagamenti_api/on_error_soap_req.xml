@@ -27,7 +27,7 @@
           <trace source="on_soap_error" severity="error">
             <message>@{
               string error = "[ALERT][ON-SOAP-ERROR][REASON] A policy error has occurred, " +
-              "Reason: " + context.LastError.Reason;
+              "Reason:" + context.LastError.Reason;
               return error;
               }</message>
           </trace>
