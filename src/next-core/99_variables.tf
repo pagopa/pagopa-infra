@@ -960,6 +960,13 @@ variable "cdn_storage_account_replication_type" {
   description = "(Optional) Cdn storage account replication type"
 }
 
+
+variable "backup_storage_replication_type" {
+  type        = string
+  default     = "GZRS"
+  description = "(Optional) Backup storage account replication type"
+}
+
 variable "azuread_service_principal_azure_cdn_frontdoor_id" {
   type        = string
   description = "Azure CDN Front Door Principal ID"
