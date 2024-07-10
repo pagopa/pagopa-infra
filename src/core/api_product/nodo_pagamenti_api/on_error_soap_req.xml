@@ -26,7 +26,7 @@
         <otherwise>
             <trace source="on_soap_error" severity="error">
                 <message>
-                    A policy error has occured
+                    A policy error has occurred
                     Reason: @(context.LastError.Reason)
                 </message>
             </trace>
