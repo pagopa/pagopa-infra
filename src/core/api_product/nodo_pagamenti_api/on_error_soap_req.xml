@@ -8,8 +8,8 @@
             <set-header name="Content-Type" exists-action="override">
                 <value>text/xml</value>
             </set-header>
-            <set-body>@{     
-                return (string) context.Variables["renewrequest"]; 
+            <set-body>@{
+                return (string) context.Variables["renewrequest"];
             }</set-body>
         </send-request>
         <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["risposta"]).Body.As<string>(preserveContent: true))" />
@@ -17,11 +17,35 @@
             <set-header name="Content-Type" exists-action="override">
                 <value>text/xml</value>
             </set-header>
-            <set-body>@{     
+            <set-body>@{
                 string message = (string)context.Variables["leggirisposta"];
-                return message; 
+                return message;
             }</set-body>
         </return-response>
         </when>
+        <otherwise>
+            <trace source="on_soap_error" severity="error">
+                <message>
+                    A policy error has occured
+                    Reason: @(context.LastError.Reason)
+                </message>
+            </trace>
+            <trace source="on_soap_error" severity="error">
+                <message>
+                    A policy error has occurred
+                    Source: @(context.LastError.Source)
+                    Reason: @(context.LastError.Reason)
+                    Message: @(context.LastError.Message)
+                    Scope: @(context.LastError.Scope)
+                    Section: @(context.LastError.Section)
+                    Path: @(context.LastError.Path)
+                    PolicyId: @(context.LastError.PolicyId)
+                </message>
+                <!-- soapAction is required!  -->
+                <metadata name="Operation Name" value="@((context.Variables.ContainsKey("soapAction") ? (string)context.Variables["soapAction"] : "Unknown")"/>
+            </trace>
+            <!-- Include default on-error policies -->
+            <base />
+        </otherwise>
         </choose>
 </fragment>
