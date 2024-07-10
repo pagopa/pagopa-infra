@@ -24,28 +24,28 @@
         </return-response>
         </when>
         <otherwise>
-            <trace source="on_soap_error" severity="error">
-                <message>
-                    A policy error has occurred
-                    Reason: @(context.LastError.Reason)
-                </message>
-            </trace>
-            <trace source="on_soap_error" severity="error">
-                <message>
-                    A policy error has occurred
-                    Source: @(context.LastError.Source)
-                    Reason: @(context.LastError.Reason)
-                    Message: @(context.LastError.Message)
-                    Scope: @(context.LastError.Scope)
-                    Section: @(context.LastError.Section)
-                    Path: @(context.LastError.Path)
-                    PolicyId: @(context.LastError.PolicyId)
-                </message>
-                <!-- soapAction is required!  -->
-                <metadata name="Operation Name" value="@((context.Variables.ContainsKey("soapAction") ? (string)context.Variables["soapAction"] : "Unknown")"/>
-            </trace>
-            <!-- Include default on-error policies -->
-            <base />
+          <trace source="on_soap_error" severity="error">
+            <message>@{
+              string error = "A policy error has occurred, " +
+              "Reason: " + context.LastError.Reason;
+              return error;
+              }</message>
+          </trace>
+          <trace source="on_soap_error" severity="error">
+            <message>@{
+              string error = "A policy error has occurred, " +
+              "Source: " + context.LastError.Source + ", " +
+              "Reason: " + context.LastError.Reason + ", " +
+              "Message: " + context.LastError.Message + ", " +
+              "Scope: " + context.LastError.Scope + ", " +
+              "Section: " + context.LastError.Section + ", " +
+              "Path: " + context.LastError.Path + ", " +
+              "PolicyId: " + context.LastError.PolicyId;
+              return error;
+              }</message>
+            <!-- soapAction is required!  -->
+            <metadata name="Operation Name" value="@((context.Variables.ContainsKey("soapAction") ? (string)context.Variables["soapAction"] : "Unknown"))"/>
+          </trace>
         </otherwise>
         </choose>
 </fragment>
