@@ -20,25 +20,13 @@ module "apim_payment_manager_product" {
   policy_xml = file("./api_product/payment_manager_api/_base_policy.xml")
 }
 
-data "azurerm_key_vault_secret" "pm_gtw_hostname" {
-  name         = "pm-gtw-hostname"
-  key_vault_id = module.key_vault.id
-}
 
 data "azurerm_key_vault_secret" "pm_restapi_ip" {
   name         = "pm-restapi-ip"
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "pm_host" {
-  name         = "pm-host"
-  key_vault_id = module.key_vault.id
-}
 
-data "azurerm_key_vault_secret" "pm_host_prf" {
-  name         = "pm-host-prf"
-  key_vault_id = module.key_vault.id
-}
 #####################################
 ## API buyerbanks                  ##
 #####################################

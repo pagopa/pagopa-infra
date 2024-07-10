@@ -1,7 +1,3 @@
-data "azurerm_key_vault_secret" "pm_onprem_hostname" {
-  name         = "pm-onprem-hostname"
-  key_vault_id = module.key_vault.id
-}
 
 resource "azurerm_key_vault_secret" "pgs_jwt_key" {
   name         = "pgs-jwt-key"
