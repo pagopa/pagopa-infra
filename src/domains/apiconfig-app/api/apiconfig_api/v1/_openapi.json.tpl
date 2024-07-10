@@ -1,10 +1,10 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "PagoPA API configuration ${service}",
+    "title": "core",
     "description": "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei Pagamenti",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.58.24"
+    "version": "0.59.0-2-VAS-1146-primitive-version-channel"
   },
   "servers": [
     {
@@ -9129,31 +9129,9 @@
         "operationId": "getCreditorInstitutions",
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of elements on one page. Default = 50",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 50
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number. Page value starts from 0",
-            "required": true,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
             "name": "code",
             "in": "query",
-            "description": "Filter by code",
+            "description": "Filter by creditor institution's tax code",
             "required": false,
             "schema": {
               "type": "string"
@@ -9162,16 +9140,25 @@
           {
             "name": "name",
             "in": "query",
-            "description": "Filter by name",
+            "description": "Filter by creditor institution's business name",
             "required": false,
             "schema": {
               "type": "string"
             }
           },
           {
+            "name": "enabled",
+            "in": "query",
+            "description": "Filter by creditor institution's enabled",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "orderby",
             "in": "query",
-            "description": "Order by code or name",
+            "description": "Order by creditor institution's tax code or business name",
             "required": false,
             "schema": {
               "type": "string",
@@ -9194,6 +9181,28 @@
                 "ASC",
                 "DESC"
               ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of elements on one page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": true,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
             }
           }
         ],
@@ -17637,8 +17646,7 @@
           },
           "is_connection_sync": {
             "type": "boolean",
-            "description": "Describe the station connection's type, true synchronous, false asynchronous",
-            "readOnly": true
+            "description": "Describe the station connection's type, true synchronous, false asynchronous"
           },
           "ip": {
             "type": "string"
@@ -18280,6 +18288,11 @@
             "description": "Broker description. Read only field",
             "example": "Lorem ipsum dolor sit amet"
           },
+          "primitive_version": {
+            "type": "integer",
+            "description": "Primitive number version",
+            "format": "int32"
+          },
           "password": {
             "type": "string"
           },
@@ -18427,13 +18440,6 @@
           "flag_psp_cp": {
             "type": "boolean",
             "description": "Represents the authorization to carry out the transfer of the information present in additional payment information in the tags relating to payment by card for the PA in V1"
-          },
-          "primitive_version": {
-            "maximum": 2,
-            "minimum": 1,
-            "type": "integer",
-            "description": "Primitive number version",
-            "format": "int32"
           }
         }
       },
@@ -18764,8 +18770,7 @@
           },
           "is_connection_sync": {
             "type": "boolean",
-            "description": "Describe the station connection's type, true synchronous, false asynchronous",
-            "readOnly": true
+            "description": "Describe the station connection's type, true synchronous, false asynchronous"
           }
         }
       },
@@ -19285,8 +19290,7 @@
           },
           "is_connection_sync": {
             "type": "boolean",
-            "description": "Describe the station connection's type, true synchronous, false asynchronous",
-            "readOnly": true
+            "description": "Describe the station connection's type, true synchronous, false asynchronous"
           },
           "application_code": {
             "minimum": 0,
@@ -19584,7 +19588,8 @@
       "Channel": {
         "required": [
           "channel_code",
-          "enabled"
+          "enabled",
+          "primitive_version"
         ],
         "type": "object",
         "properties": {
@@ -19599,6 +19604,11 @@
             "type": "string",
             "description": "Broker description. Read only field",
             "example": "Lorem ipsum dolor sit amet"
+          },
+          "primitive_version": {
+            "type": "integer",
+            "description": "Primitive number version",
+            "format": "int32"
           }
         }
       },
@@ -19727,6 +19737,9 @@
             "type": "string"
           },
           "version": {
+            "type": "string"
+          },
+          "time": {
             "type": "string"
           }
         }
