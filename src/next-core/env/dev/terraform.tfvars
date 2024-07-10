@@ -36,6 +36,8 @@ cidr_subnet_tools_cae            = ["10.1.248.0/23"]
 cidr_subnet_azdoa                = ["10.1.130.0/24"]
 cidr_subnet_loadtest_agent       = ["10.1.159.0/24"]
 cidr_subnet_appgateway           = ["10.1.128.0/24"]
+cidr_subnet_eventhub             = ["10.230.8.64/26"]
+
 ### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]
 
