@@ -11,11 +11,7 @@ locals {
 }
 
 
-## Responses that return OK and those with one of these error codes
-## ["PPT_PAGAMENTO_IN_CORSO","PPT_PAGAMENTO_DUPLICATO", "PPT_STAZIONE_INT_PA_TIMEOUT","PPT_ATTIVAZIONE_IN_CORSO", "PPT_ERRORE_EMESSO_DA_PAA"]
-## are considered positive. The others are considered failure.
-## NB: In this case the fault code PPT_ERRORE_EMESSO_DA_PAA is considered as 'Success', because there is a dedicated alert for this type of error.
-## Excluding this type of fault from OK group would complicate the definition of the general alert for fault codes like this.
+// Availability by fault-code on activatePaymentNotice
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-code-availability" {
   count = var.env_short == "p" ? 1 : 0
 
@@ -29,35 +25,35 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-code-availab
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Availability Fault Code on activatePaymentNotice operation of node-for-psp API <grafana-dashboard-on-application-code>" #todo
-  enabled        = true
+
+  description = <<EOF
+Availability Fault Code on activatePaymentNotice V1 and V2 operation of node-for-psp API.
+The monitored fault codes are PPT_AUTENTICAZIONE, PPT_SYSTEM_ERROR, PPT_CANALE_IRRANGIUNGIBILE, PPT_ERRORE_IDEMEMPOTENZA
+The availability threshold is set to 97%
+Dashboard: https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa
+EOF
+
+  enabled = true
   query = (<<-QUERY
 let threshold = 0.97;
 requests
-| extend xml_resp = replace_regex(replace_regex(replace_regex(tostring(customDimensions["Response-Body"]), '</.{0,10}?:', '</'), '<.{0,10}?:', '<'), 'activatePaymentNoticeRes|sendPaymentOutcomeRes|verificaBollettinoRes|verifyPaymentNoticeRes|nodoVerificaRPT', 'primitiva')
+| where operation_Name in (
+"p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fc", // activatePaymentNotice v1 legacy
+"p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa0", // activatePaymentNotice v1 auth
+"p-node-for-psp-api;rev=1 - 63c559672a92e811a8f33a00", // activatePaymentNotice v2 legacy
+"p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa5" // activatePaymentNotice v2 auth
+)
+| extend xml_resp = replace_regex(replace_regex(replace_regex(tostring(customDimensions["Response-Body"]), '</.{0,10}?:', '</'), '<.{0,10}?:', '<'), 'activatePaymentNoticeRes|activatePaymentNoticeV2Response', 'primitiva')
 | extend json_resp=parse_xml(xml_resp)
-| extend resp_outcome = tostring(json_resp["Envelope"]["Body"]["primitiva"]["outcome"])
-| extend faultCode= tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"]["faultCode"])
-| extend originalFaultCode = case(
-json_resp["Envelope"]["Body"]["primitiva"]["fault"]["originalFaultCode"] != "", tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"]["originalFaultCode"]),
-extract("FaultCode PA: ([A-Z_]+)", 1, tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"]["description"])))
-| where cloud_RoleName == "pagopa-p-apim West Europe"
-| where operation_Name == "p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fc" or operation_Name == "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa0" // activatePaymentNotice v1 legacy or auth
+| extend outcome = tostring(json_resp["Envelope"]["Body"]["primitiva"].outcome)
+| extend faultCode = tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"].faultCode)
 | summarize
 Total=count(),
-Success=countif(resp_outcome == "OK"
-or faultCode in (
-"PPT_SINTASSI_EXTRAXSD", "PPT_SINTASSI_XSD", "PPT_DOMINIO_SCONOSCIUTO", "PPT_STAZIONE_INT_PA_SCONOSCIUTA",                  // Errori dati contenuti nell'avviso
-"PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE", "PPT_STAZIONE_INT_PA_TIMEOUT", "PPT_STAZIONE_INT_PA_ERRORE_RESPONSE",                // Errori imputabili all'EC
-"PPT_IBAN_NON_CENSITO", "PAA_SINTASSI_EXTRAXSD", "PAA_SINTASSI_XSD", "PAA_ID_DOMINIO_ERRATO", "PAA_SYSTEM_ERROR"            // Errori imputabili all'EC
-"PAA_ID_INTERMEDIARIO_ERRATO", "PAA_STAZIONE_INT_ERRATA", "PAA_ATTIVA_RPT_IMPORTO_NON_VALIDO", "PPT_ERRORE_EMESSO_DA_PAA",  // Errori imputabili all'EC
-"PAA_PAGAMENTO_IN_CORSO", "PPT_PAGAMENTO_IN_CORSO", "PAA_PAGAMENTO_SCADUTO", "PAA_PAGAMENTO_SCONOSCIUTO",                   // Pagamento in corso, errori avviso
-"PAA_PAGAMENTO_ANNULLATO", "PAA_PAGAMENTO_DUPLICATO", "PPT_PAGAMENTO_DUPLICATO",                                            // Avviso scaduto, sconosciuto, annullato, duplicato
-"PPT_ATTIVAZIONE_IN_CORSO"                                                                                                  // Meccanismo di prenotazione delle attivazioni tramite verificatore
-))
+Success=countif(outcome == "OK"
+or faultCode !in ("PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_CANALE_IRRANGIUNGIBILE", "PPT_ERRORE_IDEMEMPOTENZA"))
 by bin(timestamp, 5m)
 | extend availability=toreal(Success) / Total
-| where (Total >= 100 and availability < threshold ) or (Total > 20 and Total < 100 and availability < 0.80)
+| where availability < threshold
 QUERY
   )
 
@@ -71,6 +67,177 @@ QUERY
     threshold = 2
   }
 }
+
+// Availability by fault-code on sendPaymentOutcome
+resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-code-availability-sendPaymentOutcome" {
+  count = var.env_short == "p" ? 1 : 0
+
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-node-for-psp-api-fault-code-availability"
+  location            = var.location
+
+  action {
+    action_group           = local.action_groups
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+
+  description = <<EOF
+Availability Fault Code on sendPaymentOutcome V1 and V2 operation of node-for-psp API.
+The monitored fault codes are PPT_AUTENTICAZIONE, PPT_SYSTEM_ERROR, PPT_CANALE_IRRANGIUNGIBILE, PPT_ERRORE_IDEMEMPOTENZA
+The availability threshold is set to 97%
+Dashboard: https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa
+EOF
+
+  enabled = true
+  query = (<<-QUERY
+let threshold = 0.97;
+requests
+| where operation_Name in (
+"p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fd", // sendPaymentOutcome v1 legacy
+"p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa1", // sendPaymentOutcome v1 auth
+"p-node-for-psp-api;rev=1 - 63c559672a92e811a8f33a01", // sendPaymentOutcome v2 legacy
+"p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa6" // sendPaymentOutcome v2 auth
+)
+| extend xml_resp = replace_regex(replace_regex(replace_regex(tostring(customDimensions["Response-Body"]), '</.{0,10}?:', '</'), '<.{0,10}?:', '<'), 'sendPaymentOutcomeResponse|sendPaymentOutcomeV2Response', 'primitiva')
+| extend json_resp=parse_xml(xml_resp)
+| extend outcome = tostring(json_resp["Envelope"]["Body"]["primitiva"].outcome)
+| extend faultCode = tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"].faultCode)
+| summarize
+Total=count(),
+Success=countif(outcome == "OK"
+or faultCode !in ("PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_CANALE_IRRANGIUNGIBILE", "PPT_ERRORE_IDEMEMPOTENZA"))
+by bin(timestamp, 5m)
+| extend availability=toreal(Success) / Total
+| where availability < threshold
+QUERY
+  )
+
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/best-practices-alerts#alert-severity
+  # Sev 1	Error	Degradation of performance or loss of availability of some aspect of an application or service. Requires attention but not immediate
+  severity    = 1
+  frequency   = 5
+  time_window = 10
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
+// Availability by fault-code on nodoInviaRPT
+resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-code-availability-nodoInviaRPT" {
+  count = var.env_short == "p" ? 1 : 0
+
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-nodo-per-pa-api-fault-code-availability"
+  location            = var.location
+
+  action {
+    action_group           = local.action_groups
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+
+  description = <<EOF
+Availability Fault Code on nodoInviaRPT operation of nodo-per-pa API.
+The monitored fault codes are PPT_AUTENTICAZIONE, PPT_SYSTEM_ERROR, PPT_CANALE_IRRANGIUNGIBILE, PPT_ERRORE_IDEMEMPOTENZA
+The availability threshold is set to 97%
+Dashboard: https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa
+EOF
+
+  enabled = true
+  query = (<<-QUERY
+let threshold = 0.97;
+requests
+| where operation_Name in (
+"p-nodo-per-pa-api;rev=1 - 62189aea2a92e81fa4f15ec6", // nodoInviaRPT legacy
+"p-nodo-per-pa-api-auth;rev=1 - 63e5d8212a92e80448d38dff" // nodoInviaRPT auth
+)
+| extend body_resp = replace_regex(tostring(customDimensions["Response-Body"]), '<url>.*?</url>', '')
+| extend xml_resp = replace_regex(replace_regex(replace_regex(replace_regex(body_resp, '</.{0,10}?:', '</'), '<.{0,10}?:', '<'), 'nodoInviaRPTRisposta', 'primitiva'),'esitoComplessivoOperazione','esito')
+| extend json_resp=parse_xml(xml_resp)
+| extend esito = tostring(json_resp["Envelope"]["Body"]["primitiva"].esito)
+| extend faultCode = tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"].faultCode)
+| extend faultCode = iff(isnotnull(faultCode) and faultCode != "", faultCode, tostring(json_resp["Envelope"]["Body"]["primitiva"]["listaErroriRPT"]["fault"].faultCode))
+| summarize
+Total=count(),
+Success=countif(esito == "OK"
+or faultCode !in ("PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_CANALE_IRRANGIUNGIBILE", "PPT_ERRORE_IDEMEMPOTENZA"))
+by bin(timestamp, 5m)
+| extend availability=toreal(Success) / Total
+| where availability < threshold
+QUERY
+  )
+
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/best-practices-alerts#alert-severity
+  # Sev 1	Error	Degradation of performance or loss of availability of some aspect of an application or service. Requires attention but not immediate
+  severity    = 1
+  frequency   = 5
+  time_window = 10
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-code-availability-nodoInviaCarrelloRPT" {
+  count = var.env_short == "p" ? 1 : 0
+
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-nodo-per-pa-api-fault-code-availability"
+  location            = var.location
+
+  action {
+    action_group           = local.action_groups
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+
+  description = <<EOF
+Availability Fault Code on nodoInviaCarrelloRPT operation of nodo-per-pa API.
+The monitored fault codes are PPT_AUTENTICAZIONE, PPT_SYSTEM_ERROR, PPT_CANALE_IRRANGIUNGIBILE, PPT_ERRORE_IDEMEMPOTENZA
+The availability threshold is set to 97%
+Dashboard: https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa
+EOF
+
+  enabled = true
+  query = (<<-QUERY
+let threshold = 0.97;
+requests
+| where operation_Name in (
+"p-nodo-per-pa-api;rev=1 - 62189aea2a92e81fa4f15ec7", // nodoInviaCarrelloRPT legacy
+"p-nodo-per-pa-api-auth;rev=1 - 63e5d8212a92e80448d38e00" // nodoInviaCarrelloRPT auth
+)
+| extend body_resp = replace_regex(tostring(customDimensions["Response-Body"]), '<url>.*?</url>', '')
+| extend xml_resp = replace_regex(replace_regex(replace_regex(replace_regex(body_resp, '</.{0,10}?:', '</'), '<.{0,10}?:', '<'), 'nodoInviaCarrelloRPTRisposta', 'primitiva'),'esitoComplessivoOperazione','esito')
+| extend json_resp=parse_xml(xml_resp)
+| extend esito = tostring(json_resp["Envelope"]["Body"]["primitiva"].esito)
+| extend faultCode = tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"].faultCode)
+| extend faultCode = iff(isnotnull(faultCode) and faultCode != "", faultCode, tostring(json_resp["Envelope"]["Body"]["primitiva"]["listaErroriRPT"]["fault"].faultCode))
+| summarize
+Total=count(),
+Success=countif(esito == "OK"
+or faultCode !in ("PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_CANALE_IRRANGIUNGIBILE", "PPT_ERRORE_IDEMEMPOTENZA"))
+by bin(timestamp, 5m)
+| extend availability=toreal(Success) / Total
+| where availability < threshold
+QUERY
+  )
+
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/best-practices-alerts#alert-severity
+  # Sev 1	Error	Degradation of performance or loss of availability of some aspect of an application or service. Requires attention but not immediate
+  severity    = 1
+  frequency   = 5
+  time_window = 10
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
 
 
 ## Error alert on specific faultCode
