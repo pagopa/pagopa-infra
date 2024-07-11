@@ -264,7 +264,7 @@ nodo_pagamenti_x_forwarded_for = "10.230.10.5"
 
 
 # WISP-dismantling-cfg
-create_wisp_converter = false
+create_wisp_converter = true
 wisp_converter = {
   enable_apim_switch     = false
   brokerPSP_whitelist    = "97735020584"
