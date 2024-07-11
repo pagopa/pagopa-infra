@@ -63,7 +63,7 @@ module "apim_tkm_consent_manager_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/tkm_api/tkm-ms-consent-manager/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/tkm_api/tkm-ms-consent-manager/v1/_base_policy.xml.tpl", {
@@ -115,7 +115,7 @@ module "apim_tkm_consent_manager_internal_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/tkm_api/tkm-ms-consent-manager-internal/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/tkm_api/tkm-ms-consent-manager-internal/v1/_base_policy.xml.tpl")
@@ -164,7 +164,7 @@ module "apim_tkm_card_manager_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/tkm_api/tkm-ms-card-manager/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/tkm_api/tkm-ms-card-manager/v1/_base_policy.xml.tpl")
@@ -213,7 +213,7 @@ module "apim_tkm_acquirer_manager_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/tkm_api/tkm-ms-acquirer-manager/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/tkm_api/tkm-ms-acquirer-manager/v1/_base_policy.xml.tpl", {
@@ -264,7 +264,7 @@ module "apim_tkm_test_utility_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/tkm_api/tkm-ms-test-utility/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/tkm_api/tkm-ms-test-utility/v1/_base_policy.xml.tpl")
@@ -315,7 +315,7 @@ module "apim_tkm_mock_circuit_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/tkm_api/tkm-mock-circuit-api/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/tkm_api/tkm-mock-circuit-api/v1/_base_policy.xml.tpl", {

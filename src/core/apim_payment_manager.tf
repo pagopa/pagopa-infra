@@ -20,25 +20,13 @@ module "apim_payment_manager_product" {
   policy_xml = file("./api_product/payment_manager_api/_base_policy.xml")
 }
 
-data "azurerm_key_vault_secret" "pm_gtw_hostname" {
-  name         = "pm-gtw-hostname"
-  key_vault_id = module.key_vault.id
-}
 
 data "azurerm_key_vault_secret" "pm_restapi_ip" {
   name         = "pm-restapi-ip"
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "pm_host" {
-  name         = "pm-host"
-  key_vault_id = module.key_vault.id
-}
 
-data "azurerm_key_vault_secret" "pm_host_prf" {
-  name         = "pm-host-prf"
-  key_vault_id = module.key_vault.id
-}
 #####################################
 ## API buyerbanks                  ##
 #####################################
@@ -82,7 +70,7 @@ module "apim_buyerbanks_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/buyerbanks/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/buyerbanks/_base_policy.xml.tpl")
@@ -131,7 +119,7 @@ module "apim_pm_restapi_api_v4" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/restapi/v4/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_manager_api/restapi/v4/_base_policy.xml.tpl", {
@@ -182,7 +170,7 @@ module "apim_pm_restapi_api_old_v4" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/restapi/v4/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_manager_api/restapi/v4/_base_policy.xml.tpl", {
@@ -233,7 +221,7 @@ module "apim_pm_restapicd_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/restapi-cd/v1/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_manager_api/restapi-cd/v1/_base_policy.xml.tpl", {
@@ -261,7 +249,7 @@ module "apim_pm_restapicd_api_v2" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/restapi-cd/v2/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/restapi-cd/v2/_base_policy.xml.tpl")
@@ -287,7 +275,7 @@ module "apim_pm_restapicd_api_v3" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/restapi-cd/v3/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_manager_api/restapi-cd/v3/_base_policy.xml.tpl", {
@@ -326,7 +314,7 @@ module "apim_pm_restapi_cd_assets" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/restapi-cd-assets/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/restapi-cd-assets/_base_policy.xml.tpl")
@@ -375,7 +363,7 @@ module "apim_pm_restapicd_internal_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/restapi-cd-internal/v1/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/restapi-cd-internal/v1/_base_policy.xml.tpl")
@@ -401,7 +389,7 @@ module "apim_pm_restapicd_internal_api_v2" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/restapi-cd-internal/v2/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/restapi-cd-internal/v2/_base_policy.xml.tpl")
@@ -450,7 +438,7 @@ module "apim_pm_restapi_server_api_v4" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_manager_api/restapi-server/v4/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/restapi-server/v4/_base_policy.xml.tpl")
@@ -499,7 +487,7 @@ module "apim_pm_restapirtd_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_manager_api/restapi-rtd/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/restapi-rtd/v1/_base_policy.xml.tpl")
@@ -525,7 +513,7 @@ module "apim_pm_restapirtd_api_v2" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_manager_api/restapi-rtd/v2/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/restapi-rtd/v2/_base_policy.xml.tpl")
@@ -573,7 +561,7 @@ module "apim_pm_auth_rtd_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_manager_api/auth-rtd/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/auth-rtd/v1/_base_policy.xml.tpl")
@@ -599,7 +587,7 @@ module "apim_pm_auth_rtd_api_v2" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_manager_api/auth-rtd/v2/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/auth-rtd/v2/_base_policy.xml.tpl")
@@ -641,7 +629,7 @@ module "apim_pm_logging_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/logging/v1/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/logging/v1/_base_policy.xml.tpl")
@@ -687,7 +675,7 @@ module "apim_pm_adminpanel_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/admin-panel/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_manager_api/admin-panel/_base_policy.xml.tpl", {
@@ -741,7 +729,7 @@ module "apim_pm_wisp_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/wisp/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/wisp/_base_policy.xml.tpl")
@@ -799,7 +787,7 @@ module "apim_pm_ptg_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_manager_api/payment-transactions-gateway/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/payment-transactions-gateway/v1/_base_policy.xml.tpl")
@@ -849,7 +837,7 @@ module "apim_pm_per_nodo_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/pm-per-nodo/v1/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/pm-per-nodo/v1/_base_policy.xml.tpl")
@@ -898,7 +886,7 @@ module "apim_pm_events_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_manager_api/payment-events/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/payment-events/v1/_base_policy.xml.tpl")
@@ -924,11 +912,11 @@ module "apim_pm_per_nodo_v2" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_manager_api/pm-per-nodo/v2/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_manager_api/pm-per-nodo/v2/_base_policy.xml.tpl", {
-    host                       = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name,
+    host                       = local.api_domain,
     ecommerce_ingress_hostname = var.ecommerce_ingress_hostname
   })
 }
@@ -995,7 +983,7 @@ module "apim_pmclient_iobpd_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/clients/io-bpd/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/io-bpd/_base_policy.xml.tpl", {
@@ -1045,7 +1033,7 @@ module "apim_pm_paypalpsp_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_manager_api/clients/paypal-psp/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/paypal-psp/v1/_base_policy.xml.tpl", {
@@ -1095,7 +1083,7 @@ module "apim_pm_xpay_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/clients/xpay/v1/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/xpay/v1/_base_policy.xml.tpl", {
@@ -1145,7 +1133,7 @@ module "apim_pm_bpd_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_manager_api/clients/bpd/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/bpd/v1/_base_policy.xml.tpl", {
@@ -1195,7 +1183,7 @@ module "apim_pm_cobadge_api_v4" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/clients/cobadge/v4/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/cobadge/v4/_base_policy.xml.tpl", {
@@ -1245,7 +1233,7 @@ module "apim_pm_satispay_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/clients/satispay/v1/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/satispay/v1/_base_policy.xml.tpl", {
@@ -1295,7 +1283,7 @@ module "apim_pm_fesp_api_v1" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/payment_manager_api/clients/fesp/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_manager_api/clients/fesp/_base_policy.xml.tpl", {
@@ -1335,7 +1323,7 @@ module "apim_pm_mock_services_fe" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_manager_api/mock-services-fe/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/mock-services-fe/v1/_base_policy.xml.tpl")
@@ -1386,7 +1374,7 @@ module "apim_pm_mock_services_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_manager_api/mock-services-api/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/mock-services-api/v1/_base_policy.xml.tpl")
@@ -1437,7 +1425,7 @@ module "apim_pm_test_utility_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_manager_api/test-utility/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_manager_api/test-utility/v1/_base_policy.xml.tpl")

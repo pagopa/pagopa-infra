@@ -31,8 +31,8 @@ locals {
   portal_domain     = format("portal.%s.%s", var.dns_zone_prefix, var.external_domain)
   management_domain = format("management.%s.%s", var.dns_zone_prefix, var.external_domain)
 
-  redis_connection_string = var.create_redis_multiaz ? module.redis[0].primary_connection_string : data.azurerm_redis_cache.redis.primary_connection_string
-  redis_cache_id          = var.create_redis_multiaz ? module.redis[0].id : data.azurerm_redis_cache.redis.id
+  redis_connection_string = module.redis[0].primary_connection_string
+  redis_cache_id          = module.redis[0].id
 }
 
 
@@ -196,4 +196,49 @@ module "apim" {
 
   tags = var.tags
 
+}
+
+
+
+resource "azurerm_api_management_custom_domain" "api_custom_domain" {
+  api_management_id = module.apim[0].id
+
+  gateway {
+    host_name = local.api_domain
+    key_vault_id = replace(
+      data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
+      "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
+      ""
+    )
+  }
+
+  developer_portal {
+    host_name = local.portal_domain
+    key_vault_id = replace(
+      data.azurerm_key_vault_certificate.portal_platform.secret_id,
+      "/${data.azurerm_key_vault_certificate.portal_platform.version}",
+      ""
+    )
+  }
+
+  management {
+    host_name = local.management_domain
+    key_vault_id = replace(
+      data.azurerm_key_vault_certificate.management_platform.secret_id,
+      "/${data.azurerm_key_vault_certificate.management_platform.version}",
+      ""
+    )
+  }
+
+  dynamic "gateway" {
+    for_each = var.env_short == "u" ? [""] : []
+    content {
+      host_name = local.prf_domain
+      key_vault_id = replace(
+        data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
+        "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
+        ""
+      )
+    }
+  }
 }

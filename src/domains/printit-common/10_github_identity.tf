@@ -18,6 +18,7 @@ locals {
     "pagopa-print-payment-notice-service",
     "pagopa-print-payment-notice-generator",
     "pagopa-print-payment-notice-functions",
+    "pagopa-template-notice-pdf"
   ]
 
   federations_01 = [

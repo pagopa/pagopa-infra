@@ -21,11 +21,9 @@
 				<when condition="@(context.Variables.GetValueOrDefault<string>("enable_routing_switch", "").Equals("true"))">
 					<set-variable name="baseUrl" value="@{
                         var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
-
                         // get random number
                         var rand = new Random();
                         int random = rand.Next(0, 100);
-
                         // priority is given by list order. add field for sorting the priority
                         int currentRouting = 0;
                         foreach (JObject item in configuration) {
@@ -34,7 +32,6 @@
                                 return item.GetValue("node_uri").ToString();
                             }
                         }
-
                         return context.Variables.GetValueOrDefault<string>("baseUrl", "");
       }" />
 				</when>
@@ -88,7 +85,6 @@ new JProperty("ttl", 1)
                             // retrieve data from request body
                             XElement request = context.Request.Body.As<XElement>(preserveContent: true);
                             XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
-
                             if (body != null ) {
                                 XElement primitive = (XElement) body.FirstNode;
                                 XElement idBrokerPSP = primitive.Descendants("idBrokerPSP").FirstOrDefault();
@@ -169,25 +165,20 @@ new JProperty("ttl", 1)
 							<!-- evaluate list algorithm -->
 							<set-variable name="dataToSet" value="@{
                             var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
-
                             var requestData = JObject.Parse((string)context.Variables["requestData"]);
                             bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true");
                             if (enable_nm3_switch) {
                             foreach (JObject item in configuration) {
                             bool brokerPspFound = false;
                             bool ciFound = false;
-
                             var brokerPsps = item.GetValue("broker_psps").ToList();
                             var cis = item.GetValue("cis").ToList();
-
                             if (brokerPsps.Count == 0 || (brokerPsps.Count > 0 && brokerPsps.Contains(requestData.GetValue("brokerPsp")))) {
                             brokerPspFound = true;
                             }
-
                             if (cis.Count == 0 || (cis.Count > 0 && cis.Contains(requestData.GetValue("ci")))) {
                             ciFound = true;
                             }
-
                             if (brokerPspFound && ciFound) {
                             return new JObject(
                             new JProperty("nodeId", item.GetValue("node_id").ToString()),
@@ -204,7 +195,6 @@ new JProperty("ttl", 1)
                             new JProperty("nodeUri", baseUrl),
                             new JProperty("ttl", requestData.GetValue("ttl"))
                             ).ToString();
-
                             }" />
 							<!-- set base url -->
 							<choose>
@@ -249,11 +239,9 @@ new JProperty("ttl", 1)
 					<!-- retrieve url by node_id according to configuration -->
 					<set-variable name="dataToSet" value="@{
                             var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
-
                             var nodeId = (string)context.Variables["nodeId"];
                             foreach (JObject item in configuration) {
                                 var currentNodeId = item.GetValue("node_id").ToString();
-
                                 if (currentNodeId.Equals(nodeId)) {
                                     return new JObject(
                                         new JProperty("nodeId", item.GetValue("node_id").ToString()),
@@ -269,7 +257,6 @@ new JProperty("ttl", 1)
                                     new JProperty("nodeUri", baseUrl),
                                     new JProperty("ttl", 3600)
                                     ).ToString();
-
                         }" />
 					<!-- set base url -->
 					<!-- if enable_nm3_decoupler_switch == true -->
@@ -300,7 +287,6 @@ new JProperty("ttl", 1)
                         // isWhiteListed if:
                         // - lists are empties
                         // - channelId, brokerPSP, stationId and creditorInstitutionId belong to relative lists
-
                         string brokersList = (string) context.Variables["wisp_whitelisted_brokers"];
                         string channelsList = (string) context.Variables["wisp_whitelisted_channels"];
                         string stationsList = (string) context.Variables["wisp_whitelisted_stations"];
@@ -310,24 +296,20 @@ new JProperty("ttl", 1)
                         bool stationsWhitelisted = stationsList.Equals("*");
                         bool cisWhitelisted = cisList.Equals("*");
                         bool isWhitelisted = false;
-
                         if (brokersWhitelisted && channelsWhitelisted && stationsWhitelisted && cisWhitelisted) {
                             isWhitelisted = true;
                             return isWhitelisted;
                         }
-
                         string[] brokers = !brokersWhitelisted ? ((string) context.Variables["wisp_whitelisted_brokers"]).Split(',') : new string[] {};
                         string[] channels = !channelsWhitelisted ? ((string) context.Variables["wisp_whitelisted_channels"]).Split(',') : new string[] {};
                         string[] stations =  !stationsWhitelisted ? ((string) context.Variables["wisp_whitelisted_stations"]).Split(',') : new string[] {};
                         string[] cis = !cisWhitelisted ? ((string) context.Variables["wisp_whitelisted_cis"]).Split(',') : new string[] {};
-
                         XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
                         try {
                             XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
                             XElement primitive = (XElement) body.FirstNode;
                             string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
                             string pspBrokerId = (string) primitive.Descendants("identificativoIntermediarioPSP").FirstOrDefault();
-
                             // check if nodoInviaRPT or nodoInviaCarrelloRPT, to set ci value correctly
                             XElement header = doc.Descendants(doc.Name.Namespace + "Header").FirstOrDefault();
                             string ciId = "";
@@ -340,10 +322,9 @@ new JProperty("ttl", 1)
                             } else {
                                 ciId = (string) header.Descendants("identificativoDominio").FirstOrDefault();
                             }
-
                             // check cis only if whitelist contains at least one element
-                            // variable isCiAndStationOk set to true, if ci and station not whitelisted then will 
-                            // be set to false 
+                            // variable isCiAndStationOk set to true, if ci and station not whitelisted then will
+                            // be set to false
                             bool isCiAndStationOk = true;
                             if (cis.Count() > 0) {
                                 // check if ciId is whitelisted
@@ -360,9 +341,8 @@ new JProperty("ttl", 1)
                                     isCiAndStationOk = false;
                                 }
                             }
-
-                            isWhitelisted = (brokersWhitelisted || brokers.Contains(pspBrokerId)) && 
-                                            (channelsWhitelisted || channels.Contains(channelId)) && 
+                            isWhitelisted = (brokersWhitelisted || brokers.Contains(pspBrokerId)) &&
+                                            (channelsWhitelisted || channels.Contains(channelId)) &&
                                             isCiAndStationOk;
                         } catch (Exception e) {
                             // do nothing
