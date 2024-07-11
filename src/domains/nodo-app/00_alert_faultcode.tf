@@ -12,47 +12,57 @@ locals {
     {
       name = "activatePaymentNotice V1 and V2"
       operations = [ // activatePaymentNotice v1/v2 legacy/auth
-        "p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fc", "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa0", "p-node-for-psp-api;rev=1 - 63c559672a92e811a8f33a00", "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa5"
+        "p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fc",
+        "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa0",
+        "p-node-for-psp-api;rev=1 - 63c559672a92e811a8f33a00",
+        "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa5"
       ]
       faults = [
-        "PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_CANALE_IRRANGIUNGIBILE", "PPT_ERRORE_IDEMPOTENZA"
+        "PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMPOTENZA" # errori MINIMI da monitorare e far scattare alert
       ]
       soapreq = "activatePaymentNoticeRes|activatePaymentNoticeV2Response"
     },
     {
       name = "sendPaymentOutcome V1 and V2"
       operations = [ // sendPaymentOutcome v1/v2 legacy/auth
-        "p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fd", "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa1", "p-node-for-psp-api;rev=1 - 63c559672a92e811a8f33a01", "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa6"
+        "p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fd",
+        "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa1",
+        "p-node-for-psp-api;rev=1 - 63c559672a92e811a8f33a01",
+        "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa6"
       ]
       faults = [
-        "PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMPOTENZA"
+        "PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMPOTENZA" # errori MINIMI da monitorare e far scattare alert
       ]
-      soapreq = "sendPaymentOutcomeResponse|sendPaymentOutcomeV2Response"
+      soapreq = "sendPaymentOutcomeRes|sendPaymentOutcomeV2Response"
     }
   ]
 
-  alert-nodo-per-pa = [
-    {
-      name = "nodoInviaRPT"
-      operations = [ // nodoInviaRPT legacy/auth
-        "p-nodo-per-pa-api;rev=1 - 62189aea2a92e81fa4f15ec6", "p-nodo-per-pa-api-auth;rev=1 - 63e5d8212a92e80448d38dff"
-      ]
-      faults = [
-        // nothing for now
-      ]
-      soapreq = "nodoInviaRPTRisposta"
-    },
-    {
-      name = "nodoInviaCarrelloRPT"
-      operations = [ // nodoInviaCarrelloRPT legacy/auth
-        "p-nodo-per-pa-api;rev=1 - 62189aea2a92e81fa4f15ec7", "p-nodo-per-pa-api-auth;rev=1 - 63e5d8212a92e80448d38e00"
-      ]
-      faults = [
-        // nothing for now
-      ]
-      soapreq = "nodoInviaCarrelloRPTRisposta"
-    },
-  ]
+  // ********************************************
+  // Not needed until WISP dismantlng is DISABLED 
+  // ********************************************
+  alert-nodo-per-pa = []
+  # [
+  #   {
+  #     name = "nodoInviaRPT"
+  #     operations = [ // nodoInviaRPT legacy/auth
+  #       "p-nodo-per-pa-api;rev=1 - 62189aea2a92e81fa4f15ec6", "p-nodo-per-pa-api-auth;rev=1 - 63e5d8212a92e80448d38dff"
+  #     ]
+  #     faults = [
+  #       // nothing for now
+  #     ]
+  #     soapreq = "nodoInviaRPTRisposta"
+  #   },
+  #   {
+  #     name = "nodoInviaCarrelloRPT"
+  #     operations = [ // nodoInviaCarrelloRPT legacy/auth
+  #       "p-nodo-per-pa-api;rev=1 - 62189aea2a92e81fa4f15ec7", "p-nodo-per-pa-api-auth;rev=1 - 63e5d8212a92e80448d38e00"
+  #     ]
+  #     faults = [
+  #       // nothing for now
+  #     ]
+  #     soapreq = "nodoInviaCarrelloRPTRisposta"
+  #   },
+  # ]
 }
 
 
@@ -89,8 +99,7 @@ requests
 | extend faultCode = tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"].faultCode)
 | summarize
 Total=count(),
-Success=countif(outcome == "OK"
-or faultCode !in (${join(", ", each.value.faults)}))
+Success=countif(outcome == "OK" or faultCode !in (${join(", ", each.value.faults)}))
 by bin(timestamp, 5m)
 | extend availability=toreal(Success) / Total
 | where availability < threshold
@@ -110,7 +119,7 @@ QUERY
 
 // Availability by fault-code on nodoInviaRPT and nodoInviaCarrelloRPT
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-code-availability-nodoInviaRPT" {
-  for_each = var.env_short == "p" ? { for idx, alert in local.alert-node-for-psp : idx => alert } : {}
+  for_each = var.env_short == "p" ? { for idx, alert in local.alert-nodo-per-pa : idx => alert } : {}
 
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-nodo-per-pa-api-fault-code-availability"
