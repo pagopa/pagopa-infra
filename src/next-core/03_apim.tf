@@ -203,7 +203,7 @@ module "apim" {
 resource "azurerm_api_management_custom_domain" "api_custom_domain" {
   api_management_id = module.apim[0].id
 
-  proxy {
+  gateway {
     host_name = local.api_domain
     key_vault_id = replace(
       data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
@@ -230,7 +230,7 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
     )
   }
 
-  dynamic "proxy" {
+  dynamic "gateway" {
     for_each = var.env_short == "u" ? [""] : []
     content {
       host_name = local.prf_domain
