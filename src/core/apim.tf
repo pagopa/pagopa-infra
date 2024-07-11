@@ -48,36 +48,7 @@ data "azurerm_api_management" "apim_migrated" {
 ## API ##
 #########
 
-## monitor ##
-module "monitor" {
-  source              = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-  name                = format("%s-monitor", var.env_short)
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
-
-  description  = "Monitor"
-  display_name = "Monitor"
-  path         = ""
-  protocols    = ["https"]
-
-  service_url = null
-
-  content_format = "openapi"
-  content_value = templatefile("./api/monitor/openapi.json.tpl", {
-    host = local.api_domain
-  })
-
-  xml_content = file("./api/base_policy.xml")
-
-  subscription_required = false
-
-  api_operation_policies = [
-    {
-      operation_id = "get"
-      xml_content  = file("./api/monitor/mock_policy.xml")
-    }
-  ]
-}
+## monitor moved to next-core ##
 
 # apicfg cache path(s) configuration
 

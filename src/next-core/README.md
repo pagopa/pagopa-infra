@@ -15,6 +15,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_apim"></a> [apim](#module\_apim) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management | v8.23.0 |
+| <a name="module_apim_monitor"></a> [apim\_monitor](#module\_apim\_monitor) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v8.8.0 |
 | <a name="module_app_gw"></a> [app\_gw](#module\_app\_gw) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway | v8.8.0 |
 | <a name="module_app_gw_integration"></a> [app\_gw\_integration](#module\_app\_gw\_integration) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway | v7.50.0 |
 | <a name="module_appgateway_snet"></a> [appgateway\_snet](#module\_appgateway\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.8.0 |
