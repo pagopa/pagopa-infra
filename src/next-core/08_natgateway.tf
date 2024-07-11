@@ -1,19 +1,20 @@
 locals {
   subnet_in_nat_gw_ids = [
-    module.node_forwarder_snet.id # pagopa-node-forwarder ( aka GAD replacemnet )
+    data.azurerm_subnet.node_forwarder_snet.id #pagopa-node-forwarder ( aka GAD replacemnet )
   ]
 }
 
 module "nat_gw" {
   count  = var.nat_gateway_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//nat_gateway?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//nat_gateway?ref=v7.50.0"
 
-  name                = format("%s-natgw", local.project)
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  location            = azurerm_resource_group.rg_vnet.location
+  name                = format("%s-natgw", local.product)
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+  location            = data.azurerm_resource_group.rg_vnet.location
   public_ips_count    = var.nat_gateway_public_ips
-  zone                = "1"
+  zones               = ["1"]
   subnet_ids          = local.subnet_in_nat_gw_ids
+
 
   tags = var.tags
 }
@@ -23,10 +24,10 @@ module "nat_gw" {
 resource "azurerm_monitor_metric_alert" "snat_connection_over_10K" {
   count = (var.env_short == "p" && var.nat_gateway_enabled) ? 1 : 0
 
-  name                = "${local.project}-natgw-connetion-over-30k"
-  resource_group_name = azurerm_resource_group.monitor_rg.name
+  name                = "${local.product}-natgw-connetion-over-45k"
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
   scopes              = [module.nat_gw[0].id]
-  description         = "Total SNAT connections over 30K"
+  description         = "Total SNAT connections over 45K"
   severity            = 3
   frequency           = "PT5M"
   window_size         = "PT5M"
@@ -40,18 +41,18 @@ resource "azurerm_monitor_metric_alert" "snat_connection_over_10K" {
     metric_name            = "SNATConnectionCount"
     aggregation            = "Total"
     operator               = "GreaterThan"
-    threshold              = "30000" # Each NAT gateway public IP address provides 64,512 SNAT ports to make outbound connections
+    threshold              = "45000" # Each NAT gateway public IP address provides 64,512 SNAT ports to make outbound connections
     skip_metric_validation = false
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.slack.id
+    action_group_id = data.azurerm_monitor_action_group.slack.id
   }
   action {
-    action_group_id = azurerm_monitor_action_group.email.id
+    action_group_id = data.azurerm_monitor_action_group.email.id
   }
   action {
-    action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+    action_group_id = data.azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
   }
 
   tags = var.tags

@@ -18,10 +18,6 @@ output "vnet_integration_address_space" {
   value = module.vnet_integration.address_space
 }
 
-output "nat_gw_outbound_ip_addresses" {
-  value = var.nat_gateway_enabled ? module.nat_gw[0].public_ip_address : null
-}
-
 ## Container registry ##
 output "container_registry_login_server" {
   value = var.acr_enabled ? module.container_registry.login_server : null
