@@ -15,7 +15,7 @@ locals {
         "p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fc", "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa0", "p-node-for-psp-api;rev=1 - 63c559672a92e811a8f33a00", "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa5"
       ]
       faults = [
-        "PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_CANALE_IRRANGIUNGIBILE", "PPT_ERRORE_IDEMEMPOTENZA"
+        "PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_CANALE_IRRANGIUNGIBILE", "PPT_ERRORE_IDEMPOTENZA"
       ]
       soapreq = "activatePaymentNoticeRes|activatePaymentNoticeV2Response"
     },
@@ -25,7 +25,7 @@ locals {
         "p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fd", "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa1", "p-node-for-psp-api;rev=1 - 63c559672a92e811a8f33a01", "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa6"
       ]
       faults = [
-        "PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMEMPOTENZA"
+        "PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMPOTENZA"
       ]
       soapreq = "sendPaymentOutcomeResponse|sendPaymentOutcomeV2Response"
     }
