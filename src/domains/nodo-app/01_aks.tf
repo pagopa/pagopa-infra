@@ -33,7 +33,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodo_pool" {
 
   ### autoscaling
   enable_auto_scaling = false # PSFC-TODO da ripristinare prima del merge a true
-  node_count          = var.nodo_user_node_pool.node_count_min
+  node_count          = 3     # PSFC-TODO da ripristinare prima del merge a var.nodo_user_node_pool.node_count_min
   min_count           = var.nodo_user_node_pool.node_count_min
   max_count           = var.nodo_user_node_pool.node_count_max
 

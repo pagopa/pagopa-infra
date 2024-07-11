@@ -162,6 +162,10 @@ resource "azapi_resource" "fragment_chk_jwt_session_token" {
 ## Fragment policy to chk PM token pagoPA for IO                     ##
 #######################################################################
 
+resource "terraform_data" "sha256_fragment_chk_pm_session_token" {
+  input = sha256(file("./api/session-wallet/v1/_fragment_policiy_chk_token.tpl.xml"))
+}
+
 resource "azapi_resource" "fragment_chk_pm_session_token" {
 
   # provider  = azapi.apim

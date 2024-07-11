@@ -43,6 +43,9 @@ module "wisp_converter_caching_api_v1" {
 # fragment for loading configuration inside policy
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
 # https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+resource "terraform_data" "sha256_wisp_cache_4_decoupler" {
+  input = sha256(file("./api/wisp-converter/caching/v1/wisp-cache-for-decoupler.xml"))
+}
 resource "azapi_resource" "wisp_cache_4_decoupler" {
 
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"

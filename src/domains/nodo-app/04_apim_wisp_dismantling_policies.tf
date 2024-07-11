@@ -68,6 +68,9 @@ resource "azurerm_api_management_named_value" "wisp_dismantling_converter_base_u
 #################
 ## Fragment    ##
 #################
+resource "terraform_data" "sha256_wisp_disable_payment_token_timer" {
+  input = sha256(file("./api/nodopagamenti_api/wisp/wisp-disable-payment-token-timer.xml"))
+}
 
 resource "azapi_resource" "wisp_disable_payment_token_timer" {
   count = var.create_wisp_converter ? 1 : 0
@@ -90,6 +93,9 @@ resource "azapi_resource" "wisp_disable_payment_token_timer" {
   }
 }
 
+resource "terraform_data" "sha256_wisp_receipt_ko" {
+  input = sha256(file("./api/nodopagamenti_api/wisp/wisp-receipt-ko.xml"))
+}
 resource "azapi_resource" "wisp_receipt_ko" {
   count = var.create_wisp_converter ? 1 : 0
 

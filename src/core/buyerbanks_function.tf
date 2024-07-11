@@ -218,8 +218,6 @@ resource "azurerm_storage_container" "banks" {
 # 🐞https://github.com/hashicorp/terraform-provider-azurerm/pull/15832
 ## blob lifecycle policy
 resource "azurerm_storage_management_policy" "buyerbanks_storage_lifeclycle_policies" {
-  count = var.env_short == "p" ? 1 : 0 # PSFC-TODO to remove
-
   storage_account_id = module.buyerbanks_storage.id
 
   rule {
