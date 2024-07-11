@@ -17,6 +17,10 @@
                         allowedPaymentTypeCodes.Add("RBPB");//Conto BancoPosta Impresa BPIOL
                         allowedPaymentTypeCodes.Add("RBPP");//Paga con Postepay
                         allowedPaymentTypeCodes.Add("RBPR");//Conto BancoPosta
+                        allowedPaymentTypeCodes.Add("RPIC");//Redirect Intesa
+                        //allowedPaymentTypeCodes.Add("BPAY");
+                        //allowedPaymentTypeCodes.Add("PPAL");
+                        //allowedPaymentTypeCodes.Add("BPAY");
                         for(int i = methods.Count - 1; i >= 0; i--) {
                             String paymentTypeCode = (string)((JObject)methods[i])["paymentTypeCode"];
                             if( !allowedPaymentTypeCodes.Contains(paymentTypeCode) ) {
