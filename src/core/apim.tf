@@ -41,52 +41,8 @@ data "azurerm_api_management" "apim_migrated" {
 #################
 ## NAMED VALUE ##
 #################
-
 # migrated in next-core
 
-
-resource "azurerm_api_management_custom_domain" "api_custom_domain" {
-  api_management_id = data.azurerm_api_management.apim_migrated[0].id
-
-  proxy {
-    host_name = local.api_domain
-    key_vault_id = replace(
-      data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
-      "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
-      ""
-    )
-  }
-
-  developer_portal {
-    host_name = local.portal_domain
-    key_vault_id = replace(
-      data.azurerm_key_vault_certificate.portal_platform.secret_id,
-      "/${data.azurerm_key_vault_certificate.portal_platform.version}",
-      ""
-    )
-  }
-
-  management {
-    host_name = local.management_domain
-    key_vault_id = replace(
-      data.azurerm_key_vault_certificate.management_platform.secret_id,
-      "/${data.azurerm_key_vault_certificate.management_platform.version}",
-      ""
-    )
-  }
-
-  dynamic "proxy" {
-    for_each = var.env_short == "u" ? [""] : []
-    content {
-      host_name = local.prf_domain
-      key_vault_id = replace(
-        data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
-        "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
-        ""
-      )
-    }
-  }
-}
 
 #########
 ## API ##
@@ -108,7 +64,7 @@ module "monitor" {
 
   content_format = "openapi"
   content_value = templatefile("./api/monitor/openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/base_policy.xml")

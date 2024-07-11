@@ -81,7 +81,7 @@ module "apim_payment_transactions_gateway_update_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_transactions_gateway_api/update/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_transactions_gateway_api/update/v1/_base_policy.xml.tpl")
@@ -130,7 +130,7 @@ module "apim_payment_transactions_gateway_internal_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_transactions_gateway_api/internal/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_transactions_gateway_api/internal/v1/_base_policy.xml.tpl")
@@ -179,7 +179,7 @@ module "apim_payment_transactions_gateway_external_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_transactions_gateway_api/external/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_transactions_gateway_api/external/v1/_base_policy.xml.tpl")
@@ -229,7 +229,7 @@ module "apim_payment_transactions_gateway_pgsfe_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_transactions_gateway_api/pgs-fe/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_transactions_gateway_api/pgs-fe/v1/_base_policy.xml.tpl", {
