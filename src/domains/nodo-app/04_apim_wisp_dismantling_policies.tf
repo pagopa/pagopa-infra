@@ -33,6 +33,14 @@ resource "azurerm_api_management_named_value" "wisp_station_whitelist_named_valu
   value               = var.wisp_converter.station_whitelist
 }
 
+resource "azurerm_api_management_named_value" "wisp_ci_whitelist_named_value" {
+  name                = "wisp-ci-whitelist"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "wisp-ci-whitelist"
+  value               = var.wisp_converter.ci_whitelist
+}
+
 resource "azurerm_api_management_named_value" "wisp_dismantling_primitives" {
   name                = "wisp-dismantling-primitives"
   api_management_name = local.pagopa_apim_name

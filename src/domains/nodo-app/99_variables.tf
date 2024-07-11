@@ -448,6 +448,7 @@ variable "wisp_converter" {
     brokerPSP_whitelist    = string
     channel_whitelist      = string
     station_whitelist      = string
+    ci_whitelist           = string
     dismantling_primitives = string
   })
 }
