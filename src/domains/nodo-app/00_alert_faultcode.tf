@@ -17,10 +17,12 @@ locals {
         "p-node-for-psp-api;rev=1 - 63c559672a92e811a8f33a00",
         "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa5"
       ]
+      operations_flat = "'p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fc','p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa0','p-node-for-psp-api;rev=1 - 63c559672a92e811a8f33a00','p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa5'"
       faults = [
         "PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMPOTENZA" # errori MINIMI da monitorare e far scattare alert
       ]
-      soapreq = "activatePaymentNoticeRes|activatePaymentNoticeV2Response"
+      faults_flat = "'PPT_AUTENTICAZIONE', 'PPT_SYSTEM_ERROR', 'PPT_ERRORE_IDEMPOTENZA'"
+      soapreq     = "activatePaymentNoticeRes|activatePaymentNoticeV2Response"
     },
     {
       name = "sendPaymentOutcome V1 and V2"
@@ -30,10 +32,12 @@ locals {
         "p-node-for-psp-api;rev=1 - 63c559672a92e811a8f33a01",
         "p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa6"
       ]
+      operations_flat = "'p-node-for-psp-api;rev=1 - 61dedafc2a92e81a0c7a58fd','p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa1','p-node-for-psp-api;rev=1 - 63c559672a92e811a8f33a01','p-node-for-psp-api-auth;rev=1 - 63b6e2daea7c4a25440fdaa6'"
       faults = [
         "PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMPOTENZA" # errori MINIMI da monitorare e far scattare alert
       ]
-      soapreq = "sendPaymentOutcomeRes|sendPaymentOutcomeV2Response"
+      faults_flat = "'PPT_AUTENTICAZIONE', 'PPT_SYSTEM_ERROR', 'PPT_ERRORE_IDEMPOTENZA'"
+      soapreq     = "sendPaymentOutcomeRes|sendPaymentOutcomeV2Response"
     }
   ]
 
@@ -81,25 +85,19 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-code-availab
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
 
-  description = <<EOF
-Availability Fault Code on ${each.value.name} operation of node-for-psp API.
-The monitored fault codes are ${each.value.faults}
-The availability threshold is set to 97%
-Dashboard: https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa
-EOF
-
-  enabled = true
+  description = "Availability Fault Code on ${each.value.name} operation of node-for-psp API. The monitored fault codes are ${each.value.faults_flat} The availability threshold is set to 97% Dashboard: https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa"
+  enabled     = true
   query = (<<-QUERY
 let threshold = 0.97;
 requests
-| where operation_Name in (${join(", ", each.value.operations)})
+| where operation_Name in (${each.value.operations_flat})
 | extend xml_resp = replace_regex(replace_regex(replace_regex(tostring(customDimensions["Response-Body"]), '</.{0,10}?:', '</'), '<.{0,10}?:', '<'), '${each.value.soapreq}', 'primitiva')
 | extend json_resp=parse_xml(xml_resp)
 | extend outcome = tostring(json_resp["Envelope"]["Body"]["primitiva"].outcome)
 | extend faultCode = tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"].faultCode)
 | summarize
 Total=count(),
-Success=countif(outcome == "OK" or faultCode !in (${join(", ", each.value.faults)}))
+Success=countif(outcome == "OK" or faultCode !in (${each.value.faults_flat}))
 by bin(timestamp, 5m)
 | extend availability=toreal(Success) / Total
 | where availability < threshold
@@ -117,59 +115,53 @@ QUERY
   }
 }
 
-// Availability by fault-code on nodoInviaRPT and nodoInviaCarrelloRPT
-resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-code-availability-nodoInviaRPT" {
-  for_each = var.env_short == "p" ? { for idx, alert in local.alert-nodo-per-pa : idx => alert } : {}
+# // Availability by fault-code on nodoInviaRPT and nodoInviaCarrelloRPT
+# resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fault-code-availability-nodoInviaRPT" {
+#   for_each = var.env_short == "p" ? { for idx, alert in local.alert-nodo-per-pa : idx => alert } : {}
 
-  resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-nodo-per-pa-api-fault-code-availability"
-  location            = var.location
+#   resource_group_name = "dashboards"
+#   name                = "pagopa-${var.env_short}-nodo-per-pa-api-fault-code-availability"
+#   location            = var.location
 
-  action {
-    action_group           = local.action_groups
-    email_subject          = "Email Header"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = data.azurerm_application_insights.application_insights.id
+#   action {
+#     action_group           = local.action_groups
+#     email_subject          = "Email Header"
+#     custom_webhook_payload = "{}"
+#   }
+#   data_source_id = data.azurerm_application_insights.application_insights.id
 
-  description = <<EOF
-Availability Fault Code on ${each.value.name} operation of nodo-per-pa API.
-The monitored fault codes are ${each.value.faults}
-The availability threshold is set to 97%
-Dashboard: https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa
-EOF
+#   description = "Availability Fault Code on ${each.value.name} operation of nodo-per-pa API. The monitored fault codes are ${each.value.faults} The availability threshold is set to 97% Dashboard https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa"
+#   enabled = true
+#   query = (<<-QUERY
+# let threshold = 0.97;
+# requests
+# | where operation_Name in (${join(", ", each.value.operations)})
+# | extend body_resp = replace_regex(tostring(customDimensions["Response-Body"]), '<url>.*?</url>', '')
+# | extend xml_resp = replace_regex(replace_regex(replace_regex(replace_regex(body_resp, '</.{0,10}?:', '</'), '<.{0,10}?:', '<'), '${each.value.soapreq}', 'primitiva'),'esitoComplessivoOperazione','esito')
+# | extend json_resp=parse_xml(xml_resp)
+# | extend esito = tostring(json_resp["Envelope"]["Body"]["primitiva"].esito)
+# | extend faultCode = tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"].faultCode)
+# | extend faultCode = iff(isnotnull(faultCode) and faultCode != "", faultCode, tostring(json_resp["Envelope"]["Body"]["primitiva"]["listaErroriRPT"]["fault"].faultCode))
+# | summarize
+# Total=count(),
+# Success=countif(esito == "OK"
+# or faultCode !in (${join(", ", each.value.faults)}))
+# by bin(timestamp, 5m)
+# | extend availability=toreal(Success) / Total
+# | where availability < threshold
+# QUERY
+#   )
 
-  enabled = true
-  query = (<<-QUERY
-let threshold = 0.97;
-requests
-| where operation_Name in (${join(", ", each.value.operations)})
-| extend body_resp = replace_regex(tostring(customDimensions["Response-Body"]), '<url>.*?</url>', '')
-| extend xml_resp = replace_regex(replace_regex(replace_regex(replace_regex(body_resp, '</.{0,10}?:', '</'), '<.{0,10}?:', '<'), '${each.value.soapreq}', 'primitiva'),'esitoComplessivoOperazione','esito')
-| extend json_resp=parse_xml(xml_resp)
-| extend esito = tostring(json_resp["Envelope"]["Body"]["primitiva"].esito)
-| extend faultCode = tostring(json_resp["Envelope"]["Body"]["primitiva"]["fault"].faultCode)
-| extend faultCode = iff(isnotnull(faultCode) and faultCode != "", faultCode, tostring(json_resp["Envelope"]["Body"]["primitiva"]["listaErroriRPT"]["fault"].faultCode))
-| summarize
-Total=count(),
-Success=countif(esito == "OK"
-or faultCode !in (${join(", ", each.value.faults)}))
-by bin(timestamp, 5m)
-| extend availability=toreal(Success) / Total
-| where availability < threshold
-QUERY
-  )
-
-  # https://learn.microsoft.com/en-us/azure/azure-monitor/best-practices-alerts#alert-severity
-  # Sev 1	Error	Degradation of performance or loss of availability of some aspect of an application or service. Requires attention but not immediate
-  severity    = 1
-  frequency   = 5
-  time_window = 10
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 2
-  }
-}
+#   # https://learn.microsoft.com/en-us/azure/azure-monitor/best-practices-alerts#alert-severity
+#   # Sev 1	Error	Degradation of performance or loss of availability of some aspect of an application or service. Requires attention but not immediate
+#   severity    = 1
+#   frequency   = 5
+#   time_window = 10
+#   trigger {
+#     operator  = "GreaterThanOrEqual"
+#     threshold = 2
+#   }
+# }
 
 
 ## Error alert on specific faultCode
