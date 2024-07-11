@@ -515,7 +515,7 @@ module "apim_nodo_per_pm_api_v1_dev" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_swagger.json.tpl", {
-    host    = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host    = local.api_domain
     service = module.apim_nodo_dei_pagamenti_product_dev[0].product_id
   })
 
@@ -567,7 +567,7 @@ module "apim_nodo_per_pm_api_v2_dev" {
 
   content_format = "swagger-json"
   content_value = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_swagger.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v2/_base_policy_dev.xml.tpl", {
@@ -620,7 +620,7 @@ module "apim_nodo_monitoring_api_dev" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host    = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host    = local.api_domain
     service = module.apim_nodo_dei_pagamenti_product_dev[0].product_id
   })
 

@@ -55,7 +55,7 @@ module "apim_api_donations_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/donations/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/donations/v1/_base_policy.xml")
