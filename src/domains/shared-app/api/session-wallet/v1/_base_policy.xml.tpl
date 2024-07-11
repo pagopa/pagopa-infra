@@ -13,7 +13,8 @@
           <set-method>GET</set-method>
       </send-request>
       <choose>
-          <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode == 401)">
+          <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode != 200)">
+              <!-- PM answers with 500 if the token is invalid -->
               <return-response>
                   <set-status code="401" reason="Unauthorized" />
                   <set-header name="Content-Type" exists-action="override">
@@ -24,21 +25,6 @@
                           "title": "Unauthorized",
                           "status": 401,
                           "detail": "Invalid session token"
-                      }
-                  </set-body>
-              </return-response>
-          </when>
-          <when condition="@(((IResponse)context.Variables["pm-session-body"]).StatusCode != 200)">
-              <return-response>
-                  <set-status code="502" reason="Bad Gateway" />
-                  <set-header name="Content-Type" exists-action="override">
-                      <value>application/json</value>
-                  </set-header>
-                  <set-body>
-                      {
-                          "title": "Error starting session",
-                          "status": 502,
-                          "detail": "There was an error starting session for input wallet token"
                       }
                   </set-body>
               </return-response>
