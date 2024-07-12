@@ -126,7 +126,7 @@ resource "terraform_data" "sha256_fragment_chk_jwt_session_token" {
 }
 
 resource "azapi_resource" "fragment_chk_jwt_session_token" {
-  depends_on = [azurerm_api_management_named_value.wallet-jwt-signing-key, terraform_data.ha256_fragment_chk_jwt_session_token.output]
+  depends_on = [azurerm_api_management_named_value.wallet-jwt-signing-key, terraform_data.sha256_fragment_chk_jwt_session_token]
 
   # provider  = azapi.apim
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
@@ -157,7 +157,6 @@ resource "azapi_resource" "fragment_chk_jwt_session_token" {
 #   format            = "xml"
 #   value             = templatefile("./api/session-wallet/v1/_fragment_policiy_chk_jwt.tpl.xml", {})
 # }
-
 #######################################################################
 ## Fragment policy to chk PM token pagoPA for IO                     ##
 #######################################################################
