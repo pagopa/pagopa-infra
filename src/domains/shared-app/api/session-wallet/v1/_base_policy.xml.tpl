@@ -108,7 +108,9 @@
       </choose>
       <!-- user fiscal code tokenization with PDV END -->
       <choose>
-        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["userId"])))">
+      <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || 
+      ("FF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])))
+      )"> 
           <!-- pagoPA platform wallet JWT session token : START -->
           <set-variable name="x-jwt-token" value="@(((JObject)context.Variables["pmSession"])["data"]["sessionToken"].ToString())" />
           <!-- pagoPA platform wallet JWT session token : END -->

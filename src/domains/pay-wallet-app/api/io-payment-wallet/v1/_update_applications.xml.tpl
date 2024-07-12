@@ -2,7 +2,9 @@
     <inbound>
     <base />
         <choose>
-            <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+            <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || 
+            ("FF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])))
+            )"> 
                 <!-- START payment status wallet -->
                 <set-variable name="requestBody" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
                 <set-variable name="idWalletPM" value="@{

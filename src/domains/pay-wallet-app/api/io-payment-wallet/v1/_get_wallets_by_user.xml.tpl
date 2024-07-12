@@ -2,7 +2,9 @@
     <inbound>
     <base />
         <choose>
-            <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+            <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || 
+            ("FF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])))
+            )"> 
                 <!-- START get user wallets -->
                 <send-request ignore-error="false" timeout="10" response-variable-name="pmWalletResponse">
                     <set-url>{{pm-host}}/pp-restapi-CD/v3/wallet</set-url>

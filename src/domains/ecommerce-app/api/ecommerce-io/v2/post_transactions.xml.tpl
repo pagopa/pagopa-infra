@@ -2,7 +2,9 @@
     <inbound>
         <base />
         <choose>
-          <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+        <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || 
+        ("FF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])))
+        )"> 
             <set-backend-service base-url="{{pagopa-appservice-proxy-url}}" />
             <rewrite-uri template="/payment-activations" />
             <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
@@ -102,7 +104,9 @@
     <outbound>
         <base />
         <choose>
-          <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+        <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || 
+        ("FF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])))
+        )"> 
             <set-variable name="pagopaProxyResponseBody" value="@(context.Response.Body.As<JObject>())" />
             <choose>
               <when condition="@(context.Response.StatusCode == 200)">
@@ -153,7 +157,9 @@
     <on-error>
         <base />
         <choose>
-          <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+        <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || 
+        ("FF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])))
+        )"> 
             <set-body>
             {
               "status": 502,

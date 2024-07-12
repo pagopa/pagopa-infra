@@ -5,7 +5,9 @@
       is an opaque token a "session-token-not-found" string is returned-->  
       <include-fragment fragment-id="pay-wallet-user-id-from-session-token" />
       <choose>
-        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+      <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || 
+      ("FF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])))
+      )"> 
           <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
         </when>
         <otherwise>
