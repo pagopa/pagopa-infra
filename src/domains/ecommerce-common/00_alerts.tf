@@ -234,6 +234,6 @@ AzureDiagnostics
   time_window = 30
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 10
+    threshold = 2
   }
 }
