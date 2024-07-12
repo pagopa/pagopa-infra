@@ -39,8 +39,8 @@ nodo_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "2"
-  node_count_max  = "6"
+  node_count_min  = "0" # PSFC-TODO da ripristinare prima del merge a 2
+  node_count_max  = "0" # PSFC-TODO da ripristinare prima del merge a 6
   node_labels = {
   "nodo" = "true", },
   node_taints        = ["dedicated=nodo:NoSchedule"],
@@ -130,7 +130,6 @@ nodo_re_to_datastore_function_autoscale = {
   minimum = 1
   maximum = 10
 }
-
 nodo_re_to_tablestorage_function = {
   always_on                    = true
   kind                         = "Linux"
@@ -220,5 +219,29 @@ storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
+# WISP-dismantling-cfg
+create_wisp_converter = true
+wisp_converter = {
+  enable_apim_switch     = true
+  brokerPSP_whitelist    = "97735020584"                                                                                                                            # AGID
+  channel_whitelist      = "97735020584_02"                                                                                                                         # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/135924270/Canali+Particolari
+  station_whitelist      = "15376371009-15376371009_09,80005570561-00799960158_05,80023530167-00799960158_03,12621570154-00053810149_01,77777777777-97735020584_01" # https://config.uat.platform.pagopa.it/stations/15376371009_09 in UAT x i test quella di MockEC
+  ci_whitelist           = "15376371009,80005570561,80023530167,12621570154,77777777777"
+  dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
+}
 
+# 15376371009-15376371009_09 EC PagoPA di test
+# 80005570561-00799960158_05 Provincia di Viterbo/Intesa
+# 80023530167-00799960158_03 Comune di Villa di Serio/Intesa
+# 12621570154-00053810149_01 Bicocca/Banca popolare di Sondrio
+# 77777777777-97735020584_01 EC PagoPA di collaudo
+# 80207790587-02327910580_02 Dipartimento delle finanze/Sogei
+# 80185690585-02327910580_02 Ministero dell'Interno - Dipartimento Affari interni e territoriali/Sogei
+# 00833920150-02327910580_02 Riscossione Sicilia S.P.A/Sogei
+# 09982061005-02327910580_02 Equitalia Giustizia S.P.A./Sogei
+# 06363391001-02327910580_02 Agenzia delle Entrate/Sogei
+# 97210890584-02327910580_02 Agenzia delle Dogane e dei Monopoli/Sogei
+# 80415740580-02327910580_02 Ministero dell'Economia e delle Finanze/Sogei
+# 13756881002-02327910580_02 Agenzia delle entrate-Riscossione/Sogei
 
+enable_sendPaymentResultV2_SWClient = true
