@@ -50,7 +50,7 @@ module "apim_node_forwarder_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/node_forwarder_api/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/node_forwarder_api/v1/_base_policy.xml", {

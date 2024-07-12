@@ -55,7 +55,7 @@ module "apim_nodo_sync_dev_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/nodoServices/sync/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/sync/v1/_base_policy_dev.xml", {
@@ -122,7 +122,7 @@ module "apim_nodo_wfesp_dev_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/nodoServices/wfesp/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/wfesp/v1/_base_policy_dev.xml", {
@@ -189,7 +189,7 @@ module "apim_nodo_fatturazione_dev_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/nodoServices/fatturazione/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/fatturazione/v1/_base_policy_dev.xml", {
@@ -258,7 +258,7 @@ module "apim_nodo_web_bo_dev_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/nodoServices/web-bo/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/web-bo/v1/_base_policy_dev.xml", {
@@ -337,7 +337,7 @@ module "apim_nodo_web_bo_dev_api_history" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/nodoServices/web-bo-history/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/web-bo-history/v1/_base_policy_dev.xml", {
