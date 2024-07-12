@@ -149,6 +149,8 @@ resource "azapi_resource" "fragment_chk_jwt_session_token" {
   }
 
 }
+
+
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-2129067947
 # resource "azurerm_api_management_policy_fragment" "fragment_chk_jwt_session_token" {
 #   api_management_id = data.azurerm_api_management.apim.id
