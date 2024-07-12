@@ -39,8 +39,8 @@ nodo_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "0" # PSFC-TODO da ripristinare prima del merge a 2
-  node_count_max  = "0" # PSFC-TODO da ripristinare prima del merge a 6
+  node_count_min  = "2"
+  node_count_max  = "6"
   node_labels = {
   "nodo" = "true", },
   node_taints        = ["dedicated=nodo:NoSchedule"],
