@@ -2,7 +2,8 @@
     <inbound>
       <base />
       <cache-lookup vary-by-developer="false" vary-by-developer-groups="false" caching-type="internal" />
-      <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
+      <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
+      <set-backend-service base-url="@("https://${hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")" />
     </inbound>
     <outbound>
       <base />
