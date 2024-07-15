@@ -21,7 +21,7 @@
     }
   ],
   "paths": {
-    "/v2/ecommerce/searchTransaction": {
+    "/ecommerce/searchTransaction": {
       "post": {
         "parameters": [
           {
