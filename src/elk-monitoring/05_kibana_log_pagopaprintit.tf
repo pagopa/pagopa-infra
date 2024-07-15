@@ -53,7 +53,7 @@ resource "null_resource" "printit_kibana_space" {
 }
 
 resource "null_resource" "pagopaprintit_ingest_pipeline" {
-  depends_on = [null_resource.fdr_kibana_space]
+  depends_on = [null_resource.printit_kibana_space]
 
   triggers = {
     always_run = "${timestamp()}"
