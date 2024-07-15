@@ -13,6 +13,7 @@ locals {
     "pagopa-shared-toolbox",
     "pagopa-platform-authorizer",
     "pagopa-platform-authorizer-config",
+    "pagopa-iuvgenerator",
     "pagopa-infra"
   ]
 
