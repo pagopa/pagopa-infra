@@ -121,8 +121,12 @@ module "apim_session_wallet_api_v1" {
 ## Fragment policy to chk JWT session wallet token pagoPA for IO     ##
 #######################################################################
 
+resource "terraform_data" "sha256_fragment_chk_jwt_session_token" {
+  input = sha256(file("./api/session-wallet/v1/_fragment_policiy_chk_jwt.tpl.xml"))
+}
+
 resource "azapi_resource" "fragment_chk_jwt_session_token" {
-  depends_on = [azurerm_api_management_named_value.wallet-jwt-signing-key]
+  depends_on = [azurerm_api_management_named_value.wallet-jwt-signing-key, terraform_data.sha256_fragment_chk_jwt_session_token]
 
   # provider  = azapi.apim
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
@@ -141,13 +145,26 @@ resource "azapi_resource" "fragment_chk_jwt_session_token" {
 
   lifecycle {
     ignore_changes = [output]
+    # replace_triggered_by = [ terraform_data.sha256_fragment_chk_jwt_session_token.output ]
   }
 
 }
 
+
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-2129067947
+# resource "azurerm_api_management_policy_fragment" "fragment_chk_jwt_session_token" {
+#   api_management_id = data.azurerm_api_management.apim.id
+#   name              = "jwt-chk-wallet-session-CLONE"
+#   format            = "xml"
+#   value             = templatefile("./api/session-wallet/v1/_fragment_policiy_chk_jwt.tpl.xml", {})
+# }
 #######################################################################
 ## Fragment policy to chk PM token pagoPA for IO                     ##
 #######################################################################
+
+resource "terraform_data" "sha256_fragment_chk_pm_session_token" {
+  input = sha256(file("./api/session-wallet/v1/_fragment_policiy_chk_token.tpl.xml"))
+}
 
 resource "azapi_resource" "fragment_chk_pm_session_token" {
 
