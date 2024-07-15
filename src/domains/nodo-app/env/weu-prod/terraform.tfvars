@@ -105,6 +105,13 @@ route_aks = [
   },
   {
     #  aks nodo to nexi oncloud oracle
+    name                   = "aks-outbound-to-nexi-oracle-dr-onprem-subnet"
+    address_prefix         = "10.101.35.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    #  aks nodo to nexi oncloud oracle
     name                   = "aks-outbound-to-nexi-aks-cloud-subnet"
     address_prefix         = "10.70.135.0/24"
     next_hop_type          = "VirtualAppliance"
