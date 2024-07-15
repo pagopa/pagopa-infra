@@ -45,7 +45,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-payments
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /gpd/payments/pull is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-gpd-payments-pull"
+  description    = "Availability for /gpd/payments/pull is less than or equal to 99% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-gpd-payments-pull"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
