@@ -136,7 +136,7 @@
                     </otherwise>
                 </choose>
             </when>
-            <when condition="@("NPG".Equals("{{ecommerce-for-io-pm-npg-ff}}"))>
+            <when condition="@("NPG".Equals("{{ecommerce-for-io-pm-npg-ff}}"))">
                 <choose>
                     <when condition="@(!String.IsNullOrEmpty((string)(context.Variables["walletId"])))">
                         <send-request response-variable-name="walletResponse" timeout="10">
@@ -217,9 +217,7 @@
     <outbound>
         <base />
         <choose>
-            <when condition="@(("NPG".Equals("{{ecommerce-for-io-pm-npg-ff}}") || 
-            ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])))
-            ) && context.Response.StatusCode == 200)"> 
+            <when condition="@(  ("NPG".Equals("{{ecommerce-for-io-pm-npg-ff}}")) || ( ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}")) && ("{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))) ) && context.Response.StatusCode == 200)"> 
                 <set-body>@{
                     JObject inBody = context.Response.Body.As<JObject>(preserveContent: true);
                     var authorizationUrl = (string)inBody["authorizationUrl"];
