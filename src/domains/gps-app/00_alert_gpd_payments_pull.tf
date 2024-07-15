@@ -1,5 +1,5 @@
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-payments-pull-rest-responsetime-upd" {
-  count               = var.env_short == "p" ? 1 : 0
+  count               = var.flag_responsetime_alert 
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-opex_pagopa-gpd-payments-pull-rest-responsetime @ _gpd-payments-pull"
   location            = var.location
