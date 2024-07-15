@@ -10,7 +10,7 @@ module "apim_nodo_dei_pagamenti_product_auth" {
   description  = "Product for Nodo dei Pagamenti (Nuova Connettività)"
 
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = true
@@ -29,7 +29,7 @@ data "azurerm_api_management_api" "apim_aca_api_v1_" {
 
   name                = format("%s-weu-aca-api-v1", "${var.prefix}-${var.env_short}") // pagopa-<ENV>-weu-aca-api-v1
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   revision            = "1"
 }
 
@@ -54,7 +54,7 @@ resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_a
   api_name            = each.key
   product_id          = module.apim_nodo_dei_pagamenti_product_auth.product_id
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 }
 
 ## NAMED VALUE
@@ -62,7 +62,7 @@ resource "azurerm_api_management_product_api" "apim_nodo_dei_pagamenti_product_a
 resource "azurerm_api_management_named_value" "nodo_auth_password_value" {
   name                = "nodoAuthPassword"
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   display_name        = "nodoAuthPassword"
   value               = var.nodo_pagamenti_auth_password
 }
@@ -70,7 +70,7 @@ resource "azurerm_api_management_named_value" "nodo_auth_password_value" {
 resource "azurerm_api_management_named_value" "x_forwarded_for_value" {
   name                = "xForwardedFor"
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   display_name        = "xForwardedFor"
   value               = data.azurerm_api_management.apim_migrated[0].private_ip_addresses[0]
 }

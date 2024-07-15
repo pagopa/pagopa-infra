@@ -111,7 +111,7 @@ module "node_forwarder_app_service" {
 
   app_settings = local.node_forwarder_app_settings
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
   subnet_id = module.node_forwarder_snet.id
@@ -142,7 +142,7 @@ module "node_forwarder_slot_staging" {
   # App settings
   app_settings = local.node_forwarder_app_settings
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
   subnet_id       = module.node_forwarder_snet.id
 

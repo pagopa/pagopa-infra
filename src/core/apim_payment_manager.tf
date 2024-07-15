@@ -10,7 +10,7 @@ module "apim_payment_manager_product" {
   description  = "Product for Payment Manager pagoPA"
 
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = true
@@ -44,7 +44,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "buyerbanks_api" {
 
   name                = format("%s-buyerbanks-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_buyerbanks_api.display_name
   versioning_scheme   = "Segment"
@@ -56,7 +56,7 @@ module "apim_buyerbanks_api_v1" {
 
   name                  = format("%s-buyerbanks-api", var.env_short)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_buyerbanks_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.buyerbanks_api.id
@@ -93,7 +93,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "pm_restapi_api" {
 
   name                = "${local.project}-pm-restapi-api"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_restapi_api.display_name
   versioning_scheme   = "Segment"
@@ -105,7 +105,7 @@ module "apim_pm_restapi_api_v4" {
 
   name                  = "${local.project}-pm-restapi-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_restapi_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_restapi_api.id
@@ -144,7 +144,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "pm_restapi_old_api" {
 
   name                = "${local.project}-pm-restapi-old-api"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_restapi_old_api.display_name
   versioning_scheme   = "Segment"
@@ -156,7 +156,7 @@ module "apim_pm_restapi_api_old_v4" {
 
   name                  = "${local.project}-pm-restapi-old-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_restapi_old_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_restapi_old_api.id
@@ -195,7 +195,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "pm_restapicd_api" {
 
   name                = "${local.project}-pm-restapicd-api"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_restapicd_api.display_name
   versioning_scheme   = "Segment"
@@ -207,7 +207,7 @@ module "apim_pm_restapicd_api_v1" {
 
   name                  = "${local.project}-pm-restapicd-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_restapicd_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_restapicd_api.id
@@ -235,7 +235,7 @@ module "apim_pm_restapicd_api_v2" {
 
   name                  = "${local.project}-pm-restapicd-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_restapicd_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_restapicd_api.id
@@ -261,7 +261,7 @@ module "apim_pm_restapicd_api_v3" {
 
   name                  = "${local.project}-pm-restapicd-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_restapicd_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_restapicd_api.id
@@ -302,7 +302,7 @@ module "apim_pm_restapi_cd_assets" {
 
   name                  = "${local.project}-pm-cd-assets-restapi"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_restapicd_assets_api.subscription_required
   service_url           = local.apim_pm_restapicd_assets_api.service_url
@@ -337,7 +337,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "pm_restapicd_internal_api" {
 
   name                = "${local.project}-pm-restapicd-internal-api"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_restapicd_internal_api.display_name
   versioning_scheme   = "Segment"
@@ -349,7 +349,7 @@ module "apim_pm_restapicd_internal_api_v1" {
 
   name                  = "${local.project}-pm-restapicd-internal-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_restapicd_internal_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_restapicd_internal_api.id
@@ -375,7 +375,7 @@ module "apim_pm_restapicd_internal_api_v2" {
 
   name                  = "${local.project}-pm-restapicd-internal-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_restapicd_internal_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_restapicd_internal_api.id
@@ -412,7 +412,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "pm_restapi_server_api" {
 
   name                = "${local.project}-pm-restapi-server-api"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_restapi_server_api.display_name
   versioning_scheme   = "Segment"
@@ -424,7 +424,7 @@ module "apim_pm_restapi_server_api_v4" {
 
   name                  = "${local.project}-pm-restapi-server-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_restapi_server_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_restapi_server_api.id
@@ -461,7 +461,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "pm_restapirtd_api" {
 
   name                = "${local.project}-pm-restapirtd-api"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_restapirtd_api.display_name
   versioning_scheme   = "Segment"
@@ -473,7 +473,7 @@ module "apim_pm_restapirtd_api_v1" {
 
   name                  = "${local.project}-pm-restapirtd-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_restapirtd_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_restapirtd_api.id
@@ -499,7 +499,7 @@ module "apim_pm_restapirtd_api_v2" {
 
   name                  = "${local.project}-pm-restapirtd-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_restapirtd_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_restapirtd_api.id
@@ -535,7 +535,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "pm_auth_rtd_api" {
   name                = "${local.project}-pm-auth-rtd-api"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_auth_rtd_api.display_name
   versioning_scheme   = "Segment"
@@ -547,7 +547,7 @@ module "apim_pm_auth_rtd_api_v1" {
 
   name                  = "${local.project}-pm-auth-rtd-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_auth_rtd_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_auth_rtd_api.id
@@ -573,7 +573,7 @@ module "apim_pm_auth_rtd_api_v2" {
 
   name                  = "${local.project}-pm-auth-rtd-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_auth_rtd_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_auth_rtd_api.id
@@ -617,7 +617,7 @@ module "apim_pm_logging_api_v1" {
 
   name                  = "${local.project}-pm-logging-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_logging_api.subscription_required
   service_url           = local.apim_pm_logging_api.service_url
@@ -651,7 +651,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "pm_adminpanel_api" {
 
   name                = "${local.project}-pm-adminpanel-api"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_adminpanel_api.display_name
   versioning_scheme   = "Segment"
@@ -663,7 +663,7 @@ module "apim_pm_adminpanel_api_v1" {
 
   name                  = "${local.project}-pm-adminpanel-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_adminpanel_api.subscription_required
   service_url           = local.apim_pm_adminpanel_api.service_url
@@ -717,7 +717,7 @@ module "apim_pm_wisp_api_v1" {
 
   name                  = "${local.project}-pm-wisp-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_wisp_api.subscription_required
   service_url           = local.apim_pm_wisp_api.service_url
@@ -738,7 +738,7 @@ module "apim_pm_wisp_api_v1" {
 # resource "azurerm_api_management_api_operation_policy" "get_spid_metadata_api" {
 #   api_name            = "${local.project}-pm-wisp-api"
 #   api_management_name = module.apim[0].name
-#   resource_group_name = azurerm_resource_group.rg_api.name
+#   resource_group_name = data.azurerm_resource_group.rg_api.name
 #   operation_id        = "GETSpidMetadata"
 
 #   xml_content = templatefile("./api/payment_manager_api/wisp/_spid_metadata_policy.xml.tpl", { metadata = data.azurerm_key_vault_secret.pm_wisp_metadata.value })
@@ -761,7 +761,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "pm_ptg_api" {
 
   name                = "${local.project}-pm-ptg-api"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_ptg_api.display_name
   versioning_scheme   = "Segment"
@@ -773,7 +773,7 @@ module "apim_pm_ptg_api_v1" {
 
   name                  = "${local.project}-pm-ptg-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_ptg_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_ptg_api.id
@@ -811,7 +811,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "pm_per_nodo_api" {
 
   name                = "${local.project}-pm-per-nodo-api"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_per_nodo_api.display_name
   versioning_scheme   = "Segment"
@@ -823,7 +823,7 @@ module "apim_pm_per_nodo_v1" {
 
   name                  = "${local.project}-pm-per-nodo-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id, local.apim_x_node_product_id]
   subscription_required = local.apim_pm_per_nodo_api.subscription_required_v1
   version_set_id        = azurerm_api_management_api_version_set.pm_per_nodo_api.id
@@ -860,7 +860,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "pm_events_api" {
 
   name                = "${local.project}-pm-events-api"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_events_api.display_name
   versioning_scheme   = "Segment"
@@ -872,7 +872,7 @@ module "apim_pm_events_v1" {
 
   name                  = "${local.project}-pm-events-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_events_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pm_events_api.id
@@ -898,7 +898,7 @@ module "apim_pm_per_nodo_v2" {
 
   name                  = "${local.project}-pm-per-nodo-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id, local.apim_x_node_product_id]
   subscription_required = local.apim_pm_per_nodo_api.subscription_required_v2
   version_set_id        = azurerm_api_management_api_version_set.pm_per_nodo_api.id
@@ -957,7 +957,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "pmclient_iobpd_api" {
 
   name                = format("%s-pmclient-iobpd-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pmclient_iobpd_api.display_name
   versioning_scheme   = "Segment"
@@ -969,7 +969,7 @@ module "apim_pmclient_iobpd_api_v1" {
 
   name                  = format("%s-pmclient-iobpd-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pmclient_iobpd_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pmclient_iobpd_api.id
@@ -1007,7 +1007,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "apim_pm_paypalpsp_api" {
 
   name                = format("%s-pm-paypalpsp-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_paypalpsp_api.display_name
   versioning_scheme   = "Segment"
@@ -1019,7 +1019,7 @@ module "apim_pm_paypalpsp_api_v1" {
 
   name                  = format("%s-pm-paypalpsp-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_paypalpsp_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_pm_paypalpsp_api.id
@@ -1057,7 +1057,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "apim_pm_xpay_api" {
 
   name                = format("%s-pm-xpay-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_xpay_api.display_name
   versioning_scheme   = "Segment"
@@ -1069,7 +1069,7 @@ module "apim_pm_xpay_api_v1" {
 
   name                  = format("%s-pm-xpay-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_xpay_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_pm_xpay_api.id
@@ -1107,7 +1107,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "apim_pm_bpd_api" {
 
   name                = format("%s-pm-bpd-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_bpd_api.display_name
   versioning_scheme   = "Segment"
@@ -1119,7 +1119,7 @@ module "apim_pm_bpd_api_v1" {
 
   name                  = format("%s-pm-bpd-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_bpd_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_pm_bpd_api.id
@@ -1157,7 +1157,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "apim_pm_cobadge_api" {
 
   name                = format("%s-pm-cobadge-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_cobadge_api.display_name
   versioning_scheme   = "Segment"
@@ -1169,7 +1169,7 @@ module "apim_pm_cobadge_api_v4" {
 
   name                  = format("%s-pm-cobadge-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_cobadge_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_pm_cobadge_api.id
@@ -1207,7 +1207,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "apim_pm_satispay_api" {
 
   name                = format("%s-pm-satispay-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_satispay_api.display_name
   versioning_scheme   = "Segment"
@@ -1219,7 +1219,7 @@ module "apim_pm_satispay_api_v1" {
 
   name                  = format("%s-pm-satispay-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_satispay_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_pm_satispay_api.id
@@ -1257,7 +1257,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "apim_pm_fesp_api" {
 
   name                = format("%s-pm-fesp-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_fesp_api.display_name
   versioning_scheme   = "Segment"
@@ -1269,7 +1269,7 @@ module "apim_pm_fesp_api_v1" {
 
   name                  = format("%s-pm-fesp-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_fesp_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_pm_fesp_api.id
@@ -1311,7 +1311,7 @@ module "apim_pm_mock_services_fe" {
 
   name                  = format("%s-pm-mock-services-fe-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_mock_services_fe_api.subscription_required
   service_url           = local.apim_pm_mock_services_fe_api.service_url
@@ -1346,7 +1346,7 @@ resource "azurerm_api_management_api_version_set" "apim_pm_mock_services_api" {
   count = var.env_short != "p" ? 1 : 0
 
   name                = format("%s-pm-mock-services-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_mock_services_api.display_name
   versioning_scheme   = "Segment"
@@ -1360,7 +1360,7 @@ module "apim_pm_mock_services_api_v1" {
 
   name                  = format("%s-pm-mock-services-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_mock_services_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_pm_mock_services_api[0].id
@@ -1397,7 +1397,7 @@ resource "azurerm_api_management_api_version_set" "apim_pm_test_utility_api" {
   count = var.env_short == "d" ? 1 : 0
 
   name                = format("%s-pm-test-utility-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_pm_test_utility_api.display_name
   versioning_scheme   = "Segment"
@@ -1411,7 +1411,7 @@ module "apim_pm_test_utility_api_v1" {
 
   name                  = format("%s-pm-test-utility-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_manager_product.product_id]
   subscription_required = local.apim_pm_test_utility_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.apim_pm_test_utility_api[0].id

@@ -85,7 +85,7 @@ nat_gateway_public_ips = 2
 #
 # apim v2
 #
-cidr_subnet_apim = ["10.230.10.160/27"]
+cidr_subnet_apim = ["10.230.10.0/26"]
 apim_v2_subnet_nsg_security_rules = [
   {
     name                       = "inbound-management-3443"
@@ -789,3 +789,6 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
 }
 
 cdn_storage_account_replication_type = "GZRS"
+
+apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
+apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"

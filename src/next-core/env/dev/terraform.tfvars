@@ -69,7 +69,7 @@ geo_replica_enabled = false
 # apim v2
 #
 redis_cache_enabled = true
-cidr_subnet_apim    = ["10.230.8.160/27"]
+cidr_subnet_apim    = ["10.230.8.0/26"]
 apim_v2_zones       = ["1"]
 apim_v2_subnet_nsg_security_rules = [
   {
@@ -732,3 +732,6 @@ redis_cache_params = {
   sku_name      = "Basic"
   family        = "C"
 }
+
+apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
+apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"

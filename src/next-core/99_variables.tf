@@ -961,6 +961,19 @@ variable "cdn_storage_account_replication_type" {
 }
 
 
+variable "apicfg_core_service_path_value" {
+  type        = string
+  description = "apicfg core cache path"
+  # default     = "pagopa-api-config-core-service/o"
+}
+
+variable "apicfg_selfcare_integ_service_path_value" {
+  type        = string
+  description = "apicfg selfcare integ cache path"
+  # default     = "pagopa-api-config-selfcare-integration/o" // at moment blocked to ORA 👀 https://github.com/pagopa/pagopa-api-config-selfcare-integration/pull/36
+}
+
+
 variable "cidr_subnet_eventhub" {
   type        = list(string)
   description = "Address prefixes subnet eventhub"
