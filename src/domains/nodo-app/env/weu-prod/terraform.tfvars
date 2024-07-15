@@ -263,4 +263,15 @@ nodo_auth_subscription_limit = 10000
 nodo_pagamenti_x_forwarded_for = "10.230.10.5"
 
 
+# WISP-dismantling-cfg
+create_wisp_converter = true
+wisp_converter = {
+  enable_apim_switch     = false
+  brokerPSP_whitelist    = "97735020584"
+  channel_whitelist      = "97735020584_02"
+  station_whitelist      = "ABCDblabla" # subsets of EC friends # PSFC
+  ci_whitelist           = "ABCDblabla"
+  dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
+}
 
+enable_sendPaymentResultV2_SWClient = false
