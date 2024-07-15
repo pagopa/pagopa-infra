@@ -2,9 +2,7 @@
     <inbound>
         <base />
         <choose>
-            <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || 
-            ("FF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])))
-            )"> 
+            <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))"> 
                 <!-- START delete wallet -->
                 <set-variable name="idWalletPM" value="@{
                     string walletId = context.Request.MatchedParameters["walletId"];

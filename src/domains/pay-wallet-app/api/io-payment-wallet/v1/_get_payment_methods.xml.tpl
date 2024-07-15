@@ -2,9 +2,7 @@
     <inbound>
     <base />
     <choose>
-    <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || 
-    ("FF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])))
-    )">  
+      <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))">  
         <include-fragment fragment-id="pm-chk-wallet-session" />
       </when>
     </choose>
@@ -13,9 +11,7 @@
     <outbound>
       <base />
       <choose>
-        <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || 
-        ("FF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])))
-        )"> 
+        <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))"> 
           <set-body>@{
             JObject response = context.Response.Body.As<JObject>();
 

@@ -2,9 +2,7 @@
     <inbound>
         <base />
         <choose>
-        <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || 
-        ("FF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])))
-        )"> 
+        <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))"> 
             <set-variable  name="sessionToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
             <set-variable name="requestTransactionId" value="@{
                 var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");

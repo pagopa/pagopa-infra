@@ -17,12 +17,10 @@
              is an opaque token a "session-token-not-found" string is returned-->                
             <include-fragment fragment-id="pay-wallet-user-id-from-session-token" />
             <choose>
-                <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || 
-                ("FF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])))
-                )"> 
+                <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))"> 
                     <include-fragment fragment-id="pm-chk-wallet-session" />
                 </when>
-                <otherwise>
+                <when condition="@("NPG".Equals("{{ecommerce-for-io-pm-npg-ff}}"))">
                     <include-fragment fragment-id="jwt-chk-wallet-session" />
                     <choose>
                         <when condition="@((string)context.Variables.GetValueOrDefault("xUserId","") != "")">
@@ -85,7 +83,7 @@
                             </return-response> 
                         </otherwise>
                     </choose>
-                </otherwise>
+                </when>
             </choose>
 
         <set-header name="Ocp-Apim-Subscription-Keykey" exists-action="override">
