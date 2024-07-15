@@ -766,7 +766,7 @@ function_app_storage_account_info = {
 logic_app_storage_account_replication_type   = "LRS"
 buyer_banks_storage_account_replication_type = "GZRS"
 cdn_storage_account_replication_type         = "GRS"
-backup_storage_replication_type              = "GRS"
+backup_storage_replication_type              = "GZRS"
 fdr_flow_sa_replication_type                 = "ZRS"
 
 apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
