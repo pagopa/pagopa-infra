@@ -35,7 +35,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-payments-pull-rest-availability-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-gpd-payments-pull-rest-availability @ _gpd-payments-pull"
+  name                = "pagopa-${var.env_short}-alert_pagopa-gpd-availability@ _gpd-payments-pull"
   location            = var.location
 
   action {
