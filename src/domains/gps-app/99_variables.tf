@@ -388,3 +388,9 @@ variable "pod_disruption_budgets" {
   description = "Pod disruption budget for domain namespace"
   default     = {}
 }
+
+variable "flag_responsetime_alert" {
+  type        = number
+  description = "Flag to enable if payments-pull response time alert is available"
+  default     = 0
+}
