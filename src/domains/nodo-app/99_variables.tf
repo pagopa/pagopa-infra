@@ -436,5 +436,27 @@ variable "storage_account_info" {
 }
 
 
+variable "create_wisp_converter" {
+  type        = bool
+  default     = false
+  description = "CREATE WISP dismantling system infra"
+}
 
+variable "wisp_converter" {
+  type = object({
+    enable_apim_switch     = bool # enable WISP dismantling
+    brokerPSP_whitelist    = string
+    channel_whitelist      = string
+    station_whitelist      = string
+    ci_whitelist           = string
+    dismantling_primitives = string
+  })
+}
+
+# https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/654541075/RFC+Gestione+clientId+per+integrazione+Software+Client
+variable "enable_sendPaymentResultV2_SWClient" {
+  type        = bool
+  default     = false
+  description = "Gestione clientId per integrazione Software Client"
+}
 
