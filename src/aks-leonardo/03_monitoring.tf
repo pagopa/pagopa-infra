@@ -15,14 +15,14 @@ module "elastic_agent" {
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_agent?ref=introducing-agent-module"
 
-  es_host = var.env == "p" ? "https://weu${var.env}.kibana.internal.platform.pagopa.it/elastic" : "https://weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it:443/elastic"
+  es_host = var.env == "p" ? "https://weu${var.env}.kibana.internal.platform.pagopa.it:443/elastic" : "https://weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it:443/elastic"
 
   eck_version = "2.9"
 
   namespace = kubernetes_namespace.monitoring.id
 
   dedicated_log_instance_name = [
-    /* printit */ "print-payment-notice-service-microservice-chart", "print-payment-notice-generator-microservice-chart", "print-payment-notice-functions-microservice-chart"
+    /* printit */ "print-payment-notice-service", "print-payment-notice-generator", "print-payment-notice-functions"
   ]
 
 }
