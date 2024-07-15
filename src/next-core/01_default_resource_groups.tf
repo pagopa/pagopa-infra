@@ -1,3 +1,10 @@
+resource "azurerm_resource_group" "managed_identities_rg" {
+  name     = "${local.product}-identity-rg"
+  location = var.location
+
+  tags = var.tags
+}
+
 resource "azurerm_resource_group" "default_roleassignment_rg" {
   #Important: do not create any resource inside this resource group
   name     = "default-roleassignment-rg"

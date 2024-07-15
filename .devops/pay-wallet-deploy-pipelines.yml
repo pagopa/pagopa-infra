@@ -28,9 +28,9 @@ parameters:
 variables:
   TIME_OUT: 10
   # working dir
-  WORKING_DIR_APP: 'src/domains/wallet-app'
-  WORKING_DIR_COMMON: 'src/domains/wallet-common'
-  DOMAIN_NAME: wallet
+  WORKING_DIR_APP: 'src/domains/pay-wallet-app'
+  WORKING_DIR_COMMON: 'src/domains/pay-wallet-common'
+  DOMAIN_NAME: pay-wallet
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
   poolNameProd: '$(TF_POOL_NAME_PROD)'
@@ -77,7 +77,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_common"
-        TF_ENVIRONMENT_FOLDER: "weu-dev"
+        TF_ENVIRONMENT_FOLDER: "itn-dev"
         ENVIRONMENT: "DEV"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameDev}}"
         WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
@@ -87,7 +87,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_app"
-        TF_ENVIRONMENT_FOLDER: "weu-dev"
+        TF_ENVIRONMENT_FOLDER: "itn-dev"
         ENVIRONMENT: "DEV"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameDev}}"
         WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
@@ -104,7 +104,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_common"
-        TF_ENVIRONMENT_FOLDER: "weu-uat"
+        TF_ENVIRONMENT_FOLDER: "itn-uat"
         ENVIRONMENT: "UAT"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
         WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
@@ -114,7 +114,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_app"
-        TF_ENVIRONMENT_FOLDER: "weu-uat"
+        TF_ENVIRONMENT_FOLDER: "itn-uat"
         ENVIRONMENT: "UAT"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameUat}}"
         WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
@@ -132,7 +132,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_common"
-        TF_ENVIRONMENT_FOLDER: "weu-prod"
+        TF_ENVIRONMENT_FOLDER: "itn-prod"
         ENVIRONMENT: "PROD"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameProd}}"
         WORKINGDIR: ${{ variables.WORKING_DIR_COMMON }}
@@ -142,7 +142,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         FULL_DOMAIN_NAME: "${{variables.DOMAIN_NAME}}_app"
-        TF_ENVIRONMENT_FOLDER: "weu-prod"
+        TF_ENVIRONMENT_FOLDER: "itn-prod"
         ENVIRONMENT: "PROD"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{variables.poolNameProd}}"
         WORKINGDIR: ${{ variables.WORKING_DIR_APP }}
