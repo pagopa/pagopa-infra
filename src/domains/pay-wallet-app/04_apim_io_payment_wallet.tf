@@ -149,6 +149,9 @@ resource "azurerm_api_management_named_value" "pay_wallet_family_friends_user_id
 #######################################################################
 ## Fragment policy to extract user id from session token             ##
 #######################################################################
+resource "terraform_data" "sha256_pay_wallet_fragment_user_id_from_session_token" {
+  input = sha256(file("./api/fragments/_fragment_policy_user_id_from_session_token.tpl.xml"))
+}
 
 resource "azapi_resource" "pay_wallet_fragment_user_id_from_session_token" {
 
