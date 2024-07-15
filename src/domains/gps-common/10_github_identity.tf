@@ -13,7 +13,8 @@ locals {
     "pagopa-gpd-upload",
     "pagopa-gpd-upload-function",
     "pagopa-gpd-payments-pull",
-    "pagopa-gps-donation-service"
+    "pagopa-gps-donation-service",
+    "pagopa-gpd-payments",
   ]
 
   federations_01 = [

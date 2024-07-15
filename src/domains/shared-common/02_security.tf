@@ -1,14 +1,7 @@
 data "azurerm_redis_cache" "redis_cache" {
-  name                = format("%s-%s-redis", var.prefix, var.env_short)
+  name                = var.redis_ha_enabled ? format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short) : format("%s-%s-redis", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
 }
-
-data "azurerm_redis_cache" "redis_cache_ha" {
-  count               = var.redis_ha_enabled ? 1 : 0
-  name                = format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
-}
-
 
 resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.product}-${var.domain}-sec-rg"
@@ -51,7 +44,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", ]
   secret_permissions  = ["Get", "List", "Set", "Delete", "Restore", "Recover", ]
   storage_permissions = []
   certificate_permissions = [
@@ -140,7 +133,7 @@ resource "azurerm_key_vault_secret" "authorizer_cosmos_key" {
 
 resource "azurerm_key_vault_secret" "redis_password" {
   name  = "redis-password"
-  value = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].primary_access_key : data.azurerm_redis_cache.redis_cache.primary_access_key
+  value = data.azurerm_redis_cache.redis_cache.primary_access_key
 
   content_type = "text/plain"
 
@@ -150,7 +143,7 @@ resource "azurerm_key_vault_secret" "redis_password" {
 
 resource "azurerm_key_vault_secret" "redis_hostname" {
   name  = "redis-hostname"
-  value = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].hostname : data.azurerm_redis_cache.redis_cache.hostname
+  value = data.azurerm_redis_cache.redis_cache.hostname
 
   content_type = "text/plain"
 
@@ -344,3 +337,35 @@ resource "azurerm_key_vault_secret" "nodo5_slack_webhook_url" {
     ]
   }
 }
+
+# Wallet secrets ( JWT_SIGNATURE_KEY and PDV Tokenizer key )
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry:exp:2022-05-01 # already ignored, maybe a bug in tfsec
+module "pagopa_wallet_jwt" {
+  source = "github.com/pagopa/terraform-azurerm-v3//jwt_keys?ref=v8.21.0"
+  # Save on KV :
+  #  - pagopa-wallet-session-jwt-signature-key-private-key
+  #  - pagopa-wallet-session-jwt-signature-key-public-key
+  jwt_name         = "pagopa-wallet-session-jwt-signature-key"
+  key_vault_id     = module.key_vault.id
+  cert_common_name = "pagoPA platform session wallet token for IO"
+  cert_password    = ""
+
+  tags = var.tags
+}
+# JWT_SIGNATURE_KEY   = trimspace(module.pagopa_wallet_jwt.jwt_private_key_pem) # to avoid unwanted changes
+
+
+# DEPRECATED the real one is called personal-data-vault-api-key-wallet-session and is located in shared-secrets domain
+resource "azurerm_key_vault_secret" "wallet_session_pdv_api_key" {
+  name         = "personal-data-vault-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+

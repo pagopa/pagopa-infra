@@ -9,7 +9,7 @@ module "apim_nodo_dei_pagamenti_monitoring_product" {
   display_name = "Nodo dei Pagamenti - Monitoring"
   description  = "Product for Nodo dei Pagamenti - Monitoring"
 
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
@@ -33,12 +33,13 @@ locals {
     subscription_required = false
     service_url           = null
   }
+
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_monitoring_api" {
   name                = format("%s-nodo-monitoring-api", var.env_short)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_nodo_monitoring_api.display_name
   versioning_scheme   = "Segment"
 }
@@ -47,9 +48,9 @@ module "apim_nodo_monitoring_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-monitoring-api", var.env_short)
-  api_management_name   = module.apim.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_dei_pagamenti_monitoring_product.product_id]
+  product_ids           = [module.apim_nodo_dei_pagamenti_monitoring_product.product_id, local.apim_x_node_product_id]
   subscription_required = local.apim_nodo_monitoring_api.subscription_required
 
   version_set_id = azurerm_api_management_api_version_set.nodo_monitoring_api.id
@@ -64,7 +65,7 @@ module "apim_nodo_monitoring_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/monitoring/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host    = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host    = local.api_domain
     service = module.apim_nodo_dei_pagamenti_monitoring_product.product_id
   })
 

@@ -1,7 +1,7 @@
 module "cosmosdb_account_wispconv" {
-  count = var.enable_wisp_converter ? 1 : 0
+  count = var.create_wisp_converter ? 1 : 0
 
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.77.0"
   domain              = var.domain
   name                = "${local.project}-wispconv-cosmos-account"
   location            = var.location
@@ -15,11 +15,12 @@ module "cosmosdb_account_wispconv" {
   subnet_id                     = module.cosmosdb_wisp_converter_snet[0].id
   public_network_access_enabled = var.wisp_converter_cosmos_nosql_db_params.public_network_access_enabled
   # private endpoint
-  private_endpoint_enabled          = var.wisp_converter_cosmos_nosql_db_params.private_endpoint_enabled
-  private_endpoint_name             = "${local.project}-wispconv-cosmos-nosql-endpoint"
-  private_dns_zone_ids              = [data.azurerm_private_dns_zone.cosmos_nosql.id]
-  is_virtual_network_filter_enabled = var.wisp_converter_cosmos_nosql_db_params.is_virtual_network_filter_enabled
-  ip_range                          = ""
+  private_service_connection_sql_name = "${local.project}-wispconv-cosmos-nosql-endpoint"
+  private_endpoint_enabled            = var.wisp_converter_cosmos_nosql_db_params.private_endpoint_enabled
+  private_endpoint_sql_name           = "${local.project}-wispconv-cosmos-nosql-endpoint"
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos_nosql.id]
+  is_virtual_network_filter_enabled   = var.wisp_converter_cosmos_nosql_db_params.is_virtual_network_filter_enabled
+  ip_range                            = ""
 
   allowed_virtual_network_subnet_ids = var.wisp_converter_cosmos_nosql_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
@@ -42,8 +43,8 @@ module "cosmosdb_account_wispconv" {
 
 # cosmosdb database for wispconv
 module "cosmosdb_account_wispconv_db" {
-  count               = var.enable_wisp_converter ? 1 : 0
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.7.0"
+  count               = var.create_wisp_converter ? 1 : 0
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v7.77.0"
   name                = "wispconverter"
   resource_group_name = azurerm_resource_group.wisp_converter_rg[0].name
   account_name        = module.cosmosdb_account_wispconv[0].name
@@ -55,9 +56,33 @@ locals {
     {
       name               = "data",
       partition_key_path = "/id", # contains brokerEC_sessionId
-      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.events_ttl
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.data_ttl
       autoscale_settings = {
-        max_throughput = var.wisp_converter_cosmos_nosql_db_params.max_throughput
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.data_max_throughput
+      }
+    },
+    {
+      name               = "receipt",
+      partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.receipt_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.receipt_max_throughput
+      }
+    },
+    {
+      name               = "idempotency_key",
+      partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.idempotency_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.idempotency_max_throughput
+      }
+    },
+    {
+      name               = "re",
+      partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.re_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.re_max_throughput
       }
     }
   ]
@@ -65,8 +90,8 @@ locals {
 
 # cosmosdb container for stand-in datastore
 module "cosmosdb_account_wispconv_containers" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
-  for_each = { for c in local.wispconv_containers : c.name => c if var.enable_wisp_converter }
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.77.0"
+  for_each = { for c in local.wispconv_containers : c.name => c if var.create_wisp_converter }
 
   name                = each.value.name
   resource_group_name = azurerm_resource_group.wisp_converter_rg[0].name

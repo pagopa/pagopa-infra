@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI definition - PDF Engine",
+    "title": "PDF Engine - Java",
     "version": "0.0.1-17"
   },
   "servers": [

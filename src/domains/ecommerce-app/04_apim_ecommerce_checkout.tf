@@ -167,6 +167,15 @@ resource "azurerm_api_management_api_operation_policy" "create_session" {
   xml_content = file("./api/ecommerce-checkout/v1/_payment_methods_policy.xml.tpl")
 }
 
+resource "azurerm_api_management_api_operation_policy" "get_method_testing" {
+  api_name            = "${local.project}-ecommerce-checkout-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getAllPaymentMethods"
+
+  xml_content = file("./api/ecommerce-checkout/v1/_methods_testing_policy.xml.tpl")
+}
+
 # pagopa-ecommerce APIs for checkout V2
 
 module "apim_ecommerce_checkout_api_v2" {
@@ -204,5 +213,16 @@ resource "azurerm_api_management_api_operation_policy" "transaction_activation_r
   resource_group_name = local.pagopa_apim_rg
   operation_id        = "newTransaction"
 
-  xml_content = file("./api/ecommerce-checkout/v2/_transaction_policy.xml.tpl")
+  xml_content = templatefile("./api/ecommerce-checkout/v2/_transaction_policy.xml.tpl", {
+    pdv_api_base_path = var.pdv_api_base_path
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_fees_v2" {
+  api_name            = "${local.project}-ecommerce-checkout-api-v2"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "calculateFees"
+
+  xml_content = file("./api/ecommerce-checkout/v2/_validate_transactions_jwt_token.tpl")
 }

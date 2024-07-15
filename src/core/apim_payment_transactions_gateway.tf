@@ -1,7 +1,3 @@
-data "azurerm_key_vault_secret" "pm_onprem_hostname" {
-  name         = "pm-onprem-hostname"
-  key_vault_id = module.key_vault.id
-}
 
 resource "azurerm_key_vault_secret" "pgs_jwt_key" {
   name         = "pgs-jwt-key"
@@ -31,7 +27,7 @@ module "apim_payment_transactions_gateway_product" {
   display_name = "Payment Transactions Gateway pagoPA"
   description  = "Product for Payment Transactions Gateway pagoPA"
 
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
@@ -60,7 +56,7 @@ resource "azurerm_api_management_api_version_set" "payment_transactions_gateway_
 
   name                = format("%s-payment-transactions-gateway-update-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_payment_transactions_gateway_update_api.display_name
   versioning_scheme   = "Segment"
 }
@@ -70,7 +66,7 @@ module "apim_payment_transactions_gateway_update_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-payment-transactions-gateway-update-api", local.project)
-  api_management_name   = module.apim.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_transactions_gateway_product.product_id]
   subscription_required = local.apim_payment_transactions_gateway_update_api.subscription_required
@@ -85,7 +81,7 @@ module "apim_payment_transactions_gateway_update_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_transactions_gateway_api/update/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_transactions_gateway_api/update/v1/_base_policy.xml.tpl")
@@ -109,7 +105,7 @@ resource "azurerm_api_management_api_version_set" "payment_transactions_gateway_
 
   name                = format("%s-payment-transactions-gateway-internal-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_payment_transactions_gateway_internal_api.display_name
   versioning_scheme   = "Segment"
 }
@@ -119,7 +115,7 @@ module "apim_payment_transactions_gateway_internal_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-payment-transactions-gateway-internal-api", local.project)
-  api_management_name   = module.apim.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_transactions_gateway_product.product_id]
   subscription_required = local.apim_payment_transactions_gateway_internal_api.subscription_required
@@ -134,7 +130,7 @@ module "apim_payment_transactions_gateway_internal_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_transactions_gateway_api/internal/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_transactions_gateway_api/internal/v1/_base_policy.xml.tpl")
@@ -158,7 +154,7 @@ resource "azurerm_api_management_api_version_set" "payment_transactions_gateway_
 
   name                = format("%s-payment-transactions-gateway-external-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_payment_transactions_gateway_external_api.display_name
   versioning_scheme   = "Segment"
 }
@@ -168,7 +164,7 @@ module "apim_payment_transactions_gateway_external_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-payment-transactions-gateway-external-api", local.project)
-  api_management_name   = module.apim.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_transactions_gateway_product.product_id]
   subscription_required = local.apim_payment_transactions_gateway_external_api.subscription_required
@@ -183,7 +179,7 @@ module "apim_payment_transactions_gateway_external_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_transactions_gateway_api/external/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/payment_transactions_gateway_api/external/v1/_base_policy.xml.tpl")
@@ -208,7 +204,7 @@ resource "azurerm_api_management_api_version_set" "payment_transactions_gateway_
 
   name                = format("%s-payment-transactions-gateway-pgsfe-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_payment_transactions_gateway_pgsfe_api.display_name
   versioning_scheme   = "Segment"
 }
@@ -218,7 +214,7 @@ module "apim_payment_transactions_gateway_pgsfe_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-payment-transactions-gateway-pgsfe-api", local.project)
-  api_management_name   = module.apim.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_payment_transactions_gateway_product.product_id]
   subscription_required = local.apim_payment_transactions_gateway_pgsfe_api.subscription_required
@@ -233,7 +229,7 @@ module "apim_payment_transactions_gateway_pgsfe_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/payment_transactions_gateway_api/pgs-fe/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/payment_transactions_gateway_api/pgs-fe/v1/_base_policy.xml.tpl", {
@@ -243,7 +239,7 @@ module "apim_payment_transactions_gateway_pgsfe_api_v1" {
 
 resource "azurerm_api_management_named_value" "payment_gateway_service_jwt_key" {
   name                = "payment-gateway-service-jwt-key"
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "payment-gateway-service-jwt-key"
   value               = data.azurerm_key_vault_secret.pgs_jwt_key.value

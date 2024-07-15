@@ -41,18 +41,19 @@ pgres_flex_params = {
   db_version = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                             = 1048576
-  zone                                   = 3
-  standby_ha_zone                        = 1
-  backup_retention_days                  = 30
-  geo_redundant_backup_enabled           = true
-  create_mode                            = "Default"
-  pgres_flex_private_endpoint_enabled    = true
-  pgres_flex_ha_enabled                  = true
-  pgres_flex_pgbouncer_enabled           = true
-  pgres_flex_diagnostic_settings_enabled = true
-  max_connections                        = 5000
-  enable_private_dns_registration        = true
+  storage_mb                                       = 1048576
+  zone                                             = 1
+  standby_ha_zone                                  = 2
+  backup_retention_days                            = 30
+  geo_redundant_backup_enabled                     = true
+  create_mode                                      = "Default"
+  pgres_flex_private_endpoint_enabled              = true
+  pgres_flex_ha_enabled                            = true
+  pgres_flex_pgbouncer_enabled                     = true
+  pgres_flex_diagnostic_settings_enabled           = true
+  max_connections                                  = 5000
+  enable_private_dns_registration                  = false
+  enable_private_dns_registration_virtual_endpoint = true
 }
 
 sftp_account_replication_type = "GZRS"
@@ -194,10 +195,9 @@ standin_cosmos_nosql_db_params = {
   max_throughput = 2000
 }
 
-enable_wisp_converter = false
+create_wisp_converter = true
 
 wisp_converter_cosmos_nosql_db_params = {
-  enabled      = true
   kind         = "GlobalDocumentDB"
   capabilities = []
   offer_type   = "Standard"
@@ -207,17 +207,27 @@ wisp_converter_cosmos_nosql_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                    = "4.0"
-  main_geo_location_zone_redundant  = false
+  main_geo_location_zone_redundant  = true
   enable_free_tier                  = false
-  additional_geo_locations          = []
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
   private_endpoint_enabled          = true
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
-  events_ttl     = 604800 # 7 days in second
-  max_throughput = 1000
+  data_ttl                   = 10368000 # 120 days in second
+  data_max_throughput        = 1000
+  re_ttl                     = 31536000 # 1 year in second
+  re_max_throughput          = 1000
+  receipt_ttl                = -1 # max
+  receipt_max_throughput     = 1000
+  idempotency_ttl            = 604800 # 7 days in second
+  idempotency_max_throughput = 1000
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
@@ -258,7 +268,7 @@ nodo_verifyko_storage_account = {
 nodo_storico_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
-  account_replication_type      = "LRS"
+  account_replication_type      = "GZRS"
   blob_versioning_enabled       = true
   advanced_threat_protection    = true
   public_network_access_enabled = true
@@ -304,9 +314,50 @@ wisp_converter_storage_account = {
   backup_retention_days         = 30
 }
 
-redis_ha_enabled = false
+redis_ha_enabled = true
 
 enabled_features = {
-  eventhub_ha_tx = false
-  eventhub_ha_rx = false
+  eventhub_ha_tx = true
+  eventhub_ha_rx = true
 }
+
+/*****************
+Service Bus
+*****************/
+service_bus_wisp = {
+  sku                                  = "Premium"
+  requires_duplicate_detection         = false
+  dead_lettering_on_message_expiration = false
+  queue_default_message_ttl            = null # default is good
+  capacity                             = 1
+  premium_messaging_partitions         = 1
+}
+# queue_name shall be <domain>_<service>_<name>
+# producer shall have only send authorization
+# consumer shall have only listen authorization
+service_bus_wisp_queues = [
+  {
+    name                = "nodo_wisp_paainviart_queue"
+    enable_partitioning = false
+    keys = [
+      {
+        name   = "wisp_converter_paainviart"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name                = "nodo_wisp_payment_timeout_queue"
+    enable_partitioning = false
+    keys = [
+      {
+        name   = "wisp_converter_payment_timeout"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  }
+]

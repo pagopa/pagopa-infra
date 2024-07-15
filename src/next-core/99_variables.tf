@@ -161,6 +161,50 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "value"
+  default     = 3600
+}
+
+variable "private_dns_zone_db_nodo_pagamenti" {
+  type    = string
+  default = "dev.db-nodo-pagamenti.com"
+}
+
+
+# DNS private
+variable "dns_a_reconds_dbnodo_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodo_ips_dr" {
+  type        = list(string)
+  description = "IPs address of DB Nodo DR"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodo_prf_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_prf_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
+
 #
 # dns forwarder
 #
@@ -339,7 +383,141 @@ variable "redis_version" {
   default     = "6"
 }
 
+variable "redis_private_endpoint_enabled" {
+  type        = bool
+  description = "Enable private endpoints for redis instances?"
+  default     = true
+}
+
+
+variable "storage_queue_private_endpoint_enabled" {
+  type        = bool
+  description = "Whether private endpoint for Azure Storage Queues is enabled"
+  default     = true
+}
+
+variable "platform_private_dns_zone_records" {
+  type        = list(string)
+  default     = ["api", "portal", "management"]
+  description = "List of records to add into the platform.pagopa.it dns private"
+}
+
 ## integration app gateway
+
+variable "integration_app_gateway_sku_name" {
+  type        = string
+  description = "The Name of the SKU to use for this Application Gateway. Possible values are Standard_Small, Standard_Medium, Standard_Large, Standard_v2, WAF_Medium, WAF_Large, and WAF_v2"
+}
+
+variable "integration_app_gateway_sku_tier" {
+  type        = string
+  description = "The Tier of the SKU to use for this Application Gateway. Possible values are Standard, Standard_v2, WAF and WAF_v2"
+}
+
+variable "integration_app_gateway_waf_enabled" {
+  type        = bool
+  description = "Enable waf"
+  default     = false
+}
+
+variable "integration_app_gateway_api_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "integration_app_gateway_min_capacity" {
+  type    = number
+  default = 0
+}
+
+variable "integration_app_gateway_max_capacity" {
+  type    = number
+  default = 2
+}
+
+variable "integration_app_gateway_alerts_enabled" {
+  type        = bool
+  description = "Enable alerts"
+  default     = true
+}
+
+variable "integration_app_gateway_portal_certificate_name" {
+  type        = string
+  description = "Application gateway developer portal certificate name on Key Vault"
+}
+
+variable "integration_app_gateway_management_certificate_name" {
+  type        = string
+  description = "Application gateway api management certificate name on Key Vault"
+}
+
+variable "integration_appgateway_private_ip" {
+  type        = string
+  description = "Integration app gateway private ip"
+}
+variable "integration_appgateway_zones" {
+  type        = list(number)
+  description = "Integration app gateway private ip"
+}
+
+variable "integration_app_gateway_prf_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
+
+# public app gateway
+
+variable "app_gateway_api_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+variable "app_gateway_upload_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault ( 'upload' is used for heavy payload size)"
+}
+
+variable "upload_endpoint_enabled" {
+  type        = bool
+  description = "Enable upload for heavy payload size on appgw"
+  default     = true
+}
+
+variable "app_gateway_prf_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
+
+variable "app_gateway_portal_certificate_name" {
+  type        = string
+  description = "Application gateway developer portal certificate name on Key Vault"
+}
+
+variable "app_gateway_management_certificate_name" {
+  type        = string
+  description = "Application gateway api management certificate name on Key Vault"
+}
+
+variable "app_gateway_wisp2_certificate_name" {
+  type        = string
+  description = "Application gateway wisp2 certificate name on Key Vault"
+}
+
+variable "app_gateway_wisp2govit_certificate_name" {
+  type        = string
+  description = "Application gateway wisp2govit certificate name on Key Vault"
+}
+
+variable "app_gateway_wfespgovit_certificate_name" {
+  type        = string
+  description = "Application gateway wfespgovit certificate name on Key Vault"
+}
+variable "app_gateway_kibana_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
 
 variable "app_gateway_sku_name" {
   type        = string
@@ -354,47 +532,13 @@ variable "app_gateway_sku_tier" {
 variable "app_gateway_waf_enabled" {
   type        = bool
   description = "Enable waf"
-  default     = false
-}
-
-variable "app_gateway_api_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
-}
-
-variable "app_gateway_min_capacity" {
-  type    = number
-  default = 0
-}
-
-variable "app_gateway_max_capacity" {
-  type    = number
-  default = 2
+  default     = true
 }
 
 variable "app_gateway_alerts_enabled" {
   type        = bool
   description = "Enable alerts"
   default     = true
-}
-
-variable "app_gateway_portal_certificate_name" {
-  type        = string
-  description = "Application gateway developer portal certificate name on Key Vault"
-}
-
-variable "app_gateway_management_certificate_name" {
-  type        = string
-  description = "Application gateway api management certificate name on Key Vault"
-}
-
-variable "integration_appgateway_private_ip" {
-  type        = string
-  description = "Integration app gateway private ip"
-}
-variable "integration_appgateway_zones" {
-  type        = list(number)
-  description = "Integration app gateway private ip"
 }
 
 # apim named values
@@ -525,11 +669,12 @@ variable "dns_zone_wisp2" {
   description = "The wisp2 dns subdomain."
 }
 
-variable "app_gateway_prf_certificate_name" {
+variable "dns_zone_wfesp" {
   type        = string
-  description = "Application gateway api certificate name on Key Vault"
-  default     = ""
+  default     = null
+  description = "The wfesp dns subdomain."
 }
+
 
 
 #
@@ -648,6 +793,10 @@ variable "is_feature_enabled" {
     vpn                       = optional(bool, false)
     dns_forwarder_lb          = optional(bool, false)
     postgres_private_dns      = bool
+    azdoa                     = optional(bool, true)
+    apim_core_import          = optional(bool, false)
+    use_new_apim              = optional(bool, false)
+    azdoa_extension           = optional(bool, false)
   })
   description = "Features enabled in this domain"
 }
@@ -680,4 +829,133 @@ variable "node_forwarder_sku" {
   type        = string
   description = "(Required) The SKU for the plan. Possible values include B1, B2, B3, D1, F1, I1, I2, I3, I1v2, I2v2, I3v2, I4v2, I5v2, I6v2, P1v2, P2v2, P3v2, P0v3, P1v3, P2v3, P3v3, P1mv3, P2mv3, P3mv3, P4mv3, P5mv3, S1, S2, S3, SHARED, EP1, EP2, EP3, WS1, WS2, WS3, and Y1."
   default     = "P3v3"
+}
+
+variable "devops_agent_zones" {
+  type        = list(number)
+  default     = null
+  description = "(Optional) List of zones in which the scale set for azdo agent will be deployed"
+}
+
+variable "devops_agent_balance_zones" {
+  type        = bool
+  default     = false
+  description = "(Optional) True if the devops agent instances must be evenly balanced between the configured zones"
+}
+
+variable "cidr_subnet_azdoa" {
+  type        = list(string)
+  description = "Azure DevOps agent network address space."
+}
+
+variable "cidr_subnet_loadtest_agent" {
+  type        = list(string)
+  description = "LoadTest Agent Pool address space"
+  default     = null
+}
+
+variable "azdo_agent_vm_image_name" {
+  type        = string
+  description = "(Required) Azure devops agent image name"
+}
+
+variable "node_fw_ha_snet_cidr" {
+  type        = list(string)
+  default     = null
+  description = "(Required) node forwarder ha subnet cidr block"
+}
+
+# nat gateway
+variable "nat_gateway_enabled" {
+  type        = bool
+  default     = true
+  description = "Nat Gateway enabled"
+}
+
+variable "nat_gateway_public_ips" {
+  type        = number
+  default     = 1
+  description = "Number of public outbound ips"
+}
+
+variable "ingress_elk_load_balancer_ip" {
+  type    = string
+  default = "10.1.100.251"
+}
+
+variable "cidr_subnet_appgateway" {
+  type        = list(string)
+  description = "Application gateway address space."
+}
+
+variable "app_gateway_min_capacity" {
+  type    = number
+  default = 0
+}
+
+variable "app_gateway_max_capacity" {
+  type    = number
+  default = 2
+}
+
+variable "app_gateway_deny_paths" {
+  type        = list(string)
+  description = "Deny paths on app gateway"
+  default     = []
+}
+
+variable "app_gateway_kibana_deny_paths" {
+  type        = list(string)
+  description = "Deny paths on app gateway kibana"
+  default     = []
+}
+
+# needs to be less than 512 characters. For more details refer to the documentation here: https://aka.ms/appgwheadercrud."
+variable "app_gateway_deny_paths_2" {
+  type        = list(string)
+  description = "Deny paths on app gateway"
+  default     = []
+}
+
+variable "app_gateway_allowed_paths_pagopa_onprem_only" {
+  type = object({
+    paths = list(string)
+    ips   = list(string)
+  })
+  description = "Allowed paths from pagopa onprem only"
+}
+
+variable "app_gateway_allowed_fdr_soap_action" {
+  type        = list(string)
+  description = "Allowed SOAPAction header for upload platform fqdn"
+  default     = ["nodoInviaFlussoRendicontazione", "nodoChiediFlussoRendicontazione", "nodoChiediElencoFlussiRendicontazione"]
+}
+
+variable "app_gateway_allowed_paths_upload" {
+  type        = list(string)
+  description = "Allowed paths from pagopa for upload platform fqdn"
+  default = [
+    "/upload/gpd/.*",
+    "/nodo-auth/node-for-psp/.*",
+    "/nodo-auth/nodo-per-psp/.*",
+    "/nodo/nodo-per-psp/.*",
+    "/fdr-legacy/nodo-per-pa/.*",
+    "/nodo/nodo-per-pa/.*",
+    "/nodo-auth/nodo-per-pa/.*",
+    "/nodo-auth/node-for-pa/.*",
+  "/nodo/node-for-psp/.*"]
+}
+
+
+variable "cidr_subnet_redis" {
+  type        = list(string)
+  description = "Redis network address space."
+  default     = ["10.1.163.0/24"]
+}
+
+
+variable "cdn_storage_account_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) Cdn storage account replication type"
 }

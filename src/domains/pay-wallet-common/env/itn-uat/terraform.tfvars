@@ -4,6 +4,7 @@ env            = "uat"
 domain         = "pay-wallet"
 location       = "italynorth"
 location_short = "itn"
+cdn_location   = "westeurope"
 instance       = "uat"
 
 tags = {
@@ -16,30 +17,33 @@ tags = {
 
 ### FEATURES FLAGS
 is_feature_enabled = {
-  cosmos  = false
-  redis   = false
-  storage = false
+  cosmos  = true
+  redis   = true
+  storage = true
 }
-
-### NETWORK
-
-cidr_subnet_cosmosdb_pay_wallet = ["10.3.8.0/24"]
-cidr_subnet_redis_pay_wallet    = ["10.3.9.0/24"]
-cidr_subnet_storage_pay_wallet  = ["10.3.10.0/24"]
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-u-monitor-rg"
-log_analytics_workspace_name                = "pagopa-u-law"
-log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
+monitor_italy_resource_group_name                 = "pagopa-u-itn-core-monitor-rg"
+log_analytics_italy_workspace_name                = "pagopa-u-itn-core-law"
+log_analytics_italy_workspace_resource_group_name = "pagopa-u-itn-core-monitor-rg"
 
+### NETWORK
+
+cidr_subnet_cosmosdb_pay_wallet = ["10.3.5.0/27"]
+cidr_subnet_redis_pay_wallet    = ["10.3.5.64/27"]
+cidr_subnet_storage_pay_wallet  = ["10.3.5.96/27"]
+cidr_subnet_pay_wallet_user_aks = ["10.3.6.0/24"]
+
+### AKS
 ingress_load_balancer_ip = "10.3.2.250"
 
-### dns
+### DNS
 
 external_domain          = "pagopa.it"
 dns_zone_prefix          = "uat.payment-wallet"
 dns_zone_internal_prefix = "internal.uat.platform"
+dns_zone_platform        = "uat.platform"
 
 ### Cosmos
 
@@ -52,16 +56,18 @@ cosmos_mongo_db_params = {
     max_interval_in_seconds = 5
     max_staleness_prefix    = 100000
   }
-  server_version                   = "4.0"
+  server_version                   = "6.0"
   main_geo_location_zone_redundant = false
   enable_free_tier                 = false
 
   additional_geo_locations          = []
   private_endpoint_enabled          = true
-  public_network_access_enabled     = false
-  is_virtual_network_filter_enabled = false
+  public_network_access_enabled     = true
+  is_virtual_network_filter_enabled = true
 
   backup_continuous_enabled = true
+  ip_range_filter           = "104.42.195.92,40.76.54.131,52.176.6.30,52.169.50.45,52.187.184.26,13.88.56.148,40.91.218.243,13.91.105.215,4.210.172.107,40.80.152.199,13.95.130.121,20.245.81.54,40.118.23.126"
+
 }
 
 cosmos_mongo_db_pay_wallet_params = {
@@ -82,7 +88,6 @@ redis_pay_wallet_params = {
   zones    = []
 }
 
-
 ### Storage
 
 pay_wallet_storage_params = {
@@ -95,3 +100,16 @@ pay_wallet_storage_params = {
   public_network_access_enabled = false,
 }
 
+# AKS
+aks_user_node_pool = {
+  enabled         = true,
+  name            = "pauakswalusr",
+  vm_size         = "Standard_D8ds_v5",
+  os_disk_type    = "Ephemeral",
+  os_disk_size_gb = 300,
+  node_count_min  = 1,
+  node_count_max  = 1,
+  node_labels     = { node_name : "aks-pay-wallet-user", node_type : "user", domain : "paywallet" },
+  node_taints     = ["paymentWalletOnly=true:NoSchedule"],
+  node_tags       = { payWallet : "true" },
+}

@@ -1,6 +1,7 @@
 #################################################
 ## API payment wallet for eCommerce            ##
 #################################################
+/*
 locals {
   apim_payment_wallet_for_ecommerce_api = {
     display_name          = "pagoPA - payment wallet API for eCommerce"
@@ -46,3 +47,4 @@ module "apim_payment_wallet_for_ecommerce_api_v1" {
     hostname = local.wallet_hostname
   })
 }
+*/

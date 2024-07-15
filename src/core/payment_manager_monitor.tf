@@ -17,7 +17,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pm_restapi_availability"
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.app_gw.id
+  data_source_id = data.azurerm_application_gateway.app_gw.id
   description    = "Availability pm-restapi (for pagopa - checkout) greater than or equal 99%"
   enabled        = true
   query = (<<-QUERY
@@ -54,7 +54,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pm_restapi_cd_availabili
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.app_gw.id
+  data_source_id = data.azurerm_application_gateway.app_gw.id
   description    = "Availability pm-restapi-cd greater than or equal 99%"
   enabled        = true
   query = (<<-QUERY
@@ -67,7 +67,7 @@ AzureDiagnostics
     Success=count((toint(httpStatus_d) >= 200 and toint(httpStatus_d) < 500 and timeTaken_d < 2))
     by Time=bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
+| where toint(Availability) < 90
   QUERY
   )
   severity    = 1
@@ -92,7 +92,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pm_wallet_availability" 
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.app_gw.id
+  data_source_id = data.azurerm_application_gateway.app_gw.id
   description    = "Availability pm-wallet greater than or equal 99%"
   enabled        = true
   query = (<<-QUERY

@@ -1,14 +1,14 @@
 <policies>
     <inbound>
-        <base />
+        <!-- <base /> --> <!-- to avoid Nuova Connettività policy  -->
     </inbound>
     <backend>
         <base />
     </backend>
     <outbound>
-        <base />
+        <!-- <base /> --> <!-- to avoid Nuova Connettività policy  -->
     </outbound>
     <on-error>
-        <base />
+        <!-- <base /> --> <!-- to avoid Nuova Connettività policy  -->
     </on-error>
 </policies>

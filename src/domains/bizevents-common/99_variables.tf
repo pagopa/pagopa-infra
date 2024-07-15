@@ -125,6 +125,7 @@ variable "bizevents_datastore_cosmos_db_params" {
     container_default_ttl             = number
     ip_range_filter                   = string
     max_throughput                    = number
+    max_throughput_alt                = number
   })
 }
 
@@ -198,12 +199,8 @@ variable "redis_ha_enabled" {
 
 variable "enabled_features" {
   type = object({
-    eventhub_ha_rx = bool
-    eventhub_ha_tx = bool
   })
   default = {
-    eventhub_ha_rx = false
-    eventhub_ha_tx = false
   }
   description = "Features enabled in this domain"
 }

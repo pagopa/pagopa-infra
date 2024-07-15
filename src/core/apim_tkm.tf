@@ -9,7 +9,7 @@ module "apim_tkm_product" {
   display_name = "Token Manager pagoPA"
   description  = "Product for Token Manager pagoPA"
 
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
 
   published             = true
@@ -38,7 +38,7 @@ resource "azurerm_api_management_api_version_set" "tkm_consent_manager_api" {
 
   name                = format("%s-tkm-consent-manager-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_tkm_consent_manager_api.display_name
   versioning_scheme   = "Segment"
 }
@@ -48,7 +48,7 @@ module "apim_tkm_consent_manager_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-tkm-consent-manager-api", local.project)
-  api_management_name   = module.apim.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
   subscription_required = local.apim_tkm_consent_manager_api.subscription_required
@@ -63,7 +63,7 @@ module "apim_tkm_consent_manager_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/tkm_api/tkm-ms-consent-manager/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/tkm_api/tkm-ms-consent-manager/v1/_base_policy.xml.tpl", {
@@ -90,7 +90,7 @@ resource "azurerm_api_management_api_version_set" "tkm_consent_manager_internal_
 
   name                = format("%s-tkm-consent-manager-internal-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_tkm_consent_manager_internal_api.display_name
   versioning_scheme   = "Segment"
 }
@@ -100,7 +100,7 @@ module "apim_tkm_consent_manager_internal_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-tkm-consent-manager-internal-api", local.project)
-  api_management_name   = module.apim.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
   subscription_required = local.apim_tkm_consent_manager_internal_api.subscription_required
@@ -115,7 +115,7 @@ module "apim_tkm_consent_manager_internal_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/tkm_api/tkm-ms-consent-manager-internal/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/tkm_api/tkm-ms-consent-manager-internal/v1/_base_policy.xml.tpl")
@@ -139,7 +139,7 @@ resource "azurerm_api_management_api_version_set" "tkm_card_manager_api" {
 
   name                = format("%s-tkm-card-manager-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_tkm_card_manager_api.display_name
   versioning_scheme   = "Segment"
 }
@@ -149,7 +149,7 @@ module "apim_tkm_card_manager_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-tkm-card-manager-api", local.project)
-  api_management_name   = module.apim.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
   subscription_required = local.apim_tkm_card_manager_api.subscription_required
@@ -164,7 +164,7 @@ module "apim_tkm_card_manager_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/tkm_api/tkm-ms-card-manager/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/tkm_api/tkm-ms-card-manager/v1/_base_policy.xml.tpl")
@@ -188,7 +188,7 @@ resource "azurerm_api_management_api_version_set" "tkm_acquirer_manager_api" {
 
   name                = format("%s-tkm-acquirer-manager-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_tkm_acquirer_manager_api.display_name
   versioning_scheme   = "Segment"
 }
@@ -198,7 +198,7 @@ module "apim_tkm_acquirer_manager_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-tkm-acquirer-manager-api", local.project)
-  api_management_name   = module.apim.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
   subscription_required = local.apim_tkm_acquirer_manager_api.subscription_required
@@ -213,7 +213,7 @@ module "apim_tkm_acquirer_manager_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/tkm_api/tkm-ms-acquirer-manager/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/tkm_api/tkm-ms-acquirer-manager/v1/_base_policy.xml.tpl", {
@@ -239,7 +239,7 @@ resource "azurerm_api_management_api_version_set" "tkm_test_utility_api" {
   count               = var.env_short == "d" ? 1 : 0
   name                = format("%s-tkm-ms-test-utility-api", local.project)
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_tkm_test_utility_api.display_name
   versioning_scheme   = "Segment"
 }
@@ -249,7 +249,7 @@ module "apim_tkm_test_utility_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-tkm-ms-test-utility-api", local.project)
-  api_management_name   = module.apim.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
   subscription_required = local.apim_tkm_test_utility_api.subscription_required
@@ -264,7 +264,7 @@ module "apim_tkm_test_utility_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/tkm_api/tkm-ms-test-utility/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = file("./api/tkm_api/tkm-ms-test-utility/v1/_base_policy.xml.tpl")
@@ -289,7 +289,7 @@ resource "azurerm_api_management_api_version_set" "tkm_mock_circuit_api" {
 
   name                = "${local.project}-tkm-mock-circuit-api"
   resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = module.apim.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_tkm_mock_circuit_api.display_name
   versioning_scheme   = "Segment"
 }
@@ -300,7 +300,7 @@ module "apim_tkm_mock_circuit_api_v1" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = "${local.project}-tkm-mock-circuit-api"
-  api_management_name   = module.apim.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
   subscription_required = local.apim_tkm_mock_circuit_api.subscription_required
@@ -315,7 +315,7 @@ module "apim_tkm_mock_circuit_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/tkm_api/tkm-mock-circuit-api/v1/_openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/tkm_api/tkm-mock-circuit-api/v1/_base_policy.xml.tpl", {

@@ -1,5 +1,23 @@
-# general
+### Features flags
 
+variable "is_feature_enabled" {
+  type = object({
+    cosmosdb_notice      = bool
+    storage_institutions = bool
+    storage_notice       = bool
+    storage_templates    = bool
+    eventhub             = bool
+  })
+  default = {
+    cosmosdb_notice      = false
+    storage_institutions = false
+    storage_notice       = false
+    storage_templates    = false
+    eventhub             = false
+  }
+}
+
+# general
 variable "prefix" {
   type = string
   validation {
@@ -48,6 +66,7 @@ variable "location_short" {
     error_message = "Length must be 3 chars."
   }
   description = "One of wue, neu"
+  default     = "itn"
 }
 
 variable "instance" {
@@ -62,15 +81,38 @@ variable "tags" {
   }
 }
 
-### Features flags
+#
+# CIRDs
+#
 
-variable "is_feature_enabled" {
-  type = object({
-    cosmosdb_notice      = bool
-    storage_institutions = bool
-    storage_notice       = bool
-    storage_templates    = bool
-  })
+variable "cidr_printit_cosmosdb_italy" {
+  type        = list(string)
+  description = "Address prefixes for all cosmosdb in italy."
+}
+
+variable "cidr_printit_storage_italy" {
+  type        = list(string)
+  description = "Address prefixes for all storage accounts in italy."
+}
+
+variable "cidr_printit_redis_italy" {
+  type        = list(string)
+  description = "Address prefixes for all redis accounts in italy."
+}
+
+variable "cidr_printit_postgresql_italy" {
+  type        = list(string)
+  description = "Address prefixes for all postgresql accounts in italy."
+}
+
+variable "cidr_printit_pdf_engine_italy" {
+  type        = list(string)
+  description = "Address prefixes for all pdf engine accounts in italy."
+}
+
+variable "cidr_printit_eventhub_italy" {
+  type        = list(string)
+  description = "Address prefixes for all evh accounts in italy."
 }
 
 ### External resources
@@ -88,6 +130,21 @@ variable "log_analytics_workspace_name" {
 variable "log_analytics_workspace_resource_group_name" {
   type        = string
   description = "The name of the resource group in which the Log Analytics workspace is located in."
+}
+
+variable "monitor_italy_resource_group_name" {
+  type        = string
+  description = "Monitor Italy resource group name"
+}
+
+variable "log_analytics_italy_workspace_name" {
+  type        = string
+  description = "Specifies the name of the Log Analytics Workspace Italy."
+}
+
+variable "log_analytics_italy_workspace_resource_group_name" {
+  type        = string
+  description = "The name of the resource group in which the Log Analytics workspace Italy is located in."
 }
 
 # DNS
@@ -151,6 +208,9 @@ variable "cosmos_mongo_db_notices_params" {
   })
 }
 
+#
+# Storage account
+#
 variable "notices_storage_account" {
   type = object({
     account_kind                                                        = string
@@ -201,48 +261,50 @@ variable "institutions_storage_account" {
 
 }
 
-# eventhub
-variable "eventhub_enabled" {
+#
+# Eventhub
+#
+
+variable "ehns_public_network_access" {
   type        = bool
-  default     = false
-  description = "eventhub enable?"
+  description = "(Required) enables public network access to the event hubs"
+}
+
+variable "ehns_private_endpoint_is_present" {
+  type        = bool
+  description = "(Required) create private endpoint to the event hubs"
 }
 
 variable "ehns_sku_name" {
   type        = string
   description = "Defines which tier to use."
-  default     = "Basic"
 }
 
 variable "ehns_capacity" {
   type        = number
   description = "Specifies the Capacity / Throughput Units for a Standard SKU namespace."
-  default     = null
 }
 
 variable "ehns_maximum_throughput_units" {
   type        = number
   description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
-  default     = null
 }
 
 variable "ehns_auto_inflate_enabled" {
   type        = bool
   description = "Is Auto Inflate enabled for the EventHub Namespace?"
-  default     = false
 }
 
 variable "ehns_zone_redundant" {
   type        = bool
   description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
-  default     = false
 }
 
 variable "ehns_alerts_enabled" {
   type        = bool
-  default     = true
   description = "Event hub alerts enabled?"
 }
+
 variable "ehns_metric_alerts" {
   default = {}
 
@@ -271,21 +333,4 @@ EOD
       }
     ))
   }))
-}
-
-variable "eventhubs" {
-  description = "A list of event hubs to add to namespace."
-  type = list(object({
-    name              = string
-    partitions        = number
-    message_retention = number
-    consumers         = list(string)
-    keys = list(object({
-      name   = string
-      listen = bool
-      send   = bool
-      manage = bool
-    }))
-  }))
-  default = []
 }

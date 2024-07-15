@@ -121,61 +121,61 @@ resource "azurerm_storage_queue" "transactions_authorization_outcome_waiting_que
 }
 //storage queue for blue deployment
 resource "azurerm_storage_queue" "notifications_service_retry_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
+  count                = var.env_short != "p" ? 1 : 0
   name                 = "${local.project}-notifications-service-retry-queue-b"
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_expiration_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
+  count                = var.env_short != "p" ? 1 : 0
   name                 = "${local.project}-transactions-expiration-queue-b"
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_close_payment_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
+  count                = var.env_short != "p" ? 1 : 0
   name                 = "${local.project}-transactions-close-payment-queue-b"
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_close_payment_retry_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
+  count                = var.env_short != "p" ? 1 : 0
   name                 = "${local.project}-transactions-close-payment-retry-queue-b"
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_refund_retry_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
+  count                = var.env_short != "p" ? 1 : 0
   name                 = "${local.project}-transactions-refund-retry-queue-b"
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_refund_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
+  count                = var.env_short != "p" ? 1 : 0
   name                 = "${local.project}-transactions-refund-queue-b"
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_notifications_retry_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
+  count                = var.env_short != "p" ? 1 : 0
   name                 = "${local.project}-transaction-notifications-retry-queue-b"
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_notifications_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
+  count                = var.env_short != "p" ? 1 : 0
   name                 = "${local.project}-transaction-notifications-queue-b"
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_authorization_requested_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
+  count                = var.env_short != "p" ? 1 : 0
   name                 = "${local.project}-transaction-auth-requested-queue-b"
   storage_account_name = module.ecommerce_storage_transient.name
 }
 
 resource "azurerm_storage_queue" "transactions_authorization_outcome_waiting_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
+  count                = var.env_short != "p" ? 1 : 0
   name                 = "${local.project}-transaction-auth-outcome-waiting-queue-b"
   storage_account_name = module.ecommerce_storage_transient.name
 }
@@ -243,13 +243,13 @@ resource "azurerm_storage_queue" "notifications_service_errors_queue" {
 
 //dead letter queues for blue deployment
 resource "azurerm_storage_queue" "transactions_dead_letter_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
+  count                = var.env_short != "p" ? 1 : 0
   name                 = "${local.project}-transactions-dead-letter-queue-b"
   storage_account_name = module.ecommerce_storage_deadletter.name
 }
 
 resource "azurerm_storage_queue" "notifications_service_errors_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
+  count                = var.env_short != "p" ? 1 : 0
   name                 = "${local.project}-notifications-service-errors-queue-b"
   storage_account_name = module.ecommerce_storage_deadletter.name
 }

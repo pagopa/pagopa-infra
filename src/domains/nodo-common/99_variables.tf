@@ -103,21 +103,22 @@ variable "cidr_subnet_flex_dbms" {
 # Postgres Flexible
 variable "pgres_flex_params" {
   type = object({
-    enabled                                = bool
-    sku_name                               = string
-    db_version                             = string
-    storage_mb                             = string
-    zone                                   = number
-    standby_ha_zone                        = number
-    backup_retention_days                  = number
-    geo_redundant_backup_enabled           = bool
-    create_mode                            = string
-    pgres_flex_private_endpoint_enabled    = bool
-    pgres_flex_ha_enabled                  = bool
-    pgres_flex_pgbouncer_enabled           = bool
-    pgres_flex_diagnostic_settings_enabled = bool
-    max_connections                        = number
-    enable_private_dns_registration        = optional(bool, false)
+    enabled                                          = bool
+    sku_name                                         = string
+    db_version                                       = string
+    storage_mb                                       = string
+    zone                                             = number
+    standby_ha_zone                                  = number
+    backup_retention_days                            = number
+    geo_redundant_backup_enabled                     = bool
+    create_mode                                      = string
+    pgres_flex_private_endpoint_enabled              = bool
+    pgres_flex_ha_enabled                            = bool
+    pgres_flex_pgbouncer_enabled                     = bool
+    pgres_flex_diagnostic_settings_enabled           = bool
+    max_connections                                  = number
+    enable_private_dns_registration                  = optional(bool, false)
+    enable_private_dns_registration_virtual_endpoint = optional(bool, false)
   })
 
 }
@@ -367,16 +368,22 @@ variable "wisp_converter_cosmos_nosql_db_params" {
     public_network_access_enabled     = bool
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
-    events_ttl                        = number
-    max_throughput                    = number
+
+    data_ttl                   = number
+    data_max_throughput        = number
+    re_ttl                     = number
+    re_max_throughput          = number
+    receipt_ttl                = number
+    receipt_max_throughput     = number
+    idempotency_ttl            = number
+    idempotency_max_throughput = number
   })
 }
 
-variable "enable_wisp_converter" {
+variable "create_wisp_converter" {
   type        = bool
   default     = false
-  description = "Enables WISP Converter"
-
+  description = "CREATE WISP dismantling system infra"
 }
 
 # Nodo RE Storage Account
@@ -435,18 +442,6 @@ variable "nodo_storico_storage_account" {
     backup_retention              = optional(number, 0)
 
   })
-  default = {
-    account_kind                  = "StorageV2"
-    account_tier                  = "Standard"
-    account_replication_type      = "LRS"
-    blob_versioning_enabled       = false
-    advanced_threat_protection    = true
-    public_network_access_enabled = true
-    backup_enabled                = false
-    blob_delete_retention_days    = 0
-    backup_retention              = 0
-
-  }
 }
 
 variable "nodo_storico_allowed_ips" {
@@ -542,13 +537,46 @@ variable "wisp_converter_storage_account" {
 
 variable "enabled_features" {
   type = object({
-    eventhub_ha_tx = bool
-    eventhub_ha_rx = bool
   })
   default = {
-    eventhub_ha_tx = false
-    eventhub_ha_rx = false
   }
   description = "Features enabled in this domain"
 }
 
+/*****************
+Service Bus
+*****************/
+variable "service_bus_wisp" {
+  type = object({
+    sku                                  = string
+    requires_duplicate_detection         = bool
+    dead_lettering_on_message_expiration = bool
+    capacity                             = number
+    # https://learn.microsoft.com/en-us/azure/service-bus-messaging/message-expiration#entity-level-expiration
+    queue_default_message_ttl    = string # ISO 8601 timespan duration as P(n)Y(n)M(n)DT(n)H(n)M(n)S e.g. P7D seven days, P1M one month, P1Y one year
+    premium_messaging_partitions = number
+  })
+  default = {
+    sku                                  = "Standard"
+    requires_duplicate_detection         = false
+    dead_lettering_on_message_expiration = false
+    capacity                             = 0
+    queue_default_message_ttl            = null # default is good
+    premium_messaging_partitions         = 0
+  }
+}
+
+variable "service_bus_wisp_queues" {
+  description = "A list of Service Bus Queues to add to namespace service_bus_wisp."
+  type = list(object({
+    name                = string
+    enable_partitioning = bool
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
+}

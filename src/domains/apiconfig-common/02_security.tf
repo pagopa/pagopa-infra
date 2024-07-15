@@ -205,19 +205,14 @@ resource "azurerm_key_vault_secret" "postgresql_db_cfg_password" {
 }
 
 data "azurerm_redis_cache" "redis_cache" {
-  name                = format("%s-%s-redis", var.prefix, var.env_short)
+  name                = var.redis_ha_enabled ? format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short) : format("%s-%s-redis", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
 }
 
-data "azurerm_redis_cache" "redis_cache_ha" {
-  count               = var.redis_ha_enabled ? 1 : 0
-  name                = format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
-}
 
 resource "azurerm_key_vault_secret" "redis_password" {
   name         = "redis-password"
-  value        = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].primary_access_key : data.azurerm_redis_cache.redis_cache.primary_access_key
+  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -225,7 +220,7 @@ resource "azurerm_key_vault_secret" "redis_password" {
 
 resource "azurerm_key_vault_secret" "redis_hostname" {
   name         = "redis-hostname"
-  value        = var.redis_ha_enabled ? data.azurerm_redis_cache.redis_cache_ha[0].hostname : data.azurerm_redis_cache.redis_cache.hostname
+  value        = data.azurerm_redis_cache.redis_cache.hostname
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -327,3 +322,16 @@ resource "azurerm_key_vault_secret" "cfg_for_node_subscription_key" {
   }
 }
 
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "db_postgres_nexi_cfg_password" {
+  count        = var.env_short == "p" ? 0 : 1
+  name         = "db-postgres-nexi-cfg-password"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

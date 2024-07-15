@@ -19,7 +19,7 @@ module "key_vault" {
 resource "azurerm_key_vault_access_policy" "api_management_policy" {
   key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = module.apim.principal_id
+  object_id    = data.azurerm_api_management.apim_migrated[0].identity[0].principal_id
 
   key_permissions         = []
   secret_permissions      = ["Get", "List"]
@@ -199,20 +199,7 @@ data "azurerm_key_vault_secret" "sec_storage_id" {
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_secret" "fn_checkout_key" {
-  name         = "fn-checkout-key"
-  key_vault_id = module.key_vault.id
-}
 
-data "azurerm_key_vault_secret" "fn_buyerbanks_key" {
-  name         = "fn-buyerbanks-key"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "google_recaptcha_secret" {
-  name         = "google-recaptcha-secret"
-  key_vault_id = module.key_vault.id
-}
 
 ## azure cdn frontdoor ##
 ## remember to do this: https://docs.microsoft.com/it-it/azure/frontdoor/standard-premium/how-to-configure-https-custom-domain#register-azure-front-door

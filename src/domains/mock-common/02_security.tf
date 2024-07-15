@@ -1,3 +1,9 @@
+data "azurerm_redis_cache" "redis_cache" {
+  name                = var.redis_ha_enabled ? "${var.prefix}-${var.env_short}-${var.location_short}-redis" : "${var.prefix}-${var.env_short}-redis"
+  resource_group_name = "${var.prefix}-${var.env_short}-data-rg"
+}
+
+
 resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
@@ -76,6 +82,25 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 resource "azurerm_key_vault_secret" "mocker_cosmosdb_connection_string" {
   name         = "db-mocker-uri"
   value        = module.mocker_cosmosdb_account.connection_strings[0]
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "redis_password" {
+  name  = "redis-password"
+  value = data.azurerm_redis_cache.redis_cache.primary_access_key
+
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+
+resource "azurerm_key_vault_secret" "redis_hostname" {
+  name  = "redis-hostname"
+  value = data.azurerm_redis_cache.redis_cache.hostname
+
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
