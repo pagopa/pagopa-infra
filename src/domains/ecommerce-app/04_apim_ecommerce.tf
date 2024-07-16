@@ -49,6 +49,24 @@ module "apim_ecommerce_payment_methods_product" {
   policy_xml = file("./api_product/_base_policy.xml")
 }
 
+module "apim_ecommerce_helpdesk_product" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
+
+  product_id   = "ecommerce-helpdesk"
+  display_name = "ecommerce pagoPA helpdesk service"
+  description  = "Product for ecommerce pagoPA helpdesk service"
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/_base_policy.xml")
+}
+
 ##############################
 ## API transactions service ##
 ##############################
@@ -438,7 +456,7 @@ module "apim_pagopa_ecommerce_helpdesk_service_api_v1" {
   name                  = "${local.project}-helpdesk-service-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_ecommerce_product.product_id]
+  product_ids           = [module.apim_ecommerce_product.product_id,module.apim_ecommerce_helpdesk_product.product_id]
   subscription_required = local.apim_pagopa_ecommerce_helpdesk_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pagopa_ecommerce_helpdesk_service_api.id
   api_version           = "v1"
@@ -466,7 +484,7 @@ module "apim_pagopa_ecommerce_helpdesk_service_api_v2" {
   name                  = "${local.project}-helpdesk-service-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_ecommerce_product.product_id]
+  product_ids           = [module.apim_ecommerce_product.product_id,module.apim_ecommerce_helpdesk_product.product_id]
   subscription_required = local.apim_pagopa_ecommerce_helpdesk_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pagopa_ecommerce_helpdesk_service_api.id
   api_version           = "v2"
