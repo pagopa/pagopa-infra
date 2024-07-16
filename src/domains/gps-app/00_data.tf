@@ -34,4 +34,3 @@ data "azurerm_postgresql_flexible_server" "postgres_flexible_server_private" {
   resource_group_name = format("%s-pgres-flex-rg", local.product)
 }
 
-
