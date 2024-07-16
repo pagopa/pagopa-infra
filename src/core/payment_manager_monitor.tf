@@ -67,7 +67,7 @@ AzureDiagnostics
     Success=count((toint(httpStatus_d) >= 200 and toint(httpStatus_d) < 500 and timeTaken_d < 2))
     by Time=bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
+| where toint(Availability) < 90
   QUERY
   )
   severity    = 1
