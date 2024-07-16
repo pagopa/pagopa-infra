@@ -23,7 +23,7 @@ module "apim_payment_manager_product" {
 
 data "azurerm_key_vault_secret" "pm_restapi_ip" {
   name         = "pm-restapi-ip"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 
@@ -608,7 +608,7 @@ locals {
 
 data "azurerm_key_vault_secret" "pm_logging_ip" {
   name         = "pm-logging-ip"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 module "apim_pm_logging_api_v1" {
@@ -708,7 +708,7 @@ locals {
 
 data "azurerm_key_vault_secret" "pm_wisp_metadata" {
   name         = "pm-wisp-metadata"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 module "apim_pm_wisp_api_v1" {

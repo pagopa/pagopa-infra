@@ -2,7 +2,7 @@
 resource "azurerm_key_vault_secret" "pgs_jwt_key" {
   name         = "pgs-jwt-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 
   lifecycle {
     ignore_changes = [
@@ -13,7 +13,7 @@ resource "azurerm_key_vault_secret" "pgs_jwt_key" {
 
 data "azurerm_key_vault_secret" "pgs_jwt_key" {
   name         = "pgs-jwt-key"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 ##############

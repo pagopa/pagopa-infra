@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source              = "git::https://github.com/pagopa/azurerm.git//key_vault?ref=v1.0.90"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.22.0"
   name                = format("%s-kv", local.project)
   location            = azurerm_resource_group.sec_rg.location
   resource_group_name = azurerm_resource_group.sec_rg.name
@@ -17,9 +17,9 @@ module "key_vault" {
 
 # ## api management policy ##
 resource "azurerm_key_vault_access_policy" "api_management_policy" {
-  key_vault_id = data.azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azurerm_api_management.apim_migrated[0].identity[0].principal_id
+  object_id    = module.apim[0].principal_id
 
   key_permissions         = []
   secret_permissions      = ["Get", "List"]
@@ -28,8 +28,8 @@ resource "azurerm_key_vault_access_policy" "api_management_policy" {
 }
 
 ## user assined identity: (application gateway) ##
-resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
-  key_vault_id            = data.azurerm_key_vault.key_vault.id
+resource "azurerm_key_vault_access_policy" "app_gateway_public_policy" {
+  key_vault_id            = module.key_vault.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = azurerm_user_assigned_identity.appgateway.principal_id
   key_permissions         = ["Get", "List"]
@@ -38,14 +38,10 @@ resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
   storage_permissions     = []
 }
 
-# Azure AD
-data "azuread_group" "adgroup_admin" {
-  display_name = format("%s-adgroup-admin", local.project)
-}
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "ad_group_policy" {
-  key_vault_id = data.azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
@@ -59,15 +55,12 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   ]
 }
 
-data "azuread_group" "adgroup_developers" {
-  display_name = format("%s-adgroup-developers", local.project)
-}
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   count = var.env_short != "p" ? 1 : 0
 
-  key_vault_id = data.azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
@@ -81,15 +74,11 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   ]
 }
 
-data "azuread_group" "adgroup_externals" {
-  display_name = format("%s-adgroup-externals", local.project)
-}
-
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   count = var.env_short == "d" ? 1 : 0
 
-  key_vault_id = data.azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_externals.object_id
@@ -103,15 +92,11 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   ]
 }
 
-data "azuread_group" "adgroup_security" {
-  display_name = format("%s-adgroup-security", local.project)
-}
-
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_security_policy" {
   count = var.env_short == "d" ? 1 : 0
 
-  key_vault_id = data.azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_security.object_id
@@ -125,7 +110,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_security_policy" {
   ]
 }
 
-resource "azurerm_user_assigned_identity" "appgateway" {
+resource "azurerm_user_assigned_identity" "appgateway_public" {
   resource_group_name = azurerm_resource_group.sec_rg.name
   location            = azurerm_resource_group.sec_rg.location
   name                = format("%s-appgateway-identity", local.project)
@@ -143,7 +128,7 @@ resource "azurerm_user_assigned_identity" "appgateway" {
 # }
 
 resource "azurerm_key_vault_access_policy" "azure_cdn_frontdoor_policy" {
-  key_vault_id = data.azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = var.azuread_service_principal_azure_cdn_frontdoor_id
 
@@ -164,7 +149,7 @@ resource "azurerm_key_vault_secret" "newconn_opsgenie_webhook_token" {
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 
   lifecycle {
     ignore_changes = [
@@ -179,7 +164,7 @@ resource "azurerm_key_vault_secret" "team_core_opsgenie_webhook_token" {
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 
   lifecycle {
     ignore_changes = [
@@ -194,7 +179,7 @@ resource "azurerm_key_vault_secret" "github_token_read_packages_bot" {
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.key_vault.id
+  key_vault_id = module.key_vault.id
 
   lifecycle {
     ignore_changes = [
