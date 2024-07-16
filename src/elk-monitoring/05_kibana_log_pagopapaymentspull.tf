@@ -52,7 +52,7 @@ resource "null_resource" "paymentspull_kibana_space" {
 }
 
 resource "null_resource" "pagopaymentspull_ingest_pipeline" {
-  depends_on = [null_resource.fdr_kibana_space]
+  depends_on = [null_resource.paymentspull_kibana_space]
 
   triggers = {
     always_run = "${timestamp()}"
