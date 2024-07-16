@@ -20,7 +20,3 @@ tags = {
 input_file = "./secret/weu-prod/configs.json"
 
 enable_iac_pipeline = true
-
-ecommerce_domain = "ecommerce"
-
-pay_wallet_domain = "pay-wallet"
