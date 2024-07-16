@@ -332,6 +332,6 @@ variable "ecommerce_io_pm_enabled" {
 
 variable "ecommerce_for_io_pm_npg" {
   type        = string
-  description = "eCommerce for io gateway (3 values allowed: 'NPG','PM','FF')"
+  description = "eCommerce for io gateway (3 values allowed: 'NPG','PM','NPGFF')"
   default     = "PM"
 }
