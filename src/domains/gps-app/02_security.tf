@@ -23,8 +23,8 @@ data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
-data "azurerm_key_vault_secret" "gpd_config_cache_api_key" {
-  name         = format("gpd-%s-config-cache-api-key", var.env_short)
+data "azurerm_key_vault_secret" "config_cache_subscription_key" {
+  name         = "config-cache-subscription-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
