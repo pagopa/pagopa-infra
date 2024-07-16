@@ -30,7 +30,8 @@
             </set-header>
             <!-- Headers settings required for backend service END -->
           </when>
-          <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}"))">
+          <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))"> 
+
             <!-- Check sessiontoken START-->
             <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
             <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">

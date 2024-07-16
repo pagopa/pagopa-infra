@@ -20,7 +20,7 @@
                 <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))"> 
                     <include-fragment fragment-id="pm-chk-wallet-session" />
                 </when>
-                <when condition="@("NPG".Equals("{{ecommerce-for-io-pm-npg-ff}}"))">
+                <when condition="@("NPG".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))">
                     <include-fragment fragment-id="jwt-chk-wallet-session" />
                     <choose>
                         <when condition="@((string)context.Variables.GetValueOrDefault("xUserId","") != "")">
@@ -67,7 +67,6 @@
                             <!-- <trace source="transaction-service-IO-JWT-end" severity="information">transaction-service-IO-JWT-end</trace> -->
                         </when>
                         <otherwise>
-
                             <return-response>
                                 <set-status code="502" />
                                 <set-header name="Content-Type" exists-action="override">

@@ -108,12 +108,12 @@
       </choose>
       <!-- user fiscal code tokenization with PDV END -->
       <choose>
-        <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))"> 
+        <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["userId"]))))"> 
             <!-- pagoPA platform wallet JWT session token : START -->
             <set-variable name="x-jwt-token" value="@(((JObject)context.Variables["pmSession"])["data"]["sessionToken"].ToString())" />
             <!-- pagoPA platform wallet JWT session token : END -->
         </when>
-        <when condition="@("NPG".Equals("{{ecommerce-for-io-pm-npg-ff}}"))">
+        <when condition="@("NPG".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["userId"]))))">
             <!-- Get User IO : START-->
             <send-request ignore-error="true" timeout="10" response-variable-name="user-auth-body" mode="new">
               <set-url>@("${io_backend_base_path}/pagopa/api/v1/user?version=20200114")</set-url> 
