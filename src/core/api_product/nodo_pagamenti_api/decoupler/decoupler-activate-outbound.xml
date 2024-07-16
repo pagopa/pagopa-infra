@@ -5,14 +5,12 @@
     - Copy and paste your code here or simply start coding
 -->
 <fragment>
-  <trace source="activate-outbound" severity="information">outbound</trace>
   <choose>
     <when condition="@{
             string[] activatePayment = new string[] {"activatePaymentNotice", "activateIOPayment", "activatePaymentNoticeV2"};
             var soapAction = (string)context.Variables["soapAction"];
             return activatePayment.Contains(soapAction);
         }">
-      <trace source="activate" severity="information">@(context.Response.Body.As<string>(preserveContent: true))</trace>
       <set-variable name="paymentToken" value="@{
                 XElement response = context.Response.Body.As<XElement>(preserveContent: true);
                 XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
@@ -21,7 +19,6 @@
 
                 return paymentToken != null ? paymentToken.Value.ToString() : "NONE";
             }" />
-      <trace source="activate-data-set" severity="information">@((string)context.Variables["dataToSet"])</trace>
       <choose>
         <when condition="@(!((string)context.Variables["paymentToken"]).Equals("NONE"))">
           <cache-store-value key="@((string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"])" value="@{
@@ -35,7 +32,6 @@
       </choose>
     </when>
   </choose>
-
 <choose>
 <when condition="@{
             string[] activatePayment = new string[] {"activatePaymentNoticeV2"};

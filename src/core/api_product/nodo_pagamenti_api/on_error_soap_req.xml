@@ -1,8 +1,9 @@
 <fragment>
-        <!-- <trace source="renewrequestdebug" severity="information">@((string) context.Variables["renewrequest"])</trace> -->
+        <trace source="renewrequestdebug" severity="information">@((string) context.Variables["renewrequest"])</trace>
         <choose>
         <when condition="@(context.Variables.ContainsKey("baseUrl") && context.Variables.ContainsKey("renewrequest") && context.Variables.ContainsKey("renewrequest")!= null)">
-        <send-request mode="new" ignore-error="true" response-variable-name="risposta">
+          <trace source="first-when" severity="information">execute on-error request</trace>
+          <send-request mode="new" ignore-error="true" response-variable-name="risposta">
             <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
             <set-method>POST</set-method>
             <set-header name="Content-Type" exists-action="override">

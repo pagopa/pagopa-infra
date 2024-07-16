@@ -5,7 +5,6 @@
     - Copy and paste your code here or simply start coding
 -->
 <fragment>
-	<trace source="primitive-type" severity="information">@((string) context.Variables["primitiveType"])</trace>
 	<set-variable name="enable_nm3_switch" value="{{enable-nm3-decoupler-switch}}" />
 	<set-variable name="enable_routing_switch" value="{{enable-routing-decoupler-switch}}" />
 	<set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
@@ -35,10 +34,6 @@
                         return context.Variables.GetValueOrDefault<string>("baseUrl", "");
       }" />
 				</when>
-				<!-- TODO remove after test -->
-				<otherwise>
-					<trace source="skip-set-base-user-routing" severity="information">skipped set base url routing</trace>
-				</otherwise>
 			</choose>
 		</when>
 		<when condition="@(((string)context.Variables["primitiveType"]).Equals("NM3"))">
@@ -207,9 +202,6 @@ new JProperty("ttl", 1)
   return target.Equals("NONE") ? defaultBaseUrl : target;
   }" />
 								</when>
-								<otherwise>
-									<trace source="skip-set-base-user" severity="information">skipped set base url nm3</trace>
-								</otherwise>
 							</choose>
 							<!-- set node_id in cache -->
 							<choose>
@@ -235,7 +227,6 @@ new JProperty("ttl", 1)
 				</when>
 				<!-- key in cache -->
 				<otherwise>
-					<trace source="retrieve-node-uri" severity="information">Node URI retrieved by cache</trace>
 					<!-- retrieve url by node_id according to configuration -->
 					<set-variable name="dataToSet" value="@{
                             var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
@@ -269,10 +260,6 @@ new JProperty("ttl", 1)
   return target.Equals("NONE") ? defaultBaseUrl : target;
   }" />
 						</when>
-						<otherwise>
-							<!-- TODO remove after test -->
-							<trace source="skip-set-base-user" severity="information">skipped set base url nm3</trace>
-						</otherwise>
 					</choose>
 				</otherwise>
 			</choose>
@@ -353,9 +340,6 @@ new JProperty("ttl", 1)
 				<when condition="@( context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && context.Variables.GetValueOrDefault<bool>("is_whitelisted", false) )">
 					<set-variable name="baseUrl" value="{{wisp-dismantling-backend-url}}" />
 				</when>
-				<otherwise>
-					<trace source="skip-set-base-url-whitelisted-broker-and-channel" severity="information">broker and channel not in whitelist or WISP dismantling disabled</trace>
-				</otherwise>
 			</choose>
 		</when>
 	</choose>

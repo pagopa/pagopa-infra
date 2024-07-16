@@ -94,11 +94,8 @@
     <set-variable name="baseNodeId" value="{{default-nodo-id}}" />
     <!-- used for convention in the cache key -->
     <set-variable name="domain" value="nodo" />
-    <!-- used for debugging -->
-    <trace source="json-configuration" severity="information">@{
-      var configuration = JArray.Parse(((string) context.Variables["configuration"]));
-      return configuration.FirstOrDefault()["node_id"].Value<string>();
-      }</trace>
+    <!-- trace used to count requests for monitoring -->
+    <trace source="retrieve-node-uri" severity="information">[COUNT] Request</trace>
       <!-- load primitives from the related named valued -->
       <set-variable name="primitives" value="{{node-decoupler-primitives}}" />
       <set-variable name="wispDismantlingPrimitives" value="{{wisp-dismantling-primitives}}" />
@@ -127,7 +124,6 @@
         }" />
 <!-- apply algorithm logic -->
 <include-fragment fragment-id="decoupler-algorithm" />
-<trace source="base-url" severity="information">@((string)context.Variables["baseUrl"])</trace>
 
 <!-- set backend service url -->
 <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
