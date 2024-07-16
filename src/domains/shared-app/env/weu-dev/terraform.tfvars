@@ -76,3 +76,4 @@ pdf_engine_zone_balancing_enabled = false
 io_backend_base_path = "http://{{aks-lb-nexi}}/pmmockservice/pmmockserviceapi"
 pdv_api_base_path    = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
 
+ecommerce_for_io_pm_npg = "NPGFF"
