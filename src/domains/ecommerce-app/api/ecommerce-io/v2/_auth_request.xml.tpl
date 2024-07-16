@@ -216,19 +216,6 @@
     </inbound>
     <outbound>
         <base />
-        <choose>
-            <when condition="@( ("false".Equals("{{enable-pm-ecommerce-io}}") && "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) ) && context.Response.StatusCode == 200)">
-                <set-body>@{
-                    JObject inBody = context.Response.Body.As<JObject>(preserveContent: true);
-                    var authorizationUrl = (string)inBody["authorizationUrl"];
-                    if(authorizationUrl.Contains("checkout.pagopa.it")){
-                        authorizationUrl = authorizationUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("sessionToken",""));
-                    }
-                    inBody["authorizationUrl"] = authorizationUrl;
-                    return inBody.ToString();
-                }</set-body>
-            </when>
-        </choose>
     </outbound>
     <backend>
         <base />
