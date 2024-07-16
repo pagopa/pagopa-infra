@@ -2,7 +2,7 @@
     <inbound>
     <base />
     <choose>
-      <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )"> 
+      <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))"> 
         <include-fragment fragment-id="pm-chk-wallet-session" />
       </when>
     </choose>
@@ -11,7 +11,7 @@
     <outbound>
       <base />
       <choose>
-        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}")  || !"{{pay-wallet-family-friends-user-ids}}".Contains((string)context.Variables["sessionTokenUserId"]))">
+        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}"))">
           <set-body>@{
             JObject response = context.Response.Body.As<JObject>();
 

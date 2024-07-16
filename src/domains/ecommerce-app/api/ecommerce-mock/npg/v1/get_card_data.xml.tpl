@@ -11,7 +11,7 @@
       {
         "bin": "434994",
         "lastFourDigits": "0000",
-        "expiringDate": "0430",
+        "expiringDate": "01/25",
         "circuit": "VISA"
       }
       </set-body>
