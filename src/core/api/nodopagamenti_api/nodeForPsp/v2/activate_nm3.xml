@@ -98,6 +98,28 @@
                 return "";
             }
         }" />
+        <set-variable name="paymentMethod" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"paymentMethod"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            if (result.Length > 2) {
+                var paymentMethod = result[1].Substring(1,result[1].Length-3);
+                return "<paymentMethod>"+paymentMethod+"</paymentMethod>";
+            } else {
+                return "";
+            }
+        }" />
+        <set-variable name="touchPoint" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"touchPoint"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            if (result.Length > 2) {
+                var touchPoint = result[1].Substring(1,result[1].Length-3);
+                return "<touchPoint>"+touchPoint+"</touchPoint>";
+            } else {
+                return "";
+            }
+        }" />
         <!--
         if attvazionePrenotata then sent PPT_ATTIVAZIONE_IN_CORSO
         else store PPT_ATTIVAZIONE_IN_CORSO in attvazionePrenotata for fiscalCode and noticeNumber
@@ -298,7 +320,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -321,7 +343,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -344,7 +366,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -367,7 +389,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -529,7 +551,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -552,7 +574,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -575,7 +597,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -598,7 +620,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
