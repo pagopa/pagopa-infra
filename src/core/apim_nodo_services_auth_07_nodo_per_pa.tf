@@ -13,7 +13,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "nodo_per_pa_api_auth" {
   name                = format("%s-nodo-per-pa-api-auth", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_nodo_per_pa_api_auth.display_name
   versioning_scheme   = "Segment"
@@ -22,7 +22,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pa_api_auth" {
 resource "azurerm_api_management_api" "apim_nodo_per_pa_api_v1_auth" {
   name                  = format("%s-nodo-per-pa-api-auth", var.env_short)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   subscription_required = local.apim_nodo_per_pa_api_auth.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.nodo_per_pa_api_auth.id
   version               = "v1"
@@ -49,7 +49,7 @@ resource "azurerm_api_management_api" "apim_nodo_per_pa_api_v1_auth" {
 resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy_auth" {
   api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPa/v1/_base_policy.xml.tpl", {
     is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
