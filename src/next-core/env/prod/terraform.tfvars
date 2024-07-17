@@ -789,6 +789,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
 }
 
 cdn_storage_account_replication_type = "GZRS"
+backup_storage_replication_type      = "GZRS"
 
 apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
 apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"
