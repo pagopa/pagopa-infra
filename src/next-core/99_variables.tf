@@ -959,3 +959,10 @@ variable "cdn_storage_account_replication_type" {
   default     = "GRS"
   description = "(Optional) Cdn storage account replication type"
 }
+
+
+variable "cidr_subnet_eventhub" {
+  type        = list(string)
+  description = "Address prefixes subnet eventhub"
+  default     = null
+}
