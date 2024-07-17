@@ -17,7 +17,7 @@
     <include-fragment fragment-id="pay-wallet-user-id-from-session-token" />
     <!-- Session eCommerce START-->
         <choose>
-          <when condition="@("false".Equals("{{enable-pm-ecommerce-io}}") && "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+          <when condition="@( ("NPG".Equals("{{ecommerce-for-io-pm-npg-ff}}")) || ( ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}")) && ("{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))) ))">
             <!-- Check JWT START-->
             <include-fragment fragment-id="jwt-chk-wallet-session" />
             <!-- Check JWT END-->
@@ -30,8 +30,9 @@
             </set-header>
             <!-- Headers settings required for backend service END -->
           </when>
-          <otherwise>
-          <!-- Check sessiontoken START-->
+          <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))"> 
+
+            <!-- Check sessiontoken START-->
             <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
             <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
               <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/users/check-session?sessionToken={(string)context.Variables["sessionToken"]}")</set-url>
@@ -54,8 +55,8 @@
                 </return-response>
               </when>
             </choose>
-          <!-- Check sessiontoken END-->
-          </otherwise>
+            <!-- Check sessiontoken END-->
+          </when>
         </choose>
 
     <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
