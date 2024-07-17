@@ -6,8 +6,8 @@ module "apim_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet_integration.name
   address_prefixes     = var.cidr_subnet_apim
 
-  private_endpoint_network_policies_enabled = true
-  service_endpoints                              = ["Microsoft.Web"]
+  private_endpoint_network_policies_enabled = false
+  service_endpoints                         = ["Microsoft.Web"]
 }
 
 resource "azurerm_resource_group" "rg_api" {

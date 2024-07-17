@@ -929,11 +929,11 @@ module "apim_pm_per_nodo_v2" {
 # v2 -> src/core/api/payment_manager_api/pm-per-nodo/v2/_openapi.json.tpl
 #   "/transactions/{transactionId}/user-receipts" - "operationId": "addUserReceipt"
 #
-# WISP sendPaymentResultV2 
+# WISP sendPaymentResultV2
 resource "azurerm_api_management_api_operation_policy" "send_payment_result_api_v2_wisp_policy" { # aka addUserReceipt
   count               = var.create_wisp_converter ? 1 : 0
   api_name            = "${local.project}-pm-per-nodo-api-v2"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   operation_id        = "addUserReceipt"
   xml_content         = file("./api/payment_manager_api/pm-per-nodo/v2/wisp-sendpaymentresult.xml")
