@@ -766,10 +766,13 @@ function_app_storage_account_info = {
 logic_app_storage_account_replication_type   = "LRS"
 buyer_banks_storage_account_replication_type = "GZRS"
 cdn_storage_account_replication_type         = "GRS"
-backup_storage_replication_type              = "GRS"
+backup_storage_replication_type              = "GZRS"
 fdr_flow_sa_replication_type                 = "ZRS"
 
 apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
 apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"
 
 apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/loggers/pagopa-p-apim-logger"
+
+# WISP-dismantling-cfg
+create_wisp_converter = true

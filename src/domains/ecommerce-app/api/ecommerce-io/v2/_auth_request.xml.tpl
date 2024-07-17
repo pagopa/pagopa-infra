@@ -19,7 +19,7 @@
             </otherwise>
         </choose>
         <choose>
-            <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+            <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))"> 
                 <set-variable name="idPsp" value="@((string)((JObject) context.Variables["body"])["pspId"])" />
                 <set-variable name="idWallet" value="@{
                     string walletIdUUID = (string)context.Variables["walletId"];
@@ -29,7 +29,7 @@
                 <set-variable name="requestTransactionId" value="@{
                 var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");
                 return transactionId;
-            }" />
+                }" />
                 <!-- Check wallet type to call or not putWallet. To do only when wallet type is credit card -->
                 <send-request response-variable-name="wallet" timeout="10">
                     <set-url>@($"{{pm-host}}/pp-restapi-CD/v1/wallet/{(string)context.Variables["idWallet"]}")</set-url>
@@ -136,7 +136,7 @@
                     </otherwise>
                 </choose>
             </when>
-            <otherwise>
+            <when condition="@("NPG".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))">
                 <choose>
                     <when condition="@(!String.IsNullOrEmpty((string)(context.Variables["walletId"])))">
                         <send-request response-variable-name="walletResponse" timeout="10">
@@ -211,24 +211,11 @@
                     requestBody["paymentInstrumentId"] = paymentMethodId;
                     return requestBody.ToString();
                 }</set-body>
-            </otherwise>
+            </when>
         </choose>
     </inbound>
     <outbound>
         <base />
-        <choose>
-            <when condition="@( ("false".Equals("{{enable-pm-ecommerce-io}}") && "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) ) && context.Response.StatusCode == 200)">
-                <set-body>@{
-                    JObject inBody = context.Response.Body.As<JObject>(preserveContent: true);
-                    var authorizationUrl = (string)inBody["authorizationUrl"];
-                    if(authorizationUrl.Contains("checkout.pagopa.it")){
-                        authorizationUrl = authorizationUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("sessionToken",""));
-                    }
-                    inBody["authorizationUrl"] = authorizationUrl;
-                    return inBody.ToString();
-                }</set-body>
-            </when>
-        </choose>
     </outbound>
     <backend>
         <base />
