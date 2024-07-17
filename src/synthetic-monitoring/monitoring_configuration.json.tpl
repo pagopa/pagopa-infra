@@ -394,7 +394,22 @@
       "enabled" : false
     }
   },
-
+  {
+    "apiName" : "status",
+    "appName" : "gpd-payments-pull",
+    "url" :  "https://${internal_api_domain_prefix}.gps.${internal_api_domain_suffix}/pagopa-gpd-payments-pull/info",
+    "type" : "private",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "tags" : {
+      "description" : "pagopa ${env_name} gpd payments pull status endpoint"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : false
+    }
+  },
   {
     "apiName" : "status",
     "appName" : "gpd-enrollment",
