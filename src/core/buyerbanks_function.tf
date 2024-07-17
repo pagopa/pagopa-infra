@@ -245,7 +245,7 @@ resource "azurerm_storage_management_policy" "buyerbanks_storage_lifeclycle_poli
  */
 data "azurerm_key_vault_secret" "pagopa_buyerbank_cert_key" {
   name         = "pagopa-buyerbank-cert-key"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 /*
@@ -253,7 +253,7 @@ data "azurerm_key_vault_secret" "pagopa_buyerbank_cert_key" {
  */
 data "azurerm_key_vault_secret" "pagopa_buyerbank_thumbprint" {
   name         = "pagopa-buyerbank-thumbprint"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 /*
@@ -261,7 +261,7 @@ data "azurerm_key_vault_secret" "pagopa_buyerbank_thumbprint" {
  */
 data "azurerm_key_vault_secret" "pagopa_buyerbank_signature" {
   name         = "pagopa-buyerbank-signature"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 /*
@@ -270,7 +270,7 @@ data "azurerm_key_vault_secret" "pagopa_buyerbank_signature" {
 data "azurerm_key_vault_secret" "pagopa_buyerbank_cert_peer" {
   count        = var.env_short == "p" ? 1 : 0
   name         = "pagopa-buyerbank-cert-peer"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 /*
@@ -279,7 +279,7 @@ data "azurerm_key_vault_secret" "pagopa_buyerbank_cert_peer" {
 data "azurerm_key_vault_secret" "pagopa_buyerbank_thumbprint_peer" {
   count        = var.env_short == "p" ? 1 : 0
   name         = "pagopa-buyerbank-thumbprint-peer"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 /*
@@ -289,7 +289,7 @@ resource "azurerm_key_vault_certificate" "buyerbanks_cert" {
 
   name = format("%s-buyerbanks-cert", local.project) # module.buyerbanks_function.name
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 
   certificate_policy {
     issuer_parameters {

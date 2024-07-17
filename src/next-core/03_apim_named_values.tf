@@ -320,7 +320,7 @@ resource "azurerm_api_management_named_value" "wisp2_it" {
 data "azurerm_key_vault_secret" "mock_services_api_key" {
   count        = var.env_short == "d" ? 1 : 0
   name         = "mock-services-api-key"
-  key_vault_id = data.azurerm_key_vault.kv_core.id
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_named_value" "pagopa_mock_services_api_key" {
@@ -336,7 +336,7 @@ resource "azurerm_api_management_named_value" "pagopa_mock_services_api_key" {
 data "azurerm_key_vault_secret" "user_pm_test_key" {
   count        = var.env_short == "d" ? 1 : 0
   name         = "user-pm-test"
-  key_vault_id = data.azurerm_key_vault.kv_core.id
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_named_value" "user_pm_test" {
@@ -352,7 +352,7 @@ resource "azurerm_api_management_named_value" "user_pm_test" {
 data "azurerm_key_vault_secret" "password_pm_test_key" {
   count        = var.env_short == "d" ? 1 : 0
   name         = "password-pm-test"
-  key_vault_id = data.azurerm_key_vault.kv_core.id
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_named_value" "password_pm_test" {
@@ -368,7 +368,7 @@ resource "azurerm_api_management_named_value" "password_pm_test" {
 data "azurerm_key_vault_secret" "checkout_v2_test_key_secret" {
   count        = var.env_short == "d" ? 1 : 0
   name         = "checkout-v2-testing-api-key"
-  key_vault_id = data.azurerm_key_vault.kv_core.id
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_named_value" "checkout_v2_test_key" {
@@ -385,7 +385,7 @@ resource "azurerm_api_management_named_value" "checkout_v2_test_key" {
 
 data "azurerm_key_vault_secret" "verificatore_key_secret_apiconfig" {
   name         = "verificatore-api-key-apiconfig"
-  key_vault_id = data.azurerm_key_vault.kv_core.id
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_api_management_named_value" "verificatore_api_key_apiconfig" {
