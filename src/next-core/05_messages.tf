@@ -7,13 +7,13 @@ resource "azurerm_resource_group" "msg_rg" {
 
 ## Eventhub subnet
 module "eventhub_snet" {
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.2.0"
-  name                                           = format("%s-eventhub-snet", local.product)
-  address_prefixes                               = var.cidr_subnet_eventhub
-  resource_group_name                            = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_integration.name
-  service_endpoints                              = ["Microsoft.EventHub"]
-  private_endpoint_network_policies_enabled      = true
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.2.0"
+  name                                      = format("%s-eventhub-snet", local.product)
+  address_prefixes                          = var.cidr_subnet_eventhub
+  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_integration.name
+  service_endpoints                         = ["Microsoft.EventHub"]
+  private_endpoint_network_policies_enabled = false
 }
 
 
@@ -26,7 +26,7 @@ resource "azurerm_private_dns_zone" "privatelink_servicebus_windows_net" {
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_core_link_privatelink_servicebus_windows_net" {
 
   name                  = "${local.product}-evh-ns01-private-dns-zone-link-02"
-  resource_group_name = azurerm_resource_group.msg_rg.name
+  resource_group_name   = azurerm_resource_group.msg_rg.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_servicebus_windows_net.name
   virtual_network_id    = data.azurerm_virtual_network.vnet_core.id
   registration_enabled  = false
@@ -37,7 +37,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_core_link_private
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_integration_link_privatelink_servicebus_windows_net" {
 
   name                  = "${local.product}-evh-ns01-private-dns-zone-link-01"
-  resource_group_name = azurerm_resource_group.msg_rg.name
+  resource_group_name   = azurerm_resource_group.msg_rg.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_servicebus_windows_net.name
   virtual_network_id    = data.azurerm_virtual_network.vnet_integration.id
   registration_enabled  = false
@@ -51,7 +51,7 @@ module "event_hub03" {
   source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v7.62.0"
   name                     = "${local.project}-evh-ns03"
   location                 = var.location
-  resource_group_name = azurerm_resource_group.msg_rg.name
+  resource_group_name      = azurerm_resource_group.msg_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
   sku                      = var.ehns_sku_name
   capacity                 = var.ehns_capacity
@@ -92,7 +92,7 @@ module "event_hub04" {
   source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v7.62.0"
   name                     = "${local.project}-evh-ns04"
   location                 = var.location
-  resource_group_name = azurerm_resource_group.msg_rg.name
+  resource_group_name      = azurerm_resource_group.msg_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
   sku                      = var.ehns_sku_name
   capacity                 = var.ehns_capacity
