@@ -37,6 +37,8 @@ cidr_subnet_appgateway           = ["10.1.128.0/24"]
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
 cidr_subnet_tools_cae            = ["10.1.248.0/23"]
 cidr_subnet_azdoa                = ["10.1.130.0/24"]
+cidr_subnet_eventhub             = ["10.230.10.64/26"]
+
 
 #
 # Dns
