@@ -73,8 +73,8 @@ cosmos_mongo_db_params = {
 cosmos_mongo_db_pay_wallet_params = {
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 1000
-  throughput         = 1000
+  max_throughput     = 2000
+  throughput         = 2000
 }
 
 
