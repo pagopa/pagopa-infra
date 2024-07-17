@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "sec_rg" {
-  name     = format("%s-sec-rg", local.project)
+  name     = format("%s-sec-rg", local.product)
   location = var.location
 
   tags = var.tags
@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "sec_rg" {
 
 module "key_vault" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.22.0"
-  name                = format("%s-kv", local.project)
+  name                = format("%s-kv", local.product)
   location            = azurerm_resource_group.sec_rg.location
   resource_group_name = azurerm_resource_group.sec_rg.name
   tenant_id           = data.azurerm_client_config.current.tenant_id
@@ -31,7 +31,7 @@ resource "azurerm_key_vault_access_policy" "api_management_policy" {
 resource "azurerm_key_vault_access_policy" "app_gateway_public_policy" {
   key_vault_id            = module.key_vault.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
-  object_id               = azurerm_user_assigned_identity.appgateway.principal_id
+  object_id               = azurerm_user_assigned_identity.appgateway_public.principal_id
   key_permissions         = ["Get", "List"]
   secret_permissions      = ["Get", "List"]
   certificate_permissions = ["Get", "List", "Purge"]
@@ -47,7 +47,7 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   object_id = data.azuread_group.adgroup_admin.object_id
 
   key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Restore", "Recover"]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
@@ -113,7 +113,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_security_policy" {
 resource "azurerm_user_assigned_identity" "appgateway_public" {
   resource_group_name = azurerm_resource_group.sec_rg.name
   location            = azurerm_resource_group.sec_rg.location
-  name                = format("%s-appgateway-identity", local.project)
+  name                = format("%s-appgateway-identity", local.product)
 
   tags = var.tags
 }
