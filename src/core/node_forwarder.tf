@@ -270,7 +270,7 @@ resource "azurerm_key_vault_secret" "certificate_crt_node_forwarder_s" {
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 
   lifecycle {
     ignore_changes = [
@@ -284,7 +284,7 @@ resource "azurerm_key_vault_secret" "certificate_key_node_forwarder_s" {
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 
   lifecycle {
     ignore_changes = [
@@ -295,11 +295,11 @@ resource "azurerm_key_vault_secret" "certificate_key_node_forwarder_s" {
 
 data "azurerm_key_vault_secret" "certificate_crt_node_forwarder" {
   name         = "certificate-crt-node-forwarder"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 data "azurerm_key_vault_secret" "certificate_key_node_forwarder" {
   name         = "certificate-key-node-forwarder"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
@@ -309,7 +309,7 @@ resource "azurerm_key_vault_secret" "node_forwarder_subscription_key" {
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 
   lifecycle {
     ignore_changes = [

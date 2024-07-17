@@ -960,6 +960,13 @@ variable "cdn_storage_account_replication_type" {
   description = "(Optional) Cdn storage account replication type"
 }
 
+variable "azuread_service_principal_azure_cdn_frontdoor_id" {
+  type        = string
+  description = "Azure CDN Front Door Principal ID"
+  # this is the deafult value for tenant pagopa.it
+  default = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
+}
+
 
 variable "apicfg_core_service_path_value" {
   type        = string
