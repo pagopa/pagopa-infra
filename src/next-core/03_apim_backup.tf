@@ -20,8 +20,8 @@ module "backupstorage" {
   resource_group_name             = azurerm_resource_group.data.name
   location                        = var.location
   allow_nested_items_to_be_public = false
-  public_network_access_enabled = false
-  
+  public_network_access_enabled   = false
+
 
   tags = var.tags
 }
