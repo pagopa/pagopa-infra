@@ -152,7 +152,7 @@
                 <!-- ottimizzazione-ec-buoni start -->
                 <!-- https://pagopa.atlassian.net/wiki/spaces/PAG/pages/533398561/Ottimizzazione+filtro+su+Enti+Creditori+buoni -->
                 <cache-lookup-value key="@((string) context.Variables["fiscalCode"])" variable-name="dynamicGoodEc" caching-type="internal" />
-                <trace source="ottimizzazione-ec-buoni-init" severity="information">ottimizzazione-ec-buoni-init</trace>
+<!--                <trace source="ottimizzazione-ec-buoni-init" severity="information">ottimizzazione-ec-buoni-init</trace>-->
                 <choose>
                     <when condition="@{
                     var eclist = ((string) context.Variables["ecs"]).Split(',');
@@ -161,7 +161,7 @@
                     //      se non è in blacklist e NON è nella dynamic => call apiconfig
                     return  ( isFiscalCodeNotInBlackList && !context.Variables.ContainsKey("dynamicGoodEc") )  ;
                     }">
-                        <trace source="ottimizzazione-ec-buoni" severity="information">ottimizzazione-ec-buoni-start</trace>
+<!--                        <trace source="ottimizzazione-ec-buoni" severity="information">ottimizzazione-ec-buoni-start</trace>-->
                         <send-request ignore-error="true" timeout="10" response-variable-name="ec-stations-body" mode="new">
                             <!-- Get station details and relation info with creditor institution -->
                             <!-- <set-url>@(String.Format("https://api.${urlenvpath}platform.pagopa.it/apiconfig/auth/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url> -->
@@ -236,7 +236,7 @@
                 var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
                 return isBrkPSPintoPSPwhiteList && isFiscalCodeNotInBlackList && isIdempotencyKeyNotAlreadytRx;
             }">
-                        <trace source="ottimizzazione-sent-verify" severity="information">ottimizzazione-sent-verify</trace>
+<!--                        <trace source="ottimizzazione-sent-verify" severity="information">ottimizzazione-sent-verify</trace>-->
                         <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
                             <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
                             <set-method>POST</set-method>
@@ -515,7 +515,7 @@
                         </choose>
                     </when>
                     <otherwise>
-                        <trace source="ottimizzazione-sent-activate" severity="information">ottimizzazione-sent-activate</trace>
+<!--                        <trace source="ottimizzazione-sent-activate" severity="information">ottimizzazione-sent-activate</trace>-->
                         <set-variable name="amount" value="@{
                     var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
                     if (isIdempotencyKeyNotAlreadytRx) {

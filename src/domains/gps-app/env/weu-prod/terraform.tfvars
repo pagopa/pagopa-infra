@@ -64,6 +64,9 @@ apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/r
 # gpd database config for gpd-app-service
 pgbouncer_enabled = true
 
+# WISP-dismantling-cfg
+create_wisp_converter = true
+
 pod_disruption_budgets = {
   "gpd-core" = {
     minAvailable = 1

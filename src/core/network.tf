@@ -50,6 +50,12 @@ module "vnet_peering" {
   target_peering_custom_name       = "pagopa-${var.env_short}-vnet-to-pagopa-${var.env_short}-vnet-integration"
 }
 
+data "azurerm_subnet" "eventhub_snet" {
+  name                 = format("%s-eventhub-snet", local.project)
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  virtual_network_name = module.vnet_integration.name
+}
+
 module "route_table_peering_sia" {
   source = "git::https://github.com/pagopa/azurerm.git//route_table?ref=v4.18.1"
 
@@ -58,7 +64,7 @@ module "route_table_peering_sia" {
   resource_group_name           = azurerm_resource_group.rg_vnet.name
   disable_bgp_route_propagation = false
 
-  subnet_ids = [module.apim_snet.id, module.eventhub_snet[0].id]
+  subnet_ids = [module.apim_snet.id, data.azurerm_subnet.eventhub_snet.id]
 
   routes = [
     {

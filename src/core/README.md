@@ -111,7 +111,6 @@
 | <a name="module_cosmosdb_paymentsdb_snet"></a> [cosmosdb\_paymentsdb\_snet](#module\_cosmosdb\_paymentsdb\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v2.15.1 |
 | <a name="module_dns_forwarder"></a> [dns\_forwarder](#module\_dns\_forwarder) | git::https://github.com/pagopa/azurerm.git//dns_forwarder | v4.18.1 |
 | <a name="module_dns_forwarder_snet"></a> [dns\_forwarder\_snet](#module\_dns\_forwarder\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v4.18.1 |
-| <a name="module_eventhub_snet"></a> [eventhub\_snet](#module\_eventhub\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.90 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/azurerm.git//key_vault | v1.0.90 |
 | <a name="module_node_forwarder_app_service"></a> [node\_forwarder\_app\_service](#module\_node\_forwarder\_app\_service) | git::https://github.com/pagopa/azurerm.git//app_service | v3.4.0 |
 | <a name="module_node_forwarder_slot_staging"></a> [node\_forwarder\_slot\_staging](#module\_node\_forwarder\_slot\_staging) | git::https://github.com/pagopa/azurerm.git//app_service_slot | v3.4.0 |
@@ -158,6 +157,7 @@
 | [azurerm_api_management_api_operation_policy.activateIO_reservation_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.close_payment_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.close_payment_api_v1_dev](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.close_payment_api_v2_wisp_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.donazioni_activate_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.donazioni_sendrt_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.donazioni_verify_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
@@ -168,6 +168,7 @@
 | [azurerm_api_management_api_operation_policy.nm3_activate_verify_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.parked_list_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.parked_list_api_v1_dev](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.send_payment_result_api_v2_wisp_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_policy.apim_node_for_donazioni_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_node_for_io_policy](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_policy) | resource |
 | [azurerm_api_management_api_policy.apim_node_for_io_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/api_management_api_policy) | resource |
@@ -308,7 +309,6 @@
 | [azurerm_resource_group.cosmosdb_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.data](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.msg_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.node_forwarder_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.nodo_pagamenti_test_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.payment_manager_monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
@@ -322,6 +322,10 @@
 | [azurerm_user_assigned_identity.appgateway](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/user_assigned_identity) | resource |
 | [null_resource.decoupler_configuration_from_json_2_xml](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [random_id.dns_forwarder_hash](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
+| [terraform_data.sha256_decoupler_activate_outbound](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
+| [terraform_data.sha256_decoupler_algorithm](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
+| [terraform_data.sha256_decoupler_configuration](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
+| [terraform_data.sha256_on_erro_soap_handler](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [azuread_application.vpn_app](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application) | data source |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -370,6 +374,7 @@
 | [azurerm_key_vault_secret.sec_workspace_id](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_private_dns_zone.privatelink_documents_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/private_dns_zone) | data source |
 | [azurerm_resource_group.rg_vnet_ita](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/resource_group) | data source |
+| [azurerm_subnet.eventhub_snet](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/subnet) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet_ita](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/virtual_network) | data source |
 
@@ -478,6 +483,7 @@
 | <a name="input_cidr_vnet_integration"></a> [cidr\_vnet\_integration](#input\_cidr\_vnet\_integration) | Virtual network to peer with sia subscription. It should host apim | `list(string)` | n/a | yes |
 | <a name="input_cobadge_hostname"></a> [cobadge\_hostname](#input\_cobadge\_hostname) | Cobadge hostname | `string` | `""` | no |
 | <a name="input_cosmos_document_db_params"></a> [cosmos\_document\_db\_params](#input\_cosmos\_document\_db\_params) | n/a | <pre>object({<br>    kind           = string<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>  })</pre> | n/a | yes |
+| <a name="input_create_wisp_converter"></a> [create\_wisp\_converter](#input\_create\_wisp\_converter) | CREATE WISP dismantling system infra | `bool` | `false` | no |
 | <a name="input_cstar_outbound_ip_1"></a> [cstar\_outbound\_ip\_1](#input\_cstar\_outbound\_ip\_1) | CSTAR ip 1 | `string` | n/a | yes |
 | <a name="input_cstar_outbound_ip_2"></a> [cstar\_outbound\_ip\_2](#input\_cstar\_outbound\_ip\_2) | CSTAR ip 2 | `string` | n/a | yes |
 | <a name="input_ddos_protection_plan"></a> [ddos\_protection\_plan](#input\_ddos\_protection\_plan) | Network | <pre>object({<br>    id     = string<br>    enable = bool<br>  })</pre> | `null` | no |
@@ -558,7 +564,7 @@
 | <a name="input_logic_app_biz_evt_plan_sku_size"></a> [logic\_app\_biz\_evt\_plan\_sku\_size](#input\_logic\_app\_biz\_evt\_plan\_sku\_size) | App service plan sku size | `string` | `"WS1"` | no |
 | <a name="input_logic_app_biz_evt_plan_sku_tier"></a> [logic\_app\_biz\_evt\_plan\_sku\_tier](#input\_logic\_app\_biz\_evt\_plan\_sku\_tier) | App service plan sku tier | `string` | `"WorkflowStandard"` | no |
 | <a name="input_logic_app_storage_account_replication_type"></a> [logic\_app\_storage\_account\_replication\_type](#input\_logic\_app\_storage\_account\_replication\_type) | (Optional) Storage account replication type used for function apps | `string` | `"LRS"` | no |
-| <a name="input_node_decoupler_primitives"></a> [node\_decoupler\_primitives](#input\_node\_decoupler\_primitives) | Node decoupler primitives | `string` | `"nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"` | no |
+| <a name="input_node_decoupler_primitives"></a> [node\_decoupler\_primitives](#input\_node\_decoupler\_primitives) | Node decoupler primitives | `string` | `"nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"` | no |
 | <a name="input_node_forwarder_always_on"></a> [node\_forwarder\_always\_on](#input\_node\_forwarder\_always\_on) | Node Forwarder always on property | `bool` | `true` | no |
 | <a name="input_node_forwarder_autoscale_enabled"></a> [node\_forwarder\_autoscale\_enabled](#input\_node\_forwarder\_autoscale\_enabled) | n/a | `bool` | `true` | no |
 | <a name="input_node_forwarder_logging_level"></a> [node\_forwarder\_logging\_level](#input\_node\_forwarder\_logging\_level) | Logging level of Node Forwarder | `string` | `"INFO"` | no |
