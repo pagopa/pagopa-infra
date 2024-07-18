@@ -40,8 +40,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_io_av
   location            = var.location
 
   action {
-    #action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
     email_subject          = "[payment-wallet-for-IO V1] Availability Alert"
     custom_webhook_payload = "{}"
   }
@@ -53,7 +52,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/io-payment-wallet/v1'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 250)
+    Success=countif(responseCode_d < 500 and DurationMs < 5000)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
@@ -78,8 +77,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_webvi
   location            = var.location
 
   action {
-    #action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
     email_subject          = "[payment-wallet-for-webview V1] Availability Alert"
     custom_webhook_payload = "{}"
   }
@@ -119,8 +117,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_ecomm
   location            = var.location
 
   action {
-    #action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
     email_subject          = "[payment-wallet-for-ecommerce V1] Availability Alert"
     custom_webhook_payload = "{}"
   }
@@ -156,8 +153,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_npg_notif
   location            = var.location
 
   action {
-    #action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
     email_subject          = "[payment-wallet-npg-notifications V1] Availability Alert"
     custom_webhook_payload = "{}"
   }
@@ -193,8 +189,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_outcomes_
   location            = var.location
 
   action {
-    #action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
     email_subject          = "[payment-wallet-outcomes V1] Availability Alert"
     custom_webhook_payload = "{}"
   }
