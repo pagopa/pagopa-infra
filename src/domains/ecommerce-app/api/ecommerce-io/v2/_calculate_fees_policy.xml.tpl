@@ -45,7 +45,7 @@
             </otherwise>
         </choose>
         <choose>
-            <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+            <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))"> 
                 <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
                 <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
                 <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["walletId"])" />
@@ -156,7 +156,7 @@
                     </otherwise>
                 </choose>
             </when>
-            <otherwise>
+            <when condition="@("NPG".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && "{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))">
                 <set-variable name="body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
                 <set-variable name="walletId" value="@((string)((JObject) context.Variables["body"])["walletId"])" />
                 <choose>
@@ -223,7 +223,7 @@
                     }
                     return inBody.ToString();
                 }</set-body>
-            </otherwise>
+            </when>
         </choose>
     </inbound>
     <outbound>

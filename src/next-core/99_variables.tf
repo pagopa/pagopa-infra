@@ -959,3 +959,37 @@ variable "cdn_storage_account_replication_type" {
   default     = "GRS"
   description = "(Optional) Cdn storage account replication type"
 }
+
+
+variable "backup_storage_replication_type" {
+  type        = string
+  default     = "GZRS"
+  description = "(Optional) Backup storage account replication type"
+}
+
+variable "azuread_service_principal_azure_cdn_frontdoor_id" {
+  type        = string
+  description = "Azure CDN Front Door Principal ID"
+  # this is the deafult value for tenant pagopa.it
+  default = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
+}
+
+
+variable "apicfg_core_service_path_value" {
+  type        = string
+  description = "apicfg core cache path"
+  # default     = "pagopa-api-config-core-service/o"
+}
+
+variable "apicfg_selfcare_integ_service_path_value" {
+  type        = string
+  description = "apicfg selfcare integ cache path"
+  # default     = "pagopa-api-config-selfcare-integration/o" // at moment blocked to ORA 👀 https://github.com/pagopa/pagopa-api-config-selfcare-integration/pull/36
+}
+
+
+variable "cidr_subnet_eventhub" {
+  type        = list(string)
+  description = "Address prefixes subnet eventhub"
+  default     = null
+}

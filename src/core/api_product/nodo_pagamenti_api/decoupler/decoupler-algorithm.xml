@@ -5,26 +5,24 @@
     - Copy and paste your code here or simply start coding
 -->
 <fragment>
-  <trace source="primitive-type" severity="information">@((string) context.Variables["primitiveType"])</trace>
-  <set-variable name="enable_nm3_switch" value="{{enable-nm3-decoupler-switch}}" />
-  <set-variable name="enable_routing_switch" value="{{enable-routing-decoupler-switch}}" />
-  <choose>
-    <!-- evaluate routing algorithm -->
-    <when condition="@(((string)context.Variables["primitiveType"]).Equals("ROUTING"))">
-    <set-variable name="configuration" value="@{
+	<set-variable name="enable_nm3_switch" value="{{enable-nm3-decoupler-switch}}" />
+	<set-variable name="enable_routing_switch" value="{{enable-routing-decoupler-switch}}" />
+	<set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
+	<choose>
+		<!-- evaluate routing algorithm -->
+		<when condition="@(((string)context.Variables["primitiveType"]).Equals("ROUTING"))">
+			<set-variable name="configuration" value="@{
     JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
     JArray sorted = new JArray(json_configuration.OrderByDescending(obj => (int)obj["routing"]));
     return sorted.ToString();
     }" />
-    <choose>
-      <when condition="@(context.Variables.GetValueOrDefault<string>("enable_routing_switch", "").Equals("true"))">
-      <set-variable name="baseUrl" value="@{
+			<choose>
+				<when condition="@(context.Variables.GetValueOrDefault<string>("enable_routing_switch", "").Equals("true"))">
+					<set-variable name="baseUrl" value="@{
                         var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
-
                         // get random number
                         var rand = new Random();
                         int random = rand.Next(0, 100);
-
                         // priority is given by list order. add field for sorting the priority
                         int currentRouting = 0;
                         foreach (JObject item in configuration) {
@@ -33,30 +31,25 @@
                                 return item.GetValue("node_uri").ToString();
                             }
                         }
-
                         return context.Variables.GetValueOrDefault<string>("baseUrl", "");
       }" />
-    </when>
-    <!-- TODO remove after test -->
-    <otherwise>
-      <trace source="skip-set-base-user-routing" severity="information">skipped set base url routing</trace>
-    </otherwise>
-  </choose>
-</when>
-<when condition="@(((string)context.Variables["primitiveType"]).Equals("NM3"))">
-<set-variable name="configuration" value="@{
+				</when>
+			</choose>
+		</when>
+		<when condition="@(((string)context.Variables["primitiveType"]).Equals("NM3"))">
+			<set-variable name="configuration" value="@{
     JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
     JArray sorted = new JArray(json_configuration.OrderBy(obj => (int)obj["list_priority"]));
     return sorted.ToString();
     }" />
-  <!-- read request info -->
-<choose>
-<!--<when condition="@(((string)context.Variables["soapAction"]).Equals("sendPaymentOutcome"))">-->
-<when condition="@{
+			<!-- read request info -->
+			<choose>
+				<!--<when condition="@(((string)context.Variables["soapAction"]).Equals("sendPaymentOutcome"))">-->
+				<when condition="@{
   string[] sendPaymentOutcome = new string[] {"sendPaymentOutcome", "sendPaymentOutcomeV2"};
   return sendPaymentOutcome.Contains((string)context.Variables["soapAction"]);
 }">
-<set-variable name="requestData" value="@{
+					<set-variable name="requestData" value="@{
                             // retrieve data from request body
                             XElement request = context.Request.Body.As<XElement>(preserveContent: true);
                             XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
@@ -81,13 +74,12 @@ new JProperty("ttl", 1)
 ).ToString();
 }
 }" />
-</when>
-<otherwise>
-<set-variable name="requestData" value="@{
+				</when>
+				<otherwise>
+					<set-variable name="requestData" value="@{
                             // retrieve data from request body
                             XElement request = context.Request.Body.As<XElement>(preserveContent: true);
                             XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
-
                             if (body != null ) {
                                 XElement primitive = (XElement) body.FirstNode;
                                 XElement idBrokerPSP = primitive.Descendants("idBrokerPSP").FirstOrDefault();
@@ -97,53 +89,91 @@ new JProperty("ttl", 1)
                                 var ci = idCi.Value;
                                 // ttl in seconds
                                 return new JObject(
-                                    new JProperty("brokerPsp", idBrokerPSP.Value),
-                                    new JProperty("ci", idCi.Value),
+                                    new JProperty("brokerPsp", brokerPsp),
+                                    new JProperty("ci", ci),
+                                    new JProperty("noticeNumber", noticeNumber.Value),
                                     new JProperty("key", brokerPsp + "_" + ci + "_" + noticeNumber.Value),
                                     new JProperty("ttl", 3600)
                                 ).ToString();
                             } else {
                                 return new JObject(
                                     new JProperty("brokerPsp", ""),
+new JProperty("ci", ""),
+new JProperty("noticeNumber", ""),
 new JProperty("paymentToken", ""),
 new JProperty("key", ""),
 new JProperty("ttl", 1)
 ).ToString();
 }
 }" />
-</otherwise>
-  </choose>
-  <!-- check if key is cached -->
-<cache-lookup-value key="@{
+				</otherwise>
+			</choose>
+			<!-- check if key is cached -->
+			<cache-lookup-value key="@{
                         var domain = (string)context.Variables["domain"];
                         var requestData = JObject.Parse((string)context.Variables["requestData"]);
                         return domain + "_" + (string)requestData["key"];
                     }" variable-name="nodeId" default-value="LIST" caching-type="internal" />
-<choose>
-<!-- if key not in cache -->
-<when condition="@(context.Variables.GetValueOrDefault<string>("nodeId", "").Equals("LIST"))">
-<!-- evaluate list algorithm -->
-<set-variable name="dataToSet" value="@{
+			<choose>
+				<!-- if key not in cache -->
+				<when condition="@(context.Variables.GetValueOrDefault<string>("nodeId", "").Equals("LIST"))">
+					<!-- Execute cache lookup for default node ID if WISP dismantling is enabled -->
+					<set-variable name="set_cache" value="true" />
+					<choose>
+						<when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
+							<!-- if fiscalcode and notice number belongs to wisp dismantling, set nodeId as default value ( {{default-nodo-id}} ) -->
+							<set-variable name="wisp_fiscalcode_noticenumber" value="@{
+                                var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                                var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
+  var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
+  return "wisp_" + ci + "_" + noticeNumber;
+  }" />
+							<cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
+							<choose>
+								<when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+									<cache-store-value key="@{
+                                            var domain = (string) context.Variables["domain"];
+                                            var requestData = JObject.Parse((string) context.Variables["requestData"]);
+                                            return domain + "_" + (string) requestData["key"];
+                                        }" value="@((string) context.Variables["baseNodeId"])" duration="@{
+                                            var requestData = JObject.Parse((string) context.Variables["requestData"]);
+                                            return (int) requestData["ttl"];
+                                        }" caching-type="internal" />
+									<!-- dataToSet is used in decoupler-activate-outbound -->
+									<set-variable name="dataToSet" value="@{
+											var baseNodeId = context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
+											var baseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "NONE");
+											return new JObject(
+												new JProperty("nodeId", baseNodeId),
+												new JProperty("nodeUri", baseUrl),
+												new JProperty("ttl", 3600)
+											).ToString();
+										}" />
+									<set-variable name="set_cache" value="false" />
+									<!-- set_cache to false indicates to skip LIST list algorithm -->
+								</when>
+							</choose>
+						</when>
+					</choose>
+					<choose>
+						<when condition="@(context.Variables.GetValueOrDefault<string>("set_cache", "true")=="true")">
+							<!-- evaluate list algorithm -->
+							<set-variable name="dataToSet" value="@{
                             var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
-
                             var requestData = JObject.Parse((string)context.Variables["requestData"]);
                             bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true");
                             if (enable_nm3_switch) {
                             foreach (JObject item in configuration) {
                             bool brokerPspFound = false;
                             bool ciFound = false;
-
                             var brokerPsps = item.GetValue("broker_psps").ToList();
                             var cis = item.GetValue("cis").ToList();
-
                             if (brokerPsps.Count == 0 || (brokerPsps.Count > 0 && brokerPsps.Contains(requestData.GetValue("brokerPsp")))) {
                             brokerPspFound = true;
                             }
-
                             if (cis.Count == 0 || (cis.Count > 0 && cis.Contains(requestData.GetValue("ci")))) {
                             ciFound = true;
                             }
-
                             if (brokerPspFound && ciFound) {
                             return new JObject(
                             new JProperty("nodeId", item.GetValue("node_id").ToString()),
@@ -160,30 +190,26 @@ new JProperty("ttl", 1)
                             new JProperty("nodeUri", baseUrl),
                             new JProperty("ttl", requestData.GetValue("ttl"))
                             ).ToString();
-
                             }" />
-<!-- set base url -->
-<choose>
-  <!-- if enable_nm3_decoupler_switch == true -->
-  <when condition="@(context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true"))">
-  <set-variable name="baseUrl" value="@{
+							<!-- set base url -->
+							<choose>
+								<!-- if enable_nm3_decoupler_switch == true -->
+								<when condition="@(context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true"))">
+									<set-variable name="baseUrl" value="@{
                                   var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
                                   var target = dataToSet.GetValue("nodeUri").ToString();
                                   var defaultBaseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "");
   return target.Equals("NONE") ? defaultBaseUrl : target;
   }" />
-</when>
-<otherwise>
-  <trace source="skip-set-base-user" severity="information">skipped set base url nm3</trace>
-</otherwise>
-</choose>
-  <!-- set node_id in cache -->
-<choose>
-<when condition="@{
+								</when>
+							</choose>
+							<!-- set node_id in cache -->
+							<choose>
+								<when condition="@{
                                 var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
                                 return !dataToSet.GetValue("nodeId").ToString().Equals("NONE");
                             }">
-<cache-store-value key="@{
+									<cache-store-value key="@{
                                     var domain = (string)context.Variables["domain"];
                                     var requestData = JObject.Parse((string)context.Variables["requestData"]);
                                     return domain + "_" + (string)requestData["key"];
@@ -194,20 +220,19 @@ new JProperty("ttl", 1)
                                     var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
                                     return (int)requestData["ttl"];
                                 }" caching-type="internal" />
-</when>
-  </choose>
-  </when>
-  <!-- key in cache -->
-<otherwise>
-<trace source="retrieve-node-uri" severity="information">Node URI retrieved by cache</trace>
-<!-- retrieve url by node_id according to configuration -->
-<set-variable name="dataToSet" value="@{
+								</when>
+							</choose>
+						</when>
+					</choose>
+				</when>
+				<!-- key in cache -->
+				<otherwise>
+					<!-- retrieve url by node_id according to configuration -->
+					<set-variable name="dataToSet" value="@{
                             var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
-
                             var nodeId = (string)context.Variables["nodeId"];
                             foreach (JObject item in configuration) {
                                 var currentNodeId = item.GetValue("node_id").ToString();
-
                                 if (currentNodeId.Equals(nodeId)) {
                                     return new JObject(
                                         new JProperty("nodeId", item.GetValue("node_id").ToString()),
@@ -223,26 +248,99 @@ new JProperty("ttl", 1)
                                     new JProperty("nodeUri", baseUrl),
                                     new JProperty("ttl", 3600)
                                     ).ToString();
-
                         }" />
-<!-- set base url -->
-<!-- if enable_nm3_decoupler_switch == true -->
-<choose>
-  <when condition="@(context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true"))">
-  <set-variable name="baseUrl" value="@{
+					<!-- set base url -->
+					<!-- if enable_nm3_decoupler_switch == true -->
+					<choose>
+						<when condition="@(context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true"))">
+							<set-variable name="baseUrl" value="@{
                                   var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
                                   var target = dataToSet.GetValue("nodeUri").ToString();
                                   var defaultBaseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "");
   return target.Equals("NONE") ? defaultBaseUrl : target;
   }" />
-</when>
-<otherwise>
-  <!-- TODO remove after test -->
-  <trace source="skip-set-base-user" severity="information">skipped set base url nm3</trace>
-</otherwise>
-</choose>
-  </otherwise>
-  </choose>
-  </when>
-  </choose>
-  </fragment>
+						</when>
+					</choose>
+				</otherwise>
+			</choose>
+		</when>
+		<!-- evaluate wisp dismantling algorithm -->
+		<when condition="@(((string)context.Variables["primitiveType"]).Equals("OTHER_WISPDISMANTLING"))">
+			<set-variable name="wisp_whitelisted_brokers" value="{{wisp-brokerPSP-whitelist}}" />
+			<set-variable name="wisp_whitelisted_channels" value="{{wisp-channel-whitelist}}" />
+			<set-variable name="wisp_whitelisted_stations" value="{{wisp-station-whitelist}}" />
+			<set-variable name="wisp_whitelisted_cis" value="{{wisp-ci-whitelist}}" />
+			<set-variable name="is_whitelisted" value="@{
+                        // isWhiteListed if:
+                        // - lists are empties
+                        // - channelId, brokerPSP, stationId and creditorInstitutionId belong to relative lists
+                        string brokersList = (string) context.Variables["wisp_whitelisted_brokers"];
+                        string channelsList = (string) context.Variables["wisp_whitelisted_channels"];
+                        string stationsList = (string) context.Variables["wisp_whitelisted_stations"];
+                        string cisList = (string) context.Variables["wisp_whitelisted_cis"];
+                        bool brokersWhitelisted = brokersList.Equals("*");
+                        bool channelsWhitelisted = channelsList.Equals("*");
+                        bool stationsWhitelisted = stationsList.Equals("*");
+                        bool cisWhitelisted = cisList.Equals("*");
+                        bool isWhitelisted = false;
+                        if (brokersWhitelisted && channelsWhitelisted && stationsWhitelisted && cisWhitelisted) {
+                            isWhitelisted = true;
+                            return isWhitelisted;
+                        }
+                        string[] brokers = !brokersWhitelisted ? ((string) context.Variables["wisp_whitelisted_brokers"]).Split(',') : new string[] {};
+                        string[] channels = !channelsWhitelisted ? ((string) context.Variables["wisp_whitelisted_channels"]).Split(',') : new string[] {};
+                        string[] stations =  !stationsWhitelisted ? ((string) context.Variables["wisp_whitelisted_stations"]).Split(',') : new string[] {};
+                        string[] cis = !cisWhitelisted ? ((string) context.Variables["wisp_whitelisted_cis"]).Split(',') : new string[] {};
+                        XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
+                        try {
+                            XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+                            XElement primitive = (XElement) body.FirstNode;
+                            string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
+                            string pspBrokerId = (string) primitive.Descendants("identificativoIntermediarioPSP").FirstOrDefault();
+                            // check if nodoInviaRPT or nodoInviaCarrelloRPT, to set ci value correctly
+                            XElement header = doc.Descendants(doc.Name.Namespace + "Header").FirstOrDefault();
+                            string ciId = "";
+                            // listaRPT is set only in nodoInviaCarrelloRPT
+                            // in this case we retrieve the ci from the first RPT (primaryCI)
+                            if(primitive.Descendants("listaRPT").FirstOrDefault() != null) {
+                                XElement listaRPT = primitive.Descendants("listaRPT").FirstOrDefault();
+                                XElement firstRPT = listaRPT.Descendants("elementoListaRPT").FirstOrDefault();
+                                ciId = (string) firstRPT.Descendants("identificativoDominio").FirstOrDefault();
+                            } else {
+                                ciId = (string) header.Descendants("identificativoDominio").FirstOrDefault();
+                            }
+                            // check cis only if whitelist contains at least one element
+                            // variable isCiAndStationOk set to true, if ci and station not whitelisted then will
+                            // be set to false
+                            bool isCiAndStationOk = true;
+                            if (cis.Count() > 0) {
+                                // check if ciId is whitelisted
+                                if(cis.Contains(ciId)) {
+                                    // check if ci relation with some station is present
+                                    if(stationsList.Contains(ciId + "-")) {
+                                        // if present, check if ci-station relation is whitelisted
+                                        string stationId = (string) header.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
+                                        if(!stations.Contains(ciId + "-" + stationId)) {
+                                            isCiAndStationOk = false;
+                                        }
+                                    }
+                                } else {
+                                    isCiAndStationOk = false;
+                                }
+                            }
+                            isWhitelisted = (brokersWhitelisted || brokers.Contains(pspBrokerId)) &&
+                                            (channelsWhitelisted || channels.Contains(channelId)) &&
+                                            isCiAndStationOk;
+                        } catch (Exception e) {
+                            // do nothing
+                        }
+                        return isWhitelisted;
+                    }" />
+			<choose>
+				<when condition="@( context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && context.Variables.GetValueOrDefault<bool>("is_whitelisted", false) )">
+					<set-variable name="baseUrl" value="{{wisp-dismantling-backend-url}}" />
+				</when>
+			</choose>
+		</when>
+	</choose>
+</fragment>
