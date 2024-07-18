@@ -1,0 +1,96 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+
+  <!-- create sequence section -->
+  <changeSet author="liquibase" id="2024071800000">
+    <validCheckSum>ANY</validCheckSum>
+    <createSequence cacheSize="2000000" cycle="false" incrementBy="1"
+                    maxValue="9223372036854775807" minValue="1"
+                    sequenceName="MANUTENZIONE_STAZIONE_SEQ" startValue="2000000"/>
+  </changeSet>
+
+
+  <!-- create table section -->
+  <changeSet author="liquibase" id="2024071800001">
+    <validCheckSum>ANY</validCheckSum>
+    <createTable tableName="MANUTENZIONE_STAZIONE">
+      <column defaultValueSequenceNext="MANUTENZIONE_STAZIONE_SEQ" name="OBJ_ID" type="NUMBER">
+        <constraints nullable="false" primaryKey="true"
+                     primaryKeyName="PK_MANUTENZIONE_STAZIONE"/>
+      </column>
+      <column name="DATA_ORA_INIZIO" type="TIMESTAMP WITH TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="DATA_ORA_FINE" type="TIMESTAMP WITH TIME ZONE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="STANDIN" type="BOOLEAN">
+        <constraints nullable="false"/>
+      </column>
+      <column name="FK_STAZIONE" type="NUMBER">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <!-- create fk section -->
+  <changeSet author="liquibase" id="2024071800002">
+    <addForeignKeyConstraint baseColumnNames="FK_STAZIONE"
+                             baseTableName="MANUTENZIONE_STAZIONE"
+                             constraintName="FK_MANUTENZIONE_STAZIONE_STAZIONE"
+                             deferrable="false" initiallyDeferred="false"
+                             onDelete="RESTRICT" onUpdate="RESTRICT"
+                             referencedColumnNames="obj_id"
+                             referencedTableName="STAZIONI" validate="true"/>
+  </changeSet>
+
+  <!-- create index section -->
+  <changeSet author="liquibase" id="2024071800003">
+      <createIndex indexName="MANUTENZIONE_STAZIONE_DATE_IDX1" tableName="MANUTENZIONE_STAZIONE">
+          <column name="DATA_ORA_INIZIO"/>
+          <column name="DATA_ORA_FINE"/>
+      </createIndex>
+  </changeSet>
+
+  <!-- create view section -->
+  <changeSet author="liquibase" id="2024071800004">
+    <createView replaceIfExists="true" fullDefinition="false" viewName="MANUTENZIONE_STAZIONE_ESPANSA">
+      SELECT mequal.OBJ_ID::varchar(255) AS ID, mequal.DATA_ORA_INIZIO, mequal.DATA_ORA_FINE, ipa.ID_INTERMEDIARIO_PA AS INTERMEDIARIO_PA_CODICE_FISCALE
+      FROM MANUTENZIONE_STAZIONE mequal JOIN STAZIONI s ON mequal.FK_STAZIONE = s.OBJ_ID JOIN INTERMEDIARI_PA ipa ON s.FK_INTERMEDIARIO_PA = ipa.OBJ_ID
+      WHERE EXTRACT('year' FROM mequal.DATA_ORA_INIZIO) = EXTRACT('year' FROM mequal.DATA_ORA_FINE )
+      UNION ALL
+      SELECT mdiffStart.OBJ_ID || 'start' AS ID, mdiffStart.DATA_ORA_INIZIO, (DATE_TRUNC('year', mdiffStart.DATA_ORA_INIZIO) + interval '1' year) AS DATA_ORA_FINE , ipa.ID_INTERMEDIARIO_PA AS INTERMEDIARIO_PA_CODICE_FISCALE
+      FROM MANUTENZIONE_STAZIONE mdiffStart JOIN STAZIONI s ON mdiffStart.FK_STAZIONE = s.OBJ_ID JOIN INTERMEDIARI_PA ipa ON s.FK_INTERMEDIARIO_PA = ipa.OBJ_ID
+      WHERE EXTRACT('year' FROM mdiffStart.DATA_ORA_INIZIO) != EXTRACT('year' FROM mdiffStart.DATA_ORA_FINE )
+      UNION ALL
+      SELECT mdiffEnd.OBJ_ID || 'end' AS ID, (DATE_TRUNC('year', mdiffEnd.DATA_ORA_FINE )) AS DATA_ORA_INIZIO, mdiffEnd.DATA_ORA_FINE , ipa.ID_INTERMEDIARIO_PA AS INTERMEDIARIO_PA_CODICE_FISCALE
+      FROM MANUTENZIONE_STAZIONE mdiffEnd JOIN STAZIONI s ON mdiffEnd.FK_STAZIONE = s.OBJ_ID JOIN INTERMEDIARI_PA ipa ON s.FK_INTERMEDIARIO_PA = ipa.OBJ_ID
+      WHERE EXTRACT('year' FROM mdiffEnd.DATA_ORA_INIZIO) != EXTRACT('year' FROM mdiffEnd.DATA_ORA_FINE );
+    </createView>
+  </changeSet>
+
+  <changeSet author="liquibase" id="2024071800005">
+    <createView replaceIfExists="true" fullDefinition="false" viewName="MANUTENZIONE_STAZIONE_RIEPILOGO">
+      SELECT INTERMEDIARIO_PA_CODICE_FISCALE, TO_CHAR(DATE_TRUNC('year', DATA_ORA_INIZIO), 'YYYY') AS ANNO_MANUTENZIONE,
+      SUM(COALESCE(
+        (
+          SELECT EXTRACT(epoch FROM DATA_ORA_FINE - DATA_ORA_INIZIO)/3600
+          FROM MANUTENZIONE_STAZIONE_ESPANSA AS maintenanceForUsedHours
+          WHERE maintenanceForUsedHours.DATA_ORA_FINE &lt; CURRENT_TIMESTAMP and maintenanceForUsedHours.ID = maintenanceBase.ID
+        ), 0)) AS ORE_UTILIZZATE,
+      SUM(COALESCE(
+        (
+          SELECT EXTRACT(epoch FROM DATA_ORA_FINE - DATA_ORA_INIZIO)/3600
+          FROM MANUTENZIONE_STAZIONE_ESPANSA AS maintenanceForScheduledHours
+          WHERE maintenanceForScheduledHours.DATA_ORA_INIZIO &gt; CURRENT_TIMESTAMP and maintenanceForScheduledHours.ID = maintenanceBase.ID
+        ), 0)) AS ORE_PROGRAMMATE
+      FROM MANUTENZIONE_STAZIONE_ESPANSA AS maintenanceBase
+      GROUP BY INTERMEDIARIO_PA_CODICE_FISCALE, ANNO_MANUTENZIONE;
+    </createView>
+  </changeSet>
+
+
+</databaseChangeLog>
