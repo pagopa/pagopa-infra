@@ -72,7 +72,6 @@ cidr_subnet_api_config = ["10.230.8.128/29"]
 external_domain   = "pagopa.it"
 dns_zone_prefix   = "dev.platform"
 dns_zone_checkout = "dev.checkout"
-dns_zone_wisp2    = "dev.wisp2"
 dns_zone_wfesp    = ""
 
 # azure devops
@@ -125,7 +124,7 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "0.0.0.0",
     "0.0.0.0",
     "0.0.0.0",
-    "0.0.0.0"
+    "0.0.0.0",
   ]
 }
 
@@ -149,28 +148,13 @@ prostgresql_db_mockpsp = "mock-psp"
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
 
-apim_enable_nm3_decoupler_switch     = false
-apim_enable_routing_decoupler_switch = false
-default_node_id                      = "NDP002SIT"
 
 apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
-nodo_pagamenti_psp     = "06529501006,97249640588,06874351007,08301100015,00194450219,02113530345,01369030935,07783020725"
-nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,00103110573,00939820726,00109190579,00122520570,82501690018,80001220773,84515520017,03509990788,84002410540,00482510542,00326070166,01350940019,00197530298,00379480031,06396970482,00460900038,82005250285,82002770236,80013960036,83000970018,84002970162,82500110158,00429530546,01199250158,80003370477,00111190575,81001650548,00096090550,95001650167,00451080063,80038190163,00433320033,00449050061,82002270724,00682280284,00448140541,00344700034,81000550673,00450150065,80002860775,83001970017,00121490577,00383120037,00366270031,80023530167,01504430016,00221940364,00224320366,00246880397,01315320489,00354730392,00357850395,80008270375,00218770394,00226010395,00202300398,81002910396,00360090393,84002010365,00242920395,80005570561,80015230347,00236340477,92035800488,03428581205,00114510571"
-nodo_pagamenti_url     = "http://10.70.66.200/nodo-sit/webservices/input"
-ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/sit/webservices/input shall use lb_aks
 lb_aks                 = "10.70.66.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input ( 👀 look above nodo_pagamenti_url )
 
-schema_ip_nexi = "http://10.70.66.200"
 
-base_path_nodo_oncloud        = "/nodo-sit"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-sit-NOT-FOUND"
-base_path_nodo_sync           = "/sync-cron-sit/syncWisp"
-base_path_nodo_wfesp          = "/wfesp-sit"
-base_path_nodo_fatturazione   = "/fatturazione-sit"
-base_path_nodo_web_bo         = "/web-bo-sit"
-base_path_nodo_web_bo_history = "/web-bo-history-sit"
 
 base_path_nodo_postgresql_nexi_onprem = "/sit"
 
@@ -775,3 +759,6 @@ apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integrati
 
 
 apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/loggers/pagopa-d-apim-logger"
+
+# WISP-dismantling-cfg
+create_wisp_converter = true

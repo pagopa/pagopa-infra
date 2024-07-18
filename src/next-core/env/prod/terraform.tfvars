@@ -37,6 +37,8 @@ cidr_subnet_appgateway           = ["10.1.128.0/24"]
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
 cidr_subnet_tools_cae            = ["10.1.248.0/23"]
 cidr_subnet_azdoa                = ["10.1.130.0/24"]
+cidr_subnet_eventhub             = ["10.230.10.64/26"]
+
 
 #
 # Dns
@@ -83,7 +85,7 @@ nat_gateway_public_ips = 2
 #
 # apim v2
 #
-cidr_subnet_apim = ["10.230.10.160/27"]
+cidr_subnet_apim = ["10.230.10.0/26"]
 apim_v2_subnet_nsg_security_rules = [
   {
     name                       = "inbound-management-3443"
@@ -785,3 +787,9 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "151.1.203.68"    # Softlab backup support line
   ]
 }
+
+cdn_storage_account_replication_type = "GZRS"
+backup_storage_replication_type      = "GZRS"
+
+apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
+apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"
