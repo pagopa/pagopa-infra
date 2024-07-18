@@ -209,7 +209,7 @@ resource "azurerm_monitor_metric_alert" "queue_storage_account_average_message_c
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.pay_wallet_opsgenie[0].id
+    action_group_id = azurerm_monitor_action_group.payment_wallet_opsgenie[0].id
   }
 
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${each.value.storage_account_name}] Queue message count average exceeds ${each.value.threshold}"
