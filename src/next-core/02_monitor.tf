@@ -6,14 +6,14 @@ resource "azurerm_resource_group" "monitor_rg" {
 }
 
 resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
-  name                = format("%s-law", local.product)
-  location            = azurerm_resource_group.monitor_rg.location
-  resource_group_name = azurerm_resource_group.monitor_rg.name
-  sku                 = var.law_sku
-  retention_in_days   = var.law_retention_in_days
-  daily_quota_gb      = var.law_daily_quota_gb
+  name                               = format("%s-law", local.product)
+  location                           = azurerm_resource_group.monitor_rg.location
+  resource_group_name                = azurerm_resource_group.monitor_rg.name
+  sku                                = var.law_sku
+  retention_in_days                  = var.law_retention_in_days
+  daily_quota_gb                     = var.law_daily_quota_gb
   reservation_capacity_in_gb_per_day = var.env_short == "p" ? 100 : null
-  allow_resource_only_permissions = var.env_short != "p"
+  allow_resource_only_permissions    = var.env_short != "p"
 
   tags = var.tags
 }
@@ -222,8 +222,8 @@ locals {
   ]
   # actions grp
   actions_grp_default_2 = [
-      azurerm_monitor_action_group.email.id,
-      azurerm_monitor_action_group.slack.id,
+    azurerm_monitor_action_group.email.id,
+    azurerm_monitor_action_group.slack.id,
   ]
 }
 
@@ -233,28 +233,28 @@ module "web_test_standard" {
   for_each = { for v in local.test_urls : v.host => v if v != null }
 
   application_insights_action_group_ids = var.env_short == "p" ? concat([
-   azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+    azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
   ], local.actions_grp_default_2) : local.actions_grp_default_2
-  application_insights_id = azurerm_application_insights.application_insights.id
+  application_insights_id             = azurerm_application_insights.application_insights.id
   application_insights_resource_group = azurerm_application_insights.application_insights.resource_group_name
-  https_endpoint = format("https://%s", each.value.host)
-  https_endpoint_path = each.value.path
-  https_probe_method = "GET"
-  location = azurerm_resource_group.monitor_rg.location
-  alert_name = "${each.value.host}-test-${azurerm_application_insights.application_insights.name}"
-  retry_enabled = true
-  replace_non_words_in_name = false
+  https_endpoint                      = format("https://%s", each.value.host)
+  https_endpoint_path                 = each.value.path
+  https_probe_method                  = "GET"
+  location                            = azurerm_resource_group.monitor_rg.location
+  alert_name                          = "${each.value.host}-test-${azurerm_application_insights.application_insights.name}"
+  retry_enabled                       = true
+  replace_non_words_in_name           = false
   validation_rules = {
-    expected_status_code = 200
+    expected_status_code        = 200
     ssl_cert_remaining_lifetime = 7
-    ssl_check_enabled = true
+    ssl_check_enabled           = true
 
   }
-  request_follow_redirects = false
+  request_follow_redirects                 = false
   request_parse_dependent_requests_enabled = false
-  metric_severity = 1
-  metric_frequency = "PT1M"
-  alert_use_web_test_criteria = true
+  metric_severity                          = 1
+  metric_frequency                         = "PT1M"
+  alert_use_web_test_criteria              = true
 
 
 }
