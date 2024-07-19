@@ -172,11 +172,12 @@ variable "cosmos_mongo_db_params" {
       failover_priority = number
       zone_redundant    = bool
     }))
-    private_endpoint_enabled          = bool
-    public_network_access_enabled     = bool
-    is_virtual_network_filter_enabled = bool
-    backup_continuous_enabled         = bool
-    ip_range_filter                   = optional(string, null)
+    private_endpoint_enabled                     = bool
+    public_network_access_enabled                = bool
+    is_virtual_network_filter_enabled            = bool
+    backup_continuous_enabled                    = bool
+    ip_range_filter                              = optional(string, null)
+    enable_provisioned_throughput_exceeded_alert = bool
   })
 }
 

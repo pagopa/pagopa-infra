@@ -13,7 +13,7 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "node_for_psp_api_auth" {
   name                = format("%s-node-for-psp-api-auth", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_node_for_psp_api_auth.display_name
   versioning_scheme   = "Segment"
@@ -22,7 +22,7 @@ resource "azurerm_api_management_api_version_set" "node_for_psp_api_auth" {
 resource "azurerm_api_management_api" "apim_node_for_psp_api_v1_auth" {
   name                  = format("%s-node-for-psp-api-auth", var.env_short)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   subscription_required = local.apim_node_for_psp_api_auth.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.node_for_psp_api_auth.id
   version               = "v1"
@@ -50,7 +50,7 @@ resource "azurerm_api_management_api" "apim_node_for_psp_api_v1_auth" {
 resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_auth" {
   api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/_base_policy.xml.tpl", {
     is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
@@ -62,7 +62,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_verify_poli
 
   api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   operation_id        = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0"
 
   #tfsec:ignore:GEN005
@@ -77,7 +77,7 @@ resource "azurerm_api_management_api_operation_policy" "nm3_activate_v2_verify_p
 
   api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   operation_id        = var.env_short == "d" ? "637608a0c257810fc0ecfe21" : var.env_short == "u" ? "63756cf1451c1c01c4186baa" : "63b6e2daea7c4a25440fdaa5"
 
   #tfsec:ignore:GEN005

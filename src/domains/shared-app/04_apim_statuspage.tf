@@ -134,6 +134,7 @@ module "apim_api_statuspage_api_v1" {
       "wispconverterts"          = format("%s/pagopa-wisp-converter-technical-support", format(local.aks_path, "nodo"))
       "gpd"                      = format("%s/pagopa-gpd-core", format(local.aks_path, "gps"))
       "gpdpayments"              = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
+      "gpdpaymentspull"          = format("%s/pagopa-gpd-payments-pull", format(local.aks_path, "gps"))
       "gpdenrollment"            = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
       "gpdupload"                = format("%s/pagopa-gpd-upload", format(local.aks_path, "gps"))
       "gpdreportinganalysis"     = format("%s/", data.azurerm_function_app.reporting_analysis.default_hostname)

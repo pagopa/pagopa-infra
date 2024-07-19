@@ -36,6 +36,8 @@ cidr_subnet_tools_cae            = ["10.1.248.0/23"]
 cidr_subnet_azdoa                = ["10.1.130.0/24"]
 cidr_subnet_loadtest_agent       = ["10.1.159.0/24"]
 cidr_subnet_appgateway           = ["10.1.128.0/24"]
+cidr_subnet_eventhub             = ["10.230.8.64/26"]
+
 ### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]
 
@@ -67,7 +69,7 @@ geo_replica_enabled = false
 # apim v2
 #
 redis_cache_enabled = true
-cidr_subnet_apim    = ["10.230.8.160/27"]
+cidr_subnet_apim    = ["10.230.8.0/26"]
 apim_v2_zones       = ["1"]
 apim_v2_subnet_nsg_security_rules = [
   {
@@ -730,3 +732,6 @@ redis_cache_params = {
   sku_name      = "Basic"
   family        = "C"
 }
+
+apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
+apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"

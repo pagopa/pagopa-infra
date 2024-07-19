@@ -15,7 +15,3 @@ data "azurerm_resource_group" "rg_vnet" {
 data "azurerm_resource_group" "sec_rg" {
   name = format("%s-sec-rg", local.product)
 }
-
-data "azurerm_resource_group" "rg_api" {
-  name = format("%s-api-rg", local.product)
-}

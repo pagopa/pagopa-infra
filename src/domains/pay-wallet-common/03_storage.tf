@@ -152,7 +152,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -208,9 +208,9 @@ resource "azurerm_monitor_metric_alert" "queue_storage_account_average_message_c
     action_group_id = data.azurerm_monitor_action_group.slack.id
   }
 
-  # action {
-  #   action_group_id = azurerm_monitor_action_group.pay_wallet_opsgenie[0].id
-  # }
+  action {
+    action_group_id = azurerm_monitor_action_group.payment_wallet_opsgenie[0].id
+  }
 
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${each.value.storage_account_name}] Queue message count average exceeds ${each.value.threshold}"
   resource_group_name = azurerm_resource_group.storage_pay_wallet_rg.name
