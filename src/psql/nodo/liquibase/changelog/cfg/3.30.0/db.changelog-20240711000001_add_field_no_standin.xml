@@ -15,7 +15,7 @@
             </not>
         </preConditions>
         <addColumn tableName="pa_stazione_pa">
-            <column name="no_standin" type="CHAR(1)"/>
+            <column name="standin" type="CHAR(1)"/>
         </addColumn>
     </changeSet>
   
