@@ -12,6 +12,8 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   sku                 = var.law_sku
   retention_in_days   = var.law_retention_in_days
   daily_quota_gb      = var.law_daily_quota_gb
+  reservation_capacity_in_gb_per_day = var.env_short == "p" ? 100 : null
+  allow_resource_only_permissions = var.env_short != "p"
 
   tags = var.tags
 }
@@ -218,27 +220,45 @@ locals {
       action_group_id = azurerm_monitor_action_group.slack.id,
     },
   ]
+  # actions grp
+  actions_grp_default_2 = [
+      azurerm_monitor_action_group.email.id,
+      azurerm_monitor_action_group.slack.id,
+  ]
 }
 
-module "web_test_api" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_web_test_preview?ref=v8.2.0"
+module "web_test_standard" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_standard_web_test?ref=v8.29.0"
 
   for_each = { for v in local.test_urls : v.host => v if v != null }
 
-  subscription_id                   = data.azurerm_subscription.current.subscription_id
-  name                              = format("%s-test", each.value.host)
-  location                          = azurerm_resource_group.monitor_rg.location
-  resource_group                    = azurerm_resource_group.monitor_rg.name
-  application_insight_name          = azurerm_application_insights.application_insights.name
-  application_insight_id            = azurerm_application_insights.application_insights.id
-  request_url                       = format("https://%s%s", each.value.host, each.value.path)
-  ssl_cert_remaining_lifetime_check = 7
+  application_insights_action_group_ids = var.env_short == "p" ? concat([
+   azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+  ], local.actions_grp_default_2) : local.actions_grp_default_2
+  application_insights_id = azurerm_application_insights.application_insights.id
+  application_insights_resource_group = azurerm_application_insights.application_insights.resource_group_name
+  https_endpoint = format("https://%s", each.value.host)
+  https_endpoint_path = each.value.path
+  https_probe_method = "GET"
+  location = azurerm_resource_group.monitor_rg.location
+  alert_name = "${each.value.host}-test-${azurerm_application_insights.application_insights.name}"
+  retry_enabled = true
+  replace_non_words_in_name = false
+  validation_rules = {
+    expected_status_code = 200
+    ssl_cert_remaining_lifetime = 7
+    ssl_check_enabled = true
 
-  actions = var.env_short == "p" ? concat([{
-    action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id,
-  }, ], local.actions_grp_default) : local.actions_grp_default
+  }
+  request_follow_redirects = false
+  request_parse_dependent_requests_enabled = false
+  metric_severity = 1
+  metric_frequency = "PT1M"
+  alert_use_web_test_criteria = true
+
 
 }
+
 
 resource "azurerm_monitor_diagnostic_setting" "activity_log" {
   count                      = var.env_short == "p" ? 1 : 0
