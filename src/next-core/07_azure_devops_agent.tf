@@ -140,7 +140,7 @@ data "azurerm_user_assigned_identity" "iac_federated_azdo" {
 resource "azurerm_key_vault_access_policy" "azdevops_iac_managed_identities" {
   for_each = local.azdo_iac_managed_identities
 
-  key_vault_id = data.azurerm_key_vault.kv_core.id
+  key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = data.azurerm_user_assigned_identity.iac_federated_azdo[each.key].principal_id
 
@@ -170,7 +170,7 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_legacy_policies" {
     data.azuread_service_principal.iac_plan_legacy.object_id,
     data.azuread_service_principal.iac_deploy_legacy.object_id
   ])
-  key_vault_id = data.azurerm_key_vault.kv_core.id
+  key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = each.key
 
