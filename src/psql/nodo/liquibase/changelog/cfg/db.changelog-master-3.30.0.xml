@@ -8,6 +8,6 @@
   <include file="./db.changelog-master-3.28.0.xml"/>
 
   <include file="./${version}/db.changelog-20240711000000_add_field_aca.xml" labels="${version}"/>
-  <include file="./${version}/db.changelog-20240711000001_add_field_no_standin.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20240711000001_add_field_standin.xml" labels="${version}"/>
 
 </databaseChangeLog>
