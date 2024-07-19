@@ -735,3 +735,9 @@ redis_cache_params = {
 
 apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
 apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"
+
+
+# monitoring
+law_sku               = "PerGB2018"
+law_retention_in_days = 30
+law_daily_quota_gb    = 10

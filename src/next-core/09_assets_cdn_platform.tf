@@ -147,8 +147,8 @@ resource "azurerm_application_insights_web_test" "assets_cdn_platform_web_test" 
   count                   = var.env_short == "p" ? 1 : 0
   name                    = format("%s-assets-platform-web-test", local.product)
   location                = var.location
-  resource_group_name     = data.azurerm_resource_group.monitor_rg.name
-  application_insights_id = data.azurerm_application_insights.application_insights.id
+  resource_group_name     = azurerm_resource_group.monitor_rg.name
+  application_insights_id = azurerm_application_insights.application_insights.id
   kind                    = "ping"
   frequency               = 300
   timeout                 = 10

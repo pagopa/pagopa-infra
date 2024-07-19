@@ -2,8 +2,8 @@ locals {
 
   node_forwarder_app_settings = {
     # Monitoring
-    APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
-    APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
+    APPINSIGHTS_INSTRUMENTATIONKEY                  = data.azurerm_application_insights.application_insights.instrumentation_key
+    APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", data.azurerm_application_insights.application_insights.instrumentation_key)
     APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
     APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
     APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""
@@ -333,7 +333,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.mo_email.id, data.azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -367,7 +367,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.mo_email.id, data.azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -424,13 +424,13 @@ resource "azurerm_monitor_metric_alert" "app_service_over_cpu_usage" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.slack.id
+    action_group_id = data.azurerm_monitor_action_group.slack.id
   }
   action {
-    action_group_id = azurerm_monitor_action_group.email.id
+    action_group_id = data.azurerm_monitor_action_group.email.id
   }
   action {
-    action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+    action_group_id = data.azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
   }
 
   tags = var.tags
@@ -461,13 +461,13 @@ resource "azurerm_monitor_metric_alert" "app_service_over_mem_usage" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.slack.id
+    action_group_id = data.azurerm_monitor_action_group.slack.id
   }
   action {
-    action_group_id = azurerm_monitor_action_group.email.id
+    action_group_id = data.azurerm_monitor_action_group.email.id
   }
   action {
-    action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+    action_group_id = data.azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
   }
 
   tags = var.tags
