@@ -26,9 +26,9 @@ module "assets_cdn_platform" {
   dns_zone_name                = azurerm_dns_zone.public[0].name
   dns_zone_resource_group_name = azurerm_dns_zone.public[0].resource_group_name
 
-  keyvault_resource_group_name = data.azurerm_key_vault.kv_core.resource_group_name
+  keyvault_resource_group_name = module.key_vault.resource_group_name
   keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
-  keyvault_vault_name          = data.azurerm_key_vault.kv_core.name
+  keyvault_vault_name          = module.key_vault.name
 
   storage_account_replication_type = var.cdn_storage_account_replication_type
 

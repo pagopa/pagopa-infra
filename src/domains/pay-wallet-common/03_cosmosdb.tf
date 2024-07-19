@@ -113,6 +113,10 @@ locals {
         {
           keys   = ["contractId"],
           unique = false
+        },
+        {
+          keys   = ["updateDate"],
+          unique = false
         }
       ]
       shard_key = "userId"
