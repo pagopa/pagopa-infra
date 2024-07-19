@@ -9,5 +9,7 @@
 
   <include file="./${version}/db.changelog-20240711000000_add_field_aca.xml" labels="${version}"/>
   <include file="./${version}/db.changelog-20240711000001_add_field_standin.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20240718000000_new_manutenzione_stazioni_table.xml" labels="${version}"/>
 
 </databaseChangeLog>
+
