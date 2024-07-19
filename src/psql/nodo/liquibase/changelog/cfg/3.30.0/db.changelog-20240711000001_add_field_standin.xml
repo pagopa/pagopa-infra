@@ -11,12 +11,12 @@
     <changeSet author="liquibase" id="20240711000010">
         <preConditions onFail="MARK_RAN">
             <not>
-                <columnExists tableName="pa_stazione_pa" columnName="no_standin"/>
+                <columnExists tableName="pa_stazione_pa" columnName="standin"/>
             </not>
         </preConditions>
         <addColumn tableName="pa_stazione_pa">
-            <column name="standin" type="CHAR(1)"/>
+            <column name="standin" type="CHAR(1)" defaultValue="Y"/>
         </addColumn>
     </changeSet>
-  
+
 </databaseChangeLog>
