@@ -15,7 +15,9 @@
             </not>
         </preConditions>
         <addColumn tableName="pa_stazione_pa">
-            <column name="aca" type="BOOLEAN" defaultValueBoolean="true"/>
+            <column name="aca" type="BOOLEAN" defaultValueBoolean="true">
+              <constraints nullable="false"/>
+            </column>
         </addColumn>
     </changeSet>
 
