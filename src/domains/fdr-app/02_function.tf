@@ -71,7 +71,7 @@ module "reporting_fdr_function" {
     FLOW_SA_CONNECTION_STRING = data.azurerm_storage_account.fdr_flows_sa.primary_connection_string
     FLOWS_XML_BLOB            = data.azurerm_storage_container.fdr_rend_flow.name
 
-    EHUB_FDR_CONNECTION_STRING = var.enabled_features.eventhub_ha_rx ? data.azurerm_eventhub_authorization_rule.events_03.primary_connection_string : data.azurerm_eventhub_authorization_rule.events.primary_connection_string
+    EHUB_FDR_CONNECTION_STRING = data.azurerm_eventhub_authorization_rule.events_03.primary_connection_string
     EHUB_FDR_NAME              = "nodo-dei-pagamenti-fdr"
     OUTPUT_BLOB                = data.azurerm_storage_container.fdr_rend_flow_out.name
 
@@ -148,3 +148,4 @@ resource "azurerm_monitor_autoscale_setting" "reporting_fdr_function" {
     }
   }
 }
+

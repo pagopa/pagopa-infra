@@ -67,7 +67,9 @@ module "apim_api_authorizer_api_v1" {
 }
 
 # fragment
-
+resource "terraform_data" "sha256_authorizer_fragment" {
+  input = sha256(file("./api/authorizer/authorizer-check.xml"))
+}
 resource "azapi_resource" "authorizer_fragment" {
   # provider  = azapi.apim
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"

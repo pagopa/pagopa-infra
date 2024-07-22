@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v8.22.0"
 
   name                       = "${local.product}-${var.location_short}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -39,8 +39,8 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Recover", "Rotate", "GetRotationPolicy"]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", ]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
@@ -57,8 +57,8 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_externals.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Recover", "Rotate", "GetRotationPolicy"]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", ]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
@@ -92,10 +92,10 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
 # create json letsencrypt inside kv
 # requierd: Docker
 module "letsencrypt_printit" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git///letsencrypt_credential?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git///letsencrypt_credential?ref=v8.22.0"
 
   prefix            = var.prefix
   env               = var.env_short
-  key_vault_name    = "${local.product}-${var.domain}-kv"
+  key_vault_name    = module.key_vault.name
   subscription_name = local.subscription_name
 }

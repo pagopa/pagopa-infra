@@ -15,15 +15,3 @@ resource "azurerm_private_dns_a_record" "ingress" {
   ttl                 = 3600
   records             = [var.ingress_load_balancer_ip]
 }
-
-data "azurerm_subnet" "aks_subnet" {
-  name                 = local.aks_subnet_name
-  virtual_network_name = local.vnet_name
-  resource_group_name  = local.vnet_resource_group_name
-}
-
-
-data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
-  name                = "privatelink.redis.cache.windows.net"
-  resource_group_name = local.vnet_resource_group_name
-}

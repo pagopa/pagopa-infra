@@ -1,9 +1,57 @@
+resource "azurerm_resource_group" "msg_rg" {
+  name     = format("%s-msg-rg", local.product)
+  location = var.location
+
+  tags = var.tags
+}
+
+## Eventhub subnet
+module "eventhub_snet" {
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.2.0"
+  name                                      = format("%s-eventhub-snet", local.product)
+  address_prefixes                          = var.cidr_subnet_eventhub
+  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet_integration.name
+  service_endpoints                         = ["Microsoft.EventHub"]
+  private_endpoint_network_policies_enabled = false
+}
+
+
+resource "azurerm_private_dns_zone" "privatelink_servicebus_windows_net" {
+  name                = "privatelink.servicebus.windows.net"
+  resource_group_name = azurerm_resource_group.msg_rg.name
+  tags                = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "vnet_core_link_privatelink_servicebus_windows_net" {
+
+  name                  = "${local.product}-evh-ns01-private-dns-zone-link-02"
+  resource_group_name   = azurerm_resource_group.msg_rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_servicebus_windows_net.name
+  virtual_network_id    = data.azurerm_virtual_network.vnet_core.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "vnet_integration_link_privatelink_servicebus_windows_net" {
+
+  name                  = "${local.product}-evh-ns01-private-dns-zone-link-01"
+  resource_group_name   = azurerm_resource_group.msg_rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.privatelink_servicebus_windows_net.name
+  virtual_network_id    = data.azurerm_virtual_network.vnet_integration.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+
 //replaces ns01
 module "event_hub03" {
   source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v7.62.0"
   name                     = "${local.project}-evh-ns03"
   location                 = var.location
-  resource_group_name      = local.msg_resource_group_name
+  resource_group_name      = azurerm_resource_group.msg_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
   sku                      = var.ehns_sku_name
   capacity                 = var.ehns_capacity
@@ -11,15 +59,15 @@ module "event_hub03" {
   zone_redundant           = var.ehns_zone_redundant
 
   virtual_network_ids = [data.azurerm_virtual_network.vnet_integration.id, data.azurerm_virtual_network.vnet_core.id]
-  subnet_id           = data.azurerm_subnet.eventhub_snet.id
+  subnet_id           = module.eventhub_snet.id
 
   eventhubs = var.eventhubs_03
 
   public_network_access_enabled = var.ehns_public_network_access
 
   private_dns_zones = {
-    id   = [data.azurerm_private_dns_zone.eventhub.id]
-    name = [data.azurerm_private_dns_zone.eventhub.name]
+    id   = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
+    name = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
   }
   private_dns_zone_record_A_name = "event_hub03"
 
@@ -27,11 +75,11 @@ module "event_hub03" {
   metric_alerts  = var.ehns_metric_alerts
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      action_group_id    = azurerm_monitor_action_group.slack.id
       webhook_properties = null
     },
     {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
+      action_group_id    = azurerm_monitor_action_group.email.id
       webhook_properties = null
     }
   ]
@@ -44,7 +92,7 @@ module "event_hub04" {
   source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v7.62.0"
   name                     = "${local.project}-evh-ns04"
   location                 = var.location
-  resource_group_name      = local.msg_resource_group_name
+  resource_group_name      = azurerm_resource_group.msg_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
   sku                      = var.ehns_sku_name
   capacity                 = var.ehns_capacity
@@ -52,11 +100,11 @@ module "event_hub04" {
   zone_redundant           = var.ehns_zone_redundant
 
   virtual_network_ids           = [data.azurerm_virtual_network.vnet_integration.id, data.azurerm_virtual_network.vnet_core.id]
-  subnet_id                     = data.azurerm_subnet.eventhub_snet.id
+  subnet_id                     = module.eventhub_snet.id
   public_network_access_enabled = var.ehns_public_network_access
   private_dns_zones = {
-    id   = [data.azurerm_private_dns_zone.eventhub.id]
-    name = [data.azurerm_private_dns_zone.eventhub.name]
+    id   = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
+    name = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
   }
   private_dns_zone_record_A_name = "event_hub04"
 
@@ -64,11 +112,11 @@ module "event_hub04" {
 
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      action_group_id    = azurerm_monitor_action_group.slack.id
       webhook_properties = null
     },
     {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
+      action_group_id    = azurerm_monitor_action_group.email.id
       webhook_properties = null
     }
   ]

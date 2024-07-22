@@ -5,6 +5,7 @@
                 <origin>https://${portal-domain}</origin>
                 <origin>https://${management-api-domain}</origin>
                 <origin>https://${apim-name}.developer.azure-api.net</origin>
+                <origin>https://${old-apim-name}.developer.azure-api.net</origin>
             </allowed-origins>
             <allowed-methods preflight-result-max-age="300">
                 <method>*</method>

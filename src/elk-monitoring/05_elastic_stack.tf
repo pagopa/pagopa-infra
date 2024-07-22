@@ -83,9 +83,9 @@ module "elastic_stack" {
     kubernetes_secret.snapshot_secret
   ]
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_stack?ref=v7.72.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_stack?ref=v8.26.2"
 
-  eck_version = "2.9"
+  eck_version = "2.12"
 
   namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config
@@ -97,7 +97,7 @@ module "elastic_stack" {
     /* apiconfig */ "pagopaapiconfig-postgresql", "pagopaapiconfig-oracle", "apiconfig-selfcare-integration-microservice-chart", "cache-oracle", "cache-postgresql", "cache-replica-oracle", "cache-replica-postgresql",
     /* ecommerce */ "pagopaecommerceeventdispatcherservice-microservice-chart", "pagopaecommercepaymentmethodsservice-microservice-chart", "pagopaecommercepaymentrequestsservice-microservice-chart", "pagopaecommercetransactionsservice-microservice-chart", "pagopaecommercetxschedulerservice-microservice-chart", "pagopanotificationsservice-microservice-chart",
     /* selfcare */ "pagopaselfcaremsbackofficebackend-microservice-chart", "backoffice-external",
-    /* gps */ "gpd-core-microservice-chart", "pagopagpdpayments-microservice-chart", "pagopareportingorgsenrollment-microservice-chart", "pagopaspontaneouspayments-microservice-chart", "gpd-payments-pull"
+    /* gps */ "gpd-core-microservice-chart", "pagopagpdpayments-microservice-chart", "pagopareportingorgsenrollment-microservice-chart", "pagopaspontaneouspayments-microservice-chart", "gpd-payments-pull", "gpd-upload-microservice-chart"
   ]
 
   eck_license = file("${path.module}/env/eck_license/pagopa-spa-4a1285e5-9c2c-4f9f-948a-9600095edc2f-orchestration.json")

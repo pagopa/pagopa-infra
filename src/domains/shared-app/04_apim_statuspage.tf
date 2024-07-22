@@ -55,11 +55,6 @@ resource "azurerm_api_management_api_version_set" "api_statuspage_api" {
   versioning_scheme   = "Segment"
 }
 
-data "azurerm_function_app" "authorizer" {
-  name                = format("%s-%s-%s-shared-authorizer-fn", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-%s-shared-rg", var.prefix, var.env_short, var.location_short)
-}
-
 data "azurerm_function_app" "canone_unico" {
   name                = format("%s-%s-fn-canoneunico", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-canoneunico-rg", var.prefix, var.env_short)
@@ -87,8 +82,8 @@ data "azurerm_linux_function_app" "mockec" {
 }
 
 data "azurerm_linux_web_app" "pdf_engine" {
-  name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java"
-  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-pdf-engine-rg"
+  name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java${var.env_short == "p" ? "-ha" : ""}"
+  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-${var.env_short == "p" ? "ha" : "pdf-engine"}-rg"
 }
 
 module "apim_api_statuspage_api_v1" {
@@ -119,12 +114,12 @@ module "apim_api_statuspage_api_v1" {
       "afmcalculator"            = format("%s/pagopa-afm-calculator-service", format(local.aks_path, "afm"))
       "afmmarketplace"           = format("%s/pagopa-afm-marketplace-service", format(local.aks_path, "afm"))
       "afmutils"                 = format("%s/pagopa-afm-utils-service", format(local.aks_path, "afm"))
-      "apiconfig"                = format("%s/pagopa-api-config-core-service/o", format(local.aks_path, "apiconfig"))
+      "apiconfig"                = format("%s/{{apicfg-core-service-path}}", format(local.aks_path, "apiconfig")) // show status only one instances Ora OR Pgflex
       "apiconfig-fe"             = format("%s", local.fe_apiconfig_path)
       "apiconfigcacheo"          = format("%s/api-config-cache/o", format(local.aks_path, "apiconfig"))
       "apiconfigcachep"          = format("%s/api-config-cache/p", format(local.aks_path, "apiconfig"))
-      "apiconfigselfcare"        = format("%s/pagopa-api-config-selfcare-integration", format(local.aks_path, "apiconfig"))
-      "authorizer"               = format("%s/", data.azurerm_function_app.authorizer.default_hostname)
+      "apiconfigselfcare"        = format("%s/{{apicfg-selfcare-integ-service-path}}", format(local.aks_path, "apiconfig")) // show status only one instances Ora OR Pgflex
+      "authorizer"               = format("%s//authorizer-functions", format(local.aks_path, "shared"))
       "authorizerconfig"         = format("%s//authorizer-config", format(local.aks_path, "shared"))
       "bizevents"                = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
       "bizeventsdatastoreneg"    = format("%s/pagopa-negative-biz-events-datastore-service", format(local.aks_path, "bizevents"))
@@ -134,8 +129,12 @@ module "apim_api_statuspage_api_v1" {
       "backofficeexternalpagopa" = format("%s/backoffice-external", format(local.aks_path, "selfcare"))
       "canoneunico"              = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
       "fdrndpnew"                = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
+      "wispconverter"            = format("%s/pagopa-wisp-converter", format(local.aks_path, "nodo"))
+      "wispsoapconverter"        = format("%s/wisp-soap-converter", format(local.aks_path, "nodo"))
+      "wispconverterts"          = format("%s/pagopa-wisp-converter-technical-support", format(local.aks_path, "nodo"))
       "gpd"                      = format("%s/pagopa-gpd-core", format(local.aks_path, "gps"))
       "gpdpayments"              = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
+      "gpdpaymentspull"          = format("%s/pagopa-gpd-payments-pull", format(local.aks_path, "gps"))
       "gpdenrollment"            = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
       "gpdupload"                = format("%s/pagopa-gpd-upload", format(local.aks_path, "gps"))
       "gpdreportinganalysis"     = format("%s/", data.azurerm_function_app.reporting_analysis.default_hostname)

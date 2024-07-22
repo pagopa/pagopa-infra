@@ -28,7 +28,7 @@
             </allowed-headers>
         </cors>
         <base />
-        <set-backend-service base-url="https://${hostname}/pagopa-api-config-core-service/o" />
+        <set-backend-service base-url="https://${hostname}/{{apicfg-core-service-path}}" />
     </inbound>
     <outbound>
         <base />

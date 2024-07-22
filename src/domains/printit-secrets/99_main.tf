@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.99.0"
+      version = "<= 3.106.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -10,7 +10,7 @@ terraform {
     }
     null = {
       source  = "hashicorp/null"
-      version = "<= 3.1.1"
+      version = "<= 3.2.1"
     }
     external = {
       source  = "hashicorp/external"
@@ -41,5 +41,3 @@ provider "kubernetes" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
-
-data "azuread_client_config" "current" {}

@@ -105,6 +105,13 @@ route_aks = [
   },
   {
     #  aks nodo to nexi oncloud oracle
+    name                   = "aks-outbound-to-nexi-oracle-onprem-dr-subnet"
+    address_prefix         = "10.101.35.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    #  aks nodo to nexi oncloud oracle
     name                   = "aks-outbound-to-nexi-aks-cloud-subnet"
     address_prefix         = "10.70.135.0/24"
     next_hop_type          = "VirtualAppliance"
@@ -263,8 +270,15 @@ nodo_auth_subscription_limit = 10000
 nodo_pagamenti_x_forwarded_for = "10.230.10.5"
 
 
-enabled_features = {
-  apim_v2        = false
-  eventhub_ha_rx = false
+# WISP-dismantling-cfg
+create_wisp_converter = true
+wisp_converter = {
+  enable_apim_switch     = false
+  brokerPSP_whitelist    = "97735020584"
+  channel_whitelist      = "97735020584_02"
+  station_whitelist      = "ABCDblabla" # subsets of EC friends # PSFC
+  ci_whitelist           = "ABCDblabla"
+  dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
 }
 
+enable_sendPaymentResultV2_SWClient = false

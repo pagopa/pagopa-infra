@@ -1,8 +1,8 @@
 module "institutions_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.9.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.22.0"
   count  = var.is_feature_enabled.storage_institutions ? 1 : 0
 
-  name                            = replace("${var.domain}-institutions", "-", "")
+  name                            = replace("${local.project_short}-ci", "-", "")
   account_kind                    = var.institutions_storage_account.account_kind
   account_tier                    = var.institutions_storage_account.account_tier
   account_replication_type        = var.institutions_storage_account.account_replication_type
@@ -11,7 +11,7 @@ module "institutions_sa" {
   resource_group_name             = azurerm_resource_group.printit_rg.name
   location                        = var.location
   advanced_threat_protection      = var.institutions_storage_account.advanced_threat_protection
-  allow_nested_items_to_be_public = false
+  allow_nested_items_to_be_public = true
   public_network_access_enabled   = var.institutions_storage_account.public_network_access_enabled
   enable_low_availability_alert   = var.institutions_storage_account.enable_low_availability_alert
 
@@ -61,4 +61,12 @@ resource "azurerm_storage_container" "institutions_blob_file" {
   name                  = "institutionsdatablob"
   storage_account_name  = module.institutions_sa[0].name
   container_access_type = "private"
+}
+
+resource "azurerm_storage_container" "institutions_blob_logo_file" {
+  count = var.is_feature_enabled.storage_institutions ? 1 : 0
+
+  name                  = "institutionslogoblob"
+  storage_account_name  = module.institutions_sa[0].name
+  container_access_type = "blob"
 }

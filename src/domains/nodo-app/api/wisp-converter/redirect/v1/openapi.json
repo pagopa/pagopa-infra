@@ -1,0 +1,96 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "description": "A service that permits to execute the keys caching for decoupler, needed for RPT disambiguation.",
+    "termsOfService": "https://www.pagopa.gov.it/",
+    "title": "WISP Converter - Redirect",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "https://{host}",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/payments": {
+      "get": {
+        "operationId": "payments-redirect",
+        "responses": {
+          "200": {
+            "description": "Error page",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "302": {
+            "description": "Redirect to Checkout",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "summary": "Redirect payments to eCommerce"
+      },
+      "parameters": [
+        {
+          "description": "SessionId retrieved by nodoInviaRPT or nodoInviaCarrelloRPT response.",
+          "in": "query",
+          "name": "sessionId",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  },
+  "components": {
+    "schemas": {
+      "DecouplerCachingKeys": {
+        "required": [
+          "keys"
+        ],
+        "type": "object",
+        "properties": {
+          "keys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKey": {
+        "description": "The API key to access this function app.",
+        "in": "header",
+        "name": "Ocp-Apim-Subscription-Key",
+        "type": "apiKey"
+      }
+    }
+  }
+}

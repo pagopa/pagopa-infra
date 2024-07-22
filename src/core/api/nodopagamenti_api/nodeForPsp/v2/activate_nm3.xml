@@ -98,6 +98,28 @@
                 return "";
             }
         }" />
+        <set-variable name="paymentMethod" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"paymentMethod"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            if (result.Length > 2) {
+                var paymentMethod = result[1].Substring(1,result[1].Length-3);
+                return "<paymentMethod>"+paymentMethod+"</paymentMethod>";
+            } else {
+                return "";
+            }
+        }" />
+        <set-variable name="touchPoint" value="@{
+            var dom2parse = ((string) context.Variables["readrequest"]);
+            String[] spearator = {"touchPoint"};
+            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+            if (result.Length > 2) {
+                var touchPoint = result[1].Substring(1,result[1].Length-3);
+                return "<touchPoint>"+touchPoint+"</touchPoint>";
+            } else {
+                return "";
+            }
+        }" />
         <!--
         if attvazionePrenotata then sent PPT_ATTIVAZIONE_IN_CORSO
         else store PPT_ATTIVAZIONE_IN_CORSO in attvazionePrenotata for fiscalCode and noticeNumber
@@ -130,7 +152,7 @@
                 <!-- ottimizzazione-ec-buoni start -->
                 <!-- https://pagopa.atlassian.net/wiki/spaces/PAG/pages/533398561/Ottimizzazione+filtro+su+Enti+Creditori+buoni -->
                 <cache-lookup-value key="@((string) context.Variables["fiscalCode"])" variable-name="dynamicGoodEc" caching-type="internal" />
-                <trace source="ottimizzazione-ec-buoni-init" severity="information">ottimizzazione-ec-buoni-init</trace>
+<!--                <trace source="ottimizzazione-ec-buoni-init" severity="information">ottimizzazione-ec-buoni-init</trace>-->
                 <choose>
                     <when condition="@{
                     var eclist = ((string) context.Variables["ecs"]).Split(',');
@@ -139,12 +161,12 @@
                     //      se non è in blacklist e NON è nella dynamic => call apiconfig
                     return  ( isFiscalCodeNotInBlackList && !context.Variables.ContainsKey("dynamicGoodEc") )  ;
                     }">
-                        <trace source="ottimizzazione-ec-buoni" severity="information">ottimizzazione-ec-buoni-start</trace>
+<!--                        <trace source="ottimizzazione-ec-buoni" severity="information">ottimizzazione-ec-buoni-start</trace>-->
                         <send-request ignore-error="true" timeout="10" response-variable-name="ec-stations-body" mode="new">
                             <!-- Get station details and relation info with creditor institution -->
                             <!-- <set-url>@(String.Format("https://api.${urlenvpath}platform.pagopa.it/apiconfig/auth/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url> -->
 <!--                            <set-url>@(String.Format("https://pagopa-${urlenvpath}-app-api-config.azurewebsites.net/apiconfig/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>-->
-                            <set-url>@(String.Format("https://${url_aks}/pagopa-api-config-core-service/o/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>
+                            <set-url>@(String.Format("https://${url_aks}/{{apicfg-core-service-path}}/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>
                             <set-method>GET</set-method>
                             <set-header name="Content-Type" exists-action="override">
                                 <value>application/json</value>
@@ -214,7 +236,7 @@
                 var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
                 return isBrkPSPintoPSPwhiteList && isFiscalCodeNotInBlackList && isIdempotencyKeyNotAlreadytRx;
             }">
-                        <trace source="ottimizzazione-sent-verify" severity="information">ottimizzazione-sent-verify</trace>
+<!--                        <trace source="ottimizzazione-sent-verify" severity="information">ottimizzazione-sent-verify</trace>-->
                         <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
                             <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
                             <set-method>POST</set-method>
@@ -298,7 +320,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -321,7 +343,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -344,7 +366,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -367,7 +389,7 @@
 															<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 														</qrCode>
 														<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+														<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 												</soapenv:Body>
 											</soapenv:Envelope>
 										</set-body>
@@ -493,7 +515,7 @@
                         </choose>
                     </when>
                     <otherwise>
-                        <trace source="ottimizzazione-sent-activate" severity="information">ottimizzazione-sent-activate</trace>
+<!--                        <trace source="ottimizzazione-sent-activate" severity="information">ottimizzazione-sent-activate</trace>-->
                         <set-variable name="amount" value="@{
                     var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
                     if (isIdempotencyKeyNotAlreadytRx) {
@@ -529,7 +551,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -552,7 +574,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<!-- <expirationTime>{{context.Variables["expirationTime"]}}</expirationTime> -->
-												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -575,7 +597,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>
@@ -598,7 +620,7 @@
 													<noticeNumber>{{context.Variables["noticeNumber"]}}</noticeNumber>
 												</qrCode>
 												<expirationTime>{{context.Variables["expirationTime"]}}</expirationTime>
-												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}</nod:activatePaymentNoticeV2Request>
+												<amount>{{context.Variables["amount"]}}</amount>{{context.Variables["dueDate"]}}{{context.Variables["paymentNote"]}}{{context.Variables["paymentMethod"]}}{{context.Variables["touchPoint"]}}</nod:activatePaymentNoticeV2Request>
 										</soapenv:Body>
 									</soapenv:Envelope>
 								</set-body>

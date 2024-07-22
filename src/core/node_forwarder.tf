@@ -2,8 +2,8 @@ locals {
 
   node_forwarder_app_settings = {
     # Monitoring
-    APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
-    APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
+    APPINSIGHTS_INSTRUMENTATIONKEY                  = data.azurerm_application_insights.application_insights.instrumentation_key
+    APPLICATIONINSIGHTS_CONNECTION_STRING           = format("InstrumentationKey=%s", data.azurerm_application_insights.application_insights.instrumentation_key)
     APPINSIGHTS_PROFILERFEATURE_VERSION             = "1.0.0"
     APPINSIGHTS_SNAPSHOTFEATURE_VERSION             = "1.0.0"
     APPLICATIONINSIGHTS_CONFIGURATION_CONTENT       = ""
@@ -42,7 +42,7 @@ locals {
     # Connection Pool
     MAX_CONNECTIONS           = 80
     MAX_CONNECTIONS_PER_ROUTE = 40
-    CONN_TIMEOUT              = 8
+    CONN_TIMEOUT              = var.env_short == "u" ? 30 : 8
 
   }
 
@@ -55,6 +55,7 @@ resource "azurerm_resource_group" "node_forwarder_rg" {
 
   tags = var.tags
 }
+
 
 # Subnet to host the node forwarder
 module "node_forwarder_snet" {
@@ -74,9 +75,22 @@ module "node_forwarder_snet" {
   }
 }
 
-module "node_forwarder_app_service" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.4.0"
+moved {
+  from = module.node_forwarder_app_service
+  to   = module.node_forwarder_app_service[0]
+}
+moved {
+  from = module.node_forwarder_slot_staging
+  to   = module.node_forwarder_slot_staging[0]
+}
+moved {
+  from = azurerm_monitor_autoscale_setting.node_forwarder_app_service_autoscale
+  to   = azurerm_monitor_autoscale_setting.node_forwarder_app_service_autoscale[0]
+}
 
+module "node_forwarder_app_service" {
+  source              = "git::https://github.com/pagopa/azurerm.git//app_service?ref=v3.4.0"
+  count               = var.enabled_features.node_forwarder_ha ? 0 : 1
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
   location            = var.location
@@ -97,7 +111,7 @@ module "node_forwarder_app_service" {
 
   app_settings = local.node_forwarder_app_settings
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
   subnet_id = module.node_forwarder_snet.id
@@ -106,14 +120,14 @@ module "node_forwarder_app_service" {
 }
 
 module "node_forwarder_slot_staging" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short != "d" && !var.enabled_features.node_forwarder_ha ? 1 : 0
 
   source = "git::https://github.com/pagopa/azurerm.git//app_service_slot?ref=v3.4.0"
 
   # App service plan
-  app_service_plan_id = module.node_forwarder_app_service.plan_id
-  app_service_id      = module.node_forwarder_app_service.id
-  app_service_name    = module.node_forwarder_app_service.name
+  app_service_plan_id = module.node_forwarder_app_service[0].plan_id
+  app_service_id      = module.node_forwarder_app_service[0].id
+  app_service_name    = module.node_forwarder_app_service[0].name
 
   # App service
   name                = "staging"
@@ -128,7 +142,7 @@ module "node_forwarder_slot_staging" {
   # App settings
   app_settings = local.node_forwarder_app_settings
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
   subnet_id       = module.node_forwarder_snet.id
 
@@ -136,10 +150,11 @@ module "node_forwarder_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autoscale" {
+  count               = var.enabled_features.node_forwarder_ha ? 0 : 1
   name                = format("%s-autoscale-node-forwarder", local.project)
   resource_group_name = azurerm_resource_group.node_forwarder_rg.name
   location            = azurerm_resource_group.node_forwarder_rg.location
-  target_resource_id  = module.node_forwarder_app_service.plan_id
+  target_resource_id  = module.node_forwarder_app_service[0].plan_id
   enabled             = var.node_forwarder_autoscale_enabled
 
   # default profile on REQUESTs
@@ -155,7 +170,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.node_forwarder_app_service.id
+        metric_resource_id       = module.node_forwarder_app_service[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -177,7 +192,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.node_forwarder_app_service.id
+        metric_resource_id       = module.node_forwarder_app_service[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -196,12 +211,12 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
       }
     }
 
-    # Supported metrics for Microsoft.Web/sites 
+    # Supported metrics for Microsoft.Web/sites
     # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.node_forwarder_app_service.id
+        metric_resource_id       = module.node_forwarder_app_service[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -223,7 +238,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.node_forwarder_app_service.id
+        metric_resource_id       = module.node_forwarder_app_service[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -244,70 +259,6 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
 
   }
 
-  # addded profile on CPU avg
-  # profile {
-  #   name = "response-time"
-
-  #   capacity {
-  #     default = 5
-  #     minimum = 3
-  #     maximum = 10
-  #   }
-
-  #   # Supported metrics for Microsoft.Web/sites 
-  #   # 👀 https://learn.microsoft.com/en-us/azure/azure-monitor/reference/supported-metrics/microsoft-web-sites-metrics
-  #   rule {
-  #     metric_trigger {
-  #       metric_name              = "HttpResponseTime"
-  #       metric_resource_id       = module.node_forwarder_app_service.id
-  #       metric_namespace         = "microsoft.web/sites"
-  #       time_grain               = "PT1M"
-  #       statistic                = "Average"
-  #       time_window              = "PT5M"
-  #       time_aggregation         = "Average"
-  #       operator                 = "GreaterThan"
-  #       threshold                = 3 #sec
-  #       divide_by_instance_count = false
-  #     }
-
-  #     scale_action {
-  #       direction = "Increase"
-  #       type      = "ChangeCount"
-  #       value     = "2"
-  #       cooldown  = "PT5M"
-  #     }
-  #   }
-
-  #   rule {
-  #     metric_trigger {
-  #       metric_name              = "HttpResponseTime"
-  #       metric_resource_id       = module.node_forwarder_app_service.id
-  #       metric_namespace         = "microsoft.web/sites"
-  #       time_grain               = "PT1M"
-  #       statistic                = "Average"
-  #       time_window              = "PT5M"
-  #       time_aggregation         = "Average"
-  #       operator                 = "LessThan"
-  #       threshold                = 2 #sec
-  #       divide_by_instance_count = false
-  #     }
-
-  #     scale_action {
-  #       direction = "Decrease"
-  #       type      = "ChangeCount"
-  #       value     = "1"
-  #       cooldown  = "PT20M"
-  #     }
-  #   }
-
-  #   recurrence {
-  #     timezone = "E. Europe Standard Time"
-  #     days     = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
-  #     hours    = [6]
-  #     minutes  = [0]
-  #   }
-
-  # }
 
 }
 
@@ -319,7 +270,7 @@ resource "azurerm_key_vault_secret" "certificate_crt_node_forwarder_s" {
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 
   lifecycle {
     ignore_changes = [
@@ -333,7 +284,7 @@ resource "azurerm_key_vault_secret" "certificate_key_node_forwarder_s" {
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 
   lifecycle {
     ignore_changes = [
@@ -344,11 +295,11 @@ resource "azurerm_key_vault_secret" "certificate_key_node_forwarder_s" {
 
 data "azurerm_key_vault_secret" "certificate_crt_node_forwarder" {
   name         = "certificate-crt-node-forwarder"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 data "azurerm_key_vault_secret" "certificate_key_node_forwarder" {
   name         = "certificate-key-node-forwarder"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
@@ -358,7 +309,7 @@ resource "azurerm_key_vault_secret" "node_forwarder_subscription_key" {
   value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 
   lifecycle {
     ignore_changes = [
@@ -382,11 +333,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.mo_email.id, data.azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.apim.id
+  data_source_id = data.azurerm_api_management.apim_migrated[0].id
   description    = "Response time for /forward is less than or equal to 9s - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
   enabled        = true
   query = (<<-QUERY
@@ -416,11 +367,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.mo_email.id, data.azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.apim.id
+  data_source_id = data.azurerm_api_management.apim_migrated[0].id
   description    = "Availability for /forward is less than or equal to 99% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
   enabled        = true
   query = (<<-QUERY
@@ -446,14 +397,14 @@ AzureDiagnostics
 }
 
 #################################
-# Alert on mem or cpu avr 
+# Alert on mem or cpu avr
 #################################
 resource "azurerm_monitor_metric_alert" "app_service_over_cpu_usage" {
-  count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" && !var.enabled_features.node_forwarder_ha ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-pagopa-node-forwarder-cpu-usage-over-80"
 
-  scopes      = [module.node_forwarder_app_service.plan_id]
+  scopes      = [module.node_forwarder_app_service[0].plan_id]
   description = "Forwarder CPU usage greater than 80% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
   severity    = 3
   frequency   = "PT5M"
@@ -473,24 +424,24 @@ resource "azurerm_monitor_metric_alert" "app_service_over_cpu_usage" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.slack.id
+    action_group_id = data.azurerm_monitor_action_group.slack.id
   }
   action {
-    action_group_id = azurerm_monitor_action_group.email.id
+    action_group_id = data.azurerm_monitor_action_group.email.id
   }
   action {
-    action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+    action_group_id = data.azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
   }
 
   tags = var.tags
 }
 
 resource "azurerm_monitor_metric_alert" "app_service_over_mem_usage" {
-  count               = var.env_short == "p" ? 1 : 0
+  count               = var.env_short == "p" && !var.enabled_features.node_forwarder_ha ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-pagopa-node-forwarder-mem-usage-over-80"
 
-  scopes      = [module.node_forwarder_app_service.plan_id]
+  scopes      = [module.node_forwarder_app_service[0].plan_id]
   description = "Forwarder MEM usage greater than 80% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
   severity    = 3
   frequency   = "PT5M"
@@ -510,13 +461,13 @@ resource "azurerm_monitor_metric_alert" "app_service_over_mem_usage" {
   }
 
   action {
-    action_group_id = azurerm_monitor_action_group.slack.id
+    action_group_id = data.azurerm_monitor_action_group.slack.id
   }
   action {
-    action_group_id = azurerm_monitor_action_group.email.id
+    action_group_id = data.azurerm_monitor_action_group.email.id
   }
   action {
-    action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+    action_group_id = data.azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
   }
 
   tags = var.tags

@@ -18,10 +18,6 @@ output "vnet_integration_address_space" {
   value = module.vnet_integration.address_space
 }
 
-output "nat_gw_outbound_ip_addresses" {
-  value = var.nat_gateway_enabled ? module.nat_gw[0].public_ip_address : null
-}
-
 ## Container registry ##
 output "container_registry_login_server" {
   value = var.acr_enabled ? module.container_registry.login_server : null
@@ -56,16 +52,7 @@ output "nodo_test_sa_blob_connection_string" {
 }
 
 output "application_insights_instrumentation_key" {
-  value     = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
+  value     = format("InstrumentationKey=%s", data.azurerm_application_insights.application_insights.instrumentation_key)
   sensitive = true
 }
 
-output "ehub_biz_event_rx_conn_str" {
-  value     = module.event_hub01.keys["nodo-dei-pagamenti-biz-evt.pagopa-biz-evt-rx"].primary_connection_string
-  sensitive = true
-}
-
-output "ehub_biz_event_tx_primary_key" {
-  value     = module.event_hub01.keys["nodo-dei-pagamenti-biz-evt.pagopa-biz-evt-tx"].primary_key
-  sensitive = true
-}

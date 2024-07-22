@@ -17,6 +17,10 @@ tags = {
 
 ### External resources
 
+monitor_italy_resource_group_name                 = "pagopa-u-itn-core-monitor-rg"
+log_analytics_italy_workspace_name                = "pagopa-u-itn-core-law"
+log_analytics_italy_workspace_resource_group_name = "pagopa-u-itn-core-monitor-rg"
+
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"
 log_analytics_workspace_name                = "pagopa-u-law"
 log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
@@ -29,14 +33,14 @@ apim_dns_zone_prefix     = "uat.platform"
 
 ingress_load_balancer_ip = "10.3.2.250"
 
-# chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
-# image tags: https://github.com/pagopa/infra-ssl-check/releases
-tls_cert_check_helm = {
-  chart_version = "2.0.0"
-  image_name    = "ghcr.io/pagopa/infra-ssl-check"
-  image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
+is_feature_enabled = {
+  pdf_engine = true
+  printit    = true
 }
 
-cidr_subnet_pdf_engine_app_service = ["10.3.5.0/24"]
+app_service_pdf_engine_sku_name          = "S1"
+app_service_pdf_engine_autoscale_enabled = false
+app_service_pdf_engine_always_on         = true
 
-pdf_engine_app_ha_enabled = false
+app_service_pdf_engine_sku_name_java                        = "S1"
+app_service_pdf_engine_sku_name_java_zone_balancing_enabled = false

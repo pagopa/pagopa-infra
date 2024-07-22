@@ -14,16 +14,29 @@
       </allowed-headers>
     </cors>
     <base />
+    <set-header name="x-user-id" exists-action="delete" />
     <!-- Session eCommerce START-->
     <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
         <issuer-signing-keys>
             <key>{{ecommerce-webview-jwt-signing-key}}</key>
             <key>{{ecommerce-checkout-transaction-jwt-signing-key}}</key> <!-- TODO Need to review the key management for validation of the token used in this call as currently for payment wallet cards and apm tokens are signed differently -->
+            <key>{{wallet-session-jwt-signing-key}}</key> <!-- TODO Need to remove this key. The session token for webview polling MUST be different from the one used for app IO Authentication -->
         </issuer-signing-keys>
-        <!-- <required-claims>
-            <claim name="userId" />
-        </required-claims> -->
     </validate-jwt>
+        <set-variable name="xUserId" value="@{
+          var jwt = (Jwt)context.Variables["jwtToken"];
+          if(jwt.Claims.ContainsKey("userId")){
+              return jwt.Claims["userId"][0];
+          }
+          return "";
+          }" />
+        <choose>
+            <when condition="@(context.Variables.GetValueOrDefault("xUserId","") != "")">
+                <set-header name="x-user-id" exists-action="override">
+                    <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
+                </set-header>
+            </when>
+        </choose>
     <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
     <choose>
       <when condition="@( context.Request.Url.Path.Contains("transactions") )">

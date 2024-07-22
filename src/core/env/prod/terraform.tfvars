@@ -18,11 +18,12 @@ tags = {
 # Feature flag
 #
 enabled_features = {
-  apim_v2  = false
-  vnet_ita = false
+  vnet_ita          = false
+  node_forwarder_ha = true
 }
 
-lock_enable = true
+upload_endpoint_enabled = true
+lock_enable             = true
 
 # monitoring
 law_sku               = "CapacityReservation" # TODO verify why it is changed from PerGB2018 to CapacityReservation
@@ -59,7 +60,6 @@ cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 cidr_subnet_node_forwarder = ["10.1.158.0/24"]
 
 # specific
-cidr_subnet_redis                = ["10.1.163.0/24"]
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
 
 # integration vnet
@@ -74,7 +74,6 @@ cidr_subnet_api_config = ["10.230.10.128/29"]
 external_domain   = "pagopa.it"
 dns_zone_prefix   = "platform"
 dns_zone_checkout = "checkout"
-dns_zone_wisp2    = "wisp2"
 dns_zone_wfesp    = "wfesp"
 
 # azure devops
@@ -87,9 +86,6 @@ apim_publisher_name = "pagoPA Platform PROD"
 apim_sku            = "Premium_1"
 apim_alerts_enabled = true
 
-# redis private endpoint
-redis_private_endpoint_enabled = true
-redis_cache_enabled            = true
 
 apim_autoscale = {
   enabled                       = true
@@ -176,12 +172,10 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
     "193.203.230.21", # VPN NEXI
+    "151.1.203.68"    # Softlab backup support line
   ]
 }
 
-# nat_gateway
-nat_gateway_enabled    = true
-nat_gateway_public_ips = 2
 
 # todo change to Premium before launch
 # redis_sku_name = "Premium"
@@ -200,26 +194,10 @@ apim_nodo_auth_decoupler_enable = true
 apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 
-apim_enable_nm3_decoupler_switch     = false
-apim_enable_routing_decoupler_switch = false
-default_node_id                      = "NDP003PROD"
-
 nodo_pagamenti_enabled = true
-nodo_pagamenti_psp     = "97249640588,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
-nodo_pagamenti_ec      = "00493410583,09633951000,06655971007,00856930102,02478610583,97169170822,01266290996,01248040998,01429910183,80007270376,01142420056,80052310580,83000730297,80082160013,94050080038,01032450072,01013130073,10718570012,01013210073,87007530170,01242340998,80012150274,02508710585,80422850588,94032590278,94055970480,92001600524,80043570482,92000530532,80094780378,80016430045,80011170505,80031650486,00337870406,09227921005,01928010683,00608810057,03299640163,82002730487,02928200241"
-nodo_pagamenti_url     = "https://10.79.20.34/webservices/input"
-ip_nodo                = "10.79.20.34"   # TEMP Nodo On Premises
 lb_aks                 = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
-schema_ip_nexi = "https://10.79.20.34"
 
-base_path_nodo_oncloud        = "/nodo-prd"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-prd-NOT-FOUND"
-base_path_nodo_sync           = "/sync-cron-prd/syncWisp"
-base_path_nodo_wfesp          = "/wfesp-prd"
-base_path_nodo_fatturazione   = "/fatturazione-prd"
-base_path_nodo_web_bo         = "/web-bo-prd"
-base_path_nodo_web_bo_history = "/web-bo-history-prd"
 
 base_path_nodo_postgresql_nexi_onprem = "/"
 
@@ -679,13 +657,6 @@ pagopa_proxy_size           = "P1v3"
 # TODO this is dev value ... replace with uat value.
 nodo_ip_filter = "10.79.20.32"
 
-# redis apim
-redis_cache_params = {
-  public_access = false
-  capacity      = 0
-  sku_name      = "Standard"
-  family        = "C"
-}
 
 # payment-manager clients
 io_bpd_hostname    = "portal.test.pagopa.gov.it" #TO UPDATE with prod hostname
@@ -771,9 +742,10 @@ storage_queue_private_endpoint_enabled = true
 platform_private_dns_zone_records = ["api", "portal", "management"]
 
 # node forwarder
-nodo_pagamenti_x_forwarded_for = "10.230.10.5"
-node_forwarder_tier            = "PremiumV3"
-node_forwarder_size            = "P1v3"
+nodo_pagamenti_x_forwarded_for         = "10.230.10.5"
+nodo_pagamenti_x_forwarded_for_apim_v2 = "10.230.10.164"
+node_forwarder_tier                    = "PremiumV3"
+node_forwarder_size                    = "P1v3"
 
 # lb elk
 ingress_elk_load_balancer_ip = "10.1.100.251"
@@ -794,5 +766,13 @@ function_app_storage_account_info = {
 logic_app_storage_account_replication_type   = "LRS"
 buyer_banks_storage_account_replication_type = "GZRS"
 cdn_storage_account_replication_type         = "GRS"
-backup_storage_replication_type              = "GRS"
+backup_storage_replication_type              = "GZRS"
 fdr_flow_sa_replication_type                 = "ZRS"
+
+apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
+apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"
+
+apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/loggers/pagopa-p-apim-logger"
+
+# WISP-dismantling-cfg
+create_wisp_converter = true
