@@ -1,4 +1,5 @@
 locals {
+  node_forwarder_names_suffix = var.is_feature_enabled.node_forwarder_ha_enabled ? "-ha" : ""
   node_forwarder_rg_name = "${local.product}-node-forwarder-rg"
   node_forwarder_app_settings = {
     # Monitoring
@@ -47,6 +48,33 @@ locals {
 
 }
 
+resource "azurerm_resource_group" "node_forwarder_rg" {
+  name     = format("%s-node-forwarder-rg", local.project)
+  location = var.location
+
+  tags = var.tags
+}
+
+
+# Subnet to host the node forwarder
+module "node_forwarder_snet" {
+  count                                         = var.is_feature_enabled.node_forwarder_ha_enabled ? 0 : 1
+  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
+  name                                           = format("%s-node-forwarder-snet", local.product)
+  address_prefixes                               = var.cidr_subnet_node_forwarder
+  resource_group_name                            = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                           = data.azurerm_virtual_network.vnet_core.name
+  enforce_private_link_endpoint_network_policies = true
+
+  delegation = {
+    name = "default"
+    service_delegation = {
+      name    = "Microsoft.Web/serverFarms"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+    }
+  }
+}
+
 
 
 module "node_forwarder_ha_snet" {
@@ -84,10 +112,10 @@ module "node_forwarder_app_service" {
   location            = var.location
 
   # App service plan vars
-  plan_name = "${local.project}-plan-node-forwarder-ha"
+  plan_name = "${local.project}-plan-node-forwarder${local.node_forwarder_names_suffix}"
 
   # App service plan
-  name                = "${local.project}-app-node-forwarder-ha"
+  name                = "${local.project}-app-node-forwarder${local.node_forwarder_names_suffix}"
   client_cert_enabled = false
   always_on           = var.node_forwarder_always_on
   health_check_path   = "/actuator/info"
@@ -102,7 +130,7 @@ module "node_forwarder_app_service" {
 
   sku_name = var.node_forwarder_sku
 
-  subnet_id                    = module.node_forwarder_ha_snet[0].id
+  subnet_id                    = var.is_feature_enabled.node_forwarder_ha_enabled ? module.node_forwarder_ha_snet[0].id : module.node_forwarder_snet[0].id
   health_check_maxpingfailures = 10
 
   zone_balancing_enabled = var.node_forwarder_zone_balancing_enabled
