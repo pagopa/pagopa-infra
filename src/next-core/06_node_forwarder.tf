@@ -64,7 +64,7 @@ module "node_forwarder_snet" {
   address_prefixes                               = var.cidr_subnet_node_forwarder
   resource_group_name                            = data.azurerm_resource_group.rg_vnet.name
   virtual_network_name                           = data.azurerm_virtual_network.vnet_core.name
-  enforce_private_link_endpoint_network_policies = true
+  private_link_service_network_policies_enabled = true
 
   delegation = {
     name = "default"
@@ -105,7 +105,7 @@ resource "azurerm_subnet_nat_gateway_association" "nodefw_ha_snet_nat_associatio
 module "node_forwarder_app_service" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
 
-  count = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
+  count =  1
 
   vnet_integration    = true
   resource_group_name = "${local.product}-node-forwarder-rg"
@@ -139,7 +139,7 @@ module "node_forwarder_app_service" {
 }
 
 module "node_forwarder_slot_staging" {
-  count = var.env_short == "p" && var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
+  count = var.env_short != "d" ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.60.0"
 
@@ -162,13 +162,12 @@ module "node_forwarder_slot_staging" {
 
   allowed_subnets = [module.apim_snet.id]
   allowed_ips     = []
-  subnet_id       = module.node_forwarder_ha_snet[0].id
+  subnet_id       = var.is_feature_enabled.node_forwarder_ha_enabled ? module.node_forwarder_ha_snet[0].id : module.node_forwarder_snet[0].id
 
   tags = var.tags
 }
 
 resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autoscale" {
-  count               = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
   name                = "${local.project}-autoscale-node-forwarder-ha"
   resource_group_name = local.node_forwarder_rg_name
   location            = var.location
@@ -286,7 +285,7 @@ resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autosca
 # Alert on mem or cpu avr
 #################################
 resource "azurerm_monitor_metric_alert" "app_service_over_cpu_usage" {
-  count               = var.env_short == "p" && var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-pagopa-node-forwarder-ha-cpu-usage-over-80"
 
@@ -323,7 +322,7 @@ resource "azurerm_monitor_metric_alert" "app_service_over_cpu_usage" {
 }
 
 resource "azurerm_monitor_metric_alert" "app_service_over_mem_usage" {
-  count               = var.env_short == "p" && var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-pagopa-node-forwarder-ha-mem-usage-over-80"
 
@@ -359,4 +358,122 @@ resource "azurerm_monitor_metric_alert" "app_service_over_mem_usage" {
   tags = var.tags
 }
 
+
+# KV placeholder for CERT and KEY certificate
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "certificate_crt_node_forwarder_s" {
+  name         = "certificate-crt-node-forwarder"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "certificate_key_node_forwarder_s" {
+  name         = "certificate-key-node-forwarder"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "node_forwarder_subscription_key" {
+  count        = var.env_short != "p" ? 1 : 0 # only in DEV and UAT
+  name         = "node-forwarder-api-subscription-key"
+  value        = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forwarder-responsetime-upd" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-opex_pagopa-node-forwarder-responsetime @ _forward2"
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = module.apim[0].id
+  description    = "Response time for /forward is less than or equal to 9s - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
+  enabled        = true
+  query = (<<-QUERY
+let threshold = 9000;
+AzureDiagnostics
+| where url_s matches regex "/forward"
+| summarize
+    watermark=threshold,
+    duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)
+| where duration_percentile_95 > threshold
+  QUERY
+  )
+  severity    = 1
+  frequency   = 5
+  time_window = 5
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forwarder-availability-upd" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-opex_pagopa-node-forwarder-availability @ _forward2"
+  location            = var.location
+
+  action {
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = module.apim[0].id
+  description    = "Availability for /forward is less than or equal to 99% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
+  enabled        = true
+  query = (<<-QUERY
+let threshold = 0.99;
+AzureDiagnostics
+| where url_s matches regex "/forward"
+| summarize
+    Total=count(),
+    Success=count(responseCode_d < 500)
+    by bin(TimeGenerated, 5m)
+| extend availability=toreal(Success) / Total
+| where availability < threshold
+  QUERY
+  )
+  severity    = 1
+  frequency   = 5
+  time_window = 5
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+
+}
 
