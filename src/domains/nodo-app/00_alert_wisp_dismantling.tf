@@ -59,7 +59,7 @@ traces
 | summarize
     Total=count(message startswith "Invoking API operation ${each.value}"),
     Success=count(message startswith "Failed API operation ${each.value}")
-    by bin(TimeGenerated, 5m)
+    by bin(timestamp, 5m)
 | extend availability=toreal(Success) / Total
 | where availability < threshold
   QUERY
