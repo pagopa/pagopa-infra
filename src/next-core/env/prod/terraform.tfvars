@@ -789,6 +789,11 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
 }
 
 cdn_storage_account_replication_type = "GZRS"
+backup_storage_replication_type      = "GZRS"
 
 apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
 apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"
+# monitoring
+law_sku               = "CapacityReservation" # TODO verify why it is changed from PerGB2018 to CapacityReservation
+law_retention_in_days = 30
+law_daily_quota_gb    = -1

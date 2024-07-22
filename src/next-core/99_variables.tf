@@ -960,6 +960,13 @@ variable "cdn_storage_account_replication_type" {
   description = "(Optional) Cdn storage account replication type"
 }
 
+
+variable "backup_storage_replication_type" {
+  type        = string
+  default     = "GZRS"
+  description = "(Optional) Backup storage account replication type"
+}
+
 variable "azuread_service_principal_azure_cdn_frontdoor_id" {
   type        = string
   description = "Azure CDN Front Door Principal ID"
@@ -985,4 +992,24 @@ variable "cidr_subnet_eventhub" {
   type        = list(string)
   description = "Address prefixes subnet eventhub"
   default     = null
+}
+
+
+## Monitor
+variable "law_sku" {
+  type        = string
+  description = "Sku of the Log Analytics Workspace"
+  default     = "PerGB2018"
+}
+
+variable "law_retention_in_days" {
+  type        = number
+  description = "The workspace data retention in days"
+  default     = 30
+}
+
+variable "law_daily_quota_gb" {
+  type        = number
+  description = "The workspace daily quota for ingestion in GB."
+  default     = -1
 }
