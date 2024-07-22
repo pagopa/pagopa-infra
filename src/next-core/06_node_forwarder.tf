@@ -49,7 +49,7 @@ locals {
 }
 
 resource "azurerm_resource_group" "node_forwarder_rg" {
-  name     = format("%s-node-forwarder-rg", local.project)
+  name     = format("%s-node-forwarder-rg", local.product)
   location = var.location
 
   tags = var.tags
