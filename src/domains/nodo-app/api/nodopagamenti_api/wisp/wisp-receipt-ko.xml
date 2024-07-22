@@ -1,6 +1,6 @@
 <fragment>
   <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
-  <set-variable name="status-code" value="@(context.Response.StatusCode)" />
+  <set-variable name="status-code" value="@(context.Response.StatusCode.ToString())" />
   <choose>
     <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
       <!-- check if outcome in request is KO -->
