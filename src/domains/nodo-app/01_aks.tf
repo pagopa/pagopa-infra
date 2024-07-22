@@ -32,10 +32,10 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodo_pool" {
   os_type = "Linux"
 
   ### autoscaling
-  enable_auto_scaling = var.env_short == "p" ? false : true                               # PSFC-TODO da ripristinare true
-  node_count          = var.env_short == "p" ? 0 : var.nodo_user_node_pool.node_count_min # PSFC-TODO da ripristinare var.nodo_user_node_pool.node_count_min
-  min_count           = var.env_short == "p" ? 0 : var.nodo_user_node_pool.node_count_min # PSFC-TODO da ripristinare var.nodo_user_node_pool.node_count_min
-  max_count           = var.env_short == "p" ? 0 : var.nodo_user_node_pool.node_count_max # PSFC-TODO da ripristinare var.nodo_user_node_pool.node_count_max
+  enable_auto_scaling = true
+  node_count          = var.nodo_user_node_pool.node_count_min
+  min_count           = var.nodo_user_node_pool.node_count_min
+  max_count           = var.nodo_user_node_pool.node_count_max
 
   ### K8s node configuration
   max_pods    = var.nodo_user_node_pool.nodo_pool_max_pods
