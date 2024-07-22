@@ -276,11 +276,12 @@ wisp_converter = {
   enable_apim_switch     = false
   brokerPSP_whitelist    = "97735020584"
   channel_whitelist      = "97735020584_02"
-  station_whitelist      = "80001480534-00838520880_01" # subsets of EC friends
-  ci_whitelist           = "80001480534"
+  station_whitelist      = "80001480534-00838520880_01,82004590814-00838520880_01" # subsets of EC friends
+  ci_whitelist           = "80001480534,82004590814"
   dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
 }
 
-# 80001480534-00838520880_01 GRPM01000E/Argo
+# 80001480534-00838520880_01 GRPM01000E/Argo https://config.platform.pagopa.it/creditor-institutions/80001480534
+# 82004590814-00838520880_01 TPIC81700P/Argo https://config.platform.pagopa.it/creditor-institutions/82004590814
 
 enable_sendPaymentResultV2_SWClient = false
