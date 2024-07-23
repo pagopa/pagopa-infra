@@ -1013,3 +1013,9 @@ variable "law_daily_quota_gb" {
   description = "The workspace daily quota for ingestion in GB."
   default     = -1
 }
+
+variable "cidr_subnet_node_forwarder" {
+  type        = list(string)
+  description = "Address prefixes subnet node forwarder"
+  default     = null
+}

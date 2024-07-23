@@ -21,7 +21,7 @@ tags = {
 is_feature_enabled = {
   vnet_ita                  = false,
   container_app_tools_cae   = true,
-  node_forwarder_ha_enabled = true,
+  node_forwarder_ha_enabled = false,
   vpn                       = false,
   dns_forwarder_lb          = true,
   postgres_private_dns      = true,
@@ -38,6 +38,7 @@ cidr_subnet_appgateway           = ["10.1.128.0/24"]
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
 cidr_subnet_tools_cae            = ["10.1.248.0/23"]
 cidr_subnet_azdoa                = ["10.1.130.0/24"]
+cidr_subnet_node_forwarder       = ["10.1.158.0/24"]
 cidr_subnet_loadtest_agent       = ["10.1.159.0/24"]
 cidr_subnet_eventhub             = ["10.230.9.64/26"]
 
@@ -666,7 +667,7 @@ eventhubs_04 = [
 
 node_forwarder_logging_level          = "DEBUG"
 node_forwarder_zone_balancing_enabled = false
-node_forwarder_sku                    = "B1"
+node_forwarder_sku                    = "P1v3"
 node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
 azdo_agent_vm_image_name              = "pagopa-u-azdo-agent-ubuntu2204-image-v3"
 
