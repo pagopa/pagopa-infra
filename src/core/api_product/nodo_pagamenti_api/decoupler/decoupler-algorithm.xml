@@ -333,17 +333,17 @@ new JProperty("ttl", 1)
                             isWhitelisted = (brokersWhitelisted || brokers.Contains(pspBrokerId)) &&
                                             (channelsWhitelisted || channels.Contains(channelId)) &&
                                             isCiAndStationOk;
-							// check if 'tipoVersamento' is accepted for WISP dismantling only
-							// if is whitelisted and it is a 'nodoInviaRPT'
-							bool isNodoInviaRPT = "nodoInviaRPT".Equals((string)context.Variables["soapAction"]);
-							if (isWhitelisted && isNodoInviaRPT) {
-								byte[] rptAsBytearray = Convert.FromBase64String((string) primitive.Descendants("rpt").FirstOrDefault());
-								string rptAsString = System.Text.Encoding.UTF8.GetString(rptAsBytearray);
-								XElement rpt = XElement.Parse(rptAsString);
-								string rptPaymentType = rpt.Descendants(rpt.Name.Namespace + "tipoVersamento").FirstOrDefault()?.Value;
-								string[] paymentTypes =  ((string) context.Variables["wisp_whitelisted_paymenttypes"]).Split(',');
-								isWhitelisted = paymentTypes.Contains(rptPaymentType);
-							}
+                            // check if 'tipoVersamento' is accepted for WISP dismantling only
+                            // if is whitelisted and it is a 'nodoInviaRPT'
+                            bool isNodoInviaRPT = "nodoInviaRPT".Equals((string)context.Variables["soapAction"]);
+                            if (isWhitelisted && isNodoInviaRPT) {
+                                byte[] rptAsBytearray = Convert.FromBase64String((string) primitive.Descendants("rpt").FirstOrDefault());
+                                string rptAsString = System.Text.Encoding.UTF8.GetString(rptAsBytearray);
+                                XElement rpt = XElement.Parse(rptAsString);
+                                string rptPaymentType = rpt.Descendants(rpt.Name.Namespace + "tipoVersamento").FirstOrDefault()?.Value;
+                                string[] paymentTypes =  ((string) context.Variables["wisp_whitelisted_paymenttypes"]).Split(',');
+                                isWhitelisted = paymentTypes.Contains(rptPaymentType);
+                            }
                         } catch (Exception e) {
                             // do nothing
                         }
