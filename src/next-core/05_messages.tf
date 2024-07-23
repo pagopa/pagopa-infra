@@ -75,11 +75,11 @@ module "event_hub03" {
   metric_alerts  = var.ehns_metric_alerts
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      action_group_id    = azurerm_monitor_action_group.slack.id
       webhook_properties = null
     },
     {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
+      action_group_id    = azurerm_monitor_action_group.email.id
       webhook_properties = null
     }
   ]
@@ -112,11 +112,11 @@ module "event_hub04" {
 
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      action_group_id    = azurerm_monitor_action_group.slack.id
       webhook_properties = null
     },
     {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
+      action_group_id    = azurerm_monitor_action_group.email.id
       webhook_properties = null
     }
   ]

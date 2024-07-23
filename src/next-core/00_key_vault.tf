@@ -109,3 +109,58 @@ data "azurerm_key_vault_secret" "certificate_key_node_forwarder" {
   name         = "certificate-key-node-forwarder"
   key_vault_id = module.key_vault.id
 }
+
+
+data "azurerm_key_vault_secret" "monitor_notification_email" {
+  name         = "monitor-notification-email"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
+  name         = "monitor-notification-slack-email"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "monitor_mo_notification_email" {
+  name         = "monitor-mo-notification-email"
+  key_vault_id = module.key_vault.id
+}
+
+# DEPRECATED use opsgenie-webhook-token
+data "azurerm_key_vault_secret" "monitor_new_conn_srv_webhook_key" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "new-conn-srv-opsgenie-webhook-token"
+  key_vault_id = module.key_vault.id
+}
+
+
+#
+# Alerts
+#
+data "azurerm_key_vault_secret" "alert_error_notification_email" {
+  name         = "alert-error-notification-email"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "alert_error_notification_slack" {
+  name         = "alert-error-notification-slack"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "monitor_pm_opsgenie_webhook_key" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "pm-opsgenie-webhook-token"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "sec_workspace_id" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "sec-workspace-id"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "sec_storage_id" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "sec-storage-id"
+  key_vault_id = module.key_vault.id
+}
