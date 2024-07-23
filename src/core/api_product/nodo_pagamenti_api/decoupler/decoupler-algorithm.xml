@@ -270,7 +270,7 @@ new JProperty("ttl", 1)
 			<set-variable name="wisp_whitelisted_channels" value="{{wisp-channel-whitelist}}" />
 			<set-variable name="wisp_whitelisted_stations" value="{{wisp-station-whitelist}}" />
 			<set-variable name="wisp_whitelisted_cis" value="{{wisp-ci-whitelist}}" />
-			<set-variable name="wisp_whitelisted_paymenttypes" value="{{wisp-paymenttype-whitelist}}" />
+			<set-variable name="wisp_whitelisted_nodoinviarpt_paymenttypes" value="{{wisp-nodoinviarpt-paymenttype-whitelist}}" />
 			<set-variable name="is_whitelisted" value="@{
                         // isWhiteListed if:
                         // - lists are empties
@@ -341,7 +341,7 @@ new JProperty("ttl", 1)
                                 string rptAsString = System.Text.Encoding.UTF8.GetString(rptAsBytearray);
                                 XElement rpt = XElement.Parse(rptAsString);
                                 string rptPaymentType = rpt.Descendants(rpt.Name.Namespace + "tipoVersamento").FirstOrDefault()?.Value;
-                                string[] paymentTypes =  ((string) context.Variables["wisp_whitelisted_paymenttypes"]).Split(',');
+                                string[] paymentTypes =  ((string) context.Variables["wisp_whitelisted_nodoinviarpt_paymenttypes"]).Split(',');
                                 isWhitelisted = paymentTypes.Contains(rptPaymentType);
                             }
                         } catch (Exception e) {

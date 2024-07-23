@@ -41,12 +41,12 @@ resource "azurerm_api_management_named_value" "wisp_ci_whitelist_named_value" {
   value               = var.wisp_converter.ci_whitelist
 }
 
-resource "azurerm_api_management_named_value" "wisp_paymenttype_whitelist_named_value" {
-  name                = "wisp-paymenttype-whitelist"
+resource "azurerm_api_management_named_value" "wisp_nodoinviarpt_paymenttype_whitelist_named_value" {
+  name                = "wisp-nodoinviarpt-paymenttype-whitelist"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = "wisp-paymenttype-whitelist"
-  value               = var.wisp_converter.paymenttype_whitelist
+  display_name        = "wisp-nodoinviarpt-paymenttype-whitelist"
+  value               = var.wisp_converter.nodoinviarpt_paymenttype_whitelist
 }
 
 resource "azurerm_api_management_named_value" "wisp_dismantling_primitives" {
