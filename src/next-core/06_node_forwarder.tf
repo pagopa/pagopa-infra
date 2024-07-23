@@ -1,6 +1,6 @@
 locals {
   node_forwarder_names_suffix = var.is_feature_enabled.node_forwarder_ha_enabled ? "-ha" : ""
-  node_forwarder_rg_name = "${local.product}-node-forwarder-rg"
+  node_forwarder_rg_name      = "${local.product}-node-forwarder-rg"
   node_forwarder_app_settings = {
     # Monitoring
     APPINSIGHTS_INSTRUMENTATIONKEY                  = azurerm_application_insights.application_insights.instrumentation_key
@@ -59,11 +59,11 @@ resource "azurerm_resource_group" "node_forwarder_rg" {
 # Subnet to host the node forwarder
 module "node_forwarder_snet" {
   count                                         = var.is_feature_enabled.node_forwarder_ha_enabled ? 0 : 1
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
-  name                                           = format("%s-node-forwarder-snet", local.product)
-  address_prefixes                               = var.cidr_subnet_node_forwarder
-  resource_group_name                            = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet_core.name
+  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
+  name                                          = format("%s-node-forwarder-snet", local.product)
+  address_prefixes                              = var.cidr_subnet_node_forwarder
+  resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                          = data.azurerm_virtual_network.vnet_core.name
   private_link_service_network_policies_enabled = true
 
   delegation = {
@@ -105,7 +105,7 @@ resource "azurerm_subnet_nat_gateway_association" "nodefw_ha_snet_nat_associatio
 module "node_forwarder_app_service" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
 
-  count =  1
+  count = 1
 
   vnet_integration    = true
   resource_group_name = "${local.product}-node-forwarder-rg"
