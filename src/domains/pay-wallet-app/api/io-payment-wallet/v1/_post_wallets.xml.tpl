@@ -93,7 +93,7 @@
                 var jti = Guid.NewGuid().ToString(); //sets the iat claim. Random uuid added to prevent the reuse of this token
                 var date = DateTime.Now;
                 var iat = new DateTimeOffset(date).ToUnixTimeSeconds(); // sets the issued time of the token now
-                var exp = new DateTimeOffset(date.AddMinutes(10)).ToUnixTimeSeconds();  // sets the expiration of the token to be 10 minutes from now
+                var exp = new DateTimeOffset(date.AddMinutes(15)).ToUnixTimeSeconds();  // sets the expiration of the token to be 15 minutes from now
                 var userId = ((string)context.Variables.GetValueOrDefault("xUserId","")); 
                 var walletId = ((string)context.Variables.GetValueOrDefault("walletId",""));
                 var payload = new { iat, exp, jti, userId, walletId }; 

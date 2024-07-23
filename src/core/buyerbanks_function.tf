@@ -40,7 +40,7 @@ module "buyerbanks_function" {
   always_on                                = true
   os_type                                  = "linux"
   linux_fx_version                         = "NODE|18"
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_name = format("%s-plan-fnbuyerbanks", local.project)
   app_service_plan_info = {
@@ -152,11 +152,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_update_alert"
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = azurerm_application_insights.application_insights.id
+  data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "Availability greater than or equal 99%"
   enabled        = true
   query = format(<<-QUERY

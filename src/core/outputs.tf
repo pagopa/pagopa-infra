@@ -52,7 +52,7 @@ output "nodo_test_sa_blob_connection_string" {
 }
 
 output "application_insights_instrumentation_key" {
-  value     = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
+  value     = format("InstrumentationKey=%s", data.azurerm_application_insights.application_insights.instrumentation_key)
   sensitive = true
 }
 
