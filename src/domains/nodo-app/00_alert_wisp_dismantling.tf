@@ -61,7 +61,7 @@ traces
     Failed=count(message startswith "Failed API operation ${each.value}")
     by bin(timestamp, 5m)
 | where Total > 0
-| extend availability=toreal(1-Failed) / Total
+| extend availability=toreal(Total-Failed) / Total
 | where availability < threshold
   QUERY
   )
