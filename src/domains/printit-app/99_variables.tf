@@ -189,11 +189,6 @@ variable "app_service_pdf_engine_sku_name" {
   description = "app service plan size"
 }
 
-variable "app_service_pdf_engine_zone_balancing_enabled" {
-  type        = bool
-  description = "Enable HA multi az balancing"
-}
-
 ### PDF JAVA
 variable "app_service_pdf_engine_sku_name_java" {
   type        = string
