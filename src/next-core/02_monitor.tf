@@ -195,8 +195,8 @@ locals {
     },
     # assets.cdn.platform.pagopa.it
     {
-      host = "assets.cdn.platform.pagopa.it",
-      path = "",
+      host          = "assets.cdn.platform.pagopa.it",
+      path          = "",
       alert_enabled = false
     },
     # wfesp.pagopa.gov.it
@@ -256,7 +256,7 @@ module "web_test_standard" {
   metric_severity                          = 1
   metric_frequency                         = "PT1M"
   alert_use_web_test_criteria              = true
-  alert_enabled = try(each.value.alert_enabled , true)
+  alert_enabled                            = try(each.value.alert_enabled, true)
 
 
 }
