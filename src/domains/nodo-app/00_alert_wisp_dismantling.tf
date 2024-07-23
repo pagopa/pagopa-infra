@@ -58,9 +58,10 @@ traces
 | where cloud_RoleName == "pagopawispconverter"
 | summarize
     Total=count(message startswith "Invoking API operation ${each.value}"),
-    Success=count(message startswith "Failed API operation ${each.value}")
+    Failed=count(message startswith "Failed API operation ${each.value}")
     by bin(timestamp, 5m)
-| extend availability=toreal(Success) / Total
+| where Total > 0
+| extend availability=toreal(1-Failed) / Total
 | where availability < threshold
   QUERY
   )
@@ -87,7 +88,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-convert
   }
 
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Availability for wisp-converter API ${each.value} is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-wisp-converter"
+  description    = "Errors for wisp-converter API ${each.value} is greater than 1 - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-wisp-converter"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
