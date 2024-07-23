@@ -73,6 +73,10 @@
                 </send-request>
                 <choose>
                     <when condition="@(((int)((IResponse)context.Variables["paymentMethodSessionVerificationResponse"]).StatusCode) != 200)">
+                        <trace source="ecommerce_npg_notify" severity="error">
+                            <message>NPG Notification Error - Payment Method</message>
+                            <metadata name="paymentMethodResponseCode" value="@(((int)((IResponse)context.Variables["paymentMethodSessionVerificationResponse"]).StatusCode).ToString())" />
+                        </trace>
                         <return-response>
                             <set-status code="500" reason="Error retrieving session" />
                         </return-response>
@@ -161,6 +165,10 @@
                 </return-response>
             </when>
             <otherwise>
+                <trace source="ecommerce_npg_notify" severity="error">
+                    <message>NPG Notification Error - Transaction Service</message>
+                    <metadata name="transactionServiceResponseCode" value="@(((int)((IResponse)context.Variables["transactionServiceAuthorizationPatchResponse"]).StatusCode).ToString())" />
+                </trace>
                 <return-response>
                     <set-status code="500" reason="Error during transaction status notify" />
                 </return-response>
@@ -173,6 +181,15 @@
     </backend>
     <outbound />
     <on-error>
+        <trace source="ecommerce_npg_notify" severity="error">
+            <message>NPG Notification Error</message>
+            <metadata name="errorSource" value="@(context.LastError.Source)" />
+            <metadata name="errorMessage" value="@(context.LastError.Message)" />
+            <metadata name="errorReason" value="@(context.LastError?.Reason ?? "-")" />
+            <metadata name="errorSection" value="@(context.LastError?.Section ?? "-")" />
+            <metadata name="errorPath" value="@(context.LastError?.Path ?? "-")" />
+            <metadata name="errorStatusCode" value="@((context.Response?.StatusCode ?? -1).ToString())" />
+        </trace>
         <base />
     </on-error>
 </policies>
