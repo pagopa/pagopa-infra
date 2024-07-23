@@ -95,7 +95,7 @@ module "apim" {
 
   application_insights = {
     enabled             = true
-    instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+    instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
   }
   zones                                         = startswith(var.apim_v2_sku, "Premium") ? var.apim_v2_zones : null
   management_logger_applicaiton_insight_enabled = false
@@ -119,11 +119,11 @@ module "apim" {
 
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      action_group_id    = azurerm_monitor_action_group.slack.id
       webhook_properties = null
     },
     {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
+      action_group_id    = azurerm_monitor_action_group.email.id
       webhook_properties = null
     }
   ]
