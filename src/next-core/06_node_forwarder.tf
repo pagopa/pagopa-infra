@@ -410,7 +410,7 @@ resource "azurerm_key_vault_secret" "node_forwarder_subscription_key" {
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forwarder-responsetime-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-node-forwarder-responsetime @ _forward2"
+  name                = "pagopa-${var.env_short}-opex_pagopa-node-forwarder-responsetime@_forward2"
   location            = var.location
 
   action {
@@ -444,7 +444,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forwarder-availability-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-node-forwarder-availability @ _forward2"
+  name                = "pagopa-${var.env_short}-opex_pagopa-node-forwarder-availability@_forward2"
   location            = var.location
 
   action {

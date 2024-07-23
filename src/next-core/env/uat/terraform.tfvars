@@ -667,7 +667,7 @@ eventhubs_04 = [
 
 node_forwarder_logging_level          = "DEBUG"
 node_forwarder_zone_balancing_enabled = false
-node_forwarder_sku                    = "B1"
+node_forwarder_sku                    = "P1v3"
 node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
 azdo_agent_vm_image_name              = "pagopa-u-azdo-agent-ubuntu2204-image-v3"
 
