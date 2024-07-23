@@ -278,6 +278,7 @@ wisp_converter = {
   channel_whitelist      = "97735020584_02"
   station_whitelist      = "80001480534-00838520880_01,82004590814-00838520880_01" # subsets of EC friends
   ci_whitelist           = "80001480534,82004590814"
+  paymenttype_whitelist  = "BBT"
   dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
 }
 

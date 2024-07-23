@@ -205,6 +205,7 @@ wisp_converter = {
   channel_whitelist      = "97735020584_02"             # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/135924270/Canali+Particolari
   station_whitelist      = "15376371009-15376371009_09" # https://config.dev.platform.pagopa.it/stations/15376371009_09 in DEV x i test quella di MockEC
   ci_whitelist           = "15376371009"
+  paymenttype_whitelist  = "BBT"
   dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
 }
 

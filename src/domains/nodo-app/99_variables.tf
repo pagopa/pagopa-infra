@@ -449,6 +449,7 @@ variable "wisp_converter" {
     channel_whitelist      = string
     station_whitelist      = string
     ci_whitelist           = string
+    paymenttype_whitelist  = string
     dismantling_primitives = string
   })
 }
