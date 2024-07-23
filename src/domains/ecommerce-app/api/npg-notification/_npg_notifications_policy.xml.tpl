@@ -87,17 +87,16 @@
         </choose>
         <!-- end payment method verify session -->
         <!-- send transactions service PATCH request -->
-        <send-request mode="new" response-variable-name="transactionServiceAuthorizationPatchResponse" timeout="10" ignore-error="true">
-            <set-url>@(String.Format((string)context.Variables["transactionServiceBackendUri"]+"/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))</set-url>
-            <set-method>PATCH</set-method>
-            <set-header name="Content-Type" exists-action="override">
-                <value>application/json</value>
-            </set-header>
-            <set-header name="x-payment-gateway-type" exists-action="override">
-                <value>"NPG"</value>
-            </set-header>
-            <set-body>
-                     @{
+        <set-backend-service base-url="@((string)context.Variables["transactionServiceBackendUri"])" />
+        <rewrite-uri template="@(String.Format("/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))" copy-unmatched-params="false"/>
+        <set-method>PATCH</set-method>
+        <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+        </set-header>
+        <set-header name="x-payment-gateway-type" exists-action="override">
+            <value>"NPG"</value>
+        </set-header>
+        <set-body>@{
                         JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
                         JObject operation = (JObject)requestBody["operation"];
                         string operationResult = (string)operation["operationResult"];
@@ -156,10 +155,15 @@
                         response["outcomeGateway"] = outcomeGateway;
                         return response.ToString();
                      }
-            </set-body>
-        </send-request>
+        </set-body>
+        <!-- end send transactions service PATCH request -->
+    </inbound>
+    <backend>
+        <forward-request timeout="10" />
+    </backend>
+    <outbound>
         <choose>
-            <when condition="@(((int)((IResponse)context.Variables["transactionServiceAuthorizationPatchResponse"]).StatusCode) == 200)">
+            <when condition="@(((int)((IResponse)context.Response).StatusCode) == 200)">
                 <return-response>
                     <set-status code="200" reason="Notification elaborated successfully" />
                 </return-response>
@@ -167,19 +171,14 @@
             <otherwise>
                 <trace source="ecommerce_npg_notify" severity="error">
                     <message>NPG Notification Error - Transaction Service</message>
-                    <metadata name="transactionServiceResponseCode" value="@(((int)((IResponse)context.Variables["transactionServiceAuthorizationPatchResponse"]).StatusCode).ToString())" />
+                    <metadata name="transactionServiceResponseCode" value="@(((int)((IResponse)context.Response).StatusCode).ToString())" />
                 </trace>
                 <return-response>
                     <set-status code="500" reason="Error during transaction status notify" />
                 </return-response>
             </otherwise>
         </choose>
-        <!-- end send transactions service PATCH request -->
-    </inbound>
-    <backend>
-        <base />
-    </backend>
-    <outbound />
+    </outbound>
     <on-error>
         <trace source="ecommerce_npg_notify" severity="error">
             <message>NPG Notification Error</message>
