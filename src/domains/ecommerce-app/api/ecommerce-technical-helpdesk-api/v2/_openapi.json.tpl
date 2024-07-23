@@ -157,61 +157,6 @@
           }
         }
       }
-    },
-    "/helpdesk/searchPaymentMethod": {
-      "post": {
-        "tags": [
-          "helpDesk"
-        ],
-        "operationId": "helpDeskSearchPaymentMethod",
-        "summary": "Search payment methods by input parameters",
-        "description": "GET with body payload - no resources created",
-        "requestBody": {
-          "$ref": "#/components/requestBodies/SearchPaymentMethodRequest"
-        },
-        "responses": {
-          "200": {
-            "description": "Payment methods found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SearchPaymentMethodResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Formally invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Transaction not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
