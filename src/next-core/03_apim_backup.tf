@@ -32,7 +32,7 @@ resource "azurerm_private_endpoint" "backup_blob_private_endpoint" {
   name                = format("%s-backup-blob-private-endpoint", local.product)
   location            = var.location
   resource_group_name = azurerm_resource_group.data.name
-  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
+  subnet_id           = module.common_private_endpoint_snet.id
 
   private_dns_zone_group {
     name                 = "${local.product}-backup-blob-private-dns-zone-group"

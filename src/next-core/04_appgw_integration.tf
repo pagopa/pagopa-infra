@@ -1,8 +1,8 @@
 module "integration_appgateway_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.50.0"
   name                                      = "${local.product_region}-integration-appgateway-snet"
-  resource_group_name                       = data.azurerm_resource_group.rg_vnet_integration.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_integration.name
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet_integration.name
   address_prefixes                          = var.cidr_subnet_appgateway_integration
   private_endpoint_network_policies_enabled = true
 }
@@ -27,8 +27,8 @@ resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
 
 resource "azurerm_public_ip" "integration_appgateway_public_ip" {
   name                = "${local.product_region}-integration-appgateway-pip"
-  resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
-  location            = data.azurerm_resource_group.rg_vnet_integration.location
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  location            = azurerm_resource_group.rg_vnet.location
   sku                 = "Standard"
   allocation_method   = "Static"
   zones               = var.integration_appgateway_zones
@@ -118,7 +118,7 @@ locals {
 module "app_gw_integration" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v7.50.0"
 
-  resource_group_name = data.azurerm_virtual_network.vnet_integration.resource_group_name
+  resource_group_name = module.vnet_integration.resource_group_name
   location            = var.location
   name                = "${local.product_region}-integration-app-gw"
 

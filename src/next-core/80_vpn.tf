@@ -4,8 +4,8 @@ module "vpn_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
   name                                      = "GatewaySubnet"
   address_prefixes                          = var.cidr_subnet_vpn
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_core.name
-  resource_group_name                       = data.azurerm_resource_group.rg_vnet_core.name
+  virtual_network_name                      = module.vnet.name
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
   service_endpoints                         = []
   private_endpoint_network_policies_enabled = true
 }
@@ -21,7 +21,7 @@ module "vpn" {
 
   name                  = "${local.product}-vpn"
   location              = var.location
-  resource_group_name   = data.azurerm_resource_group.rg_vnet_core.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
   sku                   = "VpnGw1"
   pip_sku               = "Standard"
   pip_allocation_method = "Static"
