@@ -26,6 +26,33 @@ module "backupstorage" {
   tags = var.tags
 }
 
+resource "azurerm_private_endpoint" "backup_blob_private_endpoint" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = format("%s-backup-blob-private-endpoint", local.product)
+  location            = var.location
+  resource_group_name = azurerm_resource_group.data.name
+  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
+
+  private_dns_zone_group {
+    name                 = "${local.product}-backup-blob-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_core_windows_net.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-bakcup-blob-private-service-connection"
+    private_connection_resource_id = module.backupstorage[0].id
+    is_manual_connection           = false
+    subresource_names              = ["blob"]
+  }
+
+  tags = var.tags
+
+  depends_on = [
+    module.backupstorage
+  ]
+}
+
 resource "azurerm_storage_container" "apim_backup" {
   count                 = var.env_short == "p" ? 1 : 0
   name                  = "apim"
