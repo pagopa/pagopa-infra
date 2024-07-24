@@ -329,3 +329,9 @@ variable "ecommerce_io_pm_enabled" {
   description = "eCommerce vs pm enabled"
   default     = false
 }
+
+variable "ecommerce_for_io_pm_npg" {
+  type        = string
+  description = "eCommerce for io gateway (3 values allowed: 'NPG','PM','NPGFF')"
+  default     = "NPGFF"
+}

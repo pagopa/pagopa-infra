@@ -36,6 +36,8 @@ module "cosmosdb_account_mongodb" {
   backup_continuous_enabled = var.cosmos_mongo_db_params.backup_continuous_enabled
   ip_range                  = var.cosmos_mongo_db_params.ip_range_filter
 
+  enable_provisioned_throughput_exceeded_alert = var.cosmos_mongo_db_params.enable_provisioned_throughput_exceeded_alert
+
   tags = var.tags
 }
 
@@ -113,6 +115,10 @@ locals {
         {
           keys   = ["contractId"],
           unique = false
+        },
+        {
+          keys   = ["updateDate"],
+          unique = false
         }
       ]
       shard_key = "userId"
@@ -185,6 +191,10 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
 
   action {
     action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.payment_wallet_opsgenie[0].id
   }
 
   tags = var.tags
