@@ -761,3 +761,17 @@ law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 30
 
+
+
+monitor_env_test_urls = [
+   # api.prf.platform.pagopa.it
+    {
+      host = "api.prf.platform.pagopa.it"
+      path = "",
+    },
+    # uat.wisp2.pagopa.gov.it
+    {
+      host = "uat.wisp2.pagopa.gov.it",
+      path = "",
+    }
+]
