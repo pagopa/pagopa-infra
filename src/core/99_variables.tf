@@ -283,10 +283,6 @@ variable "cidr_subnet_dns_forwarder" {
   description = "DNS Forwarder network address space."
 }
 
-variable "cidr_common_private_endpoint_snet" {
-  type        = list(string)
-  description = "Common Private Endpoint network address space."
-}
 
 # apim
 variable "apim_publisher_name" {

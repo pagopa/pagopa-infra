@@ -330,7 +330,7 @@ module "appgateway_snet" {
   name                                      = format("%s-appgateway-snet", local.product)
   address_prefixes                          = var.cidr_subnet_appgateway
   resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_core.name
+  virtual_network_name                      = module.vnet.name
   private_endpoint_network_policies_enabled = true
 }
 

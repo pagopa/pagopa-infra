@@ -3,7 +3,7 @@ module "apim_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.23.0"
   name                 = format("%s-apim-snet", local.product)
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_integration.name
+  virtual_network_name = module.vnet_integration.name
   address_prefixes     = var.cidr_subnet_apim
 
   private_endpoint_network_policies_enabled = false
@@ -20,7 +20,7 @@ resource "azurerm_resource_group" "rg_api" {
 resource "azurerm_network_security_group" "apimv2_snet_nsg" {
   name                = "${local.project}-apimv2-snet-nsg"
   location            = var.location
-  resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
 }
 
 resource "azurerm_network_security_rule" "apimv2_snet_nsg_rules" {
@@ -28,7 +28,7 @@ resource "azurerm_network_security_rule" "apimv2_snet_nsg_rules" {
 
   network_security_group_name = azurerm_network_security_group.apimv2_snet_nsg.name
   name                        = var.apim_v2_subnet_nsg_security_rules[count.index].name
-  resource_group_name         = data.azurerm_resource_group.rg_vnet_integration.name
+  resource_group_name         = azurerm_resource_group.rg_vnet.name
   priority                    = var.apim_v2_subnet_nsg_security_rules[count.index].priority
   direction                   = var.apim_v2_subnet_nsg_security_rules[count.index].direction
   access                      = var.apim_v2_subnet_nsg_security_rules[count.index].access
@@ -56,8 +56,8 @@ locals {
 
 resource "azurerm_public_ip" "apim_pip" {
   name                = "${local.project}-apim-pip"
-  resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
-  location            = data.azurerm_resource_group.rg_vnet_integration.location
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  location            = azurerm_resource_group.rg_vnet.location
   sku                 = "Standard"
   domain_name_label   = "apim-${var.env_short}-pagopa-migrated"
   allocation_method   = "Static"

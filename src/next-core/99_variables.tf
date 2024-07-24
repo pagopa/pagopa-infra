@@ -1023,10 +1023,47 @@ variable "cidr_subnet_node_forwarder" {
 
 variable "monitor_env_test_urls" {
   type = list(object({
-    host = string
-    path = string
+    host          = string
+    path          = string
     alert_enabled = optional(bool, true)
   }))
   description = "(Optional) Environment specific standard web tests urls to be created in addition to locals.test_urls"
-  default = []
+  default     = []
+}
+
+
+variable "cidr_vnet" {
+  type        = list(string)
+  description = "Virtual network address space."
+}
+
+variable "cidr_vnet_integration" {
+  type        = list(string)
+  description = "Virtual network to peer with sia subscription. It should host apim"
+}
+
+# Network
+variable "ddos_protection_plan" {
+  type = object({
+    id     = string
+    enable = bool
+  })
+  default = null
+}
+
+variable "cidr_common_private_endpoint_snet" {
+  type        = list(string)
+  description = "Common Private Endpoint network address space."
+}
+
+variable "route_table_peering_sia_additional_routes" {
+  type = list(object({
+    address_prefix         = string
+    name                   = string
+    next_hop_in_ip_address = string
+    next_hop_type          = string
+    }
+  ))
+  description = "(Optional) additional routes for route table peering sia"
+  default     = []
 }
