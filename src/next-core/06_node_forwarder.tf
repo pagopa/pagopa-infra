@@ -63,7 +63,7 @@ module "node_forwarder_snet" {
   name                                          = format("%s-node-forwarder-snet", local.product)
   address_prefixes                              = var.cidr_subnet_node_forwarder
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                          = data.azurerm_virtual_network.vnet_core.name
+  virtual_network_name                          = module.vnet.name
   private_link_service_network_policies_enabled = true
 
   delegation = {
@@ -83,7 +83,7 @@ module "node_forwarder_ha_snet" {
   name                                          = "${local.project}-node-forwarder-ha-snet"
   address_prefixes                              = var.node_fw_ha_snet_cidr
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                          = data.azurerm_virtual_network.vnet_core.name
+  virtual_network_name                          = module.vnet.name
   private_link_service_network_policies_enabled = true
 
   delegation = {

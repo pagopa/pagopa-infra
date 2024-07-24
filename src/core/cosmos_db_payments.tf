@@ -9,8 +9,8 @@ module "cosmosdb_paymentsdb_snet" {
   source               = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v2.15.1"
   name                 = "${local.project}-cosmosb-paymentsdb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_paymentsdb
-  resource_group_name  = azurerm_resource_group.rg_vnet.name
-  virtual_network_name = module.vnet.name
+  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name = data.azurerm_virtual_network.vnet.name
 
   enforce_private_link_endpoint_network_policies = true
   service_endpoints                              = ["Microsoft.Web"]
