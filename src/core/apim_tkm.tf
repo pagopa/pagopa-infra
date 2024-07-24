@@ -10,7 +10,7 @@ module "apim_tkm_product" {
   description  = "Product for Token Manager pagoPA"
 
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = true
@@ -37,7 +37,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "tkm_consent_manager_api" {
 
   name                = format("%s-tkm-consent-manager-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_tkm_consent_manager_api.display_name
   versioning_scheme   = "Segment"
@@ -49,7 +49,7 @@ module "apim_tkm_consent_manager_api_v1" {
 
   name                  = format("%s-tkm-consent-manager-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
   subscription_required = local.apim_tkm_consent_manager_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.tkm_consent_manager_api.id
@@ -89,7 +89,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "tkm_consent_manager_internal_api" {
 
   name                = format("%s-tkm-consent-manager-internal-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_tkm_consent_manager_internal_api.display_name
   versioning_scheme   = "Segment"
@@ -101,7 +101,7 @@ module "apim_tkm_consent_manager_internal_api_v1" {
 
   name                  = format("%s-tkm-consent-manager-internal-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
   subscription_required = local.apim_tkm_consent_manager_internal_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.tkm_consent_manager_internal_api.id
@@ -138,7 +138,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "tkm_card_manager_api" {
 
   name                = format("%s-tkm-card-manager-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_tkm_card_manager_api.display_name
   versioning_scheme   = "Segment"
@@ -150,7 +150,7 @@ module "apim_tkm_card_manager_api_v1" {
 
   name                  = format("%s-tkm-card-manager-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
   subscription_required = local.apim_tkm_card_manager_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.tkm_card_manager_api.id
@@ -187,7 +187,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "tkm_acquirer_manager_api" {
 
   name                = format("%s-tkm-acquirer-manager-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_tkm_acquirer_manager_api.display_name
   versioning_scheme   = "Segment"
@@ -199,7 +199,7 @@ module "apim_tkm_acquirer_manager_api_v1" {
 
   name                  = format("%s-tkm-acquirer-manager-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
   subscription_required = local.apim_tkm_acquirer_manager_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.tkm_acquirer_manager_api.id
@@ -238,7 +238,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "tkm_test_utility_api" {
   count               = var.env_short == "d" ? 1 : 0
   name                = format("%s-tkm-ms-test-utility-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_tkm_test_utility_api.display_name
   versioning_scheme   = "Segment"
@@ -250,7 +250,7 @@ module "apim_tkm_test_utility_api_v1" {
 
   name                  = format("%s-tkm-ms-test-utility-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
   subscription_required = local.apim_tkm_test_utility_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.tkm_test_utility_api[0].id
@@ -288,7 +288,7 @@ resource "azurerm_api_management_api_version_set" "tkm_mock_circuit_api" {
   count = var.env_short == "u" || var.env_short == "d" ? 1 : 0
 
   name                = "${local.project}-tkm-mock-circuit-api"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_tkm_mock_circuit_api.display_name
   versioning_scheme   = "Segment"
@@ -301,7 +301,7 @@ module "apim_tkm_mock_circuit_api_v1" {
 
   name                  = "${local.project}-tkm-mock-circuit-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_tkm_product.product_id]
   subscription_required = local.apim_tkm_mock_circuit_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.tkm_mock_circuit_api[0].id

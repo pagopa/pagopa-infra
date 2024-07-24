@@ -5,7 +5,7 @@
 resource "azurerm_api_management_named_value" "node_decoupler_primitives" {
   name                = "node-decoupler-primitives"
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   display_name        = "node-decoupler-primitives"
   value               = var.node_decoupler_primitives
 }
@@ -25,6 +25,9 @@ resource "null_resource" "decoupler_configuration_from_json_2_xml" {
 # fragment for loading configuration inside policy
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
 # https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+resource "terraform_data" "sha256_decoupler_configuration" {
+  input = sha256(file("./api_product/nodo_pagamenti_api/decoupler/cfg/${var.env}/decoupler-configuration.xml"))
+}
 resource "azapi_resource" "decoupler_configuration" {
 
   depends_on = [null_resource.decoupler_configuration_from_json_2_xml]
@@ -47,6 +50,9 @@ resource "azapi_resource" "decoupler_configuration" {
 }
 
 # decoupler algorithm fragment
+resource "terraform_data" "sha256_decoupler_algorithm" {
+  input = sha256(file("./api_product/nodo_pagamenti_api/decoupler/decoupler-algorithm.xml"))
+}
 resource "azapi_resource" "decoupler_algorithm" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-algorithm"
@@ -66,6 +72,9 @@ resource "azapi_resource" "decoupler_algorithm" {
 }
 
 # fragment for managing outbound policy if primitive is activatePayment or activateIO
+resource "terraform_data" "sha256_decoupler_activate_outbound" {
+  input = sha256(file("./api_product/nodo_pagamenti_api/decoupler/decoupler-activate-outbound.xml"))
+}
 resource "azapi_resource" "decoupler_activate_outbound" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-activate-outbound"
@@ -84,6 +93,9 @@ resource "azapi_resource" "decoupler_activate_outbound" {
   }
 }
 
+resource "terraform_data" "sha256_on_erro_soap_handler" {
+  input = sha256(file("./api_product/nodo_pagamenti_api/on_error_soap_req.xml"))
+}
 resource "azapi_resource" "on_erro_soap_handler" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "onerror-soap-req"

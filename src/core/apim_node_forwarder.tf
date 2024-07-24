@@ -10,7 +10,7 @@ module "apim_node_forwarder_product" {
   description  = "Product pagoPA Node Forwarder API"
 
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = true
@@ -23,7 +23,7 @@ module "apim_node_forwarder_product" {
 resource "azurerm_api_management_api_version_set" "node_forwarder_api" {
 
   name                = "${var.env_short}-node-forwarder-api"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = "pagoPA Node Forwarder API"
   versioning_scheme   = "Segment"
@@ -34,7 +34,7 @@ module "apim_node_forwarder_api" {
 
   name                  = "${var.env_short}-node-forwarder-api"
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_node_forwarder_product.product_id, local.apim_x_node_product_id]
   subscription_required = true
 
@@ -46,7 +46,7 @@ module "apim_node_forwarder_api" {
   path         = "pagopa-node-forwarder/api"
   protocols    = ["https"]
 
-  service_url = var.enabled_features.node_forwarder_ha ? "https://${data.azurerm_app_service.node_forwarder_ha[0].default_site_hostname}" : "https://${module.node_forwarder_app_service[0].default_site_hostname}"
+  service_url = var.enabled_features.node_forwarder_ha ? "https://${data.azurerm_app_service.node_forwarder_ha[0].default_site_hostname}" : "https://${data.azurerm_app_service.node_forwarder[0].default_site_hostname}"
 
   content_format = "openapi"
   content_value = templatefile("./api/node_forwarder_api/v1/_openapi.json.tpl", {
@@ -54,7 +54,7 @@ module "apim_node_forwarder_api" {
   })
 
   xml_content = templatefile("./api/node_forwarder_api/v1/_base_policy.xml", {
-    node_forwarder_host_path = var.enabled_features.node_forwarder_ha ? "https://${data.azurerm_app_service.node_forwarder_ha[0].default_site_hostname}" : "https://${module.node_forwarder_app_service[0].default_site_hostname}"
+    node_forwarder_host_path = var.enabled_features.node_forwarder_ha ? "https://${data.azurerm_app_service.node_forwarder_ha[0].default_site_hostname}" : "https://${data.azurerm_app_service.node_forwarder[0].default_site_hostname}"
   })
 
 

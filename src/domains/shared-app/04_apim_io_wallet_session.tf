@@ -69,6 +69,14 @@ resource "azurerm_api_management_named_value" "ecommerce_io_pm_enabled" {
   value               = var.ecommerce_io_pm_enabled
 }
 
+resource "azurerm_api_management_named_value" "ecommerce_for_io_pm_npg" {
+  name                = "ecommerce-for-io-pm-npg-ff"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-for-io-pm-npg-ff"
+  value               = var.ecommerce_for_io_pm_npg
+}
+
 locals {
   apim_session_wallet_api = {
     display_name          = "pagoPA - session wallet token pagoPA for IO APP"

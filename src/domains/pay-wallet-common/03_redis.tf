@@ -96,5 +96,9 @@ resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
     action_group_id = data.azurerm_monitor_action_group.slack.id
   }
 
+  action {
+    action_group_id = azurerm_monitor_action_group.payment_wallet_opsgenie[0].id
+  }
+
   tags = var.tags
 }

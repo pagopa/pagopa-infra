@@ -16,7 +16,7 @@ resource "azurerm_user_assigned_identity" "appgateway" {
 }
 
 resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
-  key_vault_id            = data.azurerm_key_vault.kv_core.id
+  key_vault_id            = module.key_vault.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = azurerm_user_assigned_identity.appgateway.principal_id
   key_permissions         = ["Get", "List"]
@@ -202,11 +202,11 @@ module "app_gw_integration" {
 
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      action_group_id    = azurerm_monitor_action_group.slack.id
       webhook_properties = null
     },
     {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
+      action_group_id    = azurerm_monitor_action_group.email.id
       webhook_properties = null
     }
   ]

@@ -1,4 +1,21 @@
+# APIM subnet
+module "apim_snet" {
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.23.0"
+  name                 = format("%s-apim-snet", local.product)
+  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name = data.azurerm_virtual_network.vnet_integration.name
+  address_prefixes     = var.cidr_subnet_apim
 
+  private_endpoint_network_policies_enabled = false
+  service_endpoints                         = ["Microsoft.Web"]
+}
+
+resource "azurerm_resource_group" "rg_api" {
+  name     = format("%s-api-rg", local.product)
+  location = var.location
+
+  tags = var.tags
+}
 
 resource "azurerm_network_security_group" "apimv2_snet_nsg" {
   name                = "${local.project}-apimv2-snet-nsg"
@@ -37,16 +54,6 @@ locals {
 
 
 
-#############################
-# apim v1 updated
-#############################
-data "azurerm_subnet" "apim_snet" {
-  name                 = "${local.product}-apim-snet"
-  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name = data.azurerm_virtual_network.vnet_integration.name
-}
-
-
 resource "azurerm_public_ip" "apim_pip" {
   name                = "${local.project}-apim-pip"
   resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
@@ -63,17 +70,17 @@ resource "azurerm_public_ip" "apim_pip" {
 
 resource "azurerm_subnet_network_security_group_association" "apim_snet_sg_association" {
   count                     = var.is_feature_enabled.apim_core_import ? 1 : 0
-  subnet_id                 = data.azurerm_subnet.apim_subnet.id
+  subnet_id                 = module.apim_snet.id
   network_security_group_id = azurerm_network_security_group.apimv2_snet_nsg.id
 }
 
 module "apim" {
   count               = 1
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management?ref=v8.23.0"
-  subnet_id           = data.azurerm_subnet.apim_subnet.id
-  location            = data.azurerm_resource_group.rg_api.location
+  subnet_id           = module.apim_snet.id
+  location            = azurerm_resource_group.rg_api.location
   name                = "${local.product}-apim"
-  resource_group_name = data.azurerm_resource_group.rg_api.name
+  resource_group_name = azurerm_resource_group.rg_api.name
   publisher_name      = var.apim_v2_publisher_name
   publisher_email     = data.azurerm_key_vault_secret.apim_publisher_email.value
   sku_name            = var.apim_v2_sku
@@ -88,7 +95,7 @@ module "apim" {
 
   application_insights = {
     enabled             = true
-    instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
+    instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
   }
   zones                                         = startswith(var.apim_v2_sku, "Premium") ? var.apim_v2_zones : null
   management_logger_applicaiton_insight_enabled = false
@@ -112,11 +119,11 @@ module "apim" {
 
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      action_group_id    = azurerm_monitor_action_group.slack.id
       webhook_properties = null
     },
     {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
+      action_group_id    = azurerm_monitor_action_group.email.id
       webhook_properties = null
     }
   ]
