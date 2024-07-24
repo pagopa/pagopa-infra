@@ -13,8 +13,8 @@ module "redis" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.50.0"
   # name differentiated because the new ha version had to exist at the same time of the old version for migration purposes
   name                  = var.create_redis_multiaz ? "${local.product_region}-redis" : format("%s-redis", local.product)
-  resource_group_name   = data.azurerm_resource_group.data.name
-  location              = data.azurerm_resource_group.data.location
+  resource_group_name   = azurerm_resource_group.data.name
+  location              = azurerm_resource_group.data.location
   capacity              = var.redis_cache_params.capacity
   enable_non_ssl_port   = false
   family                = var.redis_cache_params.family

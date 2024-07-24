@@ -1019,3 +1019,14 @@ variable "cidr_subnet_node_forwarder" {
   description = "Address prefixes subnet node forwarder"
   default     = null
 }
+
+
+variable "monitor_env_test_urls" {
+  type = list(object({
+    host = string
+    path = string
+    alert_enabled = optional(bool, true)
+  }))
+  description = "(Optional) Environment specific standard web tests urls to be created in addition to locals.test_urls"
+  default = []
+}
