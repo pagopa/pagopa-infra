@@ -91,13 +91,10 @@ variable "tags" {
 #
 variable "enabled_features" {
   type = object({
-    apim_v2           = bool
-    apim_migrated     = optional(bool, false)
     vnet_ita          = bool
     node_forwarder_ha = optional(bool, false)
   })
   default = {
-    apim_v2  = false
     vnet_ita = false
   }
   description = "Features enabled in this domain"
@@ -130,28 +127,9 @@ variable "nodo_pagamenti_enabled" {
   default     = false
 }
 
-variable "nodo_pagamenti_psp" {
-  type        = string
-  description = "PSP' white list nodo pagamenti (separate comma list) ."
-  default     = ","
-}
 
-variable "nodo_pagamenti_ec" {
-  type        = string
-  description = "EC' black list nodo pagamenti (separate comma list)."
-  default     = ","
-}
 
-variable "nodo_pagamenti_url" {
-  type        = string
-  description = "Nodo pagamenti url"
-  default     = "https://"
-}
 
-variable "ip_nodo" { # TEMP used only for onPrem shall be replace with "lb_aks"
-  type        = string
-  description = "Nodo pagamenti ip"
-}
 
 variable "lb_aks" {
   type        = string
@@ -159,10 +137,6 @@ variable "lb_aks" {
   default     = "0.0.0.0"
 }
 
-variable "base_path_nodo_oncloud" {
-  type        = string
-  description = "base nodo on cloud"
-}
 
 variable "nodo_pagamenti_subkey_required" {
   type        = bool
@@ -170,10 +144,6 @@ variable "nodo_pagamenti_subkey_required" {
   default     = false
 }
 
-variable "schema_ip_nexi" {
-  type        = string
-  description = "Nodo Pagamenti Nexi schema://ip"
-}
 
 variable "base_path_nodo_postgresql_nexi_onprem" {
   type        = string
@@ -181,73 +151,9 @@ variable "base_path_nodo_postgresql_nexi_onprem" {
 }
 
 
-# 1. PPT LMI
-# 2. SYNC
-# 3. WFESP
-# 4. Fatturazione
-# 5. Web-BO
-# 6. Web-BO History
 
-variable "base_path_nodo_ppt_lmi" {
-  type        = string
-  description = "base nodo on cloud"
-}
-variable "base_path_nodo_ppt_lmi_dev" {
-  type        = string
-  description = "base nodo on cloud"
-  default     = "/ppt-lmi-dev"
-}
 
-variable "base_path_nodo_sync" {
-  type        = string
-  description = "base nodo on cloud"
-}
 
-variable "base_path_nodo_sync_dev" {
-  type        = string
-  description = "base nodo on cloud"
-  default     = "/sync-cron-dev/syncWisp"
-}
-
-variable "base_path_nodo_wfesp" {
-  type        = string
-  description = "base nodo on cloud"
-}
-variable "base_path_nodo_wfesp_dev" {
-  type        = string
-  description = "base nodo on cloud"
-  default     = "/wfesp-dev"
-}
-
-variable "base_path_nodo_fatturazione" {
-  type        = string
-  description = "base nodo on cloud"
-}
-variable "base_path_nodo_fatturazione_dev" {
-  type        = string
-  description = "base nodo on cloud"
-  default     = "/fatturazione-dev"
-}
-
-variable "base_path_nodo_web_bo" {
-  type        = string
-  description = "base nodo on cloud"
-}
-variable "base_path_nodo_web_bo_dev" {
-  type        = string
-  description = "base nodo on cloud"
-  default     = "/web-bo-dev"
-}
-
-variable "base_path_nodo_web_bo_history" {
-  type        = string
-  description = "base nodo on cloud"
-}
-variable "base_path_nodo_web_bo_history_dev" {
-  type        = string
-  description = "base nodo on cloud"
-  default     = "/web-bo-history-dev"
-}
 variable "nodo_pagamenti_auth_password" {
   type        = string
   description = "Default password used for nodo-auth"
@@ -313,18 +219,7 @@ variable "cidr_subnet_loadtest_agent" {
   default     = null
 }
 
-# nat gateway
-variable "nat_gateway_enabled" {
-  type        = bool
-  default     = false
-  description = "Nat Gateway enabled"
-}
 
-variable "nat_gateway_public_ips" {
-  type        = number
-  default     = 1
-  description = "Number of public outbound ips"
-}
 
 # DNS
 variable "dns_default_ttl_sec" {
@@ -357,11 +252,6 @@ variable "dns_zone_checkout" {
   description = "The checkout dns subdomain."
 }
 
-variable "dns_zone_wisp2" {
-  type        = string
-  default     = null
-  description = "The wisp2 dns subdomain."
-}
 
 variable "dns_zone_wfesp" {
   type        = string
@@ -393,10 +283,6 @@ variable "cidr_subnet_dns_forwarder" {
   description = "DNS Forwarder network address space."
 }
 
-variable "cidr_common_private_endpoint_snet" {
-  type        = list(string)
-  description = "Common Private Endpoint network address space."
-}
 
 # apim
 variable "apim_publisher_name" {
@@ -459,55 +345,9 @@ variable "apim_nodo_auth_decoupler_enable" {
   description = "Apply decoupler to nodo-auth product apim policy"
 }
 
-variable "apim_enable_nm3_decoupler_switch" {
-  type        = bool
-  default     = false
-  description = "Enable switch backend address in NM3 algorithm logic"
-}
 
-variable "apim_enable_routing_decoupler_switch" {
-  type        = bool
-  default     = false
-  description = "Enable switch backend address in Routing algorithm logic"
-}
-variable "default_node_id" {
-  type        = string
-  description = "Default NodeId according to default base url"
-}
 
-## Redis cache
-variable "redis_cache_params" {
-  type = object({
-    public_access = bool
-    capacity      = number
-    sku_name      = string
-    family        = string
-  })
-  default = {
-    public_access = false
-    capacity      = 1
-    sku_name      = "Basic"
-    family        = "C"
-  }
-}
 
-variable "redis_cache_enabled" {
-  type        = bool
-  description = "redis cache enabled"
-  default     = false
-}
-
-variable "cidr_subnet_redis" {
-  type        = list(string)
-  description = "Redis network address space."
-  default     = ["10.1.162.0/24"]
-}
-
-variable "redis_private_endpoint_enabled" {
-  type        = bool
-  description = "Enable private endpoints for redis instances?"
-  default     = true
-}
 
 variable "app_gateway_api_certificate_name" {
   type        = string
@@ -1745,7 +1585,7 @@ variable "github_runner" {
 variable "node_decoupler_primitives" {
   type        = string
   description = "Node decoupler primitives"
-  default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
+  default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
 }
 
 variable "apim_fdr_nodo_pagopa_enable" {
@@ -1834,4 +1674,10 @@ variable "apim_logger_resource_id" {
   type        = string
   description = "Resource id for the APIM logger"
   default     = null
+}
+
+variable "create_wisp_converter" {
+  type        = bool
+  default     = false
+  description = "CREATE WISP dismantling system infra"
 }

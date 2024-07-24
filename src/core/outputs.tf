@@ -1,25 +1,21 @@
 output "vnet_name" {
-  value = module.vnet.name
+  value = data.azurerm_virtual_network.vnet.name
 }
 
 output "vnet_id" {
-  value = module.vnet.id
+  value = data.azurerm_virtual_network.vnet.id
 }
 
 output "vnet_address_space" {
-  value = module.vnet.address_space
+  value = data.azurerm_virtual_network.vnet.address_space
 }
 
 output "vnet_integration_name" {
-  value = module.vnet_integration.name
+  value = data.azurerm_virtual_network.vnet_integration.name
 }
 
 output "vnet_integration_address_space" {
-  value = module.vnet_integration.address_space
-}
-
-output "nat_gw_outbound_ip_addresses" {
-  value = var.nat_gateway_enabled ? module.nat_gw[0].public_ip_address : null
+  value = data.azurerm_virtual_network.vnet_integration.address_space
 }
 
 ## Container registry ##
@@ -56,7 +52,7 @@ output "nodo_test_sa_blob_connection_string" {
 }
 
 output "application_insights_instrumentation_key" {
-  value     = format("InstrumentationKey=%s", azurerm_application_insights.application_insights.instrumentation_key)
+  value     = format("InstrumentationKey=%s", data.azurerm_application_insights.application_insights.instrumentation_key)
   sensitive = true
 }
 

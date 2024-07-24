@@ -5,8 +5,20 @@
     <outbound>
         <base />
         <!-- APM test START -->
+        <set-variable name="allowedIps" value="PLACEHOLDER1,PLACEHOLDER2" />
+        <set-variable name="callerIps" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
+        <set-variable name="isTesterIp" value="@{
+            var allowedIps = new HashSet<string>(context.Variables.GetValueOrDefault("allowedIps","").Split(','));
+            string[] callerIps = context.Variables.GetValueOrDefault("callerIps","").Split(',');
+            foreach (string callerIp in callerIps){
+                if(allowedIps.Contains(callerIp)){
+                    return true;
+                }
+            }
+            return false;
+        }" />
         <choose>
-            <when condition="@(!((string)context.Request.Headers.GetValueOrDefault("X-Forwarded-For","")).Contains("PLACEHOLDER") && ((string)context.Request.Headers.GetValueOrDefault("origin","")).Equals("https://checkout.pagopa.it"))">
+            <when condition="@(((Boolean)context.Variables.GetValueOrDefault("isTesterIp",false)) == false && ((string)context.Request.Headers.GetValueOrDefault("origin","")).Equals("https://checkout.pagopa.it"))">
                 <set-variable name="responseBody" value="@(context.Response.Body.As<JObject>(preserveContent: true))" />
                     <set-body>@{ 
 
@@ -17,6 +29,10 @@
                         allowedPaymentTypeCodes.Add("RBPB");//Conto BancoPosta Impresa BPIOL
                         allowedPaymentTypeCodes.Add("RBPP");//Paga con Postepay
                         allowedPaymentTypeCodes.Add("RBPR");//Conto BancoPosta
+                        allowedPaymentTypeCodes.Add("RPIC");//Redirect Intesa
+                        allowedPaymentTypeCodes.Add("BPAY");//Bancompatpay
+                        allowedPaymentTypeCodes.Add("PPAL");//Paypal
+                        allowedPaymentTypeCodes.Add("MYBK");//Mybank
                         for(int i = methods.Count - 1; i >= 0; i--) {
                             String paymentTypeCode = (string)((JObject)methods[i])["paymentTypeCode"];
                             if( !allowedPaymentTypeCodes.Contains(paymentTypeCode) ) {

@@ -49,6 +49,7 @@ authorizer_functions_autoscale = {
   maximum = 3
 }
 
+
 # taxonomy
 taxonomy_function_subnet                   = ["10.1.183.0/24"]
 taxonomy_function_network_policies_enabled = true
@@ -76,4 +77,6 @@ pdf_engine_zone_balancing_enabled = false
 // wallet session token
 io_backend_base_path = "https://api-app.io.pagopa.it"
 pdv_api_base_path    = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
+
+ecommerce_for_io_pm_npg = "NPG"
 

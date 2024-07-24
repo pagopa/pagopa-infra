@@ -18,9 +18,7 @@ tags = {
 # Feature flag
 #
 enabled_features = {
-  apim_v2           = false
   vnet_ita          = false
-  apim_migrated     = true
   node_forwarder_ha = false
 }
 
@@ -49,7 +47,6 @@ cidr_subnet_canoneunico_common       = ["10.1.140.0/24"]
 cidr_subnet_pg_flex_dbms             = ["10.1.141.0/24"]
 cidr_subnet_vpn                      = ["10.1.142.0/24"]
 cidr_subnet_dns_forwarder            = ["10.1.143.0/29"]
-cidr_common_private_endpoint_snet    = ["10.1.144.0/23"]
 cidr_subnet_logicapp_biz_evt         = ["10.1.146.0/24"]
 cidr_subnet_advanced_fees_management = ["10.1.147.0/24"]
 # cidr_subnet_gps_cosmosdb             = ["10.1.149.0/24"]
@@ -60,7 +57,6 @@ cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
 
 
 # specific
-cidr_subnet_redis = ["10.1.163.0/24"]
 
 # integration vnet
 # https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
@@ -76,7 +72,6 @@ dns_zone_prefix     = "uat.platform"
 dns_zone_prefix_prf = "prf.platform"
 dns_zone_checkout   = "uat.checkout"
 dns_zone_selc       = "selfcare.uat.platform"
-dns_zone_wisp2      = "uat.wisp2"
 dns_zone_wfesp      = "wfesp.test"
 
 # azure devops
@@ -89,9 +84,6 @@ apim_publisher_name = "pagoPA Platform UAT"
 apim_sku            = "Developer_1"
 apim_alerts_enabled = false
 
-# redis private endpoint
-redis_private_endpoint_enabled = true
-redis_cache_enabled            = true
 
 # app_gateway
 app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
@@ -163,11 +155,10 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
     "193.203.230.21", # VPN NEXI
+    "151.1.203.68"    # Softlab backup support line
   ]
 }
 
-# nat_gateway
-nat_gateway_enabled = true
 
 # postgresql
 postgresql_sku_name                      = "GP_Gen5_2" # todo fixme verify
@@ -188,28 +179,13 @@ prostgresql_db_mockpsp = "mock-psp"
 apim_nodo_decoupler_enable      = true
 apim_nodo_auth_decoupler_enable = true
 
-apim_enable_nm3_decoupler_switch     = false
-apim_enable_routing_decoupler_switch = false
-default_node_id                      = "NDP002UAT"
 
 apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 nodo_pagamenti_enabled = true
-nodo_pagamenti_psp     = "06529501006,97249640588,08301100015,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
-nodo_pagamenti_ec      = "00493410583,77777777777,00113430573,00184260040,00103110573,00939820726,00109190579,00122520570,82501690018,80001220773,84515520017,03509990788,84002410540,00482510542,00326070166,01350940019,00197530298,00379480031,06396970482,00460900038,82005250285,82002770236,80013960036,83000970018,84002970162,82500110158,00429530546,01199250158,80003370477,00111190575,81001650548,00096090550,95001650167,00451080063,80038190163,00433320033,00449050061,82002270724,00682280284,00448140541,00344700034,81000550673,00450150065,80002860775,83001970017,00121490577,00383120037,00366270031,80023530167,01504430016,00221940364,00224320366,00246880397,01315320489,00354730392,00357850395,80008270375,00218770394,00226010395,00202300398,81002910396,00360090393,84002010365,00242920395,80005570561,80015230347,00236340477,92035800488,03428581205,00114510571,97086740582,80029030568,87007530170,92000530532,80023370168,01349510436,10718570012,01032450072,01248040998,00608810057,80094780378,82002730487,80016430045,03299640163,94032590278,01928010683,91007750937,80052310580,97169170822,80043570482,80011170505,94050080038,01013130073,09227921005,94055970480,01429910183,01013210073,80031650486,83002410260,00337870406,92001600524,80007270376,02928200241,80082160013,01242340998,83000730297,01266290996,80012150274,02508710585,01142420056,02438750586"
-nodo_pagamenti_url     = "https://10.70.74.200/nodo-uat/webservices/input"
-ip_nodo                = "x.x.x.x"      # disabled 10.79.20.32/uat/webservices/input shall use lb_aks
 lb_aks                 = "10.70.74.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
-schema_ip_nexi = "http://10.70.74.200"
 
-base_path_nodo_oncloud        = "/nodo-uat"
-base_path_nodo_ppt_lmi        = "/ppt-lmi-uat-NOT-FOUND"
-base_path_nodo_sync           = "/sync-cron-uat/syncWisp"
-base_path_nodo_wfesp          = "/wfesp-uat"
-base_path_nodo_fatturazione   = "/fatturazione-uat"
-base_path_nodo_web_bo         = "/web-bo-uat"
-base_path_nodo_web_bo_history = "/web-bo-history-uat"
 
 base_path_nodo_postgresql_nexi_onprem = "/"
 
@@ -671,13 +647,6 @@ pagopa_proxy_size           = "S1"
 # TODO this is dev value ... replace with uat value.
 nodo_ip_filter = "10.79.20.32"
 
-# redis apim
-redis_cache_params = {
-  public_access = false
-  capacity      = 0
-  sku_name      = "Basic"
-  family        = "C"
-}
 
 # nodo-dei-pagamenti-test
 nodo_pagamenti_test_enabled = true
@@ -795,3 +764,6 @@ apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
 apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"
 
 apim_logger_resource_id = "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/loggers/pagopa-u-apim-logger"
+
+# WISP-dismantling-cfg
+create_wisp_converter = true

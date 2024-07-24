@@ -195,10 +195,9 @@ standin_cosmos_nosql_db_params = {
   max_throughput = 2000
 }
 
-enable_wisp_converter = false
+create_wisp_converter = true
 
 wisp_converter_cosmos_nosql_db_params = {
-  enabled      = true
   kind         = "GlobalDocumentDB"
   capabilities = []
   offer_type   = "Standard"
@@ -207,18 +206,28 @@ wisp_converter_cosmos_nosql_db_params = {
     max_interval_in_seconds = 300
     max_staleness_prefix    = 100000
   }
-  server_version                    = "4.0"
-  main_geo_location_zone_redundant  = false
-  enable_free_tier                  = false
-  additional_geo_locations          = []
+  server_version                   = "4.0"
+  main_geo_location_zone_redundant = true
+  enable_free_tier                 = false
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
   private_endpoint_enabled          = true
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
-  backup_continuous_enabled = false
+  backup_continuous_enabled = true
 
-  events_ttl     = 604800 # 7 days in second
-  max_throughput = 1000
+  data_ttl                   = 10368000 # 120 days in second
+  data_max_throughput        = 1000
+  re_ttl                     = 31536000 # 1 year in second
+  re_max_throughput          = 1000
+  receipt_ttl                = -1 # max
+  receipt_max_throughput     = 1000
+  idempotency_ttl            = 604800 # 7 days in second
+  idempotency_max_throughput = 1000
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]

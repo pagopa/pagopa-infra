@@ -49,6 +49,24 @@ module "apim_ecommerce_payment_methods_product" {
   policy_xml = file("./api_product/_base_policy.xml")
 }
 
+module "apim_ecommerce_helpdesk_product" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
+
+  product_id   = "ecommerce-helpdesk"
+  display_name = "ecommerce pagoPA helpdesk service"
+  description  = "Product for ecommerce pagoPA helpdesk service"
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/_base_policy.xml")
+}
+
 ##############################
 ## API transactions service ##
 ##############################
@@ -438,7 +456,7 @@ module "apim_pagopa_ecommerce_helpdesk_service_api_v1" {
   name                  = "${local.project}-helpdesk-service-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_ecommerce_product.product_id]
+  product_ids           = [module.apim_ecommerce_product.product_id,module.apim_ecommerce_helpdesk_product.product_id]
   subscription_required = local.apim_pagopa_ecommerce_helpdesk_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.pagopa_ecommerce_helpdesk_service_api.id
   api_version           = "v1"
@@ -455,6 +473,34 @@ module "apim_pagopa_ecommerce_helpdesk_service_api_v1" {
   })
 
   xml_content = templatefile("./api/ecommerce-helpdesk-api/v1/_base_policy.xml.tpl", {
+    hostname = local.ecommerce_hostname
+  })
+}
+
+#helpdesk api V2 for ecommerce
+module "apim_pagopa_ecommerce_helpdesk_service_api_v2" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+
+  name                  = "${local.project}-helpdesk-service-api"
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_ecommerce_product.product_id,module.apim_ecommerce_helpdesk_product.product_id]
+  subscription_required = local.apim_pagopa_ecommerce_helpdesk_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pagopa_ecommerce_helpdesk_service_api.id
+  api_version           = "v2"
+
+  description  = local.apim_pagopa_ecommerce_helpdesk_service_api.description
+  display_name = local.apim_pagopa_ecommerce_helpdesk_service_api.display_name
+  path         = local.apim_pagopa_ecommerce_helpdesk_service_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_pagopa_ecommerce_helpdesk_service_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/ecommerce-helpdesk-api/v2/_openapi.json.tpl", {
+    hostname = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/ecommerce-helpdesk-api/v2/_base_policy.xml.tpl", {
     hostname = local.ecommerce_hostname
   })
 }
@@ -532,6 +578,34 @@ module "apim_pagopa_ecommerce_technical_helpdesk_service_api_v1" {
   })
 
   xml_content = templatefile("./api/ecommerce-technical-helpdesk-api/v1/_base_policy.xml.tpl", {
+    hostname = local.ecommerce_hostname
+  })
+}
+
+
+module "apim_pagopa_ecommerce_technical_helpdesk_service_api_v2" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+
+  name                  = "${local.project}-technical-helpdesk-service-api"
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [data.azurerm_api_management_product.technical_support_api_product.product_id]
+  subscription_required = local.apim_pagopa_ecommerce_technical_helpdesk_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.pagopa_ecommerce_technical_helpdesk_service_api.id
+  api_version           = "v2"
+
+  description  = local.apim_pagopa_ecommerce_technical_helpdesk_service_api.description
+  display_name = local.apim_pagopa_ecommerce_technical_helpdesk_service_api.display_name
+  path         = local.apim_pagopa_ecommerce_technical_helpdesk_service_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_pagopa_ecommerce_technical_helpdesk_service_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/ecommerce-technical-helpdesk-api/v2/_openapi.json.tpl", {
+    hostname = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/ecommerce-technical-helpdesk-api/v2/_base_policy.xml.tpl", {
     hostname = local.ecommerce_hostname
   })
 }

@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <rate-limit-by-key calls="50" renewal-period="1" counter-key="@(context.Request.IpAddress)" />
+      <rate-limit calls="6000" renewal-period="60" />
       <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
     </inbound>
     <outbound>

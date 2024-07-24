@@ -10,8 +10,8 @@ module "apim_nodo_sync_product" {
   display_name = "product-nodo-sync"
   description  = "product-nodo-sync"
 
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = false
@@ -27,8 +27,8 @@ resource "azurerm_api_management_api_version_set" "nodo_sync_api" {
   count = var.env_short == "p" ? 0 : 1
 
   name                = format("%s-nodo-sync-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = "Nodo OnCloud SYNC"
   versioning_scheme   = "Segment"
 }
@@ -38,8 +38,8 @@ module "apim_nodo_sync_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-sync-api", var.env_short)
-  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_sync_product[0].product_id]
   subscription_required = false
 
@@ -55,7 +55,7 @@ module "apim_nodo_sync_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/nodoServices/sync/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/sync/v1/_base_policy.xml", {
@@ -76,8 +76,8 @@ module "apim_nodo_wfesp_product" {
   display_name = "product-nodo-wfesp"
   description  = "product-nodo-wfesp"
 
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = false
@@ -94,8 +94,8 @@ module "apim_nodo_wfesp_product" {
 resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
 
   name                = format("%s-nodo-wfesp-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = "Nodo OnCloud WFESP"
   versioning_scheme   = "Segment"
 }
@@ -108,8 +108,8 @@ module "apim_nodo_wfesp_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-wfesp-api", var.env_short)
-  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_wfesp_product.product_id]
   subscription_required = false
 
@@ -125,7 +125,7 @@ module "apim_nodo_wfesp_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/nodoServices/wfesp/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
 
   })
 
@@ -150,8 +150,8 @@ module "apim_nodo_fatturazione_product" {
   display_name = "product-nodo-fatturazione"
   description  = "product-nodo-fatturazione"
 
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = false
@@ -167,8 +167,8 @@ resource "azurerm_api_management_api_version_set" "nodo_fatturazione_api" {
   count = var.env_short == "p" ? 0 : 1
 
   name                = format("%s-nodo-fatturazione-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = "Nodo OnCloud FATTURAZIONE"
   versioning_scheme   = "Segment"
 }
@@ -178,8 +178,8 @@ module "apim_nodo_fatturazione_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-fatturazione-api", var.env_short)
-  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_fatturazione_product[0].product_id]
   subscription_required = false
 
@@ -195,7 +195,7 @@ module "apim_nodo_fatturazione_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/nodoServices/fatturazione/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/fatturazione/v1/_base_policy.xml", {
@@ -216,8 +216,8 @@ module "apim_nodo_web_bo_product" {
   display_name = "product-nodo-web-bo"
   description  = "product-nodo-web-bo"
 
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = false
@@ -233,8 +233,8 @@ module "apim_nodo_web_bo_product" {
 #   count  = var.env_short == "p" ? 0 : 1
 
 #   name                = format("%s-nodo-web-bo-api", var.env_short)
-#   resource_group_name = azurerm_resource_group.rg_api.name
-#   api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
+#   resource_group_name = data.azurerm_resource_group.rg_api.name
+#   api_management_name = data.azurerm_api_management.apim_migrated[0].name
 #   display_name        = "Nodo OnCloud WEB-BO"
 #   versioning_scheme   = "Segment"
 # }
@@ -245,8 +245,8 @@ module "apim_nodo_web_bo_api" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-web-bo-api", var.env_short)
-  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_web_bo_product.product_id]
   subscription_required = false
 
@@ -262,7 +262,7 @@ module "apim_nodo_web_bo_api" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/nodoServices/web-bo/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/web-bo/v1/_base_policy.xml", {
@@ -289,8 +289,8 @@ module "apim_nodo_web_bo_api_onprem" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-web-bo-onprem-api", var.env_short)
-  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_web_bo_product.product_id]
   subscription_required = false
 
@@ -306,7 +306,7 @@ module "apim_nodo_web_bo_api_onprem" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/nodoServices/web-bo/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/web-bo-on-prem/v1/_base_policy.xml", {
@@ -337,8 +337,8 @@ module "apim_nodo_web_bo_product_history" {
   display_name = "product-nodo-web-bo-history"
   description  = "product-nodo-web-bo-history"
 
-  api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = false
@@ -354,8 +354,8 @@ module "apim_nodo_web_bo_product_history" {
 #   count  = var.env_short == "p" ? 0 : 1
 
 #   name                = format("%s-nodo-web-bo-api", var.env_short)
-#   resource_group_name = azurerm_resource_group.rg_api.name
-#   api_management_name = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
+#   resource_group_name = data.azurerm_resource_group.rg_api.name
+#   api_management_name = data.azurerm_api_management.apim_migrated[0].name
 #   display_name        = "Nodo OnCloud WEB-BO"
 #   versioning_scheme   = "Segment"
 # }
@@ -366,8 +366,8 @@ module "apim_nodo_web_bo_api_history" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-web-bo-api-history", var.env_short)
-  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_web_bo_product_history.product_id]
   subscription_required = false
 
@@ -383,7 +383,7 @@ module "apim_nodo_web_bo_api_history" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/nodoServices/web-bo-history/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/web-bo-history/v1/_base_policy.xml", {
@@ -410,8 +410,8 @@ module "apim_nodo_web_bo_api_onprem_history" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
 
   name                  = format("%s-nodo-web-bo-onprem-api-history", var.env_short)
-  api_management_name   = var.enabled_features.apim_migrated ? data.azurerm_api_management.apim_migrated[0].name : module.apim[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_web_bo_product_history.product_id]
   subscription_required = false
 
@@ -427,7 +427,7 @@ module "apim_nodo_web_bo_api_onprem_history" {
 
   content_format = "openapi"
   content_value = templatefile("./api/nodopagamenti_api/nodoServices/web-bo-history/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = azurerm_api_management_custom_domain.api_custom_domain.proxy[0].host_name
+    host = local.api_domain
   })
 
   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/web-bo-history-on-prem/v1/_base_policy.xml", {

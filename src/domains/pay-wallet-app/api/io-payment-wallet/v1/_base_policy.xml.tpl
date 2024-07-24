@@ -5,7 +5,7 @@
       is an opaque token a "session-token-not-found" string is returned-->  
       <include-fragment fragment-id="pay-wallet-user-id-from-session-token" />
       <choose>
-        <when condition="@("true".Equals("{{enable-pm-ecommerce-io}}") || !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"])) )">
+      <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))"> 
           <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
         </when>
         <otherwise>
@@ -22,7 +22,8 @@
               <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
           </set-header>
           <!-- Headers settings required for backend service END -->
-          <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
+          <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
+          <set-backend-service base-url="@("https://${hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")" />
         </otherwise>
       </choose>
       <set-header name="x-client-id" exists-action="override" >

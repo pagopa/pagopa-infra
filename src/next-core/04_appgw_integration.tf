@@ -1,22 +1,22 @@
 module "integration_appgateway_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.50.0"
   name                                      = "${local.product_region}-integration-appgateway-snet"
-  resource_group_name                       = data.azurerm_resource_group.rg_vnet_integration.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_integration.name
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet_integration.name
   address_prefixes                          = var.cidr_subnet_appgateway_integration
   private_endpoint_network_policies_enabled = true
 }
 
 resource "azurerm_user_assigned_identity" "appgateway" {
-  resource_group_name = data.azurerm_resource_group.sec_rg.name
-  location            = data.azurerm_resource_group.sec_rg.location
+  resource_group_name = azurerm_resource_group.sec_rg.name
+  location            = azurerm_resource_group.sec_rg.location
   name                = "${local.product_region}-integration-appgateway-identity"
 
   tags = var.tags
 }
 
 resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
-  key_vault_id            = data.azurerm_key_vault.kv_core.id
+  key_vault_id            = module.key_vault.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
   object_id               = azurerm_user_assigned_identity.appgateway.principal_id
   key_permissions         = ["Get", "List"]
@@ -27,8 +27,8 @@ resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
 
 resource "azurerm_public_ip" "integration_appgateway_public_ip" {
   name                = "${local.product_region}-integration-appgateway-pip"
-  resource_group_name = data.azurerm_resource_group.rg_vnet_integration.name
-  location            = data.azurerm_resource_group.rg_vnet_integration.location
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  location            = azurerm_resource_group.rg_vnet.location
   sku                 = "Standard"
   allocation_method   = "Static"
   zones               = var.integration_appgateway_zones
@@ -45,8 +45,8 @@ locals {
       ssl_profile_name   = "${local.product_region}-ssl-profile"
       firewall_policy_id = null
       certificate = {
-        name = var.app_gateway_prf_certificate_name
-        id = var.app_gateway_prf_certificate_name == "" ? null : replace(
+        name = var.integration_app_gateway_prf_certificate_name
+        id = var.integration_app_gateway_prf_certificate_name == "" ? null : replace(
           data.azurerm_key_vault_certificate.app_gw_platform_prf[0].secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_platform_prf[0].version}",
           ""
@@ -65,7 +65,7 @@ locals {
       type               = "Private"
 
       certificate = {
-        name = var.app_gateway_api_certificate_name
+        name = var.integration_app_gateway_api_certificate_name
         id = replace(
           data.azurerm_key_vault_certificate.app_gw_platform.secret_id,
           "/${data.azurerm_key_vault_certificate.app_gw_platform.version}",
@@ -83,7 +83,7 @@ locals {
       type               = "Private"
 
       certificate = {
-        name = var.app_gateway_portal_certificate_name
+        name = var.integration_app_gateway_portal_certificate_name
         id = replace(
           data.azurerm_key_vault_certificate.portal_platform.secret_id,
           "/${data.azurerm_key_vault_certificate.portal_platform.version}",
@@ -101,7 +101,7 @@ locals {
       type               = "Private"
 
       certificate = {
-        name = var.app_gateway_management_certificate_name
+        name = var.integration_app_gateway_management_certificate_name
         id = replace(
           data.azurerm_key_vault_certificate.management_platform.secret_id,
           "/${data.azurerm_key_vault_certificate.management_platform.version}",
@@ -118,16 +118,16 @@ locals {
 module "app_gw_integration" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v7.50.0"
 
-  resource_group_name = data.azurerm_virtual_network.vnet_integration.resource_group_name
+  resource_group_name = module.vnet_integration.resource_group_name
   location            = var.location
   name                = "${local.product_region}-integration-app-gw"
 
   # SKU
-  sku_name = var.app_gateway_sku_name
-  sku_tier = var.app_gateway_sku_tier
+  sku_name = var.integration_app_gateway_sku_name
+  sku_tier = var.integration_app_gateway_sku_tier
 
   # WAF
-  waf_enabled = var.app_gateway_waf_enabled
+  waf_enabled = var.integration_app_gateway_waf_enabled
 
   # Networking
   subnet_id          = module.integration_appgateway_snet.id
@@ -141,7 +141,7 @@ module "app_gw_integration" {
       protocol                    = "Https"
       host                        = "api.${var.dns_zone_prefix}.${var.external_domain}"
       port                        = 443
-      ip_addresses                = var.is_feature_enabled.use_new_apim ? module.apimv2.private_ip_addresses : data.azurerm_api_management.apim.private_ip_addresses
+      ip_addresses                = module.apim[0].private_ip_addresses
       fqdns                       = ["api.${var.dns_zone_prefix}.${var.external_domain}."]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
@@ -195,18 +195,18 @@ module "app_gw_integration" {
   identity_ids = [azurerm_user_assigned_identity.appgateway.id]
 
   # Scaling
-  app_gateway_min_capacity = var.app_gateway_min_capacity
-  app_gateway_max_capacity = var.app_gateway_max_capacity
+  app_gateway_min_capacity = var.integration_app_gateway_min_capacity
+  app_gateway_max_capacity = var.integration_app_gateway_max_capacity
 
-  alerts_enabled = var.app_gateway_alerts_enabled
+  alerts_enabled = var.integration_app_gateway_alerts_enabled
 
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      action_group_id    = azurerm_monitor_action_group.slack.id
       webhook_properties = null
     },
     {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
+      action_group_id    = azurerm_monitor_action_group.email.id
       webhook_properties = null
     }
   ]

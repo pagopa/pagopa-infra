@@ -41,11 +41,30 @@ is_feature_enabled = {
   printit    = true
 }
 
-app_service_pdf_engine_sku_name               = "P2v3"
-app_service_pdf_engine_autoscale_enabled      = true
-app_service_pdf_engine_always_on              = true
-app_service_pdf_engine_zone_balancing_enabled = true
+app_service_pdf_engine_sku_name          = "P2v3"
+app_service_pdf_engine_autoscale_enabled = true
+app_service_pdf_engine_always_on         = true
 
 app_service_pdf_engine_sku_name_java                        = "P1v3"
 app_service_pdf_engine_sku_name_java_zone_balancing_enabled = true
 
+pod_disruption_budgets = {
+  "print-payment-notice-functions" = {
+    minAvailable = 2
+    matchLabels = {
+      "app.kubernetes.io/instance" = "print-payment-notice-functions"
+    }
+  },
+  "print-payment-notice-generator" = {
+    minAvailable = 2
+    matchLabels = {
+      "app.kubernetes.io/instance" = "print-payment-notice-generator"
+    }
+  },
+  "print-payment-notice-service" = {
+    minAvailable = 2
+    matchLabels = {
+      "app.kubernetes.io/instance" = "print-payment-notice-service"
+    }
+  },
+}

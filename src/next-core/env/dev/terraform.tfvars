@@ -30,11 +30,22 @@ is_feature_enabled = {
 }
 
 ### Network west europe
-cidr_subnet_vpn                  = ["10.1.142.0/24"]
-cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
-cidr_subnet_tools_cae            = ["10.1.248.0/23"]
-cidr_subnet_azdoa                = ["10.1.130.0/24"]
-cidr_subnet_loadtest_agent       = ["10.1.159.0/24"]
+# main vnet
+cidr_vnet = ["10.1.0.0/16"]
+# integration vnet
+# https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
+cidr_vnet_integration = ["10.230.8.0/24"] # ask to SIA
+
+cidr_subnet_vpn                   = ["10.1.142.0/24"]
+cidr_subnet_dns_forwarder_backup  = ["10.1.251.0/29"]
+cidr_subnet_tools_cae             = ["10.1.248.0/23"]
+cidr_subnet_azdoa                 = ["10.1.130.0/24"]
+cidr_subnet_node_forwarder        = ["10.1.158.0/24"]
+cidr_subnet_loadtest_agent        = ["10.1.159.0/24"]
+cidr_subnet_appgateway            = ["10.1.128.0/24"]
+cidr_subnet_eventhub              = ["10.230.8.64/26"]
+cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
+
 ### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]
 
@@ -44,7 +55,11 @@ cidr_vnet_italy = ["10.3.0.0/16"]
 #
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
+dns_zone_wfesp           = ""
 
+dns_a_reconds_dbnodo_ips             = ["10.70.67.18"]    # db onCloud
+dns_a_reconds_dbnodonexipostgres_ips = ["10.222.214.176"] # db onPrem PostgreSQL
+private_dns_zone_db_nodo_pagamenti   = "d.db-nodo-pagamenti.com"
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-d-monitor-rg"
@@ -62,7 +77,7 @@ geo_replica_enabled = false
 # apim v2
 #
 redis_cache_enabled = true
-cidr_subnet_apim    = ["10.230.8.160/27"]
+cidr_subnet_apim    = ["10.230.8.0/26"]
 apim_v2_zones       = ["1"]
 apim_v2_subnet_nsg_security_rules = [
   {
@@ -140,13 +155,13 @@ dns_zone_prefix        = "dev.platform"
 
 cidr_subnet_appgateway_integration = ["10.230.8.192/27"]
 integration_appgateway_private_ip  = "10.230.8.200"
-app_gateway_sku_name               = "Standard_v2"
-app_gateway_sku_tier               = "Standard_v2"
+integration_app_gateway_sku_name   = "Standard_v2"
+integration_app_gateway_sku_tier   = "Standard_v2"
 
-app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
-app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
-app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
-integration_appgateway_zones            = []
+integration_app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
+integration_app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
+integration_app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
+integration_appgateway_zones                        = []
 
 nodo_pagamenti_psp            = "06529501006,97249640588,06874351007,08301100015,00194450219,02113530345,01369030935,07783020725"
 nodo_pagamenti_ec             = "00493410583,77777777777,00113430573,00184260040,00103110573,00939820726,00109190579,00122520570,82501690018,80001220773,84515520017,03509990788,84002410540,00482510542,00326070166,01350940019,00197530298,00379480031,06396970482,00460900038,82005250285,82002770236,80013960036,83000970018,84002970162,82500110158,00429530546,01199250158,80003370477,00111190575,81001650548,00096090550,95001650167,00451080063,80038190163,00433320033,00449050061,82002270724,00682280284,00448140541,00344700034,81000550673,00450150065,80002860775,83001970017,00121490577,00383120037,00366270031,80023530167,01504430016,00221940364,00224320366,00246880397,01315320489,00354730392,00357850395,80008270375,00218770394,00226010395,00202300398,81002910396,00360090393,84002010365,00242920395,80005570561,80015230347,00236340477,92035800488,03428581205,00114510571"
@@ -673,3 +688,64 @@ node_forwarder_sku                    = "B1"
 
 dns_forwarder_vm_image_name = "pagopa-d-dns-forwarder-ubuntu2204-image-v1"
 azdo_agent_vm_image_name    = "pagopa-d-azdo-agent-ubuntu2204-image-v3"
+
+
+# public app gateway
+# app_gateway
+app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
+app_gateway_upload_certificate_name     = "upload-dev-platform-pagopa-it"
+upload_endpoint_enabled                 = true
+app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
+app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
+app_gateway_wisp2_certificate_name      = "dev-wisp2-pagopa-it"
+app_gateway_wisp2govit_certificate_name = ""
+app_gateway_wfespgovit_certificate_name = ""
+app_gateway_kibana_certificate_name     = "kibana-dev-platform-pagopa-it"
+app_gateway_sku_name                    = "Standard_v2"
+app_gateway_sku_tier                    = "Standard_v2"
+app_gateway_waf_enabled                 = false
+app_gateway_alerts_enabled              = false
+app_gateway_deny_paths = [
+  "/notfound/*",
+]
+app_gateway_kibana_deny_paths = [
+  "/notfound/*",
+]
+app_gateway_deny_paths_2 = [
+  "/notfound2/*",
+]
+app_gateway_allowed_paths_pagopa_onprem_only = {
+  paths = [
+    "/allowed/*",
+  ]
+  ips = [
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+    "0.0.0.0",
+  ]
+}
+
+
+redis_cache_params = {
+  public_access = true
+  capacity      = 0
+  sku_name      = "Basic"
+  family        = "C"
+}
+
+apicfg_core_service_path_value           = "pagopa-api-config-core-service/p"
+apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integration/p"
+
+
+# monitoring
+law_sku               = "PerGB2018"
+law_retention_in_days = 30
+law_daily_quota_gb    = 10

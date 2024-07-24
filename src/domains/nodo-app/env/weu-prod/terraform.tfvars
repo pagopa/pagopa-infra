@@ -105,6 +105,13 @@ route_aks = [
   },
   {
     #  aks nodo to nexi oncloud oracle
+    name                   = "aks-outbound-to-nexi-oracle-dr-onprem-subnet"
+    address_prefix         = "10.101.35.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    #  aks nodo to nexi oncloud oracle
     name                   = "aks-outbound-to-nexi-aks-cloud-subnet"
     address_prefix         = "10.70.135.0/24"
     next_hop_type          = "VirtualAppliance"
@@ -263,4 +270,18 @@ nodo_auth_subscription_limit = 10000
 nodo_pagamenti_x_forwarded_for = "10.230.10.5"
 
 
+# WISP-dismantling-cfg
+create_wisp_converter = true
+wisp_converter = {
+  enable_apim_switch     = true
+  brokerPSP_whitelist    = "97735020584"
+  channel_whitelist      = "97735020584_02"
+  station_whitelist      = "80001480534-00838520880_01,82004590814-00838520880_01" # subsets of EC friends
+  ci_whitelist           = "80001480534,82004590814"
+  dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
+}
 
+# 80001480534-00838520880_01 GRPM01000E/Argo https://config.platform.pagopa.it/creditor-institutions/80001480534
+# 82004590814-00838520880_01 TPIC81700P/Argo https://config.platform.pagopa.it/creditor-institutions/82004590814
+
+enable_sendPaymentResultV2_SWClient = false

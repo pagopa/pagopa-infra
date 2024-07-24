@@ -48,6 +48,52 @@
         </when>
     </choose>
     <!-- pass rptId value into header END -->
+
+    <!-- Post Token PDV START-->
+    <send-request ignore-error="true" timeout="10" response-variable-name="pdv-token" mode="new">
+        <set-url>${pdv_api_base_path}/tokens</set-url>
+        <set-method>PUT</set-method>
+        <set-header name="x-api-key" exists-action="override">
+            <value>{{ecommerce-personal-data-vault-api-key}}</value>
+        </set-header>
+        <set-body>@{
+        JObject requestBody = (JObject)context.Request.Body.As<JObject>(true);
+        return new JObject(
+                new JProperty("pii",  (string)requestBody["email"])
+            ).ToString();
+            }</set-body>
+    </send-request>
+    <choose>
+        <when condition="@(((IResponse)context.Variables["pdv-token"]).StatusCode != 200)">
+            <return-response>
+                <set-status code="502" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>
+                {
+                      "title" : "Bad gateway - Invalid PDV response",
+                      "status":  502,
+                      "detail":  "Cannot tokenize fiscal code"
+                }
+                </set-body>
+            </return-response>
+        </when>
+    </choose>
+
+    <set-variable name="pdvToken" value="@(((IResponse)context.Variables["pdv-token"]).Body.As<JObject>())" />
+    <set-variable name="emailToken" value="@((string)((JObject)context.Variables["pdvToken"])["token"])" />
+    <!-- Post Token PDV END-->
+    <set-body>@{
+        JObject requestBody = (JObject)context.Request.Body.As<JObject>(true);
+        string emailToken = (string) context.Variables["emailToken"];
+
+        requestBody.Remove("email");
+        requestBody["emailToken"] = emailToken;
+
+        return requestBody.ToString();
+    }
+    </set-body>
     <base />
     </inbound>
     <outbound>
