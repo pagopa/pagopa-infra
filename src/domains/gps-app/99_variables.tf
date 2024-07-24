@@ -139,10 +139,10 @@ variable "ddos_protection_plan" {
 }
 
 # Reporting
-
+# https://learn.microsoft.com/it-it/azure/azure-functions/functions-bindings-timer?tabs=python-v2%2Cisolated-process%2Cnodejs-v4&pivots=programming-language-java#ncrontab-examples
 variable "gpd_reporting_schedule_batch" {
   type        = string
-  description = "Cron scheduling (NCRON example '*/45 * * * * *')"
+  description = "Cron scheduling (every day 1 o'clock every day UTC-0) {second} {minute} {hour} {day} {month} {day-of-week}"
   default     = "0 0 1 * * *"
 }
 
