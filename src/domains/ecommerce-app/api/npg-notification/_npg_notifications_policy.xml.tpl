@@ -169,10 +169,6 @@
                 </return-response>
             </when>
             <otherwise>
-                <trace source="ecommerce_npg_notify" severity="error">
-                    <message>NPG Notification Error - Transaction Service</message>
-                    <metadata name="transactionServiceResponseCode" value="@(((int)((IResponse)context.Response).StatusCode).ToString())" />
-                </trace>
                 <return-response>
                     <set-status code="500" reason="Error during transaction status notify" />
                 </return-response>
