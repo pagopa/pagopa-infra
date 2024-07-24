@@ -9,27 +9,24 @@ locals {
   ## printit
   pagopaprintit_key = "pagopaprintit"
 
-  pagopaprintit_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/log-template/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
+  pagopaprintit_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/pagopa/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   pagopaprintit_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
     name        = local.pagopaprintit_key,
     managed     = false,
     policy_name = local.default_snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
-  pagopaprintit_component_template_package = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@package.json", {
-    name = local.pagopaprintit_key
-  }), "\""), "\""), "'", "'\\''")
   pagopaprintit_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@custom.json", {
     name = local.pagopaprintit_key
   }), "\""), "\""), "'", "'\\''")
   pagopaprintit_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/index-template.json", {
-    name                       = local.pagopaprintit_key
+    name                       = "print-payment"
     component_template_package = "${local.pagopaprintit_key}@package"
     component_template_custom  = "${local.pagopaprintit_key}@custom"
   }), "\""), "\""), "'", "'\\''")
 
 
   pagopaprintit_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-    name = local.pagopaprintit_key
+    name = "Stampa Avvisi"
   }), "\""), "\""), "'", "'\\''")
 }
 
@@ -88,26 +85,8 @@ resource "null_resource" "pagopaprintit_ilm_policy" {
   }
 }
 
-resource "null_resource" "pagopaprintit_component_template_package" {
-  depends_on = [null_resource.pagopaprintit_ilm_policy]
-
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-
-  provisioner "local-exec" {
-    command     = <<EOT
-      curl -k -X PUT "${local.elastic_url}/_component_template/${local.pagopaprintit_key}@package" \
-      -H 'kbn-xsrf: true' \
-      -H 'Content-Type: application/json' \
-      -d '${local.pagopaprintit_component_template_package}'
-    EOT
-    interpreter = ["/bin/bash", "-c"]
-  }
-}
-
 resource "null_resource" "pagopaprintit_component_template_custom" {
-  depends_on = [null_resource.pagopaprintit_component_template_package]
+  depends_on = [null_resource.pagopaprintit_ilm_policy]
 
   triggers = {
     always_run = "${timestamp()}"
@@ -143,7 +122,7 @@ resource "null_resource" "pagopaprintit_index_template" {
   }
 }
 
-resource "null_resource" "pagopaprintit_data_stream_rollover" {
+resource "null_resource" "pagopaprintit_service_data_stream_rollover" {
   depends_on = [null_resource.pagopaprintit_index_template]
 
   triggers = {
@@ -152,7 +131,41 @@ resource "null_resource" "pagopaprintit_data_stream_rollover" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.elastic_url}/logs-${local.pagopaprintit_key}-default/_rollover/" \
+      curl -k -X POST "${local.elastic_url}/logs-print-payment-notice-service-default/_rollover/" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
+resource "null_resource" "pagopaprintit_generator_data_stream_rollover" {
+  depends_on = [null_resource.pagopaprintit_index_template]
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X POST "${local.elastic_url}/logs-print-payment-notice-generator-default/_rollover/" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
+resource "null_resource" "pagopaprintit_functions_data_stream_rollover" {
+  depends_on = [null_resource.pagopaprintit_index_template]
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X POST "${local.elastic_url}/logs-print-payment-notice-functions-default/_rollover/" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json'
     EOT
