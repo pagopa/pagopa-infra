@@ -797,3 +797,28 @@ apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integrati
 law_sku               = "CapacityReservation" # TODO verify why it is changed from PerGB2018 to CapacityReservation
 law_retention_in_days = 30
 law_daily_quota_gb    = -1
+
+
+monitor_env_test_urls = [
+   # wisp2.pagopa.gov.it
+    {
+      host = "wisp2.pagopa.gov.it",
+      path = "",
+    },
+  # status.pagopa.gov.it
+    {
+      host = "status.pagopa.gov.it",
+      path = "",
+    },
+  # assets.cdn.platform.pagopa.it
+    {
+      host          = "assets.cdn.platform.pagopa.it",
+      path          = "",
+      alert_enabled = false
+    },
+  # wfesp.pagopa.gov.it
+    {
+      host = "wfesp.pagopa.gov.it",
+      path = "",
+    }
+]

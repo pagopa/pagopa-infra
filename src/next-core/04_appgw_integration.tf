@@ -8,8 +8,8 @@ module "integration_appgateway_snet" {
 }
 
 resource "azurerm_user_assigned_identity" "appgateway" {
-  resource_group_name = data.azurerm_resource_group.sec_rg.name
-  location            = data.azurerm_resource_group.sec_rg.location
+  resource_group_name = azurerm_resource_group.sec_rg.name
+  location            = azurerm_resource_group.sec_rg.location
   name                = "${local.product_region}-integration-appgateway-identity"
 
   tags = var.tags
@@ -141,7 +141,7 @@ module "app_gw_integration" {
       protocol                    = "Https"
       host                        = "api.${var.dns_zone_prefix}.${var.external_domain}"
       port                        = 443
-      ip_addresses                = data.azurerm_api_management.apim.private_ip_addresses
+      ip_addresses                = module.apim[0].private_ip_addresses
       fqdns                       = ["api.${var.dns_zone_prefix}.${var.external_domain}."]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
