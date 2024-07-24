@@ -98,7 +98,7 @@ module "node_forwarder_ha_snet" {
 resource "azurerm_subnet_nat_gateway_association" "nodefw_ha_snet_nat_association" {
   count          = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
   subnet_id      = module.node_forwarder_ha_snet[0].id
-  nat_gateway_id = data.azurerm_nat_gateway.nat_gw.id
+  nat_gateway_id = module.nat_gw[0].id
 }
 
 

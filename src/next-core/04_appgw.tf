@@ -307,7 +307,7 @@ locals {
 }
 
 data "azurerm_user_assigned_identity" "public_appgateway" {
-  resource_group_name = data.azurerm_resource_group.sec_rg.name
+  resource_group_name = azurerm_resource_group.sec_rg.name
   name                = format("%s-appgateway-identity", local.product)
 
 }
