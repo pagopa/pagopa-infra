@@ -9,8 +9,8 @@ resource "azurerm_resource_group" "tools_rg" {
 
 resource "azurerm_subnet" "tools_cae_subnet" {
   name                 = "${local.product}-tools-cae-subnet"
-  resource_group_name  = data.azurerm_virtual_network.vnet_core.resource_group_name
-  virtual_network_name = data.azurerm_virtual_network.vnet_core.name
+  resource_group_name  = module.vnet.resource_group_name
+  virtual_network_name = module.vnet.name
   address_prefixes     = var.cidr_subnet_tools_cae
 }
 
