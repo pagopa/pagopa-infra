@@ -4,8 +4,8 @@ module "vpn_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v4.18.1"
   name                                           = "GatewaySubnet"
   address_prefixes                               = var.cidr_subnet_vpn
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
+  resource_group_name                            = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
   service_endpoints                              = []
   enforce_private_link_endpoint_network_policies = true
 }
@@ -20,7 +20,7 @@ module "vpn" {
 
   name                = "${local.project}-vpn"
   location            = var.location
-  resource_group_name = azurerm_resource_group.rg_vnet.name
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
   sku                 = var.vpn_sku
   pip_sku             = var.vpn_pip_sku
   subnet_id           = module.vpn_snet[0].id
@@ -49,8 +49,8 @@ module "dns_forwarder_snet" {
 
   name                                           = "${local.project}-dns-forwarder-snet"
   address_prefixes                               = var.cidr_subnet_dns_forwarder
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
+  resource_group_name                            = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
   enforce_private_link_endpoint_network_policies = true
 
   delegation = {
@@ -72,8 +72,8 @@ module "dns_forwarder" {
   source = "git::https://github.com/pagopa/azurerm.git//dns_forwarder?ref=v4.18.1"
 
   name                = "${local.project}-${random_id.dns_forwarder_hash[count.index].hex}-dns-forwarder"
-  location            = azurerm_resource_group.rg_vnet.location
-  resource_group_name = azurerm_resource_group.rg_vnet.name
+  location            = data.azurerm_resource_group.rg_vnet.location
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
   subnet_id           = module.dns_forwarder_snet[0].id
 
   tags = var.tags

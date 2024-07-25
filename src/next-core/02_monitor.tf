@@ -172,44 +172,7 @@ locals {
       host = join(".",
       compact(["selfcare", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "",
-    },
-    # api.prf.platform.pagopa.it
-    {
-      host = "api.prf.platform.pagopa.it"
-      path = "",
-    },
-    # wisp2.pagopa.gov.it
-    {
-      host = "wisp2.pagopa.gov.it",
-      path = "",
-    },
-    # uat.wisp2.pagopa.gov.it
-    {
-      host = "uat.wisp2.pagopa.gov.it",
-      path = "",
-    },
-    # status.pagopa.gov.it
-    {
-      host = "status.pagopa.gov.it",
-      path = "",
-    },
-    # assets.cdn.platform.pagopa.it
-    {
-      host          = "assets.cdn.platform.pagopa.it",
-      path          = "",
-      alert_enabled = false
-    },
-    # wfesp.pagopa.gov.it
-    {
-      host = "wfesp.pagopa.gov.it",
-      path = "",
-    },
-    # # forwarder[.env].platform.pagopa.it https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/589005731/Certificati+forwarder+.env+.platform.pagopa.it+Nuova+Connettivit
-    # {
-    #   host = join(".",
-    #   compact(["forwarder", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
-    #   path = "",
-    # },
+    }
   ]
 
   # actions grp
@@ -231,7 +194,7 @@ locals {
 module "web_test_standard" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_standard_web_test?ref=v8.29.0"
 
-  for_each = { for v in local.test_urls : v.host => v if v != null }
+  for_each = { for v in concat(local.test_urls, var.monitor_env_test_urls) : v.host => v if v != null }
 
   application_insights_action_group_ids = var.env_short == "p" ? concat([
     azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id

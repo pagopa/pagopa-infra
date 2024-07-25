@@ -1,21 +1,21 @@
 output "vnet_name" {
-  value = module.vnet.name
+  value = data.azurerm_virtual_network.vnet.name
 }
 
 output "vnet_id" {
-  value = module.vnet.id
+  value = data.azurerm_virtual_network.vnet.id
 }
 
 output "vnet_address_space" {
-  value = module.vnet.address_space
+  value = data.azurerm_virtual_network.vnet.address_space
 }
 
 output "vnet_integration_name" {
-  value = module.vnet_integration.name
+  value = data.azurerm_virtual_network.vnet_integration.name
 }
 
 output "vnet_integration_address_space" {
-  value = module.vnet_integration.address_space
+  value = data.azurerm_virtual_network.vnet_integration.address_space
 }
 
 ## Container registry ##
