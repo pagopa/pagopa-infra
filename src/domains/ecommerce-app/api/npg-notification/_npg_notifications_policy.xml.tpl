@@ -162,18 +162,8 @@
         <forward-request timeout="10" />
     </backend>
     <outbound>
-        <choose>
-            <when condition="@(((int)((IResponse)context.Response).StatusCode) == 200)">
-                <return-response>
-                    <set-status code="200" reason="Notification elaborated successfully" />
-                </return-response>
-            </when>
-            <otherwise>
-                <return-response>
-                    <set-status code="500" reason="Error during transaction status notify" />
-                </return-response>
-            </otherwise>
-        </choose>
+        <!-- forward transaction-service response but set empty body for response -->
+        <set-body></set-body>
     </outbound>
     <on-error>
         <trace source="ecommerce_npg_notify" severity="error">
