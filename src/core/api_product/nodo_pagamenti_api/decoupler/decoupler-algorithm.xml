@@ -330,20 +330,22 @@ new JProperty("ttl", 1)
                                     isCiAndStationOk = false;
                                 }
                             }
-                            isWhitelisted = (brokersWhitelisted || brokers.Contains(pspBrokerId)) &&
-                                            (channelsWhitelisted || channels.Contains(channelId)) &&
-                                            isCiAndStationOk;
-                            // check if 'tipoVersamento' is accepted for WISP dismantling only
-                            // if is whitelisted and it is a 'nodoInviaRPT'
+                            // check if 'tipoVersamento' is accepted for WISP dismantling only if the request is a 'nodoInviaRPT'
+                            bool isNodoInviaRptWithAllowedPaymentType = false;
                             bool isNodoInviaRPT = "nodoInviaRPT".Equals((string)context.Variables["soapAction"]);
-                            if (isWhitelisted && isNodoInviaRPT) {
+                            if (isNodoInviaRPT) {
                                 byte[] rptAsBytearray = Convert.FromBase64String((string) primitive.Descendants("rpt").FirstOrDefault());
                                 string rptAsString = System.Text.Encoding.UTF8.GetString(rptAsBytearray);
                                 XElement rpt = XElement.Parse(rptAsString);
                                 string rptPaymentType = rpt.Descendants(rpt.Name.Namespace + "tipoVersamento").FirstOrDefault()?.Value;
                                 string[] paymentTypes =  ((string) context.Variables["wisp_whitelisted_nodoinviarpt_paymenttypes"]).Split(',');
-                                isWhitelisted = paymentTypes.Contains(rptPaymentType);
+                                isNodoInviaRptWithAllowedPaymentType = paymentTypes.Contains(rptPaymentType);
                             }
+                            bool isValidNodoInviaRptOrNodoInviaCarrelloRPT = !isNodoInviaRPT || isNodoInviaRptWithAllowedPaymentType;
+                            // last, check all the conditions and return the final result
+                            isWhitelisted = (brokersWhitelisted || brokers.Contains(pspBrokerId)) &&
+                                            (channelsWhitelisted || channels.Contains(channelId)) &&
+                                            isCiAndStationOk && isValidNodoInviaRptOrNodoInviaCarrelloRPT;
                         } catch (Exception e) {
                             // do nothing
                         }
