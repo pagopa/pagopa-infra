@@ -461,3 +461,9 @@ variable "enable_sendPaymentResultV2_SWClient" {
   description = "Gestione clientId per integrazione Software Client"
 }
 
+variable "wfesp_dismantling" {
+  type = object({
+    channel_list                       = string
+  })
+}
+

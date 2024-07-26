@@ -359,6 +359,7 @@ new JProperty("ttl", 1)
 			</choose>
 		</when>
 	</choose>
+    <set-variable name="wfesp_channels" value="{{wfesp-channels}}" />
     <set-variable name="is_wfesp" value="@{
             // isWfesp if:
             // - if channel in request is equal to 13212880150_90
