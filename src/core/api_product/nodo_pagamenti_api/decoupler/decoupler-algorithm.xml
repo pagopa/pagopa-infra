@@ -271,7 +271,25 @@ new JProperty("ttl", 1)
 			<set-variable name="wisp_whitelisted_stations" value="{{wisp-station-whitelist}}" />
 			<set-variable name="wisp_whitelisted_cis" value="{{wisp-ci-whitelist}}" />
 			<set-variable name="wisp_whitelisted_nodoinviarpt_paymenttypes" value="{{wisp-nodoinviarpt-paymenttype-whitelist}}" />
-			<set-variable name="is_whitelisted" value="@{
+			<set-variable name="is_wfesp" value="@{
+                        // isWfesp if:
+                        // - if channel in request is equal to 13212880150_90
+                        // - if request is nodoInviaCarrelloRPT
+                        bool isWfesp = false;
+                        XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
+                        try {
+                            XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+                            XElement primitive = (XElement) body.FirstNode;
+                            string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
+                            // listaRPT is set only in nodoInviaCarrelloRPT
+                            // we want to act only if there is nodoInviaCarrello
+                            isWfesp = channelId.Equals("13212880150_90") && ((string)context.Variables["soapAction"]).Equals("nodoInviaCarrelloRPT");
+                        } catch (Exception e) {
+                            // do nothing
+                        }
+                        return isWfesp;
+                    }" />
+            <set-variable name="is_whitelisted" value="@{
                         // isWhiteListed if:
                         // - lists are empties
                         // - channelId, brokerPSP, stationId and creditorInstitutionId belong to relative lists
