@@ -363,7 +363,7 @@ new JProperty("ttl", 1)
             // isWfesp if:
             // - if channel in request is equal to 13212880150_90
             // - if request is nodoInviaCarrelloRPT
-            string[] wfespChannels = ((string) context.Variables["wfesp_channels"]).Split(',')
+            string[] wfespChannels = ((string) context.Variables["wfesp_channels"]).Split(',');
             bool isWfesp = false;
             XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
             try {
