@@ -110,13 +110,6 @@ ecommerce_ingress_hostname = "weuprod.ecommerce.internal.platform.pagopa.it"
 
 
 
-
-
-
-# acr
-acr_enabled = true
-
-
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
 buyerbanks_function_sku_tier          = "Standard"
