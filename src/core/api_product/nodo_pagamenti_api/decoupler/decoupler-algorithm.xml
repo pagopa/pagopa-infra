@@ -282,7 +282,7 @@ new JProperty("ttl", 1)
                             string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
                             // listaRPT is set only in nodoInviaCarrelloRPT
                             // we want to act only if there is nodoInviaCarrello
-                            isWfesp = channelId.Equals("13212880150_90") && (primitive.Descendants("listaRPT").FirstOrDefault() != null);
+                            isWfesp = channelId.Equals("13212880150_90") && ((string)context.Variables["soapAction"]).Equals("nodoInviaCarrelloRPT");
                         } catch (Exception e) {
                             // do nothing
                         }
