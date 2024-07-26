@@ -45,11 +45,12 @@ cidr_subnet_loadtest_agent        = ["10.1.159.0/24"]
 cidr_subnet_appgateway            = ["10.1.128.0/24"]
 cidr_subnet_eventhub              = ["10.230.8.64/26"]
 cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
+cidr_subnet_dns_forwarder            = ["10.1.143.0/29"]
 
 ### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]
 
-
+vpn_gw_pip_sku = "Standard"
 #
 # Dns
 #
