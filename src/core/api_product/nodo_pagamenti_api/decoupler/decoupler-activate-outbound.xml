@@ -96,19 +96,32 @@
   </choose>
     <choose>
         <when condition="@( context.Variables.GetValueOrDefault<bool>("is_wfesp", true) )">
-            <set-header  name="Content-Type"  exists-action="override">
-                <value>application/xml</value>
-            </set-header>
-            <set-body template="liquid">
-                <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ppt="http://ws.pagamenti.telematici.gov/" xmlns:tns="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT" xmlns:ppthead="http://ws.pagamenti.telematici.gov/ppthead">
-                    <soapenv:Body>
-                        <ppt:nodoInviaCarrelloRPTRisposta>
-                            <esitoComplessivoOperazione>OK</esitoComplessivoOperazione>
-                            <url>PLACEHOLDER</url>
-                        </ppt:nodoInviaCarrelloRPTRisposta>
-                    </soapenv:Body>
-                </soapenv:Envelope>
-            </set-body>
+          <set-variable name="outcomeWfespCart" value="@{
+                    XElement response = context.Response.Body.As<XElement>(preserveContent: true);
+                    XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
+                    XElement primitive = (XElement) body.FirstNode;
+                    XElement nodoInviaCarrelloRPTResponse = primitive.Descendants("nodoInviaCarrelloRPTRisposta").FirstOrDefault();
+                    string outcomeWfespCart = (string) nodoInviaCarrelloRPTResponse.Descendants("esitoComplessivoOperazione").FirstOrDefault();
+
+                    return outcomeWfespCart.Equals("OK");
+                }" />
+          <choose>
+            <when condition="@( context.Variables.GetValueOrDefault<bool>("outcomeWfespCart", true) )">
+              <set-header  name="Content-Type"  exists-action="override">
+                  <value>application/xml</value>
+              </set-header>
+              <set-body template="liquid">
+                  <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ppt="http://ws.pagamenti.telematici.gov/" xmlns:tns="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT" xmlns:ppthead="http://ws.pagamenti.telematici.gov/ppthead">
+                      <soapenv:Body>
+                          <ppt:nodoInviaCarrelloRPTRisposta>
+                              <esitoComplessivoOperazione>OK</esitoComplessivoOperazione>
+                              <url>PLACEHOLDER</url>
+                          </ppt:nodoInviaCarrelloRPTRisposta>
+                      </soapenv:Body>
+                  </soapenv:Envelope>
+              </set-body>
+            </when>
+          </choose>
         </when>
     </choose>
   </fragment>
