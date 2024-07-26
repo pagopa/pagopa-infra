@@ -18,20 +18,6 @@ output "vnet_integration_address_space" {
   value = data.azurerm_virtual_network.vnet_integration.address_space
 }
 
-## Container registry ##
-output "container_registry_login_server" {
-  value = var.acr_enabled ? module.container_registry.login_server : null
-}
-
-output "container_registry_admin_username" {
-  value = var.acr_enabled ? module.container_registry.admin_username : null
-}
-
-output "container_registry_admin_password" {
-  value     = var.acr_enabled ? module.container_registry.admin_password : null
-  sensitive = true
-}
-
 # Blob storage
 output "nodo_test_sa_blob_host" {
   value = var.nodo_pagamenti_test_enabled ? module.nodo_test_storage[0].primary_blob_host : null

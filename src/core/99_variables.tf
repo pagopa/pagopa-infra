@@ -246,19 +246,6 @@ variable "ecommerce_ingress_hostname" {
 }
 
 
-
-
-# acr
-
-variable "acr_enabled" {
-  type        = bool
-  description = "Container registry enabled"
-  default     = false
-}
-
-
-
-
 variable "cidr_subnet_buyerbanks" {
   type        = list(string)
   description = "Address prefixes subnet buyerbanks"

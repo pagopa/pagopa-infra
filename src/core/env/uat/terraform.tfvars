@@ -118,13 +118,6 @@ buyerbanks_delete_retention_days      = 30
 
 
 
-
-# acr
-acr_enabled = true
-
-
-
-
 # nodo-dei-pagamenti-test
 nodo_pagamenti_test_enabled = true
 
