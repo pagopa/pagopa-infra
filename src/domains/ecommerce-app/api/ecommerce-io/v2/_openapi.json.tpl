@@ -91,14 +91,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized, access token missing or invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
@@ -200,14 +193,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized, access token missing or invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized, access token missing or invalid"
           },
           "500": {
             "description": "Internal server error serving request",
@@ -280,14 +266,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized, access token missing or invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
@@ -378,14 +357,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized, access token missing or invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Transaction not found",
@@ -436,14 +408,7 @@
             "description": "Transaction cancellation request successfully accepted"
           },
           "401": {
-            "description": "Unauthorized, access token missing or invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Transaction not found",
@@ -543,14 +508,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized, access token missing or invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Transaction not found",
@@ -641,14 +599,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized, access token missing or invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized, access token missing or invalid"
           },
           "500": {
             "description": "Service unavailable",
@@ -728,14 +679,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized, access token missing or invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Payment method not found",
@@ -795,14 +739,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized, access token missing or invalid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Wallet not found",

@@ -75,14 +75,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized: the provided token is not valid or expired.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized: the provided token is not valid or expired."
           },
           "404": {
             "description": "Payment methods not found",
@@ -166,14 +159,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized: the provided token is not valid or expired.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized: the provided token is not valid or expired."
           },
           "500": {
             "description": "Internal server error serving request",
@@ -234,14 +220,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized: the provided token is not valid or expired.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized: the provided token is not valid or expired."
           },
           "404": {
             "description": "Wallet not found"
@@ -301,14 +280,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized: the provided token is not valid or expired.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized: the provided token is not valid or expired."
           },
           "404": {
             "description": "Wallet not found"
@@ -356,14 +328,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized: the provided token is not valid or expired.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized: the provided token is not valid or expired."
           },
           "404": {
             "description": "Wallet not found"
