@@ -260,4 +260,5 @@ enable_sendPaymentResultV2_SWClient = true
 # WFESP-dismantling-cfg
 wfesp_dismantling = {
   channel_list                       = "13212880150_90"
+  wfesp_fixed_url                    = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
 }
