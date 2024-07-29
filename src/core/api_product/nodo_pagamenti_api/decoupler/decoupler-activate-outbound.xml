@@ -105,7 +105,10 @@
                   return outcomeWfespCart.Equals("OK");
                   }" />
         <choose>
-          <when condition="@( context.Variables.GetValueOrDefault<bool>("outcomeWfespCart", true) )">
+          <when condition="@( context.Variables.GetValueOrDefault<bool>("outcomeWFESPCart", true) )">
+            <set-variable name="fixedUrlWFESP" value="@{
+                return "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession=" + context.Response.Headers.GetValueOrDefault("sessionId");
+            }" />
             <set-header name="Content-Type" exists-action="override">
               <value>application/xml</value>
             </set-header>
@@ -114,7 +117,7 @@
                 <soapenv:Body>
                   <ppt:nodoInviaCarrelloRPTRisposta>
                     <esitoComplessivoOperazione>OK</esitoComplessivoOperazione>
-                    <url>PLACEHOLDER</url>
+                    <url>{{context.Variables["fixedUrlWFESP"]}}</url>
                   </ppt:nodoInviaCarrelloRPTRisposta>
                 </soapenv:Body>
               </soapenv:Envelope>
