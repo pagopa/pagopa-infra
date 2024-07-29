@@ -95,7 +95,7 @@
   </when>
   </choose>
     <choose>
-      <when condition="@( context.Variables.GetValueOrDefault<bool>("is_wfesp", true) )">
+      <when condition="@( context.Variables.GetValueOrDefault<bool>("is_wfesp", false) )">
         <set-variable name="outcome_wfesp_cart" value="@{
                   XElement response = context.Response.Body.As<XElement>(preserveContent: true);
                   XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
@@ -105,7 +105,7 @@
                   return outcomeWfespCart.Equals("OK");
                   }" />
         <choose>
-          <when condition="@( context.Variables.GetValueOrDefault<bool>("outcomeWfespCart", true) )">
+          <when condition="@( context.Variables.GetValueOrDefault<bool>("outcome_wfesp_cart", false) )">
             <set-variable name="wfesp_fixed_url" value="{{wfesp-fixed-url}}" />
             <set-variable name="wfesp_fixed_url_completed" value="@{
                 return ((string) context.Variables["wfesp_fixed_url"]) + context.Response.Headers.GetValueOrDefault("sessionId");
