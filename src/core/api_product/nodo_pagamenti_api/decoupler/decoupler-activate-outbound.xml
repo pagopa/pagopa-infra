@@ -96,7 +96,7 @@
   </choose>
     <choose>
       <when condition="@( context.Variables.GetValueOrDefault<bool>("is_wfesp", true) )">
-        <set-variable name="outcomeWFESPCart" value="@{
+        <set-variable name="outcome_wfesp_cart" value="@{
                   XElement response = context.Response.Body.As<XElement>(preserveContent: true);
                   XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
                   XElement primitive = (XElement) body.FirstNode;
@@ -105,9 +105,10 @@
                   return outcomeWfespCart.Equals("OK");
                   }" />
         <choose>
-          <when condition="@( context.Variables.GetValueOrDefault<bool>("outcomeWFESPCart", true) )">
-            <set-variable name="fixedUrlWFESP" value="@{
-                return "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession=" + context.Response.Headers.GetValueOrDefault("sessionId");
+          <when condition="@( context.Variables.GetValueOrDefault<bool>("outcomeWfespCart", true) )">
+            <set-variable name="wfesp_fixed_url" value="{{wfesp-fixed-url}}" />
+            <set-variable name="wfesp_fixed_url_completed" value="@{
+                return ((string) context.Variables["wfesp_fixed_url"]) + context.Response.Headers.GetValueOrDefault("sessionId");
             }" />
             <set-header name="Content-Type" exists-action="override">
               <value>application/xml</value>
@@ -117,7 +118,7 @@
                 <soapenv:Body>
                   <ppt:nodoInviaCarrelloRPTRisposta>
                     <esitoComplessivoOperazione>OK</esitoComplessivoOperazione>
-                    <url>{{context.Variables["fixedUrlWFESP"]}}</url>
+                    <url>{{context.Variables["wfesp_fixed_url_completed"]}}</url>
                   </ppt:nodoInviaCarrelloRPTRisposta>
                 </soapenv:Body>
               </soapenv:Envelope>
