@@ -286,3 +286,8 @@ wisp_converter = {
 # 82004590814-00838520880_01 TPIC81700P/Argo https://config.platform.pagopa.it/creditor-institutions/82004590814
 
 enable_sendPaymentResultV2_SWClient = false
+
+# WFESP-dismantling-cfg
+wfesp_dismantling = {
+  channel_list                       = "13212880150_90"
+}

@@ -256,3 +256,8 @@ wisp_converter = {
 # 03623810151-01378570350_01 Comune di Albairate/Credemtel
 
 enable_sendPaymentResultV2_SWClient = true
+
+# WFESP-dismantling-cfg
+wfesp_dismantling = {
+  channel_list                       = "13212880150_90"
+}
