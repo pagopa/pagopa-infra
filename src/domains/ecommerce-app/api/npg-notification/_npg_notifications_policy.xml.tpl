@@ -13,6 +13,13 @@
           </claim>
        </required-claims>
       </validate-jwt>
+      <choose>
+            <when condition="@((string)context.Variables["orderId"] == "orderIdToBlock")">
+                <return-response>
+                    <set-status code="500" reason="Internal server error" />
+                </return-response>
+            </when>
+      </choose>
       <!-- end validation policy -->
       <!-- start policy variables -->
       <set-variable name="transactionId" value="@{
