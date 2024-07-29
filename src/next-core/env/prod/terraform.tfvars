@@ -32,13 +32,41 @@ is_feature_enabled = {
 #
 # CIRDs
 #
-cidr_vnet_italy                  = ["10.3.0.0/16"]
-cidr_subnet_appgateway           = ["10.1.128.0/24"]
-cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
-cidr_subnet_tools_cae            = ["10.1.248.0/23"]
-cidr_subnet_azdoa                = ["10.1.130.0/24"]
-cidr_subnet_eventhub             = ["10.230.10.64/26"]
+# main vnet
+cidr_vnet = ["10.1.0.0/16"]
+# integration vnet
+# https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
+cidr_vnet_integration = ["10.230.10.0/24"] # ask to SIA
 
+cidr_vnet_italy                   = ["10.3.0.0/16"]
+cidr_subnet_appgateway            = ["10.1.128.0/24"]
+cidr_subnet_dns_forwarder_backup  = ["10.1.251.0/29"]
+cidr_subnet_tools_cae             = ["10.1.248.0/23"]
+cidr_subnet_azdoa                 = ["10.1.130.0/24"]
+cidr_subnet_eventhub              = ["10.230.10.64/26"]
+cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
+
+
+# networking
+ddos_protection_plan = {
+  id     = "/subscriptions/0da48c97-355f-4050-a520-f11a18b8be90/resourceGroups/sec-p-ddos/providers/Microsoft.Network/ddosProtectionPlans/sec-p-ddos-protection"
+  enable = true
+}
+
+route_table_peering_sia_additional_routes = [
+  {
+    address_prefix         = "10.101.175.0/24"
+    name                   = "to-nodo-db-oracle-pero"
+    next_hop_in_ip_address = "10.70.249.10"
+    next_hop_type          = "VirtualAppliance"
+  },
+  {
+    address_prefix         = "10.102.175.0/24"
+    name                   = "to-nodo-db-oracle-settimo"
+    next_hop_in_ip_address = "10.70.249.10"
+    next_hop_type          = "VirtualAppliance"
+  }
+]
 
 #
 # Dns
@@ -797,3 +825,28 @@ apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integrati
 law_sku               = "CapacityReservation" # TODO verify why it is changed from PerGB2018 to CapacityReservation
 law_retention_in_days = 30
 law_daily_quota_gb    = -1
+
+
+monitor_env_test_urls = [
+  # wisp2.pagopa.gov.it
+  {
+    host = "wisp2.pagopa.gov.it",
+    path = "",
+  },
+  # status.pagopa.gov.it
+  {
+    host = "status.pagopa.gov.it",
+    path = "",
+  },
+  # assets.cdn.platform.pagopa.it
+  {
+    host          = "assets.cdn.platform.pagopa.it",
+    path          = "",
+    alert_enabled = false
+  },
+  # wfesp.pagopa.gov.it
+  {
+    host = "wfesp.pagopa.gov.it",
+    path = "",
+  }
+]

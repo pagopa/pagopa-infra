@@ -1,6 +1,6 @@
 locals {
-  subnet_in_nat_gw_ids = [
-    data.azurerm_subnet.node_forwarder_snet.id #pagopa-node-forwarder ( aka GAD replacemnet )
+  subnet_in_nat_gw_ids = var.is_feature_enabled.node_forwarder_ha_enabled ? [] : [
+    module.node_forwarder_snet[0].id #pagopa-node-forwarder ( aka GAD replacemnet )
   ]
 }
 

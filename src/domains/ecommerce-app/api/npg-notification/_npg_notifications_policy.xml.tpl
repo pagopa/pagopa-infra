@@ -73,6 +73,10 @@
                 </send-request>
                 <choose>
                     <when condition="@(((int)((IResponse)context.Variables["paymentMethodSessionVerificationResponse"]).StatusCode) != 200)">
+                        <trace source="ecommerce_npg_notify" severity="error">
+                            <message>NPG Notification Error - Payment Method</message>
+                            <metadata name="paymentMethodResponseCode" value="@(((int)((IResponse)context.Variables["paymentMethodSessionVerificationResponse"]).StatusCode).ToString())" />
+                        </trace>
                         <return-response>
                             <set-status code="500" reason="Error retrieving session" />
                         </return-response>
@@ -83,17 +87,16 @@
         </choose>
         <!-- end payment method verify session -->
         <!-- send transactions service PATCH request -->
-        <send-request mode="new" response-variable-name="transactionServiceAuthorizationPatchResponse" timeout="10" ignore-error="true">
-            <set-url>@(String.Format((string)context.Variables["transactionServiceBackendUri"]+"/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))</set-url>
-            <set-method>PATCH</set-method>
-            <set-header name="Content-Type" exists-action="override">
-                <value>application/json</value>
-            </set-header>
-            <set-header name="x-payment-gateway-type" exists-action="override">
-                <value>"NPG"</value>
-            </set-header>
-            <set-body>
-                     @{
+        <set-backend-service base-url="@((string)context.Variables["transactionServiceBackendUri"])" />
+        <rewrite-uri template="@(String.Format("/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))" copy-unmatched-params="false"/>
+        <set-method>PATCH</set-method>
+        <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+        </set-header>
+        <set-header name="x-payment-gateway-type" exists-action="override">
+            <value>"NPG"</value>
+        </set-header>
+        <set-body>@{
                         JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
                         JObject operation = (JObject)requestBody["operation"];
                         string operationResult = (string)operation["operationResult"];
@@ -152,27 +155,26 @@
                         response["outcomeGateway"] = outcomeGateway;
                         return response.ToString();
                      }
-            </set-body>
-        </send-request>
-        <choose>
-            <when condition="@(((int)((IResponse)context.Variables["transactionServiceAuthorizationPatchResponse"]).StatusCode) == 200)">
-                <return-response>
-                    <set-status code="200" reason="Notification elaborated successfully" />
-                </return-response>
-            </when>
-            <otherwise>
-                <return-response>
-                    <set-status code="500" reason="Error during transaction status notify" />
-                </return-response>
-            </otherwise>
-        </choose>
+        </set-body>
         <!-- end send transactions service PATCH request -->
     </inbound>
     <backend>
-        <base />
+        <forward-request timeout="10" />
     </backend>
-    <outbound />
+    <outbound>
+        <!-- forward transaction-service response but set empty body for response -->
+        <set-body></set-body>
+    </outbound>
     <on-error>
+        <trace source="ecommerce_npg_notify" severity="error">
+            <message>NPG Notification Error</message>
+            <metadata name="errorSource" value="@(context.LastError.Source)" />
+            <metadata name="errorMessage" value="@(context.LastError.Message)" />
+            <metadata name="errorReason" value="@(context.LastError?.Reason ?? "-")" />
+            <metadata name="errorSection" value="@(context.LastError?.Section ?? "-")" />
+            <metadata name="errorPath" value="@(context.LastError?.Path ?? "-")" />
+            <metadata name="errorStatusCode" value="@((context.Response?.StatusCode ?? -1).ToString())" />
+        </trace>
         <base />
     </on-error>
 </policies>
