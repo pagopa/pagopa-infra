@@ -100,12 +100,10 @@
                   XElement response = context.Response.Body.As<XElement>(preserveContent: true);
                   XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
                   XElement primitive = (XElement) body.FirstNode;
-                  string outcomeWfespCart = (string) primitive.Descendants("esitoComplessivoOperazione").FirstOrDefault();
-
-                  return outcomeWfespCart.Equals("OK");
+                  return (string) primitive.Descendants("esitoComplessivoOperazione").FirstOrDefault();
                   }" />
         <choose>
-          <when condition="@( context.Variables.GetValueOrDefault<bool>("outcome_wfesp_cart", false) )">
+          <when condition="@( context.Variables.GetValueOrDefault<string>("outcome_wfesp_cart", "").Equals("OK"))">
             <set-variable name="wfesp_fixed_url" value="{{wfesp-fixed-url}}" />
             <set-variable name="wfesp_fixed_url_completed" value="@{
                 return ((string) context.Variables["wfesp_fixed_url"]) + context.Response.Headers.GetValueOrDefault("sessionId");
