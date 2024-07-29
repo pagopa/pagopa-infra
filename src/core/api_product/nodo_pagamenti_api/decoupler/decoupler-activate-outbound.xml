@@ -96,7 +96,7 @@
   </choose>
     <choose>
       <when condition="@( context.Variables.GetValueOrDefault<bool>("is_wfesp", true) )">
-        <set-variable name="outcomeWfespCart" value="@{
+        <set-variable name="outcomeWFESPCart" value="@{
                   XElement response = context.Response.Body.As<XElement>(preserveContent: true);
                   XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
                   XElement primitive = (XElement) body.FirstNode;
