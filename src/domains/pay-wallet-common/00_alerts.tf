@@ -55,7 +55,7 @@ AzureDiagnostics
     Success=countif(responseCode_d < 500 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
+| where toint(Availability) < 95
   QUERY
   )
   severity    = 1
@@ -92,7 +92,7 @@ AzureDiagnostics
     Success=countif(responseCode_d < 500 and DurationMs < 2000)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
+| where toint(Availability) < 95
   QUERY
   )
   severity    = 1
@@ -132,7 +132,7 @@ AzureDiagnostics
     Success=countif(responseCode_d < 500 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
+| where toint(Availability) < 95
   QUERY
   )
   severity    = 1
@@ -168,7 +168,7 @@ AzureDiagnostics
     Success=countif(responseCode_d < 500 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
+| where toint(Availability) < 95
   QUERY
   )
   severity    = 1
@@ -204,7 +204,7 @@ AzureDiagnostics
     Success=countif(responseCode_d < 500 and DurationMs < 100)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
+| where toint(Availability) < 95
   QUERY
   )
   severity    = 1
