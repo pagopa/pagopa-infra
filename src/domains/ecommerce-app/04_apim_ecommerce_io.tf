@@ -83,35 +83,6 @@ resource "azurerm_api_management_api_version_set" "ecommerce_io_api_v1" {
   versioning_scheme   = "Segment"
 }
 
-module "apim_ecommerce_io_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
-
-  name                  = "${local.project}-ecommerce-io-api"
-  resource_group_name   = local.pagopa_apim_rg
-  api_management_name   = local.pagopa_apim_name
-  product_ids           = [module.apim_ecommerce_io_product.product_id]
-  subscription_required = local.apim_ecommerce_io_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.ecommerce_io_api_v1.id
-  api_version           = "v1"
-  service_url           = local.apim_ecommerce_io_api.service_url
-
-  description  = local.apim_ecommerce_io_api.description
-  display_name = local.apim_ecommerce_io_api.display_name
-  path         = local.apim_ecommerce_io_api.path
-  protocols    = ["https"]
-
-  content_format = "openapi"
-  content_value = templatefile("./api/ecommerce-io/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
-  })
-
-  xml_content = templatefile("./api/ecommerce-io/v1/_base_policy.xml.tpl", {
-    ecommerce_ingress_hostname   = local.ecommerce_hostname
-    wallet_ingress_hostname      = local.wallet_hostname
-    ecommerce_io_with_pm_enabled = var.ecommerce_io_with_pm_enabled
-  })
-}
-
 resource "azurerm_api_management_api_version_set" "ecommerce_io_webview_pay_v1" {
   name                = "${local.project}-io-api-webview-pay"
   resource_group_name = local.pagopa_apim_rg
