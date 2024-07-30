@@ -1,11 +1,11 @@
 locals {
 
   hostname_blob_notices = data.azurerm_storage_account.notices_storage_sa.primary_blob_host
-  hostname_blob_ci = data.azurerm_storage_account.institutions_storage_sa.primary_blob_host
+  hostname_blob_ci      = data.azurerm_storage_account.institutions_storage_sa.primary_blob_host
 
   apim_notices_blob_pagopa_api = {
-    display_name = "Payment Notices Generator Product pagoPA"
-    description  = "API for Payment Notices Generator"
+    display_name          = "Payment Notices Generator Product pagoPA"
+    description           = "API for Payment Notices Generator"
     path                  = "blob"
     subscription_required = false
     service_url           = null
