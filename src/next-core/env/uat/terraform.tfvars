@@ -48,7 +48,7 @@ cidr_subnet_node_forwarder        = ["10.1.158.0/24"]
 cidr_subnet_loadtest_agent        = ["10.1.159.0/24"]
 cidr_subnet_eventhub              = ["10.230.9.64/26"]
 cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
-cidr_subnet_dns_forwarder            = ["10.1.143.0/29"]
+cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
 cidr_subnet_vpn                   = ["10.1.142.0/24"]
 
 #

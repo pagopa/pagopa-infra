@@ -29,10 +29,8 @@ enabled_features = {
 # main vnet
 
 # common
-cidr_subnet_postgresql    = ["10.1.129.0/24"]
-cidr_subnet_buyerbanks    = ["10.1.134.0/24"]
-cidr_subnet_vpn           = ["10.1.142.0/24"] #place holder
-cidr_subnet_dns_forwarder = ["10.1.143.0/29"]
+cidr_subnet_postgresql = ["10.1.129.0/24"]
+cidr_subnet_buyerbanks = ["10.1.134.0/24"]
 
 
 # specific

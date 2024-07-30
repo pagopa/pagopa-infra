@@ -148,30 +148,6 @@ variable "dns_zone_checkout" {
 }
 
 
-# vpn
-
-variable "cidr_subnet_vpn" {
-  type        = list(string)
-  description = "VPN network address space."
-}
-
-variable "vpn_sku" {
-  type        = string
-  default     = "VpnGw1"
-  description = "VPN Gateway SKU"
-}
-
-variable "vpn_pip_sku" {
-  type        = string
-  default     = "Basic"
-  description = "VPN GW PIP SKU"
-}
-
-variable "cidr_subnet_dns_forwarder" {
-  type        = list(string)
-  description = "DNS Forwarder network address space."
-}
-
 
 # apim
 

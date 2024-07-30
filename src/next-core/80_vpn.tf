@@ -4,12 +4,12 @@ moved {
 }
 
 module "vpn_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
-  name                                      = "GatewaySubnet"
-  address_prefixes                          = var.cidr_subnet_vpn
-  virtual_network_name                      = module.vnet.name
-  resource_group_name                       = azurerm_resource_group.rg_vnet.name
-  service_endpoints                         = [
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
+  name                 = "GatewaySubnet"
+  address_prefixes     = var.cidr_subnet_vpn
+  virtual_network_name = module.vnet.name
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
+  service_endpoints = [
     "Microsoft.AzureCosmosDB",
     "Microsoft.Storage"
   ]
@@ -38,7 +38,7 @@ module "vpn" {
   subnet_id             = module.vpn_snet.id
 
   random_special = true
-  random_upper = true
+  random_upper   = true
 
   vpn_client_configuration = [
     {
@@ -64,10 +64,10 @@ module "dns_forwarder_snet" {
   count  = var.env_short != "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.0"
 
-  name                                           = "${local.product}-dns-forwarder-snet"
-  address_prefixes                               = var.cidr_subnet_dns_forwarder
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
+  name                                      = "${local.product}-dns-forwarder-snet"
+  address_prefixes                          = var.cidr_subnet_dns_forwarder
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
   private_endpoint_network_policies_enabled = false
 
   delegation = {
