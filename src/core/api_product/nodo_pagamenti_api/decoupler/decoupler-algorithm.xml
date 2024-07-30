@@ -366,16 +366,18 @@ new JProperty("ttl", 1)
             // - if request is nodoInviaCarrelloRPT
             string[] wfespChannels = ((string) context.Variables["wfesp_channels"]).Split(',');
             bool isWfesp = false;
-            XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
-            try {
-                XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
-                XElement primitive = (XElement) body.FirstNode;
-                string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
-                // listaRPT is set only in nodoInviaCarrelloRPT
-                // we want to act only if there is nodoInviaCarrello
-                isWfesp = ((string)context.Variables["soapAction"]).Equals("nodoInviaCarrelloRPT") && wfespChannels.Contains(channelId);
-            } catch (Exception e) {
-                // do nothing
+            if(((string)context.Variables["soapAction"]).Equals("nodoInviaCarrelloRPT")){
+                try {
+                    XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
+                    XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+                    XElement primitive = (XElement) body.FirstNode;
+                    string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
+                    // listaRPT is set only in nodoInviaCarrelloRPT
+                    // we want to act only if there is nodoInviaCarrello
+                    isWfesp = wfespChannels.Contains(channelId);
+                } catch (Exception e) {
+                    // do nothing
+                }
             }
             return isWfesp;
         }" />
