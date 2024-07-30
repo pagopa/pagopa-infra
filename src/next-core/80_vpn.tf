@@ -9,7 +9,10 @@ module "vpn_snet" {
   address_prefixes                          = var.cidr_subnet_vpn
   virtual_network_name                      = module.vnet.name
   resource_group_name                       = azurerm_resource_group.rg_vnet.name
-  service_endpoints                         = []
+  service_endpoints                         = [
+    "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage"
+  ]
   private_endpoint_network_policies_enabled = false
 }
 
@@ -24,14 +27,14 @@ moved {
 }
 
 module "vpn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//vpn_gateway?ref=0b4b793"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//vpn_gateway?ref=v8.33.0"
 
   name                  = "${local.product}-vpn"
   location              = var.location
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   sku                   = "VpnGw1"
   pip_sku               = var.vpn_gw_pip_sku
-  pip_allocation_method = "Static"
+  pip_allocation_method = "Dynamic"
   subnet_id             = module.vpn_snet.id
 
   random_special = true
