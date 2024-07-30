@@ -42,7 +42,7 @@ locals {
     service_url           = null
   }
   aks_path           = var.env == "prod" ? "weuprod.%s.internal.platform.pagopa.it" : "weu${var.env}.%s.internal.${var.env}.platform.pagopa.it"
-  aks_ita_path           = var.env == "prod" ? "itnprod.%s.internal.platform.pagopa.it" : "itn${var.env}.%s.internal.${var.env}.platform.pagopa.it"
+  aks_ita_path       = var.env == "prod" ? "itnprod.%s.internal.platform.pagopa.it" : "itn${var.env}.%s.internal.${var.env}.platform.pagopa.it"
   fe_backoffice_path = replace(format("%s/ui/version.json", data.azurerm_storage_account.pagopa_selfcare_fe_sa.primary_web_host), "/{2}", "/")
   fe_apiconfig_path  = format("config.%s.%s/version.json", var.apim_dns_zone_prefix, var.external_domain)
 }
@@ -152,9 +152,9 @@ module "apim_api_statuspage_api_v1" {
       "receiptpdfnotifier"       = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
       "receiptpdfservice"        = format("%s/pagopa-receipt-pdf-service", format(local.aks_path, "receipts"))
       "receiptpdfhelpdesk"       = format("%s/pagopa-receipt-pdf-helpdesk", format(local.aks_path, "receipts")),
-      "printnoticegenerator"      = format("%s/pagopa-receipt-pdf-generator", format(local.aks_ita_path, "printit"))
-      "printnoticefunctions"       = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_ita_path, "printit"))
-      "printnoticeservice"        = format("%s/pagopa-receipt-pdf-service", format(local.aks_ita_path, "printit"))
+      "printnoticegenerator"     = format("%s/pagopa-print-payment-notice-generator", format(local.aks_ita_path, "printit"))
+      "printnoticefunctions"     = format("%s/pagopa-print-payment-notice-functions", format(local.aks_ita_path, "printit"))
+      "printnoticeservice"       = format("%s/pagopa-print-payment-notice-service", format(local.aks_ita_path, "printit"))
     }), "\"", "\\\"")
   })
 }
