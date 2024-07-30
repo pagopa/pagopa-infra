@@ -5,7 +5,7 @@
 resource "azurerm_api_management_named_value" "node_decoupler_primitives" {
   name                = "node-decoupler-primitives"
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   display_name        = "node-decoupler-primitives"
   value               = var.node_decoupler_primitives
 }
