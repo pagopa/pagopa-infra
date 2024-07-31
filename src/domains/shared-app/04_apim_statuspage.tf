@@ -42,7 +42,7 @@ locals {
     service_url           = null
   }
   aks_path           = var.env == "prod" ? "weuprod.%s.internal.platform.pagopa.it" : "weu${var.env}.%s.internal.${var.env}.platform.pagopa.it"
-  aks_ita_path       = var.env == "prod" ? "itnprod.%s.internal.platform.pagopa.it" : "itn${var.env}.%s.internal.${var.env}.platform.pagopa.it"
+  aks_ita_path       = var.env == "prod" ? "%s.itn.internal.platform.pagopa.it" : "%s.itn.internal.${var.env}.platform.pagopa.it"
   fe_backoffice_path = replace(format("%s/ui/version.json", data.azurerm_storage_account.pagopa_selfcare_fe_sa.primary_web_host), "/{2}", "/")
   fe_apiconfig_path  = format("config.%s.%s/version.json", var.apim_dns_zone_prefix, var.external_domain)
 }
@@ -112,49 +112,49 @@ module "apim_api_statuspage_api_v1" {
   xml_content = templatefile("./api/status-page-service/v1/_base_policy.xml", {
     hostname = local.shared_hostname
     services = replace(jsonencode({
-      "afmcalculator"            = format("%s/pagopa-afm-calculator-service", format(local.aks_path, "afm"))
-      "afmmarketplace"           = format("%s/pagopa-afm-marketplace-service", format(local.aks_path, "afm"))
-      "afmutils"                 = format("%s/pagopa-afm-utils-service", format(local.aks_path, "afm"))
-      "apiconfig"                = format("%s/{{apicfg-core-service-path}}", format(local.aks_path, "apiconfig")) // show status only one instances Ora OR Pgflex
-      "apiconfig-fe"             = format("%s", local.fe_apiconfig_path)
-      "apiconfigcacheo"          = format("%s/api-config-cache/o", format(local.aks_path, "apiconfig"))
-      "apiconfigcachep"          = format("%s/api-config-cache/p", format(local.aks_path, "apiconfig"))
-      "apiconfigselfcare"        = format("%s/{{apicfg-selfcare-integ-service-path}}", format(local.aks_path, "apiconfig")) // show status only one instances Ora OR Pgflex
-      "authorizer"               = format("%s//authorizer-functions", format(local.aks_path, "shared"))
-      "authorizerconfig"         = format("%s//authorizer-config", format(local.aks_path, "shared"))
-      "bizevents"                = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
-      "bizeventsdatastoreneg"    = format("%s/pagopa-negative-biz-events-datastore-service", format(local.aks_path, "bizevents"))
-      "bizeventsdatastorepos"    = format("%s/pagopa-biz-events-datastore-service", format(local.aks_path, "bizevents"))
-      "backofficepagopa"         = format("%s/selfcare/pagopa/v1", format(local.aks_path, "selfcare"))
-      "backofficepagopa-fe"      = format("%s", local.fe_backoffice_path)
-      "backofficeexternalpagopa" = format("%s/backoffice-external", format(local.aks_path, "selfcare"))
-      "canoneunico"              = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
-      "fdrndpnew"                = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
-      "wispconverter"            = format("%s/pagopa-wisp-converter", format(local.aks_path, "nodo"))
-      "wispsoapconverter"        = format("%s/wisp-soap-converter", format(local.aks_path, "nodo"))
-      "wispconverterts"          = format("%s/pagopa-wisp-converter-technical-support", format(local.aks_path, "nodo"))
-      "gpd"                      = format("%s/pagopa-gpd-core", format(local.aks_path, "gps"))
-      "gpdpayments"              = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
-      "gpdpaymentspull"          = format("%s/pagopa-gpd-payments-pull", format(local.aks_path, "gps"))
-      "gpdenrollment"            = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
-      "gpdupload"                = format("%s/pagopa-gpd-upload", format(local.aks_path, "gps"))
-      "gpdreportinganalysis"     = format("%s/", data.azurerm_function_app.reporting_analysis.default_hostname)
-      "gpdreportingbatch"        = format("%s/api/", data.azurerm_function_app.reporting_batch.default_hostname)
-      "gpdreportingservice"      = format("%s/api/", data.azurerm_function_app.reporting_service.default_hostname)
-      "gps"                      = format("%s/pagopa-spontaneous-payments-service", format(local.aks_path, "gps"))
-      "gpsdonation"              = format("%s/pagopa-gps-donation-service", format(local.aks_path, "gps"))
-      "mockec"                   = var.env_short != "p" ? format("%s/", data.azurerm_linux_function_app.mockec[0].default_hostname) : "NA"
-      "mockconfig"               = var.env_short != "p" ? format("%s/pagopa-mock-config-be", format(local.aks_path, "mock")) : "NA"
-      "mocker"                   = var.env_short != "p" ? format("%s/pagopa-mocker/mocker", format(local.aks_path, "mock")) : "NA"
-      "pdfengine"                = format("%s/", data.azurerm_linux_web_app.pdf_engine.default_hostname)
-      "receiptpdfdatastore"      = format("%s/pagopa-receipt-pdf-datastore", format(local.aks_path, "receipts"))
-      "receiptpdfgenerator"      = format("%s/pagopa-receipt-pdf-generator", format(local.aks_path, "receipts"))
-      "receiptpdfnotifier"       = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
-      "receiptpdfservice"        = format("%s/pagopa-receipt-pdf-service", format(local.aks_path, "receipts"))
-      "receiptpdfhelpdesk"       = format("%s/pagopa-receipt-pdf-helpdesk", format(local.aks_path, "receipts")),
-      "printnoticegenerator"     = format("%s/pagopa-print-payment-notice-generator", format(local.aks_ita_path, "printit"))
-      "printnoticefunctions"     = format("%s/pagopa-print-payment-notice-functions", format(local.aks_ita_path, "printit"))
-      "printnoticeservice"       = format("%s/pagopa-print-payment-notice-service", format(local.aks_ita_path, "printit"))
+      "afmcalculator"               = format("%s/pagopa-afm-calculator-service", format(local.aks_path, "afm"))
+      "afmmarketplace"              = format("%s/pagopa-afm-marketplace-service", format(local.aks_path, "afm"))
+      "afmutils"                    = format("%s/pagopa-afm-utils-service", format(local.aks_path, "afm"))
+      "apiconfig"                   = format("%s/{{apicfg-core-service-path}}", format(local.aks_path, "apiconfig")) // show status only one instances Ora OR Pgflex
+      "apiconfig-fe"                = format("%s", local.fe_apiconfig_path)
+      "apiconfigcacheo"             = format("%s/api-config-cache/o", format(local.aks_path, "apiconfig"))
+      "apiconfigcachep"             = format("%s/api-config-cache/p", format(local.aks_path, "apiconfig"))
+      "apiconfigselfcare"           = format("%s/{{apicfg-selfcare-integ-service-path}}", format(local.aks_path, "apiconfig")) // show status only one instances Ora OR Pgflex
+      "authorizer"                  = format("%s//authorizer-functions", format(local.aks_path, "shared"))
+      "authorizerconfig"            = format("%s//authorizer-config", format(local.aks_path, "shared"))
+      "bizevents"                   = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
+      "bizeventsdatastoreneg"       = format("%s/pagopa-negative-biz-events-datastore-service", format(local.aks_path, "bizevents"))
+      "bizeventsdatastorepos"       = format("%s/pagopa-biz-events-datastore-service", format(local.aks_path, "bizevents"))
+      "backofficepagopa"            = format("%s/selfcare/pagopa/v1", format(local.aks_path, "selfcare"))
+      "backofficepagopa-fe"         = format("%s", local.fe_backoffice_path)
+      "backofficeexternalpagopa"    = format("%s/backoffice-external", format(local.aks_path, "selfcare"))
+      "canoneunico"                 = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
+      "fdrndpnew"                   = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
+      "wispconverter"               = format("%s/pagopa-wisp-converter", format(local.aks_path, "nodo"))
+      "wispsoapconverter"           = format("%s/wisp-soap-converter", format(local.aks_path, "nodo"))
+      "wispconverterts"             = format("%s/pagopa-wisp-converter-technical-support", format(local.aks_path, "nodo"))
+      "gpd"                         = format("%s/pagopa-gpd-core", format(local.aks_path, "gps"))
+      "gpdpayments"                 = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
+      "gpdpaymentspull"             = format("%s/pagopa-gpd-payments-pull", format(local.aks_path, "gps"))
+      "gpdenrollment"               = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
+      "gpdupload"                   = format("%s/pagopa-gpd-upload", format(local.aks_path, "gps"))
+      "gpdreportinganalysis"        = format("%s/", data.azurerm_function_app.reporting_analysis.default_hostname)
+      "gpdreportingbatch"           = format("%s/api/", data.azurerm_function_app.reporting_batch.default_hostname)
+      "gpdreportingservice"         = format("%s/api/", data.azurerm_function_app.reporting_service.default_hostname)
+      "gps"                         = format("%s/pagopa-spontaneous-payments-service", format(local.aks_path, "gps"))
+      "gpsdonation"                 = format("%s/pagopa-gps-donation-service", format(local.aks_path, "gps"))
+      "mockec"                      = var.env_short != "p" ? format("%s/", data.azurerm_linux_function_app.mockec[0].default_hostname) : "NA"
+      "mockconfig"                  = var.env_short != "p" ? format("%s/pagopa-mock-config-be", format(local.aks_path, "mock")) : "NA"
+      "mocker"                      = var.env_short != "p" ? format("%s/pagopa-mocker/mocker", format(local.aks_path, "mock")) : "NA"
+      "pdfengine"                   = format("%s/", data.azurerm_linux_web_app.pdf_engine.default_hostname)
+      "receiptpdfdatastore"         = format("%s/pagopa-receipt-pdf-datastore", format(local.aks_path, "receipts"))
+      "receiptpdfgenerator"         = format("%s/pagopa-receipt-pdf-generator", format(local.aks_path, "receipts"))
+      "receiptpdfnotifier"          = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
+      "receiptpdfservice"           = format("%s/pagopa-receipt-pdf-service", format(local.aks_path, "receipts"))
+      "receiptpdfhelpdesk"          = format("%s/pagopa-receipt-pdf-helpdesk", format(local.aks_path, "receipts")),
+      "printpaymentnoticegenerator" = format("%s/pagopa-print-payment-notice-generator", format(local.aks_ita_path, "printit"))
+      "printpaymentnoticefunctions" = format("%s/pagopa-print-payment-notice-functions", format(local.aks_ita_path, "printit"))
+      "printpaymentnoticeservice"   = format("%s/pagopa-print-payment-notice-service", format(local.aks_ita_path, "printit"))
     }), "\"", "\\\"")
   })
 }
