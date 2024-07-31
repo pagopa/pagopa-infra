@@ -2,7 +2,10 @@
   "template": {
     "settings": {
       "index": {
-        "default_pipeline": "${name}"
+        "default_pipeline": "${pipeline}",
+        "lifecycle": {
+          "name": "${lifecycle}"
+        }
       }
     }
   },

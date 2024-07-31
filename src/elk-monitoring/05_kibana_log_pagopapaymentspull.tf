@@ -16,7 +16,8 @@ locals {
     policy_name = local.default_snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
   pagopapaymentspull_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/gps/component@custom.json", {
-    name = local.pagopapaymentspull_key
+    pipeline  = local.pagopapaymentspull_key
+    lifecycle = local.pagopapaymentspull_key
   }), "\""), "\""), "'", "'\\''")
   pagopapaymentspull_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/gps/index-template.json", {
     name                      = "gpd-payments-pull"
