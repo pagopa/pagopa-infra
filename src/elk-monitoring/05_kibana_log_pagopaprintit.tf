@@ -16,7 +16,8 @@ locals {
     policy_name = local.default_snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
   pagopaprintit_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/printit/component@custom.json", {
-    name = local.pagopaprintit_key
+    pipeline  = local.pagopaprintit_key
+    lifecycle = local.pagopaprintit_key
   }), "\""), "\""), "'", "'\\''")
   pagopaprintit_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/printit/index-template.json", {
     name                      = "print-payment"
