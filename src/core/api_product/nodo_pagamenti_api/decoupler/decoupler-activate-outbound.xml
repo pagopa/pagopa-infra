@@ -97,10 +97,17 @@
     <choose>
       <when condition="@( context.Variables.GetValueOrDefault<bool>("is_wfesp", false) )">
         <set-variable name="outcome_wfesp_cart" value="@{
-                  XElement response = context.Response.Body.As<XElement>(preserveContent: true);
-                  XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
-                  XElement primitive = (XElement) body.FirstNode;
-                  return (string) primitive.Descendants("esitoComplessivoOperazione").FirstOrDefault();
+                  string outcomeWfespCart = "";
+                  try {
+                    XElement response = context.Response.Body.As<XElement>(preserveContent: true);
+                    XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
+                    XElement primitive = (XElement) body.FirstNode;
+                    outcomeWfespCart = (string) primitive.Descendants("esitoComplessivoOperazione").FirstOrDefault();
+                  } catch (Exception e)
+                    {
+                      //  do nothing
+                    }
+                  return outcomeWfespCart;
                   }" />
         <choose>
           <when condition="@( context.Variables.GetValueOrDefault<string>("outcome_wfesp_cart", "").Equals("OK"))">
