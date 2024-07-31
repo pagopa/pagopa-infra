@@ -28,13 +28,8 @@ enabled_features = {
 # main vnet
 
 # common
-cidr_subnet_postgresql          = ["10.1.129.0/24"]
-cidr_subnet_buyerbanks          = ["10.1.134.0/24"]
-cidr_subnet_reporting_fdr       = ["10.1.135.0/24"]
-cidr_subnet_cosmosdb_paymentsdb = ["10.1.139.0/24"]
-cidr_subnet_canoneunico_common  = ["10.1.140.0/24"]
-cidr_subnet_vpn                 = ["10.1.142.0/24"]
-cidr_subnet_dns_forwarder       = ["10.1.143.0/29"]
+cidr_subnet_postgresql = ["10.1.129.0/24"]
+cidr_subnet_buyerbanks = ["10.1.134.0/24"]
 
 # specific
 cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"] #placeholder
@@ -136,32 +131,6 @@ cstar_outbound_ip_2 = "20.101.29.160"
 
 
 
-# CosmosDb Payments
-cosmos_document_db_params = {
-  kind         = "GlobalDocumentDB"
-  capabilities = []
-  offer_type   = "Standard"
-  consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 300
-    max_staleness_prefix    = 100000
-  }
-  server_version                   = "4.0"
-  main_geo_location_zone_redundant = true
-  enable_free_tier                 = true
-
-  private_endpoint_enabled      = true
-  public_network_access_enabled = false
-  additional_geo_locations = [{
-    location          = "northeurope"
-    failover_priority = 1
-    zone_redundant    = false
-  }]
-
-  is_virtual_network_filter_enabled = true
-
-  backup_continuous_enabled = true
-}
 
 
 
