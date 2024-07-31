@@ -2,7 +2,7 @@ module "redis_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.50.0"
   name                                      = format("%s-redis-snet", local.product)
   address_prefixes                          = var.cidr_subnet_redis
-  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
   virtual_network_name                      = module.vnet.name # module.vnet_integration.name ???
   private_endpoint_network_policies_enabled = var.redis_cache_params.public_access
 }
@@ -62,7 +62,7 @@ module "redis" {
 
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_integration_network_link" {
   name                  = format("%s-vnet-integration", local.product)
-  resource_group_name   = data.azurerm_resource_group.rg_vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.privatelink_redis_cache_windows_net[0].name
   virtual_network_id    = module.vnet_integration.id
 }
