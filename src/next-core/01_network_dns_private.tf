@@ -12,7 +12,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "postgres_vnet_replica"
   count = var.geo_replica_enabled ? 1 : 0
 
   name                  = module.vnet_replica[0].name
-  resource_group_name   = data.azurerm_resource_group.rg_vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
   private_dns_zone_name = azurerm_private_dns_zone.postgres[0].name
   virtual_network_id    = module.vnet_replica[0].id
 }

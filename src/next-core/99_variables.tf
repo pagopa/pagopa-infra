@@ -1067,3 +1067,15 @@ variable "route_table_peering_sia_additional_routes" {
   description = "(Optional) additional routes for route table peering sia"
   default     = []
 }
+
+
+variable "cidr_subnet_dns_forwarder" {
+  type        = list(string)
+  description = "DNS Forwarder network address space."
+}
+
+variable "vpn_gw_pip_sku" {
+  type        = string
+  default     = "Basic"
+  description = "VPN GW PIP SKU"
+}

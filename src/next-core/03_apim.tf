@@ -2,7 +2,7 @@
 module "apim_snet" {
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.23.0"
   name                 = format("%s-apim-snet", local.product)
-  resource_group_name  = data.azurerm_resource_group.rg_vnet.name
+  resource_group_name  = azurerm_resource_group.rg_vnet.name
   virtual_network_name = module.vnet_integration.name
   address_prefixes     = var.cidr_subnet_apim
 
