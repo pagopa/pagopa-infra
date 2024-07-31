@@ -84,6 +84,14 @@ locals {
       autoscale_settings = {
         max_throughput = var.wisp_converter_cosmos_nosql_db_params.re_max_throughput
       }
+    },
+    {
+      name               = "receipts-rt",
+      partition_key_path = "/id",
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.rt_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.rt_max_throughput
+      }
     }
   ]
 }
