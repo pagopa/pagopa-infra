@@ -1,13 +1,13 @@
 resource "azurerm_resource_group" "container_registry_rg" {
-  name     = format("%s-container-registry-rg", local.project)
+  name     = format("%s-container-registry-rg", local.product)
   location = var.location
 
   tags = var.tags
 }
 
 module "container_registry" {
-  source                        = "git::https://github.com/pagopa/azurerm.git//container_registry?ref=v2.14.1"
-  name                          = replace(format("%s-common-acr", local.project), "-", "")
+  source                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//container_registry?ref=v8.22.0"
+  name                          = replace(format("%s-common-acr", local.product), "-", "")
   sku                           = var.env_short != "d" ? "Premium" : "Basic"
   resource_group_name           = azurerm_resource_group.container_registry_rg.name
   admin_enabled                 = true # TODO to change ...
@@ -16,12 +16,9 @@ module "container_registry" {
   public_network_access_enabled = true
   location                      = var.location
 
-  private_endpoint = {
-    enabled              = false
-    private_dns_zone_ids = []
-    subnet_id            = null
-    virtual_network_id   = null
-  }
+
+  private_endpoint_enabled = false
+
 
   network_rule_set = [{
     default_action  = "Allow"
