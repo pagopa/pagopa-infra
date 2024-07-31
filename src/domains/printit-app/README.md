@@ -134,8 +134,8 @@ No outputs.
 |------|--------|---------|
 | <a name="module_apim_api_pdf_engine_api_v1"></a> [apim\_api\_pdf\_engine\_api\_v1](#module\_apim\_api\_pdf\_engine\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v8.18.0 |
 | <a name="module_apim_api_pdf_engine_node_api_v1"></a> [apim\_api\_pdf\_engine\_node\_api\_v1](#module\_apim\_api\_pdf\_engine\_node\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v8.18.0 |
-| <a name="module_apim_notices_blob_api_v1"></a> [apim\_notices\_blob\_api\_v1](#module\_apim\_notices\_blob\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.76.1 |
-| <a name="module_apim_notices_blob_product"></a> [apim\_notices\_blob\_product](#module\_apim\_notices\_blob\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v8.18.0 |
+| <a name="module_apim_notices_blob_api_v1"></a> [apim\_notices\_blob\_api\_v1](#module\_apim\_notices\_blob\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v8.33.0 |
+| <a name="module_apim_notices_blob_product"></a> [apim\_notices\_blob\_product](#module\_apim\_notices\_blob\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v8.33.0 |
 | <a name="module_apim_notices_generator_product"></a> [apim\_notices\_generator\_product](#module\_apim\_notices\_generator\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v8.18.0 |
 | <a name="module_apim_notices_service_product_external"></a> [apim\_notices\_service\_product\_external](#module\_apim\_notices\_service\_product\_external) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v8.18.0 |
 | <a name="module_apim_notices_service_product_internal"></a> [apim\_notices\_service\_product\_internal](#module\_apim\_notices\_service\_product\_internal) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v8.18.0 |
