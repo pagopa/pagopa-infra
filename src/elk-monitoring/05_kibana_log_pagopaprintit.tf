@@ -2,31 +2,31 @@
 locals {
   ## space
   printit_space_name = "printit"
-  printit_space = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/space.json", {
+  printit_space = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/printit/space.json", {
     name = "${local.printit_space_name}"
   }), "\""), "\""), "'", "'\\''")
 
   ## printit
   pagopaprintit_key = "pagopaprintit"
 
-  pagopaprintit_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/pagopa/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
-  pagopaprintit_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/ilm-policy.json", {
+  pagopaprintit_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/pagopa/printit/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
+  pagopaprintit_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/printit/ilm-policy.json", {
     name        = local.pagopaprintit_key,
     managed     = false,
     policy_name = local.default_snapshot_policy_key
   }), "\""), "\""), "'", "'\\''")
-  pagopaprintit_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/component@custom.json", {
+  pagopaprintit_component_template_custom = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/printit/component@custom.json", {
     name = local.pagopaprintit_key
   }), "\""), "\""), "'", "'\\''")
-  pagopaprintit_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/index-template.json", {
-    name                       = "print-payment"
-    component_template_package = "${local.pagopaprintit_key}@package"
-    component_template_custom  = "${local.pagopaprintit_key}@custom"
+  pagopaprintit_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/printit/index-template.json", {
+    name                      = "print-payment"
+    component_template_custom = "${local.pagopaprintit_key}@custom"
   }), "\""), "\""), "'", "'\\''")
 
 
-  pagopaprintit_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/log-template/data-view.json", {
-    name = "Stampa Avvisi"
+  pagopaprintit_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/printit/data-view.json", {
+    name  = "Stampa Avvisi"
+    index = "print-payment"
   }), "\""), "\""), "'", "'\\''")
 }
 
