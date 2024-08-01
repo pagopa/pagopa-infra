@@ -479,14 +479,7 @@
             }
           },
           "401": {
-            "description": "Unauthorized: the provided token is not valid or expired.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
+            "description": "Unauthorized: the provided token is not valid or expired."
           },
           "403": {
             "description": "Forbidden",
