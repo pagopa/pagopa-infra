@@ -29,13 +29,8 @@ enabled_features = {
 # main vnet
 
 # common
-cidr_subnet_postgresql          = ["10.1.129.0/24"]
-cidr_subnet_buyerbanks          = ["10.1.134.0/24"]
-cidr_subnet_reporting_fdr       = ["10.1.135.0/24"]
-cidr_subnet_cosmosdb_paymentsdb = ["10.1.139.0/24"]
-cidr_subnet_canoneunico_common  = ["10.1.140.0/24"]
-cidr_subnet_vpn                 = ["10.1.142.0/24"] #place holder
-cidr_subnet_dns_forwarder       = ["10.1.143.0/29"]
+cidr_subnet_postgresql = ["10.1.129.0/24"]
+cidr_subnet_buyerbanks = ["10.1.134.0/24"]
 
 
 # specific
@@ -96,13 +91,6 @@ ecommerce_ingress_hostname = "weudev.ecommerce.internal.dev.platform.pagopa.it"
 
 
 
-
-
-
-# acr
-acr_enabled = true
-
-
 # buyerbanks functions
 buyerbanks_function_kind              = "Linux"
 buyerbanks_function_sku_tier          = "Basic"
@@ -114,8 +102,6 @@ buyerbanks_delete_retention_days      = 30
 
 
 
-# nodo-dei-pagamenti-test
-nodo_pagamenti_test_enabled = true
 
 # payment-manager clients
 io_bpd_hostname    = "portal.test.pagopa.gov.it"
@@ -130,28 +116,6 @@ cstar_outbound_ip_1 = "20.105.180.187"
 cstar_outbound_ip_2 = "20.76.239.212"
 
 
-# CosmosDb Payments
-cosmos_document_db_params = {
-  kind         = "GlobalDocumentDB"
-  capabilities = ["EnableServerless"]
-  offer_type   = "Standard"
-  consistency_policy = {
-    consistency_level       = "Strong"
-    max_interval_in_seconds = 300
-    max_staleness_prefix    = 100000
-  }
-  server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
-  enable_free_tier                 = false
-
-  additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
-
-  backup_continuous_enabled = false
-
-}
 
 # CosmosDb AFM
 cosmos_afm_db_params = {

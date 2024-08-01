@@ -90,6 +90,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
           "404": {
             "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
             "content": {
@@ -189,6 +192,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
           "500": {
             "description": "Internal server error serving request",
             "content": {
@@ -258,6 +264,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
@@ -589,6 +598,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
           "500": {
             "description": "Service unavailable",
             "content": {
@@ -666,6 +678,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
           "404": {
             "description": "Payment method not found",
             "content": {
@@ -723,14 +738,38 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
           "404": {
-            "description": "Wallet not found"
+            "description": "Wallet not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "502": {
-            "description": "Bad gateway"
+            "description": "Bad gateway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "504": {
-            "description": "Timeout serving request"
+            "description": "Timeout serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }

@@ -62,7 +62,7 @@ module "node_forwarder_snet" {
   source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
   name                                          = format("%s-node-forwarder-snet", local.product)
   address_prefixes                              = var.cidr_subnet_node_forwarder
-  resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
+  resource_group_name                           = azurerm_resource_group.rg_vnet.name
   virtual_network_name                          = module.vnet.name
   private_link_service_network_policies_enabled = true
 
@@ -82,7 +82,7 @@ module "node_forwarder_ha_snet" {
   count                                         = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
   name                                          = "${local.project}-node-forwarder-ha-snet"
   address_prefixes                              = var.node_fw_ha_snet_cidr
-  resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
+  resource_group_name                           = azurerm_resource_group.rg_vnet.name
   virtual_network_name                          = module.vnet.name
   private_link_service_network_policies_enabled = true
 
