@@ -271,7 +271,7 @@ new JProperty("ttl", 1)
 			<set-variable name="wisp_whitelisted_stations" value="{{wisp-station-whitelist}}" />
 			<set-variable name="wisp_whitelisted_cis" value="{{wisp-ci-whitelist}}" />
 			<set-variable name="wisp_whitelisted_nodoinviarpt_paymenttypes" value="{{wisp-nodoinviarpt-paymenttype-whitelist}}" />
-            <set-variable name="is_whitelisted" value="@{
+			<set-variable name="is_whitelisted" value="@{
                         // isWhiteListed if:
                         // - lists are empties
                         // - channelId, brokerPSP, stationId and creditorInstitutionId belong to relative lists
