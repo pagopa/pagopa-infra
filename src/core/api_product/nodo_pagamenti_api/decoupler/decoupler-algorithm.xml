@@ -359,4 +359,26 @@ new JProperty("ttl", 1)
 			</choose>
 		</when>
 	</choose>
+    <set-variable name="wfesp_channels" value="{{wfesp-channels}}" />
+    <set-variable name="is_wfesp" value="@{
+            // isWfesp if:
+            // - if channel in request is equal to 13212880150_90
+            // - if request is nodoInviaCarrelloRPT
+            string[] wfespChannels = ((string) context.Variables["wfesp_channels"]).Split(',');
+            bool isWfesp = false;
+            if(((string)context.Variables["soapAction"]).Equals("nodoInviaCarrelloRPT")){
+                try {
+                    XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
+                    XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+                    XElement primitive = (XElement) body.FirstNode;
+                    string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
+                    // listaRPT is set only in nodoInviaCarrelloRPT
+                    // we want to act only if there is nodoInviaCarrello
+                    isWfesp = wfespChannels.Contains(channelId);
+                } catch (Exception e) {
+                    // do nothing
+                }
+            }
+            return isWfesp;
+        }" />
 </fragment>

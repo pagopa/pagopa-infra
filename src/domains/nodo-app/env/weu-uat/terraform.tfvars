@@ -258,3 +258,9 @@ wisp_converter = {
 # 02002380224-02695640421_01 Ente Trentino Riscossioni/e-SED Società Cooperativa
 
 enable_sendPaymentResultV2_SWClient = true
+
+# WFESP-dismantling-cfg
+wfesp_dismantling = {
+  channel_list                       = "13212880150_90"
+  wfesp_fixed_url                    = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
+}
