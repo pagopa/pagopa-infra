@@ -223,10 +223,10 @@ storage_account_info = {
 create_wisp_converter = true
 wisp_converter = {
   enable_apim_switch     = true
-  brokerPSP_whitelist    = "97735020584"                                                                                                                                                                                                                                                                                                                                                                                                          # AGID
-  channel_whitelist      = "97735020584_02"                                                                                                                                                                                                                                                                                                                                                                                                       # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/135924270/Canali+Particolari
-  station_whitelist      = "15376371009-15376371009_09,80005570561-00799960158_05,80023530167-00799960158_03,12621570154-00053810149_01,77777777777-97735020584_01,93027230668-00838520880_03,80019530924-00838520880_03,80008750475-00838520880_03,92020910888-00838520880_01,02323170130-02818030369_01,00146330733-02818030369_01,01199840115-02818030369_01,02341640353-02818030369_01,03623810151-01484460587_01,03623810151-01378570350_01" # https://config.uat.platform.pagopa.it/stations/15376371009_09 in UAT x i test quella di MockEC
-  ci_whitelist           = "15376371009,80005570561,80023530167,12621570154,77777777777,93027230668,80019530924,80008750475,92020910888,02323170130,00146330733,01199840115,02341640353,03623810151"
+  brokerPSP_whitelist    = "97735020584"                                                                                                                                                                                                                                                                                                                                                                                                                                                                # AGID
+  channel_whitelist      = "97735020584_02"                                                                                                                                                                                                                                                                                                                                                                                                                                                             # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/135924270/Canali+Particolari
+  station_whitelist      = "15376371009-15376371009_09,80005570561-00799960158_05,80023530167-00799960158_03,12621570154-00053810149_01,77777777777-97735020584_01,93027230668-00838520880_03,80019530924-00838520880_03,80008750475-00838520880_03,92020910888-00838520880_01,02323170130-02818030369_01,00146330733-02818030369_01,01199840115-02818030369_01,02341640353-02818030369_01,03623810151-01484460587_01,03623810151-01378570350_01,03122360153-08543640158_01,02002380224-02695640421_01" # https://config.uat.platform.pagopa.it/stations/15376371009_09 in UAT x i test quella di MockEC
+  ci_whitelist           = "15376371009,80005570561,80023530167,12621570154,77777777777,93027230668,80019530924,80008750475,92020910888,02323170130,00146330733,01199840115,02341640353,03623810151,03122360153,02002380224"
   dismantling_primitives = "nodoInviaRPT,nodoInviaCarrelloRPT"
 }
 
@@ -253,5 +253,7 @@ wisp_converter = {
 # 02341640353-02818030369_01 GPS Global Parking Solutions S.p.A./Argo
 # 03623810151-01484460587_01 Comune di Albairate/Unioncamere
 # 03623810151-01378570350_01 Comune di Albairate/Credemtel
+# 03122360153-08543640158_01 Comune di Corbetta/APKAPPA S.R.L.
+# 02002380224-02695640421_01 Ente Trentino Riscossioni/e-SED Società Cooperativa
 
 enable_sendPaymentResultV2_SWClient = true
