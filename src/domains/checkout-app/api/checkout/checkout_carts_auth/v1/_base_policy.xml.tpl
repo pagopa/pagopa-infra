@@ -4,6 +4,9 @@
       <base />
       <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
       <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
+      <set-header name="x-client-id" exists-action="override">
+        <value>WISP_REDIRECT</value>
+      </set-header>
   </inbound>
 
   <outbound>
