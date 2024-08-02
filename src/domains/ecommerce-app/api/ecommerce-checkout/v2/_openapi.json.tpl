@@ -58,6 +58,20 @@
             }
           },
           {
+            "in": "header",
+            "name": "x-client-id-from-client",
+            "required": true,
+            "description": "Client id from client",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CHECKOUT",
+                "CHECKOUT_CART",
+                "WISP_REDIRECT"
+              ]
+            }
+          },
+          {
             "in": "query",
             "name": "recaptchaResponse",
             "description": "Recaptcha response",
