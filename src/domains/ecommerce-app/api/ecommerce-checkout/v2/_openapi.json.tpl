@@ -701,6 +701,10 @@
             },
             "minItems": 1,
             "maxItems": 5
+          },
+          "creditorReferenceId": {
+            "type": "string",
+            "description": "Creditor notice number's"
           }
         },
         "required": [

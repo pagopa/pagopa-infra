@@ -187,6 +187,10 @@
           "isAllCCP": {
             "type": "boolean",
             "description": "Flag for poste psp enabling in gec request"
+          },
+          "creditorReferenceId": {
+            "type": "string",
+            "description": "Creditor notice number's"
           }
         },
         "required": [
