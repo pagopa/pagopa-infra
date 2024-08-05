@@ -4,9 +4,19 @@
       <base />
       <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
       <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
-      <set-header name="x-client-id" exists-action="override">
-        <value>WISP_REDIRECT</value>
-      </set-header>
+      <set-header name="x-client-id" exists-action="delete" />
+      <choose>
+          <when condition="@(context.User != null && context.User.Groups.Select(g => g.Id).Contains("wisp-dismantling"))">
+              <set-header name="x-client-id" exists-action="override">
+                  <value>WISP_REDIRECT</value>
+              </set-header>
+          </when>
+          <when condition="@(context.User != null && context.User.Groups.Select(g => g.Id).Contains("send"))">
+              <set-header name="x-client-id" exists-action="override">
+                  <value>CHECKOUT_CART</value> <!-- maybe here we can use an additional internal client id to distinguish carts redirect coming from SEND -->
+              </set-header>
+          </when>
+      </choose>
   </inbound>
 
   <outbound>
