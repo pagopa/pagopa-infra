@@ -67,6 +67,8 @@ module "apim_pagopa_ecommerce_helpdesk_commands_service_api_v1" {
   })
 
   xml_content = templatefile("./api/ecommerce-helpdesk-commands-api/v1/_base_policy.xml.tpl", {
-    hostname = local.ecommerce_hostname
+    hostname      = local.ecommerce_hostname
+    pagopa_vpn    = var.pagopa_vpn.ips[0]
+    pagopa_vpn_dr = var.pagopa_vpn_dr.ips[1]
   })
 }
