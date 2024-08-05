@@ -11,7 +11,7 @@
         </when>
       </choose>
       <set-header name="x-user-id" exists-action="override">
-        <value>@(context.User.Id)</value>
+        <value>@(context.Subscription.Id)</value>
       </set-header>  
       <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-helpdesk-commands-service" />
     </inbound>
