@@ -196,7 +196,14 @@
             }
           },
           "504": {
-            "description": "Timeout serving request"
+            "description": "Timeout serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       },
@@ -244,13 +251,34 @@
             }
           },
           "404": {
-            "description": "Wallet not found"
+            "description": "Wallet not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "502": {
-            "description": "Bad gateway"
+            "description": "Bad gateway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "504": {
-            "description": "Timeout serving request"
+            "description": "Timeout serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }
@@ -311,10 +339,24 @@
             }
           },
           "404": {
-            "description": "Wallet not found"
+            "description": "Wallet not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "504": {
-            "description": "Timeout serving request"
+            "description": "Timeout serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       },
@@ -366,10 +408,24 @@
             }
           },
           "404": {
-            "description": "Wallet not found"
+            "description": "Wallet not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "504": {
-            "description": "Timeout serving request"
+            "description": "Timeout serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }
@@ -422,6 +478,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized: the provided token is not valid or expired."
+          },
           "403": {
             "description": "Forbidden",
             "content": {
@@ -433,7 +492,14 @@
             }
           },
           "404": {
-            "description": "Wallet not found"
+            "description": "Wallet not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           },
           "409": {
             "description": "Wallet request is inconsistent with global application status (e.g. the user requested a application to be enabled but the application has a global status of disabled)",
@@ -446,7 +512,14 @@
             }
           },
           "504": {
-            "description": "Timeout serving request"
+            "description": "Timeout serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }

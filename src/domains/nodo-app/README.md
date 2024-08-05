@@ -152,6 +152,7 @@
 | [azurerm_api_management_named_value.wisp_dismantling_backend_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.wisp_dismantling_converter_base_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.wisp_dismantling_primitives](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.wisp_nodoinviarpt_paymenttype_whitelist_named_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.wisp_station_whitelist_named_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_product_api.apim_nodo_dei_pagamenti_product_api_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_api) | resource |
 | [azurerm_api_management_product_api.apim_nodo_dei_pagamenti_product_api_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_api) | resource |
@@ -317,7 +318,7 @@
 | <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image_name    = string,<br>    image_tag     = string<br>  })</pre> | n/a | yes |
 | <a name="input_vmss_instance_number"></a> [vmss\_instance\_number](#input\_vmss\_instance\_number) | availability zones for vmss | `number` | n/a | yes |
 | <a name="input_vmss_zones"></a> [vmss\_zones](#input\_vmss\_zones) | availability zones for vmss | `list(string)` | n/a | yes |
-| <a name="input_wisp_converter"></a> [wisp\_converter](#input\_wisp\_converter) | n/a | <pre>object({<br>    enable_apim_switch     = bool # enable WISP dismantling<br>    brokerPSP_whitelist    = string<br>    channel_whitelist      = string<br>    station_whitelist      = string<br>    ci_whitelist           = string<br>    dismantling_primitives = string<br>  })</pre> | n/a | yes |
+| <a name="input_wisp_converter"></a> [wisp\_converter](#input\_wisp\_converter) | n/a | <pre>object({<br>    enable_apim_switch                 = bool # enable WISP dismantling<br>    brokerPSP_whitelist                = string<br>    channel_whitelist                  = string<br>    station_whitelist                  = string<br>    ci_whitelist                       = string<br>    nodoinviarpt_paymenttype_whitelist = string<br>    dismantling_primitives             = string<br>  })</pre> | n/a | yes |
 
 ## Outputs
 

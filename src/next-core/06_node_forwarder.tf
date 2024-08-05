@@ -457,6 +457,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
+let threshold_low_traffic = 0.90;
+let low_traffic = 3000;
 AzureDiagnostics
 | where url_s matches regex "/forward"
 | summarize
@@ -464,7 +466,7 @@ AzureDiagnostics
     Success=count(responseCode_d < 500)
     by bin(TimeGenerated, 5m)
 | extend availability=toreal(Success) / Total
-| where availability < threshold
+| where (Total > low_traffic and availability < threshold) or (Total <= low_traffic and availability < threshold_low_traffic)
   QUERY
   )
   severity    = 1
