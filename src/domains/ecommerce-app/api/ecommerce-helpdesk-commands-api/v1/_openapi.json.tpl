@@ -29,17 +29,6 @@
         "operationId": "refundOperation",
         "summary": "Api's for performing money refunds operations over failed transactions",
         "description": "POST with body payload - no resources created",
-        "parameters": [
-          {
-            "in": "header",
-            "name": "X-User-Id",
-            "required": true,
-            "description": "User ID (populated by APIM policy)",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "$ref": "#/components/requestBodies/RefundTransactionRequest"
         },
