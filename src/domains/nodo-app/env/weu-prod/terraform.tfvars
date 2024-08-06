@@ -276,8 +276,8 @@ wisp_converter = {
   enable_apim_switch                 = true
   brokerPSP_whitelist                = "97735020584"
   channel_whitelist                  = "97735020584_02"
-  station_whitelist                  = "80001480534-00838520880_01,82004590814-00838520880_01,95565960010-00838520880_01,01808020356-02818030369_01,02002380224-02695640421_01,03122360153-08543640158_01,12621570154-00053810149_01" # subsets of EC friends
-  ci_whitelist                       = "80001480534,82004590814,95565960010,01808020356,02002380224,03122360153,12621570154"
+  station_whitelist                  = "80001480534-00838520880_01,82004590814-00838520880_01,95565960010-00838520880_01,01808020356-02818030369_01,12621570154-00053810149_01" # subsets of EC friends
+  ci_whitelist                       = "80001480534,82004590814,95565960010,01808020356,12621570154"
   nodoinviarpt_paymenttype_whitelist = "BBT"
   dismantling_primitives             = "nodoInviaRPT,nodoInviaCarrelloRPT"
 }
@@ -286,8 +286,8 @@ wisp_converter = {
 # 82004590814-00838520880_01 TPIC81700P/Argo https://config.platform.pagopa.it/creditor-institutions/82004590814
 # 95565960010-00838520880_01 TOIC86200P/Argo https://config.platform.pagopa.it/creditor-institutions/95565960010
 # 01808020356-02818030369_01 Trasporti Integrati e Logistica SRL/BRAV SRL https://config.platform.pagopa.it/creditor-institutions/01808020356
-# 02002380224-02695640421_01 Trentino Riscossioni/e-SED Società Cooperativa https://config.platform.pagopa.it/creditor-institutions/02002380224
-# 03122360153-08543640158_01 Comune di Corbetta/APKAPPA S.R.L. https://config.platform.pagopa.it/creditor-institutions/03122360153
+# REMOVED 02002380224-02695640421_01 Trentino Riscossioni/e-SED Società Cooperativa https://config.platform.pagopa.it/creditor-institutions/02002380224
+# REMOVED 03122360153-08543640158_01 Comune di Corbetta/APKAPPA S.R.L. https://config.platform.pagopa.it/creditor-institutions/03122360153
 # 12621570154-00053810149_01 Universita' degli Studi di Milano - Bicocca/Banca Popolare di Sondrio https://config.platform.pagopa.it/creditor-institutions/12621570154
 
 
