@@ -3,7 +3,7 @@
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-print-payment-notice-service-responsetime-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-print-payment-notice-service-rest-responsetime @ _/print-payment-notice-service"
+  name                = "pagopa-${var.env_short}-opex_pagopa-print-payment-notice-service-rest-responsetime @ _print-payment-notice-service"
   location            = var.location
 
   action {
@@ -75,7 +75,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-print-payment-notice-generator-responsetime-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-print-payment-notice-generator-rest-responsetime @ _/print-payment-notice-generator"
+  name                = "pagopa-${var.env_short}-opex_pagopa-print-payment-notice-generator-rest-responsetime @ _print-payment-notice-generator"
   location            = var.location
 
   action {
@@ -327,7 +327,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "print-manage-notice-retr
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights_italy.id
-  description    = "Binding exception for function BizEventToReceiptProcessor"
+  description    = "Binding exception for function ManageNoticeErrorsProcess"
   enabled        = true
   query = format(<<-QUERY
   exceptions
