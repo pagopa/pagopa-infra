@@ -94,5 +94,42 @@
   </choose>
   </when>
   </choose>
-
+    <choose>
+      <when condition="@( context.Variables.GetValueOrDefault<bool>("is_wfesp", false) )">
+        <set-variable name="outcome_wfesp_cart" value="@{
+                  string outcomeWfespCart = "";
+                  try {
+                    XElement response = context.Response.Body.As<XElement>(preserveContent: true);
+                    XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
+                    XElement primitive = (XElement) body.FirstNode;
+                    outcomeWfespCart = (string) primitive.Descendants("esitoComplessivoOperazione").FirstOrDefault();
+                  } catch (Exception e)
+                    {
+                      //  do nothing
+                    }
+                  return outcomeWfespCart;
+                  }" />
+        <choose>
+          <when condition="@( context.Variables.GetValueOrDefault<string>("outcome_wfesp_cart", "").Equals("OK"))">
+            <set-variable name="wfesp_fixed_url" value="{{wfesp-fixed-url}}" />
+            <set-variable name="wfesp_fixed_url_completed" value="@{
+                return ((string) context.Variables["wfesp_fixed_url"]) + context.Response.Headers.GetValueOrDefault("sessionId");
+            }" />
+            <set-header name="Content-Type" exists-action="override">
+              <value>application/xml</value>
+            </set-header>
+            <set-body template="liquid">
+              <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ppt="http://ws.pagamenti.telematici.gov/" xmlns:tns="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT" xmlns:ppthead="http://ws.pagamenti.telematici.gov/ppthead">
+                <soapenv:Body>
+                  <ppt:nodoInviaCarrelloRPTRisposta>
+                    <esitoComplessivoOperazione>OK</esitoComplessivoOperazione>
+                    <url>{{context.Variables["wfesp_fixed_url_completed"]}}</url>
+                  </ppt:nodoInviaCarrelloRPTRisposta>
+                </soapenv:Body>
+              </soapenv:Envelope>
+            </set-body>
+          </when>
+        </choose>
+      </when>
+    </choose>
   </fragment>
