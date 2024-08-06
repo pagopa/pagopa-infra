@@ -14,7 +14,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "nodo_per_pm_api" {
 
   name                = format("%s-nodo-per-pm-api", local.project)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = local.apim_nodo_per_pm_api.display_name
   versioning_scheme   = "Segment"
@@ -26,7 +26,7 @@ module "apim_nodo_per_pm_api_v1" {
 
   name                  = format("%s-nodo-per-pm-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   subscription_required = local.apim_nodo_per_pm_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api.id
   api_version           = "v1"
@@ -51,7 +51,7 @@ module "apim_nodo_per_pm_api_v1" {
 resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
   api_name            = format("%s-nodo-per-pm-api-v1", local.project)
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   operation_id        = "closePayment"
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
@@ -61,7 +61,7 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v1" {
 resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1" {
   api_name            = format("%s-nodo-per-pm-api-v1", local.project)
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   operation_id        = "parkedList"
   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_add_v1_policy.xml.tpl", {
     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
@@ -73,7 +73,7 @@ module "apim_nodo_per_pm_api_v2" {
 
   name                  = format("%s-nodo-per-pm-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   subscription_required = local.apim_nodo_per_pm_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api.id
   api_version           = "v2"
@@ -94,11 +94,11 @@ module "apim_nodo_per_pm_api_v2" {
   })
 }
 
-# WISP closePaymentV2 
+# WISP closePaymentV2
 resource "azurerm_api_management_api_operation_policy" "close_payment_api_v2_wisp_policy" {
   count               = var.create_wisp_converter ? 1 : 0
   api_name            = "${local.project}-nodo-per-pm-api-v2"
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   operation_id        = "closePaymentV2"
   xml_content         = file("./api/nodopagamenti_api/nodoPerPM/v2/wisp-closepayment.xml")

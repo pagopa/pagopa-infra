@@ -27,8 +27,8 @@
       <set-variable name="wisp-payment-tokens" value="@{
               try {
                             JObject request = (JObject) context.Variables["request-body"];
-                            JArray paymentsTokens = (JArray) request.Property("paymentTokens").Value;
-                            return string.Join(",", paymentsTokens.Select(token => token.ToString()));
+                            JArray payments = (JArray) request.Property("payments").Value;
+                            return string.Join(",", payments.Select(payment => payment["paymentToken"].ToString()));
       } catch (Exception e) {
       return "";
       }

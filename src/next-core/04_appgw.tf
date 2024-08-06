@@ -307,7 +307,7 @@ locals {
 }
 
 data "azurerm_user_assigned_identity" "public_appgateway" {
-  resource_group_name = data.azurerm_resource_group.sec_rg.name
+  resource_group_name = azurerm_resource_group.sec_rg.name
   name                = format("%s-appgateway-identity", local.product)
 
 }
@@ -315,8 +315,8 @@ data "azurerm_user_assigned_identity" "public_appgateway" {
 ## Application gateway public ip ##
 resource "azurerm_public_ip" "appgateway_public_ip" {
   name                = format("%s-appgateway-pip", local.product)
-  resource_group_name = data.azurerm_resource_group.rg_vnet.name
-  location            = data.azurerm_resource_group.rg_vnet.location
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  location            = azurerm_resource_group.rg_vnet.location
   sku                 = "Standard"
   allocation_method   = "Static"
   zones               = [1, 2, 3]
@@ -329,8 +329,8 @@ module "appgateway_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.8.0"
   name                                      = format("%s-appgateway-snet", local.product)
   address_prefixes                          = var.cidr_subnet_appgateway
-  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_core.name
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
   private_endpoint_network_policies_enabled = true
 }
 
@@ -338,8 +338,8 @@ module "appgateway_snet" {
 module "app_gw" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.8.0"
 
-  resource_group_name = data.azurerm_resource_group.rg_vnet.name
-  location            = data.azurerm_resource_group.rg_vnet.location
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  location            = azurerm_resource_group.rg_vnet.location
   name                = format("%s-app-gw", local.product)
 
   # SKU
@@ -570,11 +570,11 @@ module "app_gw" {
 
   action = [
     {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
+      action_group_id    = azurerm_monitor_action_group.slack.id
       webhook_properties = null
     },
     {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
+      action_group_id    = azurerm_monitor_action_group.email.id
       webhook_properties = null
     }
   ]

@@ -30,7 +30,7 @@ variables:
   # working dir
   WORKING_DIR_APP: 'src/domains/pay-wallet-app'
   WORKING_DIR_COMMON: 'src/domains/pay-wallet-common'
-  DOMAIN_NAME: pay-wallet
+  DOMAIN_NAME: paywallet
   poolNameDev: '$(TF_POOL_NAME_DEV)'
   poolNameUat: '$(TF_POOL_NAME_UAT)'
   poolNameProd: '$(TF_POOL_NAME_PROD)'

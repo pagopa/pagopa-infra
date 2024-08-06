@@ -26,9 +26,9 @@ module "assets_cdn_platform" {
   dns_zone_name                = azurerm_dns_zone.public[0].name
   dns_zone_resource_group_name = azurerm_dns_zone.public[0].resource_group_name
 
-  keyvault_resource_group_name = data.azurerm_key_vault.kv_core.resource_group_name
+  keyvault_resource_group_name = module.key_vault.resource_group_name
   keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
-  keyvault_vault_name          = data.azurerm_key_vault.kv_core.name
+  keyvault_vault_name          = module.key_vault.name
 
   storage_account_replication_type = var.cdn_storage_account_replication_type
 
@@ -147,8 +147,8 @@ resource "azurerm_application_insights_web_test" "assets_cdn_platform_web_test" 
   count                   = var.env_short == "p" ? 1 : 0
   name                    = format("%s-assets-platform-web-test", local.product)
   location                = var.location
-  resource_group_name     = data.azurerm_resource_group.monitor_rg.name
-  application_insights_id = data.azurerm_application_insights.application_insights.id
+  resource_group_name     = azurerm_resource_group.monitor_rg.name
+  application_insights_id = azurerm_application_insights.application_insights.id
   kind                    = "ping"
   frequency               = 300
   timeout                 = 10

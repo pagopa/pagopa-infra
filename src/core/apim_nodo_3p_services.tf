@@ -11,7 +11,7 @@ module "apim_nodo_sync_product" {
   description  = "product-nodo-sync"
 
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = false
@@ -27,7 +27,7 @@ resource "azurerm_api_management_api_version_set" "nodo_sync_api" {
   count = var.env_short == "p" ? 0 : 1
 
   name                = format("%s-nodo-sync-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = "Nodo OnCloud SYNC"
   versioning_scheme   = "Segment"
@@ -39,7 +39,7 @@ module "apim_nodo_sync_api" {
 
   name                  = format("%s-nodo-sync-api", var.env_short)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_sync_product[0].product_id]
   subscription_required = false
 
@@ -77,7 +77,7 @@ module "apim_nodo_wfesp_product" {
   description  = "product-nodo-wfesp"
 
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = false
@@ -94,7 +94,7 @@ module "apim_nodo_wfesp_product" {
 resource "azurerm_api_management_api_version_set" "nodo_wfesp_api" {
 
   name                = format("%s-nodo-wfesp-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = "Nodo OnCloud WFESP"
   versioning_scheme   = "Segment"
@@ -109,7 +109,7 @@ module "apim_nodo_wfesp_api" {
 
   name                  = format("%s-nodo-wfesp-api", var.env_short)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_wfesp_product.product_id]
   subscription_required = false
 
@@ -151,7 +151,7 @@ module "apim_nodo_fatturazione_product" {
   description  = "product-nodo-fatturazione"
 
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = false
@@ -167,7 +167,7 @@ resource "azurerm_api_management_api_version_set" "nodo_fatturazione_api" {
   count = var.env_short == "p" ? 0 : 1
 
   name                = format("%s-nodo-fatturazione-api", var.env_short)
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   display_name        = "Nodo OnCloud FATTURAZIONE"
   versioning_scheme   = "Segment"
@@ -179,7 +179,7 @@ module "apim_nodo_fatturazione_api" {
 
   name                  = format("%s-nodo-fatturazione-api", var.env_short)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_fatturazione_product[0].product_id]
   subscription_required = false
 
@@ -217,7 +217,7 @@ module "apim_nodo_web_bo_product" {
   description  = "product-nodo-web-bo"
 
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = false
@@ -233,7 +233,7 @@ module "apim_nodo_web_bo_product" {
 #   count  = var.env_short == "p" ? 0 : 1
 
 #   name                = format("%s-nodo-web-bo-api", var.env_short)
-#   resource_group_name = azurerm_resource_group.rg_api.name
+#   resource_group_name = data.azurerm_resource_group.rg_api.name
 #   api_management_name = data.azurerm_api_management.apim_migrated[0].name
 #   display_name        = "Nodo OnCloud WEB-BO"
 #   versioning_scheme   = "Segment"
@@ -246,7 +246,7 @@ module "apim_nodo_web_bo_api" {
 
   name                  = format("%s-nodo-web-bo-api", var.env_short)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_web_bo_product.product_id]
   subscription_required = false
 
@@ -290,7 +290,7 @@ module "apim_nodo_web_bo_api_onprem" {
 
   name                  = format("%s-nodo-web-bo-onprem-api", var.env_short)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_web_bo_product.product_id]
   subscription_required = false
 
@@ -338,7 +338,7 @@ module "apim_nodo_web_bo_product_history" {
   description  = "product-nodo-web-bo-history"
 
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
   subscription_required = false
@@ -354,7 +354,7 @@ module "apim_nodo_web_bo_product_history" {
 #   count  = var.env_short == "p" ? 0 : 1
 
 #   name                = format("%s-nodo-web-bo-api", var.env_short)
-#   resource_group_name = azurerm_resource_group.rg_api.name
+#   resource_group_name = data.azurerm_resource_group.rg_api.name
 #   api_management_name = data.azurerm_api_management.apim_migrated[0].name
 #   display_name        = "Nodo OnCloud WEB-BO"
 #   versioning_scheme   = "Segment"
@@ -367,7 +367,7 @@ module "apim_nodo_web_bo_api_history" {
 
   name                  = format("%s-nodo-web-bo-api-history", var.env_short)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_web_bo_product_history.product_id]
   subscription_required = false
 
@@ -411,7 +411,7 @@ module "apim_nodo_web_bo_api_onprem_history" {
 
   name                  = format("%s-nodo-web-bo-onprem-api-history", var.env_short)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = azurerm_resource_group.rg_api.name
+  resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_nodo_web_bo_product_history.product_id]
   subscription_required = false
 

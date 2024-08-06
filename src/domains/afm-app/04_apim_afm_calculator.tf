@@ -14,6 +14,20 @@ resource "azurerm_api_management_named_value" "afm_secondary_sub_key" {
   }
 }
 
+resource "azurerm_api_management_named_value" "afm_ndp_test_sub_key" {
+  name                = "afm-ndp-test-sub-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "afm-ndp-test-sub-key"
+  value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 #############################
 ## Product AFM Calculator ##
 #############################
