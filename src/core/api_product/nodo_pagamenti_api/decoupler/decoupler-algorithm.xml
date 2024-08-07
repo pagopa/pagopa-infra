@@ -358,6 +358,45 @@ new JProperty("ttl", 1)
 				</when>
 			</choose>
 		</when>
+    <!-- evaluate wisp dismantling algorithm for nodoChiediCopiaRT-->
+    <when condition="@(((string)context.Variables["primitiveType"]).Equals("OTHER_WISPDISMANTLING_COPIA_RT"))">
+      <set-variable name="receipt_query_param" value="@{
+          XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
+          string queryParam = NONE;
+          // if NONE the request is sent to default backend url
+          try {
+            XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+            XElement primitive = (XElement) body.FirstNode;
+            string creditorInstitution = (string) primitive.Descendants("identificativoDominio").FirstOrDefault();
+            string iuv = (string) primitive.Descendants("identificativoUnivocoVersamento").FirstOrDefault();
+            string ccp = (string) primitive.Descendants("codiceContestoPagamento").FirstOrDefault();
+            if (creditorInstitution != null && iuv != null && ccp != null) {
+              queryParam = "ci=" + creditorInstitution + "&iuv=" + iuv + "&ccp=" + ccp;
+            }
+          } catch (Exception e) {
+            // do nothing
+          }
+          return queryParam;
+        }" />
+      <choose>
+        <when condition="@( context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && !context.Variables.GetValueOrDefault<string>("receipt_query_param", "NONE").Equals("NONE") )">
+          <!-- call wisp-converter -->
+          <send-request mode="new" response-variable-name="receipt_response">
+            <set-url>@(context.Variables.GetValueOrDefault<string>("wisp-dismantling-converter-base-url") + "/receipt?" + context.Variables.GetValueOrDefault<string>("receipt_query_param"))</set-url>
+            <set-method>GET</set-method>
+            <set-header name="Content-Type" exists-action="override">
+              <value>application/json</value>
+            </set-header>
+          </send-request>
+          <choose>
+            <when condition="@((int)context.Variables["receipt_response"]["status"] == 200)">
+              <set-variable name="baseUrl" value="{{wisp-dismantling-backend-url}}" />
+            </when>
+          </choose>
+        </when>
+      </choose>
+
+    </when>
 	</choose>
     <set-variable name="wfesp_channels" value="{{wfesp-channels}}" />
     <set-variable name="is_wfesp" value="@{
