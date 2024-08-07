@@ -26,6 +26,7 @@ locals {
 
 
   pagopaprintit_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/printit/data-view.json", {
+    key   = local.pagopaprintit_key
     name  = "Stampa Avvisi"
     index = "print-payment"
   }), "\""), "\""), "'", "'\\''")
