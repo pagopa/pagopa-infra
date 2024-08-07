@@ -207,6 +207,7 @@ wisp_converter = {
   ci_whitelist                       = "15376371009"
   nodoinviarpt_paymenttype_whitelist = "BBT"
   dismantling_primitives             = "nodoInviaRPT,nodoInviaCarrelloRPT"
+  dismantling_rt_primitives          = "nodoChiediCopiaRT"
 }
 
 enable_sendPaymentResultV2_SWClient = true

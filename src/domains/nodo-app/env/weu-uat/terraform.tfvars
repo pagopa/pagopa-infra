@@ -229,6 +229,7 @@ wisp_converter = {
   ci_whitelist                       = "15376371009,80005570561,80023530167,12621570154,77777777777,93027230668,80019530924,80008750475,92020910888,02323170130,00146330733,01199840115,02341640353,03623810151,03122360153,02002380224"
   nodoinviarpt_paymenttype_whitelist = "BBT"
   dismantling_primitives             = "nodoInviaRPT,nodoInviaCarrelloRPT"
+  dismantling_rt_primitives          = "nodoChiediCopiaRT"
 }
 
 # 15376371009-15376371009_09 EC PagoPA di test
