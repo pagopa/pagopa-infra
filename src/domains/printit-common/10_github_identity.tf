@@ -173,7 +173,7 @@ resource "azurerm_key_vault_access_policy" "gha_pr_iac_managed_identities" {
 
 # create a module for each 20 repos
 module "identity_ref_01" {
-  source    = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=github-identity-ref"
+  source    = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.36.1"
   prefix    = var.prefix
   env_short = var.env_short
   domain    = "${var.domain}-01-ref"
