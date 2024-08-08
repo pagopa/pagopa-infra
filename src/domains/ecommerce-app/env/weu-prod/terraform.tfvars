@@ -94,14 +94,12 @@ enabled_payment_wallet_method_ids_pm = "6920b555-c972-4e2b-980c-b0e0037a111a,0ff
 
 pagopa_vpn = {
   ips = [
-    "0.0.0.0",
-    "0.0.0.0",
+    "93.63.219.230", # PagoPA on prem VPN
   ]
 }
 
 pagopa_vpn_dr = {
   ips = [
-    "93.63.219.230", # PagoPA on prem VPN
     "93.63.219.234", # PagoPA on prem VPN DR
   ]
 }
