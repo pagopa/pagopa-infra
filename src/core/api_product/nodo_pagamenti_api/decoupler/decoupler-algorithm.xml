@@ -378,26 +378,27 @@ new JProperty("ttl", 1)
           }
           return queryParam;
         }" />
-      <choose>
-        <when condition="@( context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && !context.Variables.GetValueOrDefault<string>("receipt_query_param", "NONE").Equals("NONE") )">
-          <!-- call wisp-converter -->
-          <send-request mode="new" response-variable-name="receipt_response">
-            <set-url>@(context.Variables.GetValueOrDefault<string>("wisp-dismantling-converter-base-url") + "/receipt?" + context.Variables.GetValueOrDefault<string>("receipt_query_param"))</set-url>
-            <set-method>GET</set-method>
-            <set-header name="Content-Type" exists-action="override">
-              <value>application/json</value>
-            </set-header>
-          </send-request>
-          <choose>
-            <when condition="@((int)((JObject)context.Variables["receipt_response"])["status"] == 200)">
-              <set-variable name="baseUrl" value="{{wisp-dismantling-backend-url}}" />
-            </when>
-          </choose>
-        </when>
-      </choose>
-
-    </when>
-	</choose>
+        <choose>
+          <when condition="@( context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && !context.Variables.GetValueOrDefault<string>("receipt_query_param", "NONE").Equals("NONE") )">
+            <set-variable name="wisp_converter_url" value="{{wisp-dismantling-converter-base-url}}" />
+            <!-- call wisp-converter -->
+            <send-request mode="new" response-variable-name="receipt_response">
+              <set-url>@(context.Variables["wisp_converter_url"] + "/receipt?" + context.Variables["receipt_query_param"])</set-url>
+              <set-method>GET</set-method>
+              <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+              </set-header>
+            </send-request>
+            <trace source="response" severity="information">@(((IResponse)context.Variables["receipt_response"]).StatusCode.ToString())</trace>
+            <choose>
+              <when condition="@(((IResponse)context.Variables["receipt_response"]).StatusCode == 200)">
+                <set-variable name="baseUrl" value="{{wisp-dismantling-backend-url}}" />
+              </when>
+            </choose>
+          </when>
+        </choose>
+      </when>
+	  </choose>
     <set-variable name="wfesp_channels" value="{{wfesp-channels}}" />
     <set-variable name="is_wfesp" value="@{
             // isWfesp if:
