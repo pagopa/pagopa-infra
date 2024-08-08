@@ -1,0 +1,9 @@
+{
+    "data_view": {
+       "id": "log_pattern_${name}",
+       "title": "logs-${index}-*",
+       "name": "Log ${name}",
+       "timeFieldName": "@timestamp"
+    },
+    "override": true
+  }
