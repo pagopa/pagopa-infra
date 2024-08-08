@@ -270,10 +270,12 @@ new JProperty("ttl", 1)
 			<set-variable name="wisp_whitelisted_channels" value="{{wisp-channel-whitelist}}" />
 			<set-variable name="wisp_whitelisted_stations" value="{{wisp-station-whitelist}}" />
 			<set-variable name="wisp_whitelisted_cis" value="{{wisp-ci-whitelist}}" />
+			<set-variable name="wisp_whitelisted_nodoinviarpt_paymenttypes" value="{{wisp-nodoinviarpt-paymenttype-whitelist}}" />
 			<set-variable name="is_whitelisted" value="@{
                         // isWhiteListed if:
                         // - lists are empties
                         // - channelId, brokerPSP, stationId and creditorInstitutionId belong to relative lists
+                        // - if nodoInviaRPT, the 'tipoVersamento' field is accepted
                         string brokersList = (string) context.Variables["wisp_whitelisted_brokers"];
                         string channelsList = (string) context.Variables["wisp_whitelisted_channels"];
                         string stationsList = (string) context.Variables["wisp_whitelisted_stations"];
@@ -328,12 +330,26 @@ new JProperty("ttl", 1)
                                     isCiAndStationOk = false;
                                 }
                             }
+                            // check if 'tipoVersamento' is accepted for WISP dismantling only if the request is a 'nodoInviaRPT'
+                            bool isNodoInviaRptWithAllowedPaymentType = false;
+                            bool isNodoInviaRPT = "nodoInviaRPT".Equals((string)context.Variables["soapAction"]);
+                            if (isNodoInviaRPT) {
+                                byte[] rptAsBytearray = Convert.FromBase64String((string) primitive.Descendants("rpt").FirstOrDefault());
+                                string rptAsString = System.Text.Encoding.UTF8.GetString(rptAsBytearray);
+                                XElement rpt = XElement.Parse(rptAsString);
+                                string rptPaymentType = rpt.Descendants(rpt.Name.Namespace + "tipoVersamento").FirstOrDefault()?.Value;
+                                string[] paymentTypes =  ((string) context.Variables["wisp_whitelisted_nodoinviarpt_paymenttypes"]).Split(',');
+                                isNodoInviaRptWithAllowedPaymentType = paymentTypes.Contains(rptPaymentType);
+                            }
+                            bool isValidNodoInviaRptOrNodoInviaCarrelloRPT = !isNodoInviaRPT || isNodoInviaRptWithAllowedPaymentType;
+                            // last, check all the conditions and return the final result
                             isWhitelisted = (brokersWhitelisted || brokers.Contains(pspBrokerId)) &&
                                             (channelsWhitelisted || channels.Contains(channelId)) &&
-                                            isCiAndStationOk;
+                                            isCiAndStationOk && isValidNodoInviaRptOrNodoInviaCarrelloRPT;
                         } catch (Exception e) {
                             // do nothing
                         }
+
                         return isWhitelisted;
                     }" />
 			<choose>
@@ -343,4 +359,26 @@ new JProperty("ttl", 1)
 			</choose>
 		</when>
 	</choose>
+    <set-variable name="wfesp_channels" value="{{wfesp-channels}}" />
+    <set-variable name="is_wfesp" value="@{
+            // isWfesp if:
+            // - if channel in request is equal to 13212880150_90
+            // - if request is nodoInviaCarrelloRPT
+            string[] wfespChannels = ((string) context.Variables["wfesp_channels"]).Split(',');
+            bool isWfesp = false;
+            if(((string)context.Variables["soapAction"]).Equals("nodoInviaCarrelloRPT")){
+                try {
+                    XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
+                    XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+                    XElement primitive = (XElement) body.FirstNode;
+                    string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
+                    // listaRPT is set only in nodoInviaCarrelloRPT
+                    // we want to act only if there is nodoInviaCarrello
+                    isWfesp = wfespChannels.Contains(channelId);
+                } catch (Exception e) {
+                    // do nothing
+                }
+            }
+            return isWfesp;
+        }" />
 </fragment>

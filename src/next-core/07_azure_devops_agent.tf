@@ -11,8 +11,8 @@ module "azdoa_snet" {
   count                                     = var.is_feature_enabled.azdoa ? 1 : 0
   name                                      = "${local.product}-azdoa-snet"
   address_prefixes                          = var.cidr_subnet_azdoa
-  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_core.name
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
@@ -95,8 +95,8 @@ module "loadtest_agent_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.13.0"
   name                                      = "${local.product}-loadtest-agent-snet"
   address_prefixes                          = var.cidr_subnet_loadtest_agent
-  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_core.name
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [

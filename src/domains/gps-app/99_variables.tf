@@ -139,10 +139,10 @@ variable "ddos_protection_plan" {
 }
 
 # Reporting
-
+# https://learn.microsoft.com/it-it/azure/azure-functions/functions-bindings-timer?tabs=python-v2%2Cisolated-process%2Cnodejs-v4&pivots=programming-language-java#ncrontab-examples
 variable "gpd_reporting_schedule_batch" {
   type        = string
-  description = "Cron scheduling (NCRON example '*/45 * * * * *')"
+  description = "Cron scheduling (every day 1 o'clock every day UTC-0) {second} {minute} {hour} {day} {month} {day-of-week}"
   default     = "0 0 1 * * *"
 }
 
@@ -174,6 +174,48 @@ variable "gpd_paa_stazione_int" {
   type        = string
   description = "PagoPA Station ID"
   default     = false
+}
+
+variable "gpd_cache_path" {
+  type        = string
+  description = "Api-Config cache path"
+  default     = "/cache?keys=creditorInstitutionStations,stations"
+}
+
+variable "enable_client_retry" {
+  type        = bool
+  description = "Enable client retry"
+  default     = false
+}
+
+variable "initial_interval_millis" {
+  type        = number
+  description = "The initial interval in milliseconds"
+  default     = 500
+}
+
+variable "max_elapsed_time_millis" {
+  type        = number
+  description = "The maximum elapsed time in milliseconds"
+  default     = 1000
+}
+
+variable "max_interval_millis" {
+  type        = number
+  description = "The maximum interval in milliseconds"
+  default     = 1000
+}
+
+variable "multiplier" {
+  type        = number
+  description = "Multiplier for the client backoff procedure"
+  default     = 1.5
+}
+
+variable "randomization_factor" {
+  type        = number
+  description = "Randomization factor for the backoff procedure"
+  default     = 0.5
 }
 
 variable "cname_record_name" {

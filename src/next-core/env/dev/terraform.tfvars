@@ -30,19 +30,27 @@ is_feature_enabled = {
 }
 
 ### Network west europe
-cidr_subnet_vpn                  = ["10.1.142.0/24"]
-cidr_subnet_dns_forwarder_backup = ["10.1.251.0/29"]
-cidr_subnet_tools_cae            = ["10.1.248.0/23"]
-cidr_subnet_azdoa                = ["10.1.130.0/24"]
-cidr_subnet_node_forwarder       = ["10.1.158.0/24"]
-cidr_subnet_loadtest_agent       = ["10.1.159.0/24"]
-cidr_subnet_appgateway           = ["10.1.128.0/24"]
-cidr_subnet_eventhub             = ["10.230.8.64/26"]
+# main vnet
+cidr_vnet = ["10.1.0.0/16"]
+# integration vnet
+# https://www.davidc.net/sites/default/subnets/subnets.html?network=10.230.7.0&mask=24&division=7.31
+cidr_vnet_integration = ["10.230.8.0/24"] # ask to SIA
+
+cidr_subnet_vpn                   = ["10.1.142.0/24"]
+cidr_subnet_dns_forwarder_backup  = ["10.1.251.0/29"]
+cidr_subnet_tools_cae             = ["10.1.248.0/23"]
+cidr_subnet_azdoa                 = ["10.1.130.0/24"]
+cidr_subnet_node_forwarder        = ["10.1.158.0/24"]
+cidr_subnet_loadtest_agent        = ["10.1.159.0/24"]
+cidr_subnet_appgateway            = ["10.1.128.0/24"]
+cidr_subnet_eventhub              = ["10.230.8.64/26"]
+cidr_common_private_endpoint_snet = ["10.1.144.0/23"]
+cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
 
 ### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]
 
-
+vpn_gw_pip_sku = "Standard"
 #
 # Dns
 #

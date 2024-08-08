@@ -1,6 +1,6 @@
 locals {
-  subnet_in_nat_gw_ids = [
-    data.azurerm_subnet.node_forwarder_snet.id #pagopa-node-forwarder ( aka GAD replacemnet )
+  subnet_in_nat_gw_ids = var.is_feature_enabled.node_forwarder_ha_enabled ? [] : [
+    module.node_forwarder_snet[0].id #pagopa-node-forwarder ( aka GAD replacemnet )
   ]
 }
 
@@ -9,8 +9,8 @@ module "nat_gw" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//nat_gateway?ref=v7.50.0"
 
   name                = format("%s-natgw", local.product)
-  resource_group_name = data.azurerm_resource_group.rg_vnet.name
-  location            = data.azurerm_resource_group.rg_vnet.location
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  location            = azurerm_resource_group.rg_vnet.location
   public_ips_count    = var.nat_gateway_public_ips
   zones               = ["1"]
   subnet_ids          = local.subnet_in_nat_gw_ids

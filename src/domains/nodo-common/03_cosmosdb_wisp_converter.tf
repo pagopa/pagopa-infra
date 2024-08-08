@@ -62,7 +62,7 @@ locals {
       }
     },
     {
-      name               = "receipt",
+      name               = "receipt",       # contains all FAILED paInviaRT (not recevide) a.k.a. "receipts-failed"
       partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
       default_ttl        = var.wisp_converter_cosmos_nosql_db_params.receipt_ttl
       autoscale_settings = {
@@ -83,6 +83,14 @@ locals {
       default_ttl        = var.wisp_converter_cosmos_nosql_db_params.re_ttl
       autoscale_settings = {
         max_throughput = var.wisp_converter_cosmos_nosql_db_params.re_max_throughput
+      }
+    },
+    {
+      name               = "receipts-rt", # contains all generated and sent RT
+      partition_key_path = "/id",
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.rt_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.rt_max_throughput
       }
     }
   ]
