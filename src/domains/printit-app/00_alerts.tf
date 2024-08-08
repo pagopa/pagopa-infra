@@ -1,9 +1,9 @@
 ## Print Notice Service ##
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-print-payment-notice-service-responsetime-upd" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-print-payment-notice-service-responsetime-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-print-payment-notice-service-rest-responsetime @ _print-payment-notice-service"
+  name                = "pagopa-${var.env_short}-pagopa-print-payment-notice-service-rest-responsetime @ _print-payment-notice-service"
   location            = var.location
 
   action {
@@ -34,10 +34,10 @@ AzureDiagnostics
   }
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-print-payment-notice-service-rest-availability-upd" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-print-payment-notice-service-rest-availability-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-print-payment-notice-service-rest-availability @ _print-payment-notice-service"
+  name                = "pagopa-${var.env_short}-pagopa-print-payment-notice-service-rest-availability @ _print-payment-notice-service"
   location            = var.location
 
   action {
@@ -72,10 +72,10 @@ AzureDiagnostics
 
 ## Print Notice Generator ##
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-print-payment-notice-generator-responsetime-upd" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-print-payment-notice-generator-responsetime-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-print-payment-notice-generator-rest-responsetime @ _print-payment-notice-generator"
+  name                = "pagopa-${var.env_short}-pagopa-print-payment-notice-generator-rest-responsetime @ _print-payment-notice-generator"
   location            = var.location
 
   action {
@@ -106,10 +106,10 @@ AzureDiagnostics
   }
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-print-payment-notice-generator-rest-availability-upd" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-print-payment-notice-generator-rest-availability-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-print-payment-notice-generator-rest-availability @ _print-payment-notice-generator"
+  name                = "pagopa-${var.env_short}-pagopa-print-payment-notice-generator-rest-availability @ _print-payment-notice-generator"
   location            = var.location
 
   action {
@@ -242,7 +242,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pdf-engine-fun-error-ale
 }
 
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "opex_generate-pdf-engine-generate-responsetime" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "generate-pdf-engine-generate-responsetime" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-responsetime @ _generate-pdf"
@@ -276,7 +276,7 @@ AzureDiagnostics
 
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-pdf-engine-pdf-availability" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-pdf-engine-pdf-availability" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-availability @ _generate-pdf"
@@ -314,10 +314,10 @@ AzureDiagnostics
 
 ## Print Notice Functions ##
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "print-manage-notice-retry-error-alert" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "print-notice-retry-fn-error-alert" {
 
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-print-manage-notice-retry-error-alert"
+  name                = "pagopa-${var.env_short}-print-notice-retry-fn-error-alert"
   location            = var.location
 
   action {
@@ -327,12 +327,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "print-manage-notice-retr
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights_italy.id
-  description    = "Binding exception for function ManageNoticeErrorsProcess"
+  description    = "Retry Function Error"
   enabled        = true
   query = format(<<-QUERY
   exceptions
     | where cloud_RoleName == "%s"
-    | where outerMessage contains "Exception while executing function: Functions.ManageNoticeErrorsProcess"
+    | where outerMessage contains "Retry Error"
     | order by timestamp desc
   QUERY
     , "print-payment-notice-functions" # from HELM's parameter WEBSITE_SITE_NAME
@@ -347,10 +347,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "print-manage-notice-retr
 
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "print-manage-notice-error-alert" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "print-notice-compress-fn-error-alert" {
 
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-print-manage-notice-error-alert"
+  name                = "pagopa-${var.env_short}-print-notice-compress-fn-error-alert"
   location            = var.location
 
   action {
@@ -360,12 +360,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "print-manage-notice-erro
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights_italy.id
-  description    = "Binding exception for function ManagePaymentNoticeFolderUpdatesProcess"
+  description    = "Compression Function Error"
   enabled        = true
   query = format(<<-QUERY
   exceptions
     | where cloud_RoleName == "%s"
-    | where outerMessage contains "Exception while executing function: Functions.ManagePaymentNoticeFolderUpdatesProcess"
+    | where outerMessage contains "Massive Request FAILED"
     | order by timestamp desc
   QUERY
     , "print-payment-notice-functions" # from HELM's parameter WEBSITE_SITE_NAME
