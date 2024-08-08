@@ -389,7 +389,7 @@ new JProperty("ttl", 1)
             </set-header>
           </send-request>
           <choose>
-            <when condition="@((int)context.Variables["receipt_response"]["status"] == 200)">
+            <when condition="@((int)((JObject)context.Variables["receipt_response"])["status"] == 200)">
               <set-variable name="baseUrl" value="{{wisp-dismantling-backend-url}}" />
             </when>
           </choose>
