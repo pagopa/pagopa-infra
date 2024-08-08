@@ -121,3 +121,30 @@ resource "azurerm_key_vault_secret" "cosmodb_mongo_bopagopa_key" {
     ]
   }
 }
+
+####
+
+# PDF engine nodejs for PDF engine Java
+
+data "azurerm_api_management_product" "apim_notices_service_product_internal" {
+  product_id          = "pagopa_notices_service_internal"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+resource "azurerm_api_management_subscription" "apim_notices_service_product_internal_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_notices_service_product_internal.id
+  display_name  = "Stampa avvisi for backoffice"
+  allow_tracing = false
+  state         = "active"
+}
+resource "azurerm_key_vault_secret" "notices_service_product_internal_subscription_key" {
+  depends_on   = [azurerm_api_management_subscription.apim_notices_service_product_internal_subkey]
+  name         = "pagopa-${var.env_short}-apim-notices-key"
+  value        = azurerm_api_management_subscription.apim_notices_service_product_internal_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
