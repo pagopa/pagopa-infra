@@ -444,12 +444,13 @@ variable "create_wisp_converter" {
 
 variable "wisp_converter" {
   type = object({
-    enable_apim_switch     = bool # enable WISP dismantling
-    brokerPSP_whitelist    = string
-    channel_whitelist      = string
-    station_whitelist      = string
-    ci_whitelist           = string
-    dismantling_primitives = string
+    enable_apim_switch                 = bool # enable WISP dismantling
+    brokerPSP_whitelist                = string
+    channel_whitelist                  = string
+    station_whitelist                  = string
+    ci_whitelist                       = string
+    nodoinviarpt_paymenttype_whitelist = string
+    dismantling_primitives             = string
   })
 }
 
@@ -458,5 +459,12 @@ variable "enable_sendPaymentResultV2_SWClient" {
   type        = bool
   default     = false
   description = "Gestione clientId per integrazione Software Client"
+}
+
+variable "wfesp_dismantling" {
+  type = object({
+    channel_list                       = string
+    wfesp_fixed_url                    = string
+  })
 }
 
