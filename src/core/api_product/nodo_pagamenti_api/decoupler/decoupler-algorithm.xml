@@ -362,7 +362,7 @@ new JProperty("ttl", 1)
     <when condition="@(((string)context.Variables["primitiveType"]).Equals("OTHER_WISPDISMANTLING_COPIA_RT"))">
       <set-variable name="receipt_query_param" value="@{
           XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
-          string queryParam = NONE;
+          string queryParam = "NONE";
           // if NONE the request is sent to default backend url
           try {
             XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
