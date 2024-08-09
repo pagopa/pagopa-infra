@@ -48,6 +48,7 @@
 | Name | Type |
 |------|------|
 | [azapi_resource.azure_postgresql_ls](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
+| [azurerm_api_management_subscription.integration_test_forwarder_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.integration_test_gpd_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.integration_test_nodo_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_api_management_subscription.integration_test_technical_support_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
@@ -72,6 +73,7 @@
 | [azurerm_key_vault_secret.evthub_nodo_dei_pagamenti_verify_ko_datastore_rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.evthub_nodo_dei_pagamenti_verify_ko_tablestorage_rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.evthub_nodo_dei_pagamenti_verify_ko_tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.integration_test_forwarder_subscription_key_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.integration_test_gpd_subscription_key_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.integration_test_nodo_subscription_key_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.integration_test_technical_support_subscription_key_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -133,6 +135,7 @@
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azurerm_api_management_product.apim_forwarder_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_api_management_product.apim_gpd_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_api_management_product.apim_nodo_dei_pagamenti_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_api_management_product.apim_technical_support_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |

@@ -218,6 +218,31 @@ resource "azurerm_key_vault_secret" "wisp_paainviart_key" {
 /*****************
 Integration tests
 *****************/
+# Subscription key taken from Node Forwarder product and used for integration tests
+data "azurerm_api_management_product" "apim_forwarder_product" {
+  product_id          = "nodo-auth"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+resource "azurerm_api_management_subscription" "integration_test_forwarder_subscription_key" {
+  count               = var.env_short != "p" ? 1 : 0
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_forwarder_product.id
+  display_name  = "Subscription key from Nuova Connettivita for integration test"
+  allow_tracing = false
+  state         = "active"
+}
+resource "azurerm_key_vault_secret" "integration_test_forwarder_subscription_key_kv" {
+  count        = var.env_short != "p" ? 1 : 0
+  depends_on   = [azurerm_api_management_subscription.integration_test_forwarder_subscription_key[0]]
+  name         = "integration-test-forwarder-subscription-key"
+  value        = azurerm_api_management_subscription.integration_test_forwarder_subscription_key[0].primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
 
 # Subscription key taken from GPD product and used for integration tests
 data "azurerm_api_management_product" "apim_gpd_product" {
