@@ -1,0 +1,56 @@
+[
+    {
+        "name": "obj_id",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "progressivo",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "fk_pa",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "fk_stazione",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "aux_digit",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "segregazione",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "quarto_modello",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "broadcast",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "pagamento_spontaneo",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    }
+]
