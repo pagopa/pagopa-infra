@@ -127,6 +127,7 @@
                 </return-response>
             </when>
             <otherwise>
+                <cache-store-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" value="PPT_ATTIVAZIONE_IN_CORSO" duration="30" caching-type="internal" />            
                 <!-- ottimizzazione-ec-buoni start -->
                 <!-- https://pagopa.atlassian.net/wiki/spaces/PAG/pages/533398561/Ottimizzazione+filtro+su+Enti+Creditori+buoni -->
                 <cache-lookup-value key="@((string) context.Variables["fiscalCode"])" variable-name="dynamicGoodEc" caching-type="internal" />
@@ -184,7 +185,6 @@
                     </otherwise>
                 </choose>
                 <!-- ottimizzazione-ec-buoni stop -->
-                <cache-store-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" value="PPT_ATTIVAZIONE_IN_CORSO" duration="30" caching-type="internal" />
                 <!-- verificatore -->
                 <choose>
                     <when condition="@(context.Variables["idempotencyKey"] != null)">
