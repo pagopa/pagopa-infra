@@ -389,7 +389,6 @@ new JProperty("ttl", 1)
                 <value>application/json</value>
               </set-header>
             </send-request>
-            <trace source="response" severity="information">@(((IResponse)context.Variables["receipt_response"]).StatusCode.ToString())</trace>
             <choose>
               <when condition="@(((IResponse)context.Variables["receipt_response"]).StatusCode == 200)">
                 <set-variable name="baseUrl" value="{{wisp-dismantling-backend-url}}" />
