@@ -27,3 +27,17 @@ resource "azurerm_role_assignment" "grafana_dashboard_monitoring_reader" {
   role_definition_name = "Monitoring Reader"
   principal_id         = azurerm_dashboard_grafana.grafana_dashboard.identity[0].principal_id
 }
+
+
+
+resource "azurerm_kusto_database_principal_assignment" "grafana_viewer" {
+  name                = "GrafanaViewerAssignment"
+  resource_group_name = data.azurerm_kusto_cluster.data_explorer.resource_group_name
+  cluster_name        = data.azurerm_kusto_cluster.data_explorer.name
+  database_name       = data.azurerm_kusto_database.data_explorer_re.name
+
+  tenant_id      = data.azurerm_client_config.current.tenant_id
+  principal_id   = azurerm_dashboard_grafana.grafana_dashboard.identity[0].principal_id
+  principal_type = "App"
+  role           = "Viewer"
+}
