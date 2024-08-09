@@ -221,7 +221,7 @@ Integration tests
 
 # Subscription key taken from GPD product and used for integration tests
 data "azurerm_api_management_product" "apim_gpd_product" {
-  product_id          = "gpd-product"
+  product_id          = "product-gpd"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
