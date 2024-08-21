@@ -7,7 +7,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-print-payment-not
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -41,7 +41,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-print-payment-not
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -113,7 +113,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-print-payment-not
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -143,14 +143,13 @@ AzureDiagnostics
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "print-generator-save-error-alert" {
-
+  count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-print-generator-save-error-alert"
   location            = var.location
 
   action {
-    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[Print Notice] error on generated notice save on blob storage"
     custom_webhook_payload = "{}"
   }
@@ -176,14 +175,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "print-generator-save-err
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "print-generator-retry-save-error-alert" {
-
+  count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-print-generator-error-save-error-alert"
   location            = var.location
 
   action {
-    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[Print Notice] error on generated notice save on retry related repository"
     custom_webhook_payload = "{}"
   }
@@ -211,13 +209,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "print-generator-retry-sa
 ## PDF Engine ##
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "pdf-engine-fun-error-alert" {
+  count = var.env_short == "p" ? 1 : 0
 
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-pdf-engine-fun-error-alert"
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[PDF ENGINE] error while executing generation"
     custom_webhook_payload = "{}"
   }
@@ -249,7 +248,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "generate-pdf-engine-gene
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -283,7 +282,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-pdf-engine-pdf-av
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -315,14 +314,14 @@ AzureDiagnostics
 ## Print Notice Functions ##
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "print-notice-retry-fn-error-alert" {
+  count = var.env_short == "p" ? 1 : 0
 
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-print-notice-retry-fn-error-alert"
   location            = var.location
 
   action {
-    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[Print Notice] error on retry management"
     custom_webhook_payload = "{}"
   }
@@ -348,14 +347,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "print-notice-retry-fn-er
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "print-notice-compress-fn-error-alert" {
-
+  count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-print-notice-compress-fn-error-alert"
   location            = var.location
 
   action {
-    # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[Print Notice] error on completion function for massive request"
     custom_webhook_payload = "{}"
   }
