@@ -25,6 +25,7 @@ resource "azurerm_api_management_named_value" "wisp_channel_whitelist_named_valu
   value               = var.wisp_converter.channel_whitelist
 }
 
+# TODO: delete this after an apply of 'core'
 resource "azurerm_api_management_named_value" "wisp_station_whitelist_named_value" {
   name                = "wisp-station-whitelist"
   api_management_name = local.pagopa_apim_name
@@ -33,6 +34,7 @@ resource "azurerm_api_management_named_value" "wisp_station_whitelist_named_valu
   value               = var.wisp_converter.station_whitelist
 }
 
+# TODO: delete this after an apply of 'core'
 resource "azurerm_api_management_named_value" "wisp_ci_whitelist_named_value" {
   name                = "wisp-ci-whitelist"
   api_management_name = local.pagopa_apim_name
@@ -117,6 +119,33 @@ resource "azapi_resource" "wisp_receipt_ko" {
       description = "[WISP] Logic to send receipt ko"
       format      = "rawxml"
       value       = file("./api/nodopagamenti_api/wisp/wisp-receipt-ko.xml")
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
+
+
+resource "terraform_data" "sha256_decoupler_whitelist_fragment" {
+  input = sha256(file("./api_product/wisp-converter/decoupler-whitelist-fragment.xml"))
+}
+
+resource "azapi_resource" "authorizer_fragment" {
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "decoupler-whitelist-fragment"
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Component that permits to set CIs and Stations in whitelist for Dismissione WISP"
+      format      = "rawxml"
+      value = templatefile("./api_product/wisp-converter/decoupler-whitelist-fragment.xml", {
+        wisp_whitelisted_cis      = var.wisp_converter.ci_whitelist
+        wisp_whitelisted_stations = var.wisp_converter.station_whitelist
+      })
+
     }
   })
 
