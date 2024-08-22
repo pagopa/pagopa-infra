@@ -447,8 +447,6 @@ variable "wisp_converter" {
     enable_apim_switch                 = bool # enable WISP dismantling
     brokerPSP_whitelist                = string
     channel_whitelist                  = string
-    station_whitelist                  = string
-    ci_whitelist                       = string
     nodoinviarpt_paymenttype_whitelist = string
     dismantling_primitives             = string
   })

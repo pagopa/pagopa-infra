@@ -153,4 +153,6 @@ buyer_banks_storage_account_replication_type = "GZRS"
 apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/loggers/pagopa-p-apim-logger"
 
 # WISP-dismantling-cfg
-create_wisp_converter = true
+create_wisp_converter     = true
+wisp_whitelisted_stations = "80001480534-00838520880_01,82004590814-00838520880_01,95565960010-00838520880_01,01808020356-02818030369_01,12621570154-00053810149_01" # subsets of EC friends
+wisp_whitelisted_cis      = "80001480534,82004590814,95565960010,01808020356,12621570154"

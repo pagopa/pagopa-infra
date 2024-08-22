@@ -153,4 +153,6 @@ node_forwarder_autoscale_enabled = false
 apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/loggers/pagopa-d-apim-logger"
 
 # WISP-dismantling-cfg
-create_wisp_converter = true
+create_wisp_converter     = true
+wisp_whitelisted_stations = "15376371009-15376371009_09" # https://config.dev.platform.pagopa.it/stations/15376371009_09 in DEV x i test quella di MockEC
+wisp_whitelisted_cis      = "15376371009"

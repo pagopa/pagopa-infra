@@ -62,7 +62,10 @@ resource "azapi_resource" "decoupler_algorithm" {
     properties = {
       description = "Logic about NPD decoupler"
       format      = "rawxml"
-      value       = file("./api_product/nodo_pagamenti_api/decoupler/decoupler-algorithm.xml")
+      value = templatefile("./api_product/nodo_pagamenti_api/decoupler/decoupler-algorithm.xml", {
+        wisp_whitelisted_cis      = var.wisp_whitelisted_cis
+        wisp_whitelisted_stations = var.wisp_whitelisted_stations
+      })
     }
   })
 

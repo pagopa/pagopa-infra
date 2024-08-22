@@ -389,3 +389,13 @@ variable "create_wisp_converter" {
   default     = false
   description = "CREATE WISP dismantling system infra"
 }
+
+variable "wisp_whitelisted_cis" {
+  type        = string
+  description = "CIs enabled for Dismissione WISP"
+}
+
+variable "wisp_whitelisted_stations" {
+  type        = string
+  description = "Staions enabled for Dismissione WISP"
+}

@@ -139,4 +139,6 @@ cstar_outbound_ip_2 = "20.76.182.7"
 apim_logger_resource_id = "/subscriptions/26abc801-0d8f-4a6e-ac5f-8e81bcc09112/resourceGroups/pagopa-u-api-rg/providers/Microsoft.ApiManagement/service/pagopa-u-apim/loggers/pagopa-u-apim-logger"
 
 # WISP-dismantling-cfg
-create_wisp_converter = true
+create_wisp_converter     = true
+wisp_whitelisted_stations = "*" # https://config.uat.platform.pagopa.it/stations/15376371009_09 in UAT x i test quella di MockEC
+wisp_whitelisted_cis      = "*"
