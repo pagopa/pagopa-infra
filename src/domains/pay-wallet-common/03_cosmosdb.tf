@@ -75,7 +75,7 @@ locals {
       ]
       shard_key = null
     },
-    {
+    { # collection with event until 25/08/2024, replaced by payment-wallet-log-events
       name = "wallet-log-events"
       indexes = [{
         keys   = ["_id"]
@@ -122,6 +122,19 @@ locals {
         }
       ]
       shard_key = "userId"
+    },
+    { # collection with event from 25/08/2024
+      name = "payment-wallet-log-events"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["walletId", "timestamp", "eventType"]
+          unique = true
+        }
+      ]
+      shard_key = "walletId"
     },
   ]
 }
