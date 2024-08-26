@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+  http://www.liquibase.org/xml/ns/pro
+  http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+
+    <changeSet author="liquibase" id="20240826000000">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="iban" columnName="fk_pa"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="iban">
+            <column name="fk_pa" type="NUMBER" />
+        </addColumn>
+      <addForeignKeyConstraint
+        baseColumnNames="fk_pa"
+        baseTableName="iban"
+        constraintName="fk_iban_to_pa"
+        deferrable="false" initiallyDeferred="false"
+        onDelete="RESTRICT" onUpdate="RESTRICT"
+        referencedColumnNames="obj_id"
+        referencedTableName="pa" validate="true"/>
+    </changeSet>
+
+</databaseChangeLog>
