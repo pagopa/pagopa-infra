@@ -25,22 +25,6 @@ resource "azurerm_api_management_named_value" "wisp_channel_whitelist_named_valu
   value               = var.wisp_converter.channel_whitelist
 }
 
-resource "azurerm_api_management_named_value" "wisp_station_whitelist_named_value" {
-  name                = "wisp-station-whitelist"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "wisp-station-whitelist"
-  value               = var.wisp_converter.station_whitelist
-}
-
-resource "azurerm_api_management_named_value" "wisp_ci_whitelist_named_value" {
-  name                = "wisp-ci-whitelist"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "wisp-ci-whitelist"
-  value               = var.wisp_converter.ci_whitelist
-}
-
 resource "azurerm_api_management_named_value" "wisp_nodoinviarpt_paymenttype_whitelist_named_value" {
   name                = "wisp-nodoinviarpt-paymenttype-whitelist"
   api_management_name = local.pagopa_apim_name
@@ -77,6 +61,7 @@ resource "azurerm_api_management_named_value" "wisp_dismantling_converter_base_u
 ## Fragment    ##
 #################
 resource "terraform_data" "sha256_wisp_disable_payment_token_timer" {
+  count = var.create_wisp_converter ? 1 : 0
   input = sha256(file("./api/nodopagamenti_api/wisp/wisp-disable-payment-token-timer.xml"))
 }
 
@@ -102,6 +87,7 @@ resource "azapi_resource" "wisp_disable_payment_token_timer" {
 }
 
 resource "terraform_data" "sha256_wisp_receipt_ko" {
+  count = var.create_wisp_converter ? 1 : 0
   input = sha256(file("./api/nodopagamenti_api/wisp/wisp-receipt-ko.xml"))
 }
 resource "azapi_resource" "wisp_receipt_ko" {
@@ -117,6 +103,35 @@ resource "azapi_resource" "wisp_receipt_ko" {
       description = "[WISP] Logic to send receipt ko"
       format      = "rawxml"
       value       = file("./api/nodopagamenti_api/wisp/wisp-receipt-ko.xml")
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
+
+
+resource "terraform_data" "sha256_wisp_batch_migration" {
+  count = var.create_wisp_converter ? 1 : 0
+  input = sha256(file("./api/nodopagamenti_api/wisp/wisp-batch-migration.xml"))
+}
+resource "azapi_resource" "wisp_batch_migration" {
+  count = var.create_wisp_converter ? 1 : 0
+
+  type = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name = "wisp-batch-migration"
+
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "[WISP] Logic to create whitelisted cis and station"
+      format      = "rawxml"
+      value = templatefile("./api/nodopagamenti_api/wisp/wisp-batch-migration.xml", {
+        wisp_whitelisted_cis      = trimspace(file("./api/nodopagamenti_api/wisp/cfg/${var.env}/batch_migration_cis.txt"))
+        wisp_whitelisted_stations = trimspace(file("./api/nodopagamenti_api/wisp/cfg/${var.env}/batch_migration_stations.txt"))
+      })
     }
   })
 
