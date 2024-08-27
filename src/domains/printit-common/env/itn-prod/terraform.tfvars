@@ -84,17 +84,17 @@ cosmos_mongo_db_notices_params = {
 }
 
 notices_storage_account = {
-  account_kind                                                        = "StorageV2"
-  account_tier                                                        = "Standard"
-  account_replication_type                                            = "ZRS"
-  blob_versioning_enabled                                             = true
-  advanced_threat_protection                                          = false
-  public_network_access_enabled                                       = false
-  blob_delete_retention_days                                          = 30
-  enable_low_availability_alert                                       = true
-  blob_tier_to_cool_after_last_access                                 = 100
-  blob_tier_to_archive_after_days_since_last_access_time_greater_than = 3650
-  blob_delete_after_last_access                                       = 3650
+  account_kind                        = "StorageV2"
+  account_tier                        = "Standard"
+  account_replication_type            = "ZRS"
+  blob_versioning_enabled             = true
+  advanced_threat_protection          = false
+  public_network_access_enabled       = false
+  blob_delete_retention_days          = 30
+  enable_low_availability_alert       = true
+  blob_tier_to_cool_after_last_access = 100
+  #   blob_tier_to_archive_after_days_since_last_access_time_greater_than = 3650
+  blob_delete_after_last_access = 200
 }
 
 templates_storage_account = {
