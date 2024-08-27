@@ -174,3 +174,18 @@ resource "azurerm_app_configuration_feature" "payment_notices_flag" {
     ]
   }
 }
+
+resource "azurerm_app_configuration_feature" "station_maintenances_flag" {
+  configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
+  description            = "It enables the Station Maintenance's page"
+  name                   = "station-maintenances"
+  enabled                = false
+
+  lifecycle {
+    ignore_changes = [
+      enabled,
+      targeting_filter,
+      timewindow_filter
+    ]
+  }
+}
