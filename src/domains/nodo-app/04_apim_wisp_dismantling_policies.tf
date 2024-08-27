@@ -124,3 +124,31 @@ resource "azapi_resource" "wisp_receipt_ko" {
     ignore_changes = [output]
   }
 }
+
+
+resource "terraform_data" "sha256_wisp_batch_migration" {
+  input = sha256(file("./api/nodopagamenti_api/wisp/wisp-batch-migration.xml"))
+}
+resource "azapi_resource" "wisp_batch_migration" {
+  count = var.create_wisp_converter ? 1 : 0
+
+  type = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name = "wisp-batch-migration"
+
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "[WISP] Logic to create whitelisted cis and station"
+      format      = "rawxml"
+      value = templatefile("./api/nodopagamenti_api/wisp/wisp-batch-migration.xml", {
+        wisp_whitelisted_cis      = trimspace(file("./api/nodopagamenti_api/wisp/cfg/${var.env}/batch_migration_cis.txt"))
+        wisp_whitelisted_stations = trimspace(file("./api/nodopagamenti_api/wisp/cfg/${var.env}/batch_migration_stations.txt"))
+      })
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}

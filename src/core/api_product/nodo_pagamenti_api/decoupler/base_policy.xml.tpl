@@ -125,6 +125,11 @@
             return "NOTSET";
         }" />
 <!-- apply algorithm logic -->
+<choose>
+      <when condition="@(((string)context.Variables["primitiveType"]).Equals("OTHER_WISPDISMANTLING"))">
+        <include-fragment fragment-id="wisp-batch-migration" />
+      </when>
+</choose>
 <include-fragment fragment-id="decoupler-algorithm" />
 
 <!-- set backend service url -->
