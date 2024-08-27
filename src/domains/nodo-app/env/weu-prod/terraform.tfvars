@@ -280,6 +280,7 @@ wisp_converter = {
   ci_whitelist                       = "80001480534,82004590814,95565960010,01808020356,12621570154"
   nodoinviarpt_paymenttype_whitelist = "BBT"
   dismantling_primitives             = "nodoInviaRPT,nodoInviaCarrelloRPT"
+  dismantling_rt_primitives          = "nodoChiediCopiaRT"
 }
 
 # 80001480534-00838520880_01 GRPM01000E/Argo https://config.platform.pagopa.it/creditor-institutions/80001480534
