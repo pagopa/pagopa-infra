@@ -453,6 +453,7 @@ variable "wisp_converter" {
     dismantling_primitives              = string
     dismantling_rt_primitives           = string
     checkout_predefined_expiration_time = number
+    wisp_ecommerce_channels             = string
   })
 }
 

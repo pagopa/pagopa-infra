@@ -208,7 +208,8 @@ wisp_converter = {
   nodoinviarpt_paymenttype_whitelist  = "BBT"
   dismantling_primitives              = "nodoInviaRPT,nodoInviaCarrelloRPT"
   dismantling_rt_primitives           = "nodoChiediCopiaRT"
-  checkout_predefined_expiration_time = 60
+  checkout_predefined_expiration_time = 1800
+  wisp_ecommerce_channels             = "97735020584_03"
 }
 
 enable_sendPaymentResultV2_SWClient = true

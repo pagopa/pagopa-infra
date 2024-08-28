@@ -73,6 +73,14 @@ resource "azurerm_api_management_named_value" "wisp_checkout_predefined_expirati
   value               = var.wisp_converter.checkout_predefined_expiration_time
 }
 
+resource "azurerm_api_management_named_value" "wisp_ecommerce_channels" {
+  name                = "wisp-ecommerce-channels"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "wisp-ecommerce-channels"
+  value               = var.wisp_converter.wisp_ecommerce_channels
+}
+
 #################
 ## Fragment    ##
 #################
