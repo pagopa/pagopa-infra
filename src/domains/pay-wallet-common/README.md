@@ -24,12 +24,12 @@
 | <a name="module_redis_pagopa_pay_wallet_snet"></a> [redis\_pagopa\_pay\_wallet\_snet](#module\_redis\_pagopa\_pay\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.20.1 |
 | <a name="module_storage_pay_wallet_snet"></a> [storage\_pay\_wallet\_snet](#module\_storage\_pay\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.20.1 |
 | <a name="module_wallet_fe_cdn"></a> [wallet\_fe\_cdn](#module\_wallet\_fe\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn | v8.20.1 |
+| <a name="module_wallet_fe_web_test"></a> [wallet\_fe\_web\_test](#module\_wallet\_fe\_web\_test) | git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_standard_web_test | v8.20.1 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [azurerm_application_insights_web_test.wallet_fe_web_test](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/application_insights_web_test) | resource |
 | [azurerm_cosmosdb_mongo_database.pay_wallet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
 | [azurerm_dns_caa_record.payment_wallet_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_caa_record) | resource |
 | [azurerm_dns_ns_record.dev_payment_wallet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_ns_record) | resource |

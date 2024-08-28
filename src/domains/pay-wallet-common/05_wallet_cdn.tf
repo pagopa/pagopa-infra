@@ -100,25 +100,23 @@ module "wallet_fe_cdn" {
   tags = var.tags
 }
 
-resource "azurerm_application_insights_web_test" "wallet_fe_web_test" {
-  count                   = var.env_short == "p" ? 1 : 0
-  name                    = "${local.project}-fe-web-test"
-  location                = var.location
-  resource_group_name     = data.azurerm_resource_group.monitor_italy_rg.name
-  application_insights_id = data.azurerm_application_insights.application_insights_italy.id
-  kind                    = "ping"
-  frequency               = 300
-  timeout                 = 10
-  enabled                 = true
-  geo_locations           = ["emea-nl-ams-azr"]
 
-  configuration = <<XML
-<WebTest Name="wallet_fe_web_test" Id="ABD48585-0831-40CB-9069-682EA6BB3583" Enabled="True" CssProjectStructure="" CssIteration="" Timeout="10" WorkItemIds=""
-    xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010" Description="" CredentialUserName="" CredentialPassword="" PreAuthenticate="True" Proxy="default" StopOnError="False" RecordedResultFile="" ResultsLocale="">
-    <Items>
-        <Request Method="GET" Guid="a5f10126-e4cd-570d-961c-cea43999a200" Version="1.1" Url="https://${var.dns_zone_prefix}.${var.external_domain}/index.html" ThinkTime="0" Timeout="10" ParseDependentRequests="False" FollowRedirects="True" RecordResult="True" Cache="False" ResponseTimeGoal="0" Encoding="utf-8" ExpectedHttpStatusCode="200" ExpectedResponseUrl="" ReportingName="" IgnoreHttpStatusCode="False" />
-    </Items>
-</WebTest>
-XML
+module "wallet_fe_web_test" {
+  count                                 = var.env_short == "p" ? 1 : 0
+  source                                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_standard_web_test?ref=v8.20.1"
+  https_endpoint                        = "https://${module.wallet_fe_cdn.fqdn}"
+  https_endpoint_path                   = "/index.html"
+  alert_name                            = "${local.project}-fe-web-test"
+  location                              = var.location
+  alert_enabled                         = true
+  application_insights_resource_group   = data.azurerm_resource_group.monitor_italy_rg.name
+  application_insights_id               = data.azurerm_application_insights.application_insights_italy.id
+  application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
+  https_probe_method                    = "GET"
+  timeout                               = 10
+  frequency                             = 300
+  https_probe_threshold                 = 99
+  metric_frequency                      = "PT5M"
+  metric_window_size                    = "PT5M"
 
 }
