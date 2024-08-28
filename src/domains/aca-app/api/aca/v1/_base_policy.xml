@@ -1,0 +1,34 @@
+<policies>
+    <inbound>
+      <!-- <base /> --> <!-- to avoid Nuova Connettività policy  -->
+      <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
+      <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
+      <set-backend-service base-url="@("https://${aca_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-aca-service")"/>
+      <!-- Calling Authorizer's fragment -->
+      <set-variable name="application_domain" value="aca" />
+      <set-variable name="metadata" value="no-metadata" />
+      <set-variable name="requestBody" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
+      <set-variable name="authorization_entity" value="@(context.Variables.GetValueOrDefault<JObject>("requestBody")["paFiscalCode"]?.ToString())" />
+      <choose>
+        <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
+        <when condition="@(context.Variables["authorization_entity"] != null)">
+          <include-fragment fragment-id="authorizer" />
+        </when>
+        <otherwise>
+          <return-response>
+            <set-status code="400" reason="Bad Request" />
+            <set-body>@("The 'paFiscalCode' field is missing in the request body.")</set-body>
+          </return-response>
+        </otherwise>
+      </choose>
+    </inbound>
+    <outbound>
+      <!-- <base /> --> <!-- to avoid Nuova Connettività policy  -->
+    </outbound>
+    <backend>
+      <base />
+    </backend>
+    <on-error>
+      <!-- <base /> --> <!-- to avoid Nuova Connettività policy  -->
+    </on-error>
+  </policies>
