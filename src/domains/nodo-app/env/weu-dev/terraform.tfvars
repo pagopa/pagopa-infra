@@ -200,14 +200,15 @@ storage_account_info = {
 # WISP-dismantling-cfg
 create_wisp_converter = true
 wisp_converter = {
-  enable_apim_switch                 = true
-  brokerPSP_whitelist                = "97735020584"                # AGID
-  channel_whitelist                  = "97735020584_02"             # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/135924270/Canali+Particolari
-  station_whitelist                  = "15376371009-15376371009_09" # https://config.dev.platform.pagopa.it/stations/15376371009_09 in DEV x i test quella di MockEC
-  ci_whitelist                       = "15376371009"
-  nodoinviarpt_paymenttype_whitelist = "BBT"
-  dismantling_primitives             = "nodoInviaRPT,nodoInviaCarrelloRPT"
-  dismantling_rt_primitives          = "nodoChiediCopiaRT"
+  enable_apim_switch                  = true
+  brokerPSP_whitelist                 = "97735020584"                # AGID
+  channel_whitelist                   = "97735020584_02"             # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/135924270/Canali+Particolari
+  station_whitelist                   = "15376371009-15376371009_09" # https://config.dev.platform.pagopa.it/stations/15376371009_09 in DEV x i test quella di MockEC
+  ci_whitelist                        = "15376371009"
+  nodoinviarpt_paymenttype_whitelist  = "BBT"
+  dismantling_primitives              = "nodoInviaRPT,nodoInviaCarrelloRPT"
+  dismantling_rt_primitives           = "nodoChiediCopiaRT"
+  checkout_predefined_expiration_time = 60
 }
 
 enable_sendPaymentResultV2_SWClient = true

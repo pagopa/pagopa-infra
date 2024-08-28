@@ -1,0 +1,20 @@
+<policies>
+  <inbound>
+    <base />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+    <set-variable name="wisp_sessionId" value="@(context.Request.Url.Query.GetValueOrDefault("idSession", "NONE"))" />
+    <choose>
+      <when condition="@(!((string)context.Variables["wisp_sessionId"]).Equals("NONE"))">
+      <cache-store-value key="@("wisp_timer_hang_" + (string)context.Variables["wisp_sessionId"])" value="@(DateTime.UtcNow.AddSeconds({{wisp-checkout-predefined-expiration-time}}))" duration="{{wisp-checkout-predefined-expiration-time}}" caching-type="external" />
+    </when>
+  </choose>
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
