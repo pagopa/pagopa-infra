@@ -273,14 +273,16 @@ nodo_pagamenti_x_forwarded_for = "10.230.10.5"
 # WISP-dismantling-cfg
 create_wisp_converter = true
 wisp_converter = {
-  enable_apim_switch                 = true
-  brokerPSP_whitelist                = "97735020584"
-  channel_whitelist                  = "97735020584_02"
-  station_whitelist                  = "80001480534-00838520880_01,82004590814-00838520880_01,95565960010-00838520880_01,01808020356-02818030369_01,12621570154-00053810149_01" # subsets of EC friends
-  ci_whitelist                       = "80001480534,82004590814,95565960010,01808020356,12621570154"
-  nodoinviarpt_paymenttype_whitelist = "BBT"
-  dismantling_primitives             = "nodoInviaRPT,nodoInviaCarrelloRPT"
-  dismantling_rt_primitives          = "nodoChiediCopiaRT"
+  enable_apim_switch                  = true
+  brokerPSP_whitelist                 = "97735020584"
+  channel_whitelist                   = "97735020584_02"
+  station_whitelist                   = "80001480534-00838520880_01,82004590814-00838520880_01,95565960010-00838520880_01,01808020356-02818030369_01,12621570154-00053810149_01" # subsets of EC friends
+  ci_whitelist                        = "80001480534,82004590814,95565960010,01808020356,12621570154"
+  nodoinviarpt_paymenttype_whitelist  = "BBT"
+  dismantling_primitives              = "nodoInviaRPT,nodoInviaCarrelloRPT"
+  dismantling_rt_primitives           = "nodoChiediCopiaRT"
+  checkout_predefined_expiration_time = 1800
+  wisp_ecommerce_channels             = "97735020584_03"
 }
 
 # 80001480534-00838520880_01 GRPM01000E/Argo https://config.platform.pagopa.it/creditor-institutions/80001480534

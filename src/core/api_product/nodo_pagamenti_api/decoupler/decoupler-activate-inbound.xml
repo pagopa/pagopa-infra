@@ -32,7 +32,7 @@
         XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
         XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
         XElement primitive = (XElement) body.FirstNode;
-        string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
+        string channelId = (string) primitive.Descendants("idChannel").FirstOrDefault();
 
         var soapAction = (string)context.Variables["soapAction"];
         return activatePayment.Contains(soapAction) && ecommerceChannels.Contains(channelId);
@@ -61,19 +61,19 @@
               <value>text/xml</value>
             </set-header>
             <set-body><![CDATA[
-                                            <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/" xmlns:nfp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
-                                                <soapenv:Body>
-                                                    <nfp:activatePaymentNoticeV2Response>
-                                                        <outcome>KO</outcome>
-                                                        <fault>
-                                                            <faultCode>PPT_ERRORE_EMESSO_DA_PAA</faultCode>
-                                                            <faultString>User session expired.</faultString>
-                                                            <id>NodoDeiPagamentiSPC</id>
-                                                            <description>Too many time occured between Checkout redirect and activatePaymentNoticeV2</description>
-                                                        </fault>
-                                                    </nfp:activatePaymentNoticeV2Response>
-                                                </soapenv:Body>
-                                            </soapenv:Envelope>
+<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/" xmlns:nfp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+    <soapenv:Body>
+        <nfp:activatePaymentNoticeV2Response>
+            <outcome>KO</outcome>
+            <fault>
+                <faultCode>PPT_ERRORE_EMESSO_DA_PAA</faultCode>
+                <faultString>User session expired.</faultString>
+                <id>NodoDeiPagamentiSPC</id>
+                <description>Too many times occurred between Checkout redirect and activatePaymentNoticeV2</description>
+            </fault>
+        </nfp:activatePaymentNoticeV2Response>
+    </soapenv:Body>
+</soapenv:Envelope>
                                         ]]></set-body>
           </return-response>
         </when>
