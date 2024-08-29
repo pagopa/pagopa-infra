@@ -1,0 +1,52 @@
+<policies>
+  <inbound>
+    <base />
+    <set-variable name="paSendRTV2-request-body" value="@((string)context.Request.Body.As<string>(preserveContent: true))" />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <base />
+    <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
+    <set-variable name="status_code" value="@(context.Response.StatusCode)" />
+    <choose>
+      <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && context.Variables.GetValueOrDefault<int>("status_code", 0).Equals(200))">
+        <set-variable name="paSendRT-fiscalCode-noticeNumber" value="@{
+                        try {
+                            XElement request = context.Request.Body.As<XElement>(preserveContent: true);
+                            XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
+                            XElement primitive = (XElement) body.FirstNode;
+                            var fiscalCode = primitive.Descendants("fiscalCode").FirstOrDefault();
+                            var noticeNumber = primitive.Descendants("noticeNumber").FirstOrDefault();
+                            return "wisp_" + fiscalCode.Value.ToString() + "_" + noticeNumber.Value.ToString();
+                        } catch (Exception e) {
+                            return "NONE";
+                        }
+                    }" />
+        <cache-lookup-value key="@((string) context.Variables["paSendRT-fiscalCode-noticeNumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
+        <choose>
+          <!-- if wisp_<CF-EC>_<NAV> exist -->
+          <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+            <send-one-way-request mode="new">
+              <set-url>{{wisp-dismantling-converter-base-url}}/receipt/ok</set-url>
+              <set-method>POST</set-method>
+              <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+              </set-header>
+              <set-body>@{
+                return new JObject(
+                new JProperty("content", (string) context.Variables["paSendRTV2-request-body"])
+                ).ToString();
+                }</set-body>
+            </send-one-way-request>
+          </when>
+        </choose>
+      </when>
+    </choose>
+
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

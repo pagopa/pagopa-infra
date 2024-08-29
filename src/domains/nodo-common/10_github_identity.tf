@@ -13,11 +13,14 @@ locals {
     "pagopa-stand-in-manager",
     "pagopa-stand-in-technical-support",
     "pagopa-node-cfg-sync",
+    "pagopa-nodo-verifyko-to-tablestorage",
+    "pagopa-nodo-verifyko-to-datastore",
     "pagopa-nodo-verifyko-aux",
     "pagopa-wisp-soap-converter",
     "pagopa-wisp-converter",
     "pagopa-wisp-converter-technical-support",
-    "pagopa-node-technical-support-worker"
+    "pagopa-node-technical-support-worker",
+    "pagopa-mbd"
   ]
 
   federations_01 = [
@@ -45,7 +48,7 @@ locals {
 
 # create a module for each 20 repos
 module "identity_cd_01" {
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.45.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.77.0"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short

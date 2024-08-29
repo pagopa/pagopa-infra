@@ -45,3 +45,8 @@ dexp_db = {
 dexp_re_db_linkes_service = {
   enable = true
 }
+
+app_forwarder_enabled = true
+
+external_domain      = "pagopa.it"
+apim_dns_zone_prefix = "dev.platform"

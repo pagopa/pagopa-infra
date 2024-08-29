@@ -32,7 +32,7 @@ upload_firmatore = {
 
 cacerts_path = "./env/weu-prod/resources/cacerts"
 
-certs_storage_account_replication_type = "ZRS"
+certs_storage_account_replication_type = "GZRS"
 
 
 nodo_cert_storage_account = {

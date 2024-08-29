@@ -3,7 +3,7 @@
 ##############
 
 module "apim_pdf_engine_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.18.0"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   product_id   = "pdf-engine-printit"
@@ -25,19 +25,21 @@ module "apim_pdf_engine_product" {
 ##  API PDF ENGINE  ##
 #########################
 locals {
-  apim_pdf_engine_service_api = { # java
+  apim_pdf_engine_service_api = {
+    # java
     display_name          = "PDF Engine Service for Stampa Avvisi - API"
     description           = "PDF Engine Service for Stampa Avvisi - API"
     path                  = "printit/pdf-engine"
     subscription_required = true
-    service_url           = can(module.printit_pdf_engine_app_service_java[0].default_site_hostname)
+    service_url           = can(module.printit_pdf_engine_app_service_java[0].default_site_hostname) ? module.printit_pdf_engine_app_service_java[0].default_site_hostname : ""
   }
-  apim_pdf_engine_node_service_api = { # node
+  apim_pdf_engine_node_service_api = {
+    # node
     display_name          = "PDF Engine Node Service for Stampa Avvisi - API"
     description           = "PDF Engine Node Service for Stampa Avvisi - API"
     path                  = "printit/pdf-engine-node"
     subscription_required = true
-    service_url           = can(module.printit_pdf_engine_app_service[0].default_site_hostname)
+    service_url           = can(module.printit_pdf_engine_app_service[0].default_site_hostname) ? module.printit_pdf_engine_app_service[0].default_site_hostname : ""
   }
 }
 
@@ -48,7 +50,7 @@ locals {
 resource "azurerm_api_management_api_version_set" "api_pdf_engine_api" {
   count = var.is_feature_enabled.pdf_engine ? 1 : 0
 
-  name                = "${var.env_short}-pdf-engine-service-api"
+  name                = "${var.env_short}-pdf-engine-service-api-for-notice"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_pdf_engine_service_api.display_name
@@ -56,7 +58,7 @@ resource "azurerm_api_management_api_version_set" "api_pdf_engine_api" {
 }
 
 module "apim_api_pdf_engine_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.18.0"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   name                  = "${local.project}-pdf-engine-service-api"
@@ -90,7 +92,7 @@ module "apim_api_pdf_engine_api_v1" {
 resource "azurerm_api_management_api_version_set" "api_pdf_engine_node_api" {
   count = var.is_feature_enabled.pdf_engine ? 1 : 0
 
-  name                = "${var.env_short}-pdf-engine-node-service-api"
+  name                = "${var.env_short}-pdf-engine-node-service-api-for-notice"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_pdf_engine_node_service_api.display_name
@@ -98,7 +100,7 @@ resource "azurerm_api_management_api_version_set" "api_pdf_engine_node_api" {
 }
 
 module "apim_api_pdf_engine_node_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.18.0"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   name                  = "${var.env_short}-pdf-engine-node-service-api"

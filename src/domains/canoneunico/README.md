@@ -5,10 +5,12 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.6.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.30.0, <= 3.53.0 |
-| <a name="requirement_local"></a> [local](#requirement\_local) | >= 2.2.3 |
-| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.0 |
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.12.1 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.6.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.45.0 |
+| <a name="requirement_local"></a> [local](#requirement\_local) | <= 2.4.1 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.2 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | <= 0.10.0 |
 
 ## Modules
 
@@ -22,8 +24,8 @@
 
 | Name | Type |
 |------|------|
-| [azapi_resource.sftp_localuser_on_container](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource) | resource |
-| [azapi_resource_action.generate_sftp_user_password](https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource_action) | resource |
+| [azapi_resource.sftp_localuser_on_container](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
+| [azapi_resource_action.generate_sftp_user_password](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource_action) | resource |
 | [azurerm_app_service_plan.canoneunico_service_plan](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_service_plan) | resource |
 | [azurerm_eventgrid_system_topic.storage_topic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventgrid_system_topic) | resource |
 | [azurerm_eventgrid_system_topic_event_subscription.storage_subscription](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/eventgrid_system_topic_event_subscription) | resource |

@@ -67,8 +67,18 @@ variable "tags" {
   }
 }
 
-### External resources
+### Features flags
 
+variable "is_feature_enabled" {
+  type = object({
+    pdf_engine = bool
+    printit    = bool
+  })
+  default = {
+    pdf_engine = false
+    printit    = false
+  }
+}
 ### External resources
 
 variable "monitor_resource_group_name" {
@@ -130,15 +140,6 @@ variable "apim_dns_zone_prefix" {
   description = "The dns subdomain for apim."
 }
 
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
-
 variable "payment_wallet_with_pm_enabled" {
   type        = bool
   default     = false
@@ -171,43 +172,43 @@ variable "payment_wallet_migrations_enabled" {
   description = "Payment wallet migrations enabled"
 }
 
-
-# pdf-engine
-variable "cidr_subnet_pdf_engine_app_service" {
-  type        = list(string)
-  description = "CIDR subnet for App Service"
-  default     = null
-}
-
+#
+# APP Service PDF
+#
 variable "app_service_pdf_engine_autoscale_enabled" {
-  type    = bool
-  default = true
+  type = bool
 }
 
 variable "app_service_pdf_engine_always_on" {
   type        = bool
   description = "Always on property"
-  default     = true
 }
 
 variable "app_service_pdf_engine_sku_name" {
   type        = string
   description = "app service plan size"
-  default     = "S1"
 }
+
+
+### PDF JAVA
 variable "app_service_pdf_engine_sku_name_java" {
   type        = string
   description = "app service plan size"
-  default     = "S1"
 }
 
-### Features flags
+variable "app_service_pdf_engine_sku_name_java_zone_balancing_enabled" {
+  type        = bool
+  description = "Enable HA multi az balancing"
+}
 
-variable "is_feature_enabled" {
-  type = object({
-    pdf_engine = bool
-  })
-  default = {
-    pdf_engine = false
-  }
+
+### PDB
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
 }

@@ -37,8 +37,4 @@ pagopa_proxy_redis_family   = "C"
 
 redis_private_endpoint_enabled = true
 redis_zones                    = []
-redis_ha_enabled               = false
-pagopa_proxy_redis_ha_sku_name = "Basic"
-pagopa_proxy_redis_ha_family   = "C"
-pagopa_proxy_redis_ha_capacity = 0
 

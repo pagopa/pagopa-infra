@@ -144,7 +144,7 @@
                             <!-- Get station details and relation info with creditor institution -->
                             <!-- <set-url>@(String.Format("https://api.${urlenvpath}platform.pagopa.it/apiconfig/auth/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url> -->
 <!--                            <set-url>@(String.Format("https://pagopa-${urlenvpath}-app-api-config.azurewebsites.net/apiconfig/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>-->
-                            <set-url>@(String.Format("https://${url_aks}/pagopa-api-config-core-service/o/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>
+                            <set-url>@(String.Format("https://${url_aks}/{{apicfg-core-service-path}}/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>
                             <set-method>GET</set-method>
                             <set-header name="Content-Type" exists-action="override">
                                 <value>application/json</value>

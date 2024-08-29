@@ -20,6 +20,10 @@ terraform {
       source  = "hashicorp/helm"
       version = "<= 2.12.0"
     }
+    azapi = {
+      source  = "azure/azapi"
+      version = "<= 1.3.0"
+    }
   }
 
   backend "azurerm" {}
