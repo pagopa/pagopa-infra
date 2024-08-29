@@ -64,7 +64,7 @@ module "apim_aca_api_v1" {
     hostname = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/aca/v1/_base_policy.xml.tpl", {
+  xml_content = templatefile("./api/aca/v1/_base_policy.xml", {
     aca_ingress_hostname = local.aca_hostname
   })
 }
