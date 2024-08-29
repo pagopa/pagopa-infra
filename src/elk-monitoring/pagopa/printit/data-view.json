@@ -1,6 +1,6 @@
 {
     "data_view": {
-       "id": "log_pattern_${name}",
+       "id": "log_pattern_${key}",
        "title": "logs-${index}-*",
        "name": "Log ${name}",
        "timeFieldName": "@timestamp"
