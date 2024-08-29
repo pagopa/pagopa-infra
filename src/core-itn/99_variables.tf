@@ -1,11 +1,6 @@
 variable "is_feature_enabled" {
   type = object({
-    vnet_ita                  = bool,
-    container_app_tools_cae   = optional(bool, false),
-    node_forwarder_ha_enabled = bool
-    vpn                       = optional(bool, false)
-    dns_forwarder_lb          = optional(bool, false)
-    postgres_private_dns      = bool
+    container_app_tools_cae = optional(bool, false),
   })
   description = "Features enabled in this domain"
 }
@@ -151,96 +146,25 @@ variable "law_internet_query_enabled" {
 }
 
 # DNS
-# variable "external_domain" {
-#   type        = string
-#   default     = "pagopa.it"
-#   description = "Domain for delegation"
-# }
-#
-# variable "dns_zone_internal_prefix" {
-#   type        = string
-#   default     = null
-#   description = "The dns subdomain."
-# }
-
-#
-# Event hub
-#
-variable "ehns_auto_inflate_enabled" {
-  type        = bool
-  description = "Is Auto Inflate enabled for the EventHub Namespace?"
-  default     = false
-}
-
-variable "ehns_sku_name" {
+variable "external_domain" {
   type        = string
-  description = "Defines which tier to use."
+  default     = "pagopa.it"
+  description = "Domain for delegation"
 }
 
-variable "ehns_capacity" {
+variable "dns_zone_internal_prefix" {
+  type        = string
+  description = "The dns subdomain."
+}
+
+variable "platform_dns_zone_prefix" {
+  type        = string
+  description = "platform dns prefix"
+}
+
+variable "dns_default_ttl_sec" {
   type        = number
-  description = "Specifies the Capacity / Throughput Units for a Standard SKU namespace."
-}
-
-variable "ehns_maximum_throughput_units" {
-  type        = number
-  description = "Specifies the maximum number of throughput units when Auto Inflate is Enabled"
-}
-
-variable "ehns_zone_redundant" {
-  type        = bool
-  description = "Specifies if the EventHub Namespace should be Zone Redundant (created across Availability Zones)."
-}
-
-# variable "ehns_alerts_enabled" {
-#   type        = bool
-#   default     = false
-#   description = "Event hub alerts enabled?"
-# }
-
-variable "ehns_public_network_access" {
-  type        = bool
-  description = "(Required) enables public network access to the event hubs"
-}
-
-variable "ehns_private_endpoint_is_present" {
-  type        = bool
-  description = "(Required) create private endpoint to the event hubs"
-}
-
-variable "ehns_metric_alerts_create" {
-  type        = bool
-  description = "Create metrics alerts for eventhub"
-}
-
-variable "ehns_metric_alerts" {
-  default = {}
-
-  description = <<EOD
-Map of name = criteria objects
-EOD
-
-  type = map(object({
-    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
-    aggregation = string
-    metric_name = string
-    description = string
-    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
-    operator  = string
-    threshold = number
-    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
-    frequency = string
-    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
-    window_size = string
-
-    dimension = list(object(
-      {
-        name     = string
-        operator = string
-        values   = list(string)
-      }
-    ))
-  }))
+  description = "Dns default ttl secs"
 }
 
 #

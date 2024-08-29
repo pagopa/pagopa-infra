@@ -163,3 +163,23 @@ variable "pdv_api_base_path" {
   default     = null
   description = "Personal data vault api base path"
 }
+
+variable "enabled_payment_wallet_method_ids_pm" {
+  type        = string
+  default     = ""
+  description = "Comma separated list of eCommerce payment method ids that are enabled with PM APIs"
+}
+
+variable "pagopa_vpn" {
+  type = object({
+    ips = list(string)
+  })
+  description = "pagoPA on prem VPN"
+}
+
+variable "pagopa_vpn_dr" {
+  type = object({
+    ips = list(string)
+  })
+  description = "pagoPA on prem VPN DR"
+}

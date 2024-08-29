@@ -23,6 +23,11 @@ data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "config_cache_subscription_key" {
+  name         = "config-cache-subscription-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 # KV placeholder for subkey
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "gpd_subscription_key" {

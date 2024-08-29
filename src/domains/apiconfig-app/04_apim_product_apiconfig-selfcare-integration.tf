@@ -22,3 +22,5 @@ resource "azurerm_api_management_product_group" "access_control_developers_for_s
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
+
+// API policy and endpoints are configured in the repository

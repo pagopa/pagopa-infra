@@ -23,6 +23,8 @@ locals {
   vnet_italy_name                = "${local.product_italy}-vnet"
   vnet_italy_resource_group_name = "${local.product_italy}-vnet-rg"
 
+  vpn_subnet_name = "GatewaySubnet"
+
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
 
@@ -40,4 +42,7 @@ locals {
 
   azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
   azdo_iac_managed_identities   = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
+
+  aks_name                = "${local.product}-${var.location_short}-${var.instance}-aks"
+  aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
 }

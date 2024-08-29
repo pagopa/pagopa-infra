@@ -269,7 +269,7 @@
           },
           "gateway": {
             "type": "string",
-            "pattern": "XPAY|VPOS|NPG",
+            "pattern": "XPAY|VPOS|NPG|REDIRECT",
             "description": "Pgs identifier"
           }
         },

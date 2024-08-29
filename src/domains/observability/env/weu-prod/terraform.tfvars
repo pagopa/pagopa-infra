@@ -46,3 +46,6 @@ dexp_db = {
 dexp_re_db_linkes_service = {
   enable = true
 }
+
+external_domain      = "NOT_USED"
+apim_dns_zone_prefix = "NOT_USED"

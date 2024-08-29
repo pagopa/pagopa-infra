@@ -7,7 +7,7 @@ module "logos_donation_flows_sa" {
   account_replication_type        = var.logos_donations_storage_account_replication_type
   access_tier                     = "Hot"
   blob_versioning_enabled         = var.enable_logos_backup
-  resource_group_name             = data.azurerm_resource_group.data.name
+  resource_group_name             = azurerm_resource_group.data.name
   location                        = var.location
   advanced_threat_protection      = false
   allow_nested_items_to_be_public = false
@@ -92,7 +92,7 @@ resource "azurerm_storage_blob" "donation_logo10" {
 resource "azurerm_role_assignment" "data_contributor_role_donations" {
   scope                = module.logos_donation_flows_sa.id
   role_definition_name = "Storage Blob Data Contributor"
-  principal_id         = data.azurerm_api_management.apim.identity[0].principal_id
+  principal_id         = module.apim[0].principal_id
 
   depends_on = [
     module.logos_donation_flows_sa
@@ -103,7 +103,7 @@ resource "azurerm_role_assignment" "data_contributor_role_donations" {
 resource "null_resource" "change_auth_donations_blob_container_logo7" {
 
   triggers = {
-    apim_principal_id = data.azurerm_api_management.apim.identity[0].principal_id
+    apim_principal_id = module.apim[0].principal_id
   }
 
   provisioner "local-exec" {
@@ -124,7 +124,7 @@ resource "null_resource" "change_auth_donations_blob_container_logo7" {
 resource "null_resource" "change_auth_donations_blob_container_logo8" {
 
   triggers = {
-    apim_principal_id = data.azurerm_api_management.apim.identity[0].principal_id
+    apim_principal_id = module.apim[0].principal_id
   }
 
   provisioner "local-exec" {
@@ -145,7 +145,7 @@ resource "null_resource" "change_auth_donations_blob_container_logo8" {
 resource "null_resource" "change_auth_donations_blob_container_logo9" {
 
   triggers = {
-    apim_principal_id = data.azurerm_api_management.apim.identity[0].principal_id
+    apim_principal_id = module.apim[0].principal_id
   }
 
   provisioner "local-exec" {
@@ -166,7 +166,7 @@ resource "null_resource" "change_auth_donations_blob_container_logo9" {
 resource "null_resource" "change_auth_donations_blob_container_logo10" {
 
   triggers = {
-    apim_principal_id = data.azurerm_api_management.apim.identity[0].principal_id
+    apim_principal_id = module.apim[0].principal_id
   }
 
   provisioner "local-exec" {

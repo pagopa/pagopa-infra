@@ -110,3 +110,15 @@ variable "app_forwarder_enabled" {
   description = "Enable app_forwarder"
   default     = false
 }
+
+variable "external_domain" {
+  type        = string
+  default     = null
+  description = "Domain for delegation"
+}
+
+variable "apim_dns_zone_prefix" {
+  type        = string
+  default     = null
+  description = "The dns subdomain for apim."
+}

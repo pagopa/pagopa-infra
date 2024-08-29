@@ -11,6 +11,7 @@ module "aks_snet" {
     "Microsoft.AzureCosmosDB",
     "Microsoft.EventHub",
     "Microsoft.Storage",
+    "Microsoft.ServiceBus"
   ]
 
 }
