@@ -73,3 +73,9 @@ resource "azurerm_api_management_group" "afm_calculator" {
   api_management_name = module.apim[0].name
   display_name        = "AFM Calculator for Node"
 }
+resource "azurerm_api_management_group" "pagopa_core_grp" {
+  name                = "pagopa-core-grp"
+  resource_group_name = azurerm_resource_group.rg_api.name
+  api_management_name = module.apim[0].name
+  display_name        = "pagoPa Core" #"https://groups.google.com/a/pagopa.it/g/pagopa-core/about"
+}
