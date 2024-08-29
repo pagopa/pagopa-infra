@@ -221,13 +221,15 @@ wisp_converter_cosmos_nosql_db_params = {
   backup_continuous_enabled = true
 
   data_ttl                   = 10368000 # 120 days in second
-  data_max_throughput        = 1000
+  data_max_throughput        = 2000
   re_ttl                     = 31536000 # 1 year in second
-  re_max_throughput          = 1000
+  re_max_throughput          = 2000
   receipt_ttl                = -1 # max
-  receipt_max_throughput     = 1000
+  receipt_max_throughput     = 2000
   idempotency_ttl            = 604800 # 7 days in second
-  idempotency_max_throughput = 1000
+  idempotency_max_throughput = 2000
+  rt_ttl                     = 31536000 # 1 year in second
+  rt_max_throughput          = 2000
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
@@ -236,8 +238,6 @@ cidr_subnet_cosmosdb_standin        = ["10.1.190.0/24"]
 cidr_subnet_cosmosdb_wisp_converter = ["10.1.191.0/24"]
 
 nodo_storico_allowed_ips = ["93.63.219.230"]
-
-
 
 nodo_re_storage_account = {
   account_kind                  = "StorageV2"

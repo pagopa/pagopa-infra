@@ -77,6 +77,8 @@
         <set-header name="X-Forwarded-For" exists-action="override">
           <value>{{xForwardedFor}}</value>
         </set-header>
+        <!-- update renewrequest after updating password field -->
+        <set-variable name="renewrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
       </when>
       <otherwise>
         <!-- blacklist for appgateway-snet  -->

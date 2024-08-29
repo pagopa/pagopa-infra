@@ -123,9 +123,17 @@ log-level: INFO
 # liquibase --defaultsFile=cfg.properties update-sql --changelogFile="db.changelog-master-3.20.0.xml"
 # liquibase --defaultsFile=cfg.properties update-sql --changelogFile="db.changelog-master-$VERSION.xml"
 
+
+# Convert and print the liquibase in to sql. This command doesn't update the DB
 liquibase \
 --defaultsFile=${properties} update-sql \
 --contexts="${LQB_CONTEXTS}" \
 --changelogFile="db.changelog-master-$VERSION.xml"
+
+# Use 'update' instead 'update-sql' to update the DB too
+#liquibase \
+#--defaultsFile=${properties} update \
+#--contexts="${LQB_CONTEXTS}" \
+#--changelogFile="db.changelog-master-$VERSION.xml"
 
 #rm ${properties}

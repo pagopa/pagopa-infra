@@ -377,6 +377,8 @@ variable "wisp_converter_cosmos_nosql_db_params" {
     receipt_max_throughput     = number
     idempotency_ttl            = number
     idempotency_max_throughput = number
+    rt_ttl                     = number
+    rt_max_throughput          = number
   })
 }
 

@@ -216,6 +216,8 @@ wisp_converter_cosmos_nosql_db_params = {
   receipt_max_throughput     = 400
   idempotency_ttl            = 259200 # 3 days in second
   idempotency_max_throughput = 400
+  rt_ttl                     = 259200 # 3 days in second
+  rt_max_throughput          = 400
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
