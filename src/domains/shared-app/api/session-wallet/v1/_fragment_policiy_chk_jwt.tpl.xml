@@ -1,0 +1,27 @@
+<fragment>
+      <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
+        <issuer-signing-keys>
+            <key>{{pagopa-wallet-session-jwt-signing-key}}</key>
+        </issuer-signing-keys>
+        <required-claims>
+          <claim name="userId" match="all">
+          </claim>
+          <claim name="email" match="all">
+          </claim>
+        </required-claims>
+      </validate-jwt>
+      <set-variable name="xUserId" value="@{
+        var jwt = (Jwt)context.Variables["jwtToken"];
+        if(jwt.Claims.ContainsKey("userId")){
+            return jwt.Claims["userId"][0];
+        }
+        return "";
+        }" />
+      <set-variable name="email" value="@{
+        var jwt = (Jwt)context.Variables["jwtToken"];
+        if(jwt.Claims.ContainsKey("email")){
+            return jwt.Claims["email"][0];
+        }
+        return "";
+        }" />
+</fragment>      

@@ -2,12 +2,17 @@
 # node
 ################
 
+resource "azurerm_resource_group" "pdf_engine_ha_rg" {
+  count    = var.pdf_engine_app_ha_enabled ? 1 : 0
+  name     = "${local.project}-ha-rg"
+  location = var.location
+}
 
 module "shared_pdf_engine_app_service_ha" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
   count               = var.pdf_engine_app_ha_enabled ? 1 : 0
   vnet_integration    = false
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
+  resource_group_name = azurerm_resource_group.pdf_engine_ha_rg[0].name
   location            = var.location
 
   # App service plan vars
@@ -26,9 +31,9 @@ module "shared_pdf_engine_app_service_ha" {
 
   app_settings = local.shared_pdf_engine_app_settings
 
-
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
-  allowed_ips     = []
+  zone_balancing_enabled = var.pdf_engine_zone_balancing_enabled
+  allowed_subnets        = [data.azurerm_subnet.apim_vnet.id]
+  allowed_ips            = []
 
   subnet_id = module.shared_pdf_engine_app_service_snet.id
 
@@ -47,7 +52,7 @@ module "shared_pdf_engine_slot_staging_ha" {
 
   # App service
   name                = "staging"
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
+  resource_group_name = azurerm_resource_group.pdf_engine_ha_rg[0].name
   location            = var.location
 
   always_on = true
@@ -71,8 +76,8 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
   count = var.env_short != "d" && var.pdf_engine_app_ha_enabled ? 1 : 0
 
   name                = format("%s-autoscale-pdf-engine-ha", local.project)
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
-  location            = azurerm_resource_group.shared_pdf_engine_app_service_rg.location
+  resource_group_name = azurerm_resource_group.pdf_engine_ha_rg[0].name
+  location            = azurerm_resource_group.pdf_engine_ha_rg[0].location
   target_resource_id  = module.shared_pdf_engine_app_service_ha[0].plan_id
   enabled             = var.app_service_pdf_engine_autoscale_enabled
 
@@ -82,7 +87,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     capacity {
       default = 3
       minimum = var.env_short == "p" ? 3 : 1
-      maximum = 10
+      maximum = 12
     }
 
     # Requests
@@ -144,7 +149,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 5 #sec
+        threshold                = 3 #sec
         divide_by_instance_count = false
       }
 
@@ -238,12 +243,13 @@ module "shared_pdf_engine_app_service_java_ha" {
   source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
   count               = var.pdf_engine_app_ha_enabled ? 1 : 0
   vnet_integration    = false
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
+  resource_group_name = azurerm_resource_group.pdf_engine_ha_rg[0].name
   location            = var.location
 
   # App service plan vars
-  plan_name = format("%s-plan-pdf-engine-java-ha", local.project)
-  sku_name  = var.app_service_pdf_engine_sku_name_java
+  plan_name              = format("%s-plan-pdf-engine-java-ha", local.project)
+  sku_name               = var.app_service_pdf_engine_sku_name_java
+  zone_balancing_enabled = var.pdf_engine_zone_balancing_enabled
 
   # App service plan
   name                = format("%s-app-pdf-engine-java-ha", local.project)
@@ -277,7 +283,7 @@ module "shared_pdf_engine_java_slot_staging_ha" {
 
   # App service
   name                = "staging"
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
+  resource_group_name = azurerm_resource_group.pdf_engine_ha_rg[0].name
   location            = var.location
 
   always_on = true
@@ -301,8 +307,8 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
   count = var.env_short != "d" && var.pdf_engine_app_ha_enabled ? 1 : 0
 
   name                = format("%s-autoscale-pdf-engine-java-ha", local.project)
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg.name
-  location            = azurerm_resource_group.shared_pdf_engine_app_service_rg.location
+  resource_group_name = azurerm_resource_group.pdf_engine_ha_rg[0].name
+  location            = azurerm_resource_group.pdf_engine_ha_rg[0].location
   target_resource_id  = module.shared_pdf_engine_app_service_java_ha[0].plan_id
   enabled             = var.app_service_pdf_engine_autoscale_enabled
 
@@ -312,7 +318,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     capacity {
       default = 3
       minimum = var.env_short == "p" ? 3 : 1
-      maximum = 10
+      maximum = 12
     }
 
     # Requests
@@ -374,7 +380,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 5 #sec
+        threshold                = 3 #sec
         divide_by_instance_count = false
       }
 

@@ -3,7 +3,7 @@
 ##############
 
 module "apim_fdr_nodo_dei_pagamenti_legacy_product" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.11.0"
 
   product_id   = "fdr-legacy"
   display_name = "FdR Legacy - Nodo dei Pagamenti"

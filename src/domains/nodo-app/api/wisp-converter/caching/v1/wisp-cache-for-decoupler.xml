@@ -1,0 +1,13 @@
+<!--
+    IMPORTANT:
+    - Policy fragment are included as-is whenever they are referenced.
+    - If using variables. Ensure they are setup before use.
+    - Copy and paste your code here or simply start coding
+-->
+<fragment>
+  <choose>
+    <when condition="@(!context.Variables.GetValueOrDefault("wisp_fiscalCode_noticeNumber", "NONE").Equals("NONE"))">
+    <cache-store-value key="@( (string)context.Variables["wisp_fiscalCode_noticeNumber"] )" value="@( (string)context.Variables["baseNodeId"] )" duration="172800" caching-type="external" />
+  </when>
+</choose>
+  </fragment>

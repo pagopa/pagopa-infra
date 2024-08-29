@@ -53,22 +53,12 @@ data "azurerm_virtual_network" "vnet_integration" {
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 }
 
-data "azurerm_eventhub_namespace" "event_hub01_namespace" {
-  name                = "${local.product}-evh-ns01"
-  resource_group_name = data.azurerm_resource_group.msg_rg.name
-}
 
 data "azurerm_eventhub_namespace" "event_hub03_namespace" {
   name                = "${local.product}-${var.location_short}-core-evh-ns03"
   resource_group_name = data.azurerm_resource_group.msg_rg.name
 }
 
-data "azurerm_eventhub_authorization_rule" "events" {
-  name                = var.event_name
-  namespace_name      = data.azurerm_eventhub_namespace.event_hub01_namespace.name
-  eventhub_name       = var.eventhub_name
-  resource_group_name = data.azurerm_resource_group.msg_rg.name
-}
 
 data "azurerm_eventhub_authorization_rule" "events_03" {
   name                = var.event_name

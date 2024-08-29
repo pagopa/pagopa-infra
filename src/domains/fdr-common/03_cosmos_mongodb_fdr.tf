@@ -54,6 +54,12 @@ resource "azurerm_cosmosdb_mongo_database" "fdr" {
 # fdr_payment_publish
 
 # Collections
+
+# https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/indexing#compound-indexes-mongodb-server-version-36
+# Compound indexes are required if your query needs the ability to sort on multiple fields at once.
+# For queries with multiple filters that don't need to sort, create multiple single field indexes instead
+# of a compound index to save on indexing costs.
+
 locals {
   collections = [
     {
@@ -73,7 +79,15 @@ locals {
           unique = true
         },
         {
-          keys   = ["fdr", "revision"] # reporting_flow_name revision
+          keys   = ["fdr"]
+          unique = false
+        },
+        {
+          keys   = ["sender.psp_id"]
+          unique = false
+        },
+        {
+          keys   = ["fdr", "revision"]
           unique = true
         }
       ]
@@ -86,7 +100,19 @@ locals {
         unique = true
         },
         {
-          keys   = ["fdr", "revision"] # reporting_flow_name revision
+          keys   = ["fdr"]
+          unique = false
+        },
+        {
+          keys   = ["sender.psp_id"]
+          unique = false
+        },
+        {
+          keys   = ["receiver.organization_id"]
+          unique = false
+        },
+        {
+          keys   = ["fdr", "revision"]
           unique = true
         }
       ]
@@ -103,18 +129,36 @@ locals {
     },
     {
       name = "fdr_payment_insert"
-      indexes = [{
-        keys   = ["_id"] # index + ref_fdr_reporting_flow_name + ref_fdr_id
-        unique = true
-        }
+      indexes = [
+        {
+          keys   = ["_id"] # index + ref_fdr_reporting_flow_name + ref_fdr_id
+          unique = true
+        },
+        {
+          keys   = ["ref_fdr"]
+          unique = false
+        },
+        {
+          keys   = ["ref_fdr_sender_psp_id"]
+          unique = false
+        },
       ]
       shard_key = null
     },
     {
       name = "fdr_payment_publish"
-      indexes = [{
-        keys   = ["_id"] # index + ref_fdr_reporting_flow_name + ref_fdr_id
-        unique = true
+      indexes = [
+        {
+          keys   = ["_id"] # index + ref_fdr_reporting_flow_name + ref_fdr_id
+          unique = true
+        },
+        {
+          keys   = ["ref_fdr"]
+          unique = false
+        },
+        {
+          keys   = ["ref_fdr_sender_psp_id"]
+          unique = false
         }
       ]
       shard_key = null

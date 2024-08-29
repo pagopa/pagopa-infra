@@ -16,9 +16,9 @@ tags = {
 
 ### External resources
 
-monitor_resource_group_name                 = "pagopa-p-monitor-rg"
-log_analytics_workspace_name                = "pagopa-p-law"
-log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
+monitor_italy_resource_group_name                 = "pagopa-d-itn-core-monitor-rg"
+log_analytics_italy_workspace_name                = "pagopa-d-itn-core-law"
+log_analytics_italy_workspace_resource_group_name = "pagopa-d-itn-core-monitor-rg"
 
 input_file = "./secret/itn-prod/configs.json"
 

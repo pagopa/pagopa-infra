@@ -14,7 +14,7 @@
   <inbound>
     <base />
     <set-backend-service base-url="https://${hostname}/pagopa-afm-calculator-service" />
-    <set-variable name="isMock" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key","").Equals("{{afm-secondary-sub-key}}"))" />
+    <set-variable name="isMock" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key","").Equals("{{afm-secondary-sub-key}}") || context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key","").Equals("{{afm-ndp-test-sub-key}}"))" />
     <choose>
       <when condition="@(context.Variables.GetValueOrDefault<bool>("isMock"))">
       <!--Mock Responses-->
@@ -124,6 +124,27 @@
           data.Add("idPsp", "00000000010");
           }
           list.Add(data);
+
+          data = new JObject();
+          data.Add("taxPayerFee", 80);
+          data.Add("primaryCiIncurredFee", 0);
+          data.Add("paymentMethod", "PO");
+          data.Add("touchpoint", "PSP");
+          data.Add("idBundle", "2");
+          data.Add("idCiBundle", JValue.CreateNull());
+          data.Add("idChannel", "POSTE3");
+          data.Add("idBrokerPsp", "BANCOPOSTA");
+          data.Add("bundleName", "bundle 2");
+          data.Add("bundleDescription", "bundle description 3");
+          data.Add("onUs", false);
+          data.Add("abi", "14156");
+          if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+          data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]);
+          } else {
+          data.Add("idPsp", "00000000010");
+          }
+          list.Add(data);
+
 
           JObject response = new JObject();
           response.Add("belowThreshold", false);

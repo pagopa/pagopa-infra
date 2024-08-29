@@ -4,12 +4,27 @@
     "title": "Marketplace API for PagoPA AFM",
     "description": "marketplace-be",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.13.3"
+    "version": "0.18.0"
   },
   "servers": [
     {
-      "url": "${host}/afm/api/v1",
-      "description": "Generated server url"
+      "url": "${host}/afm/api/v1"
+    },
+    {
+      "url": "https://{host}{basePath}",
+      "variables": {
+        "host": {
+          "default": "api.dev.platform.pagopa.it",
+          "enum": [
+            "api.dev.platform.pagopa.it",
+            "api.uat.platform.pagopa.it",
+            "api.platform.pagopa.it"
+          ]
+        },
+        "basePath": {
+          "default": "/afm/marketplace-service/v1/"
+        }
+      }
     }
   ],
   "tags": [
@@ -26,38 +41,15 @@
     "/bundles": {
       "get": {
         "tags": [
-          "CI"
+          "Bundle"
         ],
-        "summary": "Get bundles by type",
+        "summary": "Get paginated list of bundles",
         "operationId": "getGlobalBundles",
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "description": "Number of items for page. Default = 50",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 50
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number. Page number value starts from 0. Default = 1",
-            "required": false,
-            "schema": {
-              "minimum": 0,
-              "type": "integer",
-              "format": "int32",
-              "default": 1
-            }
-          },
-          {
             "name": "types",
             "in": "query",
-            "description": "Bundle type. Default = GLOBAL",
+            "description": "Bundle's type",
             "required": false,
             "schema": {
               "type": "array",
@@ -72,6 +64,60 @@
               "default": [
                 "GLOBAL"
               ]
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Bundle's name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "validFrom",
+            "in": "query",
+            "description": "Validity date of bundles, used to retrieve all bundles valid from the specified date (yyyy-MM-dd)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2024-05-10"
+          },
+          {
+            "name": "expireAt",
+            "in": "query",
+            "description": "Validity date of bundles, used to retrieve all bundles that expire at the specified date (yyyy-MM-dd)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2024-05-10"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items for page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
             }
           }
         ],
@@ -181,7 +227,131 @@
         }
       ]
     },
-    "/cis/{cifiscalcode}/bundles": {
+    "/bundles/{id-bundle}": {
+      "get": {
+        "tags": [
+          "Bundle"
+        ],
+        "summary": "Get the bundle details",
+        "operationId": "getBundleDetails",
+        "parameters": [
+          {
+            "name": "id-bundle",
+            "in": "path",
+            "description": "Bundle identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PspBundleDetails"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/cis/{ci-fiscal-code}/bundles": {
       "get": {
         "tags": [
           "CI"
@@ -190,10 +360,42 @@
         "operationId": "getBundlesByFiscalCode",
         "parameters": [
           {
-            "name": "cifiscalcode",
+            "name": "ci-fiscal-code",
             "in": "path",
-            "description": "CI identifier",
+            "description": "Creditor institution's tax code",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Filtering the ciBundles by type",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "GLOBAL",
+                "PUBLIC",
+                "PRIVATE"
+              ]
+            }
+          },
+          {
+            "name": "bundleName",
+            "in": "query",
+            "description": "Filtering the ciBundles by bundle name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pspBusinessName",
+            "in": "query",
+            "description": "Filtering the ciBundles by pspBusinessName of the corresponding bundle",
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -201,7 +403,7 @@
           {
             "name": "limit",
             "in": "query",
-            "description": "Number of items for page. Default = 50",
+            "description": "Number of items for page",
             "required": false,
             "schema": {
               "type": "integer",
@@ -212,13 +414,13 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number. Page number value starts from 0. Default = 1",
+            "description": "Page number",
             "required": false,
             "schema": {
               "minimum": 0,
               "type": "integer",
               "format": "int32",
-              "default": 1
+              "default": 0
             }
           }
         ],
@@ -328,7 +530,7 @@
         }
       ]
     },
-    "/cis/{cifiscalcode}/bundles/{idbundle}": {
+    "/cis/{ci-fiscal-code}/bundles/{id-bundle}": {
       "get": {
         "tags": [
           "CI"
@@ -337,16 +539,16 @@
         "operationId": "getBundleByFiscalCode",
         "parameters": [
           {
-            "name": "cifiscalcode",
+            "name": "ci-fiscal-code",
             "in": "path",
-            "description": "CI identifier",
+            "description": "Creditor institution's tax code",
             "required": true,
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "idbundle",
+            "name": "id-bundle",
             "in": "path",
             "description": "Bundle identifier",
             "required": true,
@@ -369,7 +571,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BundleDetailsForCi"
+                  "$ref": "#/components/schemas/CiBundleDetails"
                 }
               }
             }
@@ -461,7 +663,7 @@
         }
       ]
     },
-    "/cis/{cifiscalcode}/bundles/{idbundle}/attributes": {
+    "/cis/{ci-fiscal-code}/bundles/{id-bundle}/attributes": {
       "get": {
         "tags": [
           "CI"
@@ -470,7 +672,7 @@
         "operationId": "getBundleAttributesByFiscalCode",
         "parameters": [
           {
-            "name": "cifiscalcode",
+            "name": "ci-fiscal-code",
             "in": "path",
             "description": "CI identifier",
             "required": true,
@@ -479,7 +681,7 @@
             }
           },
           {
-            "name": "idbundle",
+            "name": "id-bundle",
             "in": "path",
             "description": "Bundle identifier",
             "required": true,
@@ -591,7 +793,7 @@
         "operationId": "createBundleAttributesByCi",
         "parameters": [
           {
-            "name": "cifiscalcode",
+            "name": "ci-fiscal-code",
             "in": "path",
             "description": "CI identifier",
             "required": true,
@@ -600,7 +802,7 @@
             }
           },
           {
-            "name": "idbundle",
+            "name": "id-bundle",
             "in": "path",
             "description": "Bundle identifier",
             "required": true,
@@ -725,7 +927,7 @@
         }
       ]
     },
-    "/cis/{cifiscalcode}/bundles/{idbundle}/attributes/{idattribute}": {
+    "/cis/{ci-fiscal-code}/bundles/{id-bundle}/attributes/{idattribute}": {
       "put": {
         "tags": [
           "CI"
@@ -734,7 +936,7 @@
         "operationId": "updateBundleAttributesByCi",
         "parameters": [
           {
-            "name": "cifiscalcode",
+            "name": "ci-fiscal-code",
             "in": "path",
             "description": "CI identifier",
             "required": true,
@@ -743,7 +945,7 @@
             }
           },
           {
-            "name": "idbundle",
+            "name": "id-bundle",
             "in": "path",
             "description": "Bundle identifier",
             "required": true,
@@ -870,7 +1072,7 @@
         "operationId": "removeBundleAttributesByCi",
         "parameters": [
           {
-            "name": "cifiscalcode",
+            "name": "ci-fiscal-code",
             "in": "path",
             "description": "CI identifier",
             "required": true,
@@ -879,7 +1081,7 @@
             }
           },
           {
-            "name": "idbundle",
+            "name": "id-bundle",
             "in": "path",
             "description": "Bundle identifier",
             "required": true,
@@ -999,7 +1201,7 @@
         }
       ]
     },
-    "/cis/{cifiscalcode}/bundles/{idcibundle}": {
+    "/cis/{ci-fiscal-code}/bundles/{idcibundle}": {
       "delete": {
         "tags": [
           "CI"
@@ -1008,7 +1210,7 @@
         "operationId": "removeBundleByFiscalCode",
         "parameters": [
           {
-            "name": "cifiscalcode",
+            "name": "ci-fiscal-code",
             "in": "path",
             "description": "CI identifier",
             "required": true,
@@ -1128,7 +1330,7 @@
         }
       ]
     },
-    "/cis/{cifiscalcode}/offers": {
+    "/cis/{ci-fiscal-code}/offers": {
       "get": {
         "tags": [
           "CI"
@@ -1137,18 +1339,36 @@
         "operationId": "getOffersByCI",
         "parameters": [
           {
-            "name": "cifiscalcode",
+            "name": "ci-fiscal-code",
             "in": "path",
-            "description": "CI identifier",
+            "description": "Tax code of the creditor institution to which the offers are addressed",
             "required": true,
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "size",
+            "name": "idPsp",
             "in": "query",
-            "description": "Number of elements for one page. Default = 50",
+            "description": "Id of the payment service provider that has created the offers (used for to filter out the result)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bundleName",
+            "in": "query",
+            "description": "Filtering the offers by bundle name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items for page",
             "required": false,
             "schema": {
               "type": "integer",
@@ -1157,21 +1377,15 @@
             }
           },
           {
-            "name": "cursor",
+            "name": "page",
             "in": "query",
-            "description": "Starting cursor",
+            "description": "Page number",
             "required": false,
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "idPsp",
-            "in": "query",
-            "description": "Filter by psp",
-            "required": false,
-            "schema": {
-              "type": "string"
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
             }
           }
         ],
@@ -1281,7 +1495,7 @@
         }
       ]
     },
-    "/cis/{cifiscalcode}/offers/{idbundleoffer}/accept": {
+    "/cis/{ci-fiscal-code}/offers/{id-bundle-offer}/accept": {
       "post": {
         "tags": [
           "CI"
@@ -1290,16 +1504,16 @@
         "operationId": "acceptOffer",
         "parameters": [
           {
-            "name": "cifiscalcode",
+            "name": "ci-fiscal-code",
             "in": "path",
-            "description": "PSP identifier",
+            "description": "Creditor institution's tax code",
             "required": true,
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "idbundleoffer",
+            "name": "id-bundle-offer",
             "in": "path",
             "description": "Bundle offer identifier",
             "required": true,
@@ -1308,6 +1522,19 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CiBundleAttributeModel"
+                }
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "201": {
             "description": "OK",
@@ -1414,7 +1641,7 @@
         }
       ]
     },
-    "/cis/{cifiscalcode}/offers/{idbundleoffer}/reject": {
+    "/cis/{ci-fiscal-code}/offers/{id-bundle-offer}/reject": {
       "post": {
         "tags": [
           "CI"
@@ -1423,16 +1650,16 @@
         "operationId": "rejectOffer",
         "parameters": [
           {
-            "name": "cifiscalcode",
+            "name": "ci-fiscal-code",
             "in": "path",
-            "description": "CI identifier",
+            "description": "Creditor institution's tax code",
             "required": true,
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "idbundleoffer",
+            "name": "id-bundle-offer",
             "in": "path",
             "description": "Bundle offer identifier",
             "required": true,
@@ -1543,7 +1770,7 @@
         }
       ]
     },
-    "/cis/{cifiscalcode}/requests": {
+    "/cis/{ci-fiscal-code}/requests": {
       "get": {
         "tags": [
           "CI"
@@ -1552,30 +1779,10 @@
         "operationId": "getRequestsByCI",
         "parameters": [
           {
-            "name": "cifiscalcode",
+            "name": "ci-fiscal-code",
             "in": "path",
-            "description": "CI identifier",
+            "description": "Creditor institution's tax code",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "size",
-            "in": "query",
-            "description": "Number of elements for one page. Default = 50",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 50
-            }
-          },
-          {
-            "name": "cursor",
-            "in": "query",
-            "description": "Starting cursor",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -1583,10 +1790,46 @@
           {
             "name": "idPsp",
             "in": "query",
-            "description": "Filter by psp",
+            "description": "Filter by psp identifier",
+            "required": false,
+            "schema": {
+              "maxLength": 35,
+              "minLength": 0,
+              "type": "string"
+            }
+          },
+          {
+            "name": "idBundle",
+            "in": "query",
+            "description": "Filter by bundle id",
             "required": false,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items for page",
+            "required": false,
+            "schema": {
+              "maximum": 100,
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "schema": {
+              "maximum": 10000,
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
             }
           }
         ],
@@ -1604,7 +1847,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CiRequests"
+                  "$ref": "#/components/schemas/PublicBundleRequests"
                 }
               }
             }
@@ -1693,7 +1936,7 @@
         "operationId": "createRequest",
         "parameters": [
           {
-            "name": "cifiscalcode",
+            "name": "ci-fiscal-code",
             "in": "path",
             "description": "CI identifier",
             "required": true,
@@ -1771,6 +2014,17 @@
               }
             }
           },
+          "409": {
+            "description": "Conflict",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Too many requests",
             "headers": {
@@ -1818,7 +2072,7 @@
         }
       ]
     },
-    "/cis/{cifiscalcode}/requests/{idbundlerequest}": {
+    "/cis/{ci-fiscal-code}/requests/{id-bundle-request}": {
       "delete": {
         "tags": [
           "CI"
@@ -1827,7 +2081,7 @@
         "operationId": "removeRequest",
         "parameters": [
           {
-            "name": "cifiscalcode",
+            "name": "ci-fiscal-code",
             "in": "path",
             "description": "CI identifier",
             "required": true,
@@ -1836,7 +2090,7 @@
             }
           },
           {
-            "name": "idbundlerequest",
+            "name": "id-bundle-request",
             "in": "path",
             "description": "CI identifier",
             "required": true,
@@ -2532,6 +2786,35 @@
             }
           },
           {
+            "name": "types",
+            "in": "query",
+            "description": "Bundle type. Default = GLOBAL",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "GLOBAL",
+                  "PUBLIC",
+                  "PRIVATE"
+                ]
+              },
+              "default": [
+                "GLOBAL"
+              ]
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "description": "Bundle name.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "limit",
             "in": "query",
             "description": "Number of items for page. Default = 50",
@@ -2545,13 +2828,13 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number. Page number value starts from 0. Default = 1",
+            "description": "Page number. Page number value starts from 0. Default = 0",
             "required": false,
             "schema": {
               "minimum": 0,
               "type": "integer",
               "format": "int32",
-              "default": 1
+              "default": 0
             }
           }
         ],
@@ -3074,6 +3357,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "forceUpdate",
+            "in": "query",
+            "description": "Force update",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "requestBody": {
@@ -3334,6 +3627,39 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "ciFiscalCode",
+            "in": "query",
+            "description": "CI fiscal code",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items for page",
+            "required": false,
+            "schema": {
+              "maximum": 200,
+              "type": "integer",
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
           }
         ],
         "responses": {
@@ -3350,7 +3676,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CiFiscalCodeList"
+                  "$ref": "#/components/schemas/BundleCreditorInstitutionResource"
                 }
               }
             }
@@ -3639,7 +3965,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CiFiscalCodeList"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BundleOffered"
+                  }
                 }
               }
             }
@@ -3781,11 +4110,7 @@
               }
             },
             "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CiFiscalCodeList"
-                }
-              }
+              "application/json": {}
             }
           },
           "400": {
@@ -3895,11 +4220,30 @@
             }
           },
           {
-            "name": "limit",
+            "name": "ciTaxCode",
             "in": "query",
-            "description": "Number of items for page. Default = 50",
+            "description": "Filter by creditor institution",
             "required": false,
             "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idBundle",
+            "in": "query",
+            "description": "Filter by bundle id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items for page",
+            "required": false,
+            "schema": {
+              "maximum": 200,
               "type": "integer",
               "format": "int32",
               "default": 50
@@ -3908,13 +4252,13 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number. Page number value starts from 0. Default = 1",
+            "description": "Page number",
             "required": false,
             "schema": {
               "minimum": 0,
               "type": "integer",
               "format": "int32",
-              "default": 1
+              "default": 0
             }
           }
         ],
@@ -4030,7 +4374,7 @@
           "PSP"
         ],
         "summary": "Get paginated list of CI request to the PSP regarding public bundles",
-        "operationId": "getRequestsByPsp",
+        "operationId": "getPublicBundleRequestsByPsp",
         "parameters": [
           {
             "name": "idpsp",
@@ -4044,11 +4388,30 @@
             }
           },
           {
-            "name": "limit",
+            "name": "ciFiscalCode",
             "in": "query",
-            "description": "Number of items for page. Default = 50",
+            "description": "Filter by creditor institution",
             "required": false,
             "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idBundle",
+            "in": "query",
+            "description": "Filter by bundle id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items for page",
+            "required": false,
+            "schema": {
+              "maximum": 200,
               "type": "integer",
               "format": "int32",
               "default": 50
@@ -4057,32 +4420,13 @@
           {
             "name": "page",
             "in": "query",
-            "description": "Page number. Page number value starts from 0. Default = 1",
+            "description": "Page number",
             "required": false,
             "schema": {
               "minimum": 0,
               "type": "integer",
               "format": "int32",
-              "default": 1
-            }
-          },
-          {
-            "name": "cursor",
-            "in": "query",
-            "description": "Cursor",
-            "required": false,
-            "schema": {
-              "minimum": 0,
-              "type": "string"
-            }
-          },
-          {
-            "name": "ciFiscalCode",
-            "in": "query",
-            "description": "Filter by creditor institution",
-            "required": false,
-            "schema": {
-              "type": "string"
+              "default": 0
             }
           }
         ],
@@ -4100,7 +4444,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PspRequests"
+                  "$ref": "#/components/schemas/PublicBundleRequests"
                 }
               }
             }
@@ -4953,6 +5297,11 @@
           "idBrokerPsp": {
             "type": "string"
           },
+          "cart": {
+            "type": "boolean",
+            "description": "is the bundle valid for cart payments?",
+            "default": true
+          },
           "idCdi": {
             "type": "string"
           },
@@ -4963,6 +5312,9 @@
             "type": "string"
           },
           "pspBusinessName": {
+            "type": "string"
+          },
+          "urlPolicyPsp": {
             "type": "string"
           },
           "description": {
@@ -5099,6 +5451,17 @@
           }
         }
       },
+      "BundleOffered": {
+        "type": "object",
+        "properties": {
+          "ciFiscalCode": {
+            "type": "string"
+          },
+          "idBundleOffer": {
+            "type": "string"
+          }
+        }
+      },
       "PaymentType": {
         "required": [
           "paymentType",
@@ -5183,6 +5546,10 @@
             "type": "integer",
             "description": "Total number of pages",
             "format": "int32"
+          },
+          "total_items": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -5204,7 +5571,7 @@
           }
         }
       },
-      "PspBundleRequest": {
+      "PublicBundleRequest": {
         "required": [
           "ciFiscalCode",
           "idBundle",
@@ -5215,8 +5582,21 @@
           "idBundle": {
             "type": "string"
           },
+          "idPsp": {
+            "type": "string"
+          },
           "ciFiscalCode": {
             "type": "string"
+          },
+          "validityDateFrom": {
+            "type": "string",
+            "description": "the start date of the bundle if accepted",
+            "format": "date"
+          },
+          "validityDateTo": {
+            "type": "string",
+            "description": "the end date of the bundle if accepted",
+            "format": "date"
           },
           "acceptedDate": {
             "type": "string",
@@ -5226,37 +5606,22 @@
             "type": "string",
             "format": "date-time"
           },
-          "ciBundleAttributes": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PspCiBundleAttribute"
-            }
+          "insertedDate": {
+            "type": "string",
+            "format": "date-time"
           },
           "idBundleRequest": {
             "type": "string"
+          },
+          "attributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CiBundleAttributeModel"
+            }
           }
         }
       },
-      "PspCiBundleAttribute": {
-        "type": "object",
-        "properties": {
-          "maxPaymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "transferCategory": {
-            "type": "string"
-          },
-          "transferCategoryRelation": {
-            "type": "string",
-            "enum": [
-              "EQUAL",
-              "NOT_EQUAL"
-            ]
-          }
-        }
-      },
-      "PspRequests": {
+      "PublicBundleRequests": {
         "required": [
           "pageInfo",
           "requests"
@@ -5266,7 +5631,7 @@
           "requests": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/PspBundleRequest"
+              "$ref": "#/components/schemas/PublicBundleRequest"
             }
           },
           "pageInfo": {
@@ -5391,6 +5756,9 @@
           "idChannel": {
             "type": "string"
           },
+          "idPsp": {
+            "type": "string"
+          },
           "idBrokerPsp": {
             "type": "string"
           },
@@ -5400,8 +5768,39 @@
           "digitalStampRestriction": {
             "type": "boolean"
           },
+          "pspBusinessName": {
+            "type": "string"
+          },
+          "urlPolicyPsp": {
+            "type": "string"
+          },
+          "cart": {
+            "type": "boolean"
+          },
+          "abi": {
+            "type": "string"
+          },
           "idBundle": {
             "type": "string"
+          }
+        }
+      },
+      "BundleCreditorInstitutionResource": {
+        "required": [
+          "ciBundleDetails",
+          "pageInfo"
+        ],
+        "type": "object",
+        "properties": {
+          "ciBundleDetails": {
+            "type": "array",
+            "description": "List of details about creditor institution's subscription to a bundle",
+            "items": {
+              "$ref": "#/components/schemas/CiBundleDetails"
+            }
+          },
+          "pageInfo": {
+            "$ref": "#/components/schemas/PageInfo"
           }
         }
       },
@@ -5438,6 +5837,15 @@
           "validityDateTo": {
             "type": "string",
             "format": "date"
+          },
+          "idBundle": {
+            "type": "string"
+          },
+          "idCIBundle": {
+            "type": "string"
+          },
+          "ciTaxCode": {
+            "type": "string"
           },
           "attributes": {
             "type": "array",
@@ -5487,56 +5895,6 @@
           }
         }
       },
-      "CiBundleRequest": {
-        "type": "object",
-        "properties": {
-          "idBundle": {
-            "type": "string"
-          },
-          "idPsp": {
-            "type": "string"
-          },
-          "acceptedDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "rejectionDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "insertedDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "ciBundleAttributeModels": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CiBundleAttributeModel"
-            }
-          },
-          "idBundleRequest": {
-            "type": "string"
-          }
-        }
-      },
-      "CiRequests": {
-        "required": [
-          "pageInfo",
-          "requests"
-        ],
-        "type": "object",
-        "properties": {
-          "requests": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CiBundleRequest"
-            }
-          },
-          "pageInfo": {
-            "$ref": "#/components/schemas/PageInfo"
-          }
-        }
-      },
       "BundleCiOffers": {
         "required": [
           "offers",
@@ -5581,69 +5939,6 @@
           }
         }
       },
-      "CiBundleInfo": {
-        "type": "object",
-        "properties": {
-          "idCiBundle": {
-            "type": "string"
-          },
-          "idPsp": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "paymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "minPaymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "maxPaymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "paymentType": {
-            "type": "string"
-          },
-          "touchpoint": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "transferCategoryList": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "validityDateFrom": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "validityDateTo": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "insertedDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "lastUpdatedDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "idBundle": {
-            "type": "string"
-          }
-        }
-      },
       "CiBundles": {
         "required": [
           "bundles",
@@ -5657,80 +5952,8 @@
           "bundles": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CiBundleInfo"
+              "$ref": "#/components/schemas/CiBundleDetails"
             }
-          }
-        }
-      },
-      "BundleDetailsForCi": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "paymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "minPaymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "maxPaymentAmount": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "paymentType": {
-            "type": "string"
-          },
-          "touchpoint": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "transferCategoryList": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "validityDateFrom": {
-            "type": "string",
-            "format": "date"
-          },
-          "validityDateTo": {
-            "type": "string",
-            "format": "date"
-          },
-          "insertedDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "lastUpdatedDate": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "idChannel": {
-            "type": "string"
-          },
-          "idBrokerPsp": {
-            "type": "string"
-          },
-          "digitalStamp": {
-            "type": "boolean"
-          },
-          "digitalStampRestriction": {
-            "type": "boolean"
-          },
-          "idPsp": {
-            "type": "string"
-          },
-          "idBundle": {
-            "type": "string"
           }
         }
       },

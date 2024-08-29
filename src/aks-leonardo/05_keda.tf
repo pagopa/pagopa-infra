@@ -13,7 +13,7 @@ locals {
 }
 
 module "keda_pod_identity" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v7.67.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v8.17.1"
 
   resource_group_name = azurerm_resource_group.rg_aks.name
   location            = var.location

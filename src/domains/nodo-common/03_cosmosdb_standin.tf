@@ -1,5 +1,5 @@
 module "cosmosdb_account_standin" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.77.0"
   domain              = var.domain
   name                = "${local.project}-standin-cosmos-account"
   location            = var.location
@@ -13,11 +13,12 @@ module "cosmosdb_account_standin" {
   subnet_id                     = module.cosmosdb_standin_snet.id
   public_network_access_enabled = var.standin_cosmos_nosql_db_params.public_network_access_enabled
   # private endpoint
-  private_endpoint_enabled          = var.standin_cosmos_nosql_db_params.private_endpoint_enabled
-  private_endpoint_name             = "${local.project}-standin-cosmos-nosql-endpoint"
-  private_dns_zone_ids              = [data.azurerm_private_dns_zone.cosmos_nosql.id]
-  is_virtual_network_filter_enabled = var.standin_cosmos_nosql_db_params.is_virtual_network_filter_enabled
-  ip_range                          = ""
+  private_service_connection_sql_name = "${local.project}-standin-cosmos-nosql-endpoint"
+  private_endpoint_enabled            = var.standin_cosmos_nosql_db_params.private_endpoint_enabled
+  private_endpoint_sql_name           = "${local.project}-standin-cosmos-nosql-endpoint"
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos_nosql.id]
+  is_virtual_network_filter_enabled   = var.standin_cosmos_nosql_db_params.is_virtual_network_filter_enabled
+  ip_range                            = ""
 
   allowed_virtual_network_subnet_ids = var.standin_cosmos_nosql_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
@@ -35,7 +36,7 @@ module "cosmosdb_account_standin" {
 
 # cosmosdb database for standin
 module "cosmosdb_account_standin_db" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.7.0"
+  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v7.77.0"
   name                = "standin"
   resource_group_name = azurerm_resource_group.standin_rg.name
   account_name        = module.cosmosdb_account_standin.name
@@ -78,7 +79,7 @@ locals {
 
 # cosmosdb container for stand-in datastore
 module "cosmosdb_account_standin_containers" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.77.0"
   for_each = { for c in local.standin_containers : c.name => c }
 
   name                = each.value.name

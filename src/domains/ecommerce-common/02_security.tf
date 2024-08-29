@@ -557,3 +557,28 @@ resource "azurerm_key_vault_secret" "wallet_storage_connection_string" {
     ]
   }
 }
+
+
+resource "azurerm_key_vault_secret" "npg_apple_pay_psp_keys" {
+  name         = "npg-apple-pay-psp-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "npg_satispay_psp_keys" {
+  name         = "npg-satispay-psp-keys"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

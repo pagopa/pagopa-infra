@@ -32,3 +32,5 @@ tls_cert_check_helm = {
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
   image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
+
+pdv_api_base_path = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"

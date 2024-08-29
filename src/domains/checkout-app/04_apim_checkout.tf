@@ -21,6 +21,25 @@ module "apim_checkout_product" {
   policy_xml = file("./api_product/checkout/_base_policy.xml")
 }
 
+module "apim_checkout_auth_product" {
+  count  = var.checkout_enabled ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.76.1"
+
+  product_id   = "checkout-auth"
+  display_name = "checkout auth  pagoPA"
+  description  = "Product for checkout auth pagoPA"
+
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+
+  published             = true
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/checkout/_base_policy.xml")
+}
+
 #####################################
 ## API checkout payment activation ##
 #####################################
@@ -111,7 +130,7 @@ module "apim_checkout_payment_activations_api_auth_v1" {
   name                  = format("%s-checkout-payment-activations-auth-api", local.parent_project)
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_checkout_product[0].product_id]
+  product_ids           = [module.apim_checkout_product[0].product_id, module.apim_checkout_auth_product[0].product_id]
   subscription_required = local.apim_checkout_payment_activations_auth_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.checkout_payment_activations_auth_api.id
   api_version           = "v1"
@@ -137,7 +156,7 @@ module "apim_checkout_payment_activations_api_auth_v2" {
   name                  = format("%s-checkout-payment-activations-auth-api", local.parent_project)
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_checkout_product[0].product_id]
+  product_ids           = [module.apim_checkout_product[0].product_id, module.apim_checkout_auth_product[0].product_id]
   subscription_required = local.apim_checkout_payment_activations_auth_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.checkout_payment_activations_auth_api.id
   api_version           = "v2"

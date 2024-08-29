@@ -105,6 +105,13 @@ route_aks = [
   },
   {
     #  aks nodo to nexi oncloud oracle
+    name                   = "aks-outbound-to-nexi-oracle-dr-onprem-subnet"
+    address_prefix         = "10.101.35.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    #  aks nodo to nexi oncloud oracle
     name                   = "aks-outbound-to-nexi-aks-cloud-subnet"
     address_prefix         = "10.70.135.0/24"
     next_hop_type          = "VirtualAppliance"
@@ -263,7 +270,35 @@ nodo_auth_subscription_limit = 10000
 nodo_pagamenti_x_forwarded_for = "10.230.10.5"
 
 
-enabled_features = {
-  apim_v2        = false
-  eventhub_ha_rx = false
+# WISP-dismantling-cfg
+create_wisp_converter = true
+wisp_converter = {
+  enable_apim_switch                 = true
+  brokerPSP_whitelist                = "97735020584"
+  channel_whitelist                  = "97735020584_02"
+  station_whitelist                  = "80001480534-00838520880_01,82004590814-00838520880_01,95565960010-00838520880_01,01808020356-02818030369_01,12621570154-00053810149_01,00208400259-80007580279_01,00203510250-80007580279_01,80007580279-80007580279_01" # subsets of EC friends
+  ci_whitelist                       = "80001480534,82004590814,95565960010,01808020356,12621570154,00208400259,00203510250,80007580279"
+  nodoinviarpt_paymenttype_whitelist = "BBT"
+  dismantling_primitives             = "nodoInviaRPT,nodoInviaCarrelloRPT"
+}
+
+# 80001480534-00838520880_01 GRPM01000E/Argo https://config.platform.pagopa.it/creditor-institutions/80001480534
+# 82004590814-00838520880_01 TPIC81700P/Argo https://config.platform.pagopa.it/creditor-institutions/82004590814
+# 95565960010-00838520880_01 TOIC86200P/Argo https://config.platform.pagopa.it/creditor-institutions/95565960010
+# 01808020356-02818030369_01 Trasporti Integrati e Logistica SRL/BRAV SRL https://config.platform.pagopa.it/creditor-institutions/01808020356
+# REMOVED 02002380224-02695640421_01 Trentino Riscossioni/e-SED Società Cooperativa https://config.platform.pagopa.it/creditor-institutions/02002380224
+# REMOVED 03122360153-08543640158_01 Comune di Corbetta/APKAPPA S.R.L. https://config.platform.pagopa.it/creditor-institutions/03122360153
+# 12621570154-00053810149_01 Universita' degli Studi di Milano - Bicocca/Banca Popolare di Sondrio https://config.platform.pagopa.it/creditor-institutions/12621570154
+# 00208400259 Unione Montana Alpago https://config.platform.pagopa.it/creditor-institutions/00208400259
+# 00203510250 Comune Valle di Cadore https://config.platform.pagopa.it/creditor-institutions/00203510250
+# 80007580279 Regione Veneto
+
+
+
+enable_sendPaymentResultV2_SWClient = false
+
+# WFESP-dismantling-cfg
+wfesp_dismantling = {
+  channel_list    = "disabled" # When we want to activate WFESP dismantling, insert correct channel list "13212880150_90"
+  wfesp_fixed_url = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
 }

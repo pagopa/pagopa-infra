@@ -21,6 +21,7 @@
           <value>${allowed_ip_4}</value>
           <value>${allowed_ip_5}</value>
           <value>${allowed_ip_6}</value>
+          <value>${allowed_ip_11}</value>
         </check-header>
       </when> -->
       <when condition="@(context.Request.Headers.GetValueOrDefault("X-Environment", "").Equals("prod"))">
@@ -35,6 +36,7 @@
           <value>${allowed_ip_8}</value>
           <value>${allowed_ip_9}</value>
           <value>${allowed_ip_10}</value>
+          <value>${allowed_ip_11}</value>
         </check-header>
       </when>
     </choose>
