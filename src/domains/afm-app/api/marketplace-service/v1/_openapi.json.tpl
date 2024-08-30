@@ -4,7 +4,7 @@
     "title": "Marketplace API for PagoPA AFM",
     "description": "marketplace-be",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.18.0"
+    "version": "0.19.0-4-PPANTT-99-new-filters-psp-bundle-list"
   },
   "servers": [
     {
@@ -2813,6 +2813,84 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "maxPaymentAmountOrder",
+            "in": "query",
+            "description": "Order bundles by maxPaymentAmount",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            },
+            "example": "ASC"
+          },
+          {
+            "name": "paymentAmountMinRange",
+            "in": "query",
+            "description": "Filter bundles with paymentAmount less than",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "paymentAmountMaxRange",
+            "in": "query",
+            "description": "Filter bundles with paymentAmount more than",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "validBefore",
+            "in": "query",
+            "description": "Validity date of bundles, used to retrieve all bundles valid before the specified date (yyyy-MM-dd)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2024-05-10"
+          },
+          {
+            "name": "validAfter",
+            "in": "query",
+            "description": "Validity date of bundles, used to retrieve all bundles valid after the specified date (yyyy-MM-dd)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2024-05-10"
+          },
+          {
+            "name": "expireBefore",
+            "in": "query",
+            "description": "Validity date of bundles, used to retrieve all bundles that expire before the specified date (yyyy-MM-dd)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2024-05-10"
+          },
+          {
+            "name": "expireAfter",
+            "in": "query",
+            "description": "Validity date of bundles, used to retrieve all bundles that expire after the specified date (yyyy-MM-dd)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            },
+            "example": "2024-05-10"
           },
           {
             "name": "limit",
