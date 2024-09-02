@@ -1,6 +1,6 @@
 locals {
   # Map of <queue_names, queue>
-  queues = {for q in var.service_bus_wisp_queues : q.name => q}
+  queues = { for q in var.service_bus_wisp_queues : q.name => q }
 
   # List of queue names
   queue_names = keys(local.queues)
@@ -13,14 +13,14 @@ locals {
       for q in var.service_bus_wisp_queues :
       [
         for k in q.keys : {
-        key_name   = k.name
-        queue_name = q.name
-        listen     = k.listen
-        send       = k.send
-        manage     = k.manage
-      }
+          key_name   = k.name
+          queue_name = q.name
+          listen     = k.listen
+          send       = k.send
+          manage     = k.manage
+        }
       ]
-    ]) : "${qk.key_name}" => {
+      ]) : "${qk.key_name}" => {
       queue_name = qk.queue_name
       listen     = qk.listen
       send       = qk.send
@@ -49,13 +49,13 @@ resource "azurerm_servicebus_namespace" "service_bus_wisp" {
   location            = var.location
   resource_group_name = local.sb_resource_group_name
   sku                 = var.service_bus_wisp.sku
-  zone_redundant = var.service_bus_wisp.sku == "Premium"
+  zone_redundant      = var.service_bus_wisp.sku == "Premium"
   # https://learn.microsoft.com/en-us/azure/well-architected/service-guides/service-bus/reliability
 
-  capacity = try(var.service_bus_wisp.capacity, null)
+  capacity                     = try(var.service_bus_wisp.capacity, null)
   premium_messaging_partitions = var.service_bus_wisp.premium_messaging_partitions
 
-  dynamic network_rule_set {
+  dynamic "network_rule_set" {
     for_each = var.env_short != "d" ? [1] : []
     content {
       trusted_services_allowed = true
