@@ -15,6 +15,7 @@
       </expose-headers>
     </cors>
     <set-variable name="cartId" value="@(context.Request.MatchedParameters["cart_id"])" />
+    <set-variable name="clientId" value="@(context.Request.Url.Query.GetValueOrDefault("clientId", ""))" />
     <return-response>
       <set-status code="200"/>
       <set-header name="Content-Type" exists-action="override">
@@ -22,7 +23,7 @@
       </set-header>
         <set-body template="liquid">
           <head>
-            <meta http-equiv="refresh" content="0; URL=https://${checkout_hostname}/c/{{context.Variables['cartId']}}"/>
+            <meta http-equiv="refresh" content="0; URL=https://${checkout_hostname}/c/{{context.Variables['cartId']}}?clientId={{context.Variables['clientId']}}"/>
           </head>
         </set-body>
     </return-response>
