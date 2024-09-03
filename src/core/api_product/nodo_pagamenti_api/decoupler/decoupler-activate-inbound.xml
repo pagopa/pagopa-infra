@@ -52,7 +52,7 @@
                                     return "NOTSET";
                                 }
                             }" />
-        <cache-lookup-value key="@("wisp_timer_hang_" + ((string)context.Variables["wisp_ecommerce_paymentNote"] ?? ""))" variable-name="wisp_checkout_timeout" default-value="NONE" caching-type="external" />
+        <cache-lookup-value key="@("wisp_timer_hang_" + ((string)context.Variables["wisp_ecommerce_paymentNote"] ?? "") + (((string) context.Variables["wisp_fiscalcode_noticenumber"])).Substring(4))" variable-name="wisp_checkout_timeout" default-value="NONE" caching-type="external" />
         <choose>
           <when condition="@(context.Variables.GetValueOrDefault<string>("wisp_checkout_timeout", "NONE").Equals("NONE"))">
           <return-response>
