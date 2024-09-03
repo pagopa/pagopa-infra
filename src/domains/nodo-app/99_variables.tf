@@ -451,7 +451,7 @@ variable "wisp_converter" {
     ci_whitelist                       = string
     nodoinviarpt_paymenttype_whitelist = string
     dismantling_primitives             = string
-    dismantling_rt_primitives             = string
+    dismantling_rt_primitives          = string
   })
 }
 
@@ -464,8 +464,8 @@ variable "enable_sendPaymentResultV2_SWClient" {
 
 variable "wfesp_dismantling" {
   type = object({
-    channel_list                       = string
-    wfesp_fixed_url                    = string
+    channel_list    = string
+    wfesp_fixed_url = string
   })
 }
 
