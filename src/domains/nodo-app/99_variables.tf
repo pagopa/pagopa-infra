@@ -451,7 +451,7 @@ variable "wisp_converter" {
     ci_whitelist                       = string
     nodoinviarpt_paymenttype_whitelist = string
     dismantling_primitives             = string
-    dismantling_rt_primitives             = string
+    dismantling_rt_primitives          = string
   })
 }
 
