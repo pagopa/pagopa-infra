@@ -40,6 +40,19 @@ module "wisp_converter_caching_api_v1" {
   xml_content = templatefile("./api/wisp-converter/caching/v1/_base_policy.xml", {})
 }
 
+resource "azurerm_api_management_api_operation_policy" "save_mapping_api_v1" {
+  api_name            = format("%s-wisp-converter-caching-api-v1", var.env_short)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "saveMapping"
+
+  xml_content         = file("./api/wisp-converter/caching/v1/save_mapping_policy.xml")
+}
+
+resource "terraform_data" "sha256_save_mapping_api_v1" {
+  input = sha256(file("./api/wisp-converter/caching/v1/save_mapping_policy.xml"))
+}
+
 # fragment for loading configuration inside policy
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
 # https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
