@@ -1,0 +1,4 @@
+<fragment>
+  <set-variable name="wisp_whitelisted_cis" value="${wisp_whitelisted_cis}" />
+  <set-variable name="wisp_whitelisted_stations" value="${wisp_whitelisted_stations}" />
+</fragment>
