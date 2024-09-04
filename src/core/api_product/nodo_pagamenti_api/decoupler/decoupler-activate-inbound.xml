@@ -66,7 +66,7 @@
         <nfp:activatePaymentNoticeV2Response>
             <outcome>KO</outcome>
             <fault>
-                <faultCode>PPT_ERRORE_EMESSO_DA_PAA</faultCode>
+                <faultCode>PPT_WISP_SESSIONE_SCONOSCIUTA</faultCode>
                 <faultString>User session expired.</faultString>
                 <id>NodoDeiPagamentiSPC</id>
                 <description>Too many times occurred between Checkout redirect and activatePaymentNoticeV2</description>
