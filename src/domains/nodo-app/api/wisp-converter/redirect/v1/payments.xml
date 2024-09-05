@@ -6,9 +6,9 @@
       <when condition="@(!((string)context.Variables["wisp_sessionId"]).Equals("NONE"))">
         <cache-lookup-value key="@("wisp_timer_hang_" + (string)context.Variables["wisp_sessionId"])" variable-name="wisp_redirect_timeout" default-value="NONE" caching-type="external" />
         <choose>
-          <when condition="@(!((string)context.Variables["wisp_sessionId"]).Equals("NONE"))">
-            <set-backend-service base-url="{{wisp-dismantling-converter-base-url}}/static/error" />
-            <rewrite-uri template="" />
+          <when condition="@(((string)context.Variables["wisp_sessionId"]).Equals("NONE"))">
+            <set-backend-service base-url="{{wisp-dismantling-converter-base-url}}/static" />
+            <rewrite-uri template="/error" />
           </when>
         </choose>
       </when>
