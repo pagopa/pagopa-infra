@@ -121,7 +121,7 @@
               }</message>
           </trace>
           <!-- acitvateResp KO STOP -->
-        </otherwise>        
+        </otherwise>
       </choose>
   </when>
 </choose>

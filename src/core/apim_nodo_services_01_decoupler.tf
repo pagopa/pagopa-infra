@@ -136,3 +136,24 @@ resource "azapi_resource" "on_erro_soap_handler" {
   }
 }
 
+# fragment for managing outbound policy for nodoInviaRPT and nodoInviaCarrelloRPT
+resource "terraform_data" "sha256_nodoinviarpt_wisp_nodoinviacarrellorpt_outbound_policy" {
+  input = sha256(file("./api/nodopagamenti_api/nodoPerPa/v1/wisp_nodoInviaRPT_nodoInviaCarrelloRPT_outbound_policy.xml"))
+}
+resource "azapi_resource" "wisp_nodoinviarpt_nodoinviacarrellorpt_outbound_policy" {
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "wisp-nodoinviarpt-nodoinviacarrellorpt-outbound"
+  parent_id = data.azurerm_api_management.apim_migrated[0].id
+
+  body = jsonencode({
+    properties = {
+      description = "Outbound policy for nodoInviaRPT / nodoInviaCarrelloRPT regarding WISP"
+      format      = "rawxml"
+      value       = file("./api/nodopagamenti_api/nodoPerPa/v1/wisp_nodoInviaRPT_nodoInviaCarrelloRPT_outbound_policy.xml")
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}

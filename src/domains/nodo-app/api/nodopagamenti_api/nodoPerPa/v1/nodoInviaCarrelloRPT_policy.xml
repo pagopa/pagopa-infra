@@ -2,12 +2,13 @@
   <inbound>
     <base />
   </inbound>
-  <outbound>
-    <base />
-  </outbound>
   <backend>
     <base />
   </backend>
+  <outbound>
+    <base />
+    <include-fragment fragment-id="wisp-nodoinviarpt-nodoinviacarrellorpt-outbound" />
+  </outbound>
   <on-error>
     <base />
   </on-error>
