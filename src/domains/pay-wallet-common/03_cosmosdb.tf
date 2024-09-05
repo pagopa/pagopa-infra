@@ -136,6 +136,20 @@ locals {
       ]
       shard_key = "walletId"
     },
+    { # collection with detailed events
+      name = "payment-wallets-log-events"
+      default_ttl_seconds = "600"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["walletId", "timestamp", "eventType"]
+          unique = true
+        }
+      ]
+      shard_key = "walletId"
+    },
   ]
 }
 
