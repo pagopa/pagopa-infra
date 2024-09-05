@@ -118,8 +118,7 @@
             var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
             return new JObject(
             new JProperty("fiscalCode", ci),
-            new JProperty("noticeNumber", noticeNumber),
-            new JProperty("paymentToken", "NONE")
+            new JProperty("noticeNumber", noticeNumber)
             ).ToString();
           }" />
 
