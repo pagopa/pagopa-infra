@@ -109,33 +109,17 @@
         </when>
         <otherwise>
           <!-- acitvateResp KO START -->
-          <!-- call create receipt KO direct -->
-          <set-variable name="wisp-receipt-ko-req" value="@{
-            var requestData = JObject.Parse((string) context.Variables["requestData"]);
-            var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
-            var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
-            return new JObject(
-            new JProperty("fiscalCode", ci),
-            new JProperty("noticeNumber", noticeNumber)
-            ).ToString();
-          }" />
-
-          <send-one-way-request mode="new">
-            <set-url>{{wisp-dismantling-converter-base-url}}/receipt/ko</set-url>
-            <set-method>POST</set-method>
-            <set-header name="Content-Type" exists-action="override">
-              <value>application/json</value>
-            </set-header>
-            <set-header name="X-Primitive" exists-action="override">
-              <value>activatePaymentNoticeV2</value>
-            </set-header>
-            <set-header name="X-HTTP-Status-Code" exists-action="override">
-              <value>@(context.Response.StatusCode.ToString())</value>
-            </set-header>
-            <set-body>
-              @{ return (string) context.Variables["wisp-receipt-ko-req"]; }
-            </set-body>
-          </send-one-way-request>
+          <!-- only trace for Dismissione dash -->
+          <trace source="wrn_dash_wips" severity="information">
+            <message>@{
+              var requestData = JObject.Parse((string) context.Variables["requestData"]);
+              var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
+              var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
+              string error = "[WRN-DASH-WISP] " +
+              "noticeNumer :" + noticeNumber + " ci: "+ ci;
+              return error;
+              }</message>
+          </trace>
           <!-- acitvateResp KO STOP -->
         </otherwise>        
       </choose>
