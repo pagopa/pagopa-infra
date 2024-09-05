@@ -41,20 +41,18 @@
 <choose>
   <!-- Caching wisp_paymenttoken key if WISP dismantling is enabled and the payment belongs to WISP dismantling -->
   <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") )">
-
+  <set-variable name="wisp_fiscalcode_noticenumber" value="@{
+                        try {
+                            var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                            var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
+                            var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
+                            return "wisp_" + ci + "_" + noticeNumber;
+                        } catch (Exception e) {
+                            return "wisp_FAKE";
+                        }
+                    }" />
+  <cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
   <choose>
-   <set-variable name="wisp_fiscalcode_noticenumber" value="@{
-                          try {
-                              var requestData = JObject.Parse((string)context.Variables["requestData"]);
-                              var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
-                              var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
-                              return "wisp_" + ci + "_" + noticeNumber;
-                          } catch (Exception e) {
-                              return "wisp_FAKE";
-                          }
-                      }" />
-    <cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
-
     <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
 
       <choose>
