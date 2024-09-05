@@ -60,7 +60,7 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy" {
   })
 }
 
-# nodoInviaRPT
+# nodoInviaRPT x WISP dismantling
 resource "azurerm_api_management_api_operation_policy" "nodoInviaRPT_api_v1_policy" {
   count               = var.create_wisp_converter ? 1 : 0
 
@@ -75,7 +75,7 @@ resource "terraform_data" "sha256_nodoInviaRPT_api_v1_policy" {
   input = sha256(file("./api/nodopagamenti_api/nodoPerPa/v1/nodoInviaRPT_policy.xml"))
 }
 
-# nodoInviaCarrelloRPT
+# nodoInviaCarrelloRPT x WISP dismantling
 resource "azurerm_api_management_api_operation_policy" "nodoInviaCarrelloRPT_api_v1_policy" {
   count               = var.create_wisp_converter ? 1 : 0
 

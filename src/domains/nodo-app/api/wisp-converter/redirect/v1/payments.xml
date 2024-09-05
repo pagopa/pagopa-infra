@@ -8,6 +8,7 @@
         <choose>
           <when condition="@(!((string)context.Variables["wisp_sessionId"]).Equals("NONE"))">
             <set-backend-service base-url="{{wisp-dismantling-converter-base-url}}/static/error" />
+            <rewrite-uri template="" />
           </when>
         </choose>
       </when>
