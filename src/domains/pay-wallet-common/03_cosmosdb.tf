@@ -144,7 +144,7 @@ locals {
         unique = true
         },
         {
-          keys   = ["walletId", "timestamp", "eventType"]
+          keys   = ["walletId", "timestamp"]
           unique = true
         }
       ]
