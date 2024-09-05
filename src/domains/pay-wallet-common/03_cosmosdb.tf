@@ -136,20 +136,6 @@ locals {
       ]
       shard_key = "walletId"
     },
-    { # collection with detailed events
-      name = "payment-wallets-log-events"
-      default_ttl_seconds = "600"
-      indexes = [{
-        keys   = ["_id"]
-        unique = true
-        },
-        {
-          keys   = ["walletId", "timestamp"]
-          unique = true
-        }
-      ]
-      shard_key = "walletId"
-    },
   ]
 }
 
@@ -167,6 +153,30 @@ module "cosmosdb_pay_wallet_collections" {
   indexes     = each.value.indexes
   shard_key   = each.value.shard_key
   lock_enable = var.env_short != "p" ? false : true
+}
+
+module "cosmosdb_payment_wallets_log_events_collection" {
+
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.20.1"
+
+  name                = "payment-wallets-log-events"
+  resource_group_name = azurerm_resource_group.cosmosdb_pay_wallet_rg.name
+
+  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb[0].name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.pay_wallet[0].name
+
+  indexes = [{
+    keys   = ["_id"]
+    unique = true
+    },
+    {
+      keys   = ["walletId", "timestamp"]
+      unique = true
+    }
+  ]
+  shard_key           = "walletId"
+  default_ttl_seconds = "2592000"
+  lock_enable         = var.env_short != "p" ? false : true
 }
 
 # -----------------------------------------------
