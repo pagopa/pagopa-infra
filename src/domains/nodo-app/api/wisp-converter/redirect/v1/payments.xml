@@ -12,6 +12,10 @@
           </when>
         </choose>
       </when>
+      <otherwise>
+        <!-- deleting wisp_timer_hang_sessionId will avoid multiple redirect starting from the same WISP dismantling trigger (nodoInviaRPT / nodoInviaCarrelloRPT) -->
+        <cache-remove-value key="@("wisp_timer_hang_" + (string)context.Variables["wisp_sessionId"])" caching-type="external" />
+      </otherwise>
   </choose>
   </inbound>
   <backend>
@@ -19,12 +23,6 @@
   </backend>
   <outbound>
     <base />
-    <choose>
-      <when condition="@(context.Response.StatusCode == 302)">
-        <!-- deleting wisp_timer_hang_sessionId will avoid multiple redirect starting from the same WISP dismantling trigger (nodoInviaRPT / nodoInviaCarrelloRPT) -->
-        <cache-remove-value key="@("wisp_timer_hang_" + (string)context.Variables["wisp_sessionId"])" caching-type="external" />
-      </when>
-    </choose>
   </outbound>
   <on-error>
     <base />
