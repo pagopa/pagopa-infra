@@ -323,7 +323,7 @@
 | <a name="input_vmss_instance_number"></a> [vmss\_instance\_number](#input\_vmss\_instance\_number) | availability zones for vmss | `number` | n/a | yes |
 | <a name="input_vmss_zones"></a> [vmss\_zones](#input\_vmss\_zones) | availability zones for vmss | `list(string)` | n/a | yes |
 | <a name="input_wfesp_dismantling"></a> [wfesp\_dismantling](#input\_wfesp\_dismantling) | n/a | <pre>object({<br>    channel_list    = string<br>    wfesp_fixed_url = string<br>  })</pre> | n/a | yes |
-| <a name="input_wisp_converter"></a> [wisp\_converter](#input\_wisp\_converter) | n/a | <pre>object({<br>    enable_apim_switch                 = bool # enable WISP dismantling<br>    brokerPSP_whitelist                = string<br>    channel_whitelist                  = string<br>    station_whitelist                  = string<br>    ci_whitelist                       = string<br>    nodoinviarpt_paymenttype_whitelist = string<br>    dismantling_primitives             = string<br>    dismantling_rt_primitives          = string<br>  })</pre> | n/a | yes |
+| <a name="input_wisp_converter"></a> [wisp\_converter](#input\_wisp\_converter) | n/a | <pre>object({<br>    enable_apim_switch                 = bool # enable WISP dismantling<br>    brokerPSP_whitelist                = string<br>    channel_whitelist                  = string<br>    station_whitelist                  = string<br>    ci_whitelist                       = string<br>    nodoinviarpt_paymenttype_whitelist = string<br>    dismantling_primitives             = string<br>  })</pre> | n/a | yes |
 
 ## Outputs
 
