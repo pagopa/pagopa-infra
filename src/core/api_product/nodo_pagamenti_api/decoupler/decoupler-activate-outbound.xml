@@ -92,7 +92,7 @@
                                   }" />
           <!-- deleting wisp_timer_hang will avoid multiple activations starting from the same WISP dismantling trigger (nodoInviaRPT / nodoInviaCarrelloRPT) -->
           <!-- the variable wisp_ecommerce_paymentNote is defined in decoupler-activate-inbound fragment -->
-          <cache-remove-value key="@("wisp_timer_hang_" + ((string)context.Variables["wisp_ecommerce_paymentNote"] ?? ""))" caching-type="external" />
+          <cache-remove-value  key="@("wisp_timer_hang_" + ((string)context.Variables["wisp_ecommerce_paymentNote"] ?? "") + (((string) context.Variables["wisp_fiscalcode_noticenumber"])).Substring(4))" caching-type="external" />
           <send-one-way-request mode="new">
             <set-url>{{wisp-dismantling-converter-base-url}}/receipt/timer</set-url>
             <set-method>POST</set-method>

@@ -7,7 +7,7 @@
 <fragment>
   <choose>
     <when condition="@(!context.Variables.GetValueOrDefault("wisp_sessionId_fiscalCode_noticeNumber", "NONE").Equals("NONE"))">
-    <cache-store-value key="@("wisp_timer_hang_"+(string)context.Variables["wisp_sessionId_fiscalCode_noticeNumber"] )" value="@(DateTime.UtcNow.AddSeconds({{wisp-checkout-predefined-expiration-time}}))" duration="{{wisp-checkout-predefined-expiration-time}}" caching-type="external" />
+    <cache-store-value key="@("wisp_timer_hang_"+(string)context.Variables["wisp_sessionId_fiscalCode_noticeNumber"] )" value="@(DateTime.UtcNow.AddSeconds({{wisp-checkout-predefined-expiration-time}}).ToString())" duration="{{wisp-checkout-predefined-expiration-time}}" caching-type="external" />
   </when>
 </choose>
   </fragment>
