@@ -75,7 +75,7 @@ locals {
       ]
       shard_key = null
     },
-    { # collection with event until 25/08/2024, replaced by payment-wallet-log-events
+    { # collection with event until 25/08/2024, replaced by payment-wallet-log-events DEPRECATED
       name = "wallet-log-events"
       indexes = [{
         keys   = ["_id"]
@@ -123,7 +123,7 @@ locals {
       ]
       shard_key = "userId"
     },
-    { # collection with event from 25/08/2024
+    { # collection with event from 25/08/2024, DEPRECATED
       name = "payment-wallet-log-events"
       indexes = [{
         keys   = ["_id"]
@@ -175,7 +175,7 @@ module "cosmosdb_payment_wallets_log_events_collection" {
     }
   ]
   shard_key           = "walletId"
-  default_ttl_seconds = "2592000"
+  default_ttl_seconds = "2592000" #30 days
   lock_enable         = var.env_short != "p" ? false : true
 }
 
