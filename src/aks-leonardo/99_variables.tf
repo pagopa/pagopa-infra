@@ -34,6 +34,11 @@ variable "location" {
   description = "Location name complete"
 }
 
+variable "location_westeurope" {
+  type        = string
+  description = "Location name complete"
+}
+
 variable "location_short" {
   type        = string
   description = "Location short like eg: itn, weu.."
@@ -518,4 +523,46 @@ variable "nginx_helm_version" {
 
 variable "keda_helm_version" {
   type = string
+}
+
+### Monitor
+
+variable "monitor_resource_group_name" {
+  type        = string
+  description = "Monitor resource group name"
+}
+
+variable "log_analytics_workspace_name" {
+  type        = string
+  description = "Specifies the name of the Log Analytics Workspace."
+}
+
+variable "log_analytics_workspace_resource_group_name" {
+  type        = string
+  description = "The name of the resource group in which the Log Analytics workspace is located in."
+}
+
+variable "monitor_appinsights_italy_name" {
+  type        = string
+  description = "App insight in Italy name"
+}
+
+variable "monitor_italy_resource_group_name" {
+  type        = string
+  description = "Monitor Italy resource group name"
+}
+
+variable "log_analytics_italy_workspace_name" {
+  type        = string
+  description = "Specifies the name of the Log Analytics Workspace Italy."
+}
+
+variable "log_analytics_italy_workspace_resource_group_name" {
+  type        = string
+  description = "The name of the resource group in which the Log Analytics workspace Italy is located in."
+}
+
+variable "monitor_appinsights_name" {
+  type        = string
+  description = "App insight in europe name"
 }

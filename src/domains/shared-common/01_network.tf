@@ -27,6 +27,11 @@ data "azurerm_private_dns_zone" "cosmos" {
   resource_group_name = local.cosmos_dns_zone_resource_group_name
 }
 
+data "azurerm_private_dns_zone" "cosmos_table" {
+  name                = local.cosmos_table_dns_zone_name
+  resource_group_name = local.cosmos_table_dns_zone_resource_group_name
+}
+
 data "azurerm_private_dns_zone" "storage" {
   name                = local.storage_queue_dns_zone_name
   resource_group_name = local.storage_dns_zone_resource_group_name

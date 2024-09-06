@@ -16,7 +16,7 @@ CREATE TABLE ${schema}.carrello_parted (
                                          flag_multibeneficiario bpchar(1) DEFAULT 'N'::bpchar NOT NULL,
                                          CONSTRAINT carrello_parted__pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX carrello_id_carrello_parted_idx ON ${schema}.carrello_parted USING btree (id_carrello);
+CREATE INDEX IF NOT EXISTS carrello_id_carrello_parted_idx ON ${schema}.carrello_parted USING btree (id_carrello);
 
 ---
 
@@ -30,7 +30,7 @@ CREATE TABLE ${schema}.cd_info_pagamento_parted (
                                                   updated_timestamp timestamp(6) NOT NULL,
                                                   CONSTRAINT cd_info_pagamento_parted_pk PRIMARY KEY (obj_id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX cd_info_pagamento_parted_idx ON ${schema}.cd_info_pagamento_parted USING btree (ident_dominio, iuv, ccp);
+CREATE INDEX IF NOT EXISTS cd_info_pagamento_parted_idx ON ${schema}.cd_info_pagamento_parted USING btree (ident_dominio, iuv, ccp);
 
 ---
 
@@ -51,10 +51,10 @@ CREATE TABLE ${schema}.idempotency_cache_parted (
                                                   updated_by varchar(100) NULL,
                                                   CONSTRAINT idempotency_cache_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX idempotency_cache_hash_parted_idx ON ${schema}.idempotency_cache_parted USING btree (hash_request);
-CREATE INDEX idempotency_cache_key_psp_parted_id ON ${schema}.idempotency_cache_parted USING btree (idempotency_key, psp_id);
-CREATE INDEX idempotency_cache_psp_notice_parted_idx ON ${schema}.idempotency_cache_parted USING btree (primitiva, psp_id, notice_id);
-CREATE INDEX idempotency_cache_psp_token_parted_idx ON ${schema}.idempotency_cache_parted USING btree (primitiva, psp_id, token);
+CREATE INDEX IF NOT EXISTS idempotency_cache_hash_parted_idx ON ${schema}.idempotency_cache_parted USING btree (hash_request);
+CREATE INDEX IF NOT EXISTS idempotency_cache_key_psp_parted_id ON ${schema}.idempotency_cache_parted USING btree (idempotency_key, psp_id);
+CREATE INDEX IF NOT EXISTS idempotency_cache_psp_notice_parted_idx ON ${schema}.idempotency_cache_parted USING btree (primitiva, psp_id, notice_id);
+CREATE INDEX IF NOT EXISTS idempotency_cache_psp_token_parted_idx ON ${schema}.idempotency_cache_parted USING btree (primitiva, psp_id, token);
 
 ---
 
@@ -71,9 +71,9 @@ CREATE TABLE ${schema}.messaggi_parted (
                                          source_type varchar(10) NULL,
                                          CONSTRAINT messaggi_parted_pk PRIMARY KEY (id, timestamp_evento)
 ) partition by range ("timestamp_evento");
-CREATE INDEX messaggi_id_carrello_parted_idx ON ${schema}.messaggi_parted USING btree (id_carrello);
-CREATE INDEX messaggi_id_dominio_iuv_ccp_parted_idx ON ${schema}.messaggi_parted USING btree (id_dominio, iuv, ccp);
-CREATE INDEX messaggi_id_sess_parted ON ${schema}.messaggi_parted USING btree (id_sessione);
+CREATE INDEX IF NOT EXISTS messaggi_id_carrello_parted_idx ON ${schema}.messaggi_parted USING btree (id_carrello);
+CREATE INDEX IF NOT EXISTS messaggi_id_dominio_iuv_ccp_parted_idx ON ${schema}.messaggi_parted USING btree (id_dominio, iuv, ccp);
+CREATE INDEX IF NOT EXISTS messaggi_id_sess_parted ON ${schema}.messaggi_parted USING btree (id_sessione);
 
 ---
 
@@ -116,8 +116,8 @@ CREATE TABLE ${schema}.pm_session_data_parted (
                                                 codice_autorizzativo_bpay varchar(255) NULL,
                                                 CONSTRAINT rpt_pm_data_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX pm_sess_data_sessid_parted_idx ON ${schema}.pm_session_data_parted USING btree (id_sessione);
-CREATE INDEX pm_session_data_rrn_parted_idx ON ${schema}.pm_session_data_parted USING btree (rrn);
+CREATE INDEX IF NOT EXISTS pm_sess_data_sessid_parted_idx ON ${schema}.pm_session_data_parted USING btree (id_sessione);
+CREATE INDEX IF NOT EXISTS pm_session_data_rrn_parted_idx ON ${schema}.pm_session_data_parted USING btree (rrn);
 
 ---
 
@@ -146,8 +146,8 @@ CREATE TABLE ${schema}.position_activate_parted (
                                                   payment_note varchar(255) NULL,
                                                   CONSTRAINT position_activate_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX position_activate_parted_idx1 ON ${schema}.position_activate_parted USING btree (payment_token);
-CREATE INDEX position_activate_pa_parted_no ON ${schema}.position_activate_parted USING btree (pa_fiscal_code, notice_id, payment_token);
+CREATE INDEX IF NOT EXISTS position_activate_parted_idx1 ON ${schema}.position_activate_parted USING btree (payment_token);
+CREATE INDEX IF NOT EXISTS position_activate_pa_parted_no ON ${schema}.position_activate_parted USING btree (pa_fiscal_code, notice_id, payment_token);
 
 ---
 
@@ -235,7 +235,7 @@ CREATE TABLE ${schema}.retry_pa_attiva_rpt_parted (
                                                     ready bpchar(1) NULL,
                                                     CONSTRAINT retry_pa_attiva_rpt_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX retry_pa_attiva_rpt_parted_idx1 ON ${schema}.retry_pa_attiva_rpt_parted USING btree (pa_fiscal_code, iuv, token);
+CREATE INDEX IF NOT EXISTS retry_pa_attiva_rpt_parted_idx1 ON ${schema}.retry_pa_attiva_rpt_parted USING btree (pa_fiscal_code, iuv, token);
 
 ---
 
@@ -296,8 +296,8 @@ CREATE TABLE ${schema}.rpt_activations_parted (
                                                 updated_by varchar(100) NULL,
                                                 retry_pending bpchar(1) DEFAULT 'N'::bpchar NOT NULL
 ) partition by range ("inserted_timestamp");
-CREATE INDEX rpt_activations_fu6msyd0tadcw_parted_idx ON ${schema}.rpt_activations_parted USING btree (creditor_reference_id, payment_token, pa_fiscal_code);
-CREATE INDEX rpt_activations_pa_fiscal_code_parted_idx ON ${schema}.rpt_activations_parted USING btree (pa_fiscal_code, notice_id, creditor_reference_id);
+CREATE INDEX IF NOT EXISTS rpt_activations_fu6msyd0tadcw_parted_idx ON ${schema}.rpt_activations_parted USING btree (creditor_reference_id, payment_token, pa_fiscal_code);
+CREATE INDEX IF NOT EXISTS rpt_activations_pa_fiscal_code_parted_idx ON ${schema}.rpt_activations_parted USING btree (pa_fiscal_code, notice_id, creditor_reference_id);
 
 ---
 
@@ -321,7 +321,7 @@ CREATE TABLE ${schema}.rt_parted (
                                    generata_da varchar(10) NULL,
                                    CONSTRAINT rt_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX rt_unique_parted ON ${schema}.rt_parted USING btree (ident_dominio, iuv, ccp);
+CREATE INDEX IF NOT EXISTS rt_unique_parted ON ${schema}.rt_parted USING btree (ident_dominio, iuv, ccp);
 ---* rt_unique_parted non pèuò piu essere unico, non avrebbe senso
 
 
@@ -337,7 +337,7 @@ CREATE TABLE ${schema}.stati_carrello_parted (
                                                id int8 GENERATED BY DEFAULT AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1 NO CYCLE) NOT NULL,
                                                CONSTRAINT stati_carrello_parted_pk PRIMARY KEY (id,inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX stati_carrello_idx_id_carrello_id_sessione_parted ON ${schema}.stati_carrello_parted USING btree (id_carrello, id_sessione);
+CREATE INDEX IF NOT EXISTS stati_carrello_idx_id_carrello_id_sessione_parted ON ${schema}.stati_carrello_parted USING btree (id_carrello, id_sessione);
 
 ---
 
@@ -351,7 +351,7 @@ CREATE TABLE ${schema}.stati_carrello_snapshot_parted (
                                                         updated_by varchar(35) NOT NULL,
                                                         CONSTRAINT pk_carrello_parted PRIMARY KEY (id_carrello, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX stati_carrello_snapshot_idx_id_sessione_parted ON ${schema}.stati_carrello_snapshot_parted USING btree (id_sessione);
+CREATE INDEX IF NOT EXISTS stati_carrello_snapshot_idx_id_sessione_parted ON ${schema}.stati_carrello_snapshot_parted USING btree (id_sessione);
 
 ---
 
@@ -367,9 +367,9 @@ CREATE TABLE ${schema}.stati_rpt_parted (
                                           inserted_timestamp timestamp(6) NOT NULL,
                                           CONSTRAINT stati_rpt_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX stati_rpt_idx_id_sessione_originale_parted ON ${schema}.stati_rpt_parted USING btree (id_sessione_originale);
-CREATE INDEX stati_rpt_idx_rptkey_id_sessione_parted ON ${schema}.stati_rpt_parted USING btree (id_dominio, iuv, ccp, id_sessione);
-CREATE INDEX stati_rpt_mv_parted_idx1 ON ${schema}.stati_rpt_parted USING btree (inserted_timestamp);
+CREATE INDEX IF NOT EXISTS stati_rpt_idx_id_sessione_originale_parted ON ${schema}.stati_rpt_parted USING btree (id_sessione_originale);
+CREATE INDEX IF NOT EXISTS stati_rpt_idx_rptkey_id_sessione_parted ON ${schema}.stati_rpt_parted USING btree (id_dominio, iuv, ccp, id_sessione);
+CREATE INDEX IF NOT EXISTS stati_rpt_mv_parted_idx1 ON ${schema}.stati_rpt_parted USING btree (inserted_timestamp);
 
 ---
 
@@ -386,9 +386,9 @@ CREATE TABLE ${schema}.stati_rpt_snapshot_parted (
                                                    push numeric(1) NULL,
                                                    CONSTRAINT stati_rpt_snapshot_parted_pk PRIMARY KEY (id_dominio, iuv, ccp, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX stati_rpt_snapshot_parted_idx1 ON ${schema}.stati_rpt_snapshot_parted USING btree (stato);
-CREATE INDEX stati_rpt_snapshot_idx_id_sessione_parted ON ${schema}.stati_rpt_snapshot_parted USING btree (id_sessione);
-CREATE INDEX stati_rpt_snapshot_mv_parted_idx1 ON ${schema}.stati_rpt_snapshot_parted USING btree (inserted_timestamp);
+CREATE INDEX IF NOT EXISTS stati_rpt_snapshot_parted_idx1 ON ${schema}.stati_rpt_snapshot_parted USING btree (stato);
+CREATE INDEX IF NOT EXISTS stati_rpt_snapshot_idx_id_sessione_parted ON ${schema}.stati_rpt_snapshot_parted USING btree (id_sessione);
+CREATE INDEX IF NOT EXISTS stati_rpt_snapshot_mv_parted_idx1 ON ${schema}.stati_rpt_snapshot_parted USING btree (inserted_timestamp);
 
 ---
 
@@ -403,7 +403,7 @@ CREATE TABLE ${schema}.verifica_bollettino_parted (
                                                     updated_by varchar(100) NULL,
                                                     CONSTRAINT vb_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX verifica_bollettino_unique_parted ON ${schema}.verifica_bollettino_parted USING btree (notice_id, pa_fiscal_code, inserted_timestamp);
+CREATE INDEX IF NOT EXISTS verifica_bollettino_unique_parted ON ${schema}.verifica_bollettino_parted USING btree (notice_id, pa_fiscal_code, inserted_timestamp);
 ---* indice non può essere unico
 
 ---
@@ -425,7 +425,7 @@ CREATE TABLE ${schema}.rt_versamenti_parted (
                                               commissione_applicate_pa float4 NULL,
                                               CONSTRAINT rt_versamenti_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX rt_versamenti_fk_rt_parted_idx ON ${schema}.rt_versamenti_parted USING btree (fk_rt);
+CREATE INDEX IF NOT EXISTS rt_versamenti_fk_rt_parted_idx ON ${schema}.rt_versamenti_parted USING btree (fk_rt);
 
 ---
 
@@ -443,8 +443,8 @@ CREATE TABLE ${schema}.position_service_parted (
                                                  updated_by varchar(100) NULL,
                                                  CONSTRAINT ps_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX position_service_inserted_timestamp_parted ON ${schema}.position_service_parted USING btree (inserted_timestamp);
-CREATE INDEX position_service_pa_fiscal_code_parted_idx ON ${schema}.position_service_parted USING btree (pa_fiscal_code, notice_id);
+CREATE INDEX IF NOT EXISTS position_service_inserted_timestamp_parted ON ${schema}.position_service_parted USING btree (inserted_timestamp);
+CREATE INDEX IF NOT EXISTS position_service_pa_fiscal_code_parted_idx ON ${schema}.position_service_parted USING btree (pa_fiscal_code, notice_id);
 ---* indice non può essere unico
 
 ---
@@ -462,10 +462,10 @@ CREATE TABLE ${schema}.position_status_snapshot_parted (
                                                          updated_by varchar(100) NULL,
                                                          CONSTRAINT position_status_snapshot_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX position_status_snapshot_parted_idx ON ${schema}.position_status_snapshot_parted USING btree (fk_position_service);
-CREATE INDEX position_status_snapshot_parted_idx1 ON ${schema}.position_status_snapshot_parted USING btree (notice_id, pa_fiscal_code);
-CREATE INDEX position_status_snapshot_parted_idx2 ON ${schema}.position_status_snapshot_parted USING btree (notice_id);
-CREATE INDEX position_status_snapshot_inserted_timestamp_parted ON ${schema}.position_status_snapshot_parted USING btree (inserted_timestamp);
+CREATE INDEX IF NOT EXISTS position_status_snapshot_parted_idx ON ${schema}.position_status_snapshot_parted USING btree (fk_position_service);
+CREATE INDEX IF NOT EXISTS position_status_snapshot_parted_idx1 ON ${schema}.position_status_snapshot_parted USING btree (notice_id, pa_fiscal_code);
+CREATE INDEX IF NOT EXISTS position_status_snapshot_parted_idx2 ON ${schema}.position_status_snapshot_parted USING btree (notice_id);
+CREATE INDEX IF NOT EXISTS position_status_snapshot_inserted_timestamp_parted ON ${schema}.position_status_snapshot_parted USING btree (inserted_timestamp);
 
 ---
 
@@ -499,11 +499,11 @@ CREATE TABLE ${schema}.rpt_parted (
                                     flag_io bpchar(1) NULL,
                                     CONSTRAINT rpt_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX cffj72a4012c5_parted_idx ON ${schema}.rpt_parted USING btree (iuv, ident_dominio, ccp, flag_io);
-CREATE INDEX dsf6xw4twzyr2_parted_idx ON ${schema}.rpt_parted USING btree (fk_carrello, wisp_2);
-CREATE INDEX rpt_fk_carrello_parted ON ${schema}.rpt_parted USING btree (fk_carrello);
-CREATE INDEX rpt_staz_intermediariopa_parted ON ${schema}.rpt_parted USING btree (staz_intermediariopa);
-CREATE INDEX rpt_unique_parted ON ${schema}.rpt_parted USING btree (ident_dominio, iuv, ccp);
+CREATE INDEX IF NOT EXISTS cffj72a4012c5_parted_idx ON ${schema}.rpt_parted USING btree (iuv, ident_dominio, ccp, flag_io);
+CREATE INDEX IF NOT EXISTS dsf6xw4twzyr2_parted_idx ON ${schema}.rpt_parted USING btree (fk_carrello, wisp_2);
+CREATE INDEX IF NOT EXISTS rpt_fk_carrello_parted ON ${schema}.rpt_parted USING btree (fk_carrello);
+CREATE INDEX IF NOT EXISTS rpt_staz_intermediariopa_parted ON ${schema}.rpt_parted USING btree (staz_intermediariopa);
+CREATE INDEX IF NOT EXISTS rpt_unique_parted ON ${schema}.rpt_parted USING btree (ident_dominio, iuv, ccp);
 ---* indice non può essere unico
 
 ---
@@ -527,7 +527,7 @@ CREATE TABLE ${schema}.rpt_soggetti_parted (
                                              updated_timestamp timestamp(6) NOT NULL,
                                              CONSTRAINT rpt_soggetti_parted_pk PRIMARY KEY (rpt_id, tipo_soggetto, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX rpt_soggetti_rpt_id_parted_idx ON ${schema}.rpt_soggetti_parted USING btree (rpt_id);
+CREATE INDEX IF NOT EXISTS rpt_soggetti_rpt_id_parted_idx ON ${schema}.rpt_soggetti_parted USING btree (rpt_id);
 
 ---
 
@@ -549,7 +549,7 @@ CREATE TABLE ${schema}.rpt_versamenti_parted (
                                                updated_timestamp timestamp(6) NOT NULL,
                                                CONSTRAINT rpt_versamenti_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX rpt_versamenti_fk_rpt_parted_idx ON ${schema}.rpt_versamenti_parted USING btree (fk_rpt);
+CREATE INDEX IF NOT EXISTS rpt_versamenti_fk_rpt_parted_idx ON ${schema}.rpt_versamenti_parted USING btree (fk_rpt);
 
 ---
 
@@ -564,7 +564,7 @@ CREATE TABLE ${schema}.rpt_versamenti_bollo_parted (
                                                      updated_timestamp timestamp(6) NOT NULL,
                                                      CONSTRAINT rpt_versamenti_bollo_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX rpt_versamenti_bollo_fk_rpt_versamenti_parted_idx ON ${schema}.rpt_versamenti_bollo_parted USING btree (fk_rpt_versamenti);
+CREATE INDEX IF NOT EXISTS rpt_versamenti_bollo_fk_rpt_versamenti_parted_idx ON ${schema}.rpt_versamenti_bollo_parted USING btree (fk_rpt_versamenti);
 
 ---
 
@@ -582,9 +582,9 @@ CREATE TABLE ${schema}.rpt_xml_parted (
                                         updated_timestamp timestamp(6) NOT NULL,
                                         CONSTRAINT rpt_xml_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX rpt_xml_ccp_iuv_parted_idx ON ${schema}.rpt_xml_parted USING btree (ccp, iuv);
-CREATE INDEX rpt_xml_fk_rpt_parted_idx ON ${schema}.rpt_xml_parted USING btree (fk_rpt);
-CREATE INDEX rpt_xml_id_fk_carrello_parted_idx ON ${schema}.rpt_xml_parted USING btree (fk_carrello);
+CREATE INDEX IF NOT EXISTS rpt_xml_ccp_iuv_parted_idx ON ${schema}.rpt_xml_parted USING btree (ccp, iuv);
+CREATE INDEX IF NOT EXISTS rpt_xml_fk_rpt_parted_idx ON ${schema}.rpt_xml_parted USING btree (fk_rpt);
+CREATE INDEX IF NOT EXISTS rpt_xml_id_fk_carrello_parted_idx ON ${schema}.rpt_xml_parted USING btree (fk_carrello);
 
 ---
 
@@ -634,13 +634,13 @@ CREATE TABLE ${schema}.position_payment_parted (
                                                  flag_standin bpchar(1) NULL,
                                                  CONSTRAINT position_payment_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX i_fk_pp_ps_parted ON ${schema}.position_payment_parted USING btree (fk_payment_plan);
-CREATE INDEX i_fk_pp_rpt_parted ON ${schema}.position_payment_parted USING btree (rpt_id);
-CREATE INDEX position_payment_parted_idx ON ${schema}.position_payment_parted USING btree (payment_token);
-CREATE INDEX position_payment_parted_idx1 ON ${schema}.position_payment_parted USING btree (notice_id);
-CREATE INDEX position_payment_parted_idx3 ON ${schema}.position_payment_parted USING btree (payment_token, psp_id, inserted_timestamp);
-CREATE INDEX position_payment_inserted_timestamp_parted ON ${schema}.position_payment_parted USING btree (inserted_timestamp);
-CREATE INDEX position_payment_trans_id_parted_idx ON ${schema}.position_payment_parted USING btree (transaction_id);
+CREATE INDEX IF NOT EXISTS i_fk_pp_ps_parted ON ${schema}.position_payment_parted USING btree (fk_payment_plan);
+CREATE INDEX IF NOT EXISTS i_fk_pp_rpt_parted ON ${schema}.position_payment_parted USING btree (rpt_id);
+CREATE INDEX IF NOT EXISTS position_payment_parted_idx ON ${schema}.position_payment_parted USING btree (payment_token);
+CREATE INDEX IF NOT EXISTS position_payment_parted_idx1 ON ${schema}.position_payment_parted USING btree (notice_id);
+CREATE INDEX IF NOT EXISTS position_payment_parted_idx3 ON ${schema}.position_payment_parted USING btree (payment_token, psp_id, inserted_timestamp);
+CREATE INDEX IF NOT EXISTS position_payment_inserted_timestamp_parted ON ${schema}.position_payment_parted USING btree (inserted_timestamp);
+CREATE INDEX IF NOT EXISTS position_payment_trans_id_parted_idx ON ${schema}.position_payment_parted USING btree (transaction_id);
 
 ---
 
@@ -661,9 +661,9 @@ CREATE TABLE ${schema}.position_payment_plan_parted (
                                                       updated_by varchar(100) NULL,
                                                       CONSTRAINT ppp_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX cred_fiscal_code_parted_idx ON ${schema}.position_payment_plan_parted USING btree (creditor_reference_id, pa_fiscal_code);
-CREATE INDEX i_06b1nax785kuu_parted_idx ON ${schema}.position_payment_plan_parted USING btree (creditor_reference_id, notice_id, pa_fiscal_code);
-CREATE INDEX position_payment_plan_parted_idx ON ${schema}.position_payment_plan_parted USING btree (fk_position_service);
+CREATE INDEX IF NOT EXISTS cred_fiscal_code_parted_idx ON ${schema}.position_payment_plan_parted USING btree (creditor_reference_id, pa_fiscal_code);
+CREATE INDEX IF NOT EXISTS i_06b1nax785kuu_parted_idx ON ${schema}.position_payment_plan_parted USING btree (creditor_reference_id, notice_id, pa_fiscal_code);
+CREATE INDEX IF NOT EXISTS position_payment_plan_parted_idx ON ${schema}.position_payment_plan_parted USING btree (fk_position_service);
 
 ---
 
@@ -681,13 +681,13 @@ CREATE TABLE ${schema}.position_payment_status_snapshot_parted (
                                                                  updated_by varchar(100) NULL,
                                                                  CONSTRAINT position_payment_status_snapshot_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX position_payment_status_parted_idx ON ${schema}.position_payment_status_snapshot_parted USING btree (status);
-CREATE INDEX position_payment_status_snapshot_parted_idx ON ${schema}.position_payment_status_snapshot_parted USING btree (fk_position_payment);
-CREATE INDEX position_payment_status_snapshot_parted_idx1 ON ${schema}.position_payment_status_snapshot_parted USING btree (notice_id);
-CREATE INDEX position_payment_status_snapshot_inserted_timestamp_parted ON ${schema}.position_payment_status_snapshot_parted USING btree (inserted_timestamp);
-CREATE INDEX position_payment_status_snapshot_pa_no_parted ON ${schema}.position_payment_status_snapshot_parted USING btree (pa_fiscal_code, notice_id, payment_token);
-CREATE INDEX position_payment_status_snapshot_token_parted ON ${schema}.position_payment_status_snapshot_parted USING btree (payment_token);
-CREATE INDEX ppss_2qupz9mdtj4b6_parted_idx ON ${schema}.position_payment_status_snapshot_parted USING btree (creditor_reference_id, pa_fiscal_code, payment_token);
+CREATE INDEX IF NOT EXISTS position_payment_status_parted_idx ON ${schema}.position_payment_status_snapshot_parted USING btree (status);
+CREATE INDEX IF NOT EXISTS position_payment_status_snapshot_parted_idx ON ${schema}.position_payment_status_snapshot_parted USING btree (fk_position_payment);
+CREATE INDEX IF NOT EXISTS position_payment_status_snapshot_parted_idx1 ON ${schema}.position_payment_status_snapshot_parted USING btree (notice_id);
+CREATE INDEX IF NOT EXISTS position_payment_status_snapshot_inserted_timestamp_parted ON ${schema}.position_payment_status_snapshot_parted USING btree (inserted_timestamp);
+CREATE INDEX IF NOT EXISTS position_payment_status_snapshot_pa_no_parted ON ${schema}.position_payment_status_snapshot_parted USING btree (pa_fiscal_code, notice_id, payment_token);
+CREATE INDEX IF NOT EXISTS position_payment_status_snapshot_token_parted ON ${schema}.position_payment_status_snapshot_parted USING btree (payment_token);
+CREATE INDEX IF NOT EXISTS ppss_2qupz9mdtj4b6_parted_idx ON ${schema}.position_payment_status_snapshot_parted USING btree (creditor_reference_id, pa_fiscal_code, payment_token);
 
 
 ---
@@ -730,7 +730,7 @@ CREATE TABLE ${schema}.position_receipt_parted (
                                                  flag_standin bpchar(1) NULL,
                                                  CONSTRAINT position_receipt_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX position_receipt_payment_date_time_parted ON ${schema}.position_receipt_parted USING btree (payment_date_time);
+CREATE INDEX IF NOT EXISTS position_receipt_payment_date_time_parted ON ${schema}.position_receipt_parted USING btree (payment_date_time);
 
 ---
 
@@ -752,8 +752,8 @@ CREATE TABLE ${schema}.position_receipt_recipient_parted (
                                                            updated_by varchar(100) NULL,
                                                            CONSTRAINT position_receipt_recipient_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX position_receipt_recipient_inserted_timestamp_parted ON ${schema}.position_receipt_recipient_parted USING btree (inserted_timestamp);
-CREATE INDEX position_receipt_recipient_pa_no_to_parted ON ${schema}.position_receipt_recipient_parted USING btree (pa_fiscal_code, notice_id, payment_token);
+CREATE INDEX IF NOT EXISTS position_receipt_recipient_inserted_timestamp_parted ON ${schema}.position_receipt_recipient_parted USING btree (inserted_timestamp);
+CREATE INDEX IF NOT EXISTS position_receipt_recipient_pa_no_to_parted ON ${schema}.position_receipt_recipient_parted USING btree (pa_fiscal_code, notice_id, payment_token);
 
 ---
 
@@ -845,8 +845,8 @@ CREATE TABLE ${schema}.position_transfer_parted (
                                                   company_name_secondary varchar(140) NULL,
                                                   CONSTRAINT position_transfer_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX position_transfer_fk_position_payment_parted ON ${schema}.position_transfer_parted USING btree (fk_position_payment);
-CREATE INDEX position_transfer_parted_idx1 ON ${schema}.position_transfer_parted USING btree (fk_payment_plan);
+CREATE INDEX IF NOT EXISTS position_transfer_fk_position_payment_parted ON ${schema}.position_transfer_parted USING btree (fk_position_payment);
+CREATE INDEX IF NOT EXISTS position_transfer_parted_idx1 ON ${schema}.position_transfer_parted USING btree (fk_payment_plan);
 
 ---
 
@@ -868,8 +868,8 @@ CREATE TABLE ${schema}.rt_versamenti_bollo_parted (
                                                     updated_timestamp timestamp(6) NOT NULL,
                                                     CONSTRAINT rt_versamenti_bollo_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX rt_versamenti_bollo_fk_rt_versamenti_parted_idx ON ${schema}.rt_versamenti_bollo_parted USING btree (fk_rt_versamenti);
-CREATE INDEX rt_versamenti_bollo_iubd_parted ON ${schema}.rt_versamenti_bollo_parted USING btree (iubd);
+CREATE INDEX IF NOT EXISTS rt_versamenti_bollo_fk_rt_versamenti_parted_idx ON ${schema}.rt_versamenti_bollo_parted USING btree (fk_rt_versamenti);
+CREATE INDEX IF NOT EXISTS rt_versamenti_bollo_iubd_parted ON ${schema}.rt_versamenti_bollo_parted USING btree (iubd);
 
 ---
 
@@ -886,8 +886,8 @@ CREATE TABLE ${schema}.rt_xml_parted (
                                        id_sessione varchar(50) NULL,
                                        CONSTRAINT rt_xml_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX rt_xml_fk_rt_parted_idx ON ${schema}.rt_xml_parted USING btree (fk_rt);
-CREATE INDEX rt_xml_parted_idx1 ON ${schema}.rt_xml_parted USING btree (ccp, iuv);
+CREATE INDEX IF NOT EXISTS rt_xml_fk_rt_parted_idx ON ${schema}.rt_xml_parted USING btree (fk_rt);
+CREATE INDEX IF NOT EXISTS rt_xml_parted_idx1 ON ${schema}.rt_xml_parted USING btree (ccp, iuv);
 
 ---
 
@@ -908,5 +908,5 @@ CREATE TABLE ${schema}.token_utility_parted (
                                               inserted_timestamp timestamp(6) NULL,
                                               CONSTRAINT token_utility_parted_pk PRIMARY KEY (id, inserted_timestamp)
 ) partition by range ("inserted_timestamp");
-CREATE INDEX i_fk_rpt_1_parted ON ${schema}.token_utility_parted USING btree (fk_rpt1);
-CREATE INDEX i_fk_rpt_2_parted ON ${schema}.token_utility_parted USING btree (fk_rpt2);
+CREATE INDEX IF NOT EXISTS i_fk_rpt_1_parted ON ${schema}.token_utility_parted USING btree (fk_rpt1);
+CREATE INDEX IF NOT EXISTS i_fk_rpt_2_parted ON ${schema}.token_utility_parted USING btree (fk_rpt2);

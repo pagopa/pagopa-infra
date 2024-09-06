@@ -3,7 +3,7 @@
 ##############
 
 module "apim_pdf_engine_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.18.0"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   product_id   = "pdf-engine-printit"
@@ -58,7 +58,7 @@ resource "azurerm_api_management_api_version_set" "api_pdf_engine_api" {
 }
 
 module "apim_api_pdf_engine_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.18.0"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   name                  = "${local.project}-pdf-engine-service-api"
@@ -100,7 +100,7 @@ resource "azurerm_api_management_api_version_set" "api_pdf_engine_node_api" {
 }
 
 module "apim_api_pdf_engine_node_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.18.0"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   name                  = "${var.env_short}-pdf-engine-node-service-api"

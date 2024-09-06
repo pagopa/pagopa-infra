@@ -17,8 +17,14 @@ module "container_registry_ita" {
   public_network_access_enabled = true
   private_endpoint_enabled      = false
 
-  admin_enabled          = false
+  admin_enabled          = true
   anonymous_pull_enabled = false
+
+  network_rule_set = [{
+    default_action  = "Allow"
+    ip_rule         = []
+    virtual_network = []
+  }]
 
   tags = var.tags
 }

@@ -10,8 +10,8 @@ module "buyerbanks_function_snet" {
   source                                         = "git::https://github.com/pagopa/azurerm.git//subnet?ref=v1.0.90"
   name                                           = format("%s-buyerbanks-snet", local.project)
   address_prefixes                               = var.cidr_subnet_buyerbanks
-  resource_group_name                            = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = module.vnet.name
+  resource_group_name                            = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
   enforce_private_link_endpoint_network_policies = true
 
   delegation = {
@@ -40,7 +40,7 @@ module "buyerbanks_function" {
   always_on                                = true
   os_type                                  = "linux"
   linux_fx_version                         = "NODE|18"
-  application_insights_instrumentation_key = azurerm_application_insights.application_insights.instrumentation_key
+  application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
   app_service_plan_name = format("%s-plan-fnbuyerbanks", local.project)
   app_service_plan_info = {
@@ -75,7 +75,7 @@ module "buyerbanks_function" {
     PAGOPA_BUYERBANKS_THUMBPRINT_PEER = var.env_short == "p" ? data.azurerm_key_vault_secret.pagopa_buyerbank_thumbprint_peer[0].value : null
   }
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
 
   allowed_ips = []
 
@@ -152,11 +152,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "buyerbanks_update_alert"
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = azurerm_application_insights.application_insights.id
+  data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "Availability greater than or equal 99%"
   enabled        = true
   query = format(<<-QUERY
@@ -245,7 +245,7 @@ resource "azurerm_storage_management_policy" "buyerbanks_storage_lifeclycle_poli
  */
 data "azurerm_key_vault_secret" "pagopa_buyerbank_cert_key" {
   name         = "pagopa-buyerbank-cert-key"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 /*
@@ -253,7 +253,7 @@ data "azurerm_key_vault_secret" "pagopa_buyerbank_cert_key" {
  */
 data "azurerm_key_vault_secret" "pagopa_buyerbank_thumbprint" {
   name         = "pagopa-buyerbank-thumbprint"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 /*
@@ -261,7 +261,7 @@ data "azurerm_key_vault_secret" "pagopa_buyerbank_thumbprint" {
  */
 data "azurerm_key_vault_secret" "pagopa_buyerbank_signature" {
   name         = "pagopa-buyerbank-signature"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 /*
@@ -270,7 +270,7 @@ data "azurerm_key_vault_secret" "pagopa_buyerbank_signature" {
 data "azurerm_key_vault_secret" "pagopa_buyerbank_cert_peer" {
   count        = var.env_short == "p" ? 1 : 0
   name         = "pagopa-buyerbank-cert-peer"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 /*
@@ -279,7 +279,7 @@ data "azurerm_key_vault_secret" "pagopa_buyerbank_cert_peer" {
 data "azurerm_key_vault_secret" "pagopa_buyerbank_thumbprint_peer" {
   count        = var.env_short == "p" ? 1 : 0
   name         = "pagopa-buyerbank-thumbprint-peer"
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 /*
@@ -289,7 +289,7 @@ resource "azurerm_key_vault_certificate" "buyerbanks_cert" {
 
   name = format("%s-buyerbanks-cert", local.project) # module.buyerbanks_function.name
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 
   certificate_policy {
     issuer_parameters {

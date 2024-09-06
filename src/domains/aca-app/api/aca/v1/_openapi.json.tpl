@@ -48,7 +48,14 @@
         },
         "responses": {
           "200": {
-            "description": "create / update / invalidate debt position successfully"
+            "description": "create / update / invalidate debt position successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DebtPositionResponse"
+                }
+              }
+            }
           },
           "400": {
             "description": "Formally invalid input",
@@ -206,6 +213,7 @@
         "type": "object",
         "required": [
           "paFiscalCode",
+          "companyName",
           "entityType",
           "entityFiscalCode",
           "entityFullName",
@@ -218,11 +226,19 @@
         "properties": {
           "paFiscalCode": {
             "type": "string",
+            "example": "12345678910",
             "minLength": 11,
             "maxLength": 11
           },
+          "companyName": {
+            "type": "string",
+            "example": "Company name",
+            "minLength": 1,
+            "maxLength": 140
+          },
           "entityType": {
             "type": "string",
+            "example": "G",
             "enum": [
               "F",
               "G"
@@ -230,35 +246,113 @@
           },
           "entityFiscalCode": {
             "type": "string",
+            "example": "12345678910",
             "minLength": 2
           },
           "entityFullName": {
             "type": "string",
+            "example": "Full Name",
             "minLength": 1,
             "maxLength": 255
           },
           "iuv": {
             "type": "string",
+            "example": "00000000000000000",
             "minLength": 1,
             "maxLength": 255
+          },
+          "nav": {
+            "type": "string",
+            "example": "30000000000000000",
+            "minLength": 1,
+            "maxLength": 255,
+            "description": "notice number, if not specified it will created using the following pattern: 3 + iuv"
           },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
           },
           "description": {
             "type": "string",
+            "example": "ACA Debt Position description",
             "minLength": 1,
             "maxLength": 255
           },
           "expirationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "iban": {
+            "type": "string",
+            "example": "IT0000000000000000000000000",
+            "minLength": 27,
+            "maxLength": 27
+          },
+          "postalIban": {
+            "type": "string",
+            "example": "IT60X0542811101000000123456",
+            "minLength": 27,
+            "maxLength": 27
+          },
+          "switchToExpired": {
+            "type": "boolean",
+            "example": true,
+            "default": false
+          }
+        }
+      },
+      "DebtPositionResponse": {
+        "type": "object",
+        "properties": {
+          "paFiscalCode": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "entityType": {
+            "type": "string"
+          },
+          "entityFiscalCode": {
+            "type": "string"
+          },
+          "entityFullName": {
+            "type": "string"
+          },
+          "iuv": {
+            "type": "string"
+          },
+          "nav": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": {
+            "type": "string"
+          },
+          "expirationDate": {
+            "type": "string",
+            "format": "local-date-time"
+          },
+          "iban": {
+            "type": "string"
+          },
+          "postalIban": {
+            "type": "string"
+          },
+          "switchToExpired": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string"
           }
         }
       },
       "AmountEuroCents": {
         "description": "Amount for payments, in euro cents",
         "type": "integer",
+        "example": 100,
         "minimum": 0,
         "maximum": 99999999999
       },

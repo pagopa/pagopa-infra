@@ -11,8 +11,8 @@ module "azdoa_snet" {
   count                                     = var.is_feature_enabled.azdoa ? 1 : 0
   name                                      = "${local.product}-azdoa-snet"
   address_prefixes                          = var.cidr_subnet_azdoa
-  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_core.name
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
   private_endpoint_network_policies_enabled = false
 
   service_endpoints = [
@@ -29,7 +29,7 @@ module "azdoa_li_app" {
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
-  source_image_name   = "pagopa-${var.env_short}-azdo-agent-ubuntu2204-image-v2"
+  source_image_name   = var.azdo_agent_vm_image_name
   vm_sku              = "Standard_B2ms"
 
   zones        = var.devops_agent_zones
@@ -47,7 +47,7 @@ module "azdoa_li_infra" {
   subscription_id     = data.azurerm_subscription.current.subscription_id
   location            = var.location
   image_type          = "custom" # enables usage of "source_image_name"
-  source_image_name   = "pagopa-${var.env_short}-azdo-agent-ubuntu2204-image-v2"
+  source_image_name   = var.azdo_agent_vm_image_name
   vm_sku              = "Standard_B2ms"
 
   zones        = var.devops_agent_zones
@@ -55,6 +55,36 @@ module "azdoa_li_infra" {
 
   tags = var.tags
 }
+
+resource "azurerm_virtual_machine_scale_set_extension" "custom_script_extension_infra" {
+  count                        = var.is_feature_enabled.azdoa && var.is_feature_enabled.azdoa_extension ? 1 : 0
+  name                         = "CustomScript"
+  virtual_machine_scale_set_id = module.azdoa_li_infra[0].scale_set_id
+  publisher                    = "Microsoft.Azure.Extensions"
+  type                         = "CustomScript"
+  type_handler_version         = "2.1"
+  settings = jsonencode({
+    "commandToExecute" = <<EOL
+    echo "nothing to do"
+    EOL
+  })
+}
+
+
+resource "azurerm_virtual_machine_scale_set_extension" "custom_script_extension_app" {
+  count                        = var.is_feature_enabled.azdoa && var.is_feature_enabled.azdoa_extension ? 1 : 0
+  name                         = "CustomScript"
+  virtual_machine_scale_set_id = module.azdoa_li_app[0].scale_set_id
+  publisher                    = "Microsoft.Azure.Extensions"
+  type                         = "CustomScript"
+  type_handler_version         = "2.1"
+  settings = jsonencode({
+    "commandToExecute" = <<EOL
+    echo "nothing to do"
+    EOL
+  })
+}
+
 
 #
 # Load Tests
@@ -65,8 +95,8 @@ module "loadtest_agent_snet" {
   source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.13.0"
   name                                      = "${local.product}-loadtest-agent-snet"
   address_prefixes                          = var.cidr_subnet_loadtest_agent
-  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet_core.name
+  resource_group_name                       = azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = module.vnet.name
   private_endpoint_network_policies_enabled = true
 
   service_endpoints = [
@@ -110,7 +140,7 @@ data "azurerm_user_assigned_identity" "iac_federated_azdo" {
 resource "azurerm_key_vault_access_policy" "azdevops_iac_managed_identities" {
   for_each = local.azdo_iac_managed_identities
 
-  key_vault_id = data.azurerm_key_vault.kv_core.id
+  key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = data.azurerm_user_assigned_identity.iac_federated_azdo[each.key].principal_id
 
@@ -140,7 +170,7 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_legacy_policies" {
     data.azuread_service_principal.iac_plan_legacy.object_id,
     data.azuread_service_principal.iac_deploy_legacy.object_id
   ])
-  key_vault_id = data.azurerm_key_vault.kv_core.id
+  key_vault_id = module.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = each.key
 

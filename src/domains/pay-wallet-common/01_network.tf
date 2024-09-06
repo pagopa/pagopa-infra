@@ -11,7 +11,7 @@ resource "azurerm_private_dns_a_record" "ingress" {
 #
 
 module "cosmosdb_pay_wallet_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.5.0"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.20.1"
   name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_pay_wallet
   resource_group_name  = local.vnet_italy_resource_group_name
@@ -26,7 +26,7 @@ module "cosmosdb_pay_wallet_snet" {
 }
 
 module "redis_pagopa_pay_wallet_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.20.1"
 
   name                                      = "${local.project}-redis-snet"
   address_prefixes                          = var.cidr_subnet_redis_pay_wallet
@@ -36,7 +36,7 @@ module "redis_pagopa_pay_wallet_snet" {
 }
 
 module "storage_pay_wallet_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.20.1"
 
   name                 = "${local.project}-storage-snet"
   address_prefixes     = var.cidr_subnet_storage_pay_wallet

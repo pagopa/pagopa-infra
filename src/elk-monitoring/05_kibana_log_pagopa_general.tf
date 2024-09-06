@@ -116,18 +116,10 @@ resource "null_resource" "pagopa_kibana_data_view_faultcode" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.kibana_url}/s/${local.pagopa_key}/api/data_views/data_view/log_pagopa/runtime_field' \
+    curl -k -X POST '${local.kibana_url}/s/${local.pagopa_key}/api/data_views/data_view/log_pagopa/runtime_field' \
       --header 'kbn-xsrf: true' \
       --header 'Content-Type: application/json' \
-      --data '{
-        "name": "faultCode",
-        "runtimeField": {
-           "type": "keyword",
-           "script": {
-              "source": "String message = params[\"_source\"][\"message\"];def m = /^.*title=(.*)(?=, status).*$/.matcher(message);if ( m.matches() ) {return emit(m.group(1));} else{return emit(\"-\");}"
-            }
-        }
-      }'
+      --data '{ "name": "faultCode", "runtimeField": { "type": "keyword", "script": {"source": "String message = params[\"_source\"][\"message\"];def m = /^.*title=(.*)(?=, status).*$/.matcher(message);if ( m.matches() ) {return emit(m.group(1));} else{return emit(\"-\");}"}}}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
@@ -141,18 +133,10 @@ resource "null_resource" "pagopa_kibana_data_view_faultdatail" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.kibana_url}/s/${local.pagopa_key}/api/data_views/data_view/log_pagopa/runtime_field' \
+      curl -k -X POST '${local.kibana_url}/s/${local.pagopa_key}/api/data_views/data_view/log_pagopa/runtime_field' \
       --header 'kbn-xsrf: true' \
       --header 'Content-Type: application/json' \
-      --data '{
-        "name": "faultDetail",
-        "runtimeField": {
-           "type": "keyword",
-           "script": {
-              "source": "String message = params[\"_source\"][\"message\"];\n\ndef m = /^.*detail=(.*)(?=\\)).*$/.matcher(message);\nif ( m.matches() ) {\n   return emit(m.group(1));\n} else {\n   return emit(\"-\");\n}"
-            }
-        }
-      }'
+      --data '{ "name": "faultDetail", "runtimeField": { "type": "keyword", "script": {"source": "String message = params[\"_source\"][\"message\"];\n\ndef m = /^.*detail=(.*)(?=\\)).*$/.matcher(message);\nif ( m.matches() ) {\n   return emit(m.group(1));\n} else {\n   return emit(\"-\");\n}"}}}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }

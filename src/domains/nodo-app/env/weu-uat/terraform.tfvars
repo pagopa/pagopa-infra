@@ -39,7 +39,7 @@ nodo_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "2"
+  node_count_min  = "3"
   node_count_max  = "6"
   node_labels = {
   "nodo" = "true", },
@@ -130,7 +130,6 @@ nodo_re_to_datastore_function_autoscale = {
   minimum = 1
   maximum = 10
 }
-
 nodo_re_to_tablestorage_function = {
   always_on                    = true
   kind                         = "Linux"
@@ -220,9 +219,23 @@ storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
-enabled_features = {
-  apim_v2        = false
-  eventhub_ha_rx = true
+# WISP-dismantling-cfg
+create_wisp_converter = true
+wisp_converter = {
+  enable_apim_switch                 = true
+  brokerPSP_whitelist                = "97735020584"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           # AGID
+  channel_whitelist                  = "97735020584_02"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/135924270/Canali+Particolari
+  station_whitelist                  = "*" # https://config.uat.platform.pagopa.it/stations/15376371009_09 in UAT x i test quella di MockEC
+  ci_whitelist                       = "*"
+  nodoinviarpt_paymenttype_whitelist = "BBT"
+  dismantling_primitives             = "nodoInviaRPT,nodoInviaCarrelloRPT"
+  dismantling_rt_primitives          = "nodoChiediCopiaRT"
 }
 
+enable_sendPaymentResultV2_SWClient = true
 
+# WFESP-dismantling-cfg
+wfesp_dismantling = {
+  channel_list    = "13212880150_90"
+  wfesp_fixed_url = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
+}

@@ -8,6 +8,8 @@
 module "apim_receipt_for_ndp_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
 
+  count = var.enable_sendPaymentResultV2_SWClient ? 1 : 0
+
   product_id   = "receipt_for_ndp"
   display_name = "Receipt sendPaymentResult for NDP"
   description  = "Receipt sendPaymentResult for NDP"
@@ -34,6 +36,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "api_receipt_for_ndp_api" {
+  count = var.enable_sendPaymentResultV2_SWClient ? 1 : 0
+
   name                = format("%s-receipt-npd-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -60,13 +64,14 @@ data "azurerm_key_vault_secret" "subscriptionkey_ecomm" {
 
 module "apim_api_receipt_for_ndp_api_v1" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  count  = var.enable_sendPaymentResultV2_SWClient ? 1 : 0
 
   name                  = format("%s-receipt-npd-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_receipt_for_ndp_product.product_id]
+  product_ids           = [module.apim_receipt_for_ndp_product[0].product_id]
   subscription_required = local.apim_receipt_for_ndp_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_receipt_for_ndp_api.id
+  version_set_id        = azurerm_api_management_api_version_set.api_receipt_for_ndp_api[0].id
   api_version           = "v1"
 
   description  = local.apim_receipt_for_ndp_service_api.description
@@ -78,7 +83,7 @@ module "apim_api_receipt_for_ndp_api_v1" {
   content_format = "openapi"
   content_value = templatefile("./api/receipt_for_ndp/v1/_openapi.json.tpl", {
     host    = local.apim_hostname
-    service = module.apim_receipt_for_ndp_product.product_id
+    service = module.apim_receipt_for_ndp_product[0].product_id
   })
 
   # xml_content = templatefile("./api/receipt_for_ndp/v1/_base_policy.xml", {

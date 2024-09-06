@@ -14,6 +14,7 @@
               <header>Authorization</header>
               <header>x-transaction-id-from-client</header>
               <header>x-correlation-id</header>
+              <header>x-client-id-from-client</header>
           </allowed-headers>
         </cors>
       <base />
@@ -23,7 +24,7 @@
     </set-header>
       <choose>
         <when condition="@( context.Request.Url.Path.Contains("transactions") )">
-          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2")"/>
+          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2.1")"/>
         </when>
         <when condition="@( context.Request.Url.Path.Contains("payment-methods") )">
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service/v2")"/>

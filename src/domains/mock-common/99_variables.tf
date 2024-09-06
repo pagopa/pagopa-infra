@@ -235,3 +235,10 @@ variable "cosmosdb_mongodb_max_throughput" {
   default     = 5000
 }
 
+
+variable "redis_ha_enabled" {
+  type        = bool
+  description = "(Required) If true, enables the usage of HA redis instance"
+  default     = false
+}
+

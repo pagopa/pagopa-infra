@@ -86,6 +86,8 @@ module "aks" {
     }
   ]
 
+  microsoft_defender_log_analytics_workspace_id = var.env == "prod" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
+
   tags = var.tags
 }
 

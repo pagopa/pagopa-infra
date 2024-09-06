@@ -3,6 +3,11 @@ data "azurerm_key_vault_secret" "list_trx_for_io_api_key_secret" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+# data "azurerm_key_vault_secret" "list_trx_for_io_api_key_secret_apim_v2" {
+#   name         = "list-trx-4-io-api-key"
+#   key_vault_id = data.azurerm_key_vault.kv.id
+# }
+
 resource "azurerm_api_management_named_value" "list_trx_for_io_api_key_secret" {
   name                = "list-trx-for-io-api-key"
   api_management_name = local.pagopa_apim_name
@@ -43,6 +48,25 @@ locals {
 ##############
 ## Products ##
 ##############
+
+module "apim_bizevents_product_all_in_one" { # only for test
+  count  = var.env_short != "p" ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+
+  product_id   = "bizevents-all-in-one"
+  display_name = "bizevents-all-in-one"
+  description  = "bizevents-all-in-one"
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = true
+  subscription_required = true
+  approval_required     = false
+  subscriptions_limit   = 2
+
+  policy_xml = file("./api_product/bizevents-service/_base_policy.xml")
+}
 
 // EC user(s)
 module "apim_bizevents_product" {
@@ -153,7 +177,7 @@ module "apim_api_bizevents_api_v1" {
   name                  = format("%s-bizevents-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_bizevents_product.product_id]
+  product_ids           = var.env_short == "p" ? [module.apim_bizevents_product.product_id] : [module.apim_bizevents_product.product_id, module.apim_bizevents_product_all_in_one[0].product_id]
   subscription_required = local.apim_bizevents_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_bizevents_api.id
   api_version           = "v1"
@@ -180,7 +204,7 @@ module "apim_api_bizevents_helpdesk_api_v1" {
   name                  = format("%s-bizevents-helpdesk-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_bizevents_helpdesk_product.product_id]
+  product_ids           = var.env_short == "p" ? [module.apim_bizevents_helpdesk_product.product_id] : [module.apim_bizevents_helpdesk_product.product_id, module.apim_bizevents_product_all_in_one[0].product_id]
   subscription_required = local.apim_bizevents_helpdesk_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_bizevents_helpdesk_api.id
   api_version           = "v1"
@@ -207,7 +231,7 @@ module "apim_api_bizevents_transactions_api_v1" {
   name                  = format("%s-bizevents-transaction-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_transactions_product.product_id]
+  product_ids           = var.env_short == "p" ? [module.apim_transactions_product.product_id] : [module.apim_transactions_product.product_id, module.apim_bizevents_product_all_in_one[0].product_id]
   subscription_required = local.apim_transaction_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_bizevents_transactions_api.id
   api_version           = "v1"
@@ -251,6 +275,9 @@ module "apim_api_bizevents_transactions_api_jwt_v1" {
   })
 
   xml_content = templatefile("./api/transaction-service/v1/_base_policy-jwt.xml", {
-    hostname = local.bizevents_hostname
+    hostname          = local.bizevents_hostname
+    pdv_api_base_path = var.pdv_api_base_path
   })
 }
+
+

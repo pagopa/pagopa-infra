@@ -6,8 +6,8 @@ resource "azurerm_resource_group" "printit_pdf_engine_app_service_rg" {
 }
 
 data "azurerm_container_registry" "container_registry" {
-  name                = "pagopa${var.env_short}commonacr"
-  resource_group_name = "pagopa-${var.env_short}-container-registry-rg"
+  name                = "pagopa${var.env_short}itncoreacr"
+  resource_group_name = "pagopa-${var.env_short}-itn-acr-rg"
 }
 
 ################
@@ -15,7 +15,7 @@ data "azurerm_container_registry" "container_registry" {
 ################
 
 module "printit_pdf_engine_app_service" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.18.0"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   vnet_integration    = false
@@ -24,22 +24,23 @@ module "printit_pdf_engine_app_service" {
 
   # App service plan vars
   plan_name = "${local.project}-plan-pdf-engine"
-
-  sku_name = var.app_service_pdf_engine_sku_name
+  sku_name  = var.app_service_pdf_engine_sku_name
 
   # App service plan
   name                = "${local.project}-app-pdf-engine"
   client_cert_enabled = false
   always_on           = var.app_service_pdf_engine_always_on
-  docker_image        = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
-  docker_image_tag    = "latest"
+
+  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
+  docker_image_tag = "latest"
 
   health_check_path = "/info"
 
   app_settings = local.printit_pdf_engine_app_settings
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
-  allowed_ips     = []
+  zone_balancing_enabled = var.app_service_pdf_engine_autoscale_enabled
+  allowed_subnets        = [data.azurerm_subnet.apim_vnet.id]
+  allowed_ips            = []
 
   subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
@@ -50,7 +51,7 @@ module "printit_pdf_engine_app_service" {
 module "printit_pdf_engine_slot_staging" {
   count = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v8.18.0"
 
   # App service plan
   # app_service_plan_id = module.printit_pdf_engine_app_service.plan_id
@@ -81,13 +82,13 @@ module "printit_pdf_engine_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_autoscale" {
-  count = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
+  count   = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
+  enabled = var.app_service_pdf_engine_autoscale_enabled
 
   name                = "${local.project}-autoscale-pdf-engine"
   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
   location            = azurerm_resource_group.printit_pdf_engine_app_service_rg.location
   target_resource_id  = module.printit_pdf_engine_app_service[0].plan_id
-  enabled             = var.app_service_pdf_engine_autoscale_enabled
 
   profile {
     name = "default"
@@ -248,7 +249,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
 #java
 ###############
 module "printit_pdf_engine_app_service_java" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.18.0"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   vnet_integration    = false
@@ -256,8 +257,9 @@ module "printit_pdf_engine_app_service_java" {
   location            = var.location
 
   # App service plan vars
-  plan_name = "${local.project}-plan-pdf-engine-java"
-  sku_name  = var.app_service_pdf_engine_sku_name_java
+  plan_name              = "${local.project}-plan-pdf-engine-java"
+  sku_name               = var.app_service_pdf_engine_sku_name_java
+  zone_balancing_enabled = var.app_service_pdf_engine_sku_name_java_zone_balancing_enabled
 
   # App service plan
   name                = "${local.project}-app-pdf-engine-java"
@@ -283,7 +285,7 @@ module "printit_pdf_engine_app_service_java" {
 module "printit_pdf_engine_java_slot_staging" {
   count = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v8.5.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v8.18.0"
 
   # App service plan
   # app_service_plan_id = module.printit_pdf_engine_app_service.plan_id

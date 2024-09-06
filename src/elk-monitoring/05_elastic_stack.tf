@@ -83,9 +83,9 @@ module "elastic_stack" {
     kubernetes_secret.snapshot_secret
   ]
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_stack?ref=v7.72.2"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_stack?ref=v8.26.2"
 
-  eck_version = "2.9"
+  eck_version = "2.12"
 
   namespace      = local.elk_namespace
   nodeset_config = var.nodeset_config

@@ -8,13 +8,10 @@ data "azurerm_private_dns_zone" "internal_postgresql_pagopa_it" {
   resource_group_name = "pagopa-${var.env_short}-vnet-rg"
 }
 
-#
-# ⚠️ This will be enabled after apim migration, now it will use a special one created in Italy
-#
-# data "azurerm_private_dns_zone" "dev_platform_pagopa_it" {
-#   name                = "dev.platform.pagopa.it"
-#   resource_group_name = "pagopa-${var.env_short}-vnet-rg"
-# }
+data "azurerm_private_dns_zone" "env_platform_pagopa_it" {
+  name                = "${var.platform_dns_zone_prefix}.${var.external_domain}"
+  resource_group_name = "pagopa-${var.env_short}-vnet-rg"
+}
 
 data "azurerm_private_dns_zone" "internal_env_platform_pagopa_it" {
   name                = var.env_short != "p" ? "internal.${var.env}.platform.pagopa.it" : "internal.platform.pagopa.it"

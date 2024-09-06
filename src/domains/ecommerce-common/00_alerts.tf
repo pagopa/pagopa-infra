@@ -201,3 +201,39 @@ AzureDiagnostics
     threshold = 10
   }
 }
+
+# eCommerce for app IO V2 availability
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_app_io_v2_availability_alert" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "ecommerce-for-app-io-v2-availability-alert"
+  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "[eCommerce] api for app IO V2 availability less that 99%"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "eCommerce api for app IO V2 availability less than 99% in the last 30 minutes detected"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s startswith 'https://api.platform.pagopa.it/ecommerce/io/v2'
+| summarize
+    Total=count(),
+    Success=countif(responseCode_d < 500 and DurationMs < 2000)
+    by Time = bin(TimeGenerated, 15m)
+| extend Availability=((Success * 1.0) / Total) * 100
+| where toint(Availability) < 99
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
