@@ -64,6 +64,7 @@ locals {
   collections = [
     {
       name = "applications"
+      default_ttl_seconds = null
       indexes = [{
         keys   = ["_id"]
         unique = true
@@ -75,8 +76,10 @@ locals {
       ]
       shard_key = null
     },
-    { # collection with event until 25/08/2024, replaced by payment-wallet-log-events DEPRECATED
+    { # collection with event until 25/08/2024, replaced by payment-wallet-log-events
+      # DEPRECATED
       name = "wallet-log-events"
+      default_ttl_seconds = null
       indexes = [{
         keys   = ["_id"]
         unique = true
@@ -90,6 +93,7 @@ locals {
     },
     {
       name = "wallets-migration-pm",
+      default_ttl_seconds = null
       indexes = [
         {
           keys   = ["_id"] # wallet id pm
@@ -104,6 +108,7 @@ locals {
     },
     {
       name = "payment-wallets"
+      default_ttl_seconds = null
       indexes = [{
         keys   = ["_id"]
         unique = true
@@ -123,14 +128,30 @@ locals {
       ]
       shard_key = "userId"
     },
-    { # collection with event from 25/08/2024, DEPRECATED
+    { # collection with event from 25/08/2024
+      # DEPRECATED
       name = "payment-wallet-log-events"
+      default_ttl_seconds = null
       indexes = [{
         keys   = ["_id"]
         unique = true
         },
         {
           keys   = ["walletId", "timestamp", "eventType"]
+          unique = true
+        }
+      ]
+      shard_key = "walletId"
+    },
+    { # collection with new and detailed logging events
+      name = "payment-wallets-log-events"
+      default_ttl_seconds = "600" #30 days
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+      },
+        {
+          keys   = ["walletId", "timestamp"]
           unique = true
         }
       ]
@@ -152,31 +173,8 @@ module "cosmosdb_pay_wallet_collections" {
 
   indexes     = each.value.indexes
   shard_key   = each.value.shard_key
+  default_ttl_seconds = each.value.default_ttl_seconds
   lock_enable = var.env_short != "p" ? false : true
-}
-
-module "cosmosdb_payment_wallets_log_events_collection" {
-
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.20.1"
-
-  name                = "payment-wallets-log-events"
-  resource_group_name = azurerm_resource_group.cosmosdb_pay_wallet_rg.name
-
-  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb[0].name
-  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.pay_wallet[0].name
-
-  indexes = [{
-    keys   = ["_id"]
-    unique = true
-    },
-    {
-      keys   = ["walletId", "timestamp"]
-      unique = true
-    }
-  ]
-  shard_key           = "walletId"
-  default_ttl_seconds = "2592000" #30 days
-  lock_enable         = var.env_short != "p" ? false : true
 }
 
 # -----------------------------------------------
