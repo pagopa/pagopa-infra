@@ -145,7 +145,7 @@ locals {
     },
     { # collection with new and detailed logging events
       name                = "payment-wallets-log-events"
-      default_ttl_seconds = "2592000" #30 days
+      default_ttl_seconds = "7776000" #90 days
       indexes = [{
         keys   = ["_id"]
         unique = true
