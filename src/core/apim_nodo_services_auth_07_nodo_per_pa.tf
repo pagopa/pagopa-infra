@@ -55,3 +55,33 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_pa_policy_auth" {
     is-nodo-decoupler-enabled = var.apim_nodo_auth_decoupler_enable
   })
 }
+
+# nodoInviaRPT
+resource "azurerm_api_management_api_operation_policy" "nodoInviaRPT_api_auth_v1_policy" {
+  count = var.create_wisp_converter ? 1 : 0
+
+  api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+  operation_id        = var.env_short == "d" ? "6352c3bcc257810f183b3984" : var.env_short == "u" ? "63e5237639519a0f7094b47e" : "63e5d8212a92e80448d38dff"
+  xml_content         = file("./api/nodopagamenti_api/nodoPerPa/v1/nodoInviaRPT_policy.xml")
+}
+
+resource "terraform_data" "sha256_nodoInviaRPT_api_auth_v1_policy" {
+  input = sha256(file("./api/nodopagamenti_api/nodoPerPa/v1/nodoInviaRPT_policy.xml"))
+}
+
+# nodoInviaCarrelloRPT
+resource "azurerm_api_management_api_operation_policy" "nodoInviaCarrelloRPT_api_auth_v1_policy" {
+  count = var.create_wisp_converter ? 1 : 0
+
+  api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1_auth.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  api_management_name = data.azurerm_api_management.apim_migrated[0].name
+  operation_id        = var.env_short == "d" ? "6352c3bcc257810f183b3985" : var.env_short == "u" ? "63e5237639519a0f7094b47f" : "63e5d8212a92e80448d38e00"
+  xml_content         = file("./api/nodopagamenti_api/nodoPerPa/v1/nodoInviaCarrelloRPT_policy.xml")
+}
+
+resource "terraform_data" "sha256_nodoInviaCarrelloRPT_api_auth_v1_policy" {
+  input = sha256(file("./api/nodopagamenti_api/nodoPerPa/v1/nodoInviaCarrelloRPT_policy.xml"))
+}
