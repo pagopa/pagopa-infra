@@ -444,14 +444,12 @@ variable "create_wisp_converter" {
 
 variable "wisp_converter" {
   type = object({
-    enable_apim_switch                 = bool # enable WISP dismantling
-    brokerPSP_whitelist                = string
-    channel_whitelist                  = string
-    station_whitelist                  = string
-    ci_whitelist                       = string
-    nodoinviarpt_paymenttype_whitelist = string
-    dismantling_primitives             = string
-    dismantling_rt_primitives          = string
+    enable_apim_switch                  = bool # enable WISP dismantling
+    brokerPSP_whitelist                 = string
+    channel_whitelist                   = string
+    nodoinviarpt_paymenttype_whitelist  = string
+    dismantling_primitives              = string
+    dismantling_rt_primitives           = string
     checkout_predefined_expiration_time = number
     wisp_ecommerce_channels             = string
   })

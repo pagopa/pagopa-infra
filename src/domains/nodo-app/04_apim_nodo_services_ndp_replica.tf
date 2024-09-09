@@ -579,7 +579,7 @@ module "apim_nodo_monitoring_api_replica_ndp" {
 
 # nodoInviaRPT
 resource "azurerm_api_management_api_operation_policy" "nodoInviaRPT_api_v1_policy_replica_ndp" {
-  count               = var.create_wisp_converter && var.env_short != "p" ? 1 : 0
+  count = var.create_wisp_converter && var.env_short != "p" ? 1 : 0
 
   api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1_replica_ndp[0].name
   resource_group_name = local.pagopa_apim_rg
@@ -590,7 +590,7 @@ resource "azurerm_api_management_api_operation_policy" "nodoInviaRPT_api_v1_poli
 
 # nodoInviaCarrelloRPT
 resource "azurerm_api_management_api_operation_policy" "nodoInviaCarrelloRPT_api_v1_policy_replica_ndp" {
-  count               = var.create_wisp_converter && var.env_short != "p" ? 1 : 0
+  count = var.create_wisp_converter && var.env_short != "p" ? 1 : 0
 
   api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1_replica_ndp[0].name
   resource_group_name = local.pagopa_apim_rg

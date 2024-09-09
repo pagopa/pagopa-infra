@@ -46,7 +46,7 @@ resource "azurerm_api_management_api_operation_policy" "save_mapping_api_v1" {
   resource_group_name = local.pagopa_apim_rg
   operation_id        = "saveMapping"
 
-  xml_content         = file("./api/wisp-converter/caching/v1/save_mapping_policy.xml")
+  xml_content = file("./api/wisp-converter/caching/v1/save_mapping_policy.xml")
 }
 
 resource "terraform_data" "sha256_save_mapping_api_v1" {
@@ -59,7 +59,7 @@ resource "azurerm_api_management_api_operation_policy" "save_cart_mapping_api_v1
   resource_group_name = local.pagopa_apim_rg
   operation_id        = "saveCartMapping"
 
-  xml_content         = file("./api/wisp-converter/caching/v1/save_cart_mapping_policy.xml")
+  xml_content = file("./api/wisp-converter/caching/v1/save_cart_mapping_policy.xml")
 }
 
 resource "terraform_data" "sha256_save_cart_mapping_api_v1" {

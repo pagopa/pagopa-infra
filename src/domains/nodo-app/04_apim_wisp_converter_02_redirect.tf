@@ -4,7 +4,7 @@ resource "azurerm_api_management_api_operation_policy" "payments_api_v1" {
   resource_group_name = local.pagopa_apim_rg
   operation_id        = "redirect"
 
-  xml_content         = file("./api/wisp-converter/redirect/v1/payments.xml")
+  xml_content = file("./api/wisp-converter/redirect/v1/payments.xml")
 }
 
 resource "terraform_data" "sha256_payments_api_v1" {
