@@ -119,18 +119,18 @@ new JProperty("ttl", 1)
 				<when condition="@(context.Variables.GetValueOrDefault<string>("nodeId", "").Equals("LIST"))">
 					<!-- Execute cache lookup for default node ID if WISP dismantling is enabled -->
 					<set-variable name="set_cache" value="true" />
-					<choose>
-						<when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
-							<!-- if fiscalcode and notice number belongs to wisp dismantling, set nodeId as default value ( {{default-nodo-id}} ) -->
-							<set-variable name="wisp_fiscalcode_noticenumber" value="@{
-                                var requestData = JObject.Parse((string)context.Variables["requestData"]);
-                                var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
-  var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
-  return "wisp_" + ci + "_" + noticeNumber;
-  }" />
-							<cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
-							<choose>
-								<when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+            <choose>
+              <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
+                <!-- if fiscalcode and notice number belongs to wisp dismantling, set nodeId as default value ( {{default-nodo-id}} ) -->
+                <set-variable name="wisp_fiscalcode_noticenumber" value="@{
+                                  var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                                  var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
+    var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
+    return "wisp_" + ci + "_" + noticeNumber;
+    }" />
+                <cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
+                <choose>
+                  <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
 									<cache-store-value key="@{
                                             var domain = (string) context.Variables["domain"];
                                             var requestData = JObject.Parse((string) context.Variables["requestData"]);
