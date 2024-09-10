@@ -1,0 +1,61 @@
+<policies>
+  <inbound>
+    <base />
+    <!--
+        We could have at most 5 keys as sessonId_fiscalCode_noticeNumber
+    -->
+    <set-variable name="sessionId_fiscalCode_noticeNumber_keys" value="@((JArray)context.Request.Body.As<JObject>()["keys"])" />
+    <set-variable name="wisp_sessionId_fiscalCode_noticeNumber" value="@{
+            try {
+                return (string)((JArray) context.Variables["sessionId_fiscalCode_noticeNumber_keys"])[0];
+            } catch (Exception e) {
+                return "NONE";
+            }
+        }" />
+    <include-fragment fragment-id="wisp-cache-for-decoupler-cart" />
+    <set-variable name="wisp_sessionId_fiscalCode_noticeNumber" value="@{
+            try {
+                return (string)((JArray) context.Variables["sessionId_fiscalCode_noticeNumber_keys"])[1];
+            } catch (Exception e) {
+                return "NONE";
+            }
+        }" />
+    <include-fragment fragment-id="wisp-cache-for-decoupler-cart" />
+    <set-variable name="wisp_sessionId_fiscalCode_noticeNumber" value="@{
+            try {
+                return (string)((JArray) context.Variables["sessionId_fiscalCode_noticeNumber_keys"])[2];
+            } catch (Exception e) {
+                return "NONE";
+            }
+        }" />
+    <include-fragment fragment-id="wisp-cache-for-decoupler-cart" />
+    <set-variable name="wisp_sessionId_fiscalCode_noticeNumber" value="@{
+            try {
+                return (string)((JArray) context.Variables["sessionId_fiscalCode_noticeNumber_keys"])[3];
+            } catch (Exception e) {
+                return "NONE";
+            }
+        }" />
+    <include-fragment fragment-id="wisp-cache-for-decoupler-cart" />
+    <set-variable name="wisp_sessionId_fiscalCode_noticeNumber" value="@{
+            try {
+                return (string)((JArray) context.Variables["sessionId_fiscalCode_noticeNumber_keys"])[4];
+            } catch (Exception e) {
+                return "NONE";
+            }
+        }" />
+    <include-fragment fragment-id="wisp-cache-for-decoupler-cart" />
+    <return-response>
+      <set-status code="200" reason="OK" />
+    </return-response>
+  </inbound>
+  <outbound>
+    <base />
+  </outbound>
+  <backend>
+    <base />
+  </backend>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

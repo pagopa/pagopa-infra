@@ -139,7 +139,7 @@
 
 <!-- set backend service url -->
 <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
-
+<include-fragment fragment-id="decoupler-activate-inbound" />
 </inbound>
 <backend>
 <base/>

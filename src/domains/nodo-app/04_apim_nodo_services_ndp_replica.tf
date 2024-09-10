@@ -576,3 +576,25 @@ module "apim_nodo_monitoring_api_replica_ndp" {
     base-url = "https://${local.nodo_hostname}/nodo-replica"
   })
 }
+
+# nodoInviaRPT
+resource "azurerm_api_management_api_operation_policy" "nodoInviaRPT_api_v1_policy_replica_ndp" {
+  count = var.create_wisp_converter && var.env_short != "p" ? 1 : 0
+
+  api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1_replica_ndp[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = var.env_short == "d" ? "63d7c034c257810ad4354e11" : "63d7c1f0451c1c1948ef4165"
+  xml_content         = file("./api/nodopagamenti_api/nodoPerPa/v1/nodoInviaRPT_policy.xml")
+}
+
+# nodoInviaCarrelloRPT
+resource "azurerm_api_management_api_operation_policy" "nodoInviaCarrelloRPT_api_v1_policy_replica_ndp" {
+  count = var.create_wisp_converter && var.env_short != "p" ? 1 : 0
+
+  api_name            = azurerm_api_management_api.apim_nodo_per_pa_api_v1_replica_ndp[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = var.env_short == "d" ? "63d7c034c257810ad4354e12" : "63d7c1f0451c1c1948ef4166"
+  xml_content         = file("./api/nodopagamenti_api/nodoPerPa/v1/nodoInviaCarrelloRPT_policy.xml")
+}
