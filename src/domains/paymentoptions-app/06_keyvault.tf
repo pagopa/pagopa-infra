@@ -30,9 +30,16 @@ resource "azurerm_key_vault_secret" "tenant_id" {
 
 # Event Hub
 
-resource "azurerm_key_vault_secret" "ehub_notice_complete_jaas_config" {
-  name         = "ehub-${var.env_short}-notice-complete-jaas-config"
-  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.notices_evt_complete_authorization_rule.primary_connection_string}\";"
+resource "azurerm_key_vault_secret" "ehub_payment-options-re_jaas_config" {
+  name         = "ehub-${var.env_short}-payment-options-re-jaas-config"
+  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.payment_options_re_authorization_rule.primary_connection_string}\";"
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_nodo_pagamenti_cache_jaas_config" {
+  name         = "ehub-${var.env_short}-nodo-pagamenti-cache-jaas-config"
+  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_nodo-dei-pagamenti-cache-sync-rx.primary_connection_string}\";"
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
