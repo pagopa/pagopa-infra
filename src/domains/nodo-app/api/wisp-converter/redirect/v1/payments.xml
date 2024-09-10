@@ -1,0 +1,28 @@
+<policies>
+  <inbound>
+    <base />
+    <set-variable name="wisp_sessionId" value="@(context.Request.Url.Query.GetValueOrDefault("idSession", "NONE"))" />
+    <choose>
+      <when condition="@(!((string)context.Variables["wisp_sessionId"]).Equals("NONE"))">
+      <cache-lookup-value key="@("wisp_timer_hang_" + (string)context.Variables["wisp_sessionId"])" variable-name="wisp_redirect_timeout" default-value="NONE" caching-type="external" />
+      <choose>
+        <when condition="@(((string)context.Variables["wisp_redirect_timeout"]).Equals("NONE"))">
+        <set-backend-service base-url="{{wisp-dismantling-converter-base-url}}/static" />
+        <rewrite-uri template="/error" />
+      </when>
+    </choose>
+  </when>
+</choose>
+  </inbound>
+<backend>
+<base />
+</backend>
+<outbound>
+<base />
+<!-- deleting wisp_timer_hang_sessionId will avoid multiple redirect starting from the same WISP dismantling trigger (nodoInviaRPT / nodoInviaCarrelloRPT) -->
+<cache-remove-value key="@("wisp_timer_hang_" + (string)context.Variables["wisp_sessionId"])" caching-type="external" />
+</outbound>
+<on-error>
+<base />
+</on-error>
+  </policies>

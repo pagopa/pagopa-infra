@@ -223,7 +223,7 @@ wisp_converter_cosmos_nosql_db_params = {
   data_ttl                   = 10368000 # 120 days in second
   data_max_throughput        = 2000
   re_ttl                     = 31536000 # 1 year in second
-  re_max_throughput          = 2000
+  re_max_throughput          = 3000
   receipt_ttl                = -1 # max
   receipt_max_throughput     = 2000
   idempotency_ttl            = 604800 # 7 days in second
@@ -354,6 +354,18 @@ service_bus_wisp_queues = [
     keys = [
       {
         name   = "wisp_converter_payment_timeout"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name                = "nodo_wisp_ecommerce_hang_timeout_queue"
+    enable_partitioning = false
+    keys = [
+      {
+        name   = "nodo_wisp_ecommerce_hang_timeout_queue"
         listen = true
         send   = true
         manage = false

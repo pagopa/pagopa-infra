@@ -1,0 +1,13 @@
+<!--
+    IMPORTANT:
+    - Policy fragment are included as-is whenever they are referenced.
+    - If using variables. Ensure they are setup before use.
+    - Copy and paste your code here or simply start coding
+-->
+<fragment>
+  <choose>
+    <when condition="@(!context.Variables.GetValueOrDefault("wisp_sessionId_fiscalCode_noticeNumber", "NONE").Equals("NONE"))">
+    <cache-store-value key="@("wisp_timer_hang_"+(string)context.Variables["wisp_sessionId_fiscalCode_noticeNumber"] )" value="@(DateTime.UtcNow.AddSeconds({{wisp-checkout-predefined-expiration-time}}).ToString())" duration="{{wisp-checkout-predefined-expiration-time}}" caching-type="external" />
+  </when>
+</choose>
+  </fragment>
