@@ -11,11 +11,11 @@
     <changeSet author="liquibase" id="20240910000000">
         <preConditions onFail="MARK_RAN">
             <not>
-                <columnExists tableName="stazioni" columnName="very_payment_option_enabled"/>
+                <columnExists tableName="stazioni" columnName="verify_payment_option_enabled"/>
             </not>
         </preConditions>
         <addColumn tableName="stazioni">
-            <column name="very_payment_option_enabled" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="verify_payment_option_enabled" type="BOOLEAN" defaultValueBoolean="false">
               <constraints nullable="false"/>
             </column>
         </addColumn>
