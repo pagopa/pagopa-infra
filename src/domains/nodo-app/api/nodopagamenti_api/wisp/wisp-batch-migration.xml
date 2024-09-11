@@ -24,9 +24,9 @@
 
     <choose>
       <when condition="@(((IResponse)context.Variables["ci_list_response"]).StatusCode == 200)">
-      <set-variable name="wisp_whitelisted_cis" value="@(((IResponse)context.Variables["ci_list_response"]).Body.As<JObject>()["key"])" />
-      <cache-store-value key="wisp_whitelisted_cis" value="@((string) context.Variables["wisp_whitelisted_cis"])" duration="2629800" caching-type="external" />
-      <cache-store-value key="wisp_ci_list_loaded" value="@(DateTime.UtcNow.ToString())" duration="2629800" caching-type="external" />
+        <set-variable name="wisp_whitelisted_cis" value="@(((IResponse)context.Variables["ci_list_response"]).Body.As<JObject>()["key"])" />
+        <cache-store-value key="wisp_ci_list" value="@((string) context.Variables["wisp_whitelisted_cis"])" duration="2629800" caching-type="external" /> <!-- 1 month -->
+        <cache-store-value key="wisp_ci_list_loaded" value="@(DateTime.UtcNow.ToString())" duration="2629800" caching-type="external" />
     </when>
   </choose>
 
@@ -51,7 +51,7 @@
 <choose>
   <when condition="@(((IResponse)context.Variables["station_list_response"]).StatusCode == 200)">
   <set-variable name="wisp_whitelisted_stations" value="@(((IResponse)context.Variables["ci_list_response"]).Body.As<JObject>()["key"])" />
-  <cache-store-value key="wisp_whitelisted_stations" value="@((string) context.Variables["wisp_whitelisted_stations"])" duration="2629800" caching-type="external" />
+  <cache-store-value key="wisp_station_list" value="@((string) context.Variables["wisp_whitelisted_stations"])" duration="2629800" caching-type="external" />
   <cache-store-value key="wisp_station_list_loaded" value="@(DateTime.UtcNow.ToString())" duration="2629800" caching-type="external" />
 </when>
 </choose>
