@@ -1,0 +1,26 @@
+<!--
+    IMPORTANT:
+    - Policy fragment are included as-is whenever they are referenced.
+    - If using variables. Ensure they are setup before use.
+    - Copy and paste your code here or simply start coding
+-->
+<fragment>
+  <set-variable name="wisp_sessionId" value="@{
+      try {
+          XElement doc = context.Response.Body.As<XElement>(preserveContent: true);
+          XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+          XElement primitive = (XElement) body.FirstNode;
+          string url = (string) primitive.Descendants("url").FirstOrDefault();
+          string sessionId = System.Text.RegularExpressions.Regex.Match(url, @"idSession=([^&]+)").Groups[1].Value;
+          return sessionId;
+      } catch (Exception e) {
+          return "NONE";
+      }
+  }" />
+  <choose>
+    <when condition="@(!((string)context.Variables["wisp_sessionId"]).Equals("NONE"))">
+      <cache-store-value key="@("wisp_timer_hang_" + (string)context.Variables["wisp_sessionId"])" value="@(DateTime.UtcNow.AddSeconds({{wisp-checkout-predefined-expiration-time}}).ToString())" duration="{{wisp-checkout-predefined-expiration-time}}" caching-type="external" />
+    </when>
+  </choose>
+
+</fragment>
