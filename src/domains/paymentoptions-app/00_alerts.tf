@@ -1,9 +1,9 @@
 ## Print Notice Service ##
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-print-payment-notice-service-responsetime-upd" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-payment-options-service-responsetime-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-pagopa-print-payment-notice-service-rest-responsetime @ _print-payment-notice-service"
+  name                = "pagopa-${var.env_short}-pagopa-print-payment-notice-service-rest-responsetime @ _payment-options-service"
   location            = var.location
 
   action {

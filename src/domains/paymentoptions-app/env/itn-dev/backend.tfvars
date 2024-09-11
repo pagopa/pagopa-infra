@@ -1,4 +1,4 @@
 resource_group_name  = "terraform-state-rg"
 storage_account_name = "tfinfdevpagopa"
 container_name       = "terraform-state"
-key                  = "printit-app-dev.terraform.tfstate"
+key                  = "paymentoptions-app-dev.terraform.tfstate"
