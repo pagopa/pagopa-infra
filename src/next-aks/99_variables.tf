@@ -50,6 +50,11 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
+}
+
 variable "enable_velero_backup" {
   type        = bool
   description = "(Optional) If true, installs velero on the aks cluster and schedules the automatic backups"
@@ -66,6 +71,12 @@ variable "velero_backup_ttl" {
 variable "velero_backup_schedule" {
   type        = string
   default     = "0 3 * * *"
+  description = "(Optional) cron expression defining when to run the backups, expressed in UTC"
+}
+
+variable "velero_backup_single_namespace_schedule" {
+  type        = string
+  default     = "0 2 * * *"
   description = "(Optional) cron expression defining when to run the backups, expressed in UTC"
 }
 

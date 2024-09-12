@@ -14,6 +14,20 @@ resource "azurerm_api_management_named_value" "afm_secondary_sub_key" {
   }
 }
 
+resource "azurerm_api_management_named_value" "afm_ndp_test_sub_key" {
+  name                = "afm-ndp-test-sub-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "afm-ndp-test-sub-key"
+  value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 #############################
 ## Product AFM Calculator ##
 #############################
@@ -130,7 +144,7 @@ module "apim_api_afm_calculator_api_v1" {
   service_url  = local.apim_afm_calculator_service_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/calculator-service/v1/_openapi.json.tpl", {
+  content_value = templatefile(var.env_short != "p" ? "./api/calculator-service/v1/_openapi.json.tpl" : "./api/calculator-service/v1/prod/_openapi.json.tpl", {
     host = local.apim_hostname
   })
 
@@ -158,7 +172,8 @@ module "apim_api_afm_calculator_api_v2" {
 
   content_format = "openapi"
   content_value = templatefile("./api/calculator-service/v2/_openapi.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = module.apim_afm_calculator_product.product_id
   })
 
   xml_content = templatefile("./api/calculator-service/v2/_base_policy.xml", {
@@ -225,7 +240,8 @@ module "apim_api_afm_calculator_api_node_v2" {
 
   content_format = "openapi"
   content_value = templatefile("./api/calculator-service/node/v2/_openapi.json.tpl", {
-    host = local.apim_hostname
+    host    = local.apim_hostname
+    service = module.apim_afm_calculator_node_product.product_id
   })
 
   xml_content = templatefile("./api/calculator-service/node/v2/_base_policy.xml", {

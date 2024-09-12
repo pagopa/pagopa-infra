@@ -5,7 +5,7 @@ resource "kubernetes_namespace" "keda" {
 }
 
 module "keda_pod_identity" {
-  source = "git::https://github.com/pagopa/azurerm.git//kubernetes_pod_identity?ref=v2.13.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v7.58.0"
 
   resource_group_name = azurerm_resource_group.aks_rg.name
   location            = var.location

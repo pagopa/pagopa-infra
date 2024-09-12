@@ -113,6 +113,23 @@ variable "cidr_subnet_tools_cae" {
   description = "Tool container app env, network address space."
 }
 
+### VPN
+variable "cidr_subnet_vpn" {
+  type        = list(string)
+  description = "VPN network address space."
+  default     = [""]
+}
+
+variable "cidr_subnet_apim" {
+  type        = list(string)
+  description = "(Required) APIM v2 subnet cidr"
+}
+
+variable "cidr_subnet_appgateway_integration" {
+  type        = list(string)
+  description = "Address prefixes subnet integration appgateway."
+  default     = null
+}
 
 ### External resources
 
@@ -144,14 +161,53 @@ variable "dns_zone_internal_prefix" {
   description = "The dns subdomain."
 }
 
+variable "dns_default_ttl_sec" {
+  type        = number
+  description = "value"
+  default     = 3600
+}
+
+variable "private_dns_zone_db_nodo_pagamenti" {
+  type    = string
+  default = "dev.db-nodo-pagamenti.com"
+}
+
+
+# DNS private
+variable "dns_a_reconds_dbnodo_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodo_ips_dr" {
+  type        = list(string)
+  description = "IPs address of DB Nodo DR"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodo_prf_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_prf_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
+
 #
 # dns forwarder
 #
-variable "dns_forwarder_backup_is_enabled" {
-  type        = bool
-  description = "Allow to enable or disable dns forwarder backup"
-}
-
 variable "dns_forwarder_vm_image_name" {
   type        = string
   description = "Image name for dns forwarder"
@@ -194,11 +250,6 @@ variable "geo_replica_ddos_protection_plan" {
   default = null
 }
 
-variable "postgres_private_dns_enabled" {
-  type        = bool
-  description = "(Optional) If true creates a private dns that can be used to access the postgres databases"
-  default     = false
-}
 
 
 variable "logos_donations_storage_account_replication_type" {
@@ -217,11 +268,6 @@ variable "logos_backup_retention" {
   type        = number
   default     = 7
   description = "(Optional) Blob backup retention"
-}
-
-variable "cidr_subnet_apim" {
-  type        = list(string)
-  description = "(Required) APIM v2 subnet cidr"
 }
 
 variable "apim_v2_zones" {
@@ -337,7 +383,141 @@ variable "redis_version" {
   default     = "6"
 }
 
+variable "redis_private_endpoint_enabled" {
+  type        = bool
+  description = "Enable private endpoints for redis instances?"
+  default     = true
+}
+
+
+variable "storage_queue_private_endpoint_enabled" {
+  type        = bool
+  description = "Whether private endpoint for Azure Storage Queues is enabled"
+  default     = true
+}
+
+variable "platform_private_dns_zone_records" {
+  type        = list(string)
+  default     = ["api", "portal", "management"]
+  description = "List of records to add into the platform.pagopa.it dns private"
+}
+
 ## integration app gateway
+
+variable "integration_app_gateway_sku_name" {
+  type        = string
+  description = "The Name of the SKU to use for this Application Gateway. Possible values are Standard_Small, Standard_Medium, Standard_Large, Standard_v2, WAF_Medium, WAF_Large, and WAF_v2"
+}
+
+variable "integration_app_gateway_sku_tier" {
+  type        = string
+  description = "The Tier of the SKU to use for this Application Gateway. Possible values are Standard, Standard_v2, WAF and WAF_v2"
+}
+
+variable "integration_app_gateway_waf_enabled" {
+  type        = bool
+  description = "Enable waf"
+  default     = false
+}
+
+variable "integration_app_gateway_api_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+
+variable "integration_app_gateway_min_capacity" {
+  type    = number
+  default = 0
+}
+
+variable "integration_app_gateway_max_capacity" {
+  type    = number
+  default = 2
+}
+
+variable "integration_app_gateway_alerts_enabled" {
+  type        = bool
+  description = "Enable alerts"
+  default     = true
+}
+
+variable "integration_app_gateway_portal_certificate_name" {
+  type        = string
+  description = "Application gateway developer portal certificate name on Key Vault"
+}
+
+variable "integration_app_gateway_management_certificate_name" {
+  type        = string
+  description = "Application gateway api management certificate name on Key Vault"
+}
+
+variable "integration_appgateway_private_ip" {
+  type        = string
+  description = "Integration app gateway private ip"
+}
+variable "integration_appgateway_zones" {
+  type        = list(number)
+  description = "Integration app gateway private ip"
+}
+
+variable "integration_app_gateway_prf_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
+
+# public app gateway
+
+variable "app_gateway_api_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+}
+variable "app_gateway_upload_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault ( 'upload' is used for heavy payload size)"
+}
+
+variable "upload_endpoint_enabled" {
+  type        = bool
+  description = "Enable upload for heavy payload size on appgw"
+  default     = true
+}
+
+variable "app_gateway_prf_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
+
+variable "app_gateway_portal_certificate_name" {
+  type        = string
+  description = "Application gateway developer portal certificate name on Key Vault"
+}
+
+variable "app_gateway_management_certificate_name" {
+  type        = string
+  description = "Application gateway api management certificate name on Key Vault"
+}
+
+variable "app_gateway_wisp2_certificate_name" {
+  type        = string
+  description = "Application gateway wisp2 certificate name on Key Vault"
+}
+
+variable "app_gateway_wisp2govit_certificate_name" {
+  type        = string
+  description = "Application gateway wisp2govit certificate name on Key Vault"
+}
+
+variable "app_gateway_wfespgovit_certificate_name" {
+  type        = string
+  description = "Application gateway wfespgovit certificate name on Key Vault"
+}
+variable "app_gateway_kibana_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
 
 variable "app_gateway_sku_name" {
   type        = string
@@ -352,53 +532,13 @@ variable "app_gateway_sku_tier" {
 variable "app_gateway_waf_enabled" {
   type        = bool
   description = "Enable waf"
-  default     = false
-}
-
-variable "cidr_subnet_appgateway_integration" {
-  type        = list(string)
-  description = "Address prefixes subnet integration appgateway."
-  default     = null
-}
-
-variable "app_gateway_api_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
-}
-
-variable "app_gateway_min_capacity" {
-  type    = number
-  default = 0
-}
-
-variable "app_gateway_max_capacity" {
-  type    = number
-  default = 2
+  default     = true
 }
 
 variable "app_gateway_alerts_enabled" {
   type        = bool
   description = "Enable alerts"
   default     = true
-}
-
-variable "app_gateway_portal_certificate_name" {
-  type        = string
-  description = "Application gateway developer portal certificate name on Key Vault"
-}
-
-variable "app_gateway_management_certificate_name" {
-  type        = string
-  description = "Application gateway api management certificate name on Key Vault"
-}
-
-variable "integration_appgateway_private_ip" {
-  type        = string
-  description = "Integration app gateway private ip"
-}
-variable "integration_appgateway_zones" {
-  type        = list(number)
-  description = "Integration app gateway private ip"
 }
 
 # apim named values
@@ -529,11 +669,12 @@ variable "dns_zone_wisp2" {
   description = "The wisp2 dns subdomain."
 }
 
-variable "app_gateway_prf_certificate_name" {
+variable "dns_zone_wfesp" {
   type        = string
-  description = "Application gateway api certificate name on Key Vault"
-  default     = ""
+  default     = null
+  description = "The wfesp dns subdomain."
 }
+
 
 
 #
@@ -610,7 +751,7 @@ variable "ehns_alerts_enabled" {
 }
 
 variable "ehns_public_network_access" {
-  type = bool
+  type        = bool
   description = "(Required) enables public network access to the event hubs"
 }
 
@@ -646,9 +787,16 @@ EOD
 
 variable "is_feature_enabled" {
   type = object({
-    vnet_ita = bool,
-    container_app_tools_cae = optional(bool, false),
+    vnet_ita                  = bool,
+    container_app_tools_cae   = optional(bool, false),
     node_forwarder_ha_enabled = bool
+    vpn                       = optional(bool, false)
+    dns_forwarder_lb          = optional(bool, false)
+    postgres_private_dns      = bool
+    azdoa                     = optional(bool, true)
+    apim_core_import          = optional(bool, false)
+    use_new_apim              = optional(bool, false)
+    azdoa_extension           = optional(bool, false)
   })
   description = "Features enabled in this domain"
 }
@@ -683,3 +831,251 @@ variable "node_forwarder_sku" {
   default     = "P3v3"
 }
 
+variable "devops_agent_zones" {
+  type        = list(number)
+  default     = null
+  description = "(Optional) List of zones in which the scale set for azdo agent will be deployed"
+}
+
+variable "devops_agent_balance_zones" {
+  type        = bool
+  default     = false
+  description = "(Optional) True if the devops agent instances must be evenly balanced between the configured zones"
+}
+
+variable "cidr_subnet_azdoa" {
+  type        = list(string)
+  description = "Azure DevOps agent network address space."
+}
+
+variable "cidr_subnet_loadtest_agent" {
+  type        = list(string)
+  description = "LoadTest Agent Pool address space"
+  default     = null
+}
+
+variable "azdo_agent_vm_image_name" {
+  type        = string
+  description = "(Required) Azure devops agent image name"
+}
+
+variable "node_fw_ha_snet_cidr" {
+  type        = list(string)
+  default     = null
+  description = "(Required) node forwarder ha subnet cidr block"
+}
+
+# nat gateway
+variable "nat_gateway_enabled" {
+  type        = bool
+  default     = true
+  description = "Nat Gateway enabled"
+}
+
+variable "nat_gateway_public_ips" {
+  type        = number
+  default     = 1
+  description = "Number of public outbound ips"
+}
+
+variable "ingress_elk_load_balancer_ip" {
+  type    = string
+  default = "10.1.100.251"
+}
+
+variable "cidr_subnet_appgateway" {
+  type        = list(string)
+  description = "Application gateway address space."
+}
+
+variable "app_gateway_min_capacity" {
+  type    = number
+  default = 0
+}
+
+variable "app_gateway_max_capacity" {
+  type    = number
+  default = 2
+}
+
+variable "app_gateway_deny_paths" {
+  type        = list(string)
+  description = "Deny paths on app gateway"
+  default     = []
+}
+
+variable "app_gateway_kibana_deny_paths" {
+  type        = list(string)
+  description = "Deny paths on app gateway kibana"
+  default     = []
+}
+
+# needs to be less than 512 characters. For more details refer to the documentation here: https://aka.ms/appgwheadercrud."
+variable "app_gateway_deny_paths_2" {
+  type        = list(string)
+  description = "Deny paths on app gateway"
+  default     = []
+}
+
+variable "app_gateway_allowed_paths_pagopa_onprem_only" {
+  type = object({
+    paths = list(string)
+    ips   = list(string)
+  })
+  description = "Allowed paths from pagopa onprem only"
+}
+
+variable "app_gateway_allowed_fdr_soap_action" {
+  type        = list(string)
+  description = "Allowed SOAPAction header for upload platform fqdn"
+  default     = ["nodoInviaFlussoRendicontazione", "nodoChiediFlussoRendicontazione", "nodoChiediElencoFlussiRendicontazione"]
+}
+
+variable "app_gateway_allowed_paths_upload" {
+  type        = list(string)
+  description = "Allowed paths from pagopa for upload platform fqdn"
+  default = [
+    "/upload/gpd/.*",
+    "/nodo-auth/node-for-psp/.*",
+    "/nodo-auth/nodo-per-psp/.*",
+    "/nodo/nodo-per-psp/.*",
+    "/fdr-legacy/nodo-per-pa/.*",
+    "/nodo/nodo-per-pa/.*",
+    "/nodo-auth/nodo-per-pa/.*",
+    "/nodo-auth/node-for-pa/.*",
+  "/nodo/node-for-psp/.*"]
+}
+
+
+variable "cidr_subnet_redis" {
+  type        = list(string)
+  description = "Redis network address space."
+  default     = ["10.1.163.0/24"]
+}
+
+
+variable "cdn_storage_account_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) Cdn storage account replication type"
+}
+
+
+variable "backup_storage_replication_type" {
+  type        = string
+  default     = "GZRS"
+  description = "(Optional) Backup storage account replication type"
+}
+
+variable "azuread_service_principal_azure_cdn_frontdoor_id" {
+  type        = string
+  description = "Azure CDN Front Door Principal ID"
+  # this is the deafult value for tenant pagopa.it
+  default = "f3b3f72f-4770-47a5-8c1e-aa298003be12"
+}
+
+
+variable "apicfg_core_service_path_value" {
+  type        = string
+  description = "apicfg core cache path"
+  # default     = "pagopa-api-config-core-service/o"
+}
+
+variable "apicfg_selfcare_integ_service_path_value" {
+  type        = string
+  description = "apicfg selfcare integ cache path"
+  # default     = "pagopa-api-config-selfcare-integration/o" // at moment blocked to ORA 👀 https://github.com/pagopa/pagopa-api-config-selfcare-integration/pull/36
+}
+
+
+variable "cidr_subnet_eventhub" {
+  type        = list(string)
+  description = "Address prefixes subnet eventhub"
+  default     = null
+}
+
+
+## Monitor
+variable "law_sku" {
+  type        = string
+  description = "Sku of the Log Analytics Workspace"
+  default     = "PerGB2018"
+}
+
+variable "law_retention_in_days" {
+  type        = number
+  description = "The workspace data retention in days"
+  default     = 30
+}
+
+variable "law_daily_quota_gb" {
+  type        = number
+  description = "The workspace daily quota for ingestion in GB."
+  default     = -1
+}
+
+variable "cidr_subnet_node_forwarder" {
+  type        = list(string)
+  description = "Address prefixes subnet node forwarder"
+  default     = null
+}
+
+
+variable "monitor_env_test_urls" {
+  type = list(object({
+    host          = string
+    path          = string
+    alert_enabled = optional(bool, true)
+  }))
+  description = "(Optional) Environment specific standard web tests urls to be created in addition to locals.test_urls"
+  default     = []
+}
+
+
+variable "cidr_vnet" {
+  type        = list(string)
+  description = "Virtual network address space."
+}
+
+variable "cidr_vnet_integration" {
+  type        = list(string)
+  description = "Virtual network to peer with sia subscription. It should host apim"
+}
+
+# Network
+variable "ddos_protection_plan" {
+  type = object({
+    id     = string
+    enable = bool
+  })
+  default = null
+}
+
+variable "cidr_common_private_endpoint_snet" {
+  type        = list(string)
+  description = "Common Private Endpoint network address space."
+}
+
+variable "route_table_peering_sia_additional_routes" {
+  type = list(object({
+    address_prefix         = string
+    name                   = string
+    next_hop_in_ip_address = string
+    next_hop_type          = string
+    }
+  ))
+  description = "(Optional) additional routes for route table peering sia"
+  default     = []
+}
+
+
+variable "cidr_subnet_dns_forwarder" {
+  type        = list(string)
+  description = "DNS Forwarder network address space."
+}
+
+variable "vpn_gw_pip_sku" {
+  type        = string
+  default     = "Basic"
+  description = "VPN GW PIP SKU"
+}

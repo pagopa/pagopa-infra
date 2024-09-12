@@ -54,7 +54,7 @@ data "azurerm_subnet" "pagopa_proxy_redis_snet" {
 # pagopa-proxy subnet
 
 module "pagopa_proxy_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.1"
   name                 = format("%s-pagopa-proxy-snet", local.parent_project)
   address_prefixes     = var.cidr_subnet_pagopa_proxy
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name
@@ -72,7 +72,7 @@ module "pagopa_proxy_snet" {
 }
 
 module "pagopa_proxy_snet_ha" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.76.1"
   name                 = format("%s-pagopa-proxy-ha-snet", local.parent_project)
   address_prefixes     = var.cidr_subnet_pagopa_proxy_ha
   resource_group_name  = data.azurerm_resource_group.rg_vnet.name

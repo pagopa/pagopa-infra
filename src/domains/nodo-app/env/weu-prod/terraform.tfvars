@@ -105,6 +105,13 @@ route_aks = [
   },
   {
     #  aks nodo to nexi oncloud oracle
+    name                   = "aks-outbound-to-nexi-oracle-dr-onprem-subnet"
+    address_prefix         = "10.101.35.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    #  aks nodo to nexi oncloud oracle
     name                   = "aks-outbound-to-nexi-aks-cloud-subnet"
     address_prefix         = "10.70.135.0/24"
     next_hop_type          = "VirtualAppliance"
@@ -261,3 +268,25 @@ storage_account_info = {
 nodo_auth_subscription_limit = 10000
 # node forwarder
 nodo_pagamenti_x_forwarded_for = "10.230.10.5"
+
+
+# WISP-dismantling-cfg
+create_wisp_converter = true
+wisp_converter = {
+  enable_apim_switch                  = true
+  brokerPSP_whitelist                 = "97735020584"
+  channel_whitelist                   = "97735020584_02"
+  nodoinviarpt_paymenttype_whitelist  = "BBT"
+  dismantling_primitives              = "nodoInviaRPT,nodoInviaCarrelloRPT"
+  dismantling_rt_primitives           = "nodoChiediCopiaRT"
+  checkout_predefined_expiration_time = 1800
+  wisp_ecommerce_channels             = "97735020584_03"
+}
+
+enable_sendPaymentResultV2_SWClient = false
+
+# WFESP-dismantling-cfg
+wfesp_dismantling = {
+  channel_list    = "disabled" # When we want to activate WFESP dismantling, insert correct channel list "13212880150_90"
+  wfesp_fixed_url = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
+}

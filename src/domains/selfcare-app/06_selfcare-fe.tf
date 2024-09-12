@@ -14,7 +14,8 @@ locals {
     for i, spa in var.spa :
     {
       name  = replace("SPA-${spa}", "-", "")
-      order = i + 3 // +3 required because the order start from 1: 1 is reserved for default application redirect; 2 is reserved for the https rewrite;
+      order = i + 3
+      // +3 required because the order start from 1: 1 is reserved for default application redirect; 2 is reserved for the https rewrite;
       conditions = [
         {
           condition_type   = "url_path_condition"
@@ -49,7 +50,7 @@ locals {
 // public storage used to serve FE
 #tfsec:ignore:azure-storage-default-action-deny
 module "selfcare_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v8.15.1"
   count  = var.selfcare_fe_enabled ? 1 : 0
 
   name                = "selfcare"
@@ -59,7 +60,6 @@ module "selfcare_cdn" {
   #                       selfcare.<ENV>.platform.pagopa.it
   hostname              = "${local.dns_zone_selfcare}.${local.dns_zone_platform}.${local.external_domain}"
   https_rewrite_enabled = true
-  lock_enabled          = false
 
   index_document     = "index.html"
   error_404_document = "error.html"
@@ -82,16 +82,18 @@ module "selfcare_cdn" {
     modify_request_header_action  = []
 
     # HSTS
-    modify_response_header_action = [{
-      action = "Overwrite"
-      name   = "Strict-Transport-Security"
-      value  = "max-age=31536000"
+    modify_response_header_action = [
+      {
+        action = "Overwrite"
+        name   = "Strict-Transport-Security"
+        value  = "max-age=31536000"
       },
       # Content-Security-Policy (in Report mode)
       {
         action = "Overwrite"
         name   = "Content-Security-Policy-Report-Only"
-        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api.${local.dns_zone_selfcare}.${local.external_domain}/ https://${local.dns_zone_selfcare}.${local.dns_zone_platform}.${local.external_domain}/;" # https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it
+        value  = "default-src 'self'; object-src 'none'; connect-src 'self' https://api.${local.dns_zone_selfcare}.${local.external_domain}/ https://${local.dns_zone_selfcare}.${local.dns_zone_platform}.${local.external_domain}/;"
+        # https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it
       },
       {
         action = "Append"
@@ -136,24 +138,26 @@ module "selfcare_cdn" {
     ]
   }
 
-  delivery_rule_rewrite = concat([{
-    name  = "RewriteRules"
-    order = 2
-    conditions = [
-      {
-        condition_type   = "url_path_condition"
-        operator         = "Equal"
-        match_values     = ["/"]
-        negate_condition = false
-        transforms       = null
+  delivery_rule_rewrite = concat([
+    {
+      name  = "RewriteRules"
+      order = 2
+      conditions = [
+        {
+          condition_type   = "url_path_condition"
+          operator         = "Equal"
+          match_values     = ["/"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
+      url_rewrite_action = {
+        source_pattern          = "/"
+        destination             = "/ui/index.html"
+        preserve_unmatched_path = false
       }
-    ]
-    url_rewrite_action = {
-      source_pattern          = "/"
-      destination             = "/ui/index.html"
-      preserve_unmatched_path = false
     }
-    }],
+    ],
     local.spa
   )
 
@@ -163,12 +167,14 @@ module "selfcare_cdn" {
       order = 3 + length(local.spa)
 
       // conditions
-      url_path_conditions = [{
-        operator         = "Equal"
-        match_values     = length(var.robots_indexed_paths) > 0 ? var.robots_indexed_paths : ["dummy"]
-        negate_condition = true
-        transforms       = null
-      }]
+      url_path_conditions = [
+        {
+          operator         = "Equal"
+          match_values     = length(var.robots_indexed_paths) > 0 ? var.robots_indexed_paths : ["dummy"]
+          negate_condition = true
+          transforms       = null
+        }
+      ]
       cookies_conditions            = []
       device_conditions             = []
       http_version_conditions       = []
@@ -184,11 +190,13 @@ module "selfcare_cdn" {
       url_file_name_conditions      = []
 
       // actions
-      modify_response_header_actions = [{
-        action = "Overwrite"
-        name   = "X-Robots-Tag"
-        value  = "noindex, nofollow"
-      }]
+      modify_response_header_actions = [
+        {
+          action = "Overwrite"
+          name   = "X-Robots-Tag"
+          value  = "noindex, nofollow"
+        }
+      ]
       cache_expiration_actions       = []
       cache_key_query_string_actions = []
       modify_request_header_actions  = []
@@ -214,19 +222,23 @@ module "selfcare_cdn" {
       request_uri_conditions        = []
       url_file_extension_conditions = []
 
-      url_file_name_conditions = [{
-        operator         = "Equal"
-        match_values     = ["remoteEntry.js"]
-        negate_condition = false
-        transforms       = null
-      }]
+      url_file_name_conditions = [
+        {
+          operator         = "Equal"
+          match_values     = ["remoteEntry.js"]
+          negate_condition = false
+          transforms       = null
+        }
+      ]
 
       // actions
-      modify_response_header_actions = [{
-        action = "Overwrite"
-        name   = "Cache-Control"
-        value  = "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
-      }]
+      modify_response_header_actions = [
+        {
+          action = "Overwrite"
+          name   = "Cache-Control"
+          value  = "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0"
+        }
+      ]
       cache_expiration_actions       = []
       cache_key_query_string_actions = []
       modify_request_header_actions  = []
@@ -238,12 +250,14 @@ module "selfcare_cdn" {
       order = 5 + length(local.spa)
 
       // conditions
-      url_path_conditions = [{
-        operator         = "BeginsWith"
-        match_values     = local.cors.paths
-        negate_condition = false
-        transforms       = null
-      }]
+      url_path_conditions = [
+        {
+          operator         = "BeginsWith"
+          match_values     = local.cors.paths
+          negate_condition = false
+          transforms       = null
+        }
+      ]
       request_header_conditions     = []
       cookies_conditions            = []
       device_conditions             = []
@@ -259,19 +273,23 @@ module "selfcare_cdn" {
       url_file_name_conditions      = []
 
       // actions
-      modify_response_header_actions = [{
-        action = "Overwrite"
-        name   = "Access-Control-Allow-Origin"
-        value  = "*"
-      }]
+      modify_response_header_actions = [
+        {
+          action = "Overwrite"
+          name   = "Access-Control-Allow-Origin"
+          value  = "*"
+        }
+      ]
       cache_expiration_actions       = []
       cache_key_query_string_actions = []
       modify_request_header_actions  = []
       url_redirect_actions           = []
       url_rewrite_actions            = []
-  }]
+    }
+  ]
 
-  tags = var.tags
+  tags                       = var.tags
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 }
 
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry
@@ -296,6 +314,28 @@ resource "azurerm_key_vault_secret" "selfcare_web_storage_connection_string" {
 resource "azurerm_key_vault_secret" "selfcare_web_storage_blob_connection_string" {
   name         = "web-storage-blob-connection-string"
   value        = module.selfcare_cdn[0].storage_primary_blob_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+
+resource "azurerm_static_web_app" "selfcare_backoffice_static_web_app" {
+  count = var.env_short == "d" ? 1 : 0
+
+  name                = "${var.prefix}-${var.env_short}-${var.domain}-backoffice-fe"
+  resource_group_name = azurerm_resource_group.selfcare_fe_rg[0].name
+  location            = var.location
+
+  sku_tier = "Standard"
+  sku_size = "Standard"
+}
+
+resource "azurerm_key_vault_secret" "selfcare_backoffice_static_app_key" {
+  count = var.env_short == "d" ? 1 : 0
+
+  name         = "backoffice-static-app-key"
+  value        = azurerm_static_web_app.selfcare_backoffice_static_web_app[0].api_key
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv.id

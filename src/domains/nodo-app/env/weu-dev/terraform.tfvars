@@ -197,7 +197,23 @@ storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
+# WISP-dismantling-cfg
+create_wisp_converter = true
+wisp_converter = {
+  enable_apim_switch                  = true
+  brokerPSP_whitelist                 = "97735020584"    # AGID
+  channel_whitelist                   = "97735020584_02" # https://pagopa.atlassian.net/wiki/spaces/PAG/pages/135924270/Canali+Particolari
+  nodoinviarpt_paymenttype_whitelist  = "BBT"
+  dismantling_primitives              = "nodoInviaRPT,nodoInviaCarrelloRPT"
+  dismantling_rt_primitives           = "nodoChiediCopiaRT"
+  checkout_predefined_expiration_time = 1800
+  wisp_ecommerce_channels             = "97735020584_03"
+}
 
-enabled_features = {
-  apim_v2 = true
+enable_sendPaymentResultV2_SWClient = true
+
+# WFESP-dismantling-cfg
+wfesp_dismantling = {
+  channel_list    = "13212880150_90"
+  wfesp_fixed_url = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
 }

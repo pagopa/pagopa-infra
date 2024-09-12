@@ -8,6 +8,10 @@ terraform {
       source  = "hashicorp/azuread"
       version = "= 2.21.0"
     }
+    github = {
+      source  = "integrations/github"
+      version = "5.18.3"
+    }
     null = {
       source  = "hashicorp/null"
       version = "= 3.1.1"
@@ -28,3 +32,7 @@ provider "azurerm" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
+
+provider "github" {
+  owner = "pagopa"
+}

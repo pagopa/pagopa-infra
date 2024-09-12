@@ -62,7 +62,7 @@ resource "azurerm_api_management_api_operation_policy" "npg_notifications_policy
   operation_id        = "npgNotify"
 
   xml_content = templatefile("./api/npg-notification/_npg_notifications_policy.xml.tpl", {
-    hostname = var.env_short == "p" ? "disabled" : local.ecommerce_hostname
+    hostname = local.ecommerce_hostname
   })
 }
 

@@ -36,3 +36,7 @@ data "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
   resource_group_name = local.vnet_resource_group_name
 }
 
+data "azurerm_private_dns_zone" "storage" {
+  name                = local.storage_queue_dns_zone_name
+  resource_group_name = local.storage_dns_zone_resource_group_name
+}

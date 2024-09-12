@@ -33,12 +33,12 @@ apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/r
 
 #### pagopa-proxy
 
-cidr_subnet_pagopa_proxy = ["10.1.132.0/24"]
+cidr_subnet_pagopa_proxy    = ["10.1.132.0/24"]
 cidr_subnet_pagopa_proxy_ha = ["10.1.194.0/28"]
 
-pagopa_proxy_plan_sku = "S1"
+pagopa_proxy_plan_sku             = "S1"
 pagopa_proxy_zone_balance_enabled = false
-pagopa_proxy_ha_enabled = true
+pagopa_proxy_ha_enabled           = true
 
 # Checkout
 

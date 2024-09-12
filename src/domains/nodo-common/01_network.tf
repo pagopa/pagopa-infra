@@ -97,7 +97,7 @@ data "azurerm_private_dns_zone" "privatelink_table_azure_com" {
 
 # Azure Storage subnet
 module "storage_account_snet" {
-  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
+  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.77.0"
   name                                          = format("%s-storage-account-snet", local.project)
   address_prefixes                              = var.cidr_subnet_storage_account
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
@@ -109,7 +109,7 @@ module "storage_account_snet" {
 # CosmosDB subnet Nodo-RE
 module "cosmosdb_nodo_re_snet" {
   count                = var.enable_nodo_re ? 1 : 0
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.77.0"
   name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_nodo_re
   resource_group_name  = local.vnet_resource_group_name
@@ -125,7 +125,7 @@ module "cosmosdb_nodo_re_snet" {
 
 # CosmosDB subnet Verify KO
 module "cosmosdb_nodo_verifyko_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.77.0"
   name                 = "${local.project}-verifyko-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_nodo_verifyko
   resource_group_name  = local.vnet_resource_group_name
@@ -148,7 +148,7 @@ resource "azurerm_resource_group" "standin_rg" {
 }
 
 module "cosmosdb_standin_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.77.0"
   name                 = "${local.project}-standin-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_standin
   resource_group_name  = local.vnet_resource_group_name
@@ -164,7 +164,7 @@ module "cosmosdb_standin_snet" {
 
 # Wisp converter
 resource "azurerm_resource_group" "wisp_converter_rg" {
-  count    = var.enable_wisp_converter ? 1 : 0
+  count    = var.create_wisp_converter ? 1 : 0
   name     = "${local.project}-wisp-converter-rg"
   location = var.location
 
@@ -172,8 +172,8 @@ resource "azurerm_resource_group" "wisp_converter_rg" {
 }
 
 module "cosmosdb_wisp_converter_snet" {
-  count                = var.enable_wisp_converter ? 1 : 0
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.1"
+  count                = var.create_wisp_converter ? 1 : 0
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.77.0"
   name                 = "${local.project}-wisp-converter-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_wisp_converter
   resource_group_name  = local.vnet_resource_group_name

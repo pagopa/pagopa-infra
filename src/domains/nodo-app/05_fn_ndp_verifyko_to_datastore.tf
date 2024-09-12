@@ -10,9 +10,9 @@ data "azurerm_cosmosdb_sql_database" "nodo_verifyko_cosmosdb_nosql_db" {
   account_name        = data.azurerm_cosmosdb_account.nodo_verifyko_cosmosdb_nosql.name
 }
 
-data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx" {
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx" {
   name                = "nodo-dei-pagamenti-verify-ko-datastore-rx"
-  namespace_name      = "${local.product}-evh-ns01"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
   eventhub_name       = "nodo-dei-pagamenti-verify-ko"
   resource_group_name = "${local.product}-msg-rg"
 }
@@ -41,7 +41,7 @@ locals {
     COSMOS_DB_NAME            = "nodo_verifyko"
     COSMOS_DB_COLLECTION_NAME = "events"
 
-    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns01_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx.primary_connection_string
+    EVENTHUB_CONN_STRING = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-datastore-rx.primary_connection_string
   }
 
   verifyko_ds_docker_settings = {
@@ -159,7 +159,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_verifyko_to_datastore_functio
       metric_trigger {
         metric_name        = "IncomingMessages"
         metric_namespace   = "microsoft.eventhub/namespaces"
-        metric_resource_id = data.azurerm_eventhub_namespace.pagopa-evh-ns01.id
+        metric_resource_id = data.azurerm_eventhub_namespace.pagopa-evh-ns03.id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
@@ -186,7 +186,7 @@ resource "azurerm_monitor_autoscale_setting" "nodo_verifyko_to_datastore_functio
       metric_trigger {
         metric_name        = "IncomingMessages"
         metric_namespace   = "microsoft.eventhub/namespaces"
-        metric_resource_id = data.azurerm_eventhub_namespace.pagopa-evh-ns01.id
+        metric_resource_id = data.azurerm_eventhub_namespace.pagopa-evh-ns03.id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"

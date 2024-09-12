@@ -63,6 +63,64 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SearchTransactionResponse"
+                },
+                "example": {
+                  "transactions": [
+                    {
+                      "userInfo": {
+                        "userFiscalCode": "user_fiscal_code",
+                        "notificationEmail": "test@test.it",
+                        "surname": "Surname",
+                        "name": "Name",
+                        "username": "username",
+                        "authenticationType": "auth type"
+                      },
+                      "transactionInfo": {
+                        "creationDate": "2023-08-02T02:42:54.0000000+00:00",
+                        "status": "status",
+                        "statusDetails": "status detail",
+                        "eventStatus": "NOTIFIED_OK",
+                        "amount": 100,
+                        "fee": 10,
+                        "grandTotal": 110,
+                        "rrn": "rrn",
+                        "authorizationCode": "auth code",
+                        "paymentMethodName": "payment method name",
+                        "brand": "brand",
+                        "authorizationRequestId": "authorizationRequestId",
+                        "paymentGateway": "VPOS",
+                        "correlationId": "30846e8f-efa1-47ad-abad-08cfb30e5c09",
+                        "gatewayAuthorizationStatus": "EXECUTED",
+                        "gatewayErrorCode": "000"
+                      },
+                      "paymentInfo": {
+                        "origin": "string",
+                        "details": [
+                          {
+                            "subject": "subject",
+                            "iuv": "302001069073736640",
+                            "rptId": "rptId",
+                            "idTransaction": "paymentContextCode",
+                            "paymentToken": "payment token",
+                            "creditorInstitution": "66666666666",
+                            "amount": 99999999,
+                            "paFiscalCode": "77777777777"
+                          }
+                        ]
+                      },
+                      "pspInfo": {
+                        "pspId": "EXAMPLEPSP",
+                        "businessName": "businessName",
+                        "idChannel": "13212880150_02_ONUS"
+                      },
+                      "product": "PM"
+                    }
+                  ],
+                  "page": {
+                    "current": 0,
+                    "total": 0,
+                    "results": 0
+                  }
                 }
               }
             }

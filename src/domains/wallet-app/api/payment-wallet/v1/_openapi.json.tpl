@@ -608,6 +608,45 @@
           ]
         }
       },
+      "WalletApplicationInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "$ref": "#/components/schemas/WalletApplicationId"
+          },
+          "status": {
+            "$ref": "#/components/schemas/WalletApplicationStatus"
+          }
+        },
+        "required": [
+          "name",
+          "status"
+        ]
+      },
+      "WalletClientStatus": {
+        "type": "string",
+        "description": "Enumeration of wallet client statuses",
+        "enum": [
+          "ENABLED",
+          "DISABLED"
+        ]
+      },
+      "WalletClient": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/WalletClientStatus"
+          },
+          "lastUsage": {
+            "type": "string",
+            "description": "Time of last usage of this wallet by the client",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
       "WalletInfo": {
         "type": "object",
         "description": "Wallet information",
@@ -636,7 +675,14 @@
             "description": "list of applications for which this wallet is created for",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/WalletApplication"
+              "$ref": "#/components/schemas/WalletApplicationInfo"
+            }
+          },
+          "clients": {
+            "description": "Client-specific state (e.g. last usage) and configuration (enabled/disabled). Currently the only supported client is `IO`.",
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/WalletClient"
             }
           },
           "details": {
@@ -656,6 +702,7 @@
           "creationDate",
           "updateDate",
           "applications",
+          "clients",
           "paymentMethodAsset"
         ]
       },
@@ -683,13 +730,7 @@
               },
               "brand": {
                 "description": "Payment instrument brand",
-                "type": "string",
-                "enum": [
-                  "MASTERCARD",
-                  "VISA",
-                  "AMEX",
-                  "MAESTRO"
-                ]
+                "type": "string"
               }
             },
             "required": [
@@ -707,12 +748,13 @@
                 "type": "string",
                 "description": "Wallet details discriminator field. Fixed valued 'PAYPAL'"
               },
-              "abi": {
-                "description": "bank idetifier",
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 5,
-                "example": "12345"
+              "pspId": {
+                "description": "bank identifier",
+                "type": "string"
+              },
+              "pspBusinessName": {
+                "description": "PSP business name",
+                "type": "string"
               },
               "maskedEmail": {
                 "description": "email masked pan",
@@ -722,8 +764,8 @@
             },
             "required": [
               "type",
-              "abi",
-              "maskedEmail"
+              "pspId",
+              "pspBusinessName"
             ]
           },
           {
@@ -853,6 +895,9 @@
             "type": "string",
             "description": "Payment method type code"
           },
+          "methodManagement": {
+            "$ref": "#/components/schemas/PaymentMethodManagementType"
+          },
           "ranges": {
             "description": "Payment amount range in eurocents",
             "type": "array",
@@ -875,7 +920,8 @@
           "description",
           "status",
           "paymentTypeCode",
-          "ranges"
+          "ranges",
+          "methodManagement"
         ]
       },
       "PaymentMethodStatus": {
@@ -885,6 +931,17 @@
           "ENABLED",
           "DISABLED",
           "INCOMING"
+        ]
+      },
+      "PaymentMethodManagementType": {
+        "type": "string",
+        "description": "Describes how to manage the payment method authorization flow in wallet and eCommerce domain:\n- REDIRECT if it must be managed with a redirect flow;\n- ONBOARDABLE if it must be managed with NPG and it is possible to save the payment method in the wallet, but also guest payment is accepted;\n- NOT_ONBOARDABLE if it must be managed with NPG but the method cannot be saved, only guest payment is accepted;\n- ONBOARDABLE_ONLY if it must be managed with NPG and it is mandatory to save the payment method in the wallet to use it. Guest payment isn't accepted;\n- ONBORDABLE_WITH_PAYMENT if it must be managed with NPG and it is possible to save it, to use it as guest payment, and to onboard it during the payment;",
+        "enum": [
+          "ONBOARDABLE",
+          "NOT_ONBOARDABLE",
+          "REDIRECT",
+          "ONBOARDABLE_ONLY",
+          "ONBOARDABLE_WITH_PAYMENT"
         ]
       },
       "Range": {

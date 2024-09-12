@@ -20,6 +20,7 @@ if [[ "${TIPO}" == 'dev' ]]; then
   export NODO_OFFLINE_SCHEMA='offline'
   export NODO_RE_SCHEMA='re'
   export NODO_WFESP_SCHEMA='wfesp'
+  export NODO_PARTITION_SCHEMA='partition'
   export LQB_CONTEXTS="dev"
   export NODO_CFG_USERNAME=$SCHEMA
   export NODO_CFG_PASSWORD="password"
@@ -36,6 +37,7 @@ elif [[ "${TIPO}" == 'it' ]]; then
   export NODO_OFFLINE_SCHEMA='offline'
   export NODO_RE_SCHEMA='re'
   export NODO_WFESP_SCHEMA='wfesp'
+  export NODO_PARTITION_SCHEMA='partition'
   export LQB_CONTEXTS="it"
   export NODO_CFG_USERNAME=$SCHEMA
   export NODO_CFG_PASSWORD="password"
@@ -111,6 +113,7 @@ parameter.schemaOnline: ${NODO_ONLINE_SCHEMA}
 parameter.schemaOffline: ${NODO_OFFLINE_SCHEMA}
 parameter.schemaRe: ${NODO_RE_SCHEMA}
 parameter.schemaWfesp: ${NODO_WFESP_SCHEMA}
+parameter.schemaPartition: ${NODO_PARTITION_SCHEMA}
 parameter.usernameOffline: offline
 liquibase.hub.mode: OFF
 log-level: INFO
@@ -120,9 +123,17 @@ log-level: INFO
 # liquibase --defaultsFile=cfg.properties update-sql --changelogFile="db.changelog-master-3.20.0.xml"
 # liquibase --defaultsFile=cfg.properties update-sql --changelogFile="db.changelog-master-$VERSION.xml"
 
+
+# Convert and print the liquibase in to sql. This command doesn't update the DB
 liquibase \
 --defaultsFile=${properties} update-sql \
 --contexts="${LQB_CONTEXTS}" \
 --changelogFile="db.changelog-master-$VERSION.xml"
+
+# Use 'update' instead 'update-sql' to update the DB too
+#liquibase \
+#--defaultsFile=${properties} update \
+#--contexts="${LQB_CONTEXTS}" \
+#--changelogFile="db.changelog-master-$VERSION.xml"
 
 #rm ${properties}

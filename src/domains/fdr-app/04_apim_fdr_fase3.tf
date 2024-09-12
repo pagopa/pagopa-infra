@@ -91,7 +91,7 @@ locals {
   }
 
   apim_fdr_service_api_internal = {
-    display_name          = "FDR - Flussi di rendicontazione (INTERNAL)"
+    display_name          = "FDR Fase 3 - Flussi di rendicontazione (INTERNAL)"
     description           = "FDR - Flussi di rendicontazione (INTERNAL)"
     path                  = "fdr-internal/service"
     subscription_required = true

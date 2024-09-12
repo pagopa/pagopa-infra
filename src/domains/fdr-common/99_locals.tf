@@ -37,4 +37,6 @@ locals {
 
   monitor_appinsights_name = "${local.product}-appinsights"
 
+  evt_hub_location = "weu-core"
+
 }

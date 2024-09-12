@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "nodo_cfg_sync_rg" {
 }
 
 module "nodo_cfg_sync_re_storage_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.60.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
 
   name                            = replace(format("%s-cfg-syn-re-st", local.project), "-", "")
   account_kind                    = var.nodo_cfg_sync_storage_account.account_kind
@@ -43,14 +43,14 @@ resource "azurerm_private_endpoint" "nodo_cfg_sync_re_private_endpoint_container
 
   private_dns_zone_group {
     name                 = "${local.project}-cfg-sync-re-private-dns-zone-group-container"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
   }
 
   private_service_connection {
     name                           = "${local.project}-cfg-sync-re-private-service-connection-container"
     private_connection_resource_id = module.nodo_cfg_sync_re_storage_account.id
     is_manual_connection           = false
-    subresource_names              = ["container"]
+    subresource_names              = ["blob"]
   }
 
   tags = var.tags

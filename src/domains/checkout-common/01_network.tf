@@ -46,10 +46,10 @@ data "azurerm_subnet" "azdoa_snet" {
 # pagopa-proxy Redis subnet
 
 module "pagopa_proxy_redis_snet" {
-  source                                         = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
-  name                                           = format("%s-pagopa-proxy-redis-snet", local.parent_project)
-  address_prefixes                               = var.cidr_subnet_pagopa_proxy_redis
-  resource_group_name                            = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                           = data.azurerm_virtual_network.vnet.name
-  private_endpoint_network_policies_enabled      = false
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
+  name                                      = format("%s-pagopa-proxy-redis-snet", local.parent_project)
+  address_prefixes                          = var.cidr_subnet_pagopa_proxy_redis
+  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
+  virtual_network_name                      = data.azurerm_virtual_network.vnet.name
+  private_endpoint_network_policies_enabled = false
 }

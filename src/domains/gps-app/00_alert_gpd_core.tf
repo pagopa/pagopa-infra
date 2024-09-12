@@ -32,6 +32,7 @@ AzureDiagnostics
     threshold = 2
   }
 }
+
 ## called by internal pagoPA hosts Availability ##
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-internal-availability-upd" {
   count               = var.env_short == "p" ? 1 : 0
@@ -51,13 +52,52 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-int
   query = (<<-QUERY
 let threshold = 0.99;
 AzureDiagnostics
-| where url_s matches regex "/gpd/api"
+| where url_s matches regex "/gpd/api" and not(url_s matches regex "/gpd/api/.*/report")
 | summarize
     Total=count(),
     Success=count(responseCode_d < 500)
     by bin(TimeGenerated, 5m)
 | extend availability=toreal(Success) / Total
 | where availability < threshold
+  QUERY
+  )
+  severity    = 1
+  frequency   = 5
+  time_window = 5
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
+
+## called by internal pagoPA hosts Availability ##
+resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-core-internal-availability-lock-exception" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-opex_pagopa-gpd-core-internal-availability @ _gpd-lock-exception"
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = <<EOT
+  On /gpd/api identified errors due to LockAcquisitionException that may occur during report transfer calls.
+  In these cases, it is necessary to verify that the retry attempt was correctly made, thus avoiding inconsistent states.
+  https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-debt-position
+  EOT
+  enabled        = true
+  query = (<<-QUERY
+let threshold = 0.99;
+requests
+| where url matches regex "/gpd/api"
+| where tolong(resultCode) > 499
+| where customDimensions["Response-Body"] contains "LockAcquisitionException"
+| summarize count() by name
+| where count_ > 1
   QUERY
   )
   severity    = 1

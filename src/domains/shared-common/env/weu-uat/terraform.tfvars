@@ -30,7 +30,7 @@ dns_zone_internal_prefix = "internal.uat.platform"
 # CosmosDb IUV Generator
 cosmos_iuvgenerator_db_params = {
   kind         = "GlobalDocumentDB"
-  capabilities = []
+  capabilities = ["EnableTable"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -107,3 +107,5 @@ test_data_storage_account = {
   blob_delete_retention_days    = 7
   enable_low_availability_alert = false
 }
+
+redis_ha_enabled = false

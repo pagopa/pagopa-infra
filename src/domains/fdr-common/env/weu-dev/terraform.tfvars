@@ -207,5 +207,5 @@ fdr_history_storage_account = {
 # replica settings
 #
 geo_replica_enabled               = false
-postgres_dns_registration_enabled = false
+postgres_dns_registration_enabled = true
 

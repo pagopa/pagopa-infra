@@ -435,12 +435,37 @@ variable "storage_account_info" {
   }
 }
 
-variable "enabled_features" {
-  type = object({
-    apim_v2 = bool
-  })
-  default = {
-    apim_v2 = false
-  }
-  description = "Features enabled in this domain"
+
+variable "create_wisp_converter" {
+  type        = bool
+  default     = false
+  description = "CREATE WISP dismantling system infra"
 }
+
+variable "wisp_converter" {
+  type = object({
+    enable_apim_switch                  = bool # enable WISP dismantling
+    brokerPSP_whitelist                 = string
+    channel_whitelist                   = string
+    nodoinviarpt_paymenttype_whitelist  = string
+    dismantling_primitives              = string
+    dismantling_rt_primitives           = string
+    checkout_predefined_expiration_time = number
+    wisp_ecommerce_channels             = string
+  })
+}
+
+# https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/654541075/RFC+Gestione+clientId+per+integrazione+Software+Client
+variable "enable_sendPaymentResultV2_SWClient" {
+  type        = bool
+  default     = false
+  description = "Gestione clientId per integrazione Software Client"
+}
+
+variable "wfesp_dismantling" {
+  type = object({
+    channel_list    = string
+    wfesp_fixed_url = string
+  })
+}
+
