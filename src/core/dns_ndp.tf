@@ -1,7 +1,7 @@
 resource "azurerm_dns_zone" "ndp_public" {
   count               = var.env_short == "p" ? 1 : 0
   name                = join(".", ["ndp", var.external_domain])
-  resource_group_name = azurerm_resource_group.rg_vnet.name
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
 
   tags = var.tags
 }
@@ -11,7 +11,7 @@ resource "azurerm_dns_a_record" "dns_a_nexi_at" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "nexi"
   zone_name           = azurerm_dns_zone.ndp_public[0].name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = ["185.91.56.184"]
   tags                = var.tags
@@ -22,7 +22,7 @@ resource "azurerm_dns_a_record" "dns_a_testnexi_at" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "test.nexi"
   zone_name           = azurerm_dns_zone.ndp_public[0].name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = ["185.91.56.194"]
   tags                = var.tags
@@ -32,7 +32,7 @@ resource "azurerm_dns_caa_record" "ndp_pagopa_it" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "@"
   zone_name           = azurerm_dns_zone.ndp_public[0].name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
 
   record {
