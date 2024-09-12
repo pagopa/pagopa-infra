@@ -1,0 +1,17 @@
+<policies>
+    <inbound>
+        <base />
+        <!-- rate limit by subscription key -->
+        <!-- <rate-limit calls="300" renewal-period="10" remaining-calls-variable-name="remainingCallsPerSubscription"/> -->
+        <set-backend-service base-url="https://${hostname}/pagopa-biz-events-service" />
+    </inbound>
+    <outbound>
+        <base />
+    </outbound>
+    <backend>
+        <base />
+    </backend>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

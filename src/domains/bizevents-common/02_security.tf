@@ -311,6 +311,32 @@ resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv" {
   key_vault_id = module.key_vault.id
 }
 
+// apikey list-lap-4-io-api-key and save keys on KV
+data "azurerm_api_management_product" "apim_biz_lst_lap_product" {
+  product_id          = "bizevent-lap"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+resource "azurerm_api_management_subscription" "list_lap_4_io_api_key_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_biz_lst_lap_product.id
+  display_name  = "Biz Events list-lap-4-io-api-key"
+  allow_tracing = false
+  state         = "active"
+}
+
+resource "azurerm_key_vault_secret" "list_lap_4_io_api_keysubkey_store_kv" {
+  depends_on   = [azurerm_api_management_subscription.list_lap_4_io_api_key_subkey]
+  name         = "list-lap-4-io-api-key"
+  value        = azurerm_api_management_subscription.list_lap_4_io_api_key_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 // apikey biz-trx-api-key-4-perftest and save keys on KV
 data "azurerm_api_management_product" "apim_biz_events_service_product" {
   product_id          = "bizevents-all-in-one"
