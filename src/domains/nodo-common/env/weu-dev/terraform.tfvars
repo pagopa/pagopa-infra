@@ -218,6 +218,8 @@ wisp_converter_cosmos_nosql_db_params = {
   idempotency_max_throughput = 400
   rt_ttl                     = 259200 # 3 days in second
   rt_max_throughput          = 400
+  configuration_ttl             = -1
+  configuration_max_throughput  = 400
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
@@ -325,6 +327,18 @@ service_bus_wisp_queues = [
     keys = [
       {
         name   = "wisp_converter_payment_timeout"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name                = "nodo_wisp_ecommerce_hang_timeout_queue"
+    enable_partitioning = true
+    keys = [
+      {
+        name   = "nodo_wisp_ecommerce_hang_timeout_queue"
         listen = true
         send   = true
         manage = false

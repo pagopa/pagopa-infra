@@ -40,6 +40,33 @@ module "wisp_converter_caching_api_v1" {
   xml_content = templatefile("./api/wisp-converter/caching/v1/_base_policy.xml", {})
 }
 
+resource "azurerm_api_management_api_operation_policy" "save_mapping_api_v1" {
+  api_name            = format("%s-wisp-converter-caching-api-v1", var.env_short)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "saveMapping"
+
+  xml_content = file("./api/wisp-converter/caching/v1/save_mapping_policy.xml")
+}
+
+resource "terraform_data" "sha256_save_mapping_api_v1" {
+  input = sha256(file("./api/wisp-converter/caching/v1/save_mapping_policy.xml"))
+}
+
+resource "azurerm_api_management_api_operation_policy" "save_cart_mapping_api_v1" {
+  api_name            = format("%s-wisp-converter-caching-api-v1", var.env_short)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "saveCartMapping"
+
+  xml_content = file("./api/wisp-converter/caching/v1/save_cart_mapping_policy.xml")
+}
+
+resource "terraform_data" "sha256_save_cart_mapping_api_v1" {
+  input = sha256(file("./api/wisp-converter/caching/v1/save_cart_mapping_policy.xml"))
+}
+
+
 # fragment for loading configuration inside policy
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
 # https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
@@ -54,9 +81,34 @@ resource "azapi_resource" "wisp_cache_4_decoupler" {
 
   body = jsonencode({
     properties = {
-      description = "Cache info for decoupler"
+      description = "Cache info for decoupler about fiscalCode and noticeNumber"
       format      = "rawxml"
       value       = file("./api/wisp-converter/caching/v1/wisp-cache-for-decoupler.xml")
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+}
+
+# fragment for loading configuration inside policy
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
+# https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+resource "terraform_data" "sha256_wisp_cache_4_decoupler_cart" {
+  input = sha256(file("./api/wisp-converter/caching/v1/wisp-cache-for-decoupler-cart.xml"))
+}
+resource "azapi_resource" "wisp_cache_4_decoupler_cart" {
+
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "wisp-cache-for-decoupler-cart"
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Save cart mapping for decoupler"
+      format      = "rawxml"
+      value       = file("./api/wisp-converter/caching/v1/wisp-cache-for-decoupler-cart.xml")
     }
   })
 
