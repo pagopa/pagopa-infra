@@ -20,10 +20,6 @@
   <inbound>
     <base />
 
-    <ip-filter action="forbid">
-      <!-- pagopa-p-appgateway-snet  -->
-      <address-range from="10.1.128.0" to="10.1.128.255" />
-    </ip-filter>
     <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
     <set-variable name="backend-base-url" value="@($"{{pm-host}}/pp-restapi-CD/v2")" />
     <set-variable name="ecommerce_url" value="${ecommerce_ingress_hostname}" />
