@@ -4,11 +4,11 @@
     "title": "Marketplace API for PagoPA AFM",
     "description": "marketplace-be",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.19.0-4-PPANTT-99-new-filters-psp-bundle-list"
+    "version": "0.21.0"
   },
   "servers": [
     {
-      "url": "${host}/afm/api/v1"
+      "url": "http://localhost:8080"
     },
     {
       "url": "https://{host}{basePath}",
