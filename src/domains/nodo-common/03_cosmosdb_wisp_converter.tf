@@ -92,7 +92,15 @@ locals {
       autoscale_settings = {
         max_throughput = var.wisp_converter_cosmos_nosql_db_params.rt_max_throughput
       }
-    }
+    },
+    {
+      name               = "configuration",
+      partition_key_path = "/id", # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.configuration_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.configuration_max_throughput
+      }
+    },
   ]
 }
 
