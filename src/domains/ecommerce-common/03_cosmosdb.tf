@@ -97,7 +97,11 @@ locals {
         {
           keys   = ["transactionId", "creationDate"]
           unique = false
-        }
+        },
+        {
+          keys   = ["creationDate"]
+          unique = false
+        },
       ]
       shard_key = "transactionId"
     },
