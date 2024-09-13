@@ -29,6 +29,7 @@ dns_zone_internal_prefix = "internal.dev.platform"
 
 ## CIDR nodo per database pgsql
 cidr_subnet_flex_dbms = ["10.1.160.0/24"]
+cidr_subnet_flex_storico_dbms = ["10.1.176.0/24"]
 
 ## CIDR storage subnet
 cidr_subnet_storage_account                                        = ["10.1.137.16/29"]
@@ -54,6 +55,27 @@ pgres_flex_params = {
   max_connections                                  = 1700
   enable_private_dns_registration                  = true
   enable_private_dns_registration_virtual_endpoint = false
+}
+
+pgres_flex_storico_params = {
+
+  enabled    = true
+  sku_name   = "GP_Standard_D2s_v3"
+  db_version = "13"
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                             = 32768
+  zone                                   = 3
+  standby_ha_zone                        = 2
+  backup_retention_days                  = 7
+  geo_redundant_backup_enabled           = false
+  create_mode                            = "Default"
+  pgres_flex_private_endpoint_enabled    = false
+  pgres_flex_ha_enabled                  = false
+  pgres_flex_pgbouncer_enabled           = true
+  pgres_flex_diagnostic_settings_enabled = false
+  max_connections                        = 850
+  enable_private_dns_registration        = true
 }
 
 sftp_account_replication_type = "LRS"
