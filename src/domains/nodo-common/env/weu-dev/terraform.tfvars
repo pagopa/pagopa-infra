@@ -350,7 +350,7 @@ service_bus_wisp_queues = [
     enable_partitioning = true
     keys = [
       {
-        name   = "nodo_wisp_ecommerce_hang_timeout_queue"
+        name   = "wisp_rpt_timeout_queue"
         listen = true
         send   = true
         manage = false
