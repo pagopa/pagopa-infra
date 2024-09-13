@@ -66,4 +66,3 @@ resource "azurerm_key_vault_secret" "secret" {
   ]
 }
 
-// jdbc:oracle:thin:@//ldbpmsp02:1523/PAGOPA_READER
