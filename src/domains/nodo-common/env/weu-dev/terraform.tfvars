@@ -344,6 +344,18 @@ service_bus_wisp_queues = [
         manage = false
       }
     ]
+  },
+  {
+    name                = "wisp_rpt_timeout_queue"
+    enable_partitioning = true
+    keys = [
+      {
+        name   = "nodo_wisp_ecommerce_hang_timeout_queue"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
   }
 ]
 
