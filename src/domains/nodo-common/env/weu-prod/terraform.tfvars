@@ -375,11 +375,11 @@ service_bus_wisp_queues = [
     ]
   },
   {
-    name                = "wisp_rpt_timeout_queue"
+    name                = "nodo_wisp_rpt_timeout_queue"
     enable_partitioning = true
     keys = [
       {
-        name   = "wisp_rpt_timeout_queue"
+        name   = "nodo_wisp_rpt_timeout_queue"
         listen = true
         send   = true
         manage = false

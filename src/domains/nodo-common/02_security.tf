@@ -47,9 +47,9 @@ data "azurerm_servicebus_queue_authorization_rule" "wisp_paainviart_authorizatio
 }
 
 data "azurerm_servicebus_queue_authorization_rule" "wisp_rpt_timeout_queue" {
-  name                = "wisp_rpt_timeout_queue"
+  name                = "nodo_wisp_rpt_timeout_queue"
   resource_group_name = local.sb_resource_group_name
-  queue_name          = "wisp_rpt_timeout_queue"
+  queue_name          = "nodo_wisp_rpt_timeout_queue"
   namespace_name      = "${local.project}-servicebus-wisp"
 
   depends_on = [azurerm_servicebus_queue.service_bus_wisp_queue]
