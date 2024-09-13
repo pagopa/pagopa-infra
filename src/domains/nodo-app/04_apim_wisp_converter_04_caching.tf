@@ -126,6 +126,6 @@ resource "azurerm_api_management_api_operation_policy" "delete_sessionId_api_v1"
   xml_content = file("./api/wisp-converter/caching/v1/delete_sessionId_policy.xml")
 }
 
-resource "terraform_data" "sha256_save_cart_mapping_api_v1" {
+resource "terraform_data" "sha256_delete_sessionId_api_v1" {
   input = sha256(file("./api/wisp-converter/caching/v1/delete_sessionId_policy.xml"))
 }
