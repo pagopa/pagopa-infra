@@ -369,16 +369,18 @@ variable "wisp_converter_cosmos_nosql_db_params" {
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
 
-    data_ttl                   = number
-    data_max_throughput        = number
-    re_ttl                     = number
-    re_max_throughput          = number
-    receipt_ttl                = number
-    receipt_max_throughput     = number
-    idempotency_ttl            = number
-    idempotency_max_throughput = number
-    rt_ttl                     = number
-    rt_max_throughput          = number
+    data_ttl                     = number
+    data_max_throughput          = number
+    re_ttl                       = number
+    re_max_throughput            = number
+    receipt_ttl                  = number
+    receipt_max_throughput       = number
+    idempotency_ttl              = number
+    idempotency_max_throughput   = number
+    rt_ttl                       = number
+    rt_max_throughput            = number
+    configuration_ttl            = number
+    configuration_max_throughput = number
   })
 }
 
