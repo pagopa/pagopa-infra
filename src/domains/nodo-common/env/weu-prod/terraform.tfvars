@@ -220,16 +220,18 @@ wisp_converter_cosmos_nosql_db_params = {
 
   backup_continuous_enabled = true
 
-  data_ttl                   = 10368000 # 120 days in second
-  data_max_throughput        = 2000
-  re_ttl                     = 31536000 # 1 year in second
-  re_max_throughput          = 2000
-  receipt_ttl                = -1 # max
-  receipt_max_throughput     = 2000
-  idempotency_ttl            = 604800 # 7 days in second
-  idempotency_max_throughput = 2000
-  rt_ttl                     = 31536000 # 1 year in second
-  rt_max_throughput          = 2000
+  data_ttl                     = 10368000 # 120 days in second
+  data_max_throughput          = 2000
+  re_ttl                       = 31536000 # 1 year in second
+  re_max_throughput            = 5000
+  receipt_ttl                  = -1 # max
+  receipt_max_throughput       = 2000
+  idempotency_ttl              = 604800 # 7 days in second
+  idempotency_max_throughput   = 2000
+  rt_ttl                       = 31536000 # 1 year in second
+  rt_max_throughput            = 2000
+  configuration_ttl            = -1 # https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/time-to-live#time-to-live-for-containers-and-items
+  configuration_max_throughput = 1000
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
