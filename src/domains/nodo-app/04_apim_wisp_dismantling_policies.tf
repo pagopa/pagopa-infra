@@ -152,7 +152,7 @@ resource "azapi_resource" "wisp_batch_migration" {
     properties = {
       description = "[WISP] Logic to retrieve whitelisted cis and station"
       format      = "rawxml"
-      value = file("./api/nodopagamenti_api/wisp/wisp-batch-migration.xml")
+      value       = file("./api/nodopagamenti_api/wisp/wisp-batch-migration.xml")
     }
   })
 
