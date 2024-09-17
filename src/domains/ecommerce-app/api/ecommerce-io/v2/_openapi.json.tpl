@@ -782,25 +782,17 @@
         }
       }
     },
-    "/users/{userId}/stats": {
+    "/users/stats": {
       "get": {
         "operationId": "getUserStats",
         "description": "Retrieve stats about a user's usage of the pagoPA platform. Currently retrieves the last used payment method.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "required": true,
-            "description": "User identifier",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "security": [
           {
             "pagoPAPlatformSessionToken": []
           }
+        ],
+        "tags": [
+          "users"
         ],
         "summary": "Get user statistics",
         "responses": {
