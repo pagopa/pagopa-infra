@@ -32,6 +32,14 @@
         "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611516433/-servizio+payment+methods+service",
         "description": "Technical specifications"
       }
+    },
+    {
+      "name": "wallets",
+      "description": "Api's for wallet operations"
+    },
+    {
+      "name": "users",
+      "description": "Api's for users statistics"
     }
   ],
   "servers": [
@@ -530,7 +538,7 @@
               }
             }
           },
-           "422": {
+          "422": {
             "description": "Transaction cannot be processed",
             "content": {
               "application/json": {
@@ -763,6 +771,74 @@
           },
           "504": {
             "description": "Timeout serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/stats": {
+      "get": {
+        "operationId": "getUserStats",
+        "description": "Retrieve stats about a user's usage of the pagoPA platform. Currently retrieves the last used payment method.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "description": "User identifier",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "pagoPAPlatformSessionToken": []
+          }
+        ],
+        "summary": "Get user statistics",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserStatsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Cannot find the requested user by user id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -1995,6 +2071,69 @@
             }
           }
         }
+      },
+      "UserStatsResponse": {
+        "description": "Last usage data for wallet or payment method (guest)",
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Last usage data for wallets.",
+            "properties": {
+              "walletId": {
+                "$ref": "#/components/schemas/WalletId"
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "type": {
+                "$ref": "#/components/schemas/WalletLastUsageType"
+              }
+            },
+            "required": [
+              "walletId",
+              "date",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "description": "Last usage data for wallets",
+            "properties": {
+              "paymentMethodId": {
+                "type": "string",
+                "format": "uuid",
+                "description": "eCommerce payment method id associated to this last usage"
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "type": {
+                "$ref": "#/components/schemas/GuestMethodLastUsageType"
+              }
+            },
+            "required": [
+              "paymentMethodId",
+              "date",
+              "type"
+            ]
+          }
+        ]
+      },
+      "WalletLastUsageType": {
+        "type": "string",
+        "description": "Discriminant type for last usage of a wallet",
+        "enum": [
+          "wallet"
+        ]
+      },
+      "GuestMethodLastUsageType": {
+        "type": "string",
+        "description": "Discriminant type for last usage of a guest (non-wallet) payment method",
+        "enum": [
+          "guest"
+        ]
       },
       "WalletId": {
         "description": "Wallet identifier",
