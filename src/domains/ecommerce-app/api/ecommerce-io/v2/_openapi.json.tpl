@@ -782,10 +782,10 @@
         }
       }
     },
-    "/users/stats": {
+    "/user/lastPaymentMethodUsed": {
       "get": {
-        "operationId": "getUserStats",
-        "description": "Retrieve stats about a user's usage of the pagoPA platform. Currently retrieves the last used payment method.",
+        "operationId": "getUserLastPaymentMethodUsed",
+        "description": "Retrieve the last payment method used by a user",
         "security": [
           {
             "pagoPAPlatformSessionToken": []
@@ -794,14 +794,14 @@
         "tags": [
           "users"
         ],
-        "summary": "Get user statistics",
+        "summary": "Get user last payment method used, saved or guest",
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserStatsResponse"
+                  "$ref": "#/components/schemas/UserLastPaymentMethodResponse"
                 }
               }
             }
@@ -2064,7 +2064,7 @@
           }
         }
       },
-      "UserStatsResponse": {
+      "UserLastPaymentMethodResponse": {
         "description": "Last usage data for wallet or payment method (guest)",
         "oneOf": [
           {
