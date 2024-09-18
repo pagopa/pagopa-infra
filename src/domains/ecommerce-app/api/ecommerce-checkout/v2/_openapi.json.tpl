@@ -58,7 +58,7 @@
 		      {
             "in": "header",
             "name": "lang",
-            "required": false,
+            "required": true,
             "description": "Language requested by the user",
             "schema": {
               "type": "string",
