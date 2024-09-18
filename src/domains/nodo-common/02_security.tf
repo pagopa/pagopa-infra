@@ -46,6 +46,15 @@ data "azurerm_servicebus_queue_authorization_rule" "wisp_paainviart_authorizatio
   depends_on = [azurerm_servicebus_queue.service_bus_wisp_queue]
 }
 
+data "azurerm_servicebus_queue_authorization_rule" "wisp_rpt_timeout_queue" {
+  name                = "nodo_wisp_rpt_timeout_queue"
+  resource_group_name = local.sb_resource_group_name
+  queue_name          = "nodo_wisp_rpt_timeout_queue"
+  namespace_name      = "${local.project}-servicebus-wisp"
+
+  depends_on = [azurerm_servicebus_queue.service_bus_wisp_queue]
+}
+
 /*****************
 Storage Account
 *****************/
@@ -228,6 +237,16 @@ resource "azurerm_key_vault_secret" "wisp_paainviart_key" {
 
   name         = "wisp-paainviart-queue-connection-string"
   value        = data.azurerm_servicebus_queue_authorization_rule.wisp_paainviart_authorization.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "wisp_rpt_timeout_key" {
+  count = var.create_wisp_converter ? 1 : 0
+
+  name         = "wisp-rpt-timeout-queue-connection-string"
+  value        = data.azurerm_servicebus_queue_authorization_rule.wisp_rpt_timeout_queue.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
