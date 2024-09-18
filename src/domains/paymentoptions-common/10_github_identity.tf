@@ -15,10 +15,7 @@ data "azurerm_key_vault" "key_vault" {
 # repos must be lower than 20 items
 locals {
   repos_01 = [
-    "pagopa-print-payment-notice-service",
-    "pagopa-print-payment-notice-generator",
-    "pagopa-print-payment-notice-functions",
-    "pagopa-template-notice-pdf"
+    "pagopa-payment-options-service",
   ]
 
   federations_01 = [
