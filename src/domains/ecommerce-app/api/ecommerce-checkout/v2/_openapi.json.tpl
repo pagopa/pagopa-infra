@@ -28,6 +28,77 @@
     "description": "Design review"
   },
   "paths": {
+    "/payment-methods/{id}/sessions": {
+      "post": {
+        "tags": [
+          "ecommerce-methods"
+        ],
+        "operationId": "createSession",
+        "summary": "Create frontend field data paired with a payment gateway session",
+        "description": "This endpoint returns an object containing data on how a frontend can build a form\nto allow direct exchanging of payment information to the payment gateway without eCommerce\nhaving to store PCI data (or other sensitive data tied to the payment method).\nThe returned data is tied to a session on the payment gateway identified by the field `orderId`.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment Method id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "recaptchaResponse",
+            "description": "Recaptcha response",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+		  {
+            "in": "header",
+            "name": "lang",
+            "required": true,
+            "description": "Language requested by the user",
+            "schema": {
+              "type": "string",
+            }
+          },
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment form data successfully created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateSessionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Payment method not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Payment gateway did return error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/transactions": {
       "post": {
         "tags": [
@@ -327,6 +398,70 @@
         "maximum": 600,
         "exclusiveMaximum": true,
         "example": 200
+      },
+"CreateSessionResponse": {
+        "type": "object",
+        "description": "Form data needed to create a payment method input form",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "description": "Identifier of the payment gateway session associated to the form"
+          },
+          "correlationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identifier of the payment session associated to the transaction flow"
+          },
+          "paymentMethodData": {
+            "$ref": "#/components/schemas/CardFormFields"
+          }
+        },
+        "required": [
+          "paymentMethodData",
+          "orderId",
+          "correlationId"
+        ]
+      },
+      "CardFormFields": {
+        "type": "object",
+        "description": "Form fields for credit cards",
+        "properties": {
+          "paymentMethod": {
+            "type": "string"
+          },
+          "form": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Field"
+            }
+          }
+        },
+        "required": [
+          "paymentMethod",
+          "form"
+        ]
+      },
+      "Field": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "text"
+          },
+          "class": {
+            "type": "string",
+            "example": "cardData"
+          },
+          "id": {
+            "type": "string",
+            "example": "cardholderName"
+          },
+          "src": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://<fe>/field.html?id=CARDHOLDER_NAME&sid=052211e8-54c8-4e0a-8402-e10bcb8ff264"
+          }
+        }
       },
       "ValidationFaultPaymentUnavailableProblemJson": {
         "description": "A PaymentProblemJson-like type specific for the GetPayment operations.\nPossible values of `detail_v2` are limited to faults pertaining to validation errors.",
