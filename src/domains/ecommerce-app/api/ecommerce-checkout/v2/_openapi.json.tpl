@@ -55,7 +55,7 @@
             },
             "required": true
           },
-		      {
+		  {
             "in": "header",
             "name": "lang",
             "required": true,
@@ -140,6 +140,15 @@
                 "CHECKOUT_CART",
                 "WISP_REDIRECT"
               ]
+            }
+          },
+		  {
+            "in": "header",
+            "name": "lang",
+            "required": true,
+            "description": "Language requested by the user",
+            "schema": {
+              "type": "string",
             }
           },
           {
