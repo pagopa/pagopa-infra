@@ -92,7 +92,15 @@ locals {
       autoscale_settings = {
         max_throughput = var.wisp_converter_cosmos_nosql_db_params.rt_max_throughput
       }
-    }
+    },
+    {
+      name               = "configuration",
+      partition_key_path = "/id", # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.configuration_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.configuration_max_throughput
+      }
+    },
   ]
 }
 
@@ -117,4 +125,56 @@ module "cosmosdb_account_wispconv_containers" {
     module.cosmosdb_account_wispconv_db
   ]
 }
+
+resource "azurerm_monitor_metric_alert" "cosmos_wisp_normalized_ru_exceeded" {
+  count = (var.env_short == "p" && var.create_wisp_converter) ? 1 : 0
+
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.cosmosdb_account_wispconv[0].name}] Normalized RU Exceeded"
+  resource_group_name = azurerm_resource_group.wisp_converter_rg[0].name
+  scopes              = [module.cosmosdb_account_wispconv[0].id]
+  description         = "A collection Normalized RU/s exceed provisioned throughput, and it's raising latency. Please, consider to increase RU."
+  severity            = 0
+  window_size         = "PT5M"
+  frequency           = "PT5M"
+  auto_mitigate       = false
+
+
+  # Metric info
+  # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
+  criteria {
+    metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
+    metric_name            = "NormalizedRUConsumption"
+    aggregation            = "Maximum"
+    operator               = "GreaterThan"
+    threshold              = "80"
+    skip_metric_validation = false
+
+
+    dimension {
+      name     = "Region"
+      operator = "Include"
+      values   = [azurerm_resource_group.wisp_converter_rg[0].location]
+    }
+
+    dimension {
+      name     = "CollectionName"
+      operator = "Include"
+      values   = ["*"]
+    }
+
+  }
+
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
+  }
+
+  tags = var.tags
+}
+
 
