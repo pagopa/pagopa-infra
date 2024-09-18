@@ -150,12 +150,9 @@ resource "azapi_resource" "wisp_batch_migration" {
 
   body = jsonencode({
     properties = {
-      description = "[WISP] Logic to create whitelisted cis and station"
+      description = "[WISP] Logic to retrieve whitelisted cis and station"
       format      = "rawxml"
-      value = templatefile("./api/nodopagamenti_api/wisp/wisp-batch-migration.xml", {
-        wisp_whitelisted_cis      = trimspace(file("./api/nodopagamenti_api/wisp/cfg/${var.env}/batch_migration_cis.txt"))
-        wisp_whitelisted_stations = trimspace(file("./api/nodopagamenti_api/wisp/cfg/${var.env}/batch_migration_stations.txt"))
-      })
+      value       = file("./api/nodopagamenti_api/wisp/wisp-batch-migration.xml")
     }
   })
 

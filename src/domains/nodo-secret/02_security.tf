@@ -40,7 +40,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   object_id = data.azuread_group.adgroup_developers.object_id
 
   key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
