@@ -9,7 +9,7 @@ module "apim_payment_options_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.18.0"
   count  = var.is_feature_enabled.paymentoptions ? 1 : 0
 
-  product_id   = "pagopa_notices_generator"
+  product_id   = "pagopa_payment_options"
   display_name = local.apim_payment_options_pagopa_api.display_name
   description  = local.apim_payment_options_pagopa_api.description
 
