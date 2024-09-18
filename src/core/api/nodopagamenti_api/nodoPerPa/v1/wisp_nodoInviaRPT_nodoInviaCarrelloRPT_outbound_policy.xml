@@ -20,6 +20,22 @@
   <choose>
     <when condition="@(!((string)context.Variables["wisp_sessionId"]).Equals("NONE"))">
       <cache-store-value key="@("wisp_timer_hang_" + (string)context.Variables["wisp_sessionId"])" value="@(DateTime.UtcNow.AddSeconds({{wisp-checkout-predefined-expiration-time}}).ToString())" duration="{{wisp-checkout-predefined-expiration-time}}" caching-type="external" />
+
+      <!-- set rpt/timer to check if redirect will be executed successfully -->
+      <send-one-way-request mode="new">
+        <set-url>{{wisp-dismantling-converter-base-url}}/rpt/timer</set-url>
+        <set-method>POST</set-method>
+        <set-header name="Content-Type" exists-action="override">
+          <value>application/json</value>
+        </set-header>
+        <set-body>
+          @{
+            return new JObject(
+              new JProperty("sessionId", (string) context.Variables["wisp_sessionId"])
+            ).ToString();
+          }
+        </set-body>
+      </send-one-way-request>
     </when>
   </choose>
 
