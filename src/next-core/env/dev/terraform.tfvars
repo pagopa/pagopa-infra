@@ -50,7 +50,9 @@ cidr_subnet_dns_forwarder         = ["10.1.143.0/29"]
 ### Network Italy
 cidr_vnet_italy = ["10.3.0.0/16"]
 
-vpn_gw_pip_sku = "Standard"
+vpn_gw_pip_sku               = "Standard"
+vpn_gw_pip_allocation_method = "Static"
+vpn_random_specials_char     = false
 #
 # Dns
 #
