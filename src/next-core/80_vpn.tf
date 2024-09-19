@@ -34,11 +34,11 @@ module "vpn" {
   resource_group_name   = azurerm_resource_group.rg_vnet.name
   sku                   = "VpnGw1"
   pip_sku               = var.vpn_gw_pip_sku
-  pip_allocation_method = "Dynamic"
+  pip_allocation_method = var.vpn_gw_pip_allocation_method
   subnet_id             = module.vpn_snet.id
 
-  random_special = true
-  random_upper   = true
+  random_special = var.vpn_random_specials_char
+  random_upper   = var.vpn_random_specials_char
 
   vpn_client_configuration = [
     {
