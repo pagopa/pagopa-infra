@@ -22,7 +22,8 @@ module "elastic_agent" {
   namespace = kubernetes_namespace.monitoring.id
 
   dedicated_log_instance_name = [
-    /* printit */ "print-payment-notice-service", "print-payment-notice-generator", "print-payment-notice-functions"
+    /* printit */ "print-payment-notice-service", "print-payment-notice-generator", "print-payment-notice-functions",
+    /* paymentoptions */ "payment-options-service"
   ]
 
 }
