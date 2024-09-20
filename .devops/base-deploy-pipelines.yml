@@ -32,7 +32,7 @@ parameters:
   - name: 'USE_LOCATION'
     displayName: 'If true use region in env folder structure'
     default: True
-    type: bool
+    type: boolean
   - name: 'SC_PLAN_NAME'
     type: string
   - name: 'SC_APPLY_NAME'
