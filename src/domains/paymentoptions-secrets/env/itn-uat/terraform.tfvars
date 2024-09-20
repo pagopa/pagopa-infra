@@ -1,7 +1,7 @@
 prefix         = "pagopa"
 env_short      = "u"
 env            = "uat"
-domain         = "paymentoptions"
+domain         = "payopt"
 location       = "italynorth"
 location_short = "itn"
 instance       = "uat"

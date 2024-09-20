@@ -1,7 +1,7 @@
 prefix         = "pagopa"
 env_short      = "d"
 env            = "dev"
-domain         = "paymentoptions"
+domain         = "payopt"
 location       = "italynorth"
 location_short = "itn"
 instance       = "dev"

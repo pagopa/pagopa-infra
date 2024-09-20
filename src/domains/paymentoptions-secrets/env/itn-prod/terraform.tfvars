@@ -1,8 +1,8 @@
 prefix         = "pagopa"
 env_short      = "p"
 env            = "prod"
-domain         = "paymentoptions"
-location       = "italynorth"
+domain         = "paymentoptns"
+location       = "payopt"
 location_short = "itn"
 instance       = "prod"
 
