@@ -73,7 +73,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         FULL_DOMAIN_NAME: "${{parameters.DEFINITION_NAME}}_common"
-        TF_ENVIRONMENT_FOLDER: "${{ if eq(parameters.USE_LOCATION, 'True') ? parameters.ENV_LOCATION-lower(parameters.ENV) :  lower(parameters.ENV) }}"
+        TF_ENVIRONMENT_FOLDER: "$[ if eq(parameters.USE_LOCATION, 'True') ? parameters.ENV_LOCATION-lower(parameters.ENV) :  lower(parameters.ENV) ]"
         ENVIRONMENT: "${{parameters.ENV}}"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{parameters.POOL_NAME}}"
         WORKINGDIR: ${{ parameters.WORKING_DIR_COMMON }}
@@ -88,7 +88,7 @@ stages:
     - template: templates/terraform-plan-apply/template.yaml@terraform
       parameters:
         FULL_DOMAIN_NAME: "${{parameters.DEFINITION_NAME}}_app"
-        TF_ENVIRONMENT_FOLDER: "${{ if eq(parameters.USE_LOCATION, 'True') ? parameters.ENV_LOCATION-lower(parameters.ENV) :  lower(parameters.ENV) }}"
+        TF_ENVIRONMENT_FOLDER: "$[ if eq(parameters.USE_LOCATION, 'True') ? parameters.ENV_LOCATION-lower(parameters.ENV) :  lower(parameters.ENV) ]"
         ENVIRONMENT: "${{parameters.ENV}}"
         AZURE_DEVOPS_POOL_AGENT_NAME: "${{parameters.POOL_NAME}}"
         WORKINGDIR: ${{ parameters.WORKING_DIR_APP }}
@@ -103,7 +103,7 @@ stages:
       - template: templates/terraform-plan-apply/template.yaml@terraform
         parameters:
           FULL_DOMAIN_NAME: "${{parameters.DEFINITION_NAME}}_module"
-          TF_ENVIRONMENT_FOLDER: "${{ if eq(parameters.USE_LOCATION, 'True') ? parameters.ENV_LOCATION-lower(parameters.ENV) :  lower(parameters.ENV) }}"
+          TF_ENVIRONMENT_FOLDER: "$[ if eq(parameters.USE_LOCATION, 'True') ? parameters.ENV_LOCATION-lower(parameters.ENV) :  lower(parameters.ENV) ]"
           ENVIRONMENT: "${{parameters.ENV}}"
           AZURE_DEVOPS_POOL_AGENT_NAME: "${{parameters.POOL_NAME}}"
           WORKINGDIR: ${{ parameters.WORKING_DIR_MODULE }}
