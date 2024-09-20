@@ -1,7 +1,7 @@
 prefix         = "pagopa"
 env_short      = "d"
 env            = "dev"
-domain         = "paymentoptions"
+domain         = "payopt"
 location       = "italynorth"
 location_short = "itn"
 instance       = "dev"
@@ -17,12 +17,12 @@ tags = {
 ### 🚩Feautures flags
 
 is_feature_enabled = {
-  eventhub             = true
+  eventhub = true
 }
 
 ### CIRDs
 
-cidr_paymentoptions_eventhub_italy   = ["10.3.12.160/27"]
+cidr_paymentoptions_eventhub_italy = ["10.3.12.160/27"]
 
 ### External resources
 
