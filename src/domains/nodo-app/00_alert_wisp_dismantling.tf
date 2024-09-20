@@ -128,6 +128,7 @@ traces
 | where cloud_RoleName == "pagopawispconverter"
 | where message contains "WIC-" 
 | extend problem_detail=extract('ProblemDetail\\[(.+)\\]', 1, message)
+| extend session_id=extract("properties='.+session-id=(.+).+'", 1, problem_detail)
 | extend error_status=extract('status=([0-9]+)\\,', 1, problem_detail)
 | extend error_code=extract("type='https://pagopa.gov/error-code/(WIC-[0-9]+)'", 1, problem_detail)
 | extend error_detail=extract("detail='(.+)'", 1, problem_detail)
