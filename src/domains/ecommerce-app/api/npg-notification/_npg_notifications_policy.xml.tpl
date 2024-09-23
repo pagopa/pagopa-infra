@@ -164,6 +164,7 @@
               interval="1" count="2" first-fast-retry="true">
               <forward-request timeout="10" buffer-request-body="true" />
         </retry>
+        <forward-request timeout="10" />
     </backend>
     <outbound>
         <!-- forward transaction-service response but set empty body for response -->
