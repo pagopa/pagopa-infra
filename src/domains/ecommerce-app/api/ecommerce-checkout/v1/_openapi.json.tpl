@@ -389,7 +389,16 @@
             },
             "required": true,
             "description": "Transaction ID"
-          }
+          },
+          {
+            "in": "header",
+            "name": "lang",
+            "required": true,
+            "description": "Language requested by the user",
+            "schema": {
+              "type": "string",
+            }
+          },
         ],
         "security": [
           {
