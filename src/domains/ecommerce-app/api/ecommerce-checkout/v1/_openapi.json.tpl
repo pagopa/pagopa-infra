@@ -662,6 +662,15 @@
             }
           },
           {
+            "in": "header",
+            "name": "lang",
+            "required": true,
+            "description": "Language requested by the user",
+            "schema": {
+              "type": "string",
+            }
+          },
+          {
             "in": "query",
             "name": "recaptchaResponse",
             "description": "Recaptcha response",
