@@ -107,7 +107,7 @@ resource "azurerm_monitor_action_group" "infra_opsgenie" { #
   count               = var.env_short == "p" ? 1 : 0
   name                = "InfraOpsgenie"
   resource_group_name = azurerm_resource_group.monitor_rg.name
-  short_name          = "INFRopsgenie"
+  short_name          = "InfrOpsgenie"
 
   webhook_receiver {
     name                    = "INFRAOpsgenieWebhook"
