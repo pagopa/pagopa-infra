@@ -22,7 +22,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.22.0 |
-| <a name="module_letsencrypt_paymentoptions"></a> [letsencrypt\_paymentoptions](#module\_letsencrypt\_paymentoptions) | git::https://github.com/pagopa/terraform-azurerm-v3.git///letsencrypt_credential | v8.22.0 |
+| <a name="module_letsencrypt_paymentoptions"></a> [letsencrypt\_paymentoptions](#module\_letsencrypt\_paymentoptions) | git::https://github.com/pagopa/terraform-azurerm-v3.git///letsencrypt_credential | v8.44.0 |
 
 ## Resources
 
