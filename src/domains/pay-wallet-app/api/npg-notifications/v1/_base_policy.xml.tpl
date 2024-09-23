@@ -87,12 +87,10 @@
       <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
     </inbound>
     <backend>
-        <base />
-        retry condition="@((context.Response.StatusCode == 500)
-                       && (context.LastError?.Reason == "BackendConnectionFailure")")
-              interval="1" count="2" first-fast-retry="true">
-              <forward-request buffer-request-body="true" />
-        </retry>
+      <retry condition="@(context.Response.StatusCode >= 500)"
+            interval="1" count="2" first-fast-retry="true">
+            <forward-request timeout="10" buffer-request-body="true" />
+      </retry>
     </backend>
     <outbound />
     <on-error>
