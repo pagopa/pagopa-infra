@@ -31,7 +31,7 @@
             </when>
         </choose>
         <set-header name="Authorization" exists-action="override">
-      <value> 
+      <value>
           @{
               JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
               return "Bearer " + (string)requestBody["securityToken"];
@@ -88,6 +88,11 @@
     </inbound>
     <backend>
         <base />
+        retry condition="@((context.Response.StatusCode == 500)
+                       && (context.LastError?.Reason == "BackendConnectionFailure")")
+              interval="1" count="2" first-fast-retry="true">
+              <forward-request buffer-request-body="true" />
+        </retry>
     </backend>
     <outbound />
     <on-error>
