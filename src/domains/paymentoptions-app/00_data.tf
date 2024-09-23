@@ -1,19 +1,19 @@
 ### EVH
-data "azurerm_eventhub_authorization_rule" "payment_options_re_authorization_rule" {
-  name                = "${local.project_short}-payment-options-re-rx"
+data "azurerm_eventhub_authorization_rule" "payment_options_re_authorization_rule_writer" {
+  name                = "${local.project}-payment-options-re-tx"
   resource_group_name = "${local.project}-evh-rg"
   eventhub_name       = "pagopa-payopt-evh"
   namespace_name      = "${local.project}-evh"
 }
 
-data "azurerm_eventhub_authorization_rule" "pagopa_weu_core_evh_ns04_nodo_dei_pagamenti_cache_sync_rx" {
+data "azurerm_eventhub_authorization_rule" "pagopa_weu_core_evh_ns04_nodo_dei_pagamenti_cache_sync_reader" {
   name                = "nodo-dei-pagamenti-cache-sync-rx"
   namespace_name      = "${local.product}-${local.evt_hub_location}-evh-ns04"
   eventhub_name       = "nodo-dei-pagamenti-cache"
   resource_group_name = "${local.product}-msg-rg"
 }
 
-data "azurerm_eventhub_authorization_rule" "pagopa_weu_core_evh_ns04_nodo_dei_pagamenti_verify_ko" {
+data "azurerm_eventhub_authorization_rule" "pagopa_weu_core_evh_ns04_nodo_dei_pagamenti_verify_ko_writer" {
   name                = "nodo-dei-pagamenti-verify-ko-tx"
   namespace_name      = "${local.product}-${local.evt_hub_location}-evh-ns03"
   eventhub_name       = "nodo-dei-pagamenti-verify-ko"
