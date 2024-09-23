@@ -1,7 +1,7 @@
 prefix          = "pagopa"
 env_short       = "u"
 env             = "uat"
-domain          = "paymentoptions"
+domain          = "payopt"
 location        = "italynorth"
 location_short  = "itn"
 location_string = "Italy North"
@@ -34,5 +34,5 @@ apim_dns_zone_prefix     = "uat.platform"
 ingress_load_balancer_ip = "10.3.2.250"
 
 is_feature_enabled = {
-  paymentoptions    = true
+  paymentoptions = true
 }

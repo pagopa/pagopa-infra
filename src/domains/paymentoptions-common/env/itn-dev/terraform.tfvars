@@ -14,7 +14,7 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
-### 🚩Feautures flags
+### 🚩Features flags
 
 is_feature_enabled = {
   eventhub = true
@@ -22,7 +22,7 @@ is_feature_enabled = {
 
 ### CIRDs
 
-cidr_paymentoptions_eventhub_italy = ["10.3.12.160/27"]
+cidr_paymentoptions_eventhub_italy = ["10.3.13.0/27"]
 
 ### External resources
 
