@@ -28,7 +28,7 @@ module "monitoring_pod_identity" {
   key_vault_id  = data.azurerm_key_vault.kv.id
 
   secret_permissions = ["Get"]
-}
+} # TEST
 
 resource "helm_release" "kube_prometheus_stack" {
   name       = "prometheus"
