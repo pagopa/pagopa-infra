@@ -1,0 +1,187 @@
+trigger: none
+pr: none
+
+parameters:
+  - name: 'ENV'
+    displayName: 'Environment to switch'
+    type: string
+    default: dev
+    values:
+      - dev
+      - uat
+      - prod
+  - name: 'SWITCH'
+    displayName: 'Switch to perform'
+    type: string
+    default: 'toNexiPublic'
+    values:
+      - toNexiPublic
+      - toNexiPrivate
+  - name: 'PERC_NODO_NEXI'
+    displayName: "Nexi NdP load percentage"
+    type: number
+  - name: 'PERC_NODO_PAGOPA'
+    displayName: "PagoPA NdP load percentage"
+    type: number
+  - name: 'PERC_NODO_NEXI_PG'
+    displayName: "Nexi PostgreSQL  NdP load percentage"
+    type: number
+
+variables:
+  - name: TIME_OUT
+    value: 10
+  - name: APPROVE_NOTIFY_ADMIN
+    value: '[pagoPA-iac]\Project Administrators'
+
+  - name: azureServiceConnectionApplyName
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)"
+
+  - name: poolName
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "$(TF_POOL_NAME_DEV)"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "$(TF_POOL_NAME_UAT)"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "$(TF_POOL_NAME_PROD)"
+
+  - name: apimName
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "pagopa-d-apim"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "pagopa-u-apim"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "pagopa-p-apim"
+
+  - name: apimRg
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "pagopa-d-api-rg"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "pagopa-u-api-rg"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "pagopa-p-api-rg"
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+    - repository: terraform
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v6.11.0
+      endpoint: "io-azure-devops-github-ro"
+
+name: "Switch ${{ parameters.ENV }} ${{ parameters.SWITCH }} - $(Date:yyyyMMdd).$(Rev:r)"
+stages:
+  - stage: switch_${{parameters.ENV}}
+    pool:
+      name: "${{variables.poolName}}"
+
+    jobs:
+      - job: check_new_values
+        displayName: "Check new values consistency"
+        condition: always()
+        steps:
+        - bash: |
+            total=$(expr ${{ parameters.PERC_NODO_NEXI }} + ${{ parameters.PERC_NODO_PAGOPA }} + ${{ parameters.PERC_NODO_NEXI_PG }} )
+            if [ $total == "100" ]
+            then
+                echo "## ✅ Total node balance is 100. Ready to proceed"
+                exit 0
+            else
+                echo "## ❌ Total node balance weight != '100'! Given total is: $total"
+                exit 1
+            fi
+          displayName: "🔍 Check new weight balance consistency"
+      - job: get_current_values
+        displayName: "Retrieve current APIM named values"
+        condition: succeeded()
+        dependsOn: check_new_values
+        steps:
+        - template: templates/apim-get-values/template.yaml@terraform
+          parameters:
+            AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyName}}"
+            APIM_NAME: "${{variables.apimName}}"
+            APIM_RG: "${{variables.apimRg}}"
+            NAMED_VALUES:
+              - test-marco-01
+              - test-named-value-02
+      - job: compare
+        displayName: "Weight balance confirmation"
+        condition: succeeded()
+        dependsOn: get_current_values
+        variables:
+          test-marco-01: $[ dependencies.get_current_values.outputs['test_marco_01.test-marco-01'] ]
+          test-named-value-02: $[ dependencies.get_current_values.outputs['test_named_value_02.test-named-value-02'] ]
+        steps:
+          - bash: |
+              echo "🔍 Weight balance comparison:"
+              echo "➖ NEXI NdP:           old weight = $(test-marco-01); new weight = ${{ parameters.PERC_NODO_NEXI }} "
+              echo "➖ NEXI NdP Postgres:  old weight = $(test-marco-01); new weight = ${{ parameters.PERC_NODO_NEXI_PG }} "
+              echo "➖ PagoPa NdP:         old weight = $(test-marco-01); new weight = ${{ parameters.PERC_NODO_PAGOPA }} "
+            displayName: "❓Weight balance confirmation"
+      - job: waitForValidation
+        condition: succeeded()
+        timeoutInMinutes: 240 # task times out in 4 hours
+        dependsOn: compare
+        displayName: "Authorization - Switch NdP on env '${{ parameters.ENV }}' ${{ parameters.SWITCH }}"
+        pool: server
+        steps:
+          - task: ManualValidation@0
+            inputs:
+              notifyUsers: |
+                $(APPROVE_NOTIFY_ADMIN)
+              instructions: "Please, check the weights on step 'Weight balance confirmation' and THEN click 'Resume' to continue the switch on '${{ parameters.ENV }}' ${{ parameters.SWITCH }}"
+              onTimeout: 'reject'
+            displayName: "🚨 Confirm?"
+      - ${{ if eq(parameters.SWITCH, 'toNexiPublic') }}:
+        - job: "update_values_nexi_public"
+          displayName: "Switching to Nexi NdP via public route"
+          condition: succeeded()
+          dependsOn: waitForValidation
+          steps:
+          - template: templates/apim-set-values/template.yaml@terraform
+            parameters:
+              AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyName}}"
+              APIM_NAME: "${{variables.apimName}}"
+              APIM_RG: "${{variables.apimRg}}"
+              NAMED_VALUES:
+                - name: test-marco-01
+                  value: nexi-public
+                - name: test-named-value-02
+                  value: nexi-public
+      - ${{ if eq(parameters.SWITCH, 'toNexiPrivate') }}:
+        - job: "update_values_nexi_private"
+          displayName: "Switching to Nexi NdP via private route"
+          dependsOn: waitForValidation
+          steps:
+          - template: templates/apim-set-values/template.yaml@terraform
+            parameters:
+              AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyName}}"
+              APIM_NAME: "${{variables.apimName}}"
+              APIM_RG: "${{variables.apimRg}}"
+              NAMED_VALUES:
+                - name: test-marco-01
+                  value: nexi-private
+                - name: test-named-value-02
+                  value: nexi-private
+      - ${{ if eq(parameters.SWITCH, 'toNexiPrivate') }}:
+          - job: "update_values_nexi_private"
+            displayName: "Switching to Nexi NdP via private route"
+            dependsOn: waitForValidation
+            steps:
+              - template: templates/apim-set-values/template.yaml@terraform
+                parameters:
+                  AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyName}}"
+                  APIM_NAME: "${{variables.apimName}}"
+                  APIM_RG: "${{variables.apimRg}}"
+                  NAMED_VALUES:
+                    - name: test-marco-01
+                      value: nexi-private
+                    - name: test-named-value-02
+                      value: nexi-private
