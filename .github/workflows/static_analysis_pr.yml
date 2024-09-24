@@ -31,7 +31,7 @@ jobs:
           git diff --name-only $current_branch origin/main --output=/tmp/diff.txt
           echo "get modified paths from source"
           # i'm using echo because using grep directly fails. it produces an invalid output that breaks the variable assignment
-          source_count=$(echo "$(grep -v 'domains' /tmp/diff.txt | wc -l )")
+          source_count=$(echo "$(egrep -v 'domains|scripts' /tmp/diff.txt | wc -l )")
           echo "source count: $source_count"
           if [[ $source_count -eq 0 ]]
           then
@@ -39,7 +39,7 @@ jobs:
             modified_paths_source=""
           else
             echo "in source if false"
-            modified_paths_source=$(grep -v 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2 | uniq )
+            modified_paths_source=$(egrep -v 'domains|scripts' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2 | uniq )
           fi
 
           echo "modified_paths_source: $modified_paths_source"
@@ -62,7 +62,7 @@ jobs:
           modified_paths="$modified_paths_source $modified_paths_domains .github"
           echo "📌 modified_paths"
           #
-          # This is the only way to pass a string with paths to other step without error, usign env the paths force an error
+          # This is the only way to pass a string with paths to other step without error, using env the paths force an error
           #
           echo "$modified_paths" > "/tmp/paths.txt"
 
