@@ -290,3 +290,5 @@ wfesp_dismantling = {
   channel_list    = "disabled" # When we want to activate WFESP dismantling, insert correct channel list "13212880150_90"
   wfesp_fixed_url = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
 }
+
+nodo_hostname_force_to_nexi = true
