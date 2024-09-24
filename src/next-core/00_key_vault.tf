@@ -164,3 +164,11 @@ data "azurerm_key_vault_secret" "sec_storage_id" {
   name         = "sec-storage-id"
   key_vault_id = module.key_vault.id
 }
+
+# INFRA OpsGenie PagoPA_Azure_infra webhook key
+data "azurerm_key_vault_secret" "opsgenie_infra_webhook_key" {
+  count = var.env_short == "p" ? 1 : 0
+  name  = "opsgenie-infra-webhook-token"
+
+  key_vault_id = module.key_vault.id
+}
