@@ -95,7 +95,18 @@ jobs:
           ls -la
           du -h -d 3 .
 
+      - name: Check if 'src' folder is modified
+        id: check_src_modified
+        run: |
+          if git diff --name-only ${{ github.sha }}^1 ${{ github.sha }} | grep '^src/'; then
+            echo "src folder modified."
+            echo "run_static_analysis=true" >> $GITHUB_ENV
+          else
+            echo "src folder not modified."
+            echo "run_static_analysis=false" >> $GITHUB_ENV
+
       - name: Static Analysis
+        if: env.run_static_analysis == 'true'
         uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@v1.14.1
         with:
           precommit_version: 'v1.89.1@sha256:1ea921bc4fe87651d41677218e537afdcdb8202e757e554b9866668eaba144c5'
