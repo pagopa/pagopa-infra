@@ -123,3 +123,24 @@ resource "azurerm_key_vault_secret" "afm_calculator_subscription_key" {
   }
 }
 
+
+data "azurerm_key_vault" "kv_nodo" {
+  name                = "pagopa-${var.env_short}-nodo-kv"
+  resource_group_name = "pagopa-${var.env_short}-nodo-sec-rg"
+}
+
+data "azurerm_key_vault_secret" "db_cfg_password_read_ndp" {
+  name         = "db-cfg-password-read"
+  key_vault_id = data.azurerm_key_vault.kv_nodo.id
+}
+
+resource "azurerm_key_vault_secret" "db_cfg_password_read_ndp_du" {
+  name         = "db-cfg-password-read"
+  value        = data.azurerm_key_vault_secret.db_cfg_password_read_ndp.value
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+
+
