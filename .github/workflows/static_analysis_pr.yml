@@ -98,13 +98,18 @@ jobs:
       - name: Check if 'src' folder is modified
         id: check_src_modified
         run: |
-          if git diff --name-only ${{ github.sha }}^1 ${{ github.sha }} | grep '^src/.*.tf$'; then
+          # Get list of all modified files in the PR
+          MODIFIED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }})
+
+          echo "Modified files: $MODIFIED_FILES"
+
+          # Check if any of the modified files are in the 'src' directory
+          if echo "$MODIFIED_FILES" | grep -q '^src/'; then
             echo "src folder modified."
             echo "run_static_analysis=true" >> $GITHUB_ENV
           else
             echo "src folder not modified."
             echo "run_static_analysis=false" >> $GITHUB_ENV
-          fi
 
       - name: Static Analysis
         if: env.run_static_analysis == 'true'
