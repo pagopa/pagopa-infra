@@ -98,7 +98,7 @@ jobs:
       - name: Check if 'src' folder is modified
         id: check_src_modified
         run: |
-          if git diff --name-only ${{ github.sha }}^1 ${{ github.sha }} | grep '^src/'; then
+          if git diff --name-only ${{ github.sha }}^1 ${{ github.sha }} | grep '^src/*.tf$'; then
             echo "src folder modified."
             echo "run_static_analysis=true" >> $GITHUB_ENV
           else
