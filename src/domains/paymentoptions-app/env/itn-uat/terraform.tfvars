@@ -27,7 +27,7 @@ log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
-dns_zone_prefix          = "paymentoptions.itn"
+dns_zone_prefix          = "payopt.itn"
 apim_dns_zone_prefix     = "uat.platform"
 ### Aks
 
