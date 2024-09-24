@@ -393,7 +393,6 @@
           {
             "in": "header",
             "name": "lang",
-            "required": false,
             "description": "Language requested by the user",
             "schema": {
               "type": "string",
