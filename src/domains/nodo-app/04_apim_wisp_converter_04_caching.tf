@@ -116,3 +116,16 @@ resource "azapi_resource" "wisp_cache_4_decoupler_cart" {
     ignore_changes = [output]
   }
 }
+
+resource "azurerm_api_management_api_operation_policy" "delete_sessionId_api_v1" {
+  api_name            = format("%s-wisp-converter-caching-api-v1", var.env_short)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "deleteSessionId"
+
+  xml_content = file("./api/wisp-converter/caching/v1/delete_sessionId_policy.xml")
+}
+
+resource "terraform_data" "sha256_delete_sessionId_api_v1" {
+  input = sha256(file("./api/wisp-converter/caching/v1/delete_sessionId_policy.xml"))
+}
