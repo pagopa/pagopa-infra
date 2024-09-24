@@ -30,3 +30,9 @@ data "azurerm_api_management_product" "apim_api_config_product" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
+
+data "azurerm_api_management_product" "apim_forwarder_product" {
+  product_id          = "product-node-forwarder"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
