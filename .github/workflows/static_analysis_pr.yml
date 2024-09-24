@@ -24,7 +24,7 @@ jobs:
           #
           # Discover only the paths changed inside src and src/domains, between my current branch and origin/main
           #
-          ignored_path="domains|scripts|github"
+          ignored_path="domains|scripts|github|.devops"
           echo "get current branch"
           current_branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           echo "current branch: $current_branch"
