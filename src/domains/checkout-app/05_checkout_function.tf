@@ -160,24 +160,27 @@ resource "azurerm_monitor_autoscale_setting" "checkout_function" {
 resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   count = var.checkout_enabled && var.env_short == "p" ? 1 : 0
 
-  name                = format("%s-availability-alert", module.checkout_function[0].name)
+  name                = "${module.checkout_function[0].name}-availability-alert"
   resource_group_name = azurerm_resource_group.checkout_be_rg[0].name
   location            = var.location
 
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
-    email_subject          = "Checkout Availability"
+    email_subject          = "Checkout Availability - pagopa-proxy"
     custom_webhook_payload = "{}"
   }
-  data_source_id = data.azurerm_application_insights.application_insights.id
+  data_source_id = data.azurerm_api_management.apim.id
   description    = "Checkout Availability less than 99%"
   enabled        = true
   query = (<<-QUERY
-requests
-    | where url startswith 'https://api.platform.pagopa.it/checkout/' or  url startswith 'https://api.platform.pagopa.it/api/checkout/v1'
-    | summarize Total=count(), Success=count( (toint(resultCode) >= 200 and toint(resultCode) < 500 or customDimensions['Response-Body'] contains 'detail_v2' ) and duration < 10000) by Time=bin(timestamp,5m)
-    | extend Availability=((Success*1.0)/Total)*100
-    | where toint(Availability) < 99
+AzureDiagnostics
+| where url_s startswith 'https://api.platform.pagopa.it/checkout/auth/payments/v2/payment-requests/'
+| summarize
+    Total=count(),
+    Success=countif(responseCode_d < 500 or responseCode_d == 502 or responseCode_d == 504)
+    by Time = bin(TimeGenerated, 15m)
+| extend Availability=((Success * 1.0) / Total) * 100
+| where toint(Availability) < 90
   QUERY
   )
   severity    = 1
