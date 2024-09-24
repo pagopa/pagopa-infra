@@ -393,6 +393,7 @@
           {
             "in": "header",
             "name": "lang",
+            "required": true,
             "description": "Language requested by the user",
             "schema": {
               "type": "string",
@@ -672,6 +673,7 @@
           {
             "in": "header",
             "name": "lang",
+            "required": true,
             "description": "Language requested by the user",
             "schema": {
               "type": "string",
