@@ -63,7 +63,8 @@ resource "azurerm_cosmosdb_mongo_database" "pay_wallet" {
 locals {
   collections = [
     {
-      name = "applications"
+      name                = "applications"
+      default_ttl_seconds = null
       indexes = [{
         keys   = ["_id"]
         unique = true
@@ -76,7 +77,9 @@ locals {
       shard_key = null
     },
     { # collection with event until 25/08/2024, replaced by payment-wallet-log-events
-      name = "wallet-log-events"
+      # DEPRECATED
+      name                = "wallet-log-events"
+      default_ttl_seconds = null
       indexes = [{
         keys   = ["_id"]
         unique = true
@@ -89,7 +92,8 @@ locals {
       shard_key = null
     },
     {
-      name = "wallets-migration-pm",
+      name                = "wallets-migration-pm",
+      default_ttl_seconds = null
       indexes = [
         {
           keys   = ["_id"] # wallet id pm
@@ -103,7 +107,8 @@ locals {
       shard_key = null
     },
     {
-      name = "payment-wallets"
+      name                = "payment-wallets"
+      default_ttl_seconds = null
       indexes = [{
         keys   = ["_id"]
         unique = true
@@ -124,13 +129,29 @@ locals {
       shard_key = "userId"
     },
     { # collection with event from 25/08/2024
-      name = "payment-wallet-log-events"
+      # DEPRECATED
+      name                = "payment-wallet-log-events"
+      default_ttl_seconds = null
       indexes = [{
         keys   = ["_id"]
         unique = true
         },
         {
           keys   = ["walletId", "timestamp", "eventType"]
+          unique = true
+        }
+      ]
+      shard_key = "walletId"
+    },
+    { # collection with new and detailed logging events
+      name                = "payment-wallets-log-events"
+      default_ttl_seconds = "7776000" #90 days
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["walletId", "timestamp"]
           unique = true
         }
       ]
@@ -150,9 +171,10 @@ module "cosmosdb_pay_wallet_collections" {
   cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb[0].name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.pay_wallet[0].name
 
-  indexes     = each.value.indexes
-  shard_key   = each.value.shard_key
-  lock_enable = var.env_short != "p" ? false : true
+  indexes             = each.value.indexes
+  shard_key           = each.value.shard_key
+  default_ttl_seconds = each.value.default_ttl_seconds
+  lock_enable         = var.env_short != "p" ? false : true
 }
 
 # -----------------------------------------------

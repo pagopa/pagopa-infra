@@ -223,7 +223,7 @@ AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/ecommerce/io/v2'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 2000)
+    Success=countif(responseCode_d < 500 and DurationMs < 10000)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99

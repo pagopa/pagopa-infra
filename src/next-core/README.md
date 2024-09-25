@@ -165,6 +165,7 @@
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_action_group.error_action_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
+| [azurerm_monitor_action_group.infra_opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_action_group.mo_email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_action_group.new_conn_srv_opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_action_group.pm_opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
@@ -298,6 +299,7 @@
 | [azurerm_key_vault_secret.monitor_notification_email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.monitor_notification_slack_email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.monitor_pm_opsgenie_webhook_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.opsgenie_infra_webhook_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.password_pm_test_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.pm_gtw_hostname](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.pm_host](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
@@ -476,7 +478,9 @@
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 | <a name="input_upload_endpoint_enabled"></a> [upload\_endpoint\_enabled](#input\_upload\_endpoint\_enabled) | Enable upload for heavy payload size on appgw | `bool` | `true` | no |
 | <a name="input_vnet_ita_ddos_protection_plan"></a> [vnet\_ita\_ddos\_protection\_plan](#input\_vnet\_ita\_ddos\_protection\_plan) | n/a | <pre>object({<br>    id     = string<br>    enable = bool<br>  })</pre> | `null` | no |
+| <a name="input_vpn_gw_pip_allocation_method"></a> [vpn\_gw\_pip\_allocation\_method](#input\_vpn\_gw\_pip\_allocation\_method) | VPN GW PIP ALLOCATION METHOD | `string` | `"Dynamic"` | no |
 | <a name="input_vpn_gw_pip_sku"></a> [vpn\_gw\_pip\_sku](#input\_vpn\_gw\_pip\_sku) | VPN GW PIP SKU | `string` | `"Basic"` | no |
+| <a name="input_vpn_random_specials_char"></a> [vpn\_random\_specials\_char](#input\_vpn\_random\_specials\_char) | Enable random special characters in VPN gateway's pip name | `bool` | `true` | no |
 
 ## Outputs
 

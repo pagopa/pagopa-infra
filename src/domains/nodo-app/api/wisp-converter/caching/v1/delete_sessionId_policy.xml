@@ -1,0 +1,19 @@
+<policies>
+  <inbound>
+    <base />
+    <set-variable name="wisp_delete_sessionId" value="@((string)context.Request.Body.As<JObject>()["sessionId"])" />
+    <cache-remove-value key="@("wisp_timer_hang_" + (string)context.Variables["wisp_delete_sessionId"])" caching-type="external" />
+    <return-response>
+      <set-status code="200" reason="OK" />
+    </return-response>
+  </inbound>
+  <outbound>
+    <base />
+  </outbound>
+  <backend>
+    <base />
+  </backend>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

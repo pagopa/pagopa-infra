@@ -915,18 +915,15 @@ module "apim_pm_per_nodo_v2" {
     host = local.api_domain
   })
 
-  xml_content = templatefile("./api/payment_manager_api/pm-per-nodo/v2/_base_policy.xml.tpl", {
-    host                       = local.api_domain,
-    ecommerce_ingress_hostname = var.ecommerce_ingress_hostname
-  })
+  xml_content = file("./api/payment_manager_api/pm-per-nodo/v2/_base_policy.xml")
 }
 
-# Payment Manager - PM per Nodo API
+# Payment Manager - PM per Nodo API
 #
 # v1 -> src/core/api/payment_manager_api/pm-per-nodo/v1/_swagger.json.tpl - NOT used into WISP dismantling
 #   "/payments/send-payment-result" - "operationId": "sendPaymentResult"
 #
-# v2 -> src/core/api/payment_manager_api/pm-per-nodo/v2/_openapi.json.tpl
+# v2 -> src/core/api/payment_manager_api/pm-per-nodo/v2/_openapi.json.tpl
 #   "/transactions/{transactionId}/user-receipts" - "operationId": "addUserReceipt"
 #
 # WISP sendPaymentResultV2
@@ -936,7 +933,14 @@ resource "azurerm_api_management_api_operation_policy" "send_payment_result_api_
   resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   operation_id        = "addUserReceipt"
-  xml_content         = file("./api/payment_manager_api/pm-per-nodo/v2/wisp-sendpaymentresult.xml")
+  xml_content = templatefile("./api/payment_manager_api/pm-per-nodo/v2/wisp-sendpaymentresult.xml.tpl", {
+    host                       = local.api_domain,
+    ecommerce_ingress_hostname = var.ecommerce_ingress_hostname
+  })
+}
+
+resource "terraform_data" "sha256_send_payment_result_api_v2_wisp_policy" {
+  input = sha256(file("./api/payment_manager_api/pm-per-nodo/v2/wisp-sendpaymentresult.xml.tpl"))
 }
 
 

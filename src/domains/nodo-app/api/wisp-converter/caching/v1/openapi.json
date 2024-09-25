@@ -67,6 +67,116 @@
           }
         }
       ]
+    },
+    "/save-cart-mapping": {
+      "post": {
+        "operationId": "saveCartMapping",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecouplerCachingKeys"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "summary": "Save cart mapping with qrCode (fiscalCode and noticeNumber)"
+      },
+      "parameters": [
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/delete-sessionId": {
+      "post": {
+        "operationId": "deleteSessionId",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SessionId"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          }
+        ],
+        "summary": "Delete sessionId saved in cache"
+      },
+      "parameters": [
+        {
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "in": "header",
+          "name": "X-Request-Id",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
     }
   },
   "components": {
@@ -82,6 +192,17 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "SessionId": {
+        "required": [
+          "sessionId"
+        ],
+        "type": "object",
+        "properties": {
+          "sessionId": {
+            "type": "string"
           }
         }
       }

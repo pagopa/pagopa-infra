@@ -24,6 +24,7 @@ jobs:
           #
           # Discover only the paths changed inside src and src/domains, between my current branch and origin/main
           #
+          ignored_path="domains|scripts|github|.devops"
           echo "get current branch"
           current_branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
           echo "current branch: $current_branch"
@@ -31,7 +32,7 @@ jobs:
           git diff --name-only $current_branch origin/main --output=/tmp/diff.txt
           echo "get modified paths from source"
           # i'm using echo because using grep directly fails. it produces an invalid output that breaks the variable assignment
-          source_count=$(echo "$(grep -v 'domains' /tmp/diff.txt | wc -l )")
+          source_count=$(echo "$(egrep -v "$ignored_path" /tmp/diff.txt | wc -l )")
           echo "source count: $source_count"
           if [[ $source_count -eq 0 ]]
           then
@@ -39,7 +40,7 @@ jobs:
             modified_paths_source=""
           else
             echo "in source if false"
-            modified_paths_source=$(grep -v 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2 | uniq )
+            modified_paths_source=$(egrep -v "$ignored_path" /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2 | uniq )
           fi
 
           echo "modified_paths_source: $modified_paths_source"
@@ -59,12 +60,21 @@ jobs:
           echo "modified_paths_domains: $modified_paths_domains"
 
           echo "merge paths"
-          modified_paths="$modified_paths_source $modified_paths_domains .github"
+          modified_paths="$modified_paths_source $modified_paths_domains"
           echo "📌 modified_paths"
           #
-          # This is the only way to pass a string with paths to other step without error, usign env the paths force an error
+          # This is the only way to pass a string with paths to other step without error, using env the paths force an error
           #
           echo "$modified_paths" > "/tmp/paths.txt"
+
+          # Check if any of the modified files are in the 'src' directory
+          if echo "$modified_paths" | grep -q '^src/'; then
+            echo "src folder modified."
+            echo "run_static_analysis=true" >> $GITHUB_ENV
+          else
+            echo "src folder not modified."
+            echo "run_static_analysis=false" >> $GITHUB_ENV
+          fi
 
         shell: bash
 
@@ -95,6 +105,7 @@ jobs:
           du -h -d 3 .
 
       - name: Static Analysis
+        if: env.run_static_analysis == 'true'
         uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@v1.14.1
         with:
           precommit_version: 'v1.89.1@sha256:1ea921bc4fe87651d41677218e537afdcdb8202e757e554b9866668eaba144c5'
