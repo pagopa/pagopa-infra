@@ -1,10 +1,10 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "api-config core ${host}",
+    "title": "core",
     "description": "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei Pagamenti",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.59.12"
+    "version": "0.59.17-1-PAGOPA-1622"
   },
   "servers": [
     {
@@ -18538,6 +18538,7 @@
         "required": [
           "broker_code",
           "enabled",
+          "flag_standin",
           "port",
           "primitive_version",
           "protocol",
@@ -18716,6 +18717,16 @@
             "type": "integer",
             "description": "Primitive number version",
             "format": "int32"
+          },
+          "is_payment_options_enabled": {
+            "type": "boolean"
+          },
+          "rest_endpoint": {
+            "type": "string"
+          },
+          "flag_standin": {
+            "type": "boolean",
+            "description": "Represents the authorization to use the standin mode with this station"
           }
         }
       },
@@ -19197,6 +19208,7 @@
           "digital_stamp_brand",
           "enabled",
           "flag_psp_cp",
+          "flag_standin",
           "on_us",
           "payment_model",
           "port",
@@ -19375,6 +19387,10 @@
           "flag_psp_cp": {
             "type": "boolean",
             "description": "Represents the authorization to carry out the transfer of the information present in additional payment information in the tags relating to payment by card for the PA in V1"
+          },
+          "flag_standin": {
+            "type": "boolean",
+            "description": "Represents the authorization to use the standin mode with this channel"
           }
         }
       },
