@@ -56,6 +56,11 @@ module "checkout_cdn" {
       name   = "Strict-Transport-Security"
       value  = "max-age=31536000"
       },
+      {
+        action = "Overwrite"
+        name   = "X-Frame-Options"
+        value  = "SAMEORIGIN"
+      },
       # Content-Security-Policy
       {
         action = "Overwrite"
