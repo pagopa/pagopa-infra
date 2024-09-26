@@ -140,7 +140,6 @@ resource "azurerm_key_vault_secret" "afm_calculator_subscription_key" {
   }
 }
 
-
 data "azurerm_key_vault" "kv_nodo" {
   name                = "pagopa-${var.env_short}-nodo-kv"
   resource_group_name = "pagopa-${var.env_short}-nodo-sec-rg"
@@ -159,5 +158,10 @@ resource "azurerm_key_vault_secret" "db_cfg_password_read_ndp_du" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "afm_fee_reporting_cosmos_pkey" {
+  name         = "afm-fee-reporting-${var.env_short}-cosmos-pkey"
+  value        = module.afm_marketplace_cosmosdb_account.primary_key
+  content_type = "text/plain"
 
-
+  key_vault_id = module.key_vault.id
+}
