@@ -39,8 +39,8 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
@@ -306,6 +306,51 @@ resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv" {
   depends_on   = [azurerm_api_management_subscription.list_trx_4_io_api_key_subkey]
   name         = "list-trx-4-io-api-key"
   value        = azurerm_api_management_subscription.list_trx_4_io_api_key_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+// appIO - apikey list-lap-4-io-api-key and save keys on KV 
+data "azurerm_api_management_product" "apim_biz_lst_lap_product" {
+  product_id          = "bizevent-lap"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+resource "azurerm_api_management_subscription" "list_lap_4_io_api_key_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_biz_lst_lap_product.id
+  display_name  = "Biz Events list-lap-4-io-api-key"
+  allow_tracing = false
+  state         = "active"
+}
+
+resource "azurerm_key_vault_secret" "list_lap_4_io_api_keysubkey_store_kv" {
+  depends_on   = [azurerm_api_management_subscription.list_lap_4_io_api_key_subkey]
+  name         = "list-lap-4-io-api-key"
+  value        = azurerm_api_management_subscription.list_lap_4_io_api_key_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+// ARC apikey list-lap-4-io-api-key and save keys on KV
+resource "azurerm_api_management_subscription" "list_lap_arc_4_io_api_key_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_biz_lst_lap_product.id
+  display_name  = "Biz Events list-lap-arc-4-io-api-key"
+  allow_tracing = false
+  state         = "active"
+}
+
+resource "azurerm_key_vault_secret" "list_lap_arc_4_io_api_keysubkey_store_kv" {
+  depends_on   = [azurerm_api_management_subscription.list_lap_arc_4_io_api_key_subkey]
+  name         = "list-lap-arc-4-io-api-key"
+  value        = azurerm_api_management_subscription.list_lap_arc_4_io_api_key_subkey.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

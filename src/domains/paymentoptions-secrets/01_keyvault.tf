@@ -92,7 +92,7 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
 # create json letsencrypt inside kv
 # requierd: Docker
 module "letsencrypt_paymentoptions" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git///letsencrypt_credential?ref=v8.22.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git///letsencrypt_credential?ref=v8.44.0"
 
   prefix            = var.prefix
   env               = var.env_short

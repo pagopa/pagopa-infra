@@ -2,10 +2,10 @@
 
 variable "is_feature_enabled" {
   type = object({
-    eventhub             = bool
+    eventhub = bool
   })
   default = {
-    eventhub             = false
+    eventhub = false
   }
 }
 

@@ -32,14 +32,21 @@ resource "azurerm_key_vault_secret" "tenant_id" {
 
 resource "azurerm_key_vault_secret" "ehub_payment-options-re_jaas_config" {
   name         = "ehub-${var.env_short}-payment-options-re-jaas-config"
-  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.payment_options_re_authorization_rule.primary_connection_string}\";"
+  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.payment_options_re_authorization_rule_writer.primary_connection_string}\";"
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 resource "azurerm_key_vault_secret" "ehub_nodo_pagamenti_cache_jaas_config" {
   name         = "ehub-${var.env_short}-nodo-pagamenti-cache-jaas-config"
-  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_nodo-dei-pagamenti-cache-sync-rx.primary_connection_string}\";"
+  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.pagopa_weu_core_evh_ns04_nodo_dei_pagamenti_cache_sync_reader.primary_connection_string}\";"
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_nodo-dei-pagamenti-verify-ko_jaas_config" {
+  name         = "ehub-${var.env_short}-nodo-dei-pagamenti-verify-ko-jaas-config"
+  value        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_authorization_rule.pagopa_weu_core_evh_ns04_nodo_dei_pagamenti_verify_ko_writer.primary_connection_string}\";"
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
@@ -47,6 +54,14 @@ resource "azurerm_key_vault_secret" "ehub_nodo_pagamenti_cache_jaas_config" {
 resource "azurerm_key_vault_secret" "api_config_subscription_key" {
   name         = "api-config-sub-key"
   value        = azurerm_api_management_subscription.api_config_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_key_vault_secret" "forwarder_subscription_key" {
+  name         = "forwarder-sub-key"
+  value        = azurerm_api_management_subscription.forwarder_subkey.primary_key
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.kv.id

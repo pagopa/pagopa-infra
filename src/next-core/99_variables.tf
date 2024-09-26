@@ -1079,3 +1079,15 @@ variable "vpn_gw_pip_sku" {
   default     = "Basic"
   description = "VPN GW PIP SKU"
 }
+
+variable "vpn_gw_pip_allocation_method" {
+  type        = string
+  default     = "Dynamic"
+  description = "VPN GW PIP ALLOCATION METHOD"
+}
+
+variable "vpn_random_specials_char" {
+  type        = bool
+  default     = true
+  description = "Enable random special characters in VPN gateway's pip name"
+}

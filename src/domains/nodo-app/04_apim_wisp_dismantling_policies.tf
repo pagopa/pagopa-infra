@@ -65,6 +65,22 @@ resource "azurerm_api_management_named_value" "wisp_dismantling_converter_base_u
   value               = "https://${local.nodo_hostname}/pagopa-wisp-converter"
 }
 
+resource "azurerm_api_management_named_value" "wisp_checkout_predefined_expiration_time" {
+  name                = "wisp-checkout-predefined-expiration-time"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "wisp-checkout-predefined-expiration-time"
+  value               = var.wisp_converter.checkout_predefined_expiration_time
+}
+
+resource "azurerm_api_management_named_value" "wisp_ecommerce_channels" {
+  name                = "wisp-ecommerce-channels"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "wisp-ecommerce-channels"
+  value               = var.wisp_converter.wisp_ecommerce_channels
+}
+
 #################
 ## Fragment    ##
 #################
@@ -134,12 +150,9 @@ resource "azapi_resource" "wisp_batch_migration" {
 
   body = jsonencode({
     properties = {
-      description = "[WISP] Logic to create whitelisted cis and station"
+      description = "[WISP] Logic to retrieve whitelisted cis and station"
       format      = "rawxml"
-      value = templatefile("./api/nodopagamenti_api/wisp/wisp-batch-migration.xml", {
-        wisp_whitelisted_cis      = trimspace(file("./api/nodopagamenti_api/wisp/cfg/${var.env}/batch_migration_cis.txt"))
-        wisp_whitelisted_stations = trimspace(file("./api/nodopagamenti_api/wisp/cfg/${var.env}/batch_migration_stations.txt"))
-      })
+      value       = file("./api/nodopagamenti_api/wisp/wisp-batch-migration.xml")
     }
   })
 

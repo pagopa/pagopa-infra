@@ -68,9 +68,15 @@ module "eventhub_paymentoptions_configuration" {
       ]
       keys = [
         {
-          name   = "${local.project}-payment-options-re-ev"
-          listen = true
+          name   = "${local.project}-payment-options-re-tx"
+          listen = false
           send   = true
+          manage = false
+        },
+        {
+          name   = "${local.project}-payment-options-re-rx" # internal use
+          listen = true
+          send   = false
           manage = false
         }
       ]

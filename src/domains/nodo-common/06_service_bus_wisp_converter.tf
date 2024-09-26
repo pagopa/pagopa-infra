@@ -3,10 +3,10 @@ locals {
   queues = { for q in var.service_bus_wisp_queues : q.name => q }
 
   # List of queue names
-  queue_names = [ for q in var.service_bus_wisp_queues: q.name]
+  queue_names = [for q in var.service_bus_wisp_queues : q.name]
 
   # List of queue values
-  queue_values = [ for q in var.service_bus_wisp_queues: q ]
+  queue_values = [for q in var.service_bus_wisp_queues : q]
 
   # Map of <authorization_key, authorization(queue, properties)>
   key_queue_map = {
@@ -22,10 +22,10 @@ locals {
         }
       ]
       ]) : "${qk.key_name}" => {
-      queue_name = qk.queue_name
-      listen     = qk.listen
-      send       = qk.send
-      manage     = qk.manage
+          queue_name = qk.queue_name
+          listen     = qk.listen
+          send       = qk.send
+          manage     = qk.manage
     }
   }
 

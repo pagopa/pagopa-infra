@@ -511,7 +511,7 @@ locals {
       "severity"             = 1
       "time_window"          = "PT1H"
       "frequency"            = "PT15M"
-      "threshold"            = 2000
+      "threshold"            = 10000
     },
     {
       "storage_account_id"   = "${module.ecommerce_storage_deadletter.id}"

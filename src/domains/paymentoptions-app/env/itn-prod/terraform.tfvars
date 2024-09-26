@@ -1,7 +1,7 @@
 prefix          = "pagopa"
 env_short       = "p"
 env             = "prod"
-domain          = "paymentoptions"
+domain          = "payopt"
 location        = "italynorth"
 location_short  = "itn"
 location_string = "Italy North"
@@ -27,14 +27,14 @@ log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.platform"
-dns_zone_prefix          = "paymentoptions.itn"
+dns_zone_prefix          = "payopt.itn"
 apim_dns_zone_prefix     = "platform"
 ### Aks
 
 ingress_load_balancer_ip = "10.3.2.250"
 
 is_feature_enabled = {
-  paymentoptions    = true
+  paymentoptions = true
 }
 
 pod_disruption_budgets = {
