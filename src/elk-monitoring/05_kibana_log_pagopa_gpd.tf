@@ -6,7 +6,8 @@ locals {
     name = "${local.gpd_space_name}"
   }), "\""), "\""), "'", "'\\''")
 
-  pagopagpd_key = "pagopagpd"
+  pagopagpd_key     = "pagopagpd"
+  log_index_pattern = "logs*gpd*"
 
   pagopagpd_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/pagopa/gpd/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   pagopagpd_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/gpd/ilm-policy.json", {
@@ -21,12 +22,13 @@ locals {
   pagopagpd_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/gpd/index-template.json", {
     name                      = "gpd"
     component_template_custom = "${local.pagopagpd_key}@custom"
+    index                     = local.log_index_pattern
   }), "\""), "\""), "'", "'\\''")
 
   pagopagpd_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/gpd/data-view.json", {
     key   = local.pagopagpd_key
     name  = "Dominio GPD"
-    index = "gpd"
+    index = local.log_index_pattern
   }), "\""), "\""), "'", "'\\''")
 }
 
