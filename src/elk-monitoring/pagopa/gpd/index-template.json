@@ -11,7 +11,7 @@
     }
   },
   "index_patterns": [
-    "logs-${name}-*"
+    "${index}"
   ],
   "data_stream": {
     "hidden": false,
