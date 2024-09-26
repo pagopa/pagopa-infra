@@ -86,7 +86,12 @@ module "checkout_cdn" {
         action = "Append"
         name   = local.content_security_policy_header_name
         value  = "style-src 'self'  'unsafe-inline'; worker-src www.recaptcha.net blob:;"
-      }
+      },
+      {
+        action = "Overwrite"
+        name   = "X-Frame-Options"
+        value  = "SAMEORIGIN"
+      },
     ]
   }
 
