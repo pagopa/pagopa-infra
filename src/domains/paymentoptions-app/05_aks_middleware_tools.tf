@@ -1,5 +1,5 @@
 module "tls_checker" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v8.22.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v8.44.3"
 
   https_endpoint                                            = local.domain_hostname
   alert_name                                                = local.domain_hostname
@@ -19,7 +19,7 @@ resource "helm_release" "cert_mounter" {
   name         = "cert-mounter-blueprint"
   repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
   chart        = "cert-mounter-blueprint"
-  version      = "1.0.4"
+  version      = "2.0.0"
   namespace    = var.domain
   timeout      = 120
   force_update = true
