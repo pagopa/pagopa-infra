@@ -1,0 +1,29 @@
+[
+  {
+    "node_id": "NDP002SIT",
+    "description": "Nodo OnCloud Nexi",
+    "node_uri": "{{nexi-nodo-address}}",
+    "routing": 100,
+    "broker_psps": [],
+    "cis": [],
+    "list_priority": 3
+  },
+  {
+    "node_id": "NDP001DEV",
+    "description": "Nodo Azure PagoPA",
+    "node_uri": "{{pagopa-nodo-address}}",
+    "routing": 0,
+    "broker_psps": [],
+    "cis": ["15376371009"],
+    "list_priority": 1
+  },
+  {
+    "node_id": "NDP004IT",
+    "description": "Nodo PostgreSQL OnPrem Nexi",
+    "node_uri": "{{nexi-nodo-pg-address}}",
+    "routing": 0,
+    "broker_psps": [],
+    "cis": ["88888888888"],
+    "list_priority": 2
+  }
+]
