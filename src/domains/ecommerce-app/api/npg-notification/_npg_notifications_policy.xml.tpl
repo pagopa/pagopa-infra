@@ -160,7 +160,7 @@
     </inbound>
     <backend>
         <retry condition="@(context.Response.StatusCode >= 500)"
-              interval="1" count="2" first-fast-retry="true">
+              interval="2" count="3" first-fast-retry="true">
               <forward-request timeout="10" buffer-request-body="true" />
         </retry>
     </backend>
