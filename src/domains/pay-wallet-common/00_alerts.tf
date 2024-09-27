@@ -48,14 +48,23 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_io_av
   description    = "Payment Wallet for IO - Availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
+let thresholdTrafficMin = 40;
+let thresholdTrafficLinear = 100;
+let lowTrafficAvailability = 80;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/io-payment-wallet/v1'
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
+| where (toint(Availability) < expectedAvailability)
   QUERY
   )
   severity    = 1
@@ -85,14 +94,23 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_webvi
   description    = "Payment Wallet for Webview - Availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
+let thresholdTrafficMin = 40;
+let thresholdTrafficLinear = 100;
+let lowTrafficAvailability = 80;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/webview-payment-wallet/v1'
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 and DurationMs < 2000)
     by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
+| where (toint(Availability) < expectedAvailability)
   QUERY
   )
   severity    = 1
@@ -125,14 +143,23 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_ecomm
   description    = "Payment Wallet for eCommerce V1 - Availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
+let thresholdTrafficMin = 40;
+let thresholdTrafficLinear = 100;
+let lowTrafficAvailability = 80;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/payment-wallet-for-ecommerce/v1'
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
+| where (toint(Availability) < expectedAvailability)
   QUERY
   )
   severity    = 1
@@ -161,14 +188,23 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_npg_notif
   description    = "Payment Wallet NPG Notifications - Availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
+let thresholdTrafficMin = 40;
+let thresholdTrafficLinear = 100;
+let lowTrafficAvailability = 80;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/payment-wallet-notifications/v1'
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
+| where (toint(Availability) < expectedAvailability)
   QUERY
   )
   severity    = 1
@@ -197,14 +233,23 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_outcomes_
   description    = "Payment Wallet redirection outcomes - Availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
+let thresholdTrafficMin = 40;
+let thresholdTrafficLinear = 100;
+let lowTrafficAvailability = 80;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/payment-wallet-outcomes/v1'
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 and DurationMs < 100)
     by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
+| where (toint(Availability) < expectedAvailability)
   QUERY
   )
   severity    = 1
