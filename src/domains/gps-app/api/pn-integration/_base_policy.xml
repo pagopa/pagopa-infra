@@ -8,7 +8,7 @@
     <!-- Throttle, authorize, validate, cache, or transform the requests -->
     <inbound>
         <base />
-        <set-backend-service base-url="https://${hostname}/pagopa-gpd-core" />
+        <set-backend-service base-url="https://weuuat.gps.internal.uat.platform.pagopa.it/pagopa-gpd-core" />
         <set-variable name="isMock" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key","").Equals("{{afm-pn-sub-key}}"))" />
         <choose>
             <when condition="@(context.Variables.GetValueOrDefault<bool>("isMock"))">
@@ -51,22 +51,29 @@
                                 data.Add("paymentDate", null);
                                 data.Add("reportingDate", null);
                                 data.Add("paymentMethod", null);
+                                data.Add("pspCompany", null);
+                                data.Add("idReceipt", null);
+                                data.Add("idFlowReporting", null);
                                 data.Add("fee", 0);
                                 data.Add("notificationFee", context.Request.Body.As<JObject>(true)["notificationFee"].Value<string>());
                                 data.Add("status", "PO_UNPAID");
                                 data.Add("lastUpdatedDate", currentDate);
                                 data.Add("lastUpdatedDateNotificationFee", currentDate);
+                                data.Add("paymentOptionMetadata", new JArray());
                                 
                                 JObject transfer = new JObject();
                                 transfer.Add("organizationFiscalCode", context.Request.MatchedParameters["organizationFiscalCode"].ToString()); 
                                 transfer.Add("idTransfer", "01");
                                 transfer.Add("amount", 100);
                                 transfer.Add("remittanceInformation", "test payment");
-                                transfer.Add("category", "/12345/");
+                                transfer.Add("category", "9/0301100TS/");
                                 transfer.Add("iban", "IT12A1234512345123456789012");
+                                transfer.Add("postalIban", null);
+                                transfer.Add("stamp", null);
                                 transfer.Add("insertedDate", "2024-09-28T22:12:47.989Z");
                                 transfer.Add("status", "T_UNREPORTED");
                                 transfer.Add("lastUpdatedDate", currentDate);
+                                transfer.Add("transferMetadata", new JArray());
 
                                 JArray list = new JArray(transfer);
                                 data.Add("transfer", list);
@@ -102,22 +109,45 @@
                                 data.Add("paymentDate", null);
                                 data.Add("reportingDate", null);
                                 data.Add("paymentMethod", null);
+                                data.Add("pspCompany", null);
+                                data.Add("idReceipt", null);
+                                data.Add("idFlowReporting", null);
                                 data.Add("fee", 0);
                                 data.Add("notificationFee", 0);
                                 data.Add("status", "PO_UNPAID");
                                 data.Add("lastUpdatedDate", currentDate);
                                 data.Add("lastUpdatedDateNotificationFee", currentDate);
+                                data.Add("paymentOptionMetadata", new JArray());
+                                data.Add("iupd", "77777777777-64c8e41bfec846e02000000000000010");
+                                data.Add("type", "F");
+                                data.Add("fiscalCode", "SMNRDN75R05H501F");
+                                data.Add("fullName", "Simone Rondinella");
+                                data.Add("streetName", null);
+                                data.Add("civicNumber", null);
+                                data.Add("postalCode", null);
+                                data.Add("city", null);
+                                data.Add("province", null);
+                                data.Add("region", null);
+                                data.Add("country", null);
+                                data.Add("email", null);
+                                data.Add("phone", null);
+                                data.Add("companyName", "Piattaforma Notifiche");
+                                data.Add("officeName", null);
+                                data.Add("debtPositionStatus", "VALID");
                                 
                                 JObject transfer = new JObject();
                                 transfer.Add("organizationFiscalCode", context.Request.MatchedParameters["organizationFiscalCode"].ToString()); 
                                 transfer.Add("idTransfer", "01");
                                 transfer.Add("amount", 100);
                                 transfer.Add("remittanceInformation", "test payment");
-                                transfer.Add("category", "/12345/");
+                                transfer.Add("category", "9/0301100TS/");
                                 transfer.Add("iban", "IT12A1234512345123456789012");
+                                transfer.Add("postalIban", null);
+                                transfer.Add("stamp", null);
                                 transfer.Add("insertedDate", "2024-09-28T22:12:47.989Z");
                                 transfer.Add("status", "T_UNREPORTED");
                                 transfer.Add("lastUpdatedDate", currentDate);
+                                transfer.Add("transferMetadata", new JArray());
 
                                 JArray list = new JArray(transfer);
                                 data.Add("transfer", list);
