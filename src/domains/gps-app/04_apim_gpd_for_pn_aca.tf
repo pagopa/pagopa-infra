@@ -1,3 +1,17 @@
+resource "azurerm_api_management_named_value" "afm_pn_sub_key" {
+  name                = "afm-pn-sub-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "afm-pn-sub-key"
+  value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 ####################
 ## Local variables #
 ####################
