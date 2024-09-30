@@ -240,7 +240,7 @@ wfesp_dismantling = {
   wfesp_fixed_url = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
 }
 
-nexi_nodo_address = "http:\/\/10.70.74.200/nodo-uat"
-nexi_nodo_pg_address = "https:\/\/10.79.20.32"
-pagopa_nodo_address = "https:\/\/weuuat.nodo.internal.uat.platform.pagopa.it/nodo"
+nexi_nodo_address = "http:\\/\\/10.70.74.200/nodo-uat"
+nexi_nodo_pg_address = "https:\\/\\/10.79.20.32"
+pagopa_nodo_address = "https:\\/\\/weuuat.nodo.internal.uat.platform.pagopa.it/nodo"
 

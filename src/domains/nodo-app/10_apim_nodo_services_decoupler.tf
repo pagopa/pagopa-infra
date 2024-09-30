@@ -27,7 +27,7 @@ resource "azapi_resource" "decoupler_configuration" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-configuration"
   parent_id = data.azurerm_api_management.apim.id
-
+  ignore_missing_property = false
   body = jsonencode({
     properties = {
       description = "Configuration of NDP decoupler"
@@ -49,7 +49,7 @@ resource "azapi_resource" "decoupler_algorithm" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-algorithm"
   parent_id = data.azurerm_api_management.apim.id
-
+  ignore_missing_property = false
   body = jsonencode({
     properties = {
       description = "Logic about NPD decoupler"
@@ -71,7 +71,7 @@ resource "azapi_resource" "decoupler_activate_inbound" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-activate-inbound"
   parent_id = data.azurerm_api_management.apim.id
-
+  ignore_missing_property = false
   body = jsonencode({
     properties = {
       description = "Inbound logic for Activate primitive of NDP decoupler"
@@ -93,7 +93,7 @@ resource "azapi_resource" "decoupler_activate_outbound" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "decoupler-activate-outbound"
   parent_id = data.azurerm_api_management.apim.id
-
+  ignore_missing_property = false
   body = jsonencode({
     properties = {
       description = "Outbound logic for Activate primitive of NDP decoupler"
@@ -136,7 +136,7 @@ resource "azapi_resource" "wisp_nodoinviarpt_nodoinviacarrellorpt_outbound_polic
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
   name      = "wisp-nodoinviarpt-nodoinviacarrellorpt-outbound"
   parent_id = data.azurerm_api_management.apim.id
-
+  ignore_missing_property = false
   body = jsonencode({
     properties = {
       description = "Outbound policy for nodoInviaRPT / nodoInviaCarrelloRPT regarding WISP"
