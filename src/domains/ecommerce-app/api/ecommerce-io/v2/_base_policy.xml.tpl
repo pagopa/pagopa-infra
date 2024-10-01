@@ -73,6 +73,9 @@
       <when condition="@( context.Request.Url.Path.Contains("wallets") )">
         <set-backend-service base-url="@("https://${wallet_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")"/>
       </when>
+      <when condition="@( context.Request.Url.Path.Contains("user") )">
+        <set-backend-service base-url="@("https://${user_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-user-service")"/>
+      </when>
     </choose>
   </inbound>
 
