@@ -12,7 +12,8 @@ locals {
   repos_01 = [
     "pagopa-afm-calculator",
     "pagopa-afm-marketplace-be",
-    "pagopa-afm-utils"
+    "pagopa-afm-utils",
+    "pagopa-afm-fee-reporting-service",
   ]
 
   federations_01 = [
