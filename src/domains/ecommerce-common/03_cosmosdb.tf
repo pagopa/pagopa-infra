@@ -143,6 +143,15 @@ locals {
       ]
       shard_key = "_id"
     },
+    {
+      name = "user-stats"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        }
+      ]
+      shard_key = null
+    },
   ]
 }
 
