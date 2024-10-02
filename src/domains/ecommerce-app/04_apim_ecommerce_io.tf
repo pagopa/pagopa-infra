@@ -201,7 +201,6 @@ module "apim_ecommerce_io_api_v2" {
   xml_content = templatefile("./api/ecommerce-io/v2/_base_policy.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname
     wallet_ingress_hostname    = local.wallet_hostname
-    user_ingress_hostname      = local.user_hostname
   })
 }
 
