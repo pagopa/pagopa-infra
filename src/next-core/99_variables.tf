@@ -877,6 +877,12 @@ variable "node_fw_ha_snet_cidr" {
   description = "(Required) node forwarder ha subnet cidr block"
 }
 
+variable "node_fw_dbg_snet_cidr" {
+  type        = list(string)
+  default     = null
+  description = "(Required) node forwarder debug ha subnet cidr block"
+}
+
 # nat gateway
 variable "nat_gateway_enabled" {
   type        = bool
