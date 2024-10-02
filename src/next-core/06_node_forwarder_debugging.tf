@@ -39,8 +39,8 @@ locals {
     DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.container_registry.admin_password
 
     # Connection Pool
-    MAX_CONNECTIONS           = 80
-    MAX_CONNECTIONS_PER_ROUTE = 40
+    MAX_CONNECTIONS           = 120
+    MAX_CONNECTIONS_PER_ROUTE = 60
     CONN_TIMEOUT              = 8
 
   }
