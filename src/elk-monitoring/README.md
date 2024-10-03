@@ -56,6 +56,7 @@
 | [null_resource.apm_log_ilm_policy](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.ecommerce_kibana_space](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.fdr_kibana_space](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.wisp_kibana_space](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.logs_ilm_policy](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.metrics_ilm_policy](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.ndp_kibana_space](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
