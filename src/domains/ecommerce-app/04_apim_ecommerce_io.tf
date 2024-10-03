@@ -295,3 +295,14 @@ resource "azurerm_api_management_api_operation_policy" "io_get_all_payment_metho
     enabled_payment_wallet_method_ids_pm = var.enabled_payment_wallet_method_ids_pm
   })
 }
+
+resource "azurerm_api_management_api_operation_policy" "io_get_last_usage_by_user" {
+  count = var.env_short == "u" ? 1 : 0
+  
+  api_name            = "${local.project}-ecommerce-io-api-v2"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getUserLastPaymentMethodUsed"
+
+  xml_content = file("./api/ecommerce-io/v2/_last_usage_policy.xml.tpl")
+}
