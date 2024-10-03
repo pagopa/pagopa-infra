@@ -189,3 +189,33 @@ resource "azurerm_app_configuration_feature" "station_maintenances_flag" {
     ]
   }
 }
+
+resource "azurerm_app_configuration_feature" "station-rest-section" {
+  configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
+  description            = "It shows the REST endpoint section for Stations"
+  name                   = "station-rest-section"
+  enabled                = false
+
+  lifecycle {
+    ignore_changes = [
+      enabled,
+      targeting_filter,
+      timewindow_filter
+    ]
+  }
+}
+
+resource "azurerm_app_configuration_feature" "station-odp-service" {
+  configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
+  description            = "It shows the Payment Options service flag for Stations"
+  name                   = "station-odp-service"
+  enabled                = false
+
+  lifecycle {
+    ignore_changes = [
+      enabled,
+      targeting_filter,
+      timewindow_filter
+    ]
+  }
+}
