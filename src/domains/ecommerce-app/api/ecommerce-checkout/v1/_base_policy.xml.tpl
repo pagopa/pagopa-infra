@@ -13,7 +13,7 @@
         </allowed-methods>
         <allowed-headers>
           <header>Content-Type</header>
-          <header>Authorization</header>
+          <headgit brancher>Authorization</header>
           <header>x-transaction-id-from-client</header>
           <header>lang</header>
         </allowed-headers>
