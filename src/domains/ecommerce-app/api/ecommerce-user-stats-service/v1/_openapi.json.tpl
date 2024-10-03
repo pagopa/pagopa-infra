@@ -33,12 +33,12 @@
     }
   ],
   "paths": {
-    "/user/{userId}/lastPaymentMethodUsed": {
+    "/user/lastPaymentMethodUsed": {
       "post": {
         "parameters": [
           {
-            "name": "userId",
-            "in": "path",
+            "in": "header",
+            "name": "x-user-id",
             "required": true,
             "description": "User identifier",
             "schema": {
