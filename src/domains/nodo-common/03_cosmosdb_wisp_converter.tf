@@ -62,11 +62,19 @@ locals {
       }
     },
     {
-      name               = "receipt",       # contains all FAILED paInviaRT (not recevide) a.k.a. "receipts-failed"
+      name               = "receipt",       # contains all paaInviaRT to send
       partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
       default_ttl        = var.wisp_converter_cosmos_nosql_db_params.receipt_ttl
       autoscale_settings = {
         max_throughput = var.wisp_converter_cosmos_nosql_db_params.receipt_max_throughput
+      }
+    },
+    {
+      name               = "receipt-dead-letter",       # contains all paaInviaRT sent but not accepted by EC and with fault code not in blacklist
+      partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.receipt_dead_letter_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.receipt_dead_letter_max_throughput
       }
     },
     {
