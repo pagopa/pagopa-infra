@@ -1,5 +1,5 @@
 locals {
-  node_forwarder_dbg_names_suffix = var.is_feature_enabled.node_forwarder_ha_enabled ? "-dbg-ha" : "-dbg"
+  node_forwarder_dbg_names_suffix = false ? "-dbg-ha" : "-dbg"
   node_forwarder_dbg_rg_name      = "${local.product}-node-forwarder-dbg-rg"
   node_forwarder_dbg_app_settings = {
     # Monitoring
@@ -58,7 +58,7 @@ resource "azurerm_resource_group" "node_forwarder_dbg_rg" {
 
 # Subnet to host the node forwarder
 module "node_forwarder_dbg_snet" {
-  count                                         = var.is_feature_enabled.node_forwarder_ha_enabled ? 0 : 1
+  count                                         = false ? 0 : 1
   source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
   name                                          = format("%s-node-forwarder-dbg-snet", local.product)
   address_prefixes                              = var.node_fw_dbg_snet_cidr
@@ -79,7 +79,7 @@ module "node_forwarder_dbg_snet" {
 
 module "node_forwarder_dbg_ha_snet" {
   source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
-  count                                         = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
+  count                                         = false ? 1 : 0
   name                                          = "${local.project}-node-forwarder-ha-dbg-snet"
   address_prefixes                              = var.node_fw_dbg_snet_cidr
   resource_group_name                           = azurerm_resource_group.rg_vnet.name
@@ -96,8 +96,14 @@ module "node_forwarder_dbg_ha_snet" {
 }
 
 resource "azurerm_subnet_nat_gateway_association" "nodefw_dbg_ha_snet_nat_association" {
-  count          = var.is_feature_enabled.node_forwarder_ha_enabled ? 1 : 0
+  count          = false ? 1 : 0
   subnet_id      = module.node_forwarder_dbg_ha_snet[0].id
+  nat_gateway_id = module.nat_gw[0].id
+}
+
+resource "azurerm_subnet_nat_gateway_association" "nodefw_dbg_snet_nat_association" {
+  count          = false ? 0 : 1
+  subnet_id      = module.node_forwarder_dbg_snet[0].id
   nat_gateway_id = module.nat_gw[0].id
 }
 
@@ -128,9 +134,9 @@ module "node_forwarder_dbg_app_service" {
   allowed_subnets = [module.apim_snet.id]
   allowed_ips     = []
 
-  sku_name = var.node_forwarder_sku
+  sku_name = "P3v2"
 
-  subnet_id                    = var.is_feature_enabled.node_forwarder_ha_enabled ? module.node_forwarder_dbg_ha_snet[0].id : module.node_forwarder_dbg_snet[0].id
+  subnet_id                    = false ? module.node_forwarder_dbg_ha_snet[0].id : module.node_forwarder_dbg_snet[0].id
   health_check_maxpingfailures = 10
 
   zone_balancing_enabled = var.node_forwarder_zone_balancing_enabled
@@ -162,7 +168,7 @@ module "node_forwarder_dbg_slot_staging" {
 
   allowed_subnets = [module.apim_snet.id]
   allowed_ips     = []
-  subnet_id       = var.is_feature_enabled.node_forwarder_ha_enabled ? module.node_forwarder_dbg_ha_snet[0].id : module.node_forwarder_dbg_snet[0].id
+  subnet_id       = false ? module.node_forwarder_dbg_ha_snet[0].id : module.node_forwarder_dbg_snet[0].id
 
   tags = var.tags
 }
