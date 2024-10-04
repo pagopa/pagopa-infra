@@ -25,8 +25,8 @@ data "azurerm_api_management" "apim" {
   resource_group_name = "${var.prefix}-${var.env_short}-api-rg"
 }
 
-data "azurerm_api_management_product" "apim_api_config_product" {
-  product_id          = "product-api-config-auth"
+data "azurerm_api_management_product" "apim_apiconfig-cache_product" {
+  product_id          = "product-apiconfig-cache"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
