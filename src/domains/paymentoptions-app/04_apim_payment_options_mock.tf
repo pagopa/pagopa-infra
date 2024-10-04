@@ -1,7 +1,7 @@
 locals {
   apim_payment_options_mock_pagopa_api = {
-    display_name = "Payment Options Mock Product pagoPA"
-    description  = "Mocked API for Payment Options"
+    display_name = "Mock Payment Options Product pagoPA"
+    description  = "Mock API for Payment Options"
   }
 }
 
@@ -9,9 +9,9 @@ module "apim_payment_options_mock_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.18.0"
   count  = var.is_feature_enabled.paymentoptions_mock ? 1 : 0
 
-  product_id   = "pagopa_payment_options_mock"
-  display_name = local.apim_payment_options_pagopa_api.display_name
-  description  = local.apim_payment_options_pagopa_api.description
+  product_id   = "pagopa-payment-options-mock"
+  display_name = local.apim_payment_options_mock_pagopa_api.display_name
+  description  = local.apim_payment_options_mock_pagopa_api.description
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -25,6 +25,7 @@ module "apim_payment_options_mock_product" {
 }
 
 resource "azurerm_api_management_api_version_set" "payment_options_mock_api" {
+  count = var.is_feature_enabled.paymentoptions_mock ? 1 : 0
 
   name                = format("%s-payment-options-mock-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
@@ -35,17 +36,19 @@ resource "azurerm_api_management_api_version_set" "payment_options_mock_api" {
 
 
 module "apim_api_pay_opt_mock_api" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.18.0"
+  count  = var.is_feature_enabled.paymentoptions_mock ? 1 : 0
 
   name                  = format("%s-pay-opt-mock-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_payment_options_mock_product[0].product_id]
   subscription_required = false
-  version_set_id        = azurerm_api_management_api_version_set.payment_options_mock_api.id
+  version_set_id        = azurerm_api_management_api_version_set.payment_options_mock_api[0].id
+  api_version           = "v1"
 
-  description  = "Payment Options Mock"
-  display_name = "payment-options-mock-api"
+  description  = local.apim_payment_options_mock_pagopa_api.description
+  display_name = local.apim_payment_options_mock_pagopa_api.display_name
   path         = "payopt-mock"
   protocols    = ["https"]
   service_url  = null
