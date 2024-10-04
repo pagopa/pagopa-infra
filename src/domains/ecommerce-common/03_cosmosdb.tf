@@ -86,7 +86,8 @@ locals {
         unique = true
         }
       ]
-      shard_key = null
+      shard_key           = null,
+      default_ttl_seconds = null
     },
     {
       name = "eventstore"
@@ -99,7 +100,8 @@ locals {
           unique = false
         }
       ]
-      shard_key = "transactionId"
+      shard_key           = "transactionId",
+      default_ttl_seconds = null
     },
     {
       name = "transactions-view"
@@ -124,7 +126,8 @@ locals {
           unique = false
         }
       ]
-      shard_key = "_id"
+      shard_key           = "_id",
+      default_ttl_seconds = null
     },
     {
       name = "dead-letter-events"
@@ -141,7 +144,8 @@ locals {
           unique = false
         }
       ]
-      shard_key = "_id"
+      shard_key           = "_id",
+      default_ttl_seconds = null
     },
     {
       name = "user-stats"
@@ -150,7 +154,8 @@ locals {
         unique = true
         }
       ]
-      shard_key = "_id"
+      shard_key           = "_id",
+      default_ttl_seconds = "31536000" #1 year
     },
   ]
 }
@@ -171,9 +176,10 @@ module "cosmosdb_ecommerce_collections" {
   cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.ecommerce.name
 
-  indexes     = each.value.indexes
-  shard_key   = each.value.shard_key
-  lock_enable = var.env_short == "d" ? false : true
+  indexes             = each.value.indexes
+  shard_key           = each.value.shard_key
+  default_ttl_seconds = each.value.default_ttl_seconds
+  lock_enable         = var.env_short == "d" ? false : true
 }
 
 # -----------------------------------------------
