@@ -18,77 +18,104 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install necessary packages
+        run: python -m pip install --upgrade pip
+
       - name: 🔨 Get Modified Paths
         id: get-paths
         run: |
-          #
-          # Discover only the paths changed inside src and src/domains, between my current branch and origin/main
-          #
-          ignored_path="domains|scripts|github|.devops"
-          echo "get current branch"
-          current_branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
-          echo "current branch: $current_branch"
-          echo "get git diff"
-          git diff --name-only $current_branch origin/main --output=/tmp/diff.txt
-          echo "get modified paths from source"
-          # i'm using echo because using grep directly fails. it produces an invalid output that breaks the variable assignment
-          source_count=$(echo "$(egrep -v "$ignored_path" /tmp/diff.txt | wc -l )")
-          echo "source count: $source_count"
-          if [[ $source_count -eq 0 ]]
-          then
-            echo "in source if true"
-            modified_paths_source=""
+          import os
+          import subprocess
+
+          IGNORED_PATHS = ["domains", "scripts", "github", ".devops"]
+
+          def get_current_branch():
+              result = subprocess.run(["git", "rev-parse", "--abbrev-ref", "HEAD"], capture_output=True, text=True)
+              return result.stdout.strip()
+
+          def get_git_diff(current_branch):
+              subprocess.run(["git", "fetch", "origin"])
+              result = subprocess.run(["git", "diff", "--name-only", current_branch, "origin/main"], capture_output=True, text=True)
+              with open('/tmp/diff.txt', 'w') as f:
+                  f.write(result.stdout)
+
+          def get_modified_paths(pattern, exclude_ignored=True):
+              with open('/tmp/diff.txt') as f:
+                  lines = f.readlines()
+              if exclude_ignored:
+                  paths = [
+                      line.strip()
+                      for line in lines
+                      if not any(ignored in line for ignored in IGNORED_PATHS)
+                  ]
+              else:
+                  paths = [line.strip() for line in lines if pattern in line]
+              # Removing duplicates and sorting
+              unique_paths = sorted(set(["/".join(path.split("/")[:2]) for path in paths if path]))
+              return unique_paths
+
+          def write_to_file(content, filepath):
+              with open(filepath, 'w') as f:
+                  f.write(content)
+
+          def main():
+              current_branch = get_current_branch()
+              print(f"Current branch: {current_branch}")
+
+              get_git_diff(current_branch)
+
+              modified_paths_source = get_modified_paths('/', exclude_ignored=True)
+              print(f"Modified paths in source: {modified_paths_source}")
+
+              modified_paths_domains = get_modified_paths('domains', exclude_ignored=False)
+              print(f"Modified paths in domains: {modified_paths_domains}")
+
+              modified_paths = " ".join(modified_paths_source + modified_paths_domains)
+              print(f"📌 Modified paths: {modified_paths}")
+
+              write_to_file(modified_paths, "/tmp/paths.txt")
+
+              if any("src/" in path for path in modified_paths.split()):
+                  print("src folder modified.")
+                  with open(os.getenv('GITHUB_ENV'), 'a') as f:
+                      f.write('run_static_analysis=true\n')
+              else:
+                  print("src folder not modified.")
+                  with open(os.getenv('GITHUB_ENV'), 'a') as f:
+                      f.write('run_static_analysis=false\n')
+          if __name__ == "__main__":
+              main()
+        shell: python
+
+      - name: Read modified paths
+        id: read_paths
+        run: |
+          modified_paths=$(cat /tmp/paths.txt)
+          echo "Modified paths: $modified_paths"
+          echo "::set-output name=modified_paths::$modified_paths"
+
+      - name: Check if static analysis is needed
+        run: |
+          if [ "$(grep 'run_static_analysis' /tmp/github_env | cut -d '=' -f2)" == "true" ]; then
+            echo "Run static analysis."
           else
-            echo "in source if false"
-            modified_paths_source=$(egrep -v "$ignored_path" /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2 | uniq )
+            echo "Static analysis not needed."
           fi
 
-          echo "modified_paths_source: $modified_paths_source"
-
-          echo "get modified paths from domains"
-          # i'm using echo because using grep directly fails. it produces an invalid output that breaks the variable assignment
-          domains_count=$(echo "$(grep 'domains' /tmp/diff.txt | wc -l )")
-          echo "domains count: $domains_count"
-          if [ $domains_count -eq 0 ]
-          then
-            echo "in domains if true"
-            modified_paths_domains=""
-          else
-            echo "in domains if false"
-            modified_paths_domains=$( grep 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2,3 | uniq )
-          fi
-          echo "modified_paths_domains: $modified_paths_domains"
-
-          echo "merge paths"
-          modified_paths="$modified_paths_source $modified_paths_domains"
-          echo "📌 modified_paths"
-          #
-          # This is the only way to pass a string with paths to other step without error, using env the paths force an error
-          #
-          echo "$modified_paths" > "/tmp/paths.txt"
-
-          # Check if any of the modified files are in the 'src' directory
-          if echo "$modified_paths" | grep -q '^src/'; then
-            echo "src folder modified."
-            echo "run_static_analysis=true" >> $GITHUB_ENV
-          else
-            echo "src folder not modified."
-            echo "run_static_analysis=false" >> $GITHUB_ENV
-          fi
-
-        shell: bash
-
-      - name: ⏬ Download only changed folders
-        id: download
+      - name: ⏬ Download Modified Folders Only
+        id: download_changed_folders
         shell: bash
         run: |
-          #
-          # This allow to read all the paths and download only the changed folders
-          #
-          PAGOPA_MULTIPLE_FOLDERS=$(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
-          echo $PAGOPA_MULTIPLE_FOLDERS
+          # Read all paths and download only the modified folders
+          MODIFIED_FOLDERS=$(cat /tmp/paths.txt)
+          echo "$MODIFIED_FOLDERS"
           git sparse-checkout init --cone
-          git sparse-checkout set $PAGOPA_MULTIPLE_FOLDERS
+          git sparse-checkout set $MODIFIED_FOLDERS
           git checkout
 
 #      - name: Checkout Modified Paths
