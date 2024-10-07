@@ -5,7 +5,9 @@ resource "azurerm_app_configuration" "selfcare_appconf" {
   sku                 = "standard"
 }
 
-
+# ⚠️⚠️⚠️ iif on apply receive error 409 already exist a tricky u be ⚠️⚠️⚠️ :
+# 1. sh terraform.sh state weu-<ENV> rm azurerm_role_assignment.selfcare_appconf_dataowner_sp
+# 2. remove ✋ from portal pagopa-<ENV>-selfcare-appconfiguration > Role assignments > filter for "App Configuration Data Owner" and removed pagopa-<ENB>-seflcare
 resource "azurerm_role_assignment" "selfcare_appconf_dataowner" {
   scope                = azurerm_app_configuration.selfcare_appconf.id
   role_definition_name = "App Configuration Data Owner"
@@ -179,6 +181,36 @@ resource "azurerm_app_configuration_feature" "station_maintenances_flag" {
   configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
   description            = "It enables the Station Maintenance's page"
   name                   = "station-maintenances"
+  enabled                = false
+
+  lifecycle {
+    ignore_changes = [
+      enabled,
+      targeting_filter,
+      timewindow_filter
+    ]
+  }
+}
+
+resource "azurerm_app_configuration_feature" "station-rest-section" {
+  configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
+  description            = "It shows the REST endpoint section for Stations"
+  name                   = "station-rest-section"
+  enabled                = false
+
+  lifecycle {
+    ignore_changes = [
+      enabled,
+      targeting_filter,
+      timewindow_filter
+    ]
+  }
+}
+
+resource "azurerm_app_configuration_feature" "station-odp-service" {
+  configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
+  description            = "It shows the Payment Options service flag for Stations"
+  name                   = "station-odp-service"
   enabled                = false
 
   lifecycle {
