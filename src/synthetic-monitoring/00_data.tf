@@ -8,7 +8,7 @@ data "azurerm_resource_group" "tools_rg" {
   count = var.enabled_resource.container_app_tools_cae ? 1 : 0
   name  = "${local.product}-core-tools-rg"
 }
-
+# TEST
 
 
 data "azurerm_monitor_action_group" "slack" {
