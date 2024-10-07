@@ -118,12 +118,6 @@ jobs:
           git sparse-checkout set $MODIFIED_FOLDERS
           git checkout
 
-#      - name: Checkout Modified Paths
-#        uses: actions/checkout@v4
-#        with:
-#          sparse-checkout: |
-#            $(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
-
       - name: 👀 See folders downloaded
         id: see
         shell: bash
@@ -136,5 +130,3 @@ jobs:
         uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@v1.14.1
         with:
           precommit_version: 'v1.89.1@sha256:1ea921bc4fe87651d41677218e537afdcdb8202e757e554b9866668eaba144c5'
-
-
