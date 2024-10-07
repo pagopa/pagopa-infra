@@ -294,7 +294,7 @@
           "payStandIn": {
             "type": "boolean",
             "example": true,
-            "default": false
+            "default": true
           }
         }
       },
