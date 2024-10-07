@@ -290,6 +290,11 @@
             "type": "boolean",
             "example": true,
             "default": false
+          },
+          "payStandIn": {
+            "type": "boolean",
+            "example": true,
+            "default": false
           }
         }
       },
