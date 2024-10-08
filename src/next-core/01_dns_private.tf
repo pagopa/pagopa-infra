@@ -392,3 +392,13 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurewebsi
 
   tags = var.tags
 }
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurewebsite_vnet_integration" {
+  name                  = module.vnet_integration.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.appservice_private_dns.name
+  virtual_network_id    = module.vnet_integration.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
