@@ -56,14 +56,14 @@ jobs:
                   if "domains" in parts[start_index:]:
                       domains_index = parts.index("domains", start_index)
                       if len(parts) > domains_index + 2:  # Ensure there is a level after "domains"
-                          end_index = len(parts) - 1  # Exclude the last part
+                          end_index = 3  # Exclude the last part
                           # Include the parent of "domains" and all up to the second last part
                           return os.sep.join(parts[start_index:end_index])
                       else:
                           return ""
                   else:  # Handle paths not containing 'domains'
                       if len(parts) > start_index + 2:  # Ensure there is enough depth
-                          end_index = len(parts) - 1  # Exclude the last part
+                          end_index = 2  # Exclude the last part
                           return os.sep.join(parts[start_index:end_index])
                       else:
                           return ""
@@ -141,10 +141,8 @@ jobs:
           echo $MODIFIED_FOLDERS
 
           git sparse-checkout init --cone
+          git sparse-checkout set "scripts"
           git sparse-checkout set "$MODIFIED_FOLDERS"
-
-          # Reapply sparse-checkout to fix any potential issues
-          git sparse-checkout reapply
 
           # Checkout the latest changes
           git checkout
