@@ -44,6 +44,34 @@ jobs:
               with open('/tmp/diff.txt', 'w') as f:
                   f.write(result.stdout)
 
+          def get_required_path(path):
+              # Split the path into its components
+              parts = path.split(os.sep)
+
+              # Find the index of "src" and "domains"
+              try:
+                  start_index = parts.index("src")  # Find "src"
+
+                  # Check if "domains" is present and get up one higher level
+                  if "domains" in parts[start_index:]:
+                      domains_index = parts.index("domains", start_index)
+                      if len(parts) > domains_index + 2:  # Ensure there is a level after "domains"
+                          end_index = len(parts) - 1  # Exclude the last part
+                          # Include the parent of "domains" and all up to the second last part
+                          return os.sep.join(parts[start_index:end_index])
+                      else:
+                          return ""
+                  else:  # Handle paths not containing 'domains'
+                      if len(parts) > start_index + 2:  # Ensure there is enough depth
+                          end_index = len(parts) - 1  # Exclude the last part
+                          return os.sep.join(parts[start_index:end_index])
+                      else:
+                          return ""
+              except (ValueError, IndexError) as e:
+                return ""
+
+
+
           def get_modified_paths(pattern, exclude_ignored=True):
               with open('/tmp/diff.txt') as f:
                   lines = f.readlines()
@@ -56,7 +84,10 @@ jobs:
               else:
                   paths = [line.strip() for line in lines if pattern in line]
               # Removing duplicates and sorting
-              unique_paths = sorted(set([os.path.dirname(path) for path in paths if path]))
+              unique_paths = sorted(set([
+                  get_required_path(os.path.dirname(path))
+                  for path in paths if path
+              ]))
               return unique_paths
 
           def write_to_file(content, filepath):
@@ -107,18 +138,26 @@ jobs:
         run: |
           # Read all paths and download only the modified folders
           MODIFIED_FOLDERS=$(cat /tmp/paths.txt)
-          echo "$MODIFIED_FOLDERS"
+
           git sparse-checkout init --cone
-          git sparse-checkout set $MODIFIED_FOLDERS
+          for DIR in $MODIFIED_FOLDERS; do
+            echo $DIR
+            git sparse-checkout set "$DIR"
+          done
+
+          # Reapply sparse-checkout to fix any potential issues
+          git sparse-checkout reapply
+
+          # Checkout the latest changes
           git checkout
 
-      - name: 👀 See folders downloaded
-        if: env.run_static_analysis == 'true'
-        id: see
-        shell: bash
-        run: |
-          ls -la
-          du -h -d 3 .
+#      - name: 👀 See folders downloaded
+#        if: env.run_static_analysis == 'true'
+#        id: see
+#        shell: bash
+#        run: |
+#          ls -la
+#          du -h -d 3 .
 
       - name: Static Analysis
         if: env.run_static_analysis == 'true'
