@@ -137,12 +137,16 @@ jobs:
         shell: bash
         run: |
           # Read all paths and download only the modified folders
-          MODIFIED_FOLDERS=$(cat /tmp/paths.txt)
-          echo $MODIFIED_FOLDERS
+          MODIFIED_FOLDERS=($(cat /tmp/paths.txt))
 
+          # Include 'scripts' in the list of directories to checkout
+          MODIFIED_FOLDERS+=("scripts")
+
+          # Initialize git sparse-checkout
           git sparse-checkout init --cone
-          git sparse-checkout set "scripts"
-          git sparse-checkout set "$MODIFIED_FOLDERS"
+
+          # Set each path in MODIFIED_FOLDERS for sparse-checkout
+          git sparse-checkout set "${MODIFIED_FOLDERS[@]}"
 
           # Checkout the latest changes
           git checkout
