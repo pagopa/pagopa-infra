@@ -2,19 +2,43 @@ locals {
   subnet_in_nat_gw_ids = var.is_feature_enabled.node_forwarder_ha_enabled ? [] : [
     module.node_forwarder_snet[0].id #pagopa-node-forwarder ( aka GAD replacemnet )
   ]
+
+  zones = ["1"]
+}
+
+resource "azurerm_public_ip" "nat_ip_2" {
+  name                = "${local.product}-natgw-pip-2"
+  location            = azurerm_resource_group.rg_vnet.location
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+  zones               = local.zones
+
+  tags = var.tags
+}
+
+resource "azurerm_public_ip" "nat_ip_3" {
+  name                = "${local.product}-natgw-pip-3"
+  location            = azurerm_resource_group.rg_vnet.location
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  allocation_method   = "Static"
+  sku                 = "Standard"
+  zones               = local.zones
+
+  tags = var.tags
 }
 
 module "nat_gw" {
   count  = var.nat_gateway_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//nat_gateway?ref=v7.50.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//nat_gateway?ref=75056c7"
 
   name                = format("%s-natgw", local.product)
   resource_group_name = azurerm_resource_group.rg_vnet.name
   location            = azurerm_resource_group.rg_vnet.location
   public_ips_count    = var.nat_gateway_public_ips
-  zones               = ["1"]
+  zones               = local.zones
   subnet_ids          = local.subnet_in_nat_gw_ids
-
+  additional_public_ip_ids = [azurerm_public_ip.nat_ip_2.id, azurerm_public_ip.nat_ip_3.id]
 
   tags = var.tags
 }

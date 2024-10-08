@@ -109,7 +109,7 @@ logos_backup_retention                           = 30
 logos_donations_storage_account_replication_type = "GZRS"
 
 # nat gateway
-nat_gateway_public_ips = 4
+nat_gateway_public_ips = 2
 
 #
 # apim v2
