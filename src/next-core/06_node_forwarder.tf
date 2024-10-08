@@ -103,7 +103,7 @@ resource "azurerm_subnet_nat_gateway_association" "nodefw_ha_snet_nat_associatio
 
 
 module "node_forwarder_app_service" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.28.0"
 
   count = 1
 
@@ -125,8 +125,10 @@ module "node_forwarder_app_service" {
   docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopanodeforwarder"
   docker_image_tag = "latest"
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = []
   allowed_ips     = []
+  
+  public_network_access_enabled = false
 
   sku_name = var.node_forwarder_sku
 
@@ -163,6 +165,28 @@ module "node_forwarder_slot_staging" {
   allowed_subnets = [module.apim_snet.id]
   allowed_ips     = []
   subnet_id       = var.is_feature_enabled.node_forwarder_ha_enabled ? module.node_forwarder_ha_snet[0].id : module.node_forwarder_snet[0].id
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "forwarder_input_private_endpoint" {
+
+  name                = "${local.project}-node-forwarder-private-endpoint"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.node_forwarder_rg.name
+  subnet_id           = module.common_private_endpoint_snet.id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-node-forwarder-dns-zone-group"
+    private_dns_zone_ids = [azurerm_private_dns_zone.appservice_private_dns.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-node-forwarder-service-connection"
+    private_connection_resource_id = module.node_forwarder_app_service[0].id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
 
   tags = var.tags
 }
