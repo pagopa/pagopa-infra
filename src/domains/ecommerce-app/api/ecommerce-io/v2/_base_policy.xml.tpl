@@ -70,7 +70,7 @@
       <when condition="@( context.Request.Url.Path.Contains("payment-requests") )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
       </when>
-      <when condition="@( context.Request.Url.Path.Contains("user") )">
+      <when condition="@( context.Request.Url.Path.Contains("user/lastPaymentMethodUsed") )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-user-stats-service")"/>
       </when>
       <when condition="@( context.Request.Url.Path.Contains("wallets") )">
