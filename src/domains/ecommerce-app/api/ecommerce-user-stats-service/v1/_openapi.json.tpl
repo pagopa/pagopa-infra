@@ -34,19 +34,7 @@
   ],
   "paths": {
     "/user/lastPaymentMethodUsed": {
-      "post": {
-        "parameters": [
-          {
-            "in": "header",
-            "name": "x-user-id",
-            "required": true,
-            "description": "User identifier",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
+      "put": {
         "operationId": "saveLastPaymentMethodUsed",
         "tags": [
           "user-stats"
@@ -57,7 +45,7 @@
           "$ref": "#/components/requestBodies/UserLastPaymentMethodRequest"
         },
         "responses": {
-          "201": {
+          "204": {
             "description": "User last payment method used updated successfully"
           },
           "400": {
@@ -135,6 +123,24 @@
         "exclusiveMaximum": true,
         "example": 200
       },
+      "UserLastPaymentMethodRequest": {
+        "type": "object",
+        "description": "Request to update last payment method used by an user",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "the user unique identifier"
+          },
+          "details": {
+            "$ref": "#/components/schemas/UserLastPaymentMethodData"
+          }
+        },
+        "required": [
+          "userId",
+          "details"
+        ]
+      },
       "UserLastPaymentMethodData": {
         "description": "Last usage data for wallet or payment method (guest)",
         "oneOf": [
@@ -154,6 +160,7 @@
         }
       },
       "WalletLastUsageData": {
+        "x-discriminator-value": "wallet",
         "type": "object",
         "description": "Last usage data for wallets.",
         "properties": {
@@ -176,6 +183,7 @@
         ]
       },
       "GuestMethodLastUsageData": {
+        "x-discriminator-value": "guest",
         "type": "object",
         "description": "Last usage data for guest method",
         "properties": {
@@ -211,7 +219,7 @@
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/UserLastPaymentMethodData"
+              "$ref": "#/components/schemas/UserLastPaymentMethodRequest"
             }
           }
         }
