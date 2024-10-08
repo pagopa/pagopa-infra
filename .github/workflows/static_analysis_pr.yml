@@ -106,7 +106,7 @@ jobs:
               modified_paths_domains = get_modified_paths('domains', exclude_ignored=False)
               print(f"Modified paths in domains: {modified_paths_domains}")
 
-              modified_paths = " ".join(modified_paths_source + modified_paths_domains)
+              modified_paths = "\n".join(modified_paths_source + modified_paths_domains)
               print(f"📌 Modified paths: {modified_paths}")
 
               write_to_file(modified_paths, "/tmp/paths.txt")
@@ -138,6 +138,7 @@ jobs:
         run: |
           # Read all paths and download only the modified folders
           MODIFIED_FOLDERS=$(cat /tmp/paths.txt)
+          echo $MODIFIED_FOLDERS
 
           git sparse-checkout init --cone
           git sparse-checkout set "$MODIFIED_FOLDERS"
