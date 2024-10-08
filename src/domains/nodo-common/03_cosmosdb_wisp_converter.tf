@@ -70,8 +70,8 @@ locals {
       }
     },
     {
-      name               = "receipt-dead-letter",       # contains all paaInviaRT sent but not accepted by EC and with fault code not in blacklist
-      partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
+      name               = "receipt-dead-letter", # contains all paaInviaRT sent but not accepted by EC and with fault code not in blacklist
+      partition_key_path = "/partitionKey",       # contains 'yyyy-MM-dd'
       default_ttl        = var.wisp_converter_cosmos_nosql_db_params.receipt_dead_letter_ttl
       autoscale_settings = {
         max_throughput = var.wisp_converter_cosmos_nosql_db_params.receipt_dead_letter_max_throughput
