@@ -140,10 +140,7 @@ jobs:
           MODIFIED_FOLDERS=$(cat /tmp/paths.txt)
 
           git sparse-checkout init --cone
-          for DIR in $MODIFIED_FOLDERS; do
-            echo $DIR
-            git sparse-checkout set "$DIR"
-          done
+          git sparse-checkout set "$MODIFIED_FOLDERS"
 
           # Reapply sparse-checkout to fix any potential issues
           git sparse-checkout reapply
@@ -151,13 +148,13 @@ jobs:
           # Checkout the latest changes
           git checkout
 
-#      - name: 👀 See folders downloaded
-#        if: env.run_static_analysis == 'true'
-#        id: see
-#        shell: bash
-#        run: |
-#          ls -la
-#          du -h -d 3 .
+      - name: 👀 See folders downloaded
+        if: env.run_static_analysis == 'true'
+        id: see
+        shell: bash
+        run: |
+          ls -la
+          du -h -d 3 .
 
       - name: Static Analysis
         if: env.run_static_analysis == 'true'
