@@ -85,7 +85,7 @@ jobs:
                   paths = [line.strip() for line in lines if pattern in line]
               # Removing duplicates and sorting
               unique_paths = sorted(set([
-                  get_required_path(os.path.dirname(path))
+                  get_required_path(path)
                   for path in paths if path
               ]))
               return unique_paths
