@@ -127,7 +127,7 @@ module "node_forwarder_app_service" {
 
   allowed_subnets = []
   allowed_ips     = []
-  
+
   public_network_access_enabled = false
 
   sku_name = var.node_forwarder_sku
