@@ -1,15 +1,22 @@
-resource "azurerm_api_management_named_value" "afm_pn_sub_key" {
-  name                = "afm-pn-sub-key"
+resource "azurerm_api_management_subscription" "afm_pn_subkey_test" {
+  count = var.env_short != "p" ? 1 : 0
+
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  product_id          = module.apim_pn_integration_product.id
+  display_name        = "Subscription for PN GDP notifcation fee test"
+  allow_tracing       = false
+  state               = "active"
+}
+
+resource "azurerm_api_management_named_value" "afm_pn_sub_key_test_apim_nv" {
+  count = var.env_short != "p" ? 1 : 0
+
+  name                = "afm-pn-sub-key-test"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = "afm-pn-sub-key"
-  value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
+  display_name        = "afm-pn-sub-key-test"
+  value               = azurerm_api_management_subscription.afm_pn_subkey_test[0].primary_key
 }
 
 ####################
@@ -113,6 +120,6 @@ module "apim_api_pn_integration_gpd_api_v1" {
     service = local.apim_pn_integration_rest_api.gpd_service.path
   })
 
-  xml_content = templatefile("./api/pn-integration/_base_policy.xml", {
+  xml_content = templatefile("./api/pn-integration/_base_policy${var.env_short != "p" ? "_mock" : ""}.xml", {
   })
 }
