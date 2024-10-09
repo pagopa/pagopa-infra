@@ -6,8 +6,9 @@ locals {
   zones = ["1"]
 }
 
-resource "azurerm_public_ip" "nat_ip_2" {
-  name                = "${local.product}-natgw-pip-2"
+resource "azurerm_public_ip" "nat_ip_03" {
+  count = var.env == "p" ? 1 : 0
+  name                = "${local.product}-natgw-pip-03"
   location            = azurerm_resource_group.rg_vnet.location
   resource_group_name = azurerm_resource_group.rg_vnet.name
   allocation_method   = "Static"
@@ -17,8 +18,9 @@ resource "azurerm_public_ip" "nat_ip_2" {
   tags = var.tags
 }
 
-resource "azurerm_public_ip" "nat_ip_3" {
-  name                = "${local.product}-natgw-pip-3"
+resource "azurerm_public_ip" "nat_ip_04" {
+  count = var.env == "p" ? 1 : 0
+  name                = "${local.product}-natgw-pip-04"
   location            = azurerm_resource_group.rg_vnet.location
   resource_group_name = azurerm_resource_group.rg_vnet.name
   allocation_method   = "Static"
@@ -30,7 +32,7 @@ resource "azurerm_public_ip" "nat_ip_3" {
 
 module "nat_gw" {
   count  = var.nat_gateway_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//nat_gateway?ref=75056c7"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//nat_gateway?ref=v8.47.0"
 
   name                = format("%s-natgw", local.product)
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -38,7 +40,8 @@ module "nat_gw" {
   public_ips_count    = var.nat_gateway_public_ips
   zones               = local.zones
   subnet_ids          = local.subnet_in_nat_gw_ids
-  additional_public_ip_ids = [azurerm_public_ip.nat_ip_2.id, azurerm_public_ip.nat_ip_3.id]
+  # commented out, waiting for EC to allow the new ips
+#   additional_public_ip_ids = var.env == "p" ? [azurerm_public_ip.nat_ip_03[0].id, azurerm_public_ip.nat_ip_04[0].id] : []
 
   tags = var.tags
 }
