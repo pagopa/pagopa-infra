@@ -155,6 +155,7 @@ module "apim_api_statuspage_api_v1" {
       "printpaymentnoticegenerator" = format("%s/pagopa-print-payment-notice-generator", format(local.aks_ita_path, "printit"))
       "printpaymentnoticefunctions" = format("%s/pagopa-print-payment-notice-functions", format(local.aks_ita_path, "printit"))
       "printpaymentnoticeservice"   = format("%s/pagopa-print-payment-notice-service", format(local.aks_ita_path, "printit"))
+      "paymentoptionsservice"       = format("%s/payment-options-service", format(local.aks_ita_path, "payopt"))
     }), "\"", "\\\"")
   })
 }
