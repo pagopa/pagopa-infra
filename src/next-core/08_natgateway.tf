@@ -7,7 +7,7 @@ locals {
 }
 
 resource "azurerm_public_ip" "nat_ip_03" {
-  count = var.env == "p" ? 1 : 0
+  count               = var.env == "p" ? 1 : 0
   name                = "${local.product}-natgw-pip-03"
   location            = azurerm_resource_group.rg_vnet.location
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -19,7 +19,7 @@ resource "azurerm_public_ip" "nat_ip_03" {
 }
 
 resource "azurerm_public_ip" "nat_ip_04" {
-  count = var.env == "p" ? 1 : 0
+  count               = var.env == "p" ? 1 : 0
   name                = "${local.product}-natgw-pip-04"
   location            = azurerm_resource_group.rg_vnet.location
   resource_group_name = azurerm_resource_group.rg_vnet.name
@@ -41,7 +41,7 @@ module "nat_gw" {
   zones               = local.zones
   subnet_ids          = local.subnet_in_nat_gw_ids
   # commented out, waiting for EC to allow the new ips
-#   additional_public_ip_ids = var.env == "p" ? [azurerm_public_ip.nat_ip_03[0].id, azurerm_public_ip.nat_ip_04[0].id] : []
+  #   additional_public_ip_ids = var.env == "p" ? [azurerm_public_ip.nat_ip_03[0].id, azurerm_public_ip.nat_ip_04[0].id] : []
 
   tags = var.tags
 }
