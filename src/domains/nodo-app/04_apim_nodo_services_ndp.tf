@@ -96,13 +96,14 @@ resource "azurerm_api_management_api" "apim_node_for_psp_api_v1_ndp" {
 
 }
 
+
 resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_ndp" {
   api_name            = resource.azurerm_api_management_api.apim_node_for_psp_api_v1_ndp.name
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
 
   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/_base_policy.xml.tpl", {
-    base-url = "https://${local.nodo_hostname}/nodo/webservices/input"
+    base-url = var.nodo_hostname_force_to_nexi ? "http://10.79.20.34/webservices/input" : "https://${local.nodo_hostname}/nodo/webservices/input"
   })
 }
 
