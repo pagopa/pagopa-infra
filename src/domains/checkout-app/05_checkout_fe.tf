@@ -1,7 +1,7 @@
 
 locals {
   npg_sdk_hostname                    = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
-  content_security_policy_header_name = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+  content_security_policy_header_name = "Content-Security-Policy"
 }
 
 /**
