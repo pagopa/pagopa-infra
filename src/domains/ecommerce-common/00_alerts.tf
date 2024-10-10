@@ -64,7 +64,7 @@ AzureDiagnostics
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
 | extend Availability=((Success * 1.0) / Total) * 100
-| where (toint(Availability) < expectedAvailability)
+| where Availability < expectedAvailability
   QUERY
   )
   severity    = 1
@@ -244,7 +244,7 @@ AzureDiagnostics
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
 | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
 | extend Availability=((Success * 1.0) / Total) * 100
-| where (toint(Availability) < expectedAvailability)
+| where Availability < expectedAvailability
   QUERY
   )
   severity    = 1
