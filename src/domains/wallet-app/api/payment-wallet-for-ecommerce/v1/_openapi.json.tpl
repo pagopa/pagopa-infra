@@ -110,14 +110,14 @@
                 "$ref": "#/components/schemas/WalletAuthCardData"
               },
               {
-                "$ref": "#/components/schemas/WalletAuthAPMData"
+                "$ref": "#/components/schemas/WalletAuthPayPalData"
               }
             ],
             "discriminator": {
               "propertyName": "paymentMethodType",
               "mapping": {
                 "cards": "#/components/schemas/WalletAuthCardData",
-                "apm": "#/components/schemas/WalletAuthAPMData"
+                "paypal": "#/components/schemas/WalletAuthPayPalData"
               }
             }
           }
@@ -137,22 +137,37 @@
           "bin": {
             "type": "string",
             "description": "Bin of user card"
+          },
+          "lastFourDigits": {
+            "type": "string",
+            "description": "Last four digits of user card"
           }
         },
         "required": [
           "paymentMethodType",
-          "bin"
+          "bin",
+          "lastFourDigits"
         ]
       },
-      "WalletAuthAPMData": {
+      "WalletAuthPayPalData": {
         "type": "object",
         "properties": {
           "paymentMethodType": {
             "type": "string"
+          },
+          "maskedEmail": {
+            "type": "string",
+            "description": "Masked email of PayPal account"
+          },
+          "pspId": {
+            "type": "string",
+            "description": "Identifier of the PSP used to onboard this PayPal wallet"
           }
         },
         "required": [
-          "paymentMethodType"
+          "paymentMethodType",
+          "maskedEmail",
+          "pspId"
         ]
       },
       "ProblemJson": {
