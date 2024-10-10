@@ -218,7 +218,7 @@ variable "lb_aks" {
 
 
 variable "mock_enabled" {
-  type = bool
+  type        = bool
   description = "mock enabled on this environment"
-  default = false
+  default     = false
 }

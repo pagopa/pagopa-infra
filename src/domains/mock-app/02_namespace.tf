@@ -6,7 +6,7 @@ resource "kubernetes_namespace" "namespace" {
 }
 
 module "pod_identity" {
-  count = var.mock_enabled ? 1 : 0
+  count  = var.mock_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v6.4.1"
 
   resource_group_name = local.aks_resource_group_name
