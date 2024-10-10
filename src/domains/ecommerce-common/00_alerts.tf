@@ -51,7 +51,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_checkout_a
 let thresholdTrafficMin = 40;
 let thresholdTrafficLinear = 100;
 let lowTrafficAvailability = 90;
-let highTrafficAvailability = 99;
+let highTrafficAvailability = 98;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
@@ -231,7 +231,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_app_io_v2_
 let thresholdTrafficMin = 40;
 let thresholdTrafficLinear = 100;
 let lowTrafficAvailability = 90;
-let highTrafficAvailability = 99;
+let highTrafficAvailability = 98;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics

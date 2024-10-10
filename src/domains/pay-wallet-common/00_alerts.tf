@@ -51,7 +51,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_io_av
 let thresholdTrafficMin = 40;
 let thresholdTrafficLinear = 100;
 let lowTrafficAvailability = 90;
-let highTrafficAvailability = 99;
+let highTrafficAvailability = 98;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
@@ -97,7 +97,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_webvi
 let thresholdTrafficMin = 40;
 let thresholdTrafficLinear = 100;
 let lowTrafficAvailability = 90;
-let highTrafficAvailability = 99;
+let highTrafficAvailability = 98;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
@@ -146,7 +146,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_ecomm
 let thresholdTrafficMin = 40;
 let thresholdTrafficLinear = 100;
 let lowTrafficAvailability = 90;
-let highTrafficAvailability = 99;
+let highTrafficAvailability = 98;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
@@ -191,7 +191,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_npg_notif
 let thresholdTrafficMin = 40;
 let thresholdTrafficLinear = 100;
 let lowTrafficAvailability = 90;
-let highTrafficAvailability = 99;
+let highTrafficAvailability = 98;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
