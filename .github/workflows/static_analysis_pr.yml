@@ -15,7 +15,7 @@ jobs:
 
       - name: 🔨 Get Modified Paths
         id: get-paths
-        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@PAYMCLOUD-101-Add-new-github-action-template-to-sparse-checkout-modified-folders
+        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@v1.18.0
         with:
           starting_index: "src"
           default_end_index: 3
