@@ -1,6 +1,7 @@
 <policies>
     <inbound>
         <base />
+        <retry condition="@(true)" count="1" interval="3" />
         <choose>
             <when condition="@(context.Request.Headers.GetValueOrDefault("X-Host-Path", "").Contains("redirections/refunds"))">
                 <return-response>
