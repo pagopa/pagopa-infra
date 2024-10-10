@@ -48,9 +48,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_io_av
   description    = "Payment Wallet for IO - Availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
-let thresholdTrafficMin = 40;
+let thresholdTrafficMin = 50;
 let thresholdTrafficLinear = 100;
-let lowTrafficAvailability = 90;
+let lowTrafficAvailability = 94;
 let highTrafficAvailability = 98;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
@@ -94,10 +94,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_webvi
   description    = "Payment Wallet for Webview - Availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
-let thresholdTrafficMin = 40;
-let thresholdTrafficLinear = 100;
+let thresholdTrafficMin = 50;
+let thresholdTrafficLinear = 150;
 let lowTrafficAvailability = 90;
-let highTrafficAvailability = 98;
+let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
@@ -143,10 +143,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_ecomm
   description    = "Payment Wallet for eCommerce V1 - Availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
-let thresholdTrafficMin = 40;
-let thresholdTrafficLinear = 100;
+let thresholdTrafficMin = 20;
+let thresholdTrafficLinear = 80;
 let lowTrafficAvailability = 90;
-let highTrafficAvailability = 98;
+let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
@@ -188,17 +188,17 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_npg_notif
   description    = "Payment Wallet NPG Notifications - Availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
-let thresholdTrafficMin = 40;
-let thresholdTrafficLinear = 100;
-let lowTrafficAvailability = 90;
-let highTrafficAvailability = 98;
+let thresholdTrafficMin = 5;
+let thresholdTrafficLinear = 20;
+let lowTrafficAvailability = 80;
+let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/payment-wallet-notifications/v1'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 250)
+    Success=countif(responseCode_d < 500 and DurationMs < 350)
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
@@ -233,7 +233,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_outcomes_
   description    = "Payment Wallet redirection outcomes - Availability less than 99% in the last 30 minutes"
   enabled        = true
   query = (<<-QUERY
-let thresholdTrafficMin = 40;
+let thresholdTrafficMin = 50;
 let thresholdTrafficLinear = 100;
 let lowTrafficAvailability = 90;
 let highTrafficAvailability = 99;
