@@ -50,7 +50,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_checkout_a
   query = (<<-QUERY
 let thresholdTrafficMin = 40;
 let thresholdTrafficLinear = 100;
-let lowTrafficAvailability = 80;
+let lowTrafficAvailability = 90;
 let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
@@ -230,7 +230,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_app_io_v2_
   query = (<<-QUERY
 let thresholdTrafficMin = 40;
 let thresholdTrafficLinear = 100;
-let lowTrafficAvailability = 80;
+let lowTrafficAvailability = 90;
 let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;

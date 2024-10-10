@@ -50,7 +50,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_io_av
   query = (<<-QUERY
 let thresholdTrafficMin = 40;
 let thresholdTrafficLinear = 100;
-let lowTrafficAvailability = 80;
+let lowTrafficAvailability = 90;
 let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
@@ -96,7 +96,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_webvi
   query = (<<-QUERY
 let thresholdTrafficMin = 40;
 let thresholdTrafficLinear = 100;
-let lowTrafficAvailability = 80;
+let lowTrafficAvailability = 90;
 let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
@@ -145,7 +145,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_for_ecomm
   query = (<<-QUERY
 let thresholdTrafficMin = 40;
 let thresholdTrafficLinear = 100;
-let lowTrafficAvailability = 80;
+let lowTrafficAvailability = 90;
 let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
@@ -190,7 +190,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_npg_notif
   query = (<<-QUERY
 let thresholdTrafficMin = 40;
 let thresholdTrafficLinear = 100;
-let lowTrafficAvailability = 80;
+let lowTrafficAvailability = 90;
 let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
@@ -235,7 +235,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "payment_wallet_outcomes_
   query = (<<-QUERY
 let thresholdTrafficMin = 40;
 let thresholdTrafficLinear = 100;
-let lowTrafficAvailability = 80;
+let lowTrafficAvailability = 90;
 let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
