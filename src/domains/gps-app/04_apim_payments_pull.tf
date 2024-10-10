@@ -24,7 +24,7 @@ module "apim_gpd_payments_pull_product" {
 ######################################################
 ## GPD Payments Pull Test Products                  ##
 ## 1. product_id   = "gpd-payments-pull             ##
-## 2. product_id   = "debt-positions"               ##
+## 2. product_id   = "product-gpd"                  ##
 ######################################################
 
 
