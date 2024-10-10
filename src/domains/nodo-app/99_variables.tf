@@ -382,9 +382,36 @@ variable "apim_nodo_decoupler_enable" {
 variable "node_decoupler_primitives" {
   type        = string
   description = "Node decoupler primitives"
-  default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoAttivaRPT,nodoVerificaRPT,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
+  default     = "nodoChiediNumeroAvviso,nodoChiediCatalogoServizi,nodoChiediInformativaPA,nodoChiediInformativaPSP,nodoChiediTemplateInformativaPSP,nodoPAChiediInformativaPA,nodoChiediSceltaWISP,demandPaymentNotice"
 }
 
+variable "nexi_nodo_address" {
+  type = string
+  description = "Nexi NdP address, used in decoupler configuration"
+}
+
+variable "nexi_nodo_pg_address" {
+  type = string
+  description = "Nexi NdP PostgreSQL address, used in decoupler configuration"
+}
+
+variable "nexi_nodo_weight" {
+  type = number
+  description = "Nexi NdP routing weight (0-100)"
+  default = 100
+}
+
+variable "pagopa_nodo_weight" {
+  type = number
+  description = "PagoPA NdP routing weight (0-100)"
+  default = 0
+}
+
+variable "nexi_pg_nodo_weight" {
+  type = number
+  description = "Nexi PostgreSQL NdP routing weight (0-100)"
+  default = 0
+}
 
 variable "nodo_pagamenti_subkey_required" {
   type        = bool

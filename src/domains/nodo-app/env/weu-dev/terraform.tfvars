@@ -217,3 +217,9 @@ wfesp_dismantling = {
   channel_list    = "13212880150_90"
   wfesp_fixed_url = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
 }
+
+
+# decoupler
+nexi_nodo_address = "http:\\/\\/10.70.66.200/nodo-sit"
+nexi_nodo_pg_address = "https:\\/\\/10.79.20.32/sit"
+pagopa_nodo_address = "https:\\/\\/weudev.nodo.internal.dev.platform.pagopa.it/nodo"
