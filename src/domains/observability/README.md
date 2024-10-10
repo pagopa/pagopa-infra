@@ -6,6 +6,7 @@
 
 | Name | Version |
 |------|---------|
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.3.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.21.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | = 3.53.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | = 3.1.1 |
@@ -23,11 +24,14 @@
 
 | Name | Type |
 |------|------|
+| [azapi_resource.qi_azure_postgresql_ls](https://registry.terraform.io/providers/azure/azapi/latest/docs/resources/resource) | resource |
 | [azurerm_api_management_api_version_set.app_forwarder_api](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_subscription.apim_app_forwarder_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/api_management_subscription) | resource |
 | [azurerm_data_factory_custom_dataset.qi_datasets](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_custom_dataset) | resource |
 | [azurerm_data_factory_custom_dataset.qi_datasets_cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_custom_dataset) | resource |
+| [azurerm_data_factory_custom_dataset.qi_datasets_nodo_flexible_cfg](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_custom_dataset) | resource |
 | [azurerm_data_factory_linked_service_cosmosdb.cosmos_biz](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_linked_service_cosmosdb) | resource |
+| [azurerm_data_factory_linked_service_key_vault.qi_df_linked_kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_linked_service_key_vault) | resource |
 | [azurerm_data_factory_linked_service_kusto.dataexp_ls](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_linked_service_kusto) | resource |
 | [azurerm_data_factory_pipeline.pipeline_KPI_FDR_IMPORT_ESITI](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_pipeline) | resource |
 | [azurerm_data_factory_pipeline.pipeline_KPI_FDR_IMPORT_ESITI_DAILY_Manuale](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_pipeline) | resource |
@@ -58,6 +62,7 @@
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_TPNP](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_WAFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_WPNFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_trigger_schedule) | resource |
+| [azurerm_key_vault_access_policy.datafactory_access_db_nodo](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_secret.apim_app_forwarder_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.certificate_crt_app_forwarder_s](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.certificate_key_app_forwarder_s](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/key_vault_secret) | resource |
@@ -70,11 +75,15 @@
 | [azurerm_cosmosdb_account.bizevent_cosmos_account](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/cosmosdb_account) | data source |
 | [azurerm_data_factory.qi_data_factory](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/data_factory) | data source |
 | [azurerm_data_factory.qi_data_factory_cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/data_factory) | data source |
+| [azurerm_data_factory.qi_data_factory_x_nodo_flexible](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/data_factory) | data source |
 | [azurerm_eventhub.pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/eventhub) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.kv_shared](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault.qi_nodo_kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.certificate_crt_app_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.certificate_key_app_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.qi_kv_nodo_flexible_cfg](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_postgresql_flexible_server.qi_nodo_flexible](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/postgresql_flexible_server) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.rg_node_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/resource_group) | data source |
 | [azurerm_subnet.subnet_apim](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/subnet) | data source |
