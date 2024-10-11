@@ -17,8 +17,8 @@ jobs:
         id: get-paths
         uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@PAYMCLOUD-101-change-sparse-chackuot-module-nomencalture
         with:
-          starting_index: "src"
-          default_end_index: 3
+          start_folder: "src"
+          default_end_folder_depth: 3
           include_patterns: "src,domains"
 
       - name: 👀 See folders downloaded
