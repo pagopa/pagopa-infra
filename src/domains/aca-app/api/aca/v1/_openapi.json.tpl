@@ -213,7 +213,6 @@
         "type": "object",
         "required": [
           "paFiscalCode",
-          "companyName",
           "entityType",
           "entityFiscalCode",
           "entityFullName",
@@ -229,12 +228,6 @@
             "example": "12345678910",
             "minLength": 11,
             "maxLength": 11
-          },
-          "companyName": {
-            "type": "string",
-            "example": "Company name",
-            "minLength": 1,
-            "maxLength": 140
           },
           "entityType": {
             "type": "string",
@@ -297,6 +290,11 @@
             "type": "boolean",
             "example": true,
             "default": false
+          },
+          "payStandIn": {
+            "type": "boolean",
+            "example": true,
+            "default": true
           }
         }
       },
@@ -350,7 +348,7 @@
         }
       },
       "AmountEuroCents": {
-        "description": "Amount for payments, in euro cents",
+        "description": "Amount for payments, in eurocents",
         "type": "integer",
         "example": 100,
         "minimum": 0,
