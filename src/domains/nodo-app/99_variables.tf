@@ -409,8 +409,26 @@ variable "pagopa_nodo_weight" {
 
 variable "nexi_pg_nodo_weight" {
   type = number
-  description = "Nexi PostgreSQL NdP routing weight (0-100)"
+  description = "Nexi PostgreSQL NdP routing priority"
   default = 0
+}
+
+variable "nexi_nodo_priority" {
+  type = number
+  description = "Nexi NdP routing priority"
+  default = 3
+}
+
+variable "pagopa_nodo_priority" {
+  type = number
+  description = "PagoPA NdP routing priority"
+  default = 1
+}
+
+variable "nexi_pg_nodo_priority" {
+  type = number
+  description = "Nexi PostgreSQL NdP routing priority"
+  default = 2
 }
 
 variable "nodo_pagamenti_subkey_required" {

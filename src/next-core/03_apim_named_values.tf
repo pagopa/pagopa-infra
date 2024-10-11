@@ -69,14 +69,7 @@ resource "azurerm_api_management_named_value" "schema_ip_nexi" {
   value               = var.schema_ip_nexi
 }
 
-# 8. Nodo PagoPA
-resource "azurerm_api_management_named_value" "schema_ip_nodo_pagopa" {
-  name                = "schema-ip-nodo-pagopa"
-  api_management_name = module.apim[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  display_name        = "schema-ip-nodo-pagopa"
-  value               = var.env_short == "p" ? "https://weu${var.env}.nodo.internal.platform.pagopa.it/${local.soap_basepath_nodo_postgres_pagopa}" : "https://weu${var.env}.nodo.internal.${var.env}.platform.pagopa.it/${local.soap_basepath_nodo_postgres_pagopa}"
-}
+
 
 # DEFAULT NODO CONFIGURATION
 resource "azurerm_api_management_named_value" "default_nodo_backend" {

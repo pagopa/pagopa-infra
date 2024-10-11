@@ -6,7 +6,7 @@
     "routing": "\\{\\{nexi-nodo-weight\\}\\}",
     "broker_psps": [],
     "cis": [],
-    "list_priority": 3
+    "list_priority": "\\{\\{nexi-nodo-priority\\}\\}"
   },
   {
     "node_id": "NDP001DEV",
@@ -15,7 +15,7 @@
     "routing": "{\\{\\pagopa-nodo-weight\\}\\}",
     "broker_psps": [],
     "cis": ["15376371009"],
-    "list_priority": 1
+    "list_priority": "{\\{\\pagopa-nodo-priority\\}\\}"
   },
   {
     "node_id": "NDP004IT",
@@ -24,6 +24,6 @@
     "routing": "\\{\\{nexi-pg-nodo-weight\\}\\}",
     "broker_psps": [],
     "cis": ["88888888888"],
-    "list_priority": 2
+    "list_priority": "\\{\\{nexi-pg-nodo-priority\\}\\}"
   }
 ]
