@@ -15,7 +15,7 @@ jobs:
 
       - name: 🔨 Get Modified Paths
         id: get-paths
-        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@v1.18.0
+        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@PAYMCLOUD-101-change-sparse-chackuot-module-nomencalture
         with:
           starting_index: "src"
           default_end_index: 3
