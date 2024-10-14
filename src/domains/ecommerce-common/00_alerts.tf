@@ -48,14 +48,23 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_checkout_a
   description    = "eCommerce Availability less than or equal 99%"
   enabled        = true
   query = (<<-QUERY
+let thresholdTrafficMin = 150;
+let thresholdTrafficLinear = 400;
+let lowTrafficAvailability = 96;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/ecommerce/checkout/'
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 or url_s startswith "https://api.platform.pagopa.it/ecommerce/checkout/v1/payment-requests" and ( responseCode_d == 502 or responseCode_d == 504))
     by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 90
+| where Availability < expectedAvailability
   QUERY
   )
   severity    = 1
@@ -219,14 +228,23 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_app_io_v2_
   description    = "eCommerce api for app IO V2 availability less than 99% in the last 30 minutes detected"
   enabled        = true
   query = (<<-QUERY
+let thresholdTrafficMin = 200;
+let thresholdTrafficLinear = 500;
+let lowTrafficAvailability = 94;
+let highTrafficAvailability = 98;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/ecommerce/io/v2'
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 and DurationMs < 10000)
     by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 99
+| where Availability < expectedAvailability
   QUERY
   )
   severity    = 1
