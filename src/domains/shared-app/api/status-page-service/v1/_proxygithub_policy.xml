@@ -7,7 +7,6 @@
 <policies>
   <!-- Throttle, authorize, validate, cache, or transform the requests -->
   <inbound>
-    <base />
     <cors allow-credentials="false">
       <allowed-origins>
         <origin>*</origin>
@@ -17,6 +16,7 @@
         <method>POST</method>
       </allowed-methods>
     </cors>
+    <base />
     <rewrite-uri template="@(context.Request.Url.ToString().Replace("github","").Replace("%2F", "/"))" />
     <set-backend-service base-url="https://github.com" />
   </inbound>
@@ -27,7 +27,6 @@
   <!-- Customize the responses -->
   <outbound>
     <base />
-    <find-and-replace from="https://api.dev.platform.pagopa.it/shared/statuspage/v1/github/" to="https://github.com/" />
   </outbound>
   <!-- Handle exceptions and customize error responses  -->
   <on-error>
