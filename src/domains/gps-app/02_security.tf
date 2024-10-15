@@ -47,7 +47,7 @@ resource "azurerm_key_vault_secret" "gpd_subscription_key" {
 
 // apikey test apim_gpd_payments_pull_product_and_debt_positions_product_test and save keys on KV
 resource "azurerm_api_management_subscription" "test_gpd_payments_pull_and_debt_positions_subkey" {
-  count               = var.env_short != "p" ? 1 : 0
+  count               = 1 # var.env_short != "p" ? 1 : 0 # ppull-prod-test
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
@@ -58,7 +58,7 @@ resource "azurerm_api_management_subscription" "test_gpd_payments_pull_and_debt_
 }
 
 resource "azurerm_key_vault_secret" "test_gpd_payments_pull_and_debt_positions_subkey_kv" {
-  count        = var.env_short != "p" ? 1 : 0
+  count        = 1 # var.env_short != "p" ? 1 : 0 # ppull-prod-test
   depends_on   = [azurerm_api_management_subscription.test_gpd_payments_pull_and_debt_positions_subkey[0]]
   name         = "integration-test-subkey" # "tst-gpd-ppull-debt-position-key"
   value        = azurerm_api_management_subscription.test_gpd_payments_pull_and_debt_positions_subkey[0].primary_key
