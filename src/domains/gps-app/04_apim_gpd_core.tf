@@ -30,7 +30,7 @@ module "apim_api_gpd_api" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   product_ids = concat([module.apim_gpd_product.product_id],
-  var.env_short == "p" ? [] : [module.apim_gpd_payments_pull_product_and_debt_positions_product_test[0].product_id])
+  var.env_short == "-" ? [] : [module.apim_gpd_payments_pull_product_and_debt_positions_product_test[0].product_id]) # ppull-prod-test
 
   subscription_required = false
   api_version           = "v1"
@@ -57,7 +57,7 @@ module "apim_api_gpd_api_v2" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   product_ids = concat([module.apim_gpd_product.product_id],
-  var.env_short == "p" ? [] : [module.apim_gpd_payments_pull_product_and_debt_positions_product_test[0].product_id])
+  var.env_short == "-" ? [] : [module.apim_gpd_payments_pull_product_and_debt_positions_product_test[0].product_id]) # ppull-prod-test
 
   subscription_required = false
   api_version           = "v2"
