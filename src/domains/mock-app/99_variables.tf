@@ -215,3 +215,10 @@ variable "lb_aks" {
   description = "IP load balancer AKS Nexi/SIA"
   default     = "0.0.0.0"
 }
+
+
+variable "mock_enabled" {
+  type        = bool
+  description = "mock enabled on this environment"
+  default     = false
+}
