@@ -81,10 +81,8 @@
           </return-response>
         </when>
       </choose>
-
-      <set-variable name="pdvToken" value="@(((IResponse)context.Variables["pdv-token"]).Body.As<JObject>())" />
-      <!-- used as jwt claims  https://auth0.com/docs/secure/tokens/json-web-tokens/json-web-token-claims -->      
-      <set-variable name="userId" value="@((string)((JObject)context.Variables["pdvToken"])["token"])" />
+      <!-- used as jwt claims  https://auth0.com/docs/secure/tokens/json-web-tokens/json-web-token-claims -->
+      <set-variable name="userId" value="@((string)(((IResponse)context.Variables["pdv-token"]).Body.As<JObject>())["token"])" />
       <choose>
         <when condition="@(String.IsNullOrEmpty((string)context.Variables["userId"]))">
             <return-response>
@@ -130,8 +128,8 @@
         </when>
       </choose>
 
-      <set-variable name="pdvEmailToken" value="@(((IResponse)context.Variables["pdv-email-token"]).Body.As<JObject>())" />
-      <set-variable name="email" value="@((string)((JObject)context.Variables["pdvEmailToken"])["token"])" />
+      <set-variable name="email" value="@((string)(((IResponse)context.Variables["pdv-email-token"]).Body.As<JObject>())["token"])" />
+
       <!-- user email tokenization with PDV END -->
 
       <!-- pagoPA platform wallet JWT session token : START -->
