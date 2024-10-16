@@ -319,6 +319,6 @@ module "apim_tkm_mock_circuit_api_v1" {
   })
 
   xml_content = templatefile("./api/tkm_api/tkm-mock-circuit-api/v1/_base_policy.xml.tpl", {
-    hostname = var.env_short == "u" ? "https://weuuat.shared.internal.uat.platform.pagopa.it" : "http://${var.lb_aks}/tkmcircuitmock"
+    hostname = var.env_short == "u" ? "https://weuuat.shared.internal.uat.platform.pagopa.it" : "http://{{aks-lb-nexi}}/tkmcircuitmock"
   })
 }
