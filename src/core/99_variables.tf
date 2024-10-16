@@ -85,14 +85,6 @@ variable "enabled_features" {
   description = "Features enabled in this domain"
 }
 
-
-variable "lb_aks" {
-  type        = string
-  description = "IP load balancer AKS Nexi/SIA"
-  default     = "0.0.0.0"
-}
-
-
 variable "nodo_pagamenti_subkey_required" {
   type        = bool
   description = "Enabled subkeys for nodo dei pagamenti api"
