@@ -30,7 +30,7 @@ dns_zone_prefix                             = "dev.platform"
 cidr_subnet_mock_ec              = ["10.1.137.0/29"]
 cidr_subnet_mock_payment_gateway = ["10.1.137.8/29"]
 
-lb_aks = "10.70.66.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input ( 👀 look above nodo_pagamenti_url )
+lb_aks = "10.70.66.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
 mock_ec_enabled                    = true
 mock_ec_secondary_enabled          = true
