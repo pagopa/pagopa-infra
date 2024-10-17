@@ -270,7 +270,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_user_stats_ser
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "eCommerce user stats service availability less than 99% in the last 30 minutes detected"
+  description    = "eCommerce User stats service availability less than 99% in the last 30 minutes detected"
   enabled        = true
   query = (<<-QUERY
 let thresholdTrafficMin = 200;
@@ -297,6 +297,6 @@ AzureDiagnostics
   time_window = 30
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 2
+    threshold = 10
   }
 }
