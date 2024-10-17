@@ -13,13 +13,12 @@ parameters:
   - name: 'SWITCH'
     displayName: 'Switch to perform'
     type: string
-    default: 'test'
+    default: 'toNexiPublic'
     values:
-      - test
-#      - toNexiPublic
-#      - toNexiPrivateHTTP
-#      - toNexiPrivateHTTPS
-#      - toPagoPA
+      - toNexiPublic
+      - toNexiPrivateHTTP
+      - toNexiPrivateHTTPS
+      - toPagoPA
 
 variables:
   - name: TIME_OUT
@@ -75,18 +74,15 @@ variables:
     ${{ if eq(parameters.ENV, 'prod') }}:
       value: "NDP001PROD"
 
-  - name: nexiNodeAddress
+  - name: nexiNodePublicAddress
     ${{ if eq(parameters.ENV, 'dev') }}:
-      value: "https://test.nexi.ndp.pagopa.it"
+      value: "https://test.nexi.ndp.pagopa.it/nodo-p-sit.nexigroup.com"
     ${{ if eq(parameters.ENV, 'uat') }}:
       value: "https://test.nexi.ndp.pagopa.it"
     ${{ if eq(parameters.ENV, 'prod') }}:
       value: "https://nexi.ndp.pagopa.it"
 
-#todo
-  # todo dev e uat rete privata http non esiste
-  # todo su uat cambiare anche il named value di perf
-  - name: nexiNodeIpHttp
+  - name: nexiNodePrivateAddressHttp
     ${{ if eq(parameters.ENV, 'dev') }}:
       value: "http://10.70.66.200/nodo-dev"
     ${{ if eq(parameters.ENV, 'uat') }}:
@@ -94,11 +90,11 @@ variables:
     ${{ if eq(parameters.ENV, 'prod') }}:
       value: "http://10.79.20.34"
 
-  - name: nexiNodeIpHttps
+  - name: nexiNodePrivateAddressHttps
     ${{ if eq(parameters.ENV, 'dev') }}:
-      value: "https://10.70.66.200/nodo-dev"
+      value: "http://10.70.66.200/nodo-dev"
     ${{ if eq(parameters.ENV, 'uat') }}:
-      value: "https://10.70.74.200/nodo-uat"
+      value: "http://10.70.74.200/nodo-uat"
     ${{ if eq(parameters.ENV, 'prod') }}:
       value: "https://10.79.20.34"
 
@@ -177,12 +173,12 @@ stages:
                 - name: default-nodo-id
                   value: "${{variables.nexiNodeId}}"
                 - name: default-nodo-backend
-                  value: "${{variables.nexiNodeAddress}}"
+                  value: "${{variables.nexiNodePublicAddress}}"
                 - name: schema-ip-nexi
-                  value: "${{variables.nexiNodeAddress}}"
+                  value: "${{variables.nexiNodePublicAddress}}"
                 - ${{ if eq(parameters.ENV, 'uat') }}:
                   - name: default-nodo-backend-prf
-                    value: "${{variables.nexiNodeAddress}}"
+                    value: "${{variables.nexiNodePublicAddress}}"
 
       - ${{ if eq(parameters.SWITCH, 'toNexiPrivateHTTP') }}:
         - job: "update_values_nexi_private_https"
@@ -202,12 +198,12 @@ stages:
                 - name: default-nodo-id
                   value: "${{variables.nexiNodeId}}"
                 - name: default-nodo-backend
-                  value: "${{variables.nexiNodeIpHttps}}"
+                  value: "${{variables.nexiNodePrivateAddressHttps}}"
                 - name: schema-ip-nexi
-                  value: "${{variables.nexiNodeIpHttps}}"
+                  value: "${{variables.nexiNodePrivateAddressHttps}}"
                 - ${{ if eq(parameters.ENV, 'uat') }}:
                     - name: default-nodo-backend-prf
-                      value: "${{variables.nexiNodeIpHttps}}"
+                      value: "${{variables.nexiNodePrivateAddressHttps}}"
 
       - ${{ if eq(parameters.SWITCH, 'toNexiPrivateHTTPS') }}:
         - job: "update_values_nexi_private_http"
@@ -227,12 +223,12 @@ stages:
                 - name: default-nodo-id
                   value: "${{variables.nexiNodeId}}"
                 - name: default-nodo-backend
-                  value: "${{variables.nexiNodeIpHttp}}"
+                  value: "${{variables.nexiNodePrivateAddressHttp}}"
                 - name: schema-ip-nexi
-                  value: "${{variables.nexiNodeIpHttp}}"
+                  value: "${{variables.nexiNodePrivateAddressHttp}}"
                 - ${{ if eq(parameters.ENV, 'uat') }}:
                     - name: default-nodo-backend-prf
-                      value: "${{variables.nexiNodeIpHttp}}"
+                      value: "${{variables.nexiNodePrivateAddressHttp}}"
 
       - ${{ if eq(parameters.SWITCH, 'toPagoPA') }}:
           - job: "update_values_pagopa_private"
@@ -256,21 +252,4 @@ stages:
                     - ${{ if eq(parameters.ENV, 'uat') }}:
                         - name: default-nodo-backend-prf
                           value: "${{variables.pagopaNodeAddress}}"
-
-      - ${{ if eq(parameters.SWITCH, 'test') }}:
-          - job: "update_values_test"
-            displayName: "Switching to test"
-            dependsOn: waitForValidation
-            steps:
-              - template: templates/apim-set-values/template.yaml@terraform
-                parameters:
-                  AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyName}}"
-                  APIM_NAME: "${{variables.apimName}}"
-                  APIM_RG: "${{variables.apimRg}}"
-                  NAMED_VALUES:
-                    - name: test-marco-01
-                      value: allenv
-                    - ${{ if eq(parameters.ENV, 'uat') }}:
-                        - name: test-named-value-02
-                          value: onlyuat
 
