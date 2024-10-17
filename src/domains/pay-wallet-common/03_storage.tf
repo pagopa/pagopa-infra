@@ -55,19 +55,6 @@ resource "azurerm_private_endpoint" "storage_private_endpoint" {
   tags = var.tags
 }
 
-resource "azurerm_storage_queue" "pay_wallet_usage_update_queue" {
-  count                = var.is_feature_enabled.storage ? 1 : 0
-  name                 = "${local.project}-usage-update-queue"
-  storage_account_name = module.pay_wallet_storage[0].name
-}
-
-//storage queue for blue deployment
-resource "azurerm_storage_queue" "pay_wallet_usage_update_queue_blue" {
-  count                = var.is_feature_enabled.storage && var.env_short == "u" ? 1 : 0
-  name                 = "${local.project}-usage-update-queue-b"
-  storage_account_name = module.pay_wallet_storage[0].name
-}
-
 resource "azurerm_storage_queue" "pay_wallet_wallet_expiration_queue" {
   name                 = "${local.project}-expiration-queue"
   storage_account_name = module.pay_wallet_storage[0].name

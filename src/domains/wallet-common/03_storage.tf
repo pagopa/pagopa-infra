@@ -70,18 +70,6 @@ module "wallet_storage" {
   tags = var.tags
 }
 
-resource "azurerm_storage_queue" "wallet_usage_update_queue" {
-  name                 = "${local.project}-usage-update-queue"
-  storage_account_name = module.wallet_storage.name
-}
-
-//storage queue for blue deployment
-resource "azurerm_storage_queue" "wallet_usage_update_queue_blue" {
-  count                = var.env_short == "u" ? 1 : 0
-  name                 = "${local.project}-usage-update-queue-b"
-  storage_account_name = module.wallet_storage.name
-}
-
 resource "azurerm_storage_queue" "wallet_expiration_queue" {
   name                 = "${local.project}-expiration-queue"
   storage_account_name = module.wallet_storage.name
