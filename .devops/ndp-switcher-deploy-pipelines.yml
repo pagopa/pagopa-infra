@@ -198,12 +198,12 @@ stages:
                 - name: default-nodo-id
                   value: "${{variables.nexiNodeId}}"
                 - name: default-nodo-backend
-                  value: "${{variables.nexiNodePrivateAddressHttps}}"
+                  value: "${{variables.nexiNodePrivateAddressHttp}}"
                 - name: schema-ip-nexi
-                  value: "${{variables.nexiNodePrivateAddressHttps}}"
+                  value: "${{variables.nexiNodePrivateAddressHttp}}"
                 - ${{ if eq(parameters.ENV, 'uat') }}:
                     - name: default-nodo-backend-prf
-                      value: "${{variables.nexiNodePrivateAddressHttps}}"
+                      value: "${{variables.nexiNodePrivateAddressHttp}}"
 
       - ${{ if eq(parameters.SWITCH, 'toNexiPrivateHTTPS') }}:
         - job: "update_values_nexi_private_http"
@@ -223,12 +223,12 @@ stages:
                 - name: default-nodo-id
                   value: "${{variables.nexiNodeId}}"
                 - name: default-nodo-backend
-                  value: "${{variables.nexiNodePrivateAddressHttp}}"
+                  value: "${{variables.nexiNodePrivateAddressHttps}}"
                 - name: schema-ip-nexi
-                  value: "${{variables.nexiNodePrivateAddressHttp}}"
+                  value: "${{variables.nexiNodePrivateAddressHttps}}"
                 - ${{ if eq(parameters.ENV, 'uat') }}:
                     - name: default-nodo-backend-prf
-                      value: "${{variables.nexiNodePrivateAddressHttp}}"
+                      value: "${{variables.nexiNodePrivateAddressHttps}}"
 
       - ${{ if eq(parameters.SWITCH, 'toPagoPA') }}:
           - job: "update_values_pagopa_private"
