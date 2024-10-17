@@ -86,13 +86,21 @@ variables:
 #todo
   # todo dev e uat rete privata http non esiste
   # todo su uat cambiare anche il named value di perf
-  - name: nexiNodeIp
+  - name: nexiNodeIpHttp
     ${{ if eq(parameters.ENV, 'dev') }}:
-      value: "10.70.66.200/nodo-dev"
+      value: "http://10.70.66.200/nodo-dev"
     ${{ if eq(parameters.ENV, 'uat') }}:
-      value: "10.70.74.200/nodo-uat"
+      value: "http://10.70.74.200/nodo-uat"
     ${{ if eq(parameters.ENV, 'prod') }}:
-      value: "10.79.20.34"
+      value: "http://10.79.20.34"
+
+  - name: nexiNodeIpHttps
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "https://10.70.66.200/nodo-dev"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "https://10.70.74.200/nodo-uat"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "https://10.79.20.34"
 
   - name: pagopaNodeAddress
     ${{ if eq(parameters.ENV, 'dev') }}:
@@ -195,12 +203,12 @@ stages:
                 - name: default-nodo-id
                   value: "${{variables.nexiNodeId}}"
                 - name: default-nodo-backend
-                  value: "https://${{variables.nexiNodeIp}}"
+                  value: "${{variables.nexiNodeIpHttps}}"
                 - name: schema-ip-nexi
-                  value: "https://${{variables.nexiNodeIp}}"
+                  value: "${{variables.nexiNodeIpHttps}}"
                 - ${{ if eq(parameters.ENV, 'uat') }}:
                     - name: default-nodo-backend-prf
-                      value: "https://${{variables.nexiNodeIp}}"
+                      value: "${{variables.nexiNodeIpHttps}}"
 
       - ${{ if eq(parameters.SWITCH, 'toNexiPrivateHTTPS') }}:
         - job: "update_values_nexi_private_http"
@@ -220,12 +228,12 @@ stages:
                 - name: default-nodo-id
                   value: "${{variables.nexiNodeId}}"
                 - name: default-nodo-backend
-                  value: "http://${{variables.nexiNodeIp}}"
+                  value: "${{variables.nexiNodeIpHttp}}"
                 - name: schema-ip-nexi
-                  value: "http://${{variables.nexiNodeIp}}"
+                  value: "${{variables.nexiNodeIpHttp}}"
                 - ${{ if eq(parameters.ENV, 'uat') }}:
                     - name: default-nodo-backend-prf
-                      value: "http://${{variables.nexiNodeIp}}"
+                      value: "${{variables.nexiNodeIpHttp}}"
 
       - ${{ if eq(parameters.SWITCH, 'toPagoPA') }}:
           - job: "update_values_pagopa_private"
