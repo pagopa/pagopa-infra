@@ -184,5 +184,6 @@ module "cosmosdb_wisp_converter_snet" {
   service_endpoints = [
     "Microsoft.Web",
     "Microsoft.AzureCosmosDB",
+    "Microsoft.Storage"
   ]
 }
