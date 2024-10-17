@@ -131,7 +131,6 @@ stages:
       - job: get_current_values
         displayName: "Retrieve current APIM named values"
         condition: succeeded()
-        dependsOn: check_new_values
         steps:
         - template: templates/apim-get-values/template.yaml@terraform
           parameters:
@@ -147,7 +146,7 @@ stages:
       - job: waitForValidation
         condition: succeeded()
         timeoutInMinutes: 240 # task times out in 4 hours
-        dependsOn: compare
+        dependsOn: get_current_values
         displayName: "Authorization - Switch NdP on env '${{ parameters.ENV }}' ${{ parameters.SWITCH }}"
         pool: server
         steps:
