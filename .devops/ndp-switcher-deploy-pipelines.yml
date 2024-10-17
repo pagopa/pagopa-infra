@@ -13,19 +13,13 @@ parameters:
   - name: 'SWITCH'
     displayName: 'Switch to perform'
     type: string
-    default: 'toNexiPublic'
+    default: 'test'
     values:
-      - toNexiPublic
-      - toNexiPrivate
-  - name: 'PERC_NODO_NEXI'
-    displayName: "Nexi NdP load percentage"
-    type: number
-  - name: 'PERC_NODO_PAGOPA'
-    displayName: "PagoPA NdP load percentage"
-    type: number
-  - name: 'PERC_NODO_NEXI_PG'
-    displayName: "Nexi PostgreSQL  NdP load percentage"
-    type: number
+      - test
+#      - toNexiPublic
+#      - toNexiPrivateHTTP
+#      - toNexiPrivateHTTPS
+#      - toPagoPA
 
 variables:
   - name: TIME_OUT
@@ -65,6 +59,49 @@ variables:
     ${{ if eq(parameters.ENV, 'prod') }}:
       value: "pagopa-p-api-rg"
 
+  - name: nexiNodeId
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "NDP004IT"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "NDP002UAT"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "NDP003PROD"
+
+  - name: pagopaNodeId
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "NDP001DEV"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "NDP001UAT"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "NDP001PROD"
+
+  - name: nexiNodeAddress
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "https://test.nexi.ndp.pagopa.it"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "https://test.nexi.ndp.pagopa.it"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "https://nexi.ndp.pagopa.it"
+
+#todo
+  # todo dev e uat rete privata http non esiste
+  # todo su uat cambiare anche il named value di perf
+  - name: nexiNodeIp
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "10.70.66.200/nodo-dev"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "10.70.74.200/nodo-uat"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "10.79.20.34"
+
+  - name: pagopaNodeAddress
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "https://weudev.nodo.internal.dev.platform.pagopa.it/nodo"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "https://weuuat.nodo.internal.uat.platform.pagopa.it/nodo"
+    ${{ if eq(parameters.ENV, 'prod') }}:
+      value: "https://weuprod.nodo.internal.platform.pagopa.it/nodo"
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -83,21 +120,6 @@ stages:
       name: "${{variables.poolName}}"
 
     jobs:
-      - job: check_new_values
-        displayName: "Check new values consistency"
-        condition: always()
-        steps:
-        - bash: |
-            total=$(expr ${{ parameters.PERC_NODO_NEXI }} + ${{ parameters.PERC_NODO_PAGOPA }} + ${{ parameters.PERC_NODO_NEXI_PG }} )
-            if [ $total == "100" ]
-            then
-                echo "## ✅ Total node balance is 100. Ready to proceed"
-                exit 0
-            else
-                echo "## ❌ Total node balance weight != '100'! Given total is: $total"
-                exit 1
-            fi
-          displayName: "🔍 Check new weight balance consistency"
       - job: get_current_values
         displayName: "Retrieve current APIM named values"
         condition: succeeded()
@@ -109,22 +131,11 @@ stages:
             APIM_NAME: "${{variables.apimName}}"
             APIM_RG: "${{variables.apimRg}}"
             NAMED_VALUES:
-              - test-marco-01
-              - test-named-value-02
-      - job: compare
-        displayName: "Weight balance confirmation"
-        condition: succeeded()
-        dependsOn: get_current_values
-        variables:
-          test-marco-01: $[ dependencies.get_current_values.outputs['test_marco_01.test-marco-01'] ]
-          test-named-value-02: $[ dependencies.get_current_values.outputs['test_named_value_02.test-named-value-02'] ]
-        steps:
-          - bash: |
-              echo "🔍 Weight balance comparison:"
-              echo "➖ NEXI NdP:           old weight = $(test-marco-01); new weight = ${{ parameters.PERC_NODO_NEXI }} "
-              echo "➖ NEXI NdP Postgres:  old weight = $(test-marco-01); new weight = ${{ parameters.PERC_NODO_NEXI_PG }} "
-              echo "➖ PagoPa NdP:         old weight = $(test-marco-01); new weight = ${{ parameters.PERC_NODO_PAGOPA }} "
-            displayName: "❓Weight balance confirmation"
+              - schema-ip-nexi
+              - default-nodo-backend
+              - default-nodo-id
+              - enable-routing-decoupler-switch
+              - enable-nm3-decoupler-switch
       - job: waitForValidation
         condition: succeeded()
         timeoutInMinutes: 240 # task times out in 4 hours
@@ -136,9 +147,10 @@ stages:
             inputs:
               notifyUsers: |
                 $(APPROVE_NOTIFY_ADMIN)
-              instructions: "Please, check the weights on step 'Weight balance confirmation' and THEN click 'Resume' to continue the switch on '${{ parameters.ENV }}' ${{ parameters.SWITCH }}"
+              instructions: "Click 'Resume' to continue the switch on '${{ parameters.ENV }}' ${{ parameters.SWITCH }}"
               onTimeout: 'reject'
             displayName: "🚨 Confirm?"
+
       - ${{ if eq(parameters.SWITCH, 'toNexiPublic') }}:
         - job: "update_values_nexi_public"
           displayName: "Switching to Nexi NdP via public route"
@@ -151,13 +163,23 @@ stages:
               APIM_NAME: "${{variables.apimName}}"
               APIM_RG: "${{variables.apimRg}}"
               NAMED_VALUES:
-                - name: test-marco-01
-                  value: nexi-public
-                - name: test-named-value-02
-                  value: nexi-public
-      - ${{ if eq(parameters.SWITCH, 'toNexiPrivate') }}:
-        - job: "update_values_nexi_private"
-          displayName: "Switching to Nexi NdP via private route"
+                - name: enable-nm3-decoupler-switch
+                  value: "false"
+                - name: enable-routing-decoupler-switch
+                  value: "false"
+                - name: default-nodo-id
+                  value: "${{variables.nexiNodeId}}"
+                - name: default-nodo-backend
+                  value: "${{variables.nexiNodeAddress}}"
+                - name: schema-ip-nexi
+                  value: "${{variables.nexiNodeAddress}}"
+                - ${{ if eq(parameters.ENV, 'uat') }}:
+                  - name: default-nodo-backend-prf
+                    value: "${{variables.nexiNodeAddress}}"
+
+      - ${{ if eq(parameters.SWITCH, 'toNexiPrivateHTTP') }}:
+        - job: "update_values_nexi_private_https"
+          displayName: "Switching to Nexi NdP via private route with HTTPS"
           dependsOn: waitForValidation
           steps:
           - template: templates/apim-set-values/template.yaml@terraform
@@ -166,13 +188,71 @@ stages:
               APIM_NAME: "${{variables.apimName}}"
               APIM_RG: "${{variables.apimRg}}"
               NAMED_VALUES:
-                - name: test-marco-01
-                  value: nexi-private
-                - name: test-named-value-02
-                  value: nexi-private
-      - ${{ if eq(parameters.SWITCH, 'toNexiPrivate') }}:
-          - job: "update_values_nexi_private"
-            displayName: "Switching to Nexi NdP via private route"
+                - name: enable-nm3-decoupler-switch
+                  value: "false"
+                - name: enable-routing-decoupler-switch
+                  value: "false"
+                - name: default-nodo-id
+                  value: "${{variables.nexiNodeId}}"
+                - name: default-nodo-backend
+                  value: "https://${{variables.nexiNodeIp}}"
+                - name: schema-ip-nexi
+                  value: "https://${{variables.nexiNodeIp}}"
+                - ${{ if eq(parameters.ENV, 'uat') }}:
+                    - name: default-nodo-backend-prf
+                      value: "https://${{variables.nexiNodeIp}}"
+
+      - ${{ if eq(parameters.SWITCH, 'toNexiPrivateHTTPS') }}:
+        - job: "update_values_nexi_private_http"
+          displayName: "Switching to Nexi NdP via private route with HTTP"
+          dependsOn: waitForValidation
+          steps:
+          - template: templates/apim-set-values/template.yaml@terraform
+            parameters:
+              AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyName}}"
+              APIM_NAME: "${{variables.apimName}}"
+              APIM_RG: "${{variables.apimRg}}"
+              NAMED_VALUES:
+                - name: enable-nm3-decoupler-switch
+                  value: "false"
+                - name: enable-routing-decoupler-switch
+                  value: "false"
+                - name: default-nodo-id
+                  value: "${{variables.nexiNodeId}}"
+                - name: default-nodo-backend
+                  value: "http://${{variables.nexiNodeIp}}"
+                - name: schema-ip-nexi
+                  value: "http://${{variables.nexiNodeIp}}"
+                - ${{ if eq(parameters.ENV, 'uat') }}:
+                    - name: default-nodo-backend-prf
+                      value: "http://${{variables.nexiNodeIp}}"
+
+      - ${{ if eq(parameters.SWITCH, 'toPagoPA') }}:
+          - job: "update_values_pagopa_private"
+            displayName: "Switching to PagoPA NdP"
+            dependsOn: waitForValidation
+            steps:
+              - template: templates/apim-set-values/template.yaml@terraform
+                parameters:
+                  AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyName}}"
+                  APIM_NAME: "${{variables.apimName}}"
+                  APIM_RG: "${{variables.apimRg}}"
+                  NAMED_VALUES:
+                    - name: enable-nm3-decoupler-switch
+                      value: "false"
+                    - name: enable-routing-decoupler-switch
+                      value: "false"
+                    - name: default-nodo-id
+                      value: "${{variables.pagopaNodeId}}"
+                    - name: default-nodo-backend
+                      value: "${{variables.pagopaNodeAddress}}"
+                    - ${{ if eq(parameters.ENV, 'uat') }}:
+                        - name: default-nodo-backend-prf
+                          value: "${{variables.pagopaNodeAddress}}"
+
+      - ${{ if eq(parameters.SWITCH, 'test') }}:
+          - job: "update_values_test"
+            displayName: "Switching to test"
             dependsOn: waitForValidation
             steps:
               - template: templates/apim-set-values/template.yaml@terraform
@@ -182,6 +262,8 @@ stages:
                   APIM_RG: "${{variables.apimRg}}"
                   NAMED_VALUES:
                     - name: test-marco-01
-                      value: nexi-private
-                    - name: test-named-value-02
-                      value: nexi-private
+                      value: allenv
+                    - ${{ if eq(parameters.ENV, 'uat') }}:
+                        - name: test-named-value-02
+                          value: onlyuat
+
