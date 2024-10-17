@@ -469,3 +469,8 @@ variable "wfesp_dismantling" {
   })
 }
 
+variable "nodo_hostname_force_to_nexi" {
+  type        = bool
+  default     = false
+  description = "Force to use NDP Nexi istance"
+}
