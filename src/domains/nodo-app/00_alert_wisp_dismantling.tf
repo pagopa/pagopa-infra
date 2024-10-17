@@ -123,7 +123,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-convert
   description    = "Errors for wisp-converter API WIC-ERROR is greater than 1 - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa"
   enabled        = true
   query = (<<-QUERY
-let errorsToExclude = dynamic(["WIC-3004"]);
+let errorsToExclude = dynamic(["WIC-3004","WIC-1300"]);
 traces
 | where cloud_RoleName == "pagopawispconverter"
 | where message contains "WIC-" 
