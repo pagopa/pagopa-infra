@@ -14,18 +14,15 @@ data "azurerm_key_vault_secret" "pgres_admin_pwd" {
 }
 
 data "azurerm_resource_group" "flex_data" {
-  count = var.env_short != "d" ? 1 : 0
   name  = format("%s-pgres-flex-rg", local.product)
 }
 
 data "azurerm_resource_group" "data" {
-  count = var.env_short == "d" ? 1 : 0
   name  = format("%s-data-rg", local.product)
 }
 
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet" {
-  count  = var.env_short != "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//subnet?ref=v6.11.2"
 
   name                                      = format("%s-pgres-flexible-snet", local.product)
@@ -47,15 +44,12 @@ module "postgres_flexible_snet" {
 }
 
 data "azurerm_private_dns_zone" "postgres" {
-  count = var.env_short != "d" ? 1 : 0
-
   name                = "private.postgres.database.azure.com"
   resource_group_name = local.vnet_resource_group_name
 }
 
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
 module "postgres_flexible_server_private" {
-  count  = var.env_short != "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//postgres_flexible_server?ref=v7.23.0"
 
   name = format("%s-gpd-pgflex", local.product)
@@ -114,7 +108,6 @@ module "postgres_flexible_server_private" {
 }
 
 resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
-  count     = var.env_short != "d" ? 1 : 0
   name      = var.gpd_db_name
   server_id = module.postgres_flexible_server_private[0].id
   collation = "en_US.utf8"
@@ -122,7 +115,6 @@ resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_connection" {
-  count     = var.env_short != "d" ? 1 : 0
   name      = "max_connections"
   server_id = module.postgres_flexible_server_private[0].id
   value     = var.pgres_flex_params.max_connections
@@ -130,25 +122,42 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_con
 
 # Message    : FATAL: unsupported startup parameter: extra_float_digits
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_ignore_startup_parameters" {
-  count     = var.env_short != "d" ? 1 : 0
   name      = "pgbouncer.ignore_startup_parameters"
   server_id = module.postgres_flexible_server_private[0].id
   value     = "extra_float_digits"
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_pool_size" {
-  count     = var.env_short != "d" ? 1 : 0
   name      = "pgbouncer.min_pool_size"
   server_id = module.postgres_flexible_server_private[0].id
-  value     = 10
+  value     = var.env_short != "d" ? 1 : 10
 }
+
+# Message    : FATAL: unsupported startup parameter: extra_float_digits
+resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_worker_process" {
+  name      = "max_worker_processes"
+  server_id = module.postgres_flexible_server_private[0].id
+  value     = var.env_short != "d" ? 16 : 32
+}
+
+resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_wal_level" {
+  name      = "wal_level"
+  server_id = module.postgres_flexible_server_private[0].id
+  value     = "logical"
+}
+
+resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_shared_preoload_libraries" {
+  name      = "shared_preload_libraries"
+  server_id = module.postgres_flexible_server_private[0].id
+  value     = "pg_failover_slots"
+}
+
 
 ########################################################################################################################
 ########################################### POSTGRES DEV ###############################################################
 ########################################################################################################################
 
 module "postgresql_snet" {
-  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//subnet?ref=v6.11.2"
 
   name                                      = format("%s-gpd-postgresql-snet", local.product)
@@ -169,7 +178,6 @@ module "postgresql_snet" {
 
 #tfsec:ignore:azure-database-no-public-access
 module "postgresql" {
-  count  = var.env_short == "d" ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//postgresql_server?ref=v6.11.2"
 
   name                = format("%s-gpd-postgresql", local.product)
@@ -201,7 +209,6 @@ module "postgresql" {
 }
 
 resource "azurerm_postgresql_database" "apd_db" {
-  count               = var.env_short == "d" ? 1 : 0
   name                = var.gpd_db_name
   resource_group_name = azurerm_resource_group.gpd_rg.name
   server_name         = module.postgresql[0].name
