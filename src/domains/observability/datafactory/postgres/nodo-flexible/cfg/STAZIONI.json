@@ -1,0 +1,278 @@
+[
+    {
+        "name": "obj_id",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "id_stazione",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "enabled",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "ip",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "password",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "porta",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "protocollo",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "redirect_ip",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "redirect_path",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "redirect_porta",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "redirect_query_string",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "servizio",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "rt_enabled",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "servizio_pof",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "fk_intermediario_pa",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "redirect_protocollo",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "protocollo_4mod",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "ip_4mod",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "porta_4mod",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "servizio_4mod",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "proxy_enabled",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "proxy_host",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "proxy_port",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "proxy_username",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "proxy_password",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "protocollo_avv",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "ip_avv",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "porta_avv",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "servizio_avv",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "timeout",
+        "type": "numeric",
+        "precision": 19,
+        "scale": 0
+    },
+    {
+        "name": "num_thread",
+        "type": "numeric",
+        "precision": 19,
+        "scale": 0
+    },
+    {
+        "name": "timeout_a",
+        "type": "numeric",
+        "precision": 19,
+        "scale": 0
+    },
+    {
+        "name": "timeout_b",
+        "type": "numeric",
+        "precision": 19,
+        "scale": 0
+    },
+    {
+        "name": "timeout_c",
+        "type": "numeric",
+        "precision": 19,
+        "scale": 0
+    },
+    {
+        "name": "flag_online",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "versione",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "servizio_nmp",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "invio_rt_istantaneo",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "versione_primitive",
+        "type": "numeric",
+        "precision": 2,
+        "scale": 0
+    },
+    {
+        "name": "target_host",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "target_port",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "target_path",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "target_host_pof",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "target_port_pof",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "target_path_pof",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "flag_standin",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    }
+]

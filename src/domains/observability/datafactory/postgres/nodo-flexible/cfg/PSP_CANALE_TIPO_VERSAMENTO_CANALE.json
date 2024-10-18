@@ -1,0 +1,26 @@
+[
+    {
+        "name": "obj_id",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "fk_psp",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "fk_canale",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "fk_tipo_versamento",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    }
+]

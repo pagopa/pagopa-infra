@@ -1,0 +1,176 @@
+[
+    {
+        "name": "obj_id",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "id_canale",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "enabled",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "ip",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "password",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "porta",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "protocollo",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "servizio",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "descrizione",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "fk_intermediario_psp",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "proxy_enabled",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "proxy_host",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "proxy_password",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "proxy_port",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "proxy_username",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "fk_canali_nodo",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "timeout",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "num_thread",
+        "type": "numeric",
+        "precision": 19,
+        "scale": 0
+    },
+    {
+        "name": "use_new_fault_code",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "timeout_a",
+        "type": "numeric",
+        "precision": 19,
+        "scale": 0
+    },
+    {
+        "name": "timeout_b",
+        "type": "numeric",
+        "precision": 19,
+        "scale": 0
+    },
+    {
+        "name": "timeout_c",
+        "type": "numeric",
+        "precision": 19,
+        "scale": 0
+    },
+    {
+        "name": "servizio_nmp",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "target_host",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "target_port",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "target_path",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "target_host_nmp",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "target_port_nmp",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "target_path_nmp",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    }
+]

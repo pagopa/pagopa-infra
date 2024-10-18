@@ -1,0 +1,80 @@
+[
+    {
+        "name": "obj_id",
+        "type": "numeric",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "id_psp",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "enabled",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "abi",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "bic",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "descrizione",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "ragione_sociale",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "fk_int_quadrature",
+        "type": "numeric",
+        "precision": 19,
+        "scale": 0
+    },
+    {
+        "name": "codice_mybank",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "marca_bollo_digitale",
+        "type": "numeric",
+        "precision": 19,
+        "scale": 0
+    },
+    {
+        "name": "agid_psp",
+        "type": "character",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "codice_fiscale",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    },
+    {
+        "name": "vat_number",
+        "type": "character varying",
+        "precision": 0,
+        "scale": 0
+    }
+]
