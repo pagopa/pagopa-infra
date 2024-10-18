@@ -280,7 +280,7 @@ let highTrafficAvailability = 98;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
-| where url_s startswith 'https://api.dev.platform.pagopa.it/ecommerce/user-stats-service/v1'
+| where url_s startswith 'https://api.platform.pagopa.it/ecommerce/user-stats-service/v1'
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 and DurationMs < 500)
