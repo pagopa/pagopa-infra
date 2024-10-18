@@ -1,6 +1,7 @@
 <policies>
   <inbound>
     <base />
+    <retry condition="@(true)" count="1" interval="1" />
     <choose>
       <when condition="@(((string)(context.Request.Method)).Contains("PUT"))">
         <return-response>
