@@ -15,6 +15,9 @@ locals {
     "pagopa-gpd-payments-pull",
     "pagopa-gps-donation-service",
     "pagopa-gpd-payments",
+    "pagopa-gpd-reporting-batch",
+    "pagopa-gpd-reporting-analysis",
+    "pagopa-gpd-reporting-service",
   ]
 
   federations_01 = [
