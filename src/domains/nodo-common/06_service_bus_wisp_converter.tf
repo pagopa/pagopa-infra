@@ -22,10 +22,10 @@ locals {
         }
       ]
       ]) : "${qk.key_name}" => {
-          queue_name = qk.queue_name
-          listen     = qk.listen
-          send       = qk.send
-          manage     = qk.manage
+      queue_name = qk.queue_name
+      listen     = qk.listen
+      send       = qk.send
+      manage     = qk.manage
     }
   }
 

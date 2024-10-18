@@ -80,6 +80,18 @@ resource "azurerm_storage_queue" "pay_wallet_wallet_expiration_queue_blue" {
   storage_account_name = module.pay_wallet_storage[0].name
 }
 
+resource "azurerm_storage_queue" "pay_wallet_cdc_queue" {
+  name                 = "${local.project}-cdc-queue"
+  storage_account_name = module.pay_wallet_storage[0].name
+}
+
+//storage queue for blue deployment
+resource "azurerm_storage_queue" "pay_wallet_cdc_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-cdc-queue-b"
+  storage_account_name = module.pay_wallet_storage[0].name
+}
+
 # wallet queue alert diagnostic settings
 resource "azurerm_monitor_diagnostic_setting" "pay_wallet_queue_diagnostics" {
   count                      = var.is_feature_enabled.storage && var.env_short == "p" ? 1 : 0

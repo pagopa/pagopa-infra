@@ -31,7 +31,7 @@
             </when>
         </choose>
         <set-header name="Authorization" exists-action="override">
-      <value> 
+      <value>
           @{
               JObject requestBody = (JObject)context.Variables["npgNotificationRequestBody"];
               return "Bearer " + (string)requestBody["securityToken"];
@@ -87,7 +87,10 @@
       <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
     </inbound>
     <backend>
-        <base />
+      <retry condition="@(context.Response.StatusCode >= 500)"
+            interval="2" count="3" first-fast-retry="true">
+            <forward-request timeout="10" buffer-request-body="true" />
+      </retry>
     </backend>
     <outbound />
     <on-error>

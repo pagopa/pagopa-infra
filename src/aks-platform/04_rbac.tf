@@ -270,3 +270,25 @@ resource "kubernetes_cluster_role_binding" "view_binding" {
     module.aks
   ]
 }
+
+resource "kubernetes_cluster_role" "kube_system_reader" {
+  metadata {
+    name = "kube-system-reader"
+  }
+
+  rule {
+    api_groups = [""]
+    resources  = ["services"]
+    verbs      = ["get", "list", "watch", ]
+  }
+
+  rule {
+    api_groups = ["rbac.authorization.k8s.io"]
+    resources  = ["rolebindings"]
+    verbs      = ["get", "list", "watch", ]
+  }
+
+  depends_on = [
+    module.aks
+  ]
+}

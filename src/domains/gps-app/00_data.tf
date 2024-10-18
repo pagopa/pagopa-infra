@@ -33,9 +33,3 @@ data "azurerm_postgresql_flexible_server" "postgres_flexible_server_private" {
   name                = format("%s-gpd-pgflex", local.product)
   resource_group_name = format("%s-pgres-flex-rg", local.product)
 }
-
-data "azurerm_monitor_action_group" "opsgenie" {
-  count               = var.env_short == "p" ? 1 : 0
-  resource_group_name = var.monitor_resource_group_name
-  name                = local.monitor_action_group_opsgenie_name
-}

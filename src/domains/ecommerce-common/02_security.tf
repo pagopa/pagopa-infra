@@ -486,6 +486,19 @@ resource "azurerm_key_vault_secret" "transactions_service_auth_update_api_key" {
   }
 }
 
+
+resource "azurerm_key_vault_secret" "user_stats_for_event_dispatcher_api_key" {
+  name         = "user-stats-for-event-dispatcher-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 resource "azurerm_key_vault_secret" "redirect_url_mapping" {
   name         = "redirect-url-mapping"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
