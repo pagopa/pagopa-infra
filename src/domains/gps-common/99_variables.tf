@@ -116,6 +116,11 @@ variable "cidr_subnet_pg_flex_dbms" {
   type        = list(string)
   description = "Postgres Flexible Server network address space."
 }
+variable "cidr_subnet_pg_singleser" {
+  type        = list(string)
+  description = "Postgres Single Server network address space."
+  default     = []
+}
 
 # Postgres Flexible
 variable "pgres_flex_params" {
