@@ -46,11 +46,11 @@ if [ $SUBSCRIPTION == "DEV-pagoPA" ]; then
     # single-server
     psql_server_name=$(az postgres server list -o tsv --query "[?contains(name,'gpd-postgresql')].{Name:name}" | head -1)
     psql_server_private_fqdn=$(az postgres server list -o tsv --query "[?contains(name,'gpd-postgresql')].{Name:fullyQualifiedDomainName}" | head -1)
-else
-    # flexible-server
-    psql_server_name=$(az postgres flexible-server list -o tsv --query "[?contains(name,'pgflex')].{Name:name}" | head -1)
-    psql_server_private_fqdn=$(az postgres flexible-server list -o tsv --query "[?contains(name,'pgflex')].{Name:fullyQualifiedDomainName}" | head -1)
 fi
+
+# flexible-server
+psql_server_name=$(az postgres flexible-server list -o tsv --query "[?contains(name,'pgflex')].{Name:name}" | head -1)
+psql_server_private_fqdn=$(az postgres flexible-server list -o tsv --query "[?contains(name,'pgflex')].{Name:fullyQualifiedDomainName}" | head -1)
 
 # kv
 keyvault_name=$(az keyvault list -o tsv --query "[?contains(name,'gps')].{Name:name}")
@@ -60,16 +60,19 @@ if [ $SUBSCRIPTION == "DEV-pagoPA" ]; then
     # single-server
     administrator_login="$(az keyvault secret show --name pgres-admin-login --vault-name "${keyvault_name}" -o tsv --query value)@pagopa-d-gpd-postgresql"
     administrator_login_password=$(az keyvault secret show --name pgres-admin-pwd --vault-name "${keyvault_name}" -o tsv --query value)
-else
-    # flexible-server
-    administrator_login=$(az keyvault secret show --name pgres-admin-login --vault-name "${keyvault_name}" -o tsv --query value)
-    administrator_login_password=$(az keyvault secret show --name pgres-admin-pwd --vault-name "${keyvault_name}" -o tsv --query value)
 fi
+
+# flexible-server
+administrator_login=$(az keyvault secret show --name pgres-admin-login --vault-name "${keyvault_name}" -o tsv --query value)
+administrator_login_password=$(az keyvault secret show --name pgres-admin-pwd --vault-name "${keyvault_name}" -o tsv --query value)
 
 echo ${administrator_login}
 
 apd_user_password=$(az keyvault secret show --name db-apd-user-password --vault-name "${keyvault_name}" -o tsv --query value)
 apd_user=$(az keyvault secret show --name db-apd-user-name --vault-name "${keyvault_name}" -o tsv --query value)
+
+cdc_user_password=$(az keyvault secret show --name cdc-logical-replication-apd-pwd --vault-name "${keyvault_name}" -o tsv --query value)
+cdc_user=$(az keyvault secret show --name cdc-logical-replication-apd-user --vault-name "${keyvault_name}" -o tsv --query value)
 
 export ADMIN_USER="${administrator_login}"
 export FLYWAY_URL="jdbc:postgresql://${psql_server_private_fqdn}:5432/${DATABASE}?sslmode=require"
@@ -91,6 +94,18 @@ docker run --rm -it --network=host -v "${WORKDIR}/migrations/${SUBSCRIPTION}/${D
   -placeholders.admin="${ADMIN_USER}" \
   -placeholders.db_user="${APD_DB_USER}" \
   -placeholders.db_user_password="${APD_DB_PASS}" \
+  -placeholders.database="${DATABASE}" \
+  -placeholders.db_schema="${FLYWAY_SCHEMAS}" \
+  "${COMMAND}" ${other}
+
+# https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-logical#prerequisites-for-logical-replication-and-logical-decoding
+docker run --rm -it --network=host -v "${WORKDIR}/migrations/${SUBSCRIPTION}/${DATABASE}":/flyway/sql \
+  flyway/flyway:"${FLYWAY_DOCKER_TAG}" \
+  -url="${FLYWAY_URL}" -user="${FLYWAY_USER}" -password="${FLYWAY_PASSWORD}" \
+  -validateMigrationNaming=true \
+  -placeholders.admin="${ADMIN_USER}" \
+  -placeholders.db_user="${CDC_LOGICAL_REPLICATION_DB_USER}" \
+  -placeholders.db_user_password="${CDC_LOGICAL_REPLICATION_DB_PASS}" \
   -placeholders.database="${DATABASE}" \
   -placeholders.db_schema="${FLYWAY_SCHEMAS}" \
   "${COMMAND}" ${other}
