@@ -39,7 +39,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
   secret_permissions  = ["Get", "List", "Set", "Delete", ]
   storage_permissions = []
   certificate_permissions = [
@@ -56,7 +56,24 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_externals.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
+  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  storage_permissions = []
+  certificate_permissions = [
+    "Get", "List", "Update", "Create", "Import",
+    "Delete", "Restore", "Purge", "Recover"
+  ]
+}
+
+resource "azurerm_key_vault_access_policy" "adgroup_tpm_policy" {
+  count = var.env_short != "p" ? 1 : 0
+
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azuread_group.adgroup_tpm.object_id
+
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
   secret_permissions  = ["Get", "List", "Set", "Delete", ]
   storage_permissions = []
   certificate_permissions = [
@@ -123,3 +140,28 @@ resource "azurerm_key_vault_secret" "afm_calculator_subscription_key" {
   }
 }
 
+data "azurerm_key_vault" "kv_nodo" {
+  name                = "pagopa-${var.env_short}-nodo-kv"
+  resource_group_name = "pagopa-${var.env_short}-nodo-sec-rg"
+}
+
+data "azurerm_key_vault_secret" "db_cfg_password_read_ndp" {
+  name         = "db-cfg-password-read"
+  key_vault_id = data.azurerm_key_vault.kv_nodo.id
+}
+
+resource "azurerm_key_vault_secret" "db_cfg_password_read_ndp_du" {
+  name         = "db-cfg-password-read"
+  value        = data.azurerm_key_vault_secret.db_cfg_password_read_ndp.value
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "afm_fee_reporting_cosmos_pkey" {
+  name         = "afm-fee-reporting-${var.env_short}-cosmos-pkey"
+  value        = module.afm_marketplace_cosmosdb_account.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
