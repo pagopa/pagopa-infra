@@ -52,10 +52,10 @@ external_domain      = "NOT_USED"
 apim_dns_zone_prefix = "NOT_USED"
 
 # observability Ingestion cfg
-observability_storage_account_replication_type = "GZRS"
-enable_sa_backup                               = true
-cidr_subnet_observability_storage              = ["10.3.14.0/27"]
-cidr_subnet_observability_evh                  = ["10.3.14.32/27"]
+# observability_storage_account_replication_type = "GZRS" # Standard_GZRS, Kind: StorageV2 is not available in zone.
+enable_sa_backup                  = true
+cidr_subnet_observability_storage = ["10.3.14.0/27"]
+cidr_subnet_observability_evh     = ["10.3.14.32/27"]
 # <free>= ["10.3.14.64/27"]
 # <free>= ["10.3.14.96/27"]
 # <free>= ["10.3.14.128/27"]
@@ -76,7 +76,7 @@ ehns_zone_redundant           = true
 ehns_public_network_access       = false
 ehns_private_endpoint_is_present = true
 
-eventhubs_04 = [
+eventhubs = [
   {
     name              = "gec-ingestion-bundles-dl"
     partitions        = 32
