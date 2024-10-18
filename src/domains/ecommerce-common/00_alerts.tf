@@ -267,29 +267,26 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_user_stats_ser
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "[eCommerce] User stats service availability less that 99%"
-    custom_webhook_payload = "{}"
+    custom_webhook_payload = jsonencode({
+      //alert properties https://docs.opsgenie.com/docs/alert-api
+      "message"  = "[eCommerce] User stats service availability less that 99%"
+      "alias"    = "user-stats-service-availability"
+      "tags"     = "availability"
+      "entity"   = "eCommerce"
+      "priority" = "P3"
+    })
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "eCommerce User stats service availability less than 98% in the last 30 minutes detected"
+  description    = "eCommerce User stats service availability less that 99%"
   enabled        = true
   query = (<<-QUERY
-let thresholdTrafficMin = 200;
-let thresholdTrafficLinear = 500;
-let lowTrafficAvailability = 94;
-let highTrafficAvailability = 98;
-let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
-let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/ecommerce/user-stats-service/v1'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 and DurationMs < 500)
+    Success=countif(responseCode_d < 400 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
-| extend trafficUp = Total-thresholdTrafficMin
-| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
-| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
-| extend Availability=((Success * 1.0) / Total) * 100
-| where Availability < expectedAvailability
+| where toint(Availability) < 99
   QUERY
   )
   severity    = 1
@@ -297,6 +294,6 @@ AzureDiagnostics
   time_window = 30
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 10
+    threshold = 2
   }
 }
