@@ -270,7 +270,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_user_stats_ser
     custom_webhook_payload = jsonencode({
       //alert properties https://docs.opsgenie.com/docs/alert-api
       "message"  = "[eCommerce] User stats service availability less that 99%"
-      "alias"    = "user-stats-service-availability"
+      "alias"    = "ecommerce-user-stats-service-availability-alert"
       "tags"     = "availability"
       "entity"   = "eCommerce"
       "priority" = "P3"
