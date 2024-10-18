@@ -1,5 +1,5 @@
 <policies>
-  <when>
+  <inbound>
     <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
     <set-variable name="sub" value="@(context.Subscription.Name)" />
     <set-variable name="subid" value="@(context.Subscription.Id)" />
