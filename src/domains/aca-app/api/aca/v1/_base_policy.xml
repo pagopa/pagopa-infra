@@ -1,0 +1,73 @@
+<policies>
+    <inbound>
+      <!-- <base /> --> <!-- to avoid Nuova Connettività policy  -->
+      <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
+      <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
+      <set-backend-service base-url="@("https://${aca_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-aca-service")"/>
+      <!-- Calling Authorizer's fragment -->
+      <set-variable name="application_domain" value="aca" />
+      <set-variable name="metadata" value="no-metadata" />
+      <set-variable name="requestBody" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
+      <set-variable name="authorization_entity" value="@(context.Variables.GetValueOrDefault<JObject>("requestBody")["paFiscalCode"]?.ToString())" />
+      <choose>
+        <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
+        <when condition="@(context.Variables["authorization_entity"] != null)">
+          <include-fragment fragment-id="authorizer" />
+          <!-- ################################################################### -->
+          <!-- ##### GPD System: Extracting and validating segregation code ###### -->
+          <!-- ################################################################### -->
+          <!-- Extracting segregation code -->
+          <set-variable name="segregation_codes" value="@{
+                  string segregationCodes = "";
+            string[] metadataObjects = ((string) context.Variables["metadata"]).Split(new[] { ";;" }, StringSplitOptions.None);
+            string organizationId = ((string) context.Variables["authorization_entity"]);
+            bool found = false;
+            for (int i = 0; i < metadataObjects.Length && !found; i ++) {
+              string metadataObject = metadataObjects[i];
+              if (metadataObject.Contains("_seg")) {
+                string[] segregationCodeMap = (metadataObject.Split('=')[1]).Split(';');
+                for (int j = 0; j < segregationCodeMap.Length && !found; j++) {
+                  string[] splitString = segregationCodeMap[j].Split(':');
+                  found = splitString[0].Equals(organizationId);
+                  if (found) {
+                    segregationCodes = splitString[1];
+                  }
+                }
+              }
+            }
+            return segregationCodes;
+          }" />
+          <choose>
+            <when condition="@("".Equals(context.Variables["segregation_codes"]))">
+              <trace source="GPD-Payments External Policy for organizations" severity="information">
+                <message>No valid segregation codes associated with EC</message>
+              </trace>
+            </when>
+            <otherwise>
+              <!-- Add query parameter to the request -->
+              <set-query-parameter name="segregationCodes" exists-action="override">
+                <value>@((string) context.Variables["segregation_codes"])</value>
+              </set-query-parameter>
+            </otherwise>
+          </choose>
+          <!-- ################################################################### -->
+          <!-- ################################################################### -->
+        </when>
+        <otherwise>
+          <return-response>
+            <set-status code="400" reason="Bad Request" />
+            <set-body>@("The 'paFiscalCode' field is missing in the request body.")</set-body>
+          </return-response>
+        </otherwise>
+      </choose>
+    </inbound>
+    <outbound>
+      <!-- <base /> --> <!-- to avoid Nuova Connettività policy  -->
+    </outbound>
+    <backend>
+      <base />
+    </backend>
+    <on-error>
+      <!-- <base /> --> <!-- to avoid Nuova Connettività policy  -->
+    </on-error>
+  </policies>

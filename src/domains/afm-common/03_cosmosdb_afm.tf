@@ -175,3 +175,31 @@ module "afm_marketplace_cosmosdb_containers" {
 
   autoscale_settings = contains(var.afm_marketplace_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }
+
+# private_endpoint subresource_names analytical
+# resource "azurerm_private_endpoint" "afm_cosmos_analytical_private_endpoint" {
+#   count = var.env_short == "d" ? 0 : 1
+
+#   name                = format("%s-analytical-private-endpoint", local.project)
+#   location            = var.location
+#   resource_group_name = azurerm_resource_group.afm_rg.name
+#   subnet_id           = module.afm_marketplace_cosmosdb_snet.id
+
+#   private_dns_zone_group {
+#     name                 = "${local.project}-analytical-cosmos-private-dns-zone-group"
+#     private_dns_zone_ids = [data.azurerm_private_dns_zone.cosmos.id]
+#   }
+
+#   private_service_connection {
+#     name                           = "${local.project}-analytical-cosmos-private-service-connection"
+#     private_connection_resource_id = module.afm_marketplace_cosmosdb_account.id
+#     is_manual_connection           = false
+#     subresource_names              = ["Analytical"]
+#   }
+
+#   tags = var.tags
+
+#   depends_on = [
+#     module.afm_marketplace_cosmosdb_account
+#   ]
+# }

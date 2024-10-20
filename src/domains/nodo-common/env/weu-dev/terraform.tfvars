@@ -208,16 +208,20 @@ wisp_converter_cosmos_nosql_db_params = {
 
   backup_continuous_enabled = false
 
-  data_ttl                   = 259200 # 3 days in second
-  data_max_throughput        = 400
-  re_ttl                     = 259200 # 3 days in second
-  re_max_throughput          = 400
-  receipt_ttl                = 259200 # 3 days in second
-  receipt_max_throughput     = 400
-  idempotency_ttl            = 259200 # 3 days in second
-  idempotency_max_throughput = 400
-  rt_ttl                     = 259200 # 3 days in second
-  rt_max_throughput          = 400
+  data_ttl                           = 259200 # 3 days in second
+  data_max_throughput                = 400
+  re_ttl                             = 259200 # 3 days in second
+  re_max_throughput                  = 400
+  receipt_ttl                        = 259200 # 3 days in second
+  receipt_max_throughput             = 400
+  receipt_dead_letter_ttl            = 259200 # 3 days in second
+  receipt_dead_letter_max_throughput = 400
+  idempotency_ttl                    = 259200 # 3 days in second
+  idempotency_max_throughput         = 400
+  rt_ttl                             = 259200 # 3 days in second
+  rt_max_throughput                  = 400
+  configuration_ttl                  = -1
+  configuration_max_throughput       = 400
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
@@ -325,6 +329,30 @@ service_bus_wisp_queues = [
     keys = [
       {
         name   = "wisp_converter_payment_timeout"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name                = "nodo_wisp_ecommerce_hang_timeout_queue"
+    enable_partitioning = true
+    keys = [
+      {
+        name   = "nodo_wisp_ecommerce_hang_timeout_queue"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name                = "nodo_wisp_rpt_timeout_queue"
+    enable_partitioning = true
+    keys = [
+      {
+        name   = "nodo_wisp_rpt_timeout_queue"
         listen = true
         send   = true
         manage = false

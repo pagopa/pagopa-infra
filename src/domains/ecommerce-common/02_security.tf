@@ -257,18 +257,6 @@ resource "azurerm_key_vault_secret" "notifications_service_api_key" {
   }
 }
 
-resource "azurerm_key_vault_secret" "payment_transactions_gateway_api_key" {
-  name         = "payment-transactions-gateway-api-key"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
 resource "azurerm_key_vault_secret" "payment_method_api_key" {
   name         = "payment-method-api-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
@@ -488,6 +476,19 @@ resource "azurerm_key_vault_secret" "node_forwarder_api_key" {
 
 resource "azurerm_key_vault_secret" "transactions_service_auth_update_api_key" {
   name         = "transactions-service-auth-update-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+
+resource "azurerm_key_vault_secret" "user_stats_for_event_dispatcher_api_key" {
+  name         = "user-stats-for-event-dispatcher-api-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 

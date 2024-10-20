@@ -743,15 +743,15 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "93.63.219.230",  # PagoPA on prem VPN
     "93.63.219.234",  # PagoPA on prem VPN DR
     "20.93.160.60",   # CSTAR
-    "213.215.138.80", # Softlab L1 Pagamenti VPN
-    "213.215.138.79", # Softlab L1 Pagamenti VPN
-    "82.112.220.178", # Softlab L1 Pagamenti VPN
-    "77.43.17.42",    # Softlab L1 Pagamenti VPN
-    "151.2.45.1",     # Softlab L1 Pagamenti VPN
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DSIMESSO
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
     "193.203.230.21", # VPN NEXI
-    "151.1.203.68"    # Softlab L1 backup
+    "2.33.87.3"       # Nuovo senzanome
   ]
 }
 
@@ -783,4 +783,17 @@ monitor_env_test_urls = [
     host = "uat.wisp2.pagopa.gov.it",
     path = "",
   }
+]
+
+app_gateway_allowed_paths_upload = [
+  "/upload/gpd/.*",
+  "/nodo-auth/node-for-psp/.*",
+  "/nodo-auth/nodo-per-psp/.*",
+  "/nodo/nodo-per-psp/.*",
+  "/nodo/nodo-per-pa/.*",
+  "/nodo-auth/nodo-per-pa/.*",
+  "/nodo-auth/node-for-pa/.*",
+  "/nodo/node-for-psp/.*",
+  "/fdr-legacy/nodo-per-pa/.*",
+  "/fdr-psp/.*" # Added temporarily as workaround for bug https://pagopa.atlassian.net/browse/PAGOPA-2263
 ]

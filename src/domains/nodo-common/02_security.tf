@@ -28,10 +28,28 @@ data "azurerm_servicebus_queue_authorization_rule" "wisp_payment_timeout_authori
   depends_on = [azurerm_servicebus_queue.service_bus_wisp_queue]
 }
 
+data "azurerm_servicebus_queue_authorization_rule" "nodo_wisp_ecommerce_hang_timeout_queue" {
+  name                = "nodo_wisp_ecommerce_hang_timeout_queue"
+  resource_group_name = local.sb_resource_group_name
+  queue_name          = "nodo_wisp_ecommerce_hang_timeout_queue"
+  namespace_name      = "${local.project}-servicebus-wisp"
+
+  depends_on = [azurerm_servicebus_queue.service_bus_wisp_queue]
+}
+
 data "azurerm_servicebus_queue_authorization_rule" "wisp_paainviart_authorization" {
   name                = "wisp_converter_paainviart"
   resource_group_name = local.sb_resource_group_name
   queue_name          = "nodo_wisp_paainviart_queue"
+  namespace_name      = "${local.project}-servicebus-wisp"
+
+  depends_on = [azurerm_servicebus_queue.service_bus_wisp_queue]
+}
+
+data "azurerm_servicebus_queue_authorization_rule" "wisp_rpt_timeout_queue" {
+  name                = "nodo_wisp_rpt_timeout_queue"
+  resource_group_name = local.sb_resource_group_name
+  queue_name          = "nodo_wisp_rpt_timeout_queue"
   namespace_name      = "${local.project}-servicebus-wisp"
 
   depends_on = [azurerm_servicebus_queue.service_bus_wisp_queue]
@@ -204,11 +222,139 @@ resource "azurerm_key_vault_secret" "wisp_payment_timeout_key" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "ecommerce_hang_timeout_key" {
+  count = var.create_wisp_converter ? 1 : 0
+
+  name         = "ecommerce-hang-timer-queue-connection-string"
+  value        = data.azurerm_servicebus_queue_authorization_rule.nodo_wisp_ecommerce_hang_timeout_queue.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 resource "azurerm_key_vault_secret" "wisp_paainviart_key" {
   count = var.create_wisp_converter ? 1 : 0
 
   name         = "wisp-paainviart-queue-connection-string"
   value        = data.azurerm_servicebus_queue_authorization_rule.wisp_paainviart_authorization.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "wisp_rpt_timeout_key" {
+  count = var.create_wisp_converter ? 1 : 0
+
+  name         = "wisp-rpt-timeout-queue-connection-string"
+  value        = data.azurerm_servicebus_queue_authorization_rule.wisp_rpt_timeout_queue.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+
+/*****************
+Integration tests
+*****************/
+# Subscription key taken from Node Forwarder product and used for integration tests
+data "azurerm_api_management_product" "apim_forwarder_product" {
+  product_id          = "nodo-auth"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+resource "azurerm_api_management_subscription" "integration_test_forwarder_subscription_key" {
+  count               = var.env_short != "p" ? 1 : 0
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_forwarder_product.id
+  display_name  = "Subscription key from Nuova Connettivita for integration test"
+  allow_tracing = false
+  state         = "active"
+}
+resource "azurerm_key_vault_secret" "integration_test_forwarder_subscription_key_kv" {
+  count        = var.env_short != "p" ? 1 : 0
+  depends_on   = [azurerm_api_management_subscription.integration_test_forwarder_subscription_key[0]]
+  name         = "integration-test-forwarder-subscription-key"
+  value        = azurerm_api_management_subscription.integration_test_forwarder_subscription_key[0].primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+# Subscription key taken from GPD product and used for integration tests
+data "azurerm_api_management_product" "apim_gpd_product" {
+  product_id          = "product-gpd"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+resource "azurerm_api_management_subscription" "integration_test_gpd_subscription_key" {
+  count               = var.env_short != "p" ? 1 : 0
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_gpd_product.id
+  display_name  = "Subscription key from GPD-core for integration test"
+  allow_tracing = false
+  state         = "active"
+}
+resource "azurerm_key_vault_secret" "integration_test_gpd_subscription_key_kv" {
+  count        = var.env_short != "p" ? 1 : 0
+  depends_on   = [azurerm_api_management_subscription.integration_test_gpd_subscription_key[0]]
+  name         = "integration-test-gpd-subscription-key"
+  value        = azurerm_api_management_subscription.integration_test_gpd_subscription_key[0].primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+# Subscription key taken from Nodo dei Pagamenti product and used for integration tests
+data "azurerm_api_management_product" "apim_nodo_dei_pagamenti_product" {
+  product_id          = "nodo"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+resource "azurerm_api_management_subscription" "integration_test_nodo_subscription_key" {
+  count               = var.env_short != "p" ? 1 : 0
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_nodo_dei_pagamenti_product.id
+  display_name  = "Subscription key from Nodo dei Pagamenti for integration test"
+  allow_tracing = false
+  state         = "active"
+}
+resource "azurerm_key_vault_secret" "integration_test_nodo_subscription_key_kv" {
+  count        = var.env_short != "p" ? 1 : 0
+  depends_on   = [azurerm_api_management_subscription.integration_test_nodo_subscription_key[0]]
+  name         = "integration-test-nodo-subscription-key"
+  value        = azurerm_api_management_subscription.integration_test_nodo_subscription_key[0].primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+# Subscription key taken from Technical Support APIs product and used for integration tests
+data "azurerm_api_management_product" "apim_technical_support_product" {
+  product_id          = "technical_support_api"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+resource "azurerm_api_management_subscription" "integration_test_technical_support_subscription_key" {
+  count               = var.env_short != "p" ? 1 : 0
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_technical_support_product.id
+  display_name  = "Subscription key from Nodo dei Pagamenti for integration test"
+  allow_tracing = false
+  state         = "active"
+}
+resource "azurerm_key_vault_secret" "integration_test_technical_support_subscription_key_kv" {
+  count        = var.env_short != "p" ? 1 : 0
+  depends_on   = [azurerm_api_management_subscription.integration_test_technical_support_subscription_key[0]]
+  name         = "integration-test-technicalsupport-subscription-key"
+  value        = azurerm_api_management_subscription.integration_test_technical_support_subscription_key[0].primary_key
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id

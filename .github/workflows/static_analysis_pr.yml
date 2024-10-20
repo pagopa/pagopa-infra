@@ -13,81 +13,16 @@ jobs:
       - run: |
           rm -rf *
 
-      - name: ⏬ Checkout Repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: 🔨 Get Modified Paths
         id: get-paths
-        run: |
-          #
-          # Discover only the paths changed inside src and src/domains, between my current branch and origin/main
-          #
-          echo "get current branch"
-          current_branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
-          echo "current branch: $current_branch"
-          echo "get git diff"
-          git diff --name-only $current_branch origin/main --output=/tmp/diff.txt
-          echo "get modified paths from source"
-          # i'm using echo because using grep directly fails. it produces an invalid output that breaks the variable assignment
-          source_count=$(echo "$(grep -v 'domains' /tmp/diff.txt | wc -l )")
-          echo "source count: $source_count"
-          if [[ $source_count -eq 0 ]]
-          then
-            echo "in source if true"
-            modified_paths_source=""
-          else
-            echo "in source if false"
-            modified_paths_source=$(grep -v 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2 | uniq )
-          fi
-
-          echo "modified_paths_source: $modified_paths_source"
-
-          echo "get modified paths from domains"
-          # i'm using echo because using grep directly fails. it produces an invalid output that breaks the variable assignment
-          domains_count=$(echo "$(grep 'domains' /tmp/diff.txt | wc -l )")
-          echo "domains count: $domains_count"
-          if [ $domains_count -eq 0 ]
-          then
-            echo "in domains if true"
-            modified_paths_domains=""
-          else
-            echo "in domains if false"
-            modified_paths_domains=$( grep 'domains' /tmp/diff.txt | grep '/' | cut -d '/' -f 1,2,3 | uniq )
-          fi
-          echo "modified_paths_domains: $modified_paths_domains"
-
-          echo "merge paths"
-          modified_paths="$modified_paths_source $modified_paths_domains .github"
-          echo "📌 modified_paths"
-          #
-          # This is the only way to pass a string with paths to other step without error, usign env the paths force an error
-          #
-          echo "$modified_paths" > "/tmp/paths.txt"
-
-        shell: bash
-
-      - name: ⏬ Download only changed folders
-        id: download
-        shell: bash
-        run: |
-          #
-          # This allow to read all the paths and download only the changed folders
-          #
-          PAGOPA_MULTIPLE_FOLDERS=$(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
-          echo $PAGOPA_MULTIPLE_FOLDERS
-          git sparse-checkout init --cone
-          git sparse-checkout set $PAGOPA_MULTIPLE_FOLDERS
-          git checkout
-
-#      - name: Checkout Modified Paths
-#        uses: actions/checkout@v4
-#        with:
-#          sparse-checkout: |
-#            $(fold -w $(wc -L < "/tmp/paths.txt") < "/tmp/paths.txt")
+        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@v1.19.0
+        with:
+          start_folder: "src"
+          default_end_folder_depth: 3
+          include_patterns: "src,domains"
 
       - name: 👀 See folders downloaded
+        if: env.dir_changes_detected == 'true'
         id: see
         shell: bash
         run: |
@@ -95,8 +30,7 @@ jobs:
           du -h -d 3 .
 
       - name: Static Analysis
+        if: env.dir_changes_detected == 'true'
         uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@v1.14.1
         with:
           precommit_version: 'v1.89.1@sha256:1ea921bc4fe87651d41677218e537afdcdb8202e757e554b9866668eaba144c5'
-
-

@@ -1,0 +1,45 @@
+<!--
+    IMPORTANT:
+    - Policy fragment are included as-is whenever they are referenced.
+    - If using variables. Ensure they are setup before use.
+    - Copy and paste your code here or simply start coding
+-->
+<fragment>
+  <choose>
+    <!-- is_whitelisted is set in decoupler-algorithm policy (product policy) -->
+    <when condition="@( context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && context.Variables.GetValueOrDefault<bool>("is_whitelisted", false) )">
+    <set-variable name="wisp_sessionId" value="@{
+            try {
+                XElement doc = context.Response.Body.As<XElement>(preserveContent: true);
+                XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+                XElement primitive = (XElement) body.FirstNode;
+                string url = (string) primitive.Descendants("url").FirstOrDefault();
+                string sessionId = System.Text.RegularExpressions.Regex.Match(url, @"idSession=([^&]+)").Groups[1].Value;
+    return sessionId;
+    } catch (Exception e) {
+    return "NONE";
+    }
+    }" />
+    <choose>
+      <when condition="@(!((string)context.Variables["wisp_sessionId"]).Equals("NONE"))">
+      <cache-store-value key="@("wisp_timer_hang_" + (string)context.Variables["wisp_sessionId"])" value="@(DateTime.UtcNow.AddSeconds({{wisp-checkout-predefined-expiration-time}}).ToString())" duration="{{wisp-checkout-predefined-expiration-time}}" caching-type="external" />
+      <!-- set rpt/timer to check if redirect will be executed successfully -->
+      <send-request mode="new" response-variable-name="rpt-timer-create-response" timeout="5" ignore-error="true">
+        <set-url>{{wisp-dismantling-converter-base-url}}/rpt/timer</set-url>
+        <set-method>POST</set-method>
+        <set-header name="Content-Type" exists-action="override">
+          <value>application/json</value>
+        </set-header>
+        <set-body>
+          @{
+          return new JObject(
+          new JProperty("sessionId", (string) context.Variables["wisp_sessionId"])
+          ).ToString();
+          }
+        </set-body>
+      </send-request>
+    </when>
+  </choose>
+</when>
+  </choose>
+  </fragment>

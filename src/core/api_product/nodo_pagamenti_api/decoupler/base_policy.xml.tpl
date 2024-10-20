@@ -101,10 +101,12 @@
       <!-- load primitives from the related named valued -->
       <set-variable name="primitives" value="{{node-decoupler-primitives}}" />
       <set-variable name="wispDismantlingPrimitives" value="{{wisp-dismantling-primitives}}" />
+      <set-variable name="wispDismantlingRTPrimitives" value="{{wisp-dismantling-rt-primitives}}" />
       <set-variable name="soapAction" value="@(((string)context.Request.Headers.GetValueOrDefault("SOAPAction","")).Replace("\"",""))" />
 <set-variable name="primitiveType" value="@{
             string[] primitives = ((string) context.Variables["primitives"]).Split(',');
             string[] wispDismantlingPrimitives = ((string) context.Variables["wispDismantlingPrimitives"]).Split(',');
+            string[] wispDismantlingRTPrimitives = ((string) context.Variables["wispDismantlingRTPrimitives"]).Split(',');
 
             string verifyPaymentNotice = "verifyPaymentNotice";
             string[] activatePayment = new string[] {"activatePaymentNotice", "activateIOPayment", "activatePaymentNoticeV2"};
@@ -122,14 +124,22 @@
             else if (wispDismantlingPrimitives.Contains(soapAction)) {
                 return "OTHER_WISPDISMANTLING";
             }
+            else if (wispDismantlingRTPrimitives.Contains(soapAction)) {
+                return "OTHER_WISPDISMANTLING_COPIA_RT";
+            }
             return "NOTSET";
         }" />
 <!-- apply algorithm logic -->
+<choose>
+      <when condition="@(((string)context.Variables["primitiveType"]).Equals("OTHER_WISPDISMANTLING"))">
+        <include-fragment fragment-id="wisp-batch-migration" />
+      </when>
+</choose>
 <include-fragment fragment-id="decoupler-algorithm" />
 
 <!-- set backend service url -->
 <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
-
+<include-fragment fragment-id="decoupler-activate-inbound" />
 </inbound>
 <backend>
 <base/>
