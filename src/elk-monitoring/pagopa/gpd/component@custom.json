@@ -1,0 +1,15 @@
+{
+  "template": {
+    "settings": {
+      "index": {
+        "default_pipeline": "${pipeline}",
+        "lifecycle": {
+          "name": "${lifecycle}"
+        }
+      }
+    }
+  },
+  "_meta": {
+    "description": "Settings for ${pipeline}"
+  }
+}
