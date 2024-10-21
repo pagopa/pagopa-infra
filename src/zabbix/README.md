@@ -1,7 +1,7 @@
 # zabbix
 
 <!-- markdownlint-disable -->
-<!-- BEGIN_TF_DOCS -->
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
@@ -9,14 +9,6 @@
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.85.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.8.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.17.0 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.47.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.85.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.6.0 |
 
 ## Modules
 
@@ -56,15 +48,15 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_cidr_subnet_pg_flex_zabbix"></a> [cidr\_subnet\_pg\_flex\_zabbix](#input\_cidr\_subnet\_pg\_flex\_zabbix) | values for cidr\_subnet\_pg\_flex\_zabbix | `list(any)` | n/a | yes |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
-| <a name="input_enabled_resource"></a> [enabled\_resource](#input\_enabled\_resource) | Feature flags | <pre>object({<br/>    zabbix_kv_enabled      = optional(bool, false),<br/>    zabbix_pgflexi_enabled = optional(bool, false),<br/>  })</pre> | n/a | yes |
+| <a name="input_enabled_resource"></a> [enabled\_resource](#input\_enabled\_resource) | Feature flags | <pre>object({<br>    zabbix_kv_enabled      = optional(bool, false),<br>    zabbix_pgflexi_enabled = optional(bool, false),<br>  })</pre> | n/a | yes |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 
 ## Outputs
 
 No outputs.
-<!-- END_TF_DOCS -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
