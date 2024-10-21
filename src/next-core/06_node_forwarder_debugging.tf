@@ -134,7 +134,7 @@ module "node_forwarder_dbg_app_service" {
   allowed_subnets = [module.apim_snet.id]
   allowed_ips     = []
 
-  sku_name = "P3v2"
+  sku_name = "P3v3"
 
   subnet_id                    = false ? module.node_forwarder_dbg_ha_snet[0].id : module.node_forwarder_dbg_snet[0].id
   health_check_maxpingfailures = 10
