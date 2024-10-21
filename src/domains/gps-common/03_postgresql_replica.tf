@@ -28,7 +28,7 @@ module "postgresql_gpd_replica_db" {
   count  = var.geo_replica_enabled ? 1 : 0
 
   name                = "${local.project_replica}-pgflex"
-  resource_group_name = data.azurerm_resource_group.flex_data[0].name
+  resource_group_name = azurerm_resource_group.flex_data.name
   location            = var.location_replica
 
   private_dns_zone_id      = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
@@ -40,7 +40,7 @@ module "postgresql_gpd_replica_db" {
   high_availability_enabled = false
   pgbouncer_enabled         = var.pgres_flex_params.pgbouncer_enabled
 
-  source_server_id = module.postgres_flexible_server_private[0].id
+  source_server_id = module.postgres_flexible_server_private.id
 
   diagnostic_settings_enabled = false
 
@@ -52,8 +52,8 @@ module "postgresql_gpd_replica_db" {
 resource "null_resource" "virtual_endpoint" {
   count = var.geo_replica_enabled ? 1 : 0
   triggers = {
-    rg_name             = data.azurerm_resource_group.flex_data[0].name
-    primary_server_name = module.postgres_flexible_server_private[0].name
+    rg_name             = azurerm_resource_group.flex_data.name
+    primary_server_name = module.postgres_flexible_server_private.name
     ve_name             = "${local.project}-pgflex-ve"
     member_name         = module.postgresql_gpd_replica_db[0].name
   }
