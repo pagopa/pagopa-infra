@@ -58,7 +58,7 @@ stages:
         parameters:
           ENV: "dev"
           USE_LOCATION: True
-          ENV_LOCATION: weu
+          ENV_LOCATION: "weu"
           WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
           WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
@@ -74,7 +74,7 @@ stages:
         parameters:
           ENV: "uat"
           USE_LOCATION: True
-          ENV_LOCATION: weu
+          ENV_LOCATION: "weu"
           WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
           WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
@@ -91,7 +91,7 @@ stages:
         parameters:
           ENV: "prod"
           USE_LOCATION: True
-          ENV_LOCATION: weu
+          ENV_LOCATION: "weu"
           WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
           WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
