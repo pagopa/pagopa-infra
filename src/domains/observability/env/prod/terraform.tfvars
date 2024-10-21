@@ -180,6 +180,32 @@ eventhubs = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "payment-wallet-ingestion-dl"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["payment-wallet-evt-rx", "payment-wallet-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "payment-wallet-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "payment-wallet-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "payment-wallet-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 
