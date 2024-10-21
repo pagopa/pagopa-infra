@@ -22,7 +22,7 @@ module "afm_marketplace_cosmosdb_snet" {
 }
 
 module "afm_marketplace_cosmosdb_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.51.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=add-analytical_storage_enabled-2-cosmos"
 
   name                = "${local.project}-marketplace-cosmos-account"
   location            = var.location
@@ -33,6 +33,8 @@ module "afm_marketplace_cosmosdb_account" {
   kind             = var.afm_marketplace_cosmos_db_params.kind
   capabilities     = var.afm_marketplace_cosmos_db_params.capabilities
   enable_free_tier = var.afm_marketplace_cosmos_db_params.enable_free_tier
+  
+  analytical_storage_enabled = true
 
   public_network_access_enabled      = var.afm_marketplace_cosmos_db_params.public_network_access_enabled
   private_endpoint_enabled           = var.afm_marketplace_cosmos_db_params.private_endpoint_enabled
