@@ -1,5 +1,5 @@
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -9,6 +9,13 @@
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.25.1 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | <= 2.2.3 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.64.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.25.1 |
 
 ## Modules
 
@@ -48,7 +55,7 @@
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_velero_backup_sa_replication_type"></a> [velero\_backup\_sa\_replication\_type](#input\_velero\_backup\_sa\_replication\_type) | (Optional) backup storage account replication type | `string` | `"GZRS"` | no |
 | <a name="input_velero_backup_schedule"></a> [velero\_backup\_schedule](#input\_velero\_backup\_schedule) | (Optional) cron expression defining when to run the backups, expressed in UTC | `string` | `"0 3 * * *"` | no |
 | <a name="input_velero_backup_single_namespace_schedule"></a> [velero\_backup\_single\_namespace\_schedule](#input\_velero\_backup\_single\_namespace\_schedule) | (Optional) cron expression defining when to run the backups, expressed in UTC | `string` | `"0 2 * * *"` | no |
@@ -59,4 +66,4 @@
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
