@@ -1,7 +1,7 @@
 # checkout-common
 
 <!-- markdownlint-disable -->
-<!-- BEGIN_TF_DOCS -->
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
@@ -11,12 +11,6 @@
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.94.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | <= 2.5.1 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | <= 0.11.1 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.94.0 |
 
 ## Modules
 
@@ -71,9 +65,9 @@
 | <a name="input_redis_private_endpoint_enabled"></a> [redis\_private\_endpoint\_enabled](#input\_redis\_private\_endpoint\_enabled) | Enable private endpoints for redis instances? | `bool` | `true` | no |
 | <a name="input_redis_version"></a> [redis\_version](#input\_redis\_version) | (Optional) redis version | `string` | `"6"` | no |
 | <a name="input_redis_zones"></a> [redis\_zones](#input\_redis\_zones) | (Required) redis deployment zones | `list(number)` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 
 ## Outputs
 
 No outputs.
-<!-- END_TF_DOCS -->
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
