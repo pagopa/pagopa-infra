@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "eventhub_observability_rg" {
 
 module "eventhub_namespace_observability" {
   source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v8.22.0"
-  name                     = "${local.project}-evh"
+  name                     = "${local.project_itn}-evh"
   location                 = var.location_itn
   resource_group_name      = azurerm_resource_group.eventhub_observability_rg.name
   auto_inflate_enabled     = var.ehns_auto_inflate_enabled
