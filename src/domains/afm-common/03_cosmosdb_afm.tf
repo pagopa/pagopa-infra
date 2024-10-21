@@ -52,11 +52,6 @@ module "afm_marketplace_cosmosdb_account" {
   enable_automatic_failover = true
   ip_range                  = ""
 
-  # add data.azurerm_subnet.<my_service>.id
-
-  # private endpoint
-  # private_endpoint_name    = "${local.project}-marketplace-cosmos-sql-endpoint"
-
   tags = var.tags
 }
 
