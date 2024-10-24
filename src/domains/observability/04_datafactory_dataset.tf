@@ -26,3 +26,41 @@ resource "azurerm_data_factory_custom_dataset" "qi_datasets" {
   }
 
 }
+
+############# CDC INGESTION GEC DATASETS #################################
+data "azurerm_data_factory" "obeserv_data_factory" {
+  name                = "pagopa-${var.env_short}-${var.location_short}-nodo-df"
+  resource_group_name = "pagopa-${var.env_short}-${var.location_short}-nodo-df-rg"
+}
+
+resource "azurerm_data_factory_dataset_azure_blob" "pdnd_cdc_gec_bundles_json" {
+  name                = "PDND_CDC_GEC_BUNDLES_JSON_Dataset"
+  data_factory_id     = azurerm_data_factory.obeserv_data_factory.id
+  linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.fm_gec_storage_linked_service.name
+
+  folder = "PDND_CDC_GEC_DATASETS"
+}
+
+resource "azurerm_data_factory_dataset_azure_blob" "pdnd_cdc_gec_cibundles_json" {
+  name                = "PDND_CDC_GEC_CIBUNDLES_JSON_Dataset"
+  data_factory_id     = azurerm_data_factory.obeserv_data_factory.id
+  linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.fm_gec_storage_linked_service.name
+
+  folder = "PDND_CDC_GEC_DATASETS"
+}
+
+resource "azurerm_data_factory_dataset_azure_blob" "pdnd_cdc_gec_touchpoints_json" {
+  name                = "PDND_CDC_GEC_TUCHPOINTS_JSON_Dataset"
+  data_factory_id     = azurerm_data_factory.obeserv_data_factory.id
+  linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.fm_gec_storage_linked_service.name
+
+  folder = "PDND_CDC_GEC_DATASETS"
+}
+
+resource "azurerm_data_factory_dataset_azure_blob" "pdnd_cdc_gec_paymenttypes_json" {
+  name                = "PDND_CDC_GEC_PAYMENTTYPES_JSON_Dataset"
+  data_factory_id     = azurerm_data_factory.obeserv_data_factory.id
+  linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.fm_gec_storage_linked_service.name
+
+  folder = "PDND_CDC_GEC_DATASETS"
+}
