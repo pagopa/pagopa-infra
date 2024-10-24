@@ -40,6 +40,7 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'dev'
+        ENV_FOLDER: 'weu-dev'
         WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
         WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
         DOMAIN_NAME: 'aca'
@@ -55,6 +56,7 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'uat'
+        ENV_FOLDER: 'weu-uat'
         WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
         WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
         DOMAIN_NAME: 'aca'
@@ -70,6 +72,7 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'prod'
+        ENV_FOLDER: 'weu-prod'
         WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
         WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
         DOMAIN_NAME: 'aca'
