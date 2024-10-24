@@ -145,7 +145,6 @@ resource "azurerm_api_management_named_value" "pay_wallet_family_friends_user_id
   }
 }
 
-
 #######################################################################
 ## Fragment policy to extract user id from session token             ##
 #######################################################################
