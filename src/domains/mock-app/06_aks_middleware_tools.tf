@@ -1,6 +1,6 @@
 
 module "tls_checker" {
-  count  = var.env_short == "d" ? 1 : 0
+  count  = var.mock_enabled ? 1 : 0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v6.7.0"
 
   https_endpoint                                            = local.mock_hostname
@@ -21,7 +21,7 @@ module "tls_checker" {
 }
 
 resource "helm_release" "cert_mounter" {
-  count        = var.env_short == "d" ? 1 : 0
+  count        = var.mock_enabled ? 1 : 0
   name         = "cert-mounter-blueprint"
   repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
   chart        = "cert-mounter-blueprint"
@@ -43,7 +43,7 @@ resource "helm_release" "cert_mounter" {
 }
 
 resource "helm_release" "reloader" {
-  count      = var.env_short == "d" ? 1 : 0
+  count      = var.mock_enabled ? 1 : 0
   name       = "reloader"
   repository = "https://stakater.github.io/stakater-charts"
   chart      = "reloader"
