@@ -54,6 +54,13 @@ data "azuread_service_principal" "iac_principal" {
   display_name = "pagopaspa-pagoPA-iac-${data.azurerm_subscription.current.subscription_id}"
 }
 
+data "azurerm_eventhub_authorization_rule" "event_hub_connection_string" {
+  name                = "payment-wallet-evt-tx"
+  namespace_name      = "pagopa-${var.env_short}-itn-observ-evh"
+  eventhub_name       = "payment-wallet-ingestion-dl"
+  resource_group_name = "pagopa-${var.env_short}-itn-observ-evh-rg"
+}
+
 resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   count        = var.enable_iac_pipeline ? 1 : 0
   key_vault_id = module.key_vault.id
@@ -90,6 +97,12 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 resource "azurerm_key_vault_secret" "redis_wallet_password" {
   name         = "redis-wallet-password"
   value        = module.pagopa_pay_wallet_redis[0].primary_access_key
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "event_hub_connection_string" {
+  name         = "event-hub-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.event_hub_connection_string.primary_connection_string
   key_vault_id = module.key_vault.id
 }
 
