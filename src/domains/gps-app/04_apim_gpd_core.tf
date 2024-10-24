@@ -113,7 +113,7 @@ module "apim_debt_positions_product" {
 module "apim_gpd_for_aca_product" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
 
-  product_id   = "gpd_for_aca"
+  product_id   = "gpd-for-aca"
   display_name = "GPD for ACA pagoPA"
   description  = "Product GPD for A.C.A. pagoPA"
 
