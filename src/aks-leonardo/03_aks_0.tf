@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "rg_aks" {
 }
 
 module "aks_leonardo" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.20.1"
+  source = "./.terraform/modules/__v3__/kubernetes_cluster"
 
   name                       = local.aks_cluster_name
   location                   = var.location
@@ -30,6 +30,9 @@ module "aks_leonardo" {
   system_node_pool_only_critical_addons_enabled = var.aks_system_node_pool.only_critical_addons_enabled
   system_node_pool_node_labels                  = var.aks_system_node_pool.node_labels
   system_node_pool_tags                         = var.aks_system_node_pool.node_tags
+
+  workload_identity_enabled = var.env_short == "d" ? true : false
+  oidc_issuer_enabled = var.env_short == "d" ? true : false
 
   #
   # ☁️ Network
