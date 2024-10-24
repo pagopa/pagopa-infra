@@ -255,3 +255,45 @@ AzureDiagnostics
     threshold = 2
   }
 }
+
+# eCommerce user stats service availability
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_user_stats_service_availability_alert" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "ecommerce-user-stats-service-availability-alert"
+  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "[eCommerce] User stats service availability less that 99%"
+    custom_webhook_payload = jsonencode({
+      //alert properties https://docs.opsgenie.com/docs/alert-api
+      "message"  = "[eCommerce] User stats service availability less that 99%"
+      "alias"    = "ecommerce-user-stats-service-availability-alert"
+      "tags"     = "availability"
+      "entity"   = "eCommerce"
+      "priority" = "P3"
+    })
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "eCommerce User stats service availability less that 99%"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s startswith 'https://api.platform.pagopa.it/ecommerce/user-stats-service/v1'
+| summarize
+    Total=count(),
+    Success=countif(responseCode_d < 400 and DurationMs < 250)
+    by Time = bin(TimeGenerated, 15m)
+| where toint(Availability) < 99
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
