@@ -56,7 +56,7 @@ data "azuread_service_principal" "iac_principal" {
 
 data "azurerm_eventhub_authorization_rule" "sender_evt_tx_event_hub_connection_string" {
   name                = "payment-wallet-evt-tx"
-  namespace_name      = "pagopa-${var.env_short}-itn-observ-evh"
+  namespace_name      = "${local.product}-observ-evh"
   eventhub_name       = "payment-wallet-ingestion-dl"
   resource_group_name = "pagopa-${var.env_short}-itn-observ-evh-rg"
 }
