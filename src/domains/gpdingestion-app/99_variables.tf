@@ -156,3 +156,98 @@ variable "pod_disruption_budgets" {
   description = "Pod disruption budget for domain namespace"
   default     = {}
 }
+
+variable "zookeeper_replicas" {
+  type = number
+  description = "Zookeeper Replicas"
+  default = 1
+}
+
+variable "zookeeper_request_memory" {
+  type = string
+  description = "Zookeeper Request Memory"
+  default = "512m"
+}
+
+variable "zookeeper_request_cpu" {
+  type = string
+  description = "Zookeeper Request CPU"
+  default = "0.5"
+}
+
+variable "zookeeper_limits_memory" {
+  type = string
+  description = "Zookeeper Limit Memory"
+  default = "512mi"
+}
+
+variable "zookeeper_limits_cpu" {
+  type = string
+  description = "Zookeeper Limit CPU"
+  default = "0.5"
+}
+
+variable "zookeeper_jvm_xms" {
+  type = string
+  description = "Zookeeper Jvm Xms"
+  default = "512mi"
+}
+
+variable "zookeeper_jvm_xmx" {
+  type = string
+  description = "Zookeeper Jvm Xmx"
+  default = "512mi"
+}
+
+variable "zookeeper_storage_size" {
+  type = string
+  description = "Zookeeper Storage Size"
+  default = "100Gi"
+}
+
+variable "container_registry" {
+  type = string
+  description = "Container Registry"
+}
+
+variable "postgres_db_name" {
+  type = string
+  description = "Postgres Database Name"
+  default = "apd"
+}
+
+variable "tasks_max" {
+  type = string
+  description = "Number of tasks"
+  default = "1"
+}
+
+variable "replicas" {
+  type = number
+  description = "Number of replicas in cluster"
+  default = 1
+}
+
+variable "request_memory" {
+  type = string
+  description = "Connect Request Memory"
+  default = "512m"
+}
+
+variable "request_cpu" {
+  type = string
+  description = "Connect Request CPU"
+  default = "0.5"
+}
+
+variable "limits_memory" {
+  type = string
+  description = "Connect Limit Memory"
+  default = "512mi"
+}
+
+variable "limits_cpu" {
+  type = string
+  description = "Connect Limit CPU"
+  default = "0.5"
+}

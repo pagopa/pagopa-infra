@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "eventhub_ita_rg" {
 }
 
 module "eventhub_namespace" {
-  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__/eventhub_configuration"
   name                     = "${local.project}-evh"
   location                 = var.location
   resource_group_name      = azurerm_resource_group.eventhub_ita_rg.name
@@ -51,13 +51,21 @@ module "eventhub_namespace" {
 #
 # CONFIGURATION
 #
-module "eventhub_gpdingestion_configuration" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration?ref=v8.22.0"
-  count  = var.is_feature_enabled.eventhub ? 1 : 0
+#module "eventhub_gpdingestion_configuration" {
+#  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration?ref=v8.22.0"
+#  count  = var.is_feature_enabled.eventhub ? 1 : 0
+#
+#  event_hub_namespace_name                = module.eventhub_namespace.name
+#  event_hub_namespace_resource_group_name = azurerm_resource_group.eventhub_ita_rg.name
+#
+#  eventhubs = []
+#}
 
-  event_hub_namespace_name                = module.eventhub_namespace.name
-  event_hub_namespace_resource_group_name = azurerm_resource_group.eventhub_ita_rg.name
-
-  eventhubs = []
+resource "azurerm_eventhub_namespace_authorization_rule" "cdc_connection_string" {
+  name                = "cdc-connection-string"
+  namespace_name      = "${local.project}-evh"
+  resource_group_name = "${local.project}-evh-rg"
+  listen              = true
+  send                = true
+  manage              = true
 }
-

@@ -36,3 +36,20 @@ ingress_load_balancer_ip = "10.3.2.250"
 is_feature_enabled = {
   gpdingestion      = true
 }
+
+zookeeper_replicas = 3
+zookeeper_request_memory = "1024mi"
+zookeeper_request_cpu = "1"
+zookeeper_limits_memory = "1024mi"
+zookeeper_limits_cpu = "1"
+zookeeper_jvm_xms = "1024mi"
+zookeeper_jvm_xmx = "1024mi"
+zookeeper_storage_size = "100Gi"
+replicas = 3
+request_cpu = "1"
+request_memory = "512mi"
+limits_memory = "1024mi"
+limits_cpu = "1"
+postgres_db_name = "apd"
+tasks_max = "5"
+container_registry = "TBD"

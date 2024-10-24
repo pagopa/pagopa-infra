@@ -1,0 +1,55 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnect
+metadata:
+  name: debezium-connect-cluster
+  namespace: ${namespace}
+  annotations:
+    strimzi.io/use-connector-resources: "true"
+spec:
+  version: 3.1.0
+  replicas: ${replicas}
+  bootstrapServers: ${bootstrap_servers}
+  resources:
+    requests:
+      memory: $connect_request_memory}
+      cpu: ${connect_request_cpu}
+    limits:
+      memory: ${connect_limits_memory}
+      cpu: ${connect_limits_cpu}
+  config:
+    config.providers: secrets
+    config.providers.secrets.class: io.strimzi.kafka.KubernetesSecretConfigProvider
+    group.id: connect-cluster
+    offset.storage.topic: connect-cluster-offsets
+    config.storage.topic: connect-cluster-configs
+    status.storage.topic: connect-cluster-status
+    # -1 means it will use the default replication factor configured in the broker
+    config.storage.replication.factor: 1
+    offset.storage.replication.factor: 1
+    status.storage.replication.factor: 1
+    rest.advertised.host.name: connect
+    offset.flush.interval.ms: 10000
+    key.converter: org.apache.kafka.connect.json.JsonConverter
+    value.converter: org.apache.kafka.connect.json.JsonConverter
+    internal.key.converter: org.apache.kafka.connect.json.JsonConverter
+    internal.value.converter: org.apache.kafka.connect.json.JsonConverter
+    internal.key.converter.schemas.enable: false
+    internal.value.converter.schemas.enable: false
+    security.protocol: SASL_SSL
+    sasl.mechanism: PLAIN
+    sasl.jaas.config: ${eh_connection_string}
+    producer.security.protocol: SASL_SSL
+    producer.sasl.mechanism: PLAIN
+    producer.sasl.jaas.config: ${eh_connection_string}
+    consumer.security.protocol: SASL_SSL
+    consumer.sasl.mechanism: PLAIN
+    consumer.sasl.jaas.config:  ${eh_connection_string}
+  build:
+    output:
+      type: docker
+      image: ${container_registry}/debezium-connector-postgres:latest
+    plugins:
+      - name: debezium-postgres-connector
+        artifacts:
+          - type: tgz
+            url: https://repo1.maven.org/maven2/io/debezium/debezium-connector-postgres/3.0.0.Final/debezium-connector-postgres-3.0.0.Final-plugin.tar.gz
