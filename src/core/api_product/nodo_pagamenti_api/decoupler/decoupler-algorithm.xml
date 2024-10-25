@@ -55,25 +55,19 @@
                             XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
                             if (body != null ) {
                                 XElement primitive = (XElement) body.FirstNode;
-                                var brokerPspValue = "";
-var paymentTokenValue = "";
-if (primitive != null) {
-XElement idBrokerPSP = primitive.Descendants("idBrokerPSP").FirstOrDefault();
-XElement paymentToken = primitive.Descendants("paymentToken").FirstOrDefault();
-brokerPspValue = idBrokerPSP != null ? idBrokerPSP.Value : ""; // check if null
-paymentTokenValue = paymentToken != null ? paymentToken.Value : ""; // check if null
-}
-
-// ttl in seconds
-return new JObject(
-new JProperty("brokerPsp", brokerPspValue),
-new JProperty("paymentToken", paymentTokenValue),
-new JProperty("key", paymentTokenValue),
-new JProperty("ttl", 86400)
-).ToString();
-} else {
-return new JObject(
-new JProperty("brokerPsp", ""),
+                                XElement idBrokerPSP = primitive.Descendants("idBrokerPSP").FirstOrDefault();
+                                XElement paymentToken = primitive.Descendants("paymentToken").FirstOrDefault();
+                                var ptoken = paymentToken.Value;
+                                // ttl in seconds
+                                return new JObject(
+                                    new JProperty("brokerPsp", idBrokerPSP.Value),
+                                    new JProperty("paymentToken", paymentToken.Value),
+                                    new JProperty("key", paymentToken.Value),
+                                    new JProperty("ttl", 86400)
+                                ).ToString();
+                            } else {
+                                return new JObject(
+                                    new JProperty("brokerPsp", ""),
 new JProperty("paymentToken", ""),
 new JProperty("key", ""),
 new JProperty("ttl", 1)
@@ -88,30 +82,22 @@ new JProperty("ttl", 1)
                             XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
                             if (body != null ) {
                                 XElement primitive = (XElement) body.FirstNode;
-                                var brokerPSPValue = "";
-var ciValue = "";
-var noticeNumberValue = "";
-if (primitive != null) {
-XElement idBrokerPSP = primitive.Descendants("idBrokerPSP").FirstOrDefault();
-XElement idCi = primitive.Descendants("fiscalCode").FirstOrDefault();
-XElement noticeNumber = primitive.Descendants("noticeNumber").FirstOrDefault();
-//var brokerPsp = idBrokerPSP.Value;
-//var ci = idCi.Value;
-brokerPSPValue = idBrokerPSP != null ? idBrokerPSP.Value : ""; // check if null
-ciValue = idCi != null ? idCi.Value : ""; // check if null
-noticeNumberValue = noticeNumber != null ? noticeNumber.Value : ""; // check if null
-}
-// ttl in seconds
-return new JObject(
-new JProperty("brokerPsp", brokerPSPValue),
-new JProperty("ci", ciValue),
-new JProperty("noticeNumber", noticeNumberValue),
-new JProperty("key", brokerPSPValue + "_" + ciValue + "_" + noticeNumberValue),
-new JProperty("ttl", 3600)
-).ToString();
-} else {
-return new JObject(
-new JProperty("brokerPsp", ""),
+                                XElement idBrokerPSP = primitive.Descendants("idBrokerPSP").FirstOrDefault();
+                                XElement idCi = primitive.Descendants("fiscalCode").FirstOrDefault();
+                                XElement noticeNumber = primitive.Descendants("noticeNumber").FirstOrDefault();
+                                var brokerPsp = idBrokerPSP.Value;
+                                var ci = idCi.Value;
+                                // ttl in seconds
+                                return new JObject(
+                                    new JProperty("brokerPsp", brokerPsp),
+                                    new JProperty("ci", ci),
+                                    new JProperty("noticeNumber", noticeNumber.Value),
+                                    new JProperty("key", brokerPsp + "_" + ci + "_" + noticeNumber.Value),
+                                    new JProperty("ttl", 3600)
+                                ).ToString();
+                            } else {
+                                return new JObject(
+                                    new JProperty("brokerPsp", ""),
 new JProperty("ci", ""),
 new JProperty("noticeNumber", ""),
 new JProperty("paymentToken", ""),
