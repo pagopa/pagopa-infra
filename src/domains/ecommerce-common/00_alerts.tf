@@ -256,32 +256,33 @@ AzureDiagnostics
   }
 }
 
-# eCommerce user stats service availability
-resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_user_stats_service_availability_alert" {
+# eCommerce user stats last payment method put availability
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_user_stats_last_payment_method_put_availability_alert" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = "ecommerce-user-stats-service-availability-alert"
+  name                = "ecommerce-user-stats-last-payment-method-put-availability-alert"
   resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
   location            = var.location
 
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "[eCommerce] User stats service availability less that 99%"
+    email_subject          = "[eCommerce] User stats service - PUT lastPaymentMethodUsed availability less that 99%"
     custom_webhook_payload = jsonencode({
       //alert properties https://docs.opsgenie.com/docs/alert-api
-      "message"  = "[eCommerce] User stats service availability less that 99%"
-      "alias"    = "ecommerce-user-stats-service-availability-alert"
+      "message"  = "[eCommerce] User stats service - PUT lastPaymentMethodUsed availability less that 99%"
+      "alias"    = "ecommerce-user-stats-last-payment-method-put-availability-alert"
       "tags"     = "availability"
       "entity"   = "eCommerce"
       "priority" = "P3"
     })
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "eCommerce User stats service availability less that 99%"
+  description    = "eCommerce User stats service PUT lastPaymentMethodUsed availability less that 99%"
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
-| where url_s startswith 'https://api.platform.pagopa.it/ecommerce/user-stats-service/v1'
+| where url_s startswith 'https://api.platform.pagopa.it/ecommerce/user-stats-service/v1/user/lastPaymentMethodUsed'
+| where method_s == "PUT"
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 400 and DurationMs < 250)
