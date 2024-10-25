@@ -25,6 +25,9 @@ parameters:
       - False
       - True
 
+pool:
+  vmImage: 'ubuntu-latest'
+
 resources:
   repositories:
     - repository: terraform
