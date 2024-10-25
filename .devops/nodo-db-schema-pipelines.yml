@@ -364,8 +364,8 @@ stages:
               inlineScript: |
 
                 az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(PARTITION_USERNAME) \
-                --admin-password '$(db-partition-password)' --database-name "postgres" \
+                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name "postgres" \
                 --querytext "
                 do \$\$
                 BEGIN
