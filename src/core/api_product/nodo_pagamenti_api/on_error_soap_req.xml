@@ -4,7 +4,8 @@
     <when condition="@(context.Variables.ContainsKey("baseUrl") && context.Variables.ContainsKey("renewrequest") && context.Variables.ContainsKey("renewrequest")!= null)">
     <trace source="first-when" severity="information">execute on-error request</trace>
     <choose>
-      <when condition="@(context.Variables.ContainsKey("soapAction") && context.Variables.ContainsKey("soapAction")!= null)">
+      <when condition="@(context.Variables.ContainsKey("soapAction") && context.Variables.GetValueOrDefault<string>("soapAction", "")!= "")">
+      <!-- SOAP requests -->
       <send-request mode="new" ignore-error="true" response-variable-name="risposta">
         <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
         <set-method>POST</set-method>
@@ -20,11 +21,12 @@
       </send-request>
     </when>
     <otherwise>
+      <!-- REST requests -->
       <send-request mode="new" ignore-error="true" response-variable-name="risposta">
-        <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
+        <set-url>@{return (string) context.Variables["baseUrl"] + "/" + (string)context.Request.Url.Path; }</set-url>
         <set-method>POST</set-method>
         <set-header name="Content-Type" exists-action="override">
-          <value>text/xml</value>
+          <value>application/json</value>
         </set-header>
         <set-body>@{
           return (string) context.Variables["renewrequest"];
@@ -32,12 +34,13 @@
       </send-request>
     </otherwise>
   </choose>
-
   <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["risposta"]).Body.As<string>(preserveContent: true))" />
   <return-response>
-    <set-header name="Content-Type" exists-action="override">
-      <value>text/xml</value>
-    </set-header>
+    <!--
+<set-header name="Content-Type" exists-action="override">
+<value>text/xml</value>
+</set-header>
+    -->
     <set-body>@{
       string message = (string)context.Variables["leggirisposta"];
       return message;
@@ -65,7 +68,7 @@
     return error;
     }</message>
   <!-- soapAction is required!  -->
-  <metadata name="Operation Name" value="@((context.Variables.ContainsKey("soapAction") ? (string)context.Variables["soapAction"] : "Unknown"))"/>
+  <metadata name="Operation Name" value="@((context.Variables.ContainsKey("soapAction") ? (string)context.Variables["soapAction"] : "Unknown"))" />
 </trace>
 </otherwise>
   </choose>
