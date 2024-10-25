@@ -265,8 +265,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_user_stats_las
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "[eCommerce] User stats service - PUT lastPaymentMethodUsed availability less that 99%"
+    action_group  = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject = "[eCommerce] User stats service - PUT lastPaymentMethodUsed availability less that 99%"
     custom_webhook_payload = jsonencode({
       //alert properties https://docs.opsgenie.com/docs/alert-api
       "message"  = "[eCommerce] User stats service - PUT lastPaymentMethodUsed availability less that 99%"
