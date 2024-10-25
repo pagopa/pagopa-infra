@@ -29,7 +29,7 @@ module "apim_gpd_payments_pull_product" {
 
 
 module "apim_gpd_payments_pull_product_and_debt_positions_product_test" {
-  count  = var.env_short != "p" ? 1 : 0
+  count  = 1 # var.env_short != "p" ? 1 : 0 # ppull-prod-test
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v6.11.2"
 
   product_id   = "test-gpd-payments-pull-and-debt-positions"
