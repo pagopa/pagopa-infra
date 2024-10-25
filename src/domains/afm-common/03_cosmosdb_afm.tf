@@ -18,6 +18,7 @@ module "afm_marketplace_cosmosdb_snet" {
     "Microsoft.Web",
     "Microsoft.AzureCosmosDB",
     "Microsoft.Storage",
+    "Microsoft.EventHub"
   ]
 }
 
@@ -56,7 +57,7 @@ module "afm_marketplace_cosmosdb_account" {
 
 # cosmosdb database for marketplace
 module "afm_marketplace_cosmosdb_database" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=add-analytical_storage_enabled-2-cosmos"
 
   name                = "db"
   resource_group_name = azurerm_resource_group.afm_rg.name
@@ -72,6 +73,8 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
+      analytical_storage_ttl = -1,
+      partition_key_version  = null # 1,2
     },
     {
       name               = "archivedbundles",
@@ -79,6 +82,8 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
+      analytical_storage_ttl = null,
+      partition_key_version  = null
     },
     {
       name               = "cibundles",
@@ -86,6 +91,8 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
+      analytical_storage_ttl = -1,
+      partition_key_version  = null      
     },
     {
       name               = "archivedcibundles",
@@ -93,6 +100,8 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
+      analytical_storage_ttl = null,
+      partition_key_version  = null
     },
     {
       name               = "bundlerequests",
@@ -100,6 +109,8 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
+      analytical_storage_ttl = null,
+      partition_key_version  = null
     },
     {
       name               = "archivedbundlerequests",
@@ -107,6 +118,8 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
+      analytical_storage_ttl = null,
+      partition_key_version  = null
     },
     {
       name               = "bundleoffers",
@@ -114,6 +127,8 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
+      analytical_storage_ttl = null,
+      partition_key_version  = null
     },
     {
       name               = "archivedbundleoffers",
@@ -121,6 +136,8 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
+      analytical_storage_ttl = null,
+      partition_key_version  = null
     },
     {
       name               = "validbundles",
@@ -128,6 +145,8 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
+      analytical_storage_ttl = -1,
+      partition_key_version  = null # 1,2
     },
     {
       name               = "touchpoints",
@@ -135,6 +154,8 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
+      analytical_storage_ttl = -1,
+      partition_key_version  = null
     },
     {
       name               = "paymenttypes",
@@ -142,6 +163,8 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
+      analytical_storage_ttl = -1,
+      partition_key_version  = null
     },
     {
       name               = "cdis",
@@ -149,22 +172,26 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
+      analytical_storage_ttl = null,
+      partition_key_version  = null # 1,2
     }
   ]
 }
 
 # cosmosdb container for marketplace
 module "afm_marketplace_cosmosdb_containers" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=add-analytical_storage_enabled-2-cosmos"
 
   for_each = { for c in local.afm_marketplace_cosmosdb_containers : c.name => c }
 
-  name                = each.value.name
-  resource_group_name = azurerm_resource_group.afm_rg.name
-  account_name        = module.afm_marketplace_cosmosdb_account.name
-  database_name       = module.afm_marketplace_cosmosdb_database.name
-  partition_key_path  = each.value.partition_key_path
-  throughput          = lookup(each.value, "throughput", null)
+  name                   = each.value.name
+  resource_group_name    = azurerm_resource_group.afm_rg.name
+  account_name           = module.afm_marketplace_cosmosdb_account.name
+  database_name          = module.afm_marketplace_cosmosdb_database.name
+  partition_key_path     = each.value.partition_key_path
+  throughput             = lookup(each.value, "throughput", null)
+  analytical_storage_ttl = each.value.analytical_storage_ttl
+  partition_key_version  = each.value.partition_key_version
 
   autoscale_settings = contains(var.afm_marketplace_cosmos_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }
