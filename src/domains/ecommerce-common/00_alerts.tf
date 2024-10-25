@@ -287,6 +287,7 @@ AzureDiagnostics
     Total=count(),
     Success=countif(responseCode_d < 400 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
+| extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99
   QUERY
   )
