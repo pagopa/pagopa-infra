@@ -50,6 +50,7 @@ variables:
   # working dir
   WORKING_DIR_APP: 'src/domains/aca-app'
   WORKING_DIR_COMMON: 'src/domains/aca-common'
+  REGION_SHORT: "weu"
 
 stages:
   #DEV
@@ -57,7 +58,7 @@ stages:
       - template: './base-code-review-pipelines.yml'
         parameters:
           ENV: "dev"
-          ENV_FOLDER: "weu-dev"
+          ENV_FOLDER: "${{ variables.REGION_SHORT }}-dev"
           WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
           WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
@@ -72,7 +73,7 @@ stages:
       - template: './base-code-review-pipelines.yml'
         parameters:
           ENV: "uat"
-          ENV_FOLDER: "weu-uat"
+          ENV_FOLDER: "${{ variables.REGION_SHORT }}-uat"
           WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
           WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
@@ -88,7 +89,7 @@ stages:
       - template: './base-code-review-pipelines.yml'
         parameters:
           ENV: "prod"
-          ENV_FOLDER: "weu-prod"
+          ENV_FOLDER: "${{ variables.REGION_SHORT }}-prod"
           WORKING_DIR_APP: ${{ variables.WORKING_DIR_APP }}
           WORKING_DIR_COMMON: ${{ variables.WORKING_DIR_COMMON }}
           SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
