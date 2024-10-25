@@ -46,11 +46,7 @@
         </when>
       </choose>
       <set-variable name="userAuthBody" value="@(((IResponse)context.Variables["user-auth-body"]).Body.As<JObject>())" />
-      <set-variable name="userFiscalCode" value="@{
-        String userFiscalCode = ((JObject)context.Variables["userAuthBody"])?["fiscal_code"]?.ToString();
-        return userFiscalCode;
-    }" 
-    />
+      <set-variable name="userFiscalCode" value="@((string)((JObject)context.Variables["userAuthBody"])["fiscal_code"])" />
       <!-- Get User IO : END-->
 
       <!-- user fiscal code tokenization with PDV START -->
