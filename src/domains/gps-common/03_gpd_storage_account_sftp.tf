@@ -1,5 +1,5 @@
 module "gpd_sa_sftp" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                = replace("${local.project}-gpd-sa-sftp", "-", "")
   resource_group_name = azurerm_resource_group.gpd_rg.name

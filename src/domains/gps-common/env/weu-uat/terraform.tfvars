@@ -73,6 +73,9 @@ pgres_flex_params = {
   max_connections                                  = 5000
   enable_private_dns_registration                  = true
   enable_private_dns_registration_virtual_endpoint = false
+  max_worker_process                               = 32
+  wal_level                                        = null
+  shared_preoload_libraries                        = null
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]

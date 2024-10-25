@@ -26,7 +26,7 @@ data "azurerm_resource_group" "data" {
 
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//subnet?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/subnet"
 
   name                                      = format("%s-pgres-flexible-snet", local.product)
   address_prefixes                          = var.cidr_subnet_pg_flex_dbms
@@ -54,7 +54,7 @@ data "azurerm_private_dns_zone" "postgres" {
 
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
 module "postgres_flexible_server_private" { # private only into UAT and PROD env
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//postgres_flexible_server?ref=v7.23.0"
+  source = "./.terraform/modules/__v3__/postgres_flexible_server"
 
   name = format("%s-gpd-pgflex", local.product)
 
@@ -141,17 +141,21 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_poo
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_worker_process" {
   name      = "max_worker_processes"
   server_id = module.postgres_flexible_server_private.id
-  value     = var.env_short != "d" ? 16 : 32
+  value     = var.pgres_flex_params.max_worker_process # var.env_short == "d" ? 16 : 32
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_wal_level" {
+  count     = var.pgres_flex_params.wal_level != null ? 1 : 0
+
   name      = "wal_level"
   server_id = module.postgres_flexible_server_private.id
-  value     = "logical"
+  value     = var.pgres_flex_params.wal_level # "logical", ...
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_shared_preoload_libraries" {
+  count     = var.pgres_flex_params.wal_level != null ? 1 : 0
+
   name      = "shared_preload_libraries"
   server_id = module.postgres_flexible_server_private.id
-  value     = "pg_failover_slots"
+  value     = var.pgres_flex_params.shared_preoload_libraries # "pg_failover_slots"
 }

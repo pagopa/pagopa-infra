@@ -139,6 +139,9 @@ variable "pgres_flex_params" {
     max_connections                                  = number
     enable_private_dns_registration                  = optional(bool, false)
     enable_private_dns_registration_virtual_endpoint = optional(bool, false)
+    max_worker_process                               = number
+    wal_level                                        = string
+    shared_preoload_libraries                        = string
   })
 
   default = null
