@@ -42,8 +42,7 @@ resources:
     - repository: terraform
       type: github
       name: pagopa/azure-pipeline-templates
-#      ref: refs/tags/v6.11.0
-      ref: refs/tags/v6.9.0
+      ref: refs/tags/v6.11.0
       endpoint: "io-azure-devops-github-ro"
 
 variables:
@@ -68,7 +67,7 @@ stages:
           AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
           AKS_NAME: '$(TF_AKS_DEV_NAME)'
-          #TF_SUMMARIZE: true
+          TF_SUMMARIZE: true
 
   #UAT
   - ${{ if eq(parameters['UAT'], true) }}:

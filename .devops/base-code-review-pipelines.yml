@@ -43,7 +43,7 @@ parameters:
     default: 15
   - name: 'TF_SUMMARIZE'
     type: string
-    default: 'false'
+    default: ''
 
 
 
@@ -71,7 +71,7 @@ stages:
                TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
                WORKINGDIR: ${{ parameters.WORKING_DIR_SECRET }}
                AZURE_SERVICE_CONNECTION_NAME: ${{parameters.SC_PLAN_NAME}}
-               ${{ if eq(parameters.TF_SUMMARIZE, 'true') }}:
+               ${{ if ne(parameters.TF_SUMMARIZE, '') }}:
                 TF_SUMMARIZE: ${{parameters.TF_SUMMARIZE}}
       - ${{ if ne(parameters.WORKING_DIR_COMMON, '') }}:
         - job: tfplan_common
@@ -89,7 +89,7 @@ stages:
                 TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
                 WORKINGDIR: ${{ parameters.WORKING_DIR_COMMON }}
                 AZURE_SERVICE_CONNECTION_NAME: ${{parameters.SC_PLAN_NAME}}
-                ${{ if eq(parameters.TF_SUMMARIZE, 'true') }}:
+                ${{ if ne(parameters.TF_SUMMARIZE, '') }}:
                   TF_SUMMARIZE: ${{parameters.TF_SUMMARIZE}}
       - ${{ if ne(parameters.WORKING_DIR_APP, '') }}:
         - job: tfplan_app
@@ -107,7 +107,7 @@ stages:
                 TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
                 WORKINGDIR: ${{ parameters.WORKING_DIR_APP }}
                 AZURE_SERVICE_CONNECTION_NAME: ${{parameters.SC_PLAN_NAME}}
-                ${{ if eq(parameters.TF_SUMMARIZE, 'true') }}:
+                ${{ if ne(parameters.TF_SUMMARIZE, '') }}:
                   TF_SUMMARIZE: ${{parameters.TF_SUMMARIZE}}
                 AKS_NAME: ${{ parameters.AKS_NAME }}
                 AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
@@ -129,6 +129,6 @@ stages:
                 TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
                 WORKINGDIR: ${{ parameters.WORKING_DIR_MODULE }}
                 AZURE_SERVICE_CONNECTION_NAME: ${{parameters.SC_PLAN_NAME}}
-                ${{ if eq(parameters.TF_SUMMARIZE, 'true') }}:
+                ${{ if ne(parameters.TF_SUMMARIZE, '') }}:
                   TF_SUMMARIZE: ${{parameters.TF_SUMMARIZE}}
 
