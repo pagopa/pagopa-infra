@@ -48,18 +48,147 @@ module "eventhub_namespace" {
   tags = var.tags
 }
 
-#
-# CONFIGURATION
-#
-#module "eventhub_gpdingestion_configuration" {
-#  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration?ref=v8.22.0"
-#  count  = var.is_feature_enabled.eventhub ? 1 : 0
-#
-#  event_hub_namespace_name                = module.eventhub_namespace.name
-#  event_hub_namespace_resource_group_name = azurerm_resource_group.eventhub_ita_rg.name
-#
-#  eventhubs = []
-#}
+
+ CONFIGURATION
+
+module "eventhub_gpdingestion_configuration" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration?ref=v8.22.0"
+  count  = var.is_feature_enabled.eventhub ? 1 : 0
+
+  event_hub_namespace_name                = module.eventhub_namespace.name
+  event_hub_namespace_resource_group_name = azurerm_resource_group.eventhub_ita_rg.name
+
+  eventhubs = [
+    {
+      name              = "connect-cluster-offsets"
+      partitions        = 1
+      message_retention = 1
+      consumers = [
+        "connect-cluster-offsets",
+      ]
+      keys = [
+        {
+          name   = "connect-cluster-offsets"
+          listen = true
+          send   = true
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "connect-cluster-status"
+      partitions        = 1
+      message_retention = 1
+      consumers = [
+        "connect-cluster-offsets",
+      ]
+      keys = [
+        {
+          name   = "connect-cluster-status"
+          listen = true
+          send   = true
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "connect-cluster-configs"
+      partitions        = 1
+      message_retention = 1
+      consumers = [
+        "connect-cluster-configs",
+      ]
+      keys = [
+        {
+          name   = "connect-cluster-configs"
+          listen = true
+          send   = true
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "${var.prefix}-${var.domain}.apd.payment_option"
+      partitions        = 1
+      message_retention = 1
+      consumers = [
+        "${var.prefix}-${var.domain}.apd.payment_option",
+      ]
+      keys = [
+        {
+          name   = "${var.prefix}-${var.domain}.apd.payment_option"
+          listen = true
+          send   = true
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "${var.prefix}-${var.domain}.apd.payment_option_metadata"
+      partitions        = 1
+      message_retention = 1
+      consumers = [
+        "${var.prefix}-${var.domain}.apd.payment_option_metadata",
+      ]
+      keys = [
+        {
+          name   = "${var.prefix}-${var.domain}.apd.payment_option_metadata"
+          listen = true
+          send   = true
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "${var.prefix}-${var.domain}.apd.payment_position"
+      partitions        = 1
+      message_retention = 1
+      consumers = [
+        "${var.prefix}-${var.domain}.apd.payment_position",
+      ]
+      keys = [
+        {
+          name   = "${var.prefix}-${var.domain}.apd.payment_position"
+          listen = true
+          send   = true
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "${var.prefix}-${var.domain}.apd.transfer"
+      partitions        = 1
+      message_retention = 1
+      consumers = [
+        "${var.prefix}-${var.domain}.apd.transfer",
+      ]
+      keys = [
+        {
+          name   = "${var.prefix}-${var.domain}.apd.transfer"
+          listen = true
+          send   = true
+          manage = false
+        }
+      ]
+    },
+    {
+      name              = "${var.prefix}-${var.domain}.apd.transfer_metadata"
+      partitions        = 1
+      message_retention = 1
+      consumers = [
+        "${var.prefix}-${var.domain}.apd.transfer_metadata",
+      ]
+      keys = [
+        {
+          name   = "${var.prefix}-${var.domain}.apd.transfer_metadata"
+          listen = true
+          send   = true
+          manage = false
+        }
+      ]
+    },
+  ]
+}
 
 resource "azurerm_eventhub_namespace_authorization_rule" "cdc_connection_string" {
   name                = "cdc-connection-string"

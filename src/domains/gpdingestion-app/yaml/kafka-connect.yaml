@@ -29,6 +29,7 @@ spec:
     status.storage.replication.factor: 1
     rest.advertised.host.name: connect
     offset.flush.interval.ms: 10000
+    topic.creation.enable: false
     key.converter: org.apache.kafka.connect.json.JsonConverter
     value.converter: org.apache.kafka.connect.json.JsonConverter
     internal.key.converter: org.apache.kafka.connect.json.JsonConverter
