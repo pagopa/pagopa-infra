@@ -49,6 +49,7 @@ spec:
     output:
       type: docker
       image: ${container_registry}/debezium-connector-postgres:latest
+      pushSecret: my-registry-credentials
     plugins:
       - name: debezium-postgres-connector
         artifacts:

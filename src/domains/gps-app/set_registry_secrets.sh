@@ -7,17 +7,17 @@ if [ "$#" -ne 4 ]; then
 fi
 
 # Assign parameters to variables
-DOCKER_SERVER=$1
-DOCKER_USERNAME=$2
-DOCKER_PASSWORD=$3
+DOCKER_SERVER=$1        # acr url pagopa<env>commonacr.azurecr.io
+DOCKER_USERNAME=$2      # acr usr pagopa<env>commonacr
+DOCKER_PASSWORD=$3      # acr pwd 
 DOCKER_EMAIL=$4
 
 # Create the Docker registry secret using kubectl
-kubectl create secret docker-registry registry-credential \
+kubectl create secret docker-registry acr-credential \
     --docker-server="$DOCKER_SERVER" \
     --docker-username="$DOCKER_USERNAME" \
-    --docker-password="$DOCKER_PASSWORD" \
-    --docker-email="$DOCKER_EMAIL"
+    --docker-password="$DOCKER_PASSWORD"
+    # --docker-email="$DOCKER_EMAIL"
 
 # Check if the secret was created successfully
 if [ $? -eq 0 ]; then
