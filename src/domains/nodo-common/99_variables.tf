@@ -383,6 +383,8 @@ variable "wisp_converter_cosmos_nosql_db_params" {
     rt_max_throughput                  = number
     configuration_ttl                  = number
     configuration_max_throughput       = number
+    nav2iuv_mapping_ttl                = number
+    nav2iuv_mapping_max_throughput     = number
   })
 }
 

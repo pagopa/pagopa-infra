@@ -109,6 +109,14 @@ locals {
         max_throughput = var.wisp_converter_cosmos_nosql_db_params.configuration_max_throughput
       }
     },
+    {
+      name               = "nav2iuv_mapping",
+      partition_key_path = "/id", # notice number
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.nav2iuv_mapping_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.nav2iuv_mapping_max_throughput
+      }
+    },
   ]
 }
 

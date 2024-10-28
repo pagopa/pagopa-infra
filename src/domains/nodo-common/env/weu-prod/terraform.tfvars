@@ -234,6 +234,8 @@ wisp_converter_cosmos_nosql_db_params = {
   rt_max_throughput                  = 2000
   configuration_ttl                  = -1 # https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/time-to-live#time-to-live-for-containers-and-items
   configuration_max_throughput       = 1000
+  nav2iuv_mapping_ttl                = 691200 # 8 days in second
+  nav2iuv_mapping_max_throughput     = 2000
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
