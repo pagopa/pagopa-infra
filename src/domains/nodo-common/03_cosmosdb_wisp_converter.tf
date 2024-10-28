@@ -110,8 +110,8 @@ locals {
       }
     },
     {
-      name               = "nav2iuv_mapping",
-      partition_key_path = "/id", # notice number
+      name               = "nav2iuv-mapping",
+      partition_key_path = "/partitionKey", # contains Broker EC fiscal code
       default_ttl        = var.wisp_converter_cosmos_nosql_db_params.nav2iuv_mapping_ttl
       autoscale_settings = {
         max_throughput = var.wisp_converter_cosmos_nosql_db_params.nav2iuv_mapping_max_throughput
