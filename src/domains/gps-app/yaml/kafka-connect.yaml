@@ -11,11 +11,11 @@ spec:
   bootstrapServers: ${bootstrap_servers}
   resources:
     requests:
-      memory: $connect_request_memory}
-      cpu: ${connect_request_cpu}
+      memory: ${request_memory}
+      cpu: ${request_cpu}
     limits:
-      memory: ${connect_limits_memory}
-      cpu: ${connect_limits_cpu}
+      memory: ${limits_memory}
+      cpu: ${limits_cpu}
   config:
     config.providers: secrets
     config.providers.secrets.class: io.strimzi.kafka.KubernetesSecretConfigProvider
@@ -49,7 +49,8 @@ spec:
     output:
       type: docker
       image: ${container_registry}/debezium-connector-postgres:latest
-      pushSecret: my-registry-credentials
+      # src/domains/gps-app/set_registry_secrets.sh
+      pushSecret: acr-credentials
     plugins:
       - name: debezium-postgres-connector
         artifacts:

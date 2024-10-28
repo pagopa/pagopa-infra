@@ -16,9 +16,9 @@ spec:
     value.converter.schemas.enable: false
     tasks.max: ${tasks_max}
     database.hostname: ${postgres_hostname}
-    database.port:  {postgres_port}
-    database.user: ${secrets:${namespace}/debezium-secret:username}
-    database.password: ${secrets:${namespace}/debezium-secret:password}
+    database.port:  ${postgres_port}
+    database.user: ${secrets}:${namespace}/debezium-secret:username}
+    database.password: ${secrets}:${namespace}/debezium-secret:password}
     database.dbname: ${postgres_db_name}
     topic.prefix: ${postgres_topic_prefix}
     schema.include.list: "apd"

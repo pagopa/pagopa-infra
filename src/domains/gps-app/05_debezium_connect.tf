@@ -33,13 +33,13 @@ locals {
     namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
   })
 
-  debezium_secrets_yaml = templatefile("${path.module}/yaml/debezium-secretes.yaml", {
+  debezium_secrets_yaml = templatefile("${path.module}/yaml/debezium-secrets.yaml", {
     namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
-    username  = data.azurerm_key_vault_secret.pgres_admin_login.value
-    password  = data.azurerm_key_vault_secret.pgres_admin_pwd.value
+    username  = data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value
+    password  = data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value
   })
 
-  zookeeper_yaml = templatefile("${path.module}/yaml/zookeper.yaml", {
+  zookeeper_yaml = templatefile("${path.module}/yaml/zookeeper.yaml", {
     namespace                =  "gps" # kubernetes_namespace.namespace.metadata[0].name
     zookeeper_replicas       =  var.zookeeper_replicas
     zookeeper_request_memory =  var.zookeeper_request_memory

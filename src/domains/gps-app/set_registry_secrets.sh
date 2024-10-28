@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Check if the required parameters are provided
-if [ "$#" -ne 4 ]; then
+if [ "$#" -ne 3 ]; then
     echo "Usage: $0 <your-registry-server> <your-name> <your-password> <your-email>"
     exit 1
 fi
@@ -13,7 +13,7 @@ DOCKER_PASSWORD=$3      # acr pwd
 DOCKER_EMAIL=$4
 
 # Create the Docker registry secret using kubectl
-kubectl create secret docker-registry acr-credential \
+kubectl -n gps create secret docker-registry acr-credential \
     --docker-server="$DOCKER_SERVER" \
     --docker-username="$DOCKER_USERNAME" \
     --docker-password="$DOCKER_PASSWORD"
