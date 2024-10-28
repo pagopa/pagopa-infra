@@ -268,6 +268,41 @@ EOD
   }))
 }
 
+variable "ehns_metric_alerts_gpd" {
+  default = {}
+
+  description = <<EOD
+Map of name = criteria objects
+EOD
+
+  type = map(object({
+    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
+    aggregation = string
+    metric_name = string
+    description = string
+    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
+    operator  = string
+    threshold = number
+    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
+    frequency = string
+    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
+    window_size = string
+
+    dimension = list(object(
+      {
+        name     = string
+        operator = string
+        values   = list(string)
+      }
+    ))
+  }))
+}
+
+# ################################
+# INGESTION
+# ################################
+
+# evh subnet + topics GEC & WALLET
 variable "eventhubs" {
   description = "A list of event hubs to add to namespace."
   type = list(object({
@@ -289,3 +324,28 @@ variable "cidr_subnet_observability_evh" {
   type        = list(string)
   description = "Address prefixes evh"
 }
+
+# evh subnet + topics GPD & Debezium
+
+variable "eventhubs_gpd" {
+  description = "A list of event hubs to add to namespace."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
+}
+
+variable "cidr_subnet_observability_gpd_evh" {
+  type        = list(string)
+  description = "Address prefixes evh"
+}
+

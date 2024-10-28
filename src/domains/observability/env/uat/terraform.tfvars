@@ -56,10 +56,11 @@ apim_dns_zone_prefix = "uat.platform"
 # observability Ingestion cfg
 cidr_subnet_observability_storage = ["10.3.14.0/27"]
 cidr_subnet_observability_evh     = ["10.3.14.32/27"]
-# <free>= ["10.3.14.64/27"]
+cidr_subnet_observability_gpd_evh = ["10.3.14.64/27"]
 # <free>= ["10.3.14.96/27"]
 # <free>= ["10.3.14.128/27"]
 # <free>= ["10.3.14.160/27"]
+
 
 #
 # EventHub
@@ -259,3 +260,170 @@ ehns_metric_alerts = {
     ],
   },
 }
+
+eventhubs_gpd = [
+  {
+    name              = "connect-cluster-offsets" # debezium internal use
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["connect-cluster-offsets"]
+    keys = [
+      {
+        name   = "connect-cluster-offsets"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "connect-cluster-status" # debezium internal use
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["connect-cluster-offsets"]
+    keys = [
+      {
+        name   = "connect-cluster-status"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "connect-cluster-configs" # debezium internal use
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["connect-cluster-configs"]
+    keys = [
+      {
+        name   = "connect-cluster-configs"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "gpd-ingestion.apd.payment_option"
+    partitions        = 1
+    message_retention = 1
+    consumers = ["gpd-ingestion.apd.payment_option-rx-dl",]
+    keys = [
+      {
+        name   = "gpd-ingestion.apd.payment_option-rx-dl"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "gpd-ingestion.apd.payment_option_metadata"
+    partitions        = 1
+    message_retention = 1
+    consumers = ["gpd-ingestion.apd.payment_option_metadata-rx-dl"]
+    keys = [
+      {
+        name   = "gpd-ingestion.apd.payment_option_metadata-rx-dl"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "gpd-ingestion.apd.payment_position"
+    partitions        = 1
+    message_retention = 1
+    consumers = [ "gpd-ingestion.apd.payment_position-rx-dl"]
+    keys = [
+      {
+        name   = "gpd-ingestion.apd.payment_position-rx-dl"
+        listen = true
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "gpd-ingestion.apd.transfer"
+    partitions        = 1
+    message_retention = 1
+    consumers = [ "gpd-ingestion.apd.transfer-rx-dl"]
+    keys = [
+      {
+        name   = "gpd-ingestion.apd.transfer-rx-dl"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "gpd-ingestion.apd.transfer_metadata"
+    partitions        = 1
+    message_retention = 1
+    consumers = [ "gpd-ingestion.apd.transfer_metadata-rx-dl"]
+    keys = [
+      {
+        name   = "gpd-ingestion.apd.transfer_metadata-rx-dl"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+]
+
+
+# alert evh
+# ehns_metric_alerts_gpd = {
+#   no_trx = {
+#     aggregation = "Total"
+#     metric_name = "IncomingMessages"
+#     description = "No transactions received from acquirer in the last 24h"
+#     operator    = "LessThanOrEqual"
+#     threshold   = 1000
+#     frequency   = "PT1H"
+#     window_size = "P1D"
+#     dimension = [
+#       {
+#         name     = "EntityName"
+#         operator = "Include"
+#         values   = ["gec-ingestion-bundles-evt-tx", "gec-ingestion-cibundles-evt-tx", "gec-ingestion-paymenttypes-evt-tx", "gec-ingestion-touchpoints-evt-tx"]
+#       }
+#     ],
+#   },
+#   active_connections = {
+#     aggregation = "Average"
+#     metric_name = "ActiveConnections"
+#     description = null
+#     operator    = "LessThanOrEqual"
+#     threshold   = 0
+#     frequency   = "PT5M"
+#     window_size = "PT15M"
+#     dimension   = [],
+#   },
+#   error_trx = {
+#     aggregation = "Total"
+#     metric_name = "IncomingMessages"
+#     description = "Transactions rejected from one acquirer file received. trx write on eventhub. check immediately"
+#     operator    = "GreaterThan"
+#     threshold   = 0
+#     frequency   = "PT5M"
+#     window_size = "PT30M"
+#     dimension = [
+#       {
+#         name     = "EntityName"
+#         operator = "Include"
+#         values = [
+#           "gec-ingestion-bundles-evt-rx-pdnd",
+#           "gec-ingestion-cibundles-evt-rx-pdnd",
+#           "gec-ingestion-paymenttypes-evt-rx-pdnd",
+#           "gec-ingestion-touchpoints-evt-rx-pdnd"
+#         ]
+#       }
+#     ],
+#   },
+# }
