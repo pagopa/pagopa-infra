@@ -82,6 +82,7 @@ pgres_flex_params = {
   max_worker_process                               = 32
   wal_level                                        = null
   shared_preoload_libraries                        = null
+  public_network_access_enabled                    = false
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]

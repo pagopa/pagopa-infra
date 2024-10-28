@@ -62,9 +62,10 @@ module "postgres_flexible_server_private" { # private only into UAT and PROD env
   resource_group_name = azurerm_resource_group.flex_data.name
 
   ### Network
-  private_endpoint_enabled = var.pgres_flex_params.private_endpoint_enabled
-  private_dns_zone_id      = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
-  delegated_subnet_id      = module.postgres_flexible_snet.id
+  private_endpoint_enabled      = var.pgres_flex_params.private_endpoint_enabled
+  private_dns_zone_id           = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
+  delegated_subnet_id           = module.postgres_flexible_snet.id
+  public_network_access_enabled = var.pgres_flex_params.public_network_access_enabled
 
   ### admin credentials
   administrator_login    = data.azurerm_key_vault_secret.pgres_admin_login.value
@@ -115,7 +116,7 @@ resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
   name      = var.gpd_db_name
   server_id = module.postgres_flexible_server_private.id
   collation = "en_US.utf8"
-  charset   = "utf8"
+  charset   = "UTF8"
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_connection" {
@@ -145,7 +146,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_wor
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_wal_level" {
-  count     = var.pgres_flex_params.wal_level != null ? 1 : 0
+  count = var.pgres_flex_params.wal_level != null ? 1 : 0
 
   name      = "wal_level"
   server_id = module.postgres_flexible_server_private.id
@@ -153,7 +154,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_wal_lev
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_shared_preoload_libraries" {
-  count     = var.pgres_flex_params.wal_level != null ? 1 : 0
+  count = var.pgres_flex_params.wal_level != null ? 1 : 0
 
   name      = "shared_preload_libraries"
   server_id = module.postgres_flexible_server_private.id

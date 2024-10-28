@@ -142,6 +142,7 @@ variable "pgres_flex_params" {
     max_worker_process                               = number
     wal_level                                        = string
     shared_preoload_libraries                        = string
+    public_network_access_enabled                    = bool
   })
 
   default = null

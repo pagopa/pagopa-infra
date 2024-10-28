@@ -404,12 +404,20 @@ resource "azurerm_key_vault_secret" "pgres_admin_pwd" {
 #tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
 resource "azurerm_key_vault_secret" "db_url" {
   name         = "db-url"
-  value        = format("jdbc:postgresql://%s:%s/%s?sslmode=require%s", local.gpd_hostname, local.gpd_dbmsport, var.gpd_db_name, (var.env_short != "d" ? "&prepareThreshold=0" : ""))
+  value        = format("jdbc:postgresql://%s:%s/%s?sslmode=require%s", local.gpd_hostname, local.gpd_dbmsport, var.gpd_db_name, "&prepareThreshold=0")
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 
 }
+# resource "azurerm_key_vault_secret" "db_url" {
+#   name         = "db-url"
+#   value        = format("jdbc:postgresql://%s:%s/%s?sslmode=require%s", local.gpd_hostname, local.gpd_dbmsport, var.gpd_db_name, (var.env_short != "d" ? "&prepareThreshold=0" : ""))
+#   content_type = "text/plain"
+
+#   key_vault_id = module.key_vault.id
+
+# }
 
 ## GPD-Upload secrets START ##
 

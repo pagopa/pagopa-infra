@@ -76,11 +76,12 @@ pgres_flex_params = {
   max_worker_process                               = 16
   wal_level                                        = "logical"
   shared_preoload_libraries                        = "pg_failover_slots"
+  public_network_access_enabled                    = true
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
-cidr_subnet_pg_singleser = ["10.1.141.0/27"]  # ["10.1.141.0/24"]
-cidr_subnet_pg_flex_dbms = ["10.1.141.32/27"] # ["10.1.141.0/24"]
+cidr_subnet_pg_flex_dbms = ["10.1.141.0/24"]
+#cidr_subnet_pg_singleser = ["10.1.141.0/27"]  # ["10.1.141.0/24"]
 
 postgresql_network_rules = {
   ip_rules = [
