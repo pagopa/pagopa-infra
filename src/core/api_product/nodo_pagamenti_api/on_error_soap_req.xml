@@ -11,8 +11,8 @@
           string[] activatePaymentNotice = new string[] {"activatePaymentNotice", "activatePaymentNoticeV2"};
           return activatePaymentNotice.Contains((string)context.Variables["soapAction"]) && context.LastError.Reason.Equals("ClientConnectionFailure");
         }">
-        <!-- ActivatePaymentNotice timeout, skip retry -->
-        <trace source="activate-skip-on-timeout" severity="information">skipping activate retry because of timeout</trace>
+          <!-- ActivatePaymentNotice timeout, skip retry -->
+          <trace source="activate-skip-on-timeout" severity="information">skipping activate retry because of timeout</trace>
         </when>
         <otherwise>
           <send-request mode="new" ignore-error="true" response-variable-name="risposta">
