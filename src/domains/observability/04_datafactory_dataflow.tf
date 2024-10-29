@@ -5,7 +5,7 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_bundles.dataflow" {
                         azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service
                     ]
 
-  data_factory_id = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
   name            = "PDND_CDC_GEC_BUNBLES.dataflow"
 
     source {
@@ -43,11 +43,11 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_bundles.dataflow" {
 ###################### PDND_CDC_GEC_CIBUNBLES.dataflow #############################
 resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_cibundles.dataflow" {
   depends_on      = [
-                        azurerm_data_factory_linked_service_cosmosdb.datasetsafm_gec_u_cdc_linked_service,
+                        azurerm_data_factory_linked_service_cosmosdb.afm_gec_cosmosdb_linked_service,
                         azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service
                     ]
 
-  data_factory_id = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
   name            = "PDND_CDC_GEC_CIBUNBLES.dataflow"
 
     source {
@@ -95,11 +95,11 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_cibundles.dataflow" {
 ###################### PDND_CDC_GEC_TOUCHPOINTS.dataflow #############################
 resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_touchpoints.dataflow" {
   depends_on      = [
-                        azurerm_data_factory_linked_service_cosmosdb.datasetsafm_gec_u_cdc_linked_service,
+                        azurerm_data_factory_linked_service_cosmosdb.afm_gec_cosmosdb_linked_service,
                         azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service
                     ]
 
-  data_factory_id = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
   name            = "PDND_CDC_GEC_BUNBLES.dataflow"
 
     source {
@@ -138,11 +138,11 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_touchpoints.dataflow" {
 ###################### PDND_CDC_GEC_PAYMENTTYPES.dataflow #############################
 resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_paymenttypes.dataflow" {
   depends_on      = [
-                        azurerm_data_factory_linked_service_cosmosdb.datasetsafm_gec_u_cdc_linked_service,
+                        azurerm_data_factory_linked_service_cosmosdb.afm_gec_cosmosdb_linked_service,
                         azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service
                     ]
 
-  data_factory_id = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
   name            = "PDND_CDC_GEC_BUNBLES.dataflow"
 
     source {
