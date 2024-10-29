@@ -76,6 +76,23 @@ resource "azurerm_cosmosdb_mongo_database" "ecommerce" {
 
 }
 
+resource "azurerm_cosmosdb_mongo_database" "ecommerce_history" {
+
+  name                = "ecommerce-history"
+  resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
+  account_name        = module.cosmosdb_account_mongodb.name
+
+  throughput = var.cosmos_mongo_db_ecommerce_history_params.enable_autoscaling || var.cosmos_mongo_db_ecommerce_history_params.enable_serverless ? null : var.cosmos_mongo_db_ecommerce_history_params.throughput
+
+  dynamic "autoscale_settings" {
+    for_each = var.cosmos_mongo_db_ecommerce_history_params.enable_autoscaling && !var.cosmos_mongo_db_ecommerce_history_params.enable_serverless ? [""] : []
+    content {
+      max_throughput = var.cosmos_mongo_db_ecommerce_history_params.max_throughput
+    }
+  }
+
+}
+
 # Collections
 locals {
   collections = [
@@ -175,6 +192,52 @@ module "cosmosdb_ecommerce_collections" {
 
   cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
   cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.ecommerce.name
+
+  indexes             = each.value.indexes
+  shard_key           = each.value.shard_key
+  default_ttl_seconds = each.value.default_ttl_seconds
+  lock_enable         = var.env_short == "d" ? false : true
+}
+
+# Collections ecommerce history
+locals {
+  ecommerce_history_collections = [
+    {
+      name = "pm-transactions-view"
+      indexes = [{
+        keys   = ["_id"]
+        unique = true
+        },
+        {
+          keys   = ["userInfo.notificationEmail"]
+          unique = false
+        },
+        {
+          keys   = ["userInfo.userFiscaCode"]
+          unique = false
+        }
+      ]
+      shard_key           = "_id",
+      default_ttl_seconds = null
+    },
+  ]
+}
+
+module "cosmosdb_ecommerce_history_collections" {
+
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
+
+
+  for_each = {
+    for index, coll in local.ecommerce_history_collections :
+    coll.name => coll
+  }
+
+  name                = each.value.name
+  resource_group_name = azurerm_resource_group.cosmosdb_ecommerce_rg.name
+
+  cosmosdb_mongo_account_name  = module.cosmosdb_account_mongodb.name
+  cosmosdb_mongo_database_name = azurerm_cosmosdb_mongo_database.ecommerce_history.name
 
   indexes             = each.value.indexes
   shard_key           = each.value.shard_key
