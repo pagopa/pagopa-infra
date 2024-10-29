@@ -1,7 +1,7 @@
 
 locals {
   npg_sdk_hostname                    = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
-  content_security_policy_header_name = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+  content_security_policy_header_name = "Content-Security-Policy"
 }
 
 /**
@@ -80,7 +80,7 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname};"
+        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname};"
       },
       {
         action = "Append"
