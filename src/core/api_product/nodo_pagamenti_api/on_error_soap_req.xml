@@ -8,7 +8,7 @@
       <!-- SOAP requests -->
       <choose>
         <when condition="@{
-          string[] activatePaymentNotice = new string[] {"activatePaymentNotice", "activatePaymentNoticeV2"};
+          string[] activatePaymentNotice = new string[] {"activatePaymentNotice", "activateIOPayment", "activatePaymentNoticeV2"};
           return activatePaymentNotice.Contains((string)context.Variables["soapAction"]) && context.LastError.Reason.Equals("ClientConnectionFailure");
         }">
           <!-- ActivatePaymentNotice timeout, skip retry -->
