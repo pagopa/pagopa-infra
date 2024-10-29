@@ -17,9 +17,11 @@ spec:
     tasks.max: ${tasks_max}
     database.hostname: ${postgres_hostname}
     database.port:  ${postgres_port}
-    database.user: ${secrets}:${namespace}/debezium-secret:username}
-    database.password: ${secrets}:${namespace}/debezium-secret:password}
+    database.user: ${postgres_username}
+    database.password: ${postgres_password}
     database.dbname: ${postgres_db_name}
     topic.prefix: ${postgres_topic_prefix}
     schema.include.list: "apd"
     table.include.list: "apd.payment_option,apd.payment_option_metadata,apd.payment_position,apd.transfer,apd.transfer_metadata"
+    plugin.name: "pgoutput"
+    publication.autocreate.mode: "disabled" # shall be create before 
