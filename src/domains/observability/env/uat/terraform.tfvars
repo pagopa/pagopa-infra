@@ -206,6 +206,26 @@ eventhubs = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "payment-wallet-ingestion-dl-soak-test"
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["payment-wallet-evt-rx-soak-test"]
+    keys = [
+      {
+        name   = "payment-wallet-evt-tx-soak-test"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "payment-wallet-evt-rx-soak-test"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 
