@@ -51,7 +51,7 @@ data "azurerm_storage_account" "observ_storage_account" {
 
 resource "azurerm_data_factory_linked_service_azure_blob_storage" "afm_gec_storage_linked_service" {
   name              = "afm_gec_storage_linked_service"
-  data_factory_id   = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id   = data.azurerm_data_factory.obeserv_data_factory.id
   connection_string = data.azurerm_storage_account.observ_storage_account.primary_connection_string
 }
 
@@ -62,6 +62,6 @@ data "azurerm_cosmos_account" "afm_cosmos_account" {
 
 resource "azurerm_data_factory_linked_service_cosmosdb" "afm_gec_cosmosdb_linked_service" {
   name              = "afm_gec_u_cdc_linked_service"
-  data_factory_id   = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id   = data.azurerm_data_factory.obeserv_data_factory.id
   connection_string = data.azurerm_cosmos_account.afm_cosmos_account.primary_connection_string
 }

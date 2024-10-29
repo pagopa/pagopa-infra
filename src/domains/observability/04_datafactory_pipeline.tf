@@ -663,7 +663,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_KPI_WPNFDR" {
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_BUNDLES" {
 
   name            = "PDND_CDC_GEC_BUNDLES_Pipeline"
-  data_factory_id = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
   }
@@ -682,7 +682,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_BUNDLES" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_CDC_GEC_BUNDLES" {
 
   name            = "Trigger_PDND_CDC_GEC_BUNDLES"
-  data_factory_id = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 3
   frequency = "Hour"
@@ -697,7 +697,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_CDC_GEC_BUNDLES" 
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_CIBUNDLES" {
 
   name            = "PDND_CDC_GEC_CIBUNDLES_Pipeline"
-  data_factory_id = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
   }
@@ -716,7 +716,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_CIBUNDLES" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_CDC_GEC_CIBUNDLES" {
 
   name            = "Trigger_PDND_CDC_GEC_CIBUNDLES"
-  data_factory_id = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 3
   frequency = "Hour"
@@ -731,7 +731,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_CDC_GEC_CIBUNDLES
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_PAYMENTTYPES" {
 
   name            = "PDND_CDC_GEC_PAYMENTTYPES_Pipeline"
-  data_factory_id = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
   }
@@ -750,7 +750,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_PAYMENTTYPES" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_CDC_GEC_PAYMENTTYPES" {
 
   name            = "Trigger_PDND_CDC_GEC_PAYMENTTYPES"
-  data_factory_id = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 3
   frequency = "Hour"
@@ -765,7 +765,7 @@ resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_CDC_GEC_PAYMENTTY
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_TOUCHPOINTS" {
 
   name            = "PDND_CDC_GEC_TOUCHPOINTS_Pipeline"
-  data_factory_id = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   variables = {
   }
@@ -784,7 +784,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_TOUCHPOINTS" {
 resource "azurerm_data_factory_trigger_schedule" "Trigger_PDND_CDC_GEC_TOUCHPOINTS" {
 
   name            = "Trigger_PDND_CDC_GEC_TOUCHPOINTS"
-  data_factory_id = azurerm_data_factory.obeserv_data_factory.id
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
 
   interval  = 3
   frequency = "Hour"

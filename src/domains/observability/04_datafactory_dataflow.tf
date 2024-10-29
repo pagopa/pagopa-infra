@@ -1,7 +1,7 @@
 ###################### PDND_CDC_GEC_BUNBLES.dataflow #############################
 resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_bundles.dataflow" {
   depends_on      = [
-                        azurerm_data_factory_linked_service_cosmosdb.datasetsafm_gec_u_cdc_linked_service,
+                        azurerm_data_factory_linked_service_cosmosdb.afm_gec_cosmosdb_linked_service,
                         azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service
                     ]
 
