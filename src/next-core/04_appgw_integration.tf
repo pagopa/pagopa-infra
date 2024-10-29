@@ -187,6 +187,12 @@ module "app_gw_integration" {
       backend               = "apim"
       rewrite_rule_set_name = null
       priority              = 10
+    },
+    apiprf = {
+      listener              = "apiprf"
+      backend               = "apim"
+      rewrite_rule_set_name = null
+      priority              = 20
     }
   }
 
