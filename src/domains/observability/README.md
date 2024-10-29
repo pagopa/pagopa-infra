@@ -138,7 +138,7 @@
 | <a name="input_observability_storage_account_replication_type"></a> [observability\_storage\_account\_replication\_type](#input\_observability\_storage\_account\_replication\_type) | (Optional) observability datastore storage account replication type | `string` | `"LRS"` | no |
 | <a name="input_observability_tier_to_archive_after_days_since_last_access_time_greater_than"></a> [observability\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than](#input\_observability\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than) | Number of days since last access to blob before moving to archive tier | `number` | `730` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 
 ## Outputs
 
