@@ -67,7 +67,7 @@ resource "azurerm_api_management_named_value" "default_nodo_backend_prf" {
   api_management_name = module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "default-nodo-backend-prf"
-  value               = var.env_short == "u" ? "${azurerm_api_management_named_value.schema_ip_nexi.value}/nodo-prf" : "fake.address"
+  value               = var.env_short == "u" ? "${azurerm_api_management_named_value.schema_ip_nexi.value}/nodo-prf" : "http://fake.address"
   # /webservices/input is set in API policy
 }
 
@@ -76,7 +76,7 @@ resource "azurerm_api_management_named_value" "default_nodo_backend_dev_nexi" {
   api_management_name = module.apim[0].name
   resource_group_name = azurerm_resource_group.rg_api.name
   display_name        = "default-nodo-backend-dev-nexi"
-  value               = var.env_short == "d" ? "${azurerm_api_management_named_value.schema_ip_nexi.value}/nodo-dev" : "fake.address"
+  value               = var.env_short == "d" ? "${azurerm_api_management_named_value.schema_ip_nexi.value}/nodo-dev" : "http://fake.address"
   # /webservices/input is set in API policy
 }
 
