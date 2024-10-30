@@ -110,22 +110,10 @@ module "apim_debt_positions_product" {
   policy_xml = file("./api_product/gpd/debt-position-services/_base_policy.xml")
 }
 
-module "apim_gpd_for_aca_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
-
-  product_id   = "gpd-for-aca"
-  display_name = "GPD for ACA pagoPA"
-  description  = "Product GPD for A.C.A. pagoPA"
-
+data "azurerm_api_management_product" "apim_gpd_for_aca_product" {
+  product_id          = "gpd-for-aca"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-
-  published             = true
-  subscription_required = true
-  approval_required     = true
-  subscriptions_limit   = 1000
-
-  policy_xml = file("./api_product/gpd/debt-position-services/_base_policy.xml")
 }
 
 ## API ##
@@ -144,7 +132,7 @@ module "apim_api_debt_positions_api_v1" {
   name                = format("%s-debt-positions-service-api", local.product)
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  product_ids         = [module.apim_debt_positions_product.product_id, module.apim_aca_integration_product.product_id, module.apim_gpd_integration_product.product_id,module.apim_gpd_for_aca_product.product_id]
+  product_ids         = [module.apim_debt_positions_product.product_id, module.apim_aca_integration_product.product_id, module.apim_gpd_integration_product.product_id, data.azurerm_api_management_product.apim_gpd_for_aca_product.product_id]
 
   subscription_required = local.apim_debt_positions_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_debt_positions_api.id
@@ -172,7 +160,7 @@ module "apim_api_debt_positions_api_v2" {
   name                  = format("%s-debt-positions-service-api", local.product)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_debt_positions_product.product_id, module.apim_aca_integration_product.product_id, module.apim_gpd_integration_product.product_id,module.apim_gpd_for_aca_product.product_id]
+  product_ids           = [module.apim_debt_positions_product.product_id, module.apim_aca_integration_product.product_id, module.apim_gpd_integration_product.product_id, data.azurerm_api_management_product.apim_gpd_for_aca_product.product_id]
   subscription_required = local.apim_debt_positions_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_debt_positions_api.id
   api_version           = "v2"
