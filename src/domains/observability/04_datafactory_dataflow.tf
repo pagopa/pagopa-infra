@@ -1,4 +1,4 @@
-###################### PDND_CDC_GEC_BUNBLES_DataFlow #############################
+###################### PDND_CDC_GEC_BUNDLES_DataFlow #############################
 resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_bundles_dataflow" {
   depends_on = [
     azurerm_data_factory_linked_service_cosmosdb.afm_gec_cosmosdb_linked_service,
@@ -6,7 +6,7 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_bundles_dataflow" {
   ]
 
   data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
-  name            = "PDND_CDC_GEC_BUNBLES_DataFlow"
+  name            = "PDND_CDC_GEC_BUNDLES_DataFlow"
 
   source {
     linked_service {
@@ -42,7 +42,7 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_bundles_dataflow" {
   folder = "PDND_CDC_GEC_DATAFLOW"
 }
 
-###################### PDND_CDC_GEC_CIBUNBLES #############################
+###################### PDND_CDC_GEC_CIBUNDLES #############################
 resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_cibundles_dataflow" {
   depends_on = [
     azurerm_data_factory_linked_service_cosmosdb.afm_gec_cosmosdb_linked_service,
@@ -50,7 +50,7 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_cibundles_dataflow" {
   ]
 
   data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
-  name            = "PDND_CDC_GEC_CIBUNBLES_DataFlow"
+  name            = "PDND_CDC_GEC_CIBUNDLES_DataFlow"
 
   source {
     linked_service {
@@ -104,7 +104,7 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_touchpoints_dataflow" {
   ]
 
   data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
-  name            = "PDND_CDC_GEC_BUNBLES_DataFlow"
+  name            = "PDND_CDC_GEC_TOUCHPOINTS_DataFlow"
 
   source {
     linked_service {
@@ -149,7 +149,7 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_paymenttypes_dataflow" {
   ]
 
   data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
-  name            = "PDND_CDC_GEC_BUNBLES_DataFlow"
+  name            = "PDND_CDC_GEC_PAYMENTTYPES_DataFlow"
 
   source {
     linked_service {

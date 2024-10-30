@@ -1,12 +1,5 @@
 ########################### PDND CDC GEC BUNDLES PIPELINE ###########################
 
-resource "azurerm_data_factory_global_parameter" "evh_base_url" {
-  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
-  name            = "evhBaseUrl"
-  type            = "String"
-  value           = "https://pagopa-${var.env_short}-itn-observ-evh.servicebus.windows.net"
-}
-
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_BUNDLES" {
 
   name            = "PDND_CDC_GEC_BUNDLES_Pipeline"
@@ -17,6 +10,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_BUNDLES" {
 
   activities_json = "[${templatefile("./datafactory/pipelines/PDND_CDC_GEC_BUNDLES.json", {
     inputdataset = "PDND_CDC_GEC_BUNDLES_JSON_Dataset"
+    evh_base_url = "https://pagopa-${var.env_short}-itn-observ-evh.servicebus.windows.net"
   })}]"
 
   depends_on = [
@@ -51,6 +45,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_CIBUNDLES" {
 
   activities_json = "[${templatefile("./datafactory/pipelines/PDND_CDC_GEC_CIBUNDLES.json", {
     inputdataset = "PDND_CDC_GEC_CIBUNDLES_JSON_Dataset"
+    evh_base_url = "https://pagopa-${var.env_short}-itn-observ-evh.servicebus.windows.net"
   })}]"
 
   depends_on = [
@@ -85,6 +80,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_PAYMENTTYPES" {
 
   activities_json = "[${templatefile("./datafactory/pipelines/PDND_CDC_GEC_PAYMENTTYPES.json", {
     inputdataset = "PDND_CDC_GEC_PAYMENTTYPES_JSON_Dataset"
+    evh_base_url = "https://pagopa-${var.env_short}-itn-observ-evh.servicebus.windows.net"
   })}]"
 
   depends_on = [
@@ -119,6 +115,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_TOUCHPOINTS" {
 
   activities_json = "[${templatefile("./datafactory/pipelines/PDND_CDC_GEC_TOUCHPOINTS.json", {
     inputdataset = "PDND_CDC_GEC_TOUCHPOINTS_JSON_Dataset"
+    evh_base_url = "https://pagopa-${var.env_short}-itn-observ-evh.servicebus.windows.net"
   })}]"
 
   depends_on = [

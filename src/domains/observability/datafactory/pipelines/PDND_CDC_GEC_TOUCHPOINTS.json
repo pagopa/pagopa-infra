@@ -1,5 +1,5 @@
 {
-    "name": "afm_gec_cdc_dataflow",
+    "name": "PDND_CDC_GEC_TOUCHPOINTS_Pipeline_",
     "type": "ExecuteDataFlow",
     "dependsOn": [],
     "policy": {
@@ -12,7 +12,7 @@
     "userProperties": [],
     "typeProperties": {
         "dataflow": {
-            "referenceName": "afm_gec_cdc_touchpoints_df",
+            "referenceName": "PDND_CDC_GEC_TOUCHPOINTS_DataFlow",
             "type": "DataFlowReference"
         },
         "compute": {
@@ -27,7 +27,7 @@
     "type": "Lookup",
     "dependsOn": [
         {
-            "activity": "afm_gec_cdc_dataflow",
+            "activity": "PDND_CDC_GEC_TOUCHPOINTS_DataFlow",
             "dependencyConditions": [
                 "Succeeded"
             ]
@@ -56,7 +56,7 @@
             }
         },
         "dataset": {
-            "referenceName": "AFM_GEC_TOUCHPOINTS_CDC_JSON",
+            "referenceName": "PDND_CDC_GEC_TUCHPOINTS_JSON_Dataset",
             "type": "DatasetReference"
         },
         "firstRowOnly": false
@@ -96,7 +96,7 @@
                 "typeProperties": {
                     "method": "POST",
                     "url": {
-                        "value": "@concat(pipeline().globalParameters.evhBaseUrl, '/gec-ingestion-touchpoints-dl/messages')",
+                        "value": "@concat(${evh_base_url}, '/gec-ingestion-touchpoints-dl/messages')",
                         "type": "Expression"
                     },
                     "connectVia": {
@@ -106,13 +106,6 @@
                     "body": {
                         "value": "@item()",
                         "type": "Expression"
-                    },
-                    "authentication": {
-                        "type": "MSI",
-                        "resource": {
-                            "value": "@pipeline().globalParameters.evhBaseUrl",
-                            "type": "Expression"
-                        }
                     }
                 }
             }
@@ -140,7 +133,7 @@
     "userProperties": [],
     "typeProperties": {
         "dataset": {
-            "referenceName": "AFM_GEC_TOUCHPOINTS_CDC_JSON",
+            "referenceName": "PDND_CDC_GEC_TUCHPOINTS_JSON_Dataset",
             "type": "DatasetReference"
         },
         "enableLogging": false,
