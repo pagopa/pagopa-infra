@@ -63,7 +63,7 @@ locals {
     limits_memory        = var.limits_memory
     limits_cpu           = var.limits_cpu
     bootstrap_servers    = "pagopa-${var.env_short}-itn-observ-gpd-evh.servicebus.windows.net:9093"
-    eh_connection_string = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_namespace_authorization_rule.cdc_connection_string.primary_connection_string}\""
+    eh_connection_string = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_namespace_authorization_rule.cdc_connection_string.primary_connection_string};\""
     container_registry   = var.container_registry
   })
 
