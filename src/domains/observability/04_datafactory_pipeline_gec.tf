@@ -1,4 +1,12 @@
 ########################### PDND CDC GEC BUNDLES PIPELINE ###########################
+
+resource "azurerm_data_factory_global_parameter" "evh_base_url" {
+  data_factory_id = data.azurerm_data_factory.obeserv_data_factory.id
+  name            = "evhBaseUrl"
+  type            = "String"
+  value           = "https://pagopa-${var.env_short}-itn-observ-evh.servicebus.windows.net"
+}
+
 resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_BUNDLES" {
 
   name            = "PDND_CDC_GEC_BUNDLES_Pipeline"
