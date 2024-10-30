@@ -2199,8 +2199,9 @@
           },
           "lastUsage": {
             "type": "string",
-            "description": "Time of last usage of this wallet by the client",
-            "format": "date-time"
+            "description": "(DEPRECATED\\: use GET /user/lastPaymentMethodUsed to retrieve user last used method) Time of last usage of this wallet by the client\n",
+            "format": "date-time",
+            "deprecated": true
           }
         },
         "required": [
