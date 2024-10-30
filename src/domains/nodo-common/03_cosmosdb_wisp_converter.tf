@@ -110,6 +110,14 @@ locals {
       }
     },
     {
+      name               = "reports", # contains all extracted reports
+      partition_key_path = "/date",   # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.report_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.report_max_throughput
+      }
+    },
+    {
       name               = "nav2iuv-mapping",
       partition_key_path = "/partitionKey", # contains Broker EC fiscal code
       default_ttl        = var.wisp_converter_cosmos_nosql_db_params.nav2iuv_mapping_ttl

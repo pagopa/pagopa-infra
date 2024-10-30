@@ -222,6 +222,8 @@ wisp_converter_cosmos_nosql_db_params = {
   rt_max_throughput                  = 400
   configuration_ttl                  = -1
   configuration_max_throughput       = 400
+  report_ttl                         = 259200 # 3 days in seconds
+  report_max_throughput              = 400
   nav2iuv_mapping_ttl                = 259200 # 3 days in second
   nav2iuv_mapping_max_throughput     = 400
 }
