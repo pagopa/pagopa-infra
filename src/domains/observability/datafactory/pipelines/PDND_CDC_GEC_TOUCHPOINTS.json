@@ -1,0 +1,154 @@
+{
+    "name": "afm_gec_cdc_dataflow",
+    "type": "ExecuteDataFlow",
+    "dependsOn": [],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "dataflow": {
+            "referenceName": "afm_gec_cdc_touchpoints_df",
+            "type": "DataFlowReference"
+        },
+        "compute": {
+            "coreCount": 8,
+            "computeType": "General"
+        },
+        "traceLevel": "Fine"
+    }
+},
+{
+    "name": "readFileFromStorage",
+    "type": "Lookup",
+    "dependsOn": [
+        {
+            "activity": "afm_gec_cdc_dataflow",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "source": {
+            "type": "JsonSource",
+            "storeSettings": {
+                "type": "AzureBlobStorageReadSettings",
+                "recursive": true,
+                "wildcardFolderPath": "touchpoints",
+                "wildcardFileName": "*.json",
+                "enablePartitionDiscovery": false
+            },
+            "formatSettings": {
+                "type": "JsonReadSettings"
+            }
+        },
+        "dataset": {
+            "referenceName": "AFM_GEC_TOUCHPOINTS_CDC_JSON",
+            "type": "DatasetReference"
+        },
+        "firstRowOnly": false
+    }
+},
+{
+    "name": "cycleOverJsonArray",
+    "type": "ForEach",
+    "dependsOn": [
+        {
+            "activity": "readFileFromStorage",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "userProperties": [],
+    "typeProperties": {
+        "items": {
+            "value": "@json(string(activity('readFileFromStorage').output.value))",
+            "type": "Expression"
+        },
+        "isSequential": true,
+        "activities": [
+            {
+                "name": "WriteEvhub",
+                "type": "WebActivity",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "method": "POST",
+                    "url": {
+                        "value": "@concat(pipeline().globalParameters.evhBaseUrl, '/gec-ingestion-touchpoints-dl/messages')",
+                        "type": "Expression"
+                    },
+                    "connectVia": {
+                        "referenceName": "AutoResolveIntegrationRuntime",
+                        "type": "IntegrationRuntimeReference"
+                    },
+                    "body": {
+                        "value": "@item()",
+                        "type": "Expression"
+                    },
+                    "authentication": {
+                        "type": "MSI",
+                        "resource": {
+                            "value": "@pipeline().globalParameters.evhBaseUrl",
+                            "type": "Expression"
+                        }
+                    }
+                }
+            }
+        ]
+    }
+},
+{
+    "name": "deleteFile",
+    "type": "Delete",
+    "dependsOn": [
+        {
+            "activity": "cycleOverJsonArray",
+            "dependencyConditions": [
+                "Succeeded"
+            ]
+        }
+    ],
+    "policy": {
+        "timeout": "0.12:00:00",
+        "retry": 0,
+        "retryIntervalInSeconds": 30,
+        "secureOutput": false,
+        "secureInput": false
+    },
+    "userProperties": [],
+    "typeProperties": {
+        "dataset": {
+            "referenceName": "AFM_GEC_TOUCHPOINTS_CDC_JSON",
+            "type": "DatasetReference"
+        },
+        "enableLogging": false,
+        "storeSettings": {
+            "type": "AzureBlobStorageReadSettings",
+            "recursive": true,
+            "wildcardFileName": "*.json",
+            "enablePartitionDiscovery": false
+        }
+    }
+}
