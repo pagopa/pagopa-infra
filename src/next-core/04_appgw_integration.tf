@@ -148,6 +148,17 @@ module "app_gw_integration" {
       probe_name                  = "probe-apim"
       request_timeout             = 120
       pick_host_name_from_backend = false
+    },
+    apimprf = {
+      protocol                    = "Https"
+      host                        = "api.${var.dns_zone_prefix_prf}.${var.external_domain}"
+      port                        = 443
+      ip_addresses                = module.apim[0].private_ip_addresses
+      fqdns                       = ["api.${var.dns_zone_prefix_prf}.${var.external_domain}."]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apimprf"
+      request_timeout             = 120
+      pick_host_name_from_backend = false
     }
   }
 

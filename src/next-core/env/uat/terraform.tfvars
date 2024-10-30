@@ -59,11 +59,13 @@ dns_zone_internal_prefix = "internal.uat.platform"
 dns_zone_prefix_prf      = "prf.platform"
 dns_zone_wfesp           = "wfesp.test"
 
-private_dns_zone_db_nodo_pagamenti       = "u.db-nodo-pagamenti.com"
-dns_a_reconds_dbnodo_ips                 = ["10.70.73.10"]    # db onCloud
-dns_a_reconds_dbnodo_prf_ips             = ["10.70.73.20"]    # db onCloud prf
-dns_a_reconds_dbnodonexipostgres_ips     = ["10.222.214.174"] # db onPrem PostgreSQL
-dns_a_reconds_dbnodonexipostgres_prf_ips = ["10.222.214.184"] # db onPrem PostgreSQL
+private_dns_zone_db_nodo_pagamenti                  = "u.db-nodo-pagamenti.com"
+dns_a_reconds_dbnodo_ips                            = ["10.70.73.10"]    # db onCloud
+dns_a_reconds_dbnodo_prf_ips                        = ["10.70.73.20"]    # db onCloud prf
+dns_a_reconds_dbnodonexipostgres_ips                = ["10.222.214.174"] # db onPrem PostgreSQL
+dns_a_reconds_dbnodonexipostgres_prf_ips            = ["10.222.214.184"] # db onPrem PostgreSQL
+dns_a_reconds_dbnodonexipostgres_prf_balancer_1_ips = ["10.222.214.127"] # db onPrem PRF PostgreSQL
+dns_a_reconds_dbnodonexipostgres_prf_balancer_2_ips = ["10.222.214.128"] # db onPrem PRF PostgreSQL
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"

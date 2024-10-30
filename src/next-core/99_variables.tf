@@ -204,6 +204,17 @@ variable "dns_a_reconds_dbnodonexipostgres_prf_ips" {
   default     = []
 }
 
+variable "dns_a_reconds_dbnodonexipostgres_prf_balancer_1_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_prf_balancer_2_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
 
 #
 # dns forwarder
