@@ -66,11 +66,11 @@ pgbouncer_enabled = false
 create_wisp_converter = true
 
 ### debezium kafka conn
-zookeeper_replicas = 1
+zookeeper_replicas = "1"
 zookeeper_request_memory = "512Mi"
-zookeeper_request_cpu = 0.5
+zookeeper_request_cpu = "0.5"
 zookeeper_limits_memory = "512Mi"
-zookeeper_limits_cpu = 0.5
+zookeeper_limits_cpu = "0.5"
 zookeeper_jvm_xms = "512m"
 zookeeper_jvm_xmx = "512m"
 zookeeper_storage_size = "100Gi"

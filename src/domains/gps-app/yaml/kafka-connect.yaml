@@ -6,16 +6,16 @@ metadata:
   annotations:
     strimzi.io/use-connector-resources: "true"
 spec:
-  version: 3.1.0
+  version: 3.7.0
   replicas: ${replicas}
   bootstrapServers: ${bootstrap_servers}
   resources:
     requests:
-      memory: ${request_memory}
-      cpu: ${request_cpu}
+      memory: "${request_memory}"
+      cpu: "${request_cpu}"
     limits:
-      memory: ${limits_memory}
-      cpu: ${limits_cpu}
+      memory: "${limits_memory}"
+      cpu: "${limits_cpu}"
   config:
     config.providers: secrets
     config.providers.secrets.class: io.strimzi.kafka.KubernetesSecretConfigProvider
@@ -38,19 +38,19 @@ spec:
     internal.value.converter.schemas.enable: false
     security.protocol: SASL_SSL
     sasl.mechanism: PLAIN
-    sasl.jaas.config: ${eh_connection_string}
+    sasl.jaas.config: '${eh_connection_string}'
     producer.security.protocol: SASL_SSL
     producer.sasl.mechanism: PLAIN
-    producer.sasl.jaas.config: ${eh_connection_string}
+    producer.sasl.jaas.config: '${eh_connection_string}'
     consumer.security.protocol: SASL_SSL
     consumer.sasl.mechanism: PLAIN
-    consumer.sasl.jaas.config:  ${eh_connection_string}
+    consumer.sasl.jaas.config: '${eh_connection_string}'
   build:
     output:
       type: docker
       image: ${container_registry}/debezium-connector-postgres:latest
       # src/domains/gps-app/set_registry_secrets.sh
-      pushSecret: acr-credentials
+      pushSecret: acr-credential
     plugins:
       - name: debezium-postgres-connector
         artifacts:

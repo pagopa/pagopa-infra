@@ -40,17 +40,20 @@ locals {
   #   password  = data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value
   # })
 
-  zookeeper_yaml = templatefile("${path.module}/yaml/zookeeper.yaml", {
-    namespace                = "gps" # kubernetes_namespace.namespace.metadata[0].name
-    zookeeper_replicas       = var.zookeeper_replicas
-    zookeeper_request_memory = var.zookeeper_request_memory
-    zookeeper_request_cpu    = var.zookeeper_request_cpu
-    zookeeper_limits_memory  = var.zookeeper_limits_memory
-    zookeeper_limits_cpu     = var.zookeeper_limits_cpu
-    zookeeper_jvm_xms        = var.zookeeper_jvm_xms
-    zookeeper_jvm_xmx        = var.zookeeper_jvm_xmx
-    zookeeper_storage_size   = var.zookeeper_storage_size
-  })
+  # zookeeper_yaml = templatefile("${path.module}/yaml/zookeeper.yaml", {
+  #   namespace                = "gps" # kubernetes_namespace.namespace.metadata[0].name
+  #   zookeeper_replicas       = var.zookeeper_replicas
+  #   zookeeper_request_memory = var.zookeeper_request_memory
+  #   zookeeper_request_cpu    = var.zookeeper_request_cpu
+  #   zookeeper_limits_memory  = var.zookeeper_limits_memory
+  #   zookeeper_limits_cpu     = var.zookeeper_limits_cpu
+  #   zookeeper_jvm_xms        = var.zookeeper_jvm_xms
+  #   zookeeper_jvm_xmx        = var.zookeeper_jvm_xmx
+  #   zookeeper_storage_size   = var.zookeeper_storage_size
+  # })
+
+  # Az config
+  # https://learn.microsoft.com/it-it/azure/event-hubs/event-hubs-kafka-connect-debezium#configure-kafka-connect-for-event-hubs
 
   kafka_connect_yaml = templatefile("${path.module}/yaml/kafka-connect.yaml", {
     namespace            = "gps" # kubernetes_namespace.namespace.metadata[0].name
@@ -60,7 +63,7 @@ locals {
     limits_memory        = var.limits_memory
     limits_cpu           = var.limits_cpu
     bootstrap_servers    = "pagopa-${var.env_short}-itn-observ-gpd-evh.servicebus.windows.net:9093"
-    eh_connection_string = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_namespace_authorization_rule.cdc_connection_string.primary_connection_string}\";"
+    eh_connection_string = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_namespace_authorization_rule.cdc_connection_string.primary_connection_string}\""
     container_registry   = var.container_registry
   })
 
@@ -94,23 +97,23 @@ resource "kubectl_manifest" "debezoum_rbac" {
   yaml_body       = local.debezium_rbac_yaml
 }
 
-resource "kubectl_manifest" "zookeper_manifest" {
-  depends_on = [
-    helm_release.strimzi-kafka-operator
-  ]
-  force_conflicts = true
-  yaml_body       = local.zookeeper_yaml
-}
+# resource "kubectl_manifest" "zookeper_manifest" {
+#   depends_on = [
+#     helm_release.strimzi-kafka-operator
+#   ]
+#   force_conflicts = true
+#   yaml_body       = local.zookeeper_yaml
+# }
 
-resource "null_resource" "wait_zookeeper" {
-  depends_on = [
-    kubectl_manifest.zookeper_manifest
-  ]
-  provisioner "local-exec" {
-    command     = "while [ true ]; do STATUS=`kubectl -n gps get Kafka -ojsonpath='{range .items[*]}{.status.health}'`; if [ \"$STATUS\" = \"green\" ]; then echo \"Zookeper SUCCEEDED\" ; break ; else echo \"Zookeeper INPROGRESS\"; sleep 3; fi ; done"
-    interpreter = ["/bin/bash", "-c"]
-  }
-}
+# resource "null_resource" "wait_zookeeper" {
+#   depends_on = [
+#     kubectl_manifest.zookeper_manifest
+#   ]
+#   provisioner "local-exec" {
+#     command     = "while [ true ]; do STATUS=`kubectl -n gps get Kafka -ojsonpath='{range .items[*]}{.status.health}'`; if [ \"$STATUS\" = \"green\" ]; then echo \"Zookeper SUCCEEDED\" ; break ; else echo \"Zookeeper INPROGRESS\"; sleep 3; fi ; done"
+#     interpreter = ["/bin/bash", "-c"]
+#   }
+# }
 
 resource "kubectl_manifest" "kafka_connect" {
   depends_on = [
