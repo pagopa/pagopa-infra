@@ -33,7 +33,7 @@ formatDateString select(mapColumn(
 selectOutputFileds sink(allowSchemaDrift: true,
      validateSchema: false,
      format: 'json',
-     container: 'pagopa-u-itn-observ-az-blob-observability-container',
+     container: ${container_name},
      folderPath: 'touchpoints',
      truncate: true,
      skipDuplicateMapInputs: true,
