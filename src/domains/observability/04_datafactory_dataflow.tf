@@ -10,7 +10,7 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_bundles_dataflow" {
 
   source {
     linked_service {
-      name = "afm-gec-${var.env_short}-${var.location_short}-cdc-linked-service"
+      name = "afm-gec-${var.env_short}-${var.location_short}-cosmos-linked-service"
     }
 
     name        = "cosmos_ls_bundles"
@@ -54,7 +54,7 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_cibundles_dataflow" {
 
   source {
     linked_service {
-      name = "afm-gec-${var.env_short}-${var.location_short}-cdc-linked-service"
+      name = "afm-gec-${var.env_short}-${var.location_short}-cosmos-linked-service"
     }
 
     name        = "cosmos_ls_cibundles"
@@ -108,7 +108,7 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_touchpoints_dataflow" {
 
   source {
     linked_service {
-      name = "afm-gec-${var.env_short}-${var.location_short}-cdc-linked-service"
+      name = "afm-gec-${var.env_short}-${var.location_short}-cosmos-linked-service"
     }
 
     name        = "cosmos_ls_touchpoints"
@@ -153,7 +153,7 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_paymenttypes_dataflow" {
 
   source {
     linked_service {
-      name = "afm-gec-${var.env_short}-${var.location_short}-cdc-linked-service"
+      name = "afm-gec-${var.env_short}-${var.location_short}-cosmos-linked-service"
     }
 
     name        = "cosmos_ls_paymenttypes"
