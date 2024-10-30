@@ -236,6 +236,8 @@ wisp_converter_cosmos_nosql_db_params = {
   configuration_max_throughput       = 1000
   report_ttl                         = 31536000 # 1 year in second
   report_max_throughput              = 1000
+  nav2iuv_mapping_ttl                = 691200 # 8 days in second
+  nav2iuv_mapping_max_throughput     = 2000
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
