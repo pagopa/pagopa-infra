@@ -79,7 +79,7 @@ transformDateFormat select(mapColumn(
 selectFields sink(allowSchemaDrift: true,
      validateSchema: false,
      format: 'json',
-     container: 'pagopa-u-itn-observ-az-blob-observability-container',
+     container: ${container_name},
      folderPath: 'bundles',
      skipDuplicateMapInputs: true,
      skipDuplicateMapOutputs: true) ~> afmgecstorage
