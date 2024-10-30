@@ -109,6 +109,14 @@ locals {
         max_throughput = var.wisp_converter_cosmos_nosql_db_params.configuration_max_throughput
       }
     },
+    {
+      name               = "reports", # contains all extracted reports
+      partition_key_path = "/date",   # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.report_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.report_max_throughput
+      }
+    },
   ]
 }
 
