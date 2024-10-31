@@ -3,9 +3,27 @@
 ## Mock Nexi cfg in PRF   ##
 ############################
 
-# PM  -> lb aks uat 10.70.74.200+ /mock-pm-prf  +   /PerfPMMock/RestAPI
-# EC  -> lb aks uat 10.70.74.200+ /ec-mockprf   +   /servizio
-# PSP -> lb aks uat 10.70.74.200+ /psp-mockprf  +   /simulatorePSP
+# for Nexi *CLOUD* env default-backend-prf must be
+# EC
+# default-backend-url-prf = http://10.70.74.200/ec-mockprf  + /servizio
+# PM
+# default-backend-url-prf = http://10.70.74.200/mock-pm-prf  + /PerfPMMock/RestAPI
+# PSP
+# default-backend-url-prf = http://10.70.74.200/psp-mockprf  + /simulatorePSP
+
+# for Nexi *ON PREM* env default-backend-prf must be
+# EC PRF
+# default-backend-url-prf = https://10.79.20.63  + /servizio
+# header ndphost = mock-ec-prf.nexigroup.com
+# PSP
+# default-backend-url-prf = https://10.79.20.63  + /simulatorePSP
+# header ndphost = mock-psp-prf.nexigroup.com
+# PM SIT
+# default-backend-url-prf = https://10.70.66.200  + /PerfPMMock/RestAPI
+# header ndphost = mock-pm-sit.nexigroup.com
+# PM PRF
+# default-backend-url-prf = https://10.79.20.63  + /PerfPMMock/RestAPI
+# header ndphost = mock-pm-prf.nexigroup.com
 
 ############################
 ## Mock EC Nexi           ##
@@ -64,10 +82,7 @@ module "apim_mock_ec_nexi_api" {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/mock_nexi/ec/v1/_base_policy.xml", {
-    mock_base_path = "/ec-mockprf/servizio"
-  })
-
+  xml_content = file("./api/mock_nexi/ec/v1/_base_policy.xml")
 }
 
 
@@ -129,9 +144,7 @@ module "apim_mock_psp_nexi_api" {
     service = module.apim_mock_psp_nexi_product[0].product_id
   })
 
-  xml_content = templatefile("./api/mock_nexi/psp/v1/_base_policy.xml", {
-    mock_base_path = "/psp-mockprf/simulatorePSP"
-  })
+  xml_content = file("./api/mock_nexi/psp/v1/_base_policy.xml")
 
 }
 
@@ -194,7 +207,7 @@ module "apim_mock_pm_nexi_api" {
   })
 
   xml_content = templatefile("./api/mock_nexi/psp/v1/_base_policy.xml", {
-    mock_base_path = var.env_short == "u" ? "/mock-pm-prf/PerfPMMock/RestAPI" : "/sit-mock-pm"
+    backend = var.env_short == "u" ? "{{default-nodo-backend-prf}}/PerfPMMock/RestAPI" : "{{schema-ip-nexi}}/sit-mock-pm"
   })
 
 }

@@ -1,7 +1,7 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="http://{{aks-lb-nexi}}${mock_base_path}" />
+        <set-backend-service base-url="${backend}" />
     </inbound>
     <backend>
         <base />
