@@ -1,6 +1,9 @@
 <policies>
     <inbound>
         <base />
+        <set-header name="ndphost" exists-action="override">
+          <value>${ndphost}</value>
+        </set-header>
         <set-backend-service base-url="${backend}" />
     </inbound>
     <backend>
