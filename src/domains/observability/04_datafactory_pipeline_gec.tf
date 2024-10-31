@@ -14,7 +14,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_BUNDLES" {
   })}]"
 
   depends_on = [
-    azurerm_data_factory_dataset_azure_blob.pdnd_cdc_gec_bundles_json
+    azurerm_data_factory_dataset_azure_blob.pdnd_cdc_gec_bundles_json,
+    azurerm_data_factory_data_flow.pdnd_cdc_gec_bundles_dataflow
   ]
 
   folder = "PDND_CDC_GEC_PIPELINE"
@@ -49,7 +50,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_CIBUNDLES" {
   })}]"
 
   depends_on = [
-    azurerm_data_factory_dataset_azure_blob.pdnd_cdc_gec_cibundles_json
+    azurerm_data_factory_dataset_azure_blob.pdnd_cdc_gec_cibundles_json,
+    azurerm_data_factory_data_flow.pdnd_cdc_gec_cibundles_dataflow
   ]
 
   folder = "PDND_CDC_GEC_PIPELINE"
@@ -84,7 +86,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_PAYMENTTYPES" {
   })}]"
 
   depends_on = [
-    azurerm_data_factory_dataset_azure_blob.pdnd_cdc_gec_paymenttypes_json
+    azurerm_data_factory_dataset_azure_blob.pdnd_cdc_gec_paymenttypes_json,
+    azurerm_data_factory_data_flow.pdnd_cdc_gec_paymenttypes_dataflow
   ]
 
   folder = "PDND_CDC_GEC_PIPELINE"
@@ -119,7 +122,8 @@ resource "azurerm_data_factory_pipeline" "pipeline_PDND_CDC_GEC_TOUCHPOINTS" {
   })}]"
 
   depends_on = [
-    azurerm_data_factory_dataset_azure_blob.pdnd_cdc_gec_touchpoints_json
+    azurerm_data_factory_dataset_azure_blob.pdnd_cdc_gec_touchpoints_json,
+    azurerm_data_factory_data_flow.pdnd_cdc_gec_touchpoints_dataflow
   ]
 
   folder = "PDND_CDC_GEC_PIPELINE"

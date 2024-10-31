@@ -13,8 +13,13 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_bundles_dataflow" {
       name = "afm-gec-${var.env_short}-${var.location_short}-cosmos-linked-service"
     }
 
-    name        = "cosmos_ls_bundles"
+    name        = "cosmoslsbundles"
     description = "Import data from Analytical Store"
+
+    dataset {
+      name = "PDND_CDC_GEC_BUNDLES_JSON_Dataset"
+    }
+
   }
 
   transformation {
@@ -33,6 +38,7 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_bundles_dataflow" {
     }
     name        = "afmgecstorage"
     description = "Write data to blob storage in json format"
+
   }
 
   script = templatefile("./datafactory/dataflows/PDND_CDC_GEC_BUNDLES.dsl", { # src/domains/observability/datafactory/dataflows/PDND_CDC_GEC_BUNDLES.dsl
@@ -57,8 +63,12 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_cibundles_dataflow" {
       name = "afm-gec-${var.env_short}-${var.location_short}-cosmos-linked-service"
     }
 
-    name        = "cosmos_ls_cibundles"
+    name        = "cosmoslscibundles"
     description = "Import data from Analytical Store"
+
+    dataset {
+      name = "PDND_CDC_GEC_CIBUNDLES_JSON_Dataset"
+    }
   }
 
   transformation {
@@ -111,8 +121,13 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_touchpoints_dataflow" {
       name = "afm-gec-${var.env_short}-${var.location_short}-cosmos-linked-service"
     }
 
-    name        = "cosmos_ls_touchpoints"
+    name        = "cosmoslstouchpoints"
     description = "Import data from Analytical Store"
+
+    dataset {
+      name = "PDND_CDC_GEC_TUCHPOINTS_JSON_Dataset"
+    }    
+    
   }
 
   transformation {
@@ -156,8 +171,12 @@ resource "azurerm_data_factory_data_flow" "pdnd_cdc_gec_paymenttypes_dataflow" {
       name = "afm-gec-${var.env_short}-${var.location_short}-cosmos-linked-service"
     }
 
-    name        = "cosmos_ls_paymenttypes"
+    name        = "cosmoslspaymenttypes"
     description = "Import data from Analytical Store"
+
+    dataset {
+      name = "PDND_CDC_GEC_PAYMENTTYPES_JSON_Dataset"
+    }    
   }
 
   transformation {

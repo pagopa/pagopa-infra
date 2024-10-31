@@ -96,7 +96,7 @@
                 "typeProperties": {
                     "method": "POST",
                     "url": {
-                        "value": "@concat(${evh_base_url}, '/gec-ingestion-bundles-dl/messages')",
+                        "value": "@concat('${evh_base_url}', '/gec-ingestion-bundles-dl/messages')",
                         "type": "Expression"
                     },
                     "connectVia": {

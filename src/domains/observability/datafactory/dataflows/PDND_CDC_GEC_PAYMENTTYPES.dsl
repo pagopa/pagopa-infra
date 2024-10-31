@@ -34,7 +34,7 @@ selectOutputFileds sink(allowSchemaDrift: true,
      validateSchema: false,
      format: 'json',
      container: ${container_name},
-     folderPath: 'touchpoints',
+     folderPath: 'paymenttypes',
      truncate: true,
      skipDuplicateMapInputs: true,
      skipDuplicateMapOutputs: true) ~> afmgecstorage

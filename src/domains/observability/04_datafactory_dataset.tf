@@ -65,3 +65,38 @@ resource "azurerm_data_factory_dataset_azure_blob" "pdnd_cdc_gec_paymenttypes_js
   path                = "paymenttypes"
   folder              = local.folder
 }
+
+# name                = "PDND_CDC_GEC_BUNDLES_JSON_Dataset"
+# path                = "bundles"
+
+# name                = "PDND_CDC_GEC_CIBUNDLES_JSON_Dataset"
+# path                = "cibundles"
+
+# name                = "PDND_CDC_GEC_TUCHPOINTS_JSON_Dataset"
+# path                = "touchpoints"
+
+# name                = "PDND_CDC_GEC_PAYMENTTYPES_JSON_Dataset"
+# path                = "paymenttypes"
+resource "azurerm_data_factory_custom_dataset" "pdnd_cdc_gec_bundles_json" {
+  name                = "PDND_CDC_GEC_BUNDLES_JSON_Dataset_"
+  data_factory_id     = data.azurerm_data_factory.obeserv_data_factory.id
+  type                = "Json"
+
+  type_properties_json = <<JSON
+  "location": {
+      "type": "AzureBlobStorageLocation",
+      "folderPath": "bundles",
+      "container": "pagopa-d-itn-observ-az-blob-observability-container"
+  }  
+  JSON
+
+  schema_json = <<JSON
+  {}
+  JSON
+
+  linked_service {
+    name = azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service.name
+  }
+
+  folder              = local.folder
+}
