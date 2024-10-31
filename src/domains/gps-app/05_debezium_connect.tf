@@ -36,9 +36,9 @@ locals {
 
    debezium_secrets_yaml = templatefile("${path.module}/yaml/debezium-secrets.yaml", {
      namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
-     username  = data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value
-     password  = data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value
-     connection_string = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_namespace_authorization_rule.cdc_connection_string.primary_connection_string};\""
+     username  = base64encode(data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value)
+     password  = base64encode(data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value)
+     connection_string = base64encode(data.azurerm_eventhub_namespace_authorization_rule.cdc_connection_string.primary_connection_string)
    })
 
   # zookeeper_yaml = templatefile("${path.module}/yaml/zookeeper.yaml", {
