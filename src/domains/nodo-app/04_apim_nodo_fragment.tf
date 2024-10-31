@@ -1,6 +1,6 @@
 # ndphost header
 locals {
-  ndphost_header_file: templatefile("./api_product/nodo_pagamenti_api/ndphost_header.xml.tpl", {
+  ndphost_header_file = templatefile("./api_product/nodo_pagamenti_api/ndphost_header.xml.tpl", {
     content = file("./api_product/nodo_pagamenti_api/env/${var.env}/ndphost_header.xml")
   })
 }
