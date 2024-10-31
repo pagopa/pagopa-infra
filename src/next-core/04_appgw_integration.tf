@@ -56,6 +56,52 @@ locals {
     }
   }
 
+  backends = {
+    apim = {
+      protocol                    = "Https"
+      host                        = "api.${var.dns_zone_prefix}.${var.external_domain}"
+      port                        = 443
+      ip_addresses                = module.apim[0].private_ip_addresses
+      fqdns                       = ["api.${var.dns_zone_prefix}.${var.external_domain}."]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apim"
+      request_timeout             = 120
+      pick_host_name_from_backend = false
+    }
+  }
+
+  backends_prf = {
+    apimprf = {
+      protocol                    = "Https"
+      host                        = "api.${var.dns_zone_prefix_prf}.${var.external_domain}"
+      port                        = 443
+      ip_addresses                = module.apim[0].private_ip_addresses
+      fqdns                       = ["api.${var.dns_zone_prefix_prf}.${var.external_domain}."]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apimprf"
+      request_timeout             = 120
+      pick_host_name_from_backend = false
+    }
+  }
+
+  routes = {
+    api = {
+      listener              = "api"
+      backend               = "apim"
+      rewrite_rule_set_name = null
+      priority              = 10
+    }
+  }
+
+  routes_prf = {
+    apiprf = {
+      listener              = "apiprf"
+      backend               = "apimprf"
+      rewrite_rule_set_name = null
+      priority              = 20
+    }
+  }
+
   listeners = {
     api = {
       protocol           = "Https"
@@ -137,30 +183,10 @@ module "app_gw_integration" {
   zones              = var.integration_appgateway_zones
 
   # Configure backends
-  backends = {
-    apim = {
-      protocol                    = "Https"
-      host                        = "api.${var.dns_zone_prefix}.${var.external_domain}"
-      port                        = 443
-      ip_addresses                = module.apim[0].private_ip_addresses
-      fqdns                       = ["api.${var.dns_zone_prefix}.${var.external_domain}."]
-      probe                       = "/status-0123456789abcdef"
-      probe_name                  = "probe-apim"
-      request_timeout             = 120
-      pick_host_name_from_backend = false
-    },
-    apimprf = {
-      protocol                    = "Https"
-      host                        = "api.${var.dns_zone_prefix_prf}.${var.external_domain}"
-      port                        = 443
-      ip_addresses                = module.apim[0].private_ip_addresses
-      fqdns                       = ["api.${var.dns_zone_prefix_prf}.${var.external_domain}."]
-      probe                       = "/status-0123456789abcdef"
-      probe_name                  = "probe-apimprf"
-      request_timeout             = 120
-      pick_host_name_from_backend = false
-    }
-  }
+  backends = merge(
+    local.backends,
+    var.dns_zone_prefix_prf != "" ? local.backends_prf : {}
+  )
 
   ssl_profiles = [
     {
@@ -192,20 +218,10 @@ module "app_gw_integration" {
   )
 
   # maps listener to backend
-  routes = {
-    api = {
-      listener              = "api"
-      backend               = "apim"
-      rewrite_rule_set_name = null
-      priority              = 10
-    },
-    apiprf = {
-      listener              = "apiprf"
-      backend               = "apimprf"
-      rewrite_rule_set_name = null
-      priority              = 20
-    }
-  }
+  routes = merge(
+    local.routes,
+    var.dns_zone_prefix_prf != "" ? local.routes_prf : {}
+  )
 
   rewrite_rule_sets = []
 
