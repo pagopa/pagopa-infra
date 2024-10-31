@@ -63,3 +63,17 @@ resource "azurerm_eventhub_namespace_authorization_rule" "cdc_connection_string"
   manage              = false
 }
 
+# MS doc configure-cleanup-policy  https://learn.microsoft.com/en-us/azure/event-hubs/configure-event-hub-properties#configure-cleanup-policy
+# ISSUE                            https://github.com/hashicorp/terraform-provider-azurerm/issues/22155
+# MS doc create evh via TF         https://learn.microsoft.com/en-us/azure/templates/microsoft.eventhub/namespaces/eventhubs?pivots=deployment-language-terraform
+
+# Ex :
+# az eventhubs eventhub create \
+# -g pagopa-d-itn-observ-evh-rg \
+# -n "prova" \
+# --namespace-name pagopa-d-itn-observ-gpd-evh \
+# --cleanup-policy "Compact" \
+# --status "Active" \
+# --partition-count 1 \
+# --retention-time 24
+

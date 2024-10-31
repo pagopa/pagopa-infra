@@ -69,10 +69,11 @@ locals {
 
   postgres_connector_yaml = templatefile("${path.module}/yaml/postgres-connector.yaml", {
     namespace             = "gps" # kubernetes_namespace.namespace.metadata[0].name
-    postgres_hostname     = "pagopa-${var.env_short}-gpd-postgresql.postgres.database.azure.com"
-    postgres_port         = 6432
+    postgres_hostname     = "pagopa-${var.env_short}-gpd-pgflex.postgres.database.azure.com"
+    
+    postgres_port         = 5432
     postgres_db_name      = var.postgres_db_name
-    postgres_topic_prefix = "gpd"
+    postgres_topic_prefix = "azcligpd"
     postgres_username     = data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value
     postgres_password     = data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value
     tasks_max             = var.tasks_max

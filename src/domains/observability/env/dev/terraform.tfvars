@@ -261,119 +261,136 @@ ehns_metric_alerts = {
   },
 }
 
+
+
+
 eventhubs_gpd = [
-  {
-    name              = "connect-cluster-offsets" # debezium internal use
+    {
+    name              = "test-evh" # test
     partitions        = 1
     message_retention = 1
-    consumers         = ["connect-cluster-offsets"]
+    consumers         = ["test-evh"]
     keys = [
       {
-        name   = "connect-cluster-offsets"
+        name   = "test-evh"
         listen = true
         send   = true
         manage = false
       }
     ]
   },
-  {
-    name              = "connect-cluster-status" # debezium internal use
-    partitions        = 1
-    message_retention = 1
-    consumers         = ["connect-cluster-offsets"]
-    keys = [
-      {
-        name   = "connect-cluster-status"
-        listen = true
-        send   = true
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "connect-cluster-configs" # debezium internal use
-    partitions        = 1
-    message_retention = 1
-    consumers         = ["connect-cluster-configs"]
-    keys = [
-      {
-        name   = "connect-cluster-configs"
-        listen = true
-        send   = true
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "gpd-ingestion.apd.payment_option"
-    partitions        = 1
-    message_retention = 1
-    consumers = ["gpd-ingestion.apd.payment_option-rx-dl",]
-    keys = [
-      {
-        name   = "gpd-ingestion.apd.payment_option-rx-dl"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "gpd-ingestion.apd.payment_option_metadata"
-    partitions        = 1
-    message_retention = 1
-    consumers = ["gpd-ingestion.apd.payment_option_metadata-rx-dl"]
-    keys = [
-      {
-        name   = "gpd-ingestion.apd.payment_option_metadata-rx-dl"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "gpd-ingestion.apd.payment_position"
-    partitions        = 1
-    message_retention = 1
-    consumers = [ "gpd-ingestion.apd.payment_position-rx-dl"]
-    keys = [
-      {
-        name   = "gpd-ingestion.apd.payment_position-rx-dl"
-        listen = true
-        send   = true
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "gpd-ingestion.apd.transfer"
-    partitions        = 1
-    message_retention = 1
-    consumers = [ "gpd-ingestion.apd.transfer-rx-dl"]
-    keys = [
-      {
-        name   = "gpd-ingestion.apd.transfer-rx-dl"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
-  {
-    name              = "gpd-ingestion.apd.transfer_metadata"
-    partitions        = 1
-    message_retention = 1
-    consumers = [ "gpd-ingestion.apd.transfer_metadata-rx-dl"]
-    keys = [
-      {
-        name   = "gpd-ingestion.apd.transfer_metadata-rx-dl"
-        listen = true
-        send   = false
-        manage = false
-      }
-    ]
-  },
+  # {
+  #   name              = "connect-cluster-offsets" # debezium internal use
+  #   partitions        = 1
+  #   message_retention = 1
+  #   consumers         = ["connect-cluster-offsets"]
+  #   keys = [
+  #     {
+  #       name   = "connect-cluster-offsets"
+  #       listen = true
+  #       send   = true
+  #       manage = false
+  #     }
+  #   ]
+  # },
+  # {
+  #   name              = "connect-cluster-status" # debezium internal use
+  #   partitions        = 1
+  #   message_retention = 1
+  #   consumers         = ["connect-cluster-offsets"]
+  #   keys = [
+  #     {
+  #       name   = "connect-cluster-status"
+  #       listen = true
+  #       send   = true
+  #       manage = false
+  #     }
+  #   ]
+  # },
+  # {
+  #   name              = "connect-cluster-configs" # debezium internal use
+  #   partitions        = 1
+  #   message_retention = 1
+  #   consumers         = ["connect-cluster-configs"]
+  #   keys = [
+  #     {
+  #       name   = "connect-cluster-configs"
+  #       listen = true
+  #       send   = true
+  #       manage = false
+  #     }
+  #   ]
+  # },
+  # {
+  #   name              = "gpd-ingestion.apd.payment_option"
+  #   partitions        = 1
+  #   message_retention = 1
+  #   consumers = ["gpd-ingestion.apd.payment_option-rx-dl",]
+  #   keys = [
+  #     {
+  #       name   = "gpd-ingestion.apd.payment_option-rx-dl"
+  #       listen = true
+  #       send   = false
+  #       manage = false
+  #     }
+  #   ]
+  # },
+  # {
+  #   name              = "gpd-ingestion.apd.payment_option_metadata"
+  #   partitions        = 1
+  #   message_retention = 1
+  #   consumers = ["gpd-ingestion.apd.payment_option_metadata-rx-dl"]
+  #   keys = [
+  #     {
+  #       name   = "gpd-ingestion.apd.payment_option_metadata-rx-dl"
+  #       listen = true
+  #       send   = false
+  #       manage = false
+  #     }
+  #   ]
+  # },
+  # {
+  #   name              = "gpd-ingestion.apd.payment_position"
+  #   partitions        = 1
+  #   message_retention = 1
+  #   consumers = [ "gpd-ingestion.apd.payment_position-rx-dl"]
+  #   keys = [
+  #     {
+  #       name   = "gpd-ingestion.apd.payment_position-rx-dl"
+  #       listen = true
+  #       send   = true
+  #       manage = false
+  #     }
+  #   ]
+  # },
+  # {
+  #   name              = "gpd-ingestion.apd.transfer"
+  #   partitions        = 1
+  #   message_retention = 1
+  #   consumers = [ "gpd-ingestion.apd.transfer-rx-dl"]
+  #   keys = [
+  #     {
+  #       name   = "gpd-ingestion.apd.transfer-rx-dl"
+  #       listen = true
+  #       send   = false
+  #       manage = false
+  #     }
+  #   ]
+  # },
+  # {
+  #   name              = "gpd-ingestion.apd.transfer_metadata"
+  #   partitions        = 1
+  #   message_retention = 1
+  #   consumers = [ "gpd-ingestion.apd.transfer_metadata-rx-dl"]
+  #   keys = [
+  #     {
+  #       name   = "gpd-ingestion.apd.transfer_metadata-rx-dl"
+  #       listen = true
+  #       send   = false
+  #       manage = false
+  #     }
+  #   ]
+  # },
 ]
 
 
