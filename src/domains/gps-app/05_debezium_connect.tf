@@ -34,11 +34,12 @@ locals {
     namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
   })
 
-  # debezium_secrets_yaml = templatefile("${path.module}/yaml/debezium-secrets.yaml", {
-  #   namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
-  #   username  = data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value
-  #   password  = data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value
-  # })
+   debezium_secrets_yaml = templatefile("${path.module}/yaml/debezium-secrets.yaml", {
+     namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
+     username  = data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value
+     password  = data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value
+     connection_string = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_namespace_authorization_rule.cdc_connection_string.primary_connection_string};\""
+   })
 
   # zookeeper_yaml = templatefile("${path.module}/yaml/zookeeper.yaml", {
   #   namespace                = "gps" # kubernetes_namespace.namespace.metadata[0].name
@@ -63,7 +64,6 @@ locals {
     limits_memory        = var.limits_memory
     limits_cpu           = var.limits_cpu
     bootstrap_servers    = "pagopa-${var.env_short}-itn-observ-gpd-evh.servicebus.windows.net:9093"
-    eh_connection_string = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"${data.azurerm_eventhub_namespace_authorization_rule.cdc_connection_string.primary_connection_string};\""
     container_registry   = var.container_registry
   })
 

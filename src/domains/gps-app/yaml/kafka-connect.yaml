@@ -9,6 +9,14 @@ spec:
   version: 3.7.0
   replicas: ${replicas}
   bootstrapServers: ${bootstrap_servers}
+  tls:
+    trustedCertificates: []
+  authentication:
+    type: plain
+    username: "$ConnectionString"
+    passwordSecret:
+      secretName: debezium-secret
+      password: connection_string
   resources:
     requests:
       memory: "${request_memory}"
@@ -36,15 +44,6 @@ spec:
     internal.value.converter: org.apache.kafka.connect.json.JsonConverter
     internal.key.converter.schemas.enable: false
     internal.value.converter.schemas.enable: false
-    security.protocol: SASL_SSL
-    sasl.mechanism: PLAIN
-    sasl.jaas.config: '${eh_connection_string}'
-    producer.security.protocol: SASL_SSL
-    producer.sasl.mechanism: PLAIN
-    producer.sasl.jaas.config: '${eh_connection_string}'
-    consumer.security.protocol: SASL_SSL
-    consumer.sasl.mechanism: PLAIN
-    consumer.sasl.jaas.config: '${eh_connection_string}'
   build:
     output:
       type: docker
