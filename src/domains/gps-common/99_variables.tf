@@ -260,6 +260,13 @@ variable "cosmos_gps_db_params" {
   })
 }
 
+// gpd-upload-status container (gpd database)
+variable "gpd_upload_status_throughput" {
+  type        = number
+  description = "Max container throughput (Cosmos-RU)"
+  default     = 1000
+}
+
 variable "cidr_subnet_gps_cosmosdb" {
   type        = list(string)
   description = "Cosmos DB address space"
