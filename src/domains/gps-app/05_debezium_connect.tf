@@ -85,10 +85,10 @@ resource "kubectl_manifest" "debezium_role" {
   yaml_body       = local.debezium_role_yaml
 }
 
-# resource "kubectl_manifest" "debezium_secrets" {
-#   force_conflicts = true
-#   yaml_body       = local.debezium_secrets_yaml
-# }
+resource "kubectl_manifest" "debezium_secrets" {
+  force_conflicts = true
+  yaml_body       = local.debezium_secrets_yaml
+}
 
 resource "kubectl_manifest" "debezoum_rbac" {
   # depends_on      = [kubectl_manifest.debezium_role, kubectl_manifest.debezium_secrets]
