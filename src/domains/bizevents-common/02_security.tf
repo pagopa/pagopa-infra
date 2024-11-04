@@ -39,7 +39,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
   secret_permissions  = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
   storage_permissions = []
   certificate_permissions = [
@@ -311,7 +311,7 @@ resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv" {
   key_vault_id = module.key_vault.id
 }
 
-// appIO - apikey list-lap-4-io-api-key and save keys on KV 
+// appIO - apikey list-lap-4-io-api-key and save keys on KV
 data "azurerm_api_management_product" "apim_biz_lst_lap_product" {
   product_id          = "bizevent-lap"
   api_management_name = local.pagopa_apim_name
