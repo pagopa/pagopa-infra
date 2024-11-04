@@ -89,6 +89,8 @@ error_log() {
     echo "❌ ERROR: $1" >&2
 }
 
+set -x
+
 # Enable debug mode if passed as parameter
 if [[ "$1" == "debug" ]]; then
     export DEBUG=true
