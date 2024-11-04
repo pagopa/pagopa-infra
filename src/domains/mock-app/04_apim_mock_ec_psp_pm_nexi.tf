@@ -188,7 +188,7 @@ module "apim_mock_pm_nexi_api" {
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_mock_pm_nexi_product[0].product_id, local.apim_x_node_product_id]
-  subscription_required = true
+  subscription_required = false
 
   version_set_id = azurerm_api_management_api_version_set.mock_pm_nexi_api[0].id
   api_version    = "v1"
@@ -206,7 +206,7 @@ module "apim_mock_pm_nexi_api" {
     service = module.apim_mock_pm_nexi_product[0].product_id
   })
 
-  xml_content = templatefile("./api/mock_nexi/psp/v1/_base_policy.xml", {
+  xml_content = templatefile("./api/mock_nexi/pm/v1/_base_policy.xml", {
     ndphost = var.env_short == "u" ? "mock-pm-prf.nexigroup.com" : "mock-pm-sit.nexigroup.com"
     backend = var.env_short == "u" ? "{{default-nodo-backend-prf}}/PerfPMMock/RestAPI" : "{{schema-ip-nexi}}/sit-mock-pm"
   })
