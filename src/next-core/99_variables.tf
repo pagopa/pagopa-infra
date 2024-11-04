@@ -192,6 +192,18 @@ variable "dns_a_reconds_dbnodonexipostgres_ips" {
   default     = []
 }
 
+variable "dns_a_reconds_dbnodonexipostgres_1_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi - 1"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_2_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi - 2"
+  default     = []
+}
+
 variable "dns_a_reconds_dbnodo_prf_ips" {
   type        = list(string)
   description = "IPs address of DB Nodo"
