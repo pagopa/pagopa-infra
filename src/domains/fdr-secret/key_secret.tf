@@ -13,7 +13,7 @@ resource "azurerm_key_vault_key" "generated" {
 
 data "external" "external" {
   program = [
-    "bash", "terrasops.sh", "debug"
+    "bash", "terrasops.sh"
   ]
   query = {
     env = "${var.location_short}-${var.env}"
