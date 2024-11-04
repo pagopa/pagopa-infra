@@ -119,6 +119,9 @@ if [ -f "$encrypted_file_path" ]; then
     azure_kv_vault_url=$(jq -r '.sops.azure_kv[0].vault_url' "$encrypted_file_path")
     azure_kv_name=$(jq -r '.sops.azure_kv[0].name' "$encrypted_file_path")
 
+    debug_log "kv url: $azure_kv_vault_url"
+    debug_log "path: $encrypted_file_path"
+
     if [ -z "$azure_kv_vault_url" ] || [ -z "$azure_kv_name" ]; then
         error_log "🔐 Unable to load azure_kv.vault_url and azure_kv.name values from JSON file"
         exit 1
