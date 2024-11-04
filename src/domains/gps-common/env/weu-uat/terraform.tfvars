@@ -52,6 +52,8 @@ cosmos_gps_db_params = {
   backup_continuous_enabled = false
 }
 
+gpd_upload_status_throughput = 10000
+
 # Postgres Flexible
 pgres_flex_params = {
 

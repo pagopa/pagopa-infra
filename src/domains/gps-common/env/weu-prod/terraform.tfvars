@@ -55,6 +55,8 @@ cosmos_gps_db_params = {
   backup_continuous_enabled = true
 }
 
+gpd_upload_status_throughput = 10000
+
 # Postgres Flexible
 # https://docs.microsoft.com/it-it/azure/postgresql/flexible-server/concepts-high-availability
 # https://azure.microsoft.com/it-it/global-infrastructure/geographies/#choose-your-region
