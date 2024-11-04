@@ -80,6 +80,7 @@ stages:
                workingDirectory: ${{ parameters.WORKING_DIR_SECRET }}
                inlineScript: |
                  sops -d --azure-kv "pagopa-d-fdr-kv" "pagopa-d-fdr-sops-key" | jq -c
+           - template: templates/terraform-plan/template.yaml@terraform
              parameters:
                TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
                WORKINGDIR: ${{ parameters.WORKING_DIR_SECRET }}
