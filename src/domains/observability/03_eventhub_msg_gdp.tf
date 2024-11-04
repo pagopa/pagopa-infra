@@ -60,7 +60,7 @@ resource "azurerm_eventhub_namespace_authorization_rule" "cdc_connection_string"
   resource_group_name = azurerm_resource_group.eventhub_observability_rg.name
   listen              = true
   send                = true
-  manage              = false
+  manage              = true
 }
 
 # MS doc configure-cleanup-policy  https://learn.microsoft.com/en-us/azure/event-hubs/configure-event-hub-properties#configure-cleanup-policy
