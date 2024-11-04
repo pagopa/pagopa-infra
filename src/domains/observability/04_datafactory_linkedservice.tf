@@ -64,7 +64,9 @@ data "azurerm_cosmosdb_account" "afm_cosmos_account" {
 }
 
 resource "azurerm_data_factory_linked_service_cosmosdb" "afm_gec_cosmosdb_linked_service" {
-  name              = "afm-gec-${var.env_short}-${var.location_short}-cosmos-linked-service"
-  data_factory_id   = data.azurerm_data_factory.obeserv_data_factory.id
-  connection_string = data.azurerm_cosmosdb_account.afm_cosmos_account.primary_readonly_key
+  name             = "afm-gec-${var.env_short}-${var.location_short}-cosmos-linked-service"
+  data_factory_id  = data.azurerm_data_factory.obeserv_data_factory.id
+  account_endpoint = data.azurerm_cosmosdb_account.afm_cosmos_account.endpoint
+  account_key      = data.azurerm_cosmosdb_account.afm_cosmos_account.primary_key
+  database         = "db"
 }

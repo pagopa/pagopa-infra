@@ -1,5 +1,5 @@
 {
-    "name": "PDND_CDC_GEC_BUNDLES_Pipeline_",
+    "name": "afm_gec_cdc_dataflow",
     "type": "ExecuteDataFlow",
     "dependsOn": [],
     "policy": {
@@ -27,7 +27,7 @@
     "type": "Lookup",
     "dependsOn": [
         {
-            "activity": "PDND_CDC_GEC_BUNDLES_DataFlow",
+            "activity": "afm_gec_cdc_dataflow",
             "dependencyConditions": [
                 "Succeeded"
             ]
@@ -56,7 +56,7 @@
             }
         },
         "dataset": {
-            "referenceName": "PDND_CDC_GEC_BUNDLES_JSON_Dataset",
+            "referenceName": "${inputdataset}",
             "type": "DatasetReference"
         },
         "firstRowOnly": false
@@ -106,6 +106,13 @@
                     "body": {
                         "value": "@item()",
                         "type": "Expression"
+                    },
+                    "authentication": {
+                        "type": "MSI",
+                        "resource": {
+                            "value": "@pipeline().globalParameters.evhBaseUrl",
+                            "type": "Expression"
+                        }
                     }
                 }
             }
@@ -133,7 +140,7 @@
     "userProperties": [],
     "typeProperties": {
         "dataset": {
-            "referenceName": "PDND_CDC_GEC_BUNDLES_JSON_Dataset",
+            "referenceName": "${inputdataset}",
             "type": "DatasetReference"
         },
         "enableLogging": false,

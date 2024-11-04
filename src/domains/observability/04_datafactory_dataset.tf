@@ -34,69 +34,67 @@ data "azurerm_data_factory" "obeserv_data_factory" {
   resource_group_name = "pagopa-${var.env_short}-${var.location_short}-nodo-df-rg"
 }
 
-resource "azurerm_data_factory_dataset_azure_blob" "pdnd_cdc_gec_bundles_json" {
+resource "azurerm_data_factory_dataset_json" "afm_gec_bundle_cdc_json" {
   name                = "PDND_CDC_GEC_BUNDLES_JSON_Dataset"
   data_factory_id     = data.azurerm_data_factory.obeserv_data_factory.id
   linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service.name
-  path                = "bundles"
-  folder              = local.folder
+
+  azure_blob_storage_location {
+    container = "pagopa-${var.env_short}-${var.location_short}-observ-az-blob-observability-container"
+    path = "bundles"
+    filename = ""
+  }
+
+  encoding = "UTF-8"
+  folder = local.folder
+  annotations = []
 }
 
-resource "azurerm_data_factory_dataset_azure_blob" "pdnd_cdc_gec_cibundles_json" {
+resource "azurerm_data_factory_dataset_json" "afm_gec_cibundle_cdc_json" {
   name                = "PDND_CDC_GEC_CIBUNDLES_JSON_Dataset"
   data_factory_id     = data.azurerm_data_factory.obeserv_data_factory.id
   linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service.name
-  path                = "cibundles"
-  folder              = local.folder
+
+  azure_blob_storage_location {
+    container = "pagopa-${var.env_short}-${var.location_short}-observ-az-blob-observability-container"
+    path = "cibundles"
+    filename = ""
+  }
+
+  encoding = "UTF-8"
+  folder = local.folder
+  annotations = []
 }
 
-resource "azurerm_data_factory_dataset_azure_blob" "pdnd_cdc_gec_touchpoints_json" {
-  name                = "PDND_CDC_GEC_TUCHPOINTS_JSON_Dataset"
+resource "azurerm_data_factory_dataset_json" "afm_gec_touchpoints_cdc_json" {
+  name                = "PDND_CDC_GEC_TOUCHPOINTS_JSON_Dataset"
   data_factory_id     = data.azurerm_data_factory.obeserv_data_factory.id
   linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service.name
-  path                = "touchpoints"
-  folder              = local.folder
+
+  azure_blob_storage_location {
+    container = "pagopa-${var.env_short}-${var.location_short}-observ-az-blob-observability-container"
+    path = "touchpoints"
+    filename = ""
+  }
+
+  encoding = "UTF-8"
+  folder = local.folder
+  annotations = []
 }
 
-resource "azurerm_data_factory_dataset_azure_blob" "pdnd_cdc_gec_paymenttypes_json" {
+resource "azurerm_data_factory_dataset_json" "afm_gec_paymenttypes_cdc_json" {
   name                = "PDND_CDC_GEC_PAYMENTTYPES_JSON_Dataset"
   data_factory_id     = data.azurerm_data_factory.obeserv_data_factory.id
   linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service.name
-  path                = "paymenttypes"
-  folder              = local.folder
-}
 
-# name                = "PDND_CDC_GEC_BUNDLES_JSON_Dataset"
-# path                = "bundles"
-
-# name                = "PDND_CDC_GEC_CIBUNDLES_JSON_Dataset"
-# path                = "cibundles"
-
-# name                = "PDND_CDC_GEC_TUCHPOINTS_JSON_Dataset"
-# path                = "touchpoints"
-
-# name                = "PDND_CDC_GEC_PAYMENTTYPES_JSON_Dataset"
-# path                = "paymenttypes"
-resource "azurerm_data_factory_custom_dataset" "pdnd_cdc_gec_bundles_json" {
-  name                = "PDND_CDC_GEC_BUNDLES_JSON_Dataset_"
-  data_factory_id     = data.azurerm_data_factory.obeserv_data_factory.id
-  type                = "Json"
-
-  type_properties_json = <<JSON
-  "location": {
-      "type": "AzureBlobStorageLocation",
-      "folderPath": "bundles",
-      "container": "pagopa-d-itn-observ-az-blob-observability-container"
-  }  
-  JSON
-
-  schema_json = <<JSON
-  {}
-  JSON
-
-  linked_service {
-    name = azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service.name
+  azure_blob_storage_location {
+    container = "pagopa-${var.env_short}-${var.location_short}-observ-az-blob-observability-container"
+    path = "paymenttypes"
+    filename = ""
   }
 
-  folder              = local.folder
+  encoding = "UTF-8"
+  folder = local.folder
+  annotations = []
 }
+
