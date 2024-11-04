@@ -59,7 +59,7 @@ locals {
 
 # create a module for each 20 repos
 module "identity_cd_01" {
-  source = "./.terraform/modules/__v3__/github_federated_identity"
+  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.22.0"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short
@@ -131,7 +131,7 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
 
 # create a module for each 20 repos
 module "identity_pr_01" {
-  source    = "./.terraform/modules/__v3__/github_federated_identity"
+  source    = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.22.0"
   prefix    = var.prefix
   env_short = var.env_short
   domain    = "${var.domain}-01-pr"
@@ -170,7 +170,7 @@ resource "azurerm_key_vault_access_policy" "gha_pr_iac_managed_identities" {
 
 # create a module for each 20 repos
 module "identity_ref_01" {
-  source    = "./.terraform/modules/__v3__/github_federated_identity"
+  source    = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.36.1"
   prefix    = var.prefix
   env_short = var.env_short
   domain    = "${var.domain}-01-ref"

@@ -5,7 +5,7 @@ resource "kubernetes_namespace" "namespace_system" {
 }
 
 module "kubernetes_service_account" {
-  source    = "./.terraform/modules/__v3__/kubernetes_service_account"
+  source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_service_account?ref=v8.18.0"
   name      = "azure-devops"
   namespace = "${var.domain}-system"
 }

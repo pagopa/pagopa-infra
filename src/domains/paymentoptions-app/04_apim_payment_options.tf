@@ -6,7 +6,7 @@ locals {
 }
 
 module "apim_payment_options_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.18.0"
   count  = var.is_feature_enabled.paymentoptions ? 1 : 0
 
   product_id   = "pagopa_payment_options"

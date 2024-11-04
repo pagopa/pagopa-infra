@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "eventhub_ita_rg" {
 }
 
 module "eventhub_namespace" {
-  source                   = "./.terraform/modules/__v3__/eventhub"
+  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v8.22.0"
   name                     = "${local.project}-evh"
   location                 = var.location
   resource_group_name      = azurerm_resource_group.eventhub_ita_rg.name
@@ -52,7 +52,7 @@ module "eventhub_namespace" {
 # CONFIGURATION
 #
 module "eventhub_paymentoptions_configuration" {
-  source = "./.terraform/modules/__v3__/eventhub_configuration"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration?ref=v8.22.0"
   count  = var.is_feature_enabled.eventhub ? 1 : 0
 
   event_hub_namespace_name                = module.eventhub_namespace.name

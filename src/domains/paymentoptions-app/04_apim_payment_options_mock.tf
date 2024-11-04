@@ -6,7 +6,7 @@ locals {
 }
 
 module "apim_payment_options_mock_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.18.0"
   count  = var.is_feature_enabled.paymentoptions_mock ? 1 : 0
 
   product_id   = "pagopa-payment-options-mock"
@@ -36,7 +36,7 @@ resource "azurerm_api_management_api_version_set" "payment_options_mock_api" {
 
 
 module "apim_api_pay_opt_mock_api" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v8.18.0"
   count  = var.is_feature_enabled.paymentoptions_mock ? 1 : 0
 
   name                  = format("%s-pay-opt-mock-api", local.project)
