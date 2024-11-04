@@ -72,6 +72,7 @@ stages:
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
           AKS_NAME: '$(TF_AKS_DEV_NAME)'
           TF_SUMMARIZE: true
+          SECRETS_USE_AKS: false
 
   #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
