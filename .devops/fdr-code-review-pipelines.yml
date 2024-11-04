@@ -73,6 +73,7 @@ stages:
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
           AKS_NAME: '$(TF_AKS_DEV_NAME)'
           TF_SUMMARIZE: true
+          TF_LOG: TRACE
 
   #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
