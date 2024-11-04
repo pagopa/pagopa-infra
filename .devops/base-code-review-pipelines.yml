@@ -62,7 +62,7 @@ stages:
           timeoutInMinutes: ${{parameters.TIME_OUT}}
           steps:
            - checkout: self
-           - script: export TF_LOG=TRACE
+           - script: export TF_LOG="TRACE"
            # 1. Install terraform
            - template: templates/terraform-setup/template.yaml@terraform
            - template: templates/terraform-summarize/template.yaml@terraform
