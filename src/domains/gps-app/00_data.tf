@@ -22,11 +22,11 @@ data "azurerm_key_vault_secret" "gpd_db_pwd" {
   key_vault_id = data.azurerm_key_vault.gps_kv.id
 }
 
-data "azurerm_postgresql_server" "postgresql" {
-  count               = var.env_short == "d" ? 1 : 0
-  name                = format("%s-gpd-postgresql", local.product)
-  resource_group_name = format("%s-gpd-rg", local.product)
-}
+# data "azurerm_postgresql_server" "postgresql" {
+#   count               = var.env_short == "d" ? 1 : 0
+#   name                = format("%s-gpd-postgresql", local.product)
+#   resource_group_name = format("%s-gpd-rg", local.product)
+# }
 
 data "azurerm_postgresql_flexible_server" "postgres_flexible_server_private" {
   count               = var.env_short != "d" ? 1 : 0

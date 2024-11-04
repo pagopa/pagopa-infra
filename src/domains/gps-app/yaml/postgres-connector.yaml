@@ -25,3 +25,4 @@ spec:
     table.include.list: "apd.payment_option,apd.payment_option_metadata,apd.payment_position,apd.transfer,apd.transfer_metadata"
     plugin.name: "pgoutput"
     publication.autocreate.mode: "disabled" # shall be create before 
+    # publication.autocreate.mode: "filtered" 

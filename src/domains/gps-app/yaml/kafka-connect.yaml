@@ -37,8 +37,8 @@ spec:
     status.storage.replication.factor: 1
     rest.advertised.host.name: connect
     offset.flush.interval.ms: 10000
-    topic.creation.enable: "false"
-    auto.create.topics.enable: "false" # https://debezium.io/documentation/reference/3.0/configuration/topic-auto-create-config.html#disabling-automatic-topic-creation-for-the-kafka-broker
+    topic.creation.enable: "true"
+    auto.create.topics.enable: "true" # https://debezium.io/documentation/reference/3.0/configuration/topic-auto-create-config.html#disabling-automatic-topic-creation-for-the-kafka-broker
     key.converter: org.apache.kafka.connect.json.JsonConverter
     value.converter: org.apache.kafka.connect.json.JsonConverter
     internal.key.converter: org.apache.kafka.connect.json.JsonConverter

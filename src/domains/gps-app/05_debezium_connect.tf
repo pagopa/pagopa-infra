@@ -1,10 +1,12 @@
 # https://debezium.io/documentation/reference/stable/operations/kubernetes.html#_creating_a_debezium_connector
 data "azurerm_key_vault_secret" "pgres_gpd_cdc_login" {
+  # name         = "db-apd-user-name"
   name         = "cdc-logical-replication-apd-user"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
 data "azurerm_key_vault_secret" "pgres_gpd_cdc_pwd" {
+  # name         = "db-apd-user-password"
   name         = "cdc-logical-replication-apd-pwd"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
@@ -21,7 +23,7 @@ resource "helm_release" "strimzi-kafka-operator" {
   chart      = "strimzi-kafka-operator"
   repository = "oci://quay.io/strimzi-helm"
   version    = "0.43.0"
-  namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
+  namespace  = "gps" # kubernetes_namespace.namespace.metadata[0].name
 }
 
 locals {
@@ -34,12 +36,12 @@ locals {
     namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
   })
 
-   debezium_secrets_yaml = templatefile("${path.module}/yaml/debezium-secrets.yaml", {
-     namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
-     username  = base64encode(data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value)
-     password  = base64encode(data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value)
-     connection_string = base64encode(data.azurerm_eventhub_namespace_authorization_rule.cdc_connection_string.primary_connection_string)
-   })
+  debezium_secrets_yaml = templatefile("${path.module}/yaml/debezium-secrets.yaml", {
+    namespace         = "gps" # kubernetes_namespace.namespace.metadata[0].name
+    username          = base64encode(data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value)
+    password          = base64encode(data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value)
+    connection_string = base64encode(data.azurerm_eventhub_namespace_authorization_rule.cdc_connection_string.primary_connection_string)
+  })
 
   # zookeeper_yaml = templatefile("${path.module}/yaml/zookeeper.yaml", {
   #   namespace                = "gps" # kubernetes_namespace.namespace.metadata[0].name
@@ -57,20 +59,20 @@ locals {
   # https://learn.microsoft.com/it-it/azure/event-hubs/event-hubs-kafka-connect-debezium#configure-kafka-connect-for-event-hubs
 
   kafka_connect_yaml = templatefile("${path.module}/yaml/kafka-connect.yaml", {
-    namespace            = "gps" # kubernetes_namespace.namespace.metadata[0].name
-    replicas             = var.replicas
-    request_memory       = var.request_memory
-    request_cpu          = var.request_cpu
-    limits_memory        = var.limits_memory
-    limits_cpu           = var.limits_cpu
-    bootstrap_servers    = "pagopa-${var.env_short}-itn-observ-gpd-evh.servicebus.windows.net:9093"
-    container_registry   = var.container_registry
+    namespace          = "gps" # kubernetes_namespace.namespace.metadata[0].name
+    replicas           = var.replicas
+    request_memory     = var.request_memory
+    request_cpu        = var.request_cpu
+    limits_memory      = var.limits_memory
+    limits_cpu         = var.limits_cpu
+    bootstrap_servers  = "pagopa-${var.env_short}-itn-observ-gpd-evh.servicebus.windows.net:9093"
+    container_registry = var.container_registry
   })
 
   postgres_connector_yaml = templatefile("${path.module}/yaml/postgres-connector.yaml", {
-    namespace             = "gps" # kubernetes_namespace.namespace.metadata[0].name
-    postgres_hostname     = "pagopa-${var.env_short}-gpd-pgflex.postgres.database.azure.com"
-    
+    namespace         = "gps" # kubernetes_namespace.namespace.metadata[0].name
+    postgres_hostname = "pagopa-${var.env_short}-gpd-pgflex.postgres.database.azure.com"
+
     postgres_port         = 5432
     postgres_db_name      = var.postgres_db_name
     postgres_topic_prefix = "azcligpd"
