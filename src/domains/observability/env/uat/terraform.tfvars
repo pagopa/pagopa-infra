@@ -74,7 +74,7 @@ ehns_capacity                 = 1
 ehns_alerts_enabled           = false
 ehns_zone_redundant           = false
 
-ehns_public_network_access       = false
+ehns_public_network_access       = true
 ehns_private_endpoint_is_present = true
 
 eventhubs = [
