@@ -122,6 +122,10 @@ locals {
           unique = false
         },
         {
+          keys   = ["creationDate"],
+          unique = false
+        },
+        {
           keys   = ["updateDate"],
           unique = false
         }
