@@ -40,7 +40,7 @@ resource "azurerm_data_factory_dataset_json" "afm_gec_bundle_cdc_json" {
   linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service.name
 
   azure_blob_storage_location {
-    container = "pagopa-${var.env_short}-${var.location_short}-observ-az-blob-observability-container"
+    container = "pagopa-${var.env_short}-itn-observ-az-blob-observability-container"
     path = "bundles"
     filename = ""
   }
@@ -56,7 +56,7 @@ resource "azurerm_data_factory_dataset_json" "afm_gec_cibundle_cdc_json" {
   linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service.name
 
   azure_blob_storage_location {
-    container = "pagopa-${var.env_short}-${var.location_short}-observ-az-blob-observability-container"
+    container = "pagopa-${var.env_short}-itn-observ-az-blob-observability-container"
     path = "cibundles"
     filename = ""
   }
@@ -72,7 +72,7 @@ resource "azurerm_data_factory_dataset_json" "afm_gec_touchpoints_cdc_json" {
   linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service.name
 
   azure_blob_storage_location {
-    container = "pagopa-${var.env_short}-${var.location_short}-observ-az-blob-observability-container"
+    container = "pagopa-${var.env_short}-itn-observ-az-blob-observability-container"
     path = "touchpoints"
     filename = ""
   }
@@ -88,7 +88,7 @@ resource "azurerm_data_factory_dataset_json" "afm_gec_paymenttypes_cdc_json" {
   linked_service_name = azurerm_data_factory_linked_service_azure_blob_storage.afm_gec_storage_linked_service.name
 
   azure_blob_storage_location {
-    container = "pagopa-${var.env_short}-${var.location_short}-observ-az-blob-observability-container"
+    container = "pagopa-${var.env_short}-itn-observ-az-blob-observability-container"
     path = "paymenttypes"
     filename = ""
   }
