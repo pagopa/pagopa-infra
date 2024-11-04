@@ -27,4 +27,4 @@ module "elastic_agent" {
 
 }
 
-// TODO mettere nel kv il secret quickstart-es-elastic-user tramite sops
+// TODO mettere nel kv il secret quickstart-es-elastic-user tramite sops 
