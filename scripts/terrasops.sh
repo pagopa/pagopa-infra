@@ -125,8 +125,7 @@ if [ -f "$encrypted_file_path" ]; then
     fi
 
     debug_log "🔓 Decrypting file with SOPS"
-    #sops -d --azure-kv "$azure_kv_vault_url" "$encrypted_file_path" | jq -c
-    echo "{\"foo\": \"bar\"}"
+    sops -d --azure-kv "$azure_kv_vault_url" "$encrypted_file_path" | jq -c
     debug_log "🎉 Decryption completed"
 else
     debug_log "⚠️ Encrypted file not found, returning empty JSON"

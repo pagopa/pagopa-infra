@@ -69,7 +69,17 @@ stages:
            - template: templates/terraform-setup/template.yaml@terraform
            - template: templates/terraform-summarize/template.yaml@terraform
            # 2. Run terraform plan core
-           - template: templates/terraform-plan/template.yaml@terraform
+           - task: AzureCLI@2
+             displayName: "🔦 sops"
+             inputs:
+               connectedServiceNameARM: ${{parameters.SC_PLAN_NAME}}
+               addSpnToEnvironment: true
+               scriptType: 'bash'
+               scriptLocation: 'inlineScript'
+               failOnStandardError: true
+               workingDirectory: ${{ parameters.WORKING_DIR_SECRET }}
+               inlineScript: |
+                 sops -d --azure-kv "pagopa-d-fdr-kv" "pagopa-d-fdr-sops-key" | jq -c
              parameters:
                TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
                WORKINGDIR: ${{ parameters.WORKING_DIR_SECRET }}
