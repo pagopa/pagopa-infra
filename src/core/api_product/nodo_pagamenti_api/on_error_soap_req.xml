@@ -1,4 +1,6 @@
 <fragment>
+  <!-- set ndphost header -->
+  <include-fragment fragment-id="ndphost-header" />
   <trace source="renewrequestdebug" severity="information">@((string) context.Variables["renewrequest"])</trace>
   <choose>
     <when condition="@(context.Variables.ContainsKey("baseUrl") && context.Variables.ContainsKey("renewrequest") && context.Variables.ContainsKey("renewrequest")!= null)">
