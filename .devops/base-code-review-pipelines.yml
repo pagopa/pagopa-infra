@@ -47,7 +47,7 @@ parameters:
   - name: 'TF_LOG'
     type: string
     default: ''
-  - name: 'SECRETS_USE_AKS'
+  - name: 'SECRET_USE_AKS'
     type: boolean
     default: true
   - name: 'MODULE_USE_AKS'
@@ -80,7 +80,7 @@ stages:
                TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
                WORKINGDIR: ${{ parameters.WORKING_DIR_SECRET }}
                AZURE_SERVICE_CONNECTION_NAME: ${{parameters.SC_PLAN_NAME}}
-               ${{ if eq(parameters.SECRETS_USE_AKS, 'true') }}:
+               ${{ if eq(parameters.SECRET_USE_AKS, 'true') }}:
                  AKS_NAME: ${{ parameters.AKS_NAME }}
                  AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
                  AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
