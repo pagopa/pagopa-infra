@@ -43,6 +43,7 @@ variables:
   TIME_OUT: 15
   # working dir
   WORKING_DIR: 'src/next-core'
+  WORKING_DIR_SECRET: 'src/next-core-secrets'
   DOMAIN_NAME: core
 
 stages:
@@ -53,6 +54,7 @@ stages:
         ENV: 'dev'
         ENV_FOLDER: 'dev'
         WORKING_DIR_MODULE: ${{ variables.WORKING_DIR }}
+        WORKING_DIR_SECRET: ${{ variables.WORKING_DIR_SECRET }}
         DOMAIN_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
@@ -61,6 +63,7 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
         AKS_NAME: '$(TF_AKS_DEV_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_DEV)'
+        SECRET_USE_AKS: false
   #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
     - template: './base-deploy-pipelines.yml'
@@ -68,6 +71,7 @@ stages:
         ENV: 'uat'
         ENV_FOLDER: 'uat'
         WORKING_DIR_MODULE: ${{ variables.WORKING_DIR }}
+        WORKING_DIR_SECRET: ${{ variables.WORKING_DIR_SECRET }}
         DOMAIN_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
@@ -76,6 +80,7 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
         AKS_NAME: '$(TF_AKS_UAT_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_UAT)'
+        SECRET_USE_AKS: false
   #PROD
   - ${{ if eq(parameters['PROD'], true) }}:
     - template: './base-deploy-pipelines.yml'
@@ -83,6 +88,7 @@ stages:
         ENV: 'prod'
         ENV_FOLDER: 'prod'
         WORKING_DIR_MODULE: ${{ variables.WORKING_DIR }}
+        WORKING_DIR_SECRET: ${{ variables.WORKING_DIR_SECRET }}
         DOMAIN_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
@@ -91,5 +97,6 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
         AKS_NAME: '$(TF_AKS_PROD_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_PROD)'
+        SECRET_USE_AKS: false
 
 

@@ -50,6 +50,9 @@ parameters:
   - name: 'SECRETS_USE_AKS'
     type: boolean
     default: true
+  - name: 'MODULE_USE_AKS'
+    type: boolean
+    default: false
 
 
 
@@ -146,4 +149,9 @@ stages:
                 TF_LOG: ${{parameters.TF_LOG}}
                 ${{ if ne(parameters.TF_SUMMARIZE, '') }}:
                   TF_SUMMARIZE: ${{parameters.TF_SUMMARIZE}}
+                ${{ if eq(parameters.MODULE_USE_AKS, 'true') }}:
+                  AKS_NAME: ${{ parameters.AKS_NAME }}
+                  AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
+                  AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
+                  AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
 
