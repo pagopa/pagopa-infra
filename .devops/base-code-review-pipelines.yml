@@ -72,17 +72,6 @@ stages:
            - template: templates/terraform-setup/template.yaml@terraform
            - template: templates/terraform-summarize/template.yaml@terraform
            # 2. Run terraform plan core
-           - task: AzureCLI@2
-             displayName: "🔦 sops"
-             inputs:
-               connectedServiceNameARM: ${{parameters.SC_PLAN_NAME}}
-               addSpnToEnvironment: true
-               scriptType: 'bash'
-               scriptLocation: 'inlineScript'
-               failOnStandardError: true
-               workingDirectory: ${{ parameters.WORKING_DIR_SECRET }}
-               inlineScript: |
-                 sops -d --azure-kv "https://pagopa-d-nodo-kv.vault.azure.net" "./secret/weu-dev/noedit_secret_enc.json" | jq -c
            - template: templates/terraform-plan/template.yaml@terraform
              parameters:
                TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
