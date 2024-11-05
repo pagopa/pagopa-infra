@@ -44,9 +44,6 @@ parameters:
   - name: 'TF_SUMMARIZE'
     type: string
     default: ''
-  - name: 'TF_LOG'
-    type: string
-    default: ''
   - name: 'SECRET_USE_AKS'
     type: boolean
     default: true
@@ -87,7 +84,6 @@ stages:
                  AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
                ${{ if ne(parameters.TF_SUMMARIZE, '') }}:
                 TF_SUMMARIZE: ${{parameters.TF_SUMMARIZE}}
-               TF_LOG: ${{parameters.TF_LOG}}
       - ${{ if ne(parameters.WORKING_DIR_COMMON, '') }}:
         - job: tfplan_common
           strategy:
@@ -104,7 +100,6 @@ stages:
                 TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
                 WORKINGDIR: ${{ parameters.WORKING_DIR_COMMON }}
                 AZURE_SERVICE_CONNECTION_NAME: ${{parameters.SC_PLAN_NAME}}
-                TF_LOG: ${{parameters.TF_LOG}}
                 ${{ if ne(parameters.TF_SUMMARIZE, '') }}:
                   TF_SUMMARIZE: ${{parameters.TF_SUMMARIZE}}
       - ${{ if ne(parameters.WORKING_DIR_APP, '') }}:
@@ -129,7 +124,6 @@ stages:
                 AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
                 AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
                 AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
-                TF_LOG: ${{parameters.TF_LOG}}
       - ${{ if ne(parameters.WORKING_DIR_MODULE, '') }}:
         - job: tfplan_module
           strategy:
@@ -146,7 +140,6 @@ stages:
                 TF_ENVIRONMENT_FOLDER: ${{ lower(parameters.ENV_FOLDER) }}
                 WORKINGDIR: ${{ parameters.WORKING_DIR_MODULE }}
                 AZURE_SERVICE_CONNECTION_NAME: ${{parameters.SC_PLAN_NAME}}
-                TF_LOG: ${{parameters.TF_LOG}}
                 ${{ if ne(parameters.TF_SUMMARIZE, '') }}:
                   TF_SUMMARIZE: ${{parameters.TF_SUMMARIZE}}
                 ${{ if eq(parameters.MODULE_USE_AKS, 'true') }}:
