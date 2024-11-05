@@ -44,7 +44,6 @@ variables:
   # working dir
   WORKING_DIR_MODULE: 'src/domains/observability'
   DOMAIN_NAME: observability
-  REGION_SHORT: "weu"
 
 stages:
   #DEV
@@ -52,7 +51,7 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'dev'
-        ENV_FOLDER: '${{ variables.REGION_SHORT }}-dev'
+        ENV_FOLDER: 'dev'
         WORKING_DIR_MODULE: ${{ variables.WORKING_DIR_MODULE }}
         DOMAIN_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
@@ -63,7 +62,7 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'uat'
-        ENV_FOLDER: '${{ variables.REGION_SHORT }}-uat'
+        ENV_FOLDER: 'uat'
         WORKING_DIR_MODULE: ${{ variables.WORKING_DIR_MODULE }}
         DOMAIN_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
@@ -74,7 +73,7 @@ stages:
     - template: './base-deploy-pipelines.yml'
       parameters:
         ENV: 'prod'
-        ENV_FOLDER: '${{ variables.REGION_SHORT }}-prod'
+        ENV_FOLDER: 'prod'
         WORKING_DIR_MODULE: ${{ variables.WORKING_DIR_MODULE }}
         DOMAIN_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
