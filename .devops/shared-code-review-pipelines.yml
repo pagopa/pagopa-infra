@@ -52,7 +52,7 @@ variables:
   # working dir
   WORKING_DIR_APP: 'src/domains/shared-app'
   WORKING_DIR_COMMON: 'src/domains/shared-common'
-  WORKING_DIR_SECRET: 'src/domains/shared-secret'
+  WORKING_DIR_SECRET: 'src/domains/shared-secrets'
   REGION_SHORT: "weu"
 
 stages:
