@@ -66,6 +66,8 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
         AKS_NAME: '$(TF_AKS_DEV_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_DEV)'
+        SECRET_USE_AKS: false
+
   #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
     - template: './base-deploy-pipelines.yml'
@@ -83,6 +85,8 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
         AKS_NAME: '$(TF_AKS_UAT_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_UAT)'
+        SECRET_USE_AKS: false
+
   #PROD
   - ${{ if eq(parameters['PROD'], true) }}:
     - template: './base-deploy-pipelines.yml'
@@ -100,3 +104,5 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
         AKS_NAME: '$(TF_AKS_PROD_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_PROD)'
+        SECRET_USE_AKS: false
+
