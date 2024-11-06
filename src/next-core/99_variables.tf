@@ -559,17 +559,6 @@ variable "nodo_pagamenti_ec" {
   default     = ","
 }
 
-variable "nodo_pagamenti_url" {
-  type        = string
-  description = "Nodo pagamenti url"
-  default     = "https://"
-}
-
-variable "ip_nodo" { # TEMP used only for onPrem shall be replace with "lb_aks"
-  type        = string
-  description = "Nodo pagamenti ip"
-}
-
 variable "lb_aks" {
   type        = string
   description = "IP load balancer AKS Nexi/SIA"
