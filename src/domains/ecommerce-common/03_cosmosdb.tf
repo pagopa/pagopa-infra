@@ -213,7 +213,11 @@ locals {
           unique = false
         },
         {
-          keys   = ["userInfo.userFiscaCode"]
+          keys   = ["userInfo.userFiscalCode"]
+          unique = false
+        },
+        {
+          keys   = ["transactionInfo.creationDate"]
           unique = false
         }
       ]
