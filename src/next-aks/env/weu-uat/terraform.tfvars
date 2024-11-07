@@ -6,6 +6,7 @@ domain          = "uat"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
+enable_velero_backup = true
 
 tags = {
   CreatedBy   = "Terraform"
