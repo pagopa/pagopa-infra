@@ -1,6 +1,6 @@
 <fragment>
   <!-- set ndphost header -->
-  <include-fragment fragment-id="ndphost-header" />
+  ${ndphost_variable}
   <trace source="renewrequestdebug" severity="information">@((string) context.Variables["renewrequest"])</trace>
   <choose>
     <when condition="@(context.Variables.ContainsKey("baseUrl") && context.Variables.ContainsKey("renewrequest") && context.Variables.ContainsKey("renewrequest")!= null)">
@@ -13,6 +13,9 @@
         <set-method>POST</set-method>
         <set-header name="Content-Type" exists-action="override">
           <value>text/xml</value>
+        </set-header>
+        <set-header name="ndphost" exists-action="override">
+          <value>@(context.Variables.GetValueOrDefault<string>("ndphost", ""))</value>
         </set-header>
         <set-header name="SOAPAction" exists-action="override">
           <value>@(context.Variables.GetValueOrDefault<string>("soapAction", ""))</value>
