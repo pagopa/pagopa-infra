@@ -21,7 +21,7 @@
           "destination": "${log_destination}",
           "logAnalyticsConfiguration": {
             "customerId": "${log_analytics_customer_id}",
-            "sharedKey": "${log_analytics_shared_key}"
+            "sharedKey": ${log_analytics_shared_key}
           }
         },
         "zoneRedundant": ${zone_redundant},
