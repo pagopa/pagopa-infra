@@ -75,6 +75,24 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_nexi_postg
   ttl                 = 60
   records             = var.dns_a_reconds_dbnodonexipostgres_prf_balancer_2_ips
 }
+
+resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_nexi_postgres_1" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "db-postgres-ndp-1"
+  zone_name           = azurerm_private_dns_zone.db_nodo_dns_zone.name
+  resource_group_name = azurerm_resource_group.data.name
+  ttl                 = 60
+  records             = var.dns_a_reconds_dbnodonexipostgres_balancer_1_ips
+}
+
+resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_nexi_postgres_2" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "db-postgres-ndp-2"
+  zone_name           = azurerm_private_dns_zone.db_nodo_dns_zone.name
+  resource_group_name = azurerm_resource_group.data.name
+  ttl                 = 60
+  records             = var.dns_a_reconds_dbnodonexipostgres_balancer_2_ips
+}
 ### 🔮 Private dns zone: Redis
 
 resource "azurerm_private_dns_zone" "privatelink_redis_cache_windows_net" {
