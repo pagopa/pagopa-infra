@@ -4,7 +4,7 @@
 
 # # storage
 # module "gpd_archive_sa" {
-#   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+#   source = "./.terraform/modules/__v3__/storage_account"
 
 #   name                            = replace(format("%s-%s-gpd-archive-sa", local.product, var.location_short), "-", "")
 #   account_kind                    = "StorageV2"
