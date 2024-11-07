@@ -33,6 +33,9 @@
         <set-header name="Content-Type" exists-action="override">
           <value>application/json</value>
         </set-header>
+        <set-header name="ndphost" exists-action="override">
+          <value>@(context.Variables.GetValueOrDefault<string>("ndphost", ""))</value>
+        </set-header>
         <set-body>@{
           return (string) context.Variables["renewrequest"];
           }</set-body>
