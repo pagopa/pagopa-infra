@@ -284,3 +284,8 @@ variable "tls_checker_https_endpoints_to_check" {
   description = "List of https endpoint to check ssl certificate and his alert name"
   default     = []
 }
+
+variable "aks_enable_workload_identity" {
+  type = bool
+  default = false
+}

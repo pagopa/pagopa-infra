@@ -7,6 +7,7 @@ location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
 enable_velero_backup = true
+velero_backup_sa_replication_type = "ZRS"
 
 tags = {
   CreatedBy   = "Terraform"

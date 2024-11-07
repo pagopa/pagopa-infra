@@ -1,5 +1,5 @@
 module "aks_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.58.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.53.0"
 
   name                                      = "${local.project}-aks-snet"
   address_prefixes                          = var.aks_cidr_subnet
