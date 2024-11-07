@@ -29,18 +29,22 @@ resource "azurerm_subnet" "github_runner_snet" {
 #   tags = var.tags
 # }
 
-
-locals {
-  test_content = templatefile("${path.module}/template.json", {
-    location                  = var.location
-    name                      = "github-runner-cae"
-    sku_name                  = "Consumption"
-    vnet_internal             = true
-    subnet_id                 = azurerm_subnet.github_runner_snet.id
-    outbound_type             = "LoadBalancer"
-    log_destination           = "log-analytics"
-    log_analytics_customer_id = data.azurerm_log_analytics_workspace.log_analytics.workspace_id
-    log_analytics_shared_key  = data.azurerm_log_analytics_workspace.log_analytics.primary_shared_key
-    zone_redundant            = false
-  })
+output "test" {
+  value = data.azurerm_log_analytics_workspace.log_analytics.primary_shared_key
 }
+
+
+# locals {
+#   test_content = templatefile("${path.module}/template.json", {
+#     location                  = var.location
+#     name                      = "github-runner-cae"
+#     sku_name                  = "Consumption"
+#     vnet_internal             = true
+#     subnet_id                 = azurerm_subnet.github_runner_snet.id
+#     outbound_type             = "LoadBalancer"
+#     log_destination           = "log-analytics"
+#     log_analytics_customer_id = data.azurerm_log_analytics_workspace.log_analytics.workspace_id
+#     log_analytics_shared_key  = data.azurerm_log_analytics_workspace.log_analytics.primary_shared_key
+#     zone_redundant            = false
+#   })
+# }
