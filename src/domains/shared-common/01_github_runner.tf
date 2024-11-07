@@ -40,7 +40,7 @@ locals {
     outbound_type             = "LoadBalancer"
     log_destination           = "log-analytics"
     log_analytics_customer_id = data.azurerm_log_analytics_workspace.log_analytics.workspace_id
-    log_analytics_shared_key  = "asd"#data.azurerm_log_analytics_workspace.log_analytics.primary_shared_key
+    log_analytics_shared_key  = data.azurerm_log_analytics_workspace.log_analytics.primary_shared_key
     zone_redundant            = false
   })
 }
