@@ -115,6 +115,12 @@ resource "azapi_resource" "decoupler_activate_outbound" {
   }
 }
 
+locals {
+  on_error_soap_file = templatefile("./api_product/nodo_pagamenti_api/on_error_soap_req.xml", {
+    ndphost_variable = file("./api_product/nodo_pagamenti_api/env/${var.env}/ndphost_header.xml")
+  })
+}
+
 resource "terraform_data" "sha256_on_erro_soap_handler" {
   input = sha256(file("./api_product/nodo_pagamenti_api/on_error_soap_req.xml"))
 }
@@ -127,7 +133,7 @@ resource "azapi_resource" "on_erro_soap_handler" {
     properties = {
       description = "On error SOAP request"
       format      = "rawxml"
-      value       = file("./api_product/nodo_pagamenti_api/on_error_soap_req.xml")
+      value       = local.on_error_soap_file
     }
   })
 
