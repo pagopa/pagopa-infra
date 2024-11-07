@@ -31,6 +31,7 @@ resource "azurerm_subnet" "github_runner_snet" {
 
 output "test" {
   value = data.azurerm_log_analytics_workspace.log_analytics.primary_shared_key
+  sensitive = true
 }
 
 
