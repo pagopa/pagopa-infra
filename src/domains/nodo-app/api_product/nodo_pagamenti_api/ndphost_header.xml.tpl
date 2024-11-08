@@ -1,0 +1,3 @@
+<fragment>
+  ${content}
+</fragment>
