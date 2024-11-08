@@ -30,14 +30,8 @@ resource "azurerm_subnet" "github_runner_snet" {
 # }
 
 
-output "marco" {
-  value = data.azurerm_log_analytics_workspace.log_analytics
-  sensitive = true
-}
-
-output "marco_key" {
-  value = data.azurerm_log_analytics_workspace.log_analytics.primary_shared_key
-  sensitive = true
+locals {
+  foo = data.azurerm_log_analytics_workspace.log_analytics.primary_shared_key
 }
 
 
@@ -51,7 +45,7 @@ locals {
     outbound_type             = "LoadBalancer"
     log_destination           = "log-analytics"
     log_analytics_customer_id = data.azurerm_log_analytics_workspace.log_analytics.workspace_id
-    log_analytics_shared_key  = data.azurerm_log_analytics_workspace.log_analytics.primary_shared_key
+    log_analytics_shared_key  = local.foo #data.azurerm_log_analytics_workspace.log_analytics.primary_shared_key
     zone_redundant            = false
   })
 }
