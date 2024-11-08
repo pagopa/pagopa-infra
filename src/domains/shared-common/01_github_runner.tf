@@ -32,10 +32,12 @@ resource "azurerm_subnet" "github_runner_snet" {
 
 output "marco" {
   value = data.azurerm_log_analytics_workspace.log_analytics
+  sensitive = true
 }
 
 output "marco_key" {
   value = data.azurerm_log_analytics_workspace.log_analytics.primary_shared_key
+  sensitive = true
 }
 
 
