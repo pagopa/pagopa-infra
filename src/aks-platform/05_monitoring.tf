@@ -16,7 +16,7 @@ resource "kubernetes_secret_v1" "prometheus_basic_auth" {
 }
 
 module "monitoring_pod_identity" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v7.69.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v8.44.0"
 
   cluster_name        = module.aks.name
   resource_group_name = azurerm_resource_group.aks_rg.name
