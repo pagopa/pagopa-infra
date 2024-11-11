@@ -44,7 +44,7 @@ module "apim_api_debt_positions_for_aca_api_v1" {
     service = data.azurerm_api_management_product.apim_aca_product.product_id
   })
 
-  xml_content = file("./api/gpd_api/debt-position-services-for-aca/v1/_base_policy.xml")
+  xml_content = file("./api/gpd_api/debt-position-for-aca-services/v1/_base_policy.xml")
 }
 
 module "apim_api_debt_positions_for_aca_api_v2" {
