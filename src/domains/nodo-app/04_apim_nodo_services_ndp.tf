@@ -197,17 +197,6 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_ndp" {
   })
 }
 
-# resource "azurerm_api_management_api_operation_policy" "fdr_policy_ndp" {
-
-#   api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1_ndp.name
-#   api_management_name = module.apim.name
-#   resource_group_name = azurerm_resource_group.rg_api.name
-#   operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e96321e0f4ba04a49d1280" : "61e9633eea7c4a07cc7d4811"
-
-#   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
-#     base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
-#   })
-# }
 
 ######################################
 ## WS nodo per psp richiesta avvisi ##

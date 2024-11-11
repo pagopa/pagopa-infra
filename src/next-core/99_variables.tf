@@ -204,6 +204,29 @@ variable "dns_a_reconds_dbnodonexipostgres_prf_ips" {
   default     = []
 }
 
+variable "dns_a_reconds_dbnodonexipostgres_prf_balancer_1_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_prf_balancer_2_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_balancer_1_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_balancer_2_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
 
 #
 # dns forwarder
@@ -557,17 +580,6 @@ variable "nodo_pagamenti_ec" {
   type        = string
   description = "EC' black list nodo pagamenti (separate comma list)."
   default     = ","
-}
-
-variable "nodo_pagamenti_url" {
-  type        = string
-  description = "Nodo pagamenti url"
-  default     = "https://"
-}
-
-variable "ip_nodo" { # TEMP used only for onPrem shall be replace with "lb_aks"
-  type        = string
-  description = "Nodo pagamenti ip"
 }
 
 variable "lb_aks" {

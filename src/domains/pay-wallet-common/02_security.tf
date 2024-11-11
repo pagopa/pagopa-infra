@@ -278,3 +278,20 @@ resource "azurerm_key_vault_secret" "payment_wallet_opsgenie_webhook_token" {
     ]
   }
 }
+
+//connection string to soak test evh instance
+data "azurerm_eventhub_authorization_rule" "sender_evt_tx_event_hub_connection_string_soak_test" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "payment-wallet-evt-tx-soak-test"
+  namespace_name      = "${local.product_italy}-observ-evh"
+  eventhub_name       = "payment-wallet-ingestion-dl-soak-test"
+  resource_group_name = "${local.product_italy}-observ-evh-rg"
+}
+
+
+resource "azurerm_key_vault_secret" "sender_evt_tx_event_hub_connection_string_soak_test" {
+  count        = var.env_short == "u" ? 1 : 0
+  name         = "sender-evt-tx-event-hub-connection-string-soak-test"
+  value        = data.azurerm_eventhub_authorization_rule.sender_evt_tx_event_hub_connection_string_soak_test[0].primary_connection_string
+  key_vault_id = module.key_vault.id
+}

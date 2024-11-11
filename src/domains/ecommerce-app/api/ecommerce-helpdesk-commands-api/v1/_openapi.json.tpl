@@ -75,6 +75,60 @@
           }
         }
       }
+    },
+    "/commands/refund/redirect": {
+      "post": {
+        "tags": [
+          "ecommerce"
+        ],
+        "summary": "Api's for refund redirect",
+        "description": "POST refund redirect",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/RefundRedirectRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Refund redirect completed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefundRedirectResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -170,6 +224,74 @@
           "correlationId",
           "amount"
         ]
+      },
+      "RefundRedirectRequest": {
+        "type": "object",
+        "properties": {
+          "idTransaction": {
+            "$ref": "#/components/schemas/PagopaIdTransaction"
+          },
+          "idPSPTransaction": {
+            "description": "PSP transaction id",
+            "type": "string"
+          },
+          "action": {
+            "description": "Requested action (i.e. refund)",
+            "type": "string"
+          },
+          "touchpoint": {
+            "type": "string",
+            "description": "Name of touchpoint"
+          },
+          "paymentTypeCode": {
+            "type": "string",
+            "description": "The code of the payment method"
+          },
+          "pspId": {
+            "type": "string",
+            "description": "The id of the psp"
+          }
+        },
+        "required": [
+          "idTransaction",
+          "idPSPTransaction",
+          "action",
+          "touchpoint",
+          "pspId",
+          "paymentTypeCode"
+        ]
+      },
+      "RefundRedirectResponse": {
+        "type": "object",
+        "description": "Refund response body",
+        "properties": {
+          "idTransaction": {
+            "$ref": "#/components/schemas/PagopaIdTransaction"
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/RefundOutcome"
+          }
+        },
+        "required": [
+          "idTransaction",
+          "outcome"
+        ]
+      },
+      "PagopaIdTransaction": {
+        "description": "Uniquely identify a transaction",
+        "type": "string",
+        "minLength": 32,
+        "maxLength": 32,
+        "example": "3fa85f6457174562b3fc2c963f66afa6"
+      },
+      "RefundOutcome": {
+        "description": "Refund operation outcome:\nit can be one of the following values:\n* OK - `Refund operation processed successfully`\n* KO - `There was an error performing refund`\n* CANCELED - `The transaction was already refunded`\n",
+        "type": "string",
+        "enum": [
+          "OK",
+          "KO",
+          "CANCELED"
+        ]
       }
     },
     "requestBodies": {
@@ -179,6 +301,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/RefundTransactionRequest"
+            }
+          }
+        }
+      },
+      "RefundRedirectRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RefundRedirectRequest"
             }
           }
         }
