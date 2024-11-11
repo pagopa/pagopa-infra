@@ -286,6 +286,6 @@ variable "tls_checker_https_endpoints_to_check" {
 }
 
 variable "aks_enable_workload_identity" {
-  type = bool
+  type    = bool
   default = false
 }
