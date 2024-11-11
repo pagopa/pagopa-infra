@@ -570,3 +570,16 @@ resource "azurerm_key_vault_secret" "npg_satispay_psp_keys" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "helpdesk-service-testing-email-history" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "helpdesk-service-testing-email-history"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
