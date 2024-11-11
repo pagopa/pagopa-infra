@@ -48,6 +48,13 @@ locals {
     subscription_required = true
     service_url           = var.env == "prod" ? "https://weu${var.env}.gps.internal.platform.pagopa.it/pagopa-gpd-core" : "https://weu${var.env}.gps.internal.${var.env}.platform.pagopa.it/pagopa-gpd-core"
   }
+  apim_debt_positions_for_aca_service_api = {
+    display_name          = "GPD for ACA pagoPA - Debt Positions service API for ACA"
+    description           = "API to support Debt Positions service for ACA"
+    path                  = "aca/debt-positions-service"
+    subscription_required = true
+    service_url           = var.env == "prod" ? "https://weu${var.env}.gps.internal.platform.pagopa.it/pagopa-gpd-core" : "https://weu${var.env}.gps.internal.${var.env}.platform.pagopa.it/pagopa-gpd-core"
+  }
   gpd_core_service_url = var.env == "prod" ? "https://weu${var.env}.gps.internal.platform.pagopa.it/pagopa-gpd-core" : "https://weu${var.env}.gps.internal.${var.env}.platform.pagopa.it/pagopa-gpd-core"
 
   # Product APIM for Node
