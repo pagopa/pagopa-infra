@@ -771,7 +771,7 @@ apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integrati
 # monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
-law_daily_quota_gb    = 30
+law_daily_quota_gb    = 50
 
 
 
