@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "aks_rg" {
 
 
 module "aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.53.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.54.0"
 
   name                       = local.aks_name
   location                   = var.location

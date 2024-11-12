@@ -33,13 +33,14 @@ locals {
 
   aks_metrics_alerts = {
     node_cpu = {
-      aggregation      = "Average"
-      metric_namespace = "Insights.Container/nodes"
-      metric_name      = "cpuUsagePercentage"
-      operator         = "GreaterThan"
-      threshold        = 80
-      frequency        = "PT15M"
-      window_size      = "PT1H"
+      aggregation            = "Average"
+      metric_namespace       = "Insights.Container/nodes"
+      metric_name            = "cpuUsagePercentage"
+      operator               = "GreaterThan"
+      threshold              = 80
+      frequency              = "PT15M"
+      window_size            = "PT1H"
+      skip_metric_validation = var.skip_metric_validation
       dimension = [
         {
           name     = "host"

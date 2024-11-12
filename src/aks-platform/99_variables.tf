@@ -289,3 +289,9 @@ variable "aks_enable_workload_identity" {
   type    = bool
   default = false
 }
+
+variable "skip_metric_validation" {
+  type        = bool
+  description = "(Optional) Skip the metric validation to allow creating an alert rule on a custom metric that isn't yet emitted? Defaults to false."
+  default     = false
+}
