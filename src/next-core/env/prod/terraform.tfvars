@@ -72,13 +72,13 @@ route_table_peering_sia_additional_routes = [
 #
 # Dns
 #
-external_domain                      = "pagopa.it"
-dns_zone_internal_prefix             = "internal.platform"
-dns_zone_wfesp                       = "wfesp"
-private_dns_zone_db_nodo_pagamenti   = "p.db-nodo-pagamenti.com"
-dns_a_reconds_dbnodo_ips             = ["10.101.35.37", "10.101.35.38"]                                     # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
-dns_a_reconds_dbnodo_ips_dr          = ["10.250.45.145", "10.250.45.146", "10.250.45.147", "10.250.45.148"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
-dns_a_reconds_dbnodonexipostgres_ips = ["10.222.209.84"]
+external_domain                                 = "pagopa.it"
+dns_zone_internal_prefix                        = "internal.platform"
+dns_zone_wfesp                                  = "wfesp"
+private_dns_zone_db_nodo_pagamenti              = "p.db-nodo-pagamenti.com"
+dns_a_reconds_dbnodo_ips                        = ["10.101.35.37", "10.101.35.38"]                                     # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
+dns_a_reconds_dbnodo_ips_dr                     = ["10.250.45.145", "10.250.45.146", "10.250.45.147", "10.250.45.148"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
+dns_a_reconds_dbnodonexipostgres_ips            = ["10.222.209.84"]
 dns_a_reconds_dbnodonexipostgres_balancer_1_ips = ["10.222.214.129"] # db onPrem PostgreSQL
 dns_a_reconds_dbnodonexipostgres_balancer_2_ips = ["10.222.214.134"] # db onPrem PostgreSQL
 
@@ -736,6 +736,7 @@ eventhubs_04 = [
 node_forwarder_zone_balancing_enabled = true
 node_forwarder_sku                    = "P3v3"
 node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
+node_fw_dbg_snet_cidr                 = ["10.1.195.0/24"]
 devops_agent_zones                    = [1, 2, 3]
 devops_agent_balance_zones            = false
 azdo_agent_vm_image_name              = "pagopa-p-azdo-agent-ubuntu2204-image-v4"
@@ -851,3 +852,5 @@ monitor_env_test_urls = [
     path = "",
   }
 ]
+
+enable_node_forwarder_debug_instance = true
