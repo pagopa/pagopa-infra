@@ -1,7 +1,7 @@
 <policies>
   <inbound>
     <choose>
-      <when condition="(context.Request.Url.Query.GetValueOrDefault("serviceType","").Equals("ACA")">
+      <when condition="@(context.Request.Url.Query.GetValueOrDefault("serviceType","").Equals("ACA"))">
         <set-query-parameter name="serviceType" exists-action="override">
           <value>GPD</value>
         </set-query-parameter>
