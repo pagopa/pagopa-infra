@@ -1,5 +1,8 @@
 <policies>
   <inbound>
+    <set-query-parameter name="type" exists-action="override">
+      <value>aca</value>
+    </set-query-parameter>
     <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
     <set-variable name="sub" value="@(context.Subscription.Name)" />
     <set-variable name="subid" value="@(context.Subscription.Id)" />
@@ -48,7 +51,7 @@
           <!--                    <return-response>-->
           <!--                        <set-status code="403" reason="Forbidden" />-->
           <!--                    </return-response>-->
-            <trace source="GPD-Payments External Policy for organizations" severity="information">
+            <trace source="GPD for ACA Policy for organizations" severity="information">
               <message>No valid segregation codes associated with EC</message>
             </trace>
           </when>
