@@ -162,11 +162,11 @@ module "node_forwarder_slot_staging" {
   docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopanodeforwarder"
   docker_image_tag = "latest"
 
-  allowed_subnets = []
-  allowed_ips     = []
-  subnet_id       = var.is_feature_enabled.node_forwarder_ha_enabled ? module.node_forwarder_ha_snet[0].id : module.node_forwarder_snet[0].id
+  allowed_subnets               = []
+  allowed_ips                   = []
+  subnet_id                     = var.is_feature_enabled.node_forwarder_ha_enabled ? module.node_forwarder_ha_snet[0].id : module.node_forwarder_snet[0].id
   public_network_access_enabled = false
-  
+
   tags = var.tags
 }
 
@@ -206,7 +206,7 @@ resource "azurerm_private_endpoint" "forwarder_staging_input_private_endpoint" {
 
   private_service_connection {
     name                           = "${local.project}-node-forwarder-staging-service-connection"
-    private_connection_resource_id = module.node_forwarder_app_service[0].id  #issue https://github.com/hashicorp/terraform-provider-azurerm/issues/11147
+    private_connection_resource_id = module.node_forwarder_app_service[0].id #issue https://github.com/hashicorp/terraform-provider-azurerm/issues/11147
     is_manual_connection           = false
     subresource_names              = ["sites-staging"]
   }
