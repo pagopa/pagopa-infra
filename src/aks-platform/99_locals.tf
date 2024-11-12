@@ -50,13 +50,14 @@ locals {
       ],
     }
     node_memory = {
-      aggregation      = "Average"
-      metric_namespace = "Insights.Container/nodes"
-      metric_name      = "memoryWorkingSetPercentage"
-      operator         = "GreaterThan"
-      threshold        = 80
-      frequency        = "PT15M"
-      window_size      = "PT1H"
+      aggregation            = "Average"
+      metric_namespace       = "Insights.Container/nodes"
+      metric_name            = "memoryWorkingSetPercentage"
+      operator               = "GreaterThan"
+      threshold              = 80
+      frequency              = "PT15M"
+      window_size            = "PT1H"
+      skip_metric_validation = var.skip_metric_validation
       dimension = [
         {
           name     = "host"
@@ -66,13 +67,14 @@ locals {
       ],
     }
     node_disk = {
-      aggregation      = "Average"
-      metric_namespace = "Insights.Container/nodes"
-      metric_name      = "DiskUsedPercentage"
-      operator         = "GreaterThan"
-      threshold        = 80
-      frequency        = "PT15M"
-      window_size      = "PT1H"
+      aggregation            = "Average"
+      metric_namespace       = "Insights.Container/nodes"
+      metric_name            = "DiskUsedPercentage"
+      operator               = "GreaterThan"
+      threshold              = 80
+      frequency              = "PT15M"
+      window_size            = "PT1H"
+      skip_metric_validation = var.skip_metric_validation
       dimension = [
         {
           name     = "host"
@@ -87,13 +89,14 @@ locals {
       ],
     }
     node_not_ready = {
-      aggregation      = "Average"
-      metric_namespace = "Insights.Container/nodes"
-      metric_name      = "nodesCount"
-      operator         = "GreaterThan"
-      threshold        = 0
-      frequency        = "PT15M"
-      window_size      = "PT1H"
+      aggregation            = "Average"
+      metric_namespace       = "Insights.Container/nodes"
+      metric_name            = "nodesCount"
+      operator               = "GreaterThan"
+      threshold              = 0
+      frequency              = "PT15M"
+      window_size            = "PT1H"
+      skip_metric_validation = var.skip_metric_validation
       dimension = [
         {
           name     = "status"
@@ -103,13 +106,14 @@ locals {
       ],
     }
     pods_failed = {
-      aggregation      = "Average"
-      metric_namespace = "Insights.Container/pods"
-      metric_name      = "podCount"
-      operator         = "GreaterThan"
-      threshold        = 0
-      frequency        = "PT15M"
-      window_size      = "PT1H"
+      aggregation            = "Average"
+      metric_namespace       = "Insights.Container/pods"
+      metric_name            = "podCount"
+      operator               = "GreaterThan"
+      threshold              = 0
+      frequency              = "PT15M"
+      window_size            = "PT1H"
+      skip_metric_validation = var.skip_metric_validation
       dimension = [
         {
           name     = "phase"
@@ -119,13 +123,14 @@ locals {
       ]
     }
     pods_ready = {
-      aggregation      = "Average"
-      metric_namespace = "Insights.Container/pods"
-      metric_name      = "PodReadyPercentage"
-      operator         = "LessThan"
-      threshold        = 80
-      frequency        = "PT15M"
-      window_size      = "PT1H"
+      aggregation            = "Average"
+      metric_namespace       = "Insights.Container/pods"
+      metric_name            = "PodReadyPercentage"
+      operator               = "LessThan"
+      threshold              = 80
+      frequency              = "PT15M"
+      window_size            = "PT1H"
+      skip_metric_validation = var.skip_metric_validation
       dimension = [
         {
           name     = "Kubernetes namespace"
@@ -152,13 +157,14 @@ locals {
       ]
     }
     container_cpu = {
-      aggregation      = "Average"
-      metric_namespace = "Insights.Container/containers"
-      metric_name      = "cpuExceededPercentage"
-      operator         = "GreaterThan"
-      threshold        = 95
-      frequency        = "PT15M"
-      window_size      = "PT1H"
+      aggregation            = "Average"
+      metric_namespace       = "Insights.Container/containers"
+      metric_name            = "cpuExceededPercentage"
+      operator               = "GreaterThan"
+      threshold              = 95
+      frequency              = "PT15M"
+      window_size            = "PT1H"
+      skip_metric_validation = var.skip_metric_validation
       dimension = [
         {
           name     = "Kubernetes namespace"
@@ -185,13 +191,14 @@ locals {
       ]
     }
     container_memory = {
-      aggregation      = "Average"
-      metric_namespace = "Insights.Container/containers"
-      metric_name      = "memoryWorkingSetExceededPercentage"
-      operator         = "GreaterThan"
-      threshold        = 95
-      frequency        = "PT15M"
-      window_size      = "PT1H"
+      aggregation            = "Average"
+      metric_namespace       = "Insights.Container/containers"
+      metric_name            = "memoryWorkingSetExceededPercentage"
+      operator               = "GreaterThan"
+      threshold              = 95
+      frequency              = "PT15M"
+      window_size            = "PT1H"
+      skip_metric_validation = var.skip_metric_validation
       dimension = [
         {
           name     = "Kubernetes namespace"
@@ -201,13 +208,14 @@ locals {
       ]
     }
     container_oom = {
-      aggregation      = "Average"
-      metric_namespace = "Insights.Container/pods"
-      metric_name      = "oomKilledContainerCount"
-      operator         = "GreaterThan"
-      threshold        = 0
-      frequency        = "PT15M"
-      window_size      = "PT1H"
+      aggregation            = "Average"
+      metric_namespace       = "Insights.Container/pods"
+      metric_name            = "oomKilledContainerCount"
+      operator               = "GreaterThan"
+      threshold              = 0
+      frequency              = "PT15M"
+      window_size            = "PT1H"
+      skip_metric_validation = var.skip_metric_validation
       dimension = [
         {
           name     = "Kubernetes namespace"
@@ -217,13 +225,14 @@ locals {
       ]
     }
     container_restart = {
-      aggregation      = "Average"
-      metric_namespace = "Insights.Container/pods"
-      metric_name      = "restartingContainerCount"
-      operator         = "GreaterThan"
-      threshold        = 0
-      frequency        = "PT15M"
-      window_size      = "PT1H"
+      aggregation            = "Average"
+      metric_namespace       = "Insights.Container/pods"
+      metric_name            = "restartingContainerCount"
+      operator               = "GreaterThan"
+      threshold              = 0
+      frequency              = "PT15M"
+      window_size            = "PT1H"
+      skip_metric_validation = var.skip_metric_validation
       dimension = [
         {
           name     = "Kubernetes namespace"
