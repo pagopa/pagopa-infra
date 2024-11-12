@@ -1,8 +1,12 @@
 <policies>
   <inbound>
-    <set-query-parameter name="serviceType" exists-action="override">
-      <value>ACA</value>
-    </set-query-parameter>
+    <choose>
+      <when condition="@(Regex.IsMatch(context.Request.Url.Path, @"^organizations\/([a-zA-Z0-9]{11})\/debtpositions$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
+        <set-query-parameter name="serviceType" exists-action="override">
+          <value>ACA</value>
+        </set-query-parameter>
+      </when>
+    <choose>
     <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
     <set-variable name="sub" value="@(context.Subscription.Name)" />
     <set-variable name="subid" value="@(context.Subscription.Id)" />
