@@ -5,8 +5,9 @@ resource "azurerm_resource_group" "aks_rg" {
   tags = var.tags
 }
 
+
 module "aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v7.58.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.53.0"
 
   name                       = local.aks_name
   location                   = var.location
@@ -15,6 +16,9 @@ module "aks" {
   kubernetes_version         = var.aks_kubernetes_version
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
   sku_tier                   = var.aks_sku_tier
+
+  workload_identity_enabled = var.aks_enable_workload_identity
+  oidc_issuer_enabled       = var.aks_enable_workload_identity
 
   #
   # 🤖 System node pool

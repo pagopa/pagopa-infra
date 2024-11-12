@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.71.0"
+      version = "<= 3.114.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -18,7 +18,7 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "<= 2.25.1"
+      version = "<= 2.31.0"
     }
   }
 
@@ -26,6 +26,7 @@ terraform {
 }
 
 provider "azurerm" {
+  skip_provider_registration = true
   features {
     key_vault {
       purge_soft_delete_on_destroy = false

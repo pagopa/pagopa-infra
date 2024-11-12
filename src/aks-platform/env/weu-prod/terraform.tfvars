@@ -41,6 +41,8 @@ aks_system_node_pool = {
   node_tags                    = { node_tag_1 : "1" },
 }
 
+aks_enable_workload_identity = true
+
 aks_user_node_pool = {
   enabled         = true
   name            = "user01"
