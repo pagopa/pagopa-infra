@@ -104,3 +104,65 @@ ApiManagementGatewayLogs
     threshold = 1
   }
 }
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "alert-pagopa-backoffice-brokerCiExport-cron-error" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-alert_pagopa-backoffice-brokerCiExport-cron-error"
+  location            = var.location
+
+  action {
+    action_group           = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "Backoffice error while running brokerCiExport cron"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Error while running brokerCiExport cron, the process failed while attempting to extract and persist all CI associated to a broker"
+  enabled        = true
+  query = format(<<-QUERY
+  exceptions
+    | where cloud_RoleName == "%s"
+    | where outerMessage contains "[Export-CI] Error during brokerCiExport, process partially completed, the following brokers were not extracted/updated successfully:"
+    | order by timestamp desc
+  QUERY
+    , "pagopaselfcaremsbackofficebackend" # from HELM's parameter WEBSITE_SITE_NAME
+  )
+  severity    = 1 // Sev 2	Warning
+  frequency   = 5
+  time_window = 5
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "alert-pagopa-backoffice-brokerIbansExport-cron-error" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-alert_pagopa-backoffice-brokerIbansExport-cron-error"
+  location            = var.location
+
+  action {
+    action_group           = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject          = "Backoffice error while running brokerIbansExport cron"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "Error while running brokerIbansExport cron, the process failed while attempting to extract and persist all Iban of CI associated to a broker"
+  enabled        = true
+  query = format(<<-QUERY
+  exceptions
+    | where cloud_RoleName == "%s"
+    | where outerMessage contains "[Export IBANs] - Error during brokerIbansExport, process partially completed, the following brokers were not extracted/updated successfully:"
+    | order by timestamp desc
+  QUERY
+    , "pagopaselfcaremsbackofficebackend" # from HELM's parameter WEBSITE_SITE_NAME
+  )
+  severity    = 1 // Sev 2	Warning
+  frequency   = 5
+  time_window = 5
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
