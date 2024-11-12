@@ -1109,3 +1109,10 @@ variable "vpn_random_specials_char" {
   default     = true
   description = "Enable random special characters in VPN gateway's pip name"
 }
+
+
+variable "enable_node_forwarder_debug_instance" {
+  type        = bool
+  default     = false
+  description = "Enable the creation of a separate 'debug' instance of node forwarder"
+}

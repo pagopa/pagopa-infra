@@ -1,5 +1,5 @@
 locals {
-  node_forwarder_dbg_names_suffix = false ? "-dbg-ha" : "-dbg"
+  node_forwarder_dbg_names_suffix = "-dbg"
   node_forwarder_dbg_rg_name      = "${local.product}-node-forwarder-dbg-rg"
   node_forwarder_dbg_app_settings = {
     # Monitoring
@@ -48,7 +48,13 @@ locals {
 
 }
 
+moved {
+  from = azurerm_resource_group.node_forwarder_dbg_rg
+  to   = azurerm_resource_group.node_forwarder_dbg_rg[0]
+}
+
 resource "azurerm_resource_group" "node_forwarder_dbg_rg" {
+  count    = var.enable_node_forwarder_debug_instance ? 1 : 0
   name     = format("%s-node-forwarder-dbg-rg", local.product)
   location = var.location
 
@@ -58,7 +64,7 @@ resource "azurerm_resource_group" "node_forwarder_dbg_rg" {
 
 # Subnet to host the node forwarder
 module "node_forwarder_dbg_snet" {
-  count                                         = false ? 0 : 1
+  count                                         = var.enable_node_forwarder_debug_instance ? 1 : 0
   source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
   name                                          = format("%s-node-forwarder-dbg-snet", local.product)
   address_prefixes                              = var.node_fw_dbg_snet_cidr
@@ -76,33 +82,8 @@ module "node_forwarder_dbg_snet" {
 }
 
 
-
-module "node_forwarder_dbg_ha_snet" {
-  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
-  count                                         = false ? 1 : 0
-  name                                          = "${local.project}-node-forwarder-ha-dbg-snet"
-  address_prefixes                              = var.node_fw_dbg_snet_cidr
-  resource_group_name                           = azurerm_resource_group.rg_vnet.name
-  virtual_network_name                          = module.vnet.name
-  private_link_service_network_policies_enabled = true
-
-  delegation = {
-    name = "default"
-    service_delegation = {
-      name    = "Microsoft.Web/serverFarms"
-      actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
-    }
-  }
-}
-
-resource "azurerm_subnet_nat_gateway_association" "nodefw_dbg_ha_snet_nat_association" {
-  count          = false ? 1 : 0
-  subnet_id      = module.node_forwarder_dbg_ha_snet[0].id
-  nat_gateway_id = module.nat_gw[0].id
-}
-
 resource "azurerm_subnet_nat_gateway_association" "nodefw_dbg_snet_nat_association" {
-  count          = false ? 0 : 1
+  count          = var.enable_node_forwarder_debug_instance ? 1 : 0
   subnet_id      = module.node_forwarder_dbg_snet[0].id
   nat_gateway_id = module.nat_gw[0].id
 }
@@ -111,7 +92,7 @@ resource "azurerm_subnet_nat_gateway_association" "nodefw_dbg_snet_nat_associati
 module "node_forwarder_dbg_app_service" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
 
-  count = 1
+  count = var.enable_node_forwarder_debug_instance ? 1 : 0
 
   vnet_integration    = true
   resource_group_name = "${local.product}-node-forwarder-dbg-rg"
@@ -134,9 +115,9 @@ module "node_forwarder_dbg_app_service" {
   allowed_subnets = [module.apim_snet.id]
   allowed_ips     = []
 
-  sku_name = "P3v3"
+  sku_name = var.node_forwarder_sku
 
-  subnet_id                    = false ? module.node_forwarder_dbg_ha_snet[0].id : module.node_forwarder_dbg_snet[0].id
+  subnet_id                    = module.node_forwarder_dbg_snet[0].id
   health_check_maxpingfailures = 10
 
   zone_balancing_enabled = var.node_forwarder_zone_balancing_enabled
@@ -145,7 +126,7 @@ module "node_forwarder_dbg_app_service" {
 }
 
 module "node_forwarder_dbg_slot_staging" {
-  count = var.env_short != "d" ? 1 : 0
+  count = var.env_short != "d" && var.enable_node_forwarder_debug_instance ? 1 : 0
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.60.0"
 
@@ -168,12 +149,18 @@ module "node_forwarder_dbg_slot_staging" {
 
   allowed_subnets = [module.apim_snet.id]
   allowed_ips     = []
-  subnet_id       = false ? module.node_forwarder_dbg_ha_snet[0].id : module.node_forwarder_dbg_snet[0].id
+  subnet_id       = module.node_forwarder_dbg_snet[0].id
 
   tags = var.tags
 }
 
+moved {
+  from = azurerm_monitor_autoscale_setting.node_forwarder_dbg_app_service_autoscale
+  to   = azurerm_monitor_autoscale_setting.node_forwarder_dbg_app_service_autoscale[0]
+}
+
 resource "azurerm_monitor_autoscale_setting" "node_forwarder_dbg_app_service_autoscale" {
+  count               = var.enable_node_forwarder_debug_instance ? 1 : 0
   name                = "${local.project}-autoscale-node-forwarder-dbg-ha"
   resource_group_name = local.node_forwarder_dbg_rg_name
   location            = var.location
