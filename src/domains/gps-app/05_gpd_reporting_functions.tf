@@ -95,6 +95,16 @@ locals {
     QUEUE_RETENTION_SEC  = var.gpd_queue_retention_sec
     QUEUE_DELAY_SEC      = var.gpd_queue_delay_sec
 
+    CACHE_CLIENT_HOST       = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "api-config-cache/p", "v1")
+    CACHE_PATH              = var.gpd_cache_path
+    CACHE_API_KEY           = data.azurerm_key_vault_secret.config_cache_subscription_key.value // on pagopa apim | Subscriptions 👀 config-cache-gpd-reporting
+    ENABLE_CLIENT_RETRY     = var.enable_client_retry
+    INITIAL_INTERVAL_MILLIS = var.initial_interval_millis
+    MAX_ELAPSED_TIME_MILLIS = var.max_elapsed_time_millis
+    MAX_INTERVAL_MILLIS     = var.max_interval_millis
+    MULTIPLIER              = var.multiplier
+    RANDOMIZATION_FACTOR    = var.randomization_factor
+
     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.apim_dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
     GPD_HOST  = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "gpd/api", "v1")
     NODO_HOST = format("https://api.%s.%s/nodo/nodo-per-pa/v1", var.apim_dns_zone_prefix, var.external_domain)
