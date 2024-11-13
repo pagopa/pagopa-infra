@@ -1077,7 +1077,7 @@
             "description": "Dead letter event insertion date time"
           },
           "transactionInfo": {
-            "$ref": "#/components/schemas/DeadLetterTransactionInfo"
+            "$ref": "#/components/schemas/DeadLetterTransactionInfo",
             "description": "Dead letter transaction info"
           }
         },
