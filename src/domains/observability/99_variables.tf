@@ -349,3 +349,26 @@ variable "cidr_subnet_observability_gpd_evh" {
   description = "Address prefixes evh"
 }
 
+# GPD ingestion sa
+
+variable "gpd_ingestion_storage_account" {
+  type = object({
+    advanced_threat_protection    = bool
+    blob_delete_retention_days    = number
+    blob_versioning_enabled       = bool
+    backup_enabled                = bool
+    backup_retention              = optional(number, 0)
+    account_replication_type      = string
+    public_network_access_enabled = bool
+
+  })
+  default = {
+    blob_versioning_enabled       = false
+    advanced_threat_protection    = false
+    blob_delete_retention_days    = 30
+    backup_enabled                = false
+    backup_retention              = 0
+    account_replication_type      = "LRS" // changhe to GZRS for PROD
+    public_network_access_enabled = true
+  }
+}

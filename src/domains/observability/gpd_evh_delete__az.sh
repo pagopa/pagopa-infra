@@ -36,63 +36,19 @@ echo ">>>>>> 4"
 
 az eventhubs eventhub delete \
 -g pagopa-d-itn-observ-evh-rg \
--n "azcligpd-ingestion.apd.payment_option" \
+-n "cdc-raw-auto.apd.payment_option" \
 --namespace-name pagopa-d-itn-observ-gpd-evh
-
-echo ">>>>>> 4"
-
-az eventhubs eventhub delete \
--g pagopa-d-itn-observ-evh-rg \
--n "azcligpd-ingestion.apd.payment_option_metadata" \
---namespace-name pagopa-d-itn-observ-gpd-evh
-
 
 echo ">>>>>> 5"
 
 az eventhubs eventhub delete \
 -g pagopa-d-itn-observ-evh-rg \
--n "azcligpd-ingestion.apd.payment_position" \
+-n "cdc-raw-auto.apd.payment_position" \
 --namespace-name pagopa-d-itn-observ-gpd-evh
 
 echo ">>>>>> 6"
 
 az eventhubs eventhub delete \
 -g pagopa-d-itn-observ-evh-rg \
--n "azcligpd-ingestion.apd.transfer" \
---namespace-name pagopa-d-itn-observ-gpd-evh
-
-echo ">>>>>> 7"
-
-az eventhubs eventhub delete \
--g pagopa-d-itn-observ-evh-rg \
--n "azcligpd-ingestion.apd.transfer_metadata" \
---namespace-name pagopa-d-itn-observ-gpd-evh
-
-# auto-create
-
-echo ">>>>>> ....."
-
-az eventhubs eventhub delete \
--g pagopa-d-itn-observ-evh-rg \
--n "azcligpd.apd.payment_option" \
---namespace-name pagopa-d-itn-observ-gpd-evh
-
-az eventhubs eventhub delete \
--g pagopa-d-itn-observ-evh-rg \
--n "azcligpd.apd.payment_option_metadata" \
---namespace-name pagopa-d-itn-observ-gpd-evh
-
-az eventhubs eventhub delete \
--g pagopa-d-itn-observ-evh-rg \
--n "azcligpd.apd.payment_position" \
---namespace-name pagopa-d-itn-observ-gpd-evh
-
-az eventhubs eventhub delete \
--g pagopa-d-itn-observ-evh-rg \
--n "azcligpd.apd.transfer" \
---namespace-name pagopa-d-itn-observ-gpd-evh
-
-az eventhubs eventhub delete \
--g pagopa-d-itn-observ-evh-rg \
--n "azcligpd.apd.transfer_metadata" \
+-n "cdc-raw-auto.apd.transfer" \
 --namespace-name pagopa-d-itn-observ-gpd-evh

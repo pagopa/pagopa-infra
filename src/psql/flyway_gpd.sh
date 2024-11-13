@@ -103,7 +103,7 @@ printf "user [%s] pwd [%s] schema [%s]\n" "${APD_DB_USER}" "${APD_DB_PASS}" "${F
 
 # ADP USER ( GPD default ust)
 # https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-logical#prerequisites-for-logical-replication-and-logical-decoding
-# CDC usr >>> ALTER ROLE <adminname> WITH REPLICATION
+# CDC usr >>> ALTER ROLE <adminname> WITH REPLICATION ( ✋ creation )
 docker run --rm -it --network=host -v "${WORKDIR}/migrations/${SUBSCRIPTION}/${DATABASE}":/flyway/sql \
   flyway/flyway:"${FLYWAY_DOCKER_TAG}" \
   -url="${FLYWAY_URL}" -user="${FLYWAY_USER}" -password="${FLYWAY_PASSWORD}" \

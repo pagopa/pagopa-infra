@@ -22,7 +22,7 @@ spec:
     database.dbname: ${postgres_db_name}
     topic.prefix: ${postgres_topic_prefix}
     schema.include.list: "apd"
-    table.include.list: "apd.payment_option,apd.payment_option_metadata,apd.payment_position,apd.transfer,apd.transfer_metadata"
+    table.include.list: "apd.payment_option,apd.payment_position,apd.transfer"
     plugin.name: "pgoutput"
     publication.autocreate.mode: "disabled" # shall be create before 
-    # publication.autocreate.mode: "filtered" 
+    # publication.autocreate.mode: "filtered"  # create it
