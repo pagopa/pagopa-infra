@@ -30,7 +30,7 @@ Re-enable all the resource, commented before to complete the procedure
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.5 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.47.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.105.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.110.0 |
 | <a name="requirement_external"></a> [external](#requirement\_external) | <= 2.3.3 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.27.0 |
@@ -40,7 +40,7 @@ Re-enable all the resource, commented before to complete the procedure
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aks_leonardo"></a> [aks\_leonardo](#module\_aks\_leonardo) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster | v8.20.1 |
+| <a name="module_aks_leonardo"></a> [aks\_leonardo](#module\_aks\_leonardo) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster | v8.55.0 |
 | <a name="module_aks_prometheus_install"></a> [aks\_prometheus\_install](#module\_aks\_prometheus\_install) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_install | v8.17.1 |
 | <a name="module_aks_storage_class"></a> [aks\_storage\_class](#module\_aks\_storage\_class) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_storage_class | v8.17.1 |
 | <a name="module_elastic_agent"></a> [elastic\_agent](#module\_elastic\_agent) | git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_agent | v8.50.0 |
@@ -100,7 +100,6 @@ Re-enable all the resource, commented before to complete the procedure
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet_core](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_ita](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
-| [external_external.get_dns_zone](https://registry.terraform.io/providers/hashicorp/external/latest/docs/data-sources/external) | data source |
 
 ## Inputs
 
