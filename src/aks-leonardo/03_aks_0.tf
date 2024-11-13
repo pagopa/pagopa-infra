@@ -59,16 +59,24 @@ module "aks_leonardo" {
   alerts_enabled       = var.aks_alerts_enabled
   custom_metric_alerts = local.aks_metrics_alerts
 
-  action = [
-    {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
-      webhook_properties = null
-    }
-  ]
+  action = flatten([
+    [
+      {
+        action_group_id    = data.azurerm_monitor_action_group.slack.id
+        webhook_properties = null
+      },
+      {
+        action_group_id    = data.azurerm_monitor_action_group.email.id
+        webhook_properties = null
+      }
+    ],
+    (var.env == "prod" ? [
+      {
+        action_group_id    = data.azurerm_monitor_action_group.opsgenie.0.id
+        webhook_properties = null
+      }
+    ] : [])
+  ])
 
   microsoft_defender_log_analytics_workspace_id = var.env == "prod" ? data.azurerm_log_analytics_workspace.log_analytics_italy.id : null
 
