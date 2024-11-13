@@ -1,7 +1,7 @@
 <policies>
   <inbound>
     <choose>
-      <when condition="@(context.Request.Url.Query.GetValueOrDefault("serviceType","").Equals("ACA"))">
+      <when condition="@(Regex.IsMatch(context.Request.Url.Path, @"^organizations\/([a-zA-Z0-9]{11})\/debtpositions$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)))">
         <set-query-parameter name="serviceType" exists-action="override">
           <value>GPD</value>
         </set-query-parameter>
