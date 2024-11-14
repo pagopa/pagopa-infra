@@ -20,6 +20,7 @@ tags = {
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
+skip_metric_validation                      = true
 
 ### Aks
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/482967553/AKS#sku-(dimensionamento)
@@ -40,6 +41,8 @@ aks_system_node_pool = {
   node_labels                  = { node_name : "aks-system-01", node_type : "system" },
   node_tags                    = { node_tag_1 : "1" },
 }
+
+aks_enable_workload_identity = true
 
 aks_user_node_pool = {
   enabled         = true

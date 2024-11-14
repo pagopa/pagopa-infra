@@ -410,3 +410,30 @@ resource "azurerm_dns_a_record" "dns_a_forwarder" {
   records             = tolist(data.azurerm_public_ip.natgateway_public_ip.*.ip_address)
   tags                = var.tags
 }
+
+resource "azurerm_private_dns_zone" "appservice_private_dns" {
+  name                = "privatelink.azurewebsites.net"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurewebsite_vnet" {
+  name                  = module.vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.appservice_private_dns.name
+  virtual_network_id    = module.vnet.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurewebsite_vnet_integration" {
+  name                  = module.vnet_integration.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.appservice_private_dns.name
+  virtual_network_id    = module.vnet_integration.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
