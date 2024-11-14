@@ -122,7 +122,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-pagopa-backoffice-
   query = format(<<-QUERY
   exceptions
     | where cloud_RoleName == "%s"
-    | where outerMessage contains "[Export-CI] Error during brokerCiExport, process partially completed, the following brokers were not extracted/updated successfully:"
+    | where outerMessage contains "[Export-CI] - Error during brokerCiExport, process partially completed, the following brokers were not extracted/updated successfully"
     | order by timestamp desc
   QUERY
     , "pagopaselfcaremsbackofficebackend" # from HELM's parameter WEBSITE_SITE_NAME
@@ -153,7 +153,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-pagopa-backoffice-
   query = format(<<-QUERY
   exceptions
     | where cloud_RoleName == "%s"
-    | where outerMessage contains "[Export IBANs] - Error during brokerIbansExport, process partially completed, the following brokers were not extracted/updated successfully:"
+    | where outerMessage contains "[Export IBANs] - Error during brokerIbansExport, process partially completed, the following brokers were not extracted/updated successfully"
     | order by timestamp desc
   QUERY
     , "pagopaselfcaremsbackofficebackend" # from HELM's parameter WEBSITE_SITE_NAME
