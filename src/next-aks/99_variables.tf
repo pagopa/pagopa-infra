@@ -57,7 +57,7 @@ variable "k8s_kube_config_path_prefix" {
 
 variable "enable_velero_backup" {
   type        = bool
-  description = "(Optional) If true, installs velero on the aks cluster and schedules the automatic backups"
+  description = "(Optional) If true schedules the automatic backups"
   default     = false
 }
 
@@ -103,4 +103,11 @@ variable "velero_sa_backup_enabled" {
   type        = bool
   description = "(Optional) enables storage account point in time recovery"
   default     = false
+}
+
+
+variable "enable_velero" {
+  type        = bool
+  default     = true
+  description = "(Optional) If true installs velero"
 }
