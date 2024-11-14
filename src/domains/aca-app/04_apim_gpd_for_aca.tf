@@ -31,10 +31,10 @@ module "apim_api_debt_positions_for_aca_api_v1" {
   service_url  = local.apim_debt_positions_for_aca_service_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/gpd_api/debt-position-for-aca-services/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/gpd-for-aca-services/v1/_openapi.json.tpl", {
     host    = local.apim_hostname
     service = module.apim_aca_product.product_id
   })
 
-  xml_content = file("./api/gpd_api/debt-position-for-aca-services/v1/_base_policy.xml")
+  xml_content = file("./api/gpd-for-aca-services/v1/_base_policy.xml")
 }
