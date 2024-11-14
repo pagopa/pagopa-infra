@@ -1,7 +1,7 @@
 <policies>
   <inbound>
     <choose>
-      <when condition="@(Regex.IsMatch(context.Request.Url.Path, @"^organizations\/([a-zA-Z0-9]{11})\/debtpositions$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)) && ((string)(context.Request.Method)).Equals("POST"))">
+      <when condition="@(Regex.IsMatch(context.Request.Url.Path, @"^\/pagopa-gpd-core\/organizations\/([a-zA-Z0-9]{11})\/debtpositions$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)) && ((string)(context.Request.Method)).Equals("POST"))">
         <set-query-parameter name="serviceType" exists-action="override">
           <value>ACA</value>
         </set-query-parameter>
