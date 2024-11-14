@@ -10,7 +10,7 @@ fi
 DOCKER_SERVER=$1        # acr url pagopa<env>commonacr.azurecr.io
 DOCKER_USERNAME=$2      # acr usr pagopa<env>commonacr
 DOCKER_PASSWORD=$3      # acr pwd 
-DOCKER_EMAIL=$4
+# DOCKER_EMAIL=$4
 
 # Create the Docker registry secret using kubectl
 kubectl -n gps create secret docker-registry acr-credential \
