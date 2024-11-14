@@ -1,12 +1,12 @@
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.21.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.71.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.25.1 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.114.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.31.0 |
 | <a name="requirement_local"></a> [local](#requirement\_local) | <= 2.2.3 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
 
@@ -14,16 +14,19 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aks_namespace_backup"></a> [aks\_namespace\_backup](#module\_aks\_namespace\_backup) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_velero_backup | v7.68.0 |
-| <a name="module_aks_single_namespace_backup"></a> [aks\_single\_namespace\_backup](#module\_aks\_single\_namespace\_backup) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_velero_backup | v7.68.0 |
-| <a name="module_velero"></a> [velero](#module\_velero) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster_velero | v7.31.0 |
+| <a name="module_aks_namespace_backup"></a> [aks\_namespace\_backup](#module\_aks\_namespace\_backup) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_velero_backup | v8.53.0 |
+| <a name="module_aks_single_namespace_backup"></a> [aks\_single\_namespace\_backup](#module\_aks\_single\_namespace\_backup) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_velero_backup | v8.53.0 |
+| <a name="module_velero"></a> [velero](#module\_velero) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster_velero | v8.56.0 |
+| <a name="module_velero_workload_identity_init"></a> [velero\_workload\_identity\_init](#module\_velero\_workload\_identity\_init) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_workload_identity_init | v8.53.0 |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [azurerm_resource_group.rg_velero_backup](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [kubernetes_namespace.velero_namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_kubernetes_cluster.weu_aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
@@ -41,7 +44,8 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
-| <a name="input_enable_velero_backup"></a> [enable\_velero\_backup](#input\_enable\_velero\_backup) | (Optional) If true, installs velero on the aks cluster and schedules the automatic backups | `bool` | `false` | no |
+| <a name="input_enable_velero"></a> [enable\_velero](#input\_enable\_velero) | (Optional) If true installs velero | `bool` | `true` | no |
+| <a name="input_enable_velero_backup"></a> [enable\_velero\_backup](#input\_enable\_velero\_backup) | (Optional) If true schedules the automatic backups | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
@@ -59,4 +63,4 @@
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

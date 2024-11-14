@@ -1,5 +1,5 @@
 module "tls_checker" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v7.58.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v8.53.0"
 
   for_each = { for chkr in var.tls_checker_https_endpoints_to_check : chkr.alert_name => chkr }
 
@@ -14,10 +14,18 @@ module "tls_checker" {
   location_string                     = var.location_string
   application_insights_resource_group = data.azurerm_resource_group.monitor_rg.name
   application_insights_id             = data.azurerm_application_insights.application_insights.id
-  application_insights_action_group_ids = [
-    data.azurerm_monitor_action_group.slack.id,
-    data.azurerm_monitor_action_group.email.id
-  ]
+
+  application_insights_action_group_ids = flatten([
+    [
+      data.azurerm_monitor_action_group.slack.id,
+      data.azurerm_monitor_action_group.email.id,
+    ],
+    # Under here only production deployment monitor action group
+    (var.env == "prod" ? [
+      data.azurerm_monitor_action_group.opsgenie.0.id,
+    ] : [])
+  ])
+
   kv_secret_name_for_application_insights_connection_string = "ai-${var.env_short}-connection-string"
   keyvault_name                                             = data.azurerm_key_vault.kv.name
   keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
