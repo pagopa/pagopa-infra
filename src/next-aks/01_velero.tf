@@ -23,17 +23,17 @@ resource "kubernetes_namespace" "velero_namespace" {
 }
 
 module "velero" {
-  source     = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster_velero?ref=v8.53.0"
+  source     = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster_velero?ref=v8.56.0"
   depends_on = [kubernetes_namespace.velero_namespace]
   count      = var.enable_velero ? 1 : 0
 
   # required
-  subscription_id  = data.azurerm_subscription.current.subscription_id
-  prefix           = var.env_short == "p" ? var.prefix : "${var.prefix}-${var.env_short}"
-  location         = var.location
-  aks_cluster_name = local.aks_name
-  aks_cluster_rg   = data.azurerm_resource_group.aks_rg.name
-
+  subscription_id                  = data.azurerm_subscription.current.subscription_id
+  prefix                           = var.env_short == "p" ? var.prefix : "${var.prefix}-${var.env_short}"
+  location                         = var.location
+  aks_cluster_name                 = local.aks_name
+  aks_cluster_rg                   = data.azurerm_resource_group.aks_rg.name
+  namespace_name                   = kubernetes_namespace.velero_namespace[0].metadata[0].name
   storage_account_replication_type = var.velero_backup_sa_replication_type
 
   use_storage_private_endpoint = true
