@@ -1075,12 +1075,121 @@
             "type": "string",
             "format": "date-time",
             "description": "Dead letter event insertion date time"
+          },
+          "transactionInfo": {
+            "$ref": "#/components/schemas/DeadLetterTransactionInfo",
+            "description": "Dead letter transaction info"
           }
         },
         "required": [
           "queueName",
           "data",
           "timestamp"
+        ]
+      },
+      "DeadLetterTransactionInfo": {
+        "type": "object",
+        "description": "Dead letter transaction info",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 32
+          },
+          "authorizationRequestId": {
+            "type": "string"
+          },
+          "eCommerceStatus": {
+            "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-ecommerce-transactions-service/main/api-spec/v1/transactions-api.yaml#/components/schemas/TransactionStatus"
+          },
+          "paymentGateway": {
+            "type": "string",
+            "description": "Payment gateway used to perform transaction"
+          },
+          "paymentTokens": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pspId": {
+            "type": "string"
+          },
+          "paymentMethodName": {
+            "type": "string"
+          },
+          "grandTotal": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "rrn": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NpgTransactionInfoDetailsData"
+              },
+              {
+                "$ref": "#/components/schemas/RedirectTransactionInfoDetailsData"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "NPG": "#/components/schemas/NpgTransactionInfoDetailsData",
+                "REDIRECT": "#/components/schemas/RedirectTransactionInfoDetailsData"
+              }
+            }
+          }
+        },
+        "required": [
+          "transactionId",
+          "authorizationRequestId",
+          "eCommerceStatus",
+          "gateway"
+        ]
+      },
+      "NpgTransactionInfoDetailsData": {
+        "type": "object",
+        "description": "Npg transaction info details",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "operationResult": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "correlation id for a transaction executed with NPG"
+          },
+          "paymentEndToEndId": {
+            "type": "string",
+            "description": "NPG payment end to end id"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "RedirectTransactionInfoDetailsData": {
+        "type": "object",
+        "description": "Npg transaction info details",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
         ]
       },
       "DeadLetterSearchEventSource": {
