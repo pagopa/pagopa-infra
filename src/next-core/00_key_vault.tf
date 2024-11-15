@@ -83,6 +83,11 @@ data "azurerm_key_vault_certificate" "kibana" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_certificate" "apisix" {
+  name         = var.app_gateway_apisix_certificate_name
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_certificate" "wisp2govit" {
   count = (var.app_gateway_wisp2govit_certificate_name == "") ? 0 : 1
 

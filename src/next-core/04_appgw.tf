@@ -87,6 +87,23 @@ locals {
         )
       }
     }
+
+    apisix = {
+      protocol           = "Https"
+      host               = format("apisix.%s.%s", var.dns_zone_prefix, var.external_domain)
+      port               = 443
+      ssl_profile_name   = format("%s-ssl-profile", local.product)
+      firewall_policy_id = null
+
+      certificate = {
+        name = var.app_gateway_apisix_certificate_name
+        id = replace(
+          data.azurerm_key_vault_certificate.apisix.secret_id,
+          "/${data.azurerm_key_vault_certificate.apisix.version}",
+          ""
+        )
+      }
+    }
   }
   public_listeners_apiprf = {
     apiprf = {
@@ -199,6 +216,13 @@ locals {
       rewrite_rule_set_name = "rewrite-rule-set-kibana"
       priority              = 40
     }
+
+    apisix = {
+      listener              = "apisix"
+      backend               = "apisix"
+      rewrite_rule_set_name = "rewrite-rule-set-apisix"
+      priority              = 70
+    }
   }
 
   public_routes_apiprf = {
@@ -285,6 +309,18 @@ locals {
       fqdns                       = [var.env == "prod" ? "weu${var.env}.kibana.internal.platform.pagopa.it" : "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"]
       probe                       = "/kibana"
       probe_name                  = "probe-kibana"
+      request_timeout             = 10
+      pick_host_name_from_backend = false
+    }
+
+    apisix = {
+      protocol                    = "Https"
+      host                        = var.env == "prod" ? "weu${var.env}.apisix.internal.platform.pagopa.it" : "weu${var.env}.apisix.internal.${var.env}.platform.pagopa.it"
+      port                        = 443
+      ip_addresses                = [var.ingress_elk_load_balancer_ip]
+      fqdns                       = [var.env == "prod" ? "weu${var.env}.apisix.internal.platform.pagopa.it" : "weu${var.env}.apisix.internal.${var.env}.platform.pagopa.it"]
+      probe                       = "/v1/healthcheck"
+      probe_name                  = "probe-apisix"
       request_timeout             = 10
       pick_host_name_from_backend = false
     }
@@ -555,6 +591,11 @@ module "app_gw" {
             query_string = null
           }
         },
+      ]
+    },
+    {
+      name = "rewrite-rule-set-apisix"
+      rewrite_rules = [
       ]
     },
 

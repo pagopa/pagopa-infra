@@ -542,6 +542,12 @@ variable "app_gateway_kibana_certificate_name" {
   default     = ""
 }
 
+variable "app_gateway_apisix_certificate_name" {
+  type        = string
+  description = "Application gateway api certificate name on Key Vault"
+  default     = ""
+}
+
 variable "app_gateway_sku_name" {
   type        = string
   description = "The Name of the SKU to use for this Application Gateway. Possible values are Standard_Small, Standard_Medium, Standard_Large, Standard_v2, WAF_Medium, WAF_Large, and WAF_v2"
