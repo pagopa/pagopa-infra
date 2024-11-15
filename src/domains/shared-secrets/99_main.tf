@@ -33,11 +33,6 @@ provider "azurerm" {
   }
 }
 
-provider "kubernetes" {
-  config_path    = "~/.kube/config-${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
-  config_context = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks"
-}
-
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}

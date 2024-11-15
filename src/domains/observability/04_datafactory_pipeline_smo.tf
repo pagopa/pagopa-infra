@@ -77,6 +77,7 @@ resource "azurerm_data_factory_pipeline" "pipeline_KPI_TNSPO" {
 
   name            = "SMO_KPI_TNSPO_Pipeline"
   data_factory_id = data.azurerm_data_factory.qi_data_factory.id
+  description     = "Last fix: 13/11/2024 14:25:00"
 
   #   parameters = {
   #     daysToKeep = 90

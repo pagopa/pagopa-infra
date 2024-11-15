@@ -68,6 +68,11 @@ variable "tags" {
 }
 
 
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {
