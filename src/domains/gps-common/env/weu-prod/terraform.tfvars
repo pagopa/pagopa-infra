@@ -64,7 +64,7 @@ gpd_upload_status_throughput = 10000
 pgres_flex_params = {
 
   private_endpoint_enabled = true
-  sku_name                 = "GP_Standard_D8ds_v4"
+  sku_name                 = "GP_Standard_D16ds_v4"
   db_version               = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
