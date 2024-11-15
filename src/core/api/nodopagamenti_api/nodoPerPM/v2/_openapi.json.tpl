@@ -517,6 +517,25 @@
             "description": "required only for outcomePaymentGateway OK",
             "example": 10
           },
+          "primaryCiIncurredFee": {
+            "maximum": 1000000000,
+            "minimum": 0,
+            "type": "number",
+            "description": "required only for outcomePaymentGateway OK",
+            "example": 10
+          },
+          "idBundle": {
+            "maxLength": 35,
+            "minLength": 1,
+            "type": "string",
+            "description": "required only for outcomePaymentGateway OK"
+          },
+          "idCiBundle": {
+            "maxLength": 35,
+            "minLength": 1,
+            "type": "string",
+            "description": "required only for outcomePaymentGateway OK"
+          },
           "timestampOperation": {
             "type": "string",
             "description": "required only for outcomePaymentGateway OK",
