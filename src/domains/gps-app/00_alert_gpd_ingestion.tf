@@ -194,7 +194,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   for_each = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
 
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-gpd-ingestion-manager-error-alert"
+  name                = "pagopa-${var.env_short}-gpd-ingestion-manager-error-alert-${each.value.id}"
   location            = var.location
 
   action {
