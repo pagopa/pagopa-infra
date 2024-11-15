@@ -90,7 +90,7 @@ module "apim_api_bizevents_lap_api_v1" {
   name                  = format("%s-bizevents-lap-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = var.env_short == "p" ? [module.apim_lap_product.product_id, azurerm_api_management_product.technical_support_api_product.product_id] : [module.apim_lap_product.product_id, module.apim_bizevents_product.product_id, module.apim_bizevents_product_all_in_one[0].product_id, azurerm_api_management_product.technical_support_api_product.product_id]
+  product_ids           = var.env_short == "p" ? [module.apim_lap_product.product_id, data.azurerm_api_management_product.technical_support_api_product.product_id] : [module.apim_lap_product.product_id, module.apim_bizevents_product.product_id, module.apim_bizevents_product_all_in_one[0].product_id, data.azurerm_api_management_product.technical_support_api_product.product_id]
   subscription_required = local.apim_lap_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_bizevents_lap_api.id
   api_version           = "v1"
