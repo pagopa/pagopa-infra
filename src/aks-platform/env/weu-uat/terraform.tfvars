@@ -59,6 +59,9 @@ aks_cidr_subnet = ["10.1.0.0/17"]
 
 aks_kubernetes_version = "1.29.4"
 
+# Subnet aks
+subnet_private_endpoint_network_policies_enabled = true
+
 ingress_min_replica_count = "2"
 ingress_max_replica_count = "30"
 ingress_load_balancer_ip  = "10.1.100.250"
@@ -149,14 +152,6 @@ prometheus_basic_auth_file = "./env/weu-uat/kube-prometheus-stack-helm/prometheu
 kube_prometheus_stack_helm = {
   chart_version = "44.2.1"
   values_file   = "./env/weu-uat/kube-prometheus-stack-helm/values.yaml"
-}
-
-# chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
-# image tags: https://github.com/pagopa/infra-ssl-check/releases
-tls_cert_check_helm = {
-  chart_version = "1.21.0"
-  image_name    = "ghcr.io/pagopa/infra-ssl-check"
-  image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
 
 tls_checker_https_endpoints_to_check = [
