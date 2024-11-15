@@ -1,0 +1,12 @@
+<choose>
+  <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
+    <set-header name="ndphost" exists-action="override">
+      <value>nodo-p-prf.nexigroup.com</value>
+    </set-header>
+  </when>
+  <otherwise>
+    <set-header name="ndphost" exists-action="override">
+      <value>nodo-p-uat.nexigroup.com</value>
+    </set-header>
+  </otherwise>
+</choose>

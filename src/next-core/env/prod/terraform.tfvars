@@ -72,13 +72,15 @@ route_table_peering_sia_additional_routes = [
 #
 # Dns
 #
-external_domain                      = "pagopa.it"
-dns_zone_internal_prefix             = "internal.platform"
-dns_zone_wfesp                       = "wfesp"
-private_dns_zone_db_nodo_pagamenti   = "p.db-nodo-pagamenti.com"
-dns_a_reconds_dbnodo_ips             = ["10.101.35.37", "10.101.35.38"]                                     # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
-dns_a_reconds_dbnodo_ips_dr          = ["10.250.45.145", "10.250.45.146", "10.250.45.147", "10.250.45.148"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
-dns_a_reconds_dbnodonexipostgres_ips = ["10.222.209.84"]
+external_domain                                 = "pagopa.it"
+dns_zone_internal_prefix                        = "internal.platform"
+dns_zone_wfesp                                  = "wfesp"
+private_dns_zone_db_nodo_pagamenti              = "p.db-nodo-pagamenti.com"
+dns_a_reconds_dbnodo_ips                        = ["10.101.35.37", "10.101.35.38"]                                     # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
+dns_a_reconds_dbnodo_ips_dr                     = ["10.250.45.145", "10.250.45.146", "10.250.45.147", "10.250.45.148"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
+dns_a_reconds_dbnodonexipostgres_ips            = ["10.222.209.84"]
+dns_a_reconds_dbnodonexipostgres_balancer_1_ips = ["10.222.214.129"] # db onPrem PostgreSQL
+dns_a_reconds_dbnodonexipostgres_balancer_2_ips = ["10.222.214.134"] # db onPrem PostgreSQL
 
 ### External resources
 
@@ -229,8 +231,6 @@ integration_appgateway_zones                        = [1, 2, 3]
 
 nodo_pagamenti_psp            = "97249640588,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec             = "00493410583,09633951000,06655971007,00856930102,02478610583,97169170822,01266290996,01248040998,01429910183,80007270376,01142420056,80052310580,83000730297,80082160013,94050080038,01032450072,01013130073,10718570012,01013210073,87007530170,01242340998,80012150274,02508710585,80422850588,94032590278,94055970480,92001600524,80043570482,92000530532,80094780378,80016430045,80011170505,80031650486,00337870406,09227921005,01928010683,00608810057,03299640163,82002730487,02928200241"
-nodo_pagamenti_url            = "https://10.79.20.34/webservices/input"
-ip_nodo                       = "10.79.20.34"   # TEMP Nodo On Premises
 lb_aks                        = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 schema_ip_nexi                = "https://10.79.20.34"
 default_node_id               = "NDP003PROD"
@@ -736,6 +736,7 @@ eventhubs_04 = [
 node_forwarder_zone_balancing_enabled = true
 node_forwarder_sku                    = "P3v3"
 node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
+node_fw_dbg_snet_cidr                 = ["10.1.195.0/24"]
 devops_agent_zones                    = [1, 2, 3]
 devops_agent_balance_zones            = false
 azdo_agent_vm_image_name              = "pagopa-p-azdo-agent-ubuntu2204-image-v4"
@@ -851,3 +852,5 @@ monitor_env_test_urls = [
     path = "",
   }
 ]
+
+enable_node_forwarder_debug_instance = true

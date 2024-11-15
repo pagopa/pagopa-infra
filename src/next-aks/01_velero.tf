@@ -1,27 +1,39 @@
 resource "azurerm_resource_group" "rg_velero_backup" {
-  count    = var.enable_velero_backup ? 1 : 0
+  count    = var.enable_velero ? 1 : 0
   name     = "${local.product}-aks-velero"
   location = var.location
   tags     = var.tags
 }
 
 
+# Workload identity init
+module "velero_workload_identity_init" {
+  source                                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_workload_identity_init?ref=v8.53.0"
+  count                                 = var.enable_velero ? 1 : 0
+  workload_identity_location            = var.location
+  workload_identity_name_prefix         = "velero"
+  workload_identity_resource_group_name = azurerm_resource_group.rg_velero_backup[0].name
+}
+
+resource "kubernetes_namespace" "velero_namespace" {
+  count = var.enable_velero ? 1 : 0
+  metadata {
+    name = "velero"
+  }
+}
 
 module "velero" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster_velero?ref=v7.31.0"
-
-  count = var.enable_velero_backup ? 1 : 0
+  source     = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster_velero?ref=v8.56.0"
+  depends_on = [kubernetes_namespace.velero_namespace]
+  count      = var.enable_velero ? 1 : 0
 
   # required
-  backup_storage_container_name = "velero-backup"
-  resource_group_name           = azurerm_resource_group.rg_velero_backup[0].name
-  subscription_id               = data.azurerm_subscription.current.subscription_id
-  tenant_id                     = data.azurerm_subscription.current.tenant_id
-  prefix                        = var.prefix
-  location                      = var.location
-  aks_cluster_name              = local.aks_name
-  aks_cluster_rg                = data.azurerm_resource_group.aks_rg.name
-
+  subscription_id                  = data.azurerm_subscription.current.subscription_id
+  prefix                           = var.env_short == "p" ? var.prefix : "${var.prefix}-${var.env_short}"
+  location                         = var.location
+  aks_cluster_name                 = local.aks_name
+  aks_cluster_rg                   = data.azurerm_resource_group.aks_rg.name
+  namespace_name                   = kubernetes_namespace.velero_namespace[0].metadata[0].name
   storage_account_replication_type = var.velero_backup_sa_replication_type
 
   use_storage_private_endpoint = true
@@ -33,6 +45,10 @@ module "velero" {
   enable_sa_backup         = var.velero_sa_backup_enabled
   sa_backup_retention_days = var.velero_sa_backup_retention_days
 
+  key_vault_id                          = data.azurerm_key_vault.kv.id
+  storage_account_resource_group_name   = azurerm_resource_group.rg_velero_backup[0].name
+  workload_identity_name                = module.velero_workload_identity_init[0].user_assigned_identity_name
+  workload_identity_resource_group_name = azurerm_resource_group.rg_velero_backup[0].name
 
   tags = var.tags
 }
@@ -41,7 +57,7 @@ module "velero" {
 module "aks_namespace_backup" {
   count = var.enable_velero_backup ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_velero_backup?ref=v7.68.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_velero_backup?ref=v8.53.0"
 
   cluster_id = data.azurerm_kubernetes_cluster.weu_aks.id
   location   = var.location
@@ -67,7 +83,7 @@ module "aks_namespace_backup" {
 module "aks_single_namespace_backup" {
   count = var.enable_velero_backup ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_velero_backup?ref=v7.68.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_velero_backup?ref=v8.53.0"
 
   cluster_id = data.azurerm_kubernetes_cluster.weu_aks.id
   location   = var.location
