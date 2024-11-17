@@ -67,4 +67,5 @@ mocker_cosmosdb_params = {
 # CosmosDb MongoDb
 cosmosdb_mongodb_extra_capabilities = ["EnableServerless"]
 
-mock_ec_size = "P1v3"
+mock_ec_size = "B2"
+mock_payment_gateway_size = "B2"
