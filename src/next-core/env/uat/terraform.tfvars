@@ -59,10 +59,10 @@ dns_zone_internal_prefix = "internal.uat.platform"
 dns_zone_prefix_prf      = "prf.platform"
 dns_zone_wfesp           = "wfesp.test"
 
-private_dns_zone_db_nodo_pagamenti                  = "u.db-nodo-pagamenti.com"
-dns_a_reconds_dbnodo_ips                            = ["10.70.73.10"]    # db onCloud
-dns_a_reconds_dbnodo_prf_ips                        = ["10.70.73.20"]    # db onCloud prf
-dns_a_reconds_dbnodonexipostgres_ips                = ["10.222.214.174"] # db onPrem PostgreSQL
+private_dns_zone_db_nodo_pagamenti   = "u.db-nodo-pagamenti.com"
+dns_a_reconds_dbnodo_ips             = ["10.70.73.10"]    # db onCloud
+dns_a_reconds_dbnodo_prf_ips         = ["10.70.73.20"]    # db onCloud prf
+dns_a_reconds_dbnodonexipostgres_ips = ["10.222.214.174"] # db onPrem PostgreSQL
 
 dns_a_reconds_dbnodonexipostgres_balancer_1_ips     = ["10.222.214.174"] # db onPrem UAT PostgreSQL
 dns_a_reconds_dbnodonexipostgres_balancer_2_ips     = ["10.222.214.176"] # db onPrem UAT PostgreSQL
@@ -681,6 +681,7 @@ node_forwarder_logging_level          = "DEBUG"
 node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "P1v3"
 node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
+node_fw_dbg_snet_cidr                 = ["10.1.195.0/24"]
 azdo_agent_vm_image_name              = "pagopa-u-azdo-agent-ubuntu2204-image-v3"
 
 # public app gateway
@@ -695,12 +696,12 @@ app_gateway_wisp2_certificate_name      = "uat-wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "uat-wisp2-pagopa-gov-it"
 app_gateway_wfespgovit_certificate_name = "wfesp-test-pagopa-gov-it"
 app_gateway_kibana_certificate_name     = "kibana-uat-platform-pagopa-it"
-app_gateway_sku_name                    = "WAF_v2"
-app_gateway_sku_tier                    = "WAF_v2"
-app_gateway_waf_enabled                 = true
-# app_gateway_sku_name                    = "Standard_v2"
-# app_gateway_sku_tier                    = "Standard_v2"
-# app_gateway_waf_enabled                 = false
+#app_gateway_sku_name                    = "WAF_v2"
+#app_gateway_sku_tier                    = "WAF_v2"
+#app_gateway_waf_enabled                 = true
+app_gateway_sku_name       = "Standard_v2"
+app_gateway_sku_tier       = "Standard_v2"
+app_gateway_waf_enabled    = false
 app_gateway_alerts_enabled = false
 app_gateway_deny_paths = [
   # "/nodo/.*", # TEMP currently leave UAT public for testing, we should add subkeys here as well ( ➕ 🔓 forbid policy api_product/nodo_pagamenti_api/_base_policy.xml)
@@ -771,7 +772,7 @@ apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integrati
 # monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
-law_daily_quota_gb    = 30
+law_daily_quota_gb    = 50
 
 
 
