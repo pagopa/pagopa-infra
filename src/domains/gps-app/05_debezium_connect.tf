@@ -11,6 +11,12 @@ data "azurerm_key_vault_secret" "pgres_gpd_cdc_pwd" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "otel_headers" {
+  # name         = "db-apd-user-password"
+  name         = "otel_headers"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 data "azurerm_eventhub_namespace_authorization_rule" "cdc_connection_string" {
   name                = "cdc-gpd-connection-string"
   namespace_name      = "pagopa-${var.env_short}-itn-observ-gpd-evh"
@@ -59,14 +65,17 @@ locals {
   # https://learn.microsoft.com/it-it/azure/event-hubs/event-hubs-kafka-connect-debezium#configure-kafka-connect-for-event-hubs
 
   kafka_connect_yaml = templatefile("${path.module}/yaml/kafka-connect.yaml", {
-    namespace          = "gps" # kubernetes_namespace.namespace.metadata[0].name
-    replicas           = var.replicas
-    request_memory     = var.request_memory
-    request_cpu        = var.request_cpu
-    limits_memory      = var.limits_memory
-    limits_cpu         = var.limits_cpu
-    bootstrap_servers  = "pagopa-${var.env_short}-itn-observ-gpd-evh.servicebus.windows.net:9093"
-    container_registry = var.container_registry
+    namespace                 = "gps" # kubernetes_namespace.namespace.metadata[0].name
+    replicas                  = var.replicas
+    request_memory            = var.request_memory
+    request_cpu               = var.request_cpu
+    limits_memory             = var.limits_memory
+    limits_cpu                = var.limits_cpu
+    bootstrap_servers         = "pagopa-${var.env_short}-itn-observ-gpd-evh.servicebus.windows.net:9093"
+    container_registry        = var.container_registry
+    otlp_endpoint             = "http://otel-collector.elastic-system.svc:4317"
+    otlp_resource_attributes  = "service.name=gpddebeziumconnectorkotl,deployment.environment=${var.env}"
+    otlp_headers              = data.azurerm_key_vault_secret.otel_headers.value
   })
 
   postgres_connector_yaml = templatefile("${path.module}/yaml/postgres-connector.yaml", {

@@ -223,3 +223,5 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   }
 
 }
+
+
