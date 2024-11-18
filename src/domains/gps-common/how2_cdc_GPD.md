@@ -19,6 +19,10 @@
 
 1. apply https://github.com/pagopa/pagopa-infra/pull/2496 ( create/config GDP db + common secrets)
    NOTE : GDP network ( `+ Add 0.0.0.0 - 255.255.255.255` ) ( _only dev_ )
+    ```
+    src/domains/gps-secret
+    src/domains/gps-common
+    ```
 
 1. _[OPT iif not exists]_ user APD `./flyway_gpd.sh migrate <ENV>-pagoPA apd apd -schemas=apd`
 
