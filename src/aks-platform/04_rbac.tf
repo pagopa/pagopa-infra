@@ -85,6 +85,14 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 
+  rule {
+    api_groups        = ["policy"]
+    non_resource_urls = []
+    resource_names    = []
+    resources         = ["poddisruptionbudgets"]
+    verbs             = ["get", "list", "watch", "create", "update", "patch", "delete"]
+  }
+
   depends_on = [
     module.aks
   ]
