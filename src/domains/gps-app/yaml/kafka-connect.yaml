@@ -45,6 +45,11 @@ spec:
     internal.value.converter: org.apache.kafka.connect.json.JsonConverter
     internal.key.converter.schemas.enable: false
     internal.value.converter.schemas.enable: false
+    otel.traces.exporter: otlp
+    otel.propagators: tracecontext
+    otel.exporter.otlp.endpoint: "${otlp_endpoint}"
+    otel.resource.attributes: "${otlp_resource_attributes}"
+    otel.expoerter.oltp.header: "${otlp_key_headers}"
   build:
     output:
       type: docker
