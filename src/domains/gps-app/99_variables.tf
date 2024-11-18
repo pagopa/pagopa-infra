@@ -442,3 +442,9 @@ variable "flag_responsetime_alert" {
   description = "Flag to enable if payments-pull response time alert is available"
   default     = 0
 }
+
+variable "service_type_gpd" {
+  type        = string
+  description = "Service type of GPD debt position"
+  default     = "GPD"
+}

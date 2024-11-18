@@ -194,7 +194,7 @@ resource "azurerm_api_management_api_operation_policy" "set_service_type_on_crea
   resource_group_name   = local.pagopa_apim_rg
   operation_id          = "createMultiplePositions"
   xml_content = templatefile("./api/gpd_api/serviceTypeSet.xml", {
-    service_type_value = "GPD"
+    service_type_value = var.service_type_gpd
   })
 }
 
