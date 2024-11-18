@@ -1,4 +1,4 @@
-# REMOVE IT after close MS issue 
+# REMOVE IT after close MS issue
 # Support Request: certificates-do-not-conform-to-algorithm
 # ##########################################################
 # ##########################################################
@@ -6,11 +6,11 @@
 # ##########################################################
 
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
-module "postgres_flexible_server_private_test" { # private only into UAT and PROD env
+module "postgres_flexible_server_private" { # private only into UAT and PROD env
   source = "./.terraform/modules/__v3__/postgres_flexible_server"
-  count  = var.env_short == "u" ? 1 : 0 
+  count  = var.env_short == "u" ? 1 : 0
 
-  name = format("%s-gpd-pgflex-test", local.product)
+  name = format("%s-%s-gpd-pgflex",local.product, var.location_short)
 
   location            = azurerm_resource_group.flex_data[0].location
   resource_group_name = azurerm_resource_group.flex_data[0].name
@@ -66,46 +66,46 @@ module "postgres_flexible_server_private_test" { # private only into UAT and PRO
   private_dns_record_cname = "gpd-db"
 }
 
-resource "azurerm_postgresql_flexible_server_database" "apd_db_flex_test" {
-  count  = var.env_short == "u" ? 1 : 0 
+resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
+  count  = var.env_short == "u" ? 1 : 0
 
   name      = var.gpd_db_name
-  server_id = module.postgres_flexible_server_private_test[0].id
+  server_id = module.postgres_flexible_server_private[0].id
   collation = "en_US.utf8"
   charset   = "UTF8"
 }
 
-resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_connection_test" {
-  count  = var.env_short == "u" ? 1 : 0 
+resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_connection" {
+  count  = var.env_short == "u" ? 1 : 0
 
   name      = "max_connections"
-  server_id = module.postgres_flexible_server_private_test[0].id
+  server_id = module.postgres_flexible_server_private[0].id
   value     = var.pgres_flex_params.max_connections
 }
 
 # Message    : FATAL: unsupported startup parameter: extra_float_digits
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_ignore_startup_parameters_test" {
-  count  = var.env_short == "u" ? 1 : 0 
+  count  = var.env_short == "u" ? 1 : 0
 
   name      = "pgbouncer.ignore_startup_parameters"
-  server_id = module.postgres_flexible_server_private_test[0].id
+  server_id = module.postgres_flexible_server_private[0].id
   value     = "extra_float_digits"
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_pool_size_test" {
-  count  = var.env_short == "u" ? 1 : 0 
+  count  = var.env_short == "u" ? 1 : 0
 
   name      = "pgbouncer.min_pool_size"
-  server_id = module.postgres_flexible_server_private_test[0].id
+  server_id = module.postgres_flexible_server_private[0].id
   value     = var.env_short == "d" ? 1 : 10
 }
 
 # CDC https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-logical
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_worker_process_test" {
-  count  = var.env_short == "u" ? 1 : 0 
+  count  = var.env_short == "u" ? 1 : 0
 
   name      = "max_worker_processes"
-  server_id = module.postgres_flexible_server_private_test[0].id
+  server_id = module.postgres_flexible_server_private[0].id
   value     = var.pgres_flex_params.max_worker_process # var.env_short == "d" ? 16 : 32
 }
 
@@ -113,7 +113,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_wal_lev
   count = var.pgres_flex_params.wal_level != null && var.env_short == "u" ? 1 : 0
 
   name      = "wal_level"
-  server_id = module.postgres_flexible_server_private_test[0].id
+  server_id = module.postgres_flexible_server_private[0].id
   value     = var.pgres_flex_params.wal_level # "logical", ...
 }
 
@@ -121,6 +121,6 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_shared_
   count = var.pgres_flex_params.wal_level != null && var.env_short == "u" ? 1 : 0
 
   name      = "shared_preload_libraries"
-  server_id = module.postgres_flexible_server_private_test[0].id
+  server_id = module.postgres_flexible_server_private[0].id
   value     = var.pgres_flex_params.shared_preoload_libraries # "pg_failover_slots"
 }
