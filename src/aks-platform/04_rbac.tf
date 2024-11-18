@@ -85,6 +85,14 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 
+  rule {
+    api_groups        = ["policy"]
+    non_resource_urls = []
+    resource_names    = []
+    resources         = ["poddisruptionbudgets"]
+    verbs             = ["get", "list", "watch", "create", "update", "patch", "delete"]
+  }
+
   depends_on = [
     module.aks
   ]
@@ -264,6 +272,28 @@ resource "kubernetes_cluster_role_binding" "view_binding" {
     kind      = "Group"
     name      = data.azuread_group.adgroup_technical_project_managers.object_id
     namespace = "kube-system"
+  }
+
+  depends_on = [
+    module.aks
+  ]
+}
+
+resource "kubernetes_cluster_role" "kube_system_reader" {
+  metadata {
+    name = "kube-system-reader"
+  }
+
+  rule {
+    api_groups = [""]
+    resources  = ["services"]
+    verbs      = ["get", "list", "watch", ]
+  }
+
+  rule {
+    api_groups = ["rbac.authorization.k8s.io"]
+    resources  = ["rolebindings"]
+    verbs      = ["get", "list", "watch", ]
   }
 
   depends_on = [

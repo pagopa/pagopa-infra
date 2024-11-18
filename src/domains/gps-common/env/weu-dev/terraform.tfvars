@@ -42,9 +42,11 @@ cosmos_gps_db_params = {
   main_geo_location_zone_redundant = false
   enable_free_tier                 = false
 
-  additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
+  private_endpoint_enabled      = false
+  public_network_access_enabled = true
+
+  additional_geo_locations = []
+
   is_virtual_network_filter_enabled = false
 
   backup_continuous_enabled = false
@@ -52,11 +54,13 @@ cosmos_gps_db_params = {
 
 # Postgres Flexible
 pgres_flex_params = {
+
   private_endpoint_enabled = false
-  sku_name                 = "B_Standard_B1ms"
-  db_version               = "13"
+  sku_name                 = "GP_Standard_D2ds_v4"
+  db_version               = "15"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  # https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compute-storage#storage
   storage_mb                                       = 32768
   zone                                             = 1
   backup_retention_days                            = 7
@@ -69,10 +73,15 @@ pgres_flex_params = {
   max_connections                                  = 1000
   enable_private_dns_registration                  = true
   enable_private_dns_registration_virtual_endpoint = false
+  max_worker_process                               = 16
+  wal_level                                        = "logical"
+  shared_preoload_libraries                        = "pg_failover_slots"
+  public_network_access_enabled                    = true
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]
 cidr_subnet_pg_flex_dbms = ["10.1.141.0/24"]
+#cidr_subnet_pg_singleser = ["10.1.141.0/27"]  # ["10.1.141.0/24"]
 
 postgresql_network_rules = {
   ip_rules = [

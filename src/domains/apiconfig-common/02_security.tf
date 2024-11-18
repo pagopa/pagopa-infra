@@ -259,7 +259,7 @@ resource "azurerm_key_vault_secret" "apiconfig_selfcare_integration_api_subscrip
 # create json letsencrypt inside kv
 # requierd: Docker
 module "letsencrypt_apiconfig" {
-  source = "git::https://github.com/pagopa/azurerm.git//letsencrypt_credential?ref=v3.8.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//letsencrypt_credential?ref=v8.11.0"
 
   prefix            = var.prefix
   env               = var.env_short
@@ -326,6 +326,20 @@ resource "azurerm_key_vault_secret" "cfg_for_node_subscription_key" {
 resource "azurerm_key_vault_secret" "db_postgres_nexi_cfg_password" {
   count        = var.env_short == "p" ? 0 : 1
   name         = "db-postgres-nexi-cfg-password"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "db_postgres_nexi_cfg_password_prf" {
+  count        = var.env_short == "u" ? 1 : 0
+  name         = "db-postgres-nexi-cfg-password-prf"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 

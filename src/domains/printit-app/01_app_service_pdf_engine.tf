@@ -38,7 +38,7 @@ module "printit_pdf_engine_app_service" {
 
   app_settings = local.printit_pdf_engine_app_settings
 
-  zone_balancing_enabled = var.app_service_pdf_engine_autoscale_enabled
+  zone_balancing_enabled = var.app_service_pdf_engine_zone_balancing_enabled
   allowed_subnets        = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips            = []
 

@@ -204,6 +204,29 @@ variable "dns_a_reconds_dbnodonexipostgres_prf_ips" {
   default     = []
 }
 
+variable "dns_a_reconds_dbnodonexipostgres_prf_balancer_1_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_prf_balancer_2_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_balancer_1_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
+
+variable "dns_a_reconds_dbnodonexipostgres_balancer_2_ips" {
+  type        = list(string)
+  description = "IPs address of DB Nodo PostgreSQL Nexi"
+  default     = []
+}
 
 #
 # dns forwarder
@@ -559,17 +582,6 @@ variable "nodo_pagamenti_ec" {
   default     = ","
 }
 
-variable "nodo_pagamenti_url" {
-  type        = string
-  description = "Nodo pagamenti url"
-  default     = "https://"
-}
-
-variable "ip_nodo" { # TEMP used only for onPrem shall be replace with "lb_aks"
-  type        = string
-  description = "Nodo pagamenti ip"
-}
-
 variable "lb_aks" {
   type        = string
   description = "IP load balancer AKS Nexi/SIA"
@@ -865,6 +877,12 @@ variable "node_fw_ha_snet_cidr" {
   description = "(Required) node forwarder ha subnet cidr block"
 }
 
+variable "node_fw_dbg_snet_cidr" {
+  type        = list(string)
+  default     = null
+  description = "(Required) node forwarder debug ha subnet cidr block"
+}
+
 # nat gateway
 variable "nat_gateway_enabled" {
   type        = bool
@@ -1090,4 +1108,11 @@ variable "vpn_random_specials_char" {
   type        = bool
   default     = true
   description = "Enable random special characters in VPN gateway's pip name"
+}
+
+
+variable "enable_node_forwarder_debug_instance" {
+  type        = bool
+  default     = false
+  description = "Enable the creation of a separate 'debug' instance of node forwarder"
 }

@@ -9,6 +9,8 @@ locals {
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
 
+  key_vault_name    = "pagopa-${var.env_short}-kv"
+  key_vault_rg_name = "pagopa-${var.env_short}-sec-rg"
 
   aks_name = "${local.project}-aks"
 }

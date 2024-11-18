@@ -179,6 +179,10 @@ variable "app_service_pdf_engine_autoscale_enabled" {
   type = bool
 }
 
+variable "app_service_pdf_engine_zone_balancing_enabled" {
+  type = bool
+}
+
 variable "app_service_pdf_engine_always_on" {
   type        = bool
   description = "Always on property"

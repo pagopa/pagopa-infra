@@ -64,10 +64,12 @@
             var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
             var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
             var paymentToken = (string)context.Variables["paymentToken"];
-            return new JObject(
+            var sessionId = context.Variables.ContainsKey("wisp_ecommerce_paymentNote") ? (string)context.Variables["wisp_ecommerce_paymentNote"] : "";
+        return new JObject(
             new JProperty("fiscalCode", ci),
             new JProperty("noticeNumber", noticeNumber),
-            new JProperty("paymentToken", paymentToken)
+            new JProperty("paymentToken", paymentToken),
+            new JProperty("sessionId", sessionId)
             ).ToString();
           }" />
           <!-- etichetta wisp_paymentToken -->
@@ -116,7 +118,7 @@
               var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
               var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
               string error = "[WRN-DASH-WISP] " +
-              "noticeNumer :" + noticeNumber + " ci: "+ ci;
+              "noticeNumber :" + noticeNumber + " ci: "+ ci;
               return error;
               }</message>
           </trace>

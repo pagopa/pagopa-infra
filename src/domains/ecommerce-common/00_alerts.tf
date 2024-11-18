@@ -48,14 +48,23 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_checkout_a
   description    = "eCommerce Availability less than or equal 99%"
   enabled        = true
   query = (<<-QUERY
+let thresholdTrafficMin = 150;
+let thresholdTrafficLinear = 400;
+let lowTrafficAvailability = 96;
+let highTrafficAvailability = 99;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/ecommerce/checkout/'
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 or url_s startswith "https://api.platform.pagopa.it/ecommerce/checkout/v1/payment-requests" and ( responseCode_d == 502 or responseCode_d == 504))
     by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
 | extend Availability=((Success * 1.0) / Total) * 100
-| where toint(Availability) < 90
+| where Availability < expectedAvailability
   QUERY
   )
   severity    = 1
@@ -219,11 +228,64 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_app_io_v2_
   description    = "eCommerce api for app IO V2 availability less than 99% in the last 30 minutes detected"
   enabled        = true
   query = (<<-QUERY
+let thresholdTrafficMin = 200;
+let thresholdTrafficLinear = 500;
+let lowTrafficAvailability = 94;
+let highTrafficAvailability = 98;
+let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
+let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/ecommerce/io/v2'
 | summarize
     Total=count(),
     Success=countif(responseCode_d < 500 and DurationMs < 10000)
+    by Time = bin(TimeGenerated, 15m)
+| extend trafficUp = Total-thresholdTrafficMin
+| extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
+| extend Availability=((Success * 1.0) / Total) * 100
+| where Availability < expectedAvailability
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
+# eCommerce user stats last payment method put availability
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_user_stats_last_payment_method_put_availability_alert" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "ecommerce-user-stats-last-payment-method-put-availability-alert"
+  resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group  = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    email_subject = "[eCommerce] User stats service - PUT lastPaymentMethodUsed availability less that 99%"
+    custom_webhook_payload = jsonencode({
+      //alert properties https://docs.opsgenie.com/docs/alert-api
+      "message"  = "[eCommerce] User stats service - PUT lastPaymentMethodUsed availability less that 99%"
+      "alias"    = "ecommerce-user-stats-last-payment-method-put-availability-alert"
+      "tags"     = "availability"
+      "entity"   = "eCommerce"
+      "priority" = "P3"
+    })
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "eCommerce User stats service PUT lastPaymentMethodUsed availability less that 99%"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s startswith 'https://api.platform.pagopa.it/ecommerce/user-stats-service/v1/user/lastPaymentMethodUsed'
+| where method_s == "PUT"
+| summarize
+    Total=count(),
+    Success=countif(responseCode_d < 400 and DurationMs < 250)
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
 | where toint(Availability) < 99

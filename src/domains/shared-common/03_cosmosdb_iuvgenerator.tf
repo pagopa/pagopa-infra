@@ -13,7 +13,7 @@ resource "azurerm_resource_group" "iuvgenerator_rg" {
 }
 
 module "iuvgenerator_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.60.0"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.53.0"
   name                 = "${local.project}-iuvgenerator-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_iuvgenerator_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
@@ -29,7 +29,7 @@ module "iuvgenerator_cosmosdb_snet" {
 }
 
 module "iuvgenerator_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.77.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.53.0"
   name     = "${local.project}-iuv-gen-cosmos-account"
   location = var.location
   domain   = var.domain

@@ -523,6 +523,11 @@
             "format": "date-time",
             "example": "2022-02-22T14:41:58.811+01:00"
           },
+          "idBundle": {
+            "type": "string",
+            "description": "Bundle id",
+            "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
+          },
           "transactionDetails": {
             "$ref": "#/components/schemas/TransactionDetails"
           },
@@ -611,6 +616,11 @@
             "description": "required only for outcomePaymentGateway OK",
             "format": "date-time",
             "example": "2022-02-22T14:41:58.811+01:00"
+          },
+          "idBundle": {
+            "type": "string",
+            "description": "Bundle id",
+            "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
           },
           "transactionDetails": {
             "$ref": "#/components/schemas/TransactionDetails"
@@ -701,6 +711,11 @@
             "format": "date-time",
             "example": "2022-02-22T14:41:58.811+01:00"
           },
+          "idBundle": {
+            "type": "string",
+            "description": "Bundle id",
+            "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
+          },
           "transactionDetails": {
             "$ref": "#/components/schemas/TransactionDetails"
           },
@@ -789,6 +804,11 @@
             "description": "required only for outcomePaymentGateway OK",
             "format": "date-time",
             "example": "2022-02-22T14:41:58.811+01:00"
+          },
+          "idBundle": {
+            "type": "string",
+            "description": "Bundle id",
+            "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
           },
           "transactionDetails": {
             "$ref": "#/components/schemas/TransactionDetails"
@@ -879,6 +899,11 @@
             "format": "date-time",
             "example": "2022-02-22T14:41:58.811+01:00"
           },
+          "idBundle": {
+            "type": "string",
+            "description": "Bundle id",
+            "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
+          },
           "transactionDetails": {
             "$ref": "#/components/schemas/TransactionDetails"
           },
@@ -968,6 +993,11 @@
             "format": "date-time",
             "example": "2022-02-22T14:41:58.811+01:00"
           },
+          "idBundle": {
+            "type": "string",
+            "description": "Bundle id",
+            "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
+          },
           "transactionDetails": {
             "$ref": "#/components/schemas/TransactionDetails"
           },
@@ -1056,6 +1086,11 @@
             "description": "required only for outcomePaymentGateway OK",
             "format": "date-time",
             "example": "2022-02-22T14:41:58.811+01:00"
+          },
+          "idBundle": {
+            "type": "string",
+            "description": "Bundle id",
+            "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
           },
           "transactionDetails": {
             "$ref": "#/components/schemas/TransactionDetails"

@@ -13,13 +13,16 @@
 <policies>
   <inbound>
     <base/>
+    <!-- set ndphost header -->
+    <include-fragment fragment-id="ndphost-header" />
+
     <choose>
       <when condition="@(context.Request.Body != null)">
         <!-- copy request body into renewrequest variable -->
         <set-variable name="renewrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
       </when>
     </choose>
-    <!-- read decoupler configuration json -->
+
     <choose>
       <when condition="@(${is-nodo-auth-pwd-replace})">
         <!-- the following block code is to override password XML element with default nodoAuthPassword -->

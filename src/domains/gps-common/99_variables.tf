@@ -116,6 +116,11 @@ variable "cidr_subnet_pg_flex_dbms" {
   type        = list(string)
   description = "Postgres Flexible Server network address space."
 }
+variable "cidr_subnet_pg_singleser" {
+  type        = list(string)
+  description = "Postgres Single Server network address space."
+  default     = []
+}
 
 # Postgres Flexible
 variable "pgres_flex_params" {
@@ -134,6 +139,10 @@ variable "pgres_flex_params" {
     max_connections                                  = number
     enable_private_dns_registration                  = optional(bool, false)
     enable_private_dns_registration_virtual_endpoint = optional(bool, false)
+    max_worker_process                               = number
+    wal_level                                        = string
+    shared_preoload_libraries                        = string
+    public_network_access_enabled                    = bool
   })
 
   default = null
@@ -258,6 +267,13 @@ variable "cosmos_gps_db_params" {
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
   })
+}
+
+// gpd-upload-status container (gpd database)
+variable "gpd_upload_status_throughput" {
+  type        = number
+  description = "Max container throughput (Cosmos-RU)"
+  default     = 1000
 }
 
 variable "cidr_subnet_gps_cosmosdb" {

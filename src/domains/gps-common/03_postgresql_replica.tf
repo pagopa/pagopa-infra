@@ -2,7 +2,7 @@
 ## Postgres Flexible Server subnet
 module "postgres_flexible_snet_replica" {
   count                                         = var.geo_replica_enabled ? 1 : 0
-  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.22.0"
+  source = "./.terraform/modules/__v3__/subnet"
   name                                          = "${local.project_replica}-pgres-flexible-snet"
   address_prefixes                              = var.geo_replica_cidr_subnet_postgresql
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
@@ -24,11 +24,11 @@ module "postgres_flexible_snet_replica" {
 
 
 module "postgresql_gpd_replica_db" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server_replica?ref=v7.22.0"
+  source = "./.terraform/modules/__v3__/postgres_flexible_server_replica"
   count  = var.geo_replica_enabled ? 1 : 0
 
   name                = "${local.project_replica}-pgflex"
-  resource_group_name = data.azurerm_resource_group.flex_data[0].name
+  resource_group_name = azurerm_resource_group.flex_data[0].name
   location            = var.location_replica
 
   private_dns_zone_id      = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
@@ -52,7 +52,7 @@ module "postgresql_gpd_replica_db" {
 resource "null_resource" "virtual_endpoint" {
   count = var.geo_replica_enabled ? 1 : 0
   triggers = {
-    rg_name             = data.azurerm_resource_group.flex_data[0].name
+    rg_name             = azurerm_resource_group.flex_data[0].name
     primary_server_name = module.postgres_flexible_server_private[0].name
     ve_name             = "${local.project}-pgflex-ve"
     member_name         = module.postgresql_gpd_replica_db[0].name

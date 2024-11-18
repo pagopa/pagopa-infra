@@ -20,28 +20,29 @@ if [ -z "$action" ]; then
   helpmessage=$(cat <<EOF
   ℹ️ Please follow this example on how to use the script
 
-./sops.sh d <env> -> decrypt json file in specified environment
+./sops.sh d <env> -> decrypt json file using a specified environment
     example: ./sops.sh d itn-dev
     example: ./sops.sh decrypt itn-dev
 
-./sops.sh s <env> -> search in enc file in specified environment
+./sops.sh s <env> -> search in enc file using a specified environment
     example: ./sops.sh s itn-dev
     example: ./sops.sh search itn-dev
 
-./sops.sh n <env> -> create new file enc json template in specified environment
+./sops.sh n <env> -> create new file enc json template using a specified environment
     example: ./sops.sh n itn-dev
     example: ./sops.sh new itn-dev
 
-./sops.sh a <env> -> add new secret record to enc json in specified environment
+./sops.sh a <env> -> add new secret record to enc json using a specified environment
     example: ./sops.sh a itn-dev
     example: ./sops.sh add itn-dev
 
-./sops.sh e <env> -> edit enc json record in specified environment
+./sops.sh e <env> -> edit enc json record using a specified environment
     example: ./sops.sh e itn-dev
     example: ./sops.sh edit itn-dev
 
-./sops.sh f <env>  -> enc a json file in a specified environment
+./sops.sh f <env>  -> encrypt a external json file (path is requested runtime) into the default sops file using a specified environment
     example: ./sops.sh f itn-dev
+    example: ./sops.sh file-encrypt itn-dev
 
 EOF
 )
@@ -88,10 +89,17 @@ echo "[INFO] Key URL: $kv_key_url"
 
 echo "🔨 Key URL loaded correctly"
 
-if echo "d decrypt a add s search n new e edit f" | grep -w "$action" > /dev/null; then
+if echo "d decrypt a add s search n new e edit f file-encrypt di decryptignore" | grep -w "$action" > /dev/null; then
   case $action in
     "d"|"decrypt")
       sops --decrypt --azure-kv "$kv_key_url" "$encrypted_file_path"
+      if [ $? -eq 1 ]; then
+        echo "❌ File $encrypted_file_path NOT encrypted"
+        exit 0
+      fi
+      ;;
+    "di"|"decryptignore")
+      sops --decrypt --ignore-mac --azure-kv "$kv_key_url" "$encrypted_file_path"
       if [ $? -eq 1 ]; then
         echo "❌ File $encrypted_file_path NOT encrypted"
         exit 0
@@ -126,7 +134,7 @@ if echo "d decrypt a add s search n new e edit f" | grep -w "$action" > /dev/nul
       echo "✅ edit file completed"
 
       ;;
-    "f")
+    "f"|"file-encrypt")
       read -r -p 'file: ' file
       sops --encrypt --azure-kv "$kv_key_url" "./secret/$env/$file" > "$encrypted_file_path"
       ;;

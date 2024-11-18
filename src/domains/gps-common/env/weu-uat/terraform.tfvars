@@ -52,12 +52,14 @@ cosmos_gps_db_params = {
   backup_continuous_enabled = false
 }
 
+gpd_upload_status_throughput = 10000
+
 # Postgres Flexible
 pgres_flex_params = {
 
   private_endpoint_enabled = true
-  sku_name                 = "GP_Standard_D2ds_v4"
-  db_version               = "13"
+  sku_name                 = "GP_Standard_D4ds_v4"
+  db_version               = "15"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   # https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compute-storage#storage
@@ -73,6 +75,10 @@ pgres_flex_params = {
   max_connections                                  = 5000
   enable_private_dns_registration                  = true
   enable_private_dns_registration_virtual_endpoint = false
+  max_worker_process                               = 32
+  wal_level                                        = "logical"
+  shared_preoload_libraries                        = "pg_failover_slots"
+  public_network_access_enabled                    = false
 }
 
 cidr_subnet_gps_cosmosdb = ["10.1.149.0/24"]

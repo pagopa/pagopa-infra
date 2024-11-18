@@ -1,0 +1,35 @@
+<!--
+    - Policies are applied in the order they appear.
+    - Position <base/> inside a section to inherit policies from the outer scope.
+    - Comments within policies are not preserved.
+-->
+<!-- Add policies as children to the <inbound>, <outbound>, <backend>, and <on-error> elements -->
+<policies>
+  <!-- Throttle, authorize, validate, cache, or transform the requests -->
+  <inbound>
+    <cors allow-credentials="false">
+      <allowed-origins>
+        <origin>*</origin>
+      </allowed-origins>
+      <allowed-methods>
+        <method>GET</method>
+        <method>POST</method>
+      </allowed-methods>
+    </cors>
+    <base />
+    <rewrite-uri template="@(context.Request.Url.ToString().Replace("github","").Replace("%2F", "/"))" />
+    <set-backend-service base-url="https://github.com" />
+  </inbound>
+  <!-- Control if and how the requests are forwarded to services  -->
+  <backend>
+    <base />
+  </backend>
+  <!-- Customize the responses -->
+  <outbound>
+    <base />
+  </outbound>
+  <!-- Handle exceptions and customize error responses  -->
+  <on-error>
+    <base />
+  </on-error>
+</policies>

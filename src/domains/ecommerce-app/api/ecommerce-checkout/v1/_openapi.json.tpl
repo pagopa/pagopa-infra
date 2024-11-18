@@ -676,17 +676,8 @@
             "required": false,
             "description": "Language requested by the user",
             "schema": {
-              "type": "string",
-            }
-          },
-          {
-            "in": "query",
-            "name": "recaptchaResponse",
-            "description": "Recaptcha response",
-            "schema": {
               "type": "string"
-            },
-            "required": true
+            }
           }
         ],
         "responses": {

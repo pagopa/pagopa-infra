@@ -11,7 +11,9 @@ resource "azurerm_role_definition" "iac_reader" {
       # "Microsoft.Resources/subscriptions/resourcegroups/read", #resources
       "Microsoft.Web/sites/config/list/action",       # read app config for function app, app service
       "Microsoft.Web/sites/slots/config/list/action", # read app config for function app, app service slots
-      "Microsoft.ContainerService/*/read",            # help to generate cluster credentials
+      "Microsoft.Web/staticSites/listSecrets/action",
+      "Microsoft.Web/staticSites/listAppSettings/action",
+      "Microsoft.ContainerService/*/read", # help to generate cluster credentials
       # "Microsoft.ContainerService/managedClusters/read",                                 # help to generate cluster credentials
       # "Microsoft.ContainerService/managedClusters/listClusterUserCredential/action",     # help to generate cluster credentials
       # "Microsoft.ContainerService/managedClusters/accessProfiles/listCredential/action", # help to generate cluster credentials and read cluster roles
@@ -109,6 +111,7 @@ resource "azurerm_role_definition" "iac_reader" {
       # "Microsoft.DataFactory/factories/datasets/read",
       "Microsoft.ApiManagement/service/portalsettings/listSecrets/action",
       "Microsoft.ApiManagement/service/tenant/listSecrets/action",
+      "Microsoft.ApiManagement/service/subscriptions/listSecrets/action",
       "Microsoft.Compute/virtualMachineScaleSets/write", #scale the VMSS
       "Microsoft.AppConfiguration/configurationStores/*/read",
       "Microsoft.AppConfiguration/configurationStores/*/action"

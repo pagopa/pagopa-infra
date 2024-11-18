@@ -53,3 +53,6 @@ corporate_cup_users = [
     username : "testcorporate02"
   },
 ]
+
+### External resources
+monitor_resource_group_name = "pagopa-u-monitor-rg"

@@ -35,6 +35,8 @@
                         allowedPaymentTypeCodes.Add("MYBK");//Mybank
                         allowedPaymentTypeCodes.Add("RBPS");//Sondrio
                         allowedPaymentTypeCodes.Add("SATY");//Satispay
+                        allowedPaymentTypeCodes.Add("APPL");//Applepay
+                        allowedPaymentTypeCodes.Add("RICO");//iConto
                         for(int i = methods.Count - 1; i >= 0; i--) {
                             String paymentTypeCode = (string)((JObject)methods[i])["paymentTypeCode"];
                             if( !allowedPaymentTypeCodes.Contains(paymentTypeCode) ) {

@@ -1,11 +1,11 @@
 module "aks_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.58.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.53.0"
 
   name                                      = "${local.project}-aks-snet"
   address_prefixes                          = var.aks_cidr_subnet
   resource_group_name                       = data.azurerm_virtual_network.vnet.resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.vnet.name
-  private_endpoint_network_policies_enabled = true
+  private_endpoint_network_policies_enabled = var.subnet_private_endpoint_network_policies_enabled
 
   service_endpoints = [
     "Microsoft.AzureCosmosDB",

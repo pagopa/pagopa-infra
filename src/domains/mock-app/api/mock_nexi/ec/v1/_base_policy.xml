@@ -1,7 +1,10 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="http://{{aks-lb-nexi}}${mock_base_path}" />
+        <set-header name="ndphost" exists-action="override">
+          <value>mock-ec-prf.nexigroup.com</value>
+        </set-header>
+        <set-backend-service base-url="{{default-nodo-backend-prf}}/servizio" />
     </inbound>
     <backend>
         <base />

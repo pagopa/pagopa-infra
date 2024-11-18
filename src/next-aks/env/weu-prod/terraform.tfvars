@@ -15,6 +15,7 @@ tags = {
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 
+enable_velero                   = true
 enable_velero_backup            = true
 velero_sa_backup_enabled        = true
 velero_sa_backup_retention_days = 15

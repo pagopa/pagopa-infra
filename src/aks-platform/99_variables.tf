@@ -151,6 +151,12 @@ variable "aks_cidr_subnet" {
   description = "Aks network address space."
 }
 
+variable "subnet_private_endpoint_network_policies_enabled" {
+  type        = bool
+  default     = false
+  description = "(Optional) Enable or Disable network policies for the private endpoint on the subnet. Setting this to true will Enable the policy and setting this to false will Disable the policy. Defaults to false."
+}
+
 variable "aks_num_outbound_ips" {
   type        = number
   default     = 1
@@ -264,15 +270,6 @@ variable "kube_prometheus_stack_helm" {
   description = "kube-prometheus-stack helm chart configuration"
 }
 
-variable "tls_cert_check_helm" {
-  type = object({
-    chart_version = string,
-    image_name    = string,
-    image_tag     = string
-  })
-  description = "tls cert helm chart configuration"
-}
-
 variable "tls_checker_https_endpoints_to_check" {
   type = list(object({
     https_endpoint = string
@@ -283,4 +280,15 @@ variable "tls_checker_https_endpoints_to_check" {
   }))
   description = "List of https endpoint to check ssl certificate and his alert name"
   default     = []
+}
+
+variable "aks_enable_workload_identity" {
+  type    = bool
+  default = false
+}
+
+variable "skip_metric_validation" {
+  type        = bool
+  description = "(Optional) Skip the metric validation to allow creating an alert rule on a custom metric that isn't yet emitted? Defaults to false."
+  default     = false
 }

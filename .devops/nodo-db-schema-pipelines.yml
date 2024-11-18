@@ -206,6 +206,28 @@ stages:
                 --querytext "
                 do \$\$
                 BEGIN
+
+                  CREATE SEQUENCE IF NOT EXISTS $(PARTITION_SCHEMA).seq_log
+                    INCREMENT 1
+                    START 1
+                    MINVALUE 1
+                    MAXVALUE 9223372036854775807
+                    CACHE 1
+                  ;
+
+                  CREATE TABLE IF NOT EXISTS $(PARTITION_SCHEMA).PG_LOG
+                    (
+                      ID_TRACE NUMERIC DEFAULT nextval('seq_log'::regclass) NOT NULL ,
+                      UTENTE character varying,
+                      PROCESSO character varying,
+                      DATA_INIZIO timestamp without time zone,
+                      DATA_FINE timestamp without time zone,
+                      DELTA_TIME INTERVAL,
+                      ESITO character varying,
+                      MESSAGGIO character varying,
+                      NOTE character varying
+                    );
+
                   CREATE TABLE IF NOT EXISTS $(PARTITION_SCHEMA).tab_part
                     (
                       tabella character varying(100) COLLATE pg_catalog."default",
@@ -364,8 +386,8 @@ stages:
               inlineScript: |
 
                 az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(PARTITION_USERNAME) \
-                --admin-password '$(db-partition-password)' --database-name "postgres" \
+                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
+                --admin-password '$(db-administrator-login-password)' --database-name "postgres" \
                 --querytext "
                 do \$\$
                 BEGIN

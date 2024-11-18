@@ -164,7 +164,7 @@ resource "azurerm_api_management_api_operation_policy" "create_session" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "createSession"
 
-  xml_content = file("./api/ecommerce-checkout/v1/_payment_methods_policy.xml.tpl")
+  xml_content = file("./api/ecommerce-checkout/v1/_post_sessions.xml.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_method_testing" {

@@ -110,6 +110,20 @@ route_aks = [
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.9.150"
   },
+  {
+    # uat aks nodo nexi postgres onprem prf
+    name                   = "aks-outbound-to-nexi-postgres-prf-onprem-balancer-1-subnet"
+    address_prefix         = "10.222.214.127/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  },
+  {
+    #  prf aks nodo nexi postgres onprem prf
+    name                   = "aks-outbound-to-nexi-postgres-prf-onprem-balancer-2-subnet"
+    address_prefix         = "10.222.214.128/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  }
 ]
 
 vmss_zones           = ["1"]

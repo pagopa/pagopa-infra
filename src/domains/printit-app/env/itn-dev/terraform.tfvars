@@ -38,9 +38,10 @@ is_feature_enabled = {
   printit    = true
 }
 
-app_service_pdf_engine_sku_name          = "S1"
-app_service_pdf_engine_autoscale_enabled = false
-app_service_pdf_engine_always_on         = true
+app_service_pdf_engine_sku_name               = "S1"
+app_service_pdf_engine_autoscale_enabled      = false
+app_service_pdf_engine_always_on              = true
+app_service_pdf_engine_zone_balancing_enabled = false
 
 app_service_pdf_engine_sku_name_java                        = "S1"
 app_service_pdf_engine_sku_name_java_zone_balancing_enabled = false

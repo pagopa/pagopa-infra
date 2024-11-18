@@ -15,3 +15,16 @@ resource "azurerm_api_management_subscription" "forwarder_subkey" {
   allow_tracing       = false
   state               = "active"
 }
+
+resource "azurerm_api_management_subscription" "service_payment_options_subkey" {
+  count = var.env_short != "p" ? 1 : 0
+
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  product_id          = module.apim_payment_options_product[0].id
+  display_name        = "Subscription for Payments Options APIM"
+  allow_tracing       = false
+  state               = "active"
+}
+
+

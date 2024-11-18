@@ -88,7 +88,7 @@ jobs:
         echo    "+ 1️⃣  SHOW PRECOMMIT VERSION 1️⃣  +"
         echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n"
 
-        TAG=v1.89.1
+        TAG=v1.96.2@sha256:01f870b7689b5a09c1a370914fcddcac42c4b6478c9d369e1d2590dd0a66ffd0
         docker run --rm --entrypoint cat ghcr.io/antonbabenko/pre-commit-terraform:$TAG /usr/bin/tools_versions_info
 
     - name: 🚨 Run precommit
@@ -101,7 +101,7 @@ jobs:
 
         export TF_PLUGIN_CACHE_DIR="/tmp/.terraform.d/plugin-cache"
 
-        TAG=v1.89.1
+        TAG=v1.96.2@sha256:01f870b7689b5a09c1a370914fcddcac42c4b6478c9d369e1d2590dd0a66ffd0
         docker run \
           -v $(pwd):/lint \
           -v /tmp/.terraform.d/plugin-cache:/tmp/.terraform.d/plugin-cache \

@@ -62,11 +62,19 @@ locals {
       }
     },
     {
-      name               = "receipt",       # contains all FAILED paInviaRT (not recevide) a.k.a. "receipts-failed"
+      name               = "receipt",       # contains all paaInviaRT to send
       partition_key_path = "/partitionKey", # contains 'yyyy-MM-dd'
       default_ttl        = var.wisp_converter_cosmos_nosql_db_params.receipt_ttl
       autoscale_settings = {
         max_throughput = var.wisp_converter_cosmos_nosql_db_params.receipt_max_throughput
+      }
+    },
+    {
+      name               = "receipt-dead-letter", # contains all paaInviaRT sent but not accepted by EC and with fault code not in blacklist
+      partition_key_path = "/partitionKey",       # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.receipt_dead_letter_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.receipt_dead_letter_max_throughput
       }
     },
     {
@@ -99,6 +107,22 @@ locals {
       default_ttl        = var.wisp_converter_cosmos_nosql_db_params.configuration_ttl
       autoscale_settings = {
         max_throughput = var.wisp_converter_cosmos_nosql_db_params.configuration_max_throughput
+      }
+    },
+    {
+      name               = "reports", # contains all extracted reports
+      partition_key_path = "/date",   # contains 'yyyy-MM-dd'
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.report_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.report_max_throughput
+      }
+    },
+    {
+      name               = "nav2iuv-mapping",
+      partition_key_path = "/partitionKey", # contains Broker EC fiscal code
+      default_ttl        = var.wisp_converter_cosmos_nosql_db_params.nav2iuv_mapping_ttl
+      autoscale_settings = {
+        max_throughput = var.wisp_converter_cosmos_nosql_db_params.nav2iuv_mapping_max_throughput
       }
     },
   ]

@@ -1247,12 +1247,6 @@
             "example": true,
             "default": true
           },
-          "pull": {
-            "type": "boolean",
-            "description": "feature flag to enable the debt position retrieval in pull mode",
-            "example": true,
-            "default": true
-          },
           "fiscalCode": {
             "type": "string"
           },
