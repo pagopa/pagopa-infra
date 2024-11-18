@@ -56,7 +56,7 @@ afm_marketplace_cosmos_db_params = {
 
   backup_continuous_enabled = true
 
-  analytical_storage_enabled = false
+  analytical_storage_enabled = true
 }
 
 cidr_subnet_afm_marketplace_cosmosdb = ["10.1.151.0/24"]
