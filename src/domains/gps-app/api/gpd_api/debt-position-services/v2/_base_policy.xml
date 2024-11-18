@@ -1,12 +1,5 @@
 <policies>
   <inbound>
-    <choose>
-      <when condition="@(Regex.IsMatch(context.Request.Url.Path, @"^\/pagopa-gpd-core\/organizations\/([a-zA-Z0-9]{11})\/debtpositions$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(500)) && ((string)(context.Request.Method)).Equals("POST"))">
-        <set-query-parameter name="serviceType" exists-action="override">
-          <value>GPD</value>
-        </set-query-parameter>
-      </when>
-    </choose>
     <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
     <set-variable name="sub" value="@(context.Subscription.Name)" />
     <set-variable name="subid" value="@(context.Subscription.Id)" />

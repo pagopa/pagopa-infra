@@ -151,7 +151,7 @@ module "apim_api_debt_positions_api_v2" {
   count  = var.env_short != "p" ? 1 : 0 # disbled v2 external bulk prod
   source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
 
-  name                  = format("%s-debt-positions-service-api", local.product)
+  name                  = format("%s-debt-positions-service-api-v1", local.product)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_debt_positions_product.product_id, module.apim_aca_integration_product.product_id, module.apim_gpd_integration_product.product_id]
@@ -172,4 +172,32 @@ module "apim_api_debt_positions_api_v2" {
   })
 
   xml_content = file("./api/gpd_api/debt-position-services/v2/_base_policy.xml")
+}
+
+resource "azurerm_api_management_api_operation_policy" "set_service_type_on_create_v1" {
+  api_name              = format("%s-debt-positions-service-api-v1", local.product)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  operation_id          = "createPosition"
+  xml_content = templatefile("./api/gpd_api/serviceTypeSet.xml", {
+    service_type_value = "GPD"
+  })
+}
+
+resource "terraform_data" "sha256_set_service_type_on_create_v1" {
+  input = sha256(file("./api/gpd_api/serviceTypeSet.xml"))
+}
+
+resource "azurerm_api_management_api_operation_policy" "set_service_type_on_create_v2" {
+  api_name              = format("%s-debt-positions-service-api-v2", local.product)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  operation_id          = "createMultiplePositions"
+  xml_content = templatefile("./api/gpd_api/serviceTypeSet.xml", {
+    service_type_value = "GPD"
+  })
+}
+
+resource "terraform_data" "sha256_set_service_type_on_create_v2" {
+  input = sha256(file("./api/gpd_api/serviceTypeSet.xml"))
 }

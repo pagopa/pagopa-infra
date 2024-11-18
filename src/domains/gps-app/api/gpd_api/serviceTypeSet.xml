@@ -1,5 +1,8 @@
 <policies>
   <inbound>
+    <set-query-parameter name="serviceType" exists-action="override">
+        <value>${service_type_value}</value>
+    </set-query-parameter>
     <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
     <set-variable name="sub" value="@(context.Subscription.Name)" />
     <set-variable name="subid" value="@(context.Subscription.Id)" />

@@ -38,3 +38,13 @@ module "apim_api_debt_positions_for_aca_api_v1" {
 
   xml_content = file("./api/gpd-for-aca-services/v1/_base_policy.xml")
 }
+
+resource "azurerm_api_management_api_operation_policy" "set_service_type_on_create_gpd_for_aca" {
+  api_name              = format("%s-debt-positions-service-api-v2", local.product)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  operation_id          = "createPosition"
+  xml_content = templatefile("./../gps-app/api/gpd_api/serviceTypeSet.xml", {
+    service_type_value = "ACA"
+  })
+}
