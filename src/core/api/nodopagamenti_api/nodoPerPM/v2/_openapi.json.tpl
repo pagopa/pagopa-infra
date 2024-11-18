@@ -526,7 +526,6 @@
           "idBundle": {
             "type": "string",
             "description": "Bundle id",
-            "format": "uuid",
             "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
           },
           "transactionDetails": {
@@ -621,7 +620,6 @@
           "idBundle": {
             "type": "string",
             "description": "Bundle id",
-            "format": "uuid",
             "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
           },
           "transactionDetails": {
@@ -716,7 +714,6 @@
           "idBundle": {
             "type": "string",
             "description": "Bundle id",
-            "format": "uuid",
             "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
           },
           "transactionDetails": {
@@ -811,7 +808,6 @@
           "idBundle": {
             "type": "string",
             "description": "Bundle id",
-            "format": "uuid",
             "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
           },
           "transactionDetails": {
@@ -906,7 +902,6 @@
           "idBundle": {
             "type": "string",
             "description": "Bundle id",
-            "format": "uuid",
             "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
           },
           "transactionDetails": {
@@ -1001,7 +996,6 @@
           "idBundle": {
             "type": "string",
             "description": "Bundle id",
-            "format": "uuid",
             "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
           },
           "transactionDetails": {
@@ -1096,7 +1090,6 @@
           "idBundle": {
             "type": "string",
             "description": "Bundle id",
-            "format": "uuid",
             "example": "733a12e7-5bc7-41f8-a5f1-a693bf57011f"
           },
           "transactionDetails": {
