@@ -53,7 +53,7 @@ stages:
         ENV: 'dev'
         ENV_FOLDER: 'dev'
         WORKING_DIR_MODULE: ${{ variables.WORKING_DIR_MODULE }}
-        DOMAIN_NAME: ${{ variables.DOMAIN_NAME }}
+        DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
         POOL_NAME: '$(TF_POOL_NAME_DEV)'
@@ -64,7 +64,7 @@ stages:
         ENV: 'uat'
         ENV_FOLDER: 'uat'
         WORKING_DIR_MODULE: ${{ variables.WORKING_DIR_MODULE }}
-        DOMAIN_NAME: ${{ variables.DOMAIN_NAME }}
+        DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
         POOL_NAME: '$(TF_POOL_NAME_UAT)'
@@ -75,7 +75,7 @@ stages:
         ENV: 'prod'
         ENV_FOLDER: 'prod'
         WORKING_DIR_MODULE: ${{ variables.WORKING_DIR_MODULE }}
-        DOMAIN_NAME: ${{ variables.DOMAIN_NAME }}
+        DEFINITION_NAME: ${{ variables.DOMAIN_NAME }}
         SC_PLAN_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
         SC_APPLY_NAME: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
         POOL_NAME: '$(TF_POOL_NAME_PROD)'
