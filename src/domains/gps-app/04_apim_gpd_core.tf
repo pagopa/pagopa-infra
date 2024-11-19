@@ -174,15 +174,37 @@ module "apim_api_debt_positions_api_v2" {
   xml_content = file("./api/gpd_api/debt-position-services/v2/_base_policy.xml")
 }
 
-# resource "azurerm_api_management_api_operation_policy" "set_service_type_on_create_v1" {
-#   api_name              = format("%s-debt-positions-service-api-v1", local.product)
-#   api_management_name   = local.pagopa_apim_name
-#   resource_group_name   = local.pagopa_apim_rg
-#   operation_id          = "createPosition"
-#   xml_content = templatefile("service_type_set_fragment.xml", {
-#     service_type_value = "GPD"
-#   })
-# }
+#########################################
+## GPD CREATE DEBT POSITION POLICIES ####
+#########################################
+
+resource "terraform_data" "sha256_create_debt_position_v1_policy" {
+  input = sha256(file("./api/gpd_api/debt-position-services/v1/create_base_policy.xml"))
+}
+
+resource "azurerm_api_management_api_operation_policy" "create_debt_position_v1_policy" {
+  api_name              = format("%s-debt-positions-service-api-v1", local.product)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  operation_id          = "createPosition"
+  xml_content = templatefile("./api/gpd_api/debt-position-services/v1/create_base_policy.xml", {
+    service_type_value = "GPD"
+  })
+}
+
+resource "terraform_data" "sha256_create_debt_position_v2_policy" {
+  input = sha256(file("./api/gpd_api/debt-position-services/v2/create_base_policy.xml"))
+}
+
+resource "azurerm_api_management_api_operation_policy" "create_debt_position_v2_policy" {
+  api_name              = format("%s-debt-positions-service-api-v2", local.product)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  operation_id          = "createMultiplePositions"
+  xml_content = templatefile("./api/gpd_api/debt-position-services/v2/create_base_policy.xml", {
+    service_type_value = "GPD"
+  })
+}
 
 #####################
 ## GPD FRAGMENTS ####
@@ -195,7 +217,7 @@ resource "terraform_data" "sha256_service_type_set_fragment" {
 
 resource "azapi_resource" "service_type_set_fragment" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
-  name      = "service_type_set"
+  name      = "service-type-set"
   parent_id = data.azurerm_api_management.apim.id
 
   body = jsonencode({
@@ -214,7 +236,7 @@ resource "terraform_data" "sha256_segregation_codes_fragment" {
 
 resource "azapi_resource" "segregation_codes_fragment" {
   type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
-  name      = "segregation_codes_fragment"
+  name      = "segregation-codes-gpd"
   parent_id = data.azurerm_api_management.apim.id
 
   body = jsonencode({

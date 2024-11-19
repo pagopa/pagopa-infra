@@ -16,7 +16,7 @@
       <when condition="@(context.Request.MatchedParameters.ContainsKey("organizationfiscalcode") && !context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "").Equals(""))">
         <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organizationfiscalcode"])" />
         <include-fragment fragment-id="authorizer" />
-        <include-fragment fragment-id="segregation_codes_fragment"/>
+        <include-fragment fragment-id="segregation-codes-gpd"/>
       </when>
     </choose>
   </inbound>
