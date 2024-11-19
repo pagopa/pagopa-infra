@@ -18,7 +18,11 @@
     + `src/domains/observability/gpd_evh_create__az.sh` for eventhub with `cleanup-policy`
 
 1.  apply secrets `src/domains/gps-secret`
-    apply DB `src/domains/gps-common` ⚠️⚠️ _ReCreate DB GPD with new name convection_⚠️⚠️ `pagopa-<ENV_SHORT>-<REGION_SHORT>-gpd-pgflex
+    apply DB `src/domains/gps-common`
+
+    ⚠️⚠️ _ReCreate DB GPD with new name convection_ ⚠️⚠️ 
+    
+    `pagopa-<ENV_SHORT>-<REGION_SHORT>-gpd-pgflex`
 
 1. _[OPT iif not exists]_ user APD `./flyway_gpd.sh migrate <ENV>-pagoPA apd apd -schemas=apd`
 
