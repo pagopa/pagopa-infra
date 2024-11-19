@@ -183,10 +183,10 @@ resource "terraform_data" "sha256_create_debt_position_v1_policy" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "create_debt_position_v1_policy" {
-  api_name              = format("%s-debt-positions-service-api-v1", local.product)
-  api_management_name   = local.pagopa_apim_name
-  resource_group_name   = local.pagopa_apim_rg
-  operation_id          = "createPosition"
+  api_name            = format("%s-debt-positions-service-api-v1", local.product)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "createPosition"
   xml_content = templatefile("./api/gpd_api/debt-position-services/create_base_policy.xml", {
     service_type_value = "GPD"
   })
@@ -197,10 +197,10 @@ resource "terraform_data" "sha256_create_debt_position_v2_policy" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "create_debt_position_v2_policy" {
-  api_name              = format("%s-debt-positions-service-api-v2", local.product)
-  api_management_name   = local.pagopa_apim_name
-  resource_group_name   = local.pagopa_apim_rg
-  operation_id          = "createMultiplePositions"
+  api_name            = format("%s-debt-positions-service-api-v2", local.product)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "createMultiplePositions"
   xml_content = templatefile("./api/gpd_api/debt-position-services/create_base_policy.xml", {
     service_type_value = "GPD"
   })
@@ -224,7 +224,7 @@ resource "azapi_resource" "service_type_set_fragment" {
     properties = {
       description = "Component that is used to set service type in GPD"
       format      = "rawxml"
-      value = templatefile("./api/gpd_api/service_type_set_fragment.xml", {})
+      value       = templatefile("./api/gpd_api/service_type_set_fragment.xml", {})
     }
   })
 }
@@ -243,7 +243,7 @@ resource "azapi_resource" "segregation_codes_fragment" {
     properties = {
       description = "Component that is authorize on segregation codes"
       format      = "rawxml"
-      value = templatefile("./api/gpd_api/segregation_codes_fragment.xml", {})
+      value       = templatefile("./api/gpd_api/segregation_codes_fragment.xml", {})
     }
   })
 }

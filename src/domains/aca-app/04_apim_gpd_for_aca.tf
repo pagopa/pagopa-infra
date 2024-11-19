@@ -48,10 +48,10 @@ resource "terraform_data" "sha256_create_debt_position_v1_policy" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "create_debt_position_v1_policy" {
-  api_name              = format("%s-debt-positions-for-aca-service-api-v1", local.product)
-  api_management_name   = local.pagopa_apim_name
-  resource_group_name   = local.pagopa_apim_rg
-  operation_id          = "createPosition"
+  api_name            = format("%s-debt-positions-for-aca-service-api-v1", local.product)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "createPosition"
   xml_content = templatefile("./../gps-app/api/gpd_api/debt-position-services/create_base_policy.xml", {
     service_type_value = "ACA"
   })
