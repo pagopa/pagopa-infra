@@ -31,7 +31,7 @@
     <!--                    <return-response>-->
     <!--                        <set-status code="403" reason="Forbidden" />-->
     <!--                    </return-response>-->
-    <trace source="GPD for ACA Policy for organizations" severity="information">
+    <trace source="GPD Policy for organizations" severity="information">
       <message>No valid segregation codes associated with EC</message>
     </trace>
   </when>
