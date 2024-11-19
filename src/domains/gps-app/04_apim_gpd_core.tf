@@ -179,7 +179,7 @@ module "apim_api_debt_positions_api_v2" {
 #########################################
 
 resource "terraform_data" "sha256_create_debt_position_v1_policy" {
-  input = sha256(file("./api/gpd_api/debt-position-services/v1/create_base_policy.xml"))
+  input = sha256(file("./api/gpd_api/debt-position-services/create_base_policy.xml"))
 }
 
 resource "azurerm_api_management_api_operation_policy" "create_debt_position_v1_policy" {
@@ -187,13 +187,13 @@ resource "azurerm_api_management_api_operation_policy" "create_debt_position_v1_
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   operation_id          = "createPosition"
-  xml_content = templatefile("./api/gpd_api/debt-position-services/v1/create_base_policy.xml", {
+  xml_content = templatefile("./api/gpd_api/debt-position-services/create_base_policy.xml", {
     service_type_value = "GPD"
   })
 }
 
 resource "terraform_data" "sha256_create_debt_position_v2_policy" {
-  input = sha256(file("./api/gpd_api/debt-position-services/v2/create_base_policy.xml"))
+  input = sha256(file("./api/gpd_api/debt-position-services/create_base_policy.xml"))
 }
 
 resource "azurerm_api_management_api_operation_policy" "create_debt_position_v2_policy" {
@@ -201,7 +201,7 @@ resource "azurerm_api_management_api_operation_policy" "create_debt_position_v2_
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   operation_id          = "createMultiplePositions"
-  xml_content = templatefile("./api/gpd_api/debt-position-services/v2/create_base_policy.xml", {
+  xml_content = templatefile("./api/gpd_api/debt-position-services/create_base_policy.xml", {
     service_type_value = "GPD"
   })
 }
