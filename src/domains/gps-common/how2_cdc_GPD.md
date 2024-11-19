@@ -20,7 +20,7 @@
 1.  apply secrets `src/domains/gps-secret`
     apply DB `src/domains/gps-common`
 
-    ⚠️⚠️ _ReCreate DB GPD with new name convection_ ⚠️⚠️ 
+    ⚠️⚠️ _ReCreate DB GPD with new name convention_ ⚠️⚠️ 
     
     `pagopa-<ENV_SHORT>-<REGION_SHORT>-gpd-pgflex`
 
