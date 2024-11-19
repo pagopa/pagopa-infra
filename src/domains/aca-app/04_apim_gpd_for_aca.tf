@@ -31,20 +31,28 @@ module "apim_api_debt_positions_for_aca_api_v1" {
   service_url  = local.apim_debt_positions_for_aca_service_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/gpd-for-aca-services/v1/_openapi.json.tpl", {
+  content_value = templatefile("./../gps-app/api/gpd_api/debt-position-services/v1/_openapi.json.tpl", {
     host    = local.apim_hostname
     service = module.apim_aca_product.product_id
   })
 
-  xml_content = file("./api/gpd-for-aca-services/v1/_base_policy.xml")
+  xml_content = file("./../gps-app/api/gpd_api/debt-position-services/v1/_base_policy.xml")
 }
 
-resource "azurerm_api_management_api_operation_policy" "set_service_type_on_create_gpd_for_aca" {
-  api_name              = format("%s-debt-positions-for-aca-service-api-v1", local.product)
+###################################
+## CREATE DEBT POSITION POLICY ####
+###################################
+
+resource "terraform_data" "sha256_create_debt_position_v1_policy" {
+  input = sha256(file("./../gps-app/api/gpd_api/debt-position-services/v1/create_base_policy.xml"))
+}
+
+resource "azurerm_api_management_api_operation_policy" "create_debt_position_v1_policy" {
+  api_name              =format("%s-debt-positions-for-aca-service-api-v1", local.product)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   operation_id          = "createPosition"
-  xml_content = templatefile("./../gps-app/api/gpd_api/service-type-set.xml", {
-    service_type_value = var.service_type_aca
+  xml_content = templatefile("./../gps-app/api/gpd_api/debt-position-services/v1/create_base_policy.xml", {
+    service_type_value = "ACA"
   })
 }
