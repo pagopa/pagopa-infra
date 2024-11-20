@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "aks_rg" {
 
 
 module "aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.54.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.58.0"
 
   name                       = local.aks_name
   location                   = var.location
@@ -76,8 +76,8 @@ module "aks" {
   addon_azure_key_vault_secrets_provider_enabled = true
   addon_azure_pod_identity_enabled               = true
 
-  alerts_enabled       = var.aks_alerts_enabled
-  custom_metric_alerts = local.aks_metrics_alerts
+  alerts_enabled     = var.aks_alerts_enabled
+  custom_logs_alerts = local.aks_logs_alerts
 
   # takes a list and replaces any elements that are lists with a
   # flattened sequence of the list contents.
