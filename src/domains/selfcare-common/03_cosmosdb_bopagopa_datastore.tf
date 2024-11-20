@@ -27,7 +27,7 @@ module "bopagopa_cosmosdb_mongodb_snet" {
 
 
 module "bopagopa_cosmosdb_mongo_account" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=b8129acc321eec6bf12355bdd816579575702b28"
   name     = "${local.project}-cosmos-account"
   location = var.location
   domain   = var.domain
@@ -41,6 +41,8 @@ module "bopagopa_cosmosdb_mongo_account" {
   main_geo_location_zone_redundant = var.bopagopa_datastore_cosmos_db_params.main_geo_location_zone_redundant
 
   enable_free_tier = var.bopagopa_datastore_cosmos_db_params.enable_free_tier
+
+  burst_capacity_enabled = var.bopagopa_datastore_cosmos_db_params.enable_burst_capacity
 
   public_network_access_enabled = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled
 

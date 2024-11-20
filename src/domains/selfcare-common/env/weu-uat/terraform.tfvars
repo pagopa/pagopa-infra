@@ -45,6 +45,7 @@ bopagopa_datastore_cosmos_db_params = {
   server_version                   = "4.0"
   main_geo_location_zone_redundant = false
   enable_free_tier                 = false
+  enable_burst_capacity            = false
 
   additional_geo_locations          = []
   private_endpoint_enabled          = true
