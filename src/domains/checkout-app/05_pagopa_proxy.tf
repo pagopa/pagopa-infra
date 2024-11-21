@@ -47,8 +47,8 @@ module "pagopa_proxy_app_service" {
     module.pagopa_proxy_snet
   ]
   ip_restriction_default_action = "Allow"
-  resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
-  location            = var.location
+  resource_group_name           = data.azurerm_resource_group.pagopa_proxy_rg.name
+  location                      = var.location
 
   # App service plan vars
   plan_name = format("%s-plan-pagopa-proxy", local.parent_project)

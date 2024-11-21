@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "checkout_be_rg" {
 
 # Subnet to host checkout function
 module "checkout_function_snet" {
-  count                                     = var.checkout_enabled && var.cidr_subnet_checkout_be != null ? 1 : 0
+  count  = var.checkout_enabled && var.cidr_subnet_checkout_be != null ? 1 : 0
   source = "./.terraform/modules/__v3__/subnet"
 
   name                                      = format("%s-checkout-be-snet", local.parent_project)
