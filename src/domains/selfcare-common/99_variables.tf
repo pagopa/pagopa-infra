@@ -128,6 +128,7 @@ variable "bopagopa_datastore_cosmos_db_params" {
     })
     main_geo_location_zone_redundant = bool
     enable_free_tier                 = bool
+    enable_burst_capacity            = bool
     additional_geo_locations = list(object({
       location          = string
       failover_priority = number
