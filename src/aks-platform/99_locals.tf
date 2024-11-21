@@ -34,7 +34,7 @@ locals {
   aks_logs_alerts = {
     pods_failed = {
       display_name            = "${module.aks.name}-POD-FAILED"
-      description             = "Detect if there is any pod failed"
+      description             = "${module.aks.name} POD FAILED"
       query                   = <<-KQL
         KubePodInventory
         | where TimeGenerated > ago(15m)
@@ -42,9 +42,9 @@ locals {
         | project TimeGenerated, ClusterName, Namespace, Name, PodStatus
         | summarize count() by PodStatus, Namespace
       KQL
-      severity                = 1
-      window_duration         = "PT30M"
-      evaluation_frequency    = "PT15M"
+      severity                = 2
+      window_duration         = "PT15M"
+      evaluation_frequency    = "PT5M"
       operator                = "GreaterThan"
       threshold               = 1
       time_aggregation_method = "Average"
@@ -65,7 +65,7 @@ locals {
     }
     pods_ready = {
       display_name                             = "${module.aks.name}-POD-READY"
-      description                              = "Detect pods percentage is over defined threshold"
+      description                              = "${module.aks.name} POD Ready under threshold"
       query                                    = <<-KQL
         KubePodInventory
         | where TimeGenerated > ago(15m)
@@ -91,7 +91,7 @@ locals {
     }
     pods_oomkilled = {
       display_name            = "${module.aks.name}-POD-OMMKILLED"
-      description             = "Detect if any pod is OOMKilled"
+      description             = "${module.aks.name} POD OOMKilled"
       query                   = <<-KQL
         KubePodInventory
         | where PodStatus != "running"
@@ -131,7 +131,7 @@ locals {
     }
     pods_restart = {
       display_name            = "${module.aks.name}-POD-RESTART-COUNT"
-      description             = "Detect if any pod was restarted abnormally"
+      description             = "${module.aks.name} POD Restarted multiple times"
       query                   = <<-KQL
         KubePodInventory
         | where ContainerRestartCount > 0
@@ -141,8 +141,8 @@ locals {
         | summarize any(RestartCount) by Namespace
       KQL
       severity                = 2
-      window_duration         = "PT30M"
-      evaluation_frequency    = "PT15M"
+      window_duration         = "PT15M"
+      evaluation_frequency    = "PT5M"
       operator                = "GreaterThan"
       threshold               = 5
       time_aggregation_method = "Average"
@@ -165,7 +165,7 @@ locals {
     }
     pods_cpu = {
       display_name            = "${module.aks.name}-POD-CPU-USAGE"
-      description             = "Detect if any pod has High CPU Usage"
+      description             = "${module.aks.name} POD High CPU Usage"
       query                   = <<-KQL
         let endDateTime = now();
         let startDateTime = ago(1h);
@@ -220,7 +220,7 @@ locals {
     }
     pods_memory = {
       display_name            = "${module.aks.name}-POD-MEM-USAGE"
-      description             = "Detect if any pod has High Memory Usage"
+      description             = "${module.aks.name} POD High Memory Usage"
       query                   = <<-KQL
         let endDateTime = now();
         let startDateTime = ago(1h);
