@@ -3,7 +3,7 @@
 ##############
 
 module "apim_ecommerce_checkout_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "ecommerce-checkout"
   display_name = "Ecommerce for checkout pagoPA"
@@ -40,7 +40,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_checkout_api_v1" {
 }
 
 module "apim_ecommerce_checkout_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-ecommerce-checkout-api"
   resource_group_name   = local.pagopa_apim_rg
@@ -179,7 +179,7 @@ resource "azurerm_api_management_api_operation_policy" "get_method_testing" {
 # pagopa-ecommerce APIs for checkout V2
 
 module "apim_ecommerce_checkout_api_v2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-ecommerce-checkout-api"
   resource_group_name   = local.pagopa_apim_rg
