@@ -1,6 +1,6 @@
 locals {
 
-  fn_name_for_alerts_exceptions = var.env_short == "d" ? [] : [
+  fn_name_for_alerts_exceptions = var.env_short != "p" ? [] : [
     {
       id: "paymentoptionprocessor"
       name : "PaymentOptionProcessor"
