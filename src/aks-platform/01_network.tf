@@ -5,7 +5,7 @@ module "aks_snet" {
   address_prefixes                          = var.aks_cidr_subnet
   resource_group_name                       = data.azurerm_virtual_network.vnet.resource_group_name
   virtual_network_name                      = data.azurerm_virtual_network.vnet.name
-  private_endpoint_network_policies_enabled = false
+  private_endpoint_network_policies_enabled = var.subnet_private_endpoint_network_policies_enabled
 
   service_endpoints = [
     "Microsoft.AzureCosmosDB",

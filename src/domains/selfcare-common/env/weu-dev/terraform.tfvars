@@ -35,7 +35,7 @@ enable_iac_pipeline = true
 # CosmosDB BO pagopa Datastore
 bopagopa_datastore_cosmos_db_params = {
   kind         = "MongoDB"
-  capabilities = ["EnableMongo", "EnableServerless"]
+  capabilities = ["EnableMongo", "EnableServerless", "EnableMongo16MBDocumentSupport"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "Strong"
