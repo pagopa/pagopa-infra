@@ -1,9 +1,10 @@
 module "pagopa_proxy_app_service_ha" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/app_service"
   count  = var.pagopa_proxy_ha_enabled ? 1 : 0
   depends_on = [
     module.pagopa_proxy_snet_ha
   ]
+  ip_restriction_default_action = "Allow"
 
   resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
   location            = var.location
@@ -39,7 +40,7 @@ module "pagopa_proxy_app_service_ha" {
 module "pagopa_proxy_app_service_slot_staging_ha" {
   count = var.env_short == "p" && var.pagopa_proxy_ha_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/app_service_slot"
 
   # App service plan
   #  app_service_plan_id = module.pagopa_proxy_app_service.plan_id
