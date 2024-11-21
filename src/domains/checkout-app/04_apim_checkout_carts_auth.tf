@@ -3,7 +3,7 @@
 ##############
 
 module "apim_checkout_carts_auth" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "checkout-carts"
   display_name = "Checkout pagoPA carts"
@@ -40,7 +40,7 @@ resource "azurerm_api_management_api_version_set" "checkout_carts_auth_api_v1" {
 }
 
 module "apim_checkout_carts_auth_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.parent_project}-carts-auth-api"
   api_management_name   = data.azurerm_api_management.apim.name
