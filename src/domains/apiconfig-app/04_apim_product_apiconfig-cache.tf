@@ -1,7 +1,7 @@
 ###
 ### IT SHOULD BE DEPRECATED, PLEASE USE cfg-for-node PRODUCT
 module "apim_apiconfig_cache_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = local.apiconfig_cache_locals.product_id
   display_name = local.apiconfig_cache_locals.display_name

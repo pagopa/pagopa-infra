@@ -15,7 +15,7 @@ data "azurerm_key_vault_secret" "pgres_admin_pwd" {
 
 resource "azurerm_resource_group" "flex_data" {
   count = 1 # forced
-  
+
   name = format("%s-pgres-flex-rg", local.product)
 
   location = var.location
@@ -59,7 +59,7 @@ data "azurerm_private_dns_zone" "postgres" {
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
 module "postgres_flexible_server_private" { # private only into UAT and PROD env
   source = "./.terraform/modules/__v3__/postgres_flexible_server"
-  count = 1 # forced
+  count  = 1 # forced
 
   name = format("%s-gpd-pgflex", local.product)
 

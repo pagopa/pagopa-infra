@@ -150,6 +150,7 @@ module "apim_api_statuspage_api_v1" {
           "gpdreportinganalysis"        = format("%s/", data.azurerm_function_app.reporting_analysis.default_hostname)
           "gpdreportingbatch"           = format("%s/api/", data.azurerm_function_app.reporting_batch.default_hostname)
           "gpdreportingservice"         = format("%s/api/", data.azurerm_function_app.reporting_service.default_hostname)
+          "gpdingestionmanager"         = format("%s/pagopa-gpd-ingestion-manager", format(local.aks_path, "gps"))
           "gps"                         = format("%s/pagopa-spontaneous-payments-service", format(local.aks_path, "gps"))
           "gpsdonation"                 = format("%s/pagopa-gps-donation-service", format(local.aks_path, "gps"))
           "mockec"                      = var.env_short != "p" ? format("%s/", data.azurerm_linux_function_app.mockec[0].default_hostname) : "NA"
