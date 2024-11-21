@@ -18,6 +18,7 @@ locals {
     "pagopa-gpd-reporting-batch",
     "pagopa-gpd-reporting-analysis",
     "pagopa-gpd-reporting-service",
+    "pagopa-gpd-ingestion-manager"
   ]
 
   federations_01 = [
