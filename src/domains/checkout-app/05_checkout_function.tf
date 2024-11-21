@@ -89,7 +89,7 @@ module "checkout_function" {
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
 
-  ip_restriction_default_action = "Deny"
+  ip_restriction_default_action = var.checkout_ip_restriction_default_action
 
   allowed_ips = []
 

@@ -4,7 +4,7 @@ module "pagopa_proxy_app_service_ha" {
   depends_on = [
     module.pagopa_proxy_snet_ha
   ]
-  ip_restriction_default_action = "Allow"
+  ip_restriction_default_action = var.pagopa_proxy_ip_restriction_default_action
 
   resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
   location            = var.location
