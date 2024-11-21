@@ -51,7 +51,7 @@ locals {
 
 module "apim_bizevents_product_all_in_one" { # only for test
   count  = var.env_short != "p" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "bizevents-all-in-one"
   display_name = "bizevents-all-in-one"
@@ -70,7 +70,7 @@ module "apim_bizevents_product_all_in_one" { # only for test
 
 // EC user(s)
 module "apim_bizevents_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "bizevents"
   display_name = local.apim_bizevents_service_api.display_name
@@ -89,7 +89,7 @@ module "apim_bizevents_product" {
 
 // Helpdesk
 module "apim_bizevents_helpdesk_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "bizevents-helpdesk"
   display_name = local.apim_bizevents_helpdesk_api.display_name
@@ -108,7 +108,7 @@ module "apim_bizevents_helpdesk_product" {
 
 // AppIO user
 module "apim_transactions_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "bizevent-transactions"
   display_name = local.apim_transaction_service_api.display_name
@@ -179,7 +179,7 @@ resource "azurerm_api_management_api_version_set" "api_bizevents_transactions_jw
 # }
 
 module "apim_api_bizevents_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-bizevents-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -206,7 +206,7 @@ module "apim_api_bizevents_api_v1" {
 }
 
 module "apim_api_bizevents_helpdesk_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-bizevents-helpdesk-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -233,7 +233,7 @@ module "apim_api_bizevents_helpdesk_api_v1" {
 }
 
 module "apim_api_bizevents_transactions_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-bizevents-transaction-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -259,7 +259,7 @@ module "apim_api_bizevents_transactions_api_v1" {
   })
 }
 module "apim_api_bizevents_transactions_api_jwt_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                = format("%s-bizevents-transaction-service-api-jwt", local.project)
   api_management_name = local.pagopa_apim_name
