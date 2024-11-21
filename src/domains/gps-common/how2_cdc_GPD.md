@@ -23,6 +23,7 @@
     ⚠️⚠️ _ReCreate DB GPD with new name convention_ ⚠️⚠️ 
     
     `pagopa-<ENV_SHORT>-<REGION_SHORT>-gpd-pgflex`
+    NOTE : GDP network ( `+ Add 0.0.0.0 - 255.255.255.255` ) ( _only dev_ )
 
 1. _[OPT iif not exists]_ user APD `./flyway_gpd.sh migrate <ENV>-pagoPA apd apd -schemas=apd`
 

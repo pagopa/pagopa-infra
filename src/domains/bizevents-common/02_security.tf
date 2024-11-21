@@ -32,8 +32,6 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
 
 ## ad group policy ##
 resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
-  count = var.env_short != "p" ? 1 : 0
-
   key_vault_id = module.key_vault.id
 
   tenant_id = data.azurerm_client_config.current.tenant_id
@@ -42,9 +40,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
   secret_permissions  = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
   storage_permissions = []
-  certificate_permissions = [
-    "Get", "List", "Update", "Create", "Import",
-    "Delete", "Restore", "Purge", "Recover"
+  certificate_permissions = [ "Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"
   ]
 }
 
