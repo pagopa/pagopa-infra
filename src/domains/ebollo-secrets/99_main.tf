@@ -41,3 +41,7 @@ provider "kubernetes" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
+
+module "__v3__" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=15bbe5eb512bc0fa8f06ed28e0cca754b868743a"
+}

@@ -12,10 +12,10 @@ module "workload_identity" {
   workload_identity_location = var.location
 }
 
-module "workload_identity" {
+module "workload_identity_configuration" {
   source = "./.terraform/modules/__v3__/kubernetes_workload_identity_configuration"
 
-  workload_identity_name_prefix = "${var.domain}-poc"
+  workload_identity_name_prefix = "${var.domain}-workload-identity-configuration"
   workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
   aks_name = data.azurerm_kubernetes_cluster.aks.name
   aks_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name

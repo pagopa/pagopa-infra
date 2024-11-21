@@ -15,7 +15,7 @@ module "tls_checker" {
   keyvault_tenant_id = data.azurerm_client_config.current.tenant_id
 
   workload_identity_enabled = true
-  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
+  workload_identity_service_account_name = module.workload_identity_configuration.workload_identity_service_account_name
   workload_identity_client_id = module.workload_identity.workload_identity_client_id
 
   depends_on = [module.workload_identity]
@@ -25,12 +25,12 @@ module "cert_mounter" {
   source = "./.terraform/modules/__v3__/cert_mounter"
 
   namespace = var.domain
-  certificate_name = replace(local.domain_hostname, ".", "-"),
+  certificate_name = replace(local.domain_hostname, ".", "-")
   kv_name = data.azurerm_key_vault.kv.name
   tenant_id = data.azurerm_subscription.current.tenant_id
 
   workload_identity_enabled = true
-  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
+  workload_identity_service_account_name = module.workload_identity_configuration.workload_identity_service_account_name
   workload_identity_client_id = module.workload_identity.workload_identity_client_id
 
   depends_on = [module.workload_identity]
