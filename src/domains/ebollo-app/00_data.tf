@@ -4,19 +4,19 @@ data "azurerm_api_management" "apim" {
 }
 
 data "azurerm_api_management_product" "apim_node_for_psp_product" {
-  product_id          = "${var.env_short}-node-for-psp-api"
+  product_id          = "nodo-auth"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
 
 data "azurerm_api_management_product" "apim_carts_product" {
-  product_id          = "pagopa-${var.env_short}-carts-auth-api-v1"
+  product_id          = "checkout-carts"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
 
-data "azurerm_api_management_product" "apim_gpd_payments_rest" {
-  product_id          = "${var.env_short}-gpd-payments-rest-api-aks-v1"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-}
+#data "azurerm_api_management_product" "apim_gpd_payments_rest" {
+#  product_id          = "${var.env_short}-gpd-payments-rest-api-aks-v1"
+#  api_management_name = local.pagopa_apim_name
+#  resource_group_name = local.pagopa_apim_rg
+#}
