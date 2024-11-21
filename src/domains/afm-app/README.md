@@ -1,33 +1,34 @@
 # afm-app
 
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.21.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.30.0, <= 3.53.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.5.1 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.12.0 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | = 2.11.0 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | = 3.1.1 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | = 3.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_afm_calculator_node_product"></a> [apim\_afm\_calculator\_node\_product](#module\_apim\_afm\_calculator\_node\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.5.0 |
-| <a name="module_apim_afm_calculator_product"></a> [apim\_afm\_calculator\_product](#module\_apim\_afm\_calculator\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.5.0 |
-| <a name="module_apim_afm_marketplace_product"></a> [apim\_afm\_marketplace\_product](#module\_apim\_afm\_marketplace\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.5.0 |
-| <a name="module_apim_api_afm_calculator_api_node_v1"></a> [apim\_api\_afm\_calculator\_api\_node\_v1](#module\_apim\_api\_afm\_calculator\_api\_node\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
-| <a name="module_apim_api_afm_calculator_api_node_v2"></a> [apim\_api\_afm\_calculator\_api\_node\_v2](#module\_apim\_api\_afm\_calculator\_api\_node\_v2) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
-| <a name="module_apim_api_afm_calculator_api_v1"></a> [apim\_api\_afm\_calculator\_api\_v1](#module\_apim\_api\_afm\_calculator\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
-| <a name="module_apim_api_afm_calculator_api_v2"></a> [apim\_api\_afm\_calculator\_api\_v2](#module\_apim\_api\_afm\_calculator\_api\_v2) | git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api | v6.11.2 |
-| <a name="module_apim_api_afm_marketplace_api_v1"></a> [apim\_api\_afm\_marketplace\_api\_v1](#module\_apim\_api\_afm\_marketplace\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
-| <a name="module_apim_api_afm_marketplace_technical_support_api_v1"></a> [apim\_api\_afm\_marketplace\_technical\_support\_api\_v1](#module\_apim\_api\_afm\_marketplace\_technical\_support\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
-| <a name="module_apim_api_afm_utils_v1"></a> [apim\_api\_afm\_utils\_v1](#module\_apim\_api\_afm\_utils\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.5.0 |
-| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.5.0 |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v5.5.2 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 63f6181a6f3a51707a2ab4795bdbed2d888c708b |
+| <a name="module_apim_afm_calculator_node_product"></a> [apim\_afm\_calculator\_node\_product](#module\_apim\_afm\_calculator\_node\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_afm_calculator_product"></a> [apim\_afm\_calculator\_product](#module\_apim\_afm\_calculator\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_afm_marketplace_product"></a> [apim\_afm\_marketplace\_product](#module\_apim\_afm\_marketplace\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_api_afm_calculator_api_node_v1"></a> [apim\_api\_afm\_calculator\_api\_node\_v1](#module\_apim\_api\_afm\_calculator\_api\_node\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_afm_calculator_api_node_v2"></a> [apim\_api\_afm\_calculator\_api\_node\_v2](#module\_apim\_api\_afm\_calculator\_api\_node\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_afm_calculator_api_v1"></a> [apim\_api\_afm\_calculator\_api\_v1](#module\_apim\_api\_afm\_calculator\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_afm_calculator_api_v2"></a> [apim\_api\_afm\_calculator\_api\_v2](#module\_apim\_api\_afm\_calculator\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_afm_marketplace_api_v1"></a> [apim\_api\_afm\_marketplace\_api\_v1](#module\_apim\_api\_afm\_marketplace\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_afm_marketplace_technical_support_api_v1"></a> [apim\_api\_afm\_marketplace\_technical\_support\_api\_v1](#module\_apim\_api\_afm\_marketplace\_technical\_support\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_afm_utils_v1"></a> [apim\_api\_afm\_utils\_v1](#module\_apim\_api\_afm\_utils\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
 
 ## Resources
 
@@ -54,8 +55,8 @@
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-afm-calculator-v2-availability-feesbypsp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-afm-calculator-v2-responsetime-fees](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.opex_pagopa-afm-calculator-v2-responsetime-feesbypsp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
-| [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
+| [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/2.12.0/docs/resources/release) | resource |
+| [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.12.0/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
 | [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
 | [kubernetes_pod_disruption_budget_v1.afm](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/pod_disruption_budget_v1) | resource |
@@ -109,4 +110,4 @@
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
