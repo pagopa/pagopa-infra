@@ -65,6 +65,13 @@
         kubectl config use-context <NEW_CONTEXT_NAME> 
     ```
 
+    ```
+        sh set_registry_secrets.sh \
+        pagopa<env>commonacr.azurecr.io \
+        pagopa<env>commonacr \
+        <pwd>
+    ```
+
 1. deploy debezium `src/domains/gps-app`
 
     ```sh

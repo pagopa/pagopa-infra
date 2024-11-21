@@ -12,8 +12,7 @@ data "azurerm_key_vault_secret" "pgres_gpd_cdc_pwd" {
 }
 
 data "azurerm_key_vault_secret" "otel_headers" {
-  # name         = "db-apd-user-password"
-  name         = "otel_headers"
+  name         = "elastic-apm-secret-token"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
@@ -80,7 +79,7 @@ locals {
 
   postgres_connector_yaml = templatefile("${path.module}/yaml/postgres-connector.yaml", {
     namespace         = "gps" # kubernetes_namespace.namespace.metadata[0].name
-    postgres_hostname = "pagopa-${var.env_short}-gpd-pgflex.postgres.database.azure.com"
+    postgres_hostname = "pagopa-${var.env_short}-${var.location_short}-gpd-pgflex.postgres.database.azure.com"
 
     postgres_port         = 5432
     postgres_db_name      = var.postgres_db_name
