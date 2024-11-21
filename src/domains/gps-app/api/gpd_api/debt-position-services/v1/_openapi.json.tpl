@@ -237,9 +237,6 @@
         "security": [
           {
             "ApiKey": []
-          },
-          {
-            "Authorization": []
           }
         ]
       },
@@ -367,9 +364,6 @@
         "security": [
           {
             "ApiKey": []
-          },
-          {
-            "Authorization": []
           }
         ]
       },
@@ -483,9 +477,6 @@
         "security": [
           {
             "ApiKey": []
-          },
-          {
-            "Authorization": []
           }
         ]
       },
@@ -640,9 +631,6 @@
         "security": [
           {
             "ApiKey": []
-          },
-          {
-            "Authorization": []
           }
         ]
       },
@@ -762,9 +750,6 @@
         "security": [
           {
             "ApiKey": []
-          },
-          {
-            "Authorization": []
           }
         ]
       },
@@ -894,9 +879,6 @@
         "security": [
           {
             "ApiKey": []
-          },
-          {
-            "Authorization": []
           }
         ]
       },
@@ -1026,9 +1008,6 @@
         "security": [
           {
             "ApiKey": []
-          },
-          {
-            "Authorization": []
           }
         ]
       },
@@ -1113,9 +1092,6 @@
         "security": [
           {
             "ApiKey": []
-          },
-          {
-            "Authorization": []
           }
         ]
       },
@@ -1133,20 +1109,6 @@
   },
   "components": {
     "schemas": {
-      "MultiplePaymentPositionModel": {
-        "required": [
-          "paymentPositions"
-        ],
-        "type": "object",
-        "properties": {
-          "paymentPositions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PaymentPositionModel"
-            }
-          }
-        }
-      },
       "PaymentOptionMetadataModel": {
         "required": [
           "key"
@@ -1752,22 +1714,6 @@
             "type": "string"
           }
         }
-      },
-      "MultipleIUPDModel": {
-        "required": [
-          "paymentPositionIUPDs"
-        ],
-        "type": "object",
-        "properties": {
-          "paymentPositionIUPDs": {
-            "maxItems": 100,
-            "minItems": 0,
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
       }
     },
     "securitySchemes": {
@@ -1776,12 +1722,6 @@
         "description": "The API key to access this function app.",
         "name": "Ocp-Apim-Subscription-Key",
         "in": "header"
-      },
-      "Authorization": {
-        "type": "http",
-        "description": "JWT token get after Azure Login",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
       }
     }
   }
