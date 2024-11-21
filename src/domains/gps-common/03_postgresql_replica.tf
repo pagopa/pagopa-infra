@@ -2,7 +2,7 @@
 ## Postgres Flexible Server subnet
 module "postgres_flexible_snet_replica" {
   count                                         = var.geo_replica_enabled ? 1 : 0
-  source = "./.terraform/modules/__v3__/subnet"
+  source                                        = "./.terraform/modules/__v3__/subnet"
   name                                          = "${local.project_replica}-pgres-flexible-snet"
   address_prefixes                              = var.geo_replica_cidr_subnet_postgresql
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
