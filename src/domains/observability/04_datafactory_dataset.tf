@@ -41,12 +41,12 @@ resource "azurerm_data_factory_dataset_json" "afm_gec_bundle_cdc_json" {
 
   azure_blob_storage_location {
     container = "pagopa-${var.env_short}-itn-observ-az-blob-observability-container"
-    path = "bundles"
-    filename = ""
+    path      = "bundles"
+    filename  = ""
   }
 
-  encoding = "UTF-8"
-  folder = local.folder
+  encoding    = "UTF-8"
+  folder      = local.folder
   annotations = []
 }
 
@@ -57,12 +57,12 @@ resource "azurerm_data_factory_dataset_json" "afm_gec_cibundle_cdc_json" {
 
   azure_blob_storage_location {
     container = "pagopa-${var.env_short}-itn-observ-az-blob-observability-container"
-    path = "cibundles"
-    filename = ""
+    path      = "cibundles"
+    filename  = ""
   }
 
-  encoding = "UTF-8"
-  folder = local.folder
+  encoding    = "UTF-8"
+  folder      = local.folder
   annotations = []
 }
 
@@ -73,12 +73,12 @@ resource "azurerm_data_factory_dataset_json" "afm_gec_touchpoints_cdc_json" {
 
   azure_blob_storage_location {
     container = "pagopa-${var.env_short}-itn-observ-az-blob-observability-container"
-    path = "touchpoints"
-    filename = ""
+    path      = "touchpoints"
+    filename  = ""
   }
 
-  encoding = "UTF-8"
-  folder = local.folder
+  encoding    = "UTF-8"
+  folder      = local.folder
   annotations = []
 }
 
@@ -89,12 +89,12 @@ resource "azurerm_data_factory_dataset_json" "afm_gec_paymenttypes_cdc_json" {
 
   azure_blob_storage_location {
     container = "pagopa-${var.env_short}-itn-observ-az-blob-observability-container"
-    path = "paymenttypes"
-    filename = ""
+    path      = "paymenttypes"
+    filename  = ""
   }
 
-  encoding = "UTF-8"
-  folder = local.folder
+  encoding    = "UTF-8"
+  folder      = local.folder
   annotations = []
 }
 
