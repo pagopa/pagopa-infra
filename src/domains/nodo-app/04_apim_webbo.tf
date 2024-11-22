@@ -3,7 +3,7 @@
 ##############
 
 module "apim_web_bo_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "web_bo"
   display_name = "Web BO (BackOffice) for NDP"
@@ -44,7 +44,7 @@ resource "azurerm_api_management_api_version_set" "api_web_bo_api" {
 */
 
 module "apim_api_web_bo_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-web-bo-service-api", local.project)
   api_management_name   = local.pagopa_apim_name

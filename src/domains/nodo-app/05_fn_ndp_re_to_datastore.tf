@@ -85,7 +85,7 @@ locals {
 module "nodo_re_to_datastore_function" {
   count = var.enable_nodo_re ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
+  source = "./.terraform/modules/__v3__/function_app"
 
   resource_group_name = azurerm_resource_group.nodo_re_to_datastore_rg[0].name
   name                = "${local.project}-re-fn"
@@ -132,6 +132,8 @@ module "nodo_re_to_datastore_function" {
     account_replication_type          = var.function_app_storage_account_replication_type
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
+    use_legacy_defender_version       = true
+    public_network_access_enabled     = false
   }
 
   app_settings = local.function_re_to_datastore_app_settings
@@ -145,7 +147,7 @@ module "nodo_re_to_datastore_function" {
 module "nodo_re_to_datastore_function_slot_staging" {
   count = var.enable_nodo_re && var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
+  source = "./.terraform/modules/__v3__/function_app_slot"
 
   app_service_plan_id                      = module.nodo_re_to_datastore_function[0].app_service_plan_id
   function_app_id                          = module.nodo_re_to_datastore_function[0].id
