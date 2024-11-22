@@ -117,16 +117,27 @@ module "apim" {
 
   alerts_enabled = var.apim_v2_alerts_enabled
 
-  action = [
-    {
-      action_group_id    = azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = azurerm_monitor_action_group.email.id
-      webhook_properties = null
-    }
-  ]
+  # takes a list and replaces any elements that are lists with a
+  # flattened sequence of the list contents.
+  # In this case, we enable OpsGenie only on prod env
+  action = flatten([
+    [
+      {
+        action_group_id    = azurerm_monitor_action_group.slack.id
+        webhook_properties = null
+      },
+      {
+        action_group_id    = azurerm_monitor_action_group.email.id
+        webhook_properties = null
+      }
+    ],
+    (var.env == "prod" ? [
+      {
+        action_group_id    = azurerm_monitor_action_group.infra_opsgenie.0.id
+        webhook_properties = null
+      }
+    ] : [])
+  ])
 
   # metrics docs
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftapimanagementservice
