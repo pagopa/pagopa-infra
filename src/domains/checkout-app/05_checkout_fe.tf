@@ -19,7 +19,7 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
  * CDN
  */
 module "checkout_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/cdn"
 
   count                 = var.checkout_enabled ? 1 : 0
   name                  = "checkout"

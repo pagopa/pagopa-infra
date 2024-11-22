@@ -1,5 +1,5 @@
 module "apim_pm_ingestion_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "bizevent-pm-ingestion"
   display_name = "PM Ingestion"

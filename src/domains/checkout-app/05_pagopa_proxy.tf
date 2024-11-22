@@ -40,15 +40,16 @@ data "azurerm_redis_cache" "pagopa_proxy_redis" {
 }
 
 
+
 module "pagopa_proxy_app_service" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/app_service"
 
   depends_on = [
     module.pagopa_proxy_snet
   ]
-
-  resource_group_name = data.azurerm_resource_group.pagopa_proxy_rg.name
-  location            = var.location
+  ip_restriction_default_action = var.pagopa_proxy_ip_restriction_default_action
+  resource_group_name           = data.azurerm_resource_group.pagopa_proxy_rg.name
+  location                      = var.location
 
   # App service plan vars
   plan_name = format("%s-plan-pagopa-proxy", local.parent_project)
@@ -79,7 +80,7 @@ module "pagopa_proxy_app_service" {
 module "pagopa_proxy_app_service_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/app_service_slot"
 
   # App service plan
   #  app_service_plan_id = module.pagopa_proxy_app_service.plan_id

@@ -17,8 +17,9 @@ resource "azurerm_api_management_api_version_set" "api_apiconfig_cache_replica_n
 
 
 module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
-  count  = var.env_short == "p" ? 0 : 1
+  source = "./.terraform/modules/__v3__/api_management_api"
+
+  count = var.env_short == "p" ? 0 : 1
 
   name                  = format("%s-apiconfig-cache-replica-node-%s-api", local.project, "p")
   api_management_name   = local.pagopa_apim_name
@@ -48,8 +49,9 @@ module "apim_api_apiconfig_cache_replica_node_api_v1_p" {
 }
 
 module "apim_api_apiconfig_cache_replica_node_api_v1_o" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
-  count  = var.env_short == "p" ? 0 : 1
+  source = "./.terraform/modules/__v3__/api_management_api"
+
+  count = var.env_short == "p" ? 0 : 1
 
   name                  = format("%s-apiconfig-cache-replica-node-%s-api", local.project, "o")
   api_management_name   = local.pagopa_apim_name
