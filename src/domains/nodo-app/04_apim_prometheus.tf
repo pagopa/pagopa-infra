@@ -3,7 +3,7 @@
 ##############
 
 module "apim_prometheus_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "prometheus"
   display_name = "Prometheus for NDP"
@@ -44,7 +44,7 @@ resource "azurerm_api_management_api_version_set" "api_prometheus_api" {
 */
 
 module "apim_api_prometheus_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-prometheus-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
