@@ -45,7 +45,7 @@ locals {
 ############################
 
 module "apim_pn_integration_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "pn-integration"
   display_name = "PN Integration"
@@ -67,7 +67,7 @@ module "apim_pn_integration_product" {
 #############################
 
 module "apim_aca_integration_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "aca-integration"
   display_name = "ACA Integration"
@@ -98,7 +98,7 @@ resource "azurerm_api_management_api_version_set" "api_pn_integration_api" {
 }
 
 module "apim_api_pn_integration_gpd_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-pn-integration-gpd-api-aks", var.env_short)
   api_management_name   = local.pagopa_apim_name
