@@ -28,8 +28,6 @@ resource "azurerm_key_vault_secret" "tenant_id" {
 }
 
 resource "azurerm_key_vault_secret" "node_subscription_key" {
-  count = var.env_short != "p" ? 1 : 0
-
   name         = "apikey-node-for-psp"
   value        = azurerm_api_management_subscription.nodo_subkey.primary_key
   content_type = "text/plain"
@@ -38,9 +36,7 @@ resource "azurerm_key_vault_secret" "node_subscription_key" {
 }
 
 resource "azurerm_key_vault_secret" "carts_subscription_key" {
-  count = var.env_short != "p" ? 1 : 0
-
-  name         = "apikey-carts"
+  name         = "apikey-checkout-carts"
   value        = azurerm_api_management_subscription.carts_subkey.primary_key
   content_type = "text/plain"
 
@@ -48,9 +44,7 @@ resource "azurerm_key_vault_secret" "carts_subscription_key" {
 }
 
 resource "azurerm_key_vault_secret" "payments_key_subscription_key" {
-  count = var.env_short != "p" ? 1 : 0
-
-  name         = "apikey-payments"
+  name         = "apikey-gpd-payments"
   value        = azurerm_api_management_subscription.payments_subkey.primary_key
   content_type = "text/plain"
 

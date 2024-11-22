@@ -15,9 +15,9 @@ data "azurerm_key_vault" "key_vault" {
 # repos must be lower than 20 items
 locals {
   repos_01 = [
-    "pagopa-mdb-service",
-    "pagopa-mdb-gps",
-    "pagopa-mdb-error-manager"
+    "pagopa-mbd-service",
+    # "pagopa-mbd-gps",
+    # "pagopa-mbd-error-manager"
   ]
 
   federations_01 = [
