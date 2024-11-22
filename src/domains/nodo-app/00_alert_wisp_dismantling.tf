@@ -120,10 +120,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-convert
   }
 
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Errors for wisp-converter API WIC-ERROR is greater than 1 - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa"
+  description    = "Errors for wisp-converter API WIC-ERROR is greater than 5 - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa"
   enabled        = true
   query = (<<-QUERY
-let errorsToExclude = dynamic(["WIC-3004","WIC-1300"]);
+let errorsToExclude = dynamic([
+  "WIC-1300", // payment position already paid
+  "WIC-2001", // RPT timer creation
+  "WIC-3001", "WIC-3002", "WIC-3003", "WIC-3004", "WIC-3005", "WIC-3006" // client errors
+]);
 traces
 | where cloud_RoleName == "pagopawispconverter"
 | where message contains "WIC-"
@@ -139,7 +143,7 @@ traces
   time_window = 5
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 5
   }
 }
 
