@@ -67,27 +67,27 @@
                     }" />
 
       <choose>
-          <!--
-            if is-fdr-nodo-pagopa-enable == true && EC non FTP
-              then backend = fdr
-          -->
-            <when condition="@(${is-fdr-nodo-pagopa-enable} && !(bool)context.Variables["is-ftp-enabled"])">
-                <set-backend-service base-url="${base-url}" />
-            </when>
-            <otherwise>
-                <send-one-way-request mode="new">
-                    <set-url>@("${base-url}/webservices/input")</set-url>
-                    <set-method>POST</set-method>
-                    <set-header name="Content-Type" exists-action="override">
-                        <value>text/xml</value>
-                    </set-header>
-                    <set-header name="SOAPAction" exists-action="override">
-                        <value>@(context.Variables.GetValueOrDefault<string>("soapAction", ""))</value>
-                    </set-header>
-                    <set-body>@{return (string) context.Variables["readrequest"];}</set-body>
-                </send-one-way-request>
-            </otherwise>
-        </choose>
+          <when condition="@(${is-fdr-nodo-pagopa-enable})">
+              <choose>
+                  <when condition="@((bool)context.Variables["is-ftp-enabled"])">
+                      <send-one-way-request mode="new">
+                          <set-url>@("${base-url}/webservices/input")</set-url>
+                          <set-method>POST</set-method>
+                          <set-header name="Content-Type" exists-action="override">
+                              <value>text/xml</value>
+                          </set-header>
+                          <set-header name="SOAPAction" exists-action="override">
+                              <value>@(context.Variables.GetValueOrDefault<string>("soapAction", ""))</value>
+                          </set-header>
+                          <set-body>@{return (string) context.Variables["readrequest"];}</set-body>
+                      </send-one-way-request>
+                  </when>
+                  <otherwise>
+                      <set-backend-service base-url="${base-url}" />
+                  </otherwise>
+              </choose>
+          </when>
+      </choose>
 
     </inbound>
     <backend>
