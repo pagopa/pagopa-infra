@@ -61,6 +61,8 @@ bopagopa_datastore_cosmos_db_params = {
   container_default_ttl = 315576000 # 10 year in second
 }
 
+cosmosdb_mongodb_max_throughput = 8000 # increse see https://pagopa.atlassian.net/wiki/spaces/VAS/pages/884375607/Generazione+CSV+IBAN#Cron-Job
+
 # CosmosDb MongoDb
 cidr_subnet_cosmosdb_mongodb = ["10.1.166.0/24"]
 # cosmosdb_mongodb_extra_capabilities = ["EnableServerless"]
