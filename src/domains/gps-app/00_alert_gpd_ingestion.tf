@@ -2,15 +2,15 @@ locals {
 
   fn_name_for_alerts_exceptions = var.env_short != "p" ? [] : [
     {
-      id: "paymentoptionprocessor"
+      id : "paymentoptionprocessor"
       name : "PaymentOptionProcessor"
     },
     {
-      id: "paymentpositionprocessor"
+      id : "paymentpositionprocessor"
       name : "PaymentPositionProcessor"
     },
     {
-      id: "transferprocessor"
+      id : "transferprocessor"
       name : "TransferProcessor"
     }
   ]
@@ -24,7 +24,7 @@ locals {
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-availability" {
-  for_each = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
+  for_each            = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-gpd-ingestion-manager-availability-${each.value.id}"
   location            = var.location
@@ -52,7 +52,7 @@ union traces, exceptions
 //| render timechart
 | where availability < threshold
   QUERY
-    , each.value.name)
+  , each.value.name)
   severity    = 1
   frequency   = 5
   time_window = 5
@@ -63,7 +63,7 @@ union traces, exceptions
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-error-json" {
-  for_each = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
+  for_each            = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-gpd-ingestion-manager-error-json-${each.value.id}"
   location            = var.location
@@ -95,7 +95,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-error-generic" {
-  for_each = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
+  for_each            = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-gpd-ingestion-manager-error-generic-${each.value.id}"
   location            = var.location
@@ -127,7 +127,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-error-pdv-tokenizer" {
-  for_each = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
+  for_each            = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-gpd-ingestion-manager-error-pdv-tokenizer-${each.value.id}"
   location            = var.location
@@ -159,7 +159,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-error-unexpected-pdv-tokenizer" {
-  for_each = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
+  for_each            = { for c in local.fn_name_for_alerts_exceptions : c.name => c }
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-gpd-ingestion-manager-error-unexpected-pdv-tokenizer-${each.value.id}"
   location            = var.location

@@ -1,5 +1,5 @@
 module "tls_checker" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=v8.18.0"
+  source = "./.terraform/modules/__v3__/tls_checker"
 
   https_endpoint                                            = local.payment_wallet_hostname
   alert_name                                                = local.payment_wallet_hostname

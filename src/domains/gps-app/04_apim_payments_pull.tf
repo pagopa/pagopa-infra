@@ -3,7 +3,7 @@
 ####################################
 
 module "apim_gpd_payments_pull_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "gpd-payments-pull"
   display_name = "GPD Payments Pull"
@@ -30,7 +30,7 @@ module "apim_gpd_payments_pull_product" {
 
 module "apim_gpd_payments_pull_product_and_debt_positions_product_test" {
   count  = 1 # var.env_short != "p" ? 1 : 0 # ppull-prod-test
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "test-gpd-payments-pull-and-debt-positions"
   display_name = "TEST GPD Payments Pull & GPD Debt Positions for organizations"

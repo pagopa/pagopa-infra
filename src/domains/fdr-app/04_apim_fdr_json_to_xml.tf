@@ -3,7 +3,7 @@
 ##############
 
 module "apim_fdr_json_to_xml_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "fdr_json_to_xml"
   display_name = "FDR - JSON to XML API REST"
@@ -44,7 +44,7 @@ resource "azurerm_api_management_api_version_set" "api_fdr_json_to_xml_api" {
 
 
 module "apim_api_fdr_json_to_xml_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-fdr-json-to-xml-service-api"
   api_management_name   = local.pagopa_apim_name

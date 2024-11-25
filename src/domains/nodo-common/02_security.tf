@@ -68,6 +68,15 @@ resource "azurerm_key_vault_secret" "node_cfg_sync_re_sa_connection_string" {
   ]
 }
 
+
+resource "azurerm_key_vault_secret" "ai_connection_string" {
+  name         = format("ai-%s-connection-string", var.env_short)
+  value        = data.azurerm_application_insights.application_insights.connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 resource "azurerm_key_vault_secret" "wisp_converter_re_sa_connection_string" {
   count        = var.create_wisp_converter ? 1 : 0
   name         = "wisp-converter-re-sa-connection-string-key"
