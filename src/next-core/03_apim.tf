@@ -143,7 +143,7 @@ module "apim" {
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftapimanagementservice
   metric_alerts = {
     capacity = {
-      description   = "Apim used capacity is too high"
+      description   = "${module.apim.0.name} used capacity is too high"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1
@@ -162,7 +162,7 @@ module "apim" {
     }
 
     duration = {
-      description   = "Apim abnormal response time"
+      description   = "${module.apim.0.name} abnormal response time"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 2
@@ -185,7 +185,7 @@ module "apim" {
     }
 
     requests_failed = {
-      description   = "Apim abnormal failed requests"
+      description   = "${module.apim.0.name} abnormal failed requests"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 2
