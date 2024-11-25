@@ -34,6 +34,8 @@ storage_account_info = {
   account_replication_type          = "GZRS"
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
+  use_legacy_defender_version       = false
+  public_network_access_enabled     = false
 }
 
 reporting_fdr_storage_account_info = {
@@ -42,6 +44,8 @@ reporting_fdr_storage_account_info = {
   account_replication_type          = "GZRS"
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
+  use_legacy_defender_version       = false
+  public_network_access_enabled     = false
 }
 
 ### External resources

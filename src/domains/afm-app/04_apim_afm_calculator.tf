@@ -51,7 +51,7 @@ locals {
 }
 
 module "apim_afm_calculator_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.5.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "afm-calculator"
   display_name = local.apim_afm_calculator_service_api.display_name
@@ -68,7 +68,7 @@ module "apim_afm_calculator_product" {
 }
 
 module "apim_afm_calculator_node_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.5.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "afm-node-calculator"
   display_name = local.apim_afm_calculator_service_node_api.display_name
@@ -127,7 +127,7 @@ resource "azurerm_api_management_api_version_set" "api_afm_calculator_api" {
 
 
 module "apim_api_afm_calculator_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.5.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-afm-calculator-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -154,7 +154,8 @@ module "apim_api_afm_calculator_api_v1" {
 }
 
 module "apim_api_afm_calculator_api_v2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_api"
+
 
   name                  = format("%s-afm-calculator-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -195,7 +196,7 @@ resource "azurerm_api_management_api_version_set" "api_afm_calculator_node_api" 
 }
 
 module "apim_api_afm_calculator_api_node_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.5.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-afm-calculator-service-node-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -222,7 +223,7 @@ module "apim_api_afm_calculator_api_node_v1" {
 }
 
 module "apim_api_afm_calculator_api_node_v2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.5.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-afm-calculator-service-node-api", local.project)
   api_management_name   = local.pagopa_apim_name

@@ -14,7 +14,7 @@ resource "azurerm_api_management_group" "payment-wallet" {
 ##############
 /*
 module "apim_payment_wallet_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "payment-wallet"
   display_name = "payment wallet pagoPA"
@@ -54,7 +54,7 @@ resource "azurerm_api_management_api_version_set" "payment_wallet_api" {
 }
 
 module "apim_payment_wallet_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-payment-wallet-api"
   api_management_name   = local.pagopa_apim_name
@@ -169,7 +169,7 @@ resource "azurerm_api_management_api_version_set" "npg_notifications_api" {
 }
 
 module "apim_wallet_service_notifications_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-notifications-service-api"
   api_management_name   = local.pagopa_apim_name
@@ -219,7 +219,7 @@ resource "azurerm_api_management_api_version_set" "wallet_webview_api" {
 }
 
 module "apim_webview_payment_wallet_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-webview-api"
   api_management_name   = local.pagopa_apim_name
@@ -311,7 +311,7 @@ resource "azurerm_api_management_api_version_set" "wallet_outcomes_api" {
 }
 
 module "apim_payment_wallet_outcomes_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-outcomes-api"
   api_management_name   = local.pagopa_apim_name

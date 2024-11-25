@@ -17,7 +17,7 @@ locals {
 ##############
 
 module "apim_gpd_enrollment_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "gpd-reporting-orgs-enrollment"
   display_name = local.apim_reporting-orgs-enrollment_service_api.display_name
@@ -49,7 +49,7 @@ resource "azurerm_api_management_api_version_set" "api_gpd_enrollment_api" {
 
 
 module "apim_api_gpd_enrollment_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-reporting-orgs-enrollment-service-api", local.project)
   api_management_name   = local.pagopa_apim_name

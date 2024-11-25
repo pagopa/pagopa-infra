@@ -1,7 +1,7 @@
 # apiconfig-app
 
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -9,9 +9,9 @@
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.3.0 |
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.3.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.30.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.40.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | <= 5.12.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.5.1 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.11.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
 
@@ -19,21 +19,22 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_api_config_fe_cdn"></a> [api\_config\_fe\_cdn](#module\_api\_config\_fe\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn | v6.4.1 |
-| <a name="module_api_config_snet"></a> [api\_config\_snet](#module\_api\_config\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
-| <a name="module_apim_api_apiconfig_cache_node_api_v1_o"></a> [apim\_api\_apiconfig\_cache\_node\_api\_v1\_o](#module\_apim\_api\_apiconfig\_cache\_node\_api\_v1\_o) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v5.1.0 |
-| <a name="module_apim_api_apiconfig_cache_node_api_v1_p"></a> [apim\_api\_apiconfig\_cache\_node\_api\_v1\_p](#module\_apim\_api\_apiconfig\_cache\_node\_api\_v1\_p) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v5.1.0 |
-| <a name="module_apim_api_apiconfig_cache_node_nexi_api_dev_v1"></a> [apim\_api\_apiconfig\_cache\_node\_nexi\_api\_dev\_v1](#module\_apim\_api\_apiconfig\_cache\_node\_nexi\_api\_dev\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_apiconfig_cache_replica_node_api_v1_o"></a> [apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_o](#module\_apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_o) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_apiconfig_cache_replica_node_api_v1_p"></a> [apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_p](#module\_apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_p) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_config_api"></a> [apim\_api\_config\_api](#module\_apim\_api\_config\_api) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_config_auth_api"></a> [apim\_api\_config\_auth\_api](#module\_apim\_api\_config\_auth\_api) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_config_auth_product"></a> [apim\_api\_config\_auth\_product](#module\_apim\_api\_config\_auth\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_api_config_product"></a> [apim\_api\_config\_product](#module\_apim\_api\_config\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_apiconfig_cache_product"></a> [apim\_apiconfig\_cache\_product](#module\_apim\_apiconfig\_cache\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_apiconfig_selfcare_integration_product"></a> [apim\_apiconfig\_selfcare\_integration\_product](#module\_apim\_apiconfig\_selfcare\_integration\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
-| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v4.1.17 |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v6.2.1 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 63f6181a6f3a51707a2ab4795bdbed2d888c708b |
+| <a name="module_api_config_fe_cdn"></a> [api\_config\_fe\_cdn](#module\_api\_config\_fe\_cdn) | ./.terraform/modules/__v3__/cdn | n/a |
+| <a name="module_api_config_snet"></a> [api\_config\_snet](#module\_api\_config\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_apim_api_apiconfig_cache_node_api_v1_o"></a> [apim\_api\_apiconfig\_cache\_node\_api\_v1\_o](#module\_apim\_api\_apiconfig\_cache\_node\_api\_v1\_o) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_apiconfig_cache_node_api_v1_p"></a> [apim\_api\_apiconfig\_cache\_node\_api\_v1\_p](#module\_apim\_api\_apiconfig\_cache\_node\_api\_v1\_p) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_apiconfig_cache_node_nexi_api_dev_v1"></a> [apim\_api\_apiconfig\_cache\_node\_nexi\_api\_dev\_v1](#module\_apim\_api\_apiconfig\_cache\_node\_nexi\_api\_dev\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_apiconfig_cache_replica_node_api_v1_o"></a> [apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_o](#module\_apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_o) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_apiconfig_cache_replica_node_api_v1_p"></a> [apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_p](#module\_apim\_api\_apiconfig\_cache\_replica\_node\_api\_v1\_p) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_config_api"></a> [apim\_api\_config\_api](#module\_apim\_api\_config\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_config_auth_api"></a> [apim\_api\_config\_auth\_api](#module\_apim\_api\_config\_auth\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_config_auth_product"></a> [apim\_api\_config\_auth\_product](#module\_apim\_api\_config\_auth\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_api_config_product"></a> [apim\_api\_config\_product](#module\_apim\_api\_config\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_apiconfig_cache_product"></a> [apim\_apiconfig\_cache\_product](#module\_apim\_apiconfig\_cache\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_apiconfig_selfcare_integration_product"></a> [apim\_apiconfig\_selfcare\_integration\_product](#module\_apim\_apiconfig\_selfcare\_integration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
 
 ## Resources
 
@@ -154,4 +155,4 @@
 | Name | Description |
 |------|-------------|
 | <a name="output_pa"></a> [pa](#output\_pa) | n/a |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

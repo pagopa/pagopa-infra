@@ -15,7 +15,7 @@ data "azurerm_dns_zone" "public" {
 
 
 module "fdr_re_function_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
+  source                                    = "./.terraform/modules/__v3__/subnet"
   name                                      = "${local.project}-re-fn-snet"
   address_prefixes                          = var.fdr_re_function_subnet
   resource_group_name                       = local.vnet_resource_group_name
@@ -37,7 +37,7 @@ module "fdr_re_function_snet" {
 }
 
 module "fdr_xml_to_json_function_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
+  source                                    = "./.terraform/modules/__v3__/subnet"
   name                                      = "${local.project}-xml-to-json-fn-snet"
   address_prefixes                          = var.fdr_xml_to_json_function_subnet
   resource_group_name                       = local.vnet_resource_group_name
@@ -59,7 +59,7 @@ module "fdr_xml_to_json_function_snet" {
 }
 
 module "fdr_json_to_xml_function_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.4.1"
+  source                                    = "./.terraform/modules/__v3__/subnet"
   name                                      = "${local.project}-json-to-xml-fn-snet"
   address_prefixes                          = var.fdr_json_to_xml_function_subnet
   resource_group_name                       = local.vnet_resource_group_name

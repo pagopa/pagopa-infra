@@ -11,7 +11,7 @@ locals {
 ## Products ##
 ##############
 module "apim_nododatamigration_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "nodo-data-migration"
   display_name = local.apim_nododatamigration_api.display_name
@@ -38,7 +38,7 @@ resource "azurerm_api_management_api_version_set" "api_datamigration_api" {
 }
 
 module "apim_api_nododatamigration_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-nodo-datamigration-api", local.project)
   api_management_name   = local.pagopa_apim_name
