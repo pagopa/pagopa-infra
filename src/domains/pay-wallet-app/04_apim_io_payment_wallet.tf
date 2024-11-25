@@ -3,7 +3,7 @@
 ##############
 
 module "apim_io_payment_wallet_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "io-payment-wallet"
   display_name = "IO payment wallet pagoPA"
@@ -43,7 +43,7 @@ resource "azurerm_api_management_api_version_set" "io_payment_wallet_api" {
 }
 
 module "apim_io_payment_wallet_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-io-payment-wallet-api"
   api_management_name   = local.pagopa_apim_name
