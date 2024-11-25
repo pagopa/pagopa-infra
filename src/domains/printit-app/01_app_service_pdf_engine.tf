@@ -15,8 +15,9 @@ data "azurerm_container_registry" "container_registry" {
 ################
 
 module "printit_pdf_engine_app_service" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.18.0"
-  count  = var.is_feature_enabled.pdf_engine ? 1 : 0
+  source = "./.terraform/modules/__v3__/app_service"
+
+  count = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
@@ -36,6 +37,9 @@ module "printit_pdf_engine_app_service" {
 
   health_check_path = "/info"
 
+  ip_restriction_default_action = var.app_service_ip_restriction_default_action
+
+
   app_settings = local.printit_pdf_engine_app_settings
 
   zone_balancing_enabled = var.app_service_pdf_engine_zone_balancing_enabled
@@ -51,7 +55,7 @@ module "printit_pdf_engine_app_service" {
 module "printit_pdf_engine_slot_staging" {
   count = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v8.18.0"
+  source = "./.terraform/modules/__v3__/app_service_slot"
 
   # App service plan
   # app_service_plan_id = module.printit_pdf_engine_app_service.plan_id
@@ -249,7 +253,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
 #java
 ###############
 module "printit_pdf_engine_app_service_java" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.18.0"
+  source = "./.terraform/modules/__v3__/app_service"
   count  = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   vnet_integration    = false
@@ -272,8 +276,9 @@ module "printit_pdf_engine_app_service_java" {
 
   app_settings = local.printit_pdf_engine_app_settings_java
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
-  allowed_ips     = []
+  ip_restriction_default_action = var.app_service_ip_restriction_default_action
+  allowed_subnets               = [data.azurerm_subnet.apim_vnet.id]
+  allowed_ips                   = []
 
   subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
@@ -285,7 +290,7 @@ module "printit_pdf_engine_app_service_java" {
 module "printit_pdf_engine_java_slot_staging" {
   count = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v8.18.0"
+  source = "./.terraform/modules/__v3__/app_service_slot"
 
   # App service plan
   # app_service_plan_id = module.printit_pdf_engine_app_service.plan_id
