@@ -39,7 +39,7 @@ data "azurerm_container_registry" "container_registry" {
 
 module "shared_pdf_engine_app_service" {
   count  = var.env_short != "p" ? 1 : 0 # only DEV and UAT
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/app_service"
 
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
@@ -47,7 +47,6 @@ module "shared_pdf_engine_app_service" {
 
   # App service plan vars
   plan_name = format("%s-plan-pdf-engine", local.project)
-  plan_kind = "Linux"
   sku_name  = var.app_service_pdf_engine_sku_name
 
   # App service plan
@@ -65,7 +64,9 @@ module "shared_pdf_engine_app_service" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
-  subnet_id = module.shared_pdf_engine_app_service_snet.id
+  subnet_id                     = module.shared_pdf_engine_app_service_snet.id
+  ip_restriction_default_action = var.function_app_ip_restriction_default_action
+
 
   tags = var.tags
 }
@@ -73,7 +74,7 @@ module "shared_pdf_engine_app_service" {
 module "shared_pdf_engine_slot_staging" {
   count = var.env_short == "u" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/app_service_slot"
 
   # App service plan
   app_service_id   = module.shared_pdf_engine_app_service[0].id
@@ -268,7 +269,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
 # java
 ################
 module "shared_pdf_engine_app_service_java" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.3.0"
+  source              = "./.terraform/modules/__v3__/app_service"
   count               = var.env_short != "p" ? 1 : 0 # only DEV and UAT
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
@@ -276,7 +277,6 @@ module "shared_pdf_engine_app_service_java" {
 
   # App service plan vars
   plan_name = format("%s-plan-pdf-engine-java", local.project)
-  plan_kind = "Linux"
   sku_name  = var.app_service_pdf_engine_sku_name_java
 
   # App service plan
@@ -294,7 +294,9 @@ module "shared_pdf_engine_app_service_java" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
-  subnet_id = module.shared_pdf_engine_app_service_snet.id
+  subnet_id                     = module.shared_pdf_engine_app_service_snet.id
+  ip_restriction_default_action = var.function_app_ip_restriction_default_action
+
 
   tags = var.tags
 }
@@ -302,7 +304,7 @@ module "shared_pdf_engine_app_service_java" {
 module "shared_pdf_engine_java_slot_staging" {
   count = var.env_short == "u" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/app_service_slot"
 
   # App service plan
   # app_service_plan_id = module.shared_pdf_engine_app_service[0].plan_id

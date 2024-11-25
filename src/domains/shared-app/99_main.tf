@@ -10,11 +10,11 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.40.0"
+      version = "<= 3.116.0"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "= 2.5.1"
+      version = "<= 2.12.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -22,7 +22,7 @@ terraform {
     }
     null = {
       source  = "hashicorp/null"
-      version = "<= 3.1.1"
+      version = "<= 3.2.0"
     }
     github = {
       source  = "integrations/github"
@@ -57,4 +57,10 @@ provider "helm" {
   kubernetes {
     config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
   }
+}
+
+
+module "__v3__" {
+  # v8.59.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=3fc1dafaf4354e24ca8673005ec0caf4106343a3"
 }
