@@ -25,7 +25,7 @@ resource "azurerm_api_management_api_version_set" "apim_gpd_upload_api" {
 }
 
 module "apim_gpd_upload_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.product}-gpd-upload-api"
   api_management_name   = local.pagopa_apim_name

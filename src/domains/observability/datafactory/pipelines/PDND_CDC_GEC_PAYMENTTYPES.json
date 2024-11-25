@@ -82,38 +82,49 @@
         "isSequential": true,
         "activities": [
             {
-                "name": "WriteEvhub",
-                "type": "WebActivity",
+                "name": "check delete events",
+                "type": "IfCondition",
                 "dependsOn": [],
-                "policy": {
-                    "timeout": "0.12:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
                 "userProperties": [],
                 "typeProperties": {
-                    "method": "POST",
+                    "expression": {
+                        "value": "@if(contains(item(), 'idPsp'), true, false)",
+                        "type": "Expression"
+                    },
+                    "ifTrueActivities": [
+                        {
+                            "name": "WriteEvhub",
+                            "type": "WebActivity",
+                            "dependsOn": [],
+                            "policy": {
+                                "timeout": "0.12:00:00",
+                                "retry": 0,
+                                "retryIntervalInSeconds": 30,
+                                "secureOutput": false,
+                                "secureInput": false
+                            },
+                            "userProperties": [],
+                            "typeProperties": {
+                                "method": "POST",
                     "url": {
                         "value": "@concat('${evh_base_url}', '/gec-ingestion-paymenttypes-dl/messages')",
                         "type": "Expression"
                     },
-                    "connectVia": {
-                        "referenceName": "AutoResolveIntegrationRuntime",
-                        "type": "IntegrationRuntimeReference"
-                    },
-                    "body": {
-                        "value": "@item()",
-                        "type": "Expression"
-                    },
-                    "authentication": {
-                        "type": "MSI",
-                        "resource": {
-                            "value": "@pipeline().globalParameters.evhBaseUrl",
-                            "type": "Expression"
+                                "connectVia": {
+                                    "referenceName": "AutoResolveIntegrationRuntime",
+                                    "type": "IntegrationRuntimeReference"
+                                },
+                                "body": {
+                                    "value": "@item()",
+                                    "type": "Expression"
+                                },
+                                "authentication": {
+                                    "type": "MSI",
+                                    "resource": "{evh_base_url}"
+                                }
+                            }
                         }
-                    }
+                    ]
                 }
             }
         ]

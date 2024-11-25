@@ -1,6 +1,6 @@
 # This product groups each API called by node
 module "apim_apim_for_node_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v5.1.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = local.apim_for_node.product_id
   display_name = local.apim_for_node.display_name

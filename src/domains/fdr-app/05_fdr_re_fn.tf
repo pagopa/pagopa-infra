@@ -68,7 +68,7 @@ locals {
 
 ## Function fdr_re
 module "fdr_re_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.2"
+  source = "./.terraform/modules/__v3__/function_app"
 
   resource_group_name = data.azurerm_resource_group.fdr_re_rg.name
   name                = "${local.project}-re-fn"
@@ -97,10 +97,6 @@ module "fdr_re_function" {
   ]
   client_certificate_mode = "Optional"
 
-  cors = {
-    allowed_origins = []
-  }
-
   app_service_plan_name = "${local.project}-re-fn-plan"
   app_service_plan_info = {
     kind                         = var.fdr_re_function.kind
@@ -119,13 +115,14 @@ module "fdr_re_function" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
+
   tags = var.tags
 }
 
 module "fdr_re_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
+  source = "./.terraform/modules/__v3__/function_app_slot"
 
   app_service_plan_id                      = module.fdr_re_function.app_service_plan_id
   function_app_id                          = module.fdr_re_function.id
