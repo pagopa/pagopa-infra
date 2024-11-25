@@ -107,7 +107,7 @@ resource "azapi_resource" "pdnd_cdc_gec_bundles_dataflow" {
             description = "Write data to blob storage in json format"
             linkedService = {
               parameters    = {}
-              referenceName = "afm-gec-${var.env_short}-${var.location_short}-sa-linkedservice"
+              referenceName = "afm_gec_storage_linked_service"
               type          = "LinkedServiceReference"
             }
             name = "afmgecstorage"
@@ -255,7 +255,7 @@ resource "azapi_resource" "pdnd_cdc_gec_cibundles_dataflow" {
             description = "Write data to blob storage in json format"
             linkedService = {
               parameters    = {}
-              referenceName = "afm-gec-${var.env_short}-${var.location_short}-sa-linkedservice"
+              referenceName = "afm_gec_storage_linked_service"
               type          = "LinkedServiceReference"
             }
             name = "afmgecstorage"
@@ -361,7 +361,7 @@ resource "azapi_resource" "pdnd_cdc_gec_touchpoints_dataflow" {
             description = "Write data to blob storage in json format"
             linkedService = {
               parameters    = {}
-              referenceName = "afm-gec-${var.env_short}-${var.location_short}-sa-linkedservice"
+              referenceName = "afm_gec_storage_linked_service"
               type          = "LinkedServiceReference"
             }
             name = "afmgecstorage"
@@ -460,7 +460,7 @@ resource "azapi_resource" "pdnd_cdc_gec_paymenttypes_dataflow" {
             description = "Write data to blob storage in json format"
             linkedService = {
               parameters    = {}
-              referenceName = "afm-gec-${var.env_short}-${var.location_short}-sa-linkedservice"
+              referenceName = "afm_gec_storage_linked_service"
               type          = "LinkedServiceReference"
             }
             name = "afmgecstorage"
