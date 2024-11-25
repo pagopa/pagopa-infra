@@ -3,7 +3,7 @@
 ##############
 
 module "apim_qi_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "qi"
   display_name = "QI pagoPA"
