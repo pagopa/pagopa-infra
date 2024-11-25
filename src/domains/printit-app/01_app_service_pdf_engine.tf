@@ -17,7 +17,7 @@ data "azurerm_container_registry" "container_registry" {
 module "printit_pdf_engine_app_service" {
   source = "./.terraform/modules/__v3__/app_service"
 
-  count  = var.is_feature_enabled.pdf_engine ? 1 : 0
+  count = var.is_feature_enabled.pdf_engine ? 1 : 0
 
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
@@ -36,6 +36,9 @@ module "printit_pdf_engine_app_service" {
   docker_image_tag = "latest"
 
   health_check_path = "/info"
+
+  ip_restriction_default_action = var.app_service_ip_restriction_default_action
+
 
   app_settings = local.printit_pdf_engine_app_settings
 
@@ -273,8 +276,9 @@ module "printit_pdf_engine_app_service_java" {
 
   app_settings = local.printit_pdf_engine_app_settings_java
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
-  allowed_ips     = []
+  ip_restriction_default_action = var.app_service_ip_restriction_default_action
+  allowed_subnets               = [data.azurerm_subnet.apim_vnet.id]
+  allowed_ips                   = []
 
   subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
