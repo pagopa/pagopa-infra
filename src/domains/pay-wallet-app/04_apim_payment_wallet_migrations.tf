@@ -67,7 +67,7 @@ module "apim_payment_wallet_migrations_api_v1" {
 
 module "apim_payment_wallet_migrations_for_cstar_api_v1" {
   count  = var.payment_wallet_migrations_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-migrations-for-cstar-api"
   api_management_name   = local.pagopa_apim_name
