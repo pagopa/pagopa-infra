@@ -853,4 +853,4 @@ monitor_env_test_urls = [
   }
 ]
 
-enable_node_forwarder_debug_instance = true
+enable_node_forwarder_debug_instance = false

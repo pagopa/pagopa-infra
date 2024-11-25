@@ -222,6 +222,8 @@ variable "storage_account_info" {
     account_replication_type          = string
     access_tier                       = string
     advanced_threat_protection_enable = bool
+    use_legacy_defender_version       = bool
+    public_network_access_enabled     = bool
   })
 
   default = {
@@ -230,6 +232,8 @@ variable "storage_account_info" {
     account_replication_type          = "LRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
+    use_legacy_defender_version       = false
+    public_network_access_enabled     = false
   }
 }
 
@@ -241,7 +245,10 @@ variable "reporting_fdr_storage_account_info" {
     account_replication_type          = string
     access_tier                       = string
     advanced_threat_protection_enable = bool
+    use_legacy_defender_version       = bool
+    public_network_access_enabled     = bool
   })
+
 
   default = {
     account_kind                      = "StorageV2"
@@ -249,6 +256,8 @@ variable "reporting_fdr_storage_account_info" {
     account_replication_type          = "LRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
+    use_legacy_defender_version       = false
+    public_network_access_enabled     = false
   }
 }
 

@@ -118,8 +118,3 @@ variable "tls_cert_check_helm" {
   description = "tls cert helm chart configuration"
 }
 
-variable "service_type_aca" {
-  type        = string
-  description = "Service type of GPD for ACA debt position"
-  default     = "ACA"
-}

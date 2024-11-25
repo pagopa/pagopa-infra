@@ -2,7 +2,7 @@
 ## Products ##
 ##############
 module "apim_wisp_converter_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v5.1.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
   count  = var.create_wisp_converter ? 1 : 0
 
   product_id   = "pagopa-wisp-converter"

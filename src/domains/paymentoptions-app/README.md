@@ -1,13 +1,13 @@
 # paymentoptions-app
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.6.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.47.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.106.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.29.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
@@ -16,12 +16,13 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_api_pay_opt_mock_api"></a> [apim\_api\_pay\_opt\_mock\_api](#module\_apim\_api\_pay\_opt\_mock\_api) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v8.18.0 |
-| <a name="module_apim_payment_options_mock_product"></a> [apim\_payment\_options\_mock\_product](#module\_apim\_payment\_options\_mock\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v8.18.0 |
-| <a name="module_apim_payment_options_product"></a> [apim\_payment\_options\_product](#module\_apim\_payment\_options\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v8.18.0 |
-| <a name="module_kubernetes_service_account"></a> [kubernetes\_service\_account](#module\_kubernetes\_service\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_service_account | v8.18.0 |
-| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v8.18.0 |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v8.22.0 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 3fc1dafaf4354e24ca8673005ec0caf4106343a3 |
+| <a name="module_apim_api_pay_opt_mock_api"></a> [apim\_api\_pay\_opt\_mock\_api](#module\_apim\_api\_pay\_opt\_mock\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_payment_options_mock_product"></a> [apim\_payment\_options\_mock\_product](#module\_apim\_payment\_options\_mock\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_payment_options_product"></a> [apim\_payment\_options\_product](#module\_apim\_payment\_options\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_kubernetes_service_account"></a> [kubernetes\_service\_account](#module\_kubernetes\_service\_account) | ./.terraform/modules/__v3__/kubernetes_service_account | n/a |
+| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
 
 ## Resources
 
@@ -103,4 +104,4 @@
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

@@ -57,7 +57,7 @@ let threshold = 0.999;
 traces
 | where cloud_RoleName == "pagopawispconverter"
 | summarize
-    Total=count(message startswith "Invoking API operation ${each.value}"),
+    Total=count(message startswith "Successful API operation ${each.value}" or message startswith "Failed API operation ${each.value}"),
     Failed=count(message startswith "Failed API operation ${each.value}")
     by bin(timestamp, 5m)
 | where Total > 0
@@ -74,7 +74,7 @@ traces
   }
 }
 
-# # DISABLED included into opex_pagopa-wisp-converter-ai-availability above 👆
+# DISABLED included into opex_pagopa-wisp-converter-ai-availability above 👆
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-converter-ai-error" {
   for_each = var.env_short == "p" ? toset(["receiptKo", "receiptOk", "createTimer", "deleteTimer"]) : []
 
@@ -90,7 +90,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-convert
 
   data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "Errors for wisp-converter API ${each.value} is greater than 1 - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-wisp-converter https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa"
-  enabled        = false # DISABLED included into opex_pagopa-wisp-converter-ai-availability above 👆
+  enabled        = false # DISABLED included into opex_pagopa-wisp-converter-ai-availability above 👆
   query = (<<-QUERY
 traces
 | where cloud_RoleName == "pagopawispconverter"
@@ -123,10 +123,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-convert
   description    = "Errors for wisp-converter API WIC-ERROR is greater than 1 - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/0287abc9-da26-40fa-b261-f1634ee649aa"
   enabled        = true
   query = (<<-QUERY
-let errorsToExclude = dynamic(["WIC-3004","WIC-1300"]);
+let errorsToExclude = dynamic([
+  "WIC-1300", // payment position already paid
+  "WIC-2001", // RPT timer creation
+  "WIC-3001", "WIC-3002", "WIC-3003", "WIC-3004", "WIC-3005", "WIC-3006" // client errors
+]);
 traces
 | where cloud_RoleName == "pagopawispconverter"
-| where message contains "WIC-" 
+| where message contains "WIC-"
 | extend problem_detail=extract('ProblemDetail\\[(.+)\\]', 1, message)
 | extend error_status=extract('status=([0-9]+)\\,', 1, problem_detail)
 | extend error_code=extract("type='https://pagopa.gov/error-code/(WIC-[0-9]+)'", 1, problem_detail)
@@ -139,7 +143,7 @@ traces
   time_window = 5
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 5
   }
 }
 

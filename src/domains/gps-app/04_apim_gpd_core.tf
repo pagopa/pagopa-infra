@@ -5,7 +5,7 @@
 ## Products ##
 
 module "apim_gpd_product" {
-  source       = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v6.11.2"
+  source       = "./.terraform/modules/__v3__/api_management_product"
   product_id   = "product-gpd"
   display_name = "GPD pagoPA"
   description  = "Prodotto Gestione Posizione Debitorie"
@@ -24,7 +24,7 @@ module "apim_gpd_product" {
 ## API ##
 
 module "apim_api_gpd_api" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                = format("%s-api-gpd-api", var.env_short)
   api_management_name = local.pagopa_apim_name
@@ -51,7 +51,7 @@ module "apim_api_gpd_api" {
 }
 
 module "apim_api_gpd_api_v2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                = "${var.env_short}-api-gpd-api"
   api_management_name = local.pagopa_apim_name
@@ -93,7 +93,7 @@ resource "azurerm_api_management_api_version_set" "api_gpd_api" {
 ## Products ##
 
 module "apim_debt_positions_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "debt-positions"
   display_name = "GPD Debt Positions for organizations"
@@ -121,7 +121,7 @@ resource "azurerm_api_management_api_version_set" "api_debt_positions_api" {
 }
 
 module "apim_api_debt_positions_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                = format("%s-debt-positions-service-api", local.product)
   api_management_name = local.pagopa_apim_name
@@ -149,7 +149,7 @@ module "apim_api_debt_positions_api_v1" {
 
 module "apim_api_debt_positions_api_v2" {
   count  = var.env_short != "p" ? 1 : 0 # disbled v2 external bulk prod
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-debt-positions-service-api", local.product)
   api_management_name   = local.pagopa_apim_name
