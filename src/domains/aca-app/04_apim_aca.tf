@@ -20,9 +20,9 @@ module "apim_aca_product" {
   policy_xml = file("./api_product/_base_policy.xml")
 }
 
-#################################################
+##############################################
 ## API ACA service                          ##
-#################################################
+##############################################
 locals {
   apim_aca_api = {
     display_name          = "pagoPA - A.C.A. API"
