@@ -48,7 +48,7 @@ resource "azurerm_api_management_named_value" "ecommerce_for_checkout_google_rec
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   display_name        = "ecommerce-for-checkout-google-recaptcha-secret"
-  value               = data.azurerm_key_vault_secret.ecommerce_for_checkout_google_recaptcha_secret
+  value               = data.azurerm_key_vault_secret.ecommerce_for_checkout_google_recaptcha_secret.value
   secret              = true
 }
 
