@@ -14,20 +14,8 @@ module "gh_runner_job" {
   runner_labels      = ["self-hosted", "job"]
   gh_repositories = [
     {
-      name : "pagopa-afm-calculator",
-      short_name : "afm-calc"
-    },
-    {
-      name : "pagopa-afm-utils",
-      short_name : "afm-utils"
-    },
-    {
-      name : "pagopa-afm-marketplace-be",
-      short_name : "afm-mkt-be"
-    },
-    {
-      name : "pagopa-afm-fee-reporting-service",
-      short_name : "afm-fee-rpt"
+      name : "pagopa-api-config-cache",
+      short_name : "apicfg-cache"
     }
   ]
   job = {

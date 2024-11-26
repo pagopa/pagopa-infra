@@ -14,20 +14,48 @@ module "gh_runner_job" {
   runner_labels      = ["self-hosted", "job"]
   gh_repositories = [
     {
-      name : "pagopa-afm-calculator",
-      short_name : "afm-calc"
+      name : "pagopa-stand-in-manager",
+      short_name : "standin-mgr"
     },
     {
-      name : "pagopa-afm-utils",
-      short_name : "afm-utils"
+      name : "pagopa-stand-in-technical-support",
+      short_name : "stanin-tech-sup"
     },
     {
-      name : "pagopa-afm-marketplace-be",
-      short_name : "afm-mkt-be"
+      name : "pagopa-node-cfg-sync",
+      short_name : "node-cfg-sync"
     },
     {
-      name : "pagopa-afm-fee-reporting-service",
-      short_name : "afm-fee-rpt"
+      name : "pagopa-nodo-verifyko-to-tablestorage",
+      short_name : "nodo-vfko-table"
+    },
+    {
+      name : "pagopa-nodo-verifyko-to-datastore",
+      short_name : "nodo-vfko-data"
+    },
+    {
+      name : "pagopa-nodo-verifyko-aux",
+      short_name : "nodo-vfko-aux"
+    },
+    {
+      name : "pagopa-wisp-soap-converter",
+      short_name : "wisp-soap-cvt"
+    },
+    {
+      name : "pagopa-wisp-converter",
+      short_name : "wisp-cvt"
+    },
+    {
+      name : "pagopa-wisp-converter-technical-support",
+      short_name : "wisp-cvt-supp"
+    },
+    {
+      name : "pagopa-node-technical-support-worker",
+      short_name : "node-tech-supp"
+    },
+    {
+      name : "pagopa-mbd"
+      short_name : "mdb"
     }
   ]
   job = {

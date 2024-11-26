@@ -14,20 +14,20 @@ module "gh_runner_job" {
   runner_labels      = ["self-hosted", "job"]
   gh_repositories = [
     {
-      name : "pagopa-afm-calculator",
-      short_name : "afm-calc"
+      name : "pagopa-shared-toolbox",
+      short_name : "shd-tbox"
     },
     {
-      name : "pagopa-afm-utils",
-      short_name : "afm-utils"
+      name : "pagopa-platform-authorizer",
+      short_name : "pltfm-auth"
     },
     {
-      name : "pagopa-afm-marketplace-be",
-      short_name : "afm-mkt-be"
+      name : "pagopa-platform-authorizer-config",
+      short_name : "pltfm-auth-cfg"
     },
     {
-      name : "pagopa-afm-fee-reporting-service",
-      short_name : "afm-fee-rpt"
+      name : "pagopa-iuvgenerator",
+      short_name : "iuv-gen"
     }
   ]
   job = {

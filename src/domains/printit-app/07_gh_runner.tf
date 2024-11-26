@@ -14,20 +14,20 @@ module "gh_runner_job" {
   runner_labels      = ["self-hosted", "job"]
   gh_repositories = [
     {
-      name : "pagopa-afm-calculator",
-      short_name : "afm-calc"
+      name : "pagopa-print-payment-notice-service",
+      short_name : "print-not-svc"
     },
     {
-      name : "pagopa-afm-utils",
-      short_name : "afm-utils"
+      name : "pagopa-print-payment-notice-generator",
+      short_name : "print-not-gen"
     },
     {
-      name : "pagopa-afm-marketplace-be",
-      short_name : "afm-mkt-be"
+      name : "pagopa-print-payment-notice-functions",
+      short_name : "print-not-fn"
     },
     {
-      name : "pagopa-afm-fee-reporting-service",
-      short_name : "afm-fee-rpt"
+      name : "pagopa-template-notice-pdf",
+      short_name : "tpl-not-pdf"
     }
   ]
   job = {
