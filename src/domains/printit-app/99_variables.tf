@@ -216,3 +216,10 @@ variable "pod_disruption_budgets" {
   description = "Pod disruption budget for domain namespace"
   default     = {}
 }
+
+
+variable "app_service_ip_restriction_default_action" {
+  type        = string
+  default     = "Allow"
+  description = "(Optional) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. Defaults to Allow."
+}

@@ -54,7 +54,7 @@ resource "azurerm_monitor_metric_alert" "snat_connection_over_10K" {
   name                = "${local.product}-natgw-connetion-over-45k"
   resource_group_name = azurerm_resource_group.monitor_rg.name
   scopes              = [module.nat_gw[0].id]
-  description         = "Total SNAT connections over 45K"
+  description         = "${local.product}-natgw Total SNAT connections over 45K"
   severity            = 3
   frequency           = "PT5M"
   window_size         = "PT5M"

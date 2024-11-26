@@ -595,7 +595,7 @@ module "app_gw" {
   monitor_metric_alert_criteria = {
 
     compute_units_usage = {
-      description   = "Abnormal compute units usage, probably an high traffic peak"
+      description   = "${module.app_gw.name} Abnormal compute units usage, probably an high traffic peak"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 2
@@ -616,7 +616,7 @@ module "app_gw" {
     }
 
     backend_pools_status = {
-      description   = "One or more backend pools are down, check Backend Health on Azure portal"
+      description   = "${module.app_gw.name} One or more backend pools are down, check Backend Health on Azure portal"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 0
@@ -635,7 +635,7 @@ module "app_gw" {
     }
 
     total_requests = {
-      description   = "Traffic is raising"
+      description   = "${module.app_gw.name} Traffic is raising"
       frequency     = "PT5M"
       window_size   = "PT15M"
       severity      = 3
@@ -656,7 +656,7 @@ module "app_gw" {
     }
 
     failed_requests = {
-      description   = "Abnormal failed requests"
+      description   = "${module.app_gw.name} Abnormal failed requests"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1

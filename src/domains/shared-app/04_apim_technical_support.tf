@@ -2,7 +2,7 @@
 ## Products ##
 ##############
 module "apim_technical_support_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.20.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "technical_support_api"
   display_name = "API Assistenza"
