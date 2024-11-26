@@ -45,7 +45,7 @@ locals {
  * CDN
  */
 module "pagopa_shared_toolbox_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/cdn"
 
   count               = var.pagopa_shared_toolbox_enabled ? 1 : 0
   name                = "shared-toolbox"
@@ -55,7 +55,6 @@ module "pagopa_shared_toolbox_cdn" {
 
   hostname              = format("%s.%s.%s", var.cname_record_name, var.apim_dns_zone_prefix, var.external_domain)
   https_rewrite_enabled = true
-  lock_enabled          = false
 
   storage_account_replication_type = var.cdn_storage_account_replication_type
 
@@ -70,6 +69,8 @@ module "pagopa_shared_toolbox_cdn" {
   keyvault_vault_name          = data.azurerm_key_vault.kv.name
 
   querystring_caching_behaviour = "BypassCaching"
+
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 
   global_delivery_rule = {
     cache_expiration_action       = []

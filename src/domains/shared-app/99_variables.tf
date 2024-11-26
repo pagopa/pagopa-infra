@@ -335,3 +335,9 @@ variable "ecommerce_for_io_pm_npg" {
   description = "eCommerce for io gateway (3 values allowed: 'NPG','PM','NPGFF')"
   default     = "NPGFF"
 }
+
+variable "function_app_ip_restriction_default_action" {
+  type        = string
+  description = "(Optional) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. Defaults to Allow."
+  default     = "Allow"
+}

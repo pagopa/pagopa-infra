@@ -94,14 +94,14 @@ locals {
     XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled"
     XDT_MicrosoftApplicationInsights_Mode           = "recommended"
     XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
-    TIMEOUT_DELAY                                   = 300
+    # WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
+    TIMEOUT_DELAY = 300
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
     WEBSITE_RUN_FROM_PACKAGE                        = "1"
-    WEBSITE_VNET_ROUTE_ALL                          = "1"
-    WEBSITE_DNS_SERVER                              = "168.63.129.16"
-    WEBSITE_ENABLE_SYNC_UPDATE_SITE                 = true
+    # WEBSITE_VNET_ROUTE_ALL                          = "1"
+    WEBSITE_DNS_SERVER              = "168.63.129.16"
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE = true
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 3000
@@ -136,14 +136,14 @@ locals {
     XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled"
     XDT_MicrosoftApplicationInsights_Mode           = "recommended"
     XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
-    TIMEOUT_DELAY                                   = 300
+    # WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
+    TIMEOUT_DELAY = 300
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
     WEBSITE_RUN_FROM_PACKAGE                        = "1"
-    WEBSITE_VNET_ROUTE_ALL                          = "1"
-    WEBSITE_DNS_SERVER                              = "168.63.129.16"
-    WEBSITE_ENABLE_SYNC_UPDATE_SITE                 = true
+    # WEBSITE_VNET_ROUTE_ALL                          = "1"
+    WEBSITE_DNS_SERVER              = "168.63.129.16"
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE = true
 
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITES_PORT                       = 80

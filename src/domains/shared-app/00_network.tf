@@ -14,7 +14,7 @@ data "azurerm_dns_zone" "public" {
 }
 
 module "taxonomy_function_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.6.0"
+  source                                    = "./.terraform/modules/__v3__/subnet"
   name                                      = "${local.project}-txnm-fn-snet"
   address_prefixes                          = var.taxonomy_function_subnet
   resource_group_name                       = local.vnet_resource_group_name
@@ -36,7 +36,7 @@ module "taxonomy_function_snet" {
 }
 
 module "shared_pdf_engine_app_service_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/subnet"
 
   name                                      = format("%s-pdf-engine-snet", local.project)
   address_prefixes                          = var.cidr_subnet_pdf_engine_app_service

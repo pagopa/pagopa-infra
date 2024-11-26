@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "pdf_engine_ha_rg" {
 }
 
 module "shared_pdf_engine_app_service_ha" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
+  source              = "./.terraform/modules/__v3__/app_service"
   count               = var.pdf_engine_app_ha_enabled ? 1 : 0
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.pdf_engine_ha_rg[0].name
@@ -37,13 +37,15 @@ module "shared_pdf_engine_app_service_ha" {
 
   subnet_id = module.shared_pdf_engine_app_service_snet.id
 
+  ip_restriction_default_action = var.function_app_ip_restriction_default_action
+
   tags = var.tags
 }
 
 module "shared_pdf_engine_slot_staging_ha" {
   count = var.env_short != "d" && var.pdf_engine_app_ha_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.69.1"
+  source = "./.terraform/modules/__v3__/app_service_slot"
 
   # App service plan
   # app_service_plan_id = module.shared_pdf_engine_app_service.plan_id
@@ -239,8 +241,9 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
 ################
 # java
 ################
+
 module "shared_pdf_engine_app_service_java_ha" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
+  source              = "./.terraform/modules/__v3__/app_service"
   count               = var.pdf_engine_app_ha_enabled ? 1 : 0
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.pdf_engine_ha_rg[0].name
@@ -261,6 +264,8 @@ module "shared_pdf_engine_app_service_java_ha" {
 
   health_check_path = "/info"
 
+  ip_restriction_default_action = var.function_app_ip_restriction_default_action
+
   app_settings = local.shared_pdf_engine_app_settings_java
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
@@ -274,7 +279,7 @@ module "shared_pdf_engine_app_service_java_ha" {
 module "shared_pdf_engine_java_slot_staging_ha" {
   count = var.env_short != "d" && var.pdf_engine_app_ha_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.69.1"
+  source = "./.terraform/modules/__v3__/app_service_slot"
 
   # App service plan
   # app_service_plan_id = module.shared_pdf_engine_app_service.plan_id
