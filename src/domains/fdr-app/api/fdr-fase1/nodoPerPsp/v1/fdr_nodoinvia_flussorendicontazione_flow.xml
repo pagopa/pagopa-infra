@@ -57,18 +57,17 @@
             return fdrFileName;
         }" value="@((string) context.Variables["xmlRendicontazione"])" duration="3600" caching-type="internal" />
 
-
-      <set-variable name="ftp_organization" value="{{ftp-organization}}" />
-      <set-variable name="is-ftp-enabled" value="@{
-                    var org_list = ((string) context.Variables["ftp_organization"]).Split(',');
-                    var org_fiscal_code = (string) context.Variables["identificativoDominio"];
-                    var is_ftp_enabled = Array.Exists(org_list, e => e == org_fiscal_code);
-                    return is_ftp_enabled;
-                    }" />
-
-      <!-- if is-fdr-nodo-pagopa-enable == true && EC non FTP then backend = fdr -->
+      <!-- is-fdr-nodo-pagopa-enable is used to switch traffic to pagoPA Fdr1 -->
       <choose>
           <when condition="@(${is-fdr-nodo-pagopa-enable})">
+              <set-variable name="ftp_organization" value="{{ftp-organization}}" />
+            <!-- is-ftp-enabled identifies if EC uses ftp, this traffic is managed by partner -->
+            <set-variable name="is-ftp-enabled" value="@{
+                      var org_list = ((string) context.Variables["ftp_organization"]).Split(',');
+                      var org_fiscal_code = (string) context.Variables["identificativoDominio"];
+                      var is_ftp_enabled = Array.Exists(org_list, e => e == org_fiscal_code);
+                      return is_ftp_enabled;
+                      }" />
               <choose>
                   <when condition="@((bool)context.Variables["is-ftp-enabled"])">
                       <send-one-way-request mode="new">
