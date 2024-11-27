@@ -543,3 +543,9 @@ variable "limits_cpu" {
   description = "Connect Limit CPU"
   default     = "0.5"
 }
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
+}
