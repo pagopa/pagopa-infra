@@ -18,4 +18,6 @@ data "azurerm_resource_group" "node_cfg_sync_rg" {
   name = "${local.project}-cfg-sync-rg"
 }
 
-
+data "azurerm_resource_group" "identity_rg" {
+  name = "${local.product}-identity-rg"
+}
