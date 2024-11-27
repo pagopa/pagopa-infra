@@ -95,6 +95,22 @@ locals {
 
     pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
   }
+
+  apiconfig_cache_export_locals = {
+    hostname = var.env == "prod" ? "weuprod.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
+
+    product_id            = "apiconfig-cache-export"
+    display_name          = "API Config Cache - Export"
+    description           = "Export APIs of pagoPA cache"
+    subscription_required = true
+    subscription_limit    = 1000
+
+    path        = "api-config-cache-export"
+    service_url = null
+
+    pagopa_tenant_id = data.azurerm_client_config.current.tenant_id
+  }
+
   apim_x_node_product_id = "apim_for_node"
   cfg_x_node_product_id  = "cfg-for-node"
 
