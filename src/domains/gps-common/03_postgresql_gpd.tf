@@ -59,7 +59,7 @@ data "azurerm_private_dns_zone" "postgres" {
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
 module "postgres_flexible_server_private" { # private only into UAT and PROD env
   source = "./.terraform/modules/__v3__/postgres_flexible_server"
-  count  = 1 # forced
+  count  = var.env_short != "d" ? 1 : 0 # forced
 
   name = format("%s-gpd-pgflex", local.product)
 
@@ -118,7 +118,7 @@ module "postgres_flexible_server_private" { # private only into UAT and PROD env
 }
 
 resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
-  count = 1 # forced
+  count  = var.env_short != "d" ? 1 : 0 # forced
 
   name      = var.gpd_db_name
   server_id = module.postgres_flexible_server_private[0].id
@@ -127,7 +127,7 @@ resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_connection" {
-  count = 1 # forced
+  count  = var.env_short != "d" ? 1 : 0 # forced
 
   name      = "max_connections"
   server_id = module.postgres_flexible_server_private[0].id
@@ -136,7 +136,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_con
 
 # Message    : FATAL: unsupported startup parameter: extra_float_digits
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_ignore_startup_parameters" {
-  count = 1 # forced
+  count  = var.env_short != "d" ? 1 : 0 # forced
 
   name      = "pgbouncer.ignore_startup_parameters"
   server_id = module.postgres_flexible_server_private[0].id
@@ -144,7 +144,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_ignore_
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_pool_size" {
-  count = 1 # forced
+  count  = var.env_short != "d" ? 1 : 0 # forced
 
   name      = "pgbouncer.min_pool_size"
   server_id = module.postgres_flexible_server_private[0].id
@@ -153,13 +153,15 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_poo
 
 # CDC https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-logical
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_worker_process" {
+  count  = var.env_short != "d" ? 1 : 0 # forced
+
   name      = "max_worker_processes"
   server_id = module.postgres_flexible_server_private[0].id
   value     = var.pgres_flex_params.max_worker_process # var.env_short == "d" ? 16 : 32
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_wal_level" {
-  count = var.pgres_flex_params.wal_level != null ? 1 : 0
+  count = var.pgres_flex_params.wal_level != null && var.env_short != "d" ? 1 : 0 # forced ? 1 : 0
 
   name      = "wal_level"
   server_id = module.postgres_flexible_server_private[0].id
@@ -167,7 +169,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_wal_lev
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_shared_preoload_libraries" {
-  count = var.pgres_flex_params.wal_level != null ? 1 : 0
+  count = var.pgres_flex_params.wal_level != null && var.env_short != "d" ? 1 : 0
 
   name      = "shared_preload_libraries"
   server_id = module.postgres_flexible_server_private[0].id

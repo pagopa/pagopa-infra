@@ -75,7 +75,7 @@ pgres_flex_params = {
   enable_private_dns_registration_virtual_endpoint = false
   max_worker_process                               = 16
   wal_level                                        = "logical"
-  shared_preoload_libraries                        = "pg_failover_slots"
+  shared_preoload_libraries                        = "pg_failover_slots,pglogical"
   public_network_access_enabled                    = true
 }
 
