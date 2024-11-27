@@ -1060,6 +1060,31 @@
         ],
         "description": "Product from which transaction belongs"
       },
+      "SearchTransactionRequestDateTimeRange": {
+        "type": "object",
+        "description": "Search transaction by date and time range",
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "DATE_TIME_RANGE",
+            "example": "DATE_TIME_RANGE"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Search start date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Search end date"
+          }
+        },
+        "required": [
+          "startDate",
+          "endDate"
+        ]
+      },
       "PmSearchTransactionRequest": {
         "type": "object",
         "oneOf": [
@@ -1068,13 +1093,17 @@
           },
           {
             "$ref": "#/components/schemas/SearchTransactionRequestEmail"
+          },
+          {
+            "$ref": "#/components/schemas/SearchTransactionRequestDateTimeRange"
           }
         ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
             "USER_FISCAL_CODE": "#/components/schemas/SearchTransactionRequestFiscalCode",
-            "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail"
+            "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail",
+            "DATE_TIME_RANGE": "#/components/schemas/SearchTransactionRequestDateTimeRange"
           }
         }
       },
@@ -1770,13 +1799,17 @@
                 },
                 {
                   "$ref": "#/components/schemas/SearchTransactionRequestEmail"
+                },
+                {
+                  "$ref": "#/components/schemas/SearchTransactionRequestDateTimeRange"
                 }
               ],
               "discriminator": {
                 "propertyName": "type",
                 "mapping": {
                   "USER_FISCAL_CODE": "#/components/schemas/SearchTransactionRequestFiscalCode",
-                  "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail"
+                  "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail",
+                  "DATE_TIME_RANGE": "#/components/schemas/SearchTransactionRequestDateTimeRange"
                 }
               }
             },
@@ -1791,6 +1824,15 @@
                 "value": {
                   "type": "USER_EMAIL",
                   "userEmail": "test@test.it"
+                }
+              },
+              "search by date and time range": {
+                "value": {
+                  "type": "DATE_TIME_RANGE",
+                  "timeRange": {
+                    "startDate": "2023-01-01T00:00:00.000",
+                    "endDate": "2023-01-01T02:00:00.000"
+                  }
                 }
               }
             }
