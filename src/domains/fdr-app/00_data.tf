@@ -128,3 +128,7 @@ data "azurerm_api_management_api" "apim_nodo_per_psp_api_v1_auth" {
 data "azurerm_resource_group" "rg_api" {
   name = "${local.product}-api-rg"
 }
+
+data "azurerm_resource_group" "identity_rg" {
+  name = "${local.product}-identity-rg"
+}

@@ -16,7 +16,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 63f6181a6f3a51707a2ab4795bdbed2d888c708b |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 551a56a4bf841cd431b51ec951639e74260daf6a |
 | <a name="module_apim_afm_calculator_node_product"></a> [apim\_afm\_calculator\_node\_product](#module\_apim\_afm\_calculator\_node\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_afm_calculator_product"></a> [apim\_afm\_calculator\_product](#module\_apim\_afm\_calculator\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_afm_marketplace_product"></a> [apim\_afm\_marketplace\_product](#module\_apim\_afm\_marketplace\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
@@ -27,6 +27,7 @@
 | <a name="module_apim_api_afm_marketplace_api_v1"></a> [apim\_api\_afm\_marketplace\_api\_v1](#module\_apim\_api\_afm\_marketplace\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_afm_marketplace_technical_support_api_v1"></a> [apim\_api\_afm\_marketplace\_technical\_support\_api\_v1](#module\_apim\_api\_afm\_marketplace\_technical\_support\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_afm_utils_v1"></a> [apim\_api\_afm\_utils\_v1](#module\_apim\_api\_afm\_utils\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
 
@@ -78,6 +79,7 @@
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
+| [azurerm_resource_group.identity_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.rg_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
