@@ -307,7 +307,7 @@ data "azurerm_eventhub_authorization_rule" "receiver_evt_rx_event_hub_connection
 
 resource "azurerm_key_vault_secret" "receiver_evt_rx_event_hub_connection_string_test" {
   count        = var.env_short == "u" ? 1 : 0
-  name         = "receiver-evt-rx-event-hub-connection-string-soak-test"
+  name         = "receiver-evt-rx-event-hub-connection-string-test"
   value        = data.azurerm_eventhub_authorization_rule.receiver_evt_rx_event_hub_connection_string_test[0].primary_connection_string
   key_vault_id = module.key_vault.id
 }
