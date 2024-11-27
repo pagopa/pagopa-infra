@@ -1,11 +1,12 @@
-prefix          = "pagopa"
-env_short       = "p"
-env             = "prod"
-domain          = "fdr"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "prod"
+prefix                 = "pagopa"
+env_short              = "p"
+env                    = "prod"
+domain                 = "fdr"
+location               = "westeurope"
+location_short         = "weu"
+location_string        = "West Europe"
+instance               = "prod"
+gh_runner_job_location = "italynorth"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -34,7 +35,7 @@ storage_account_info = {
   account_replication_type          = "GZRS"
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
-  use_legacy_defender_version       = false
+  use_legacy_defender_version       = true
   public_network_access_enabled     = false
 }
 
@@ -44,7 +45,7 @@ reporting_fdr_storage_account_info = {
   account_replication_type          = "GZRS"
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
-  use_legacy_defender_version       = false
+  use_legacy_defender_version       = true
   public_network_access_enabled     = false
 }
 
