@@ -272,7 +272,7 @@ ehns_metric_alerts = {
         name     = "EntityName"
         operator = "Include"
         values = [
-          "payment-wallet-evt-tx",
+          "payment-wallet-ingestion-dl",
         ]
       }
     ],
