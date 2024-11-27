@@ -65,6 +65,12 @@ module "gh_runner_job" {
     cluster_name = "${local.product}-${var.location_short}-${var.instance}-aks"
     rg           = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
   }
+  function_deploy = {
+    enabled = true
+    function_rg = [
+      azurerm_resource_group.gpd_rg.name
+    ]
+  }
 
   location            = var.location
   prefix              = var.prefix

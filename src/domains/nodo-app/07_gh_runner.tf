@@ -74,6 +74,13 @@ module "gh_runner_job" {
     rg           = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
   }
 
+  function_deploy = {
+    enabled = true
+    function_rg = [
+      data.azurerm_resource_group.nodo_verify_ko_rg.name
+    ]
+  }
+
   location            = var.location
   prefix              = var.prefix
   resource_group_name = data.azurerm_resource_group.identity_rg.name

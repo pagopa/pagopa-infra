@@ -38,6 +38,15 @@ module "gh_runner_job" {
     rg           = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
   }
 
+  function_deploy = {
+    enabled = true
+    function_rg = [
+      azurerm_resource_group.reporting_fdr_rg.name,
+      data.azurerm_resource_group.fdr_re_rg.name,
+      data.azurerm_resource_group.fdr_rg.name,
+    ]
+  }
+
   location            = var.location
   prefix              = var.prefix
   resource_group_name = data.azurerm_resource_group.identity_rg.name
