@@ -132,7 +132,7 @@ No outputs.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 3fc1dafaf4354e24ca8673005ec0caf4106343a3 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 551a56a4bf841cd431b51ec951639e74260daf6a |
 | <a name="module_apim_api_pdf_engine_api_v1"></a> [apim\_api\_pdf\_engine\_api\_v1](#module\_apim\_api\_pdf\_engine\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_pdf_engine_node_api_v1"></a> [apim\_api\_pdf\_engine\_node\_api\_v1](#module\_apim\_api\_pdf\_engine\_node\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_notices_blob_api_v1"></a> [apim\_notices\_blob\_api\_v1](#module\_apim\_notices\_blob\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -141,6 +141,7 @@ No outputs.
 | <a name="module_apim_notices_service_product_external"></a> [apim\_notices\_service\_product\_external](#module\_apim\_notices\_service\_product\_external) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_notices_service_product_internal"></a> [apim\_notices\_service\_product\_internal](#module\_apim\_notices\_service\_product\_internal) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_pdf_engine_product"></a> [apim\_pdf\_engine\_product](#module\_apim\_pdf\_engine\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
 | <a name="module_kubernetes_service_account"></a> [kubernetes\_service\_account](#module\_kubernetes\_service\_account) | ./.terraform/modules/__v3__/kubernetes_service_account | n/a |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
 | <a name="module_printit_pdf_engine_app_service"></a> [printit\_pdf\_engine\_app\_service](#module\_printit\_pdf\_engine\_app\_service) | ./.terraform/modules/__v3__/app_service | n/a |
@@ -223,6 +224,7 @@ No outputs.
 | [azurerm_monitor_action_group.opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_resource_group.identity_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.monitor_italy_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_storage_account.institutions_storage_sa](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
 | [azurerm_storage_account.notices_storage_sa](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |

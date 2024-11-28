@@ -341,3 +341,9 @@ variable "function_app_ip_restriction_default_action" {
   description = "(Optional) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. Defaults to Allow."
   default     = "Allow"
 }
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
+}

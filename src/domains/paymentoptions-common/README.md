@@ -1,13 +1,13 @@
 # paymentoptions-common
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.6 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.47.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.106.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | < 4.0.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.2 |
 
 ## Modules
@@ -87,4 +87,4 @@
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
