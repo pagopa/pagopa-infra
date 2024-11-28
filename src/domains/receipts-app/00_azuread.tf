@@ -14,3 +14,7 @@ data "azuread_group" "adgroup_externals" {
 data "azuread_group" "adgroup_security" {
   display_name = "${local.product}-adgroup-security"
 }
+
+data "azurerm_resource_group" "identity_rg" {
+  name = "${local.product}-identity-rg"
+}
