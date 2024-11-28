@@ -173,7 +173,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-convert
 let errorsToExclude = dynamic([
   "WIC-1300", // payment position already paid
   "WIC-2001", // RPT timer creation
-  "WIC-3001", "WIC-3002", "WIC-3003", "WIC-3004", "WIC-3005", "WIC-3006" // client errors
+  "WIC-3004" // client errors
 ]);
 traces
 | where cloud_RoleName == "pagopawispconverter"
