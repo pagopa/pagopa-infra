@@ -14,7 +14,7 @@ data "azurerm_key_vault_secret" "pgres_admin_pwd" {
 }
 
 resource "azurerm_resource_group" "flex_data" {
-  count = 1 # forced
+  count = 1 # forced ( before exits onliy in UAT and PROD now DEV too)
 
   name = format("%s-pgres-flex-rg", local.product)
 
@@ -30,7 +30,7 @@ data "azurerm_resource_group" "data" {
 module "postgres_flexible_snet" {
   source = "./.terraform/modules/__v3__/subnet"
 
-  count = 1 # forced
+  count = 1 # forced ( before exits onliy in UAT and PROD now DEV too)
 
   name                                      = format("%s-pgres-flexible-snet", local.product)
   address_prefixes                          = var.cidr_subnet_pg_flex_dbms
@@ -51,7 +51,7 @@ module "postgres_flexible_snet" {
 }
 
 data "azurerm_private_dns_zone" "postgres" {
-  count               = var.env_short != "d" ? 1 : 0
+  count               = var.env_short != "d" ? 1 : 0  # forced ( before exits onliy in UAT and PROD now DEV too)
   name                = "private.postgres.database.azure.com"
   resource_group_name = local.vnet_resource_group_name
 }
@@ -59,7 +59,7 @@ data "azurerm_private_dns_zone" "postgres" {
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
 module "postgres_flexible_server_private" { # private only into UAT and PROD env
   source = "./.terraform/modules/__v3__/postgres_flexible_server"
-  count  = var.env_short != "d" ? 1 : 0 # forced
+  count  = var.env_short != "d" ? 1 : 0 # forced 2 create o delete ( for housekeeping old GPD db)
 
   name = format("%s-gpd-pgflex", local.product)
 
