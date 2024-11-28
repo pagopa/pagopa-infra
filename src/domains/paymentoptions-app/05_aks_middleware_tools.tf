@@ -1,7 +1,6 @@
 module "tls_checker" {
   source = "./.terraform/modules/__v3__/tls_checker"
 
-
   https_endpoint                                            = local.domain_hostname
   alert_name                                                = local.domain_hostname
   alert_enabled                                             = true

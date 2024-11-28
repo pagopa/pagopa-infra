@@ -7,19 +7,19 @@ terraform {
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "<= 3.0.2"
+      version = "<= 2.47.0"
     }
     null = {
       source  = "hashicorp/null"
-      version = "<= 3.2.3"
+      version = "<= 3.2.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "<= 2.33.0"
+      version = "<= 2.29.0"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "<= 2.16.0"
+      version = "<= 2.12.1"
     }
   }
 
