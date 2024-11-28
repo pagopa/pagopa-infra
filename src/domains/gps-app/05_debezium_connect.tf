@@ -87,6 +87,7 @@ locals {
     postgres_username     = data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value
     postgres_password     = data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value
     tasks_max             = var.tasks_max
+    max_threads           = var.max_threads
   })
 
 }

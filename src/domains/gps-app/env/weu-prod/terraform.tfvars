@@ -112,6 +112,7 @@ fn_app_storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
+
 ### debezium kafka conn
 zookeeper_replicas       = 3
 zookeeper_request_memory = "512Mi"
@@ -121,11 +122,13 @@ zookeeper_limits_cpu     = 1
 zookeeper_jvm_xms        = "512m"
 zookeeper_jvm_xmx        = "1024m"
 zookeeper_storage_size   = "100Gi"
-replicas                 = 3
+### debezium kafka_connect_yaml
+replicas                 = 2
 request_cpu              = 0.5
+limits_cpu               = 2
 request_memory           = "512Mi"
-limits_memory            = "1024Mi"
-limits_cpu               = 1
+limits_memory            = "3072Mi"
 postgres_db_name         = "apd"
 tasks_max                = "1"
 container_registry       = "pagopapcommonacr.azurecr.io"
+max_threads              = 10

@@ -543,3 +543,9 @@ variable "limits_cpu" {
   description = "Connect Limit CPU"
   default     = "0.5"
 }
+
+variable "max_threads" {
+  type        = number
+  description = "Number of max_threads"
+  default     = 1
+}
