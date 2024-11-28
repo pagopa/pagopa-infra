@@ -68,4 +68,6 @@ function_app_storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
-checkout_cdn_storage_replication_type = "GZRS"
+checkout_cdn_storage_replication_type      = "GZRS"
+checkout_ip_restriction_default_action     = "Deny"
+pagopa_proxy_ip_restriction_default_action = "Deny"

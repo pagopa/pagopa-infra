@@ -29,7 +29,7 @@ locals {
 
 ## Function fdr_json_to_xml
 module "fdr_json_to_xml_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
+  source = "./.terraform/modules/__v3__/function_app"
 
   resource_group_name = data.azurerm_resource_group.fdr_rg.name
   name                = "${local.project}-json-to-xml-fn"
@@ -58,10 +58,6 @@ module "fdr_json_to_xml_function" {
   #sticky_connection_string_names = ["COSMOS_CONN_STRING"]
   client_certificate_mode = "Optional"
 
-  cors = {
-    allowed_origins = []
-  }
-
   app_service_plan_name = "${local.project}-json-to-xml-fn-plan"
   app_service_plan_info = {
     kind                         = var.fdr_json_to_xml_function.kind
@@ -85,7 +81,7 @@ module "fdr_json_to_xml_function" {
 module "fdr_json_to_xml_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
+  source = "./.terraform/modules/__v3__/function_app_slot"
 
   app_service_plan_id                      = module.fdr_json_to_xml_function.app_service_plan_id
   function_app_id                          = module.fdr_json_to_xml_function.id

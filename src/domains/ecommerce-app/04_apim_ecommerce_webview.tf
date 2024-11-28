@@ -17,7 +17,7 @@ resource "azurerm_api_management_named_value" "ecommerce-webview-jwt-signing-key
 ##############
 
 module "apim_ecommerce_webview_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "ecommerce-webview"
   display_name = "eCommerce for webview"
@@ -54,7 +54,7 @@ resource "azurerm_api_management_api_version_set" "apim_ecommerce_webview_api" {
 }
 
 module "apim_ecommerce_webview_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-ecommerce-webview-api"
   resource_group_name   = local.pagopa_apim_rg

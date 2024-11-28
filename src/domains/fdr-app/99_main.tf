@@ -4,7 +4,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "= 3.38.0"
+      version = "<= 3.116.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -20,7 +20,7 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "= 2.5.1"
+      version = "<= 2.12.1"
     }
   }
 
@@ -48,3 +48,9 @@ provider "helm" {
     config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
   }
 }
+
+module "__v3__" {
+  # v8.60.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=551a56a4bf841cd431b51ec951639e74260daf6a"
+}
+

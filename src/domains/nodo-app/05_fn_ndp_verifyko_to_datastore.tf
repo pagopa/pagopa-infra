@@ -53,7 +53,7 @@ locals {
 
 ## Function nodo_verifyko_to_datastore
 module "nodo_verifyko_to_datastore_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v7.33.0"
+  source = "./.terraform/modules/__v3__/function_app"
 
   resource_group_name = data.azurerm_resource_group.nodo_verify_ko_rg.name
   name                = "${local.project}-verifyko2ds-fn"
@@ -80,9 +80,6 @@ module "nodo_verifyko_to_datastore_function" {
   sticky_connection_string_names = ["COSMOS_CONN_STRING"]
   client_certificate_mode        = "Optional"
 
-  cors = {
-    allowed_origins = []
-  }
 
   app_service_plan_name = "${local.project}-verifyko-to-datastore-plan"
   app_service_plan_info = {
@@ -107,7 +104,7 @@ module "nodo_verifyko_to_datastore_function" {
 module "nodo_verifyko_to_datastore_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v7.33.0"
+  source = "./.terraform/modules/__v3__/function_app_slot"
 
   app_service_plan_id                      = module.nodo_verifyko_to_datastore_function.app_service_plan_id
   function_app_id                          = module.nodo_verifyko_to_datastore_function.id

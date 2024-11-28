@@ -3,7 +3,7 @@
 ##############
 
 module "apim_ecommerce_checkout_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "ecommerce-checkout"
   display_name = "Ecommerce for checkout pagoPA"
@@ -18,6 +18,38 @@ module "apim_ecommerce_checkout_product" {
   subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/_base_policy.xml")
+}
+
+##################
+## Named value  ##
+##################
+
+data "azurerm_key_vault_secret" "ecommerce_checkout_sessions_jwt_secret" {
+  name         = "sessions-jwt-secret"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_checkout_transaction_jwt_signing_key" {
+  name                = "ecommerce-checkout-transaction-jwt-signing-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-checkout-transaction-jwt-signing-key"
+  value               = data.azurerm_key_vault_secret.ecommerce_checkout_sessions_jwt_secret.value
+  secret              = true
+}
+
+data "azurerm_key_vault_secret" "ecommerce_for_checkout_google_recaptcha_secret" {
+  name         = "ecommerce-for-checkout-google-recaptcha-secret"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_for_checkout_google_recaptcha_secret_named_value" {
+  name                = "ecommerce-for-checkout-google-recaptcha-secret"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = "ecommerce-for-checkout-google-recaptcha-secret"
+  value               = data.azurerm_key_vault_secret.ecommerce_for_checkout_google_recaptcha_secret.value
+  secret              = true
 }
 
 # pagopa-ecommerce APIs for checkout
@@ -40,7 +72,7 @@ resource "azurerm_api_management_api_version_set" "ecommerce_checkout_api_v1" {
 }
 
 module "apim_ecommerce_checkout_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-ecommerce-checkout-api"
   resource_group_name   = local.pagopa_apim_rg
@@ -65,20 +97,6 @@ module "apim_ecommerce_checkout_api_v1" {
     ecommerce_ingress_hostname = local.ecommerce_hostname
     checkout_origin            = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
   })
-}
-
-data "azurerm_key_vault_secret" "ecommerce_checkout_sessions_jwt_secret" {
-  name         = "sessions-jwt-secret"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-resource "azurerm_api_management_named_value" "ecommerce_checkout_transaction_jwt_signing_key" {
-  name                = "ecommerce-checkout-transaction-jwt-signing-key"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "ecommerce-checkout-transaction-jwt-signing-key"
-  value               = data.azurerm_key_vault_secret.ecommerce_checkout_sessions_jwt_secret.value
-  secret              = true
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_transaction_info" {
@@ -179,7 +197,7 @@ resource "azurerm_api_management_api_operation_policy" "get_method_testing" {
 # pagopa-ecommerce APIs for checkout V2
 
 module "apim_ecommerce_checkout_api_v2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-ecommerce-checkout-api"
   resource_group_name   = local.pagopa_apim_rg

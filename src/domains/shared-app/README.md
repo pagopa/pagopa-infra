@@ -1,57 +1,59 @@
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.3.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.30.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.40.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | <= 5.12.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.5.1 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.14.0 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.1.1 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_api_authorizer_api_v1"></a> [apim\_api\_authorizer\_api\_v1](#module\_apim\_api\_authorizer\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
-| <a name="module_apim_api_authorizer_config_api_v1"></a> [apim\_api\_authorizer\_config\_api\_v1](#module\_apim\_api\_authorizer\_config\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
-| <a name="module_apim_api_enrolled_orgs_api_v1"></a> [apim\_api\_enrolled\_orgs\_api\_v1](#module\_apim\_api\_enrolled\_orgs\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
-| <a name="module_apim_api_influxdb_api_v1"></a> [apim\_api\_influxdb\_api\_v1](#module\_apim\_api\_influxdb\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_influxdb_api_v2"></a> [apim\_api\_influxdb\_api\_v2](#module\_apim\_api\_influxdb\_api\_v2) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_pdf_engine_api_v1"></a> [apim\_api\_pdf\_engine\_api\_v1](#module\_apim\_api\_pdf\_engine\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
-| <a name="module_apim_api_pdf_engine_node_api_v1"></a> [apim\_api\_pdf\_engine\_node\_api\_v1](#module\_apim\_api\_pdf\_engine\_node\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
-| <a name="module_apim_api_poc_api_v1"></a> [apim\_api\_poc\_api\_v1](#module\_apim\_api\_poc\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_statuspage_api_v1"></a> [apim\_api\_statuspage\_api\_v1](#module\_apim\_api\_statuspage\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_taxonomy_api_v1"></a> [apim\_api\_taxonomy\_api\_v1](#module\_apim\_api\_taxonomy\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
-| <a name="module_apim_authorizer_config_product"></a> [apim\_authorizer\_config\_product](#module\_apim\_authorizer\_config\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.6.0 |
-| <a name="module_apim_authorizer_product"></a> [apim\_authorizer\_product](#module\_apim\_authorizer\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.6.0 |
-| <a name="module_apim_enrolled_orgs_product"></a> [apim\_enrolled\_orgs\_product](#module\_apim\_enrolled\_orgs\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.6.0 |
-| <a name="module_apim_influxdb_product"></a> [apim\_influxdb\_product](#module\_apim\_influxdb\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_pdf_engine_product"></a> [apim\_pdf\_engine\_product](#module\_apim\_pdf\_engine\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.6.0 |
-| <a name="module_apim_poc_product"></a> [apim\_poc\_product](#module\_apim\_poc\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.6.0 |
-| <a name="module_apim_session_wallet_api_v1"></a> [apim\_session\_wallet\_api\_v1](#module\_apim\_session\_wallet\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.3.0 |
-| <a name="module_apim_session_wallet_product"></a> [apim\_session\_wallet\_product](#module\_apim\_session\_wallet\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.3.0 |
-| <a name="module_apim_statuspage_product"></a> [apim\_statuspage\_product](#module\_apim\_statuspage\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_taxonomy_product"></a> [apim\_taxonomy\_product](#module\_apim\_taxonomy\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.3.0 |
-| <a name="module_apim_technical_support_product"></a> [apim\_technical\_support\_product](#module\_apim\_technical\_support\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.20.0 |
-| <a name="module_pagopa_shared_toolbox_cdn"></a> [pagopa\_shared\_toolbox\_cdn](#module\_pagopa\_shared\_toolbox\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn | v6.4.1 |
-| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.6.0 |
-| <a name="module_shared_pdf_engine_app_service"></a> [shared\_pdf\_engine\_app\_service](#module\_shared\_pdf\_engine\_app\_service) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v6.3.0 |
-| <a name="module_shared_pdf_engine_app_service_ha"></a> [shared\_pdf\_engine\_app\_service\_ha](#module\_shared\_pdf\_engine\_app\_service\_ha) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v7.69.1 |
-| <a name="module_shared_pdf_engine_app_service_java"></a> [shared\_pdf\_engine\_app\_service\_java](#module\_shared\_pdf\_engine\_app\_service\_java) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v6.3.0 |
-| <a name="module_shared_pdf_engine_app_service_java_ha"></a> [shared\_pdf\_engine\_app\_service\_java\_ha](#module\_shared\_pdf\_engine\_app\_service\_java\_ha) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v7.69.1 |
-| <a name="module_shared_pdf_engine_app_service_snet"></a> [shared\_pdf\_engine\_app\_service\_snet](#module\_shared\_pdf\_engine\_app\_service\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.3.0 |
-| <a name="module_shared_pdf_engine_java_slot_staging"></a> [shared\_pdf\_engine\_java\_slot\_staging](#module\_shared\_pdf\_engine\_java\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v6.6.0 |
-| <a name="module_shared_pdf_engine_java_slot_staging_ha"></a> [shared\_pdf\_engine\_java\_slot\_staging\_ha](#module\_shared\_pdf\_engine\_java\_slot\_staging\_ha) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v7.69.1 |
-| <a name="module_shared_pdf_engine_slot_staging"></a> [shared\_pdf\_engine\_slot\_staging](#module\_shared\_pdf\_engine\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v6.6.0 |
-| <a name="module_shared_pdf_engine_slot_staging_ha"></a> [shared\_pdf\_engine\_slot\_staging\_ha](#module\_shared\_pdf\_engine\_slot\_staging\_ha) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v7.69.1 |
-| <a name="module_taxonomy_function"></a> [taxonomy\_function](#module\_taxonomy\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.20.0 |
-| <a name="module_taxonomy_function_slot_staging"></a> [taxonomy\_function\_slot\_staging](#module\_taxonomy\_function\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v6.9.0 |
-| <a name="module_taxonomy_function_snet"></a> [taxonomy\_function\_snet](#module\_taxonomy\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.6.0 |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v6.7.0 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 551a56a4bf841cd431b51ec951639e74260daf6a |
+| <a name="module_apim_api_authorizer_api_v1"></a> [apim\_api\_authorizer\_api\_v1](#module\_apim\_api\_authorizer\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_authorizer_config_api_v1"></a> [apim\_api\_authorizer\_config\_api\_v1](#module\_apim\_api\_authorizer\_config\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_enrolled_orgs_api_v1"></a> [apim\_api\_enrolled\_orgs\_api\_v1](#module\_apim\_api\_enrolled\_orgs\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_influxdb_api_v1"></a> [apim\_api\_influxdb\_api\_v1](#module\_apim\_api\_influxdb\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_influxdb_api_v2"></a> [apim\_api\_influxdb\_api\_v2](#module\_apim\_api\_influxdb\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_pdf_engine_api_v1"></a> [apim\_api\_pdf\_engine\_api\_v1](#module\_apim\_api\_pdf\_engine\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_pdf_engine_node_api_v1"></a> [apim\_api\_pdf\_engine\_node\_api\_v1](#module\_apim\_api\_pdf\_engine\_node\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_poc_api_v1"></a> [apim\_api\_poc\_api\_v1](#module\_apim\_api\_poc\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_statuspage_api_v1"></a> [apim\_api\_statuspage\_api\_v1](#module\_apim\_api\_statuspage\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_taxonomy_api_v1"></a> [apim\_api\_taxonomy\_api\_v1](#module\_apim\_api\_taxonomy\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_authorizer_config_product"></a> [apim\_authorizer\_config\_product](#module\_apim\_authorizer\_config\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_authorizer_product"></a> [apim\_authorizer\_product](#module\_apim\_authorizer\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_enrolled_orgs_product"></a> [apim\_enrolled\_orgs\_product](#module\_apim\_enrolled\_orgs\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_influxdb_product"></a> [apim\_influxdb\_product](#module\_apim\_influxdb\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_pdf_engine_product"></a> [apim\_pdf\_engine\_product](#module\_apim\_pdf\_engine\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_poc_product"></a> [apim\_poc\_product](#module\_apim\_poc\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_session_wallet_api_v1"></a> [apim\_session\_wallet\_api\_v1](#module\_apim\_session\_wallet\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_session_wallet_product"></a> [apim\_session\_wallet\_product](#module\_apim\_session\_wallet\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_statuspage_product"></a> [apim\_statuspage\_product](#module\_apim\_statuspage\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_taxonomy_product"></a> [apim\_taxonomy\_product](#module\_apim\_taxonomy\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_technical_support_product"></a> [apim\_technical\_support\_product](#module\_apim\_technical\_support\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
+| <a name="module_pagopa_shared_toolbox_cdn"></a> [pagopa\_shared\_toolbox\_cdn](#module\_pagopa\_shared\_toolbox\_cdn) | ./.terraform/modules/__v3__/cdn | n/a |
+| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
+| <a name="module_shared_pdf_engine_app_service"></a> [shared\_pdf\_engine\_app\_service](#module\_shared\_pdf\_engine\_app\_service) | ./.terraform/modules/__v3__/app_service | n/a |
+| <a name="module_shared_pdf_engine_app_service_ha"></a> [shared\_pdf\_engine\_app\_service\_ha](#module\_shared\_pdf\_engine\_app\_service\_ha) | ./.terraform/modules/__v3__/app_service | n/a |
+| <a name="module_shared_pdf_engine_app_service_java"></a> [shared\_pdf\_engine\_app\_service\_java](#module\_shared\_pdf\_engine\_app\_service\_java) | ./.terraform/modules/__v3__/app_service | n/a |
+| <a name="module_shared_pdf_engine_app_service_java_ha"></a> [shared\_pdf\_engine\_app\_service\_java\_ha](#module\_shared\_pdf\_engine\_app\_service\_java\_ha) | ./.terraform/modules/__v3__/app_service | n/a |
+| <a name="module_shared_pdf_engine_app_service_snet"></a> [shared\_pdf\_engine\_app\_service\_snet](#module\_shared\_pdf\_engine\_app\_service\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_shared_pdf_engine_java_slot_staging"></a> [shared\_pdf\_engine\_java\_slot\_staging](#module\_shared\_pdf\_engine\_java\_slot\_staging) | ./.terraform/modules/__v3__/app_service_slot | n/a |
+| <a name="module_shared_pdf_engine_java_slot_staging_ha"></a> [shared\_pdf\_engine\_java\_slot\_staging\_ha](#module\_shared\_pdf\_engine\_java\_slot\_staging\_ha) | ./.terraform/modules/__v3__/app_service_slot | n/a |
+| <a name="module_shared_pdf_engine_slot_staging"></a> [shared\_pdf\_engine\_slot\_staging](#module\_shared\_pdf\_engine\_slot\_staging) | ./.terraform/modules/__v3__/app_service_slot | n/a |
+| <a name="module_shared_pdf_engine_slot_staging_ha"></a> [shared\_pdf\_engine\_slot\_staging\_ha](#module\_shared\_pdf\_engine\_slot\_staging\_ha) | ./.terraform/modules/__v3__/app_service_slot | n/a |
+| <a name="module_taxonomy_function"></a> [taxonomy\_function](#module\_taxonomy\_function) | ./.terraform/modules/__v3__/function_app | n/a |
+| <a name="module_taxonomy_function_slot_staging"></a> [taxonomy\_function\_slot\_staging](#module\_taxonomy\_function\_slot\_staging) | ./.terraform/modules/__v3__/function_app_slot | n/a |
+| <a name="module_taxonomy_function_snet"></a> [taxonomy\_function\_snet](#module\_taxonomy\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
 
 ## Resources
 
@@ -100,10 +102,10 @@
 | [azurerm_resource_group.pagopa_shared_toolbox_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.pdf_engine_ha_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.shared_pdf_engine_app_service_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
-| [helm_release.influxdb](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
-| [helm_release.influxdb2](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
-| [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/2.5.1/docs/resources/release) | resource |
+| [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.influxdb](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.influxdb2](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_namespace.system_domain_namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_pod_disruption_budget_v1.shared](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/pod_disruption_budget_v1) | resource |
@@ -145,6 +147,7 @@
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
+| [azurerm_resource_group.identity_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.taxonomy_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_storage_account.pagopa_apiconfig_fe_sa](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/storage_account) | data source |
@@ -179,7 +182,9 @@
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
+| <a name="input_function_app_ip_restriction_default_action"></a> [function\_app\_ip\_restriction\_default\_action](#input\_function\_app\_ip\_restriction\_default\_action) | (Optional) The Default action for traffic that does not match any ip\_restriction rule. possible values include Allow and Deny. Defaults to Allow. | `string` | `"Allow"` | no |
 | <a name="input_function_app_storage_account_replication_type"></a> [function\_app\_storage\_account\_replication\_type](#input\_function\_app\_storage\_account\_replication\_type) | (Optional) Storage account replication type used for function apps | `string` | `"ZRS"` | no |
+| <a name="input_gh_runner_job_location"></a> [gh\_runner\_job\_location](#input\_gh\_runner\_job\_location) | (Optional) The GH runner container app job location. Consistent with the container app environment location | `string` | `"westeurope"` | no |
 | <a name="input_influxdb2_helm"></a> [influxdb2\_helm](#input\_influxdb2\_helm) | influxdb2 helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image = object({<br/>      name = string,<br/>      tag  = string<br/>    })<br/>  })</pre> | <pre>{<br/>  "chart_version": "2.1.0",<br/>  "image": {<br/>    "name": "influxdb",<br/>    "tag": "2.2.0-alpine@sha256:f3b54d91cae591fc3fde20299bd0b262f6f6d9a1f73b98d623b501e82c49d5fb"<br/>  }<br/>}</pre> | no |
 | <a name="input_influxdb_helm"></a> [influxdb\_helm](#input\_influxdb\_helm) | influxdb helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image = object({<br/>      name = string,<br/>      tag  = string<br/>    })<br/>  })</pre> | <pre>{<br/>  "chart_version": "4.12.0",<br/>  "image": {<br/>    "name": "influxdb",<br/>    "tag": "1.8.10-alpine@sha256:c436689dc135f204734d63b82fd03044fa3a5205127cb2d1fa7398ff224936b1"<br/>  }<br/>}</pre> | no |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
@@ -210,4 +215,4 @@
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

@@ -278,3 +278,13 @@ variable "pagopa_proxy_ha_enabled" {
   type        = bool
   description = "(Required) enables the deployment of pagopa proxy in HA"
 }
+
+variable "checkout_ip_restriction_default_action" {
+  type        = string
+  description = "(Required) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. "
+}
+
+variable "pagopa_proxy_ip_restriction_default_action" {
+  type        = string
+  description = "(Required) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. "
+}

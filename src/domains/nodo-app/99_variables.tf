@@ -424,6 +424,8 @@ variable "storage_account_info" {
     account_replication_type          = string
     access_tier                       = string
     advanced_threat_protection_enable = bool
+    use_legacy_defender_version       = bool
+    public_network_access_enabled     = bool
   })
 
   default = {
@@ -432,6 +434,8 @@ variable "storage_account_info" {
     account_replication_type          = "LRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
+    use_legacy_defender_version       = true
+    public_network_access_enabled     = false
   }
 }
 
@@ -469,3 +473,8 @@ variable "wfesp_dismantling" {
   })
 }
 
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
+}

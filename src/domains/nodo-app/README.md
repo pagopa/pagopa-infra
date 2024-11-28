@@ -8,8 +8,8 @@
 |------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.3.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.30.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.44.1 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.5.1 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.11.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
 
@@ -17,65 +17,67 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_api_mock_ec_api_replica_v1"></a> [apim\_api\_mock\_ec\_api\_replica\_v1](#module\_apim\_api\_mock\_ec\_api\_replica\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_mock_ec_api_v1"></a> [apim\_api\_mock\_ec\_api\_v1](#module\_apim\_api\_mock\_ec\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_mock_ec_secondary_api_replica_v1"></a> [apim\_api\_mock\_ec\_secondary\_api\_replica\_v1](#module\_apim\_api\_mock\_ec\_secondary\_api\_replica\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_mock_ec_secondary_api_v1"></a> [apim\_api\_mock\_ec\_secondary\_api\_v1](#module\_apim\_api\_mock\_ec\_secondary\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_mock_pm_api_v1"></a> [apim\_api\_mock\_pm\_api\_v1](#module\_apim\_api\_mock\_pm\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_mock_psp_api_replica_v1"></a> [apim\_api\_mock\_psp\_api\_replica\_v1](#module\_apim\_api\_mock\_psp\_api\_replica\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_mock_psp_api_v1"></a> [apim\_api\_mock\_psp\_api\_v1](#module\_apim\_api\_mock\_psp\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_mock_psp_secondary_api_replica_v1"></a> [apim\_api\_mock\_psp\_secondary\_api\_replica\_v1](#module\_apim\_api\_mock\_psp\_secondary\_api\_replica\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_mock_psp_secondary_api_v1"></a> [apim\_api\_mock\_psp\_secondary\_api\_v1](#module\_apim\_api\_mock\_psp\_secondary\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_nododatamigration_api_v1"></a> [apim\_api\_nododatamigration\_api\_v1](#module\_apim\_api\_nododatamigration\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.6.0 |
-| <a name="module_apim_api_prometheus_api_v1"></a> [apim\_api\_prometheus\_api\_v1](#module\_apim\_api\_prometheus\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_receipt_for_ndp_api_v1"></a> [apim\_api\_receipt\_for\_ndp\_api\_v1](#module\_apim\_api\_receipt\_for\_ndp\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_web_bo_api_v1"></a> [apim\_api\_web\_bo\_api\_v1](#module\_apim\_api\_web\_bo\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_wfesp_api_replica_v1"></a> [apim\_api\_wfesp\_api\_replica\_v1](#module\_apim\_api\_wfesp\_api\_replica\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_api_wfesp_api_v1"></a> [apim\_api\_wfesp\_api\_v1](#module\_apim\_api\_wfesp\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_apim_for_node_product"></a> [apim\_apim\_for\_node\_product](#module\_apim\_apim\_for\_node\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
-| <a name="module_apim_cfg_for_node_product"></a> [apim\_cfg\_for\_node\_product](#module\_apim\_cfg\_for\_node\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.20.0 |
-| <a name="module_apim_mock_ec_product"></a> [apim\_mock\_ec\_product](#module\_apim\_mock\_ec\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_mock_ec_product_replica"></a> [apim\_mock\_ec\_product\_replica](#module\_apim\_mock\_ec\_product\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_mock_ec_secondary_product"></a> [apim\_mock\_ec\_secondary\_product](#module\_apim\_mock\_ec\_secondary\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_mock_ec_secondary_product_replica"></a> [apim\_mock\_ec\_secondary\_product\_replica](#module\_apim\_mock\_ec\_secondary\_product\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_mock_pm_product"></a> [apim\_mock\_pm\_product](#module\_apim\_mock\_pm\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_mock_psp_product"></a> [apim\_mock\_psp\_product](#module\_apim\_mock\_psp\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_mock_psp_product_replica"></a> [apim\_mock\_psp\_product\_replica](#module\_apim\_mock\_psp\_product\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_mock_psp_secondary_product"></a> [apim\_mock\_psp\_secondary\_product](#module\_apim\_mock\_psp\_secondary\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_mock_psp_secondary_product_replica"></a> [apim\_mock\_psp\_secondary\_product\_replica](#module\_apim\_mock\_psp\_secondary\_product\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_nodo_dei_pagamenti_product_ndp"></a> [apim\_nodo\_dei\_pagamenti\_product\_ndp](#module\_apim\_nodo\_dei\_pagamenti\_product\_ndp) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_nodo_dei_pagamenti_product_replica_ndp"></a> [apim\_nodo\_dei\_pagamenti\_product\_replica\_ndp](#module\_apim\_nodo\_dei\_pagamenti\_product\_replica\_ndp) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_nodo_monitoring_api_ndp"></a> [apim\_nodo\_monitoring\_api\_ndp](#module\_apim\_nodo\_monitoring\_api\_ndp) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_nodo_monitoring_api_replica_ndp"></a> [apim\_nodo\_monitoring\_api\_replica\_ndp](#module\_apim\_nodo\_monitoring\_api\_replica\_ndp) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_nodo_per_pm_api_v1_ndp"></a> [apim\_nodo\_per\_pm\_api\_v1\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v1\_ndp) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_nodo_per_pm_api_v1_replica_ndp"></a> [apim\_nodo\_per\_pm\_api\_v1\_replica\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v1\_replica\_ndp) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_nodo_per_pm_api_v2_ndp"></a> [apim\_nodo\_per\_pm\_api\_v2\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v2\_ndp) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_nodo_per_pm_api_v2_replica_ndp"></a> [apim\_nodo\_per\_pm\_api\_v2\_replica\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v2\_replica\_ndp) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.4.1 |
-| <a name="module_apim_nododatamigration_product"></a> [apim\_nododatamigration\_product](#module\_apim\_nododatamigration\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.6.0 |
-| <a name="module_apim_prometheus_product"></a> [apim\_prometheus\_product](#module\_apim\_prometheus\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_receipt_for_ndp_product"></a> [apim\_receipt\_for\_ndp\_product](#module\_apim\_receipt\_for\_ndp\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_web_bo_product"></a> [apim\_web\_bo\_product](#module\_apim\_web\_bo\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_wfesp_product"></a> [apim\_wfesp\_product](#module\_apim\_wfesp\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_wfesp_product_replica"></a> [apim\_wfesp\_product\_replica](#module\_apim\_wfesp\_product\_replica) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v6.4.1 |
-| <a name="module_apim_wisp_converter_product"></a> [apim\_wisp\_converter\_product](#module\_apim\_wisp\_converter\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v5.1.0 |
-| <a name="module_load_balancer_nodo_egress"></a> [load\_balancer\_nodo\_egress](#module\_load\_balancer\_nodo\_egress) | git::https://github.com/pagopa/terraform-azurerm-v3.git//load_balancer | v6.5.0 |
-| <a name="module_nodo_re_to_datastore_function"></a> [nodo\_re\_to\_datastore\_function](#module\_nodo\_re\_to\_datastore\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.20.0 |
-| <a name="module_nodo_re_to_datastore_function_slot_staging"></a> [nodo\_re\_to\_datastore\_function\_slot\_staging](#module\_nodo\_re\_to\_datastore\_function\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v6.9.0 |
-| <a name="module_nodo_re_to_datastore_function_snet"></a> [nodo\_re\_to\_datastore\_function\_snet](#module\_nodo\_re\_to\_datastore\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
-| <a name="module_nodo_re_to_tablestorage_function"></a> [nodo\_re\_to\_tablestorage\_function](#module\_nodo\_re\_to\_tablestorage\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.20.0 |
-| <a name="module_nodo_re_to_tablestorage_function_slot_staging"></a> [nodo\_re\_to\_tablestorage\_function\_slot\_staging](#module\_nodo\_re\_to\_tablestorage\_function\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v6.9.0 |
-| <a name="module_nodo_re_to_tablestorage_function_snet"></a> [nodo\_re\_to\_tablestorage\_function\_snet](#module\_nodo\_re\_to\_tablestorage\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
-| <a name="module_nodo_verifyko_to_datastore_function"></a> [nodo\_verifyko\_to\_datastore\_function](#module\_nodo\_verifyko\_to\_datastore\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v7.33.0 |
-| <a name="module_nodo_verifyko_to_datastore_function_slot_staging"></a> [nodo\_verifyko\_to\_datastore\_function\_slot\_staging](#module\_nodo\_verifyko\_to\_datastore\_function\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v7.33.0 |
-| <a name="module_nodo_verifyko_to_datastore_function_snet"></a> [nodo\_verifyko\_to\_datastore\_function\_snet](#module\_nodo\_verifyko\_to\_datastore\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
-| <a name="module_nodo_verifyko_to_tablestorage_function"></a> [nodo\_verifyko\_to\_tablestorage\_function](#module\_nodo\_verifyko\_to\_tablestorage\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v7.33.0 |
-| <a name="module_nodo_verifyko_to_tablestorage_function_slot_staging"></a> [nodo\_verifyko\_to\_tablestorage\_function\_slot\_staging](#module\_nodo\_verifyko\_to\_tablestorage\_function\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot | v7.33.0 |
-| <a name="module_nodo_verifyko_to_tablestorage_function_snet"></a> [nodo\_verifyko\_to\_tablestorage\_function\_snet](#module\_nodo\_verifyko\_to\_tablestorage\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
-| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v6.4.1 |
-| <a name="module_route_table_peering_nexi"></a> [route\_table\_peering\_nexi](#module\_route\_table\_peering\_nexi) | git::https://github.com/pagopa/terraform-azurerm-v3.git//route_table | v7.72.1 |
-| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v5.5.2 |
-| <a name="module_vmss_snet"></a> [vmss\_snet](#module\_vmss\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
-| <a name="module_wisp_converter_caching_api_v1"></a> [wisp\_converter\_caching\_api\_v1](#module\_wisp\_converter\_caching\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v6.7.0 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 551a56a4bf841cd431b51ec951639e74260daf6a |
+| <a name="module_apim_api_mock_ec_api_replica_v1"></a> [apim\_api\_mock\_ec\_api\_replica\_v1](#module\_apim\_api\_mock\_ec\_api\_replica\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_mock_ec_api_v1"></a> [apim\_api\_mock\_ec\_api\_v1](#module\_apim\_api\_mock\_ec\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_mock_ec_secondary_api_replica_v1"></a> [apim\_api\_mock\_ec\_secondary\_api\_replica\_v1](#module\_apim\_api\_mock\_ec\_secondary\_api\_replica\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_mock_ec_secondary_api_v1"></a> [apim\_api\_mock\_ec\_secondary\_api\_v1](#module\_apim\_api\_mock\_ec\_secondary\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_mock_pm_api_v1"></a> [apim\_api\_mock\_pm\_api\_v1](#module\_apim\_api\_mock\_pm\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_mock_psp_api_replica_v1"></a> [apim\_api\_mock\_psp\_api\_replica\_v1](#module\_apim\_api\_mock\_psp\_api\_replica\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_mock_psp_api_v1"></a> [apim\_api\_mock\_psp\_api\_v1](#module\_apim\_api\_mock\_psp\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_mock_psp_secondary_api_replica_v1"></a> [apim\_api\_mock\_psp\_secondary\_api\_replica\_v1](#module\_apim\_api\_mock\_psp\_secondary\_api\_replica\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_mock_psp_secondary_api_v1"></a> [apim\_api\_mock\_psp\_secondary\_api\_v1](#module\_apim\_api\_mock\_psp\_secondary\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_nododatamigration_api_v1"></a> [apim\_api\_nododatamigration\_api\_v1](#module\_apim\_api\_nododatamigration\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_prometheus_api_v1"></a> [apim\_api\_prometheus\_api\_v1](#module\_apim\_api\_prometheus\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_receipt_for_ndp_api_v1"></a> [apim\_api\_receipt\_for\_ndp\_api\_v1](#module\_apim\_api\_receipt\_for\_ndp\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_web_bo_api_v1"></a> [apim\_api\_web\_bo\_api\_v1](#module\_apim\_api\_web\_bo\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_wfesp_api_replica_v1"></a> [apim\_api\_wfesp\_api\_replica\_v1](#module\_apim\_api\_wfesp\_api\_replica\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_wfesp_api_v1"></a> [apim\_api\_wfesp\_api\_v1](#module\_apim\_api\_wfesp\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_apim_for_node_product"></a> [apim\_apim\_for\_node\_product](#module\_apim\_apim\_for\_node\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_cfg_for_node_product"></a> [apim\_cfg\_for\_node\_product](#module\_apim\_cfg\_for\_node\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_ec_product"></a> [apim\_mock\_ec\_product](#module\_apim\_mock\_ec\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_ec_product_replica"></a> [apim\_mock\_ec\_product\_replica](#module\_apim\_mock\_ec\_product\_replica) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_ec_secondary_product"></a> [apim\_mock\_ec\_secondary\_product](#module\_apim\_mock\_ec\_secondary\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_ec_secondary_product_replica"></a> [apim\_mock\_ec\_secondary\_product\_replica](#module\_apim\_mock\_ec\_secondary\_product\_replica) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_pm_product"></a> [apim\_mock\_pm\_product](#module\_apim\_mock\_pm\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_psp_product"></a> [apim\_mock\_psp\_product](#module\_apim\_mock\_psp\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_psp_product_replica"></a> [apim\_mock\_psp\_product\_replica](#module\_apim\_mock\_psp\_product\_replica) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_psp_secondary_product"></a> [apim\_mock\_psp\_secondary\_product](#module\_apim\_mock\_psp\_secondary\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_mock_psp_secondary_product_replica"></a> [apim\_mock\_psp\_secondary\_product\_replica](#module\_apim\_mock\_psp\_secondary\_product\_replica) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_nodo_dei_pagamenti_product_ndp"></a> [apim\_nodo\_dei\_pagamenti\_product\_ndp](#module\_apim\_nodo\_dei\_pagamenti\_product\_ndp) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_nodo_dei_pagamenti_product_replica_ndp"></a> [apim\_nodo\_dei\_pagamenti\_product\_replica\_ndp](#module\_apim\_nodo\_dei\_pagamenti\_product\_replica\_ndp) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_nodo_monitoring_api_ndp"></a> [apim\_nodo\_monitoring\_api\_ndp](#module\_apim\_nodo\_monitoring\_api\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_nodo_monitoring_api_replica_ndp"></a> [apim\_nodo\_monitoring\_api\_replica\_ndp](#module\_apim\_nodo\_monitoring\_api\_replica\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_nodo_per_pm_api_v1_ndp"></a> [apim\_nodo\_per\_pm\_api\_v1\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v1\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_nodo_per_pm_api_v1_replica_ndp"></a> [apim\_nodo\_per\_pm\_api\_v1\_replica\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v1\_replica\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_nodo_per_pm_api_v2_ndp"></a> [apim\_nodo\_per\_pm\_api\_v2\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v2\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_nodo_per_pm_api_v2_replica_ndp"></a> [apim\_nodo\_per\_pm\_api\_v2\_replica\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v2\_replica\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_nododatamigration_product"></a> [apim\_nododatamigration\_product](#module\_apim\_nododatamigration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_prometheus_product"></a> [apim\_prometheus\_product](#module\_apim\_prometheus\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_receipt_for_ndp_product"></a> [apim\_receipt\_for\_ndp\_product](#module\_apim\_receipt\_for\_ndp\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_web_bo_product"></a> [apim\_web\_bo\_product](#module\_apim\_web\_bo\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_wfesp_product"></a> [apim\_wfesp\_product](#module\_apim\_wfesp\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_wfesp_product_replica"></a> [apim\_wfesp\_product\_replica](#module\_apim\_wfesp\_product\_replica) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_wisp_converter_product"></a> [apim\_wisp\_converter\_product](#module\_apim\_wisp\_converter\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
+| <a name="module_load_balancer_nodo_egress"></a> [load\_balancer\_nodo\_egress](#module\_load\_balancer\_nodo\_egress) | ./.terraform/modules/__v3__/load_balancer | n/a |
+| <a name="module_nodo_re_to_datastore_function"></a> [nodo\_re\_to\_datastore\_function](#module\_nodo\_re\_to\_datastore\_function) | ./.terraform/modules/__v3__/function_app | n/a |
+| <a name="module_nodo_re_to_datastore_function_slot_staging"></a> [nodo\_re\_to\_datastore\_function\_slot\_staging](#module\_nodo\_re\_to\_datastore\_function\_slot\_staging) | ./.terraform/modules/__v3__/function_app_slot | n/a |
+| <a name="module_nodo_re_to_datastore_function_snet"></a> [nodo\_re\_to\_datastore\_function\_snet](#module\_nodo\_re\_to\_datastore\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_nodo_re_to_tablestorage_function"></a> [nodo\_re\_to\_tablestorage\_function](#module\_nodo\_re\_to\_tablestorage\_function) | ./.terraform/modules/__v3__/function_app | n/a |
+| <a name="module_nodo_re_to_tablestorage_function_slot_staging"></a> [nodo\_re\_to\_tablestorage\_function\_slot\_staging](#module\_nodo\_re\_to\_tablestorage\_function\_slot\_staging) | ./.terraform/modules/__v3__/function_app_slot | n/a |
+| <a name="module_nodo_re_to_tablestorage_function_snet"></a> [nodo\_re\_to\_tablestorage\_function\_snet](#module\_nodo\_re\_to\_tablestorage\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_nodo_verifyko_to_datastore_function"></a> [nodo\_verifyko\_to\_datastore\_function](#module\_nodo\_verifyko\_to\_datastore\_function) | ./.terraform/modules/__v3__/function_app | n/a |
+| <a name="module_nodo_verifyko_to_datastore_function_slot_staging"></a> [nodo\_verifyko\_to\_datastore\_function\_slot\_staging](#module\_nodo\_verifyko\_to\_datastore\_function\_slot\_staging) | ./.terraform/modules/__v3__/function_app_slot | n/a |
+| <a name="module_nodo_verifyko_to_datastore_function_snet"></a> [nodo\_verifyko\_to\_datastore\_function\_snet](#module\_nodo\_verifyko\_to\_datastore\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_nodo_verifyko_to_tablestorage_function"></a> [nodo\_verifyko\_to\_tablestorage\_function](#module\_nodo\_verifyko\_to\_tablestorage\_function) | ./.terraform/modules/__v3__/function_app | n/a |
+| <a name="module_nodo_verifyko_to_tablestorage_function_slot_staging"></a> [nodo\_verifyko\_to\_tablestorage\_function\_slot\_staging](#module\_nodo\_verifyko\_to\_tablestorage\_function\_slot\_staging) | ./.terraform/modules/__v3__/function_app_slot | n/a |
+| <a name="module_nodo_verifyko_to_tablestorage_function_snet"></a> [nodo\_verifyko\_to\_tablestorage\_function\_snet](#module\_nodo\_verifyko\_to\_tablestorage\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
+| <a name="module_route_table_peering_nexi"></a> [route\_table\_peering\_nexi](#module\_route\_table\_peering\_nexi) | ./.terraform/modules/__v3__/route_table | n/a |
+| <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
+| <a name="module_vmss_snet"></a> [vmss\_snet](#module\_vmss\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_wisp_converter_caching_api_v1"></a> [wisp\_converter\_caching\_api\_v1](#module\_wisp\_converter\_caching\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 
 ## Resources
 
@@ -263,6 +265,7 @@
 | [azurerm_monitor_action_group.opsgenie](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
 | [azurerm_monitor_action_group.slacknodo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
+| [azurerm_resource_group.identity_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.node_cfg_sync_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
 | [azurerm_resource_group.nodo_verify_ko_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
@@ -297,6 +300,7 @@
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_function_app_storage_account_replication_type"></a> [function\_app\_storage\_account\_replication\_type](#input\_function\_app\_storage\_account\_replication\_type) | (Optional) Storage account replication type used for function apps | `string` | `"ZRS"` | no |
+| <a name="input_gh_runner_job_location"></a> [gh\_runner\_job\_location](#input\_gh\_runner\_job\_location) | (Optional) The GH runner container app job location. Consistent with the container app environment location | `string` | `"westeurope"` | no |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
 | <a name="input_lb_frontend_private_ip_address"></a> [lb\_frontend\_private\_ip\_address](#input\_lb\_frontend\_private\_ip\_address) | load balancer egress nodo private ip | `string` | n/a | yes |
@@ -336,7 +340,7 @@
 | <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br/>    name         = optional(string, null)<br/>    minAvailable = optional(number, null)<br/>    matchLabels  = optional(map(any), {})<br/>  }))</pre> | `{}` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_route_aks"></a> [route\_aks](#input\_route\_aks) | AKS routing table | <pre>list(object({<br/>    name                   = string<br/>    address_prefix         = string<br/>    next_hop_type          = string<br/>    next_hop_in_ip_address = string<br/>  }))</pre> | n/a | yes |
-| <a name="input_storage_account_info"></a> [storage\_account\_info](#input\_storage\_account\_info) | Storage account | <pre>object({<br/>    account_kind                      = string<br/>    account_tier                      = string<br/>    account_replication_type          = string<br/>    access_tier                       = string<br/>    advanced_threat_protection_enable = bool<br/>  })</pre> | <pre>{<br/>  "access_tier": "Hot",<br/>  "account_kind": "StorageV2",<br/>  "account_replication_type": "LRS",<br/>  "account_tier": "Standard",<br/>  "advanced_threat_protection_enable": true<br/>}</pre> | no |
+| <a name="input_storage_account_info"></a> [storage\_account\_info](#input\_storage\_account\_info) | Storage account | <pre>object({<br/>    account_kind                      = string<br/>    account_tier                      = string<br/>    account_replication_type          = string<br/>    access_tier                       = string<br/>    advanced_threat_protection_enable = bool<br/>    use_legacy_defender_version       = bool<br/>    public_network_access_enabled     = bool<br/>  })</pre> | <pre>{<br/>  "access_tier": "Hot",<br/>  "account_kind": "StorageV2",<br/>  "account_replication_type": "LRS",<br/>  "account_tier": "Standard",<br/>  "advanced_threat_protection_enable": true,<br/>  "public_network_access_enabled": false,<br/>  "use_legacy_defender_version": true<br/>}</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image_name    = string,<br/>    image_tag     = string<br/>  })</pre> | n/a | yes |
 | <a name="input_vmss_instance_number"></a> [vmss\_instance\_number](#input\_vmss\_instance\_number) | availability zones for vmss | `number` | n/a | yes |

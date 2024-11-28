@@ -349,3 +349,16 @@ resource "azurerm_key_vault_secret" "db_postgres_nexi_cfg_password_prf" {
     ]
   }
 }
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "encrypted_github_token_read_packages_bot" {
+  name         = "encrypted-github-token-read-packages-bot"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

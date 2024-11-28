@@ -4,7 +4,7 @@ resource "kubernetes_namespace" "namespace" {
   }
 }
 module "pod_identity" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/kubernetes_pod_identity"
 
   resource_group_name = local.aks_resource_group_name
   location            = var.location
