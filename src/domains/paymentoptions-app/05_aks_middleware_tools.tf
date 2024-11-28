@@ -16,19 +16,24 @@ module "tls_checker" {
   keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
 }
 
-module "cert_mounter" {
-  source = "./.terraform/modules/__v3__/cert_mounter"
+resource "helm_release" "cert_mounter" {
+  name         = "cert-mounter-blueprint"
+  repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
+  chart        = "cert-mounter-blueprint"
+  version      = "1.0.4"
+  namespace    = var.domain
+  timeout      = 120
+  force_update = true
 
-  namespace = var.domain
-  certificate_name = replace(local.domain_hostname, ".", "-"),
-  kv_name = data.azurerm_key_vault.kv.name
-  tenant_id = data.azurerm_subscription.current.tenant_id
-
-  workload_identity_enabled = true
-  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
-  workload_identity_client_id = module.workload_identity.workload_identity_client_id
-
-  depends_on = [module.workload_identity]
+  values = [
+    templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
+      NAMESPACE        = var.domain,
+      DOMAIN           = var.domain,
+      CERTIFICATE_NAME = replace(local.domain_hostname, ".", "-"),
+      ENV_SHORT        = var.env_short,
+      KV_NAME          = data.azurerm_key_vault.kv.name
+    })
+  ]
 }
 
 resource "helm_release" "reloader" {
