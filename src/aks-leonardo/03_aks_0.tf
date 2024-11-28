@@ -31,9 +31,6 @@ module "aks_leonardo" {
   system_node_pool_node_labels                  = var.aks_system_node_pool.node_labels
   system_node_pool_tags                         = var.aks_system_node_pool.node_tags
 
-  workload_identity_enabled = var.env_short == "d" ? true : false
-  oidc_issuer_enabled = var.env_short == "d" ? true : false
-
   #
   # ☁️ Network
   #
