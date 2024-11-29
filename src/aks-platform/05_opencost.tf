@@ -67,7 +67,7 @@ resource "helm_release" "opencost" {
   namespace  = kubernetes_namespace.opencost.metadata[0].name
   repository = "https://opencost.github.io/opencost-helm-chart"
   chart      = "opencost"
-  version    = "1.9.8"
+  version    = "1.42.3"
 
   values = [
     <<EOF
@@ -76,8 +76,8 @@ resource "helm_release" "opencost" {
     "prometheus": {
       "internal": {
         "namespace": "elastic-system",
-        "serviceName": "prometheus-kube-prometheus-prometheus"
-      }
+        "serviceName": "prometheus-kube-prometheus-prometheus",
+      },
       "serviceDiscovery": {
         "enabled": true
       }
