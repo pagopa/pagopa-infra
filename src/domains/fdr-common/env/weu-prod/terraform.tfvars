@@ -35,24 +35,28 @@ enable_iac_pipeline = true
 
 pgres_flex_params = {
 
-  enabled    = true
   sku_name   = "GP_Standard_D4ds_v4"
   db_version = "15"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                             = 32768
-  zone                                   = 1
-  standby_zone                           = 2
+  storage_mb                             = 1048576 # 1Tib
+  zone                                   = 2
+  standby_zone                           = 1
   backup_retention_days                  = 30
   geo_redundant_backup_enabled           = true
   create_mode                            = "Default"
   pgres_flex_private_endpoint_enabled    = true
   pgres_flex_ha_enabled                  = true
   pgres_flex_pgbouncer_enabled           = true
+  standby_availability_zone              = 2
   pgres_flex_diagnostic_settings_enabled = false
-  max_connections                        = 1700
-  pgbouncer_min_pool_size                = 500
-  pgbouncer_default_pool_size            = 1000
+  alerts_enabled                         = false
+  max_connections                        = 5000
+  pgbouncer_min_pool_size                = 10
+  max_worker_process                     = 32
+  wal_level                              = "logical"
+  shared_preoload_libraries              = "pg_failover_slots"
+  public_network_access_enabled          = false
 }
 
 custom_metric_alerts = {
