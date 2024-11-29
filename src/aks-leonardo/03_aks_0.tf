@@ -16,6 +16,9 @@ module "aks_leonardo" {
   log_analytics_workspace_id = var.env_short != "d" ? data.azurerm_log_analytics_workspace.log_analytics_italy.id : data.azurerm_log_analytics_workspace.log_analytics.id
   sku_tier                   = var.aks_sku_tier
 
+  workload_identity_enabled = var.aks_enable_workload_identity
+  oidc_issuer_enabled       = var.aks_enable_workload_identity
+  
   #
   # 🤖 System node pool
   #
