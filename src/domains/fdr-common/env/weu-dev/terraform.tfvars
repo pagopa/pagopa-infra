@@ -34,7 +34,6 @@ enable_iac_pipeline = true
 
 pgres_flex_params = {
 
-  enabled    = true
   sku_name   = "GP_Standard_D2ds_v4"
   db_version = "15"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
@@ -47,10 +46,15 @@ pgres_flex_params = {
   pgres_flex_private_endpoint_enabled    = false
   pgres_flex_ha_enabled                  = false
   pgres_flex_pgbouncer_enabled           = true
+  standby_availability_zone              = 2
   pgres_flex_diagnostic_settings_enabled = false
-  max_connections                        = 1700
-  pgbouncer_min_pool_size                = 100
-  pgbouncer_default_pool_size            = 100
+  alerts_enabled                         = false
+  max_connections                        = 1000
+  pgbouncer_min_pool_size                = 1
+  max_worker_process                     = 16
+  wal_level                              = "logical"
+  shared_preoload_libraries              = "pg_failover_slots"
+  public_network_access_enabled          = true
 }
 
 custom_metric_alerts = {
@@ -170,36 +174,39 @@ cosmos_mongo_db_fdr_re_params = {
 # Storage Account
 cidr_subnet_storage_account = ["10.1.179.0/24"]
 fdr_storage_account = {
-  account_kind                  = "StorageV2"
-  account_tier                  = "Standard"
-  account_replication_type      = "LRS"
-  blob_versioning_enabled       = false
-  advanced_threat_protection    = false
-  public_network_access_enabled = true
-  blob_delete_retention_days    = 30
-  enable_low_availability_alert = false
+  account_kind                       = "StorageV2"
+  account_tier                       = "Standard"
+  account_replication_type           = "LRS"
+  blob_versioning_enabled            = false
+  advanced_threat_protection         = false
+  advanced_threat_protection_enabled = false
+  public_network_access_enabled      = true
+  blob_delete_retention_days         = 30
+  enable_low_availability_alert      = false
 }
 
 fdr_re_storage_account = {
-  account_kind                  = "StorageV2"
-  account_tier                  = "Standard"
-  account_replication_type      = "LRS"
-  blob_versioning_enabled       = false
-  advanced_threat_protection    = false
-  public_network_access_enabled = true
-  blob_delete_retention_days    = 30
-  enable_low_availability_alert = false
+  account_kind                       = "StorageV2"
+  account_tier                       = "Standard"
+  account_replication_type           = "LRS"
+  blob_versioning_enabled            = false
+  advanced_threat_protection         = false
+  advanced_threat_protection_enabled = false
+  public_network_access_enabled      = true
+  blob_delete_retention_days         = 30
+  enable_low_availability_alert      = false
 }
 
 fdr_history_storage_account = {
-  account_kind                  = "StorageV2"
-  account_tier                  = "Standard"
-  account_replication_type      = "LRS"
-  blob_versioning_enabled       = false
-  advanced_threat_protection    = false
-  public_network_access_enabled = true
-  blob_delete_retention_days    = 30
-  enable_low_availability_alert = false
+  account_kind                       = "StorageV2"
+  account_tier                       = "Standard"
+  account_replication_type           = "LRS"
+  blob_versioning_enabled            = false
+  advanced_threat_protection         = false
+  advanced_threat_protection_enabled = false
+  public_network_access_enabled      = true
+  blob_delete_retention_days         = 30
+  enable_low_availability_alert      = false
 }
 
 

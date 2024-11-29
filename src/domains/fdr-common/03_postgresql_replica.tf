@@ -1,4 +1,3 @@
-
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet_replica" {
   count                                         = var.geo_replica_enabled ? 1 : 0
@@ -81,4 +80,3 @@ resource "azurerm_private_dns_cname_record" "cname_record" {
   ttl                 = 300
   record              = "${null_resource.virtual_endpoint[0].triggers.ve_name}.writer.postgres.database.azure.com"
 }
-
