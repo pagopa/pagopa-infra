@@ -1,7 +1,7 @@
 locals {
   apim_mdb_pagopa_api = {
-    display_name = "MDB Product pagoPA"
-    description  = "API for MDB"
+    display_name = "MBD Product pagoPA"
+    description  = "API for MBD"
   }
 }
 

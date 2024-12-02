@@ -1,9 +1,9 @@
-## MDB Service ##
+## MBD Service ##
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-mdb-service-get-mdb-responsetime-upd" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-mbd-service-get-mbd-responsetime-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-pagopa-ebollo-mdb-service-get-mdb-rest-responsetime @ _pagopa-mdb-service"
+  name                = "pagopa-${var.env_short}-pagopa-ebollo-mbd-service-get-mbd-rest-responsetime @ _pagopa-mbd-service"
   location            = var.location
 
   action {
@@ -13,12 +13,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-mdb-service-get-m
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for /mdb less than or equal to 1.5s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-mdb-service"
+  description    = "Response time for /mbd less than or equal to 1.5s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-mbd-service"
   enabled        = true
   query = (<<-QUERY
 let threshold = 1500;
 AzureDiagnostics
-| where url_s matches regex "/mdb"
+| where url_s matches regex "/mbd"
 | summarize
     watermark=threshold,
     duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)
@@ -34,10 +34,10 @@ AzureDiagnostics
   }
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-mdb-service-get-mdb-rest-availability-upd" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-mbd-service-get-mbd-rest-availability-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-pagopa-mdb-service-get-mdb-rest-availability @ _pagopa-mdb-service"
+  name                = "pagopa-${var.env_short}-pagopa-mbd-service-get-mbd-rest-availability @ _pagopa-mbd-service"
   location            = var.location
 
   action {
@@ -47,12 +47,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-mdb-service-get-m
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /mdb is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-mdb-service"
+  description    = "Availability for /mbd is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-mbd-service"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
 AzureDiagnostics
-| where url_s matches regex "/mdb'"
+| where url_s matches regex "/mbd'"
 | summarize
     Total=count(),
     Success=count(responseCode_d < 500)
@@ -70,10 +70,10 @@ AzureDiagnostics
   }
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-mdb-service-get-mdb-payment-responsetime-upd" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-mbd-service-get-mbd-payment-responsetime-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-pagopa-ebollo-mdb-service-get-mdb-payment-rest-responsetime @ _pagopa-mdb-service"
+  name                = "pagopa-${var.env_short}-pagopa-ebollo-mbd-service-get-mbd-payment-rest-responsetime @ _pagopa-mbd-service"
   location            = var.location
 
   action {
@@ -83,12 +83,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-mdb-service-get-m
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for /mdb-payment less than or equal to 1.5s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-mdb-service"
+  description    = "Response time for /mbd-payment less than or equal to 1.5s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-mbd-service"
   enabled        = true
   query = (<<-QUERY
 let threshold = 1500;
 AzureDiagnostics
-| where url_s matches regex "/mdb-payment"
+| where url_s matches regex "/mbd-payment"
 | summarize
     watermark=threshold,
     duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)
@@ -104,10 +104,10 @@ AzureDiagnostics
   }
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-mdb-service-get-mdb-payment-rest-availability-upd" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-mbd-service-get-mbd-payment-rest-availability-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-pagopa-mdb-service-get-mdb-payment-rest-availability @ _pagopa-mdb-service"
+  name                = "pagopa-${var.env_short}-pagopa-mbd-service-get-mbd-payment-rest-availability @ _pagopa-mbd-service"
   location            = var.location
 
   action {
@@ -117,12 +117,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-mdb-service-get-m
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /mdb-payment is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-mdb-service"
+  description    = "Availability for /mbd-payment is less than or equal to 99% - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-mbd-service"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
 AzureDiagnostics
-| where url_s matches regex "/mdb-payment'"
+| where url_s matches regex "/mbd-payment'"
 | summarize
     Total=count(),
     Success=count(responseCode_d < 500)

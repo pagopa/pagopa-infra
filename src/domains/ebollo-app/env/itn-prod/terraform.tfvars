@@ -34,10 +34,10 @@ apim_dns_zone_prefix     = "platform"
 ingress_load_balancer_ip = "10.3.2.250"
 
 pod_disruption_budgets = {
-  "mdb-service" = {
+  "mbd-service" = {
     minAvailable = 2
     matchLabels = {
-      "app.kubernetes.io/instance" = "mdb-service"
+      "app.kubernetes.io/instance" = "mbd-service"
     }
   },
 }
