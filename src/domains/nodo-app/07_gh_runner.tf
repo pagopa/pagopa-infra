@@ -56,7 +56,7 @@ module "gh_runner_job" {
     },
     {
       name : "pagopa-mbd"
-      short_name : "mbd"
+      short_name : "mdb"
     }
   ]
   job = {
