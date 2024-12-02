@@ -15,7 +15,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | v8.61.0 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | a88c6d99ec3871db7de57db4280422b02db3e4f0 |
 | <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
 | <a name="module_cosmosdb_account_mongodb_fdr_re"></a> [cosmosdb\_account\_mongodb\_fdr\_re](#module\_cosmosdb\_account\_mongodb\_fdr\_re) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
 | <a name="module_cosmosdb_fdr_collections"></a> [cosmosdb\_fdr\_collections](#module\_cosmosdb\_fdr\_collections) | ./.terraform/modules/__v3__/cosmosdb_mongodb_collection | n/a |
