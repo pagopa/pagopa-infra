@@ -460,3 +460,9 @@ variable "enabled_features" {
   }
   description = "Features enabled in this domain"
 }
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
+}
