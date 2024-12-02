@@ -31,5 +31,10 @@ data "azurerm_subscription" "current" {}
 data "azurerm_client_config" "current" {}
 
 module "__v3__" {
+<<<<<<< HEAD:src/domains/paymentoptions-common/99_main.tf
   source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=15bbe5eb512bc0fa8f06ed28e0cca754b868743a"
+=======
+  # v8.60.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=551a56a4bf841cd431b51ec951639e74260daf6a"
+>>>>>>> main:src/domains/payopt-common/99_main.tf
 }
