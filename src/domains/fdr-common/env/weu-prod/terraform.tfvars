@@ -255,8 +255,9 @@ postgres_dns_registration_virtual_endpoint_enabled = true
 
 
 reporting_fdr_storage_account = {
-  advanced_threat_protection = false
-  blob_versioning_enabled    = false
-  blob_delete_retention_days = 30
-  account_replication_type   = "GZRS"
+  advanced_threat_protection         = false
+  advanced_threat_protection_enabled = false
+  blob_versioning_enabled            = false
+  blob_delete_retention_days         = 30
+  account_replication_type           = "GZRS"
 }
