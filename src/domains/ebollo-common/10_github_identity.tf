@@ -16,7 +16,7 @@ data "azurerm_key_vault" "key_vault" {
 locals {
   repos_01 = [
     "pagopa-mbd-service",
-    # "pagopa-mbd-gps",
+    "pagopa-mbd-gps-service",
     # "pagopa-mbd-error-manager"
   ]
 
