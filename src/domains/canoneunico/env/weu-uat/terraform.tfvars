@@ -27,8 +27,8 @@ image_name = "canone-unico"
 image_tag  = "latest"
 
 # canone unico
-canoneunico_plan_sku_tier = "Standard"
-canoneunico_plan_sku_size = "S1"
+canoneunico_plan_sku_tier = "Basic"
+canoneunico_plan_sku_size = "B2"
 
 canoneunico_function_always_on         = true
 canoneunico_function_autoscale_minimum = 1
