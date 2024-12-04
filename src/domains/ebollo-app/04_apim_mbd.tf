@@ -6,7 +6,7 @@ locals {
 }
 
 module "apim_mdb_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.18.0"
+  source    = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "pagopa_ebollo"
   display_name = local.apim_mdb_pagopa_api.display_name
@@ -18,7 +18,7 @@ module "apim_mdb_product" {
   published             = false
   subscription_required = true
   approval_required     = false
-  # subscriptions_limit   = 1000
+  subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/_base_policy.xml")
 }
