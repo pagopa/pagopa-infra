@@ -1069,20 +1069,29 @@
             "default": "DATE_TIME_RANGE",
             "example": "DATE_TIME_RANGE"
           },
-          "startDate": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Search start date"
-          },
-          "endDate": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Search end date"
+          "timeRange": {
+            "type": "object",
+            "properties": {
+              "startDate": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Search start date"
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Search end date"
+              }
+            },
+            "required": [
+              "startDate",
+              "endDate"
+            ]
           }
         },
         "required": [
-          "startDate",
-          "endDate"
+          "type",
+          "timeRange"
         ]
       },
       "PmSearchTransactionRequest": {
