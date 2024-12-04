@@ -1,65 +1,10 @@
-# review postgreql:
-# naming and resource group
-# avaibility zones, backup redundancy
 
-# KV secrets flex server
-data "azurerm_key_vault_secret" "pgres_admin_login" {
-  name         = "pgres-admin-login"
-  key_vault_id = module.key_vault.id
-}
-
-data "azurerm_key_vault_secret" "pgres_admin_pwd" {
-  name         = "pgres-admin-pwd"
-  key_vault_id = module.key_vault.id
-}
-
-resource "azurerm_resource_group" "flex_data" {
-  count = 1 # forced ( before exits onliy in UAT and PROD now DEV too)
-
-  name = format("%s-pgres-flex-rg", local.product)
-
-  location = var.location
-  tags     = var.tags
-}
-
-data "azurerm_resource_group" "data" {
-  name = format("%s-data-rg", local.product)
-}
-
-# Postgres Flexible Server subnet
-module "postgres_flexible_snet" {
-  source = "./.terraform/modules/__v3__/subnet"
-
-  count = 1 # forced ( before exits onliy in UAT and PROD now DEV too)
-
-  name                                      = format("%s-pgres-flexible-snet", local.product)
-  address_prefixes                          = var.cidr_subnet_pg_flex_dbms
-  resource_group_name                       = local.vnet_resource_group_name
-  virtual_network_name                      = local.vnet_name
-  service_endpoints                         = ["Microsoft.Storage"]
-  private_endpoint_network_policies_enabled = false
-
-  delegation = {
-    name = "delegation"
-    service_delegation = {
-      name = "Microsoft.DBforPostgreSQL/flexibleServers"
-      actions = [
-        "Microsoft.Network/virtualNetworks/subnets/join/action",
-      ]
-    }
-  }
-}
-
-data "azurerm_private_dns_zone" "postgres" {
-  count               = var.env_short != "d" ? 1 : 0  # forced ( before exits onliy in UAT and PROD now DEV too)
-  name                = "private.postgres.database.azure.com"
-  resource_group_name = local.vnet_resource_group_name
-}
+# NEWGPD-DB : DEPRECATED remove all content file
 
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
 module "postgres_flexible_server_private" { # private only into UAT and PROD env
   source = "./.terraform/modules/__v3__/postgres_flexible_server"
-  count  = var.env_short != "d" ? 1 : 0 # forced 2 create o delete ( for housekeeping old GPD db)
+  count  = var.env_short == "p" ? 1 : 0 # forced 2 create o delete ( for housekeeping old GPD db)
 
   name = format("%s-gpd-pgflex", local.product)
 
@@ -118,7 +63,7 @@ module "postgres_flexible_server_private" { # private only into UAT and PROD env
 }
 
 resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
-  count  = var.env_short != "d" ? 1 : 0 # forced
+  count  = var.env_short == "p" ? 1 : 0 # forced
 
   name      = var.gpd_db_name
   server_id = module.postgres_flexible_server_private[0].id
@@ -127,7 +72,7 @@ resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_connection" {
-  count  = var.env_short != "d" ? 1 : 0 # forced
+  count  = var.env_short == "p" ? 1 : 0 # forced
 
   name      = "max_connections"
   server_id = module.postgres_flexible_server_private[0].id
@@ -136,7 +81,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_con
 
 # Message    : FATAL: unsupported startup parameter: extra_float_digits
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_ignore_startup_parameters" {
-  count  = var.env_short != "d" ? 1 : 0 # forced
+  count  = var.env_short == "p" ? 1 : 0 # forced
 
   name      = "pgbouncer.ignore_startup_parameters"
   server_id = module.postgres_flexible_server_private[0].id
@@ -144,16 +89,16 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_ignore_
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_pool_size" {
-  count  = var.env_short != "d" ? 1 : 0 # forced
+  count  = var.env_short == "p" ? 1 : 0 # forced
 
   name      = "pgbouncer.min_pool_size"
   server_id = module.postgres_flexible_server_private[0].id
-  value     = var.env_short == "d" ? 1 : 10
+  value     = 10
 }
 
 # CDC https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-logical
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_worker_process" {
-  count  = var.env_short != "d" ? 1 : 0 # forced
+  count  = var.env_short == "p" ? 1 : 0 # forced
 
   name      = "max_worker_processes"
   server_id = module.postgres_flexible_server_private[0].id
@@ -161,7 +106,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_wor
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_wal_level" {
-  count = var.pgres_flex_params.wal_level != null && var.env_short != "d" ? 1 : 0 # forced ? 1 : 0
+  count = var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0 # forced ? 1 : 0
 
   name      = "wal_level"
   server_id = module.postgres_flexible_server_private[0].id
@@ -169,7 +114,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_wal_lev
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_shared_preoload_libraries" {
-  count = var.pgres_flex_params.wal_level != null && var.env_short != "d" ? 1 : 0
+  count = var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0
 
   name      = "shared_preload_libraries"
   server_id = module.postgres_flexible_server_private[0].id

@@ -39,6 +39,7 @@ locals {
   aks_subnet_name  = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
   azdo_subnet_name = "${local.product}-azdoa-snet"
 
+  # NEWGPD-DB : DEPRECATED switch to new istance postgres_flexible_server_private_db
   gpd_hostname = var.env_short == "p" ? module.postgres_flexible_server_private[0].fqdn : module.postgres_flexible_server_private_db.fqdn
   gpd_dbmsport = "6432"
 
