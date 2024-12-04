@@ -1,6 +1,7 @@
 locals {
-  tools_cae_name = "${local.product}-tools-cae"
-  tools_cae_rg   = "${local.product}-core-tools-rg"
+  # because westeurope does not support any other container app environment creation
+  tools_cae_name = var.env_short != "p" ? "${local.product}-tools-cae" : "${local.product}-itn-core-tools-cae"
+  tools_cae_rg   = var.env_short != "p" ? "${local.product}-core-tools-rg" : "${local.product}-itn-core-tools-rg"
 }
 
 module "gh_runner_job" {
@@ -11,7 +12,7 @@ module "gh_runner_job" {
   environment_name   = local.tools_cae_name
   environment_rg     = local.tools_cae_rg
   gh_identity_suffix = "job-01"
-  runner_labels      = ["self-hosted-job"]
+  runner_labels      = ["self-hosted-job", "${var.env}"]
   gh_repositories = [
     {
       name : "pagopa-biz-events-service",
@@ -38,7 +39,7 @@ module "gh_runner_job" {
     rg           = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
   }
 
-  location            = var.location
+  location            = var.gh_runner_job_location
   prefix              = var.prefix
   resource_group_name = data.azurerm_resource_group.identity_rg.name
 

@@ -207,6 +207,26 @@ eventhubs = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "payment-wallet-ingestion-dl-staging"
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["payment-wallet-evt-rx-staging"]
+    keys = [
+      {
+        name   = "payment-wallet-evt-tx-staging"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "payment-wallet-evt-rx-staging"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 

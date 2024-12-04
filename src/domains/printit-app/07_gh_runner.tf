@@ -1,6 +1,6 @@
 locals {
-  tools_cae_name = "${local.product}-tools-cae"
-  tools_cae_rg   = "${local.product}-core-tools-rg"
+  tools_cae_name = "${local.product}-${var.location_short}-core-tools-cae"
+  tools_cae_rg   = "${local.product}-${var.location_short}-core-tools-rg"
 }
 
 module "gh_runner_job" {
@@ -11,7 +11,7 @@ module "gh_runner_job" {
   environment_name   = local.tools_cae_name
   environment_rg     = local.tools_cae_rg
   gh_identity_suffix = "job-01"
-  runner_labels      = ["self-hosted-job"]
+  runner_labels      = ["self-hosted-job", "${var.env}"]
   gh_repositories = [
     {
       name : "pagopa-print-payment-notice-service",

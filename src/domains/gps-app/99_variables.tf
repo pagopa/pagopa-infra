@@ -549,3 +549,9 @@ variable "max_threads" {
   description = "Number of max_threads"
   default     = 1
 }
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
+}
