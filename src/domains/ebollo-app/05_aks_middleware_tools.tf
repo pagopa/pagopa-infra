@@ -1,6 +1,3 @@
-
-# WL-IDENTITY
-# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#%F0%9F%94%AE-tls-cheker
 module "tls_checker" {
   source = "./.terraform/modules/__v3__/tls_checker"
 
@@ -24,9 +21,6 @@ module "tls_checker" {
   depends_on = [module.workload_identity]
 }
 
-
-# WL-IDENTITY
-# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#%3Acertificate%3A-cert-mounter
 module "cert_mounter" {
   source = "./.terraform/modules/__v3__/cert_mounter"
 
