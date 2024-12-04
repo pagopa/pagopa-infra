@@ -19,54 +19,24 @@ module "apim_statuspage_nodo_pagamenti" {
 ##  API  ##
 ###########
 locals {
-  apim_statuspage_service_api = {
-    display_name          = "Status Page - API"
-    description           = "API to Status Page"
+  apim_statuspage_nodopagamenti_service_api = {
+    display_name          = "Status Page - API Nodo Pagamenti"
+    description           = "API to Status Page Nodo Pagamenti"
     path                  = "nodopagamenti/statuspage"
     subscription_required = true
     service_url           = null 
   }
 }
 
-resource "azurerm_api_management_api_version_set" "api_statuspage_api" {
+resource "azurerm_api_management_api_version_set" "api_statuspage_nodopagamenti_api" {
 
-  name                = format("%s-statuspage-api", var.env_short)
+  name                = format("%s-statuspage-nodopagamenti-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_statuspage_service_api.display_name
+  display_name        = local.apim_statuspage_nodopagamenti_service_api.display_name
   versioning_scheme   = "Segment"
 }
 
-data "azurerm_function_app" "canone_unico" {
-  name                = format("%s-%s-fn-canoneunico", var.prefix, var.env_short)
-  resource_group_name = format("%s-%s-canoneunico-rg", var.prefix, var.env_short)
-}
-
-data "azurerm_function_app" "reporting_analysis" {
-  name                = format("%s-%s-%s-fn-gpd-analysis", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
-}
-
-data "azurerm_function_app" "reporting_batch" {
-  name                = format("%s-%s-%s-fn-gpd-batch", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
-}
-
-data "azurerm_function_app" "reporting_service" {
-  name                = format("%s-%s-%s-fn-gpd-service", var.prefix, var.env_short, var.location_short)
-  resource_group_name = format("%s-%s-%s-gps-gpd-rg", var.prefix, var.env_short, var.location_short)
-}
-
-data "azurerm_linux_function_app" "mockec" {
-  count               = var.env_short != "p" ? 1 : 0
-  name                = format("%s-%s-app-mock-ec", var.prefix, var.env_short)
-  resource_group_name = format("%s-%s-mock-ec-rg", var.prefix, var.env_short)
-}
-
-data "azurerm_linux_web_app" "pdf_engine" {
-  name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java${var.env_short == "p" ? "-ha" : ""}"
-  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-${var.env_short == "p" ? "ha" : "pdf-engine"}-rg"
-}
 
 module "apim_api_statuspage_api_v1" {
   source = "./.terraform/modules/__v3__/api_management_api"
@@ -74,83 +44,29 @@ module "apim_api_statuspage_api_v1" {
   name                  = format("%s-statuspage-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_statuspage_product.product_id]
-  subscription_required = local.apim_statuspage_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_statuspage_api.id
+  product_ids           = [module.apim_statuspage_nodo_pagamenti.product_id]
+  subscription_required = local.apim_statuspage_nodopagamenti_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.api_statuspage_nodopagamenti_api.id
   api_version           = "v1"
 
-  description  = local.apim_statuspage_service_api.description
-  display_name = local.apim_statuspage_service_api.display_name
-  path         = local.apim_statuspage_service_api.path
+  description  = local.apim_statuspage_nodopagamenti_service_api.description
+  display_name = local.apim_statuspage_nodopagamenti_service_api.display_name
+  path         = local.apim_statuspage_nodopagamenti_service_api.path
   protocols    = ["https"]
-  service_url  = local.apim_statuspage_service_api.service_url
+  service_url  = local.apim_statuspage_nodopagamenti_service_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/status-page-service/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
+
+  content_value = templatefile("./api/aca/v1/_openapi.json.tpl", {
+    hostname = local.apim_hostname
   })
 
-  api_operation_policies = [
-    {
-      operation_id = "proxyGithub",
-      xml_content  = templatefile("./api/status-page-service/v1/_proxygithub_policy.xml", {})
-    },
-    {
-      operation_id = "healthCheck",
-      xml_content = templatefile("./api/status-page-service/v1/_healthcheck_policy.xml", {
-        hostname = local.shared_hostname
-        services = replace(jsonencode({
-          "afmcalculator"  = format("%s/pagopa-afm-calculator-service", format(local.aks_path, "afm"))
-          "afmmarketplace" = format("%s/pagopa-afm-marketplace-service", format(local.aks_path, "afm"))
-          "afmutils"       = format("%s/pagopa-afm-utils-service", format(local.aks_path, "afm"))
-          "apiconfig"      = format("%s/{{apicfg-core-service-path}}", format(local.aks_path, "apiconfig"))
-          // show status only one instances Ora OR Pgflex
-          "apiconfig-fe"      = format("%s", local.fe_apiconfig_path)
-          "apiconfigcacheo"   = format("%s/api-config-cache/o", format(local.aks_path, "apiconfig"))
-          "apiconfigcachep"   = format("%s/api-config-cache/p", format(local.aks_path, "apiconfig"))
-          "apiconfigselfcare" = format("%s/{{apicfg-selfcare-integ-service-path}}", format(local.aks_path, "apiconfig"))
-          // show status only one instances Ora OR Pgflex
-          "authorizer"                  = format("%s//authorizer-functions", format(local.aks_path, "shared"))
-          "authorizerconfig"            = format("%s//authorizer-config", format(local.aks_path, "shared"))
-          "bizevents"                   = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
-          "bizeventsdatastoreneg"       = format("%s/pagopa-negative-biz-events-datastore-service", format(local.aks_path, "bizevents"))
-          "bizeventsdatastorepos"       = format("%s/pagopa-biz-events-datastore-service", format(local.aks_path, "bizevents"))
-          "backofficepagopa"            = format("%s/selfcare/pagopa/v1", format(local.aks_path, "selfcare"))
-          "backofficepagopa-fe"         = format("%s", local.fe_backoffice_path)
-          "backofficeexternalpagopa"    = format("%s/backoffice-external", format(local.aks_path, "selfcare"))
-          "canoneunico"                 = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
-          "fdrndpnew"                   = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
-          "wispconverter"               = format("%s/pagopa-wisp-converter", format(local.aks_path, "nodo"))
-          "wispsoapconverter"           = format("%s/wisp-soap-converter", format(local.aks_path, "nodo"))
-          "wispconverterts"             = format("%s/pagopa-wisp-converter-technical-support", format(local.aks_path, "nodo"))
-          "gpd"                         = format("%s/pagopa-gpd-core", format(local.aks_path, "gps"))
-          "gpdpayments"                 = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
-          "gpdpaymentspull"             = format("%s/pagopa-gpd-payments-pull", format(local.aks_path, "gps"))
-          "gpdenrollment"               = format("%s/pagopa-gpd-reporting-orgs-enrollment", format(local.aks_path, "gps"))
-          "gpdupload"                   = format("%s/pagopa-gpd-upload", format(local.aks_path, "gps"))
-          "gpdreportinganalysis"        = format("%s/", data.azurerm_function_app.reporting_analysis.default_hostname)
-          "gpdreportingbatch"           = format("%s/api/", data.azurerm_function_app.reporting_batch.default_hostname)
-          "gpdreportingservice"         = format("%s/api/", data.azurerm_function_app.reporting_service.default_hostname)
-          "gpdingestionmanager"         = format("%s/pagopa-gpd-ingestion-manager", format(local.aks_path, "gps"))
-          "gps"                         = format("%s/pagopa-spontaneous-payments-service", format(local.aks_path, "gps"))
-          "gpsdonation"                 = format("%s/pagopa-gps-donation-service", format(local.aks_path, "gps"))
-          "mockec"                      = var.env_short != "p" ? format("%s/", data.azurerm_linux_function_app.mockec[0].default_hostname) : "NA"
-          "mockconfig"                  = var.env_short != "p" ? format("%s/pagopa-mock-config-be", format(local.aks_path, "mock")) : "NA"
-          "mocker"                      = var.env_short != "p" ? format("%s/pagopa-mocker/mocker", format(local.aks_path, "mock")) : "NA"
-          "pdfengine"                   = format("%s/", data.azurerm_linux_web_app.pdf_engine.default_hostname)
-          "receiptpdfdatastore"         = format("%s/pagopa-receipt-pdf-datastore", format(local.aks_path, "receipts"))
-          "receiptpdfgenerator"         = format("%s/pagopa-receipt-pdf-generator", format(local.aks_path, "receipts"))
-          "receiptpdfnotifier"          = format("%s/pagopa-receipt-pdf-notifier", format(local.aks_path, "receipts"))
-          "receiptpdfservice"           = format("%s/pagopa-receipt-pdf-service", format(local.aks_path, "receipts"))
-          "receiptpdfhelpdesk"          = format("%s/pagopa-receipt-pdf-helpdesk", format(local.aks_path, "receipts")),
-          "printpaymentnoticegenerator" = format("%s/pagopa-print-payment-notice-generator", format(local.aks_ita_path, "printit"))
-          "printpaymentnoticefunctions" = format("%s/pagopa-print-payment-notice-functions", format(local.aks_ita_path, "printit"))
-          "printpaymentnoticeservice"   = format("%s/pagopa-print-payment-notice-service", format(local.aks_ita_path, "printit"))
-          "paymentoptionsservice"       = format("%s/payment-options-service", format(local.aks_ita_path, "payopt"))
-        }), "\"", "\\\"")
-      })
-    }
-  ]
+  xml_content = templatefile("./api/aca/v1/_base_policy.xml", {
+    aca_ingress_hostname = local.aca_hostname
+  })
 
+#   content_value = templatefile("./api/status-page-service/v1/_openapi.json.tpl", {
+#     host = local.apim_hostname
+#   })
 
 }
