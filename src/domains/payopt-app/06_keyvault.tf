@@ -77,5 +77,25 @@ resource "azurerm_key_vault_secret" "service_payment_options_subscription_key" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+resource "azurerm_key_vault_secret" "service_payment_options_subkey_test_dev" {
+  count = var.env_short == "d" ? 1 : 0
+
+  name         = "apikey-service-payment-options-test"
+  value        = azurerm_api_management_subscription.service_payment_options_subkey_test_dev[0].primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_key_vault_secret" "service_payment_options_subkey_test_uat" {
+  count = var.env_short == "u" ? 1 : 0
+
+  name         = "apikey-service-payment-options-test"
+  value        = azurerm_api_management_subscription.service_payment_options_subkey_test_uat[0].primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 
 
