@@ -1,4 +1,4 @@
-# paymentoptions-app
+# payopt-app
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
