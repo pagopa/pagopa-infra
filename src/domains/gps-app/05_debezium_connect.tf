@@ -90,6 +90,14 @@ locals {
     max_threads           = var.max_threads
   })
 
+  healthchecker_config_yaml = templatefile("${path.module}/yaml/healthchecker-config-map.yaml", {
+    namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
+  })
+
+  debezium-health-checker-cron_yaml = templatefile("${path.module}/yaml/debezium-health-checker-cron.yaml", {
+    namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
+  })
+
 }
 
 resource "kubectl_manifest" "debezium_role" {
@@ -162,3 +170,20 @@ resource "null_resource" "wait_postgres_connector" {
     interpreter = ["/bin/bash", "-c"]
   }
 }
+
+resource "kubectl_manifest" "healthchecker-config-map" {
+  depends_on = [
+    helm_release.strimzi-kafka-operator
+  ]
+  force_conflicts = true
+  yaml_body       = local.healthchecker_config_yaml
+}
+
+resource "kubectl_manifest" "healthchecker-cron" {
+  depends_on = [
+    helm_release.strimzi-kafka-operator, kubectl_manifest.healthchecker-config-map
+  ]
+  force_conflicts = true
+  yaml_body       = local.debezium-health-checker-cron_yaml
+}
+

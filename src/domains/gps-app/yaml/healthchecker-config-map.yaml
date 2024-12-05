@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: health-checker-script
+  namespace: ${namespace}
+data:
+  check_kafka_connect.sh: |
+    #!/bin/bash
+
+    # Kafka Connect API details
+    STATUS_URL="http://debezium-connect-cluster-connect-api:8083/connectors/debezium-connector-postgres/status"
+    RESTART_URL="http://debezium-connect-cluster-connect-api:8083/connectors/debezium-connector-postgres/restart"
+
+    # Fetch the status response
+    STATUS_RESPONSE=$(curl -s -X GET "$STATUS_URL")
+
+    # Extract the connector state
+    CONNECTOR_STATUS=$(echo "$STATUS_RESPONSE" | grep -o '"connector":{"state":"[^"]*"' | sed 's/"connector":{"state":"//;s/"//')
+
+    # Extract all task states
+    # TASK_STATUSES=$(echo "$STATUS_RESPONSE" | grep -o '"state":"[^"]*"' | sed 's/"state":"//;s/"//')
+
+    # Initialize FAILED flag
+    IS_FAILED=0
+
+    # Check if the connector state is FAILED
+    if [[ "$CONNECTOR_STATUS" == "FAILED" ]]; then
+      IS_FAILED=1
+    fi
+
+    # Check if any task state is FAILED
+    # while IFS= read -r TASK_STATE; do
+    #  if [[ "$TASK_STATE" == "FAILED" ]]; then
+    #    IS_FAILED=1
+    #    break
+    #  fi
+    # done <<< "$TASK_STATUSES"
+
+    # Take action based on the combined status
+    if [[ $IS_FAILED -eq 1 ]]; then
+      echo "One or more statuses are FAILED. Restarting the connector..."
+      curl -s -X POST "$RESTART_URL" && echo "Restart command issued successfully."
+    else
+      echo "All statuses are normal."
+    fi
