@@ -167,7 +167,7 @@ module "apim_api_statuspage_api_v1" {
           "printpaymentnoticeservice"   = format("%s/pagopa-print-payment-notice-service", format(local.aks_ita_path, "printit"))
           "paymentoptionsservice"       = format("%s/payment-options-service", format(local.aks_ita_path, "payopt"))
           "mbdservice"                  = format("%s/pagopa-mbd-service", format(local.aks_ita_path, "ebollo"))
-          "mbdgpsservice"               = format("%s/pagopa-mbd-gps-service", format(local.aks_ita_path, "ebollo"))
+          "mbdgpsservice"               = format("%s/pagopa-gps-mbd-service", format(local.aks_ita_path, "ebollo"))
         }), "\"", "\\\"")
       })
     }
