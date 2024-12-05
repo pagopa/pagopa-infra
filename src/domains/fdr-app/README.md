@@ -17,7 +17,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 551a56a4bf841cd431b51ec951639e74260daf6a |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
 | <a name="module_apim_api_fdr_api_v1_internal"></a> [apim\_api\_fdr\_api\_v1\_internal](#module\_apim\_api\_fdr\_api\_v1\_internal) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_fdr_api_v1_org"></a> [apim\_api\_fdr\_api\_v1\_org](#module\_apim\_api\_fdr\_api\_v1\_org) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_fdr_api_v1_psp"></a> [apim\_api\_fdr\_api\_v1\_psp](#module\_apim\_api\_fdr\_api\_v1\_psp) | ./.terraform/modules/__v3__/api_management_api | n/a |
