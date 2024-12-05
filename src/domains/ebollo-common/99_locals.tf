@@ -27,6 +27,6 @@ locals {
     "azdo-${var.env}-pagopa-iac-plan"]
   )
 
-  msg_resource_group_name      = "${local.product}-msg-rg"
+  msg_resource_group_name = "${local.product}-msg-rg"
 
 }

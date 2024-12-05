@@ -56,9 +56,9 @@ resource "azurerm_data_factory_linked_service_azure_blob_storage" "afm_gec_stora
   data_factory_id   = data.azurerm_data_factory.obeserv_data_factory.id
   connection_string = data.azurerm_storage_account.observ_storage_account.primary_connection_string
 
-  integration_runtime_name   = "AutoResolveIntegrationRuntime"
+  integration_runtime_name = "AutoResolveIntegrationRuntime"
   # connection_string_insecure = "DefaultEndpointsProtocol=https;AccountName=pagopa${var.env_short}itnobservsa;EndpointSuffix=core.windows.net;"
-  use_managed_identity       = true
+  use_managed_identity = true
 
   lifecycle {
     ignore_changes = [

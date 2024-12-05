@@ -36,8 +36,8 @@ module "afm_marketplace_cosmosdb_account" {
   enable_free_tier           = var.afm_marketplace_cosmos_db_params.enable_free_tier
   analytical_storage_enabled = var.afm_marketplace_cosmos_db_params.analytical_storage_enabled
 
-  private_endpoint_sql_name            = "${local.project}-marketplace-cosmos-sql-endpoint" # forced after update module vers
-  private_service_connection_sql_name  = "${local.project}-marketplace-cosmos-sql-endpoint" # forced after update module vers
+  private_endpoint_sql_name           = "${local.project}-marketplace-cosmos-sql-endpoint" # forced after update module vers
+  private_service_connection_sql_name = "${local.project}-marketplace-cosmos-sql-endpoint" # forced after update module vers
 
   public_network_access_enabled      = var.afm_marketplace_cosmos_db_params.public_network_access_enabled
   private_endpoint_enabled           = var.afm_marketplace_cosmos_db_params.private_endpoint_enabled
@@ -94,8 +94,8 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
-      analytical_storage_ttl = -1,  # ingested_2_DL
-      partition_key_version  = null      
+      analytical_storage_ttl = -1, # ingested_2_DL
+      partition_key_version  = null
     },
     {
       name               = "archivedcibundles",
@@ -157,7 +157,7 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
-      analytical_storage_ttl = -1,  # ingested_2_DL
+      analytical_storage_ttl = -1, # ingested_2_DL
       partition_key_version  = null
     },
     {
@@ -166,7 +166,7 @@ locals {
       autoscale_settings = {
         max_throughput = 1000
       },
-      analytical_storage_ttl = -1,  # ingested_2_DL
+      analytical_storage_ttl = -1, # ingested_2_DL
       partition_key_version  = null
     },
     {

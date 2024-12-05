@@ -74,7 +74,7 @@ module "apim_selfcare_backoffice_helpdesk_product" {
 # SubKey 4 https://uptime.betterstack.com/team/263223/monitors recover maintenance
 # Status Page Improvement https://pagopa.atlassian.net/wiki/x/AoBBSQ
 resource "azurerm_api_management_subscription" "status_page_improvement_api_key_subkey" {
-  count   = var.env_short == "p" ? 1 : 0 
+  count = var.env_short == "p" ? 1 : 0
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
