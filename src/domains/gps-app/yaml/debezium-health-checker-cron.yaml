@@ -5,8 +5,11 @@ metadata:
   namespace: ${namespace}
 spec:
   schedule: "*/5 * * * *"  # Runs every 5 minutes
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      ttlSecondsAfterFinished: 100
       template:
         spec:
           containers:
