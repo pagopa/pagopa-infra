@@ -13,6 +13,7 @@ module "gh_runner_job" {
   environment_rg     = local.tools_cae_rg
   gh_identity_suffix = "job-01"
   runner_labels      = ["self-hosted-job", "${var.env}"]
+  gh_env             = var.env
   gh_repositories = [
     {
       name : "pagopa-afm-calculator",
