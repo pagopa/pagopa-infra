@@ -43,3 +43,7 @@ data "azurerm_subnet" "private_endpoint_subnet" {
   virtual_network_name = data.azurerm_virtual_network.vnet_core.name
 }
 
+data "azurerm_public_ip" "appgateway_public_ip" {
+  name                = format("%s-appgateway-pip", local.product)
+  resource_group_name = data.azurerm_resource_group.rg_vnet_core.name
+}
