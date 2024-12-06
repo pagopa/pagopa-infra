@@ -847,5 +847,116 @@
     "alertConfiguration" : {
       "enabled" : false
     }
+  },
+  {
+    "apiName" : "checkPosition",
+    "appName" : "nodo",
+    "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo/nodo-per-pm/v1/checkPosition",
+    "type" : "private",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "body": {"positionslist":[{"fiscalCode":"80008360523","noticeNumber":"303173097454724050"}]},
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} check position"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : false
+    }
+  },
+  {
+    "apiName" : "verifyPaymentNoticeExternal",
+    "appName" : "nodo",
+    "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo-auth/node-for-psp/v1",
+    "type" : "private",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "body": "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'><soapenv:Header /><soapenv:Body><nod:verifyPaymentNoticeReq xmlns:nod='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'><idPSP>ABI18164</idPSP><idBrokerPSP>02654890025</idBrokerPSP><idChannel>02654890025_01</idChannel><password>PLACEHOLDER</password><qrCode><fiscalCode>97532760580</fiscalCode><noticeNumber>302704889233205169</noticeNumber></qrCode></nod:verifyPaymentNoticeReq></soapenv:Body></soapenv:Envelope>",
+    "headers": {
+      "SOAPAction": "verifyPaymentNotice",
+      "Ocp-Apim-Subscription-Key": "${nodo_subscription_key}",
+      "Content-Type": "application/xml"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} verify payment notice to external service"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : false
+    }
+  },
+  {
+    "apiName" : "verifyPaymentNoticeInternal",
+    "appName" : "nodo",
+    "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo-auth/node-for-psp/v1",
+    "type" : "private",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "body": "<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/'> <SOAP-ENV:Body> <ns3:verifyPaymentNoticeReq xmlns:ns3='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'> <idPSP>CIPBITMM</idPSP> <idBrokerPSP>13212880150</idBrokerPSP> <idChannel>13212880150_10</idChannel> <password>PLACEHOLDER</password> <qrCode> <fiscalCode>83000970612</fiscalCode> <noticeNumber>302000000014360604</noticeNumber> </qrCode> </ns3:verifyPaymentNoticeReq> </SOAP-ENV:Body> </SOAP-ENV:Envelope>",
+    "headers": {
+      "SOAPAction": "verifyPaymentNotice",
+      "Ocp-Apim-Subscription-Key": "${nodo_subscription_key}",
+      "Content-Type": "application/xml"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} verify payment notice to internal service"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : false
+    }
+  },
+
+  {
+    "apiName" : "verifyPaymentNoticeExternal",
+    "appName" : "nodo",
+    "url" : "https://${appgw_public_ip}/nodo-auth/node-for-psp/v1",
+    "type" : "public",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "body": "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'><soapenv:Header /><soapenv:Body><nod:verifyPaymentNoticeReq xmlns:nod='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'><idPSP>ABI18164</idPSP><idBrokerPSP>02654890025</idBrokerPSP><idChannel>02654890025_01</idChannel><password>PLACEHOLDER</password><qrCode><fiscalCode>97532760580</fiscalCode><noticeNumber>302704889233205169</noticeNumber></qrCode></nod:verifyPaymentNoticeReq></soapenv:Body></soapenv:Envelope>",
+    "headers": {
+      "SOAPAction": "verifyPaymentNotice",
+      "Ocp-Apim-Subscription-Key": "${nodo_subscription_key}",
+      "Content-Type": "application/xml",
+      "Host": "${api_dot_env_name}.platform.pagopa.it"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} verify payment notice to external service"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : false
+    }
+  },
+  {
+    "apiName" : "verifyPaymentNoticeInternal",
+    "appName" : "nodo",
+    "url" : "https://${appgw_public_ip}/nodo-auth/node-for-psp/v1",
+    "type" : "public",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "body": "<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/'> <SOAP-ENV:Body> <ns3:verifyPaymentNoticeReq xmlns:ns3='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'> <idPSP>CIPBITMM</idPSP> <idBrokerPSP>13212880150</idBrokerPSP> <idChannel>13212880150_10</idChannel> <password>PLACEHOLDER</password> <qrCode> <fiscalCode>83000970612</fiscalCode> <noticeNumber>302000000014360604</noticeNumber> </qrCode> </ns3:verifyPaymentNoticeReq> </SOAP-ENV:Body> </SOAP-ENV:Envelope>",
+    "headers": {
+      "SOAPAction": "verifyPaymentNotice",
+      "Ocp-Apim-Subscription-Key": "${nodo_subscription_key}",
+      "Content-Type": "application/xml",
+      "Host": "${api_dot_env_name}.platform.pagopa.it"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} verify payment notice to internal service"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : false
+    }
   }
 ]

@@ -14,5 +14,7 @@ locals {
   log_analytics_workspace_name                = "${local.product}-law"
   log_analytics_workspace_resource_group_name = "${local.product}-monitor-rg"
 
+  key_vault_name    = "pagopa-${var.env_short}-kv"
+  key_vault_rg_name = "pagopa-${var.env_short}-sec-rg"
 
 }
