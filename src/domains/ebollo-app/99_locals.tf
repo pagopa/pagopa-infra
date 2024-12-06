@@ -3,9 +3,6 @@ locals {
   project_short = "${var.prefix}-${var.env_short}-${var.domain}"
   project       = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
 
-  location_short_weu = "weu"
-  project_short_weu  = "${var.prefix}-${var.env_short}-${local.location_short_weu}"
-
   project_core_itn = "${var.prefix}-${var.env_short}-${var.location_short}-core"
 
   monitor_action_group_slack_name    = "SlackPagoPA"
