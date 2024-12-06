@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: debezium-connect-cluster-network-policy
+  namespace: {namespace}
 spec:
   ingress:
     - from:

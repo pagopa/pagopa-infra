@@ -6,16 +6,14 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: 1m
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     nginx.ingress.kubernetes.io/use-regex: "true"
-  creationTimestamp: "2024-12-06T08:55:55Z"
-  generation: 1
   labels:
     ingress: debezium
   name: debezium-ingress
-  namespace: gps
+  namespace: ${namespace}
 spec:
   ingressClassName: nginx
   rules:
-    - host: weudev.gps.internal.dev.platform.pagopa.it
+    - host: ${host}
       http:
         paths:
           - backend:
@@ -27,5 +25,5 @@ spec:
             pathType: ImplementationSpecific
   tls:
     - hosts:
-        - weudev.gps.internal.dev.platform.pagopa.it
-      secretName: weudev-gps-internal-dev-platform-pagopa-it
+        - ${host}
+      secretName: ${secret}
