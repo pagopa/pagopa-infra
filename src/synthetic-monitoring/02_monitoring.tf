@@ -1,6 +1,6 @@
 module "monitoring_function" {
   depends_on = [azurerm_application_insights.application_insights]
-  source = "./.terraform/modules/__v3__/monitoring_function"
+  source     = "./.terraform/modules/__v3__/monitoring_function"
 
   location            = var.location
   prefix              = "${local.product}-${var.location_short}"
@@ -39,7 +39,7 @@ module "monitoring_function" {
     api_dot_env_name           = var.env == "prod" ? "api" : "api.${var.env}"
     internal_api_domain_prefix = "weu${var.env}"
     internal_api_domain_suffix = var.env == "prod" ? "internal.platform.pagopa.it" : "internal.${var.env}.platform.pagopa.it"
-    nodo_subscription_key      = module.secret_core.values["synthetic-monitoring-nodo-subscription-key"].value
+    nodo_subscription_key      = nonsensitive(module.secret_core.values["synthetic-monitoring-nodo-subscription-key"].value)
     appgw_public_ip            = data.azurerm_public_ip.appgateway_public_ip.ip_address
   })
 }
