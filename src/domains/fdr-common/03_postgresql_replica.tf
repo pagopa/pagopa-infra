@@ -34,7 +34,8 @@ module "postgresql_fdr_replica_db" {
   delegated_subnet_id      = module.postgres_flexible_snet_replica[0].id
   private_endpoint_enabled = var.pgres_flex_params.pgres_flex_private_endpoint_enabled
 
-  sku_name = var.pgres_flex_params.sku_name
+  sku_name   = var.pgres_flex_params.sku_name
+  storage_mb = var.pgres_flex_params.storage_mb
 
   high_availability_enabled = false
   pgbouncer_enabled         = var.pgres_flex_params.pgres_flex_pgbouncer_enabled
