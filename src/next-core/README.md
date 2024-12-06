@@ -138,6 +138,7 @@
 | [azurerm_dns_caa_record.api_platform_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_caa_record) | resource |
 | [azurerm_dns_caa_record.api_platform_pagopa_it_prf](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_caa_record) | resource |
 | [azurerm_dns_caa_record.wisp2_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_caa_record) | resource |
+| [azurerm_dns_cname_record.statuspage_platform_pagopa_it_cname](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_cname_record) | resource |
 | [azurerm_dns_ns_record.dev_pagopa_it_ns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_ns_record) | resource |
 | [azurerm_dns_ns_record.dev_wisp2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_ns_record) | resource |
 | [azurerm_dns_ns_record.prf_pagopa_it_ns](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/dns_ns_record) | resource |
