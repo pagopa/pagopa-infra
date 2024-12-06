@@ -149,7 +149,6 @@ variable "cidr_subnet_flex_dbms" {
 # Postgres Flexible
 variable "pgres_flex_params" {
   type = object({
-    enabled                                = bool
     sku_name                               = string
     db_version                             = string
     storage_mb                             = string
@@ -162,9 +161,13 @@ variable "pgres_flex_params" {
     pgres_flex_ha_enabled                  = bool
     pgres_flex_pgbouncer_enabled           = bool
     pgres_flex_diagnostic_settings_enabled = bool
+    alerts_enabled                         = bool
     max_connections                        = number
     pgbouncer_min_pool_size                = number
-    pgbouncer_default_pool_size            = number
+    max_worker_process                     = number
+    wal_level                              = string
+    shared_preoload_libraries              = string
+    public_network_access_enabled          = bool
   })
 
 }
@@ -383,74 +386,80 @@ variable "fdr_storage_account" {
 
 variable "fdr_re_storage_account" {
   type = object({
-    account_kind                  = string
-    account_tier                  = string
-    account_replication_type      = string
-    advanced_threat_protection    = bool
-    blob_versioning_enabled       = bool
-    public_network_access_enabled = bool
-    blob_delete_retention_days    = number
-    enable_low_availability_alert = bool
-    backup_enabled                = optional(bool, false)
-    backup_retention              = optional(number, 0)
+    account_kind                       = string
+    account_tier                       = string
+    account_replication_type           = string
+    advanced_threat_protection         = bool
+    advanced_threat_protection_enabled = bool
+    blob_versioning_enabled            = bool
+    public_network_access_enabled      = bool
+    blob_delete_retention_days         = number
+    enable_low_availability_alert      = bool
+    backup_enabled                     = optional(bool, false)
+    backup_retention                   = optional(number, 0)
   })
 
   default = {
-    account_kind                  = "StorageV2"
-    account_tier                  = "Standard"
-    account_replication_type      = "LRS"
-    blob_versioning_enabled       = false
-    advanced_threat_protection    = true
-    public_network_access_enabled = false
-    blob_delete_retention_days    = 30
-    enable_low_availability_alert = false
-    backup_enabled                = false
-    backup_retention              = 0
+    account_kind                       = "StorageV2"
+    account_tier                       = "Standard"
+    account_replication_type           = "LRS"
+    blob_versioning_enabled            = false
+    advanced_threat_protection         = true
+    advanced_threat_protection_enabled = true
+    public_network_access_enabled      = false
+    blob_delete_retention_days         = 30
+    enable_low_availability_alert      = false
+    backup_enabled                     = false
+    backup_retention                   = 0
   }
 }
 
 variable "fdr_history_storage_account" {
   type = object({
-    account_kind                  = string
-    account_tier                  = string
-    account_replication_type      = string
-    advanced_threat_protection    = bool
-    blob_versioning_enabled       = bool
-    public_network_access_enabled = bool
-    blob_delete_retention_days    = number
-    enable_low_availability_alert = bool
-    backup_enabled                = optional(bool, false)
-    backup_retention              = optional(number, 0)
+    account_kind                       = string
+    account_tier                       = string
+    account_replication_type           = string
+    advanced_threat_protection         = bool
+    advanced_threat_protection_enabled = bool
+    blob_versioning_enabled            = bool
+    public_network_access_enabled      = bool
+    blob_delete_retention_days         = number
+    enable_low_availability_alert      = bool
+    backup_enabled                     = optional(bool, false)
+    backup_retention                   = optional(number, 0)
   })
 
   default = {
-    account_kind                  = "StorageV2"
-    account_tier                  = "Standard"
-    account_replication_type      = "LRS"
-    blob_versioning_enabled       = false
-    advanced_threat_protection    = true
-    public_network_access_enabled = false
-    blob_delete_retention_days    = 30
-    enable_low_availability_alert = false
-    backup_enabled                = false
-    backup_retention              = 0
+    account_kind                       = "StorageV2"
+    account_tier                       = "Standard"
+    account_replication_type           = "LRS"
+    blob_versioning_enabled            = false
+    advanced_threat_protection         = true
+    advanced_threat_protection_enabled = true
+    public_network_access_enabled      = false
+    blob_delete_retention_days         = 30
+    enable_low_availability_alert      = false
+    backup_enabled                     = false
+    backup_retention                   = 0
   }
 }
 
 
 variable "reporting_fdr_storage_account" {
   type = object({
-    advanced_threat_protection = bool
-    blob_versioning_enabled    = bool
-    blob_delete_retention_days = number
-    account_replication_type   = string
+    advanced_threat_protection         = bool
+    advanced_threat_protection_enabled = bool
+    blob_versioning_enabled            = bool
+    blob_delete_retention_days         = number
+    account_replication_type           = string
   })
 
   default = {
-    advanced_threat_protection = false
-    blob_versioning_enabled    = false
-    blob_delete_retention_days = 30
-    account_replication_type   = "LRS"
+    advanced_threat_protection         = false
+    advanced_threat_protection_enabled = false
+    blob_versioning_enabled            = false
+    blob_delete_retention_days         = 30
+    account_replication_type           = "LRS"
   }
 }
 
