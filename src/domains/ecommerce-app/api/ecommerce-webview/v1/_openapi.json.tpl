@@ -250,6 +250,18 @@
               "IO"
             ]
           },
+          "closePaymentResultError": {
+            "type": "object",
+            "description": "Error details for close payment result",
+            "properties": {
+              "statusCode": {
+                "type": "number"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          },
           "sendPaymentResultOutcome": {
             "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
             "type": "string",
