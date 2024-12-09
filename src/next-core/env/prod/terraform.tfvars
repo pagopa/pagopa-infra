@@ -20,7 +20,7 @@ tags = {
 ### Feature Flag
 is_feature_enabled = {
   vnet_ita                  = false,
-  container_app_tools_cae   = false,
+  container_app_tools_cae   = true,
   node_forwarder_ha_enabled = true,
   vpn                       = false,
   dns_forwarder_lb          = true,
