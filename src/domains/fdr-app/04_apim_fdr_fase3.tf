@@ -104,6 +104,7 @@ locals {
 ##################
 
 resource "azurerm_api_management_api_version_set" "api_fdr_api_psp" {
+  count               = var.enable_fdr3_features == true ? 1 : 0
   name                = "${var.env_short}-fdr-service-api-psp"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -113,6 +114,7 @@ resource "azurerm_api_management_api_version_set" "api_fdr_api_psp" {
 
 
 module "apim_api_fdr_api_v1_psp" {
+  count  = var.enable_fdr3_features == true ? 1 : 0
   source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-fdr-service-api-psp"
@@ -120,7 +122,7 @@ module "apim_api_fdr_api_v1_psp" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_fdr_product_psp.product_id]
   subscription_required = local.apim_fdr_psp_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_fdr_api_psp.id
+  version_set_id        = azurerm_api_management_api_version_set.api_fdr_api_psp[0].id
   api_version           = "v1"
 
   description  = local.apim_fdr_psp_service_api.description
@@ -146,6 +148,7 @@ module "apim_api_fdr_api_v1_psp" {
 ##################
 
 resource "azurerm_api_management_api_version_set" "api_fdr_api_org" {
+  count               = var.enable_fdr3_features == true ? 1 : 0
   name                = "${var.env_short}-fdr-service-api-org"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -155,6 +158,7 @@ resource "azurerm_api_management_api_version_set" "api_fdr_api_org" {
 
 
 module "apim_api_fdr_api_v1_org" {
+  count  = var.enable_fdr3_features == true ? 1 : 0
   source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-fdr-service-api-org"
@@ -162,7 +166,7 @@ module "apim_api_fdr_api_v1_org" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_fdr_product_org.product_id]
   subscription_required = local.apim_fdr_org_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_fdr_api_org.id
+  version_set_id        = azurerm_api_management_api_version_set.api_fdr_api_org[0].id
   api_version           = "v1"
 
   description  = local.apim_fdr_org_service_api.description
@@ -187,7 +191,7 @@ module "apim_api_fdr_api_v1_org" {
 ##  API FdR INTERNAL ##
 #######################
 resource "azurerm_api_management_api_version_set" "api_fdr_api_internal" {
-
+  count               = var.enable_fdr3_features == true ? 1 : 0
   name                = "${var.env_short}-fdr-service-api-internal"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -196,6 +200,7 @@ resource "azurerm_api_management_api_version_set" "api_fdr_api_internal" {
 }
 
 module "apim_api_fdr_api_v1_internal" {
+  count  = var.enable_fdr3_features == true ? 1 : 0
   source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-fdr-service-api-internal"
@@ -203,7 +208,7 @@ module "apim_api_fdr_api_v1_internal" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_fdr_product_internal.product_id]
   subscription_required = local.apim_fdr_service_api_internal.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_fdr_api_internal.id
+  version_set_id        = azurerm_api_management_api_version_set.api_fdr_api_internal[0].id
   api_version           = "v1"
 
   description  = local.apim_fdr_service_api_internal.description

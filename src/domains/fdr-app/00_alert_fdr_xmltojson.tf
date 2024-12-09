@@ -1,7 +1,7 @@
 # AppException during conversion
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appexception" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${module.fdr_xml_to_json_function.name}-app-exception"
+  count               = (var.enable_fdr3_features && var.env_short == "p") ? 1 : 0
+  name                = "${module.fdr_xml_to_json_function[0].name}-app-exception"
   resource_group_name = data.azurerm_resource_group.fdr_rg.name
   location            = var.location
 
@@ -21,7 +21,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appe
       | summarize Total=count() by length=bin(timestamp,1m)
       | order by length desc
   QUERY
-    , module.fdr_xml_to_json_function.name
+    , module.fdr_xml_to_json_function[0].name
   )
   severity    = 3
   frequency   = 15
@@ -34,8 +34,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appe
 
 # AppException during conversion (Last retry)
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appexception_lastretry" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${module.fdr_xml_to_json_function.name}-app-exception-lastretry"
+  count               = (var.enable_fdr3_features && var.env_short == "p") ? 1 : 0
+  name                = "${module.fdr_xml_to_json_function[0].name}-app-exception-lastretry"
   resource_group_name = data.azurerm_resource_group.fdr_rg.name
   location            = var.location
 
@@ -55,7 +55,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appe
       | summarize Total=count() by length=bin(timestamp,1m)
       | order by length desc
   QUERY
-    , module.fdr_xml_to_json_function.name
+    , module.fdr_xml_to_json_function[0].name
   )
   severity    = 1
   frequency   = 15
