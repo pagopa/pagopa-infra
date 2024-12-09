@@ -11,6 +11,11 @@ data "azurerm_key_vault_secret" "pgres_gpd_cdc_pwd" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "otel_headers" {
+  name         = "elastic-apm-secret-token"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 data "azurerm_eventhub_namespace_authorization_rule" "cdc_connection_string" {
   name                = "cdc-gpd-connection-string"
   namespace_name      = "pagopa-${var.env_short}-itn-observ-gpd-evh"
@@ -59,19 +64,22 @@ locals {
   # https://learn.microsoft.com/it-it/azure/event-hubs/event-hubs-kafka-connect-debezium#configure-kafka-connect-for-event-hubs
 
   kafka_connect_yaml = templatefile("${path.module}/yaml/kafka-connect.yaml", {
-    namespace          = "gps" # kubernetes_namespace.namespace.metadata[0].name
-    replicas           = var.replicas
-    request_memory     = var.request_memory
-    request_cpu        = var.request_cpu
-    limits_memory      = var.limits_memory
-    limits_cpu         = var.limits_cpu
-    bootstrap_servers  = "pagopa-${var.env_short}-itn-observ-gpd-evh.servicebus.windows.net:9093"
-    container_registry = var.container_registry
+    namespace                 = "gps" # kubernetes_namespace.namespace.metadata[0].name
+    replicas                  = var.replicas
+    request_memory            = var.request_memory
+    request_cpu               = var.request_cpu
+    limits_memory             = var.limits_memory
+    limits_cpu                = var.limits_cpu
+    bootstrap_servers         = "pagopa-${var.env_short}-itn-observ-gpd-evh.servicebus.windows.net:9093"
+    container_registry        = var.container_registry
+    otlp_endpoint             = "http://otel-collector.elastic-system.svc:4317"
+    otlp_resource_attributes  = "service.name=gpddebeziumconnectorkotl,deployment.environment=${var.env}"
+    otlp_headers              = data.azurerm_key_vault_secret.otel_headers.value
   })
 
   postgres_connector_yaml = templatefile("${path.module}/yaml/postgres-connector.yaml", {
     namespace         = "gps" # kubernetes_namespace.namespace.metadata[0].name
-    postgres_hostname = "pagopa-${var.env_short}-gpd-pgflex.postgres.database.azure.com"
+    postgres_hostname = "pagopa-${var.env_short}-${var.location_short}-gpd-pgflex.postgres.database.azure.com"
 
     postgres_port         = 5432
     postgres_db_name      = var.postgres_db_name
@@ -79,6 +87,25 @@ locals {
     postgres_username     = data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value
     postgres_password     = data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value
     tasks_max             = var.tasks_max
+    max_threads           = var.max_threads
+  })
+
+  healthchecker_config_yaml = templatefile("${path.module}/yaml/healthchecker-config-map.yaml", {
+    namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
+  })
+
+  debezium_health_checker_cron_yaml = templatefile("${path.module}/yaml/debezium-health-checker-cron.yaml", {
+    namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
+  })
+
+  debezium_network_policy_yaml = templatefile("${path.module}/yaml/debezium-network-policy.yaml", {
+    namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
+  })
+
+  debezium_ingress_yaml = templatefile("${path.module}/yaml/debezium-ingress.yaml", {
+    namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
+    host = "${var.location_short}${var.env_short}.gps.internal.${var.env_short}.platform.pagopa.it"
+    secret = "${var.location_short}${var.env_short}-gps-internal-${var.env_short}-platform-pagopa-it"
   })
 
 }
@@ -153,3 +180,36 @@ resource "null_resource" "wait_postgres_connector" {
     interpreter = ["/bin/bash", "-c"]
   }
 }
+
+resource "kubectl_manifest" "healthchecker-config-map" {
+  depends_on = [
+    helm_release.strimzi-kafka-operator
+  ]
+  force_conflicts = true
+  yaml_body       = local.healthchecker_config_yaml
+}
+
+resource "kubectl_manifest" "healthchecker-cron" {
+  depends_on = [
+    helm_release.strimzi-kafka-operator, kubectl_manifest.healthchecker-config-map
+  ]
+  force_conflicts = true
+  yaml_body       = local.debezium_health_checker_cron_yaml
+}
+
+resource "kubectl_manifest" "debezium-ingress" {
+  depends_on = [
+    kubectl_manifest.kafka_connect
+  ]
+  force_conflicts = true
+  yaml_body       = local.debezium_ingress_yaml
+}
+
+resource "kubectl_manifest" "debezium-network-policy" {
+  depends_on = [
+    kubectl_manifest.kafka_connect
+  ]
+  force_conflicts = true
+  yaml_body       = local.debezium_network_policy_yaml
+}
+

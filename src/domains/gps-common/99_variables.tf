@@ -461,3 +461,10 @@ variable "location_replica_short" {
   description = "One of wue, neu"
   default     = "neu"
 }
+
+
+variable "gpd_cdc_enabled" {
+  type        = bool
+  description = "Enable CDC for GDP"
+  default     = false
+}
