@@ -21,7 +21,7 @@ spec:
                 name: debezium-connect-cluster-connect-api
                 port:
                   number: 8083
-            path: /debezium/(.*)
+            path: /debezium-gpd/(.*)
             pathType: ImplementationSpecific
   tls:
     - hosts:
