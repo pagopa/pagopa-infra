@@ -35,7 +35,7 @@ resource "azurerm_api_management_user" "user_psp_signed_direct_dev" {
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   first_name          = "99999000001"
   last_name           = "PSP Signed Direct"
-  email               = "2d6fe3c6-5656-43c8-afd4-ccf2bb352cecjacopo.carlini@pagopa.it"
+  email               = "" // TODO
   state               = "active"
 }
 
@@ -45,8 +45,8 @@ resource "azurerm_api_management_user" "user_psp_signed_direct_uat" {
   user_id             = "user_psp_signed_direct_uat"
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  first_name          = "99999000001"
-  last_name           = "PSP Signed Direct"
+  first_name          = "99999000011"
+  last_name           = "PSP DEMO"
   email               = "" // TODO
   state               = "active"
 }
