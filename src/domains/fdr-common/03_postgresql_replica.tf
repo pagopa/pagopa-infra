@@ -39,6 +39,8 @@ module "postgresql_fdr_replica_db" {
 
   high_availability_enabled = false
   pgbouncer_enabled         = var.pgres_flex_params.pgres_flex_pgbouncer_enabled
+  max_connections           = var.pgres_flex_params.max_connections
+  max_worker_process        = var.pgres_flex_params.max_worker_process
 
   source_server_id = module.postgres_flexible_server_fdr.id
 
