@@ -51,4 +51,4 @@ resource "azurerm_key_vault_secret" "secret" {
   ]
 }
 
-# ⚠️ The secrets from resources are set in paymentoptions-app to avoid circular dependency
+# ⚠️ The secrets from resources are set in payopt-app to avoid circular dependency
