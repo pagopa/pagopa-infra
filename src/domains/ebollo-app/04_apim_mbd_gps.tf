@@ -6,7 +6,7 @@ locals {
 }
 
 module "apim_mbd_gps_product" {
-  source    = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "ebollo-gps-service"
   display_name = local.apim_mbd_gps_pagopa_api.display_name

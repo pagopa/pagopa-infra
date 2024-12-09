@@ -16,7 +16,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 551a56a4bf841cd431b51ec951639e74260daf6a |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
 | <a name="module_apim_selfcare_backoffice_external_ec_product"></a> [apim\_selfcare\_backoffice\_external\_ec\_product](#module\_apim\_selfcare\_backoffice\_external\_ec\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_selfcare_backoffice_external_psp_product"></a> [apim\_selfcare\_backoffice\_external\_psp\_product](#module\_apim\_selfcare\_backoffice\_external\_psp\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_selfcare_backoffice_helpdesk_product"></a> [apim\_selfcare\_backoffice\_helpdesk\_product](#module\_apim\_selfcare\_backoffice\_helpdesk\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
@@ -35,6 +35,7 @@
 | [azurerm_api_management_api_operation_policy.pagopa_token_exchange_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_certificate.pagopa_token_exchange_cert_jwt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_certificate) | resource |
 | [azurerm_api_management_subscription.notices_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
+| [azurerm_api_management_subscription.status_page_improvement_api_key_subkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_subscription) | resource |
 | [azurerm_key_vault_certificate.pagopa_jwt_signing_cert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
