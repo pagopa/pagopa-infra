@@ -469,7 +469,10 @@
             "description": "transaction client id",
             "type": "string",
             "enum": [
-              "IO"
+              "IO",
+              "CHECKOUT",
+              "CHECKOUT_CART",
+              "UNKNOWN"
             ]
           },
           "nodeInfo":{
