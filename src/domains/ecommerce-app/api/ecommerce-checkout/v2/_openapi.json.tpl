@@ -424,37 +424,101 @@
       },
       "TransactionInfo": {
         "description": "Transaction data returned when querying for an existing transaction",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/NewTransactionResponse"
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string"
           },
-          {
-            "type": "object",
-            "properties": {
-              "closePaymentResultError": {
-                "type": "object",
-                "description": "Error details for close payment result",
-                "properties": {
-                  "statusCode": {
-                    "type": "number"
-                  },
-                  "description": {
-                    "type": "string"
-                  }
-                }
-              },
-              "status": {
-                "$ref": "#/components/schemas/TransactionStatus"
-              },
-              "gatewayAuthorizationStatus": {
-                "type": "string",
-                "description": "Payment gateway authorization status"
-              }
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentInfo"
             },
-            "required": [
-              "status"
+            "minItems": 1,
+            "maxItems": 1,
+            "example": [
+              {
+                "rptId": "77777777777302012387654312384",
+                "paymentToken": "paymentToken1",
+                "reason": "reason1",
+                "amount": 600,
+                "transferList": [
+                  {
+                    "paFiscalCode": "77777777777",
+                    "digitalStamp": false,
+                    "transferCategory": "transferCategory1",
+                    "transferAmount": 500
+                  },
+                  {
+                    "paFiscalCode": "11111111111",
+                    "digitalStamp": true,
+                    "transferCategory": "transferCategory2",
+                    "transferAmount": 100
+                  }
+                ]
+              }
             ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "feeTotal": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "clientId": {
+            "description": "transaction client id",
+            "type": "string",
+            "enum": [
+              "IO"
+            ]
+          },
+          "sendPaymentResultOutcome": {
+            "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
+            "type": "string",
+            "enum": [
+              "OK",
+              "KO",
+              "NOT_RECEIVED"
+            ]
+          },
+          "authorizationCode": {
+            "type": "string",
+            "description": "Payment gateway-specific authorization code related to the transaction"
+          },
+          "errorCode": {
+            "type": "string",
+            "description": "Payment gateway-specific error code from the gateway"
+          },
+          "gateway": {
+            "type": "string",
+            "pattern": "XPAY|VPOS|NPG|REDIRECT",
+            "description": "Pgs identifier"
+          },
+          "closePaymentResultError": {
+            "type": "object",
+            "description": "Error details for close payment result",
+            "properties": {
+              "statusCode": {
+                "type": "number"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "gatewayAuthorizationStatus": {
+            "type": "string",
+            "description": "Payment gateway authorization status"
           }
+        },
+        "required": [
+          "status",
+          "transactionId",
+          "status",
+          "payments"
         ]
       },
       "ValidationFaultPaymentUnknownProblemJson": {
