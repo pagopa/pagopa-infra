@@ -1,5 +1,5 @@
 module "cosmosdb_account_mongodb" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.3.1"
+  source              = "./.terraform/modules/__v3__/cosmosdb_account"
   domain              = null
   name                = "${local.project}-cosmos-account"
   location            = var.location
@@ -14,7 +14,7 @@ module "cosmosdb_account_mongodb" {
   public_network_access_enabled      = var.cosmos_mongo_db_fdr_params.public_network_access_enabled
   private_endpoint_enabled           = var.cosmos_mongo_db_fdr_params.private_endpoint_enabled
   subnet_id                          = module.cosmosdb_fdr_snet.id
-  private_dns_zone_ids               = [data.azurerm_private_dns_zone.cosmos.id]
+  private_dns_zone_mongo_ids         = [data.azurerm_private_dns_zone.cosmos.id]
   is_virtual_network_filter_enabled  = var.cosmos_mongo_db_fdr_params.is_virtual_network_filter_enabled
   allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_fdr_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
@@ -167,7 +167,7 @@ locals {
 }
 
 module "cosmosdb_fdr_collections" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.3.1"
+  source = "./.terraform/modules/__v3__/cosmosdb_mongodb_collection"
 
   for_each = {
     for index, coll in local.collections :
