@@ -33,6 +33,135 @@
     }
   ],
   "paths": {
+    "/transactions/{transactionId}": {
+      "get": {
+        "tags": [
+          "transactions"
+        ],
+        "operationId": "getTransactionInfo",
+        "summary": "Get transaction information",
+        "description": "Return information for the input specific transaction resource",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction data successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid transaction id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "transactions"
+        ],
+        "operationId": "requestTransactionUserCancellation",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          }
+        ],
+        "summary": "Performs the transaction cancellation",
+        "responses": {
+          "202": {
+            "description": "Transaction cancellation request successfully accepted"
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Transaction already processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Timeout from PagoPA services",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/transactions": {
       "post": {
         "operationId": "newTransaction",
@@ -220,6 +349,37 @@
             }
           ]
         }
+      },
+      "TransactionInfo": {
+        "description": "Transaction data returned when querying for an existing transaction",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/NewTransactionResponse"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "closePaymentResultError": {
+                "type": "object",
+                "description": "Error details for close payment result",
+                "properties": {
+                  "statusCode": {
+                    "type": "number"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              },
+              "feeTotal": {
+                "$ref": "#/components/schemas/AmountEuroCents"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        ]
       },
       "NewTransactionRequest": {
         "description": "Request body for creating a new transaction",
