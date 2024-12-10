@@ -182,11 +182,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
       StorageQueueLogs
       | where OperationName == operation and ObjectKey startswith queueKey
       | summarize count()
+      | extend queueKey, count_
     };
     let MessageRateForQueue = (queueKey: string) {
-      OpCountForQueue("PutMessage", queueKey)
-      | join kind=fullouter OpCountForQueue("DeleteMessage", queueKey) on count_
-      | project name = queueKey, Count = count_ - count_1
+        OpCountForQueue("PutMessage", queueKey)
+        | join kind=fullouter OpCountForQueue("DeleteMessage", queueKey) on queueKey
+        | project name = queueKey, Count = count_ - count_1
     };
     MessageRateForQueue("%s")
     | where Count > ${each.value.threshold}
