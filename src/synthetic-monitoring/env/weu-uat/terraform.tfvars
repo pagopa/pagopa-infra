@@ -26,3 +26,8 @@ enabled_resource = {
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 10
+
+check_position_body = {
+  fiscal_code = "15376371009"
+  notice_number = "351173232582781477"
+}

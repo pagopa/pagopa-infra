@@ -26,3 +26,8 @@ enabled_resource = {
 law_sku               = "CapacityReservation" # TODO verify why it is changed from PerGB2018 to CapacityReservation
 law_retention_in_days = 30
 law_daily_quota_gb    = -1
+
+check_position_body = {
+  fiscal_code = "00876220633"
+  notice_number = "001000000136265862"
+}

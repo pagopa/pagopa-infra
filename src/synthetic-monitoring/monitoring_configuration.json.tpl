@@ -856,7 +856,9 @@
     "checkCertificate" : true,
     "method" : "POST",
     "expectedCodes" : ["200"],
-    "body": {"positionslist":[{"fiscalCode":"80008360523","noticeNumber":"303173097454724050"}]},
+    "body": {"positionslist": [{"fiscalCode": "${check_position_body.fiscal_code}", "noticeNumber": "${check_position_body.notice_number}"}]},
+    "expectedBody": {"outcome":"OK"},
+    "bodyCompareStrategy": "contains",
     "headers": {
       "Content-Type": "application/json"
     },
@@ -993,6 +995,38 @@
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} verify payment notice to internal service"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : false
+    }
+  },
+  {
+    "apiName" : "verifyPaymentNoticeInternal",
+    "appName" : "nodo",
+    "url": "https://${internal_api_domain_prefix}.nodo.${internal_api_domain_suffix}/nodo/webservices/input",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "POST",
+    "expectedCodes" : ["200"],
+    "expectedBody": {
+      "soapenv:Envelope": {
+        "soapenv:Body": {
+          "nfp:verifyPaymentNoticeRes": {
+            "outcome": "KO"
+          }
+        }
+      }
+    },
+    "bodyCompareStrategy": "xmlContains",
+    "body": "<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/'> <SOAP-ENV:Body> <ns3:verifyPaymentNoticeReq xmlns:ns3='http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd'> <idPSP>CIPBITMM</idPSP> <idBrokerPSP>13212880150</idBrokerPSP> <idChannel>13212880150_10</idChannel> <password>PLACEHOLDER</password> <qrCode> <fiscalCode>83000970612</fiscalCode> <noticeNumber>302000000014360604</noticeNumber> </qrCode> </ns3:verifyPaymentNoticeReq> </SOAP-ENV:Body> </SOAP-ENV:Envelope>",
+    "headers": {
+      "SOAPAction": "verifyPaymentNotice",
+      "Ocp-Apim-Subscription-Key": "${nodo_subscription_key}",
+      "Content-Type": "application/xml"
+    },
+    "tags" : {
+      "description" : "pagopa nodo ${env_name} verify payment notice to internal service directly to aks hostname"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {

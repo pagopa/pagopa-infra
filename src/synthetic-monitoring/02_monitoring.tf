@@ -41,5 +41,6 @@ module "monitoring_function" {
     internal_api_domain_suffix = var.env == "prod" ? "internal.platform.pagopa.it" : "internal.${var.env}.platform.pagopa.it"
     nodo_subscription_key      = nonsensitive(module.secret_core.values["synthetic-monitoring-nodo-subscription-key"].value)
     appgw_public_ip            = data.azurerm_public_ip.appgateway_public_ip.ip_address
+    check_position_body        = var.check_position_body
   })
 }

@@ -95,4 +95,12 @@ variable "self_alert_enabled" {
 }
 
 
+variable "check_position_body" {
+  type = object({
+    fiscal_code = string
+    notice_number = string
+  })
+  description = "(Required) fiscal code and notice number to be used in synthetic checkposition request body"
+}
+
 
