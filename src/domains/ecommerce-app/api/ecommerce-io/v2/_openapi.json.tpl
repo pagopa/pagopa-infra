@@ -1760,28 +1760,38 @@
               "IO"
             ]
           },
-          "sendPaymentResultOutcome": {
-            "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
-            "type": "string",
-            "enum": [
-              "OK",
-              "KO",
-              "NOT_RECEIVED"
-            ]
-          },
-          "authorizationCode": {
-            "type": "string",
-            "description": "Payment gateway-specific authorization code related to the transaction"
-          },
-          "errorCode": {
-            "type": "string",
-            "description": "Payment gateway-specific error code from the gateway"
-          },
-          "gateway":{
+          "nodeInfo":{
             "type": "object",
             "description": "Gateway infos",
             "properties": {
-              "gatewayType": {
+              "closePaymentResultError": {
+                "type": "object",
+                "description": "Error details for close payment result",
+                "properties": {
+                  "statusCode": {
+                    "type": "number"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              },
+              "sendPaymentResultOutcome": {
+                "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
+                "type": "string",
+                "enum": [
+                  "OK",
+                  "KO",
+                  "NOT_RECEIVED"
+                ]
+              },
+            }
+          },
+          "gatewayInfo":{
+            "type": "object",
+            "description": "Gateway infos",
+            "properties": {
+              "gateway": {
                 "type": "string",
                 "pattern": "XPAY|VPOS|NPG|REDIRECT",
                 "description": "Pgs identifier"
@@ -1789,19 +1799,15 @@
               "gatewayAuthorizationStatus": {
                 "type": "string",
                 "description": "Payment gateway authorization status"
-              }
-            }
-          },
-          "closePaymentResultError": {
-            "type": "object",
-            "description": "Error details for close payment result",
-            "properties": {
-              "statusCode": {
-                "type": "number"
               },
-              "description": {
-                "type": "string"
-              }
+              "authorizationCode": {
+                "type": "string",
+                "description": "Payment gateway-specific authorization code related to the transaction"
+              },
+              "errorCode": {
+                "type": "string",
+                "description": "Payment gateway-specific error code from the gateway"
+              },
             }
           },
         },
