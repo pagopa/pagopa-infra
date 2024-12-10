@@ -373,9 +373,6 @@
               }
             }
           },
-          "status": {
-            "$ref": "#/components/schemas/TransactionStatus"
-          },
         },
         "required": [
           "status",
