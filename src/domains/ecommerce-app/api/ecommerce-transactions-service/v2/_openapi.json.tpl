@@ -354,10 +354,20 @@
             "type": "string",
             "description": "Payment gateway-specific error code from the gateway"
           },
-          "gateway": {
-            "type": "string",
-            "pattern": "XPAY|VPOS|NPG|REDIRECT",
-            "description": "Pgs identifier"
+          "gateway":{
+            "type": "object",
+            "description": "Gateway infos",
+            "properties": {
+              "gatewayType": {
+                "type": "string",
+                "pattern": "XPAY|VPOS|NPG|REDIRECT",
+                "description": "Pgs identifier"
+              },
+              "gatewayAuthorizationStatus": {
+                "type": "string",
+                "description": "Payment gateway authorization status"
+              }
+            }
           },
           "closePaymentResultError": {
             "type": "object",
@@ -374,10 +384,6 @@
           "status": {
             "$ref": "#/components/schemas/TransactionStatus"
           },
-          "gatewayAuthorizationStatus": {
-            "type": "string",
-            "description": "Payment gateway authorization status"
-          }
         },
         "required": [
           "status",

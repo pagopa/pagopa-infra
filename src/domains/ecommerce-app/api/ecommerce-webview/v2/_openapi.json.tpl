@@ -278,136 +278,7 @@
           "status",
           "payments"
         ]
-      },      "TransactionInfo": {
-        "description": "Transaction data returned when querying for an existing transaction",
-        "type": "object",
-        "properties": {
-          "transactionId": {
-            "type": "string"
-          },
-          "payments": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PaymentInfo"
-            },
-            "minItems": 1,
-            "maxItems": 1,
-            "example": [
-              {
-                "rptId": "77777777777302012387654312384",
-                "paymentToken": "paymentToken1",
-                "reason": "reason1",
-                "amount": 600,
-                "transferList": [
-                  {
-                    "paFiscalCode": "77777777777",
-                    "digitalStamp": false,
-                    "transferCategory": "transferCategory1",
-                    "transferAmount": 500
-                  },
-                  {
-                    "paFiscalCode": "11111111111",
-                    "digitalStamp": true,
-                    "transferCategory": "transferCategory2",
-                    "transferAmount": 100
-                  }
-                ]
-              }
-            ]
-          },
-          "status": {
-            "$ref": "#/components/schemas/TransactionStatus"
-          },
-          "feeTotal": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          },
-          "clientId": {
-            "description": "transaction client id",
-            "type": "string",
-            "enum": [
-              "IO"
-            ]
-          },
-          "sendPaymentResultOutcome": {
-            "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
-            "type": "string",
-            "enum": [
-              "OK",
-              "KO",
-              "NOT_RECEIVED"
-            ]
-          },
-          "authorizationCode": {
-            "type": "string",
-            "description": "Payment gateway-specific authorization code related to the transaction"
-          },
-          "errorCode": {
-            "type": "string",
-            "description": "Payment gateway-specific error code from the gateway"
-          },
-          "gateway": {
-            "type": "string",
-            "pattern": "XPAY|VPOS|NPG|REDIRECT",
-            "description": "Pgs identifier"
-          },
-          "closePaymentResultError": {
-            "type": "object",
-            "description": "Error details for close payment result",
-            "properties": {
-              "statusCode": {
-                "type": "number"
-              },
-              "description": {
-                "type": "string"
-              }
-            }
-          },
-          "status": {
-            "$ref": "#/components/schemas/TransactionStatus"
-          },
-          "gatewayAuthorizationStatus": {
-            "type": "string",
-            "description": "Payment gateway authorization status"
-          }
-        },
-        "required": [
-          "status",
-          "transactionId",
-          "status",
-          "payments"
-        ]
-      },
-      "AmountEuroCents": {
-        "description": "Amount for payments, in euro cents",
-        "type": "integer",
-        "minimum": 0,
-        "maximum": 99999999
-      },
-      "TransactionStatus": {
-        "type": "string",
-        "description": "Possible statuses a transaction can be in",
-        "enum": [
-          "ACTIVATED",
-          "AUTHORIZATION_REQUESTED",
-          "AUTHORIZATION_COMPLETED",
-          "CLOSURE_REQUESTED",
-          "CLOSED",
-          "CLOSURE_ERROR",
-          "NOTIFIED_OK",
-          "NOTIFIED_KO",
-          "NOTIFICATION_ERROR",
-          "NOTIFICATION_REQUESTED",
-          "EXPIRED",
-          "REFUNDED",
-          "CANCELED",
-          "EXPIRED_NOT_AUTHORIZED",
-          "UNAUTHORIZED",
-          "REFUND_ERROR",
-          "REFUND_REQUESTED",
-          "CANCELLATION_REQUESTED",
-          "CANCELLATION_EXPIRED"
-        ]
-      },
+      },      
       "TransactionInfo": {
         "description": "Transaction data returned when querying for an existing transaction",
         "type": "object",
@@ -458,6 +329,18 @@
               "IO"
             ]
           },
+          "closePaymentResultError": {
+            "type": "object",
+            "description": "Error details for close payment result",
+            "properties": {
+              "statusCode": {
+                "type": "number"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          },
           "sendPaymentResultOutcome": {
             "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
             "type": "string",
@@ -475,36 +358,61 @@
             "type": "string",
             "description": "Payment gateway-specific error code from the gateway"
           },
-          "gateway": {
-            "type": "string",
-            "pattern": "XPAY|VPOS|NPG|REDIRECT",
-            "description": "Pgs identifier"
-          },
-          "closePaymentResultError": {
+          "gateway":{
             "type": "object",
-            "description": "Error details for close payment result",
+            "description": "Gateway infos",
             "properties": {
-              "statusCode": {
-                "type": "number"
+              "gatewayType": {
+                "type": "string",
+                "pattern": "XPAY|VPOS|NPG|REDIRECT",
+                "description": "Pgs identifier"
               },
-              "description": {
-                "type": "string"
+              "gatewayAuthorizationStatus": {
+                "type": "string",
+                "description": "Payment gateway authorization status"
               }
             }
           },
           "status": {
             "$ref": "#/components/schemas/TransactionStatus"
           },
-          "gatewayAuthorizationStatus": {
-            "type": "string",
-            "description": "Payment gateway authorization status"
-          }
         },
         "required": [
           "status",
           "transactionId",
           "status",
           "payments"
+        ]
+      },
+      "AmountEuroCents": {
+        "description": "Amount for payments, in euro cents",
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 99999999
+      },
+      "TransactionStatus": {
+        "type": "string",
+        "description": "Possible statuses a transaction can be in",
+        "enum": [
+          "ACTIVATED",
+          "AUTHORIZATION_REQUESTED",
+          "AUTHORIZATION_COMPLETED",
+          "CLOSURE_REQUESTED",
+          "CLOSED",
+          "CLOSURE_ERROR",
+          "NOTIFIED_OK",
+          "NOTIFIED_KO",
+          "NOTIFICATION_ERROR",
+          "NOTIFICATION_REQUESTED",
+          "EXPIRED",
+          "REFUNDED",
+          "CANCELED",
+          "EXPIRED_NOT_AUTHORIZED",
+          "UNAUTHORIZED",
+          "REFUND_ERROR",
+          "REFUND_REQUESTED",
+          "CANCELLATION_REQUESTED",
+          "CANCELLATION_EXPIRED"
         ]
       },
       "Transfer": {
