@@ -319,6 +319,18 @@
           {
             "type": "object",
             "properties": {
+              "closePaymentResultError": {
+                "type": "object",
+                "description": "Error details for close payment result",
+                "properties": {
+                  "statusCode": {
+                    "type": "number"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              },
               "status": {
                 "$ref": "#/components/schemas/TransactionStatus"
               },
