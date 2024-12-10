@@ -838,21 +838,21 @@
           {
             "$ref": "#/components/schemas/NewTransactionResponse"
           },
-          "closePaymentResultError": {
-            "type": "object",
-            "description": "Error details for close payment result",
-            "properties": {
-              "statusCode": {
-                "type": "number"
-              },
-              "description": {
-                "type": "string"
-              }
-            }
-          },
           {
             "type": "object",
             "properties": {
+              "closePaymentResultError": {
+                "type": "object",
+                "description": "Error details for close payment result",
+                "properties": {
+                  "statusCode": {
+                    "type": "number"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              },
               "feeTotal": {
                 "$ref": "#/components/schemas/AmountEuroCents"
               }
