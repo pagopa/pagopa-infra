@@ -26,6 +26,7 @@ resource "azurerm_api_management_subscription" "payments_subkey" {
 }
 
 resource "azurerm_api_management_subscription" "gps_mbd_service_integration_test_subkey" {
+  count               = var.env_short != "p" ? 1 : 0
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   product_id          = module.apim_mbd_gps_product.id
