@@ -385,7 +385,6 @@
         "required": [
           "status",
           "transactionId",
-          "status",
           "payments"
         ]
       },
