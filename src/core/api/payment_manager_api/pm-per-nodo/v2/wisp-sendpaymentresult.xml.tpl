@@ -23,8 +23,14 @@
     <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
     <set-variable name="ecommerce_url" value="${ecommerce_ingress_hostname}" />
     <set-variable name="body_value" value="@(context.Request.Body.As<string>(preserveContent: true))" />
-    <set-backend-service base-url="@((string)context.Variables["ecommerce_url"])" />
-
+    <send-request ignore-error="true" timeout="10" response-variable-name="test-transaction" mode="new">
+      <set-url>@($"https://{(string)context.Variables["ecommerce_url"]}/pagopa-ecommerce-transactions-service/transactions/{(string)context.Variables["transactionId"]}/user-receipts")</set-url>
+      <set-method>POST</set-method>
+      <set-header name="Content-Type" exists-action="override">
+        <value>application/json</value>
+      </set-header>
+      <set-body>@($"{(string)context.Variables["body_value"]}")</set-body>
+    </send-request>
     <!-- policy for WISP Dismantling -->
     <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
     <choose>
@@ -51,6 +57,7 @@
 <base />
 <!-- fragment necessary for WISP Dismantling -->
 <include-fragment fragment-id="wisp-receipt-ko" />
+<return-response response-variable-name="test-transaction" />
 </outbound>
 <on-error>
 <base />
