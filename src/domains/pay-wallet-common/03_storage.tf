@@ -210,7 +210,7 @@ locals {
       "severity"             = 1
       "time_window"          = "PT1H"
       "frequency"            = "PT15M"
-      "threshold"            = 1000
+      "threshold"            = 3000
     },
   ] : []
 }
