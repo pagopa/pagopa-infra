@@ -5,7 +5,7 @@
 module "printit_pdf_engine_app_service_clone" {
   source = "./.terraform/modules/__v3__/app_service"
 
-  count = var.is_feature_enabled.pdf_engine ? 1 : 0
+  count = var.is_feature_enabled.pdf_engine_clone ? 1 : 0
 
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
@@ -41,7 +41,7 @@ module "printit_pdf_engine_app_service_clone" {
 }
 
 module "printit_pdf_engine_slot_staging_clone" {
-  count = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
+  count = var.env_short != "d" && var.is_feature_enabled.pdf_engine_clone ? 1 : 0
 
   source = "./.terraform/modules/__v3__/app_service_slot"
 
@@ -74,7 +74,7 @@ module "printit_pdf_engine_slot_staging_clone" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_autoscale_clone" {
-  count   = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
+  count   = var.env_short != "d" && var.is_feature_enabled.pdf_engine_clone ? 1 : 0
   enabled = var.app_service_pdf_engine_autoscale_enabled
 
   name                = "${local.project}-autoscale-pdf-engine-clone"
@@ -242,7 +242,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
 ###############
 module "printit_pdf_engine_app_service_java_clone" {
   source = "./.terraform/modules/__v3__/app_service"
-  count  = var.is_feature_enabled.pdf_engine ? 1 : 0
+  count  = var.is_feature_enabled.pdf_engine_clone ? 1 : 0
 
   vnet_integration    = false
   resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
@@ -276,7 +276,7 @@ module "printit_pdf_engine_app_service_java_clone" {
 }
 
 module "printit_pdf_engine_java_slot_staging_clone" {
-  count = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
+  count = var.env_short != "d" && var.is_feature_enabled.pdf_engine_clone ? 1 : 0
 
   source = "./.terraform/modules/__v3__/app_service_slot"
 
@@ -309,7 +309,7 @@ module "printit_pdf_engine_java_slot_staging_clone" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_java_autoscale_clone" {
-  count = var.env_short != "d" && var.is_feature_enabled.pdf_engine ? 1 : 0
+  count = var.env_short != "d" && var.is_feature_enabled.pdf_engine_clone ? 1 : 0
 
 
   name                = "${local.project}-autoscale-pdf-engine-java-clone"
