@@ -1,3 +1,11 @@
+resource "azurerm_resource_group" "printit_pdf_engine_app_service_rg_clone" {
+  count    = var.is_feature_enabled.pdf_engine_clone ? 1 : 0
+  name     = "${local.project}-pdf-engine-clone-rg"
+  location = var.location
+
+  tags = var.tags
+}
+
 ################
 # node
 ################
@@ -8,7 +16,7 @@ module "printit_pdf_engine_app_service_clone" {
   count = var.is_feature_enabled.pdf_engine_clone ? 1 : 0
 
   vnet_integration    = false
-  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].name
   location            = var.location
 
   # App service plan vars
@@ -52,7 +60,7 @@ module "printit_pdf_engine_slot_staging_clone" {
 
   # App service
   name                = "staging"
-  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].name
   location            = var.location
 
   always_on         = true
@@ -78,8 +86,8 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
   enabled = var.app_service_pdf_engine_autoscale_enabled
 
   name                = "${local.project}-autoscale-pdf-engine-clone"
-  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
-  location            = azurerm_resource_group.printit_pdf_engine_app_service_rg.location
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].name
+  location            = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].location
   target_resource_id  = module.printit_pdf_engine_app_service_clone[0].plan_id
 
   profile {
@@ -95,7 +103,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.printit_pdf_engine_app_service[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -117,7 +125,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.printit_pdf_engine_app_service[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -143,7 +151,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.printit_pdf_engine_app_service[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -165,7 +173,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.printit_pdf_engine_app_service[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -191,7 +199,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.printit_pdf_engine_app_service[0].plan_id
+        metric_resource_id       = module.printit_pdf_engine_app_service_clone[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -213,7 +221,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.printit_pdf_engine_app_service[0].plan_id
+        metric_resource_id       = module.printit_pdf_engine_app_service_clone[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -245,7 +253,7 @@ module "printit_pdf_engine_app_service_java_clone" {
   count  = var.is_feature_enabled.pdf_engine_clone ? 1 : 0
 
   vnet_integration    = false
-  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].name
   location            = var.location
 
   # App service plan vars
@@ -287,7 +295,7 @@ module "printit_pdf_engine_java_slot_staging_clone" {
 
   # App service
   name                = "staging"
-  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].name
   location            = var.location
 
   always_on         = true
@@ -313,8 +321,8 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
 
 
   name                = "${local.project}-autoscale-pdf-engine-java-clone"
-  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg.name
-  location            = azurerm_resource_group.printit_pdf_engine_app_service_rg.location
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].name
+  location            = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].location
   target_resource_id  = module.printit_pdf_engine_app_service_java_clone[0].plan_id
   enabled             = var.app_service_pdf_engine_autoscale_enabled
 
@@ -331,7 +339,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.printit_pdf_engine_app_service_java[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_java_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -353,7 +361,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.printit_pdf_engine_app_service_java[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_java_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -379,7 +387,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.printit_pdf_engine_app_service_java[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_java_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -401,7 +409,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.printit_pdf_engine_app_service_java[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_java_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -427,7 +435,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.printit_pdf_engine_app_service_java[0].plan_id
+        metric_resource_id       = module.printit_pdf_engine_app_service_java_clone[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -449,7 +457,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.printit_pdf_engine_app_service_java[0].plan_id
+        metric_resource_id       = module.printit_pdf_engine_app_service_java_clone[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
