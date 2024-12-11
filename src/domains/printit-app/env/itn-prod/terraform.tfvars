@@ -37,8 +37,10 @@ ingress_load_balancer_ip = "10.3.2.250"
 
 # pdf-engine
 is_feature_enabled = {
-  pdf_engine = true
-  printit    = true
+  pdf_engine                = true
+  pdf_engine_clone          = true
+  printit                   = true
+  apim_use_pdf_engine_clone = false
 }
 
 app_service_pdf_engine_sku_name                             = "P2v3"

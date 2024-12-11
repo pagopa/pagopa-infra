@@ -305,6 +305,12 @@ variable "pdf_engine_app_ha_enabled" {
   description = "(Required) enables the deployment of pdf engine in HA mode"
 }
 
+variable "apim_use_pdf_engine_app_ha" {
+  type        = bool
+  description = "(Optional) enables the usage of pdf engine in HA mode"
+  default     = false
+}
+
 // wallet session token
 variable "io_backend_base_path" {
   type        = string
