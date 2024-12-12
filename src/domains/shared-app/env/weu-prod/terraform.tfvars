@@ -88,12 +88,12 @@ pod_disruption_budgets = {
   },
 }
 
-pagopa_shared_toolbox_enabled     = false
-robots_indexed_paths              = []
+pagopa_shared_toolbox_enabled = false
+robots_indexed_paths          = []
 
 // wallet session token
 io_backend_base_path = "https://api-app.io.pagopa.it"
 pdv_api_base_path    = "https://api.tokenizer.pdv.pagopa.it/tokenizer/v1"
 
-ecommerce_for_io_pm_npg = "NPG"
+ecommerce_for_io_pm_npg                    = "NPG"
 function_app_ip_restriction_default_action = "Deny"
