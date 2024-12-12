@@ -515,8 +515,8 @@
             "properties": {
               "gateway": {
                 "type": "string",
-                "pattern": "XPAY|VPOS|NPG|REDIRECT",
-                "description": "Pgs identifier"
+                "pattern": "NPG|REDIRECT",
+                "description": "Payment gateway identifier"
               },
               "authorizationStatus": {
                 "type": "string",
