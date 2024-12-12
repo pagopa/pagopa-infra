@@ -6,7 +6,19 @@
         <include-fragment fragment-id="ndphost-header" />
         <set-backend-service base-url="{{default-nodo-backend}}" />
         <rewrite-uri template="/checkPosition" copy-unmatched-params="true" />
-
+        <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+        </set-header>
+        <set-body template="liquid">
+            {
+                "positionslist": [
+                    {
+                        "fiscalCode": "77777777777",
+                        "noticeNumber": "123456789012345678"
+                    }
+                ]
+            }
+        </set-body>
     </inbound>
     <outbound>
         <base />
@@ -18,12 +30,3 @@
         <base />
     </on-error>
 </policies>
-
-
-
-<!-- https://api.dev.platform.pagopa.it/nodopagamenti/statuspage/v1/info",
-http://10.70.66.200/nodo-sit/info
-
-https://api.dev.platform.pagopa.it/nodo/nodo-per-pm/v1/checkPosition
-{"positionslist":[{"fiscalCode":"77777777777","noticeNumber":"123456789012345678"}]}
-"url": "http://10.70.66.200/nodo-sit/checkPosition", -->
