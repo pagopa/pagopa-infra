@@ -367,7 +367,7 @@
                 "pattern": "XPAY|VPOS|NPG|REDIRECT",
                 "description": "Pgs identifier"
               },
-              "gatewayAuthorizationStatus": {
+              "authorizationStatus": {
                 "type": "string",
                 "description": "Payment gateway authorization status"
               },
