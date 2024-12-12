@@ -301,13 +301,13 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnos
 
 locals {
   queue_transient_alert_props = var.env_short == "p" ? [
-    {
+    /*{
       "queue_key"   = "transactions-expiration-queue"
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15
       "threshold"   = 10
-    },
+    },*/
     {
       "queue_key"   = "transaction-notifications-queue"
       "severity"    = 1
@@ -415,6 +415,67 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
   severity    = each.value.severity
   frequency   = each.value.frequency
   time_window = each.value.time_window
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 0
+  }
+}
+
+locals {
+  queue_expiration_alert_props = var.env_short == "p" ? [
+    {
+      "queue_key"   = "transactions-expiration-queue"
+      "severity"    = 1
+      "time_window" = 15
+      "frequency"   = 15
+      "threshold"   = 20
+    },
+  ]
+}
+
+# Queue size: Ecommerce - ecommerce queues enqueues rate alert
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_expiration_enqueue_rate_alert" {
+  for_each            = { for q in local.queue_expiration_alert_props : q.queue_key => q }
+  name                = "${local.project}-${each.value.queue_key}-rate-alert"
+  resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+    email_subject          = "Email Header"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = module.ecommerce_storage_transient.id
+  description    = format("Enqueuing rate for queue %s > ${each.value.threshold} during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
+  enabled        = true
+  query = format(<<-QUERY
+    let OpCountForQueue = (operation: string, queueKey: string, timestart: timespan, timeend: timespan) {
+        StorageQueueLogs
+        | where OperationName == operation and ObjectKey startswith queueKey
+        | where TimeGenerated >= ago(timestart) and TimeGenerated <= ago(timeend)
+        | summarize count() 
+        | project count_ 
+        | extend dummy=1
+    };
+    let PutMessages = OpCountForQueue("PutMessage", queueName)
+        | project PutCount = count_
+        | extend dummy = 1;
+    let DeletedMessages = OpCountForQueue("DeleteMessage", queueName)
+        | project DeleteCount = count_
+        | extend dummy = 1;
+    PutMessages
+    | join kind=inner (DeletedMessages) on dummy
+    | extend Diff = PutCount - DeleteCount
+    | project PutCount, DeleteCount, Diff;
+    MessageRateForQueue("%s","%s","%s")
+    | where Diff > ${each.value.threshold}
+    QUERY
+    , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
+    , "0m"
+    , ${each.value.time_window}+"m"
+  )
+  severity    = each.value.severity
+  frequency   = each.value.frequency
   trigger {
     operator  = "GreaterThan"
     threshold = 0
