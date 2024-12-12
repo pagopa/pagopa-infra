@@ -492,9 +492,11 @@
                 "description": "Error details for close payment result",
                 "properties": {
                   "statusCode": {
+                    "description": "Status code (4xx, 5xx) of the error received on the node",
                     "type": "number"
                   },
                   "description": {
+                    "description": "Description of the error received on the node",
                     "type": "string"
                   }
                 }
