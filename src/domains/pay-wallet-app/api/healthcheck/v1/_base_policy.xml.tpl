@@ -2,6 +2,8 @@
     <inbound>
         <base />
 
+        <rate-limit-by-key calls="10" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
+
         <send-request mode="new" response-variable-name="walletServiceLiveness" timeout="10">
             <set-url>
                 https://${hostname}/pagopa-wallet-service/actuator/health
