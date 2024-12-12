@@ -1,88 +1,66 @@
-moved {
-  from = azurerm_resource_group.shared_pdf_engine_app_service_rg
-  to   = azurerm_resource_group.shared_pdf_engine_app_service_rg[0]
-}
-moved {
-  from = module.shared_pdf_engine_app_service
-  to   = module.shared_pdf_engine_app_service[0]
-}
-moved {
-  from = module.shared_pdf_engine_slot_staging
-  to   = module.shared_pdf_engine_slot_staging[0]
-}
-moved {
-  from = module.shared_pdf_engine_app_service_java
-  to   = module.shared_pdf_engine_app_service_java[0]
-}
-moved {
-  from = module.shared_pdf_engine_java_slot_staging
-  to   = module.shared_pdf_engine_java_slot_staging[0]
-}
-
-
-resource "azurerm_resource_group" "shared_pdf_engine_app_service_rg" {
-  count    = 1
-  name     = format("%s-pdf-engine-rg", local.project)
+resource "azurerm_resource_group" "printit_pdf_engine_app_service_rg_clone" {
+  count    = var.is_feature_enabled.pdf_engine_clone ? 1 : 0
+  name     = "${local.project}-pdf-engine-clone-rg"
   location = var.location
 
   tags = var.tags
-}
-
-data "azurerm_container_registry" "container_registry" {
-  name                = "pagopa${var.env_short}commonacr"
-  resource_group_name = "pagopa-${var.env_short}-container-registry-rg"
 }
 
 ################
 # node
 ################
 
-module "shared_pdf_engine_app_service" {
-  count  = 1
+module "printit_pdf_engine_app_service_clone" {
   source = "./.terraform/modules/__v3__/app_service"
 
+  count = var.is_feature_enabled.pdf_engine_clone ? 1 : 0
+
   vnet_integration    = false
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].name
   location            = var.location
 
   # App service plan vars
-  plan_name = format("%s-plan-pdf-engine", local.project)
+  plan_name = "${local.project}-plan-pdf-engine-clone"
   sku_name  = var.app_service_pdf_engine_sku_name
 
   # App service plan
-  name                = format("%s-app-pdf-engine", local.project)
+  name                = "${local.project}-app-pdf-engine-clone"
   client_cert_enabled = false
   always_on           = var.app_service_pdf_engine_always_on
-  # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
+
   docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfengine"
   docker_image_tag = "latest"
 
   health_check_path = "/info"
 
-  app_settings = local.shared_pdf_engine_app_settings
+  ip_restriction_default_action = var.app_service_ip_restriction_default_action
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
-  allowed_ips     = []
 
-  subnet_id                     = module.shared_pdf_engine_app_service_snet.id
-  ip_restriction_default_action = var.function_app_ip_restriction_default_action
+  app_settings = local.printit_pdf_engine_app_settings
 
+  zone_balancing_enabled = false
+  allowed_subnets        = [data.azurerm_subnet.apim_vnet.id]
+  allowed_ips            = []
+
+  subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
   tags = var.tags
+
 }
 
-module "shared_pdf_engine_slot_staging" {
-  count = var.env_short != "d" ? 1 : 0
+module "printit_pdf_engine_slot_staging_clone" {
+  count = var.env_short != "d" && var.is_feature_enabled.pdf_engine_clone ? 1 : 0
 
   source = "./.terraform/modules/__v3__/app_service_slot"
 
   # App service plan
-  app_service_id   = module.shared_pdf_engine_app_service[0].id
-  app_service_name = module.shared_pdf_engine_app_service[0].name
+  # app_service_plan_id = module.printit_pdf_engine_app_service.plan_id
+  app_service_id   = module.printit_pdf_engine_app_service_clone[0].id
+  app_service_name = module.printit_pdf_engine_app_service_clone[0].name
 
   # App service
   name                = "staging"
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].name
   location            = var.location
 
   always_on         = true
@@ -92,38 +70,40 @@ module "shared_pdf_engine_slot_staging" {
 
 
   # App settings
-  app_settings = local.shared_pdf_engine_app_settings
+  app_settings = local.printit_pdf_engine_app_settings
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
-  subnet_id       = module.shared_pdf_engine_app_service_snet.id
+  subnet_id       = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
   tags = var.tags
+
+
 }
 
-resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_autoscale" {
-  count = var.env_short != "d" ? 1 : 0
+resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_autoscale_clone" {
+  count   = var.env_short != "d" && var.is_feature_enabled.pdf_engine_clone ? 1 : 0
+  enabled = var.app_service_pdf_engine_autoscale_enabled
 
-  name                = format("%s-autoscale-pdf-engine", local.project)
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
-  location            = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].location
-  target_resource_id  = module.shared_pdf_engine_app_service[0].plan_id
-  enabled             = var.app_service_pdf_engine_autoscale_enabled
+  name                = "${local.project}-autoscale-pdf-engine-clone"
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].name
+  location            = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].location
+  target_resource_id  = module.printit_pdf_engine_app_service_clone[0].plan_id
 
   profile {
     name = "default"
 
     capacity {
-      default = var.env_short == "p" ? 3 : 1
+      default = 3
       minimum = var.env_short == "p" ? 3 : 1
-      maximum = var.env_short == "p" ? 12 : 1
+      maximum = 10
     }
 
     # Requests
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.shared_pdf_engine_app_service[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -145,7 +125,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.shared_pdf_engine_app_service[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -171,14 +151,14 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.shared_pdf_engine_app_service[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3 #sec
+        threshold                = 5 #sec
         divide_by_instance_count = false
       }
 
@@ -193,7 +173,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.shared_pdf_engine_app_service[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -219,7 +199,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.shared_pdf_engine_app_service[0].plan_id
+        metric_resource_id       = module.printit_pdf_engine_app_service_clone[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -241,7 +221,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.shared_pdf_engine_app_service[0].plan_id
+        metric_resource_id       = module.printit_pdf_engine_app_service_clone[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -265,97 +245,101 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
 }
 
 
-################
-# java
-################
-module "shared_pdf_engine_app_service_java" {
-  source              = "./.terraform/modules/__v3__/app_service"
-  count               = 1
+###############
+#java
+###############
+module "printit_pdf_engine_app_service_java_clone" {
+  source = "./.terraform/modules/__v3__/app_service"
+  count  = var.is_feature_enabled.pdf_engine_clone ? 1 : 0
+
   vnet_integration    = false
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].name
   location            = var.location
 
   # App service plan vars
-  plan_name = format("%s-plan-pdf-engine-java", local.project)
-  sku_name  = var.app_service_pdf_engine_sku_name_java
+  plan_name              = "${local.project}-plan-pdf-engine-java-clone"
+  sku_name               = var.app_service_pdf_engine_sku_name_java
+  zone_balancing_enabled = false
 
   # App service plan
-  name                = format("%s-app-pdf-engine-java", local.project)
+  name                = "${local.project}-app-pdf-engine-java-clone"
   client_cert_enabled = false
   always_on           = var.app_service_pdf_engine_always_on
-  # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
-  docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
-  docker_image_tag = "latest"
+  docker_image        = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
+  docker_image_tag    = "latest"
 
   health_check_path = "/info"
 
-  app_settings = local.shared_pdf_engine_app_settings_java
+  app_settings = local.printit_pdf_engine_app_settings_java
 
-  allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
-  allowed_ips     = []
+  ip_restriction_default_action = var.app_service_ip_restriction_default_action
+  allowed_subnets               = [data.azurerm_subnet.apim_vnet.id]
+  allowed_ips                   = []
 
-  subnet_id                     = module.shared_pdf_engine_app_service_snet.id
-  ip_restriction_default_action = var.function_app_ip_restriction_default_action
-
+  subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
   tags = var.tags
+
+
 }
 
-module "shared_pdf_engine_java_slot_staging" {
-  count = var.env_short != "d" ? 1 : 0
+module "printit_pdf_engine_java_slot_staging_clone" {
+  count = var.env_short != "d" && var.is_feature_enabled.pdf_engine_clone ? 1 : 0
 
   source = "./.terraform/modules/__v3__/app_service_slot"
 
   # App service plan
-  # app_service_plan_id = module.shared_pdf_engine_app_service[0].plan_id
-  app_service_id   = module.shared_pdf_engine_app_service_java[0].id
-  app_service_name = module.shared_pdf_engine_app_service_java[0].name
+  # app_service_plan_id = module.printit_pdf_engine_app_service.plan_id
+  app_service_id   = module.printit_pdf_engine_app_service_java_clone[0].id
+  app_service_name = module.printit_pdf_engine_app_service_java_clone[0].name
 
   # App service
   name                = "staging"
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].name
   location            = var.location
 
-  always_on = true
-  # linux_fx_version    = format("DOCKER|%s/pagopapdfengine:%s", data.azurerm_container_registry.container_registry.login_server, "latest")
+  always_on         = true
   docker_image      = "${data.azurerm_container_registry.container_registry.login_server}/pagopapdfenginejava"
   docker_image_tag  = "latest"
   health_check_path = "/info"
 
 
   # App settings
-  app_settings = local.shared_pdf_engine_app_settings_java
+  app_settings = local.printit_pdf_engine_app_settings_java
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
-  subnet_id       = module.shared_pdf_engine_app_service_snet.id
+  subnet_id       = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
   tags = var.tags
+
+
 }
 
-resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_java_autoscale" {
-  count = var.env_short != "d" ? 1 : 0
+resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_printit_pdf_engine_java_autoscale_clone" {
+  count = var.env_short != "d" && var.is_feature_enabled.pdf_engine_clone ? 1 : 0
 
-  name                = format("%s-autoscale-pdf-engine-java", local.project)
-  resource_group_name = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].name
-  location            = azurerm_resource_group.shared_pdf_engine_app_service_rg[0].location
-  target_resource_id  = module.shared_pdf_engine_app_service_java[0].plan_id
+
+  name                = "${local.project}-autoscale-pdf-engine-java-clone"
+  resource_group_name = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].name
+  location            = azurerm_resource_group.printit_pdf_engine_app_service_rg_clone[0].location
+  target_resource_id  = module.printit_pdf_engine_app_service_java_clone[0].plan_id
   enabled             = var.app_service_pdf_engine_autoscale_enabled
 
   profile {
     name = "default"
 
     capacity {
-      default = 1
-      minimum = 1
-      maximum = 1
+      default = 3
+      minimum = var.env_short == "p" ? 3 : 1
+      maximum = 10
     }
 
     # Requests
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_java_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -377,7 +361,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "Requests"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_java_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -403,14 +387,14 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_java_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
         time_window              = "PT5M"
         time_aggregation         = "Average"
         operator                 = "GreaterThan"
-        threshold                = 3 #sec
+        threshold                = 5 #sec
         divide_by_instance_count = false
       }
 
@@ -425,7 +409,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "HttpResponseTime"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java[0].id
+        metric_resource_id       = module.printit_pdf_engine_app_service_java_clone[0].id
         metric_namespace         = "microsoft.web/sites"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -451,7 +435,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java[0].plan_id
+        metric_resource_id       = module.printit_pdf_engine_app_service_java_clone[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
@@ -473,7 +457,7 @@ resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_e
     rule {
       metric_trigger {
         metric_name              = "CpuPercentage"
-        metric_resource_id       = module.shared_pdf_engine_app_service_java[0].plan_id
+        metric_resource_id       = module.printit_pdf_engine_app_service_java_clone[0].plan_id
         metric_namespace         = "microsoft.web/serverfarms"
         time_grain               = "PT1M"
         statistic                = "Average"
