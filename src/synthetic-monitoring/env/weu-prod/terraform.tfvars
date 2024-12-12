@@ -31,3 +31,6 @@ check_position_body = {
   fiscal_code = "00876220633"
   notice_number = "001000000136265862"
 }
+
+
+synthetic_alerts_enabled = true

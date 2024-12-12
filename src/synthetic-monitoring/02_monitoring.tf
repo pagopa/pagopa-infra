@@ -1,6 +1,7 @@
 module "monitoring_function" {
   depends_on = [azurerm_application_insights.application_insights]
   source     = "./.terraform/modules/__v3__/monitoring_function"
+  legacy     = false
 
   location            = var.location
   prefix              = "${local.product}-${var.location_short}"
@@ -11,7 +12,7 @@ module "monitoring_function" {
   application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id]
 
   docker_settings = {
-    image_tag = "v1.9.0@sha256:ba8764aa837e2a64031f7df1f8db5c75f7e161b792cd010df181861e9ec6e678"
+    image_tag = "v1.9.1@sha256:7b5c801cc39537b56e744e59369cb62a05f6b23179cc7a5c61aacf716bbd9ad3"
   }
 
   job_settings = {
@@ -42,5 +43,6 @@ module "monitoring_function" {
     nodo_subscription_key      = nonsensitive(module.secret_core.values["synthetic-monitoring-nodo-subscription-key"].value)
     appgw_public_ip            = data.azurerm_public_ip.appgateway_public_ip.ip_address
     check_position_body        = var.check_position_body
+    alert_enabled              = var.synthetic_alerts_enabled
   })
 }
