@@ -65,7 +65,7 @@ pgres_flex_params = {
 
   private_endpoint_enabled = true
   sku_name                 = "GP_Standard_D8ds_v4"
-  db_version               = "13"
+  db_version               = "15"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   # https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compute-storage#storage
@@ -166,3 +166,4 @@ gpd_sftp_sa_delete                                             = 60
 # GPD Archive account
 gpd_archive_replication_type = "GZRS"
 gpd_sftp_ip_rules            = ["37.179.98.148"]
+gpd_cdc_enabled              = false
