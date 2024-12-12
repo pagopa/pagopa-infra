@@ -102,7 +102,7 @@ module "apim_ecommerce_webview_api_v2" {
     host = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/ecommerce-webview/v2/_base_policy.xml.tpl", {
+  xml_content = templatefile("./api/ecommerce-webview/v1/_base_policy.xml.tpl", {
     ecommerce_ingress_hostname = local.ecommerce_hostname
   })
 }
