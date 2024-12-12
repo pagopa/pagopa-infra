@@ -81,7 +81,7 @@ module "postgres_flexible_server_private_db" {
   create_mode                  = null // the update of this argument triggers a replace
   geo_redundant_backup_enabled = var.pgres_flex_params.geo_redundant_backup_enabled
 
-  high_availability_enabled = false # var.pgres_flex_params.high_availability_enabled # NEWGPD-DB : DEPRECATED force to false
+  high_availability_enabled = var.pgres_flex_params.high_availability_enabled
   standby_availability_zone = var.pgres_flex_params.standby_availability_zone
   pgbouncer_enabled         = var.pgres_flex_params.pgbouncer_enabled
 
