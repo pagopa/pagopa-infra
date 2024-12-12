@@ -10,15 +10,7 @@
             <value>application/json</value>
         </set-header>
         <set-body template="liquid">
-            {
-                "positionslist": [
-                    {
-                        "fiscalCode": "77777777777",
-                        "noticeNumber": "123456789012345678"
-                    }
-                ]
-            }
-        </set-body>
+        <set-body template="liquid">{"positionslist":[{"fiscalCode":"00311740609","noticeNumber":"301000000000000000"}]}</set-body>
     </inbound>
     <outbound>
         <base />

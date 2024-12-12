@@ -39,9 +39,8 @@ locals {
   aks_subnet_name  = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
   azdo_subnet_name = "${local.product}-azdoa-snet"
 
-  # gpd_hostname = var.env_short != "d" ? module.postgres_flexible_server_private.fqdn : module.postgresql[0].fqdn
-  # gpd_dbmsport = var.env_short != "d" ? "6432" : "5432"
-  gpd_hostname = module.postgres_flexible_server_private[0].fqdn
+  # NEWGPD-DB : DEPRECATED switch to new istance postgres_flexible_server_private_db
+  gpd_hostname = var.env_short == "p" ? module.postgres_flexible_server_private[0].fqdn : module.postgres_flexible_server_private_db.fqdn
   gpd_dbmsport = "6432"
 
   azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
