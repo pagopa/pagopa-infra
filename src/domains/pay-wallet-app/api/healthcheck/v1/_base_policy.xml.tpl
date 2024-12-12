@@ -6,28 +6,28 @@
 
         <send-request mode="new" response-variable-name="walletServiceLiveness" timeout="10">
             <set-url>
-                https://${hostname}/pagopa-wallet-service/actuator/health
+                https://${hostname}/pagopa-wallet-service/actuator/health/liveness
             </set-url>
             <set-method>GET</set-method>
         </send-request>
 
          <send-request mode="new" response-variable-name="walletEventDispatcherServiceLiveness" timeout="10">
             <set-url>
-                https://${hostname}/pagopa-wallet-event-dispatcher-service/actuator/health
+                https://${hostname}/pagopa-wallet-event-dispatcher-service/actuator/health/liveness
             </set-url>
             <set-method>GET</set-method>
         </send-request>
 
         <send-request mode="new" response-variable-name="walletCdcServiceLiveness" timeout="10">
             <set-url>
-                https://${hostname}/pagopa-payment-wallet-cdc-service/actuator/health
+                https://${hostname}/pagopa-payment-wallet-cdc-service/actuator/health/liveness
             </set-url>
             <set-method>GET</set-method>
         </send-request>
 
         <send-request mode="new" response-variable-name="walletSchedulerServiceLiveness" timeout="10">
             <set-url>
-                https://${hostname}/pagopa-payment-wallet-scheduler-service/actuator/health
+                https://${hostname}/pagopa-payment-wallet-scheduler-service/actuator/health/liveness
             </set-url>
             <set-method>GET</set-method>
         </send-request>
