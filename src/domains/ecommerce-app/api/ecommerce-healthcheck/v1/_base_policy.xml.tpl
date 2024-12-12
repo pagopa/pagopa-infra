@@ -4,42 +4,42 @@
 
         <rate-limit-by-key calls="10" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
 
-        <send-request mode="new" response-variable-name="transactionServiceLiveness" timeout="10">
+        <send-request ignore-error="true" mode="new" response-variable-name="transactionServiceLiveness" timeout="10">
             <set-url>
                 https://${hostname}/pagopa-ecommerce-transactions-service/actuator/health/liveness
             </set-url>
             <set-method>GET</set-method>
         </send-request>
 
-         <send-request mode="new" response-variable-name="paymentMethodServiceLiveness" timeout="10">
+         <send-request ignore-error="true" mode="new" response-variable-name="paymentMethodServiceLiveness" timeout="10">
             <set-url>
                 https://${hostname}/pagopa-ecommerce-payment-methods-service/actuator/health/liveness
             </set-url>
             <set-method>GET</set-method>
         </send-request>
 
-        <send-request mode="new" response-variable-name="paymentRequestServiceLiveness" timeout="10">
+        <send-request ignore-error="true" mode="new" response-variable-name="paymentRequestServiceLiveness" timeout="10">
             <set-url>
                 https://${hostname}/pagopa-ecommerce-payment-requests-service/actuator/health/liveness
             </set-url>
             <set-method>GET</set-method>
         </send-request>
 
-        <send-request mode="new" response-variable-name="userStatServiceLiveness" timeout="10">
+        <send-request ignore-error="true" mode="new" response-variable-name="userStatServiceLiveness" timeout="10">
             <set-url>
                 https://${hostname}/pagopa-ecommerce-user-stats-service/actuator/health/liveness
             </set-url>
             <set-method>GET</set-method>
         </send-request>
 
-        <send-request mode="new" response-variable-name="eventDispatcherServiceLiveness" timeout="10">
+        <send-request ignore-error="true" mode="new" response-variable-name="eventDispatcherServiceLiveness" timeout="10">
             <set-url>
                 https://${hostname}/pagopa-ecommerce-event-dispatcher/actuator/health/liveness
             </set-url>
             <set-method>GET</set-method>
         </send-request>
 
-        <send-request mode="new" response-variable-name="transactionSchedulerServiceLiveness" timeout="10">
+        <send-requestignore-error="true" mode="new" response-variable-name="transactionSchedulerServiceLiveness" timeout="10">
             <set-url>
                 https://${hostname}/pagopa-ecommerce-transactions-scheduler-service/actuator/health/liveness
             </set-url>
