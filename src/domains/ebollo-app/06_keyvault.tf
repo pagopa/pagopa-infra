@@ -59,6 +59,3 @@ resource "azurerm_key_vault_secret" "gps_mbd_service_integration_test_subscripti
 
   key_vault_id = data.azurerm_key_vault.kv.id
 }
-
-
-
