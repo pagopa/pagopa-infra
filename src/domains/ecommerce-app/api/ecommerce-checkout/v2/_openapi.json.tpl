@@ -485,7 +485,7 @@
           },
           "nodeInfo":{
             "type": "object",
-            "description": "Gateway infos",
+            "description": "Node operation info",
             "properties": {
               "closePaymentResultError": {
                 "type": "object",
