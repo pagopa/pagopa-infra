@@ -22,7 +22,7 @@
 
     <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
     <set-variable name="body_value" value="@(context.Request.Body.As<string>(preserveContent: true))" />
-    <set-backend-service base-url="@($"https://"${ecommerce_ingress_hostname}/pagopa-ecommerce-transactions-service/transactions/{(string)context.Variables["transactionId"]}/user-receipts")" />
+    <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}/pagopa-ecommerce-transactions-service/")" />
     <!-- policy for WISP Dismantling -->
     <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
     <choose>
