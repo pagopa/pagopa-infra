@@ -391,17 +391,24 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
   enabled        = true
   query = format(<<-QUERY
     let OpCountForQueue = (operation: string, queueKey: string) {
-      StorageQueueLogs
-      | where OperationName == operation and ObjectKey startswith queueKey
-      | summarize count()
+        StorageQueueLogs
+        | where OperationName == operation and ObjectKey startswith queueKey
+        | summarize count() 
+        | project count_ 
+        | extend dummy=1
     };
-    let MessageRateForQueue = (queueKey: string) {
-      OpCountForQueue("PutMessage", queueKey)
-      | join kind=fullouter OpCountForQueue("DeleteMessage", queueKey) on count_
-      | project name = queueKey, Count = count_ - count_1
-    };
+    let PutMessages = OpCountForQueue("PutMessage", queueName)
+        | project PutCount = count_
+        | extend dummy = 1;
+    let DeletedMessages = OpCountForQueue("DeleteMessage", queueName)
+        | project DeleteCount = count_
+        | extend dummy = 1;
+    PutMessages
+    | join kind=inner (DeletedMessages) on dummy
+    | extend Diff = PutCount - DeleteCount
+    | project PutCount, DeleteCount, Diff;
     MessageRateForQueue("%s")
-    | where Count > ${each.value.threshold}
+    | where Diff > ${each.value.threshold}
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
