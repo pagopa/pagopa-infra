@@ -4,28 +4,28 @@
 
         <rate-limit-by-key calls="10" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
 
-        <send-request mode="new" response-variable-name="walletServiceLiveness" timeout="10">
+        <send-request ignore-error="true" mode="new" response-variable-name="walletServiceLiveness" timeout="10">
             <set-url>
                 https://${hostname}/pagopa-wallet-service/actuator/health/liveness
             </set-url>
             <set-method>GET</set-method>
         </send-request>
 
-         <send-request mode="new" response-variable-name="walletEventDispatcherServiceLiveness" timeout="10">
+         <send-request ignore-error="true" mode="new" response-variable-name="walletEventDispatcherServiceLiveness" timeout="10">
             <set-url>
                 https://${hostname}/pagopa-wallet-event-dispatcher-service/actuator/health/liveness
             </set-url>
             <set-method>GET</set-method>
         </send-request>
 
-        <send-request mode="new" response-variable-name="walletCdcServiceLiveness" timeout="10">
+        <send-request ignore-error="true" mode="new" response-variable-name="walletCdcServiceLiveness" timeout="10">
             <set-url>
                 https://${hostname}/pagopa-payment-wallet-cdc-service/actuator/health/liveness
             </set-url>
             <set-method>GET</set-method>
         </send-request>
 
-        <send-request mode="new" response-variable-name="walletSchedulerServiceLiveness" timeout="10">
+        <send-request ignore-error="true" mode="new" response-variable-name="walletSchedulerServiceLiveness" timeout="10">
             <set-url>
                 https://${hostname}/pagopa-payment-wallet-scheduler-service/actuator/health/liveness
             </set-url>
