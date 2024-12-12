@@ -12,7 +12,7 @@ module "apim_statuspage_nodo_pagamenti" {
   subscription_required = true
   approval_required     = true
   subscriptions_limit   = 1
-  policy_xml = file("./api_product/_statuspage_policy.xml")
+  policy_xml = file("./api_product/_statuspage_nodopagamenti_policy.xml")
 }
 
 ###########
@@ -38,10 +38,10 @@ resource "azurerm_api_management_api_version_set" "api_statuspage_nodopagamenti_
 }
 
 
-module "apim_api_statuspage_api_v1" {
+module "apim_api_statuspage_nodopagamenti_api_v1" {
   source = "./.terraform/modules/__v3__/api_management_api"
 
-  name                  = format("%s-statuspage-api", local.project)
+  name                  = format("%s-statuspage-nodopagamenti-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_statuspage_nodo_pagamenti.product_id]
@@ -57,16 +57,10 @@ module "apim_api_statuspage_api_v1" {
 
   content_format = "openapi"
 
-  content_value = templatefile("./api/aca/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/statuspage_nodopagamenti/v1/_NodoDeiPagamentiInfo.openapi.json.tpl", {
     hostname = local.apim_hostname
   })
 
-  xml_content = templatefile("./api/aca/v1/_base_policy.xml", {
-    aca_ingress_hostname = local.aca_hostname
-  })
-
-#   content_value = templatefile("./api/status-page-service/v1/_openapi.json.tpl", {
-#     host = local.apim_hostname
-#   })
+  xml_content = file("./api/statuspage_nodopagamenti/v1/_base_policy.xml")
 
 }
