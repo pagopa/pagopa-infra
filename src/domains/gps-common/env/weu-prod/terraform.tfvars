@@ -165,6 +165,5 @@ gpd_sftp_sa_delete                                             = 60
 
 # GPD Archive account
 gpd_archive_replication_type = "GZRS"
-gpd_sftp_ip_rules = ["37.179.98.148"]
-
-gpd_cdc_enabled = false
+gpd_sftp_ip_rules            = ["37.179.98.148"]
+gpd_cdc_enabled              = false

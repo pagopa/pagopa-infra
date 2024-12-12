@@ -51,18 +51,36 @@ data "azurerm_storage_account" "observ_storage_account" {
   resource_group_name = "pagopa-${var.env_short}-${var.location_short_itn}-observ-st-rg"
 }
 
+# on DF json LinkSer config
+# {
+#     "name": "afm-gec-<env>-weu-sa-linkedservice",
+#     "type": "Microsoft.DataFactory/factories/linkedservices",
+#     "properties": {
+#         "connectVia": {
+#             "referenceName": "AutoResolveIntegrationRuntime",
+#             "type": "IntegrationRuntimeReference"
+#         },
+#         "type": "AzureBlobStorage",
+#         "typeProperties": {
+#             "connectionString": "DefaultEndpointsProtocol=https;AccountName=pagopa<env>itnobservsa;EndpointSuffix=core.windows.net;",
+#             "encryptedCredential": "<base64>"
+#         },
+#         "annotations": []
+#     }
+# }
 resource "azurerm_data_factory_linked_service_azure_blob_storage" "afm_gec_storage_linked_service" {
   name              = "afm-gec-${var.env_short}-${var.location_short}-sa-linkedservice"
   data_factory_id   = data.azurerm_data_factory.obeserv_data_factory.id
   connection_string = data.azurerm_storage_account.observ_storage_account.primary_connection_string
 
-  integration_runtime_name   = "AutoResolveIntegrationRuntime"
+  integration_runtime_name = "AutoResolveIntegrationRuntime"
   # connection_string_insecure = "DefaultEndpointsProtocol=https;AccountName=pagopa${var.env_short}itnobservsa;EndpointSuffix=core.windows.net;"
-  use_managed_identity       = true
+  use_managed_identity = true
 
   lifecycle {
     ignore_changes = [
       connection_string_insecure,
+      connection_string
     ]
   }
 

@@ -71,12 +71,16 @@ variable "tags" {
 
 variable "is_feature_enabled" {
   type = object({
-    pdf_engine = bool
-    printit    = bool
+    pdf_engine                = bool
+    printit                   = bool
+    apim_use_pdf_engine_clone = optional(bool, false)
+    pdf_engine_clone          = optional(bool, false)
   })
   default = {
-    pdf_engine = false
-    printit    = false
+    pdf_engine                = false
+    printit                   = false
+    apim_use_pdf_engine_clone = false
+    pdf_engine_clone          = false
   }
 }
 ### External resources
@@ -223,3 +227,4 @@ variable "app_service_ip_restriction_default_action" {
   default     = "Allow"
   description = "(Optional) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. Defaults to Allow."
 }
+
