@@ -920,7 +920,7 @@ module "apim_pm_per_nodo_v2" {
 
 data "azurerm_key_vault_secret" "subscriptionkey_ecomm" {
   name         = "subscriptionKeyEcomm"
-  key_vault_id = data.azurerm_key_vault.kv.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 # Payment Manager - PM per Nodo API
@@ -933,9 +933,7 @@ data "azurerm_key_vault_secret" "subscriptionkey_ecomm" {
 #
 # WISP sendPaymentResultV2
 resource "azurerm_api_management_api_operation_policy" "send_payment_result_api_v2_wisp_policy" { # aka addUserReceipt
-  count_uat           = var.env_short != "u" ? 1 : 0
-  count_wisp          = var.create_wisp_converter ? 1 : 0
-  count               = count_uat*count_wisp
+  count               = var.env_short != "u" && var.create_wisp_converter? 1 : 0
   api_name            = "${local.project}-pm-per-nodo-api-v2"
   resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
@@ -946,10 +944,8 @@ resource "azurerm_api_management_api_operation_policy" "send_payment_result_api_
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "send_payment_result_api_v2_wisp_policy" { # aka addUserReceipt
-  count_uat           = var.env_short == "u" ? 1 : 0
-  count_wisp          = var.create_wisp_converter ? 1 : 0
-  count               = count_uat*count_wisp
+resource "azurerm_api_management_api_operation_policy" "send_payment_result_api_v2_wisp_policy_uat" { # aka addUserReceipt
+  count               = var.env_short == "u" && var.create_wisp_converter? 1 : 0
   api_name            = "${local.project}-pm-per-nodo-api-v2"
   resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
