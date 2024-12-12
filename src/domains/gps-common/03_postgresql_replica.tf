@@ -35,7 +35,7 @@ module "postgresql_gpd_replica_db" {
   delegated_subnet_id      = module.postgres_flexible_snet_replica[0].id
   private_endpoint_enabled = var.pgres_flex_params.private_endpoint_enabled
 
-  sku_name = var.pgres_flex_params.sku_name
+  sku_name = "GP_Standard_D16ds_v4" # var.pgres_flex_params.sku_name  NEWGPD-DB : DEPRECATED switch to var.pgres_flex_params.sku_name
 
   high_availability_enabled = false
   pgbouncer_enabled         = var.pgres_flex_params.pgbouncer_enabled

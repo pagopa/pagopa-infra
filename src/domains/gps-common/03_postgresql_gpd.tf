@@ -21,8 +21,8 @@ module "postgres_flexible_server_private" { # private only into UAT and PROD env
   administrator_login    = data.azurerm_key_vault_secret.pgres_admin_login.value
   administrator_password = data.azurerm_key_vault_secret.pgres_admin_pwd.value
 
-  sku_name                     = var.pgres_flex_params.sku_name
-  db_version                   = var.pgres_flex_params.db_version
+  sku_name                     = "GP_Standard_D16ds_v4" # var.pgres_flex_params.sku_name # NEWGPD-DB
+  db_version                   = "13" # var.pgres_flex_params.db_version # NEWGPD-DB
   storage_mb                   = var.pgres_flex_params.storage_mb
   zone                         = var.pgres_flex_params.zone
   backup_retention_days        = var.pgres_flex_params.backup_retention_days
@@ -98,7 +98,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_poo
 
 # CDC https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-logical
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_worker_process" {
-  count  = var.env_short == "p" ? 1 : 0 # forced
+  count  = var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0 # forced
 
   name      = "max_worker_processes"
   server_id = module.postgres_flexible_server_private[0].id
