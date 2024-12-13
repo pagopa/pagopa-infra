@@ -142,5 +142,4 @@ gpd_sftp_sa_delete                                             = 2
 
 # GPD Archive account
 gpd_archive_replication_type = "LRS"
-
-gpd_cdc_enabled = true
+gpd_cdc_enabled              = true

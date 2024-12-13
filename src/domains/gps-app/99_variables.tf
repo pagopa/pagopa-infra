@@ -555,3 +555,9 @@ variable "gh_runner_job_location" {
   description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
   default     = "westeurope"
 }
+
+variable "gpd_cdc_enabled" {
+  type        = bool
+  description = "Enable CDC for GDP"
+  default     = false
+}

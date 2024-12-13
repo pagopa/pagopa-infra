@@ -74,13 +74,15 @@ zookeeper_limits_cpu     = "0.5"
 zookeeper_jvm_xms        = "512m"
 zookeeper_jvm_xmx        = "512m"
 zookeeper_storage_size   = "100Gi"
+
 ### debezium kafka_connect_yaml
-replicas                 = 1
-request_cpu              = 0.5
-limits_cpu               = 0.5
-request_memory           = "512Mi"
-limits_memory            = "512Mi"
-postgres_db_name         = "apd"
-tasks_max                = "1"
-container_registry       = "pagopadcommonacr.azurecr.io"
-max_threads              = 1
+replicas           = 1
+request_cpu        = 0.5
+limits_cpu         = 0.5
+request_memory     = "512Mi"
+limits_memory      = "512Mi"
+postgres_db_name   = "apd"
+tasks_max          = "1"
+container_registry = "pagopadcommonacr.azurecr.io"
+max_threads        = 1
+gpd_cdc_enabled    = true

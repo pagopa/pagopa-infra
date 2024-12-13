@@ -40,7 +40,7 @@
           <xsd:minLength value="1" />
           <xsd:maxLength value="35" />
         </xsd:restriction>
-      </xsd:simpleType>      
+      </xsd:simpleType>
       <xsd:element name="intestazionePPT"
         xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
         <xsd:complexType>
@@ -155,7 +155,7 @@
           <xsd:element name="identificativoDominio" type="ppt:stText35" minOccurs="0" />
           <xsd:element name="identificativoPSP" type="ppt:stText35" minOccurs="0" />
         </xsd:sequence>
-      </xsd:complexType>      
+      </xsd:complexType>
 
       <xsd:complexType name="nodoChiediElencoFlussiRendicontazioneRisposta">
         <xsd:complexContent>
@@ -173,7 +173,7 @@
           <xsd:element name="dataOraFlusso" type="xsd:dateTime" />
         </xsd:sequence>
       </xsd:complexType>
-      
+
       <xsd:complexType name="tipoElencoFlussiRendicontazione">
         <xsd:sequence>
           <xsd:element name="totRestituiti" type="xsd:int" />

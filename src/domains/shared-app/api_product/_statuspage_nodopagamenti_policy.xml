@@ -1,7 +1,6 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="${base-url}" />
     </inbound>
     <backend>
         <base />
