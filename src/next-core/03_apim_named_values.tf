@@ -404,3 +404,21 @@ resource "azurerm_api_management_named_value" "apicfg_selfcare_integ_service_pat
   display_name        = "apicfg-selfcare-integ-service-path"
   value               = var.apicfg_selfcare_integ_service_path_value
 }
+
+# subscription key for ecommerce addUserReceipt
+
+data "azurerm_key_vault_secret" "subscriptionkey_ecomm_secret" {
+  count        = var.env_short == "u" ? 1 : 0
+  name         = "subscriptionkey-ecomm-secret"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_api_management_named_value" "subscriptionkey_ecomm" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "subscriptionkey-ecomm"
+  api_management_name = module.apim[0].name
+  resource_group_name = azurerm_resource_group.rg_api.name
+  display_name        = "subscriptionkey-ecomm"
+  value               = data.azurerm_key_vault_secret.subscriptionkey_ecomm_secret[0].value
+  secret              = true
+}
