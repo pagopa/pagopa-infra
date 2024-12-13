@@ -5,7 +5,7 @@ locals {
   }
 }
 
-module "apim_mbd_gps_product" {
+module "apim_gps_spontaneous_payments_services_product" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "gps-spontaneous-payments-services"
