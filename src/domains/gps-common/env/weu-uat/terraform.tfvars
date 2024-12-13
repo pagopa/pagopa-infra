@@ -77,7 +77,7 @@ pgres_flex_params = {
   enable_private_dns_registration_virtual_endpoint = false
   max_worker_process                               = 32
   wal_level                                        = "logical"
-  shared_preoload_libraries                        = "pg_failover_slots"
+  shared_preoload_libraries                        = "pg_failover_slots,pglogical"
   public_network_access_enabled                    = false
 }
 
@@ -136,3 +136,4 @@ gpd_sftp_sa_delete                                             = 7
 
 # GPD Archive account
 gpd_archive_replication_type = "GRS"
+gpd_cdc_enabled              = true

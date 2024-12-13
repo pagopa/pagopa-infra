@@ -71,16 +71,12 @@ variable "tags" {
 
 variable "is_feature_enabled" {
   type = object({
-    pdf_engine                = bool
-    printit                   = bool
-    apim_use_pdf_engine_clone = optional(bool, false)
-    pdf_engine_clone          = optional(bool, false)
+    pdf_engine = bool
+    printit    = bool
   })
   default = {
-    pdf_engine                = false
-    printit                   = false
-    apim_use_pdf_engine_clone = false
-    pdf_engine_clone          = false
+    pdf_engine = false
+    printit    = false
   }
 }
 ### External resources
