@@ -145,13 +145,9 @@ No outputs.
 | <a name="module_kubernetes_service_account"></a> [kubernetes\_service\_account](#module\_kubernetes\_service\_account) | ./.terraform/modules/__v3__/kubernetes_service_account | n/a |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
 | <a name="module_printit_pdf_engine_app_service"></a> [printit\_pdf\_engine\_app\_service](#module\_printit\_pdf\_engine\_app\_service) | ./.terraform/modules/__v3__/app_service | n/a |
-| <a name="module_printit_pdf_engine_app_service_clone"></a> [printit\_pdf\_engine\_app\_service\_clone](#module\_printit\_pdf\_engine\_app\_service\_clone) | ./.terraform/modules/__v3__/app_service | n/a |
 | <a name="module_printit_pdf_engine_app_service_java"></a> [printit\_pdf\_engine\_app\_service\_java](#module\_printit\_pdf\_engine\_app\_service\_java) | ./.terraform/modules/__v3__/app_service | n/a |
-| <a name="module_printit_pdf_engine_app_service_java_clone"></a> [printit\_pdf\_engine\_app\_service\_java\_clone](#module\_printit\_pdf\_engine\_app\_service\_java\_clone) | ./.terraform/modules/__v3__/app_service | n/a |
 | <a name="module_printit_pdf_engine_java_slot_staging"></a> [printit\_pdf\_engine\_java\_slot\_staging](#module\_printit\_pdf\_engine\_java\_slot\_staging) | ./.terraform/modules/__v3__/app_service_slot | n/a |
-| <a name="module_printit_pdf_engine_java_slot_staging_clone"></a> [printit\_pdf\_engine\_java\_slot\_staging\_clone](#module\_printit\_pdf\_engine\_java\_slot\_staging\_clone) | ./.terraform/modules/__v3__/app_service_slot | n/a |
 | <a name="module_printit_pdf_engine_slot_staging"></a> [printit\_pdf\_engine\_slot\_staging](#module\_printit\_pdf\_engine\_slot\_staging) | ./.terraform/modules/__v3__/app_service_slot | n/a |
-| <a name="module_printit_pdf_engine_slot_staging_clone"></a> [printit\_pdf\_engine\_slot\_staging\_clone](#module\_printit\_pdf\_engine\_slot\_staging\_clone) | ./.terraform/modules/__v3__/app_service_slot | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
 
 ## Resources
@@ -190,9 +186,7 @@ No outputs.
 | [azurerm_key_vault_secret.templates_storage_account_pkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.tenant_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_autoscale_setting.autoscale_app_service_printit_pdf_engine_autoscale](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
-| [azurerm_monitor_autoscale_setting.autoscale_app_service_printit_pdf_engine_autoscale_clone](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.autoscale_app_service_printit_pdf_engine_java_autoscale](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
-| [azurerm_monitor_autoscale_setting.autoscale_app_service_printit_pdf_engine_java_autoscale_clone](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.generate-pdf-engine-generate-responsetime](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.pagopa-pdf-engine-pdf-availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.pagopa-print-payment-notice-generator-responsetime-upd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -206,7 +200,6 @@ No outputs.
 | [azurerm_monitor_scheduled_query_rules_alert.print-notice-retry-fn-error-alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_resource_group.printit_pdf_engine_app_service_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.printit_pdf_engine_app_service_rg_clone](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
@@ -262,7 +255,7 @@ No outputs.
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | ## Aks | `string` | n/a | yes |
 | <a name="input_instance"></a> [instance](#input\_instance) | One of beta, prod01, prod02 | `string` | n/a | yes |
 | <a name="input_io_backend_base_path"></a> [io\_backend\_base\_path](#input\_io\_backend\_base\_path) | io backend api base path | `string` | `null` | no |
-| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | n/a | <pre>object({<br/>    pdf_engine                = bool<br/>    printit                   = bool<br/>    apim_use_pdf_engine_clone = optional(bool, false)<br/>    pdf_engine_clone          = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "apim_use_pdf_engine_clone": false,<br/>  "pdf_engine": false,<br/>  "pdf_engine_clone": false,<br/>  "printit": false<br/>}</pre> | no |
+| <a name="input_is_feature_enabled"></a> [is\_feature\_enabled](#input\_is\_feature\_enabled) | n/a | <pre>object({<br/>    pdf_engine = bool<br/>    printit    = bool<br/>  })</pre> | <pre>{<br/>  "pdf_engine": false,<br/>  "printit": false<br/>}</pre> | no |
 | <a name="input_k8s_kube_config_path_prefix"></a> [k8s\_kube\_config\_path\_prefix](#input\_k8s\_kube\_config\_path\_prefix) | n/a | `string` | `"~/.kube"` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
