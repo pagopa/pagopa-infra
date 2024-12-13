@@ -435,7 +435,7 @@
               "$ref": "#/components/schemas/PaymentInfo"
             },
             "minItems": 1,
-            "maxItems": 1,
+            "maxItems": 5,
             "example": [
               {
                 "rptId": "77777777777302012387654312384",
