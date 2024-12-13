@@ -1,7 +1,7 @@
 version: '3.5'
 services:
  zabbix-server:
-  image: zabbix/zabbix-server-pgsql:ubuntu-6.4-latest
+  image: zabbix/zabbix-server-pgsql:ubuntu-6.4-latest@sha256:bf55e44b044a4a86c6c7c5426c9fac1b34f8d934996a7d319f92a7ebdf299e4b
   ports:
    - "10051:10051"
   volumes:
@@ -65,7 +65,7 @@ services:
    com.zabbix.os: "ubuntu"
 
  zabbix-web-nginx-pgsql:
-  image: zabbix/zabbix-web-nginx-pgsql:ubuntu-6.4-latest
+  image: zabbix/zabbix-web-nginx-pgsql:ubuntu-6.4-latest@sha256:04a26de1ca1eb146c6e774447d9d1198f90818a612ede66372b074b41c01fb49
   ports:
    - "80:8080"
    - "443:8443"
@@ -117,7 +117,7 @@ services:
    com.zabbix.os: "ubuntu"
 
  zabbix-agent:
-  image: zabbix/zabbix-agent:ubuntu-6.4-latest
+  image: zabbix/zabbix-agent:ubuntu-6.4-latest@sha256:9f8a541057ab9c4f20cc7830de0ad6e2715f894375edea02138e01a65452dc0e
   ports:
    - "10050:10050"
   volumes:
@@ -205,7 +205,7 @@ services:
 #    com.zabbix.os: "ubuntu"
 
  zabbix-web-service:
-  image: zabbix/zabbix-web-service:ubuntu-6.4-latest
+  image: zabbix/zabbix-web-service:ubuntu-6.4-latest@sha256:4d27278e1aec9d92a7e70b76148dd56cccded81ee6f45703352a325a509ab149
   ports:
    - "10053:10053"
   volumes:
