@@ -300,7 +300,7 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnos
 }
 
 locals {
-  queue_transient_alert_props = var.env_short == "p" ? [
+  queue_transient_alert_props = var.env_short == "u" ? [
     {
       "queue_key"   = "transaction-notifications-queue"
       "severity"    = 1
@@ -428,8 +428,13 @@ locals {
       "time_window" = 15
       "frequency"   = 15
       "threshold"   = 20
+      "time_window" = 30
+      "putTimeStart" = 30
+      "putTimeEnd"   = 15
+      "deleteTimeStart" = 15
+      "deleteTimeEnd"   = 0
     },
-  ]
+  ] : []
 }
 
 # Queue size: Ecommerce - ecommerce queues enqueues rate alert
@@ -451,7 +456,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_expiration_enq
     let OpCountForQueue = (operation: string, queueKey: string, timestart: timespan, timeend: timespan) {
         StorageQueueLogs
         | where OperationName == operation and ObjectKey startswith queueKey
-        | where TimeGenerated >= ago(timestart) and TimeGenerated <= ago(timeend)
+        | where TimeGenerated betwewn (timestart .. timeend)
         | summarize count() 
         | project count_ 
         | extend dummy=1
@@ -472,17 +477,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_expiration_enq
         | extend Diff = PutCount - DeleteCount
         | project PutCount, DeleteCount, Diff
     };
-    MessageRateForQueue("%s","%s","%s","%s")
+    MessageRateForQueue("%s", ${each.value.putTimeStart}m, ${each.value.putTimeEnd}m, ${each.value.deleteTimeStart}m, ${each.value.deleteTimeEnd}m)
     | where Diff > ${each.value.threshold}
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
-    , ${each.value.time_window}*2m
-    , ${each.value.time_window}*1m
-    , ${each.value.time_window}*1m
-    , 0m
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
+  time_window = each.value.time_window
   trigger {
     operator  = "GreaterThan"
     threshold = 0

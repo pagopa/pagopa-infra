@@ -215,6 +215,10 @@ locals {
       time_window = 30
       frequency   = 15
       threshold   = 10
+      putTimeStart = 30
+      putTimeEnd   = 15
+      deleteTimeStart = 15
+      deleteTimeEnd   = 0
     },
   ] : []
 }
@@ -259,17 +263,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
         | extend Diff = PutCount - DeleteCount
         | project PutCount, DeleteCount, Diff
     };
-    MessageRateForQueue("%s","%s","%s","%s")
+    MessageRateForQueue("%s", ${each.value.putTimeStart}m, ${each.value.putTimeEnd}m, ${each.value.deleteTimeStart}m, ${each.value.deleteTimeEnd}m)
     | where Diff > ${each.value.threshold}
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
-    , ${each.value.time_window}*2m
-    , ${each.value.time_window}*1m
-    , ${each.value.time_window}*1m
-    , 0m
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
+  time_window = each.value.time_window
   trigger {
     operator  = "GreaterThan"
     threshold = 0
