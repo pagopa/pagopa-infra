@@ -397,16 +397,22 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
         | project count_ 
         | extend dummy=1
     };
-    let PutMessages = OpCountForQueue("PutMessage", queueName)
+    let PutMessages = (queueName: string) {
+      OpCountForQueue("PutMessage", queueName)
         | project PutCount = count_
-        | extend dummy = 1;
-    let DeletedMessages = OpCountForQueue("DeleteMessage", queueName)
+        | extend dummy = 1
+    };
+    let DeletedMessages =  (queueName: string) {
+      OpCountForQueue("DeleteMessage", queueName)
         | project DeleteCount = count_
-        | extend dummy = 1;
-    PutMessages
-    | join kind=inner (DeletedMessages) on dummy
-    | extend Diff = PutCount - DeleteCount
-    | project PutCount, DeleteCount, Diff;
+        | extend dummy = 1
+    };
+    let MessageRateForQueue = (queueKey: string) {
+        PutMessages(queueKey)
+        | join kind=inner (DeletedMessages(queueKey)) on dummy
+        | extend Diff = PutCount - DeleteCount
+        | project PutCount, DeleteCount, Diff
+    };
     MessageRateForQueue("%s")
     | where Diff > ${each.value.threshold}
     QUERY
@@ -457,22 +463,30 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_expiration_enq
         | project count_ 
         | extend dummy=1
     };
-    let PutMessages = OpCountForQueue("PutMessage", queueName)
+    let PutMessages = (queueName: string, timestart: timespan, timeend: timespan) {
+      OpCountForQueue("PutMessage", queueName, timestart, timeend)
         | project PutCount = count_
-        | extend dummy = 1;
-    let DeletedMessages = OpCountForQueue("DeleteMessage", queueName)
+        | extend dummy = 1
+    };
+    let DeletedMessages =  (queueName: string, timestart: timespan, timeend: timespan) {
+      OpCountForQueue("DeleteMessage", queueName, timestart, timeend)
         | project DeleteCount = count_
-        | extend dummy = 1;
-    PutMessages
-    | join kind=inner (DeletedMessages) on dummy
-    | extend Diff = PutCount - DeleteCount
-    | project PutCount, DeleteCount, Diff;
-    MessageRateForQueue("%s","%s","%s")
+        | extend dummy = 1
+    };
+    let MessageRateForQueue = (queueKey: string, timestartPut: timespan, timeendPut: timespan, timestartDelete: timespan, timeendDelete: timespan) {
+        PutMessages(queueKey, timestartPut, timeendPut)
+        | join kind=inner (DeletedMessages(queueKey, timestartDelete, timeendDelete)) on dummy
+        | extend Diff = PutCount - DeleteCount
+        | project PutCount, DeleteCount, Diff
+    };
+    MessageRateForQueue("%s","%s","%s","%s")
     | where Diff > ${each.value.threshold}
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
-    , "0m"
-    , ${each.value.time_window}+"m"
+    , ${each.value.time_window}*2m
+    , ${each.value.time_window}*1m
+    , ${each.value.time_window}*1m
+    , 0m
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
