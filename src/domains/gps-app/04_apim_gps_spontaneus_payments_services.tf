@@ -1,0 +1,24 @@
+locals {
+  apim_gps_spontaneus_payments_services_pagopa_api = {
+    display_name = "GPS Spontaneus Payments Services Product pagoPA"
+    description  = "API for Spontaneus Payments Services"
+  }
+}
+
+module "apim_mbd_gps_product" {
+  source = "./.terraform/modules/__v3__/api_management_product"
+
+  product_id   = "gps-spontaneus-payments-services"
+  display_name = local.apim_gps_spontaneus_payments_services_pagopa_api.display_name
+  description  = local.apim_gps_spontaneus_payments_services_pagopa_api.description
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  published             = false
+  subscription_required = true
+  approval_required     = false
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/_base_policy.xml")
+}
