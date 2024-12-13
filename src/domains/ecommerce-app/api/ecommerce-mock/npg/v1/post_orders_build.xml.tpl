@@ -1,7 +1,7 @@
 <policies>
   <inbound>
     <base />
-
+    <retry condition="@(true)" count="1" interval="2" />
     <set-variable name="requestBody" value="@( (JObject) context.Request.Body.As<JObject>(preserveContent: true) )" />
     <set-variable name="paymentMethod" value="@( (string) ((JObject) ((JObject) context.Variables["requestBody"])["paymentSession"])["paymentService"] )" />
 
