@@ -1,14 +1,14 @@
 locals {
-  apim_gps_spontaneus_payments_services_pagopa_api = {
-    display_name = "GPS Spontaneus Payments Services Product pagoPA"
-    description  = "API for Spontaneus Payments Services"
+  apim_gps_spontaneous_payments_services_pagopa_api = {
+    display_name = "GPS Spontaneous Payments Services Product pagoPA"
+    description  = "API for Spontaneous Payments Services"
   }
 }
 
 module "apim_mbd_gps_product" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
-  product_id   = "gps-spontaneus-payments-services"
+  product_id   = "gps-spontaneous-payments-services"
   display_name = local.apim_gps_spontaneus_payments_services_pagopa_api.display_name
   description  = local.apim_gps_spontaneus_payments_services_pagopa_api.description
 
