@@ -37,3 +37,15 @@ data "azurerm_postgresql_flexible_server" "postgres_flexible_server_private" {
 data "azurerm_resource_group" "identity_rg" {
   name = "${local.product}-identity-rg"
 }
+
+data "azurerm_api_management_product" "apim_iuv_generator_product" {
+  product_id          = "iuvgenerator"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+data "azurerm_api_management_product" "apim_gps_spontaneous_payments_services_product" {
+  product_id          = "gps-spontaneous-payments-services"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
