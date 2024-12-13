@@ -7,6 +7,7 @@
           </allowed-origins>
           <allowed-methods>
               <method>POST</method>
+              <method>GET</method>
               <method>OPTIONS</method>
           </allowed-methods>
           <allowed-headers>
