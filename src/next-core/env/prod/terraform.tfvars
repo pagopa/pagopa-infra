@@ -20,7 +20,7 @@ tags = {
 ### Feature Flag
 is_feature_enabled = {
   vnet_ita                  = false,
-  container_app_tools_cae   = false,
+  container_app_tools_cae   = true,
   node_forwarder_ha_enabled = true,
   vpn                       = false,
   dns_forwarder_lb          = true,
@@ -835,11 +835,11 @@ monitor_env_test_urls = [
     host = "wisp2.pagopa.gov.it",
     path = "",
   },
-  # status.pagopa.gov.it
-  {
-    host = "status.pagopa.gov.it",
-    path = "",
-  },
+  # # status.pagopa.gov.it # remove it after 👀 https://github.com/pagopa/org-infra/pull/243
+  # {
+  #   host = "status.pagopa.gov.it",
+  #   path = "",
+  # },
   # assets.cdn.platform.pagopa.it
   {
     host          = "assets.cdn.platform.pagopa.it",

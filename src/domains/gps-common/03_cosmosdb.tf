@@ -53,10 +53,11 @@ module "gps_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = var.cosmos_gps_db_params.public_network_access_enabled ? var.env_short == "d" ? [] : [data.azurerm_subnet.aks_subnet.id] : [data.azurerm_subnet.aks_subnet.id]
 
   # private endpoint
-  private_endpoint_sql_name = "${local.project}-cosmos-sql-endpoint"
-  private_endpoint_enabled  = var.cosmos_gps_db_params.private_endpoint_enabled
-  subnet_id                 = module.gps_cosmosdb_snet.id
-  private_dns_zone_sql_ids  = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_sql_name           = "${local.project}-cosmos-sql-endpoint" # forced after update module vers
+  private_service_connection_sql_name = "${local.project}-cosmos-sql-endpoint" # forced after update module vers
+  private_endpoint_enabled            = var.cosmos_gps_db_params.private_endpoint_enabled
+  subnet_id                           = module.gps_cosmosdb_snet.id
+  private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
   tags = var.tags
 }

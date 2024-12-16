@@ -14,6 +14,16 @@ resource "azurerm_dns_zone" "public_prf" {
   tags = var.tags
 }
 
+resource "azurerm_dns_cname_record" "statuspage_platform_pagopa_it_cname" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "status"
+  zone_name           = azurerm_dns_zone.public[0].name
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+  record              = "statuspage.betteruptime.com"
+  ttl                 = var.dns_default_ttl_sec
+  tags                = var.tags
+}
+
 # Prod ONLY record to DEV public DNS delegation
 resource "azurerm_dns_ns_record" "dev_pagopa_it_ns" {
   count               = var.env_short == "p" ? 1 : 0
