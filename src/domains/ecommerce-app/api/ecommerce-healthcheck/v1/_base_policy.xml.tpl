@@ -39,7 +39,7 @@
             <set-method>GET</set-method>
         </send-request>
 
-        <send-requestignore-error="true" mode="new" response-variable-name="transactionSchedulerServiceLiveness" timeout="10">
+        <send-request ignore-error="true" mode="new" response-variable-name="transactionSchedulerServiceLiveness" timeout="10">
             <set-url>
                 https://${hostname}/pagopa-ecommerce-transactions-scheduler-service/actuator/health/liveness
             </set-url>
