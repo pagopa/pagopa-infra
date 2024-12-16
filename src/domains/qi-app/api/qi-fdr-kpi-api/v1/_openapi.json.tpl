@@ -25,26 +25,6 @@
         "operationId": "calculateKpi",
         "parameters": [
           {
-            "name": "x-entity-fiscal-code",
-            "in": "header",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "02654890025"
-            },
-            "description": "The fiscal code of the entity:\n- For direct PSP queries: use PSP fiscal code\n- For broker queries: use broker fiscal code\n"
-          },
-          {
-            "name": "x-psp-code",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "example": "CIPBITMM"
-            },
-            "description": "PSP code - Required only for broker queries.\n- If entityCode is a broker fiscal code: this parameter is required\n- If entityCode is a PSP fiscal code: this parameter should not be provided (it would be a duplicate)\n"
-          },
-          {
             "name": "kpiType",
             "in": "path",
             "required": true,
