@@ -31,7 +31,7 @@ locals {
     description           = "PDF Engine Service for Stampa Avvisi - API"
     path                  = "printit/pdf-engine"
     subscription_required = true
-    service_url           = var.is_feature_enabled.apim_use_pdf_engine_clone ? (can(module.printit_pdf_engine_app_service_java_clone[0].default_site_hostname) ? module.printit_pdf_engine_app_service_java_clone[0].default_site_hostname : "") : (can(module.printit_pdf_engine_app_service_java[0].default_site_hostname) ? module.printit_pdf_engine_app_service_java[0].default_site_hostname : "")
+    service_url           = can(module.printit_pdf_engine_app_service_java[0].default_site_hostname) ? module.printit_pdf_engine_app_service_java[0].default_site_hostname : ""
   }
   apim_pdf_engine_node_service_api = {
     # node
@@ -39,7 +39,7 @@ locals {
     description           = "PDF Engine Node Service for Stampa Avvisi - API"
     path                  = "printit/pdf-engine-node"
     subscription_required = true
-    service_url           = var.is_feature_enabled.apim_use_pdf_engine_clone ? (can(module.printit_pdf_engine_app_service_clone[0].default_site_hostname) ? module.printit_pdf_engine_app_service_clone[0].default_site_hostname : "") : (can(module.printit_pdf_engine_app_service[0].default_site_hostname) ? module.printit_pdf_engine_app_service[0].default_site_hostname : "")
+    service_url           = can(module.printit_pdf_engine_app_service[0].default_site_hostname) ? module.printit_pdf_engine_app_service[0].default_site_hostname : ""
   }
 }
 

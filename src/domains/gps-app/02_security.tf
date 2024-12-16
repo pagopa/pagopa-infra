@@ -66,3 +66,20 @@ resource "azurerm_key_vault_secret" "test_gpd_payments_pull_and_debt_positions_s
 
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+
+resource "azurerm_key_vault_secret" "iuv_generator_subscription_key" {
+  name         = "apikey-iuv-generator"
+  value        = azurerm_api_management_subscription.iuv_generator_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}
+
+resource "azurerm_key_vault_secret" "gps_mbd_service_integration_test_subscription_key" {
+  name         = "apikey-spontaneous-payments-services"
+  value        = azurerm_api_management_subscription.gps_spontaneous_payments_services_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}
