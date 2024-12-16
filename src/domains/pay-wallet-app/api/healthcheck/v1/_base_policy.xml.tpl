@@ -66,11 +66,6 @@
                 return response.ToString();
             }
         </set-body>
-        <choose>
-            <when condition="@(context.Response.Body.As<JObject>()["status"].ToString() == "DOWN")">
-                <set-status code="502" reason="Bad Gateway" />
-            </when>
-        </choose>
     </outbound>
     <on-error>
         <base />
