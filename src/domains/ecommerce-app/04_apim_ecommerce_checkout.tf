@@ -108,7 +108,7 @@ resource "azurerm_api_management_api_operation_policy" "get_transaction_info" {
   xml_content = file("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl")
 }
 
-resource "azurerm_api_management_api_V2_operation_policy" "get_transaction_info" {
+resource "azurerm_api_management_api_V2_operation_policy" "get_transaction_info_v2" {
   api_name            = "${local.project}-ecommerce-checkout-api-v2"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
