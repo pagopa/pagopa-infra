@@ -55,7 +55,7 @@ locals {
 
 # create a module for each 20 repos
 module "identity_cd_01" {
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.45.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short
@@ -80,7 +80,7 @@ module "identity_cd_01" {
 # create a module for each 20 repos
 module "identity_ci_01" {
   count  = var.env_short == "p" ? 0 : 1
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.45.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short
