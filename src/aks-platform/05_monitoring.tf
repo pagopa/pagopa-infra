@@ -77,10 +77,10 @@ module "kubernetes_event_exporter" {
 
   # OpsGenie integrations
   enable_opsgenie  = true
-  opsgenie_api_key = data.azurerm_key_vault_secret.opsgenie_api_key.value
+  opsgenie_api_key = data.azurerm_key_vault_secret.opsgenie_kubexporter_api_key.value
 }
 
-data "azurerm_key_vault_secret" "opsgenie_api_key" {
+data "azurerm_key_vault_secret" "opsgenie_kubexporter_api_key" {
   key_vault_id = data.azurerm_key_vault.kv.id
   name         = "opsgenie-infra-kubexporter-webhook-token"
 }
