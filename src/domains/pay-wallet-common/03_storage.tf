@@ -215,10 +215,6 @@ locals {
       time_window = 30
       frequency   = 15
       threshold   = 10
-      putTimeStart = 30
-      putTimeEnd   = 15
-      deleteTimeStart = 15
-      deleteTimeEnd   = 0
     },
   ] : []
 }
