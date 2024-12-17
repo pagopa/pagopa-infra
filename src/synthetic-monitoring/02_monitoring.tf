@@ -9,7 +9,7 @@ module "monitoring_function" {
 
   application_insight_name              = azurerm_application_insights.application_insights.name
   application_insight_rg_name           = azurerm_application_insights.application_insights.resource_group_name
-  application_insights_action_group_ids = [data.azurerm_monitor_action_group.slack.id]
+  application_insights_action_group_ids = var.env_short == "p" ? [data.azurerm_monitor_action_group.infra_opsgenie.id] : [data.azurerm_monitor_action_group.slack.id]
 
   docker_settings = {
     image_tag = "v1.9.1@sha256:7b5c801cc39537b56e744e59369cb62a05f6b23179cc7a5c61aacf716bbd9ad3"
