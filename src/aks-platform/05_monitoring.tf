@@ -63,3 +63,24 @@ resource "helm_release" "monitoring_reloader" {
     value = var.reloader_helm.image_tag
   }
 }
+
+# Kubernetes Event Exporter
+module "kubernetes_event_exporter" {
+  count     = var.env_short != "p" ? 0 : 1
+  source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter?ref=PAYMCLOUD-95-Add-Kubernetes-events-exporter-helm-on-terraform-modules-v3"
+  namespace = "monitoring"
+
+  # Slack integration
+  enable_slack  = false
+  slack_channel = "#pagopa_status"
+  slack_token   = ""
+
+  # OpsGenie integrations
+  enable_opsgenie  = true
+  opsgenie_api_key = data.azurerm_key_vault_secret.opsgenie_api_key.value
+}
+
+data "azurerm_key_vault_secret" "opsgenie_api_key" {
+  key_vault_id = data.azurerm_key_vault.kv.id
+  name         = "opsgenie-infra-kubexporter-webhook-token"
+}
