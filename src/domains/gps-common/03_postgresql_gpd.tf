@@ -1,5 +1,14 @@
+# ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+# ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+# ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
 
 # NEWGPD-DB : DEPRECATED remove all content file
+# Note in DEV and UAT env the old version of GPD db it has already been manually removed from the portal , but not in PROD
+
+# ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+# ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+# ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+
 
 # https://docs.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-compare-single-server-flexible-server
 module "postgres_flexible_server_private" { # private only into UAT and PROD env
@@ -97,24 +106,24 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_poo
 }
 
 # CDC https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-logical
-resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_worker_process" {
-  count  = var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0 # forced
+resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_worker_process" { # NEWGPD-DB : not needed to enable on OLD version
+  count  = 0 # var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0 # forced
 
   name      = "max_worker_processes"
   server_id = module.postgres_flexible_server_private[0].id
   value     = var.pgres_flex_params.max_worker_process # var.env_short == "d" ? 16 : 32
 }
 
-resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_wal_level" {
-  count = var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0 # forced ? 1 : 0
+resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_wal_level" { # NEWGPD-DB : not needed to enable on OLD version
+  count = 0 # var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0 # forced ? 1 : 0
 
   name      = "wal_level"
   server_id = module.postgres_flexible_server_private[0].id
   value     = var.pgres_flex_params.wal_level # "logical", ...
 }
 
-resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_shared_preoload_libraries" {
-  count = var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0
+resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_shared_preoload_libraries" { # NEWGPD-DB : not needed to enable on OLD version
+  count = 0 # var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0
 
   name      = "shared_preload_libraries"
   server_id = module.postgres_flexible_server_private[0].id
