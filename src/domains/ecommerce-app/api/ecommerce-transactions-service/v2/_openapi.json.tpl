@@ -33,6 +33,72 @@
     }
   ],
   "paths": {
+    "/transactions/{transactionId}": {
+      "get": {
+        "tags": [
+          "transactions"
+        ],
+        "operationId": "getTransactionInfo",
+        "summary": "Get transaction information",
+        "description": "Return information for the input specific transaction resource",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction data successfully retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid transaction id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/transactions": {
       "post": {
         "operationId": "newTransaction",
@@ -220,6 +286,116 @@
             }
           ]
         }
+      },
+      "TransactionInfo": {
+        "description": "Transaction data returned when querying for an existing transaction",
+        "type": "object",
+        "properties": {
+          "transactionId": {
+            "type": "string"
+          },
+          "payments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentInfo"
+            },
+            "minItems": 1,
+            "maxItems": 5,
+            "example": [
+              {
+                "rptId": "77777777777302012387654312384",
+                "paymentToken": "paymentToken1",
+                "reason": "reason1",
+                "amount": 600,
+                "transferList": [
+                  {
+                    "paFiscalCode": "77777777777",
+                    "digitalStamp": false,
+                    "transferCategory": "transferCategory1",
+                    "transferAmount": 500
+                  },
+                  {
+                    "paFiscalCode": "11111111111",
+                    "digitalStamp": true,
+                    "transferCategory": "transferCategory2",
+                    "transferAmount": 100
+                  }
+                ]
+              }
+            ]
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "feeTotal": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "clientId": {
+            "description": "transaction client id",
+            "enum": [
+              "IO",
+              "CHECKOUT",
+              "CHECKOUT_CART"
+            ]
+          },
+          "nodeInfo":{
+            "type": "object",
+            "description": "Gateway infos",
+            "properties": {
+              "closePaymentResultError": {
+                "type": "object",
+                "description": "Error details for close payment result",
+                "properties": {
+                  "statusCode": {
+                    "description": "Status code (4xx, 5xx) of the error received on the node",
+                    "type": "number"
+                  },
+                  "description": {
+                    "description": "Description of the error received on the node",
+                    "type": "string"
+                  }
+                }
+              },
+              "sendPaymentResultOutcome": {
+                "description": "The outcome of sendPaymentResult api (OK, KO, NOT_RECEIVED)",
+                "type": "string",
+                "enum": [
+                  "OK",
+                  "KO",
+                  "NOT_RECEIVED"
+                ]
+              },
+            }
+          },
+          "gatewayInfo":{
+            "type": "object",
+            "description": "Gateway infos",
+            "properties": {
+              "gateway": {
+                "type": "string",
+                "pattern": "NPG|REDIRECT",
+                "description": "Payment gateway identifier"
+              },
+              "authorizationStatus": {
+                "type": "string",
+                "description": "Payment gateway authorization status"
+              },
+              "authorizationCode": {
+                "type": "string",
+                "description": "Payment gateway-specific authorization code related to the transaction"
+              },
+              "errorCode": {
+                "type": "string",
+                "description": "Payment gateway-specific error code from the gateway"
+              },
+            }
+          },
+        },
+        "required": [
+          "status",
+          "transactionId",
+          "payments"
+        ]
       },
       "NewTransactionRequest": {
         "description": "Request body for creating a new transaction",
