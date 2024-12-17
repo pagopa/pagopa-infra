@@ -918,11 +918,6 @@ module "apim_pm_per_nodo_v2" {
   xml_content = file("./api/payment_manager_api/pm-per-nodo/v2/_base_policy.xml")
 }
 
-data "azurerm_key_vault_secret" "subscriptionkey_ecomm" {
-  name         = "subscriptionKeyEcomm"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
-
 # Payment Manager - PM per Nodo API
 #
 # v1 -> src/core/api/payment_manager_api/pm-per-nodo/v1/_swagger.json.tpl - NOT used into WISP dismantling
@@ -933,27 +928,14 @@ data "azurerm_key_vault_secret" "subscriptionkey_ecomm" {
 #
 # WISP sendPaymentResultV2
 resource "azurerm_api_management_api_operation_policy" "send_payment_result_api_v2_wisp_policy" { # aka addUserReceipt
-  count               = var.env_short != "u" && var.create_wisp_converter? 1 : 0
+  count               = var.create_wisp_converter ? 1 : 0
   api_name            = "${local.project}-pm-per-nodo-api-v2"
   resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   operation_id        = "addUserReceipt"
-  xml_content = templatefile("./api/payment_manager_api/pm-per-nodo/v2/wisp-sendpaymentresult.xml.tpl", {
+  xml_content = templatefile(var.env_short == "u" ? "./api/payment_manager_api/pm-per-nodo/v2/wisp-sendpaymentresult-uat.xml.tpl" : "./api/payment_manager_api/pm-per-nodo/v2/wisp-sendpaymentresult.xml.tpl", {
     host                       = local.api_domain,
     ecommerce_ingress_hostname = var.ecommerce_ingress_hostname
-  })
-}
-
-resource "azurerm_api_management_api_operation_policy" "send_payment_result_api_v2_wisp_policy_uat" { # aka addUserReceipt
-  count               = var.env_short == "u" && var.create_wisp_converter? 1 : 0
-  api_name            = "${local.project}-pm-per-nodo-api-v2"
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  operation_id        = "addUserReceipt"
-  xml_content = templatefile("./api/payment_manager_api/pm-per-nodo/v2/wisp-sendpaymentresult-uat.xml.tpl", {
-    host                       = local.api_domain,
-    ecommerce_ingress_hostname = var.ecommerce_ingress_hostname
-    subscriptionKey = data.azurerm_key_vault_secret.subscriptionkey_ecomm.value
   })
 }
 

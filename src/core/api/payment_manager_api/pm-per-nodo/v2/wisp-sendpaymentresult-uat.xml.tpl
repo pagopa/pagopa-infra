@@ -19,8 +19,8 @@
 <policies>
   <inbound>
     <base />
-
     <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
+    <set-variable name="clientId" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("clientId"))" />
     <set-variable name="body_value" value="@(context.Request.Body.As<string>(preserveContent: true))" />
     <choose>
         <when condition="@("ecomm".Equals(context.Variables["clientId"]))">
@@ -28,7 +28,7 @@
         </when>
         <otherwise>
             <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
-                <value>${subscriptionKey}</value>
+                <value>{{ecommerce-dev-sendpaymentresult-subscription-key-value}}</value>
             </set-header>
             <set-backend-service base-url="https://api.dev.platform.pagopa.it/ecommerce/transaction-user-receipts-service/v1" />
         </otherwise>
