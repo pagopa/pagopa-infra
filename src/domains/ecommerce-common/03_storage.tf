@@ -356,6 +356,13 @@ locals {
       "time_window" = 30
       "frequency"   = 15
       "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transaction-auth-outcome-waiting-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
     }
   ] : []
 }
