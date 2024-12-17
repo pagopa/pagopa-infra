@@ -300,7 +300,7 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnos
 }
 
 locals {
-  queue_transient_alert_props = var.env_short == "u" ? [
+  queue_transient_alert_props = var.env_short == "p" ? [
     {
       "queue_key"   = "transaction-notifications-queue"
       "severity"    = 1
@@ -352,13 +352,6 @@ locals {
     },
     {
       "queue_key"   = "transaction-auth-requested-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 10
-    },
-    {
-      "queue_key"   = "transaction-auth-outcome-waiting-queue"
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15
@@ -427,12 +420,7 @@ locals {
       "severity"    = 1
       "time_window" = 15
       "frequency"   = 15
-      "threshold"   = 20
-      "time_window" = 30
-      "putTimeStart" = 30
-      "putTimeEnd"   = 15
-      "deleteTimeStart" = 15
-      "deleteTimeEnd"   = 0
+      "threshold"   = 40
     },
   ] : []
 }
@@ -453,31 +441,35 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_expiration_enq
   description    = format("Enqueuing rate for queue %s > ${each.value.threshold} during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
   enabled        = true
   query = format(<<-QUERY
-    let OpCountForQueue = (operation: string, queueKey: string, timestart: timespan, timeend: timespan) {
+    let endDelete = datetime_local_to_utc(startofday(now()), 'Europe/Rome');
+    let startDelete = endDelete - ${each.value.time_window}m;
+    let endPut = startDelete;
+    let startPut = endPut - ${each.value.time_window}m;
+    let OpCountForQueue = (operation: string, queueKey: string, timestart: datetime, timeend: datetime) {
         StorageQueueLogs
         | where OperationName == operation and ObjectKey startswith queueKey
-        | where TimeGenerated betwewn (timestart .. timeend)
+        | where TimeGenerated between(timestart .. timeend)
         | summarize count() 
         | project count_ 
         | extend dummy=1
     };
-    let PutMessages = (queueName: string, timestart: timespan, timeend: timespan) {
+    let PutMessages = (queueName: string, timestart: datetime, timeend: datetime) {
       OpCountForQueue("PutMessage", queueName, timestart, timeend)
         | project PutCount = count_
         | extend dummy = 1
     };
-    let DeletedMessages =  (queueName: string, timestart: timespan, timeend: timespan) {
+    let DeletedMessages =  (queueName: string, timestart: datetime, timeend: datetime) {
       OpCountForQueue("DeleteMessage", queueName, timestart, timeend)
         | project DeleteCount = count_
         | extend dummy = 1
     };
-    let MessageRateForQueue = (queueKey: string, timestartPut: timespan, timeendPut: timespan, timestartDelete: timespan, timeendDelete: timespan) {
+    let MessageRateForQueue = (queueKey: string, timestartPut: datetime, timeendPut: datetime, timestartDelete: datetime, timeendDelete: datetime) {
         PutMessages(queueKey, timestartPut, timeendPut)
         | join kind=inner (DeletedMessages(queueKey, timestartDelete, timeendDelete)) on dummy
         | extend Diff = PutCount - DeleteCount
         | project PutCount, DeleteCount, Diff
     };
-    MessageRateForQueue("%s", ${each.value.putTimeStart}m, ${each.value.putTimeEnd}m, ${each.value.deleteTimeStart}m, ${each.value.deleteTimeEnd}m)
+    MessageRateForQueue("%s", startPut, endPut, startDelete, endDelete)
     | where Diff > ${each.value.threshold}
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
