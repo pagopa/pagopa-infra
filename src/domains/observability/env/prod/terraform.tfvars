@@ -279,6 +279,24 @@ ehns_metric_alerts = {
       }
     ],
   },
+  no_wallet_ingestion_alert = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "Payment wallet onboarding written events less than 1000 detected in the last 24h"
+    operator    = "LessThanOrEqual"
+    threshold   = 1000
+    frequency   = "PT1H"
+    window_size = "P1D"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values = [
+          "payment-wallet-ingestion-dl",
+        ]
+      }
+    ],
+  },
 }
 
 eventhubs_gpd = [
