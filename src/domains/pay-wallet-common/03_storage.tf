@@ -199,7 +199,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
     MessageRateForQueue("%s")
     | where Diff > ${each.value.threshold}
     QUERY
-    , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
+    , "/${module.pay_wallet_storage[0].name}/${local.project}-${each.value.queue_key}"
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
@@ -270,7 +270,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
     MessageRateForQueue("%s", startPut, endPut, startDelete, endDelete)
     | where Diff > ${each.value.threshold}
     QUERY
-    , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
+    , "/${module.pay_wallet_storage[0].name}/${local.project}-${each.value.queue_key}"
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
