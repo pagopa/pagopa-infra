@@ -19,7 +19,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 551a56a4bf841cd431b51ec951639e74260daf6a |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
 | <a name="module_api_config_fe_cdn"></a> [api\_config\_fe\_cdn](#module\_api\_config\_fe\_cdn) | ./.terraform/modules/__v3__/cdn | n/a |
 | <a name="module_api_config_snet"></a> [api\_config\_snet](#module\_api\_config\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_apim_api_apiconfig_cache_node_api_v1_o"></a> [apim\_api\_apiconfig\_cache\_node\_api\_v1\_o](#module\_apim\_api\_apiconfig\_cache\_node\_api\_v1\_o) | ./.terraform/modules/__v3__/api_management_api | n/a |

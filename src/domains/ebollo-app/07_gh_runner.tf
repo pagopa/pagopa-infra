@@ -11,6 +11,7 @@ module "gh_runner_job" {
   environment_name   = local.tools_cae_name
   environment_rg     = local.tools_cae_rg
   gh_identity_suffix = "job-01"
+  gh_env             = var.env
   runner_labels      = ["self-hosted-job", "${var.env}"]
   gh_repositories = [
     {
@@ -38,10 +39,10 @@ module "gh_runner_job" {
     rg           = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
   }
 
-  location            = var.location
-  prefix              = var.prefix
-  resource_group_name = data.azurerm_resource_group.identity_rg.name
-
-  tags = var.tags
+  location                = var.location
+  prefix                  = var.prefix
+  resource_group_name     = data.azurerm_resource_group.identity_rg.name
+  domain_security_rg_name = "${local.project}-sec-rg"
+  tags                    = var.tags
 
 }

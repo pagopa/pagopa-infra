@@ -300,11 +300,6 @@ variable "robots_indexed_paths" {
   description = "List of cdn paths to allow robots index"
 }
 
-variable "pdf_engine_app_ha_enabled" {
-  type        = bool
-  description = "(Required) enables the deployment of pdf engine in HA mode"
-}
-
 // wallet session token
 variable "io_backend_base_path" {
   type        = string
@@ -317,12 +312,6 @@ variable "pdv_api_base_path" {
   default     = null
   description = "Personal data vault api base path"
 }
-
-variable "pdf_engine_zone_balancing_enabled" {
-  type        = bool
-  description = "(Required) if true, enables zone balancing to pdf engine app service plans"
-}
-
 
 variable "ecommerce_io_pm_enabled" {
   type        = bool

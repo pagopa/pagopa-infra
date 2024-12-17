@@ -1,6 +1,6 @@
 # paymentoptions-secrets
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -15,8 +15,9 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.22.0 |
-| <a name="module_letsencrypt_paymentoptions"></a> [letsencrypt\_paymentoptions](#module\_letsencrypt\_paymentoptions) | git::https://github.com/pagopa/terraform-azurerm-v3.git///letsencrypt_credential | v8.44.0 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 551a56a4bf841cd431b51ec951639e74260daf6a |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v3__/key_vault | n/a |
+| <a name="module_letsencrypt_paymentoptions"></a> [letsencrypt\_paymentoptions](#module\_letsencrypt\_paymentoptions) | ./.terraform/modules/__v3__/letsencrypt_credential | n/a |
 
 ## Resources
 
@@ -62,4 +63,4 @@
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
