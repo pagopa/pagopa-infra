@@ -34,6 +34,53 @@ AzureDiagnostics
   }
 }
 
+// Query explanation: https://pagopa.atlassian.net/wiki/spaces/I/pages/574751186/Razionalizzazione+Alert
+resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-converter-redirect-availability" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-opex_pagopa-wisp-converter-redirect-availability"
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    email_subject          = "Alert pagopa-wisp-converter-redirect-availability"
+    custom_webhook_payload = "{}"
+  }
+
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "Availability for https://api.platform.pagopa.it/wisp-converter/redirect/api/v1/payments is less than or equal to threshold - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-wisp-converter"
+  enabled        = true
+  query = (<<-QUERY
+let lowTrafficThreshold = 70; // the lower threshold that can be calculated regarding the number of invocations
+let highTrafficThreshold = 95; // the upper threshold that can be calculated regarding the number of invocations
+let trafficMin = 100; // the minimum number of invocations (traffic) below which 'lowTrafficThreshold' guideline is used
+let trafficLinear = 500;  // the minimum number of invocations (traffic) above which 'highTrafficThreshold' guideline is used
+let thresholdDelta = trafficLinear - trafficMin; // the difference of the traffic guideline on which the expected availability is calculated
+let availabilityDelta = highTrafficThreshold - lowTrafficThreshold; // the difference of the threshold limits on which the expected availability is calculated
+// -----------------------------------------
+AzureDiagnostics
+| where url_s startswith "https://api.platform.pagopa.it/wisp-converter/redirect/api/v1/payments"
+| summarize
+    total=count(),
+    success=count(responseCode_d == 302)
+    by timeslot = bin(TimeGenerated, 5m)
+| extend trafficUp = total - trafficMin
+| extend deltaRatio = todouble(todouble(trafficUp) / todouble(thresholdDelta))
+| extend expectedAvailability = iff(total >= trafficLinear, toreal(highTrafficThreshold), iff(total <= trafficMin, toreal(lowTrafficThreshold), (deltaRatio * (availabilityDelta)) + lowTrafficThreshold))
+| extend availability = ((success * 1.0) / total) * 100
+| project timeslot, availability, threshold=expectedAvailability
+| where availability < threshold
+  QUERY
+  )
+  severity    = 1
+  frequency   = 5
+  time_window = 10
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
+
 // These API invoking and result are logged only on application insight
 // [receiptKo, receiptOk, createTimer, deleteTimer]
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-converter-ai-availability" {
@@ -126,7 +173,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-wisp-convert
 let errorsToExclude = dynamic([
   "WIC-1300", // payment position already paid
   "WIC-2001", // RPT timer creation
-  "WIC-3001", "WIC-3002", "WIC-3003", "WIC-3004", "WIC-3005", "WIC-3006" // client errors
+  "WIC-3004"  // CLIENT_CHECKOUT error
 ]);
 traces
 | where cloud_RoleName == "pagopawispconverter"

@@ -17,8 +17,13 @@
 
     + `src/domains/observability/gpd_evh_create__az.sh` for eventhub with `cleanup-policy`
 
-1. apply https://github.com/pagopa/pagopa-infra/pull/2496 ( create/config GDP db + common secrets)
-   NOTE : GDP network ( `+ Add 0.0.0.0 - 255.255.255.255` ) ( _only dev_ )
+1.  apply secrets `src/domains/gps-secret`
+    apply DB `src/domains/gps-common`
+
+    ⚠️⚠️ _ReCreate DB GPD with new name convention_ ⚠️⚠️ 
+    
+    `pagopa-<ENV_SHORT>-<REGION_SHORT>-gpd-pgflex`
+    NOTE : GDP network ( `+ Add 0.0.0.0 - 255.255.255.255` ) ( _only dev_ )
 
 1. _[OPT iif not exists]_ user APD `./flyway_gpd.sh migrate <ENV>-pagoPA apd apd -schemas=apd`
 
@@ -59,6 +64,13 @@
         kubectl config get-contexts
         kubectl config current-context
         kubectl config use-context <NEW_CONTEXT_NAME> 
+    ```
+
+    ```
+        sh set_registry_secrets.sh \
+        pagopa<env>commonacr.azurecr.io \
+        pagopa<env>commonacr \
+        <pwd>
     ```
 
 1. deploy debezium `src/domains/gps-app`

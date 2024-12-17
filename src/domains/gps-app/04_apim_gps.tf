@@ -17,12 +17,17 @@ module "apim_gps_product" {
   approval_required     = false
   # subscriptions_limit   = 1000
 
-  policy_xml = file("./api_product/_base_policy.xml")
+  policy_xml = file("./api_product/_base_policy_no_forbid.xml")
 }
 
 #################
 ##    API GPS  ##
 #################
+
+#################
+# Depreacted ⚠️⚠️⚠️⚠️⚠️⚠️⚠️ see here https://github.com/pagopa/pagopa-spontaneous-payments/blob/378d08505a12e1dbd83d69c2ea987a2a3ee475a1/infra/04_apim_api.tf#L4
+#################
+
 locals {
   apim_spontaneous_payments_service_api = {
     display_name          = "GPS pagoPA - spontaneous payments service API"
