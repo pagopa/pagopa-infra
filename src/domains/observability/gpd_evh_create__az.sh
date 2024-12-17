@@ -6,45 +6,45 @@ set -e
 # config topics
 # ==============================================================
 
+env=$1
 
-# echo ">>>>>> 1"
 
-# az eventhubs eventhub create \
-# -g pagopa-$env-itn-observ-evh-rg \
-# -n "connect-cluster-offsets" \
-# --namespace-name pagopa-$env-itn-observ-gpd-evh \
-# --cleanup-policy "Compact" \
-# --status "Active" \
-# --partition-count 1 \
-# --retention-time 24
+echo ">>>>>> 1"
 
-# echo ">>>>>> 2"
+az eventhubs eventhub create \
+-g pagopa-$env-itn-observ-evh-rg \
+-n "connect-cluster-offsets" \
+--namespace-name pagopa-$env-itn-observ-gpd-evh \
+--cleanup-policy "Compact" \
+--status "Active" \
+--partition-count 1 \
+--retention-time 24
 
-# az eventhubs eventhub create \
-# -g pagopa-$env-itn-observ-evh-rg \
-# -n "connect-cluster-status" \
-# --namespace-name pagopa-$env-itn-observ-gpd-evh \
-# --cleanup-policy "Compact" \
-# --status "Active" \
-# --partition-count 1 \
-# --retention-time 24
+echo ">>>>>> 2"
 
-# echo ">>>>>> 3"
+az eventhubs eventhub create \
+-g pagopa-$env-itn-observ-evh-rg \
+-n "connect-cluster-status" \
+--namespace-name pagopa-$env-itn-observ-gpd-evh \
+--cleanup-policy "Compact" \
+--status "Active" \
+--partition-count 1 \
+--retention-time 24
 
-# az eventhubs eventhub create \
-# -g pagopa-$env-itn-observ-evh-rg \
-# -n "connect-cluster-configs" \
-# --namespace-name pagopa-$env-itn-observ-gpd-evh \
-# --cleanup-policy "Compact" \
-# --status "Active" \
-# --partition-count 1 \
-# --retention-time 24
+echo ">>>>>> 3"
+
+az eventhubs eventhub create \
+-g pagopa-$env-itn-observ-evh-rg \
+-n "connect-cluster-configs" \
+--namespace-name pagopa-$env-itn-observ-gpd-evh \
+--cleanup-policy "Compact" \
+--status "Active" \
+--partition-count 1 \
+--retention-time 24
 
 # ==============================================================
 # logical topics
 # ==============================================================
-
-env=$1
 
 echo ">>>>>> 4"
 

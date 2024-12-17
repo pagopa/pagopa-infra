@@ -12,7 +12,7 @@ module "apim_statuspage_nodo_pagamenti" {
   subscription_required = true
   approval_required     = true
   subscriptions_limit   = 1
-  policy_xml = file("./api_product/_statuspage_nodopagamenti_policy.xml")
+  policy_xml            = file("./api_product/_statuspage_nodopagamenti_policy.xml")
 }
 
 ###########
@@ -24,7 +24,7 @@ locals {
     description           = "API to Status Page Nodo Pagamenti"
     path                  = "nodopagamenti/statuspage"
     subscription_required = true
-    service_url           = null 
+    service_url           = null
   }
 }
 

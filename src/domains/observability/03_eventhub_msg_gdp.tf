@@ -77,3 +77,25 @@ resource "azurerm_eventhub_namespace_authorization_rule" "cdc_connection_string"
 # --partition-count 1 \
 # --retention-time 24
 
+
+resource "azurerm_eventhub_namespace_authorization_rule" "cdc_test_connection_string" {
+  count = var.env != "p" ? 1 : 0
+
+  name                = "cdc-gpd-test-connection-string"
+  namespace_name      = module.eventhub_namespace_observability_gpd.name
+  resource_group_name = azurerm_resource_group.eventhub_observability_rg.name
+  listen              = true
+  send                = true
+  manage              = false
+}
+
+resource "azurerm_key_vault_secret" "azure_web_jobs_storage_kv" {
+  count = var.env != "p" ? 1 : 0
+
+  name         = "cdc-gpd-test-connection-string"
+  value        = azurerm_eventhub_namespace_authorization_rule.cdc_test_connection_string[0].primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}
+
+
