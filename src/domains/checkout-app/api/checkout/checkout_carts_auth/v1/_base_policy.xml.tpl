@@ -11,11 +11,11 @@
                   <value>WISP_REDIRECT</value>
               </set-header>
           </when>
-          <when condition="@(context.Subscription != null && context.Subscription.Id.ToLower().Equals("ebollo"))">
+          <otherwise>
               <set-header name="x-client-id" exists-action="override">
                   <value>CHECKOUT_CART</value>
               </set-header>
-          </when>
+          </otherwise>
           <!-- add here handling for future api clients to be integrated, such as SEND -->
       </choose>
   </inbound>
