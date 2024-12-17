@@ -47,7 +47,7 @@ module "postgres_flexible_snet" {
 }
 
 data "azurerm_private_dns_zone" "postgres" {
-  count               = var.env_short != "d" ? 1 : 0  # forced ( before exits only in UAT and PROD now DEV too)
+  count               = var.env_short != "d" ? 1 : 0 # forced ( before exits only in UAT and PROD now DEV too)
   name                = "private.postgres.database.azure.com"
   resource_group_name = local.vnet_resource_group_name
 }
@@ -58,7 +58,7 @@ data "azurerm_private_dns_zone" "postgres" {
 module "postgres_flexible_server_private_db" {
   source = "./.terraform/modules/__v3__/postgres_flexible_server"
 
-  name = format("%s-%s-gpd-pgflex",local.product, var.location_short)
+  name = format("%s-%s-gpd-pgflex", local.product, var.location_short)
 
   location            = azurerm_resource_group.flex_data[0].location
   resource_group_name = azurerm_resource_group.flex_data[0].name
