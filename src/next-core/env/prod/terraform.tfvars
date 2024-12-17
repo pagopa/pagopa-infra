@@ -835,11 +835,11 @@ monitor_env_test_urls = [
     host = "wisp2.pagopa.gov.it",
     path = "",
   },
-  # status.pagopa.gov.it
-  {
-    host = "status.pagopa.gov.it",
-    path = "",
-  },
+  # # status.pagopa.gov.it # remove it after 👀 https://github.com/pagopa/org-infra/pull/243
+  # {
+  #   host = "status.pagopa.gov.it",
+  #   path = "",
+  # },
   # assets.cdn.platform.pagopa.it
   {
     host          = "assets.cdn.platform.pagopa.it",
