@@ -134,4 +134,4 @@ postgres_db_name   = "apd"
 tasks_max          = "1"
 container_registry = "pagopapcommonacr.azurecr.io"
 max_threads        = 10
-gpd_cdc_enabled    = true
+gpd_cdc_enabled    = false
