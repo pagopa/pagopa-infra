@@ -69,7 +69,7 @@ module "postgres_flexible_server_private_db" {
   delegated_subnet_id           = module.postgres_flexible_snet[0].id
   public_network_access_enabled = var.pgres_flex_params.public_network_access_enabled
 
-  ### admin credentials
+  ### admin credentials
   administrator_login    = data.azurerm_key_vault_secret.pgres_admin_login.value
   administrator_password = data.azurerm_key_vault_secret.pgres_admin_pwd.value
 
@@ -89,7 +89,7 @@ module "postgres_flexible_server_private_db" {
 
   tags = var.tags
 
-  # alert section
+  # alert section
   custom_metric_alerts = var.pgres_flex_params.alerts_enabled ? var.pgflex_public_metric_alerts : {}
   alerts_enabled       = var.pgres_flex_params.alerts_enabled
 
