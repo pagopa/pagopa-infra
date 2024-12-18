@@ -8,6 +8,17 @@ set -e
 
 env=$1
 
+if [ "$env" != "p" ]; then
+    partitioncount=1
+    retentiontime=24 #hh = 1day
+else
+    partitioncount=32
+    retentiontime=168 #hh = 1week
+fi
+
+echo "partitioncount >> ${partitioncount}"
+echo "retentiontime  >> ${retentiontime}"
+
 
 echo ">>>>>> 1"
 
@@ -17,8 +28,8 @@ az eventhubs eventhub create \
 --namespace-name pagopa-$env-itn-observ-gpd-evh \
 --cleanup-policy "Compact" \
 --status "Active" \
---partition-count 1 \
---retention-time 24
+--partition-count ${partitioncount} \
+--retention-time ${retentiontime}
 
 echo ">>>>>> 2"
 
@@ -28,8 +39,8 @@ az eventhubs eventhub create \
 --namespace-name pagopa-$env-itn-observ-gpd-evh \
 --cleanup-policy "Compact" \
 --status "Active" \
---partition-count 1 \
---retention-time 24
+--partition-count ${partitioncount} \
+--retention-time ${retentiontime}
 
 echo ">>>>>> 3"
 
@@ -39,8 +50,8 @@ az eventhubs eventhub create \
 --namespace-name pagopa-$env-itn-observ-gpd-evh \
 --cleanup-policy "Compact" \
 --status "Active" \
---partition-count 1 \
---retention-time 24
+--partition-count ${partitioncount} \
+--retention-time ${retentiontime}
 
 # ==============================================================
 # logical topics
@@ -54,8 +65,8 @@ az eventhubs eventhub create \
 --namespace-name pagopa-$env-itn-observ-gpd-evh \
 --cleanup-policy "Compact" \
 --status "Active" \
---partition-count 1 \
---retention-time 24
+--partition-count ${partitioncount} \
+--retention-time ${retentiontime}
 
 az eventhubs eventhub authorization-rule create \
 --resource-group pagopa-$env-itn-observ-evh-rg \
@@ -72,15 +83,15 @@ az eventhubs eventhub create \
 --namespace-name pagopa-$env-itn-observ-gpd-evh \
 --cleanup-policy "Compact" \
 --status "Active" \
---partition-count 1 \
---retention-time 24
+--partition-count ${partitioncount} \
+--retention-time ${retentiontime}
 
-az eventhubs eventhub authorization-rule create \
---resource-group pagopa-$env-itn-observ-evh-rg \
---namespace-name pagopa-$env-itn-observ-gpd-evh \
---eventhub-name cdc-raw-auto.apd.payment_position \
---name cdc-raw-auto.apd.payment_position-rx \
---rights Listen
+# az eventhubs eventhub authorization-rule create \
+# --resource-group pagopa-$env-itn-observ-evh-rg \
+# --namespace-name pagopa-$env-itn-observ-gpd-evh \
+# --eventhub-name cdc-raw-auto.apd.payment_position \
+# --name cdc-raw-auto.apd.payment_position-rx \
+# --rights Listen
 
 echo ">>>>>> 6"
 
@@ -90,13 +101,13 @@ az eventhubs eventhub create \
 --namespace-name pagopa-$env-itn-observ-gpd-evh \
 --cleanup-policy "Compact" \
 --status "Active" \
---partition-count 1 \
---retention-time 24
+--partition-count ${partitioncount} \
+--retention-time ${retentiontime}
 
 
-az eventhubs eventhub authorization-rule create \
---resource-group pagopa-$env-itn-observ-evh-rg \
---namespace-name pagopa-$env-itn-observ-gpd-evh \
---eventhub-name cdc-raw-auto.apd.transfer \
---name cdc-raw-auto.apd.transfer-rx \
---rights Listen
+# az eventhubs eventhub authorization-rule create \
+# --resource-group pagopa-$env-itn-observ-evh-rg \
+# --namespace-name pagopa-$env-itn-observ-gpd-evh \
+# --eventhub-name cdc-raw-auto.apd.transfer \
+# --name cdc-raw-auto.apd.transfer-rx \
+# --rights Listen
