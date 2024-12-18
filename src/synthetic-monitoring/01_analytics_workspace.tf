@@ -11,6 +11,7 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   sku                 = var.law_sku
   retention_in_days   = var.law_retention_in_days
   daily_quota_gb      = var.law_daily_quota_gb
+  reservation_capacity_in_gb_per_day = var.env_short == "p" ? 100 : null
 
   tags = var.tags
 }
