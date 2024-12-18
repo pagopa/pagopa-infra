@@ -68,6 +68,7 @@ az eventhubs eventhub create \
 --partition-count ${partitioncount} \
 --retention-time ${retentiontime}
 
+# created by @aferracci tnx2 MS https://github.com/Azure/azure-cli/issues/30419
 az eventhubs eventhub authorization-rule create \
 --resource-group pagopa-$env-itn-observ-evh-rg \
 --namespace-name pagopa-$env-itn-observ-gpd-evh \
@@ -86,12 +87,12 @@ az eventhubs eventhub create \
 --partition-count ${partitioncount} \
 --retention-time ${retentiontime}
 
-# az eventhubs eventhub authorization-rule create \
-# --resource-group pagopa-$env-itn-observ-evh-rg \
-# --namespace-name pagopa-$env-itn-observ-gpd-evh \
-# --eventhub-name cdc-raw-auto.apd.payment_position \
-# --name cdc-raw-auto.apd.payment_position-rx \
-# --rights Listen
+az eventhubs eventhub authorization-rule create \
+--resource-group pagopa-$env-itn-observ-evh-rg \
+--namespace-name pagopa-$env-itn-observ-gpd-evh \
+--eventhub-name cdc-raw-auto.apd.payment_position \
+--name cdc-raw-auto.apd.payment_position-rx \
+--rights Listen
 
 echo ">>>>>> 6"
 
@@ -105,9 +106,9 @@ az eventhubs eventhub create \
 --retention-time ${retentiontime}
 
 
-# az eventhubs eventhub authorization-rule create \
-# --resource-group pagopa-$env-itn-observ-evh-rg \
-# --namespace-name pagopa-$env-itn-observ-gpd-evh \
-# --eventhub-name cdc-raw-auto.apd.transfer \
-# --name cdc-raw-auto.apd.transfer-rx \
-# --rights Listen
+az eventhubs eventhub authorization-rule create \
+--resource-group pagopa-$env-itn-observ-evh-rg \
+--namespace-name pagopa-$env-itn-observ-gpd-evh \
+--eventhub-name cdc-raw-auto.apd.transfer \
+--name cdc-raw-auto.apd.transfer-rx \
+--rights Listen
