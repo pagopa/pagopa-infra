@@ -5,8 +5,8 @@
       <set-variable name="application_domain" value="qi" />
       <choose>
         <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
-        <when condition="@(context.Request.MatchedParameters.ContainsKey("pspId"))">
-          <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["pspId"])" />
+        <when condition="@(context.Request.Url.Query.GetValueOrDefault("pspId","") != "")">
+          <set-variable name="authorization_entity" value="@(context.Request.Url.Query.GetValueOrDefault("pspId",""))" />
           <include-fragment fragment-id="authorizer" />
         </when>
         <otherwise>
