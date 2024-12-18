@@ -29,7 +29,7 @@ data "azurerm_key_vault_secret" "gpd_db_pwd" {
 # }
 
 data "azurerm_postgresql_flexible_server" "postgres_flexible_server_private" {
-  count               = var.env_short == "p" ? 1 : 0  # NEWGPD-DB : DEPRECATED to remove after switch to new WEU gpd  
+  count               = var.env_short == "p" ? 1 : 0 # NEWGPD-DB : DEPRECATED to remove after switch to new WEU gpd  
   name                = format("%s-gpd-pgflex", local.product)
   resource_group_name = format("%s-pgres-flex-rg", local.product)
 }

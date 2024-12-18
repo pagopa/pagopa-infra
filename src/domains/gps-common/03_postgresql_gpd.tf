@@ -31,7 +31,7 @@ module "postgres_flexible_server_private" { # private only into UAT and PROD env
   administrator_password = data.azurerm_key_vault_secret.pgres_admin_pwd.value
 
   sku_name                     = "GP_Standard_D16ds_v4" # var.pgres_flex_params.sku_name # NEWGPD-DB
-  db_version                   = "13" # var.pgres_flex_params.db_version # NEWGPD-DB
+  db_version                   = "13"                   # var.pgres_flex_params.db_version # NEWGPD-DB
   storage_mb                   = var.pgres_flex_params.storage_mb
   zone                         = var.pgres_flex_params.zone
   backup_retention_days        = var.pgres_flex_params.backup_retention_days
@@ -72,7 +72,7 @@ module "postgres_flexible_server_private" { # private only into UAT and PROD env
 }
 
 resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
-  count  = var.env_short == "p" ? 1 : 0 # forced
+  count = var.env_short == "p" ? 1 : 0 # forced
 
   name      = var.gpd_db_name
   server_id = module.postgres_flexible_server_private[0].id
@@ -81,7 +81,7 @@ resource "azurerm_postgresql_flexible_server_database" "apd_db_flex" {
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_connection" {
-  count  = var.env_short == "p" ? 1 : 0 # forced
+  count = var.env_short == "p" ? 1 : 0 # forced
 
   name      = "max_connections"
   server_id = module.postgres_flexible_server_private[0].id
@@ -90,7 +90,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_con
 
 # Message    : FATAL: unsupported startup parameter: extra_float_digits
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_ignore_startup_parameters" {
-  count  = var.env_short == "p" ? 1 : 0 # forced
+  count = var.env_short == "p" ? 1 : 0 # forced
 
   name      = "pgbouncer.ignore_startup_parameters"
   server_id = module.postgres_flexible_server_private[0].id
@@ -98,7 +98,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_ignore_
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_pool_size" {
-  count  = var.env_short == "p" ? 1 : 0 # forced
+  count = var.env_short == "p" ? 1 : 0 # forced
 
   name      = "pgbouncer.min_pool_size"
   server_id = module.postgres_flexible_server_private[0].id
@@ -107,7 +107,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_min_poo
 
 # CDC https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-logical
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_worker_process" { # NEWGPD-DB : not needed to enable on OLD version
-  count  = 0 # var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0 # forced
+  count = 0                                                                                    # var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0 # forced
 
   name      = "max_worker_processes"
   server_id = module.postgres_flexible_server_private[0].id
@@ -115,7 +115,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_max_wor
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_wal_level" { # NEWGPD-DB : not needed to enable on OLD version
-  count = 0 # var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0 # forced ? 1 : 0
+  count = 0                                                                           # var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0 # forced ? 1 : 0
 
   name      = "wal_level"
   server_id = module.postgres_flexible_server_private[0].id
@@ -123,7 +123,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_wal_lev
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "apd_db_flex_shared_preoload_libraries" { # NEWGPD-DB : not needed to enable on OLD version
-  count = 0 # var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0
+  count = 0                                                                                           # var.pgres_flex_params.wal_level != null && var.env_short == "p" ? 1 : 0
 
   name      = "shared_preload_libraries"
   server_id = module.postgres_flexible_server_private[0].id

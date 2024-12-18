@@ -57,7 +57,7 @@ resource "azurerm_servicebus_namespace" "service_bus_wisp" {
   premium_messaging_partitions = var.service_bus_wisp.premium_messaging_partitions
 
   dynamic "network_rule_set" {
-    for_each = var.env_short != "d" ? [1] : []
+    for_each = var.env_short == "p" ? [1] : []
     content {
       trusted_services_allowed = true
 

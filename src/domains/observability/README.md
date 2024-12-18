@@ -85,7 +85,9 @@
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_WAFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_WPNFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_eventhub_namespace_authorization_rule.cdc_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/eventhub_namespace_authorization_rule) | resource |
+| [azurerm_eventhub_namespace_authorization_rule.cdc_test_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/eventhub_namespace_authorization_rule) | resource |
 | [azurerm_key_vault_secret.apim_app_forwarder_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.azure_web_jobs_storage_kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.certificate_crt_app_forwarder_s](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.certificate_key_app_forwarder_s](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/key_vault_secret) | resource |
 | [azurerm_kusto_cluster.data_explorer_cluster](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/kusto_cluster) | resource |
@@ -107,6 +109,7 @@
 | [azurerm_data_factory.qi_data_factory](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/data_factory) | data source |
 | [azurerm_data_factory.qi_data_factory_cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/data_factory) | data source |
 | [azurerm_eventhub.pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/eventhub) | data source |
+| [azurerm_key_vault.gps_kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault.kv_shared](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.certificate_crt_app_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/data-sources/key_vault_secret) | data source |

@@ -1,7 +1,6 @@
 
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-| <a name="output_vnet_name"></a> [vnet\_name](#output\_vnet\_name) | n/a |<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -270,6 +269,7 @@
 | [terraform_data.sha256_send_payment_result_api_v2_wisp_policy](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [azurerm_api_management.apim_migrated](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/api_management) | data source |
 | [azurerm_api_management_api.apim_aca_api_v1_](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/api_management_api) | data source |
+| [azurerm_api_management_product.technical_support_api_product](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/api_management_product) | data source |
 | [azurerm_app_service.node_forwarder](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/app_service) | data source |
 | [azurerm_app_service.node_forwarder_ha](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/app_service) | data source |
 | [azurerm_application_gateway.app_gw](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/data-sources/application_gateway) | data source |
@@ -377,4 +377,4 @@
 | <a name="output_vnet_integration_address_space"></a> [vnet\_integration\_address\_space](#output\_vnet\_integration\_address\_space) | n/a |
 | <a name="output_vnet_integration_name"></a> [vnet\_integration\_name](#output\_vnet\_integration\_name) | n/a |
 | <a name="output_vnet_name"></a> [vnet\_name](#output\_vnet\_name) | n/a |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
