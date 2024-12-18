@@ -203,6 +203,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
   )
   severity    = each.value.severity
   frequency   = each.value.frequency
+  time_window = each.value.time_window
   trigger {
     operator  = "GreaterThan"
     threshold = 0
