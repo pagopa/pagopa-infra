@@ -59,6 +59,34 @@ resource "azurerm_private_endpoint" "wispconv_private_endpoint_container" {
   ]
 }
 
+resource "azurerm_private_endpoint" "wispconv_private_endpoint_table" {
+  count = var.env_short == "d" ? 0 : var.create_wisp_converter ? 1 : 0
+
+  name                = "${local.project}-wisp-converter-private-endpoint-table"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.wisp_converter_rg[0].name
+  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-wisp-converter-private-dns-zone-group-table"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-wisp-converter-private-service-connection-table"
+    private_connection_resource_id = module.wisp_converter_storage_account[0].id
+    is_manual_connection           = false
+    subresource_names              = ["table"]
+  }
+
+  tags = var.tags
+
+  depends_on = [
+    azurerm_resource_group.wisp_converter_rg,
+    module.wisp_converter_storage_account
+  ]
+}
+
 # table wispconverter
 resource "azurerm_storage_table" "wisp_converter_table" {
   count                = var.create_wisp_converter ? 1 : 0
