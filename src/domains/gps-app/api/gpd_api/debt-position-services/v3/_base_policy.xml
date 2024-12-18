@@ -1,0 +1,32 @@
+<policies>
+  <inbound>
+    <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
+    <set-variable name="sub" value="@(context.Subscription.Name)" />
+    <set-variable name="subid" value="@(context.Subscription.Id)" />
+    <set-variable name="subkey" value="@(context.Subscription.Key)" />
+    <base />
+    <!-- rate limit by subscription key -->
+    <rate-limit calls="300" renewal-period="10"
+      remaining-calls-variable-name="remainingCallsPerSubscription" />
+    <!-- Calling Authorizer's fragment -->
+    <set-variable name="application_domain" value="gpd" />
+    <set-variable name="metadata" value="no-metadata" />
+    <choose>
+      <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
+      <when condition="@(context.Request.MatchedParameters.ContainsKey("organizationfiscalcode") && !context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key", "").Equals(""))">
+        <set-variable name="authorization_entity" value="@(context.Request.MatchedParameters["organizationfiscalcode"])" />
+        <include-fragment fragment-id="authorizer" />
+        <include-fragment fragment-id="segregation-codes-gpd"/>
+      </when>
+    </choose>
+  </inbound>
+  <outbound>
+    <base />
+  </outbound>
+  <backend>
+    <base />
+  </backend>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
