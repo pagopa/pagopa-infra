@@ -79,3 +79,30 @@ module "apim_ecommerce_webview_api_v1" {
     ecommerce_ingress_hostname = local.ecommerce_hostname
   })
 }
+
+module "apim_ecommerce_webview_api_v2" {
+  source = "./.terraform/modules/__v3__/api_management_api"
+
+  name                  = "${local.project}-ecommerce-webview-api"
+  resource_group_name   = local.pagopa_apim_rg
+  api_management_name   = local.pagopa_apim_name
+  product_ids           = [module.apim_ecommerce_webview_product.product_id]
+  subscription_required = local.apim_ecommerce_webview_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.apim_ecommerce_webview_api.id
+  api_version           = "v2"
+  service_url           = local.apim_ecommerce_webview_api.service_url
+
+  description  = local.apim_ecommerce_webview_api.description
+  display_name = local.apim_ecommerce_webview_api.display_name
+  path         = local.apim_ecommerce_webview_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/ecommerce-webview/v2/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/ecommerce-webview/v2/_base_policy.xml.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+  })
+}
