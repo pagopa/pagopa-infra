@@ -224,7 +224,7 @@ locals {
 }
 
 # Queue size: wallet - wallet queues enqueues rate alert
-resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_alert" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_alert_visibility_timeout_diff" {
   for_each            = var.is_feature_enabled.storage ? { for q in local.queue_expiration_alert_props : q.queue_key => q } : {}
   name                = "${local.project}-${each.value.queue_key}-rate-alert"
   resource_group_name = azurerm_resource_group.storage_pay_wallet_rg.name
