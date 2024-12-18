@@ -663,6 +663,7 @@ module "apim_ecommerce_user_stats_service_api_v1" {
 ## NAMED VALUE ##
 #################
 data "azurerm_key_vault_secret" "ecommerce_dev_sendpaymentresult_subscription_key" {
+  count        = var.env_short == "u" ? 1 : 0
   name         = "ecommerce-dev-sendpaymentresult-subscription-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
