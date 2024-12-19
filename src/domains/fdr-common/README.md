@@ -8,7 +8,7 @@
 |------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.13.1 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.47.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | < 4.0.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.116.0, < 4.0.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.2 |
 
 ## Modules
