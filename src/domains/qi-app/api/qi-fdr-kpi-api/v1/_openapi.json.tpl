@@ -17,7 +17,7 @@
     }
   ],
   "paths": {
-    "/fdr-kpi/{kpiType}/{period}": {
+    "/fdr-kpi/{kpiType}": {
       "get": {
         "tags": [
           "qiFdr"
@@ -40,8 +40,17 @@
             "description": "The type of KPI to calculate\n"
           },
           {
+            "name": "brokerFiscalCode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Broker fiscal code    \n"
+          },
+          {
             "name": "period",
-            "in": "path",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string",
@@ -62,6 +71,14 @@
               "example": "2024-09"
             },
             "description": "For daily KPIs: Specify the full date (YYYY-MM-DD). Must be at least 10 days before current date.\nFor monthly KPIs: Specify year and month (YYYY-MM).\n"
+          },
+          {
+            "name": "pspId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -176,35 +193,6 @@
             }
           }
         ]
-      },
-      "PSPIdentifier": {
-        "type": "object",
-        "required": [
-          "idPsp"
-        ],
-        "properties": {
-          "idPsp": {
-            "type": "string",
-            "example": "CIPBITMM"
-          }
-        }
-      },
-      "BrokerIdentifier": {
-        "type": "object",
-        "required": [
-          "idBrokerPsp",
-          "idPsp"
-        ],
-        "properties": {
-          "idBrokerPsp": {
-            "type": "string",
-            "example": "02654890025"
-          },
-          "idPsp": {
-            "type": "string",
-            "example": "CIPBITMM"
-          }
-        }
       },
       "DailyKPIBase": {
         "type": "object",
