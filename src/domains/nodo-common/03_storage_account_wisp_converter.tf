@@ -1,6 +1,6 @@
 module "wisp_converter_storage_account" {
   count  = var.create_wisp_converter ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                            = replace(format("%s-wisp-conv-st", local.project), "-", "")
   account_kind                    = var.wisp_converter_storage_account.account_kind
@@ -58,6 +58,7 @@ resource "azurerm_private_endpoint" "wispconv_private_endpoint_container" {
     module.wisp_converter_storage_account
   ]
 }
+
 
 # table wispconverter
 resource "azurerm_storage_table" "wisp_converter_table" {
