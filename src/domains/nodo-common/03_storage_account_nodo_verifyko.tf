@@ -1,5 +1,5 @@
 module "nodo_verifyko_storage_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.77.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                            = replace(format("%s-vko-2-data-st", local.project), "-", "")
   account_kind                    = var.nodo_verifyko_storage_account.account_kind
