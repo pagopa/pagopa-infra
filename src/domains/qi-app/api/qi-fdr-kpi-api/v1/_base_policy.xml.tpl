@@ -6,7 +6,7 @@
       <set-variable name="authCheck" 
               value="@((string)context.Request.Url.Query.GetValueOrDefault("pspId", "") != "" 
                       ? context.Request.Url.Query.GetValueOrDefault("pspId", "") 
-                      : (string)context.Request.MatchedParameters["brokerfiscalcode"])"/>
+                      : context.Request.Url.Query.GetValueOrDefault("brokerfiscalcode", ""])"/>
 
       <choose>
         <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
