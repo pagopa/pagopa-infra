@@ -7,11 +7,11 @@
     "version" : "0.11.62"
   },
   "servers" : [ {
-    "url" : "https://api.uat.platform.pagopa.it/gpd/debt-positions-service/v3",
+    "url" : "https://api.uat.platform.pagopa.it/gpd/debt-positions-service",
     "description" : "GPD Test environment"
   }],
   "paths" : {
-    "/organizations/{organizationfiscalcode}/debtpositions/{iupd}" : {
+    "/v3/organizations/{organizationfiscalcode}/debtpositions/{iupd}" : {
       "get" : {
         "tags" : [ "Debt Positions API: Installments and Payment Options Manager" ],
         "summary" : "Return the details of a specific debt position.",
@@ -373,7 +373,7 @@
         }
       } ]
     },
-    "/organizations/{organizationfiscalcode}/debtpositions" : {
+    "/v3/organizations/{organizationfiscalcode}/debtpositions" : {
       "get" : {
         "tags" : [ "Debt Positions API: Installments and Payment Options Manager" ],
         "summary" : "Return the list of the organization debt positions. The due dates interval is mutually exclusive with the payment dates interval.",
@@ -685,7 +685,7 @@
         }
       } ]
     },
-    "/organizations/{organizationfiscalcode}/debtpositions/{iupd}/publish" : {
+    "/v3/organizations/{organizationfiscalcode}/debtpositions/{iupd}/publish" : {
       "post" : {
         "tags" : [ "Debt Position Actions API" ],
         "summary" : "The Organization publish a debt Position.",
