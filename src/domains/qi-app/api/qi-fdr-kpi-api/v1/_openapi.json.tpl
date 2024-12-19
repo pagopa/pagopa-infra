@@ -17,7 +17,7 @@
     }
   ],
   "paths": {
-    "/fdr-kpi/{brokerFiscalCode}/kpi/{kpiType}/{period}": {
+    "/fdr-kpi/{kpiType}": {
       "get": {
         "tags": [
           "qiFdr"
@@ -41,8 +41,8 @@
           },
           {
             "name": "brokerFiscalCode",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "schema": {
               "type": "string"
             },
@@ -50,7 +50,7 @@
           },
           {
             "name": "period",
-            "in": "path",
+            "in": "query",
             "required": true,
             "schema": {
               "type": "string",
