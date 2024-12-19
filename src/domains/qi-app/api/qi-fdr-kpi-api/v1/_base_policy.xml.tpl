@@ -3,10 +3,15 @@
       <base />
       <!-- Calling Authorizer's fragment START -->
       <set-variable name="application_domain" value="qi" />
+      <set-variable name="authCheck" 
+              value="@((string)context.Request.Url.Query.GetValueOrDefault("pspId", "") != "" 
+                      ? context.Request.Url.Query.GetValueOrDefault("pspId", "") 
+                      : (string)context.Request.MatchedParameters["brokerfiscalcode"])"/>
+
       <choose>
         <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
-        <when condition="@(context.Request.Url.Query.GetValueOrDefault("pspId","") != "")">
-          <set-variable name="authorization_entity" value="@(context.Request.Url.Query.GetValueOrDefault("pspId",""))" />
+        <when condition="@(context.Variables.GetValueOrDefault("authCheck","") != "")">
+          <set-variable name="authorization_entity" value="@(context.Variables.GetValueOrDefault("authCheck",""))" />
           <include-fragment fragment-id="authorizer" />
         </when>
         <otherwise>
