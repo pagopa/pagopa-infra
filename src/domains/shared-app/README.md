@@ -32,6 +32,7 @@
 | <a name="module_apim_authorizer_product"></a> [apim\_authorizer\_product](#module\_apim\_authorizer\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_enrolled_orgs_product"></a> [apim\_enrolled\_orgs\_product](#module\_apim\_enrolled\_orgs\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_influxdb_product"></a> [apim\_influxdb\_product](#module\_apim\_influxdb\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_pagopa_platform_statuspage_product"></a> [apim\_pagopa\_platform\_statuspage\_product](#module\_apim\_pagopa\_platform\_statuspage\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_pdf_engine_product"></a> [apim\_pdf\_engine\_product](#module\_apim\_pdf\_engine\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_poc_product"></a> [apim\_poc\_product](#module\_apim\_poc\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_session_wallet_api_v1"></a> [apim\_session\_wallet\_api\_v1](#module\_apim\_session\_wallet\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |

@@ -155,11 +155,11 @@ locals {
       action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
     },
     {
-      queue_key   = "logged-action-dead-letter-queue"
-      severity    = 1
-      time_window = 30
-      frequency   = 15
-      threshold   = 10
+      queue_key    = "logged-action-dead-letter-queue"
+      severity     = 1
+      time_window  = 30
+      frequency    = 15
+      threshold    = 10
       action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
     },
   ] : []

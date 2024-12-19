@@ -276,7 +276,7 @@ wisp_converter_storage_account = {
   blob_versioning_enabled       = false
   advanced_threat_protection    = true
   blob_delete_retention_days    = 90
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   backup_enabled                = false
   backup_retention_days         = 0
 }
