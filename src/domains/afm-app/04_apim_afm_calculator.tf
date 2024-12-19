@@ -216,8 +216,8 @@ module "apim_api_afm_calculator_api_node_v1" {
   content_value = templatefile("./api/calculator-service/node/v1/_openapi.json.tpl", {
     host = local.apim_hostname
   })
-
-  xml_content = templatefile("./api/calculator-service/node/v1/_base_policy.xml", {
+        
+  xml_content = templatefile(var.env_short != "p" ? "./api/calculator-service/node/v1/_base_policy.xml" : "./api/calculator-service/node/v1/_base_policy_no_test.xml", {
     hostname = local.afm_hostname
   })
 }
