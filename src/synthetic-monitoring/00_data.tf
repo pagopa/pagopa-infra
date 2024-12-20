@@ -17,6 +17,7 @@ data "azurerm_monitor_action_group" "slack" {
 }
 
 data "azurerm_monitor_action_group" "infra_opsgenie" {
+  count               = var.env_short == "p" ? 1 : 0
   resource_group_name = local.monitor_resource_group_name
   name                = local.monitor_action_group_infra_opsgenie_name
 }

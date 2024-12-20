@@ -4,11 +4,11 @@ locals {
   project = "${local.product}-${var.location_short}-${local.domain}"
 
 
-  monitor_appinsights_name        = "${local.product}-appinsights"
-  monitor_action_group_slack_name = "SlackPagoPA"
-  monitor_action_group_email_name = "PagoPA"
+  monitor_appinsights_name                 = "${local.product}-appinsights"
+  monitor_action_group_slack_name          = "SlackPagoPA"
+  monitor_action_group_email_name          = "PagoPA"
   monitor_action_group_infra_opsgenie_name = "InfraOpsgenie"
-  monitor_resource_group_name     = "${local.product}-monitor-rg"
+  monitor_resource_group_name              = "${local.product}-monitor-rg"
 
   vnet_core_resource_group_name               = "${local.product}-vnet-rg"
   vnet_core_name                              = "${local.product}-vnet"

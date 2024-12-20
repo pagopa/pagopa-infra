@@ -9,10 +9,10 @@ module "monitoring_function" {
 
   application_insight_name              = azurerm_application_insights.application_insights.name
   application_insight_rg_name           = azurerm_application_insights.application_insights.resource_group_name
-  application_insights_action_group_ids = var.env_short == "p" ? [data.azurerm_monitor_action_group.infra_opsgenie.id] : [data.azurerm_monitor_action_group.slack.id]
+  application_insights_action_group_ids = var.env_short == "p" ? [data.azurerm_monitor_action_group.infra_opsgenie[0].id] : [data.azurerm_monitor_action_group.slack.id]
 
   docker_settings = {
-    image_tag = "v1.9.1@sha256:7b5c801cc39537b56e744e59369cb62a05f6b23179cc7a5c61aacf716bbd9ad3"
+    image_tag = "v1.10.0@sha256:1686c4a719dc1a3c270f98f527ebc34179764ddf53ee3089febcb26df7a2d71d"
   }
 
   job_settings = {
@@ -35,14 +35,15 @@ module "monitoring_function" {
     enabled = var.self_alert_enabled
   }
   monitoring_configuration_encoded = templatefile("${path.module}/monitoring_configuration.json.tpl", {
-    env_name                   = var.env,
-    env_short                  = var.env_short,
-    api_dot_env_name           = var.env == "prod" ? "api" : "api.${var.env}"
-    internal_api_domain_prefix = "weu${var.env}"
-    internal_api_domain_suffix = var.env == "prod" ? "internal.platform.pagopa.it" : "internal.${var.env}.platform.pagopa.it"
-    nodo_subscription_key      = nonsensitive(module.secret_core.values["synthetic-monitoring-nodo-subscription-key"].value)
-    appgw_public_ip            = data.azurerm_public_ip.appgateway_public_ip.ip_address
-    check_position_body        = var.check_position_body
-    alert_enabled              = var.synthetic_alerts_enabled
+    env_name                                 = var.env,
+    env_short                                = var.env_short,
+    api_dot_env_name                         = var.env == "prod" ? "api" : "api.${var.env}"
+    internal_api_domain_prefix               = "weu${var.env}"
+    internal_api_domain_suffix               = var.env == "prod" ? "internal.platform.pagopa.it" : "internal.${var.env}.platform.pagopa.it"
+    nodo_subscription_key                    = nonsensitive(module.secret_core.values["synthetic-monitoring-nodo-subscription-key"].value)
+    appgw_public_ip                          = data.azurerm_public_ip.appgateway_public_ip.ip_address
+    check_position_body                      = var.check_position_body
+    alert_enabled                            = var.synthetic_alerts_enabled
+    verify_payment_internal_expected_outcome = var.verify_payment_internal_expected_outcome
   })
 }

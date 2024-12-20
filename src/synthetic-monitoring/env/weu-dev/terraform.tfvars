@@ -31,8 +31,11 @@ self_alert_enabled    = false
 
 force = "v1"
 
-
+#
+# monitoring template variables
+#
 check_position_body = {
-  fiscal_code = "66666666666"
+  fiscal_code   = "66666666666"
   notice_number = "310115803416020234"
 }
+verify_payment_internal_expected_outcome = "KO"
