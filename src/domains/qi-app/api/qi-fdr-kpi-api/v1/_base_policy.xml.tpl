@@ -4,9 +4,9 @@
       <!-- Calling Authorizer's fragment START -->
       <set-variable name="application_domain" value="qi" />
       <set-variable name="authCheck" 
-              value="@((string)context.Request.Url.Query.GetValueOrDefault("pspId", "") != "" 
-                      ? context.Request.Url.Query.GetValueOrDefault("pspId", "") 
-                      : context.Request.Url.Query.GetValueOrDefault("brokerfiscalcode", ""))"/>
+              value="@((string)context.Request.Url.Query.GetValueOrDefault("brokerFiscalCode", "") != "" 
+                      ? context.Request.Url.Query.GetValueOrDefault("brokerFiscalCode", "") 
+                      : context.Request.Url.Query.GetValueOrDefault("pspId", ""))"/>
 
       <choose>
         <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
