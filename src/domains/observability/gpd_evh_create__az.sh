@@ -22,13 +22,15 @@ echo "retentiontime  >> ${retentiontime}"
 
 echo ">>>>>> 1"
 
+# org.apache.kafka.common.config.ConfigException: Topic 'connect-cluster-configs' supplied via the 'config.storage.topic' property is required to have a single partition in order to guarantee consistency of connector configurations
+
 az eventhubs eventhub create \
 -g pagopa-$env-itn-observ-evh-rg \
 -n "connect-cluster-offsets" \
 --namespace-name pagopa-$env-itn-observ-gpd-evh \
 --cleanup-policy "Compact" \
 --status "Active" \
---partition-count ${partitioncount} \
+--partition-count 1 \
 --retention-time ${retentiontime}
 
 echo ">>>>>> 2"
@@ -39,7 +41,7 @@ az eventhubs eventhub create \
 --namespace-name pagopa-$env-itn-observ-gpd-evh \
 --cleanup-policy "Compact" \
 --status "Active" \
---partition-count ${partitioncount} \
+--partition-count 1 \
 --retention-time ${retentiontime}
 
 echo ">>>>>> 3"
@@ -50,7 +52,7 @@ az eventhubs eventhub create \
 --namespace-name pagopa-$env-itn-observ-gpd-evh \
 --cleanup-policy "Compact" \
 --status "Active" \
---partition-count ${partitioncount} \
+--partition-count 1 \
 --retention-time ${retentiontime}
 
 # ==============================================================
