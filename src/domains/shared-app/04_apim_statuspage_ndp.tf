@@ -12,7 +12,7 @@ module "apim_statuspage_nodo_pagamenti" {
   subscription_required = true
   approval_required     = true
   subscriptions_limit   = 1
-  policy_xml = file("./api_product/_statuspage_nodopagamenti_policy.xml")
+  policy_xml            = file("./api_product/_statuspage_nodopagamenti_policy.xml")
 }
 
 ###########
@@ -24,7 +24,7 @@ locals {
     description           = "API to Status Page Nodo Pagamenti"
     path                  = "nodopagamenti/statuspage"
     subscription_required = true
-    service_url           = null 
+    service_url           = null
   }
 }
 
@@ -44,7 +44,7 @@ module "apim_api_statuspage_nodopagamenti_api_v1" {
   name                  = format("%s-statuspage-nodopagamenti-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_statuspage_nodo_pagamenti.product_id]
+  product_ids           = [module.apim_statuspage_nodo_pagamenti.product_id, "pagoPAPlatformStatusPage"]
   subscription_required = local.apim_statuspage_nodopagamenti_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_statuspage_nodopagamenti_api.id
   api_version           = "v1"

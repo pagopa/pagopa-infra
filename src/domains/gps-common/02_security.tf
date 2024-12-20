@@ -410,6 +410,17 @@ resource "azurerm_key_vault_secret" "db_url" {
   key_vault_id = module.key_vault.id
 
 }
+
+#tfsec:ignore:azure-keyvault-ensure-secret-expiry tfsec:ignore:azure-keyvault-content-type-for-secret
+resource "azurerm_key_vault_secret" "flyway_db_url" {
+  name         = "flyway-db-url"
+  value        = format("jdbc:postgresql://%s:%s/%s?sslmode=require%s", local.gpd_hostname, local.flyway_gpd_dbmsport, var.gpd_db_name, "&prepareThreshold=0&lock_timeout=30000")
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+
+}
+
 # resource "azurerm_key_vault_secret" "db_url" {
 #   name         = "db-url"
 #   value        = format("jdbc:postgresql://%s:%s/%s?sslmode=require%s", local.gpd_hostname, local.gpd_dbmsport, var.gpd_db_name, (var.env_short != "d" ? "&prepareThreshold=0" : ""))
@@ -547,8 +558,12 @@ resource "azurerm_key_vault_secret" "cdc-raw-auto_apd_transfer-rx_kv" {
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
 }
+
+# ##########################
 # CDC GDP out eventhub
+# ##########################
 data "azurerm_eventhub_authorization_rule" "gpd_ingestion_apd_payment_option_tx" {
+  count               = var.gpd_cdc_enabled ? 1 : 0
   name                = "gpd-ingestion.apd.payment_option-tx"
   namespace_name      = "pagopa-${var.env_short}-itn-observ-gpd-evh"
   eventhub_name       = "gpd-ingestion.apd.payment_option"
@@ -556,13 +571,15 @@ data "azurerm_eventhub_authorization_rule" "gpd_ingestion_apd_payment_option_tx"
 }
 
 resource "azurerm_key_vault_secret" "gpd_ingestion_apd_payment_option_tx_kv" {
+  count        = var.gpd_cdc_enabled ? 1 : 0
   name         = "payment-option-topic-output-conn-string"
-  value        = data.azurerm_eventhub_authorization_rule.gpd_ingestion_apd_payment_option_tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.gpd_ingestion_apd_payment_option_tx[0].primary_connection_string
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
 }
 
 data "azurerm_eventhub_authorization_rule" "gpd_ingestion_apd_payment_position_tx" {
+  count               = var.gpd_cdc_enabled ? 1 : 0
   name                = "gpd-ingestion.apd.payment_position-tx"
   namespace_name      = "pagopa-${var.env_short}-itn-observ-gpd-evh"
   eventhub_name       = "gpd-ingestion.apd.payment_position"
@@ -570,13 +587,15 @@ data "azurerm_eventhub_authorization_rule" "gpd_ingestion_apd_payment_position_t
 }
 
 resource "azurerm_key_vault_secret" "gpd_ingestion_apd_payment_position_tx_kv" {
+  count        = var.gpd_cdc_enabled ? 1 : 0
   name         = "payment-position-topic-output-conn-string"
-  value        = data.azurerm_eventhub_authorization_rule.gpd_ingestion_apd_payment_position_tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.gpd_ingestion_apd_payment_position_tx[0].primary_connection_string
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
 }
 
 data "azurerm_eventhub_authorization_rule" "gpd_ingestion_apd_payment_option_transfer_tx" {
+  count               = var.gpd_cdc_enabled ? 1 : 0
   name                = "gpd-ingestion.apd.transfer-tx"
   namespace_name      = "pagopa-${var.env_short}-itn-observ-gpd-evh"
   eventhub_name       = "gpd-ingestion.apd.transfer"
@@ -584,8 +603,9 @@ data "azurerm_eventhub_authorization_rule" "gpd_ingestion_apd_payment_option_tra
 }
 
 resource "azurerm_key_vault_secret" "gpd_ingestion_apd_payment_option_transfer_tx_kv" {
+  count        = var.gpd_cdc_enabled ? 1 : 0
   name         = "transfer-topic-output-conn-string"
-  value        = data.azurerm_eventhub_authorization_rule.gpd_ingestion_apd_payment_option_transfer_tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.gpd_ingestion_apd_payment_option_transfer_tx[0].primary_connection_string
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
 }

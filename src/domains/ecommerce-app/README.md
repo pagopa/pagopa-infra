@@ -18,6 +18,7 @@
 | <a name="module_apim_ecommerce_checkout_api_v1"></a> [apim\_ecommerce\_checkout\_api\_v1](#module\_apim\_ecommerce\_checkout\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_checkout_api_v2"></a> [apim\_ecommerce\_checkout\_api\_v2](#module\_apim\_ecommerce\_checkout\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_checkout_product"></a> [apim\_ecommerce\_checkout\_product](#module\_apim\_ecommerce\_checkout\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_ecommerce_healthcheck_api_v1"></a> [apim\_ecommerce\_healthcheck\_api\_v1](#module\_apim\_ecommerce\_healthcheck\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_helpdesk_commands_product"></a> [apim\_ecommerce\_helpdesk\_commands\_product](#module\_apim\_ecommerce\_helpdesk\_commands\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_ecommerce_helpdesk_product"></a> [apim\_ecommerce\_helpdesk\_product](#module\_apim\_ecommerce\_helpdesk\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_ecommerce_io_api_v2"></a> [apim\_ecommerce\_io\_api\_v2](#module\_apim\_ecommerce\_io\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -37,6 +38,7 @@
 | <a name="module_apim_ecommerce_transactions_service_api_v2"></a> [apim\_ecommerce\_transactions\_service\_api\_v2](#module\_apim\_ecommerce\_transactions\_service\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_user_stats_service_api_v1"></a> [apim\_ecommerce\_user\_stats\_service\_api\_v1](#module\_apim\_ecommerce\_user\_stats\_service\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_webview_api_v1"></a> [apim\_ecommerce\_webview\_api\_v1](#module\_apim\_ecommerce\_webview\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_ecommerce_webview_api_v2"></a> [apim\_ecommerce\_webview\_api\_v2](#module\_apim\_ecommerce\_webview\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_webview_product"></a> [apim\_ecommerce\_webview\_product](#module\_apim\_ecommerce\_webview\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_pagopa_ecommerce_helpdesk_commands_service_api_v1"></a> [apim\_pagopa\_ecommerce\_helpdesk\_commands\_service\_api\_v1](#module\_apim\_pagopa\_ecommerce\_helpdesk\_commands\_service\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_pagopa_ecommerce_helpdesk_service_api_v1"></a> [apim\_pagopa\_ecommerce\_helpdesk\_service\_api\_v1](#module\_apim\_pagopa\_ecommerce\_helpdesk\_service\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -74,6 +76,7 @@
 | [azurerm_api_management_api_operation_policy.get_payment_request_info_api_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_state](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_transaction_info](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.get_transaction_info_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_transactions_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.helpdesk_pgs_vpos](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.helpdesk_pgs_xpay](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
@@ -106,6 +109,7 @@
 | [azurerm_api_management_api_version_set.apim_ecommerce_redirect_outcome_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.apim_ecommerce_webview_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_checkout_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.ecommerce_healthcheck_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_io_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_io_outcomes_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_io_webview_pay_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
@@ -124,6 +128,7 @@
 | [azurerm_api_management_named_value.ecommerce-personal-data-vault-api-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.ecommerce-webview-jwt-signing-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.ecommerce_checkout_transaction_jwt_signing_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.ecommerce_dev_sendpaymentresult_subscription_key_named_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.ecommerce_for_checkout_google_recaptcha_secret_named_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.ecommerce_io_transaction_jwt_signing_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.npg_notification_jwt_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
@@ -155,6 +160,7 @@
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.ecommerce_checkout_sessions_jwt_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.ecommerce_dev_sendpaymentresult_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.ecommerce_for_checkout_google_recaptcha_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.ecommerce_io_jwt_signing_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.ecommerce_io_sessions_jwt_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
@@ -195,13 +201,13 @@
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
-| <a name="input_pagopa_vpn"></a> [pagopa\_vpn](#input\_pagopa\_vpn) | pagoPA on prem VPN | <pre>object({<br/>    ips = list(string)<br/>  })</pre> | n/a | yes |
-| <a name="input_pagopa_vpn_dr"></a> [pagopa\_vpn\_dr](#input\_pagopa\_vpn\_dr) | pagoPA on prem VPN DR | <pre>object({<br/>    ips = list(string)<br/>  })</pre> | n/a | yes |
+| <a name="input_pagopa_vpn"></a> [pagopa\_vpn](#input\_pagopa\_vpn) | pagoPA on prem VPN | <pre>object({<br>    ips = list(string)<br>  })</pre> | n/a | yes |
+| <a name="input_pagopa_vpn_dr"></a> [pagopa\_vpn\_dr](#input\_pagopa\_vpn\_dr) | pagoPA on prem VPN DR | <pre>object({<br>    ips = list(string)<br>  })</pre> | n/a | yes |
 | <a name="input_pdv_api_base_path"></a> [pdv\_api\_base\_path](#input\_pdv\_api\_base\_path) | Personal data vault api base path | `string` | `null` | no |
-| <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br/>    name         = optional(string, null)<br/>    minAvailable = optional(number, null)<br/>    matchLabels  = optional(map(any), {})<br/>  }))</pre> | `{}` | no |
+| <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br>    name         = optional(string, null)<br>    minAvailable = optional(number, null)<br>    matchLabels  = optional(map(any), {})<br>  }))</pre> | `{}` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
-| <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image_name    = string,<br/>    image_tag     = string<br/>  })</pre> | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
+| <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image_name    = string,<br>    image_tag     = string<br>  })</pre> | n/a | yes |
 
 ## Outputs
 

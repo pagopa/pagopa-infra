@@ -37,19 +37,17 @@ ingress_load_balancer_ip = "10.3.2.250"
 
 # pdf-engine
 is_feature_enabled = {
-  pdf_engine                = true
-  pdf_engine_clone          = true
-  printit                   = true
-  apim_use_pdf_engine_clone = false
+  pdf_engine = true
+  printit    = true
 }
 
 app_service_pdf_engine_sku_name                             = "P2v3"
 app_service_pdf_engine_autoscale_enabled                    = true
 app_service_pdf_engine_always_on                            = true
-app_service_pdf_engine_zone_balancing_enabled               = true
+app_service_pdf_engine_zone_balancing_enabled               = false
 app_service_pdf_engine_sku_name_java                        = "P1v3"
-app_service_pdf_engine_sku_name_java_zone_balancing_enabled = true
-
+app_service_pdf_engine_sku_name_java_zone_balancing_enabled = false
+app_service_ip_restriction_default_action                   = "Deny"
 pod_disruption_budgets = {
   "print-payment-notice-functions" = {
     minAvailable = 2

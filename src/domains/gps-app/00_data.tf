@@ -29,11 +29,23 @@ data "azurerm_key_vault_secret" "gpd_db_pwd" {
 # }
 
 data "azurerm_postgresql_flexible_server" "postgres_flexible_server_private" {
-  count               = 1 # forced count
+  count               = var.env_short == "p" ? 1 : 0 # NEWGPD-DB : DEPRECATED to remove after switch to new WEU gpd  
   name                = format("%s-gpd-pgflex", local.product)
   resource_group_name = format("%s-pgres-flex-rg", local.product)
 }
 
 data "azurerm_resource_group" "identity_rg" {
   name = "${local.product}-identity-rg"
+}
+
+data "azurerm_api_management_product" "apim_iuv_generator_product" {
+  product_id          = "iuvgenerator"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+data "azurerm_api_management_product" "apim_gps_spontaneous_payments_services_product" {
+  product_id          = "gps-spontaneous-payments-services"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
 }
