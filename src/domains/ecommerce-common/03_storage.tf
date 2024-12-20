@@ -433,7 +433,7 @@ locals {
 }
 
 # Queue size: Ecommerce - ecommerce queues enqueues rate alert
-resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_expiration_enqueue_rate_alert" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_enqueue_rate_alert_visibility_timeout_diff" {
   for_each            = { for q in local.queue_expiration_alert_props : q.queue_key => q }
   name                = "${local.project}-${each.value.queue_key}-rate-alert"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
