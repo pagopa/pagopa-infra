@@ -67,12 +67,17 @@
                 bool allUp = true;
  
                 foreach (var service in services) {
-                    var parsedResponse = ((IResponse)context.Variables[service]).Body.As<JObject>();
+
+                    var serviceResponse = context.Variables[service] as IResponse;
+                    
+                    bool isServiceUp = serviceResponse.StatusCode == 200;
+                    JObject parsedResponse = isServiceUp ? serviceResponse.Body.As<JObject>() : new JObject(new JProperty("status", "DOWN"));
+                    
                     combinedResults[service] = parsedResponse;
 
-                    if ((string)parsedResponse["status"] != "UP") {
+                    if (isServiceUp && (string)parsedResponse["status"] != "UP" || !isServiceUp) {
                         allUp = false;
-                    }
+                    } 
                 }
  
                 var response = new JObject();

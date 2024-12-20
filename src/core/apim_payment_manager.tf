@@ -933,7 +933,7 @@ resource "azurerm_api_management_api_operation_policy" "send_payment_result_api_
   resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim_migrated[0].name
   operation_id        = "addUserReceipt"
-  xml_content = templatefile("./api/payment_manager_api/pm-per-nodo/v2/wisp-sendpaymentresult.xml.tpl", {
+  xml_content = templatefile(var.env_short == "u" ? "./api/payment_manager_api/pm-per-nodo/v2/wisp-sendpaymentresult-uat.xml.tpl" : "./api/payment_manager_api/pm-per-nodo/v2/wisp-sendpaymentresult.xml.tpl", {
     host                       = local.api_domain,
     ecommerce_ingress_hostname = var.ecommerce_ingress_hostname
   })
