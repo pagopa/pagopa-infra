@@ -19,7 +19,6 @@
 <policies>
   <inbound>
     <base />
-    <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
     <set-variable name="clientId" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("clientId"))" />
     <choose>
         <when condition="@("ecomm".Equals(context.Variables["clientId"]))">

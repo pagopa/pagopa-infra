@@ -19,8 +19,6 @@
 <policies>
   <inbound>
     <base />
-
-    <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
     <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}/pagopa-ecommerce-transactions-service/")" />
     <!-- policy for WISP Dismantling -->
     <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
