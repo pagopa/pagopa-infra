@@ -25,12 +25,6 @@
             <set-method>GET</set-method>
         </send-request>
 
-        <send-request ignore-error="true" mode="new" response-variable-name="walletSchedulerServiceLiveness" timeout="10">
-            <set-url>
-                https://${hostname}/pagopa-payment-wallet-scheduler-service/actuator/health/liveness
-            </set-url>
-            <set-method>GET</set-method>
-        </send-request>
     </inbound>
     <backend>
     </backend>
@@ -42,7 +36,6 @@
                     "walletServiceLiveness",
                     "walletEventDispatcherServiceLiveness",
                     "walletCdcServiceLiveness",
-                    "walletSchedulerServiceLiveness"
                 };
 
                 var combinedResults = new JObject();
@@ -50,14 +43,19 @@
                 bool allUp = true;
  
                 foreach (var service in services) {
-                    var parsedResponse = ((IResponse)context.Variables[service]).Body.As<JObject>();
+
+                    var serviceResponse = context.Variables[service] as IResponse;
+                    
+                    bool isServiceUp = serviceResponse.StatusCode == 200;
+                    JObject parsedResponse = isServiceUp ? serviceResponse.Body.As<JObject>() : new JObject(new JProperty("status", "DOWN"));
+                    
                     combinedResults[service] = parsedResponse;
 
-                    if ((string)parsedResponse["status"] != "UP") {
+                    if (isServiceUp && (string)parsedResponse["status"] != "UP" || !isServiceUp) {
                         allUp = false;
-                    }
+                    } 
                 }
- 
+
                 var response = new JObject();
                  
                 response["status"] = allUp ? "UP" : "DOWN";

@@ -35,5 +35,4 @@ ingress_load_balancer_ip = "10.3.2.250"
 
 is_feature_enabled = {
   paymentoptions      = true
-  paymentoptions_mock = true
 }
