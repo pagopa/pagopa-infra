@@ -1,5 +1,5 @@
 module "cosmosdb_account_standin" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.77.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_account"
   domain              = var.domain
   name                = "${local.project}-standin-cosmos-account"
   location            = var.location
@@ -36,7 +36,7 @@ module "cosmosdb_account_standin" {
 
 # cosmosdb database for standin
 module "cosmosdb_account_standin_db" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v7.77.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
   name                = "standin"
   resource_group_name = azurerm_resource_group.standin_rg.name
   account_name        = module.cosmosdb_account_standin.name
@@ -79,7 +79,7 @@ locals {
 
 # cosmosdb container for stand-in datastore
 module "cosmosdb_account_standin_containers" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.77.0"
+  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
   for_each = { for c in local.standin_containers : c.name => c }
 
   name                = each.value.name

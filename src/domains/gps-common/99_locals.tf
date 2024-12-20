@@ -40,8 +40,8 @@ locals {
   azdo_subnet_name = "${local.product}-azdoa-snet"
 
   # NEWGPD-DB : DEPRECATED switch to new istance postgres_flexible_server_private_db
-  gpd_hostname = var.env_short == "p" ? module.postgres_flexible_server_private[0].fqdn : module.postgres_flexible_server_private_db.fqdn
-  gpd_dbmsport = "6432"
+  gpd_hostname        = var.env_short == "p" ? module.postgres_flexible_server_private[0].fqdn : module.postgres_flexible_server_private_db.fqdn
+  gpd_dbmsport        = "6432"
   flyway_gpd_dbmsport = "5432"
 
   azdo_managed_identity_rg_name = "pagopa-${var.env_short}-identity-rg"
