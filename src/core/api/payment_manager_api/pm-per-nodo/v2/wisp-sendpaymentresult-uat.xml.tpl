@@ -19,25 +19,36 @@
 <policies>
   <inbound>
     <base />
-    <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}/pagopa-ecommerce-transactions-service/")" />
+    <set-variable name="clientId" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("clientId"))" />
+    <choose>
+        <when condition="@("ecomm".Equals(context.Variables["clientId"]))">
+          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}/pagopa-ecommerce-transactions-service/")" />
+        </when>
+        <otherwise>
+            <set-header name="Ocp-Apim-Subscription-Key" exists-action="override">
+                <value>{{ecommerce-dev-sendpaymentresult-subscription-key-value}}</value>
+            </set-header>
+            <set-backend-service base-url="https://api.dev.platform.pagopa.it/ecommerce/transaction-user-receipts-service/v1" />
+        </otherwise>
+    </choose>
     <!-- policy for WISP Dismantling -->
     <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
     <choose>
       <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
-      <set-variable name="primitive-ko" value="sendPaymentResultV2" />
-      <set-variable name="request-body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
-      <set-variable name="wisp-payment-tokens" value="@{
-              try {
-                            JObject request = (JObject) context.Variables["request-body"];
-                            JArray payments = (JArray) request.Property("payments").Value;
-                            return string.Join(",", payments.Select(payment => payment["paymentToken"].ToString()));
-      } catch (Exception e) {
-      return "";
-      }
-      }" />
-      <include-fragment fragment-id="wisp-disable-payment-token-timer" />
-    </when>
-  </choose>
+        <set-variable name="primitive-ko" value="sendPaymentResultV2" />
+        <set-variable name="request-body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
+        <set-variable name="wisp-payment-tokens" value="@{
+                try {
+                              JObject request = (JObject) context.Variables["request-body"];
+                              JArray payments = (JArray) request.Property("payments").Value;
+                              return string.Join(",", payments.Select(payment => payment["paymentToken"].ToString()));
+        } catch (Exception e) {
+        return "";
+        }
+        }" />
+        <include-fragment fragment-id="wisp-disable-payment-token-timer" />
+      </when>
+    </choose>
 </inbound>
 <backend>
 <base />

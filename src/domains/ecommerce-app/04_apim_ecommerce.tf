@@ -658,3 +658,22 @@ module "apim_ecommerce_user_stats_service_api_v1" {
     hostname = local.ecommerce_hostname
   })
 }
+
+#################
+## NAMED VALUE ##
+#################
+data "azurerm_key_vault_secret" "ecommerce_dev_sendpaymentresult_subscription_key" {
+  count        = var.env_short == "u" ? 1 : 0
+  name         = "ecommerce-dev-sendpaymentresult-subscription-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_dev_sendpaymentresult_subscription_key_named_value" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "ecommerce-dev-sendpaymentresult-subscription-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-dev-sendpaymentresult-subscription-key-value"
+  value               = data.azurerm_key_vault_secret.ecommerce_dev_sendpaymentresult_subscription_key[0].value
+  secret              = true
+}

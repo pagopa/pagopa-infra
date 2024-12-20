@@ -245,14 +245,9 @@
 | [azurerm_key_vault_certificate.buyerbanks_cert](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/key_vault_certificate) | resource |
 | [azurerm_monitor_autoscale_setting.buyerbanks_function](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.buyerbanks_update_alert](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.pm_payment_gateway_availability](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.pm_restapi_availability](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.pm_restapi_cd_availability](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.pm_wallet_availability](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_private_dns_zone.privatelink_postgres_database_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_resource_group.buyerbanks_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.payment_manager_monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/resource_group) | resource |
 | [azurerm_storage_container.banks](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_container) | resource |
 | [azurerm_storage_management_policy.buyerbanks_storage_lifeclycle_policies](https://registry.terraform.io/providers/hashicorp/azurerm/2.99.0/docs/resources/storage_management_policy) | resource |
 | [null_resource.decoupler_configuration_from_json_2_xml](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
