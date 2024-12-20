@@ -205,6 +205,7 @@ wisp_converter_cosmos_nosql_db_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
+  burst_capacity_enabled    = true
   backup_continuous_enabled = false
 
   data_ttl                           = 2592000 # 30 days in second
@@ -276,7 +277,7 @@ wisp_converter_storage_account = {
   blob_versioning_enabled       = false
   advanced_threat_protection    = true
   blob_delete_retention_days    = 90
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   backup_enabled                = false
   backup_retention_days         = 0
 }
