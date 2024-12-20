@@ -21,7 +21,6 @@
     <base />
     <set-variable name="transactionId" value="@(context.Request.MatchedParameters["transactionId"])" />
     <set-variable name="clientId" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("clientId"))" />
-    <set-variable name="body_value" value="@(context.Request.Body.As<string>(preserveContent: true))" />
     <choose>
         <when condition="@("ecomm".Equals(context.Variables["clientId"]))">
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}/pagopa-ecommerce-transactions-service/")" />
