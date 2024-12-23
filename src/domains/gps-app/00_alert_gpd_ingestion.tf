@@ -2,16 +2,16 @@ locals {
 
   fn_name_for_alerts_exceptions = var.env_short != "p" ? [] : [
     {
-      id : "paymentoptionprocessor"
-      name : "PaymentOptionProcessor"
+      id : "paymentoption"
+      name : "PaymentOption"
     },
     {
-      id : "paymentpositionprocessor"
-      name : "PaymentPositionProcessor"
+      id : "paymentposition"
+      name : "PaymentPosition"
     },
     {
-      id : "transferprocessor"
-      name : "TransferProcessor"
+      id : "transfer"
+      name : "Transfer"
     }
   ]
 
@@ -75,13 +75,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Error on JsonProcessing gpd-ingestion ${each.value.name}"
+  description    = "${each.value.name} ingestion error JsonProcessingException"
   enabled        = true
   query = format(<<-QUERY
   traces
     | where cloud_RoleName == "%s"
     | order by timestamp desc
-    | where message contains "function error JsonProcessingException"
+    | where message contains "${each.value.name} ingestion error JsonProcessingException"
   QUERY
     , "pagopagpdingestionmanager"
   )
@@ -139,13 +139,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Error on PDVTokenizerException gpd-ingestion ${each.value.name}"
+  description    = "${each.value.name} ingestion error PDVTokenizerException"
   enabled        = true
   query = format(<<-QUERY
   traces
     | where cloud_RoleName == "%s"
     | order by timestamp desc
-    | where message contains "function error PDVTokenizerException exception at"
+    | where message contains "${each.value.name} ingestion error PDVTokenizerException"
   QUERY
     , "pagopagpdingestionmanager"
   )
@@ -171,13 +171,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Error on PDVTokenizerUnexpectedException gpd-ingestion ${each.value.name}"
+  description    = "${each.value.name} ingestion error PDVTokenizerUnexpectedException"
   enabled        = true
   query = format(<<-QUERY
   traces
     | where cloud_RoleName == "%s"
     | order by timestamp desc
-    | where message contains "function error PDVTokenizerUnexpectedException exception at"
+    | where message contains "${each.value.name} ingestion error PDVTokenizerUnexpectedException"
   QUERY
     , "pagopagpdingestionmanager"
   )
@@ -209,7 +209,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   query = format(<<-QUERY
   exceptions
     | where cloud_RoleName == "%s"
-    | where outerMessage contains "Exception while executing function: Functions.${each.value.name}"
+    | where outerMessage contains "${each.value.name} ingestion error Generic exception"
     | order by timestamp desc
   QUERY
     , "pagopagpdingestionmanager" # from HELM's parameter WEBSITE_SITE_NAME
