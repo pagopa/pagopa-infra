@@ -198,3 +198,16 @@ resource "azurerm_key_vault_secret" "azure_data_explorer_re_application_key" {
     ]
   }
 }
+
+### TODO migrate in SOPS
+resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
+  name         = "elastic-otel-token-header"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
