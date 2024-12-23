@@ -18,8 +18,10 @@
 |------|--------|---------|
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 3fc1dafaf4354e24ca8673005ec0caf4106343a3 |
 | <a name="module_apim_pagopa_qi_fdr_kpi_service_api"></a> [apim\_pagopa\_qi\_fdr\_kpi\_service\_api](#module\_apim\_pagopa\_qi\_fdr\_kpi\_service\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_pagopa_qi_smo_jira_tickets_service_api"></a> [apim\_pagopa\_qi\_smo\_jira\_tickets\_service\_api](#module\_apim\_pagopa\_qi\_smo\_jira\_tickets\_service\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_qi_fdr_product"></a> [apim\_qi\_fdr\_product](#module\_apim\_qi\_fdr\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_qi_product"></a> [apim\_qi\_product](#module\_apim\_qi\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_qi_smo_jira_tickets_product"></a> [apim\_qi\_smo\_jira\_tickets\_product](#module\_apim\_qi\_smo\_jira\_tickets\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
 
@@ -28,6 +30,7 @@
 | Name | Type |
 |------|------|
 | [azurerm_api_management_api_version_set.pagopa_qi_fdr_kpi_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.pagopa_qi_smo_jira_tickets_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |

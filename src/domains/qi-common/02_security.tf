@@ -170,3 +170,31 @@ module "letsencrypt_qi" {
   key_vault_name    = "${local.product}-${var.domain}-kv"
   subscription_name = local.subscription_name
 }
+
+### TODO migrate in SOPS
+resource "azurerm_key_vault_secret" "azure_data_explorer_re_client_id" {
+  name         = "azure-data-explorer-re-client-id"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+### TODO migrate in SOPS
+resource "azurerm_key_vault_secret" "azure_data_explorer_re_application_key" {
+  name         = "azure-data-explorer-re-application-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
