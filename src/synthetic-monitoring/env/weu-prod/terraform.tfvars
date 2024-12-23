@@ -35,5 +35,5 @@ check_position_body = {
   notice_number = "001000000136265862"
 }
 verify_payment_internal_expected_outcome = "OK"
-
+nexi_node_ip                             = "10.79.20.34"
 
