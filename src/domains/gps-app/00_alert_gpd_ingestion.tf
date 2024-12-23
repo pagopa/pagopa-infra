@@ -41,7 +41,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-av
   query = format(<<-QUERY
 let threshold = 0.99;
 union traces, exceptions
-| where cloud_RoleName == "pagopa-gpd-ingestion-manager"
+| where cloud_RoleName == "pagopagpdingestionmanager"
 | where operation_Name == "%s"
 //| summarize count() by operation_Name, itemType
 | summarize
@@ -83,7 +83,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
     | order by timestamp desc
     | where message contains "function error JsonProcessingException"
   QUERY
-    , "pagopa-gpd-ingestion-manager"
+    , "pagopagpdingestionmanager"
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
@@ -115,7 +115,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
     | order by timestamp desc
     | where message contains "function error Generic exception at"
   QUERY
-    , "pagopa-gpd-ingestion-manager"
+    , "pagopagpdingestionmanager"
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
@@ -147,7 +147,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
     | order by timestamp desc
     | where message contains "function error PDVTokenizerException exception at"
   QUERY
-    , "pagopa-gpd-ingestion-manager"
+    , "pagopagpdingestionmanager"
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
@@ -179,7 +179,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
     | order by timestamp desc
     | where message contains "function error PDVTokenizerUnexpectedException exception at"
   QUERY
-    , "pagopa-gpd-ingestion-manager"
+    , "pagopagpdingestionmanager"
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
@@ -212,7 +212,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
     | where outerMessage contains "Exception while executing function: Functions.${each.value.name}"
     | order by timestamp desc
   QUERY
-    , "pagopa-gpd-ingestion-manager" # from HELM's parameter WEBSITE_SITE_NAME
+    , "pagopagpdingestionmanager" # from HELM's parameter WEBSITE_SITE_NAME
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
