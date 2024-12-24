@@ -317,6 +317,7 @@
   {
     "apiName" : "status",
     "appName" : "fdr",
+    "enabled" : ${fdr_enabled},
     "url" :  "https://${internal_api_domain_prefix}.fdr.${internal_api_domain_suffix}/pagopa-fdr-service/info",
     "type" : "aks",
     "checkCertificate" : true,
@@ -333,6 +334,7 @@
   {
     "apiName" : "status",
     "appName" : "fdr",
+    "enabled" : ${fdr_enabled},
     "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=fdrndpnew",
     "type" : "apim",
     "checkCertificate" : true,
@@ -724,7 +726,7 @@
     "headers": {
       "Content-Type": "application/json",
       "ndphost": "nodo-${env_short}.nexigroup.com",
-      "Host": "nodo-dei-pagamenti.npc.sia.eu"
+      "Host": "${nexi_ndp_host}"
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} check position"
@@ -854,7 +856,7 @@
       "SOAPAction": "verifyPaymentNotice",
       "Content-Type": "application/xml",
       "ndphost": "nodo-${env_short}.nexigroup.com",
-      "Host": "nodo-dei-pagamenti.npc.sia.eu"
+      "Host": "${nexi_ndp_host}"
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} verify payment notice to internal service"
@@ -920,7 +922,7 @@
       "SOAPAction": "verifyPaymentNotice",
       "Content-Type": "application/xml",
       "ndphost": "nodo-${env_short}.nexigroup.com",
-      "Host": "nodo-dei-pagamenti.npc.sia.eu"
+      "Host": "${nexi_ndp_host}"
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} verify payment notice to external service trough nexi"
