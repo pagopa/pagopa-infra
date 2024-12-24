@@ -2,16 +2,16 @@ locals {
 
   fn_name_for_alerts_exceptions = var.env_short != "p" ? [] : [
     {
-      id : "paymentoption"
-      name : "PaymentOption"
+      id : "cdc-raw-auto.apd.payment_option"
+      name : "cdc-raw-auto.apd.payment_option"
     },
     {
-      id : "paymentposition"
-      name : "PaymentPosition"
+      id : "cdc-raw-auto.apd.payment_position"
+      name : "cdc-raw-auto.apd.payment_position"
     },
     {
-      id : "transfer"
-      name : "Transfer"
+      id : "cdc-raw-auto.apd.transfer"
+      name : "cdc-raw-auto.apd.transfer"
     }
   ]
 
@@ -209,7 +209,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   query = format(<<-QUERY
   exceptions
     | where cloud_RoleName == "%s"
-    | where outerMessage contains "${each.value.name} ingestion error Generic exception"
+    //| where outerMessage contains "${each.value.name} ingestion error Generic exception"
+    | where operation_Name startswith "${each.value.name}"
     | order by timestamp desc
   QUERY
     , "pagopagpdingestionmanager" # from HELM's parameter WEBSITE_SITE_NAME
@@ -219,7 +220,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 20
+    threshold = 30
   }
 
 }
