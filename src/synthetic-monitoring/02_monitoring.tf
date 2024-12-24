@@ -46,5 +46,7 @@ module "monitoring_function" {
     alert_enabled                            = var.synthetic_alerts_enabled
     verify_payment_internal_expected_outcome = var.verify_payment_internal_expected_outcome
     nexi_node_ip                             = var.nexi_node_ip
+    fdr_enabled                              = var.env == "prod" ? false : true
+    nexi_ndp_host                            = var.nexi_ndp_host
   })
 }
