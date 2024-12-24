@@ -113,3 +113,8 @@ variable "verify_payment_internal_expected_outcome" {
   type        = string
   description = "(Required) Expected outcome for verify payment notice internal"
 }
+
+variable "nexi_node_ip" {
+  type        = string
+  description = "Nodo Pagamenti Nexi ip"
+}
