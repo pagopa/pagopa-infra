@@ -309,20 +309,6 @@ locals {
       "threshold"   = 10
     },
     {
-      "queue_key"   = "notifications-service-retry-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 10
-    },
-    {
-      "queue_key"   = "transaction-notifications-retry-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 10
-    },
-    {
       "queue_key"   = "transactions-close-payment-queue"
       "severity"    = 1
       "time_window" = 30
@@ -330,35 +316,7 @@ locals {
       "threshold"   = 10
     },
     {
-      "queue_key"   = "transactions-close-payment-retry-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 10
-    },
-    {
       "queue_key"   = "transactions-refund-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 10
-    },
-    {
-      "queue_key"   = "transactions-refund-retry-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 10
-    },
-    {
-      "queue_key"   = "transaction-auth-requested-queue"
-      "severity"    = 1
-      "time_window" = 30
-      "frequency"   = 15
-      "threshold"   = 10
-    },
-    {
-      "queue_key"   = "transaction-auth-outcome-waiting-queue"
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15
@@ -428,6 +386,48 @@ locals {
       "time_window" = 15
       "frequency"   = 15
       "threshold"   = 40
+    },
+    {
+      "queue_key"   = "notifications-service-retry-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transaction-notifications-retry-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transactions-refund-retry-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transaction-auth-outcome-waiting-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    }
+    {
+      "queue_key"   = "transaction-auth-requested-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
+    },
+    {
+      "queue_key"   = "transactions-close-payment-retry-queue"
+      "severity"    = 1
+      "time_window" = 30
+      "frequency"   = 15
+      "threshold"   = 10
     },
   ] : []
 }
