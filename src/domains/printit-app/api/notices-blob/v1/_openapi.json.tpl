@@ -32,7 +32,7 @@
         }
       }
     },
-    "/notices/{folderId}/{zipName}.zip": {
+    "/notices/{folderId}/{fileName}": {
       "get": {
         "summary": "getNotices",
         "operationId": "getNotices",
@@ -46,7 +46,7 @@
             }
           },
           {
-            "name": "zipName",
+            "name": "fileName",
             "in": "path",
             "required": true,
             "schema": {

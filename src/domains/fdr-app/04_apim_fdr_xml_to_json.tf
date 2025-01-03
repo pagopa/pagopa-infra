@@ -34,7 +34,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "api_fdr_xml_to_json_api" {
-
+  count               = var.enable_fdr3_features == true ? 1 : 0
   name                = "${var.env_short}-fdr-xml-to-json-service-api"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
@@ -44,6 +44,7 @@ resource "azurerm_api_management_api_version_set" "api_fdr_xml_to_json_api" {
 
 
 module "apim_api_fdr_xml_to_json_api_v1" {
+  count  = var.enable_fdr3_features == true ? 1 : 0
   source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-fdr-xml-to-json-service-api"
@@ -51,7 +52,7 @@ module "apim_api_fdr_xml_to_json_api_v1" {
   resource_group_name   = local.pagopa_apim_rg
   product_ids           = [module.apim_fdr_xml_to_json_product.product_id]
   subscription_required = local.apim_fdr_xml_to_json_service_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.api_fdr_xml_to_json_api.id
+  version_set_id        = azurerm_api_management_api_version_set.api_fdr_xml_to_json_api[0].id
   api_version           = "v1"
 
   description  = local.apim_fdr_xml_to_json_service_api.description

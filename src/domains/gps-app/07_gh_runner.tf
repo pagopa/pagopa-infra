@@ -1,7 +1,7 @@
 locals {
   # because westeurope does not support any other container app environment creation
-  tools_cae_name = var.env_short != "p" ? "${local.product}-tools-cae" : "${local.product}-itn-core-tools-cae"
-  tools_cae_rg   = var.env_short != "p" ? "${local.product}-core-tools-rg" : "${local.product}-itn-core-tools-rg"
+  tools_cae_name = "${local.product}-tools-cae"
+  tools_cae_rg   = "${local.product}-core-tools-rg"
 }
 
 module "gh_runner_job" {

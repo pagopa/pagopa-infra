@@ -79,7 +79,7 @@ resource "azurerm_api_management_api" "apim_fdr_per_pa_api_v1" {
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/nodoPerPa/v1/NodoPerPa.wsdl")
+    content_value  = file("./api/fdr-legacy/nodoPerPa/v1/NodoPerPa.wsdl")
     wsdl_selector {
       service_name  = "PagamentiTelematiciRPTservice"
       endpoint_name = "PagamentiTelematiciRPTPort"
@@ -93,7 +93,5 @@ resource "azurerm_api_management_api_policy" "apim_fdr_per_pa_policy" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  xml_content = templatefile("./api/nodoPerPa/v1/_base_policy.xml.tpl", {
-    base-url = "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
-  })
+  xml_content = file("./api/fdr-legacy/nodoPerPa/v1/_base_policy.xml")
 }
