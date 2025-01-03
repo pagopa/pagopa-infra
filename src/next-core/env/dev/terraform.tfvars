@@ -750,3 +750,12 @@ apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integrati
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 10
+route_tools = [
+  {
+    # dev aks nodo oncloud
+    name                   = "tools-outbound-to-nexy-nodo"
+    address_prefix         = "10.70.66.200/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.8.150"
+  }
+]

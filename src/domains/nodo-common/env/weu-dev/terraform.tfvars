@@ -205,8 +205,8 @@ wisp_converter_cosmos_nosql_db_params = {
   private_endpoint_enabled          = false
   public_network_access_enabled     = true
   is_virtual_network_filter_enabled = false
-
-  backup_continuous_enabled = false
+  burst_capacity_enabled            = true
+  backup_continuous_enabled         = false
 
   data_ttl                           = 259200 # 3 days in second
   data_max_throughput                = 400

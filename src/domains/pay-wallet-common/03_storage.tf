@@ -79,6 +79,18 @@ resource "azurerm_storage_queue" "pay_wallet_cdc_queue_blue" {
   storage_account_name = module.pay_wallet_storage[0].name
 }
 
+resource "azurerm_storage_queue" "pay_wallet_logged_action_dead_letter_queue" {
+  name                 = "${local.project}-logged-action-dead-letter-queue"
+  storage_account_name = module.pay_wallet_storage[0].name
+}
+
+//storage queue for blue deployment
+resource "azurerm_storage_queue" "pay_wallet_logged_action_dead_letter_queue_blue" {
+  count                = var.env_short == "u" ? 1 : 0
+  name                 = "${local.project}-logged-action-dead-letter-queue-b"
+  storage_account_name = module.pay_wallet_storage[0].name
+}
+
 # wallet queue alert diagnostic settings
 resource "azurerm_monitor_diagnostic_setting" "pay_wallet_queue_diagnostics" {
   count                      = var.is_feature_enabled.storage && var.env_short == "p" ? 1 : 0
@@ -127,18 +139,28 @@ resource "azurerm_monitor_diagnostic_setting" "pay_wallet_queue_diagnostics" {
 locals {
   queue_alert_props = var.env_short == "p" ? [
     {
-      queue_key   = "usage-update-queue"
-      severity    = 1
-      time_window = 30
-      frequency   = 15
-      threshold   = 10
+      queue_key    = "cdc-queue"
+      severity     = 1
+      time_window  = 30
+      frequency    = 15
+      threshold    = 10
+      action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     },
     {
-      queue_key   = "expiration-queue"
-      severity    = 1
-      time_window = 30
-      frequency   = 15
-      threshold   = 10
+      queue_key    = "expiration-queue"
+      severity     = 1
+      time_window  = 30
+      frequency    = 15
+      threshold    = 10
+      action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
+    },
+    {
+      queue_key    = "logged-action-dead-letter-queue"
+      severity     = 1
+      time_window  = 30
+      frequency    = 15
+      threshold    = 10
+      action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
     },
   ] : []
 }
@@ -151,7 +173,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
+    action_group           = each.value.action_group
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -191,7 +213,7 @@ locals {
       "severity"             = 1
       "time_window"          = "PT1H"
       "frequency"            = "PT15M"
-      "threshold"            = 1000
+      "threshold"            = 3000
     },
   ] : []
 }

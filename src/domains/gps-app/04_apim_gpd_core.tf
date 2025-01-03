@@ -193,13 +193,13 @@ resource "azurerm_api_management_api_operation_policy" "create_debt_position_v1_
 }
 
 resource "terraform_data" "sha256_create_debt_position_v2_policy" {
-  count  = var.env_short != "p" ? 1 : 0 # disbled v2 external bulk prod
+  count = var.env_short != "p" ? 1 : 0 # disbled v2 external bulk prod
 
   input = sha256(file("./api/gpd_api/debt-position-services/create_base_policy.xml"))
 }
 
 resource "azurerm_api_management_api_operation_policy" "create_debt_position_v2_policy" {
-  count  = var.env_short != "p" ? 1 : 0 # disbled v2 external bulk prod
+  count = var.env_short != "p" ? 1 : 0 # disbled v2 external bulk prod
 
   api_name            = format("%s-debt-positions-service-api-v2", local.product)
   api_management_name = local.pagopa_apim_name

@@ -127,3 +127,10 @@ variable "pod_disruption_budgets" {
   description = "Pod disruption budget for domain namespace"
   default     = {}
 }
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
+}
+

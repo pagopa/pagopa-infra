@@ -11,6 +11,11 @@ data "azurerm_key_vault_secret" "pgres_gpd_cdc_pwd" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+data "azurerm_key_vault_secret" "otel_headers" {
+  name         = "elastic-apm-secret-token"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 data "azurerm_eventhub_namespace_authorization_rule" "cdc_connection_string" {
   name                = "cdc-gpd-connection-string"
   namespace_name      = "pagopa-${var.env_short}-itn-observ-gpd-evh"
@@ -19,6 +24,7 @@ data "azurerm_eventhub_namespace_authorization_rule" "cdc_connection_string" {
 
 # https://github.com/strimzi/strimzi-kafka-operator/tree/main/helm-charts/helm3/strimzi-kafka-operator
 resource "helm_release" "strimzi-kafka-operator" {
+  count      = var.gpd_cdc_enabled ? 1 : 0
   name       = "strimzi-kafka-operator"
   chart      = "strimzi-kafka-operator"
   repository = "oci://quay.io/strimzi-helm"
@@ -59,19 +65,22 @@ locals {
   # https://learn.microsoft.com/it-it/azure/event-hubs/event-hubs-kafka-connect-debezium#configure-kafka-connect-for-event-hubs
 
   kafka_connect_yaml = templatefile("${path.module}/yaml/kafka-connect.yaml", {
-    namespace          = "gps" # kubernetes_namespace.namespace.metadata[0].name
-    replicas           = var.replicas
-    request_memory     = var.request_memory
-    request_cpu        = var.request_cpu
-    limits_memory      = var.limits_memory
-    limits_cpu         = var.limits_cpu
-    bootstrap_servers  = "pagopa-${var.env_short}-itn-observ-gpd-evh.servicebus.windows.net:9093"
-    container_registry = var.container_registry
+    namespace                = "gps" # kubernetes_namespace.namespace.metadata[0].name
+    replicas                 = var.replicas
+    request_memory           = var.request_memory
+    request_cpu              = var.request_cpu
+    limits_memory            = var.limits_memory
+    limits_cpu               = var.limits_cpu
+    bootstrap_servers        = "pagopa-${var.env_short}-itn-observ-gpd-evh.servicebus.windows.net:9093"
+    container_registry       = var.container_registry
+    otlp_endpoint            = "http://otel-collector.elastic-system.svc:4317"
+    otlp_resource_attributes = "service.name=gpddebeziumconnectorkotl,deployment.environment=${var.env}"
+    otlp_headers             = data.azurerm_key_vault_secret.otel_headers.value
   })
 
   postgres_connector_yaml = templatefile("${path.module}/yaml/postgres-connector.yaml", {
     namespace         = "gps" # kubernetes_namespace.namespace.metadata[0].name
-    postgres_hostname = "pagopa-${var.env_short}-gpd-pgflex.postgres.database.azure.com"
+    postgres_hostname = "pagopa-${var.env_short}-${var.location_short}-gpd-pgflex.postgres.database.azure.com"
 
     postgres_port         = 5432
     postgres_db_name      = var.postgres_db_name
@@ -79,21 +88,28 @@ locals {
     postgres_username     = data.azurerm_key_vault_secret.pgres_gpd_cdc_login.value
     postgres_password     = data.azurerm_key_vault_secret.pgres_gpd_cdc_pwd.value
     tasks_max             = var.tasks_max
+    max_threads           = var.max_threads
   })
 
 }
 
 resource "kubectl_manifest" "debezium_role" {
+  count = var.gpd_cdc_enabled ? 1 : 0
+
   force_conflicts = true
   yaml_body       = local.debezium_role_yaml
 }
 
 resource "kubectl_manifest" "debezium_secrets" {
+  count = var.gpd_cdc_enabled ? 1 : 0
+
   force_conflicts = true
   yaml_body       = local.debezium_secrets_yaml
 }
 
 resource "kubectl_manifest" "debezoum_rbac" {
+  count = var.gpd_cdc_enabled ? 1 : 0
+
   # depends_on      = [kubectl_manifest.debezium_role, kubectl_manifest.debezium_secrets]
   depends_on      = [kubectl_manifest.debezium_role]
   force_conflicts = true
@@ -119,6 +135,8 @@ resource "kubectl_manifest" "debezoum_rbac" {
 # }
 
 resource "kubectl_manifest" "kafka_connect" {
+  count = var.gpd_cdc_enabled ? 1 : 0
+
   depends_on = [
     helm_release.strimzi-kafka-operator
   ]
@@ -127,6 +145,9 @@ resource "kubectl_manifest" "kafka_connect" {
 }
 
 resource "null_resource" "wait_kafka_connect" {
+
+  count = var.gpd_cdc_enabled ? 1 : 0
+
   depends_on = [
     kubectl_manifest.kafka_connect
   ]
@@ -137,6 +158,8 @@ resource "null_resource" "wait_kafka_connect" {
 }
 
 resource "kubectl_manifest" "postgres_connector" {
+  count = var.gpd_cdc_enabled ? 1 : 0
+
   depends_on = [
     helm_release.strimzi-kafka-operator
   ]
@@ -145,6 +168,8 @@ resource "kubectl_manifest" "postgres_connector" {
 }
 
 resource "null_resource" "wait_postgres_connector" {
+  count = var.gpd_cdc_enabled ? 1 : 0
+
   depends_on = [
     kubectl_manifest.kafka_connect
   ]
