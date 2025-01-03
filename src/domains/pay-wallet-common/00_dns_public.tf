@@ -11,10 +11,10 @@ resource "azurerm_dns_ns_record" "dev_payment_wallet" {
   zone_name           = azurerm_dns_zone.payment_wallet_public.name
   resource_group_name = local.vnet_core_resource_group_name
   records = [
-    "ns1-35.azure-dns.com.",
-    "ns2-35.azure-dns.net.",
-    "ns3-35.azure-dns.org.",
-    "ns4-35.azure-dns.info."
+    "ns1-06.azure-dns.com.",
+    "ns2-06.azure-dns.net.",
+    "ns3-06.azure-dns.org.",
+    "ns4-06.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
   tags = var.tags
