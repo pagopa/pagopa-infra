@@ -205,6 +205,7 @@ wisp_converter_cosmos_nosql_db_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
+  burst_capacity_enabled    = true
   backup_continuous_enabled = false
 
   data_ttl                           = 2592000 # 30 days in second
@@ -276,7 +277,7 @@ wisp_converter_storage_account = {
   blob_versioning_enabled       = false
   advanced_threat_protection    = true
   blob_delete_retention_days    = 90
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   backup_enabled                = false
   backup_retention_days         = 0
 }
@@ -305,12 +306,12 @@ enabled_features = {
 Service Bus
 *****************/
 service_bus_wisp = {
-  sku                                  = "Premium"
+  sku                                  = "Standard"
   requires_duplicate_detection         = false
   dead_lettering_on_message_expiration = false
-  queue_default_message_ttl            = null # default is good
-  capacity                             = 1
-  premium_messaging_partitions         = 1
+  queue_default_message_ttl            = "P7D" # default for Standard P10675199DT2H48M5.4775807S
+  capacity                             = 0
+  premium_messaging_partitions         = 0
 }
 # queue_name shall be <domain>_<service>_<name>
 # producer shall have only send authorization

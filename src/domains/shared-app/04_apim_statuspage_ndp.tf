@@ -44,7 +44,7 @@ module "apim_api_statuspage_nodopagamenti_api_v1" {
   name                  = format("%s-statuspage-nodopagamenti-api", local.project)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_statuspage_nodo_pagamenti.product_id]
+  product_ids           = [module.apim_statuspage_nodo_pagamenti.product_id, "pagoPAPlatformStatusPage"]
   subscription_required = local.apim_statuspage_nodopagamenti_service_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.api_statuspage_nodopagamenti_api.id
   api_version           = "v1"

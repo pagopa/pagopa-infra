@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "aks_rg" {
 
 
 module "aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.58.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.69.0"
 
   name                       = local.aks_name
   location                   = var.location
@@ -19,6 +19,9 @@ module "aks" {
 
   workload_identity_enabled = var.aks_enable_workload_identity
   oidc_issuer_enabled       = var.aks_enable_workload_identity
+
+  # ff: Enabled only in UAT ( Testing in progress... )
+  cost_analysis_enabled = var.env_short != "d" ? (var.env_short == "p" ? false : true) : false
 
   #
   # 🤖 System node pool

@@ -84,3 +84,52 @@ data "azurerm_key_vault_secret" "opsgenie_kubexporter_api_key" {
   key_vault_id = data.azurerm_key_vault.kv.id
   name         = "opsgenie-infra-kubexporter-webhook-token"
 }
+
+module "opencosts" {
+  enable_opencost      = var.env_short == "d" ? true : false
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_opencosts?ref=v8.69.0"
+  aks_name             = module.aks.name
+  aks_rg_name          = module.aks.aks_resource_group_name
+  env                  = var.env
+  kubernetes_namespace = "elastic-system"
+  prometheus_config = {
+    namespace    = "elastic-system"
+    service_name = "prometheus-kube-prometheus-prometheus"
+    service_port = "9090"
+    external_url = "https://api.${var.env}.platform.pagopa.it/prometheus"
+  }
+}
+
+resource "kubernetes_manifest" "service_monitor" {
+  count = var.env_short == "d" ? 1 : 0
+  manifest = {
+    "apiVersion" : "monitoring.coreos.com/v1"
+    "kind" : "ServiceMonitor"
+    "metadata" : {
+      "name" : "prometheus-opencosts"
+      "namespace" : "elastic-system"
+      "labels" : {
+        "app.kubernetes.io/instance" : "prometheus"
+        "app.kubernetes.io/part-of" : "kube-prometheus-stack"
+        "app" : "kube-prometheus-stack-operator"
+        "release" : helm_release.kube_prometheus_stack.name
+      }
+    }
+    "spec" : {
+      "selector" : {
+        "matchLabels" : {
+          "app.kubernetes.io/instance" : "prometheus-opencost-exporter"
+          "app.kubernetes.io/name" : "prometheus-opencost-exporter"
+        }
+      }
+      "endpoints" : [
+        {
+          "port" : "http"
+          "interval" : "30s"
+          "path" : "/metrics"
+        }
+      ]
+      jobLabel : "opencost"
+    }
+  }
+}
