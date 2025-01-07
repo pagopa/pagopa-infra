@@ -2,16 +2,16 @@ locals {
 
   fn_name_for_alerts_exceptions = var.env_short != "p" ? [] : [
     {
-      id : "paymentoptionprocessor"
-      name : "PaymentOptionProcessor"
+      id : "cdc-raw-auto.apd.payment_option"
+      name : "cdc-raw-auto.apd.payment_option"
     },
     {
-      id : "paymentpositionprocessor"
-      name : "PaymentPositionProcessor"
+      id : "cdc-raw-auto.apd.payment_position"
+      name : "cdc-raw-auto.apd.payment_position"
     },
     {
-      id : "transferprocessor"
-      name : "TransferProcessor"
+      id : "cdc-raw-auto.apd.transfer"
+      name : "cdc-raw-auto.apd.transfer"
     }
   ]
 
@@ -41,7 +41,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-av
   query = format(<<-QUERY
 let threshold = 0.99;
 union traces, exceptions
-| where cloud_RoleName == "pagopa-gpd-ingestion-manager"
+| where cloud_RoleName == "pagopagpdingestionmanager"
 | where operation_Name == "%s"
 //| summarize count() by operation_Name, itemType
 | summarize
@@ -75,15 +75,15 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Error on JsonProcessing gpd-ingestion ${each.value.name}"
+  description    = "${each.value.name} ingestion error JsonProcessingException"
   enabled        = true
   query = format(<<-QUERY
   traces
     | where cloud_RoleName == "%s"
     | order by timestamp desc
-    | where message contains "function error JsonProcessingException"
+    | where message contains "${each.value.name} ingestion error JsonProcessingException"
   QUERY
-    , "pagopa-gpd-ingestion-manager"
+    , "pagopagpdingestionmanager"
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
@@ -115,7 +115,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
     | order by timestamp desc
     | where message contains "function error Generic exception at"
   QUERY
-    , "pagopa-gpd-ingestion-manager"
+    , "pagopagpdingestionmanager"
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
@@ -139,15 +139,15 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Error on PDVTokenizerException gpd-ingestion ${each.value.name}"
+  description    = "${each.value.name} ingestion error PDVTokenizerException"
   enabled        = true
   query = format(<<-QUERY
   traces
     | where cloud_RoleName == "%s"
     | order by timestamp desc
-    | where message contains "function error PDVTokenizerException exception at"
+    | where message contains "${each.value.name} ingestion error PDVTokenizerException"
   QUERY
-    , "pagopa-gpd-ingestion-manager"
+    , "pagopagpdingestionmanager"
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
@@ -171,15 +171,15 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Error on PDVTokenizerUnexpectedException gpd-ingestion ${each.value.name}"
+  description    = "${each.value.name} ingestion error PDVTokenizerUnexpectedException"
   enabled        = true
   query = format(<<-QUERY
   traces
     | where cloud_RoleName == "%s"
     | order by timestamp desc
-    | where message contains "function error PDVTokenizerUnexpectedException exception at"
+    | where message contains "${each.value.name} ingestion error PDVTokenizerUnexpectedException"
   QUERY
-    , "pagopa-gpd-ingestion-manager"
+    , "pagopagpdingestionmanager"
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
@@ -209,17 +209,18 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   query = format(<<-QUERY
   exceptions
     | where cloud_RoleName == "%s"
-    | where outerMessage contains "Exception while executing function: Functions.${each.value.name}"
+    //| where outerMessage contains "${each.value.name} ingestion error Generic exception"
+    | where operation_Name startswith "${each.value.name}"
     | order by timestamp desc
   QUERY
-    , "pagopa-gpd-ingestion-manager" # from HELM's parameter WEBSITE_SITE_NAME
+    , "pagopagpdingestionmanager" # from HELM's parameter WEBSITE_SITE_NAME
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 20
+    threshold = 30
   }
 
 }
