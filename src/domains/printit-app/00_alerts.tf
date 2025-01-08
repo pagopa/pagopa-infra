@@ -14,7 +14,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-print-payment-not
 
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Response time for /print-payment-notice-service is less than or equal to 1.5s - https://portal.azure.com/?l=en.en-us#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/dashboards/providers/microsoft.portal/dashboards/pagopa-p-opex_pagopa-print-payment-notice-service"
-  enabled        = true
+  enabled        = false
   query = (<<-QUERY
 let threshold = 1500;
 AzureDiagnostics
@@ -254,7 +254,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "generate-pdf-engine-gene
   }
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Response time for /generate-pdf is less than or equal to 5s"
-  enabled        = true
+  enabled        = false
   query = (<<-QUERY
 let threshold = 5000;
 AzureDiagnostics
@@ -287,10 +287,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-pdf-engine-pdf-av
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability for /generate-pdf is less than or equal to 99%"
+  description    = "Availability for /generate-pdf is less than or equal to 90%"
   enabled        = true
   query = (<<-QUERY
-let threshold = 0.99;
+let threshold = 0.90;
 AzureDiagnostics
 | where url_s matches regex "/generate-pdf"
 | summarize
