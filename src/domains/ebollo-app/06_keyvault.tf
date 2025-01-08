@@ -59,3 +59,12 @@ resource "azurerm_key_vault_secret" "gps_mbd_service_integration_test_subscripti
 
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+resource "azurerm_key_vault_secret" "mbd_service_integration_test_subscription_key" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "apikey-mbd-integration-test"
+  value        = azurerm_api_management_subscription.mbd_service_integration_test_subkey[0].primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
