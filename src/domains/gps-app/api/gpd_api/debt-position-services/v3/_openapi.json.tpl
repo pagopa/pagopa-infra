@@ -11,7 +11,7 @@
     "description" : "GPD Test environment"
   }],
   "paths" : {
-    "/v3/organizations/{organizationfiscalcode}/debtpositions/{iupd}" : {
+    "/organizations/{organizationfiscalcode}/debtpositions/{iupd}" : {
       "get" : {
         "tags" : [ "Debt Positions API: Installments and Payment Options Manager" ],
         "summary" : "Return the details of a specific debt position.",
@@ -373,7 +373,7 @@
         }
       } ]
     },
-    "/v3/organizations/{organizationfiscalcode}/debtpositions" : {
+    "/organizations/{organizationfiscalcode}/debtpositions" : {
       "get" : {
         "tags" : [ "Debt Positions API: Installments and Payment Options Manager" ],
         "summary" : "Return the list of the organization debt positions. The due dates interval is mutually exclusive with the payment dates interval.",
@@ -685,7 +685,7 @@
         }
       } ]
     },
-    "/v3/organizations/{organizationfiscalcode}/debtpositions/{iupd}/publish" : {
+    "/organizations/{organizationfiscalcode}/debtpositions/{iupd}/publish" : {
       "post" : {
         "tags" : [ "Debt Position Actions API" ],
         "summary" : "The Organization publish a debt Position.",
