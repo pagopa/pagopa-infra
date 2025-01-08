@@ -3,7 +3,7 @@
 ##############
 
 module "apim_pdf_engine_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "pdf-engine"
   display_name = "PDF Engine pagoPA"
@@ -29,14 +29,14 @@ locals {
     description           = "PDF Engine Service pagoPA - API"
     path                  = "shared/pdf-engine"
     subscription_required = true
-    service_url           = var.pdf_engine_app_ha_enabled ? module.shared_pdf_engine_app_service_java_ha[0].default_site_hostname : module.shared_pdf_engine_app_service_java[0].default_site_hostname
+    service_url           = module.shared_pdf_engine_app_service_java[0].default_site_hostname
   }
   apim_pdf_engine_node_service_api = { # node
     display_name          = "PDF Engine Node Service pagoPA - API"
     description           = "PDF Engine Node Service pagoPA - API"
     path                  = "shared/pdf-engine-node"
     subscription_required = true
-    service_url           = var.pdf_engine_app_ha_enabled ? module.shared_pdf_engine_app_service_ha[0].default_site_hostname : module.shared_pdf_engine_app_service[0].default_site_hostname
+    service_url           = module.shared_pdf_engine_app_service[0].default_site_hostname
   }
 }
 
@@ -54,7 +54,7 @@ resource "azurerm_api_management_api_version_set" "api_pdf_engine_api" {
 }
 
 module "apim_api_pdf_engine_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-pdf-engine-service-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -93,7 +93,7 @@ resource "azurerm_api_management_api_version_set" "api_pdf_engine_node_api" {
   versioning_scheme   = "Segment"
 }
 module "apim_api_pdf_engine_node_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.6.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-pdf-engine-node-service-api", local.project)
   api_management_name   = local.pagopa_apim_name

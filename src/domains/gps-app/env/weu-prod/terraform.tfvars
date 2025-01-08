@@ -1,11 +1,12 @@
-prefix          = "pagopa"
-env_short       = "p"
-env             = "prod"
-domain          = "gps"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "prod"
+prefix                 = "pagopa"
+env_short              = "p"
+env                    = "prod"
+domain                 = "gps"
+location               = "westeurope"
+location_short         = "weu"
+location_string        = "West Europe"
+instance               = "prod"
+gh_runner_job_location = "italynorth"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -28,9 +29,9 @@ apim_dns_zone_prefix     = "platform"
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
 tls_cert_check_helm = {
-  chart_version = "1.21.0"
+  chart_version = "2.0.0"
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
-  image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
+  image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
 
 # function_app docker
@@ -121,11 +122,15 @@ zookeeper_limits_cpu     = 1
 zookeeper_jvm_xms        = "512m"
 zookeeper_jvm_xmx        = "1024m"
 zookeeper_storage_size   = "100Gi"
-replicas                 = 3
-request_cpu              = 0.5
-request_memory           = "512Mi"
-limits_memory            = "1024Mi"
-limits_cpu               = 1
-postgres_db_name         = "apd"
-tasks_max                = "1"
-container_registry       = "pagopapcommonacr.azurecr.io"
+
+### debezium kafka_connect_yaml
+replicas           = 1 # set 2 in PROD iif want a new istance replicate
+request_cpu        = 0.5
+limits_cpu         = 2
+request_memory     = "512Mi"
+limits_memory      = "3072Mi"
+postgres_db_name   = "apd"
+tasks_max          = "1"
+container_registry = "pagopapcommonacr.azurecr.io"
+max_threads        = 10
+gpd_cdc_enabled    = true

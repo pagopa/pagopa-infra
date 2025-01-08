@@ -409,6 +409,8 @@ variable "fn_app_storage_account_info" {
     account_replication_type          = optional(string, "LRS")
     advanced_threat_protection_enable = optional(bool, true)
     access_tier                       = optional(string, "Hot")
+    public_network_access_enabled     = optional(bool, false)
+    use_legacy_defender_version       = optional(bool, false)
   })
 
   default = {
@@ -417,6 +419,8 @@ variable "fn_app_storage_account_info" {
     account_replication_type          = "LRS"
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
+    public_network_access_enabled     = false
+    use_legacy_defender_version       = true
   }
 }
 
@@ -538,4 +542,22 @@ variable "limits_cpu" {
   type        = string
   description = "Connect Limit CPU"
   default     = "0.5"
+}
+
+variable "max_threads" {
+  type        = number
+  description = "Number of max_threads"
+  default     = 1
+}
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
+}
+
+variable "gpd_cdc_enabled" {
+  type        = bool
+  description = "Enable CDC for GDP"
+  default     = false
 }

@@ -41,7 +41,7 @@ locals {
 
 ## Function taxonomy
 module "taxonomy_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
+  source = "./.terraform/modules/__v3__/function_app"
 
   resource_group_name = data.azurerm_resource_group.taxonomy_rg.name
   name                = "${local.project}-${local.taxonomy_label}-fn"
@@ -67,10 +67,6 @@ module "taxonomy_function" {
 
   client_certificate_mode = "Optional"
 
-  cors = {
-    allowed_origins = []
-  }
-
   app_service_plan_name = "${local.project}-${local.taxonomy_label}-fn-plan"
   app_service_plan_info = {
     kind                         = var.taxonomy_function.kind
@@ -87,6 +83,8 @@ module "taxonomy_function" {
     account_replication_type          = var.function_app_storage_account_replication_type
     access_tier                       = "Hot"
     advanced_threat_protection_enable = true
+    public_network_access_enabled     = false
+    use_legacy_defender_version       = true
   }
 
   app_settings = local.function_taxonomy_app_settings
@@ -100,7 +98,7 @@ module "taxonomy_function" {
 module "taxonomy_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
+  source = "./.terraform/modules/__v3__/function_app_slot"
 
   app_service_plan_id                      = module.taxonomy_function.app_service_plan_id
   function_app_id                          = module.taxonomy_function.id

@@ -8,14 +8,15 @@ resource "azurerm_resource_group" "reporting_fdr_rg" {
 
 # Subnet to host reporting-fdr function
 module "reporting_fdr_function_snet" {
-  count                                     = var.cidr_subnet_reporting_fdr != null ? 1 : 0
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.17.0"
+  count  = var.cidr_subnet_reporting_fdr != null ? 1 : 0
+  source = "./.terraform/modules/__v3__/subnet"
+
   name                                      = "${local.product}-reporting-fdr-snet"
   address_prefixes                          = var.cidr_subnet_reporting_fdr
   resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet.name
   private_endpoint_network_policies_enabled = var.private_endpoint_network_policies_enabled
-
+  service_endpoints                         = ["Microsoft.Storage"]
   delegation = {
     name = "default"
     service_delegation = {
@@ -26,7 +27,7 @@ module "reporting_fdr_function_snet" {
 }
 
 module "reporting_fdr_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.17.0"
+  source = "./.terraform/modules/__v3__/function_app"
 
   resource_group_name = azurerm_resource_group.reporting_fdr_rg.name
   name                = "${local.product}-fn-reportingfdr"
@@ -37,10 +38,6 @@ module "reporting_fdr_function" {
   runtime_version                          = var.fn_app_runtime_version
   always_on                                = var.reporting_fdr_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
-  cors = ({
-    allowed_origins     = []
-    support_credentials = false
-  })
 
   app_service_plan_info = var.app_service_plan_info
 

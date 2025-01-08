@@ -11,7 +11,7 @@ locals {
 }
 
 module "apim_notices_service_product_external" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.18.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
   count  = var.is_feature_enabled.printit ? 1 : 0
 
   product_id   = "pagopa_notices_service_external"
@@ -30,7 +30,7 @@ module "apim_notices_service_product_external" {
 }
 
 module "apim_notices_service_product_internal" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.18.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
   count  = var.is_feature_enabled.printit ? 1 : 0
 
   product_id   = "pagopa_notices_service_internal"

@@ -122,6 +122,7 @@ variable "afm_marketplace_cosmos_db_params" {
     public_network_access_enabled     = bool
     is_virtual_network_filter_enabled = bool
     backup_continuous_enabled         = bool
+    analytical_storage_enabled        = bool
   })
 }
 

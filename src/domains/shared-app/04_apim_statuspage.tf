@@ -13,7 +13,7 @@ data "azurerm_storage_account" "pagopa_apiconfig_fe_sa" {
 ##############
 
 module "apim_statuspage_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "statuspage"
   display_name = "Status Page"
@@ -88,7 +88,7 @@ data "azurerm_linux_web_app" "pdf_engine" {
 }
 
 module "apim_api_statuspage_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-statuspage-api", local.project)
   api_management_name   = local.pagopa_apim_name
@@ -166,6 +166,8 @@ module "apim_api_statuspage_api_v1" {
           "printpaymentnoticefunctions" = format("%s/pagopa-print-payment-notice-functions", format(local.aks_ita_path, "printit"))
           "printpaymentnoticeservice"   = format("%s/pagopa-print-payment-notice-service", format(local.aks_ita_path, "printit"))
           "paymentoptionsservice"       = format("%s/payment-options-service", format(local.aks_ita_path, "payopt"))
+          "mbdservice"                  = format("%s/pagopa-mbd-service", format(local.aks_ita_path, "ebollo"))
+          "mbdgpsservice"               = format("%s/pagopa-gps-mbd-service", format(local.aks_ita_path, "ebollo"))
         }), "\"", "\\\"")
       })
     }

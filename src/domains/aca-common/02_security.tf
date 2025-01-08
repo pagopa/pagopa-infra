@@ -54,6 +54,22 @@ data "azuread_service_principal" "iac_principal" {
   display_name = format("pagopaspa-pagoPA-iac-%s", data.azurerm_subscription.current.subscription_id)
 }
 
+data "azurerm_api_management_product" "apim_aca_product" {
+  product_id          = "aca"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+resource "azurerm_api_management_subscription" "gpd_like_for_aca_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_aca_product.id
+  display_name  = "Used by ACA to call GPD-Like-API"
+  allow_tracing = false
+  state         = "active"
+}
+
 resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   count        = var.enable_iac_pipeline ? 1 : 0
   key_vault_id = module.key_vault.id
@@ -76,15 +92,12 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 }
 
 resource "azurerm_key_vault_secret" "gpd-api-key" {
+  depends_on   = [azurerm_api_management_subscription.gpd_like_for_aca_subkey]
   name         = "gpd-api-key"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
+  value        = azurerm_api_management_subscription.gpd_like_for_aca_subkey.primary_key
+  content_type = "text/plain"
 
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
+  key_vault_id = module.key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "api-config-api-key" {

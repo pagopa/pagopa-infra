@@ -29,7 +29,7 @@ resource "azurerm_api_management_api_version_set" "api_afm_marketplace_technical
 
 
 module "apim_api_afm_marketplace_technical_support_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.5.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-afm-marketplace-service-technical-support-api", local.project)
   api_management_name   = local.pagopa_apim_name

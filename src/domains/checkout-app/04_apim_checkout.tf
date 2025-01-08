@@ -4,7 +4,7 @@
 
 module "apim_checkout_product" {
   count  = var.checkout_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "checkout"
   display_name = "checkout pagoPA"
@@ -23,7 +23,7 @@ module "apim_checkout_product" {
 
 module "apim_checkout_auth_product" {
   count  = var.checkout_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "checkout-auth"
   display_name = "checkout auth  pagoPA"
@@ -71,7 +71,7 @@ resource "azurerm_api_management_api_version_set" "checkout_payment_activations_
 }
 
 module "apim_checkout_payment_activations_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-checkout-payment-activations-api", local.parent_project)
   api_management_name   = data.azurerm_api_management.apim.name
@@ -125,7 +125,7 @@ resource "azurerm_api_management_api_version_set" "checkout_payment_activations_
 }
 
 module "apim_checkout_payment_activations_api_auth_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-checkout-payment-activations-auth-api", local.parent_project)
   api_management_name   = data.azurerm_api_management.apim.name
@@ -151,7 +151,7 @@ module "apim_checkout_payment_activations_api_auth_v1" {
 
 # Payment activation v2 authenticated APIs
 module "apim_checkout_payment_activations_api_auth_v2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-checkout-payment-activations-auth-api", local.parent_project)
   api_management_name   = data.azurerm_api_management.apim.name
@@ -272,7 +272,7 @@ resource "azurerm_api_management_api_version_set" "checkout_transactions_api" {
 module "apim_checkout_transactions_api_v1" {
   count = var.checkout_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-checkout-transactions-api", var.env_short)
   api_management_name   = data.azurerm_api_management.apim.name
@@ -319,7 +319,7 @@ resource "azurerm_api_management_api_version_set" "checkout_ecommerce_api_v1" {
 }
 
 module "apim_checkout_ecommerce_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.parent_project}-checkout-ecommerce-api"
   api_management_name   = data.azurerm_api_management.apim.name

@@ -12,11 +12,11 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.40.0"
+      version = "<= 3.116.0"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "<= 2.5.1"
+      version = "<= 2.12.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -61,3 +61,8 @@ provider "azapi" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
+
+module "__v3__" {
+  # v8.62.1
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=f3485105e35ce8c801209dcbb4ef72f3d944f0e5"
+}

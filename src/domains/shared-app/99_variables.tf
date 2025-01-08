@@ -300,11 +300,6 @@ variable "robots_indexed_paths" {
   description = "List of cdn paths to allow robots index"
 }
 
-variable "pdf_engine_app_ha_enabled" {
-  type        = bool
-  description = "(Required) enables the deployment of pdf engine in HA mode"
-}
-
 // wallet session token
 variable "io_backend_base_path" {
   type        = string
@@ -318,12 +313,6 @@ variable "pdv_api_base_path" {
   description = "Personal data vault api base path"
 }
 
-variable "pdf_engine_zone_balancing_enabled" {
-  type        = bool
-  description = "(Required) if true, enables zone balancing to pdf engine app service plans"
-}
-
-
 variable "ecommerce_io_pm_enabled" {
   type        = bool
   description = "eCommerce vs pm enabled"
@@ -334,4 +323,16 @@ variable "ecommerce_for_io_pm_npg" {
   type        = string
   description = "eCommerce for io gateway (3 values allowed: 'NPG','PM','NPGFF')"
   default     = "NPGFF"
+}
+
+variable "function_app_ip_restriction_default_action" {
+  type        = string
+  description = "(Optional) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. Defaults to Allow."
+  default     = "Allow"
+}
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
 }

@@ -696,12 +696,12 @@ app_gateway_wisp2_certificate_name      = "uat-wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "uat-wisp2-pagopa-gov-it"
 app_gateway_wfespgovit_certificate_name = "wfesp-test-pagopa-gov-it"
 app_gateway_kibana_certificate_name     = "kibana-uat-platform-pagopa-it"
-app_gateway_sku_name                    = "WAF_v2"
-app_gateway_sku_tier                    = "WAF_v2"
-app_gateway_waf_enabled                 = true
-# app_gateway_sku_name                    = "Standard_v2"
-# app_gateway_sku_tier                    = "Standard_v2"
-# app_gateway_waf_enabled                 = false
+#app_gateway_sku_name                    = "WAF_v2"
+#app_gateway_sku_tier                    = "WAF_v2"
+#app_gateway_waf_enabled                 = true
+app_gateway_sku_name       = "Standard_v2"
+app_gateway_sku_tier       = "Standard_v2"
+app_gateway_waf_enabled    = false
 app_gateway_alerts_enabled = false
 app_gateway_deny_paths = [
   # "/nodo/.*", # TEMP currently leave UAT public for testing, we should add subkeys here as well ( ➕ 🔓 forbid policy api_product/nodo_pagamenti_api/_base_policy.xml)
@@ -800,4 +800,15 @@ app_gateway_allowed_paths_upload = [
   "/nodo/node-for-psp/.*",
   "/fdr-legacy/nodo-per-pa/.*",
   "/fdr-psp/.*" # Added temporarily as workaround for bug https://pagopa.atlassian.net/browse/PAGOPA-2263
+]
+
+
+route_tools = [
+  {
+    # dev aks nodo oncloud
+    name                   = "tools-outbound-to-nexy-nodo"
+    address_prefix         = "10.70.74.200/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  }
 ]

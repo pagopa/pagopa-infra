@@ -364,6 +364,10 @@ resource "azurerm_monitor_metric_alert" "app_service_over_cpu_usage" {
   action {
     action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
   }
+  action {
+    action_group_id = azurerm_monitor_action_group.infra_opsgenie.0.id
+  }
+
 
   tags = var.tags
 }
@@ -400,6 +404,9 @@ resource "azurerm_monitor_metric_alert" "app_service_over_mem_usage" {
   }
   action {
     action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.infra_opsgenie.0.id
   }
 
   tags = var.tags
@@ -461,7 +468,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id, azurerm_monitor_action_group.infra_opsgenie.0.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }

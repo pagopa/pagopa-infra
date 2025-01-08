@@ -7,7 +7,7 @@
 ########################################################
 
 module "apim_gpd_integration_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "debt-positions-integration"
   display_name = "GPD Debt Positions integration for organizations"
