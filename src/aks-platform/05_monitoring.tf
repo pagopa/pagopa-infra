@@ -67,7 +67,7 @@ resource "helm_release" "monitoring_reloader" {
 # Kubernetes Event Exporter
 module "kubernetes_event_exporter" {
   count     = var.env_short != "p" ? 0 : 1
-  source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter?ref=v8.69.0"
+  source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter?ref=v8.70.0"
   namespace = "monitoring"
 
   # Slack integration

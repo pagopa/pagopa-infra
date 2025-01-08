@@ -18,7 +18,7 @@
 | <a name="module_aks"></a> [aks](#module\_aks) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster | v8.69.0 |
 | <a name="module_aks_snet"></a> [aks\_snet](#module\_aks\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.53.0 |
 | <a name="module_keda_pod_identity"></a> [keda\_pod\_identity](#module\_keda\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v8.53.0 |
-| <a name="module_kubernetes_event_exporter"></a> [kubernetes\_event\_exporter](#module\_kubernetes\_event\_exporter) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter | v8.69.0 |
+| <a name="module_kubernetes_event_exporter"></a> [kubernetes\_event\_exporter](#module\_kubernetes\_event\_exporter) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter | v8.70.0 |
 | <a name="module_monitoring_pod_identity"></a> [monitoring\_pod\_identity](#module\_monitoring\_pod\_identity) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_pod_identity | v8.53.0 |
 | <a name="module_nginx_ingress"></a> [nginx\_ingress](#module\_nginx\_ingress) | terraform-module/release/helm | 2.8.0 |
 | <a name="module_opencosts"></a> [opencosts](#module\_opencosts) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_opencosts | v8.69.0 |
