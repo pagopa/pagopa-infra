@@ -1,0 +1,5 @@
+<fragment>
+	<set-query-parameter name="serviceType" exists-action="override">
+		<value>@((string)context.Variables.GetValueOrDefault("service_type_value", "GPD"))</value>
+	</set-query-parameter>
+</fragment>

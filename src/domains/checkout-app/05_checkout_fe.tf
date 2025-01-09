@@ -1,7 +1,7 @@
 
 locals {
   npg_sdk_hostname                    = var.env_short == "p" ? "xpay.nexigroup.com" : "stg-ta.nexigroup.com"
-  content_security_policy_header_name = var.env_short == "p" ? "Content-Security-Policy-Report-Only" : "Content-Security-Policy"
+  content_security_policy_header_name = "Content-Security-Policy"
 }
 
 /**
@@ -19,7 +19,7 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
  * CDN
  */
 module "checkout_cdn" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn?ref=v7.76.1"
+  source = "./.terraform/modules/__v3__/cdn"
 
   count                 = var.checkout_enabled ? 1 : 0
   name                  = "checkout"

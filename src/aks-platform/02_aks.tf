@@ -5,8 +5,9 @@ resource "azurerm_resource_group" "aks_rg" {
   tags = var.tags
 }
 
+
 module "aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v7.58.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.69.0"
 
   name                       = local.aks_name
   location                   = var.location
@@ -15,6 +16,12 @@ module "aks" {
   kubernetes_version         = var.aks_kubernetes_version
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
   sku_tier                   = var.aks_sku_tier
+
+  workload_identity_enabled = var.aks_enable_workload_identity
+  oidc_issuer_enabled       = var.aks_enable_workload_identity
+
+  # ff: Enabled only in UAT ( Testing in progress... )
+  cost_analysis_enabled = var.env_short != "d" ? (var.env_short == "p" ? false : true) : false
 
   #
   # 🤖 System node pool
@@ -72,19 +79,30 @@ module "aks" {
   addon_azure_key_vault_secrets_provider_enabled = true
   addon_azure_pod_identity_enabled               = true
 
-  alerts_enabled       = var.aks_alerts_enabled
-  custom_metric_alerts = local.aks_metrics_alerts
+  alerts_enabled     = var.aks_alerts_enabled
+  custom_logs_alerts = local.aks_logs_alerts
 
-  action = [
-    {
-      action_group_id    = data.azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = data.azurerm_monitor_action_group.email.id
-      webhook_properties = null
-    }
-  ]
+  # takes a list and replaces any elements that are lists with a
+  # flattened sequence of the list contents.
+  # In this case, we enable OpsGenie only on prod env
+  action = flatten([
+    [
+      {
+        action_group_id    = data.azurerm_monitor_action_group.slack.id
+        webhook_properties = null
+      },
+      {
+        action_group_id    = data.azurerm_monitor_action_group.email.id
+        webhook_properties = null
+      }
+    ],
+    (var.env == "prod" ? [
+      {
+        action_group_id    = data.azurerm_monitor_action_group.opsgenie.0.id
+        webhook_properties = null
+      }
+    ] : [])
+  ])
 
   microsoft_defender_log_analytics_workspace_id = var.env == "prod" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
 

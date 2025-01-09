@@ -205,22 +205,27 @@ wisp_converter_cosmos_nosql_db_params = {
   public_network_access_enabled     = false
   is_virtual_network_filter_enabled = true
 
+  burst_capacity_enabled    = true
   backup_continuous_enabled = false
 
-  data_ttl                           = 604800 # 7 days in second
+  data_ttl                           = 2592000 # 30 days in second
   data_max_throughput                = 1000
-  re_ttl                             = 604800 # 7 days in second
+  re_ttl                             = 2592000 # 30 days in second
   re_max_throughput                  = 1000
-  receipt_ttl                        = 604800 # 7 days in second
+  receipt_ttl                        = 2592000 # 30 days in second
   receipt_max_throughput             = 1000
-  receipt_dead_letter_ttl            = 604800 # 7 days in second
+  receipt_dead_letter_ttl            = 2592000 # 30 days in second
   receipt_dead_letter_max_throughput = 1000
-  idempotency_ttl                    = 604800 # 7 days in second
+  idempotency_ttl                    = 2592000 # 30 days in second
   idempotency_max_throughput         = 1000
-  rt_ttl                             = 604800 # 7 days in second
+  rt_ttl                             = 2592000 # 30 days in second
   rt_max_throughput                  = 1000
   configuration_ttl                  = -1 # https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/time-to-live#time-to-live-for-containers-and-items
   configuration_max_throughput       = 1000
+  report_ttl                         = 7776000 # 90 days in seconds
+  report_max_throughput              = 1000
+  nav2iuv_mapping_ttl                = 691200 # 8 days in second
+  nav2iuv_mapping_max_throughput     = 1000
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]
@@ -272,7 +277,7 @@ wisp_converter_storage_account = {
   blob_versioning_enabled       = false
   advanced_threat_protection    = true
   blob_delete_retention_days    = 90
-  public_network_access_enabled = true
+  public_network_access_enabled = false
   backup_enabled                = false
   backup_retention_days         = 0
 }
@@ -301,12 +306,12 @@ enabled_features = {
 Service Bus
 *****************/
 service_bus_wisp = {
-  sku                                  = "Premium"
+  sku                                  = "Standard"
   requires_duplicate_detection         = false
   dead_lettering_on_message_expiration = false
-  queue_default_message_ttl            = null # default is good
-  capacity                             = 1
-  premium_messaging_partitions         = 1
+  queue_default_message_ttl            = "P7D" # default for Standard P10675199DT2H48M5.4775807S
+  capacity                             = 0
+  premium_messaging_partitions         = 0
 }
 # queue_name shall be <domain>_<service>_<name>
 # producer shall have only send authorization

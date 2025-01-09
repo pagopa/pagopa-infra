@@ -55,4 +55,6 @@ checkout_function_autoscale_default      = 1
 checkout_function_zone_balancing_enabled = false
 
 # ecommerce ingress hostname
-ecommerce_ingress_hostname = "weuuat.ecommerce.internal.uat.platform.pagopa.it"
+ecommerce_ingress_hostname                 = "weuuat.ecommerce.internal.uat.platform.pagopa.it"
+checkout_ip_restriction_default_action     = "Allow"
+pagopa_proxy_ip_restriction_default_action = "Allow"

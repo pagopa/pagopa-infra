@@ -1,37 +1,38 @@
 # checkout-app
 
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.33.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.95.0, <= 3.99.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | = 3.2.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_apim_checkout_auth_product"></a> [apim\_checkout\_auth\_product](#module\_apim\_checkout\_auth\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v7.76.1 |
-| <a name="module_apim_checkout_carts_auth"></a> [apim\_checkout\_carts\_auth](#module\_apim\_checkout\_carts\_auth) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v7.76.1 |
-| <a name="module_apim_checkout_carts_auth_v1"></a> [apim\_checkout\_carts\_auth\_v1](#module\_apim\_checkout\_carts\_auth\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.76.1 |
-| <a name="module_apim_checkout_ec_api_v1"></a> [apim\_checkout\_ec\_api\_v1](#module\_apim\_checkout\_ec\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.76.1 |
-| <a name="module_apim_checkout_ec_product"></a> [apim\_checkout\_ec\_product](#module\_apim\_checkout\_ec\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v7.76.1 |
-| <a name="module_apim_checkout_ecommerce_api_v1"></a> [apim\_checkout\_ecommerce\_api\_v1](#module\_apim\_checkout\_ecommerce\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.76.1 |
-| <a name="module_apim_checkout_payment_activations_api_auth_v1"></a> [apim\_checkout\_payment\_activations\_api\_auth\_v1](#module\_apim\_checkout\_payment\_activations\_api\_auth\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.76.1 |
-| <a name="module_apim_checkout_payment_activations_api_auth_v2"></a> [apim\_checkout\_payment\_activations\_api\_auth\_v2](#module\_apim\_checkout\_payment\_activations\_api\_auth\_v2) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.76.1 |
-| <a name="module_apim_checkout_payment_activations_api_v1"></a> [apim\_checkout\_payment\_activations\_api\_v1](#module\_apim\_checkout\_payment\_activations\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.76.1 |
-| <a name="module_apim_checkout_product"></a> [apim\_checkout\_product](#module\_apim\_checkout\_product) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product | v7.76.1 |
-| <a name="module_apim_checkout_transactions_api_v1"></a> [apim\_checkout\_transactions\_api\_v1](#module\_apim\_checkout\_transactions\_api\_v1) | git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api | v7.76.1 |
-| <a name="module_checkout_cdn"></a> [checkout\_cdn](#module\_checkout\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn | v7.76.1 |
-| <a name="module_checkout_function"></a> [checkout\_function](#module\_checkout\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v7.76.1 |
-| <a name="module_checkout_function_snet"></a> [checkout\_function\_snet](#module\_checkout\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.76.1 |
-| <a name="module_pagopa_proxy_app_service"></a> [pagopa\_proxy\_app\_service](#module\_pagopa\_proxy\_app\_service) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v7.76.1 |
-| <a name="module_pagopa_proxy_app_service_ha"></a> [pagopa\_proxy\_app\_service\_ha](#module\_pagopa\_proxy\_app\_service\_ha) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service | v7.76.1 |
-| <a name="module_pagopa_proxy_app_service_slot_staging"></a> [pagopa\_proxy\_app\_service\_slot\_staging](#module\_pagopa\_proxy\_app\_service\_slot\_staging) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v7.76.1 |
-| <a name="module_pagopa_proxy_app_service_slot_staging_ha"></a> [pagopa\_proxy\_app\_service\_slot\_staging\_ha](#module\_pagopa\_proxy\_app\_service\_slot\_staging\_ha) | git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot | v7.76.1 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 63f6181a6f3a51707a2ab4795bdbed2d888c708b |
+| <a name="module_apim_checkout_auth_product"></a> [apim\_checkout\_auth\_product](#module\_apim\_checkout\_auth\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_checkout_carts_auth"></a> [apim\_checkout\_carts\_auth](#module\_apim\_checkout\_carts\_auth) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_checkout_carts_auth_v1"></a> [apim\_checkout\_carts\_auth\_v1](#module\_apim\_checkout\_carts\_auth\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_checkout_ec_api_v1"></a> [apim\_checkout\_ec\_api\_v1](#module\_apim\_checkout\_ec\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_checkout_ec_product"></a> [apim\_checkout\_ec\_product](#module\_apim\_checkout\_ec\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_checkout_ecommerce_api_v1"></a> [apim\_checkout\_ecommerce\_api\_v1](#module\_apim\_checkout\_ecommerce\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_checkout_payment_activations_api_auth_v1"></a> [apim\_checkout\_payment\_activations\_api\_auth\_v1](#module\_apim\_checkout\_payment\_activations\_api\_auth\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_checkout_payment_activations_api_auth_v2"></a> [apim\_checkout\_payment\_activations\_api\_auth\_v2](#module\_apim\_checkout\_payment\_activations\_api\_auth\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_checkout_payment_activations_api_v1"></a> [apim\_checkout\_payment\_activations\_api\_v1](#module\_apim\_checkout\_payment\_activations\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_checkout_product"></a> [apim\_checkout\_product](#module\_apim\_checkout\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_checkout_transactions_api_v1"></a> [apim\_checkout\_transactions\_api\_v1](#module\_apim\_checkout\_transactions\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_checkout_cdn"></a> [checkout\_cdn](#module\_checkout\_cdn) | ./.terraform/modules/__v3__/cdn | n/a |
+| <a name="module_checkout_function"></a> [checkout\_function](#module\_checkout\_function) | ./.terraform/modules/__v3__/function_app | n/a |
+| <a name="module_checkout_function_snet"></a> [checkout\_function\_snet](#module\_checkout\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_pagopa_proxy_app_service"></a> [pagopa\_proxy\_app\_service](#module\_pagopa\_proxy\_app\_service) | ./.terraform/modules/__v3__/app_service | n/a |
+| <a name="module_pagopa_proxy_app_service_ha"></a> [pagopa\_proxy\_app\_service\_ha](#module\_pagopa\_proxy\_app\_service\_ha) | ./.terraform/modules/__v3__/app_service | n/a |
+| <a name="module_pagopa_proxy_app_service_slot_staging"></a> [pagopa\_proxy\_app\_service\_slot\_staging](#module\_pagopa\_proxy\_app\_service\_slot\_staging) | ./.terraform/modules/__v3__/app_service_slot | n/a |
+| <a name="module_pagopa_proxy_app_service_slot_staging_ha"></a> [pagopa\_proxy\_app\_service\_slot\_staging\_ha](#module\_pagopa\_proxy\_app\_service\_slot\_staging\_ha) | ./.terraform/modules/__v3__/app_service_slot | n/a |
 | <a name="module_pagopa_proxy_snet"></a> [pagopa\_proxy\_snet](#module\_pagopa\_proxy\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.76.1 |
 | <a name="module_pagopa_proxy_snet_ha"></a> [pagopa\_proxy\_snet\_ha](#module\_pagopa\_proxy\_snet\_ha) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v7.76.1 |
 
@@ -104,6 +105,7 @@
 | <a name="input_checkout_function_sku_tier"></a> [checkout\_function\_sku\_tier](#input\_checkout\_function\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_checkout_function_worker_count"></a> [checkout\_function\_worker\_count](#input\_checkout\_function\_worker\_count) | (Optional) checkout function worker count number | `number` | `1` | no |
 | <a name="input_checkout_function_zone_balancing_enabled"></a> [checkout\_function\_zone\_balancing\_enabled](#input\_checkout\_function\_zone\_balancing\_enabled) | (Optional) Enables zone balancing for checkout function | `bool` | `true` | no |
+| <a name="input_checkout_ip_restriction_default_action"></a> [checkout\_ip\_restriction\_default\_action](#input\_checkout\_ip\_restriction\_default\_action) | (Required) The Default action for traffic that does not match any ip\_restriction rule. possible values include Allow and Deny. | `string` | n/a | yes |
 | <a name="input_checkout_pagopaproxy_host"></a> [checkout\_pagopaproxy\_host](#input\_checkout\_pagopaproxy\_host) | pagopaproxy host | `string` | `null` | no |
 | <a name="input_cidr_subnet_checkout_be"></a> [cidr\_subnet\_checkout\_be](#input\_cidr\_subnet\_checkout\_be) | Address prefixes subnet checkout function | `list(string)` | `null` | no |
 | <a name="input_cidr_subnet_pagopa_proxy"></a> [cidr\_subnet\_pagopa\_proxy](#input\_cidr\_subnet\_pagopa\_proxy) | Address prefixes subnet proxy | `list(string)` | `null` | no |
@@ -117,7 +119,7 @@
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
-| <a name="input_function_app_storage_account_info"></a> [function\_app\_storage\_account\_info](#input\_function\_app\_storage\_account\_info) | n/a | <pre>object({<br>    account_kind                      = optional(string, "StorageV2")<br>    account_tier                      = optional(string, "Standard")<br>    account_replication_type          = optional(string, "LRS")<br>    access_tier                       = optional(string, "Hot")<br>    advanced_threat_protection_enable = optional(bool, true)<br>    use_legacy_defender_version       = optional(bool, true)<br>    public_network_access_enabled     = optional(bool, false)<br>  })</pre> | <pre>{<br>  "access_tier": "Hot",<br>  "account_kind": "StorageV2",<br>  "account_replication_type": "LRS",<br>  "account_tier": "Standard",<br>  "advanced_threat_protection_enable": true,<br>  "public_network_access_enabled": false,<br>  "use_legacy_defender_version": true<br>}</pre> | no |
+| <a name="input_function_app_storage_account_info"></a> [function\_app\_storage\_account\_info](#input\_function\_app\_storage\_account\_info) | n/a | <pre>object({<br/>    account_kind                      = optional(string, "StorageV2")<br/>    account_tier                      = optional(string, "Standard")<br/>    account_replication_type          = optional(string, "LRS")<br/>    access_tier                       = optional(string, "Hot")<br/>    advanced_threat_protection_enable = optional(bool, true)<br/>    use_legacy_defender_version       = optional(bool, true)<br/>    public_network_access_enabled     = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "access_tier": "Hot",<br/>  "account_kind": "StorageV2",<br/>  "account_replication_type": "LRS",<br/>  "account_tier": "Standard",<br/>  "advanced_threat_protection_enable": true,<br/>  "public_network_access_enabled": false,<br/>  "use_legacy_defender_version": true<br/>}</pre> | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_location_string"></a> [location\_string](#input\_location\_string) | One of West Europe, North Europe | `string` | n/a | yes |
@@ -126,13 +128,14 @@
 | <a name="input_pagopa_proxy_autoscale_maximum"></a> [pagopa\_proxy\_autoscale\_maximum](#input\_pagopa\_proxy\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `10` | no |
 | <a name="input_pagopa_proxy_autoscale_minimum"></a> [pagopa\_proxy\_autoscale\_minimum](#input\_pagopa\_proxy\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
 | <a name="input_pagopa_proxy_ha_enabled"></a> [pagopa\_proxy\_ha\_enabled](#input\_pagopa\_proxy\_ha\_enabled) | (Required) enables the deployment of pagopa proxy in HA | `bool` | n/a | yes |
+| <a name="input_pagopa_proxy_ip_restriction_default_action"></a> [pagopa\_proxy\_ip\_restriction\_default\_action](#input\_pagopa\_proxy\_ip\_restriction\_default\_action) | (Required) The Default action for traffic that does not match any ip\_restriction rule. possible values include Allow and Deny. | `string` | n/a | yes |
 | <a name="input_pagopa_proxy_plan_sku"></a> [pagopa\_proxy\_plan\_sku](#input\_pagopa\_proxy\_plan\_sku) | (Required) pagopa proxy app service sku name | `string` | n/a | yes |
 | <a name="input_pagopa_proxy_vnet_integration"></a> [pagopa\_proxy\_vnet\_integration](#input\_pagopa\_proxy\_vnet\_integration) | (Optional) enables vnet integration for pagopa proxy app service | `bool` | `true` | no |
 | <a name="input_pagopa_proxy_zone_balance_enabled"></a> [pagopa\_proxy\_zone\_balance\_enabled](#input\_pagopa\_proxy\_zone\_balance\_enabled) | (Optional) enables zone balancing for pagopa proxy app service | `bool` | `true` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

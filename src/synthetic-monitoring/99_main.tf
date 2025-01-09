@@ -10,7 +10,7 @@ terraform {
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "<= 3.85.0"
+      version = "<= 4.0.0"
     }
     null = {
       source  = "hashicorp/null"
@@ -33,3 +33,7 @@ data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
 
+module "__v3__" {
+  # v8.67.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=bfddd6f7c18b5bd1aa1b367cefed6b5dc6f1242d"
+}

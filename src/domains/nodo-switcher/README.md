@@ -25,7 +25,7 @@ opening slack on your browser and navigating to the desired channel, you will fi
 - `YYYYY` is the channel id
 
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -75,11 +75,11 @@ No modules.
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_location_string"></a> [location\_string](#input\_location\_string) | One of West Europe, North Europe | `string` | n/a | yes |
-| <a name="input_nodo_switcher"></a> [nodo\_switcher](#input\_nodo\_switcher) | n/a | <pre>object({<br>    pagopa_nodo_url                  = string<br>    trigger_max_age_minutes          = number<br>    enable_switch_approval           = bool<br>    force_execution_for_old_triggers = bool<br>    apim_variables = list(object({<br>      name  = string<br>      value = string<br>    }))<br>  })</pre> | <pre>{<br>  "apim_variables": [<br>    {<br>      "name": "apim_enable_nm3_decoupler_switch",<br>      "value": "false"<br>    },<br>    {<br>      "name": "apim_enable_routing_decoupler_switch",<br>      "value": "false"<br>    },<br>    {<br>      "name": "default_node_id",<br>      "value": "NDP003PROD"<br>    },<br>    {<br>      "name": "default-nodo-backend",<br>      "value": "https://10.79.20.34"<br>    }<br>  ],<br>  "enable_switch_approval": true,<br>  "force_execution_for_old_triggers": false,<br>  "pagopa_nodo_url": "https://httpbin.org/status/200",<br>  "trigger_max_age_minutes": 30<br>}</pre> | no |
+| <a name="input_nodo_switcher"></a> [nodo\_switcher](#input\_nodo\_switcher) | n/a | <pre>object({<br/>    pagopa_nodo_url                  = string<br/>    trigger_max_age_minutes          = number<br/>    enable_switch_approval           = bool<br/>    force_execution_for_old_triggers = bool<br/>    apim_variables = list(object({<br/>      name  = string<br/>      value = string<br/>    }))<br/>  })</pre> | <pre>{<br/>  "apim_variables": [<br/>    {<br/>      "name": "apim_enable_nm3_decoupler_switch",<br/>      "value": "false"<br/>    },<br/>    {<br/>      "name": "apim_enable_routing_decoupler_switch",<br/>      "value": "false"<br/>    },<br/>    {<br/>      "name": "default_node_id",<br/>      "value": "NDP003PROD"<br/>    },<br/>    {<br/>      "name": "default-nodo-backend",<br/>      "value": "https://10.79.20.34"<br/>    }<br/>  ],<br/>  "enable_switch_approval": true,<br/>  "force_execution_for_old_triggers": false,<br/>  "pagopa_nodo_url": "https://httpbin.org/status/200",<br/>  "trigger_max_age_minutes": 30<br/>}</pre> | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
