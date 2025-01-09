@@ -22,10 +22,10 @@ locals {
         }
       ]
       ]) : "${qk.key_name}" => {
-          queue_name = qk.queue_name
-          listen     = qk.listen
-          send       = qk.send
-          manage     = qk.manage
+      queue_name = qk.queue_name
+      listen     = qk.listen
+      send       = qk.send
+      manage     = qk.manage
     }
   }
 
@@ -57,7 +57,7 @@ resource "azurerm_servicebus_namespace" "service_bus_wisp" {
   premium_messaging_partitions = var.service_bus_wisp.premium_messaging_partitions
 
   dynamic "network_rule_set" {
-    for_each = var.env_short != "d" ? [1] : []
+    for_each = var.env_short == "p" ? [1] : []
     content {
       trusted_services_allowed = true
 

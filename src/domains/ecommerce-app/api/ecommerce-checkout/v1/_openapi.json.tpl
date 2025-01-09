@@ -389,7 +389,16 @@
             },
             "required": true,
             "description": "Transaction ID"
-          }
+          },
+          {
+            "in": "header",
+            "name": "lang",
+            "required": false,
+            "description": "Language requested by the user",
+            "schema": {
+              "type": "string",
+            }
+          },
         ],
         "security": [
           {
@@ -662,13 +671,13 @@
             }
           },
           {
-            "in": "query",
-            "name": "recaptchaResponse",
-            "description": "Recaptcha response",
+            "in": "header",
+            "name": "lang",
+            "required": false,
+            "description": "Language requested by the user",
             "schema": {
               "type": "string"
-            },
-            "required": true
+            }
           }
         ],
         "responses": {

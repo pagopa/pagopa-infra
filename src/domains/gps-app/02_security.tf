@@ -44,3 +44,42 @@ resource "azurerm_key_vault_secret" "gpd_subscription_key" {
     ]
   }
 }
+
+// apikey test apim_gpd_payments_pull_product_and_debt_positions_product_test and save keys on KV
+resource "azurerm_api_management_subscription" "test_gpd_payments_pull_and_debt_positions_subkey" {
+  count               = 1 # var.env_short != "p" ? 1 : 0 # ppull-prod-test
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = module.apim_gpd_payments_pull_product_and_debt_positions_product_test[0].id
+  display_name  = "TEST gpd-payments-pull and debt-positions"
+  allow_tracing = false
+  state         = "active"
+}
+
+resource "azurerm_key_vault_secret" "test_gpd_payments_pull_and_debt_positions_subkey_kv" {
+  count        = 1 # var.env_short != "p" ? 1 : 0 # ppull-prod-test
+  depends_on   = [azurerm_api_management_subscription.test_gpd_payments_pull_and_debt_positions_subkey[0]]
+  name         = "integration-test-subkey" # "tst-gpd-ppull-debt-position-key"
+  value        = azurerm_api_management_subscription.test_gpd_payments_pull_and_debt_positions_subkey[0].primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+
+resource "azurerm_key_vault_secret" "iuv_generator_subscription_key" {
+  name         = "apikey-iuv-generator"
+  value        = azurerm_api_management_subscription.iuv_generator_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}
+
+resource "azurerm_key_vault_secret" "gps_mbd_service_integration_test_subscription_key" {
+  name         = "apikey-spontaneous-payments-services"
+  value        = azurerm_api_management_subscription.gps_spontaneous_payments_services_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}

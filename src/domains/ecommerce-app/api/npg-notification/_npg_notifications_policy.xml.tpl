@@ -119,7 +119,7 @@
                             bpayEndToEndId = (string)receivedAdditionalData["bpayEndToEndId"];
                             myBankEndToEndId = (string)receivedAdditionalData["myBankEndToEndId"];
                         }
-                        string paymentEndToEndId = null; 
+                        string paymentEndToEndId = null;
                         switch(paymentCircuit){
                             case "BANCOMATPAY":
                                 paymentEndToEndId = bpayEndToEndId;
@@ -159,7 +159,10 @@
         <!-- end send transactions service PATCH request -->
     </inbound>
     <backend>
-        <forward-request timeout="10" />
+        <retry condition="@(context.Response.StatusCode >= 500)"
+              interval="2" count="3" first-fast-retry="true">
+              <forward-request timeout="10" buffer-request-body="true" />
+        </retry>
     </backend>
     <outbound>
         <!-- forward transaction-service response but set empty body for response -->

@@ -28,6 +28,7 @@ log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 aks_sku_tier                   = "Standard"
 aks_private_cluster_is_enabled = true
 aks_alerts_enabled             = false
+aks_enable_workload_identity   = true
 
 aks_system_node_pool = {
   name                         = "system01"
@@ -57,6 +58,9 @@ aks_user_node_pool = {
 aks_cidr_subnet = ["10.1.0.0/17"]
 
 aks_kubernetes_version = "1.29.4"
+
+# Subnet aks
+subnet_private_endpoint_network_policies_enabled = true
 
 ingress_min_replica_count = "2"
 ingress_max_replica_count = "30"
@@ -148,14 +152,6 @@ prometheus_basic_auth_file = "./env/weu-uat/kube-prometheus-stack-helm/prometheu
 kube_prometheus_stack_helm = {
   chart_version = "44.2.1"
   values_file   = "./env/weu-uat/kube-prometheus-stack-helm/values.yaml"
-}
-
-# chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
-# image tags: https://github.com/pagopa/infra-ssl-check/releases
-tls_cert_check_helm = {
-  chart_version = "1.21.0"
-  image_name    = "ghcr.io/pagopa/infra-ssl-check"
-  image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
 }
 
 tls_checker_https_endpoints_to_check = [

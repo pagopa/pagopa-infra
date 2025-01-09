@@ -3,7 +3,7 @@
   "info": {
     "version": "0.0.1",
     "title": "Pagopa eCommerce services for app IO with payment wallet",
-    "description": "API's exposed from eCommerce services to app IO to allow pagoPA payment with payment wallet.\n\nThe payment workflow ends with a outcome returned as query params in a webview, for example \n \n - /outcomes?outcome=0. \n\nThe possible outcome are:\n- SUCCESS(0) → payment completed successfully\n- GENERIC_ERROR(1),\n- AUTH_ERROR(2) → authorization denied\n- INVALID_DATA(3) → incorrect data\n- TIMEOUT(4) → timeout \n- CIRCUIT_ERROR(5) → Unsupported circuit (should never happen)\n- MISSING_FIELDS(6) → missing data (should never happen) \n- INVALID_CARD(7) → expired card (or similar)\n- CANCELED_BY_USER(8) → canceled by the user\n- DUPLICATE_ORDER(9) → Double transaction (should never happen)\n- EXCESSIVE_AMOUNT(10) → Excess of availability \n- ORDER_NOT_PRESENT(11) → (should never happen)\n- INVALID_METHOD(12) → (should never happen)\n- KO_RETRIABLE(13) → transaction failed, but the transaction is theoretically recoverable. For the user it is a KO\n- INVALID_SESSION(14)",
+    "description": "API's exposed from eCommerce services to app IO to allow pagoPA payment with payment wallet.",
     "contact": {
       "name": "pagoPA - Touchpoints team"
     }
@@ -32,6 +32,14 @@
         "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/611516433/-servizio+payment+methods+service",
         "description": "Technical specifications"
       }
+    },
+    {
+      "name": "wallets",
+      "description": "Api's for wallet operations"
+    },
+    {
+      "name": "users",
+      "description": "Api's for users statistics"
     }
   ],
   "servers": [
@@ -530,7 +538,7 @@
               }
             }
           },
-           "422": {
+          "422": {
             "description": "Transaction cannot be processed",
             "content": {
               "application/json": {
@@ -763,6 +771,66 @@
           },
           "504": {
             "description": "Timeout serving request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/lastPaymentMethodUsed": {
+      "get": {
+        "operationId": "getUserLastPaymentMethodUsed",
+        "description": "Retrieve the last payment method used by a user",
+        "security": [
+          {
+            "pagoPAPlatformSessionToken": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Get user last payment method used, saved or guest",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserLastPaymentMethodResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Cannot find the requested user by user id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -1996,6 +2064,69 @@
           }
         }
       },
+      "UserLastPaymentMethodResponse": {
+        "description": "Last usage data for wallet or payment method (guest)",
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Last usage data for wallets.",
+            "properties": {
+              "walletId": {
+                "$ref": "#/components/schemas/WalletId"
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "type": {
+                "$ref": "#/components/schemas/WalletLastUsageType"
+              }
+            },
+            "required": [
+              "walletId",
+              "date",
+              "type"
+            ]
+          },
+          {
+            "type": "object",
+            "description": "Last usage data for wallets",
+            "properties": {
+              "paymentMethodId": {
+                "type": "string",
+                "format": "uuid",
+                "description": "eCommerce payment method id associated to this last usage"
+              },
+              "date": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "type": {
+                "$ref": "#/components/schemas/GuestMethodLastUsageType"
+              }
+            },
+            "required": [
+              "paymentMethodId",
+              "date",
+              "type"
+            ]
+          }
+        ]
+      },
+      "WalletLastUsageType": {
+        "type": "string",
+        "description": "Discriminant type for last usage of a wallet",
+        "enum": [
+          "wallet"
+        ]
+      },
+      "GuestMethodLastUsageType": {
+        "type": "string",
+        "description": "Discriminant type for last usage of a guest (non-wallet) payment method",
+        "enum": [
+          "guest"
+        ]
+      },
       "WalletId": {
         "description": "Wallet identifier",
         "type": "string",
@@ -2068,8 +2199,9 @@
           },
           "lastUsage": {
             "type": "string",
-            "description": "Time of last usage of this wallet by the client",
-            "format": "date-time"
+            "description": "(DEPRECATED\\: use GET /user/lastPaymentMethodUsed to retrieve user last used method) Time of last usage of this wallet by the client\n",
+            "format": "date-time",
+            "deprecated": true
           }
         },
         "required": [

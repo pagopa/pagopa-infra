@@ -205,21 +205,27 @@ wisp_converter_cosmos_nosql_db_params = {
   private_endpoint_enabled          = false
   public_network_access_enabled     = true
   is_virtual_network_filter_enabled = false
+  burst_capacity_enabled            = true
+  backup_continuous_enabled         = false
 
-  backup_continuous_enabled = false
-
-  data_ttl                     = 259200 # 3 days in second
-  data_max_throughput          = 400
-  re_ttl                       = 259200 # 3 days in second
-  re_max_throughput            = 400
-  receipt_ttl                  = 259200 # 3 days in second
-  receipt_max_throughput       = 400
-  idempotency_ttl              = 259200 # 3 days in second
-  idempotency_max_throughput   = 400
-  rt_ttl                       = 259200 # 3 days in second
-  rt_max_throughput            = 400
-  configuration_ttl            = -1
-  configuration_max_throughput = 400
+  data_ttl                           = 259200 # 3 days in second
+  data_max_throughput                = 400
+  re_ttl                             = 259200 # 3 days in second
+  re_max_throughput                  = 400
+  receipt_ttl                        = 259200 # 3 days in second
+  receipt_max_throughput             = 400
+  receipt_dead_letter_ttl            = 259200 # 3 days in second
+  receipt_dead_letter_max_throughput = 400
+  idempotency_ttl                    = 259200 # 3 days in second
+  idempotency_max_throughput         = 400
+  rt_ttl                             = 259200 # 3 days in second
+  rt_max_throughput                  = 400
+  configuration_ttl                  = -1
+  configuration_max_throughput       = 400
+  report_ttl                         = 259200 # 3 days in seconds
+  report_max_throughput              = 400
+  nav2iuv_mapping_ttl                = 259200 # 3 days in second
+  nav2iuv_mapping_max_throughput     = 400
 }
 
 cidr_subnet_cosmosdb_nodo_re        = ["10.1.170.0/24"]

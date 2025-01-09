@@ -59,11 +59,16 @@ dns_zone_internal_prefix = "internal.uat.platform"
 dns_zone_prefix_prf      = "prf.platform"
 dns_zone_wfesp           = "wfesp.test"
 
-private_dns_zone_db_nodo_pagamenti       = "u.db-nodo-pagamenti.com"
-dns_a_reconds_dbnodo_ips                 = ["10.70.73.10"]    # db onCloud
-dns_a_reconds_dbnodo_prf_ips             = ["10.70.73.20"]    # db onCloud prf
-dns_a_reconds_dbnodonexipostgres_ips     = ["10.222.214.174"] # db onPrem PostgreSQL
-dns_a_reconds_dbnodonexipostgres_prf_ips = ["10.222.214.184"] # db onPrem PostgreSQL
+private_dns_zone_db_nodo_pagamenti   = "u.db-nodo-pagamenti.com"
+dns_a_reconds_dbnodo_ips             = ["10.70.73.10"]    # db onCloud
+dns_a_reconds_dbnodo_prf_ips         = ["10.70.73.20"]    # db onCloud prf
+dns_a_reconds_dbnodonexipostgres_ips = ["10.222.214.174"] # db onPrem PostgreSQL
+
+dns_a_reconds_dbnodonexipostgres_balancer_1_ips     = ["10.222.214.174"] # db onPrem UAT PostgreSQL
+dns_a_reconds_dbnodonexipostgres_balancer_2_ips     = ["10.222.214.176"] # db onPrem UAT PostgreSQL
+dns_a_reconds_dbnodonexipostgres_prf_ips            = ["10.222.214.184"] # db onPrem PostgreSQL
+dns_a_reconds_dbnodonexipostgres_prf_balancer_1_ips = ["10.222.214.127"] # db onPrem PRF PostgreSQL
+dns_a_reconds_dbnodonexipostgres_prf_balancer_2_ips = ["10.222.214.128"] # db onPrem PRF PostgreSQL
 ### External resources
 
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"
@@ -169,8 +174,6 @@ integration_appgateway_zones                        = []
 
 nodo_pagamenti_psp                           = "06529501006,97249640588,08301100015,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
 nodo_pagamenti_ec                            = "00493410583,77777777777,00113430573,00184260040,00103110573,00939820726,00109190579,00122520570,82501690018,80001220773,84515520017,03509990788,84002410540,00482510542,00326070166,01350940019,00197530298,00379480031,06396970482,00460900038,82005250285,82002770236,80013960036,83000970018,84002970162,82500110158,00429530546,01199250158,80003370477,00111190575,81001650548,00096090550,95001650167,00451080063,80038190163,00433320033,00449050061,82002270724,00682280284,00448140541,00344700034,81000550673,00450150065,80002860775,83001970017,00121490577,00383120037,00366270031,80023530167,01504430016,00221940364,00224320366,00246880397,01315320489,00354730392,00357850395,80008270375,00218770394,00226010395,00202300398,81002910396,00360090393,84002010365,00242920395,80005570561,80015230347,00236340477,92035800488,03428581205,00114510571,97086740582,80029030568,87007530170,92000530532,80023370168,01349510436,10718570012,01032450072,01248040998,00608810057,80094780378,82002730487,80016430045,03299640163,94032590278,01928010683,91007750937,80052310580,97169170822,80043570482,80011170505,94050080038,01013130073,09227921005,94055970480,01429910183,01013210073,80031650486,83002410260,00337870406,92001600524,80007270376,02928200241,80082160013,01242340998,83000730297,01266290996,80012150274,02508710585,01142420056,02438750586"
-nodo_pagamenti_url                           = "https://10.70.74.200/nodo-uat/webservices/input"
-ip_nodo                                      = "x.x.x.x"      # disabled 10.79.20.32/uat/webservices/input shall use lb_aks
 lb_aks                                       = "10.70.74.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 schema_ip_nexi                               = "http://10.70.74.200"
 default_node_id                              = "NDP002UAT"
@@ -678,6 +681,7 @@ node_forwarder_logging_level          = "DEBUG"
 node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "P1v3"
 node_fw_ha_snet_cidr                  = ["10.1.157.0/24"]
+node_fw_dbg_snet_cidr                 = ["10.1.195.0/24"]
 azdo_agent_vm_image_name              = "pagopa-u-azdo-agent-ubuntu2204-image-v3"
 
 # public app gateway
@@ -692,12 +696,12 @@ app_gateway_wisp2_certificate_name      = "uat-wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "uat-wisp2-pagopa-gov-it"
 app_gateway_wfespgovit_certificate_name = "wfesp-test-pagopa-gov-it"
 app_gateway_kibana_certificate_name     = "kibana-uat-platform-pagopa-it"
-app_gateway_sku_name                    = "WAF_v2"
-app_gateway_sku_tier                    = "WAF_v2"
-app_gateway_waf_enabled                 = true
-# app_gateway_sku_name                    = "Standard_v2"
-# app_gateway_sku_tier                    = "Standard_v2"
-# app_gateway_waf_enabled                 = false
+#app_gateway_sku_name                    = "WAF_v2"
+#app_gateway_sku_tier                    = "WAF_v2"
+#app_gateway_waf_enabled                 = true
+app_gateway_sku_name       = "Standard_v2"
+app_gateway_sku_tier       = "Standard_v2"
+app_gateway_waf_enabled    = false
 app_gateway_alerts_enabled = false
 app_gateway_deny_paths = [
   # "/nodo/.*", # TEMP currently leave UAT public for testing, we should add subkeys here as well ( ➕ 🔓 forbid policy api_product/nodo_pagamenti_api/_base_policy.xml)
@@ -743,15 +747,15 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "93.63.219.230",  # PagoPA on prem VPN
     "93.63.219.234",  # PagoPA on prem VPN DR
     "20.93.160.60",   # CSTAR
-    "213.215.138.80", # Softlab L1 Pagamenti VPN
-    "213.215.138.79", # Softlab L1 Pagamenti VPN
-    "82.112.220.178", # Softlab L1 Pagamenti VPN
-    "77.43.17.42",    # Softlab L1 Pagamenti VPN
-    "151.2.45.1",     # Softlab L1 Pagamenti VPN
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DSIMESSO
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
     "193.203.230.21", # VPN NEXI
-    "151.1.203.68"    # Softlab L1 backup
+    "2.33.87.3"       # Nuovo senzanome
   ]
 }
 
@@ -768,7 +772,7 @@ apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integrati
 # monitoring
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
-law_daily_quota_gb    = 30
+law_daily_quota_gb    = 50
 
 
 
@@ -782,5 +786,29 @@ monitor_env_test_urls = [
   {
     host = "uat.wisp2.pagopa.gov.it",
     path = "",
+  }
+]
+
+app_gateway_allowed_paths_upload = [
+  "/upload/gpd/.*",
+  "/nodo-auth/node-for-psp/.*",
+  "/nodo-auth/nodo-per-psp/.*",
+  "/nodo/nodo-per-psp/.*",
+  "/nodo/nodo-per-pa/.*",
+  "/nodo-auth/nodo-per-pa/.*",
+  "/nodo-auth/node-for-pa/.*",
+  "/nodo/node-for-psp/.*",
+  "/fdr-legacy/nodo-per-pa/.*",
+  "/fdr-psp/.*" # Added temporarily as workaround for bug https://pagopa.atlassian.net/browse/PAGOPA-2263
+]
+
+
+route_tools = [
+  {
+    # dev aks nodo oncloud
+    name                   = "tools-outbound-to-nexy-nodo"
+    address_prefix         = "10.70.74.200/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
   }
 ]

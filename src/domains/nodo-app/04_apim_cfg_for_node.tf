@@ -2,7 +2,7 @@
 ## Products ##
 ##############
 module "apim_cfg_for_node_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.20.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "cfg-for-node"
   display_name = "CFG for Node"

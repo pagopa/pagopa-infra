@@ -13,7 +13,7 @@ resource "azurerm_api_management_api_version_set" "api_version_set_wisp_converte
 }
 
 module "wisp_converter_caching_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.7.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
   count  = var.create_wisp_converter ? 1 : 0
 
   name                  = format("%s-wisp-converter-caching-api", var.env_short)

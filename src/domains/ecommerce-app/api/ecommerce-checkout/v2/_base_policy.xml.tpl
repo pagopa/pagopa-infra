@@ -7,6 +7,7 @@
           </allowed-origins>
           <allowed-methods>
               <method>POST</method>
+              <method>GET</method>
               <method>OPTIONS</method>
           </allowed-methods>
           <allowed-headers>
@@ -24,8 +25,11 @@
       <value>CHECKOUT</value>
     </set-header>
       <choose>
-        <when condition="@( context.Request.Url.Path.Contains("transactions") )">
+        <when condition="@( context.Request.Url.Path.Contains("transactions") && context.Operation.Id.Equals("newTransaction")  )">
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2.1")"/>
+        </when>
+         <when condition="@( context.Request.Url.Path.Contains("transactions") && context.Operation.Id.Equals("getTransactionInfo")  )">
+          <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2")"/>
         </when>
         <when condition="@( context.Request.Url.Path.Contains("payment-methods") )">
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service/v2")"/>

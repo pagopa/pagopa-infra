@@ -13,9 +13,9 @@ module "aks_prometheus_install" {
 
 module "elastic_agent" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_agent?ref=introducing-agent-module"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_agent?ref=v8.50.0"
 
-  es_host = var.env == "p" ? "https://weu${var.env}.kibana.internal.platform.pagopa.it:443/elastic" : "https://weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it:443/elastic"
+  es_host = var.env_short == "p" ? "https://weu${var.env}.kibana.internal.platform.pagopa.it:443/elastic" : "https://weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it:443/elastic"
 
   eck_version = "2.9"
 

@@ -63,15 +63,15 @@ app_gateway_allowed_paths_pagopa_onprem_only = {
     "93.63.219.230",  # PagoPA on prem VPN
     "93.63.219.234",  # PagoPA on prem VPN DR
     "20.86.161.243",  # CSTAR
-    "213.215.138.80", # Softlab L1 Pagamenti VPN
-    "213.215.138.79", # Softlab L1 Pagamenti VPN
-    "82.112.220.178", # Softlab L1 Pagamenti VPN
-    "77.43.17.42",    # Softlab L1 Pagamenti VPN
-    "151.2.45.1",     # Softlab L1 Pagamenti VPN
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO al 1/10/2024
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO al 1/10/2024
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO al 1/10/2024
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO al 1/10/2024
+    "127.0.0.1",      # Softlab L1 Pagamenti VPN DISMESSO al 1/10/2024
     "193.203.229.20", # VPN NEXI
     "193.203.230.22", # VPN NEXI
     "193.203.230.21", # VPN NEXI
-    "151.1.203.68"    # Softlab backup support line
+    "2.33.87.3"       # S.M.I. TECHNOLOGIES AND CONSULTING S.R.L attivo dal 1/10/2024
   ]
 }
 
@@ -90,7 +90,6 @@ apim_nodo_auth_decoupler_enable = true
 apim_fdr_nodo_pagopa_enable     = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 # https://pagopa.atlassian.net/wiki/spaces/PPA/pages/464650382/Regole+di+Rete
 
-lb_aks = "10.70.135.200" # use http protocol + /nodo-<sit|uat|prod> + for SOAP services add /webservices/input
 
 
 

@@ -29,9 +29,9 @@ apim_dns_zone_prefix                        = "dev.platform"
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
 tls_cert_check_helm = {
-  chart_version = "1.21.0"
+  chart_version = "2.0.0"
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
-  image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
+  image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
 
 # function_app docker
@@ -64,3 +64,25 @@ pgbouncer_enabled = false
 
 # WISP-dismantling-cfg
 create_wisp_converter = true
+
+### debezium zookeeper_yaml
+zookeeper_replicas       = "1"
+zookeeper_request_memory = "512Mi"
+zookeeper_request_cpu    = "0.5"
+zookeeper_limits_memory  = "512Mi"
+zookeeper_limits_cpu     = "0.5"
+zookeeper_jvm_xms        = "512m"
+zookeeper_jvm_xmx        = "512m"
+zookeeper_storage_size   = "100Gi"
+
+### debezium kafka_connect_yaml
+replicas           = 1
+request_cpu        = 0.5
+limits_cpu         = 0.5
+request_memory     = "512Mi"
+limits_memory      = "512Mi"
+postgres_db_name   = "apd"
+tasks_max          = "1"
+container_registry = "pagopadcommonacr.azurecr.io"
+max_threads        = 1
+gpd_cdc_enabled    = true

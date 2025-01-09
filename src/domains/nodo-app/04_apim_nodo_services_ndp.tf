@@ -3,7 +3,7 @@
 ##############
 
 module "apim_nodo_dei_pagamenti_product_ndp" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "nodo-ndp"
   display_name = "Nodo dei Pagamenti NDP"
@@ -197,17 +197,6 @@ resource "azurerm_api_management_api_policy" "apim_nodo_per_psp_policy_ndp" {
   })
 }
 
-# resource "azurerm_api_management_api_operation_policy" "fdr_policy_ndp" {
-
-#   api_name            = resource.azurerm_api_management_api.apim_nodo_per_psp_api_v1_ndp.name
-#   api_management_name = module.apim.name
-#   resource_group_name = azurerm_resource_group.rg_api.name
-#   operation_id        = var.env_short == "d" ? "61e9630cb78e981290d7c74c" : var.env_short == "u" ? "61e96321e0f4ba04a49d1280" : "61e9633eea7c4a07cc7d4811"
-
-#   xml_content = templatefile("./api/nodopagamenti_api/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
-#     base-url = var.env_short == "p" ? "{{urlnodo}}" : "http://{{aks-lb-nexi}}{{base-path-nodo-oncloud}}/webservices/input"
-#   })
-# }
 
 ######################################
 ## WS nodo per psp richiesta avvisi ##
@@ -482,7 +471,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_ndp" {
 
 module "apim_nodo_per_pm_api_v1_ndp" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-nodo-per-pm-api-ndp", local.project)
   resource_group_name   = local.pagopa_apim_rg
@@ -541,7 +530,7 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v2_ndp
 
 module "apim_nodo_per_pm_api_v2_ndp" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-nodo-per-pm-api-ndp", local.project)
   resource_group_name   = local.pagopa_apim_rg
@@ -592,7 +581,7 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_ndp" {
 }
 
 module "apim_nodo_monitoring_api_ndp" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-nodo-monitoring-api-ndp", var.env_short)
   resource_group_name   = local.pagopa_apim_rg

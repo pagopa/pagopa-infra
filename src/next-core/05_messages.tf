@@ -73,16 +73,28 @@ module "event_hub03" {
 
   alerts_enabled = var.ehns_alerts_enabled
   metric_alerts  = var.ehns_metric_alerts
-  action = [
-    {
-      action_group_id    = azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = azurerm_monitor_action_group.email.id
-      webhook_properties = null
-    }
-  ]
+
+  # takes a list and replaces any elements that are lists with a
+  # flattened sequence of the list contents.
+  # In this case, we enable OpsGenie only on prod env
+  action = flatten([
+    [
+      {
+        action_group_id    = azurerm_monitor_action_group.slack.id
+        webhook_properties = null
+      },
+      {
+        action_group_id    = azurerm_monitor_action_group.email.id
+        webhook_properties = null
+      }
+    ],
+    (var.env == "prod" ? [
+      {
+        action_group_id    = azurerm_monitor_action_group.infra_opsgenie.0.id
+        webhook_properties = null
+      }
+    ] : [])
+  ])
 
   tags = var.tags
 }
@@ -110,16 +122,27 @@ module "event_hub04" {
 
   eventhubs = var.eventhubs_04
 
-  action = [
-    {
-      action_group_id    = azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = azurerm_monitor_action_group.email.id
-      webhook_properties = null
-    }
-  ]
+  # takes a list and replaces any elements that are lists with a
+  # flattened sequence of the list contents.
+  # In this case, we enable OpsGenie only on prod env
+  action = flatten([
+    [
+      {
+        action_group_id    = azurerm_monitor_action_group.slack.id
+        webhook_properties = null
+      },
+      {
+        action_group_id    = azurerm_monitor_action_group.email.id
+        webhook_properties = null
+      }
+    ],
+    (var.env == "prod" ? [
+      {
+        action_group_id    = azurerm_monitor_action_group.infra_opsgenie.0.id
+        webhook_properties = null
+      }
+    ] : [])
+  ])
 
   tags = var.tags
 }

@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "fdr_history_rg" {
 }
 
 module "fdr_history_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                            = replace("${local.project}-history-sa", "-", "")
   account_kind                    = var.fdr_history_storage_account.account_kind

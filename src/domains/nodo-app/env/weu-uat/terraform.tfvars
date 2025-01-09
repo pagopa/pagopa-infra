@@ -28,9 +28,9 @@ apim_dns_zone_prefix     = "uat.platform"
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
 tls_cert_check_helm = {
-  chart_version = "1.21.0"
+  chart_version = "2.0.0"
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
-  image_tag     = "v1.2.2@sha256:22f4b53177cc8891bf10cbd0deb39f60e1cd12877021c3048a01e7738f63e0f9"
+  image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
 
 nodo_user_node_pool = {
@@ -110,6 +110,20 @@ route_aks = [
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.9.150"
   },
+  {
+    # uat aks nodo nexi postgres onprem prf
+    name                   = "aks-outbound-to-nexi-postgres-prf-onprem-balancer-1-subnet"
+    address_prefix         = "10.222.214.127/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  },
+  {
+    #  prf aks nodo nexi postgres onprem prf
+    name                   = "aks-outbound-to-nexi-postgres-prf-onprem-balancer-2-subnet"
+    address_prefix         = "10.222.214.128/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  }
 ]
 
 vmss_zones           = ["1"]
@@ -217,6 +231,8 @@ storage_account_info = {
   account_replication_type          = "ZRS"
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
+  use_legacy_defender_version       = true
+  public_network_access_enabled     = false
 }
 
 # WISP-dismantling-cfg

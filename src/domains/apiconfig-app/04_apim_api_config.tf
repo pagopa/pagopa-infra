@@ -3,7 +3,7 @@
 ##############
 
 module "apim_api_config_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "product-api-config"
   display_name = "ApiConfig JWT"
@@ -43,7 +43,7 @@ locals {
 }
 
 module "apim_api_config_api" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-api-config-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
@@ -101,7 +101,7 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
   default_scope = format("%s/%s",
     data.azuread_application.apiconfig-be.identifier_uris[0],
   "access-apiconfig-be")
-  client_secret = azurerm_key_vault_secret.apiconfig_client_secret.value
+  # client_secret = azurerm_key_vault_secret.apiconfig_client_secret.value
 
   bearer_token_sending_methods = ["authorizationHeader"]
   client_authentication_method = ["Body"]
@@ -115,7 +115,7 @@ resource "azurerm_api_management_authorization_server" "apiconfig-oauth2" {
 ########################
 
 module "apim_api_config_auth_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "product-api-config-auth"
   display_name = "ApiConfig SubKey"
@@ -157,7 +157,7 @@ resource "azurerm_api_management_api_version_set" "api_config_auth_api" {
 }
 
 module "apim_api_config_auth_api" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-api-config-auth-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
