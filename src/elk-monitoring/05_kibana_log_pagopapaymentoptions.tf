@@ -6,7 +6,7 @@ locals {
     name = "${local.paymentoptions_space_name}"
   }), "\""), "\""), "'", "'\\''")
 
-  ## payments_pull
+  ## pagopapaymentoptions
   pagopapaymentoptions_key = "pagopapaymentoptions"
 
   pagopapaymentoptions_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/pagopa/paymentoptions/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
@@ -20,7 +20,7 @@ locals {
     lifecycle = local.pagopapaymentoptions_key
   }), "\""), "\""), "'", "'\\''")
   pagopapaymentoptions_index_template = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/paymentoptions/index-template.json", {
-    name                      = "paymentoptions-payments-pull"
+    name                      = "payment-options"
     component_template_custom = "${local.pagopapaymentoptions_key}@custom"
   }), "\""), "\""), "'", "'\\''")
 
