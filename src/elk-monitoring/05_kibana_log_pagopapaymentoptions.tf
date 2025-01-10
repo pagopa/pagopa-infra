@@ -25,6 +25,7 @@ locals {
   }), "\""), "\""), "'", "'\\''")
 
   pagopapaymentoptions_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/paymentoptions/data-view.json", {
+    key   = local.pagopapaymentoptions_key
     name  = "Opzioni di Pagamento"
     index = "paymentoptions"
   }), "\""), "\""), "'", "'\\''")
