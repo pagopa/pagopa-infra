@@ -73,6 +73,7 @@ module "buyerbanks_function" {
     PAGOPA_BUYERBANKS_SIGN_ALG_STRING = "SHA256withRSA"
     PAGOPA_BUYERBANKS_CERT_PEER       = var.env_short == "p" ? data.azurerm_key_vault_secret.pagopa_buyerbank_cert_peer[0].value : null
     PAGOPA_BUYERBANKS_THUMBPRINT_PEER = var.env_short == "p" ? data.azurerm_key_vault_secret.pagopa_buyerbank_thumbprint_peer[0].value : null
+    "AzureWebJobs.UpdateBuyerBanks.Disabled" = true
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
