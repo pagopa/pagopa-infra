@@ -316,9 +316,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_
   description    = "eCommerce notifications Availability less than or equal 99%"
   enabled        = true
   query = (<<-QUERY
-let thresholdTrafficMin = 150;
-let thresholdTrafficLinear = 400;
-let lowTrafficAvailability = 96;
+let thresholdTrafficMin = 100;
+let thresholdTrafficLinear = 500;
+let lowTrafficAvailability = 97;
 let highTrafficAvailability = 99;
 let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
 let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
@@ -326,7 +326,7 @@ AzureDiagnostics
 | where url_s == 'https://api.platform.pagopa.it/ecommerce/notifications-service/v1/emails'
 | summarize
     Total=count(),
-    Success=countif(responseCode_d < 500 or url_s startswith "https://api.platform.pagopa.it/ecommerce/notifications-service/v1/emails" and ( responseCode_d == 502 or responseCode_d == 504))
+    Success=countif(responseCode_d < 500)
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
