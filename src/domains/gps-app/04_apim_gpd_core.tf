@@ -190,7 +190,7 @@ module "apim_api_debt_positions_api_v3" {
   display_name = local.apim_debt_positions_service_api.display_name
   path         = local.apim_debt_positions_service_api.path
   protocols    = ["https"]
-  service_url = "${local.apim_debt_positions_service_api.service_url}/v3"
+  service_url  = "${local.apim_debt_positions_service_api.service_url}/v3"
 
   content_format = "openapi"
   content_value = templatefile("./api/gpd_api/debt-position-services/v3/_openapi.json.tpl", {
