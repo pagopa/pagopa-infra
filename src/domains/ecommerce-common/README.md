@@ -16,6 +16,7 @@
 | <a name="module_cosmosdb_ecommerce_collections"></a> [cosmosdb\_ecommerce\_collections](#module\_cosmosdb\_ecommerce\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v6.7.0 |
 | <a name="module_cosmosdb_ecommerce_history_collections"></a> [cosmosdb\_ecommerce\_history\_collections](#module\_cosmosdb\_ecommerce\_history\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v6.7.0 |
 | <a name="module_cosmosdb_ecommerce_snet"></a> [cosmosdb\_ecommerce\_snet](#module\_cosmosdb\_ecommerce\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.7.0 |
+| <a name="module_ecommerce_pm_history_storage"></a> [ecommerce\_pm\_history\_storage](#module\_ecommerce\_pm\_history\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.7.0 |
 | <a name="module_ecommerce_storage_deadletter"></a> [ecommerce\_storage\_deadletter](#module\_ecommerce\_storage\_deadletter) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.7.0 |
 | <a name="module_ecommerce_storage_snet"></a> [ecommerce\_storage\_snet](#module\_ecommerce\_storage\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.7.0 |
 | <a name="module_ecommerce_storage_transient"></a> [ecommerce\_storage\_transient](#module\_ecommerce\_storage\_transient) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.7.0 |
@@ -127,6 +128,7 @@
 | [azurerm_storage_queue.transactions_refund_queue_blue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.transactions_refund_retry_queue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.transactions_refund_retry_queue_blue](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
+| [azurerm_storage_table.pm_history_ingestion_log_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/group) | data source |
