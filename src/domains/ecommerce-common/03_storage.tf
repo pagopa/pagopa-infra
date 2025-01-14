@@ -558,3 +558,33 @@ resource "azurerm_monitor_metric_alert" "queue_storage_account_average_messge_co
     skip_metric_validation = false
   }
 }
+
+## storage to support pm transaction migration for helpdesk-service
+module "ecommerce_pm_history_storage" {
+  count  = var.env_short == "p" ? 1 : 0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
+
+  name                            = replace("${local.project}-pm-h-sa", "-", "")
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  account_replication_type        = "GZRS"
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = true
+  resource_group_name             = azurerm_resource_group.storage_ecommerce_rg.name
+  location                        = var.location
+  advanced_threat_protection      = true
+  allow_nested_items_to_be_public = false
+  public_network_access_enabled   = true
+  blob_delete_retention_days      = 30
+
+  network_rules = null
+
+  tags = var.tags
+}
+
+## table#1 storage pm-transaction-ecommerce-history-logs
+resource "azurerm_storage_table" "pm_history_ingestion_log_table" {
+  count                = var.env_short == "p" ? 1 : 0
+  name                 = "pmHistoryIngestionLogTable"
+  storage_account_name = module.ecommerce_pm_history_storage[0].name
+}
