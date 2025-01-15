@@ -1,15 +1,20 @@
 <policies>
     <inbound>
+        <set-body>@{
+            var requestBody = context.Request.Body.As<JObject>();
+
+            var startTransactionId = requestBody["tR"]?["sTId"]?.ToString();
+            var endTransactionId = requestBody["tR"]?["eTId"]?.ToString();
+
+            return new JObject(
+                new JProperty("type", "TRANSACTION_ID_RANGE"),
+                new JProperty("transactionIdRange", new JObject(
+                    new JProperty("startTransactionId", startTransactionId),
+                    new JProperty("endTransactionId", endTransactionId)
+                ))
+            ).ToString();
+        }</set-body>
         <base/>
-        <set-body>
-            {
-                "type": "TRANSACTION_ID_RANGE",
-                "transactionIdRange": {
-                    "startTransactionId": "@(context.Request.Body.As<JObject>().SelectToken('tR.sTId').ToString())",
-                    "endTransactionId": "@(context.Request.Body.As<JObject>().SelectToken('tR.eTId').ToString())"
-                }
-            }
-        </set-body>
     </inbound>
     <outbound>
         <base/>
