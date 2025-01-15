@@ -399,7 +399,7 @@ locals {
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15
-      "threshold"   = 10
+      "threshold"   = 20
     },
     {
       "queue_key"   = "transactions-refund-retry-queue"
@@ -413,14 +413,14 @@ locals {
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15
-      "threshold"   = 10
+      "threshold"   = 40
     },
     {
       "queue_key"   = "transaction-auth-requested-queue"
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15
-      "threshold"   = 10
+      "threshold"   = 400
     },
     {
       "queue_key"   = "transactions-close-payment-retry-queue"
@@ -448,7 +448,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_enqueue_rate_a
   description    = format("Enqueuing rate for queue %s > ${each.value.threshold} during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
   enabled        = true
   query = format(<<-QUERY
-    let endDelete = datetime_local_to_utc(startofday(now()), 'Europe/Rome');
+    let endDelete = datetime_local_to_utc(now(), 'Europe/Rome');
     let startDelete = endDelete - ${each.value.time_window}m;
     let endPut = startDelete;
     let startPut = endPut - ${each.value.time_window}m;
