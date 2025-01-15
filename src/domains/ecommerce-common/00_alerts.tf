@@ -309,11 +309,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_
 
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
-    email_subject          = "[eCommerce] Availability Alert"
+    email_subject          = "[eCommerce] Notifications service Availability Alert"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "eCommerce notifications Availability less than or equal 99%"
+  description    = "eCommerce notifications service Availability less than or equal 99%"
   enabled        = true
   query = (<<-QUERY
 let thresholdTrafficMin = 100;
