@@ -16,6 +16,12 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   internet_query_enabled = var.law_internet_query_enabled
 
   tags = var.tags
+
+  lifecycle {
+    ignore_changes = [
+      sku
+    ]
+  }
 }
 
 # Application insights
