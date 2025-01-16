@@ -233,7 +233,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
 
   action {
     action_group           = each.value.action_group
-    email_subject          = "Email Header"
+    email_subject          = "[pay-wallet] Enqueue rate for wallet queue too high"
     custom_webhook_payload = "{}"
   }
   data_source_id = module.pay_wallet_storage[0].id

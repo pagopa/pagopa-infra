@@ -334,7 +334,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
 
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
-    email_subject          = "[eCommerce] Enqueue rate alert"
+    email_subject          = "[eCommerce] Enqueue rate for transient queue too high (instant processing)"
     custom_webhook_payload = "{}"
   }
   data_source_id = module.ecommerce_storage_transient.id
@@ -441,7 +441,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_enqueue_rate_a
 
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
-    email_subject          = "Email Header"
+    email_subject          = "[eCommerce] Enqueue rate for transient queue too high (delayed processing)"
     custom_webhook_payload = "{}"
   }
   data_source_id = module.ecommerce_storage_transient.id
@@ -556,7 +556,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
 
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
-    email_subject          = "Email Header"
+    email_subject          = "[eCommerce] Writes for dead letter queue too high"
     custom_webhook_payload = "{}"
   }
   data_source_id = module.ecommerce_storage_deadletter.id
