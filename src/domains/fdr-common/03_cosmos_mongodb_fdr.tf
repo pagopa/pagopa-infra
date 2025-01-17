@@ -63,6 +63,40 @@ resource "azurerm_cosmosdb_mongo_database" "fdr" {
 locals {
   collections = [
     {
+      name = "fdr_flow"
+      indexes = [
+        {
+          keys   = ["_id"] # document UID
+          unique = true
+        },
+        {
+          keys   = ["name", "sender.psp_id", "revision"] # flow_revision_idx
+          unique = true
+        }
+      ]
+      shard_key   = null,
+      ttl_seconds = "3024000" # 30 days + 5 days (deltaTime)
+    },
+    {
+      name = "fdr_payment"
+      indexes = [
+        {
+          keys   = ["_id"] # document UID
+          unique = true
+        },
+        {
+          keys   = ["ref_fdr.id", "index"] # payment_by_fdr_idx
+          unique = true
+        },
+        #{
+        #  keys   = ["ref_fdr.sender_psp_id", "iuv", "created"] # payment_by_iuv_idx
+        #  unique = false
+        #}
+      ]
+      shard_key   = null,
+      ttl_seconds = "3024000" # 30 days + 5 days (deltaTime)
+    },
+    {
       name = "fdr_history"
       indexes = [{
         keys   = ["_id"] # reporting_flow_name + revision
