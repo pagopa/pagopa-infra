@@ -80,6 +80,7 @@
 | [azurerm_api_management_api_operation_policy.get_transactions_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.helpdesk_pgs_vpos](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.helpdesk_pgs_xpay](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.helpdesk_pm_search_bulk](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.io_calculate_fee_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.io_get_all_payment_methods](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.io_post_wallet_transactions_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
@@ -201,13 +202,13 @@
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
-| <a name="input_pagopa_vpn"></a> [pagopa\_vpn](#input\_pagopa\_vpn) | pagoPA on prem VPN | <pre>object({<br/>    ips = list(string)<br/>  })</pre> | n/a | yes |
-| <a name="input_pagopa_vpn_dr"></a> [pagopa\_vpn\_dr](#input\_pagopa\_vpn\_dr) | pagoPA on prem VPN DR | <pre>object({<br/>    ips = list(string)<br/>  })</pre> | n/a | yes |
+| <a name="input_pagopa_vpn"></a> [pagopa\_vpn](#input\_pagopa\_vpn) | pagoPA on prem VPN | <pre>object({<br>    ips = list(string)<br>  })</pre> | n/a | yes |
+| <a name="input_pagopa_vpn_dr"></a> [pagopa\_vpn\_dr](#input\_pagopa\_vpn\_dr) | pagoPA on prem VPN DR | <pre>object({<br>    ips = list(string)<br>  })</pre> | n/a | yes |
 | <a name="input_pdv_api_base_path"></a> [pdv\_api\_base\_path](#input\_pdv\_api\_base\_path) | Personal data vault api base path | `string` | `null` | no |
-| <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br/>    name         = optional(string, null)<br/>    minAvailable = optional(number, null)<br/>    matchLabels  = optional(map(any), {})<br/>  }))</pre> | `{}` | no |
+| <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br>    name         = optional(string, null)<br>    minAvailable = optional(number, null)<br>    matchLabels  = optional(map(any), {})<br>  }))</pre> | `{}` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
-| <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image_name    = string,<br/>    image_tag     = string<br/>  })</pre> | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
+| <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image_name    = string,<br>    image_tag     = string<br>  })</pre> | n/a | yes |
 
 ## Outputs
 

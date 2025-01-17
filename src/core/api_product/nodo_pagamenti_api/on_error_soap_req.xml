@@ -7,6 +7,7 @@
     <trace source="first-when" severity="information">execute on-error request</trace>
     <choose>
       <when condition="@(context.Variables.ContainsKey("soapAction") && context.Variables.GetValueOrDefault<string>("soapAction", "")!= "")">
+      <set-variable name="contentType" value="text/xml"/>
       <!-- SOAP requests -->
       <send-request mode="new" ignore-error="true" response-variable-name="risposta">
         <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
@@ -26,6 +27,7 @@
       </send-request>
     </when>
     <otherwise>
+      <set-variable name="contentType" value="application/json"/>
       <!-- REST requests -->
       <send-request mode="new" ignore-error="true" response-variable-name="risposta">
         <set-url>@{return (string) context.Variables["baseUrl"] + "/" + (string)context.Request.Url.Path; }</set-url>
@@ -44,11 +46,9 @@
   </choose>
   <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["risposta"]).Body.As<string>(preserveContent: true))" />
   <return-response>
-    <!--
-<set-header name="Content-Type" exists-action="override">
-<value>text/xml</value>
-</set-header>
-    -->
+    <set-header name="Content-Type" exists-action="override">
+        <value>@((string)context.Variables["contentType"])</value>
+    </set-header>
     <set-body>@{
       string message = (string)context.Variables["leggirisposta"];
       return message;
