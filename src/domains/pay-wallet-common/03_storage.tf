@@ -240,7 +240,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
   description    = format("Enqueuing rate for queue %s > ${each.value.threshold} during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
   enabled        = true
   query = format(<<-QUERY
-    let endDelete = datetime_local_to_utc(startofday(now()), 'Europe/Rome');
+    let endDelete = datetime_local_to_utc(now(), 'Europe/Rome');
     let startDelete = endDelete - ${each.value.time_window}m;
     let endPut = startDelete;
     let startPut = endPut - ${each.value.time_window}m;
