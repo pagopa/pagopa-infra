@@ -477,7 +477,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_enqueue_rate_a
         | project PutCount, DeleteCount, Diff
     };
     MessageRateForQueue("%s", startPut, endPut, startDelete, endDelete)
-    | where Diff > ${each.value.threshold}
+    | where Diff > max_of(PutCount/100, ${each.value.threshold})
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
