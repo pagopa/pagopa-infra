@@ -477,6 +477,15 @@ module "apim_pagopa_ecommerce_helpdesk_service_api_v1" {
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "helpdesk_pm_search_bulk" {
+  api_name            = "${local.project}-helpdesk-service-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "pmSearchBulkTransaction"
+
+  xml_content = file("./api/ecommerce-helpdesk-api/v1/_bulk_search.xml.tpl")
+}
+
 #helpdesk api V2 for ecommerce
 module "apim_pagopa_ecommerce_helpdesk_service_api_v2" {
   source = "./.terraform/modules/__v3__/api_management_api"
