@@ -1,4 +1,6 @@
-[
+{
+  "description": "",
+  "processors": [
   {
     "json": {
       "field": "message",
@@ -32,3 +34,4 @@
     }
   }
 ]
+}
