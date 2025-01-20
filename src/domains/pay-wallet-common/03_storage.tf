@@ -147,11 +147,11 @@ locals {
       action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     },
     {
-      queue_key   = "logged-action-dead-letter-queue"
-      severity    = 1
-      time_window = 30
-      frequency   = 15
-      threshold   = 10
+      queue_key    = "logged-action-dead-letter-queue"
+      severity     = 1
+      time_window  = 30
+      frequency    = 15
+      threshold    = 10
       action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
     },
   ] : []
@@ -214,11 +214,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
 locals {
   queue_expiration_alert_props = var.env_short == "p" ? [
     {
-      queue_key   = "expiration-queue"
-      severity    = 1
-      time_window = 30
-      frequency   = 15
-      threshold   = 10
+      queue_key    = "expiration-queue"
+      severity     = 1
+      time_window  = 30
+      frequency    = 15
+      threshold    = 10
       action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
     },
   ] : []
