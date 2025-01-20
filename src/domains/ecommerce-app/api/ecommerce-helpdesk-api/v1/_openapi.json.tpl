@@ -124,6 +124,61 @@
         }
       }
     },
+    "/pm/searchBulkTransaction": {
+      "post": {
+        "tags": [
+          "PM"
+        ],
+        "operationId": "pmSearchBulkTransaction",
+        "summary": "Search bulk transaction by input parameters",
+        "description": "GET with body payload - no resources created",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/PmSearchBulkTransactionRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Transactions found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchBulkTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/pm/searchPaymentMethod": {
       "post": {
         "tags": [
@@ -574,6 +629,70 @@
           }
         }
       }
+    },
+    "/ecommerce/searchNpgOperations": {
+      "post": {
+        "tags": [
+          "eCommerce"
+        ],
+        "summary": "Search npg operations by TransactionId",
+        "description": "GET with body payload - no resources created",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SearchNpgOperationsRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction status found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchNpgOperationsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unsupported version",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -678,6 +797,13 @@
           "page"
         ]
       },
+      "SearchBulkTransactionResponse": {
+        "type": "array",
+        "description": "TransactionBulkResponse",
+        "items": {
+          "$ref": "#/components/schemas/TransactionBulkResult"
+        }
+      },
       "SearchTransactionRequestRptId": {
         "type": "object",
         "description": "Search transaction by user fiscal code",
@@ -768,6 +894,63 @@
           "pspInfo",
           "product"
         ]
+      },
+      "TransactionBulkResult": {
+        "type": "object",
+        "description": "TransactionResponse",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 32
+          },
+          "userInfo": {
+            "$ref": "#/components/schemas/UserInfoBulk"
+          },
+          "transactionInfo": {
+            "$ref": "#/components/schemas/TransactionInfo"
+          },
+          "paymentInfo": {
+            "$ref": "#/components/schemas/PaymentInfo"
+          },
+          "pspInfo": {
+            "$ref": "#/components/schemas/PspInfo"
+          },
+          "product": {
+            "$ref": "#/components/schemas/Product"
+          }
+        },
+        "required": [
+          "_id",
+          "userInfo",
+          "transactionInfo",
+          "paymentInfo",
+          "pspInfo",
+          "product"
+        ]
+      },
+      "UserInfoBulk": {
+        "type": "object",
+        "description": "User information",
+        "properties": {
+          "userFiscalCode": {
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 16
+          },
+          "notificationEmail": {
+            "type": "string",
+            "pattern": "(?:[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
+          },
+          "authenticationType": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "userFiscalCode": "user_fiscal_code",
+          "notificationEmail": "test@test.it",
+          "authenticationType": "auth type"
+        }
       },
       "UserInfo": {
         "type": "object",
@@ -996,6 +1179,40 @@
         ],
         "description": "Product from which transaction belongs"
       },
+      "SearchTransactionRequestDateTimeRange": {
+        "type": "object",
+        "description": "Search transaction by date and time range",
+        "properties": {
+          "type": {
+            "type": "string",
+            "default": "DATE_TIME_RANGE",
+            "example": "DATE_TIME_RANGE"
+          },
+          "timeRange": {
+            "type": "object",
+            "properties": {
+              "startDate": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Search start date"
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Search end date"
+              }
+            },
+            "required": [
+              "startDate",
+              "endDate"
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "timeRange"
+        ]
+      },
       "PmSearchTransactionRequest": {
         "type": "object",
         "oneOf": [
@@ -1004,13 +1221,17 @@
           },
           {
             "$ref": "#/components/schemas/SearchTransactionRequestEmail"
+          },
+          {
+            "$ref": "#/components/schemas/SearchTransactionRequestDateTimeRange"
           }
         ],
         "discriminator": {
           "propertyName": "type",
           "mapping": {
             "USER_FISCAL_CODE": "#/components/schemas/SearchTransactionRequestFiscalCode",
-            "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail"
+            "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail",
+            "DATE_TIME_RANGE": "#/components/schemas/SearchTransactionRequestDateTimeRange"
           }
         }
       },
@@ -1075,12 +1296,121 @@
             "type": "string",
             "format": "date-time",
             "description": "Dead letter event insertion date time"
+          },
+          "transactionInfo": {
+            "$ref": "#/components/schemas/DeadLetterTransactionInfo",
+            "description": "Dead letter transaction info"
           }
         },
         "required": [
           "queueName",
           "data",
           "timestamp"
+        ]
+      },
+      "DeadLetterTransactionInfo": {
+        "type": "object",
+        "description": "Dead letter transaction info",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 32
+          },
+          "authorizationRequestId": {
+            "type": "string"
+          },
+          "eCommerceStatus": {
+            "$ref": "https://raw.githubusercontent.com/pagopa/pagopa-ecommerce-transactions-service/main/api-spec/v1/transactions-api.yaml#/components/schemas/TransactionStatus"
+          },
+          "paymentGateway": {
+            "type": "string",
+            "description": "Payment gateway used to perform transaction"
+          },
+          "paymentTokens": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pspId": {
+            "type": "string"
+          },
+          "paymentMethodName": {
+            "type": "string"
+          },
+          "grandTotal": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "rrn": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/NpgTransactionInfoDetailsData"
+              },
+              {
+                "$ref": "#/components/schemas/RedirectTransactionInfoDetailsData"
+              }
+            ],
+            "discriminator": {
+              "propertyName": "type",
+              "mapping": {
+                "NPG": "#/components/schemas/NpgTransactionInfoDetailsData",
+                "REDIRECT": "#/components/schemas/RedirectTransactionInfoDetailsData"
+              }
+            }
+          }
+        },
+        "required": [
+          "transactionId",
+          "authorizationRequestId",
+          "eCommerceStatus",
+          "gateway"
+        ]
+      },
+      "NpgTransactionInfoDetailsData": {
+        "type": "object",
+        "description": "Npg transaction info details",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "operationResult": {
+            "type": "string"
+          },
+          "operationId": {
+            "type": "string"
+          },
+          "correlationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "correlation id for a transaction executed with NPG"
+          },
+          "paymentEndToEndId": {
+            "type": "string",
+            "description": "NPG payment end to end id"
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "RedirectTransactionInfoDetailsData": {
+        "type": "object",
+        "description": "Npg transaction info details",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
         ]
       },
       "DeadLetterSearchEventSource": {
@@ -1444,6 +1774,145 @@
           "username",
           "status"
         ]
+      },
+      "SearchNpgOperationsRequest": {
+        "type": "object",
+        "description": "",
+        "properties": {
+          "idTransaction": {
+            "description": "Uniquely identify a transaction",
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 32,
+            "example": "3fa85f6457174562b3fc2c963f66afa6"
+          }
+        },
+        "required": [
+          "idTransaction"
+        ]
+      },
+      "SearchNpgOperationsResponse": {
+        "type": "object",
+        "description": "",
+        "properties": {
+          "operations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Operation"
+            }
+          }
+        }
+      },
+      "Operation": {
+        "type": "object",
+        "properties": {
+          "additionalData": {
+            "type": "object",
+            "properties": {
+              "authorizationCode": {
+                "type": "string",
+                "description": "A string representing the authorization code for the transaction."
+              },
+              "rrn": {
+                "type": "string",
+                "description": "A string representing the retrieval reference number (RRN) for the transaction."
+              }
+            },
+            "additionalProperties": false,
+            "description": "Object containing additional fields specific to the chosen payment method",
+            "example": {
+              "authorizationCode": "647189",
+              "rrn": "BWtmt0ykQma3PElZ_k25vg"
+            }
+          },
+          "operationAmount": {
+            "type": "string",
+            "description": "Operation amount in the payment currency",
+            "example": "3545"
+          },
+          "operationCurrency": {
+            "type": "string",
+            "description": "Payment currency",
+            "example": "EUR"
+          },
+          "operationId": {
+            "type": "string",
+            "example": "3470744"
+          },
+          "operationResult": {
+            "$ref": "#/components/schemas/OperationResult"
+          },
+          "operationTime": {
+            "type": "string",
+            "description": "Operation time in ISO 8601 format",
+            "example": "2022-09-01T01:20:00.000Z"
+          },
+          "operationType": {
+            "$ref": "#/components/schemas/OperationType"
+          },
+          "orderId": {
+            "maxLength": 27,
+            "type": "string",
+            "description": "Merchant order id, unique in the merchant domain",
+            "example": "btid2384983"
+          },
+          "paymentCircuit": {
+            "$ref": "#/components/schemas/PaymentCircuit"
+          },
+          "paymentEndToEndId": {
+            "maxLength": 35,
+            "type": "string",
+            "description": "It is defined by the circuit to uniquely identify the transaction. Required for circuid reconciliation purposes.",
+            "example": "e723hedsdew"
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/PaymentMethod"
+          }
+        }
+      },
+      "OperationResult": {
+        "type": "string",
+        "description": "Transaction output:\n* AUTHORIZED - Payment authorized\n* EXECUTED - Payment confirmed, verification successfully executed\n* DECLINED - Declined by the Issuer during the authorization phase\n* DENIED_BY_RISK - Negative outcome of the transaction risk analysis\n* THREEDS_VALIDATED - 3DS authentication OK or 3DS skipped (non-secure payment)  \n* THREEDS_FAILED - cancellation or authentication failure during 3DS\n* PENDING - Payment ongoing. Follow up notifications are expected\n* CANCELED - Canceled by the cardholder\n* VOIDED - Online reversal of the full authorized amount\n* REFUNDED - Full or partial amount refunded\n* FAILED - Payment failed due to technical reasons\n",
+        "example": "AUTHORIZED",
+        "enum": [
+          "AUTHORIZED",
+          "EXECUTED",
+          "DECLINED",
+          "DENIED_BY_RISK",
+          "THREEDS_VALIDATED",
+          "THREEDS_FAILED",
+          "PENDING",
+          "CANCELED",
+          "VOIDED",
+          "REFUNDED",
+          "FAILED"
+        ]
+      },
+      "OperationType": {
+        "type": "string",
+        "description": "It indicates the purpose of the request:\n* AUTHORIZATION - any authorization with explicit capture\n* CAPTURE - a captured authorization or an implicit captured payment\n* VOID - reversal of an authorization\n* REFUND - refund of a captured amount\n* CANCEL - the rollback of an capture, refund.      \n",
+        "example": "CAPTURE",
+        "enum": [
+          "AUTHORIZATION",
+          "CAPTURE",
+          "VOID",
+          "REFUND",
+          "CANCEL"
+        ]
+      },
+      "PaymentMethod": {
+        "type": "string",
+        "description": "* CARD - Any card circuit\n* APM - Alternative payment method\n",
+        "example": "CARD",
+        "enum": [
+          "CARD",
+          "APM"
+        ]
+      },
+      "PaymentCircuit": {
+        "type": "string",
+        "description": "one of the payment circuit values returned by the GET payment_methods web service. The list may include (but not limited to) VISA, MC, AMEX, DINERS, GOOGLE_PAY, APPLE_PAY, PAYPAL, BANCONTACT, BANCOMAT_PAY, MYBANK, PIS, AMAZON_PAY, ALIPAY.\"\n",
+        "example": "VISA"
       }
     },
     "requestBodies": {
@@ -1458,13 +1927,17 @@
                 },
                 {
                   "$ref": "#/components/schemas/SearchTransactionRequestEmail"
+                },
+                {
+                  "$ref": "#/components/schemas/SearchTransactionRequestDateTimeRange"
                 }
               ],
               "discriminator": {
                 "propertyName": "type",
                 "mapping": {
                   "USER_FISCAL_CODE": "#/components/schemas/SearchTransactionRequestFiscalCode",
-                  "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail"
+                  "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail",
+                  "DATE_TIME_RANGE": "#/components/schemas/SearchTransactionRequestDateTimeRange"
                 }
               }
             },
@@ -1479,6 +1952,46 @@
                 "value": {
                   "type": "USER_EMAIL",
                   "userEmail": "test@test.it"
+                }
+              },
+              "search by date and time range": {
+                "value": {
+                  "type": "DATE_TIME_RANGE",
+                  "timeRange": {
+                    "startDate": "2023-01-01T00:00:00.000",
+                    "endDate": "2023-01-01T02:00:00.000"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "PmSearchBulkTransactionRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/SearchTransactionRequestDateTimeRange"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                  "DATE_TIME_RANGE": "#/components/schemas/SearchTransactionRequestDate"
+                }
+              }
+            },
+            "examples": {
+              "search by date and time range": {
+                "value": {
+                  "type": "DATE_TIME_RANGE",
+                  "timeRange": {
+                    "startDate": "2022-11-30T14:50:27.001Z",
+                    "endDate": "2023-11-30T14:50:27.001Z"
+                  }
                 }
               }
             }
@@ -1713,6 +2226,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/SearchPaymentMethodResponse"
+            }
+          }
+        }
+      },
+      "SearchNpgOperationsRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SearchNpgOperationsRequest"
             }
           }
         }

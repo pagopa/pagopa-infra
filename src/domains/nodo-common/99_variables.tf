@@ -352,6 +352,8 @@ variable "wisp_converter_cosmos_nosql_db_params" {
     offer_type     = string
     server_version = string
     kind           = string
+
+    burst_capacity_enabled = bool
     consistency_policy = object({
       consistency_level       = string
       max_interval_in_seconds = number
@@ -383,6 +385,10 @@ variable "wisp_converter_cosmos_nosql_db_params" {
     rt_max_throughput                  = number
     configuration_ttl                  = number
     configuration_max_throughput       = number
+    report_ttl                         = number
+    report_max_throughput              = number
+    nav2iuv_mapping_ttl                = number
+    nav2iuv_mapping_max_throughput     = number
   })
 }
 

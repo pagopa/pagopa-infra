@@ -3,7 +3,7 @@
 ######################
 
 module "apim_nodo_dei_pagamenti_product_replica_ndp" {
-  source       = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source       = "./.terraform/modules/__v3__/api_management_product"
   count        = var.env_short == "p" ? 0 : 1
   product_id   = "nodo-replica-ndp"
   display_name = "Nodo dei Pagamenti REPLICA NDP"
@@ -447,7 +447,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api_replica_ndp" 
 }
 
 module "apim_nodo_per_pm_api_v1_replica_ndp" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_api"
   count  = var.env_short == "p" ? 0 : 1
 
   name                  = format("%s-nodo-per-pm-api-replica-ndp", local.project)
@@ -497,7 +497,7 @@ resource "azurerm_api_management_api_operation_policy" "parked_list_api_v1_repli
 }
 
 module "apim_nodo_per_pm_api_v2_replica_ndp" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source                = "./.terraform/modules/__v3__/api_management_api"
   count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-nodo-per-pm-api-replica-ndp", local.project)
   resource_group_name   = local.pagopa_apim_rg
@@ -549,7 +549,7 @@ resource "azurerm_api_management_api_version_set" "nodo_monitoring_api_replica_n
 }
 
 module "apim_nodo_monitoring_api_replica_ndp" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
+  source                = "./.terraform/modules/__v3__/api_management_api"
   count                 = var.env_short == "p" ? 0 : 1
   name                  = format("%s-nodo-monitoring-api-replica-ndp", var.env_short)
   resource_group_name   = local.pagopa_apim_rg

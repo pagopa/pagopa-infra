@@ -33,6 +33,8 @@ storage_account_info = {
   account_replication_type          = "ZRS"
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
+  use_legacy_defender_version       = true
+  public_network_access_enabled     = false
 }
 
 reporting_fdr_storage_account_info = {
@@ -41,6 +43,8 @@ reporting_fdr_storage_account_info = {
   account_replication_type          = "LRS"
   access_tier                       = "Hot"
   advanced_threat_protection_enable = true
+  use_legacy_defender_version       = true
+  public_network_access_enabled     = false
 }
 
 ### External resources
@@ -124,3 +128,4 @@ fdr_json_to_xml_function_autoscale = {
 
 ftp_organization = "99999999999,80078750587,88888888888,97532760580,12300020158,00488410010"
 
+enable_fdr3_features = true

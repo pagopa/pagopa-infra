@@ -58,6 +58,41 @@ resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_nexi_postg
   records             = var.dns_a_reconds_dbnodonexipostgres_prf_ips
 }
 
+resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_nexi_postgres_prf_1" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "db-postgres-ndp-prf-1"
+  zone_name           = azurerm_private_dns_zone.db_nodo_dns_zone.name
+  resource_group_name = azurerm_resource_group.data.name
+  ttl                 = 60
+  records             = var.dns_a_reconds_dbnodonexipostgres_prf_balancer_1_ips
+}
+
+resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_nexi_postgres_prf_2" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "db-postgres-ndp-prf-2"
+  zone_name           = azurerm_private_dns_zone.db_nodo_dns_zone.name
+  resource_group_name = azurerm_resource_group.data.name
+  ttl                 = 60
+  records             = var.dns_a_reconds_dbnodonexipostgres_prf_balancer_2_ips
+}
+
+resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_nexi_postgres_1" {
+  count               = var.env_short != "d" ? 1 : 0
+  name                = "db-postgres-ndp-1"
+  zone_name           = azurerm_private_dns_zone.db_nodo_dns_zone.name
+  resource_group_name = azurerm_resource_group.data.name
+  ttl                 = 60
+  records             = var.dns_a_reconds_dbnodonexipostgres_balancer_1_ips
+}
+
+resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo_nexi_postgres_2" {
+  count               = var.env_short != "d" ? 1 : 0
+  name                = "db-postgres-ndp-2"
+  zone_name           = azurerm_private_dns_zone.db_nodo_dns_zone.name
+  resource_group_name = azurerm_resource_group.data.name
+  ttl                 = 60
+  records             = var.dns_a_reconds_dbnodonexipostgres_balancer_2_ips
+}
 ### 🔮 Private dns zone: Redis
 
 resource "azurerm_private_dns_zone" "privatelink_redis_cache_windows_net" {
@@ -374,4 +409,31 @@ resource "azurerm_dns_a_record" "dns_a_forwarder" {
   ttl                 = var.dns_default_ttl_sec
   records             = tolist(data.azurerm_public_ip.natgateway_public_ip.*.ip_address)
   tags                = var.tags
+}
+
+resource "azurerm_private_dns_zone" "appservice_private_dns" {
+  name                = "privatelink.azurewebsites.net"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurewebsite_vnet" {
+  name                  = module.vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.appservice_private_dns.name
+  virtual_network_id    = module.vnet.id
+  registration_enabled  = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurewebsite_vnet_integration" {
+  name                  = module.vnet_integration.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.appservice_private_dns.name
+  virtual_network_id    = module.vnet_integration.id
+  registration_enabled  = false
+
+  tags = var.tags
 }

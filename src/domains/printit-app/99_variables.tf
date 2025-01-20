@@ -179,6 +179,10 @@ variable "app_service_pdf_engine_autoscale_enabled" {
   type = bool
 }
 
+variable "app_service_pdf_engine_zone_balancing_enabled" {
+  type = bool
+}
+
 variable "app_service_pdf_engine_always_on" {
   type        = bool
   description = "Always on property"
@@ -212,3 +216,11 @@ variable "pod_disruption_budgets" {
   description = "Pod disruption budget for domain namespace"
   default     = {}
 }
+
+
+variable "app_service_ip_restriction_default_action" {
+  type        = string
+  default     = "Allow"
+  description = "(Optional) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. Defaults to Allow."
+}
+

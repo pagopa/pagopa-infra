@@ -1,12 +1,12 @@
-prefix          = "pagopa"
-env_short       = "p"
-env             = "prod"
-domain          = "apiconfig"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "prod"
-
+prefix                 = "pagopa"
+env_short              = "p"
+env                    = "prod"
+domain                 = "apiconfig"
+location               = "westeurope"
+location_short         = "weu"
+location_string        = "West Europe"
+instance               = "prod"
+gh_runner_job_location = "italynorth"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"
@@ -32,7 +32,7 @@ cidr_subnet_api_config             = ["10.230.10.128/29"]
 tls_cert_check_helm = {
   chart_version = "2.8.0"
   image_name    = "ghcr.io/pagopa/infra-ssl-check"
-  image_tag     = "v1.3.4"
+  image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
 }
 
 

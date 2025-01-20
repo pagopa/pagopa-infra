@@ -43,14 +43,19 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_moetrics" {
 
   criteria {
     aggregation      = "Average"
-    metric_namespace = "Insights.Container/pods"
-    metric_name      = "podCount"
+    metric_namespace = "Microsoft.ContainerService/managedClusters"
+    metric_name      = "kube_pod_status_phase"
     operator         = "GreaterThan"
     threshold        = 200
     dimension {
-      name     = "kubernetes namespace"
+      name     = "Namespace"
       operator = "Include"
       values   = ["nodo-cron"]
+    }
+    dimension {
+      name     = "phase"
+      operator = "Include"
+      values   = ["Failed", "Pending"]
     }
   }
   action {
@@ -67,12 +72,12 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_moetrics_error" {
 
   criteria {
     aggregation      = "Average"
-    metric_namespace = "Insights.Container/pods"
-    metric_name      = "podCount"
+    metric_namespace = "Microsoft.ContainerService/managedClusters"
+    metric_name      = "kube_pod_status_phase"
     operator         = "GreaterThan"
     threshold        = 30
     dimension {
-      name     = "kubernetes namespace"
+      name     = "Namespace"
       operator = "Include"
       values   = ["nodo-cron"]
     }

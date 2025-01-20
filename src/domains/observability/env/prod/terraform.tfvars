@@ -56,10 +56,11 @@ apim_dns_zone_prefix = "NOT_USED"
 enable_sa_backup                  = true
 cidr_subnet_observability_storage = ["10.3.14.0/27"]
 cidr_subnet_observability_evh     = ["10.3.14.32/27"]
-# <free>= ["10.3.14.64/27"]
+cidr_subnet_observability_gpd_evh = ["10.3.14.64/27"]
 # <free>= ["10.3.14.96/27"]
 # <free>= ["10.3.14.128/27"]
 # <free>= ["10.3.14.160/27"]
+
 
 #
 # EventHub
@@ -73,7 +74,7 @@ ehns_capacity                 = 5
 ehns_alerts_enabled           = true
 ehns_zone_redundant           = true
 
-ehns_public_network_access       = false
+ehns_public_network_access       = true
 ehns_private_endpoint_is_present = true
 
 eventhubs = [
@@ -206,6 +207,26 @@ eventhubs = [
         manage = false
       }
     ]
+  },
+  {
+    name              = "payment-wallet-ingestion-dl-staging"
+    partitions        = 1
+    message_retention = 1
+    consumers         = ["payment-wallet-evt-rx-staging"]
+    keys = [
+      {
+        name   = "payment-wallet-evt-tx-staging"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "payment-wallet-evt-rx-staging"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
   }
 ]
 
@@ -258,4 +279,137 @@ ehns_metric_alerts = {
       }
     ],
   },
+  no_wallet_ingestion_alert = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "Payment wallet onboarding written events less than 1000 detected in the last 24h"
+    operator    = "LessThanOrEqual"
+    threshold   = 1000
+    frequency   = "PT1H"
+    window_size = "P1D"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values = [
+          "payment-wallet-ingestion-dl",
+        ]
+      }
+    ],
+  },
 }
+
+eventhubs_gpd = [
+  {
+    name              = "gpd-ingestion.apd.payment_option"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["gpd-ingestion.apd.payment_option-rx-dl", ]
+    keys = [
+      {
+        name   = "gpd-ingestion.apd.payment_option-rx-dl"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "gpd-ingestion.apd.payment_option-tx"
+        listen = false
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "gpd-ingestion.apd.payment_position"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["gpd-ingestion.apd.payment_position-rx-dl", ]
+    keys = [
+      {
+        name   = "gpd-ingestion.apd.payment_position-rx-dl"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "gpd-ingestion.apd.payment_position-tx"
+        listen = false
+        send   = true
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "gpd-ingestion.apd.transfer"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["gpd-ingestion.apd.transfer-rx-dl", ]
+    keys = [
+      {
+        name   = "gpd-ingestion.apd.transfer-rx-dl"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "gpd-ingestion.apd.transfer-tx"
+        listen = false
+        send   = true
+        manage = false
+      }
+    ]
+  },
+]
+
+
+# alert evh
+# ehns_metric_alerts_gpd = {
+#   no_trx = {
+#     aggregation = "Total"
+#     metric_name = "IncomingMessages"
+#     description = "No transactions received from acquirer in the last 24h"
+#     operator    = "LessThanOrEqual"
+#     threshold   = 1000
+#     frequency   = "PT1H"
+#     window_size = "P1D"
+#     dimension = [
+#       {
+#         name     = "EntityName"
+#         operator = "Include"
+#         values   = ["gec-ingestion-bundles-evt-tx", "gec-ingestion-cibundles-evt-tx", "gec-ingestion-paymenttypes-evt-tx", "gec-ingestion-touchpoints-evt-tx"]
+#       }
+#     ],
+#   },
+#   active_connections = {
+#     aggregation = "Average"
+#     metric_name = "ActiveConnections"
+#     description = null
+#     operator    = "LessThanOrEqual"
+#     threshold   = 0
+#     frequency   = "PT5M"
+#     window_size = "PT15M"
+#     dimension   = [],
+#   },
+#   error_trx = {
+#     aggregation = "Total"
+#     metric_name = "IncomingMessages"
+#     description = "Transactions rejected from one acquirer file received. trx write on eventhub. check immediately"
+#     operator    = "GreaterThan"
+#     threshold   = 0
+#     frequency   = "PT5M"
+#     window_size = "PT30M"
+#     dimension = [
+#       {
+#         name     = "EntityName"
+#         operator = "Include"
+#         values = [
+#           "gec-ingestion-bundles-evt-rx-pdnd",
+#           "gec-ingestion-cibundles-evt-rx-pdnd",
+#           "gec-ingestion-paymenttypes-evt-rx-pdnd",
+#           "gec-ingestion-touchpoints-evt-rx-pdnd"
+#         ]
+#       }
+#     ],
+#   },
+# }

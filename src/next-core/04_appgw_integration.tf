@@ -44,6 +44,7 @@ locals {
       port               = 443
       ssl_profile_name   = "${local.product_region}-ssl-profile"
       firewall_policy_id = null
+      type               = "Private"
       certificate = {
         name = var.integration_app_gateway_prf_certificate_name
         id = var.integration_app_gateway_prf_certificate_name == "" ? null : replace(
@@ -52,6 +53,52 @@ locals {
           ""
         )
       }
+    }
+  }
+
+  backends = {
+    apim = {
+      protocol                    = "Https"
+      host                        = "api.${var.dns_zone_prefix}.${var.external_domain}"
+      port                        = 443
+      ip_addresses                = module.apim[0].private_ip_addresses
+      fqdns                       = ["api.${var.dns_zone_prefix}.${var.external_domain}."]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apim"
+      request_timeout             = 120
+      pick_host_name_from_backend = false
+    }
+  }
+
+  backends_prf = {
+    apimprf = {
+      protocol                    = "Https"
+      host                        = "api.${var.dns_zone_prefix_prf}.${var.external_domain}"
+      port                        = 443
+      ip_addresses                = module.apim[0].private_ip_addresses
+      fqdns                       = ["api.${var.dns_zone_prefix_prf}.${var.external_domain}."]
+      probe                       = "/status-0123456789abcdef"
+      probe_name                  = "probe-apimprf"
+      request_timeout             = 120
+      pick_host_name_from_backend = false
+    }
+  }
+
+  routes = {
+    api = {
+      listener              = "api"
+      backend               = "apim"
+      rewrite_rule_set_name = null
+      priority              = 10
+    }
+  }
+
+  routes_prf = {
+    apiprf = {
+      listener              = "apiprf"
+      backend               = "apimprf"
+      rewrite_rule_set_name = null
+      priority              = 20
     }
   }
 
@@ -136,19 +183,10 @@ module "app_gw_integration" {
   zones              = var.integration_appgateway_zones
 
   # Configure backends
-  backends = {
-    apim = {
-      protocol                    = "Https"
-      host                        = "api.${var.dns_zone_prefix}.${var.external_domain}"
-      port                        = 443
-      ip_addresses                = module.apim[0].private_ip_addresses
-      fqdns                       = ["api.${var.dns_zone_prefix}.${var.external_domain}."]
-      probe                       = "/status-0123456789abcdef"
-      probe_name                  = "probe-apim"
-      request_timeout             = 120
-      pick_host_name_from_backend = false
-    }
-  }
+  backends = merge(
+    local.backends,
+    var.dns_zone_prefix_prf != "" ? local.backends_prf : {}
+  )
 
   ssl_profiles = [
     {
@@ -180,14 +218,10 @@ module "app_gw_integration" {
   )
 
   # maps listener to backend
-  routes = {
-    api = {
-      listener              = "api"
-      backend               = "apim"
-      rewrite_rule_set_name = null
-      priority              = 10
-    }
-  }
+  routes = merge(
+    local.routes,
+    var.dns_zone_prefix_prf != "" ? local.routes_prf : {}
+  )
 
   rewrite_rule_sets = []
 
@@ -200,23 +234,34 @@ module "app_gw_integration" {
 
   alerts_enabled = var.integration_app_gateway_alerts_enabled
 
-  action = [
-    {
-      action_group_id    = azurerm_monitor_action_group.slack.id
-      webhook_properties = null
-    },
-    {
-      action_group_id    = azurerm_monitor_action_group.email.id
-      webhook_properties = null
-    }
-  ]
+  # takes a list and replaces any elements that are lists with a
+  # flattened sequence of the list contents.
+  # In this case, we enable OpsGenie only on prod env
+  action = flatten([
+    [
+      {
+        action_group_id    = azurerm_monitor_action_group.slack.id
+        webhook_properties = null
+      },
+      {
+        action_group_id    = azurerm_monitor_action_group.email.id
+        webhook_properties = null
+      }
+    ],
+    (var.env == "prod" ? [
+      {
+        action_group_id    = azurerm_monitor_action_group.infra_opsgenie.0.id
+        webhook_properties = null
+      }
+    ] : [])
+  ])
 
   # metrics docs
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftnetworkapplicationgateways
   monitor_metric_alert_criteria = {
 
     compute_units_usage = {
-      description   = "Abnormal compute units usage, probably an high traffic peak"
+      description   = "${module.app_gw_integration.name} Abnormal compute units usage, probably an high traffic peak"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 2
@@ -238,7 +283,7 @@ module "app_gw_integration" {
     }
 
     backend_pools_status = {
-      description   = "One or more backend pools are down, check Backend Health on Azure portal"
+      description   = "${module.app_gw_integration.name} One or more backend pools are down, check Backend Health on Azure portal"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 0
@@ -257,7 +302,7 @@ module "app_gw_integration" {
     }
 
     total_requests = {
-      description   = "Traffic is raising"
+      description   = "${module.app_gw_integration.name} Traffic is raising"
       frequency     = "PT5M"
       window_size   = "PT15M"
       severity      = 3
@@ -278,7 +323,7 @@ module "app_gw_integration" {
     }
 
     failed_requests = {
-      description   = "Abnormal failed requests"
+      description   = "${module.app_gw_integration.name} Abnormal failed requests"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 1

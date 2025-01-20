@@ -42,7 +42,8 @@ locals {
 
 ## Function fdr_xml_to_json
 module "fdr_xml_to_json_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.20.0"
+  count  = var.enable_fdr3_features == true ? 1 : 0
+  source = "./.terraform/modules/__v3__/function_app"
 
   resource_group_name = data.azurerm_resource_group.fdr_rg.name
   name                = "${local.project}-xml-to-json-fn"
@@ -69,10 +70,6 @@ module "fdr_xml_to_json_function" {
   #sticky_connection_string_names = ["COSMOS_CONN_STRING"]
   client_certificate_mode = "Optional"
 
-  cors = {
-    allowed_origins = []
-  }
-
   app_service_plan_name = "${local.project}-xml-to-json-fn-plan"
   app_service_plan_info = {
     kind                         = var.fdr_xml_to_json_function.kind
@@ -95,14 +92,13 @@ module "fdr_xml_to_json_function" {
 }
 
 module "fdr_xml_to_json_function_slot_staging" {
-  count = var.env_short == "p" ? 1 : 0
+  count  = (var.enable_fdr3_features && var.env_short == "p") ? 1 : 0
+  source = "./.terraform/modules/__v3__/function_app_slot"
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
-
-  app_service_plan_id                      = module.fdr_xml_to_json_function.app_service_plan_id
-  function_app_id                          = module.fdr_xml_to_json_function.id
-  storage_account_name                     = module.fdr_xml_to_json_function.storage_account_name
-  storage_account_access_key               = module.fdr_xml_to_json_function.storage_account.primary_access_key
+  app_service_plan_id                      = module.fdr_json_to_xml_function[0].app_service_plan_id
+  function_app_id                          = module.fdr_json_to_xml_function[0].id
+  storage_account_name                     = module.fdr_json_to_xml_function[0].storage_account_name
+  storage_account_access_key               = module.fdr_json_to_xml_function[0].storage_account.primary_access_key
   name                                     = "staging"
   resource_group_name                      = data.azurerm_resource_group.fdr_rg.name
   location                                 = var.location
@@ -130,11 +126,11 @@ module "fdr_xml_to_json_function_slot_staging" {
 }
 
 resource "azurerm_monitor_autoscale_setting" "fdr_xml_to_json_function" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "${module.fdr_xml_to_json_function.name}-autoscale"
+  count               = (var.enable_fdr3_features && var.env_short == "p") ? 1 : 0
+  name                = "${module.fdr_json_to_xml_function[0].name}-autoscale"
   resource_group_name = data.azurerm_resource_group.fdr_rg.name
   location            = var.location
-  target_resource_id  = module.fdr_xml_to_json_function.app_service_plan_id
+  target_resource_id  = module.fdr_json_to_xml_function[0].app_service_plan_id
 
   profile {
     name = "default"
@@ -148,7 +144,7 @@ resource "azurerm_monitor_autoscale_setting" "fdr_xml_to_json_function" {
     rule {
       metric_trigger {
         metric_name        = "CpuPercentage"
-        metric_resource_id = module.fdr_xml_to_json_function.app_service_plan_id
+        metric_resource_id = module.fdr_json_to_xml_function[0].app_service_plan_id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"
@@ -168,7 +164,7 @@ resource "azurerm_monitor_autoscale_setting" "fdr_xml_to_json_function" {
     rule {
       metric_trigger {
         metric_name        = "CpuPercentage"
-        metric_resource_id = module.fdr_xml_to_json_function.app_service_plan_id
+        metric_resource_id = module.fdr_json_to_xml_function[0].app_service_plan_id
         time_grain         = "PT1M"
         statistic          = "Average"
         time_window        = "PT5M"

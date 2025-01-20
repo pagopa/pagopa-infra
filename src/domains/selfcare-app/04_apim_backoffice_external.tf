@@ -18,7 +18,7 @@ locals {
 
 
 module "apim_selfcare_backoffice_external_psp_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.15.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "selfcare-bo-external-psp"
   display_name = local.apim_selfcare_backoffice_external_api_psp.display_name
@@ -36,7 +36,7 @@ module "apim_selfcare_backoffice_external_psp_product" {
 }
 
 module "apim_selfcare_backoffice_external_ec_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.15.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "selfcare-bo-external-ec"
   display_name = local.apim_selfcare_backoffice_external_api_ec.display_name
@@ -54,7 +54,7 @@ module "apim_selfcare_backoffice_external_ec_product" {
 }
 
 module "apim_selfcare_backoffice_helpdesk_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v8.15.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "selfcare-bo-helpdesk"
   display_name = local.apim_selfcare_backoffice_helpdesk_api.display_name
@@ -69,4 +69,27 @@ module "apim_selfcare_backoffice_helpdesk_product" {
   subscriptions_limit   = 10000
 
   policy_xml = file("./api_product/_base_policy.xml")
+}
+
+# SubKey 4 https://uptime.betterstack.com/team/263223/monitors recover maintenance
+# Status Page Improvement https://pagopa.atlassian.net/wiki/x/AoBBSQ
+
+data "azurerm_api_management_api" "apim_backoffice-helpdesk_v1" { # <env>-backoffice-helpdesk-api-v1
+  name                = "${var.env_short}-backoffice-helpdesk-api-v1"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  revision            = "1"
+}
+
+resource "azurerm_api_management_subscription" "status_page_improvement_api_key_subkey" {
+  count = var.env_short == "p" ? 1 : 0
+
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  # product_id    = module.apim_selfcare_backoffice_helpdesk_product.id
+  api_id        = replace(data.azurerm_api_management_api.apim_backoffice-helpdesk_v1.id, ";rev=1", "")
+  display_name  = "Status Page Improvement API Key for Backoffice Helpdesk"
+  allow_tracing = false
+  state         = "active"
 }

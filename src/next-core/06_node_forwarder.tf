@@ -103,7 +103,7 @@ resource "azurerm_subnet_nat_gateway_association" "nodefw_ha_snet_nat_associatio
 
 
 module "node_forwarder_app_service" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v7.69.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.28.0"
 
   count = 1
 
@@ -125,8 +125,10 @@ module "node_forwarder_app_service" {
   docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopanodeforwarder"
   docker_image_tag = "latest"
 
-  allowed_subnets = [module.apim_snet.id]
+  allowed_subnets = []
   allowed_ips     = []
+
+  public_network_access_enabled = false
 
   sku_name = var.node_forwarder_sku
 
@@ -141,7 +143,7 @@ module "node_forwarder_app_service" {
 module "node_forwarder_slot_staging" {
   count = var.env_short != "d" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v7.60.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v8.28.0"
 
   # App service plan
   app_service_id   = module.node_forwarder_app_service[0].id
@@ -160,9 +162,54 @@ module "node_forwarder_slot_staging" {
   docker_image     = "${data.azurerm_container_registry.container_registry.login_server}/pagopanodeforwarder"
   docker_image_tag = "latest"
 
-  allowed_subnets = [module.apim_snet.id]
-  allowed_ips     = []
-  subnet_id       = var.is_feature_enabled.node_forwarder_ha_enabled ? module.node_forwarder_ha_snet[0].id : module.node_forwarder_snet[0].id
+  allowed_subnets               = []
+  allowed_ips                   = []
+  subnet_id                     = var.is_feature_enabled.node_forwarder_ha_enabled ? module.node_forwarder_ha_snet[0].id : module.node_forwarder_snet[0].id
+  public_network_access_enabled = false
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "forwarder_input_private_endpoint" {
+
+  name                = "${local.project}-node-forwarder-private-endpoint"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.node_forwarder_rg.name
+  subnet_id           = module.common_private_endpoint_snet.id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-node-forwarder-dns-zone-group"
+    private_dns_zone_ids = [azurerm_private_dns_zone.appservice_private_dns.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-node-forwarder-service-connection"
+    private_connection_resource_id = module.node_forwarder_app_service[0].id
+    is_manual_connection           = false
+    subresource_names              = ["sites"]
+  }
+
+  tags = var.tags
+}
+
+resource "azurerm_private_endpoint" "forwarder_staging_input_private_endpoint" {
+
+  name                = "${local.project}-node-forwarder-staging-private-endpoint"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.node_forwarder_rg.name
+  subnet_id           = module.common_private_endpoint_snet.id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-node-forwarder-staging-dns-zone-group"
+    private_dns_zone_ids = [azurerm_private_dns_zone.appservice_private_dns.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-node-forwarder-staging-service-connection"
+    private_connection_resource_id = module.node_forwarder_app_service[0].id #issue https://github.com/hashicorp/terraform-provider-azurerm/issues/11147
+    is_manual_connection           = false
+    subresource_names              = ["sites-staging"]
+  }
 
   tags = var.tags
 }
@@ -317,6 +364,10 @@ resource "azurerm_monitor_metric_alert" "app_service_over_cpu_usage" {
   action {
     action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
   }
+  action {
+    action_group_id = azurerm_monitor_action_group.infra_opsgenie.0.id
+  }
+
 
   tags = var.tags
 }
@@ -353,6 +404,9 @@ resource "azurerm_monitor_metric_alert" "app_service_over_mem_usage" {
   }
   action {
     action_group_id = azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id
+  }
+  action {
+    action_group_id = azurerm_monitor_action_group.infra_opsgenie.0.id
   }
 
   tags = var.tags
@@ -414,7 +468,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id, azurerm_monitor_action_group.infra_opsgenie.0.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }

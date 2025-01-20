@@ -6,7 +6,7 @@
 # https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/654541075/RFC+Gestione+clientId+per+integrazione+Software+Client#Diagramma-dettaglio-flusso
 
 module "apim_receipt_for_ndp_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   count = var.enable_sendPaymentResultV2_SWClient ? 1 : 0
 
@@ -63,8 +63,9 @@ data "azurerm_key_vault_secret" "subscriptionkey_ecomm" {
 }
 
 module "apim_api_receipt_for_ndp_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.4.1"
-  count  = var.enable_sendPaymentResultV2_SWClient ? 1 : 0
+  source = "./.terraform/modules/__v3__/api_management_api"
+
+  count = var.enable_sendPaymentResultV2_SWClient ? 1 : 0
 
   name                  = format("%s-receipt-npd-api", local.project)
   api_management_name   = local.pagopa_apim_name

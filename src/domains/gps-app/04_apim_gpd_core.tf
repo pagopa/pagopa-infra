@@ -5,7 +5,7 @@
 ## Products ##
 
 module "apim_gpd_product" {
-  source       = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v6.11.2"
+  source       = "./.terraform/modules/__v3__/api_management_product"
   product_id   = "product-gpd"
   display_name = "GPD pagoPA"
   description  = "Prodotto Gestione Posizione Debitorie"
@@ -24,7 +24,7 @@ module "apim_gpd_product" {
 ## API ##
 
 module "apim_api_gpd_api" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                = format("%s-api-gpd-api", var.env_short)
   api_management_name = local.pagopa_apim_name
@@ -51,7 +51,7 @@ module "apim_api_gpd_api" {
 }
 
 module "apim_api_gpd_api_v2" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                = "${var.env_short}-api-gpd-api"
   api_management_name = local.pagopa_apim_name
@@ -93,7 +93,7 @@ resource "azurerm_api_management_api_version_set" "api_gpd_api" {
 ## Products ##
 
 module "apim_debt_positions_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_product?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "debt-positions"
   display_name = "GPD Debt Positions for organizations"
@@ -121,7 +121,7 @@ resource "azurerm_api_management_api_version_set" "api_debt_positions_api" {
 }
 
 module "apim_api_debt_positions_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                = format("%s-debt-positions-service-api", local.product)
   api_management_name = local.pagopa_apim_name
@@ -149,7 +149,7 @@ module "apim_api_debt_positions_api_v1" {
 
 module "apim_api_debt_positions_api_v2" {
   count  = var.env_short != "p" ? 1 : 0 # disbled v2 external bulk prod
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-debt-positions-service-api", local.product)
   api_management_name   = local.pagopa_apim_name
@@ -173,3 +173,82 @@ module "apim_api_debt_positions_api_v2" {
 
   xml_content = file("./api/gpd_api/debt-position-services/v2/_base_policy.xml")
 }
+
+#########################################
+## GPD CREATE DEBT POSITION POLICIES ####
+#########################################
+
+resource "terraform_data" "sha256_create_debt_position_v1_policy" {
+  input = sha256(file("./api/gpd_api/debt-position-services/create_base_policy.xml"))
+}
+
+resource "azurerm_api_management_api_operation_policy" "create_debt_position_v1_policy" {
+  api_name            = format("%s-debt-positions-service-api-v1", local.product)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "createPosition"
+  xml_content = templatefile("./api/gpd_api/debt-position-services/create_base_policy.xml", {
+    service_type_value = "GPD"
+  })
+}
+
+resource "terraform_data" "sha256_create_debt_position_v2_policy" {
+  count = var.env_short != "p" ? 1 : 0 # disbled v2 external bulk prod
+
+  input = sha256(file("./api/gpd_api/debt-position-services/create_base_policy.xml"))
+}
+
+resource "azurerm_api_management_api_operation_policy" "create_debt_position_v2_policy" {
+  count = var.env_short != "p" ? 1 : 0 # disbled v2 external bulk prod
+
+  api_name            = format("%s-debt-positions-service-api-v2", local.product)
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "createMultiplePositions"
+  xml_content = templatefile("./api/gpd_api/debt-position-services/create_base_policy.xml", {
+    service_type_value = "GPD"
+  })
+}
+
+#####################
+## GPD FRAGMENTS ####
+#####################
+
+# service type fragment
+resource "terraform_data" "sha256_service_type_set_fragment" {
+  input = sha256(file("./api/gpd_api/service_type_set_fragment.xml"))
+}
+
+resource "azapi_resource" "service_type_set_fragment" {
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "service-type-set"
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Component that is used to set service type in GPD"
+      format      = "rawxml"
+      value       = templatefile("./api/gpd_api/service_type_set_fragment.xml", {})
+    }
+  })
+}
+
+# segregation codes fragment
+resource "terraform_data" "sha256_segregation_codes_fragment" {
+  input = sha256(file("./api/gpd_api/segregation_codes_fragment.xml"))
+}
+
+resource "azapi_resource" "segregation_codes_fragment" {
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "segregation-codes-gpd"
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Component that is authorize on segregation codes"
+      format      = "rawxml"
+      value       = templatefile("./api/gpd_api/segregation_codes_fragment.xml", {})
+    }
+  })
+}
+

@@ -95,6 +95,16 @@ locals {
     QUEUE_RETENTION_SEC  = var.gpd_queue_retention_sec
     QUEUE_DELAY_SEC      = var.gpd_queue_delay_sec
 
+    CACHE_CLIENT_HOST       = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "api-config-cache/p", "v1")
+    CACHE_PATH              = var.gpd_cache_path
+    CACHE_API_KEY           = data.azurerm_key_vault_secret.config_cache_subscription_key.value // on pagopa apim | Subscriptions 👀 config-cache-gpd-reporting
+    ENABLE_CLIENT_RETRY     = var.enable_client_retry
+    INITIAL_INTERVAL_MILLIS = var.initial_interval_millis
+    MAX_ELAPSED_TIME_MILLIS = var.max_elapsed_time_millis
+    MAX_INTERVAL_MILLIS     = var.max_interval_millis
+    MULTIPLIER              = var.multiplier
+    RANDOMIZATION_FACTOR    = var.randomization_factor
+
     # GPD_HOST             = format("https://api.%s.%s/%s/%s",var.apim_dns_zone_prefix, var.external_domain, module.apim_api_gpd_api.path, module.apim_api_gpd_api.api_version )
     GPD_HOST  = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "gpd/api", "v1")
     NODO_HOST = format("https://api.%s.%s/nodo/nodo-per-pa/v1", var.apim_dns_zone_prefix, var.external_domain)
@@ -141,7 +151,7 @@ locals {
 
 ## Function reporting_batch
 module "reporting_batch_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.9.0"
+  source = "./.terraform/modules/__v3__/function_app"
 
   resource_group_name = azurerm_resource_group.gpd_rg.name
   name                = replace("${local.project}fn-gpd-batch", "gps", "")
@@ -185,7 +195,7 @@ module "reporting_batch_function" {
 module "reporting_batch_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
+  source = "./.terraform/modules/__v3__/function_app_slot"
 
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   function_app_id                          = module.reporting_batch_function.id
@@ -219,7 +229,7 @@ module "reporting_batch_function_slot_staging" {
 
 ## Function reporting_service
 module "reporting_service_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.9.0"
+  source = "./.terraform/modules/__v3__/function_app"
 
   resource_group_name  = azurerm_resource_group.gpd_rg.name
   name                 = format("%s-fn-gpd-service", local.product_location)
@@ -269,7 +279,7 @@ module "reporting_service_function" {
 module "reporting_service_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
+  source = "./.terraform/modules/__v3__/function_app_slot"
 
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   function_app_id                          = module.reporting_service_function.id
@@ -303,7 +313,7 @@ module "reporting_service_function_slot_staging" {
 
 ## Function reporting_analysis
 module "reporting_analysis_function" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app?ref=v6.9.0"
+  source = "./.terraform/modules/__v3__/function_app"
 
   resource_group_name  = azurerm_resource_group.gpd_rg.name
   name                 = format("%s-fn-gpd-analysis", local.product_location)
@@ -349,7 +359,7 @@ module "reporting_analysis_function" {
 module "reporting_analysis_function_slot_staging" {
   count = var.env_short == "p" ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app_slot?ref=v6.9.0"
+  source = "./.terraform/modules/__v3__/function_app_slot"
 
   app_service_plan_id                      = azurerm_app_service_plan.gpd_reporting_service_plan.id
   function_app_id                          = module.reporting_analysis_function.id

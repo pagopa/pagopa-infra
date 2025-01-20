@@ -41,7 +41,7 @@ resource "azurerm_api_management_named_value" "wallet-jwt-signing-key" {
 ##########################################
 
 module "apim_session_wallet_product" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "session-wallet-token"
   display_name = "session wallet token pagoPA"
@@ -97,7 +97,7 @@ resource "azurerm_api_management_api_version_set" "session_wallet_api" {
 }
 
 module "apim_session_wallet_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.3.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = "${local.project}-session-wallet-api"
   api_management_name   = local.pagopa_apim_name
