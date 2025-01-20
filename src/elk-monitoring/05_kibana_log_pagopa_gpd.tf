@@ -30,6 +30,12 @@ locals {
     name  = "Dominio GPD"
     index = local.log_index_pattern
   }), "\""), "\""), "'", "'\\''")
+
+  pagopapaymentspull_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/gps/data-view.json", {
+    name  = "Pagamenti Pull"
+    index = "gpd-payments-pull"
+  }), "\""), "\""), "'", "'\\''")
+
 }
 
 ## space
@@ -170,6 +176,25 @@ resource "null_resource" "pagopagpd_kibana_data_view" {
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
       -d '${local.pagopagpd_data_view}'
+    EOT
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
+
+resource "null_resource" "pagopapaymentspull_kibana_data_view" {
+  depends_on = [null_resource.gpd_kibana_space]
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command     = <<EOT
+      curl -k -X POST "${local.kibana_url}/s/${local.paymentspull_space_name}/api/data_views/data_view" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json' \
+      -d '${local.pagopapaymentspull_data_view}'
     EOT
     interpreter = ["/bin/bash", "-c"]
   }
