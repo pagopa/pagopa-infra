@@ -9,7 +9,7 @@
       <when condition="@(context.Variables.ContainsKey("soapAction") && context.Variables.GetValueOrDefault<string>("soapAction", "")!= "")">
       <set-variable name="contentType" value="text/xml"/>
       <!-- SOAP requests -->
-            <choose>
+      <choose>
         <when condition="@{
           string[] activatePaymentNotice = new string[] {"activatePaymentNotice", "activateIOPayment", "activatePaymentNoticeV2"};
           return activatePaymentNotice.Contains((string)context.Variables["soapAction"]) && context.LastError.Reason.Equals("ClientConnectionFailure");
