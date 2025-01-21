@@ -67,17 +67,16 @@ resource "helm_release" "monitoring_reloader" {
 # Kubernetes Event Exporter
 module "kubernetes_event_exporter" {
   count     = var.env_short != "p" ? 0 : 1
-  source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter?ref=v8.70.0"
+  source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter?ref=v8.76.0"
   namespace = "monitoring"
 
-  # Slack integration
-  enable_slack  = false
-  slack_channel = "#pagopa_status"
-  slack_token   = ""
-
-  # OpsGenie integrations
-  enable_opsgenie  = true
-  opsgenie_api_key = data.azurerm_key_vault_secret.opsgenie_kubexporter_api_key.0.value
+  custom_config = "env/weu-prod/exporter/kubernetes-event-exporter-config.yml.tftpl"
+  custom_variables = {
+    enable_slack           = false
+    enable_opsgenie        = true
+    opsgenie_receiver_name = "opsgenie"
+    opsgenie_api_key       = data.azurerm_key_vault_secret.opsgenie_kubexporter_api_key.0.value
+  }
 }
 
 data "azurerm_key_vault_secret" "opsgenie_kubexporter_api_key" {
@@ -88,7 +87,7 @@ data "azurerm_key_vault_secret" "opsgenie_kubexporter_api_key" {
 
 module "opencosts" {
   enable_opencost      = var.env_short == "d" ? true : false
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_opencosts?ref=v8.69.0"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_opencosts?ref=v8.71.0"
   aks_name             = module.aks.name
   aks_rg_name          = module.aks.aks_resource_group_name
   env                  = var.env
@@ -120,7 +119,7 @@ resource "kubernetes_manifest" "service_monitor" {
       "selector" : {
         "matchLabels" : {
           "app.kubernetes.io/instance" : "prometheus-opencost-exporter"
-          "app.kubernetes.io/name" : "prometheus-opencost-exporter"
+          "app.kubernetes.io/name" : "opencost"
         }
       }
       "endpoints" : [
