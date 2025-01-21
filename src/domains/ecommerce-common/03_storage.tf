@@ -300,13 +300,14 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnos
 }
 
 locals {
-  queue_transient_alert_props = var.env_short == "p" ? [
+  queue_transient_alert_props = var.env_short == "u" ? [
     {
       "queue_key"   = "transaction-notifications-queue"
       "severity"    = 1
       "time_window" = 30
       "frequency"   = 15
-      "threshold"   = 10
+      "threshold"   = 20
+      "dynamic_threshold" = 2.0
     },
     {
       "queue_key"   = "transactions-close-payment-queue"
@@ -314,6 +315,7 @@ locals {
       "time_window" = 30
       "frequency"   = 15
       "threshold"   = 10
+      "dynamic_threshold" = 1.0
     },
     {
       "queue_key"   = "transactions-refund-queue"
@@ -321,6 +323,7 @@ locals {
       "time_window" = 30
       "frequency"   = 15
       "threshold"   = 10
+      "dynamic_threshold" = 1.0
     }
   ] : []
 }
@@ -365,7 +368,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
         | project PutCount, DeleteCount, Diff
     };
     MessageRateForQueue("%s")
-    | where Diff > max_of(PutCount/100, ${each.value.threshold})
+    | where Diff > max_of(PutCount*(${each.value.dynamic_threshold}/100.0), ${each.value.threshold})
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
   )
