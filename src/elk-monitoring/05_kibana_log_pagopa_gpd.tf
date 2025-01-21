@@ -7,7 +7,7 @@ locals {
   }), "\""), "\""), "'", "'\\''")
 
   pagopagpd_key     = "pagopagpd"
-  log_index_pattern = "logs*gpd*"
+  log_index_pattern = "logs*gpd*" # all gpd log files
 
   pagopagpd_ingest_pipeline = replace(trimsuffix(trimprefix(file("${path.module}/pagopa/gpd/ingest-pipeline.json"), "\""), "\""), "'", "'\\''")
   pagopagpd_ilm_policy = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/gpd/ilm-policy.json", {
@@ -25,15 +25,17 @@ locals {
     index                     = local.log_index_pattern
   }), "\""), "\""), "'", "'\\''")
 
+  # GDP
   pagopagpd_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/gpd/data-view.json", {
     key   = local.pagopagpd_key
     name  = "Dominio GPD"
     index = local.log_index_pattern
   }), "\""), "\""), "'", "'\\''")
 
+  # PaymentPULL
   pagopapaymentspull_data_view = replace(trimsuffix(trimprefix(templatefile("${path.module}/pagopa/gps/data-view.json", {
     name  = "Pagamenti Pull"
-    index = "gpd-payments-pull"
+    index = "gpd-payments-pull" # included into log_index_pattern
   }), "\""), "\""), "'", "'\\''")
 
 }
@@ -191,7 +193,7 @@ resource "null_resource" "pagopapaymentspull_kibana_data_view" {
 
   provisioner "local-exec" {
     command     = <<EOT
-      curl -k -X POST "${local.kibana_url}/s/${local.paymentspull_space_name}/api/data_views/data_view" \
+      curl -k -X POST "${local.kibana_url}/s/${local.gpd_space_name}/api/data_views/data_view" \
       -H 'kbn-xsrf: true' \
       -H 'Content-Type: application/json' \
       -d '${local.pagopapaymentspull_data_view}'
