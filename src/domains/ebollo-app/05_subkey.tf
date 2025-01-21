@@ -46,7 +46,7 @@ resource "azurerm_api_management_subscription" "mbd_service_integration_test_sub
 }
 
 
-resource "azurerm_api_management_subscription" "gdp_debt_positions_productintegration_test_subkey" {
+resource "azurerm_api_management_subscription" "gdp_debt_positions_product_integration_test_subkey" {
   count               = var.env_short != "p" ? 1 : 0
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name

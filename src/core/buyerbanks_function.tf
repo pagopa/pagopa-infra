@@ -55,24 +55,25 @@ module "buyerbanks_function" {
   storage_account_name = replace(format("%s-st-fnbuyerbanks", local.project), "-", "")
 
   app_settings = {
-    FUNCTIONS_WORKER_RUNTIME          = "node"
-    WEBSITE_NODE_DEFAULT_VERSION      = "18.16.0"
-    FUNCTIONS_WORKER_PROCESS_COUNT    = 4
-    NODE_ENV                          = var.env_short == "p" ? "production" : "uat"
-    BUYERBANKS_SA_CONNECTION_STRING   = module.buyerbanks_storage.primary_connection_string
-    BUYERBANKS_BLOB_CONTAINER         = azurerm_storage_container.banks.name
-    PAGOPA_BUYERBANKS_CERT            = azurerm_key_vault_certificate.buyerbanks_cert.certificate_data_base64
-    PAGOPA_BUYERBANKS_THUMBPRINT      = data.azurerm_key_vault_secret.pagopa_buyerbank_thumbprint.value
-    PAGOPA_BUYERBANKS_KEY_CERT        = data.azurerm_key_vault_secret.pagopa_buyerbank_cert_key.value
-    PAGOPA_BUYERBANKS_BRANCH          = "10000"
-    PAGOPA_BUYERBANKS_CERT_PASSPHRASE = ""
-    PAGOPA_BUYERBANKS_INSTITUTE       = "1000"
-    PAGOPA_BUYERBANKS_RS_URL          = var.env_short == "p" ? "https://rs-pr.mybankpayments.eu" : "https://rs-te.mybankpayments.eu"
-    PAGOPA_BUYERBANKS_SIGNATURE       = trimspace(data.azurerm_key_vault_secret.pagopa_buyerbank_signature.value)
-    PAGOPA_BUYERBANKS_SIGN_ALG        = "RSA-SHA256"
-    PAGOPA_BUYERBANKS_SIGN_ALG_STRING = "SHA256withRSA"
-    PAGOPA_BUYERBANKS_CERT_PEER       = var.env_short == "p" ? data.azurerm_key_vault_secret.pagopa_buyerbank_cert_peer[0].value : null
-    PAGOPA_BUYERBANKS_THUMBPRINT_PEER = var.env_short == "p" ? data.azurerm_key_vault_secret.pagopa_buyerbank_thumbprint_peer[0].value : null
+    FUNCTIONS_WORKER_RUNTIME                 = "node"
+    WEBSITE_NODE_DEFAULT_VERSION             = "18.16.0"
+    FUNCTIONS_WORKER_PROCESS_COUNT           = 4
+    NODE_ENV                                 = var.env_short == "p" ? "production" : "uat"
+    BUYERBANKS_SA_CONNECTION_STRING          = module.buyerbanks_storage.primary_connection_string
+    BUYERBANKS_BLOB_CONTAINER                = azurerm_storage_container.banks.name
+    PAGOPA_BUYERBANKS_CERT                   = azurerm_key_vault_certificate.buyerbanks_cert.certificate_data_base64
+    PAGOPA_BUYERBANKS_THUMBPRINT             = data.azurerm_key_vault_secret.pagopa_buyerbank_thumbprint.value
+    PAGOPA_BUYERBANKS_KEY_CERT               = data.azurerm_key_vault_secret.pagopa_buyerbank_cert_key.value
+    PAGOPA_BUYERBANKS_BRANCH                 = "10000"
+    PAGOPA_BUYERBANKS_CERT_PASSPHRASE        = ""
+    PAGOPA_BUYERBANKS_INSTITUTE              = "1000"
+    PAGOPA_BUYERBANKS_RS_URL                 = var.env_short == "p" ? "https://rs-pr.mybankpayments.eu" : "https://rs-te.mybankpayments.eu"
+    PAGOPA_BUYERBANKS_SIGNATURE              = trimspace(data.azurerm_key_vault_secret.pagopa_buyerbank_signature.value)
+    PAGOPA_BUYERBANKS_SIGN_ALG               = "RSA-SHA256"
+    PAGOPA_BUYERBANKS_SIGN_ALG_STRING        = "SHA256withRSA"
+    PAGOPA_BUYERBANKS_CERT_PEER              = var.env_short == "p" ? data.azurerm_key_vault_secret.pagopa_buyerbank_cert_peer[0].value : null
+    PAGOPA_BUYERBANKS_THUMBPRINT_PEER        = var.env_short == "p" ? data.azurerm_key_vault_secret.pagopa_buyerbank_thumbprint_peer[0].value : null
+    "AzureWebJobs.UpdateBuyerBanks.Disabled" = true
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
