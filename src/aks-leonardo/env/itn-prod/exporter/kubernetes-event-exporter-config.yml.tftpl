@@ -54,6 +54,8 @@ config:
             type: "Warning"
           - receiver: "${opsgenie_receiver_name}-critical"
             reason: "Failed"
+          - receiver: "${opsgenie_receiver_name}-critical"
+            reason: "NotTriggerScaleUp"
       - drop:
         - reason: "Unhealthy"
         - kind: "HorizontalPodAutoscaler"
@@ -79,6 +81,4 @@ config:
             reason: "TerminateScheduled"
           - receiver: ${opsgenie_receiver_name}-warning
             reason: "PreemptScheduled"
-          - receiver: "${opsgenie_receiver_name}-warning"
-            reason: "NotTriggerScaleUp"
       %{ endif }
