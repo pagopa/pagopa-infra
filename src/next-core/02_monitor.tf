@@ -16,6 +16,12 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   allow_resource_only_permissions    = var.env_short != "p"
 
   tags = var.tags
+
+  lifecycle {
+    ignore_changes = [
+      sku
+    ]
+  }
 }
 
 # Application insights
