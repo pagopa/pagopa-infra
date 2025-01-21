@@ -300,7 +300,7 @@ resource "azurerm_monitor_diagnostic_setting" "ecommerce_transient_queue_diagnos
 }
 
 locals {
-  queue_transient_alert_props = var.env_short == "u" ? [
+  queue_transient_alert_props = var.env_short == "p" ? [
     {
       "queue_key"   = "transaction-notifications-queue"
       "severity"    = 1
