@@ -49,6 +49,8 @@ config:
         - reason: "FreezeScheduled"
         - reason: "TerminateScheduled"
         - reason: "PreemptScheduled"
+        - reason: "ContainerdStart"
+        - reason: "NodeNotReady"
         match:
           - receiver: "${opsgenie_receiver_name}-critical"
             type: "Warning"
@@ -56,7 +58,6 @@ config:
             reason: "Failed"
           - receiver: "${opsgenie_receiver_name}-critical"
             reason: "NotTriggerScaleUp"
-
       - drop:
         - reason: "Unhealthy"
         - kind: "HorizontalPodAutoscaler"
@@ -69,6 +70,7 @@ config:
         - reason: "FreezeScheduled"
         - reason: "TerminateScheduled"
         - reason: "PreemptScheduled"
+        - reason: "ContainerdStart"
         match:
           - receiver: ${opsgenie_receiver_name}-warning
             reason: "OOMKilling"
@@ -82,4 +84,6 @@ config:
             reason: "TerminateScheduled"
           - receiver: ${opsgenie_receiver_name}-warning
             reason: "PreemptScheduled"
+          - receiver: ${opsgenie_receiver_name}-warning
+            reason: "NodeNotReady"
       %{ endif }
