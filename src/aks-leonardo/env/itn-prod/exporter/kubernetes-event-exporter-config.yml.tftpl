@@ -51,6 +51,8 @@ config:
         - reason: "PreemptScheduled"
         - reason: "ContainerdStart"
         - reason: "NodeNotReady"
+        - reason: "Drain|FailedMount|NetworkNotReady"
+          namespace: "default|kube-system"
         match:
           - receiver: "${opsgenie_receiver_name}-critical"
             type: "Warning"
@@ -71,6 +73,8 @@ config:
         - reason: "TerminateScheduled"
         - reason: "PreemptScheduled"
         - reason: "ContainerdStart"
+        - reason: "Drain|FailedMount|NetworkNotReady"
+          namespace: "default|kube-system"
         match:
           - receiver: ${opsgenie_receiver_name}-warning
             reason: "OOMKilling"
