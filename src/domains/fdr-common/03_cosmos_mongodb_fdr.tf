@@ -70,8 +70,12 @@ locals {
           unique = true
         },
         {
-          keys   = ["name", "sender.psp_id", "revision"] # flow_revision_idx
+          keys   = ["sender.psp_id", "name", "revision"] # flow_revision_idx
           unique = true
+        },
+        {
+          keys   = ["receiver.organization_id", "sender.psp_id", "published"] # published_flow_idx
+          unique = false
         }
       ]
       shard_key   = null,
