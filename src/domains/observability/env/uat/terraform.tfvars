@@ -359,7 +359,7 @@ ehns_metric_alerts_gpd = {
       {
         name     = "EntityName"
         operator = "Include"
-        values   = ["gpd-ingestion.apd.payment_option-tx", "gpd-ingestion.apd.payment_position-tx","gpd-ingestion.apd.transfer-tx"]
+        values   = ["gpd-ingestion.apd.payment_option-tx", "gpd-ingestion.apd.payment_position-tx", "gpd-ingestion.apd.transfer-tx"]
       }
     ],
   },
