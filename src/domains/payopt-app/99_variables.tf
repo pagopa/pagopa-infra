@@ -71,10 +71,10 @@ variable "tags" {
 
 variable "is_feature_enabled" {
   type = object({
-    paymentoptions      = bool
+    paymentoptions = bool
   })
   default = {
-    paymentoptions      = false
+    paymentoptions = false
   }
 }
 ### External resources
