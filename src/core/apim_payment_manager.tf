@@ -26,56 +26,6 @@ data "azurerm_key_vault_secret" "pm_restapi_ip" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
-
-#####################################
-## API buyerbanks                  ##
-#####################################
-locals {
-  apim_buyerbanks_api = {
-    # params for all api versions
-    display_name          = "pagoPA buyerbanks API"
-    description           = "API to support buyerbanks list update"
-    path                  = "payment-manager/buyerbanks"
-    subscription_required = true
-    service_url           = null
-  }
-}
-
-resource "azurerm_api_management_api_version_set" "buyerbanks_api" {
-
-  name                = format("%s-buyerbanks-api", var.env_short)
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  display_name        = local.apim_buyerbanks_api.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_buyerbanks_api_v1" {
-
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-
-  name                  = format("%s-buyerbanks-api", var.env_short)
-  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_payment_manager_product.product_id]
-  subscription_required = local.apim_buyerbanks_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.buyerbanks_api.id
-  api_version           = "v1"
-  service_url           = local.apim_buyerbanks_api.service_url
-
-  description  = local.apim_buyerbanks_api.description
-  display_name = local.apim_buyerbanks_api.display_name
-  path         = local.apim_buyerbanks_api.path
-  protocols    = ["https"]
-
-  content_format = "swagger-json"
-  content_value = templatefile("./api/payment_manager_api/buyerbanks/_swagger.json.tpl", {
-    host = local.api_domain
-  })
-
-  xml_content = file("./api/payment_manager_api/buyerbanks/_base_policy.xml.tpl")
-}
-
 #####################################
 ## API restapi                     ##
 #####################################
