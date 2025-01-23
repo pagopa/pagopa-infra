@@ -44,22 +44,7 @@ resource "azurerm_cosmosdb_mongo_database" "fdr" {
 
 }
 
-
-# fdr_history
-# fdr_insert
-# fdr_publish
-
-# fdr_payment_history
-# fdr_payment_insert
-# fdr_payment_publish
-
 # Collections
-
-# https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/indexing#compound-indexes-mongodb-server-version-36
-# Compound indexes are required if your query needs the ability to sort on multiple fields at once.
-# For queries with multiple filters that don't need to sort, create multiple single field indexes instead
-# of a compound index to save on indexing costs.
-
 locals {
   collections = [
     {
@@ -74,7 +59,11 @@ locals {
           unique = true
         },
         {
-          keys   = ["receiver.organization_id", "sender.psp_id", "published"] # published_flow_idx
+          keys   = ["sender.psp_id", "receiver.organization_id", "published"] # published_flow_by_psp_idx
+          unique = false
+        },
+        {
+          keys   = ["receiver.organization_id", "sender.psp_id", "published"] # published_flow_by_organization_idx
           unique = false
         }
       ]
