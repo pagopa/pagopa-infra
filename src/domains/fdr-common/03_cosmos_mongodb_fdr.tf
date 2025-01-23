@@ -68,7 +68,7 @@ locals {
         }
       ]
       shard_key   = null,
-      ttl_seconds = "3024000" # 30 days + 5 days (deltaTime)
+      ttl_seconds = var.cosmos_mongo_db_fdr_params.fdr_flow_container_ttl
     },
     {
       name = "fdr_payment"
@@ -87,7 +87,7 @@ locals {
         #}
       ]
       shard_key   = null,
-      ttl_seconds = "3024000" # 30 days + 5 days (deltaTime)
+      ttl_seconds = var.cosmos_mongo_db_fdr_params.fdr_payment_container_ttl
     },
   ]
 }

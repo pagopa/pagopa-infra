@@ -140,6 +140,9 @@ cosmos_mongo_db_fdr_params = {
   throughput         = 1000
 
   container_default_ttl = 604800 # 7 days
+
+  fdr_flow_container_ttl    = "604800" # 7 days
+  fdr_payment_container_ttl = "604800" # 7 days
 }
 
 cosmos_mongo_db_fdr_re_params = {

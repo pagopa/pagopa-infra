@@ -143,6 +143,9 @@ cosmos_mongo_db_fdr_params = {
 
   container_default_ttl = 315576000 # 10 year in second
 
+  fdr_flow_container_ttl    = "3024000" # 30 days + 5 days (deltaTime)
+  fdr_payment_container_ttl = "3024000" # 30 days + 5 days (deltaTime)
+
   enable_serverless  = false
   enable_autoscaling = true
   max_throughput     = 2000
