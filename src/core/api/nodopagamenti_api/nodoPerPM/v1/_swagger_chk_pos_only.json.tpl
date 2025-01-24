@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "Specifiche di interfaccia Nodo - Payment Manager",
+    "description": "Specifiche di interfaccia Nodo - CheckPosition",
     "version": "1.0.0",
     "title": "Nodo-PaymentManager ${service}",
     "license": {
