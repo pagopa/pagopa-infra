@@ -20,13 +20,6 @@ resource "azurerm_api_management_api_version_set" "nodo_per_pm_api" {
   versioning_scheme   = "Segment"
 }
 
-#fetch technical support api product APIM product
-data "azurerm_api_management_product" "technical_support_api_product" {
-  product_id          = "technical_support_api"
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-}
-
 module "apim_nodo_per_pm_api_v1" {
 
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
