@@ -65,7 +65,7 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org https://privacyportal-de.onetrust.com https://geolocation.onetrust.com;"
+        value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org;"
       },
       {
         action = "Append"
@@ -80,7 +80,7 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://geolocation.onetrust.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname};"
+        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname};"
       },
       {
         action = "Append"
