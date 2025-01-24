@@ -100,4 +100,3 @@ resource "azurerm_storage_table" "fdr_re_table" {
   name                 = "events"
   storage_account_name = module.fdr_re_sa.name
 }
-

@@ -60,6 +60,50 @@ locals {
         }
       ]
       shard_key = "created"
+    },
+    ### fdr1-metadata, reference collection for Blobs URI ###
+    {
+      name = "fdr1-metadata"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["PartitionKey"]
+          unique = false
+        }
+      ]
+      shard_key = "todo" # todo
+    },
+    ### history collections ###
+    {
+      name = "fdrpublish"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["PartitionKey"]
+          unique = false
+        }
+      ]
+      shard_key = "created" # balanced (is it a date or instant?) but may be suboptimal for writes
+    },
+    {
+      name = "fdrpaymentpublish"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["PartitionKey"]
+          unique = false
+        }
+      ]
+      shard_key = "created" # balanced (is it a date or instant?) but may be suboptimal for writes
     }
   ]
 }

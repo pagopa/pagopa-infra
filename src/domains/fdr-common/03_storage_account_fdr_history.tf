@@ -94,14 +94,3 @@ resource "azurerm_storage_container" "fdr_history_blob_file" {
   storage_account_name  = module.fdr_history_sa.name
   container_access_type = "private"
 }
-
-# table#1 fdr-history
-resource "azurerm_storage_table" "fdr_publish_history_table" {
-  name                 = "fdrpublish"
-  storage_account_name = module.fdr_history_sa.name
-}
-resource "azurerm_storage_table" "fdr_payment_publish_history_table" {
-  name                 = "fdrpaymentpublish"
-  storage_account_name = module.fdr_history_sa.name
-}
-
