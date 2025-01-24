@@ -4,7 +4,7 @@
 locals {
   apim_nodo_per_pm_api_auth = {
     display_name          = "Nodo per Payment Manager API (AUTH)"
-    description           = "API to support Payment Manager"
+    description           = "API to support Payment Manager (AUTH)"
     path                  = "nodo-auth/nodo-per-pm"
     subscription_required = true
     service_url           = null
@@ -36,7 +36,7 @@ module "apim_nodo_per_pm_api_auth_v1" {
   resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [data.azurerm_api_management_product.technical_support_api_product.product_id]
   subscription_required = local.apim_nodo_per_pm_api_auth.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api.id
+  version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api_auth.id
   api_version           = "v1"
   service_url           = local.apim_nodo_per_pm_api_auth.service_url
 
@@ -52,7 +52,17 @@ module "apim_nodo_per_pm_api_auth_v1" {
     service = module.apim_nodo_dei_pagamenti_product.product_id
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
-    is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+
+  xml_content = var.apim_nodo_decoupler_enable ? templatefile("./api_product/nodo_pagamenti_api/decoupler/base_policy.xml.tpl", { # decoupler ON
+    address-range-from       = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to         = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+    is-nodo-auth-pwd-replace = false
+    }) : templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", { # decoupler OFF
+    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
   })
+
+  # xml_content = templatefile("./api/nodopagamenti_api/nodoPerPM/v1/_base_policy.xml.tpl", {
+  #   is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+  # })
 }

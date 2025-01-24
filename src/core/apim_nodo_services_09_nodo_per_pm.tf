@@ -27,7 +27,6 @@ module "apim_nodo_per_pm_api_v1" {
   name                  = format("%s-nodo-per-pm-api", local.project)
   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
   resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [data.azurerm_api_management_product.technical_support_api_product.product_id]
   subscription_required = local.apim_nodo_per_pm_api.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.nodo_per_pm_api.id
   api_version           = "v1"
