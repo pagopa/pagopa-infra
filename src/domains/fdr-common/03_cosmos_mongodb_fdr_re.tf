@@ -74,7 +74,7 @@ locals {
           unique = false
         }
       ]
-      shard_key = "todo" # todo
+      shard_key = "created"
     },
     ### history collections ###
     {
@@ -89,7 +89,7 @@ locals {
           unique = false
         }
       ]
-      shard_key = "created" # balanced (is it a date or instant?) but may be suboptimal for writes
+      shard_key = "created"
     },
     {
       name = "fdrpaymentpublish"
@@ -103,7 +103,7 @@ locals {
           unique = false
         }
       ]
-      shard_key = "created" # balanced (is it a date or instant?) but may be suboptimal for writes
+      shard_key = "created"
     }
   ]
 }
