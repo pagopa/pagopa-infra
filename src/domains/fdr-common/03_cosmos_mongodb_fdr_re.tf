@@ -74,7 +74,7 @@ locals {
           unique = false
         }
       ]
-      shard_key = "created"
+      shard_key = "pspCreditorInstitution"
     },
     ### history collections ###
     {
