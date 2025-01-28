@@ -94,9 +94,3 @@ resource "azurerm_storage_container" "payload_blob_file" {
   storage_account_name  = module.fdr_re_sa.name
   container_access_type = "private"
 }
-
-# table#1 fdr-re
-resource "azurerm_storage_table" "fdr_re_table" {
-  name                 = "events"
-  storage_account_name = module.fdr_re_sa.name
-}
