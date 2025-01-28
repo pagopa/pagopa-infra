@@ -60,6 +60,50 @@ locals {
         }
       ]
       shard_key = "created"
+    },
+    ### fdr1-metadata, reference collection for Blobs URI ###
+    {
+      name = "fdr1-metadata"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["PartitionKey"]
+          unique = false
+        }
+      ]
+      shard_key = "pspCreditorInstitution"
+    },
+    ### history collections ###
+    {
+      name = "fdrpublish"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["PartitionKey"]
+          unique = false
+        }
+      ]
+      shard_key = "created"
+    },
+    {
+      name = "fdrpaymentpublish"
+      indexes = [
+        {
+          keys   = ["_id"]
+          unique = true
+        },
+        {
+          keys   = ["PartitionKey"]
+          unique = false
+        }
+      ]
+      shard_key = "created"
     }
   ]
 }
