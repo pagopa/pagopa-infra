@@ -65,7 +65,7 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = " https://acardste.vaservices.eu:* https://cdn.cookielaw.org;"
+        value  = " https://acardste.vaservices.eu:*;"
       },
       {
         action = "Append"
@@ -75,12 +75,12 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "img-src 'self' https://cdn.cookielaw.org https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it;"
+        value  = "img-src 'self' https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it;"
       },
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://cdn.cookielaw.org https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname};"
+        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname};"
       },
       {
         action = "Append"
