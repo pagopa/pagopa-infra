@@ -78,7 +78,7 @@ locals {
     },
     ### history collections ###
     {
-      name = "fdrpublish"
+      name = "fdr3-flow-metadata"
       indexes = [
         {
           keys   = ["_id"]
@@ -92,7 +92,7 @@ locals {
       shard_key = "created"
     },
     {
-      name = "fdrpaymentpublish"
+      name = "fdr3-payment-metadata"
       indexes = [
         {
           keys   = ["_id"]
