@@ -1,4 +1,4 @@
-name: Static Analysis PR
+name: 🛃 Static Analysis PR
 
 on:
   push:
