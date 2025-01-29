@@ -289,6 +289,9 @@ variable "cosmos_mongo_db_fdr_params" {
     throughput                        = number
     max_throughput                    = number
     container_default_ttl             = number
+    # single container variables
+    fdr_flow_container_ttl    = string
+    fdr_payment_container_ttl = string
   })
 }
 
