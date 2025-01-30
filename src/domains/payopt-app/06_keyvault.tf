@@ -67,6 +67,7 @@ resource "azurerm_key_vault_secret" "forwarder_subscription_key" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+# using for test
 resource "azurerm_key_vault_secret" "service_payment_options_subscription_key" {
   count = var.env_short != "p" ? 1 : 0
 

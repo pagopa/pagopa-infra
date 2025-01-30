@@ -72,12 +72,12 @@ pgres_flex_params = {
   standby_availability_zone                        = 2
   pgbouncer_enabled                                = true
   alerts_enabled                                   = false
-  max_connections                                  = 5000
+  max_connections                                  = 1700
   enable_private_dns_registration                  = true
   enable_private_dns_registration_virtual_endpoint = false
   max_worker_process                               = 32
-  wal_level                                        = "logical"
-  shared_preoload_libraries                        = "pg_failover_slots,pglogical"
+  wal_level                                        = "logical"                     # gpd_cdc_enabled
+  shared_preoload_libraries                        = "pg_failover_slots,pglogical" # gpd_cdc_enabled
   public_network_access_enabled                    = false
 }
 

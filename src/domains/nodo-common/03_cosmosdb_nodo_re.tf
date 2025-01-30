@@ -1,6 +1,6 @@
 module "cosmosdb_account_nodo_re" {
   count               = var.enable_nodo_re ? 1 : 0
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v7.77.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_account"
   domain              = var.domain
   name                = "${local.project}-re-cosmos-nosql-account"
   location            = var.location
@@ -37,7 +37,7 @@ module "cosmosdb_account_nodo_re" {
 # cosmosdb database for nodo_re
 module "cosmosdb_account_nodo_re_db" {
   count               = var.enable_nodo_re ? 1 : 0
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=v7.77.0"
+  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
   name                = "nodo_re"
   resource_group_name = azurerm_resource_group.db_rg.name
   account_name        = var.enable_nodo_re ? module.cosmosdb_account_nodo_re[0].name : "no-account-name"
@@ -63,7 +63,7 @@ locals {
 
 # cosmosdb container for nodo re datastore
 module "cosmosdb_account_nodo_re_containers" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=v7.77.0"
+  source = "./.terraform/modules/__v3__/cosmosdb_sql_container"
   for_each = {
     for c in local.nodo_re_containers : c.name => c if var.enable_nodo_re
   }

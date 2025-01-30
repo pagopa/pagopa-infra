@@ -37,7 +37,7 @@ module "eventhub_namespace_observability_gpd" {
   ]
 
   metric_alerts_create = var.ehns_alerts_enabled
-  # metric_alerts        = var.ehns_metric_alerts_gpd
+  metric_alerts        = var.ehns_metric_alerts_gpd
 
   tags = var.tags
 }
@@ -78,8 +78,8 @@ resource "azurerm_eventhub_namespace_authorization_rule" "cdc_connection_string"
 # --retention-time 24
 
 
-resource "azurerm_eventhub_namespace_authorization_rule" "cdc_test_connection_string" { 
-  count  = var.env != "p" ? 1 : 0 
+resource "azurerm_eventhub_namespace_authorization_rule" "cdc_test_connection_string" {
+  count = var.env != "p" ? 1 : 0
 
   name                = "cdc-gpd-test-connection-string"
   namespace_name      = module.eventhub_namespace_observability_gpd.name
@@ -90,7 +90,7 @@ resource "azurerm_eventhub_namespace_authorization_rule" "cdc_test_connection_st
 }
 
 resource "azurerm_key_vault_secret" "azure_web_jobs_storage_kv" {
-  count  = var.env != "p" ? 1 : 0 
+  count = var.env != "p" ? 1 : 0
 
   name         = "cdc-gpd-test-connection-string"
   value        = azurerm_eventhub_namespace_authorization_rule.cdc_test_connection_string[0].primary_connection_string
