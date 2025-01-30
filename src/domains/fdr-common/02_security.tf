@@ -81,26 +81,6 @@ resource "azurerm_key_vault_secret" "fdr_storage_account_connection_string" {
   ]
 }
 
-resource "azurerm_key_vault_secret" "fdr_re_storage_account_connection_string" {
-  name         = "fdr-re-sa-connection-string"
-  value        = module.fdr_re_sa.primary_connection_string
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-
-  depends_on = [
-    module.fdr_re_sa
-  ]
-}
-
-resource "azurerm_key_vault_secret" "fdr_history_storage_account_connection_string" {
-  name         = "fdr-history-sa-connection-string"
-  value        = module.fdr_history_sa.primary_connection_string
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-
-  depends_on = [
-    module.fdr_history_sa
-  ]
-}
-
 ##########
 ## APIM ##
 ##########

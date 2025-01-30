@@ -117,22 +117,27 @@ resource "azurerm_private_endpoint" "fdr_table_private_endpoint" {
   ]
 }
 
-## share xml file
-resource "azurerm_storage_container" "xml_blob_file" {
-  name                  = "xmlsharefile"
+## fdr 1 flows blob container
+resource "azurerm_storage_container" "fdr1_flows_blob_file" {
+  name                  = "fdr1-flows"
   storage_account_name  = module.fdr_conversion_sa.name
-  container_access_type = "private"
 }
 
-# send id of fdr mongo collection
-resource "azurerm_storage_queue" "flow_id_send_queue" {
-  name                 = "flowidsendqueue"
-  storage_account_name = module.fdr_conversion_sa.name
+## fdr 3 flows blob container
+resource "azurerm_storage_container" "fdr3_flows_blob_file" {
+  name                  = "fdr3-flows"
+  storage_account_name  = module.fdr_conversion_sa.name
 }
 
-# table#1 fdr-re
-resource "azurerm_storage_table" "xml_share_file_error_table" {
-  name                 = "xmlsharefileerror"
+## re payload blob container
+resource "azurerm_storage_container" "re_payload_blob_file" {
+  name                  = "re-payload"
+  storage_account_name  = module.fdr_conversion_sa.name
+}
+
+# table#1 conversion error table
+resource "azurerm_storage_table" "fdr1_conversion_error_table" {
+  name                 = "fdr1conversionerror"
   storage_account_name = module.fdr_conversion_sa.name
 }
 
