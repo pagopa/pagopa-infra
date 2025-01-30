@@ -35,5 +35,6 @@ check_position_body = {
   notice_number = "001000000136265862"
 }
 verify_payment_internal_expected_outcome = "OK"
-
-
+nexi_node_ip                             = "10.79.20.34"
+nexi_ndp_host                            = "nodo-p.npc.sia.eu"
+nexi_ndp_host_2                          = "nodo-dei-pagamenti.npc.sia.eu"

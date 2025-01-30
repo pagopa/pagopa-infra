@@ -1116,3 +1116,13 @@ variable "enable_node_forwarder_debug_instance" {
   default     = false
   description = "Enable the creation of a separate 'debug' instance of node forwarder"
 }
+
+variable "route_tools" {
+  type = list(object({
+    name                   = string
+    address_prefix         = string
+    next_hop_type          = string
+    next_hop_in_ip_address = string
+  }))
+  description = "AKS routing table"
+}
