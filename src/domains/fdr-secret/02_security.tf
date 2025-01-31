@@ -42,10 +42,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"]
   secret_permissions  = ["Get", "List", "Set", "Delete", ]
   storage_permissions = []
-  certificate_permissions = [
-    "Get", "List", "Update", "Create", "Import",
-    "Delete", "Restore", "Purge", "Recover"
-  ]
+  certificate_permissions = [ "Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover" ]
 }
 
 ## ad group policy ##
@@ -57,13 +54,10 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_externals.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"]
   secret_permissions  = ["Get", "List", "Set", "Delete", ]
   storage_permissions = []
-  certificate_permissions = [
-    "Get", "List", "Update", "Create", "Import",
-    "Delete", "Restore", "Purge", "Recover"
-  ]
+  certificate_permissions = [ "Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover" ]
 }
 
 # azure devops policy

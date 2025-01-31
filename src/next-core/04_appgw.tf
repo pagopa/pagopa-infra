@@ -669,8 +669,8 @@ module "app_gw" {
           metric_name              = "FailedRequests"
           operator                 = "GreaterThan"
           alert_sensitivity        = "High"
-          evaluation_total_count   = 2
-          evaluation_failure_count = 2
+          evaluation_total_count   = 4
+          evaluation_failure_count = 4
           dimension                = []
         }
       ]
