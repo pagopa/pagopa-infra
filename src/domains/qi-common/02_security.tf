@@ -218,12 +218,3 @@ resource "azurerm_key_vault_secret" "bdi_kpi_ingestion_dl_evt_tx_key" {
   value        = module.eventhub_qi_configuration.keys["bdi-kpi-ingestion-dl.bdi-kpi-ingestion-dl-evt-tx"].primary_key
   key_vault_id = module.key_vault.id
 }
-
-
-# resource "azurerm_key_vault_secret" "ai_connection_string" {
-#   name         = "ai-connection-string"
-#   value        = data.azurerm_application_insights.application_insights.connection_string
-#   content_type = "text/plain"
-
-#   key_vault_id = module.key_vault.id
-# }
