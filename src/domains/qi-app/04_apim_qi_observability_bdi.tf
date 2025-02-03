@@ -60,7 +60,7 @@ module "apim_pagopa_qi_observability_perf_kpi_api" {
   service_url  = local.apim_pagopa_qi_observability_perf_kpi_api.service_url
 
   content_format = "openapi"
-  content_value = templatefile("./api/qi-observability-perf-kpi/v1/_openapi.json.tpl", {
+  content_value = templatefile("./api/qi-observability-perf-kpi/v1/_openapi.yaml.tpl", {
     hostname = local.apim_hostname
   })
 
