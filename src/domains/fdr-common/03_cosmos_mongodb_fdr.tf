@@ -44,124 +44,50 @@ resource "azurerm_cosmosdb_mongo_database" "fdr" {
 
 }
 
-
-# fdr_history
-# fdr_insert
-# fdr_publish
-
-# fdr_payment_history
-# fdr_payment_insert
-# fdr_payment_publish
-
 # Collections
-
-# https://learn.microsoft.com/en-us/azure/cosmos-db/mongodb/indexing#compound-indexes-mongodb-server-version-36
-# Compound indexes are required if your query needs the ability to sort on multiple fields at once.
-# For queries with multiple filters that don't need to sort, create multiple single field indexes instead
-# of a compound index to save on indexing costs.
-
 locals {
   collections = [
     {
-      name = "fdr_history"
-      indexes = [{
-        keys   = ["_id"] # reporting_flow_name + revision
-        unique = true
-        }
-      ]
-      shard_key = null
-    },
-    {
-      name = "fdr_insert"
+      name = "fdr_flow"
       indexes = [
         {
-          keys   = ["_id"] # reporting_flow_name
+          keys   = ["_id"] # document UID
           unique = true
         },
         {
-          keys   = ["fdr"]
-          unique = false
-        },
-        {
-          keys   = ["sender.psp_id"]
-          unique = false
-        },
-        {
-          keys   = ["fdr", "revision"]
+          keys   = ["sender.psp_id", "name", "revision"] # flow_revision_idx
           unique = true
-        }
-      ]
-      shard_key = null
-    },
-    {
-      name = "fdr_publish"
-      indexes = [{
-        keys   = ["_id"] # reporting_flow_name
-        unique = true
         },
         {
-          keys   = ["fdr"]
+          keys   = ["sender.psp_id", "receiver.organization_id", "published"] # published_flow_by_psp_idx
           unique = false
         },
         {
-          keys   = ["sender.psp_id"]
+          keys   = ["receiver.organization_id", "sender.psp_id", "published"] # published_flow_by_organization_idx
           unique = false
-        },
-        {
-          keys   = ["receiver.organization_id"]
-          unique = false
-        },
-        {
-          keys   = ["fdr", "revision"]
-          unique = true
         }
       ]
-      shard_key = null
+      shard_key   = null,
+      ttl_seconds = var.cosmos_mongo_db_fdr_params.fdr_flow_container_ttl
     },
     {
-      name = "fdr_payment_history"
-      indexes = [{
-        keys   = ["_id"] # index + ref_fdr_reporting_flow_name + ref_fdr_id
-        unique = true
-        }
-      ]
-      shard_key = null
-    },
-    {
-      name = "fdr_payment_insert"
+      name = "fdr_payment"
       indexes = [
         {
-          keys   = ["_id"] # index + ref_fdr_reporting_flow_name + ref_fdr_id
+          keys   = ["_id"] # document UID
           unique = true
         },
         {
-          keys   = ["ref_fdr"]
-          unique = false
-        },
-        {
-          keys   = ["ref_fdr_sender_psp_id"]
-          unique = false
-        },
-      ]
-      shard_key = null
-    },
-    {
-      name = "fdr_payment_publish"
-      indexes = [
-        {
-          keys   = ["_id"] # index + ref_fdr_reporting_flow_name + ref_fdr_id
+          keys   = ["ref_fdr.id", "index"] # payment_by_fdr_idx
           unique = true
         },
-        {
-          keys   = ["ref_fdr"]
-          unique = false
-        },
-        {
-          keys   = ["ref_fdr_sender_psp_id"]
-          unique = false
-        }
+        #{
+        #  keys   = ["ref_fdr.sender_psp_id", "iuv", "created"] # payment_by_iuv_idx
+        #  unique = false
+        #}
       ]
-      shard_key = null
+      shard_key   = null,
+      ttl_seconds = var.cosmos_mongo_db_fdr_params.fdr_payment_container_ttl
     },
   ]
 }

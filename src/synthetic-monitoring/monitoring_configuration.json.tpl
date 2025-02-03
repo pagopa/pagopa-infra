@@ -144,7 +144,7 @@
     "tags" : {
       "description" : "pagopa ${env_name} apiconfig status endpoint"
     },
-    "durationLimit" : 10000,
+    "durationLimit" : 20000,
     "alertConfiguration" : {
       "enabled" : ${alert_enabled}
     }
