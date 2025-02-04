@@ -37,6 +37,6 @@ resource "azurerm_portal_dashboard" "fdr-soap-dashboard" {
   }
   dashboard_properties = templatefile("dashboard/dash-fdr-soap.tpl", {
     subscription_id = data.azurerm_subscription.current.subscription_id,
-    apim            = var.env_short
+    env_short       = var.env_short
   })
 }
