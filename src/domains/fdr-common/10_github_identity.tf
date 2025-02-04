@@ -11,7 +11,8 @@ data "azurerm_kubernetes_cluster" "aks" {
 locals {
   repos_01 = [
     "pagopa-fdr-nodo-dei-pagamenti", # FdR-1
-    "pagopa-fdr"                     # FdR-3
+    "pagopa-fdr",                    # FdR-3
+    "pagopa-fdr-2-event-hub"
   ]
 
   federations_01 = [
