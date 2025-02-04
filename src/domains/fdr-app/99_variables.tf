@@ -475,6 +475,22 @@ variable "enable_fdr3_features" {
 
 variable "enable_fdr_org_soap_request" {
   type        = bool
-  default     = false
   description = "Switch to pagoPA FdR SOAP request for Orgs"
+}
+
+variable "enable_fdr_psp_soap_request" {
+  type        = bool
+  description = "Switch to pagoPA FdR SOAP request for PSP"
+}
+
+variable "fdr_soap_request_psp_whitelist" {
+  type        = string
+  default     = "*"
+  description = "String list comma separated"
+}
+
+variable "fdr_soap_request_ci_whitelist" {
+  type        = string
+  default     = "*"
+  description = "String list comma separated"
 }
