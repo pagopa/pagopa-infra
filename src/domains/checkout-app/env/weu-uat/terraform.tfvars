@@ -44,16 +44,6 @@ pagopa_proxy_ha_enabled           = false
 
 checkout_enabled = true
 
-# Checkout functions
-
-checkout_function_kind                   = "Linux"
-checkout_function_sku_tier               = "Standard"
-checkout_function_sku_size               = "S1"
-checkout_function_autoscale_minimum      = 1
-checkout_function_autoscale_maximum      = 3
-checkout_function_autoscale_default      = 1
-checkout_function_zone_balancing_enabled = false
-
 # ecommerce ingress hostname
 ecommerce_ingress_hostname                 = "weuuat.ecommerce.internal.uat.platform.pagopa.it"
 checkout_ip_restriction_default_action     = "Allow"
