@@ -62,50 +62,37 @@
     <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
     <choose>
       <when condition="@(
-        (context.Request.Url.Path.StartsWith("/transactions")
-            || context.Request.Url.Path.StartsWith("/v2/transactions")
-            || context.Request.Url.Path.StartsWith("/v2.1/transactions"))
-          && (context.Operation.Id.Equals("newTransaction")
-            || context.Operation.Id.Equals("getTransactionInfo")
-            || context.Operation.Id.Equals("requestTransactionUserCancellation")
-            || context.Operation.Id.Equals("requestTransactionAuthorization")
-            || context.Operation.Id.Equals("updateTransactionAuthorization")
-            || context.Operation.Id.Equals("addUserReceipt"))
+        context.Request.Url.Path.Contains("transactions")
+          && (context.Operation.Id.Equals("createWalletForTransactionsForIO")
+            || context.Operation.Id.Equals("newTransactionForIO")
+            || context.Operation.Id.Equals("getTransactionInfoForIO")
+            || context.Operation.Id.Equals("requestTransactionUserCancellationForIO")
+            || context.Operation.Id.Equals("requestTransactionAuthorizationForIO"))
       )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service")"/>
       </when>
       <when condition="@(
-        (context.Request.Url.Path.StartsWith("/payment-methods")
-            || context.Request.Url.Path.StartsWith("/v2/payment-methods"))
-          && (context.Operation.Id.Equals("newPaymentMethod")
-            || context.Operation.Id.Equals("getAllPaymentMethods")
-            || context.Operation.Id.Equals("patchPaymentMethod")
-            || context.Operation.Id.Equals("getPaymentMethod")
-            || context.Operation.Id.Equals("createSession")
-            || context.Operation.Id.Equals("calculateFees")
-            || context.Operation.Id.Equals("getSessionPaymentMethod")
-            || context.Operation.Id.Equals("updateSession")
-            || context.Operation.Id.Equals("getTransactionIdForSession"))
+        context.Request.Url.Path.Contains("payment-methods")
+          && (context.Operation.Id.Equals("getAllPaymentMethodsForIO")
+            || context.Operation.Id.Equals("calculateFeesForIO"))
       )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service")"/>
       </when>
       <when condition="@(
-        context.Request.Url.Path.StartsWith("/payment-requests")
-          && context.Operation.Id.Equals("getPaymentRequestInfo")
+        context.Request.Url.Path.Contains("payment-requests")
+          && context.Operation.Id.Equals("getPaymentRequestInfoForIO")
       )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
       </when>
       <when condition="@(
-        context.Request.Url.Path.StartsWith("/user/lastPaymentMethodUsed")
-          && (context.Operation.Id.Equals("saveLastPaymentMethodUsed")
-            || context.Operation.Id.Equals("getLastPaymentMethodUsed"))
+        context.Request.Url.Path.Contains("user/lastPaymentMethodUsed")
+          && context.Operation.Id.Equals("getUserLastPaymentMethodUsed")
       )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-user-stats-service")"/>
       </when>
       <when condition="@(
-        context.Request.Url.Path.StartsWith("/wallets")
-          && (context.Operation.Id.Equals("createWallet")
-            || context.Operation.Id.Equals("getWalletsByIdUser"))
+        context.Request.Url.Path.Contains("wallets")
+          && context.Operation.Id.Equals("getWalletsByIdIOUser")
       )">
         <set-backend-service base-url="@("https://${wallet_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")"/>
       </when>

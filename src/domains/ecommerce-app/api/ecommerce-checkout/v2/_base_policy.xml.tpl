@@ -31,7 +31,7 @@
          <when condition="@( context.Request.Url.Path.Contains("transactions") && context.Operation.Id.Equals("getTransactionInfo")  )">
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2")"/>
         </when>
-        <when condition="@( context.Request.Url.Path.Contains("payment-methods") )">
+        <when condition="@( context.Request.Url.Path.Contains("payment-methods") && context.Operation.Id.Equals("calculateFees") )">
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service/v2")"/>
         </when>
       </choose>
