@@ -67,3 +67,12 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
     base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
   })
 }
+
+// Switch to pagoPA FdR SOAP request for Orgs
+resource "azurerm_api_management_named_value" "enable_fdr_org_soap_request" {
+  name                = "enable-fdr-org-soap-request-switch"
+  api_management_name = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1.api_management_name
+  resource_group_name = data.azurerm_api_management_api.apim_nodo_per_pa_api_v1.resource_group_name
+  display_name        = "enable-fdr-org-soap-request-switch"
+  value = var.enable_fdr_org_soap_request
+}

@@ -472,3 +472,9 @@ variable "enable_fdr3_features" {
   default     = false
   description = "Feature flag that enabled FdR-Fase3 APIs"
 }
+
+variable "enable_fdr_org_soap_request" {
+  type        = bool
+  default     = false
+  description = "Switch to pagoPA FdR SOAP request for Orgs"
+}
