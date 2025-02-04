@@ -119,20 +119,20 @@ resource "azurerm_private_endpoint" "fdr_table_private_endpoint" {
 
 ## fdr 1 flows blob container
 resource "azurerm_storage_container" "fdr1_flows_blob_file" {
-  name                  = "fdr1-flows"
-  storage_account_name  = module.fdr_conversion_sa.name
+  name                 = "fdr1-flows"
+  storage_account_name = module.fdr_conversion_sa.name
 }
 
 ## fdr 3 flows blob container
 resource "azurerm_storage_container" "fdr3_flows_blob_file" {
-  name                  = "fdr3-flows"
-  storage_account_name  = module.fdr_conversion_sa.name
+  name                 = "fdr3-flows"
+  storage_account_name = module.fdr_conversion_sa.name
 }
 
 ## re payload blob container
 resource "azurerm_storage_container" "re_payload_blob_file" {
-  name                  = "re-payload"
-  storage_account_name  = module.fdr_conversion_sa.name
+  name                 = "re-payload"
+  storage_account_name = module.fdr_conversion_sa.name
 }
 
 # table#1 conversion error table
