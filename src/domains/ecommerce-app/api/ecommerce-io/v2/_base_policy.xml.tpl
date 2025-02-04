@@ -13,7 +13,7 @@
 
     <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
     <!-- fragment to read user id from session token jwt claims. it return userId as sessionTokenUserId variable taken from jwt claims. if the session token
-             is an opaque token a "session-token-not-found" string is returned-->  
+             is an opaque token a "session-token-not-found" string is returned-->
     <include-fragment fragment-id="pay-wallet-user-id-from-session-token" />
     <!-- Session eCommerce START-->
         <choose>
@@ -30,7 +30,7 @@
             </set-header>
             <!-- Headers settings required for backend service END -->
           </when>
-          <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))"> 
+          <when condition="@("PM".Equals("{{ecommerce-for-io-pm-npg-ff}}") || ("NPGFF".Equals("{{ecommerce-for-io-pm-npg-ff}}") && !"{{pay-wallet-family-friends-user-ids}}".Contains(((string)context.Variables["sessionTokenUserId"]))))">
 
             <!-- Check sessiontoken START-->
             <set-variable name="sessionToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
@@ -61,19 +61,52 @@
 
     <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
     <choose>
-      <when condition="@( context.Request.Url.Path.Contains("transactions") )">
+      <when condition="@(
+        (context.Request.Url.Path.StartsWith("/transactions")
+            || context.Request.Url.Path.StartsWith("/v2/transactions")
+            || context.Request.Url.Path.StartsWith("/v2.1/transactions"))
+          && (context.Operation.Id.Equals("newTransaction")
+            || context.Operation.Id.Equals("getTransactionInfo")
+            || context.Operation.Id.Equals("requestTransactionUserCancellation")
+            || context.Operation.Id.Equals("requestTransactionAuthorization")
+            || context.Operation.Id.Equals("updateTransactionAuthorization")
+            || context.Operation.Id.Equals("addUserReceipt"))
+      )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service")"/>
       </when>
-      <when condition="@( context.Request.Url.Path.Contains("payment-methods") )">
+      <when condition="@(
+        (context.Request.Url.Path.StartsWith("/payment-methods")
+            || context.Request.Url.Path.StartsWith("/v2/payment-methods"))
+          && (context.Operation.Id.Equals("newPaymentMethod")
+            || context.Operation.Id.Equals("getAllPaymentMethods")
+            || context.Operation.Id.Equals("patchPaymentMethod")
+            || context.Operation.Id.Equals("getPaymentMethod")
+            || context.Operation.Id.Equals("createSession")
+            || context.Operation.Id.Equals("calculateFees")
+            || context.Operation.Id.Equals("getSessionPaymentMethod")
+            || context.Operation.Id.Equals("updateSession")
+            || context.Operation.Id.Equals("getTransactionIdForSession"))
+      )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service")"/>
       </when>
-      <when condition="@( context.Request.Url.Path.Contains("payment-requests") )">
+      <when condition="@(
+        context.Request.Url.Path.StartsWith("/payment-requests")
+          && context.Operation.Id.Equals("getPaymentRequestInfo")
+      )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
       </when>
-      <when condition="@( context.Request.Url.Path.Contains("user/lastPaymentMethodUsed") )">
+      <when condition="@(
+        context.Request.Url.Path.StartsWith("/user/lastPaymentMethodUsed")
+          && (context.Operation.Id.Equals("saveLastPaymentMethodUsed")
+            || context.Operation.Id.Equals("getLastPaymentMethodUsed"))
+      )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-user-stats-service")"/>
       </when>
-      <when condition="@( context.Request.Url.Path.Contains("wallets") )">
+      <when condition="@(
+        context.Request.Url.Path.StartsWith("/wallets")
+          && (context.Operation.Id.Equals("createWallet")
+            || context.Operation.Id.Equals("getWalletsByIdUser"))
+      )">
         <set-backend-service base-url="@("https://${wallet_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")"/>
       </when>
     </choose>
