@@ -46,10 +46,10 @@
         </when>
         <when condition="@(
           (context.Request.Url.Path.Contains("payment-requests")
-              || context.Request.Url.Path.Contains("carts"))
-            && (context.Operation.Id.Equals("getPaymentRequestInfo")
-              || context.Operation.Id.Equals("GetCarts")
-              || context.Operation.Id.Equals("GetCartsRedirect"))
+              && context.Operation.Id.Equals("getPaymentRequestInfo"))
+              || (context.Request.Url.Path.Contains("carts")
+              && (context.Operation.Id.Equals("GetCarts")
+              || context.Operation.Id.Equals("GetCartsRedirect")))
         )">
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
         </when>
