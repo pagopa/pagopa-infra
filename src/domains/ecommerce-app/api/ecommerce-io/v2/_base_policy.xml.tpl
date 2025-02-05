@@ -63,8 +63,7 @@
     <choose>
       <when condition="@(
         context.Request.Url.Path.Contains("transactions")
-          && (context.Operation.Id.Equals("createWalletForTransactionsForIO")
-            || context.Operation.Id.Equals("newTransactionForIO")
+          && (context.Operation.Id.Equals("newTransactionForIO")
             || context.Operation.Id.Equals("getTransactionInfoForIO")
             || context.Operation.Id.Equals("requestTransactionUserCancellationForIO")
             || context.Operation.Id.Equals("requestTransactionAuthorizationForIO"))
@@ -92,7 +91,8 @@
       </when>
       <when condition="@(
         context.Request.Url.Path.Contains("wallets")
-          && context.Operation.Id.Equals("getWalletsByIdIOUser")
+          && (context.Operation.Id.Equals("createWalletForTransactionsForIO")
+            || context.Operation.Id.Equals("getWalletsByIdIOUser"))
       )">
         <set-backend-service base-url="@("https://${wallet_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")"/>
       </when>
