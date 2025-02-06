@@ -152,7 +152,7 @@
           <column name="published"/>
       </createIndex>
   </changeSet>
-  <changeSet author="liquibase" id="1738839600000-08">
+  <changeSet author="liquibase" id="1738839600000-09">
       <createIndex indexName="payment_by_fdr_idx" tableName="payment" unique="true">
           <column name="flow_id"/>
           <column name="index"/>
