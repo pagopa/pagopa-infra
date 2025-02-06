@@ -6,8 +6,8 @@ module "apim_qi_observability_bdi_product" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "qi-observability_bdi"
-  display_name = "OBSERVABILTY BDI"
-  description  = "Product for Banca d'Italia surveillance"
+  display_name = "KPI OBSERVABILTY FOR BDI"
+  description  = "API Product for Banca d'Italia surveillance"
 
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
@@ -25,9 +25,9 @@ module "apim_qi_observability_bdi_product" {
 #######################################
 locals {
   apim_pagopa_qi_observability_perf_kpi_api = {
-    display_name          = "pagoPA QI - Performance kpi monitoring"
-    description           = "API for monitoring performance KPIs"
-    path                  = "qi/perf-kpi"
+    display_name          = "pagoPA QI - Performance kpi for BDI"
+    description           = "API for collecting and monitoring performance KPIs fro BDI"
+    path                  = "qi/perf-kpi-bdi"
     subscription_required = true
     service_url           = null
   }
