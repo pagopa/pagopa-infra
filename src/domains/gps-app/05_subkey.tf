@@ -25,4 +25,5 @@ resource "azurerm_api_management_subscription" "gpd_integration_qa_subkey" {
   display_name        = "QA-GPD"
   allow_tracing       = false
   state               = "active"
+  user_id             = data.azurerm_api_management_user.apim_qa_user.id
 }
