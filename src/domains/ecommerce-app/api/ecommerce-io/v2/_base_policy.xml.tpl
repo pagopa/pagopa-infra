@@ -60,39 +60,39 @@
         </choose>
 
     <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
+    <set-variable name="transactionsOperationId" value="newTransactionForIO,getTransactionInfoForIO,requestTransactionUserCancellationForIO,requestTransactionAuthorizationForIO" />
+    <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethodsForIO,calculateFeesForIO" />
+    <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfoForIO" />
+    <set-variable name="lastPaymentMethodUsedOperationId" value="getUserLastPaymentMethodUsed" />
+    <set-variable name="walletsOperationId" value="createWalletForTransactionsForIO,getWalletsByIdIOUser" />
     <choose>
       <when condition="@(
         context.Request.Url.Path.Contains("transactions")
-          && (context.Operation.Id.Equals("newTransactionForIO")
-            || context.Operation.Id.Equals("getTransactionInfoForIO")
-            || context.Operation.Id.Equals("requestTransactionUserCancellationForIO")
-            || context.Operation.Id.Equals("requestTransactionAuthorizationForIO"))
+          && Array.Exists(context.Variables.GetValueOrDefault("transactionsOperationId","").Split(','), operations => operations == context.Operation.Id)
       )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service")"/>
       </when>
       <when condition="@(
         context.Request.Url.Path.Contains("payment-methods")
-          && (context.Operation.Id.Equals("getAllPaymentMethodsForIO")
-            || context.Operation.Id.Equals("calculateFeesForIO"))
+          && Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationId","").Split(','), operations => operations == context.Operation.Id)
       )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service")"/>
       </when>
       <when condition="@(
         context.Request.Url.Path.Contains("payment-requests")
-          && context.Operation.Id.Equals("getPaymentRequestInfoForIO")
+          && Array.Exists(context.Variables.GetValueOrDefault("paymentRequestsOperationId","").Split(','), operations => operations == context.Operation.Id)
       )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
       </when>
       <when condition="@(
         context.Request.Url.Path.Contains("user/lastPaymentMethodUsed")
-          && context.Operation.Id.Equals("getUserLastPaymentMethodUsed")
+          && Array.Exists(context.Variables.GetValueOrDefault("lastPaymentMethodUsedOperationId","").Split(','), operations => operations == context.Operation.Id)
       )">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-user-stats-service")"/>
       </when>
       <when condition="@(
         context.Request.Url.Path.Contains("wallets")
-          && (context.Operation.Id.Equals("createWalletForTransactionsForIO")
-            || context.Operation.Id.Equals("getWalletsByIdIOUser"))
+          && Array.Exists(context.Variables.GetValueOrDefault("walletsOperationId","").Split(','), operations => operations == context.Operation.Id)
       )">
         <set-backend-service base-url="@("https://${wallet_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")"/>
       </when>
