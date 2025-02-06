@@ -39,7 +39,7 @@ variables:
     poolImage: 'pagopa-prod-linux-infra'
   ADMIN_USERNAME: azureuser
   FDR3_USERNAME: fdr3
-  FDR3_SCHEMA: fdr
+  FDR3_SCHEMA: fdr3
 
 stages:
   - stage: initialization_jobs
