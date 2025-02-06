@@ -35,13 +35,13 @@
             <column name="org_domain_id" type="VARCHAR2(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="tot_payments" type="NUMBER(19, 0)" defaultValueNumber="0">
+            <column name="tot_payments" type="NUMBER(19, 0)" defaultValueNumeric="0">
                 <constraints nullable="false"/>
             </column>
             <column name="tot_amount" type="FLOAT(22)" defaultValueNumeric="0.0">
                 <constraints nullable="false"/>
             </column>
-            <column name="computed_tot_payments" type="NUMBER(19, 0)" defaultValueNumber="0">
+            <column name="computed_tot_payments" type="NUMBER(19, 0)" defaultValueNumeric="0">
                 <constraints nullable="false"/>
             </column>
             <column name="computed_tot_amount" type="FLOAT(22)" defaultValueNumeric="0.0">
@@ -85,7 +85,7 @@
     </changeSet>
 
   <changeSet author="liquibase" id="1738839600000-04">
-      <createTable tableName="flow">
+      <createTable tableName="payment">
           <column name="id" type="NUMBER" defaultValueSequenceNext="payment_sequence">
               <constraints nullable="false" primaryKey="true" primaryKeyName="payment_pk"/>
           </column>
