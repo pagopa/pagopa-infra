@@ -17,6 +17,11 @@ data "azurerm_monitor_action_group" "slack" {
   name                = local.monitor_action_group_slack_name
 }
 
+data "azurerm_monitor_action_group" "slack_pagamenti" {
+  resource_group_name = var.monitor_resource_group_name
+  name                = local.monitor_action_group_slack_pagamenti_name
+}
+
 data "azurerm_monitor_action_group" "email" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_email_name
