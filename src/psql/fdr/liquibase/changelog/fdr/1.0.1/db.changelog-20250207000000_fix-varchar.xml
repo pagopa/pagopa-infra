@@ -14,6 +14,14 @@
         newDataType="varchar(25)"
         tableName="rendicontazione"/>
 
+      <dropIndex indexName="rend_elenco_flussi" tableName="rendicontazione" />
+
+      <createIndex indexName="rend_elenco_flussi" tableName="rendicontazione">
+        <column name="stato"/>
+        <column name="data_ora_flusso"/>
+        <column name="dominio"/>
+      </createIndex>
+
     </changeSet>
 
 </databaseChangeLog>
