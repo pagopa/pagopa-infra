@@ -605,7 +605,7 @@
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
             "settings": {
               "content": {
-                "Query": "AzureDiagnostics\n| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/node-for-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3b', '63b6e2da2a92e811a8f338f9', '61e9633dea7c4a07cc7d480e')\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n"
+                "Query": "AzureDiagnostics\n| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3b', '63b6e2da2a92e811a8f338f9', '61e9633dea7c4a07cc7d480e')\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n"
               }
             },
             "partHeader": {
@@ -729,7 +729,7 @@
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
             "settings": {
               "content": {
-                "Query": "let threshold = 1;\nAzureDiagnostics\n| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/node-for-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3b', '63b6e2da2a92e811a8f338f9', '61e9633dea7c4a07cc7d480e')\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs / 100.0, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
+                "Query": "let threshold = 1;\nAzureDiagnostics\n| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3b', '63b6e2da2a92e811a8f338f9', '61e9633dea7c4a07cc7d480e')\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs / 100.0, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
                 "Dimensions": {
                   "xAxis": {
                     "name": "TimeGenerated",
@@ -994,7 +994,11 @@
               }
             ],
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
-            "settings": {},
+            "settings": {
+              "content": {
+                "Query": "AzureDiagnostics\n| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3a', '63b6e2da2a92e811a8f338f8', '61e9633dea7c4a07cc7d480d')\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n"
+              }
+            },
             "partHeader": {
               "title": "Response Codes (5m)",
               "subtitle": "nodo-chiedi-elenco-flussi-rendicontazioni"
@@ -1114,10 +1118,112 @@
               }
             ],
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
-            "settings": {},
+            "settings": {
+              "content": {
+                "Query": "let threshold = 1;\nAzureDiagnostics\n| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3a', '63b6e2da2a92e811a8f338f8', '61e9633dea7c4a07cc7d480d')\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs / 100.0, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n"
+              }
+            },
             "partHeader": {
               "title": "Percentile Response Time (5m)",
               "subtitle": "nodo-chiedi-elenco-flussi-rendicontazioni"
+            }
+          }
+        },
+        "9": {
+          "position": {
+            "x": 0,
+            "y": 12,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "resourceTypeMode",
+                "isOptional": true
+              },
+              {
+                "name": "ComponentId",
+                "isOptional": true
+              },
+              {
+                "name": "Scope",
+                "value": {
+                  "resourceIds": [
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-p-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "PartId",
+                "value": "2e43414e-25fd-4fd3-814e-d08be212561b",
+                "isOptional": true
+              },
+              {
+                "name": "Version",
+                "value": "2.0",
+                "isOptional": true
+              },
+              {
+                "name": "TimeRange",
+                "isOptional": true
+              },
+              {
+                "name": "DashboardId",
+                "isOptional": true
+              },
+              {
+                "name": "DraftRequestParameters",
+                "isOptional": true
+              },
+              {
+                "name": "Query",
+                "value": "requests\n| where timestamp > ago(30m)\n| where tostring(customDimensions[\"Request-Body\"]) contains 'nodoInviaFlussoRendicontazione'\n| extend esito = extract(\"<esito>(.*?)</esito>\", 1, tostring(customDimensions[\"Response-Body\"]))\n| summarize Count = count() by esito\n| order by Count desc\n\n",
+                "isOptional": true
+              },
+              {
+                "name": "ControlType",
+                "value": "AnalyticsGrid",
+                "isOptional": true
+              },
+              {
+                "name": "SpecificChart",
+                "isOptional": true
+              },
+              {
+                "name": "PartTitle",
+                "value": "Analytics",
+                "isOptional": true
+              },
+              {
+                "name": "PartSubTitle",
+                "value": "pagopa-p-appinsights",
+                "isOptional": true
+              },
+              {
+                "name": "Dimensions",
+                "isOptional": true
+              },
+              {
+                "name": "LegendOptions",
+                "isOptional": true
+              },
+              {
+                "name": "IsQueryContainTimeRange",
+                "value": true,
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+            "settings": {
+              "content": {
+                "Query": "requests\n| where timestamp > ago(30m)\n| where name matches regex \"nodo(-auth){0,1}/((nodo-per-psp))\" or name matches regex \"nodo(-auth){0,1}/((node-for-psp))\"\n| where tostring(customDimensions[\"Request-Body\"]) contains 'nodoInviaFlussoRendicontazione'\n| extend esito = extract(\"<esito>(.*?)</esito>\", 1, tostring(customDimensions[\"Response-Body\"]))\n| summarize Count = count() by esito\n| order by Count desc\n\n"
+              }
+            },
+            "partHeader": {
+              "title": "Summary Esito",
+              "subtitle": "nodo-invia-flusso-rendicontazione"
             }
           }
         }
