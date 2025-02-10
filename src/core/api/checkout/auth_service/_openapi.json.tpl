@@ -101,7 +101,7 @@ paths:
         - authService
       operationId: authLogout
       summary: Logout endpoint
-      description: 'GET logout endpoint'
+      description: 'POST logout endpoint'
       security:
         - bearerAuth: []
       responses:
