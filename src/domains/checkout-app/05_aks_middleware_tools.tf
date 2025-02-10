@@ -14,7 +14,7 @@ module "tls_checker" {
   application_insights_resource_group                       = data.azurerm_resource_group.monitor_rg.name
   application_insights_id                                   = data.azurerm_application_insights.application_insights.id
   application_insights_action_group_ids                     = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id]
-  keyvault_name                                             = data.azurerm_key_vault.key_vault.name
+  keyvault_name                                             = data.azurerm_key_vault.keyvault_checkout.name
   keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
 }
 

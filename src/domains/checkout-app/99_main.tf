@@ -33,3 +33,7 @@ module "__v3__" {
   # v8.58.0
   source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=63f6181a6f3a51707a2ab4795bdbed2d888c708b"
 }
+
+provider "kubernetes" {
+  config_path = "${var.k8s_kube_config_path_prefix}/config-${local.aks_name}"
+}
