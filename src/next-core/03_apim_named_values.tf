@@ -1,13 +1,4 @@
 
-resource "azurerm_api_management_named_value" "pagopa_checkout_authservice_url_value" {
-  name                = "pagopa-checkout-authservice-url"
-  api_management_name = module.apim[0].name
-  resource_group_name = azurerm_resource_group.rg_api.name
-  display_name        = "pagopa-checkout-authservice-url"
-  value               = var.base_path_nodo_auth
-}
-
-
 resource "azurerm_api_management_named_value" "pagopa_fn_checkout_url_value" {
   count               = var.checkout_enabled ? 1 : 0
   name                = "pagopa-fn-checkout-url"

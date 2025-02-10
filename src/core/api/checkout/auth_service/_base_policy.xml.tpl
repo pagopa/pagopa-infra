@@ -16,19 +16,16 @@
         </allowed-headers>
       </cors>
       <base />
-      <set-backend-service base-url="{{pagopa-checkout-authservice-url}}/api/v1" />
+      <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
+      <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-checkout-auth-service")"/>
   </inbound>
-
   <outbound>
       <base />
   </outbound>
-
   <backend>
       <base />
   </backend>
-
   <on-error>
       <base />
   </on-error>
-
 </policies>
