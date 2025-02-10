@@ -70,6 +70,11 @@
                       }" />
               <choose>
                   <when condition="@((bool)context.Variables["is-ftp-enabled"])">
+                      <!--
+                        in the case of CI uses FTP, traffic is redirect to the default nodo,
+                        then it is forwarded to FdR service to manage JSON conversion
+                      -->
+
                       <send-one-way-request mode="new">
                           <set-url>@("${base-url}/nodoInviaFlussoRendicontazioneFTP")</set-url>
                           <set-method>POST</set-method>
@@ -119,8 +124,6 @@
                           </choose>
                         </when>
                       </choose>
-                      <!-- check if enable-psp is true and if psp and ci belongs to whitelist -->
-                      <!--<set-backend-service base-url="${base-url}" />-->
                   </otherwise>
               </choose>
           </when>
