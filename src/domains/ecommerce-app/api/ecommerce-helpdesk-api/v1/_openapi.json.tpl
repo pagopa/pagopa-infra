@@ -1442,6 +1442,36 @@
           "endDate"
         ]
       },
+      "DeadLetterExcludeStatuses": {
+        "type": "object",
+        "properties": {
+          "ecommerceStatuses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of eCommerce statuses to exclude",
+            "example": [
+              "NOTIFIED_OK"
+            ]
+          },
+          "npgStatuses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of NPG statuses to exclude",
+            "example": [
+              "DECLINED",
+              "CANCELLED"
+            ]
+          }
+        },
+        "required": [
+          "ecommerceStatuses",
+          "npgStatuses"
+        ]
+      },
       "SearchPgsStatusResponse": {
         "type": "object",
         "properties": {
@@ -2147,6 +2177,9 @@
                 },
                 "timeRange": {
                   "$ref": "#/components/schemas/DeadLetterSearchDateTimeRange"
+                },
+                "excludeStatuses": {
+                  "$ref": "#/components/schemas/DeadLetterExcludeStatuses"
                 }
               },
               "required": [
