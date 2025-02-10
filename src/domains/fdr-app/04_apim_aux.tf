@@ -33,3 +33,22 @@ resource "azurerm_api_management_named_value" "fdr_ci_soap_request_ci_list" {
   display_name        = "fdr-soap-request-ci-whitelist"
   value               = var.fdr_soap_request_ci_whitelist
 }
+
+########################
+##  Info for FdR Rend ##
+########################
+resource "azurerm_api_management_named_value" "fdrcontainername" {
+  name                = "fdrcontainername"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  display_name        = "fdrcontainername"
+  value               = data.azurerm_storage_container.fdr_rend_flow.name
+}
+
+resource "azurerm_api_management_named_value" "fdrsaname" {
+  name                = "fdrsaname"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  display_name        = "fdrsaname"
+  value               = data.azurerm_storage_account.fdr_flows_sa.name
+}
