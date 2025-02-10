@@ -57,7 +57,6 @@ paths:
     get:
       tags:
         - authService
-
       operationId: authUsers
       summary: Get user information
       description: 'GET user information'
@@ -72,6 +71,12 @@ paths:
                 $ref: '#/components/schemas/UserInfoResponse'
         '400':
           description: Formally invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+        '401':
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -102,6 +107,12 @@ paths:
           description: Successful logout
         '400':
           description: Formally invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
+        '401':
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -140,6 +151,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemJson'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
         '404':
           description: Transaction not found
           content:
@@ -170,14 +187,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemJson'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemJson'
         '500':
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemJson'
-
-
 
 components:
   securitySchemes:
