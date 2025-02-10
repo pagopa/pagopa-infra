@@ -158,7 +158,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemJson'
         '404':
-          description: Transaction not found
+          description: User not found
           content:
             application/json:
               schema:
