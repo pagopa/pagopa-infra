@@ -12,9 +12,9 @@ module "pod_identity" {
   tenant_id           = data.azurerm_subscription.current.tenant_id
   cluster_name        = local.aks_name
 
-  identity_name = "${kubernetes_namespace.namespace.metadata[0].name}-pod-identity" // TODO add env in name
+  identity_name = "${kubernetes_namespace.namespace.metadata[0].name}-pod-identity"
   namespace     = kubernetes_namespace.namespace.metadata[0].name
-  key_vault_id  = data.azurerm_key_vault.key_vault.id
+  key_vault_id  = data.azurerm_key_vault.key_vault_checkout.id
 
   secret_permissions = ["Get"]
 }
