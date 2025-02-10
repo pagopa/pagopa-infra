@@ -189,6 +189,7 @@ base_path_nodo_oncloud                       = "/nodo-uat"
 
 
 
+
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
