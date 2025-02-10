@@ -6,6 +6,9 @@
 ## PSP ##
 #########
 
+# Note: the APIs are defined on repository infrastructure:
+# https://github.com/pagopa/pagopa-fdr/blob/368bfa25cea782c3c91162bde7368ee5f2ca1219/infra/04_apim_api.tf#L43
+
 module "apim_fdr_product_psp" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
@@ -28,6 +31,9 @@ module "apim_fdr_product_psp" {
 ## ORG ##
 #########
 
+# Note: the APIs are defined on repository infrastructure:
+# https://github.com/pagopa/pagopa-fdr/blob/368bfa25cea782c3c91162bde7368ee5f2ca1219/infra/04_apim_api.tf#L85
+
 module "apim_fdr_product_org" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
@@ -49,6 +55,9 @@ module "apim_fdr_product_org" {
 ###############
 ##  INTERNAL  ##
 ###############
+
+# Note: the APIs are defined on repository infrastructure:
+# https://github.com/pagopa/pagopa-fdr/blob/368bfa25cea782c3c91162bde7368ee5f2ca1219/infra/04_apim_api.tf#L125
 
 module "apim_fdr_product_internal" {
   source = "./.terraform/modules/__v3__/api_management_product"
