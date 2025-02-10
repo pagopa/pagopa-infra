@@ -96,7 +96,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemJson'
   /auth/logout:
-    get:
+    post:
       tags:
         - authService
       operationId: authLogout
