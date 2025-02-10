@@ -9,8 +9,6 @@ servers:
 tags:
   - name: authService
     description: Api's used as interface towards the identity provider, it provides Login, Logout, Self information and token validation
-
-
     externalDocs:
       url: https://pagopa.atlassian.net/wiki/spaces/I/pages/1443463171/DR+-+Autenticazione+in+Checkout+-+Fase+1
       description: Technical specifications
@@ -96,12 +94,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProblemJson'
   /auth/logout:
-    get:
+    post:
       tags:
         - authService
       operationId: authLogout
       summary: Logout endpoint
-      description: 'GET logout endpoint'
+      description: 'POST logout endpoint'
       security:
         - bearerAuth: []
       responses:
