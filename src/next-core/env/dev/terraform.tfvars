@@ -179,7 +179,7 @@ base_path_nodo_web_bo         = "/web-bo-sit"
 base_path_nodo_web_bo_history = "/web-bo-history-sit"
 dns_zone_wisp2                = "dev.wisp2"
 base_path_nodo_oncloud        = "/nodo-sit"
-
+base_path_nodo_auth           = "/TO-DECIDE-IN-PR"
 
 
 ehns_public_network_access = true

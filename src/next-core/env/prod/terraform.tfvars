@@ -242,6 +242,7 @@ base_path_nodo_web_bo         = "/web-bo-prd"
 base_path_nodo_web_bo_history = "/web-bo-history-prd"
 dns_zone_wisp2                = "wisp2"
 base_path_nodo_oncloud        = "/nodo-prd"
+base_path_nodo_auth           = "/TO-DECIDE-IN-PR"
 
 
 

@@ -588,6 +588,11 @@ variable "lb_aks" {
   default     = "0.0.0.0"
 }
 
+variable "base_path_nodo_auth" {
+  type        = string
+  description = "base nodo auth"
+}
+
 variable "base_path_nodo_oncloud" {
   type        = string
   description = "base nodo on cloud"
