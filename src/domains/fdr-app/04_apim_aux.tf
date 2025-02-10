@@ -1,4 +1,5 @@
 // Switch to pagoPA FdR SOAP request for Orgs (creditor institutions)
+// https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/1071153182/FdR-1+Flussi+di+Rendicontazione
 resource "azurerm_api_management_named_value" "enable_fdr_ci_soap_request" {
   name                = "enable-fdr-ci-soap-request-switch"
   api_management_name = data.azurerm_api_management.apim.name
@@ -8,6 +9,7 @@ resource "azurerm_api_management_named_value" "enable_fdr_ci_soap_request" {
 }
 
 // Switch to pagoPA FdR SOAP request for PSP
+// https://pagopa.atlassian.net/wiki/spaces/IQCGJ/pages/1071153182/FdR-1+Flussi+di+Rendicontazione
 resource "azurerm_api_management_named_value" "enable_fdr_psp_soap_request" {
   name                = "enable-fdr-psp-soap-request-switch"
   api_management_name = data.azurerm_api_management.apim.name
