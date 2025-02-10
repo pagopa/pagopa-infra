@@ -187,7 +187,6 @@
                         <value>@("Bearer " + (string)context.Variables["msi-access-token"])</value>
                     </set-header>
                     <!-- Set the file content from the original request body data -->
-                    <!-- <set-body>@(context.Request.Body.As<string>())</set-body> -->
                     <set-body>@((string)context.Variables["xmlRendicontazione"])</set-body>
                 </send-request>
             </when>

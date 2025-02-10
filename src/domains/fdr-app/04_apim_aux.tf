@@ -1,9 +1,9 @@
-// Switch to pagoPA FdR SOAP request for Orgs
+// Switch to pagoPA FdR SOAP request for Orgs (creditor institutions)
 resource "azurerm_api_management_named_value" "enable_fdr_ci_soap_request" {
   name                = "enable-fdr-ci-soap-request-switch"
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  display_name        = "enable-fdr-org-soap-request-switch"
+  display_name        = "enable-fdr-ci-soap-request-switch"
   value               = var.enable_fdr_ci_soap_request
 }
 
