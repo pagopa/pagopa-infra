@@ -4,13 +4,19 @@ resource "kubernetes_namespace" "monitoring" {
   }
 }
 
+#
+# Prometheus
+#
 module "aks_prometheus_install" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_install?ref=v8.17.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_install?ref=v8.78.1"
 
   prometheus_namespace = kubernetes_namespace.monitoring.metadata[0].name
   storage_class_name   = "default-zrs"
 }
 
+#
+# Elastic
+#
 module "elastic_agent" {
 
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_agent?ref=v8.50.0"
@@ -27,7 +33,9 @@ module "elastic_agent" {
 
 }
 
+#
 # Kubernetes Event Exporter
+#
 module "kubernetes_event_exporter" {
   count     = var.env_short != "p" ? 0 : 1
   source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter?ref=v8.76.0"

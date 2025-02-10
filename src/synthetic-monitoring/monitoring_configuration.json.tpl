@@ -136,7 +136,7 @@
   {
     "apiName" : "status",
     "appName" : "apiConfig",
-    "url" :  "https://${internal_api_domain_prefix}.apiconfig.${internal_api_domain_suffix}/pagopa-api-config-core-service/o/info",
+    "url" :  "https://${internal_api_domain_prefix}.apiconfig.${internal_api_domain_suffix}/pagopa-api-config-core-service/p/info",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",

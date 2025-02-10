@@ -1,0 +1,214 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd"
+                    >
+
+    <changeSet author="liquibase" id="1738839600000-01">
+        <createSequence cacheSize="1" maxValue="9223372036854775807" sequenceName="flow_sequence" startValue="1"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1738839600000-02">
+        <createSequence cacheSize="1" maxValue="9223372036854775807" sequenceName="payment_sequence" startValue="1"/>
+    </changeSet>
+    <changeSet author="liquibase" id="1738839600000-03">
+        <createSequence cacheSize="1" maxValue="9223372036854775807" sequenceName="flow_to_history_sequence" startValue="1"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="1738839600000-04">
+        <createTable tableName="flow">
+            <column name="id" type="NUMBER" defaultValueSequenceNext="flow_sequence">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="flow_pk"/>
+            </column>
+            <column name="name" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revision" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_latest" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="psp_domain_id" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="org_domain_id" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tot_payments" type="NUMBER(19, 0)" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tot_amount" type="FLOAT(22)" defaultValueNumeric="0.0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="computed_tot_payments" type="NUMBER(19, 0)" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="computed_tot_amount" type="FLOAT(22)" defaultValueNumeric="0.0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="regulation" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="regulation_date" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sender_id" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sender_type" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sender_psp_name" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sender_psp_broker_id" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sender_channel_id" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sender_password" type="VARCHAR2(255)"/>
+            <column name="receiver_id" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="receiver_organization_name" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bic_code_pouring_bank" type="VARCHAR2(255)"/>
+            <column name="created" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated" type="TIMESTAMP(6)"/>
+            <column name="published" type="TIMESTAMP(6)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="liquibase" id="1738839600000-05">
+        <createTable tableName="payment">
+            <column name="id" type="NUMBER" defaultValueSequenceNext="payment_sequence">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="payment_pk"/>
+            </column>
+            <column name="flow_id" type="NUMBER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="iuv" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="iur" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="index" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="FLOAT(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pay_date" type="TIMESTAMP(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pay_status" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transfer_id" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="TIMESTAMP(6)"/>
+            <column name="updated" type="TIMESTAMP(6)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="liquibase" id="1738839600000-06">
+        <createTable tableName="flow_to_history">
+            <column name="id" type="NUMBER" defaultValueSequenceNext="flow_to_history_sequence">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="flow_to_history_pk"/>
+            </column>
+            <column name="psp_id" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+          <column name="name" type="VARCHAR2(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="revision" type="NUMBER(19, 0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_external" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="TIMESTAMP(6)"/>
+            <column name="last_execution" type="TIMESTAMP(6)"/>
+            <column name="retries" type="NUMBER(19, 0)" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="generation_process" type="VARCHAR2(50)" defaultValue="NEVER_STARTED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="flow_metadata_persistence" type="VARCHAR2(50)" defaultValue="NEVER_STARTED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_metadata_persistence" type="VARCHAR2(50)" defaultValue="NEVER_STARTED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_partition" type="NUMBER(19, 0)" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="qi_notification" type="VARCHAR2(50)" defaultValue="NEVER_STARTED">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fase1_notification" type="VARCHAR2(50)" defaultValue="NEVER_STARTED">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="liquibase" id="1738839600000-07">
+        <addForeignKeyConstraint baseColumnNames="flow_id"
+                                 baseTableName="payment"
+                                 constraintName="payment_flow_fk"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="flow"
+                                 validate="true"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="1738839600000-08">
+        <createIndex indexName="flow_revision_idx" tableName="flow" unique="true">
+            <column name="psp_domain_id"/>
+            <column name="name"/>
+            <column name="revision"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase" id="1738839600000-09">
+        <createIndex indexName="published_flow_by_psp_idx" tableName="flow">
+            <column name="psp_domain_id"/>
+            <column name="org_domain_id"/>
+            <column name="published"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase" id="1738839600000-10">
+        <createIndex indexName="published_flow_by_organization_idx" tableName="flow">
+            <column name="org_domain_id"/>
+            <column name="psp_domain_id"/>
+            <column name="published"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase" id="1738839600000-11">
+        <createIndex indexName="payment_by_fdr_idx" tableName="payment" unique="true">
+            <column name="flow_id"/>
+            <column name="index"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase" id="1738839600000-12">
+        <createIndex indexName="flow_to_historicization_idx" tableName="flow_to_history" unique="true">
+            <column name="psp_id"/>
+            <column name="name"/>
+            <column name="revision"/>
+        </createIndex>
+      </changeSet>
+</databaseChangeLog>
