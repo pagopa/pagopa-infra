@@ -10,7 +10,7 @@ resource "azurerm_resource_group" "checkout_be_rg" {
 resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_availability" {
   count = var.checkout_enabled && var.env_short == "p" ? 1 : 0
 
-  name                = format("%s-fn-checkout", local.parent_project) + "-availability-alert"
+  name                = format("%s-availability-alert",format("%s-fn-checkout", local.parent_project))
   resource_group_name = azurerm_resource_group.checkout_be_rg[0].name
   location            = var.location
 
