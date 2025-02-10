@@ -1,13 +1,15 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: Pagopa authService endpoints used by the authenticated payment flow
+  title: Pagopa authService endpoints used by the checkout authenticated payment flow
+
   description: This microservice that expose authService services to allow authenticaded flow.
 servers:
   - url: https://${host}
 tags:
   - name: authService
-    description: Api's used as interface twards the identity provider, it provides Login, Logout, Self information and token validation
+    description: Api's used as interface towards the identity provider, it provides Login, Logout, Self information and token validation
+
 
     externalDocs:
       url: https://pagopa.atlassian.net/wiki/spaces/I/pages/1443463171/DR+-+Autenticazione+in+Checkout+-+Fase+1
