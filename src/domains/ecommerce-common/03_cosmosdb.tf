@@ -34,7 +34,7 @@ module "cosmosdb_account_mongodb" {
   offer_type   = var.cosmos_mongo_db_params.offer_type
   kind         = var.cosmos_mongo_db_params.kind
   capabilities = var.cosmos_mongo_db_params.capabilities
-  #version commented out since using 6.0 version here raise the following error 
+  #version commented out since using 6.0 version here raise the following error
   # `expected mongo_server_version to be one of [3.2 3.6 4.0 4.2], got 6.0``
   # Leaving mongo_server_version parameter here causes plan diff for each plan
   # so it was simply commented out so that actual version is ignored
@@ -158,6 +158,14 @@ locals {
         },
         {
           keys   = ["insertionDate"]
+          unique = false
+        },
+        {
+          keys = ["transactionInfo.eCommerceStatus"]
+          unique = false
+        },
+        {
+          keys = ["transactionInfo.details.operationResult"]
           unique = false
         }
       ]
