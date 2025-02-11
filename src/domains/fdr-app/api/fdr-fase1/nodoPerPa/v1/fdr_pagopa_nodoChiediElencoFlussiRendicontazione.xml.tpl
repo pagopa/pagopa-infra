@@ -178,7 +178,7 @@
           <!-- If no valid blob content is found in blob-storage, at least log an error and continue processing request -->
           <otherwise>
             <trace source="response_not_cached_for_error" severity="information">
-              <message>@{ return "Not caching response with UUID [" + ((string) context.Variables["fdr_cached_response_uuid"]) + "] because the response returned a fault code."; }</message>
+              <message>@{ return "Not caching response because the response returned a fault code."; }</message>
             </trace>
           </otherwise>
         </choose>
