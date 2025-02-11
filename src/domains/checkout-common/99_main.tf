@@ -2,11 +2,11 @@ terraform {
   required_providers {
     azapi = {
       source  = "azure/azapi"
-      version = "<= 1.3.0"
+      version = "<= 1.13.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "<= 2.47.0"
+      version = "<= 3.0.2"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -36,3 +36,8 @@ provider "azurerm" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
+
+module "__v3__" {
+  # v8.60.0
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3?ref=551a56a4bf841cd431b51ec951639e74260daf6a"
+}
