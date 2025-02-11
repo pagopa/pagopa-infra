@@ -150,4 +150,4 @@ opentelemetry_operator_helm = {
 }
 
 elastic_cloud_apm_endpoint = "https://0fbb6b488afc4677a39b9655f2caa1c2.apm.westeurope.azure.elastic-cloud.com:443"
-otel_collector_cloud_migration = true
+otel_collector_cloud_migration = false
