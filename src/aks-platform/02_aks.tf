@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "aks_rg" {
 
 
 module "aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=PAYMCLOUD-222-Add-prometheus-managed-on-terraform-module-v3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.80.0"
 
   name                       = local.aks_name
   location                   = var.location
