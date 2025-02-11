@@ -494,3 +494,9 @@ variable "fdr_soap_request_ci_whitelist" {
   default     = "*" // * means accept-all
   description = "String list comma separated"
 }
+
+variable "fdr1_cache_duration" {
+  type        = string
+  default     = "1800" // 30 minutes
+  description = "The TTL of keys stored in internal cache for FdR1's cached responses"
+}

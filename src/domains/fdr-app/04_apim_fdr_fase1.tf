@@ -82,7 +82,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf901" : var.env_short == "u" ? "61e96321e0f4ba04a49d1285" : "61e9633dea7c4a07cc7d480d"
 
   #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
+  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_cached_response.xml.tpl", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
     base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
   })

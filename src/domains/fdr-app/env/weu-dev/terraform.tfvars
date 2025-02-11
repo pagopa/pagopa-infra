@@ -134,3 +134,4 @@ enable_fdr_ci_soap_request     = true
 enable_fdr_psp_soap_request    = true
 fdr_soap_request_psp_whitelist = "*"
 fdr_soap_request_ci_whitelist  = "*"
+fdr1_cache_duration            = "1800"

@@ -141,3 +141,8 @@ resource "azurerm_storage_table" "fdr1_conversion_error_table" {
   storage_account_name = module.fdr_conversion_sa.name
 }
 
+## fdr 1 cached responses blob container
+resource "azurerm_storage_container" "fdr1_cached_response_blob_file" {
+  name                 = "fdr1-cached-response"
+  storage_account_name = module.fdr_conversion_sa.name
+}
