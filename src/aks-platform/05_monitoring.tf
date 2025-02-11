@@ -141,6 +141,7 @@ data "azurerm_monitor_workspace" "workspace" {
 }
 
 module "prometheus_managed_addon" {
+  count                  = var.env == "dev" ? 1 : 0
   source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.80.0"
   cluster_name           = module.aks.name
   resource_group_name    = module.aks.aks_resource_group_name
