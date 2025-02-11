@@ -2,10 +2,11 @@ locals {
   product = "${var.prefix}-${var.env_short}"
   project = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
 
-  monitor_action_group_slack_name    = "SlackPagoPA"
-  monitor_action_group_email_name    = "PagoPA"
-  monitor_action_group_opsgenie_name = "Opsgenie"
-  monitor_appinsights_name           = "${local.product}-appinsights"
+  monitor_action_group_slack_name           = "SlackPagoPA"
+  monitor_action_group_slack_pagamenti_name = "SlackPagamenti"
+  monitor_action_group_email_name           = "PagoPA"
+  monitor_action_group_opsgenie_name        = "Opsgenie"
+  monitor_appinsights_name                  = "${local.product}-appinsights"
 
   vnet_name                = "${local.product}-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
