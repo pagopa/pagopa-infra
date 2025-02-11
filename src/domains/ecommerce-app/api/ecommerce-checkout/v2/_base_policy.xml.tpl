@@ -28,22 +28,13 @@
       <set-variable name="transactionsV21OperationId" value="newTransaction" />
       <set-variable name="paymentMethodsOperationId" value="calculateFees" />
       <choose>
-        <when condition="@(
-          context.Request.Url.Path.Contains("transactions")
-            && Array.Exists(context.Variables.GetValueOrDefault("transactionsV21OperationId","").Split(','), operations => operations == context.Operation.Id)
-          )">
+        <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("transactionsV21OperationId","").Split(','), operations => operations == context.Operation.Id))">
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2.1")"/>
         </when>
-        <when condition="@(
-          context.Request.Url.Path.Contains("transactions")
-            && Array.Exists(context.Variables.GetValueOrDefault("transactionsV2OperationId","").Split(','), operations => operations == context.Operation.Id)
-          )">
+        <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("transactionsV2OperationId","").Split(','), operations => operations == context.Operation.Id))">
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2")"/>
         </when>
-        <when condition="@(
-          context.Request.Url.Path.Contains("payment-methods")
-          && Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationId","").Split(','), operations => operations == context.Operation.Id)
-          )">
+        <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationId","").Split(','), operations => operations == context.Operation.Id))">
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service/v2")"/>
         </when>
       </choose>
