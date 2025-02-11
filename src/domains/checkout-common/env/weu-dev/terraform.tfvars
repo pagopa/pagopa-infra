@@ -37,3 +37,6 @@ pagopa_proxy_redis_family   = "C"
 
 redis_private_endpoint_enabled = true
 redis_zones                    = []
+
+# IAC Policy
+enable_iac_pipeline = true
