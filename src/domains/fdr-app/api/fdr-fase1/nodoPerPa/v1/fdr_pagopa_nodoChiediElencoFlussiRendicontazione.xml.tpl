@@ -70,11 +70,11 @@
                         <message>@{ return "BLOB content found for cached response with UUID [" + ((string) context.Variables["fdr_cached_response_uuid"]) + "]"; }</message>
                       </trace>
                       <set-variable name="cached_response_blob" value="@(((IResponse) context.Variables["cached_response_content"]).Body.As<string>())" />
-                      <set-variable name="cached_response_status_code" value="@(((IResponse) context.Variables["cached_response_content"]).Headers.GetValueOrDefault("X-Response-Status-Code", "200"))" />
-                      <set-variable name="cached_response_status_reason" value="@(((IResponse) context.Variables["cached_response_content"]).Headers.GetValueOrDefault("X-Response-Status-Reason", "OK"))" />
-                      <set-variable name="cached_response_content_type" value="@(((IResponse) context.Variables["cached_response_content"]).Headers.GetValueOrDefault("X-Response-Content-Type", "text/xml"))" />
+                      <set-variable name="cached_response_status_code" value="@(((IResponse) context.Variables["cached_response_content"]).Headers.GetValueOrDefault("x-ms-meta-responsestatuscode", "200"))" />
+                      <set-variable name="cached_response_status_reason" value="@(((IResponse) context.Variables["cached_response_content"]).Headers.GetValueOrDefault("x-ms-meta-responsestatusreason", "OK"))" />
+                      <set-variable name="cached_response_content_type" value="@(((IResponse) context.Variables["cached_response_content"]).Headers.GetValueOrDefault("x-ms-meta-responsecontenttype", "text/xml"))" />
                       <return-response>
-                        <set-status code="@((int) context.Variables["cached_response_status_code"])" reason="@((string) context.Variables["cached_response_status_reason"])" />
+                        <set-status code="@(Convert.ToInt32(context.Variables["cached_response_status_code"]))" reason="@((string) context.Variables["cached_response_status_reason"])" />
                         <set-header name="Content-Type" exists-action="override">
                           <value>@((string) context.Variables["cached_response_content_type"])</value>
                         </set-header>
@@ -108,10 +108,14 @@
 
         <set-variable name="response_body_to_cache" value="@(((IResponse) context.Response).Body.As<string>(preserveContent: true))" />
         <set-variable name="is_in_error" value="@{
-          var dom2parse = ((string) context.Variables["response_body_to_cache"]);
-          String[] tagFaultCode = {"faultCode"};
-          String[] result = dom2parse.Split(tagFaultCode, StringSplitOptions.RemoveEmptyEntries);
-          return result[1].Substring(1,result[1].Length-3) != null;
+          try {
+            var dom2parse = ((string) context.Variables["response_body_to_cache"]);
+            String[] tagFaultCode = {"faultCode"};
+            String[] result = dom2parse.Split(tagFaultCode, StringSplitOptions.RemoveEmptyEntries);
+            return result.Length > 0 && result[1].Substring(1,result[1].Length-3) != null;
+          } catch (Exception e) {
+            return false;
+          }
         }" />
 
         <choose>
@@ -162,13 +166,13 @@
                 <value>@("Bearer " + (string)context.Variables["msi-access-token"])</value>
               </set-header>
               <!-- Setting the custom headers, required for cached response -->
-              <set-header name="X-Response-Status-Code" exists-action="override">
+              <set-header name="x-ms-meta-responsestatuscode" exists-action="override">
                 <value>@(((int) context.Variables["response_status_code_to_cache"]).ToString())</value>
               </set-header>
-              <set-header name="X-Response-Status-Reason" exists-action="override">
+              <set-header name="x-ms-meta-responsestatusreason" exists-action="override">
                 <value>@((string) context.Variables["response_status_reason_to_cache"])</value>
               </set-header>
-              <set-header name="X-Response-Content-Type" exists-action="override">
+              <set-header name="x-ms-meta-responsecontenttype" exists-action="override">
                 <value>@((string) context.Variables["response_content_type_to_cache"])</value>
               </set-header>
               <!-- Set the file content from the original request body data -->
