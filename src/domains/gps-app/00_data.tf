@@ -49,3 +49,16 @@ data "azurerm_api_management_product" "apim_gps_spontaneous_payments_services_pr
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
+
+data "azurerm_api_management_product" "apim_gpd_integration_product" {
+  product_id          = "debt-positions-integration"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+# fetch the apim qa user resource
+data "azurerm_api_management_user" "apim_qa_user" {
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  user_id             = "pagopa-qa-pagopa-it"
+}

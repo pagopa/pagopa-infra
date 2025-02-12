@@ -11,13 +11,21 @@ data "azurerm_kubernetes_cluster" "aks" {
 locals {
   repos_01 = [
     "pagopa-fdr-nodo-dei-pagamenti", # FdR-1
-    "pagopa-fdr"                     # FdR-3
+    "pagopa-fdr",                    # FdR-3
+    "pagopa-fdr-2-event-hub"
   ]
 
   federations_01 = [
     for repo in local.repos_01 : {
       repository = repo
       subject    = var.env
+    }
+  ]
+
+  federations_01_oidc = [
+    for repo in local.repos_01 : {
+      repository = repo
+      subject    = "oidc"
     }
   ]
 
@@ -93,6 +101,29 @@ module "identity_ci_01" {
   ci_rbac_roles = {
     subscription_roles = local.environment_ci_roles.subscription
     resource_groups    = local.environment_ci_roles.resource_groups
+  }
+
+  tags = var.tags
+
+  depends_on = [
+    data.azurerm_resource_group.identity_rg
+  ]
+}
+
+# create a module for each 20 repos
+module "identity_oidc_01" {
+  source    = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.36.1"
+  prefix    = var.prefix
+  env_short = var.env_short
+  domain    = "${var.domain}-01-oidc"
+
+  identity_role = "cd"
+
+  github_federations = local.federations_01_oidc
+
+  cd_rbac_roles = {
+    subscription_roles = local.environment_cd_roles.subscription
+    resource_groups    = local.environment_cd_roles.resource_groups
   }
 
   tags = var.tags
