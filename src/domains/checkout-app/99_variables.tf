@@ -204,6 +204,12 @@ variable "ecommerce_ingress_hostname" {
   default     = null
 }
 
+variable "checkout_ingress_hostname" {
+  type        = string
+  description = "checkout ingress hostname"
+  default     = null
+}
+
 variable "ecommerce_xpay_psps_list" {
   type        = string
   description = "psps list using xpay as comma separated value"

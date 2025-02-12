@@ -149,5 +149,5 @@ opentelemetry_operator_helm = {
   values_file   = "./env/opentelemetry_operator_helm/values.yaml"
 }
 
-elastic_cloud_apm_endpoint = "https://0fbb6b488afc4677a39b9655f2caa1c2.apm.westeurope.azure.elastic-cloud.com:443"
+elastic_cloud_apm_endpoint     = "https://0fbb6b488afc4677a39b9655f2caa1c2.apm.westeurope.azure.elastic-cloud.com:443"
 otel_collector_cloud_migration = false
