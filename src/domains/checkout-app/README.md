@@ -108,6 +108,7 @@
 | <a name="input_checkout_function_sku_tier"></a> [checkout\_function\_sku\_tier](#input\_checkout\_function\_sku\_tier) | App service plan sku tier | `string` | `null` | no |
 | <a name="input_checkout_function_worker_count"></a> [checkout\_function\_worker\_count](#input\_checkout\_function\_worker\_count) | (Optional) checkout function worker count number | `number` | `1` | no |
 | <a name="input_checkout_function_zone_balancing_enabled"></a> [checkout\_function\_zone\_balancing\_enabled](#input\_checkout\_function\_zone\_balancing\_enabled) | (Optional) Enables zone balancing for checkout function | `bool` | `true` | no |
+| <a name="input_checkout_ingress_hostname"></a> [checkout\_ingress\_hostname](#input\_checkout\_ingress\_hostname) | checkout ingress hostname | `string` | `null` | no |
 | <a name="input_checkout_ip_restriction_default_action"></a> [checkout\_ip\_restriction\_default\_action](#input\_checkout\_ip\_restriction\_default\_action) | (Required) The Default action for traffic that does not match any ip\_restriction rule. possible values include Allow and Deny. | `string` | n/a | yes |
 | <a name="input_checkout_pagopaproxy_host"></a> [checkout\_pagopaproxy\_host](#input\_checkout\_pagopaproxy\_host) | pagopaproxy host | `string` | `null` | no |
 | <a name="input_cidr_subnet_checkout_be"></a> [cidr\_subnet\_checkout\_be](#input\_cidr\_subnet\_checkout\_be) | Address prefixes subnet checkout function | `list(string)` | `null` | no |
