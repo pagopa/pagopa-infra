@@ -55,6 +55,8 @@ log-level: INFO
 " > fdr.properties
 
 #liquibase --defaultsFile=fdr.properties drop-all
-liquibase --defaultsFile=fdr.properties update --changelogFile="db.changelog-master-1.0.0.xml"
+#liquibase --defaultsFile=fdr.properties update --changelogFile="db.changelog-master-1.0.0.xml"
+liquibase --defaultsFile=fdr.properties update --changelogFile="db.changelog-master-0.xml"
+#liquibase --defaultsFile=fdr.properties clear-checksums #--changelogFile="db.changelog-master-1.0.0.xml"
 
 rm fdr.properties
