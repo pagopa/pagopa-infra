@@ -16,6 +16,7 @@
 |------|--------|---------|
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 63f6181a6f3a51707a2ab4795bdbed2d888c708b |
 | <a name="module_apim_checkout_auth_product"></a> [apim\_checkout\_auth\_product](#module\_apim\_checkout\_auth\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_checkout_auth_service"></a> [apim\_checkout\_auth\_service](#module\_apim\_checkout\_auth\_service) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_checkout_auth_service_v1"></a> [apim\_checkout\_auth\_service\_v1](#module\_apim\_checkout\_auth\_service\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_checkout_carts_auth"></a> [apim\_checkout\_carts\_auth](#module\_apim\_checkout\_carts\_auth) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_checkout_carts_auth_v1"></a> [apim\_checkout\_carts\_auth\_v1](#module\_apim\_checkout\_carts\_auth\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |

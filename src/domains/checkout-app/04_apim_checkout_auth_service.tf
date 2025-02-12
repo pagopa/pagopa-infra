@@ -8,6 +8,24 @@ locals {
   }
 }
 
+module "apim_checkout_auth_service" {
+  source = "./.terraform/modules/__v3__/api_management_product"
+
+  product_id   = "checkout-auth-service"
+  display_name = "Checkout pagoPA Auth Service"
+  description  = "Authenticated API exposed to allow integration to EC or other clients with Checkout pagoPA Auth Service"
+
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+
+  published             = true
+  subscription_required = true
+  approval_required     = true
+  subscriptions_limit   = 1000
+
+  policy_xml = file("./api_product/checkout/_base_policy.xml")
+}
+
 resource "azurerm_api_management_api_version_set" "checkout_auth_service_api_v1" {
   name                = "${local.parent_project}-auth-service-api"
   resource_group_name = data.azurerm_resource_group.rg_api.name
@@ -22,6 +40,7 @@ module "apim_checkout_auth_service_v1" {
   name                  = "${local.parent_project}-auth-service-api"
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_resource_group.rg_api.name
+  product_ids           = [module.apim_checkout_auth_service.product_id]
   subscription_required = local.apim_checkout_auth_service.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.checkout_auth_service_api_v1.id
   api_version           = "v1"
