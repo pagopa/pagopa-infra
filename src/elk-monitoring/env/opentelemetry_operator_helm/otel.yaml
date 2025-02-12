@@ -10,7 +10,7 @@ spec:
       otlp:
         protocols:
           grpc:
-        
+
     processors:
       memory_limiter:
         check_interval: 1s
@@ -24,9 +24,9 @@ spec:
       otlphttp/elastic:
         tls:
           insecure: true
-        endpoint: "http://quickstart-apm-http.elastic-system.svc.cluster.local:8200"
+        endpoint: "${apm_endpoint}"
         headers:
-          Authorization: "Bearer ${apm_token}"
+          Authorization: "${apm_authorization}"
 
     service:
       pipelines:
@@ -36,6 +36,6 @@ spec:
         metrics:
           receivers: [otlp]
           exporters: [logging, otlphttp/elastic]
-        logs: 
+        logs:
           receivers: [otlp]
           exporters: [logging, otlphttp/elastic]
