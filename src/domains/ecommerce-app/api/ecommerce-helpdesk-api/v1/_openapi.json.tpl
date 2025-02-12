@@ -2200,6 +2200,24 @@
                     "endDate": "2023-01-01T02:00:00.000Z"
                   }
                 }
+              },
+              "search by source with time range and exclude statuses": {
+                "value": {
+                  "source": "ALL",
+                  "timeRange": {
+                    "startDate": "2023-01-01T00:00:00.000Z",
+                    "endDate": "2023-01-01T02:00:00.000Z"
+                  },
+                  "excludeStatuses": {
+                    "ecommerceStatuses": [
+                      "NOTIFIED_OK"
+                    ],
+                    "npgStatuses": [
+                      "DECLINED",
+                      "CANCELLED"
+                    ]
+                  }
+                }
               }
             }
           }
