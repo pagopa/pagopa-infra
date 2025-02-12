@@ -103,7 +103,7 @@ module "opencosts" {
 resource "kubernetes_manifest" "service_monitor" {
   count = var.env_short == "d" ? 1 : 0
   manifest = {
-    "apiVersion" : "monitoring.coreos.com/v1"
+    "apiVersion" : "azmonitoring.coreos.com/v1"
     "kind" : "ServiceMonitor"
     "metadata" : {
       "name" : "prometheus-opencosts"
@@ -136,14 +136,14 @@ resource "kubernetes_manifest" "service_monitor" {
 
 # Refer: Resource created on next-core 02_monitor.tf
 data "azurerm_monitor_workspace" "workspace" {
-  count               = var.env == "dev" ? 1 : 0
-  name                = "pagopa-${var.env_short}-${var.location}-monitor-workspace"
+  count               = var.env != "prod" ? 1 : 0
+  name                = "pagopa-${var.env_short}-monitor-workspace"
   resource_group_name = "pagopa-${var.env_short}-monitor-rg"
 }
 
 module "prometheus_managed_addon" {
-  count                  = var.env == "dev" ? 1 : 0
-  source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.80.0"
+  count                  = var.env != "prod" ? 1 : 0
+  source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.82.0"
   cluster_name           = module.aks.name
   resource_group_name    = module.aks.aks_resource_group_name
   location               = var.location
@@ -151,5 +151,19 @@ module "prometheus_managed_addon" {
   monitor_workspace_rg   = data.azurerm_monitor_workspace.workspace.0.resource_group_name
   grafana_name           = "pagopa-${var.env_short}-${var.location_short}-grafana"
   grafana_resource_group = "pagopa-${var.env_short}-${var.location_short}-grafana-rg"
-  tags                   = var.tags
+
+  # takes a list and replaces any elements that are lists with a
+  # flattened sequence of the list contents.
+  # In this case, we enable OpsGenie only on prod env
+  action_groups_id = flatten([
+    [
+      data.azurerm_monitor_action_group.slack.id,
+      data.azurerm_monitor_action_group.email.id
+    ],
+    (var.env == "prod" ? [
+      data.azurerm_monitor_action_group.opsgenie.0.id
+    ] : [])
+  ])
+
+  tags = var.tags
 }
