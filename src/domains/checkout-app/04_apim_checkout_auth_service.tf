@@ -22,7 +22,6 @@ module "apim_checkout_auth_service_v1" {
   name                  = "${local.parent_project}-auth-service-api"
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_checkout_auth_service_v1.product_id]
   subscription_required = local.apim_checkout_auth_service.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.checkout_auth_service_api_v1.id
   api_version           = "v1"
