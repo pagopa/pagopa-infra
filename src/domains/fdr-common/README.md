@@ -77,13 +77,17 @@
 | [azurerm_resource_group.db_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.fdr_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.data_contributor_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.fdrconversionsa_data_contributor_role](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_storage_container.fdr1_cached_response_blob_file](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.fdr1_flows_blob_file](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.fdr3_flows_blob_file](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.fdr_rend_flow](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.fdr_rend_flow_out](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.re_payload_blob_file](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
+| [azurerm_storage_management_policy.fdr1_cached_response_blob_file_management_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
 | [azurerm_storage_management_policy.storage_account_fdr_management_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
 | [azurerm_storage_table.fdr1_conversion_error_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
+| [null_resource.change_auth_fdr1_cached_response_blob_file](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.change_auth_fdr_blob_container](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.github_runner_app_permissions_to_namespace_ci_01](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
@@ -139,6 +143,7 @@
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
+| <a name="input_fdr1_cached_response_blob_file_retention_days"></a> [fdr1\_cached\_response\_blob\_file\_retention\_days](#input\_fdr1\_cached\_response\_blob\_file\_retention\_days) | The number of day for storage\_management\_policy | `number` | `30` | no |
 | <a name="input_fdr_convertion_delete_retention_days"></a> [fdr\_convertion\_delete\_retention\_days](#input\_fdr\_convertion\_delete\_retention\_days) | Number of days to retain deleted. | `number` | `30` | no |
 | <a name="input_fdr_history_storage_account"></a> [fdr\_history\_storage\_account](#input\_fdr\_history\_storage\_account) | n/a | <pre>object({<br/>    account_kind                       = string<br/>    account_tier                       = string<br/>    account_replication_type           = string<br/>    advanced_threat_protection         = bool<br/>    advanced_threat_protection_enabled = bool<br/>    blob_versioning_enabled            = bool<br/>    public_network_access_enabled      = bool<br/>    blob_delete_retention_days         = number<br/>    enable_low_availability_alert      = bool<br/>    backup_enabled                     = optional(bool, false)<br/>    backup_retention                   = optional(number, 0)<br/>  })</pre> | <pre>{<br/>  "account_kind": "StorageV2",<br/>  "account_replication_type": "LRS",<br/>  "account_tier": "Standard",<br/>  "advanced_threat_protection": true,<br/>  "advanced_threat_protection_enabled": true,<br/>  "backup_enabled": false,<br/>  "backup_retention": 0,<br/>  "blob_delete_retention_days": 30,<br/>  "blob_versioning_enabled": false,<br/>  "enable_low_availability_alert": false,<br/>  "public_network_access_enabled": false<br/>}</pre> | no |
 | <a name="input_fdr_re_advanced_threat_protection"></a> [fdr\_re\_advanced\_threat\_protection](#input\_fdr\_re\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
