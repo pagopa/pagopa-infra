@@ -16,7 +16,7 @@
         </allowed-headers>
       </cors>
       <base />
-      <set-backend-service base-url="https://pagopa-checkout-auth-service"/>
+      <set-backend-service base-url="@("https://${checkout_ingress_hostname}"+"/https://pagopa-checkout-auth-service")"/>
   </inbound>
   <outbound>
       <base />

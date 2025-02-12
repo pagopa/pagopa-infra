@@ -56,5 +56,6 @@ checkout_function_zone_balancing_enabled = false
 
 # ecommerce ingress hostname
 ecommerce_ingress_hostname                 = "weudev.ecommerce.internal.dev.platform.pagopa.it"
+checkout_ingress_hostname                  = "weudev.checkout.internal.dev.platform.pagopa.it"
 checkout_ip_restriction_default_action     = "Allow"
 pagopa_proxy_ip_restriction_default_action = "Allow"

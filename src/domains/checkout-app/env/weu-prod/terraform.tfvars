@@ -58,7 +58,7 @@ checkout_function_zone_balancing_enabled = false
 
 # ecommerce ingress hostname
 ecommerce_ingress_hostname = "weuprod.ecommerce.internal.platform.pagopa.it"
-
+checkout_ingress_hostname  = "placeholder"
 
 function_app_storage_account_info = {
   account_kind                      = "StorageV2"
