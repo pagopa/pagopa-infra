@@ -116,7 +116,8 @@ module "wallet_fe_web_test" {
   timeout                               = 10
   frequency                             = 300
   https_probe_threshold                 = 99
-  metric_frequency                      = "PT1M"
-  metric_window_size                    = "PT5M"
+  metric_frequency                      = "PT5M"
+  metric_window_size                    = "PT1H"
+  retry_enabled                         = true
 
 }
