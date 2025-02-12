@@ -180,11 +180,11 @@
             </send-one-way-request>
           </when>
           <!-- If no valid blob content is found in blob-storage, at least log an error and continue processing request -->
-          <otherwise>
+          <!--<otherwise>
             <trace source="response_not_cached_for_error" severity="information">
               <message>@{ return "Not caching response because the response returned a fault code."; }</message>
             </trace>
-          </otherwise>
+          </otherwise>-->
         </choose>
 
         <!-- ##### END CACHE RETRIEVE PROCESS - WRITE PHASE #### -->
