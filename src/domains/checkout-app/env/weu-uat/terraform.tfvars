@@ -5,6 +5,7 @@ domain          = "checkout"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
+instance        = "uat"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -48,3 +49,11 @@ checkout_enabled = true
 ecommerce_ingress_hostname                 = "weuuat.ecommerce.internal.uat.platform.pagopa.it"
 checkout_ip_restriction_default_action     = "Allow"
 pagopa_proxy_ip_restriction_default_action = "Allow"
+
+# chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
+# image tags: https://github.com/pagopa/infra-ssl-check/releases
+tls_cert_check_helm = {
+  chart_version = "2.0.0"
+  image_name    = "ghcr.io/pagopa/infra-ssl-check"
+  image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
+}
