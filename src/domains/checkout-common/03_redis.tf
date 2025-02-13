@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "pagopa_proxy_rg" {
 
 
 module "pagopa_proxy_redis" {
-  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.69.1"
+  source                = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.42.3"
   name                  = format("%s-pagopa-proxy-redis", local.parent_project)
   resource_group_name   = azurerm_resource_group.pagopa_proxy_rg.name
   location              = azurerm_resource_group.pagopa_proxy_rg.location
