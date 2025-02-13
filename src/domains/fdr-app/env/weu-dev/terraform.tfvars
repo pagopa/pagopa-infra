@@ -80,6 +80,7 @@ enable_fdr_org_soap_request    = true
 enable_fdr_psp_soap_request    = true
 fdr_soap_request_psp_whitelist = "*"
 fdr_soap_request_ci_whitelist  = "*"
+fdr1_cache_duration            = "1800"
 apim_fdr_nodo_pagopa_enable    = true # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 
 ftp_organization = "55555555555,90000000002,88888888888,11111111111,paStress4,44444444444,19721972197,11111122222,66666666666,55555666666,89898989898,20000000002,11111122223,11223344551,15376371009_FTP"
