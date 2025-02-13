@@ -20,6 +20,7 @@ module "apim_checkout_auth_service" {
 
   published             = true
   subscription_required = false
+  approval_required     = false
 
   policy_xml = file("./api_product/checkout/_base_policy.xml")
 }
