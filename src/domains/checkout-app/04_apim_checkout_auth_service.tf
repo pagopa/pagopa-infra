@@ -1,7 +1,7 @@
 locals {
   apim_checkout_auth_service = {
     display_name          = "Checkout pagoPA Auth Service"
-    description           = "Authenticated API exposed to allow integration to EC or other clients with Checkout pagoPA Auth Service"
+    description           = "This microservice that expose authService services to allow authenticaded flow."
     path                  = "checkout/auth-service"
     subscription_required = true
     service_url           = "https://pagopa-checkout-auth-service"
@@ -12,16 +12,14 @@ module "apim_checkout_auth_service" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "checkout-auth-service"
-  display_name = "Checkout pagoPA Auth Service"
-  description  = "Authenticated API exposed to allow integration to EC or other clients with Checkout pagoPA Auth Service"
+  display_name = local.apim_checkout_auth_service.display_name
+  description  = "This microservice that expose authService services to allow authenticaded flow."
 
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = true
-  approval_required     = true
-  subscriptions_limit   = 1000
+  subscription_required = false
 
   policy_xml = file("./api_product/checkout/_base_policy.xml")
 }
@@ -58,5 +56,6 @@ module "apim_checkout_auth_service_v1" {
 
   xml_content = templatefile("./api/checkout/checkout_auth_service/v1/_base_policy.xml.tpl", {
     checkout_ingress_hostname = var.checkout_ingress_hostname,
+    checkout_origin = https://${var.dns_zone_checkout}.${var.external_domain}
   })
 }
