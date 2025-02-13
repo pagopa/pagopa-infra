@@ -27,6 +27,7 @@
 
 | Name | Type |
 |------|------|
+| [azurerm_key_vault_access_policy.gha_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_monitor_metric_alert.cosmos_db_normalized_ru_exceeded](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_endpoint.queue_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
@@ -44,6 +45,7 @@
 | [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_key_vault.key_vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
@@ -81,7 +83,7 @@
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_receipts_datastore_cosmos_db_params"></a> [receipts\_datastore\_cosmos\_db\_params](#input\_receipts\_datastore\_cosmos\_db\_params) | n/a | <pre>object({<br/>    kind           = string<br/>    capabilities   = list(string)<br/>    offer_type     = string<br/>    server_version = string<br/>    consistency_policy = object({<br/>      consistency_level       = string<br/>      max_interval_in_seconds = number<br/>      max_staleness_prefix    = number<br/>    })<br/>    main_geo_location_zone_redundant = bool<br/>    enable_free_tier                 = bool<br/>    additional_geo_locations = list(object({<br/>      location          = string<br/>      failover_priority = number<br/>      zone_redundant    = bool<br/>    }))<br/>    private_endpoint_enabled          = bool<br/>    public_network_access_enabled     = bool<br/>    is_virtual_network_filter_enabled = bool<br/>    backup_continuous_enabled         = bool<br/>    container_default_ttl             = number<br/>    max_throughput                    = number<br/>    max_throughput_alt                = number<br/>  })</pre> | n/a | yes |
+| <a name="input_receipts_datastore_cosmos_db_params"></a> [receipts\_datastore\_cosmos\_db\_params](#input\_receipts\_datastore\_cosmos\_db\_params) | n/a | <pre>object({<br>    kind           = string<br>    capabilities   = list(string)<br>    offer_type     = string<br>    server_version = string<br>    consistency_policy = object({<br>      consistency_level       = string<br>      max_interval_in_seconds = number<br>      max_staleness_prefix    = number<br>    })<br>    main_geo_location_zone_redundant = bool<br>    enable_free_tier                 = bool<br>    additional_geo_locations = list(object({<br>      location          = string<br>      failover_priority = number<br>      zone_redundant    = bool<br>    }))<br>    private_endpoint_enabled          = bool<br>    public_network_access_enabled     = bool<br>    is_virtual_network_filter_enabled = bool<br>    backup_continuous_enabled         = bool<br>    container_default_ttl             = number<br>    max_throughput                    = number<br>    max_throughput_alt                = number<br>  })</pre> | n/a | yes |
 | <a name="input_receipts_datastore_fn_sa_advanced_threat_protection"></a> [receipts\_datastore\_fn\_sa\_advanced\_threat\_protection](#input\_receipts\_datastore\_fn\_sa\_advanced\_threat\_protection) | Enable contract threat advanced protection | `bool` | `false` | no |
 | <a name="input_receipts_datastore_fn_sa_backup_retention_days"></a> [receipts\_datastore\_fn\_sa\_backup\_retention\_days](#input\_receipts\_datastore\_fn\_sa\_backup\_retention\_days) | Number of days to retain backups. | `number` | `0` | no |
 | <a name="input_receipts_datastore_fn_sa_delete_after_last_access"></a> [receipts\_datastore\_fn\_sa\_delete\_after\_last\_access](#input\_receipts\_datastore\_fn\_sa\_delete\_after\_last\_access) | Number of days since modification to blob before deleting | `number` | `3650` | no |
@@ -95,7 +97,7 @@
 | <a name="input_receipts_queue_retention_sec"></a> [receipts\_queue\_retention\_sec](#input\_receipts\_queue\_retention\_sec) | The maximum time to allow the message to be in the queue. | `number` | `86400` | no |
 | <a name="input_receipts_storage_account_replication_type"></a> [receipts\_storage\_account\_replication\_type](#input\_receipts\_storage\_account\_replication\_type) | (Optional) Receipts datastore storage account replication type | `string` | `"LRS"` | no |
 | <a name="input_receipts_tier_to_archive_after_days_since_last_access_time_greater_than"></a> [receipts\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than](#input\_receipts\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than) | Number of days since last access to blob before moving to archive tier | `number` | `730` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br>  "CreatedBy": "Terraform"<br>}</pre> | no |
 
 ## Outputs
 
