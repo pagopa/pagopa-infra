@@ -78,7 +78,7 @@ image_tag  = "latest"
 
 # FDR ( phase#1 and phase#3 cfg )
 enable_fdr3_features           = false
-enable_fdr_org_soap_request    = false
+enable_fdr_ci_soap_request     = false
 enable_fdr_psp_soap_request    = false
 fdr_soap_request_psp_whitelist = "NA"
 fdr_soap_request_ci_whitelist  = "NA"
