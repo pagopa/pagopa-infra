@@ -28,14 +28,15 @@ data "azurerm_monitor_action_group" "opsgenie" {
   name                = local.monitor_action_group_opsgenie_name
 }
 
-resource "azurerm_portal_dashboard" "fdr-soap-dashboard" {
-  name                = "FdR-SOAP"
+resource "azurerm_portal_dashboard" "fdr-dashboard" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "[PROD] APIM - FdR"
   resource_group_name = var.monitor_resource_group_name
   location            = var.location
   tags = {
     source = "terraform"
   }
-  dashboard_properties = templatefile("dashboard/dash-fdr-soap.tpl", {
+  dashboard_properties = templatefile("dashboard-apim-fdr.tpl", {
     subscription_id = data.azurerm_subscription.current.subscription_id,
     env_short       = var.env_short
   })
