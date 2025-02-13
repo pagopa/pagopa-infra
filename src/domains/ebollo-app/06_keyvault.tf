@@ -44,7 +44,7 @@ resource "azurerm_key_vault_secret" "carts_subscription_key" {
 }
 
 resource "azurerm_key_vault_secret" "auth_subscription_key" {
-  name         = "apikey-checkout-carts"
+  name         = "apikey-checkout-auth"
   value        = azurerm_api_management_subscription.auth_subkey.primary_key
   content_type = "text/plain"
 
