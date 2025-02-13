@@ -43,6 +43,14 @@ resource "azurerm_key_vault_secret" "carts_subscription_key" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+resource "azurerm_key_vault_secret" "auth_subscription_key" {
+  name         = "apikey-checkout-carts"
+  value        = azurerm_api_management_subscription.auth_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
 resource "azurerm_key_vault_secret" "payments_key_subscription_key" {
   name         = "apikey-gpd-payments"
   value        = azurerm_api_management_subscription.payments_subkey.primary_key
