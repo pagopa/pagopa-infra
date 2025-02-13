@@ -42,7 +42,7 @@
                   <!-- Execute a GET call on blob-storage using the UUID as "search filter" -->
                   <authentication-managed-identity resource="https://storage.azure.com/" output-token-variable-name="msi-access-token" ignore-error="false" />
                   <send-request mode="new" response-variable-name="cached_response_content" timeout="300" ignore-error="true">
-                    <set-url>@{ return "https://{{fdr_cachedresponse_saname}}.blob.core.windows.net/" + "{{fdr_cachedresponse_containername}}" + "/" + ((string) context.Variables["fdr_cached_response_uuid"]) + ".txt"; }</set-url>
+                    <set-url>@{ return "https://{{fdr_cachedresponse_saname}}.blob.core.windows.net/" + "{{fdr_cachedresponse_containername}}" + "/" + ((string) context.Variables["fdr_cached_response_uuid"]) + ".xml"; }</set-url>
                     <set-method>GET</set-method>
                     <set-header name="Host" exists-action="override">
                       <value>{{fdr_cachedresponse_saname}}.blob.core.windows.net</value>
@@ -136,7 +136,7 @@
             <!-- in read phase the absence of BLOB file is considered equivalent to no-cached-response, so the request is sent to backend.  -->
             <authentication-managed-identity resource="https://storage.azure.com/" output-token-variable-name="msi-access-token" ignore-error="true" />
             <send-one-way-request mode="new" timeout="300">
-              <set-url>@{ return "https://{{fdr_cachedresponse_saname}}.blob.core.windows.net/" + "{{fdr_cachedresponse_containername}}" + "/" + ((string) context.Variables["fdr_cached_response_uuid_value"]) + ".txt"; }</set-url>
+              <set-url>@{ return "https://{{fdr_cachedresponse_saname}}.blob.core.windows.net/" + "{{fdr_cachedresponse_containername}}" + "/" + ((string) context.Variables["fdr_cached_response_uuid_value"]) + ".xml"; }</set-url>
               <set-method>PUT</set-method>
               <set-header name="Host" exists-action="override">
                 <value>{{fdr_cachedresponse_saname}}.blob.core.windows.net</value>
