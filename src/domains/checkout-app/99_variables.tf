@@ -288,3 +288,22 @@ variable "pagopa_proxy_ip_restriction_default_action" {
   type        = string
   description = "(Required) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. "
 }
+
+variable "tls_cert_check_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "tls cert helm chart configuration"
+}
+
+variable "instance" {
+  type        = string
+  description = "One of beta, prod01, prod02"
+}
+
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
+}
