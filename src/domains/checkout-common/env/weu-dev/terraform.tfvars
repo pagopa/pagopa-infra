@@ -21,15 +21,15 @@ log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 
 # DNS
 
-external_domain   = "pagopa.it"
-dns_zone_prefix   = "dev.platform"
-dns_zone_checkout = "dev.checkout"
+external_domain          = "pagopa.it"
+dns_zone_prefix          = "dev.platform"
+dns_zone_checkout        = "dev.checkout"
 dns_zone_internal_prefix = "internal.dev.platform"
 
 # Networking
 
 cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
-ingress_load_balancer_ip = "10.1.100.250"
+ingress_load_balancer_ip       = "10.1.100.250"
 
 # pagopa-proxy Redis
 
