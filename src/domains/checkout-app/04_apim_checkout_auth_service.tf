@@ -1,7 +1,7 @@
 locals {
   apim_checkout_auth_service = {
     display_name          = "Checkout pagoPA Auth Service"
-    description           = "This microservice that expose authService services to allow authenticaded flow."
+    description           = "This microservice exposes authService services to allow authenticated flow."
     path                  = "checkout/auth-service"
     subscription_required = true
     service_url           = "https://pagopa-checkout-auth-service"
