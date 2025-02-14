@@ -13,7 +13,7 @@ module "apim_checkout_auth_service" {
 
   product_id   = "checkout-auth-service"
   display_name = local.apim_checkout_auth_service.display_name
-  description  = "This microservice that expose authService services to allow authenticaded flow."
+  description  = local.apim_checkout_auth_service.description
 
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
