@@ -31,7 +31,7 @@ resource "azurerm_key_vault_secret" "selfcare_service_principal_client_id" {
   value        = azuread_service_principal.selfcare.application_id
   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "selfcare_service_principal_client_secret" {
@@ -39,5 +39,5 @@ resource "azurerm_key_vault_secret" "selfcare_service_principal_client_secret" {
   value        = azuread_application_password.selfcare.value
   content_type = "text/plain"
 
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
 }
