@@ -163,3 +163,6 @@ variable "enable_iac_pipeline" {
   default     = false
 }
 
+variable "ingress_load_balancer_ip" {
+  type = string
+}

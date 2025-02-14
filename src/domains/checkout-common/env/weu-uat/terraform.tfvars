@@ -19,15 +19,17 @@ monitor_resource_group_name                 = "pagopa-u-monitor-rg"
 log_analytics_workspace_name                = "pagopa-u-law"
 log_analytics_workspace_resource_group_name = "pagopa-u-monitor-rg"
 
-# DNS
+# DNS
 
 external_domain   = "pagopa.it"
 dns_zone_prefix   = "uat.platform"
 dns_zone_checkout = "uat.checkout"
+dns_zone_internal_prefix = "internal.uat.platform"
 
 # Networking
 
 cidr_subnet_pagopa_proxy_redis = ["10.1.131.0/24"]
+ingress_load_balancer_ip = "10.1.100.250"
 
 # pagopa-proxy Redis
 
