@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "aks_rg" {
 
 
 module "aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.58.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.80.0"
 
   name                       = local.aks_name
   location                   = var.location
@@ -19,6 +19,13 @@ module "aks" {
 
   workload_identity_enabled = var.aks_enable_workload_identity
   oidc_issuer_enabled       = var.aks_enable_workload_identity
+
+  ## Prometheus managed
+  # ff: enabled on DEV/UAT
+  enable_prometheus_monitor_metrics = var.env_short != "p" ? true : false
+
+  # ff: Enabled cost analysis on UAT/PROD
+  cost_analysis_enabled = var.env_short != "d" ? true : false
 
   #
   # 🤖 System node pool

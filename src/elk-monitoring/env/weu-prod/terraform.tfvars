@@ -135,7 +135,7 @@ nodeset_config = {
   data-cold-nodes = {
     count            = "3"
     roles            = ["ingest", "data_content", "data_cold", "data_frozen", "ml", "transform", "remote_cluster_client"]
-    storage          = "500Gi"
+    storage          = "1Ti"
     storageClassName = "pagopa-p-weu-elk-elastic-aks-storage-cold"
     requestMemory    = "4Gi"
     requestCPU       = "1"
@@ -159,3 +159,5 @@ elk_snapshot_sa = {
 
 
 snapshot_storage_replication_type = "GZRS"
+
+elastic_cloud_apm_endpoint = "TBD"

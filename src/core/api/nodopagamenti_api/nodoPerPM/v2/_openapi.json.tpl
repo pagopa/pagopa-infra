@@ -432,6 +432,10 @@
           "email": {
             "type": "string",
             "description": "User email used for the transaction outcome notification present only in case of successful authorization"
+          },
+          "authorizationRequestId": {
+            "type": "string",
+            "description": "Information about the authorization request id present only in case of successful authorization"
           }
         },
         "required": [

@@ -352,6 +352,8 @@ variable "wisp_converter_cosmos_nosql_db_params" {
     offer_type     = string
     server_version = string
     kind           = string
+
+    burst_capacity_enabled = bool
     consistency_policy = object({
       consistency_level       = string
       max_interval_in_seconds = number

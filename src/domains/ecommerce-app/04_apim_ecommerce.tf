@@ -477,6 +477,15 @@ module "apim_pagopa_ecommerce_helpdesk_service_api_v1" {
   })
 }
 
+resource "azurerm_api_management_api_operation_policy" "helpdesk_pm_search_bulk" {
+  api_name            = "${local.project}-helpdesk-service-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "pmSearchBulkTransaction"
+
+  xml_content = file("./api/ecommerce-helpdesk-api/v1/_bulk_search.xml.tpl")
+}
+
 #helpdesk api V2 for ecommerce
 module "apim_pagopa_ecommerce_helpdesk_service_api_v2" {
   source = "./.terraform/modules/__v3__/api_management_api"
@@ -657,4 +666,23 @@ module "apim_ecommerce_user_stats_service_api_v1" {
   xml_content = templatefile("./api/ecommerce-user-stats-service/v1/_base_policy.xml.tpl", {
     hostname = local.ecommerce_hostname
   })
+}
+
+#################
+## NAMED VALUE ##
+#################
+data "azurerm_key_vault_secret" "ecommerce_dev_sendpaymentresult_subscription_key" {
+  count        = var.env_short == "u" ? 1 : 0
+  name         = "ecommerce-dev-sendpaymentresult-subscription-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_dev_sendpaymentresult_subscription_key_named_value" {
+  count               = var.env_short == "u" ? 1 : 0
+  name                = "ecommerce-dev-sendpaymentresult-subscription-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-dev-sendpaymentresult-subscription-key-value"
+  value               = data.azurerm_key_vault_secret.ecommerce_dev_sendpaymentresult_subscription_key[0].value
+  secret              = true
 }

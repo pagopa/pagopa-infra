@@ -96,6 +96,15 @@ resource "azurerm_postgresql_flexible_server_database" "fdr_db" {
   charset   = "utf8"
 }
 
+
+# FdR database
+resource "azurerm_postgresql_flexible_server_database" "fdr3_db" {
+  name      = "fdr3"
+  server_id = module.postgres_flexible_server_fdr.id
+  collation = "en_US.utf8"
+  charset   = "utf8"
+}
+
 # https://learn.microsoft.com/en-us/azure/postgresql/flexible-server/concepts-limits
 # DEV D4s_v3 / D4ds_v4	4	16 GiB	1719	1716
 # UAT D8s_v3 / D8ds_V4	8	32 GiB	3438	3435

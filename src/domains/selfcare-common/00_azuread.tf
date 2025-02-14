@@ -1,5 +1,6 @@
 resource "azuread_application" "selfcare" {
   display_name = "${local.product}-selfcare"
+  owners       = ["c7636d10-4f78-43bd-89f6-555c7d82e02c"]
 }
 
 resource "azuread_service_principal" "selfcare" {

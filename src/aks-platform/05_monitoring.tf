@@ -63,3 +63,107 @@ resource "helm_release" "monitoring_reloader" {
     value = var.reloader_helm.image_tag
   }
 }
+
+# Kubernetes Event Exporter
+module "kubernetes_event_exporter" {
+  count     = var.env_short != "p" ? 0 : 1
+  source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter?ref=v8.76.0"
+  namespace = "monitoring"
+
+  custom_config = "env/weu-prod/exporter/kubernetes-event-exporter-config.yml.tftpl"
+  custom_variables = {
+    enable_slack           = false
+    enable_opsgenie        = true
+    opsgenie_receiver_name = "opsgenie"
+    opsgenie_api_key       = data.azurerm_key_vault_secret.opsgenie_kubexporter_api_key.0.value
+  }
+}
+
+data "azurerm_key_vault_secret" "opsgenie_kubexporter_api_key" {
+  count        = var.env_short != "p" ? 0 : 1
+  key_vault_id = data.azurerm_key_vault.kv.id
+  name         = "opsgenie-infra-kubexporter-webhook-token"
+}
+
+module "opencosts" {
+  enable_opencost      = var.env_short == "d" ? true : false
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_opencosts?ref=v8.71.0"
+  aks_name             = module.aks.name
+  aks_rg_name          = module.aks.aks_resource_group_name
+  env                  = var.env
+  kubernetes_namespace = "elastic-system"
+  prometheus_config = {
+    namespace    = "elastic-system"
+    service_name = "prometheus-kube-prometheus-prometheus"
+    service_port = "9090"
+    external_url = "https://api.${var.env}.platform.pagopa.it/prometheus"
+  }
+}
+
+resource "kubernetes_manifest" "service_monitor" {
+  count = var.env_short == "d" ? 1 : 0
+  manifest = {
+    "apiVersion" : "azmonitoring.coreos.com/v1"
+    "kind" : "ServiceMonitor"
+    "metadata" : {
+      "name" : "prometheus-opencosts"
+      "namespace" : "elastic-system"
+      "labels" : {
+        "app.kubernetes.io/instance" : "prometheus"
+        "app.kubernetes.io/part-of" : "kube-prometheus-stack"
+        "app" : "kube-prometheus-stack-operator"
+        "release" : helm_release.kube_prometheus_stack.name
+      }
+    }
+    "spec" : {
+      "selector" : {
+        "matchLabels" : {
+          "app.kubernetes.io/instance" : "prometheus-opencost-exporter"
+          "app.kubernetes.io/name" : "opencost"
+        }
+      }
+      "endpoints" : [
+        {
+          "port" : "http"
+          "interval" : "30s"
+          "path" : "/metrics"
+        }
+      ]
+      jobLabel : "opencost"
+    }
+  }
+}
+
+# Refer: Resource created on next-core 02_monitor.tf
+data "azurerm_monitor_workspace" "workspace" {
+  count               = var.env != "prod" ? 1 : 0
+  name                = "pagopa-${var.env_short}-monitor-workspace"
+  resource_group_name = "pagopa-${var.env_short}-monitor-rg"
+}
+
+module "prometheus_managed_addon" {
+  count                  = var.env != "prod" ? 1 : 0
+  source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.82.0"
+  cluster_name           = module.aks.name
+  resource_group_name    = module.aks.aks_resource_group_name
+  location               = var.location
+  monitor_workspace_name = data.azurerm_monitor_workspace.workspace.0.name
+  monitor_workspace_rg   = data.azurerm_monitor_workspace.workspace.0.resource_group_name
+  grafana_name           = "pagopa-${var.env_short}-${var.location_short}-grafana"
+  grafana_resource_group = "pagopa-${var.env_short}-${var.location_short}-grafana-rg"
+
+  # takes a list and replaces any elements that are lists with a
+  # flattened sequence of the list contents.
+  # In this case, we enable OpsGenie only on prod env
+  action_groups_id = flatten([
+    [
+      data.azurerm_monitor_action_group.slack.id,
+      data.azurerm_monitor_action_group.email.id
+    ],
+    (var.env == "prod" ? [
+      data.azurerm_monitor_action_group.opsgenie.0.id
+    ] : [])
+  ])
+
+  tags = var.tags
+}

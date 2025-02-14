@@ -24,7 +24,3 @@ input_file = "./secret/itn-dev/configs.json"
 
 enable_iac_pipeline = true
 
-
-
-
-

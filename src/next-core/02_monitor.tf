@@ -16,6 +16,22 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   allow_resource_only_permissions    = var.env_short != "p"
 
   tags = var.tags
+
+  lifecycle {
+    ignore_changes = [
+      sku
+    ]
+  }
+}
+
+# Azure Monitor Workspace
+resource "azurerm_monitor_workspace" "monitor_workspace" {
+  count                         = var.env != "prod" ? 1 : 0
+  name                          = "pagopa-${var.env_short}-monitor-workspace"
+  resource_group_name           = "pagopa-${var.env_short}-monitor-rg"
+  location                      = var.location
+  public_network_access_enabled = false
+  tags                          = var.tags
 }
 
 # Application insights

@@ -38,7 +38,7 @@ pgres_flex_params = {
   db_version = "15"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                             = 32768
+  storage_mb                             = 1048576 # 1Tib
   zone                                   = 1
   backup_retention_days                  = 7
   geo_redundant_backup_enabled           = false
@@ -116,7 +116,7 @@ cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
 cosmos_mongo_db_fdr_params = {
   enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo"]
+  capabilities = ["EnableMongo", "EnableUniqueCompoundNestedDocs"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -135,6 +135,9 @@ cosmos_mongo_db_fdr_params = {
   backup_continuous_enabled = false
 
   container_default_ttl = 2629800 # 1 month in second
+
+  fdr_flow_container_ttl    = "3024000" # 30 days + 5 days (deltaTime)
+  fdr_payment_container_ttl = "3024000" # 30 days + 5 days (deltaTime)
 
   enable_serverless  = false
   enable_autoscaling = true

@@ -47,7 +47,7 @@ module "postgres_flexible_snet" {
 }
 
 data "azurerm_private_dns_zone" "postgres" {
-  count               = var.env_short != "d" ? 1 : 0  # forced ( before exits only in UAT and PROD now DEV too)
+  count               = var.env_short != "d" ? 1 : 0 # forced ( before exits only in UAT and PROD now DEV too)
   name                = "private.postgres.database.azure.com"
   resource_group_name = local.vnet_resource_group_name
 }
@@ -58,7 +58,7 @@ data "azurerm_private_dns_zone" "postgres" {
 module "postgres_flexible_server_private_db" {
   source = "./.terraform/modules/__v3__/postgres_flexible_server"
 
-  name = format("%s-%s-gpd-pgflex",local.product, var.location_short)
+  name = format("%s-%s-gpd-pgflex", local.product, var.location_short)
 
   location            = azurerm_resource_group.flex_data[0].location
   resource_group_name = azurerm_resource_group.flex_data[0].name
@@ -69,7 +69,7 @@ module "postgres_flexible_server_private_db" {
   delegated_subnet_id           = module.postgres_flexible_snet[0].id
   public_network_access_enabled = var.pgres_flex_params.public_network_access_enabled
 
-  ### admin credentials
+  ### admin credentials
   administrator_login    = data.azurerm_key_vault_secret.pgres_admin_login.value
   administrator_password = data.azurerm_key_vault_secret.pgres_admin_pwd.value
 
@@ -89,7 +89,7 @@ module "postgres_flexible_server_private_db" {
 
   tags = var.tags
 
-  # alert section
+  # alert section
   custom_metric_alerts = var.pgres_flex_params.alerts_enabled ? var.pgflex_public_metric_alerts : {}
   alerts_enabled       = var.pgres_flex_params.alerts_enabled
 
