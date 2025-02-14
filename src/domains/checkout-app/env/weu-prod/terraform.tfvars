@@ -46,17 +46,6 @@ apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/r
 
 checkout_enabled = true
 
-# Checkout functions
-
-checkout_function_kind                   = "Linux"
-checkout_function_sku_tier               = "PremiumV3"
-checkout_function_sku_size               = "P1v3"
-checkout_function_always_on              = true
-checkout_function_autoscale_minimum      = 1
-checkout_function_autoscale_maximum      = 3
-checkout_function_autoscale_default      = 1
-checkout_function_zone_balancing_enabled = false
-
 # ecommerce ingress hostname
 ecommerce_ingress_hostname = "weuprod.ecommerce.internal.platform.pagopa.it"
 checkout_ingress_hostname  = "placeholder"

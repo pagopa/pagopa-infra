@@ -1,11 +1,12 @@
-prefix                 = "pagopa"
-env_short              = "p"
-env                    = "prod"
-domain                 = "fdr"
-location               = "westeurope"
-location_short         = "weu"
-location_string        = "West Europe"
-instance               = "prod"
+prefix          = "pagopa"
+env_short       = "p"
+env             = "prod"
+domain          = "fdr"
+location        = "westeurope"
+location_short  = "weu"
+location_string = "West Europe"
+instance        = "prod"
+
 gh_runner_job_location = "italynorth"
 
 tags = {
@@ -15,7 +16,6 @@ tags = {
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/fdr"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
-
 
 # function app
 reporting_fdr_function_always_on = true
@@ -50,7 +50,6 @@ reporting_fdr_storage_account_info = {
 }
 
 ### External resources
-
 monitor_resource_group_name                 = "pagopa-p-monitor-rg"
 log_analytics_workspace_name                = "pagopa-p-law"
 log_analytics_workspace_resource_group_name = "pagopa-p-monitor-rg"
@@ -77,24 +76,16 @@ tls_cert_check_helm = {
 image_name = "reporting-fdr"
 image_tag  = "latest"
 
-apim_fdr_nodo_pagopa_enable = false # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
+# FDR ( phase#1 and phase#3 cfg )
+enable_fdr3_features           = false
+enable_fdr_ci_soap_request     = false
+enable_fdr_psp_soap_request    = false
+fdr_soap_request_psp_whitelist = "NA"
+fdr_soap_request_ci_whitelist  = "NA"
+fdr1_cache_duration            = "1800" # sec
+apim_fdr_nodo_pagopa_enable    = false  # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 
-# fdr re
-fdr_re_function = {
-  always_on                    = true
-  kind                         = "Linux"
-  sku_size                     = "P1v3"
-  sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 0
-}
-fdr_re_function_always_on                = true
-fdr_re_function_subnet                   = ["10.1.181.0/24"]
-fdr_re_function_network_policies_enabled = false
-fdr_re_function_autoscale = {
-  default = 1
-  minimum = 1
-  maximum = 10
-}
+ftp_organization = "80078750587,00488410010,97532760580,12300020158"
 
 # fdr xml to json
 fdr_xml_to_json_function_subnet                   = ["10.1.182.0/24"]
@@ -113,25 +104,3 @@ fdr_xml_to_json_function_autoscale = {
   maximum = 10
 }
 
-# fdr json to xml
-fdr_json_to_xml_function_subnet                   = ["10.1.185.0/24"]
-fdr_json_to_xml_function_network_policies_enabled = true
-fdr_json_to_xml_function = {
-  always_on                    = true
-  kind                         = "Linux"
-  sku_size                     = "B1"
-  sku_tier                     = "Basic"
-  maximum_elastic_worker_count = 0
-}
-
-fdr_json_to_xml_function_autoscale = {
-  default = 1
-  minimum = 1
-  maximum = 10
-}
-
-
-
-ftp_organization = "80078750587,00488410010,97532760580,12300020158"
-
-enable_fdr3_features = false
