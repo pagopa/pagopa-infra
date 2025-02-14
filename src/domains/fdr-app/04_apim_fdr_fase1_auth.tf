@@ -86,7 +86,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   operation_id        = var.env_short == "d" ? "6352c3bcc257810f183b398b" : var.env_short == "u" ? "636cb7e9451c1c01c4186998" : "63b6e2da2a92e811a8f338f8"
 
   #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
+  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediElencoFlussiRendicontazione.xml.tpl", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
     base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
   })

@@ -141,3 +141,75 @@ resource "azurerm_storage_table" "fdr1_conversion_error_table" {
   storage_account_name = module.fdr_conversion_sa.name
 }
 
+## fdr 1 cached responses blob container
+resource "azurerm_storage_container" "fdr1_cached_response_blob_file" {
+  name                 = "fdr1-cached-response"
+  storage_account_name = module.fdr_conversion_sa.name
+}
+
+
+
+
+## 🐞https://github.com/hashicorp/terraform-provider-azurerm/pull/15832
+## blob lifecycle policy
+# https://azure.microsoft.com/it-it/blog/azure-blob-storage-lifecycle-management-now-generally-available/
+resource "azurerm_storage_management_policy" "fdr1_cached_response_blob_file_management_policy" {
+  storage_account_id = module.fdr_conversion_sa.id
+
+  rule {
+    name    = "deleteafterdays"
+    enabled = true
+    filters {
+      prefix_match = ["${azurerm_storage_container.fdr1_cached_response_blob_file.name}/"]
+      blob_types   = ["blockBlob"]
+    }
+
+    # https://docs.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview
+    actions {
+      # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy#delete_after_days_since_modification_greater_than
+      base_blob {
+        delete_after_days_since_modification_greater_than = var.fdr1_cached_response_blob_file_retention_days
+      }
+      snapshot {
+        delete_after_days_since_creation_greater_than = 30
+      }
+    }
+  }
+
+}
+
+
+# https://medium.com/marcus-tee-anytime/secure-azure-blob-storage-with-azure-api-management-managed-identities-b0b82b53533c
+
+# 1 - add Blob Data Contributor to apim for FDR1's Cached response blob storage
+resource "azurerm_role_assignment" "fdrconversionsa_data_contributor_role" {
+  scope                = module.fdr_conversion_sa.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = data.azurerm_api_management.apim.identity[0].principal_id
+
+  depends_on = [
+    module.fdr_conversion_sa
+  ]
+}
+
+# 2 - Change container Authentication method to Azure AD authentication
+resource "null_resource" "change_auth_fdr1_cached_response_blob_file" {
+
+  triggers = {
+    apim_principal_id = data.azurerm_api_management.apim.identity[0].principal_id
+  }
+
+  provisioner "local-exec" {
+    command = <<EOT
+              az storage container set-permission \
+                --name ${azurerm_storage_container.fdr1_cached_response_blob_file.name} \
+                --account-name ${module.fdr_conversion_sa.name} \
+                --account-key ${module.fdr_conversion_sa.primary_access_key}
+
+          EOT
+  }
+
+  depends_on = [
+    azurerm_storage_container.fdr1_cached_response_blob_file
+  ]
+}

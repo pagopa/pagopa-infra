@@ -1,10 +1,10 @@
 #################################### [FDRNODO] ####################################
 locals {
-  fdrnodo_dashboard_path = "${path.module}/${local.fdr_space_name}/${local.pagopafdrnodo_key}/dashboard/*.ndjson"
+  fdrnodo_dashboard_path = "${path.module}/${local.fdr_space_name}/${local.pagopafdr_key}/dashboard/*.ndjson"
 }
 
 resource "null_resource" "pagopafdrnodo_upload_dashboard" {
-  depends_on = [null_resource.pagopafdrnodo_kibana_data_view]
+  depends_on = [null_resource.pagopafdr_kibana_data_view]
 
   triggers = {
     always_run = "${timestamp()}"
