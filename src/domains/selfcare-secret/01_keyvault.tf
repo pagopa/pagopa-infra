@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "sec_rg" {
-  name     = "${local.product}-${var.location_short}-${var.domain}-sec-rg"
+  name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
 
   tags = var.tags
@@ -8,7 +8,7 @@ resource "azurerm_resource_group" "sec_rg" {
 module "key_vault" {
   source = "./.terraform/modules/__v3__/key_vault"
 
-  name                       = "${local.product}-${var.location_short}-${var.domain}-kv"
+  name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
   resource_group_name        = azurerm_resource_group.sec_rg.name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
@@ -40,7 +40,7 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   object_id = data.azuread_group.adgroup_developers.object_id
 
   key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Recover", "Rotate", "GetRotationPolicy"]
-  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", ]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", "Restore", ]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
@@ -57,8 +57,8 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_externals.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Recover", "Rotate", "GetRotationPolicy"]
-  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", "Restore", ]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
@@ -83,19 +83,4 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
 
   storage_permissions = []
-}
-
-################
-##   Secrets  ##
-################
-
-# create json letsencrypt inside kv
-# requierd: Docker
-module "letsencrypt_selfcare" {
-  source = "./.terraform/modules/__v3__/letsencrypt_credential"
-
-  prefix            = var.prefix
-  env               = var.env_short
-  key_vault_name    = module.key_vault.name
-  subscription_name = local.subscription_name
 }
