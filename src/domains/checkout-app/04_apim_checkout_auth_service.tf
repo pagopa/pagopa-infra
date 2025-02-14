@@ -1,25 +1,25 @@
 locals {
   apim_checkout_auth_service = {
     display_name          = "Checkout pagoPA Auth Service"
-    description           = "This microservice exposes authService services to allow authenticated flow."
+    description           = "This microservice that expose authService services to allow authenticaded flow."
     path                  = "checkout/auth-service"
-    subscription_required = true
-    service_url           = "https://pagopa-checkout-auth-service"
+    subscription_required = false
+    service_url           = null
   }
 }
 
-module "apim_checkout_auth_service" {
+module "apim_checkout_authentication" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
-  product_id   = "checkout-auth-service"
-  display_name = local.apim_checkout_auth_service.display_name
-  description  = local.apim_checkout_auth_service.description
+  product_id   = "checkout-authentication"
+  display_name = "Checkout Authentication"
+  description  = "Collection of APIs related to the authenticaded flow."
 
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = false
+  subscription_required = true
   approval_required     = false
 
   policy_xml = file("./api_product/checkout/_base_policy.xml")
@@ -39,7 +39,7 @@ module "apim_checkout_auth_service_v1" {
   name                  = "${local.parent_project}-auth-service-api"
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_checkout_auth_service.product_id]
+  product_ids           = [module.apim_checkout_authentication.product_id]
   subscription_required = local.apim_checkout_auth_service.subscription_required
   version_set_id        = azurerm_api_management_api_version_set.checkout_auth_service_api_v1.id
   api_version           = "v1"
