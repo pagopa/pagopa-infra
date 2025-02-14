@@ -22,7 +22,7 @@ module "apim_checkout_authentication" {
   subscription_required = true
   approval_required     = false
 
-  policy_xml = file("./api_product/checkout/_base_policy.xml")
+  policy_xml = file("./api_product/checkout-authentication/_base_policy.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "checkout_auth_service_api_v1" {
