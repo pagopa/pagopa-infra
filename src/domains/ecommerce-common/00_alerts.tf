@@ -346,10 +346,10 @@ AzureDiagnostics
 
 
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "payment_requests_service_availability" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_payment_requests_service_availability" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = "payment-requests-service-availability-alert"
+  name                = "ecommerce-payment-requests-service-availability-alert"
   resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
   location            = var.location
 
