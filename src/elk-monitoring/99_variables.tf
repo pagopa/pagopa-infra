@@ -255,3 +255,14 @@ variable "snapshot_storage_replication_type" {
   default     = "LRS"
   description = "(Optional) ELK snapshot storage replication type"
 }
+
+
+variable "elastic_cloud_apm_endpoint" {
+  type = string
+  description = "APM endpoint for elastic cloud instance"
+}
+
+variable "otel_collector_cloud_migration" {
+  type = bool
+  default = false
+}

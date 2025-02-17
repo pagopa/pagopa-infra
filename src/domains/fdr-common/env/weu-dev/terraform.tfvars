@@ -116,7 +116,7 @@ cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
 cosmos_mongo_db_fdr_params = {
   enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo"]
+  capabilities = ["EnableMongo", "EnableUniqueCompoundNestedDocs"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -140,6 +140,9 @@ cosmos_mongo_db_fdr_params = {
   throughput         = 1000
 
   container_default_ttl = 604800 # 7 days
+
+  fdr_flow_container_ttl    = "604800" # 7 days
+  fdr_payment_container_ttl = "604800" # 7 days
 }
 
 cosmos_mongo_db_fdr_re_params = {

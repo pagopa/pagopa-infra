@@ -67,17 +67,16 @@ resource "helm_release" "monitoring_reloader" {
 # Kubernetes Event Exporter
 module "kubernetes_event_exporter" {
   count     = var.env_short != "p" ? 0 : 1
-  source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter?ref=v8.70.0"
+  source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter?ref=v8.76.0"
   namespace = "monitoring"
 
-  # Slack integration
-  enable_slack  = false
-  slack_channel = "#pagopa_status"
-  slack_token   = ""
-
-  # OpsGenie integrations
-  enable_opsgenie  = true
-  opsgenie_api_key = data.azurerm_key_vault_secret.opsgenie_kubexporter_api_key.0.value
+  custom_config = "env/weu-prod/exporter/kubernetes-event-exporter-config.yml.tftpl"
+  custom_variables = {
+    enable_slack           = false
+    enable_opsgenie        = true
+    opsgenie_receiver_name = "opsgenie"
+    opsgenie_api_key       = data.azurerm_key_vault_secret.opsgenie_kubexporter_api_key.0.value
+  }
 }
 
 data "azurerm_key_vault_secret" "opsgenie_kubexporter_api_key" {
@@ -88,7 +87,7 @@ data "azurerm_key_vault_secret" "opsgenie_kubexporter_api_key" {
 
 module "opencosts" {
   enable_opencost      = var.env_short == "d" ? true : false
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_opencosts?ref=v8.69.0"
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_opencosts?ref=v8.71.0"
   aks_name             = module.aks.name
   aks_rg_name          = module.aks.aks_resource_group_name
   env                  = var.env
@@ -104,7 +103,7 @@ module "opencosts" {
 resource "kubernetes_manifest" "service_monitor" {
   count = var.env_short == "d" ? 1 : 0
   manifest = {
-    "apiVersion" : "monitoring.coreos.com/v1"
+    "apiVersion" : "azmonitoring.coreos.com/v1"
     "kind" : "ServiceMonitor"
     "metadata" : {
       "name" : "prometheus-opencosts"
@@ -120,7 +119,7 @@ resource "kubernetes_manifest" "service_monitor" {
       "selector" : {
         "matchLabels" : {
           "app.kubernetes.io/instance" : "prometheus-opencost-exporter"
-          "app.kubernetes.io/name" : "prometheus-opencost-exporter"
+          "app.kubernetes.io/name" : "opencost"
         }
       }
       "endpoints" : [
@@ -133,4 +132,39 @@ resource "kubernetes_manifest" "service_monitor" {
       jobLabel : "opencost"
     }
   }
+}
+
+# Refer: Resource created on next-core 02_monitor.tf
+data "azurerm_monitor_workspace" "workspace" {
+  count               = var.env != "prod" ? 1 : 0
+  name                = "pagopa-${var.env_short}-monitor-workspace"
+  resource_group_name = "pagopa-${var.env_short}-monitor-rg"
+}
+
+module "prometheus_managed_addon" {
+  count                  = var.env != "prod" ? 1 : 0
+  source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.83.1"
+  cluster_name           = module.aks.name
+  resource_group_name    = module.aks.aks_resource_group_name
+  location               = var.location
+  location_short         = var.location_short
+  monitor_workspace_name = data.azurerm_monitor_workspace.workspace.0.name
+  monitor_workspace_rg   = data.azurerm_monitor_workspace.workspace.0.resource_group_name
+  grafana_name           = "pagopa-${var.env_short}-${var.location_short}-grafana"
+  grafana_resource_group = "pagopa-${var.env_short}-${var.location_short}-grafana-rg"
+
+  # takes a list and replaces any elements that are lists with a
+  # flattened sequence of the list contents.
+  # In this case, we enable OpsGenie only on prod env
+  action_groups_id = flatten([
+    [
+      data.azurerm_monitor_action_group.slack.id,
+      data.azurerm_monitor_action_group.email.id
+    ],
+    (var.env == "prod" ? [
+      data.azurerm_monitor_action_group.opsgenie.0.id
+    ] : [])
+  ])
+
+  tags = var.tags
 }

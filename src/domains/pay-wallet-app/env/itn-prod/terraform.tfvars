@@ -61,4 +61,10 @@ pod_disruption_budgets = {
       "app.kubernetes.io/instance" = "pagopawalletservice"
     }
   },
+  "pagopapaymentwalletcdcservice" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopapaymentwalletcdcservice"
+    }
+  },
 }

@@ -57,7 +57,7 @@ elastic_hot_storage = {
 elastic_warm_storage = {
   storage_type           = "StandardSSD_LRS"
   allow_volume_expansion = true
-  initialStorageSize     = "100Gi"
+  initialStorageSize     = "200Gi"
 }
 elastic_cold_storage = {
   storage_type           = "Standard_LRS"
@@ -76,7 +76,7 @@ ingress_elk_load_balancer_ip = "10.1.100.251"
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.1.0" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.1.0/charts/ingress-nginx/values.yaml
 nginx_helm = {
-  version = "4.7.1"
+  version = "4.10.0"
   controller = {
     image = {
       registry     = "k8s.gcr.io"
@@ -148,3 +148,6 @@ opentelemetry_operator_helm = {
   chart_version = "0.24.3"
   values_file   = "./env/opentelemetry_operator_helm/values.yaml"
 }
+
+elastic_cloud_apm_endpoint = "https://0fbb6b488afc4677a39b9655f2caa1c2.apm.westeurope.azure.elastic-cloud.com:443"
+otel_collector_cloud_migration = false

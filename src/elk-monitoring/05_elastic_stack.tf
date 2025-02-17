@@ -97,7 +97,8 @@ module "elastic_stack" {
     /* apiconfig */ "pagopaapiconfig-postgresql", "pagopaapiconfig-oracle", "apiconfig-selfcare-integration-microservice-chart", "cache-oracle", "cache-postgresql", "cache-replica-oracle", "cache-replica-postgresql",
     /* ecommerce */ "pagopaecommerceeventdispatcherservice-microservice-chart", "pagopaecommercepaymentmethodsservice-microservice-chart", "pagopaecommercepaymentrequestsservice-microservice-chart", "pagopaecommercetransactionsservice-microservice-chart", "pagopaecommercetxschedulerservice-microservice-chart", "pagopanotificationsservice-microservice-chart",
     /* selfcare */ "pagopaselfcaremsbackofficebackend-microservice-chart", "backoffice-external",
-    /* gps */ "gpd-core-microservice-chart", "pagopagpdpayments-microservice-chart", "pagopareportingorgsenrollment-microservice-chart", "pagopaspontaneouspayments-microservice-chart", "gpd-payments-pull", "gpd-upload-microservice-chart", "pagopapagopagpdingestionmanager-microservice-chart"
+    /* gps */ "gpd-core-microservice-chart", "pagopagpdpayments-microservice-chart", "pagopareportingorgsenrollment-microservice-chart", "pagopaspontaneouspayments-microservice-chart", "gpd-payments-pull", "gpd-upload-microservice-chart", "pagopapagopagpdingestionmanager-microservice-chart",
+    /* fdr */ "fdr-nodo-fdrnodo", "pagopafdr-microservice-chart", "fdr-technicalsupport-microservice-chart", "pagopa-fdr-2-event-hub"
   ]
 
   eck_license = file("${path.module}/env/eck_license/pagopa-spa-4a1285e5-9c2c-4f9f-948a-9600095edc2f-orchestration.json")
@@ -179,13 +180,17 @@ data "kubernetes_secret" "get_apm_token" {
   }
 }
 
+
+
 resource "kubectl_manifest" "otel_collector" {
   depends_on = [
     data.kubernetes_secret.get_apm_token
   ]
   yaml_body = templatefile("${path.module}/env/opentelemetry_operator_helm/otel.yaml", {
     namespace = local.elk_namespace
-    apm_token = data.kubernetes_secret.get_apm_token.data.secret-token
+
+    apm_endpoint = var.otel_collector_cloud_migration ? var.elastic_cloud_apm_endpoint : "http://quickstart-apm-http.elastic-system.svc.cluster.local:8200"
+    apm_authorization = var.otel_collector_cloud_migration ? "ApiKey ${data.azurerm_key_vault_secret.apm_api_key[0].value}" : "Bearer ${data.kubernetes_secret.get_apm_token.data.secret-token}"
   })
 
   force_conflicts = true

@@ -289,6 +289,9 @@ variable "cosmos_mongo_db_fdr_params" {
     throughput                        = number
     max_throughput                    = number
     container_default_ttl             = number
+    # single container variables
+    fdr_flow_container_ttl    = string
+    fdr_payment_container_ttl = string
   })
 }
 
@@ -335,6 +338,13 @@ variable "cidr_subnet_storage_account" {
 }
 
 variable "reporting_fdr_blobs_retention_days" {
+  type        = number
+  description = "The number of day for storage_management_policy"
+  default     = 30
+}
+
+
+variable "fdr1_cached_response_blob_file_retention_days" {
   type        = number
   description = "The number of day for storage_management_policy"
   default     = 30
