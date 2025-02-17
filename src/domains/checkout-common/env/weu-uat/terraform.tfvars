@@ -40,3 +40,13 @@ pagopa_proxy_redis_family   = "C"
 redis_private_endpoint_enabled = true
 redis_zones                    = []
 
+# Checkout Redis
+redis_checkout_params = {
+  capacity   = 0
+  sku_name   = "Basic"
+  family     = "C"
+  version    = 6
+  ha_enabled = false
+  zones      = []
+}
+cidr_subnet_redis_checkout    = ["10.1.152.0/24"]
