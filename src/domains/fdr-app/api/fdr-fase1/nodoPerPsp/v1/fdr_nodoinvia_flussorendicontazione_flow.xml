@@ -118,22 +118,6 @@
                           }" />
                           <choose>
                             <when condition="@( context.Variables.GetValueOrDefault<bool>("fdr_soap_request_is_whitelist", false) )">
-                                <!-- Send info to FDR for validation -->
-                                <send-one-way-request mode="new">
-                                    <set-url>@("${base-url}/register-for-validation/fdr")</set-url>
-                                    <set-method>POST</set-method>
-                                    <set-header name="Content-Type" exists-action="override">
-                                        <value>application/json</value>
-                                    </set-header>
-                                    <set-body>@{return new JObject(
-                                        new JProperty("pspId", (string) context.Variables["identificativoPSP"]),
-                                        new JProperty("organizationId", (string) context.Variables["identificativoDominio"]),
-                                        new JProperty("flowId", (string) context.Variables["identificativoFlusso"]),
-                                        new JProperty("flowTimestamp", (string) context.Variables["dataOraFlusso"]),
-                                        ).ToString();}
-                                    </set-body>
-                                </send-one-way-request>
-
                                 <set-backend-service base-url="${base-url}" />
                             </when>
                           </choose>
@@ -164,6 +148,22 @@
         <choose>
             <when condition="@("OK".Equals((string)context.Variables["esito"]) && context.Response.StatusCode == 200)">
                 <!-- <when condition="@(context.Response.StatusCode == 200)"> -->
+
+                <!-- Send info to FDR for validation -->
+                <send-one-way-request mode="new">
+                    <set-url>@("${base-url}/register-for-validation/fdr")</set-url>
+                    <set-method>POST</set-method>
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>@{return new JObject(
+                        new JProperty("pspId", (string) context.Variables["identificativoPSP"]),
+                        new JProperty("organizationId", (string) context.Variables["identificativoDominio"]),
+                        new JProperty("flowId", (string) context.Variables["identificativoFlusso"]),
+                        new JProperty("flowTimestamp", (string) context.Variables["dataOraFlusso"]),
+                        ).ToString();}
+                    </set-body>
+                </send-one-way-request>
                 <!-- First get the auth token with managed-identity from the storage account and save it on a output token -->
                 <authentication-managed-identity resource="https://storage.azure.com/" output-token-variable-name="msi-access-token" ignore-error="false" />
                 <!-- Send the PUT request with metadata -->
