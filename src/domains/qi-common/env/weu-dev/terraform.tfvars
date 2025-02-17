@@ -1,12 +1,12 @@
-prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
-domain         = "qi"
-location       = "westeurope"
-location_short = "weu"
-location_itn   = "italynorth"
-location_short_itn = "itn"
-instance       = "dev"
+prefix                           = "pagopa"
+env_short                        = "d"
+env                              = "dev"
+domain                           = "qi"
+location                         = "westeurope"
+location_short                   = "weu"
+location_itn                     = "italynorth"
+location_short_itn               = "itn"
+instance                         = "dev"
 ehns_private_endpoint_is_present = false
 
 tags = {
@@ -44,7 +44,7 @@ qi_storage_params = {
 }
 
 ### EVH
-cidr_subnet_qi_evh     = ["10.3.3.0/27"]
+cidr_subnet_qi_evh = ["10.3.3.0/27"]
 
 ehns_auto_inflate_enabled     = false
 ehns_maximum_throughput_units = 5
@@ -52,8 +52,8 @@ ehns_capacity                 = 1
 ehns_alerts_enabled           = false
 ehns_zone_redundant           = false
 
-ehns_public_network_access    = true
-ehns_sku_name                 = "Standard"
+ehns_public_network_access = true
+ehns_sku_name              = "Standard"
 
 # evh to add to namespace
 eventhubs_bdi = [

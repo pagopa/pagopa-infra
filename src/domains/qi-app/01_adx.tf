@@ -22,5 +22,8 @@ resource "azurerm_kusto_script" "create_table" {
 
   script_content                     = file("scripts/create_table_observ_bdi.dexp")
   continue_on_errors_enabled         = true
-  force_an_update_when_value_changed = "v6"
+
+  # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_script#arguments-reference
+  # should be useful use sha of scripts/create_table_observ_bdi.dexp and use it as value of `force_an_update_when_value_changed`
+  # force_an_update_when_value_changed = "v6" 
 }

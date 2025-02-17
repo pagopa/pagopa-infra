@@ -1,12 +1,12 @@
-prefix         = "pagopa"
-env_short      = "p"
-env            = "prod"
-domain         = "qi"
-location       = "westeurope"
-location_short = "weu"
-location_itn   = "italynorth"
-location_short_itn = "itn"
-instance       = "prod"
+prefix                           = "pagopa"
+env_short                        = "p"
+env                              = "prod"
+domain                           = "qi"
+location                         = "westeurope"
+location_short                   = "weu"
+location_itn                     = "italynorth"
+location_short_itn               = "itn"
+instance                         = "prod"
 ehns_private_endpoint_is_present = true
 
 tags = {
@@ -44,7 +44,7 @@ qi_storage_params = {
 }
 
 ### EVH
-cidr_subnet_qi_evh     = ["10.3.5.32/27"]
+cidr_subnet_qi_evh = ["10.3.3.0/27"]
 
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
@@ -52,8 +52,8 @@ ehns_capacity                 = 5
 ehns_alerts_enabled           = true
 ehns_zone_redundant           = true
 
-ehns_public_network_access    = true
-ehns_sku_name                 = "Standard"
+ehns_public_network_access = true
+ehns_sku_name              = "Standard"
 
 # evh to add to namespace
 eventhubs_bdi = [
@@ -86,7 +86,7 @@ eventhubs_bdi = [
 ]
 
 # alert evh
-ehns_metric_alerts = {
+ehns_metric_alerts_qi = {
   # no_trx = {
   #   aggregation = "Total"
   #   metric_name = "IncomingMessages"
