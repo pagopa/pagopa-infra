@@ -60,3 +60,12 @@ module "apim_checkout_auth_service_v1" {
     checkout_origin           = "https://${var.dns_zone_checkout}.${var.external_domain}"
   })
 }
+
+resource "azurerm_api_management_api_operation_policy" "checkout_auth_login_api" {
+  api_name            = format("%s-checkout-auth-login-api", local.parent_project)
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  operation_id        = "authLogin"
+
+  xml_content = file("./api/checkout/checkout_auth_service/v1/_recaptcha_check.xml.tpl")
+}
