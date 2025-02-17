@@ -9,7 +9,7 @@ tags:
   - name: bdi
   - name: observability
 paths:
-  /perfData:
+  /perf-data:
     get:
       summary: Collect Performance Data
       description: Collect KPI performance data based on given parameters.
