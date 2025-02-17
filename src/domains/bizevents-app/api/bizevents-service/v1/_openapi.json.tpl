@@ -538,6 +538,10 @@
             "type": "string",
             "format": "date"
           },
+          "paymentDateTimeFormatted": {
+            "type": "string",
+            "format": "date-time"
+          },
           "applicationDate": {
             "type": "string",
             "format": "date"
