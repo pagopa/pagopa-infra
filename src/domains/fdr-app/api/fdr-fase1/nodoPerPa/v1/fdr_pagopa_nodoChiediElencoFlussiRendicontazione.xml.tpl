@@ -3,6 +3,8 @@
         <base />
         <set-variable name="enable_fdr_ci_soap_request_switch" value="{{enable-fdr-ci-soap-request-switch}}" />
         <set-variable name="is_fdr_nodo_pagopa_enable" value="@(${is-fdr-nodo-pagopa-enable})" />
+        <!-- Cache feature flag -->
+        <set-variable name="enable_fdr_nodoChiediElenco_cache_flag" value="{{enable-fdr-nodoChiediElenco-cache-flag}}" />
         <choose>
             <when condition="@( context.Variables.GetValueOrDefault<bool>("is_fdr_nodo_pagopa_enable", false) && context.Variables.GetValueOrDefault<string>("enable_fdr_ci_soap_request_switch", "").Equals("true") )">
 
@@ -10,9 +12,6 @@
 
               <!-- Extracting values for fields domainId, station and PSP -->
               <set-variable name="readrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
-
-              <!-- Cache feature flag -->
-              <set-variable name="enable_fdr_nodoChiediElenco_cache_flag" value="{{enable-fdr-nodoChiediElenco-cache-flag}}" />
 
               <when condition="@(context.Variables.GetValueOrDefault<string>("enable_fdr_nodoChiediElenco_cache_flag", "").Equals("true") )">
                 <!-- Generating cache key in format fdr::fase1::cachereq::brokerId-stationId-domainId-pspId, then read it from internal cache -->
@@ -124,7 +123,7 @@
         }" />
 
         <choose>
-          <when condition="@(!context.Variables.GetValueOrDefault<bool>("is_in_error", false))">
+          <when condition="@(!context.Variables.GetValueOrDefault<bool>("is_in_error", false) && context.Variables.GetValueOrDefault<string>("enable_fdr_nodoChiediElenco_cache_flag", "").Equals("true"))">
 
             <!-- Extracting all needed variables from response in order to use them on BLOB content file -->
             <set-variable name="response_status_code_to_cache" value="@(((IResponse) context.Response).StatusCode)" />
