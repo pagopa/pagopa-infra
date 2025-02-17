@@ -211,3 +211,10 @@ resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
     ]
   }
 }
+
+### observability bdi secrets
+resource "azurerm_key_vault_secret" "bdi_kpi_ingestion_dl_evt_tx_key" {
+  name         = "evh-tx-bdi-kpi-key"
+  value        = module.eventhub_qi_configuration.keys["bdi-kpi-ingestion-dl.bdi-kpi-ingestion-dl-evt-tx"].primary_key
+  key_vault_id = module.key_vault.id
+}

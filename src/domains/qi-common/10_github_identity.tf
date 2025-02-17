@@ -11,6 +11,7 @@ data "azurerm_kubernetes_cluster" "aks" {
 locals {
   repos_01 = [
     "pagopa-qi-jira-snow",
+    "pagopa-observability-bdi"
   ]
 
   federations_01 = [
