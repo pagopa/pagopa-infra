@@ -98,11 +98,11 @@ module "pagopa_checkout_redis" {
   sku_name                      = var.redis_checkout_params.sku_name
   enable_authentication         = true
   redis_version                 = var.redis_checkout_params.version
-  public_network_access_enabled = var.env_short == "d"
+  public_network_access_enabled = false
   zones                         = var.redis_checkout_params.zones
 
   private_endpoint = {
-    enabled              = var.env_short != "d"
+    enabled              = true
     virtual_network_id   = "TODO"
     subnet_id            = module.pagopa_checkout_redis_snet.id
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_redis_cache_windows_net.id]
