@@ -148,3 +148,5 @@ opentelemetry_operator_helm = {
   chart_version = "0.24.3"
   values_file   = "./env/opentelemetry_operator_helm/values.yaml"
 }
+
+elastic_cloud_apm_endpoint = "https://0fbb6b488afc4677a39b9655f2caa1c2.apm.westeurope.azure.elastic-cloud.com:443"
