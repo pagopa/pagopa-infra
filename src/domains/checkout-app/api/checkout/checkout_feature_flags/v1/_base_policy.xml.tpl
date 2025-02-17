@@ -17,28 +17,34 @@
         <set-variable name="requestedFeature" value="@(context.Request.MatchedParameters["featureKey"])" />
         <choose>
           <when condition="@(context.Variables["requestedFeature"] == "featureA")">
-            <set-variable name="featureEnabled" value="@((bool)context.Deployment.GetValueOrDefault("featureAEnabled", false))" />
-            <set-variable name="ipWhitelist" value="@((string)context.Deployment.GetValueOrDefault("featureAIPWhitelist", ""))" />
+            <!-- Reference Named Values for featureA -->
+            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureAEnabled", false))" />
+            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureAIPWhitelist", ""))" />
           </when>
           <when condition="@(context.Variables["requestedFeature"] == "featureB")">
-            <set-variable name="featureEnabled" value="@((bool)context.Deployment.GetValueOrDefault("featureBEnabled", false))" />
-            <set-variable name="ipWhitelist" value="@((string)context.Deployment.GetValueOrDefault("featureBIPWhitelist", ""))" />
+            <!-- Reference Named Values for featureB -->
+            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureBEnabled", false))" />
+            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureBIPWhitelist", ""))" />
           </when>
           <when condition="@(context.Variables["requestedFeature"] == "featureC")">
-            <set-variable name="featureEnabled" value="@((bool)context.Deployment.GetValueOrDefault("featureCEnabled", false))" />
-            <set-variable name="ipWhitelist" value="@((string)context.Deployment.GetValueOrDefault("featureCIPWhitelist", ""))" />
+            <!-- Reference Named Values for featureC -->
+            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureCEnabled", false))" />
+            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureCIPWhitelist", ""))" />
           </when>
           <when condition="@(context.Variables["requestedFeature"] == "featureD")">
-            <set-variable name="featureEnabled" value="@((bool)context.Deployment.GetValueOrDefault("featureDEnabled", false))" />
-            <set-variable name="ipWhitelist" value="@((string)context.Deployment.GetValueOrDefault("featureDIPWhitelist", ""))" />
+            <!-- Reference Named Values for featureD -->
+            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureDEnabled", false))" />
+            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureDIPWhitelist", ""))" />
           </when>
           <when condition="@(context.Variables["requestedFeature"] == "featureE")">
-            <set-variable name="featureEnabled" value="@((bool)context.Deployment.GetValueOrDefault("featureEEnabled", false))" />
-            <set-variable name="ipWhitelist" value="@((string)context.Deployment.GetValueOrDefault("featureEIPWhitelist", ""))" />
+            <!-- Reference Named Values for featureE -->
+            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureEEnabled", false))" />
+            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureEIPWhitelist", ""))" />
           </when>
           <when condition="@(context.Variables["requestedFeature"] == "featureF")">
-            <set-variable name="featureEnabled" value="@((bool)context.Deployment.GetValueOrDefault("featureFEnabled", false))" />
-            <set-variable name="ipWhitelist" value="@((string)context.Deployment.GetValueOrDefault("featureFIPWhitelist", ""))" />
+            <!-- Reference Named Values for featureF -->
+            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureFEnabled", false))" />
+            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureFIPWhitelist", ""))" />
           </when>
           <!-- Add more feature flags as needed -->
         </choose>
