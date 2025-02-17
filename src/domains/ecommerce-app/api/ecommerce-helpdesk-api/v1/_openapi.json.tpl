@@ -1442,7 +1442,7 @@
           "endDate"
         ]
       },
-      "DeadLetterExcludeStatuses": {
+      "DeadLetterExcludedStatuses": {
         "type": "object",
         "properties": {
           "ecommerceStatuses": {
@@ -2178,8 +2178,8 @@
                 "timeRange": {
                   "$ref": "#/components/schemas/DeadLetterSearchDateTimeRange"
                 },
-                "excludeStatuses": {
-                  "$ref": "#/components/schemas/DeadLetterExcludeStatuses"
+                "excludedStatuses": {
+                  "$ref": "#/components/schemas/DeadLetterExcludedStatuses"
                 }
               },
               "required": [
@@ -2201,14 +2201,14 @@
                   }
                 }
               },
-              "search by source with time range and exclude statuses": {
+              "search by source with time range and excluded statuses": {
                 "value": {
                   "source": "ALL",
                   "timeRange": {
                     "startDate": "2023-01-01T00:00:00.000Z",
                     "endDate": "2023-01-01T02:00:00.000Z"
                   },
-                  "excludeStatuses": {
+                  "excludedStatuses": {
                     "ecommerceStatuses": [
                       "NOTIFIED_OK"
                     ],
