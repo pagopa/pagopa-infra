@@ -43,6 +43,37 @@
         }
       }
     },
+    "/register-for-validation/fdr": {
+      "post": {
+        "tags": [
+          "Fdr fase 1"
+        ],
+        "summary": "Register flow for name validation",
+        "description": "Register Nexi flow for flow name validation",
+        "operationId": "RegisterFdrForValidationRequest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterFdrForValidationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/internal/organizations/{organizationId}/fdrs/{fdr}": {
       "get": {
         "tags": [
@@ -140,6 +171,35 @@
           "xmlRendicontazione": {
             "type": "string",
             "example": "Y2lhbwo="
+          }
+        }
+      },
+      "RegisterFdrForValidationRequest": {
+        "required": [
+          "flowId",
+          "pspId",
+          "organizationId",
+          "flowTimestamp"
+        ],
+        "type": "object",
+        "properties": {
+          "flowId": {
+            "description": "[XML NodoInviaFlussoRendicontazione]=[identificativoFlusso]",
+            "pattern": "[a-zA-Z0-9\\-_]{1,35}",
+            "type": "string",
+            "example": "2016-08-16pspTest-1178"
+          },
+          "pspId": {
+            "type": "string",
+            "example": "1"
+          },
+          "organizationId": {
+            "type": "string",
+            "example": "1"
+          },
+          "flowTimestamp": {
+            "type": "string",
+            "example": "2025-01-01T12:00:00"
           }
         }
       },
