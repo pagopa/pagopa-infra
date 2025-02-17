@@ -53,4 +53,4 @@ redis_checkout_params = {
   ha_enabled = false
   zones      = []
 }
-cidr_subnet_redis_checkout = ["10.1.152.0/24"]
+cidr_subnet_redis_checkout = ["10.1.167.0/24"]
