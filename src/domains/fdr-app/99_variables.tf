@@ -411,3 +411,8 @@ variable "fdr1_cache_duration" {
   default     = "1800" // 30 minutes
   description = "The TTL of keys stored in internal cache for FdR1's cached responses"
 }
+
+variable "enable_fdr_nodoChiediElenco_cache" {
+  type        = bool
+  description = "Enable FDR1 nodoChiediElencoFlussiRendicontazione cache"
+}

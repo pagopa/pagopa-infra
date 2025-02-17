@@ -11,28 +11,33 @@
               <!-- Extracting values for fields domainId, station and PSP -->
               <set-variable name="readrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
 
-              <!-- Generating cache key in format fdr::fase1::cachereq::brokerId-stationId-domainId-pspId, then read it from internal cache -->
-              <set-variable name="cached_response_key" value="@{
-                var dom2parse = ((string) context.Variables["readrequest"]);
+              <!-- Cache feature flag -->
+              <set-variable name="enable_fdr_nodoChiediElenco_cache_flag" value="{{enable-fdr-nodoChiediElenco-cache-flag}}" />
 
-                String[] tagBrokerId = {"identificativoIntermediarioPA"};
-                String[] result = dom2parse.Split(tagBrokerId, StringSplitOptions.RemoveEmptyEntries);
-                String brokerId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+              <when condition="@(context.Variables.GetValueOrDefault<string>("enable_fdr_nodoChiediElenco_cache_flag", "").Equals("true") )">
+                <!-- Generating cache key in format fdr::fase1::cachereq::brokerId-stationId-domainId-pspId, then read it from internal cache -->
+                <set-variable name="cached_response_key" value="@{
+                  var dom2parse = ((string) context.Variables["readrequest"]);
 
-                String[] tagStationId = {"identificativoStazioneIntermediarioPA"};
-                result = dom2parse.Split(tagStationId, StringSplitOptions.RemoveEmptyEntries);
-                String stationId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+                  String[] tagBrokerId = {"identificativoIntermediarioPA"};
+                  String[] result = dom2parse.Split(tagBrokerId, StringSplitOptions.RemoveEmptyEntries);
+                  String brokerId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
 
-                String[] tagDomainId = {"identificativoDominio"};
-                result = dom2parse.Split(tagDomainId, StringSplitOptions.RemoveEmptyEntries);
-                String domainId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+                  String[] tagStationId = {"identificativoStazioneIntermediarioPA"};
+                  result = dom2parse.Split(tagStationId, StringSplitOptions.RemoveEmptyEntries);
+                  String stationId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
 
-                String[] tagPspId = {"identificativoPSP"};
-                result = dom2parse.Split(tagPspId, StringSplitOptions.RemoveEmptyEntries);
-                String pspId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+                  String[] tagDomainId = {"identificativoDominio"};
+                  result = dom2parse.Split(tagDomainId, StringSplitOptions.RemoveEmptyEntries);
+                  String domainId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
 
-                return "fdr::fase1::cachereq::" + brokerId + "-" + stationId + "-" + domainId + "-" + pspId;
-              }" />
+                  String[] tagPspId = {"identificativoPSP"};
+                  result = dom2parse.Split(tagPspId, StringSplitOptions.RemoveEmptyEntries);
+                  String pspId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+
+                  return "fdr::fase1::cachereq::" + brokerId + "-" + stationId + "-" + domainId + "-" + pspId;
+                }" />
+              </when>
               <cache-lookup-value variable-name="fdr_cached_response_uuid" key="@((string) context.Variables["cached_response_key"])" caching-type="internal" default-value="NONE"/>
 
               <!-- If cached response UUID exists, it's time to search the cached response in blob-storage -->
