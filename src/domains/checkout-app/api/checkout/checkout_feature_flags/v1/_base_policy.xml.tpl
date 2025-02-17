@@ -16,35 +16,10 @@
       <when condition="@(context.Request.MatchedParameters["featureKey"] != null)">
         <set-variable name="requestedFeature" value="@(context.Request.MatchedParameters["featureKey"])" />
         <choose>
-          <when condition="@(context.Variables["requestedFeature"] == "featureA")">
-            <!-- Reference Named Values for featureA -->
-            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureAEnabled", false))" />
-            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureAIPWhitelist", ""))" />
-          </when>
-          <when condition="@(context.Variables["requestedFeature"] == "featureB")">
-            <!-- Reference Named Values for featureB -->
-            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureBEnabled", false))" />
-            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureBIPWhitelist", ""))" />
-          </when>
-          <when condition="@(context.Variables["requestedFeature"] == "featureC")">
-            <!-- Reference Named Values for featureC -->
-            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureCEnabled", false))" />
-            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureCIPWhitelist", ""))" />
-          </when>
-          <when condition="@(context.Variables["requestedFeature"] == "featureD")">
-            <!-- Reference Named Values for featureD -->
-            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureDEnabled", false))" />
-            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureDIPWhitelist", ""))" />
-          </when>
-          <when condition="@(context.Variables["requestedFeature"] == "featureE")">
-            <!-- Reference Named Values for featureE -->
-            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureEEnabled", false))" />
-            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureEIPWhitelist", ""))" />
-          </when>
-          <when condition="@(context.Variables["requestedFeature"] == "featureF")">
-            <!-- Reference Named Values for featureF -->
-            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureFEnabled", false))" />
-            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureFIPWhitelist", ""))" />
+          <when condition="@(context.Variables["requestedFeature"] == "Checkout-Auth-Flow")">
+            <!-- Reference Named Values for Checkout-Auth-Flow -->
+            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("Checkout-Auth-Flow-Enabled", false))" />
+            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("Checkout-Auth-Flow-Ip-Whitelist", ""))" />
           </when>
           <!-- Add more feature flags as needed -->
         </choose>
