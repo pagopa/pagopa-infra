@@ -76,7 +76,7 @@ resource "azurerm_resource_group" "redis_checkout_rg" {
 
 # Redis cache subnet
 module "pagopa_checkout_redis_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.42.3"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.83.1"
 
   name                                      = format("%s-redis-snet", local.project)
   address_prefixes                          = var.cidr_subnet_redis_checkout
@@ -88,7 +88,7 @@ module "pagopa_checkout_redis_snet" {
 
 
 module "pagopa_checkout_redis" {
-  source                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.42.3"
+  source                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.83.1"
   name                          = var.redis_checkout_params.ha_enabled ? "${local.project}-redis-ha" : "${local.project}-redis"
   resource_group_name           = azurerm_resource_group.redis_checkout_rg.name
   location                      = azurerm_resource_group.redis_checkout_rg.location
