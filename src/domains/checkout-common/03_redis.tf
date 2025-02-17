@@ -103,7 +103,7 @@ module "pagopa_checkout_redis" {
 
   private_endpoint = {
     enabled              = true
-    virtual_network_id   = "TODO"
+    virtual_network_id   = "not-used-by-module"
     subnet_id            = module.pagopa_checkout_redis_snet.id
     private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_redis_cache_windows_net.id]
   }
