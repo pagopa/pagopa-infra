@@ -3,7 +3,7 @@
       <!-- Check google reCAPTCHA token validity START -->
       <set-variable name="recaptchaSecret" value="{{google-recaptcha-secret}}" />
       <!-- <set-variable name="recaptchaToken" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("recaptchaResponse"))" /> -->
-      <!-- <set-variable name="recaptchaToken" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("recaptcha"))" /> -->
+      <set-variable name="recaptchaToken" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("recaptcha"))" />
       <choose>
           <when condition="@(context.Variables["recaptchaToken"] == null || context.Variables["recaptchaToken"] == "")">
               <return-response>
