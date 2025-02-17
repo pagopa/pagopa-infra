@@ -21,8 +21,8 @@ module "aks" {
   oidc_issuer_enabled       = var.aks_enable_workload_identity
 
   ## Prometheus managed
-  # ff: enabled on DEV
-  enable_prometheus_monitor_metrics = var.env_short == "d" ? true : false
+  # ff: enabled on DEV/UAT
+  enable_prometheus_monitor_metrics = var.env_short != "p" ? true : false
 
   # ff: Enabled cost analysis on UAT/PROD
   cost_analysis_enabled = var.env_short != "d" ? true : false

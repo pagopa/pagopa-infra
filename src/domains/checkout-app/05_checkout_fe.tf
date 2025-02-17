@@ -65,7 +65,7 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = " https://acardste.vaservices.eu:*;"
+        value  = " https://acardste.vaservices.eu:* https://recaptcha.net/;"
       },
       {
         action = "Append"

@@ -314,16 +314,16 @@ locals {
       "severity"          = 1
       "time_window"       = 30
       "frequency"         = 15
-      "threshold"         = 10
-      "dynamic_threshold" = 1.0
+      "threshold"         = 20
+      "dynamic_threshold" = 2.0
     },
     {
       "queue_key"         = "transactions-refund-queue"
       "severity"          = 1
       "time_window"       = 30
       "frequency"         = 15
-      "threshold"         = 10
-      "dynamic_threshold" = 1.0
+      "threshold"         = 20
+      "dynamic_threshold" = 2.0
     }
   ] : []
 }
