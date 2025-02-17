@@ -2,8 +2,8 @@
     "openapi": "3.0.0",
     "info": {
         "version": "1.0.0",
-        "title": "Pagopa authService endpoints used by the checkout authenticated payment flow",
-        "description": "This microservice that expose authService services to allow authenticaded flow."
+        "title": "Pagopa Feature Flags",
+        "description": "This API set contains APIM level apis used to manage feature flags for checkout."
     },
     "servers": [
         {
@@ -12,47 +12,48 @@
     ],
     "tags": [
         {
-            "name": "authService",
-            "description": "Api's used as interface towards the identity provider, it provides Login, Logout, Self information and token validation",
+            "name": "featureFlags",
+            "description": "This API is used to handle feature flags for checkout, and follows the Openfeature specifications.",
             "externalDocs": {
-                "url": "https://pagopa.atlassian.net/wiki/spaces/I/pages/1443463171/DR+-+Autenticazione+in+Checkout+-+Fase+1",
-                "description": "Technical specifications"
+                "url": "https://openfeature.dev",
+                "description": "Openfeature"
             }
         }
     ],
     "paths": {
-        "/v1/auth/login": {
+        "/feature-flag": {
             "get": {
-                "tags": [
-                    "authService"
-                ],
-                "operationId": "authLogin",
-                "summary": "Login endpoint",
-                "description": "GET login endpoint with reCAPTCHA code",
+                "tags": ["featureFlags"],
+                "summary": "Get feature flag status",
+                "description": "Reads the requestedFeature string from the header and returns the feature flag status.",
                 "parameters": [
                     {
-                        "in": "query",
-                        "name": "recaptcha",
+                        "name": "requestedFeature",
+                        "in": "header",
                         "required": true,
-                        "description": "reCAPTCHA code",
                         "schema": {
                             "type": "string"
-                        }
+                        },
+                        "description": "The name of the feature flag to check."
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful login",
+                        "description": "Feature flag status",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/LoginResponse"
+                                    "$ref": "#/components/schemas/FeatureFlagResponse"
+                                },
+                                "example": {
+                                    "featureFlag": "newCheckoutFlow",
+                                    "enabled": true
                                 }
                             }
                         }
                     },
                     "400": {
-                        "description": "Formally invalid input",
+                        "description": "Invalid request",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -62,249 +63,7 @@
                         }
                     },
                     "404": {
-                        "description": "User not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/auth/users": {
-            "get": {
-                "tags": [
-                    "authService"
-                ],
-                "operationId": "authUsers",
-                "summary": "Get user information",
-                "description": "GET user information",
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful retrieval of user information",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/UserInfoResponse"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Formally invalid input",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "User not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/logout": {
-            "post": {
-                "tags": [
-                    "authService"
-                ],
-                "operationId": "authLogout",
-                "summary": "Logout endpoint",
-                "description": "POST logout endpoint",
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Successful logout"
-                    },
-                    "400": {
-                        "description": "Formally invalid input",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "User not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/token": {
-            "post": {
-                "tags": [
-                    "authService"
-                ],
-                "operationId": "authenticateWithAuthToken",
-                "summary": "Authentication endpoint",
-                "description": "POST authentication endpoint with auth code",
-                "requestBody": {
-                    "$ref": "#/components/requestBodies/AuthRequest"
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful authentication",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/AuthResponse"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Formally invalid input",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "User not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/validate": {
-            "get": {
-                "tags": [
-                    "authService"
-                ],
-                "operationId": "validateToken",
-                "summary": "Validate a token",
-                "description": "GET endpoint to validate a token",
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Token is valid"
-                    },
-                    "400": {
-                        "description": "Invalid token",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
+                        "description": "Feature flag not found",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -328,21 +87,20 @@
         }
     },
     "components": {
-        "securitySchemes": {
-            "bearerAuth": {
-                "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT"
-            }
-        },
         "schemas": {
-            "LoginResponse": {
+            "FeatureFlagResponse": {
                 "type": "object",
                 "properties": {
-                    "urlRedirect": {
-                        "type": "string"
+                    "featureFlag": {
+                        "type": "string",
+                        "description": "The name of the feature flag."
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "The status of the feature flag."
                     }
-                }
+                },
+                "required": ["featureFlag", "enabled"]
             },
             "ProblemJson": {
                 "type": "object",
@@ -350,84 +108,37 @@
                     "type": {
                         "type": "string",
                         "format": "uri",
-                        "description": "An absolute URI that identifies the problem type. When dereferenced,\nit SHOULD provide human-readable documentation for the problem type\n(e.g., using HTML).",
+                        "description": "An absolute URI that identifies the problem type. When dereferenced, it SHOULD provide human-readable documentation for the problem type (e.g., using HTML).",
                         "default": "about:blank",
                         "example": "https://example.com/problem/constraint-violation"
                     },
                     "title": {
                         "type": "string",
-                        "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); example: Service Unavailable"
+                        "description": "A short, summary of the problem type. Written in English and readable for engineers (usually not suited for non-technical stakeholders and not localized); example: Service Unavailable"
                     },
                     "status": {
                         "$ref": "#/components/schemas/HttpStatusCode"
                     },
                     "detail": {
                         "type": "string",
-                        "description": "A human readable explanation specific to this occurrence of the\nproblem.",
+                        "description": "A human-readable explanation specific to this occurrence of the problem.",
                         "example": "There was an error processing the request"
                     },
                     "instance": {
                         "type": "string",
                         "format": "uri",
-                        "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced."
+                        "description": "An absolute URI that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced."
                     }
                 }
             },
             "HttpStatusCode": {
                 "type": "integer",
                 "format": "int32",
-                "description": "The HTTP status code generated by the origin server for this occurrence\nof the problem.",
+                "description": "The HTTP status code generated by the origin server for this occurrence of the problem.",
                 "minimum": 100,
                 "maximum": 600,
                 "exclusiveMaximum": true,
                 "example": 200
-            },
-            "UserInfoResponse": {
-                "type": "object",
-                "properties": {
-                    "userInfo": {
-                        "type": "object",
-                        "properties": {
-                            "userId": {
-                                "type": "string"
-                            },
-                            "firstName": {
-                                "type": "string"
-                            },
-                            "lastName": {
-                                "type": "string"
-                            },
-                            "email": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            },
-            "AuthResponse": {
-                "type": "object",
-                "properties": {
-                    "authToken": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "requestBodies": {
-            "AuthRequest": {
-                "required": true,
-                "content": {
-                    "application/json": {
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "authCode": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
             }
         }
     }
