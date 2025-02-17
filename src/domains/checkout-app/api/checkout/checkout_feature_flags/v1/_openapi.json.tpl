@@ -21,20 +21,20 @@
         }
     ],
     "paths": {
-        "/feature-flag": {
+        "/features/{featureKey}/enabled": {
             "get": {
                 "tags": ["featureFlags"],
                 "summary": "Get feature flag status",
-                "description": "Reads the requestedFeature string from the header and returns the feature flag status.",
+                "description": "Returns the status of the specified feature flag.",
                 "parameters": [
                     {
-                        "name": "requestedFeature",
-                        "in": "header",
+                        "name": "featureKey",
+                        "in": "path",
                         "required": true,
                         "schema": {
                             "type": "string"
                         },
-                        "description": "The name of the feature flag to check."
+                        "description": "The key of the feature flag to check."
                     }
                 ],
                 "responses": {
@@ -46,7 +46,7 @@
                                     "$ref": "#/components/schemas/FeatureFlagResponse"
                                 },
                                 "example": {
-                                    "featureFlag": "newCheckoutFlow",
+                                    "featureKey": "newCheckoutFlow",
                                     "enabled": true
                                 }
                             }
@@ -91,7 +91,7 @@
             "FeatureFlagResponse": {
                 "type": "object",
                 "properties": {
-                    "featureFlag": {
+                    "featureKey": {
                         "type": "string",
                         "description": "The name of the feature flag."
                     },
@@ -100,7 +100,7 @@
                         "description": "The status of the feature flag."
                     }
                 },
-                "required": ["featureFlag", "enabled"]
+                "required": ["featureKey", "enabled"]
             },
             "ProblemJson": {
                 "type": "object",

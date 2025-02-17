@@ -8,14 +8,13 @@
         <method>GET</method>
       </allowed-methods>
       <allowed-headers>
-        <header>requestedFeature</header>
       </allowed-headers>
     </cors>
     <base />
     <set-backend-service base-url="@("https://${checkout_ingress_hostname}"+"/feature-flags")"/>
     <choose>
-      <when condition="@(context.Request.Headers.GetValueOrDefault("requestedFeature") != null)">
-        <set-variable name="requestedFeature" value="@(context.Request.Headers.GetValueOrDefault("requestedFeature"))" />
+      <when condition="@(context.Request.MatchedParameters["featureKey"] != null)">
+        <set-variable name="requestedFeature" value="@(context.Request.MatchedParameters["featureKey"])" />
         <choose>
           <when condition="@(context.Variables["requestedFeature"] == "featureA")">
             <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureAEnabled", false))" />
@@ -24,6 +23,22 @@
           <when condition="@(context.Variables["requestedFeature"] == "featureB")">
             <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureBEnabled", false))" />
             <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureBIPWhitelist", ""))" />
+          </when>
+          <when condition="@(context.Variables["requestedFeature"] == "featureC")">
+            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureCEnabled", false))" />
+            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureCIPWhitelist", ""))" />
+          </when>
+          <when condition="@(context.Variables["requestedFeature"] == "featureD")">
+            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureDEnabled", false))" />
+            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureDIPWhitelist", ""))" />
+          </when>
+          <when condition="@(context.Variables["requestedFeature"] == "featureE")">
+            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureEEnabled", false))" />
+            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureEIPWhitelist", ""))" />
+          </when>
+          <when condition="@(context.Variables["requestedFeature"] == "featureF")">
+            <set-variable name="featureEnabled" value="@((bool)context.Variables.GetValueOrDefault("featureFEnabled", false))" />
+            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("featureFIPWhitelist", ""))" />
           </when>
           <!-- Add more feature flags as needed -->
         </choose>
@@ -34,14 +49,14 @@
                 <!-- Feature is enabled and IP is whitelisted -->
                 <return-response>
                   <set-status code="200" reason="OK" />
-                  <set-body>@("{\"featureFlag\":\"" + context.Variables["requestedFeature"] + "\", \"enabled\":true}")</set-body>
+                  <set-body>@("{\"featureKey\":\"" + context.Variables["requestedFeature"] + "\", \"enabled\":true}")</set-body>
                 </return-response>
               </when>
               <otherwise>
                 <!-- IP is not whitelisted -->
                 <return-response>
                   <set-status code="403" reason="Forbidden" />
-                  <set-body>@("{\"featureFlag\":\"" + context.Variables["requestedFeature"] + "\", \"enabled\":false, \"reason\":\"IP not whitelisted\"}")</set-body>
+                  <set-body>@("{\"featureKey\":\"" + context.Variables["requestedFeature"] + "\", \"enabled\":false, \"reason\":\"IP not whitelisted\"}")</set-body>
                 </return-response>
               </otherwise>
             </choose>
@@ -50,16 +65,16 @@
             <!-- Feature is disabled -->
             <return-response>
               <set-status code="200" reason="OK" />
-              <set-body>@("{\"featureFlag\":\"" + context.Variables["requestedFeature"] + "\", \"enabled\":false}")</set-body>
+              <set-body>@("{\"featureKey\":\"" + context.Variables["requestedFeature"] + "\", \"enabled\":false}")</set-body>
             </return-response>
           </otherwise>
         </choose>
       </when>
       <otherwise>
-        <!-- No requestedFeature header -->
+        <!-- No featureKey parameter -->
         <return-response>
           <set-status code="400" reason="Bad Request" />
-          <set-body>{"error":"requestedFeature header is missing"}</set-body>
+          <set-body>{"error":"featureKey parameter is missing"}</set-body>
         </return-response>
       </otherwise>
     </choose>
