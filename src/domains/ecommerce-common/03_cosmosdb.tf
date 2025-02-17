@@ -161,11 +161,11 @@ locals {
           unique = false
         },
         {
-          keys = ["transactionInfo.eCommerceStatus"]
+          keys   = ["transactionInfo.eCommerceStatus"]
           unique = false
         },
         {
-          keys = ["transactionInfo.details.operationResult"]
+          keys   = ["transactionInfo.details.operationResult"]
           unique = false
         }
       ]
