@@ -66,5 +66,10 @@ resource "azurerm_api_management_named_value" "apim_checkout_feature_flags_ipwhi
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
   display_name        = "EnableAuthenticationIpWhitelist"
-  value               = "*"
+  value               = ""
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
 }
