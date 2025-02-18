@@ -50,7 +50,7 @@
 
          <!-- Begin IP Validation -->
         <choose>
-            <when condition="@(((Boolean)context.Variables.GetValueOrDefault("isTesterIp",false)))" />
+            <when condition="@(((Boolean)context.Variables.GetValueOrDefault("isTesterIp",false)))">
             <!-- Feature is enabled and IP is whitelisted -->
             <return-response>
               <set-status code="200" reason="OK" />
