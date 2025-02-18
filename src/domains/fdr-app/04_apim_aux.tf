@@ -79,3 +79,12 @@ resource "azurerm_api_management_named_value" "fdr1_cache_duration" {
   display_name        = "fdr1_cache_duration"
   value               = var.fdr1_cache_duration
 }
+
+// Enable FDR1 nodoChiediElencoFlussiRendicontazione cache
+resource "azurerm_api_management_named_value" "enable_fdr_nodoChiediElenco_cache" {
+  name                = "enable-fdr-nodoChiediElenco-cache-flag"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  display_name        = "enable-fdr-nodoChiediElenco-cache-flag"
+  value               = var.enable_fdr_nodoChiediElenco_cache
+}
