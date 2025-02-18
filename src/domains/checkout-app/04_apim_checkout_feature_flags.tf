@@ -26,7 +26,7 @@ module "apim_checkout_featureflags" {
 }
 
 resource "azurerm_api_management_api_version_set" "checkout_feature_flags_api_v1" {
-  name                = "${local.parent_project}-feature-flags-api"
+  name                = "${local.project}-feature-flags-api"
   resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = local.apim_checkout_feature_flags.display_name
