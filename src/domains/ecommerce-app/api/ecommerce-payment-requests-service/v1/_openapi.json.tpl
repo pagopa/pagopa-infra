@@ -576,46 +576,6 @@
           "PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO",
           "GENERIC_ERROR"
         ]
-      },
-      "PaymentNotice": {
-        "description": "Payment notice informations",
-        "type": "object",
-        "required": [
-          "noticeNumber",
-          "fiscalCode",
-          "amount",
-          "companyName",
-          "description"
-        ],
-        "properties": {
-          "noticeNumber": {
-            "description": "Payment notice number",
-            "type": "string",
-            "minLength": 18,
-            "maxLength": 18
-          },
-          "fiscalCode": {
-            "description": "Payment notice fiscal code",
-            "type": "string",
-            "minLength": 11,
-            "maxLength": 11
-          },
-          "amount": {
-            "description": "Payment notice amount",
-            "type": "integer",
-            "minimum": 1
-          },
-          "companyName": {
-            "description": "Payment notice company name",
-            "type": "string",
-            "maxLength": 140
-          },
-          "description": {
-            "description": "Payment notice description",
-            "type": "string",
-            "maxLength": 140
-          }
-        }
       }
     },
     "securitySchemes": {
