@@ -9,47 +9,7 @@ tags:
   - name: bdi
   - name: observability
 paths:
-  /perfData:
-    get:
-      summary: Collect Performance Data
-      description: Collect KPI performance data based on given parameters.
-      parameters:
-        - name: startDate
-          in: query
-          required: false
-          description: Start date in 'yyyy-MM-dd HH:mm:ss' format.
-          schema:
-            type: string
-            format: date-time
-        - name: endDate
-          in: query
-          required: false
-          description: End date in 'yyyy-MM-dd HH:mm:ss' format.
-          schema:
-            type: string
-            format: date-time
-        - name: kpiId
-          in: query
-          required: false
-          description: KPI ID to collect. Default is ALL_KPI.
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful response with KPI data.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                  message:
-                    type: string
-                  details:
-                    type: string
-        '500':
-          description: Internal server error.
+  /perf-data:
     post:
       summary: Collect Performance Data (POST)
       description: Same as GET but allows POST requests.
@@ -71,9 +31,10 @@ paths:
         - name: kpiId
           in: query
           required: false
-          description: KPI ID to collect. Default is ALL_KPI.
+          description: KPI ID to collect. Default is ALL.
           schema:
             type: string
+            enum: ["PERF-01", "PERF-02", "PERF-03", "PERF-04", "PERF-05", "PERF-06", "ALL"]
       responses:
         '200':
           description: Successful response with KPI data.
@@ -88,6 +49,8 @@ paths:
                     type: string
                   details:
                     type: string
+        '401':
+          description: Unauthorized. Authentication required or invalid credentials.
         '500':
           description: Internal server error.
 
@@ -109,6 +72,8 @@ paths:
                     type: string
                   name:
                     type: string
+        '401':
+          description: Unauthorized. Authentication required or invalid credentials.
         '500':
           description: Internal server error.
 
@@ -120,9 +85,10 @@ paths:
         - name: quarter
           in: path
           required: true
-          description: Quarter identifier (e.g., Q1, Q2, Q3, Q4, or LAST).
+          description: Quarter identifier.
           schema:
             type: string
+            enum: ["Q1", "Q2", "Q3", "Q4", "LAST"]
         - name: year
           in: query
           required: false
@@ -147,5 +113,7 @@ paths:
                       type: string
         '400':
           description: Bad request due to invalid quarter or year.
+        '401':
+          description: Unauthorized. Authentication required or invalid credentials.
         '500':
           description: Internal server error.
