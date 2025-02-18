@@ -31,9 +31,10 @@ paths:
         - name: kpiId
           in: query
           required: false
-          description: KPI ID to collect. Default is ALL_KPI.
+          description: KPI ID to collect. Default is ALL.
           schema:
             type: string
+            enum: ["PERF-01", "PERF-02", "PERF-03", "PERF-04", "PERF-05", "PERF-06", "ALL"]
       responses:
         '200':
           description: Successful response with KPI data.
@@ -48,6 +49,8 @@ paths:
                     type: string
                   details:
                     type: string
+        '401':
+          description: Unauthorized. Authentication required or invalid credentials.
         '500':
           description: Internal server error.
 
@@ -69,6 +72,8 @@ paths:
                     type: string
                   name:
                     type: string
+        '401':
+          description: Unauthorized. Authentication required or invalid credentials.
         '500':
           description: Internal server error.
 
@@ -80,9 +85,10 @@ paths:
         - name: quarter
           in: path
           required: true
-          description: Quarter identifier (e.g., Q1, Q2, Q3, Q4, or LAST).
+          description: Quarter identifier.
           schema:
             type: string
+            enum: ["Q1", "Q2", "Q3", "Q4", "LAST"]
         - name: year
           in: query
           required: false
@@ -107,5 +113,7 @@ paths:
                       type: string
         '400':
           description: Bad request due to invalid quarter or year.
+        '401':
+          description: Unauthorized. Authentication required or invalid credentials.
         '500':
           description: Internal server error.
