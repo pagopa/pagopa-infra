@@ -102,7 +102,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   operation_id        = var.env_short == "d" ? "63fc79f53b3a670f709d79c3" : var.env_short == "u" ? "63f85b45451c1c1f24639433" : "63ff73adea7c4a1860530e3a"
 
   #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
+  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa.xml.tpl", { // it's a typo? It should not be "fdr_pagopa_nodoChiediElencoFlussiRendicontazione.xml.tpl" ?
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
     base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
   })
