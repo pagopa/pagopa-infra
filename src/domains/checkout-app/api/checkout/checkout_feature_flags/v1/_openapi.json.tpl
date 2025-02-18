@@ -46,7 +46,6 @@
                                     "$ref": "#/components/schemas/FeatureFlagResponse"
                                 },
                                 "example": {
-                                    "featureKey": "newCheckoutFlow",
                                     "enabled": true
                                 }
                             }
