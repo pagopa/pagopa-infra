@@ -71,7 +71,7 @@ module "identity_cd_01" {
 
 
 resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.identity_cd_01.identity_principal_id
 
@@ -142,7 +142,7 @@ module "identity_pr_01" {
 
 
 resource "azurerm_key_vault_access_policy" "gha_pr_iac_managed_identities" {
-  key_vault_id = module.key_vault.id
+  key_vault_id = data.azurerm_key_vault.key_vault.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = module.identity_pr_01.identity_principal_id
 
