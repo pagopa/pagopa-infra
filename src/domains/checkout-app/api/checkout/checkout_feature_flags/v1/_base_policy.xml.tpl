@@ -22,7 +22,7 @@
         <set-variable name="requestIpAddress" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
 
         <choose>
-          <when condition="@(context.Variables["requestedFeature"] == "EnableAuthentication")">
+          <when condition="@(context.Variables.GetValueOrDefault("requestedFeature","") == "EnableAuthentication")">
             <!-- Reference Named Values for EnableAuthentication -->
             <set-variable name="allowedIps" value="{{EnableAuthenticationIpWhitelist}}" />
           </when>
