@@ -13,35 +13,37 @@
               <!-- Extracting values for fields domainId, station and PSP -->
               <set-variable name="readrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
 
-              <when condition="@(context.Variables.GetValueOrDefault<string>("enable_fdr_nodoChiediElenco_cache_flag", "").Equals("true") )">
-                <!-- Generating cache key in format fdr::fase1::cachereq::brokerId-stationId-domainId-pspId, then read it from internal cache -->
-                <set-variable name="cached_response_key" value="@{
-                  var dom2parse = ((string) context.Variables["readrequest"]);
+              <choose>
+                <when condition="@(context.Variables.GetValueOrDefault<string>("enable_fdr_nodoChiediElenco_cache_flag", "").Equals("true") )">
+                  <!-- Generating cache key in format fdr::fase1::cachereq::brokerId-stationId-domainId-pspId, then read it from internal cache -->
+                  <set-variable name="cached_response_key" value="@{
+                    var dom2parse = ((string) context.Variables["readrequest"]);
 
-                  String[] tagBrokerId = {"identificativoIntermediarioPA"};
-                  String[] result = dom2parse.Split(tagBrokerId, StringSplitOptions.RemoveEmptyEntries);
-                  String brokerId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+                    String[] tagBrokerId = {"identificativoIntermediarioPA"};
+                    String[] result = dom2parse.Split(tagBrokerId, StringSplitOptions.RemoveEmptyEntries);
+                    String brokerId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
 
-                  String[] tagStationId = {"identificativoStazioneIntermediarioPA"};
-                  result = dom2parse.Split(tagStationId, StringSplitOptions.RemoveEmptyEntries);
-                  String stationId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+                    String[] tagStationId = {"identificativoStazioneIntermediarioPA"};
+                    result = dom2parse.Split(tagStationId, StringSplitOptions.RemoveEmptyEntries);
+                    String stationId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
 
-                  String[] tagDomainId = {"identificativoDominio"};
-                  result = dom2parse.Split(tagDomainId, StringSplitOptions.RemoveEmptyEntries);
-                  String domainId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+                    String[] tagDomainId = {"identificativoDominio"};
+                    result = dom2parse.Split(tagDomainId, StringSplitOptions.RemoveEmptyEntries);
+                    String domainId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
 
-                  String[] tagPspId = {"identificativoPSP"};
-                  result = dom2parse.Split(tagPspId, StringSplitOptions.RemoveEmptyEntries);
-                  String pspId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+                    String[] tagPspId = {"identificativoPSP"};
+                    result = dom2parse.Split(tagPspId, StringSplitOptions.RemoveEmptyEntries);
+                    String pspId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
 
-                  return "fdr::fase1::cachereq::" + brokerId + "-" + stationId + "-" + domainId + "-" + pspId;
-                }" />
-              </when>
-              <cache-lookup-value variable-name="fdr_cached_response_uuid" key="@((string) context.Variables["cached_response_key"])" caching-type="internal" default-value="NONE"/>
+                    return "fdr::fase1::cachereq::" + brokerId + "-" + stationId + "-" + domainId + "-" + pspId;
+                  }" />
+                  <cache-lookup-value variable-name="fdr_cached_response_uuid" key="@((string) context.Variables["cached_response_key"])" caching-type="internal" default-value="NONE"/>
+                </when>
+              </choose>
 
               <!-- If cached response UUID exists, it's time to search the cached response in blob-storage -->
               <choose>
-                <when condition="@( !"NONE".Equals((string) context.Variables["fdr_cached_response_uuid"]) )">
+                <when condition="@( !"NONE".Equals((string) context.Variables.GetValueOrDefault<string>("fdr_cached_response_uuid", "NONE")) )">
 
                   <!-- Execute a GET call on blob-storage using the UUID as "search filter" -->
                   <authentication-managed-identity resource="https://storage.azure.com/" output-token-variable-name="msi-access-token" ignore-error="false" />
