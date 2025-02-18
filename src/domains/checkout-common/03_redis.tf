@@ -78,7 +78,7 @@ resource "azurerm_resource_group" "redis_checkout_rg" {
 module "pagopa_checkout_redis_snet" {
   source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.83.1"
 
-  name                                      = format("%s-redis-snet", local.project)
+  name                                      = "${local.project}-redis-snet"
   address_prefixes                          = var.cidr_subnet_redis_checkout
   resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
   virtual_network_name                      = data.azurerm_virtual_network.vnet.name
