@@ -32,11 +32,11 @@
          <!-- Begin IP Validation -->
         <choose>
           <when condition="@{
-              var allowedIps_ = context.Variables.GetValueOrDefault("allowedIps","");
-              if(allowedIps_ == "*"){
+              var allowedIps = context.Variables.GetValueOrDefault("allowedIps","");
+              if(allowedIps == "*"){
                 return true;
               }
-              var allowedIpsList = allowedIps_.Split(',');
+              var allowedIpsList = allowedIps.Split(',');
               string[] callerIps = context.Variables.GetValueOrDefault("requestIpAddress","").Split(',');
               foreach (string callerIp in callerIps){
                   if(allowedIpsList.Contains(callerIp)){
