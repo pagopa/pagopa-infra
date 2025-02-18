@@ -19,22 +19,38 @@
         <set-variable name="requestedFeature" value="@(context.Request.MatchedParameters["featureKey"])" />
 
         <!-- Save request IP address -->
-        <set-variable name="requestIpAddress" value="@((string)context.Request.IpAddress)" />
-
-        <!-- default ipWhitelist init -->
-        <set-variable name="ipWhitelist" value="" />
+        <set-variable name="requestIpAddress" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
+      
+        <!-- default -->
+        <set-variable name="isTesterIp" value="false" />
 
         <choose>
+          <!-- Reference Named Values for EnableAuthentication -->
           <when condition="@(context.Variables["requestedFeature"] == "EnableAuthentication")">
-            <!-- Reference Named Values for EnableAuthentication -->
-            <set-variable name="ipWhitelist" value="@((string)context.Variables.GetValueOrDefault("EnableAuthentication-Ip-Whitelist", ""))" />
+
+            <set-variable name="allowedIps" value="{{EnableAuthenticationIpWhitelist}}" />
+
+            <set-variable name="isTesterIp" value="@{
+                if(allowedIps == "*"){
+                  return true;
+                }
+
+                var allowedIps = new HashSetstring(context.Variables.GetValueOrDefault("allowedIps","").Split(','));
+                string[] callerIps = context.Variables.GetValueOrDefault("callerIps","").Split(',');
+                foreach (string callerIp in callerIps){
+                    if(allowedIps.Contains(callerIp)){
+                        return true;
+                    }
+                }
+                return false;
+            }" />
           </when>
           <!-- Add more feature flags as needed -->
         </choose>
 
          <!-- Begin IP Validation -->
         <choose>
-          <when condition="@(context.Variables["ipWhitelist"] == "*")">
+            <when condition="@(((Boolean)context.Variables.GetValueOrDefault("isTesterIp",false)))" />
             <!-- Feature is enabled and IP is whitelisted -->
             <return-response>
               <set-status code="200" reason="OK" />
