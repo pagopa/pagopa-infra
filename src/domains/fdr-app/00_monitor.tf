@@ -42,6 +42,6 @@ resource "azurerm_portal_dashboard" "fdr-dashboard" {
   })
 
   lifecycle {
-    ignore_changes = [dashboard_properties,tags]
+    ignore_changes = [dashboard_properties, tags]
   }
 }
