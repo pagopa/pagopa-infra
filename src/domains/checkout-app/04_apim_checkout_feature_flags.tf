@@ -12,7 +12,7 @@ module "apim_checkout_featureflags" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "checkout-feature-flags"
-  display_name = "API forfeature flags for checkout"
+  display_name = "Checkout Feature flags"
   description  = "This API set contains APIM level apis used to manage feature flags for checkout."
 
   api_management_name = data.azurerm_api_management.apim.name
