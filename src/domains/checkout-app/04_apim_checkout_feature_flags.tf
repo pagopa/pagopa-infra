@@ -56,7 +56,6 @@ module "apim_checkout_feature_flags_v1" {
   })
 
   xml_content = templatefile("./api/checkout/checkout_feature_flags/v1/_base_policy.xml.tpl", {
-    checkout_ingress_hostname = var.checkout_ingress_hostname,
     checkout_origin           = "https://${var.dns_zone_checkout}.${var.external_domain}"
   })
 }

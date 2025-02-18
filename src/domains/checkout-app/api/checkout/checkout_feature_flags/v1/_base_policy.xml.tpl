@@ -13,7 +13,6 @@
       </allowed-headers>
     </cors>
     <base />
-    <set-backend-service base-url="@("https://${checkout_ingress_hostname}"+"/pagopa-checkout-feature-flags")"/>
     <choose>
       <when condition="@(context.Request.MatchedParameters["featureKey"] != null)">
         <set-variable name="requestedFeature" value="@(context.Request.MatchedParameters["featureKey"])" />
