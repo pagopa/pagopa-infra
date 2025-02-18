@@ -152,7 +152,7 @@
                 <!-- Send info to FDR for validation -->
                 <choose>
                     <when condition="@( !context.Variables.GetValueOrDefault<bool>("fdr_soap_request_is_whitelist", false) )">
-                        <send-one-way-request mode="new">
+                        <send-request mode="new" response-variable-name="register_for_validation_result" timeout="300" ignore-error="false">
                             <set-url>@("${base-url}/register-for-validation/fdr")</set-url>
                             <set-method>POST</set-method>
                             <set-header name="Content-Type" exists-action="override">
@@ -165,7 +165,14 @@
                                 new JProperty("flowTimestamp", (string) context.Variables["dataOraFlusso"]),
                                 ).ToString();}
                             </set-body>
-                        </send-one-way-request>                            
+                        </send-request>      
+                        <choose>
+                            <when condition="@( context.Variable["register_for_validation_result"] != null && ((IResponse)context.Variable["register_for_validation_result"]).StatusCode !== 200)">
+                                <trace source="error_on_register_for_validation" severity="error">
+                                    <message>@{ return "[ALERT][FDR1] Error while sending flow for registration on validation: [" + ((IResponse)context.Variable["register_for_validation_result"]).Body.As<string>() + "]"; }</message>
+                                </trace>
+                            </when>
+                        </choose>      
                     </when>
                 </choose>
              
