@@ -677,6 +677,8 @@ eventhubs_04 = [
   }
 ]
 
+eh04_alerts_enabled = false
+
 node_forwarder_logging_level          = "DEBUG"
 node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "P1v3"
