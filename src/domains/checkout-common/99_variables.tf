@@ -166,3 +166,21 @@ variable "enable_iac_pipeline" {
 variable "ingress_load_balancer_ip" {
   type = string
 }
+
+
+variable "redis_checkout_params" {
+  type = object({
+    capacity   = number
+    sku_name   = string
+    family     = string
+    version    = string
+    ha_enabled = bool
+    zones      = list(number)
+  })
+}
+
+# Redis
+variable "cidr_subnet_redis_checkout" {
+  type        = list(string)
+  description = "Redis DB address space for checkout."
+}

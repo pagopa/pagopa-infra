@@ -189,7 +189,7 @@ resource "kubectl_manifest" "otel_collector" {
   yaml_body = templatefile("${path.module}/env/opentelemetry_operator_helm/otel.yaml", {
     namespace = local.elk_namespace
 
-    apm_endpoint = var.otel_collector_cloud_migration ? var.elastic_cloud_apm_endpoint : "http://quickstart-apm-http.elastic-system.svc.cluster.local:8200"
+    apm_endpoint      = var.otel_collector_cloud_migration ? var.elastic_cloud_apm_endpoint : "http://quickstart-apm-http.elastic-system.svc.cluster.local:8200"
     apm_authorization = var.otel_collector_cloud_migration ? "ApiKey ${data.azurerm_key_vault_secret.apm_api_key[0].value}" : "Bearer ${data.kubernetes_secret.get_apm_token.data.secret-token}"
   })
 
