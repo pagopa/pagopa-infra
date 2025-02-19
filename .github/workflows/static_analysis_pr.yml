@@ -15,7 +15,7 @@ jobs:
 
       - name: 🔨 Get Modified Paths
         id: get-paths
-        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@v1.19.0
+        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@6cc78fc1c578c0fdfc8ba739bef634b21e8e35b4 # v1.19.0
         with:
           start_folder: "src"
           default_end_folder_depth: 3
@@ -31,6 +31,6 @@ jobs:
 
       - name: Static Analysis
         if: env.dir_changes_detected == 'true'
-        uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@v1.14.1
+        uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@6b8192a09750c44dde5a9a8d9ed72648547071c5 # v1.14.1
         with:
           precommit_version: 'v1.96.2@sha256:01f870b7689b5a09c1a370914fcddcac42c4b6478c9d369e1d2590dd0a66ffd0'
