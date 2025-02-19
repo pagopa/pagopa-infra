@@ -1,15 +1,17 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Biz-Events Transaction Service JWT",
+    "title": "Biz-Events Service - Transaction Service JWT",
     "description": "Microservice for exposing REST APIs about payment receipts.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.1.41"
+    "version": "0.1.68"
   },
   "servers": [
     {
-      "url": "${host}/bizevents/tx-service-jwt/v1",
-      "description": "Generated server url"
+      "url": "http://localhost:8080"
+    },
+    {
+      "url": "https://api.platform.pagopa.it/bizevents/tx-service-jwt/v1"
     }
   ],
   "paths": {
@@ -19,6 +21,7 @@
           "IO Transactions REST APIs"
         ],
         "summary": "Disable the transaction details given its id.",
+        "description": "This operation is deprecated. Use Paid Notice APIs instead",
         "operationId": "disableTransaction",
         "parameters": [
           {
@@ -29,46 +32,9 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "X-Request-Id",
-            "in": "header",
-            "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {}
-            }
-          },
-          "200": {
-            "description": "Disabled Transactions.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {}
-            }
-          },
           "404": {
             "description": "Not found the transaction.",
             "headers": {
@@ -115,84 +81,21 @@
                 }
               }
             }
-          }
-        },
-        "security": [
-          {
-            "Authorization": []
-          }
-        ]
-      }
-    },
-    "/transactions": {
-      "get": {
-        "tags": [
-          "IO Transactions REST APIs"
-        ],
-        "summary": "Retrieve the paged transaction list from biz events.",
-        "operationId": "getTransactionList",
-        "parameters" : [ {
-            "name": "X-Request-Id",
-            "in": "header",
-            "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-            "required": false,
-            "schema": {
-              "type": "string"
+          },
+          "200": {
+            "description": "Disabled Transactions.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {}
             }
-        }, {
-          "name" : "is_payer",
-          "in" : "query",
-          "description" : "Filter by payer",
-          "required" : false,
-          "schema" : {
-            "type" : "boolean"
-          }
-        }, {
-          "name" : "is_debtor",
-          "in" : "query",
-          "description" : "Filter by debtor",
-          "required" : false,
-          "schema" : {
-            "type" : "boolean"
-          }
-        }, {
-          "name" : "x-continuation-token",
-          "in" : "header",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "size",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32",
-            "default" : 10
-          }
-        }, {
-          "name" : "orderby",
-          "in" : "query",
-          "description" : "Order by TRANSACTION_DATE",
-          "required" : false,
-          "schema" : {
-            "type" : "string",
-            "default" : "TRANSACTION_DATE",
-            "enum" : [ "TRANSACTION_DATE" ]
-          }
-        }, {
-          "name" : "ordering",
-          "in" : "query",
-          "description" : "Direction of ordering",
-          "required" : false,
-          "schema" : {
-            "type" : "string",
-            "default" : "DESC",
-            "enum" : [ "ASC", "DESC" ]
-          }
-        } ],
-        "responses": {
+          },
           "429": {
             "description": "Too many requests.",
             "headers": {
@@ -203,7 +106,101 @@
                 }
               }
             }
+          }
+        },
+        "deprecated": true,
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/transactions": {
+      "get": {
+        "tags": [
+          "IO Transactions REST APIs"
+        ],
+        "summary": "Retrieve the paged transaction list from biz events.",
+        "description": "This operation is deprecated. Use Paid Notice APIs instead",
+        "operationId": "getTransactionList",
+        "parameters": [
+          {
+            "name": "is_payer",
+            "in": "query",
+            "description": "Filter by payer",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
           },
+          {
+            "name": "is_debtor",
+            "in": "query",
+            "description": "Filter by debtor",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "x-continuation-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "description": "Order by TRANSACTION_DATE",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "TRANSACTION_DATE",
+              "enum": [
+                "TRANSACTION_DATE"
+              ]
+            }
+          },
+          {
+            "name": "ordering",
+            "in": "query",
+            "description": "Direction of ordering",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "DESC",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            }
+          }
+        ],
+        "responses": {
           "200": {
             "description": "Obtained transaction list.",
             "headers": {
@@ -275,43 +272,7 @@
                 }
               }
             }
-          }
-        },
-        "security": [
-          {
-            "Authorization": []
-          }
-        ]
-      }
-    },
-    "/transactions/{transaction-id}": {
-      "get": {
-        "tags": [
-          "IO Transactions REST APIs"
-        ],
-        "summary": "Retrieve the transaction details given its id.",
-        "operationId": "getTransactionDetails",
-        "parameters": [
-          {
-            "name": "transaction-id",
-            "in": "path",
-            "description": "The id of the transaction.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           },
-          {
-            "name": "X-Request-Id",
-            "in": "header",
-            "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
           "429": {
             "description": "Too many requests.",
             "headers": {
@@ -322,25 +283,47 @@
                 }
               }
             }
-          },
-          "200": {
-            "description": "Obtained transaction details.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionDetailResponse"
-                }
-              }
+          }
+        },
+        "deprecated": true,
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/transactions/{transaction-id}": {
+      "get": {
+        "tags": [
+          "IO Transactions REST APIs"
+        ],
+        "summary": "Retrieve the transaction details given its id.",
+        "description": "This operation is deprecated. Use Paid Notice APIs instead",
+        "operationId": "getTransactionDetails",
+        "parameters": [
+          {
+            "name": "transaction-id",
+            "in": "path",
+            "description": "The id of the transaction.",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
-          },
+          }
+        ],
+        "responses": {
           "404": {
             "description": "Not found the transaction.",
             "headers": {
@@ -387,56 +370,9 @@
                 }
               }
             }
-          }
-        },
-        "security": [
-          {
-            "Authorization": []
-          }
-        ]
-      }
-    },
-    "/transactions/{event-id}/pdf": {
-      "get": {
-        "tags": [
-          "IO Transactions REST APIs"
-        ],
-        "summary": "Retrieve the PDF receipt given event id.",
-        "operationId": "getPDFReceipt",
-        "parameters": [
-          {
-            "name": "event-id",
-            "in": "path",
-            "description": "The id of the event.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           },
-          {
-            "name": "X-Request-Id",
-            "in": "header",
-            "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Unprocessable receipt.",
+          "200": {
+            "description": "Obtained transaction details.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -448,11 +384,62 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+                  "$ref": "#/components/schemas/TransactionDetailResponse"
                 }
               }
             }
           },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true,
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/transactions/{event-id}/pdf": {
+      "get": {
+        "tags": [
+          "IO Transactions REST APIs"
+        ],
+        "summary": "Retrieve the PDF receipt given event id.",
+        "description": "This operation is deprecated. Use Paid Notice APIs instead",
+        "operationId": "getPDFReceipt",
+        "parameters": [
+          {
+            "name": "event-id",
+            "in": "path",
+            "description": "The id of the event.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
           "200": {
             "description": "Obtained the PDF receipt.",
             "headers": {
@@ -518,132 +505,6 @@
                 }
               }
             }
-          }
-        },
-        "security": [
-          {
-            "Authorization": []
-          }
-        ]
-      }
-    },
-    "/transactions/cached": {
-      "get": {
-        "tags": [
-          "IO Transactions REST APIs"
-        ],
-        "summary": "Retrieve the paged transaction list from biz events.",
-        "operationId": "getTransactionList_1",
-        "parameters" : [ {
-            "name": "X-Request-Id",
-            "in": "header",
-            "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-        }, {
-          "name" : "is_payer",
-          "in" : "query",
-          "description" : "Filter by payer",
-          "required" : false,
-          "schema" : {
-            "type" : "boolean"
-          }
-        }, {
-          "name" : "is_debtor",
-          "in" : "query",
-          "description" : "Filter by debtor",
-          "required" : false,
-          "schema" : {
-            "type" : "boolean"
-          }
-        }, {
-          "name" : "page",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32",
-            "default" : 0
-          }
-        }, {
-          "name" : "size",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int32",
-            "default" : 10
-          }
-        }, {
-          "name" : "orderby",
-          "in" : "query",
-          "description" : "Order by TRANSACTION_DATE",
-          "required" : false,
-          "schema" : {
-            "type" : "string",
-            "default" : "TRANSACTION_DATE",
-            "enum" : [ "TRANSACTION_DATE" ]
-          }
-        }, {
-          "name" : "ordering",
-          "in" : "query",
-          "description" : "Direction of ordering",
-          "required" : false,
-          "schema" : {
-            "type" : "string",
-            "default" : "DESC",
-            "enum" : [ "ASC", "DESC" ]
-          }
-        } ],
-        "responses": {
-          "200": {
-            "description": "Obtained transaction list.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionListWrapResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found the transaction.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
           },
           "429": {
             "description": "Too many requests.",
@@ -656,8 +517,8 @@
               }
             }
           },
-          "500": {
-            "description": "Service unavailable.",
+          "422": {
+            "description": "Unprocessable receipt.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -675,12 +536,24 @@
             }
           }
         },
+        "deprecated": true,
         "security": [
           {
-            "Authorization": []
+            "JWT": []
           }
         ]
-      }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
     },
     "/info": {
       "get": {
@@ -702,6 +575,24 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
           "403": {
             "description": "Forbidden",
             "headers": {
@@ -709,6 +600,24 @@
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -741,50 +650,25 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Service unavailable",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
           }
         },
         "security": [
           {
-            "Authorization": []
+            "JWT": []
           }
         ]
-      }
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
     }
   },
   "components": {
@@ -981,6 +865,9 @@
         }
       },
       "UserDetail": {
+        "required": [
+          "taxCode"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -1024,10 +911,10 @@
       }
     },
     "securitySchemes": {
-      "Authorization": {
+      "JWT": {
         "type": "http",
-        "scheme": "bearer",
-        "description": "JWT token associated to the user"
+        "description": "JWT token associated to the user",
+        "scheme": "bearer"
       }
     }
   }
