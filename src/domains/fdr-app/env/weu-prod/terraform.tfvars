@@ -79,9 +79,9 @@ image_tag  = "latest"
 # FDR ( phase#1 and phase#3 cfg )
 enable_fdr3_features                 = false
 enable_fdr_ci_soap_request           = true
-enable_fdr_psp_soap_request          = false
+enable_fdr_psp_soap_request          = true
 enable_fdr_nodoChiediElenco_cache    = true
-fdr_soap_request_psp_whitelist       = "NA"
+fdr_soap_request_psp_whitelist       = "ABI03084,BDBDIT22,BCVAIT2V,86002050580,ABI03656,ABI07078,ABI05496,ABI08954,ABI03374,POCAIT3C,ABI03205"
 fdr_soap_request_ci_whitelist        = "NA"
 fdr1_cache_duration                  = "1800" # sec
 apim_fdr_nodo_pagopa_enable          = true # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
