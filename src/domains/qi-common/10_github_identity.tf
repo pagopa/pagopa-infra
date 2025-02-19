@@ -7,16 +7,11 @@ data "azurerm_kubernetes_cluster" "aks" {
   resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
 }
 
-data "azurerm_key_vault" "key_vault" {
-  name                = "${local.product}-${var.domain}-kv"
-  resource_group_name = "${local.product}-${var.domain}-sec-rg"
-}
-
 # repos must be lower than 20 items
 locals {
   repos_01 = [
-    "pagopa-biz-events-service",
-    "pagopa-biz-pm-ingestion"
+    "pagopa-qi-jira-snow",
+    "pagopa-observability-bdi"
   ]
 
   federations_01 = [
@@ -26,7 +21,6 @@ locals {
     }
   ]
 
-  # to avoid subscription Contributor -> https://github.com/microsoft/azure-container-apps/issues/35
   environment_cd_roles = {
     subscription = [
       "Contributor"
@@ -40,11 +34,28 @@ locals {
       ]
     }
   }
+
+  environment_ci_roles = {
+    subscription = [
+      "Contributor",
+    ]
+    resource_groups = {
+      "${local.product}-${var.domain}-sec-rg" = [
+        "Key Vault Reader",
+      ],
+      "${local.product}-${var.location_short}-${var.env}-aks-rg" = [
+        "Contributor"
+      ],
+      "${local.product}-${var.location_short}-shared-tst-dt-rg" = [
+        "Storage Blob Data Contributor",
+      ],
+    }
+  }
 }
 
 # create a module for each 20 repos
 module "identity_cd_01" {
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.45.0"
+  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short
@@ -66,19 +77,29 @@ module "identity_cd_01" {
   ]
 }
 
-resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = module.identity_cd_01.identity_principal_id
+# create a module for each 20 repos
+module "identity_ci_01" {
+  count  = var.env_short == "p" ? 0 : 1
+  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity"
+  # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
+  prefix    = var.prefix
+  env_short = var.env_short
+  domain    = "${var.domain}-01"
 
-  secret_permissions = ["Get", "List", "Set", ]
+  identity_role = "ci"
 
-  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
-  key_permissions = [
-    "Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"
+  github_federations = local.federations_01
+
+  ci_rbac_roles = {
+    subscription_roles = local.environment_ci_roles.subscription
+    resource_groups    = local.environment_ci_roles.resource_groups
+  }
+
+  tags = var.tags
+
+  depends_on = [
+    data.azurerm_resource_group.identity_rg
   ]
-
-  storage_permissions = []
 }
 
 resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
@@ -113,3 +134,38 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
     module.identity_cd_01
   ]
 }
+
+resource "null_resource" "github_runner_app_permissions_to_namespace_ci_01" {
+  count = var.env_short == "p" ? 0 : 1
+  triggers = {
+    aks_id               = data.azurerm_kubernetes_cluster.aks.id
+    service_principal_id = module.identity_ci_01[0].identity_client_id
+    namespace            = var.domain
+    version              = "v2"
+  }
+
+  provisioner "local-exec" {
+    command = <<EOT
+      az role assignment create --role "Azure Kubernetes Service RBAC Admin" \
+      --assignee ${self.triggers.service_principal_id} \
+      --scope ${self.triggers.aks_id}/namespaces/${self.triggers.namespace}
+
+      az role assignment list --role "Azure Kubernetes Service RBAC Admin"  \
+      --scope ${self.triggers.aks_id}/namespaces/${self.triggers.namespace}
+    EOT
+  }
+
+  provisioner "local-exec" {
+    when    = destroy
+    command = <<EOT
+      az role assignment delete --role "Azure Kubernetes Service RBAC Admin" \
+      --assignee ${self.triggers.service_principal_id} \
+      --scope ${self.triggers.aks_id}/namespaces/${self.triggers.namespace}
+    EOT
+  }
+
+  depends_on = [
+    module.identity_ci_01
+  ]
+}
+
