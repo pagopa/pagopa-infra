@@ -193,7 +193,7 @@
                 <!-- Send info to FDR for validation -->
                 <choose>
                     <when condition="@( !context.Variables.GetValueOrDefault<bool>("fdr_soap_request_is_whitelist", false) )">
-                        <send-request mode="new" response-variable-name="register_for_validation_result" timeout="300" ignore-error="false">
+                        <send-request mode="new" response-variable-name="register_for_validation_result" timeout="10" ignore-error="false">
                             <set-url>@("${base-url}/register-for-validation/fdr")</set-url>
                             <set-method>POST</set-method>
                             <set-header name="Content-Type" exists-action="override">
