@@ -4,7 +4,7 @@ data "azurerm_key_vault" "core_kv" {
 }
 
 data "azurerm_key_vault_secret" "apm_api_key" {
-  count = var.otel_collector_cloud_migration ? 1 : 0
+  count        = var.otel_collector_cloud_migration ? 1 : 0
   key_vault_id = data.azurerm_key_vault.core_kv.id
   name         = "otel-collector-es-api-key"
 }
