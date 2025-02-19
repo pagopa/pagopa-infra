@@ -47,6 +47,9 @@
             <!-- Feature is enabled and IP is whitelisted -->
             <return-response>
               <set-status code="200" reason="OK" />
+              <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+              </set-header>
               <set-body>{"enabled":true}</set-body>
             </return-response>
           </when>
@@ -54,6 +57,9 @@
             <!-- IP is not whitelisted -->
             <return-response>
               <set-status code="200" reason="OK" />
+              <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+              </set-header>
               <set-body>{"enabled":false}</set-body>
             </return-response>
           </otherwise>
@@ -66,6 +72,9 @@
         <!-- No featureKey parameter -->
         <return-response>
           <set-status code="400" reason="Bad Request" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
           <set-body>{"error":"featureKey parameter is missing"}</set-body>
         </return-response>
       </otherwise>
