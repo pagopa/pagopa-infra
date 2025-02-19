@@ -23,6 +23,7 @@
     "paths": {
         "/features/{featureKey}/enabled": {
             "get": {
+                "operationId": "evaluateFeatureFlag",
                 "tags": ["featureFlags"],
                 "summary": "Get feature flag status",
                 "description": "Returns the status of the specified feature flag.",

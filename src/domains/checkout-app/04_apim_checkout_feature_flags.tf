@@ -19,7 +19,7 @@ module "apim_checkout_featureflags" {
   resource_group_name = data.azurerm_resource_group.rg_api.name
 
   published             = true
-  subscription_required = true
+  subscription_required = false
   approval_required     = false
 
   policy_xml = file("./api_product/checkout-authentication/_base_policy.xml")
