@@ -120,6 +120,9 @@ module "event_hub04" {
   }
   private_dns_zone_record_A_name = "event_hub04"
 
+  alerts_enabled = var.ehns_alerts_enabled
+  metric_alerts  = var.ehns_metric_alerts
+
   eventhubs = var.eventhubs_04
 
   # takes a list and replaces any elements that are lists with a
