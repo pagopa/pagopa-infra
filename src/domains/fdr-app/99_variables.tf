@@ -395,13 +395,13 @@ variable "enable_fdr_psp_soap_request" {
 }
 
 variable "fdr_soap_request_psp_whitelist" {
-  type        = string
+  type = string
   # default     = "*" # No Default to explicits set into ENV settings
   description = "String list comma separated"
 }
 
 variable "fdr_soap_request_ci_whitelist" {
-  type        = string
+  type = string
   # default     = "*" # No Default to explicits set into ENV settings
   description = "String list comma separated"
 }
