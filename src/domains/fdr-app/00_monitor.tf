@@ -40,8 +40,4 @@ resource "azurerm_portal_dashboard" "fdr-dashboard" {
     subscription_id = data.azurerm_subscription.current.subscription_id,
     env_short       = var.env_short
   })
-
-  lifecycle {
-    ignore_changes = [dashboard_properties, tags]
-  }
 }
