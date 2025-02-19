@@ -1480,21 +1480,12 @@
         "type": "string",
         "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
       },
-      "PaymentContextCode": {
-        "description": "Payment context code used for verifivaRPT/attivaRPT",
-        "type": "string",
-        "minLength": 32,
-        "maxLength": 32
-      },
       "PaymentNoticeInfo": {
         "description": "Informations about a single payment notice",
         "type": "object",
         "properties": {
           "rptId": {
             "$ref": "#/components/schemas/RptId"
-          },
-          "paymentContextCode": {
-            "$ref": "#/components/schemas/PaymentContextCode"
           },
           "amount": {
             "$ref": "#/components/schemas/AmountEuroCents"
@@ -1506,7 +1497,6 @@
         ],
         "example": {
           "rptId": "string",
-          "paymentContextCode": "12345678901234567890123456789012",
           "amount": 100
         }
       },
@@ -1582,12 +1572,10 @@
             "example": [
               {
                 "rptId": "77777777777302012387654312384",
-                "paymentContextCode": "12345678901234567890123456789011",
                 "amount": 100
               },
               {
                 "rptId": "77777777777302012387654312385",
-                "paymentContextCode": "12345678901234567890123456789012",
                 "amount": 200
               }
             ]
