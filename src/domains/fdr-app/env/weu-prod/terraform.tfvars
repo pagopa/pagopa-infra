@@ -79,7 +79,7 @@ image_tag  = "latest"
 # FDR ( phase#1 and phase#3 cfg )
 enable_fdr3_features                 = false
 enable_fdr_ci_soap_request           = true
-enable_fdr_psp_soap_request          = false
+enable_fdr_psp_soap_request          = true
 enable_fdr_nodoChiediElenco_cache    = true
 fdr_soap_request_psp_whitelist       = "ABI03084,BDBDIT22,BCVAIT2V,86002050580,ABI03656"
 fdr_soap_request_ci_whitelist        = "00493410583,00316820547,80018470171,86002050580,80184430587"
