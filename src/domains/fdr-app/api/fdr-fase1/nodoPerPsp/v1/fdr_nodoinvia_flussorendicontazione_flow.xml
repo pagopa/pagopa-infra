@@ -118,7 +118,7 @@
                           }" />
                           <choose>
                             <when condition="@( context.Variables.GetValueOrDefault<bool>("fdr_soap_request_is_whitelist", false) )">
-                              <set-backend-service base-url="${base-url}" />
+                                <set-backend-service base-url="${base-url}" />
                             </when>
                           </choose>
                         </when>
@@ -189,6 +189,40 @@
                     <!-- Set the file content from the original request body data -->
                     <set-body>@((string)context.Variables["xmlRendicontazione"])</set-body>
                 </send-request>
+
+                <!-- Send info to FDR for validation -->
+                <choose>
+                    <when condition="@( !context.Variables.GetValueOrDefault<bool>("fdr_soap_request_is_whitelist", false) )">
+                        <send-request mode="new" response-variable-name="register_for_validation_result" timeout="10" ignore-error="false">
+                            <set-url>@("${base-url}/register-for-validation/fdr")</set-url>
+                            <set-method>POST</set-method>
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-body>@{return new JObject(
+                                new JProperty("pspId", (string) context.Variables["identificativoPSP"]),
+                                new JProperty("organizationId", (string) context.Variables["identificativoDominio"]),
+                                new JProperty("flowId", (string) context.Variables["identificativoFlusso"]),
+                                new JProperty("flowTimestamp", (string) context.Variables["dataOraFlusso"])
+                                ).ToString();}
+                            </set-body>
+                        </send-request>
+                        <choose>
+                            <when condition="@( context.Variables["register_for_validation_result"] != null && ((IResponse) context.Variables["register_for_validation_result"]).StatusCode != 200)">
+                                <trace source="error_on_register_for_validation" severity="error">
+                                    <message>@{ return "[ALERT][FDR1] Error while sending flow for registration on validation: [" + ((IResponse)context.Variables["register_for_validation_result"]).Body.As<string>() + "]"; }</message>
+                                </trace>
+                            </when>
+                        </choose>
+                    </when>
+                    <!--
+                    <otherwise>
+                        <trace source="skipping_register_for_validation" severity="information">
+                            <message>@{ return "Skipping registration for validation: sent Flow on FDR1"; }</message>
+                        </trace>
+                    </otherwise>
+                    -->
+                </choose>
             </when>
         </choose>
         <return-response>
