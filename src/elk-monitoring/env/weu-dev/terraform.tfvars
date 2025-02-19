@@ -57,7 +57,7 @@ elastic_hot_storage = {
 elastic_warm_storage = {
   storage_type           = "StandardSSD_LRS"
   allow_volume_expansion = true
-  initialStorageSize     = "100Gi"
+  initialStorageSize     = "200Gi"
 }
 elastic_cold_storage = {
   storage_type           = "Standard_LRS"
