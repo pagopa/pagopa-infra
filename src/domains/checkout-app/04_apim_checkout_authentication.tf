@@ -26,7 +26,7 @@ module "apim_checkout_authentication" {
 }
 
 resource "azurerm_api_management_api_version_set" "checkout_auth_service_api_v1" {
-  name                = "${local.project}-auth-service-api"
+  name                = "${var.prefix}-${var.env_short}-${var.domain}-auth-service-api"
   resource_group_name = data.azurerm_resource_group.rg_api.name
   api_management_name = data.azurerm_api_management.apim.name
   display_name        = local.apim_checkout_auth_service.display_name
@@ -36,7 +36,7 @@ resource "azurerm_api_management_api_version_set" "checkout_auth_service_api_v1"
 module "apim_checkout_auth_service_v1" {
   source = "./.terraform/modules/__v3__/api_management_api"
 
-  name                  = "${local.project}-auth-service-api"
+  name                  = "${var.prefix}-${var.env_short}-${var.domain}-auth-service-api"
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_resource_group.rg_api.name
   product_ids           = [module.apim_checkout_authentication.product_id]
@@ -62,10 +62,10 @@ module "apim_checkout_auth_service_v1" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "checkout_auth_login_api" {
-  api_name            = "${local.project}-auth-service-login-api"
+  api_name            = "${var.prefix}-${var.env_short}-${var.domain}-auth-service-login-api"
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
   operation_id        = "authLogin"
 
-  xml_content = file("./api/checkout/checkout_auth_service/v1/_auth_login.xml.tpl")
+  xml_content = file("./api/checkout/checkout_auth_service/v1/_recaptcha_check.xml.tpl")
 }
