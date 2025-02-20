@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <set-backend-service base-url="https://${hostname}/pagopa-qi-smo-jiraticket-service" />
+      <set-backend-service base-url="https://${hostname}/pagopa-qi-jira-snow-service" />
     </inbound>
     <outbound>
       <base />
