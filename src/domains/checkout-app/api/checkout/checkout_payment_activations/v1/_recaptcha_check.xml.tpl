@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <!-- Check google reCAPTCHA token validity START -->
-      <set-variable name="recaptchaSecret" value="{{google-recaptcha-secret}}" />
+      <set-variable name="recaptchaSecret" value="{{ecommerce-for-checkout-google-recaptcha-secret}}" />
       <set-variable name="recaptchaToken" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("recaptchaResponse"))" />
       <choose>
           <when condition="@(context.Variables["recaptchaToken"] == null || context.Variables["recaptchaToken"] == "")">
