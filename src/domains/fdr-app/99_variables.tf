@@ -395,13 +395,13 @@ variable "enable_fdr_psp_soap_request" {
 }
 
 variable "fdr_soap_request_psp_whitelist" {
-  type        = string
+  type = string
   # default     = "*" # No Default to explicits set into ENV settings
   description = "String list comma separated"
 }
 
 variable "fdr_soap_request_ci_whitelist" {
-  type        = string
+  type = string
   # default     = "*" # No Default to explicits set into ENV settings
   description = "String list comma separated"
 }
@@ -410,4 +410,9 @@ variable "fdr1_cache_duration" {
   type        = string
   default     = "1800" // 30 minutes
   description = "The TTL of keys stored in internal cache for FdR1's cached responses"
+}
+
+variable "enable_fdr_nodoChiediElenco_cache" {
+  type        = bool
+  description = "Enable FDR1 nodoChiediElencoFlussiRendicontazione cache"
 }
