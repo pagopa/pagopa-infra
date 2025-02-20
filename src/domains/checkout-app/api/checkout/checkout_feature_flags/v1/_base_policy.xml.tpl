@@ -13,73 +13,29 @@
       </allowed-headers>
     </cors>
     <base />
-    <choose>
-      <when condition="@(context.Request.MatchedParameters["featureKey"] != null)">
-        <set-variable name="requestedFeature" value="@(context.Request.MatchedParameters["featureKey"])" />
+    <set-variable name="requestIpAddress" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
+    <set-variable name="allowedIpsEnabledAuthentication" value="{{EnableAuthenticationIpWhitelist}}" />
 
-        <!-- Save request IP address -->
-        <set-variable name="requestIpAddress" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
+    <!-- example of more feature flags -->
+    <set-variable name="allowedIpsFeature_1" value="{{Feature1IpWhitelist}}" />
+    <set-variable name="allowedIpsFeature_2" value="{{Feature2IpWhitelist}}" />
+    <set-variable name="allowedIpsFeature_3" value="{{Feature3IpWhitelist}}" />
 
-        <choose>
-          <when condition="@(context.Variables.GetValueOrDefault("requestedFeature","") == "EnableAuthentication")">
-            <!-- Reference Named Values for EnableAuthentication -->
-            <set-variable name="allowedIps" value="{{EnableAuthenticationIpWhitelist}}" />
-          </when>
-          <!-- Add more feature flags as needed -->
-        </choose>
-
-         <!-- Begin IP Validation -->
-        <choose>
-          <when condition="@{
-              var allowedIps = context.Variables.GetValueOrDefault("allowedIps","");
-              if(allowedIps == "*"){
-                return true;
-              }
-              var allowedIpsList = allowedIps.Split(',');
-              string[] callerIps = context.Variables.GetValueOrDefault("requestIpAddress","").Split(',');
-              foreach (string callerIp in callerIps){
-                  if(allowedIpsList.Contains(callerIp)){
-                      return true;
-                  }
-              }
-              return false;
-            }">
-            <!-- Feature is enabled and IP is whitelisted -->
-            <return-response>
-              <set-status code="200" reason="OK" />
-              <set-header name="Content-Type" exists-action="override">
-                <value>application/json</value>
-              </set-header>
-              <set-body>{"enabled":true}</set-body>
-            </return-response>
-          </when>
-          <otherwise>
-            <!-- IP is not whitelisted -->
-            <return-response>
-              <set-status code="200" reason="OK" />
-              <set-header name="Content-Type" exists-action="override">
-                <value>application/json</value>
-              </set-header>
-              <set-body>{"enabled":false}</set-body>
-            </return-response>
-          </otherwise>
-        </choose>
-
-        <!-- End IP Validation -->
-
-      </when>
-      <otherwise>
-        <!-- No featureKey parameter -->
-        <return-response>
-          <set-status code="400" reason="Bad Request" />
-          <set-header name="Content-Type" exists-action="override">
-            <value>application/json</value>
-          </set-header>
-          <set-body>{"error":"featureKey parameter is missing"}</set-body>
-        </return-response>
-      </otherwise>
-    </choose>
-
+    <return-response>
+      <set-status code="200" reason="OK" />
+      <set-header name="Content-Type" exists-action="override">
+        <value>application/json</value>
+      </set-header>
+      <set-body>@{
+        var response = new {
+          EnableAuthentication = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsEnabledAuthentication", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
+          Feature_1 = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsFeature_1", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
+          Feature_2 = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsFeature_2", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
+          Feature_3 = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsFeature_3", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
+        };
+        return JsonConvert.SerializeObject(response);
+      }</set-body>
+    </return-response>
   </inbound>
   <outbound>
     <base />
@@ -91,3 +47,23 @@
     <base />
   </on-error>
 </policies>
+
+<helpers>
+  <code>
+    @{
+      bool IsIpAllowed(string allowedIps, string requestIpAddress) {
+        if (allowedIps == "*") {
+          return true;
+        }
+        var allowedIpsList = allowedIps.Split(',');
+        string[] callerIps = requestIpAddress.Split(',');
+        foreach (string callerIp in callerIps) {
+          if (allowedIpsList.Contains(callerIp)) {
+            return true;
+          }
+        }
+        return false;
+      }
+    }
+  </code>
+</helpers>
