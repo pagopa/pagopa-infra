@@ -2,7 +2,7 @@
   <inbound>
     <cors>
       <allowed-origins>
-        <origin>${checkout_origin}</origin>
+        <origin>*</origin>
       </allowed-origins>
       <allowed-methods>
         <method>GET</method>
@@ -13,13 +13,8 @@
       </allowed-headers>
     </cors>
     <base />
-    <set-variable name="requestIpAddress" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
-    <set-variable name="allowedIpsEnabledAuthentication" value="{{EnableAuthenticationIpWhitelist}}" />
 
-    <!-- example of more feature flags -->
-    <!-- <set-variable name="allowedIpsFeature_1" value="{{Feature1IpWhitelist}}" /> -->
-    <!-- <set-variable name="allowedIpsFeature_2" value="{{Feature2IpWhitelist}}" /> -->
-    <!-- <set-variable name="allowedIpsFeature_3" value="{{Feature3IpWhitelist}}" /> -->
+    <include-fragment fragment-id="fragment-checkout-feature-flag-filter" />
 
     <return-response>
       <set-status code="200" reason="OK" />

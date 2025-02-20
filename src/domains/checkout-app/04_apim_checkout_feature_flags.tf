@@ -73,3 +73,10 @@ resource "azurerm_api_management_named_value" "apim_checkout_feature_flags_ipwhi
     ]
   }
 }
+
+resource "azurerm_api_management_policy_fragment" "fragment_checkout_feature_flag_filter" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "fragment-checkout-feature-flag-filter"
+  format            = "xml"
+  value             = file("./api/fragments/_fragment_feature_flag_filter.tpl.xml")
+}
