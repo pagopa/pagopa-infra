@@ -3,7 +3,7 @@
     "info": {
         "version": "1.0.0",
         "title": "Pagopa Feature Flags",
-        "description": "This API set contains APIM level apis used to manage feature flags for checkout."
+        "description": "This API set contains APIM level APIs used to manage feature flags for checkout."
     },
     "servers": [
         {
@@ -21,49 +21,30 @@
         }
     ],
     "paths": {
-        "/features/{featureKey}/enabled": {
+        "/features/enabled": {
             "get": {
-                "operationId": "evaluateFeatureFlag",
+                "operationId": "evaluateFeatureFlags",
                 "tags": ["featureFlags"],
-                "summary": "Get feature flag status",
-                "description": "Returns the status of the specified feature flag.",
-                "parameters": [
-                    {
-                        "name": "featureKey",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        },
-                        "description": "The key of the feature flag to check."
-                    }
-                ],
+                "summary": "Get feature flags status",
+                "description": "Returns the status of all feature flags.",
                 "responses": {
                     "200": {
-                        "description": "Feature flag status",
+                        "description": "Feature flags status",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/FeatureFlagResponse"
+                                    "$ref": "#/components/schemas/FeatureFlagsResponse"
                                 },
                                 "example": {
-                                    "enabled": true
+                                    "featureName_1": "value_1",
+                                    "featureName_2": "value_2",
+                                    "featureName_3": "value_3"
                                 }
                             }
                         }
                     },
                     "400": {
                         "description": "Invalid request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Feature flag not found",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -88,15 +69,12 @@
     },
     "components": {
         "schemas": {
-            "FeatureFlagResponse": {
+            "FeatureFlagsResponse": {
                 "type": "object",
-                "properties": {
-                    "enabled": {
-                        "type": "boolean",
-                        "description": "The status of the feature flag."
-                    }
+                "additionalProperties": {
+                    "type": "string"
                 },
-                "required": ["enabled"]
+                "description": "A JSON object containing feature names and their values."
             },
             "ProblemJson": {
                 "type": "object",
