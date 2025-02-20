@@ -300,8 +300,6 @@ ehns_metric_alerts = {
   },
 }
 
-
-
 eventhubs_03 = [
   {
     name              = "nodo-dei-pagamenti-log"
@@ -732,6 +730,8 @@ eventhubs_04 = [
     ]
   }
 ]
+
+eh04_alerts_enabled = true
 
 node_forwarder_zone_balancing_enabled = true
 node_forwarder_sku                    = "P3v3"

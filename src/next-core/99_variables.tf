@@ -762,6 +762,13 @@ variable "ehns_alerts_enabled" {
   description = "Event hub alerts enabled?"
 }
 
+variable "eh04_alerts_enabled" {
+  type        = bool
+  default     = false
+  description = "Event hub 04 alerts enabled?"
+}
+
+
 variable "ehns_public_network_access" {
   type        = bool
   description = "(Required) enables public network access to the event hubs"
