@@ -71,9 +71,7 @@
         "schemas": {
             "FeatureFlagsResponse": {
                 "type": "object",
-                "additionalProperties": {
-                    "type": "object"
-                },
+                "additionalProperties": true,
                 "description": "A JSON object containing feature names and their values."
             },
             "ProblemJson": {
