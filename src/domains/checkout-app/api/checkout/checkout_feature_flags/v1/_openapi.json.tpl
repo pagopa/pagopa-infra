@@ -72,7 +72,7 @@
             "FeatureFlagsResponse": {
                 "type": "object",
                 "additionalProperties": {
-                    "type": "string"
+                    "type": "object"
                 },
                 "description": "A JSON object containing feature names and their values."
             },
