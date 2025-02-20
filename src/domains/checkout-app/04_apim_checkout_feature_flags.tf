@@ -77,28 +77,11 @@ resource "azurerm_api_management_named_value" "apim_checkout_feature_flags_ipwhi
 #######################################################################
 ## Fragment policy to filter feature flags based on different rules  ##
 #######################################################################
-resource "terraform_data" "sha256_fragment_checkout_feature_flag_filter" {
-  input = sha256(file("./api/fragments/_fragment_feature_flag_filter.tpl.xml"))
-}
 
-resource "azapi_resource" "fragment_checkout_feature_flag_filter" {
-
-  # provider  = azapi.apim
-  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
-  name      = "fragment-checkout-feature-flag-filter"
-  parent_id = data.azurerm_api_management.apim.id
-
-  body = jsonencode({
-    properties = {
-      description = "fragment-checkout-feature-flag-filter"
-      format      = "rawxml"
-      value = templatefile("./api/fragments/_fragment_feature_flag_filter.tpl.xml", {
+resource "azurerm_api_management_policy_fragment" "fragment_checkout_feature_flag_filter" {
+  api_management_id =  data.azurerm_api_management.apim.id
+  name              = "fragment-checkout-feature-flag-filter"
+  format            = "rawxml"
+  value             = templatefile("./api/fragments/_fragment_feature_flag_filter.tpl.xml", {
       })
-
-    }
-  })
-
-  lifecycle {
-    ignore_changes = [output]
-  }
 }
