@@ -7,7 +7,7 @@
     <!-- <set-variable name="allowedIpsFeature_3" value="{{Feature3IpWhitelist}}" /> -->
 
 
-    <set-variable name="feature-flag-response-result" value="@{
+    <set-variable name="checkout-feature-flag" value="@{
         bool IsIpAllowed(string allowedIps, string requestIpAddress) {
           if (allowedIps == "*") {
             return true;
