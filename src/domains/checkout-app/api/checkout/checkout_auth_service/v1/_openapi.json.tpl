@@ -21,7 +21,7 @@
         }
     ],
     "paths": {
-        "/v1/auth/login": {
+        "/auth/login": {
             "get": {
                 "tags": [
                     "authService"
@@ -84,7 +84,7 @@
                 }
             }
         },
-        "/v1/auth/users": {
+        "/auth/users": {
             "get": {
                 "tags": [
                     "authService"

@@ -1,6 +1,13 @@
 <policies>
 
   <inbound>
+    <!-- Rate limit policy -->
+    <rate-limit-by-key
+      calls="150"
+      renewal-period="10"
+      counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))"
+    />
+    <!-- End rate limit policy -->
       <cors>
         <allowed-origins>
           <origin>${checkout_origin}</origin>
