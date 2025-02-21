@@ -335,7 +335,7 @@
     "apiName" : "status",
     "appName" : "fdr",
     "enabled" : ${fdr_enabled},
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=fdrndpnew",
+    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=fdrfase3",
     "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",

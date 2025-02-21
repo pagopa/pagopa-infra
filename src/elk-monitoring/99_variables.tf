@@ -258,11 +258,11 @@ variable "snapshot_storage_replication_type" {
 
 
 variable "elastic_cloud_apm_endpoint" {
-  type = string
+  type        = string
   description = "APM endpoint for elastic cloud instance"
 }
 
 variable "otel_collector_cloud_migration" {
-  type = bool
+  type    = bool
   default = false
 }
