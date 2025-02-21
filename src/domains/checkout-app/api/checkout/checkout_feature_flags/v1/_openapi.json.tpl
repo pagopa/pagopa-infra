@@ -21,7 +21,7 @@
         }
     ],
     "paths": {
-        "/features/enabled": {
+        "/features/values": {
             "get": {
                 "operationId": "evaluateFeatureFlags",
                 "tags": ["featureFlags"],
