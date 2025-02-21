@@ -25,11 +25,11 @@
             "get": {
                 "operationId": "evaluateFeatureFlags",
                 "tags": ["featureFlags"],
-                "summary": "Get feature flags status",
-                "description": "Returns the status of all feature flags.",
+                "summary": "Get feature flags values",
+                "description": "Returns the values of all feature flags.",
                 "responses": {
                     "200": {
-                        "description": "Feature flags status",
+                        "description": "Feature flags values",
                         "content": {
                             "application/json": {
                                 "schema": {
