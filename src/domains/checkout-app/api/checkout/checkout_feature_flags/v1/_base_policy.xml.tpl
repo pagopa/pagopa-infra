@@ -13,6 +13,7 @@
       </allowed-headers>
     </cors>
     <base />
+    <rate-limit-by-key calls="100" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" remaining-calls-header-name="x-rate-limit-remaining" retry-after-header-name="x-rate-limit-retry-after" />
 
     <include-fragment fragment-id="fragment-checkout-feature-flag-filter" />
 
