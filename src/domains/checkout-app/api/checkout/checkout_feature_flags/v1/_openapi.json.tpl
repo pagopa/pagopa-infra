@@ -25,7 +25,7 @@
             "get": {
                 "operationId": "evaluateFeatureFlags",
                 "tags": ["featureFlags"],
-                "summary": "Get feature flags values",
+                "summary": Evaluate feature flags values",
                 "description": "Returns the values of all feature flags.",
                 "responses": {
                     "200": {
@@ -39,16 +39,6 @@
                                     "featureName_1": "value_1",
                                     "featureName_2": "value_2",
                                     "featureName_3": "value_3"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProblemJson"
                                 }
                             }
                         }
