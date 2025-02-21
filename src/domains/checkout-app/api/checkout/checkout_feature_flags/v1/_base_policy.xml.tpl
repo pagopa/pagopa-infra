@@ -21,7 +21,7 @@
       <set-header name="Content-Type" exists-action="override">
         <value>application/json</value>
       </set-header>
-      <set-body>@(context.Variables.GetValueOrDefault("feature-flag-response-result", "{}"))</set-body>
+      <set-body>@(context.Variables.GetValueOrDefault("checkout-feature-flag", "{}"))</set-body>
     </return-response>
   </inbound>
   <outbound>
