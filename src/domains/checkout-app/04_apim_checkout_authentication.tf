@@ -62,7 +62,7 @@ module "apim_checkout_auth_service_v1" {
 }
 
 resource "azurerm_api_management_api_operation_policy" "checkout_auth_login_api" {
-  api_name            = "${local.project_short}-auth-service-login-api"
+  api_name            = "${local.project_short}-auth-service-api-v1"
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
   operation_id        = "authLogin"
