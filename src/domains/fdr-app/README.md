@@ -11,7 +11,7 @@
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
 | <a name="requirement_github"></a> [github](#requirement\_github) | 5.12.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | <= 2.12.1 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | <= 2.30.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | = 2.11.0 |
 
 ## Modules
 
@@ -25,7 +25,8 @@
 | <a name="module_apim_fdr_product_org"></a> [apim\_fdr\_product\_org](#module\_apim\_fdr\_product\_org) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_fdr_product_psp"></a> [apim\_fdr\_product\_psp](#module\_apim\_fdr\_product\_psp) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_fdr_xml_to_json_product"></a> [apim\_fdr\_xml\_to\_json\_product](#module\_apim\_fdr\_xml\_to\_json\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
+| <a name="module_fdr_json_to_xml_function_snet"></a> [fdr\_json\_to\_xml\_function\_snet](#module\_fdr\_json\_to\_xml\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_fdr_re_function_snet"></a> [fdr\_re\_function\_snet](#module\_fdr\_re\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_fdr_xml_to_json_function"></a> [fdr\_xml\_to\_json\_function](#module\_fdr\_xml\_to\_json\_function) | ./.terraform/modules/__v3__/function_app | n/a |
 | <a name="module_fdr_xml_to_json_function_slot_staging"></a> [fdr\_xml\_to\_json\_function\_slot\_staging](#module\_fdr\_xml\_to\_json\_function\_slot\_staging) | ./.terraform/modules/__v3__/function_app_slot | n/a |
 | <a name="module_fdr_xml_to_json_function_snet"></a> [fdr\_xml\_to\_json\_function\_snet](#module\_fdr\_xml\_to\_json\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
@@ -34,7 +35,6 @@
 | <a name="module_reporting_fdr_function"></a> [reporting\_fdr\_function](#module\_reporting\_fdr\_function) | ./.terraform/modules/__v3__/function_app | n/a |
 | <a name="module_reporting_fdr_function_snet"></a> [reporting\_fdr\_function\_snet](#module\_reporting\_fdr\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
-| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
 
 ## Resources
 
@@ -55,7 +55,6 @@
 | [azurerm_api_management_api_version_set.api_fdr_xml_to_json_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.fdr_per_pa_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_named_value.enable_fdr_ci_soap_request](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
-| [azurerm_api_management_named_value.enable_fdr_nodoChiediElenco_cache](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.enable_fdr_psp_soap_request](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.fdr1_cache_duration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.fdr_cachedresponse_containername](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
@@ -72,22 +71,22 @@
 | [azurerm_monitor_autoscale_setting.fdr_xml_to_json_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.reporting_fdr_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.alert-fdr-nodo-error](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.alert-fdr-nodo-register-for-validation-error](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.alert_fdr_internal_availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.alert_fdr_org_availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.alert_fdr_psp_availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.alert_fdr_xmltojson_appexception](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.alert_fdr_xmltojson_appexception_lastretry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.pagopa-fdr-nodo-rest-availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_portal_dashboard.fdr-dashboard](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/portal_dashboard) | resource |
+| [azurerm_portal_dashboard.fdr-soap-dashboard](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/portal_dashboard) | resource |
 | [azurerm_resource_group.reporting_fdr_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
-| [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
-| [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
-| [kubernetes_pod_disruption_budget_v1.fdr](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/pod_disruption_budget_v1) | resource |
-| [kubernetes_role_binding.deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
-| [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/role_binding) | resource |
-| [kubernetes_service_account.azure_devops](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/service_account) | resource |
+| [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
+| [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/namespace) | resource |
+| [kubernetes_pod_disruption_budget_v1.fdr](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/pod_disruption_budget_v1) | resource |
+| [kubernetes_role_binding.deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
+| [kubernetes_role_binding.system_deployer_binding](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/role_binding) | resource |
+| [kubernetes_service_account.azure_devops](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/resources/service_account) | resource |
 | [terraform_data.sha256_fdr_pagopa_policy_nodoChiediElencoFlussiRendicontazione](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_fdr_pagopa_policy_nodoChiediFlussoRendicontazione](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_fdr_pagopa_policy_nodoInviaFlussoRendicontazione](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
@@ -137,7 +136,7 @@
 | [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 | [azurerm_virtual_network.vnet_integration](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
-| [kubernetes_secret.azure_devops_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/data-sources/secret) | data source |
+| [kubernetes_secret.azure_devops_secret](https://registry.terraform.io/providers/hashicorp/kubernetes/2.11.0/docs/data-sources/secret) | data source |
 
 ## Inputs
 
@@ -152,7 +151,6 @@
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_fdr3_features"></a> [enable\_fdr3\_features](#input\_enable\_fdr3\_features) | Feature flag that enabled FdR-Fase3 APIs | `bool` | `false` | no |
 | <a name="input_enable_fdr_ci_soap_request"></a> [enable\_fdr\_ci\_soap\_request](#input\_enable\_fdr\_ci\_soap\_request) | Switch to pagoPA FdR SOAP request for Orgs | `bool` | n/a | yes |
-| <a name="input_enable_fdr_nodoChiediElenco_cache"></a> [enable\_fdr\_nodoChiediElenco\_cache](#input\_enable\_fdr\_nodoChiediElenco\_cache) | Enable FDR1 nodoChiediElencoFlussiRendicontazione cache | `bool` | n/a | yes |
 | <a name="input_enable_fdr_psp_soap_request"></a> [enable\_fdr\_psp\_soap\_request](#input\_enable\_fdr\_psp\_soap\_request) | Switch to pagoPA FdR SOAP request for PSP | `bool` | n/a | yes |
 | <a name="input_enabled_features"></a> [enabled\_features](#input\_enabled\_features) | Features enabled in this domain | <pre>object({<br/>  })</pre> | `{}` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
@@ -161,8 +159,18 @@
 | <a name="input_eventhub_name"></a> [eventhub\_name](#input\_eventhub\_name) | EventHub name | `string` | `null` | no |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_fdr1_cache_duration"></a> [fdr1\_cache\_duration](#input\_fdr1\_cache\_duration) | The TTL of keys stored in internal cache for FdR1's cached responses | `string` | `"1800"` | no |
-| <a name="input_fdr_soap_request_ci_whitelist"></a> [fdr\_soap\_request\_ci\_whitelist](#input\_fdr\_soap\_request\_ci\_whitelist) | String list comma separated | `string` | n/a | yes |
-| <a name="input_fdr_soap_request_psp_whitelist"></a> [fdr\_soap\_request\_psp\_whitelist](#input\_fdr\_soap\_request\_psp\_whitelist) | String list comma separated | `string` | n/a | yes |
+| <a name="input_fdr_json_to_xml_function"></a> [fdr\_json\_to\_xml\_function](#input\_fdr\_json\_to\_xml\_function) | FdR JSON to XML function | <pre>object({<br/>    always_on                    = bool<br/>    kind                         = string<br/>    sku_size                     = string<br/>    sku_tier                     = string<br/>    maximum_elastic_worker_count = number<br/>  })</pre> | <pre>{<br/>  "always_on": true,<br/>  "kind": "Linux",<br/>  "maximum_elastic_worker_count": 1,<br/>  "sku_size": "B1",<br/>  "sku_tier": "Basic"<br/>}</pre> | no |
+| <a name="input_fdr_json_to_xml_function_app_image_tag"></a> [fdr\_json\_to\_xml\_function\_app\_image\_tag](#input\_fdr\_json\_to\_xml\_function\_app\_image\_tag) | FdR JSON to XML function app docker image tag. Defaults to 'latest' | `string` | `"latest"` | no |
+| <a name="input_fdr_json_to_xml_function_autoscale"></a> [fdr\_json\_to\_xml\_function\_autoscale](#input\_fdr\_json\_to\_xml\_function\_autoscale) | FdR JSON to XML function autoscaling parameters | <pre>object({<br/>    default = number<br/>    minimum = number<br/>    maximum = number<br/>  })</pre> | n/a | yes |
+| <a name="input_fdr_json_to_xml_function_network_policies_enabled"></a> [fdr\_json\_to\_xml\_function\_network\_policies\_enabled](#input\_fdr\_json\_to\_xml\_function\_network\_policies\_enabled) | Network policies enabled | `bool` | `false` | no |
+| <a name="input_fdr_json_to_xml_function_subnet"></a> [fdr\_json\_to\_xml\_function\_subnet](#input\_fdr\_json\_to\_xml\_function\_subnet) | Address prefixes subnet | `list(string)` | `null` | no |
+| <a name="input_fdr_re_function"></a> [fdr\_re\_function](#input\_fdr\_re\_function) | FdR RE function | <pre>object({<br/>    always_on = bool<br/>    kind      = string<br/>    sku_size  = string<br/>    #    sku_tier                     = string<br/>    maximum_elastic_worker_count = number<br/>  })</pre> | <pre>{<br/>  "always_on": true,<br/>  "kind": "Linux",<br/>  "maximum_elastic_worker_count": 1,<br/>  "sku_size": "B1"<br/>}</pre> | no |
+| <a name="input_fdr_re_function_app_image_tag"></a> [fdr\_re\_function\_app\_image\_tag](#input\_fdr\_re\_function\_app\_image\_tag) | FdR RE to Datastore function app docker image tag. Defaults to 'latest' | `string` | `"latest"` | no |
+| <a name="input_fdr_re_function_autoscale"></a> [fdr\_re\_function\_autoscale](#input\_fdr\_re\_function\_autoscale) | FdR function autoscaling parameters | <pre>object({<br/>    default = number<br/>    minimum = number<br/>    maximum = number<br/>  })</pre> | n/a | yes |
+| <a name="input_fdr_re_function_network_policies_enabled"></a> [fdr\_re\_function\_network\_policies\_enabled](#input\_fdr\_re\_function\_network\_policies\_enabled) | Network policies enabled | `bool` | `false` | no |
+| <a name="input_fdr_re_function_subnet"></a> [fdr\_re\_function\_subnet](#input\_fdr\_re\_function\_subnet) | Address prefixes subnet | `list(string)` | `null` | no |
+| <a name="input_fdr_soap_request_ci_whitelist"></a> [fdr\_soap\_request\_ci\_whitelist](#input\_fdr\_soap\_request\_ci\_whitelist) | String list comma separated | `string` | `"*"` | no |
+| <a name="input_fdr_soap_request_psp_whitelist"></a> [fdr\_soap\_request\_psp\_whitelist](#input\_fdr\_soap\_request\_psp\_whitelist) | String list comma separated | `string` | `"*"` | no |
 | <a name="input_fdr_xml_to_json_function"></a> [fdr\_xml\_to\_json\_function](#input\_fdr\_xml\_to\_json\_function) | FdR XML to JSON function | <pre>object({<br/>    always_on                    = bool<br/>    kind                         = string<br/>    sku_size                     = string<br/>    sku_tier                     = string<br/>    maximum_elastic_worker_count = number<br/>  })</pre> | <pre>{<br/>  "always_on": true,<br/>  "kind": "Linux",<br/>  "maximum_elastic_worker_count": 1,<br/>  "sku_size": "B1",<br/>  "sku_tier": "Basic"<br/>}</pre> | no |
 | <a name="input_fdr_xml_to_json_function_app_image_tag"></a> [fdr\_xml\_to\_json\_function\_app\_image\_tag](#input\_fdr\_xml\_to\_json\_function\_app\_image\_tag) | FdR XML to JSON function app docker image tag. Defaults to 'latest' | `string` | `"latest"` | no |
 | <a name="input_fdr_xml_to_json_function_autoscale"></a> [fdr\_xml\_to\_json\_function\_autoscale](#input\_fdr\_xml\_to\_json\_function\_autoscale) | FdR function autoscaling parameters | <pre>object({<br/>    default = number<br/>    minimum = number<br/>    maximum = number<br/>  })</pre> | n/a | yes |

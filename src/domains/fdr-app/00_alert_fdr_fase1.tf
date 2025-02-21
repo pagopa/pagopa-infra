@@ -69,33 +69,4 @@ AzureDiagnostics
   }
 }
 
-resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-nodo-register-for-validation-error" {
-  name                = "fdr-nodo-register-for-validation-request-exception"
-  resource_group_name = data.azurerm_resource_group.fdr_rg.name
-  location            = var.location
 
-  action {
-    action_group           = local.action_groups
-    email_subject          = "FdR Nodo Error - RegisterForValidation"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Problem calling - RegisterForValidation Error"
-  enabled        = true
-  query = (<<-QUERY
-      traces
-        | where cloud_RoleName == "fdr-nodo"
-        | where message contains "[ALERT][FDR1][RegisterForValidation]"
-        | order by timestamp desc
-        | summarize Total=count() by length=bin(timestamp,1m)
-        | order by length desc
-    QUERY
-  )
-  severity    = 1
-  frequency   = 5
-  time_window = 5
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 1
-  }
-}

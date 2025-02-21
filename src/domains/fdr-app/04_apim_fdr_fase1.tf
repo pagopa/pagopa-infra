@@ -55,7 +55,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   operation_id        = var.env_short == "d" ? "6218976195aa0303ccfcf902" : var.env_short == "u" ? "61e96321e0f4ba04a49d1286" : "61e9633dea7c4a07cc7d480e"
 
   #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediFlussoRendicontazione.xml.tpl", {
+  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
     base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
   })
@@ -65,7 +65,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
 # https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
 resource "terraform_data" "sha256_fdr_pagopa_policy_nodoChiediFlussoRendicontazione" {
-  input = sha256(templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediFlussoRendicontazione.xml.tpl", {
+  input = sha256(templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
     base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
   }))
@@ -92,7 +92,7 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
 # https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
 resource "terraform_data" "sha256_fdr_pagopa_policy_nodoChiediElencoFlussiRendicontazione" {
-  input = sha256(templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediElencoFlussiRendicontazione.xml.tpl", {
+  input = sha256(templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
     base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
   }))

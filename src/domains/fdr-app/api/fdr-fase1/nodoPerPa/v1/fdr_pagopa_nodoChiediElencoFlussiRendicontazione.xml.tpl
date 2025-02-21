@@ -3,8 +3,6 @@
         <base />
         <set-variable name="enable_fdr_ci_soap_request_switch" value="{{enable-fdr-ci-soap-request-switch}}" />
         <set-variable name="is_fdr_nodo_pagopa_enable" value="@(${is-fdr-nodo-pagopa-enable})" />
-        <!-- Cache feature flag -->
-        <set-variable name="enable_fdr_nodoChiediElenco_cache_flag" value="{{enable-fdr-nodoChiediElenco-cache-flag}}" />
         <choose>
             <when condition="@( context.Variables.GetValueOrDefault<bool>("is_fdr_nodo_pagopa_enable", false) && context.Variables.GetValueOrDefault<string>("enable_fdr_ci_soap_request_switch", "").Equals("true") )">
 
@@ -13,90 +11,86 @@
               <!-- Extracting values for fields domainId, station and PSP -->
               <set-variable name="readrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
 
+              <!-- Generating cache key in format fdr::fase1::cachereq::brokerId-stationId-domainId-pspId, then read it from internal cache -->
+              <set-variable name="cached_response_key" value="@{
+                var dom2parse = ((string) context.Variables["readrequest"]);
+
+                String[] tagBrokerId = {"identificativoIntermediarioPA"};
+                String[] result = dom2parse.Split(tagBrokerId, StringSplitOptions.RemoveEmptyEntries);
+                String brokerId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+
+                String[] tagStationId = {"identificativoStazioneIntermediarioPA"};
+                result = dom2parse.Split(tagStationId, StringSplitOptions.RemoveEmptyEntries);
+                String stationId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+
+                String[] tagDomainId = {"identificativoDominio"};
+                result = dom2parse.Split(tagDomainId, StringSplitOptions.RemoveEmptyEntries);
+                String domainId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+
+                String[] tagPspId = {"identificativoPSP"};
+                result = dom2parse.Split(tagPspId, StringSplitOptions.RemoveEmptyEntries);
+                String pspId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+
+                return "fdr::fase1::cachereq::" + brokerId + "-" + stationId + "-" + domainId + "-" + pspId;
+              }" />
+              <cache-lookup-value variable-name="fdr_cached_response_uuid" key="@((string) context.Variables["cached_response_key"])" caching-type="internal" default-value="NONE"/>
+
+              <!-- If cached response UUID exists, it's time to search the cached response in blob-storage -->
               <choose>
-                <when condition="@(context.Variables.GetValueOrDefault<string>("enable_fdr_nodoChiediElenco_cache_flag", "").Equals("true") )">
-                  <!-- Generating cache key in format fdr::fase1::cachereq::brokerId-stationId-domainId-pspId, then read it from internal cache -->
-                  <set-variable name="cached_response_key" value="@{
-                    var dom2parse = ((string) context.Variables["readrequest"]);
+                <when condition="@( !"NONE".Equals((string) context.Variables["fdr_cached_response_uuid"]) )">
 
-                    String[] tagBrokerId = {"identificativoIntermediarioPA"};
-                    String[] result = dom2parse.Split(tagBrokerId, StringSplitOptions.RemoveEmptyEntries);
-                    String brokerId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
+                  <!-- Execute a GET call on blob-storage using the UUID as "search filter" -->
+                  <authentication-managed-identity resource="https://storage.azure.com/" output-token-variable-name="msi-access-token" ignore-error="false" />
+                  <send-request mode="new" response-variable-name="cached_response_content" timeout="300" ignore-error="true">
+                    <set-url>@{ return "https://{{fdr_cachedresponse_saname}}.blob.core.windows.net/" + "{{fdr_cachedresponse_containername}}" + "/" + ((string) context.Variables["fdr_cached_response_uuid"]) + ".xml"; }</set-url>
+                    <set-method>GET</set-method>
+                    <set-header name="Host" exists-action="override">
+                      <value>{{fdr_cachedresponse_saname}}.blob.core.windows.net</value>
+                    </set-header>
+                    <set-header name="X-Ms-Blob-Type" exists-action="override">
+                      <value>BlockBlob</value>
+                    </set-header>
+                    <set-header name="X-Ms-Version" exists-action="override">
+                      <value>2019-12-12</value>
+                    </set-header>
+                    <set-header name="Accept" exists-action="override">
+                      <value>*/*</value>
+                    </set-header>
+                    <set-header name="Authorization" exists-action="override">
+                      <value>@("Bearer " + (string) context.Variables["msi-access-token"])</value>
+                    </set-header>
+                  </send-request>
 
-                    String[] tagStationId = {"identificativoStazioneIntermediarioPA"};
-                    result = dom2parse.Split(tagStationId, StringSplitOptions.RemoveEmptyEntries);
-                    String stationId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
-
-                    String[] tagDomainId = {"identificativoDominio"};
-                    result = dom2parse.Split(tagDomainId, StringSplitOptions.RemoveEmptyEntries);
-                    String domainId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
-
-                    String[] tagPspId = {"identificativoPSP"};
-                    result = dom2parse.Split(tagPspId, StringSplitOptions.RemoveEmptyEntries);
-                    String pspId = result.Length > 2 ? result[1].Substring(1,result[1].Length-3).Replace("xmlns=\"\">", "") : "ND";
-
-                    return "fdr::fase1::cachereq::" + brokerId + "-" + stationId + "-" + domainId + "-" + pspId;
-                  }" />
-                  <cache-lookup-value variable-name="fdr_cached_response_uuid" key="@((string) context.Variables["cached_response_key"])" caching-type="internal" default-value="NONE"/>
-
-                  <!-- If cached response UUID exists, it's time to search the cached response in blob-storage -->
+                  <!-- If a valid blob content is found in blob-storage, return the response and the related headers -->
+                  <!-- This check is required because the persistence on blob-storage (made in async way) can end unsuccessfully and the cached key is stored anyway. -->
                   <choose>
-                    <!-- If cached response UUID exists, it's time to search the cached response in blob-storage -->
-                    <when condition="@( !"NONE".Equals((string) context.Variables.GetValueOrDefault<string>("fdr_cached_response_uuid", "NONE")) )">
-
-                      <!-- Execute a GET call on blob-storage using the UUID as "search filter" -->
-                      <authentication-managed-identity resource="https://storage.azure.com/" output-token-variable-name="msi-access-token" ignore-error="false" />
-                      <send-request mode="new" response-variable-name="cached_response_content" timeout="300" ignore-error="true">
-                        <set-url>@{ return "https://{{fdr_cachedresponse_saname}}.blob.core.windows.net/" + "{{fdr_cachedresponse_containername}}" + "/" + ((string) context.Variables["fdr_cached_response_uuid"]) + ".xml"; }</set-url>
-                        <set-method>GET</set-method>
-                        <set-header name="Host" exists-action="override">
-                          <value>{{fdr_cachedresponse_saname}}.blob.core.windows.net</value>
+                    <when condition="@(context.Variables["cached_response_content"] != null && ((IResponse) context.Variables["cached_response_content"]).StatusCode == 200)">
+                      <!-- Log a little tracing message and generate the response with headers and content -->
+                      <trace source="cached_content_found_on_blobstorage" severity="information">
+                        <message>@{ return "BLOB content found for cached response with UUID [" + ((string) context.Variables["fdr_cached_response_uuid"]) + "]"; }</message>
+                      </trace>
+                      <set-variable name="cached_response_blob" value="@(((IResponse) context.Variables["cached_response_content"]).Body.As<string>())" />
+                      <set-variable name="cached_response_status_code" value="@(((IResponse) context.Variables["cached_response_content"]).Headers.GetValueOrDefault("x-ms-meta-responsestatuscode", "200"))" />
+                      <set-variable name="cached_response_status_reason" value="@(((IResponse) context.Variables["cached_response_content"]).Headers.GetValueOrDefault("x-ms-meta-responsestatusreason", "OK"))" />
+                      <set-variable name="cached_response_content_type" value="@(((IResponse) context.Variables["cached_response_content"]).Headers.GetValueOrDefault("x-ms-meta-responsecontenttype", "text/xml"))" />
+                      <return-response>
+                        <set-status code="@(Convert.ToInt32(context.Variables["cached_response_status_code"]))" reason="@((string) context.Variables["cached_response_status_reason"])" />
+                        <set-header name="Content-Type" exists-action="override">
+                          <value>@((string) context.Variables["cached_response_content_type"])</value>
                         </set-header>
-                        <set-header name="X-Ms-Blob-Type" exists-action="override">
-                          <value>BlockBlob</value>
-                        </set-header>
-                        <set-header name="X-Ms-Version" exists-action="override">
-                          <value>2019-12-12</value>
-                        </set-header>
-                        <set-header name="Accept" exists-action="override">
-                          <value>*/*</value>
-                        </set-header>
-                        <set-header name="Authorization" exists-action="override">
-                          <value>@("Bearer " + (string) context.Variables["msi-access-token"])</value>
-                        </set-header>
-                      </send-request>
-
-                      <!-- If a valid blob content is found in blob-storage, return the response and the related headers -->
-                      <!-- This check is required because the persistence on blob-storage (made in async way) can end unsuccessfully and the cached key is stored anyway. -->
-                      <choose>
-                        <when condition="@(context.Variables["cached_response_content"] != null && ((IResponse) context.Variables["cached_response_content"]).StatusCode == 200)">
-                          <!-- Log a little tracing message and generate the response with headers and content -->
-                          <!--<trace source="cached_content_found_on_blobstorage" severity="information">
-                            <message>@{ return "BLOB content found for cached response with UUID [" + ((string) context.Variables["fdr_cached_response_uuid"]) + "]"; }</message>
-                          </trace>-->
-                          <set-variable name="cached_response_blob" value="@(((IResponse) context.Variables["cached_response_content"]).Body.As<string>())" />
-                          <set-variable name="cached_response_status_code" value="@(((IResponse) context.Variables["cached_response_content"]).Headers.GetValueOrDefault("x-ms-meta-responsestatuscode", "200"))" />
-                          <set-variable name="cached_response_status_reason" value="@(((IResponse) context.Variables["cached_response_content"]).Headers.GetValueOrDefault("x-ms-meta-responsestatusreason", "OK"))" />
-                          <set-variable name="cached_response_content_type" value="@(((IResponse) context.Variables["cached_response_content"]).Headers.GetValueOrDefault("x-ms-meta-responsecontenttype", "text/xml"))" />
-                          <return-response>
-                            <set-status code="@(Convert.ToInt32(context.Variables["cached_response_status_code"]))" reason="@((string) context.Variables["cached_response_status_reason"])" />
-                            <set-header name="Content-Type" exists-action="override">
-                              <value>@((string) context.Variables["cached_response_content_type"])</value>
-                            </set-header>
-                            <set-body>@((string) context.Variables["cached_response_blob"])</set-body>
-                          </return-response>
-                        </when>
-                        <!-- If no valid blob content is found in blob-storage, at least log an error and continue processing request -->
-                        <otherwise>
-                          <trace source="cached_content_not_found_on_blobstorage" severity="error">
-                            <message>@{ return "No valid BLOB content found for cached response with UUID [" + ((string) context.Variables["fdr_cached_response_uuid"]) + "]"; }</message>
-                          </trace>
-                        </otherwise>
-                      </choose>
+                        <set-body>@((string) context.Variables["cached_response_blob"])</set-body>
+                      </return-response>
                     </when>
+                    <!-- If no valid blob content is found in blob-storage, at least log an error and continue processing request -->
+                    <otherwise>
+                      <trace source="cached_content_not_found_on_blobstorage" severity="error">
+                        <message>@{ return "No valid BLOB content found for cached response with UUID [" + ((string) context.Variables["fdr_cached_response_uuid"]) + "]"; }</message>
+                      </trace>
+                    </otherwise>
                   </choose>
+
                 </when>
-            </choose>
+              </choose>
 
               <!-- ##### END CACHE RETRIEVE PROCESS - READ PHASE #### -->
 
@@ -125,7 +119,7 @@
         }" />
 
         <choose>
-          <when condition="@(!context.Variables.GetValueOrDefault<bool>("is_in_error", false) && context.Variables.GetValueOrDefault<string>("enable_fdr_nodoChiediElenco_cache_flag", "").Equals("true"))">
+          <when condition="@(!context.Variables.GetValueOrDefault<bool>("is_in_error", false))">
 
             <!-- Extracting all needed variables from response in order to use them on BLOB content file -->
             <set-variable name="response_status_code_to_cache" value="@(((IResponse) context.Response).StatusCode)" />
