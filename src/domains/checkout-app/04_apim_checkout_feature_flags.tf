@@ -64,7 +64,7 @@ resource "azurerm_api_management_named_value" "apim_checkout_feature_flags_ipwhi
   name                = "enable-checkout-authentication-ip-whitelist"
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
-  display_name        = "enable-authentication-ip-whitelist"
+  display_name        = "enable-checkout-authentication-ip-whitelist"
   value               = "-"
   secret              = true
   lifecycle {
