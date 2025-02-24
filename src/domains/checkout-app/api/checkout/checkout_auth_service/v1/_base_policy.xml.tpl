@@ -27,11 +27,7 @@
             <set-header name="Content-Type" exists-action="override">
               <value>application/json</value>
             </set-header>
-      <set-body>{ "error" : "Forbidden" }</set-body>
-              return new JObject(
-              new JProperty("error", "Forbidden")
-              ).ToString();
-              }</set-body>
+            <set-body>{ "error" : "Forbidden" }</set-body>
           </return-response>
         </when>
       </choose>
