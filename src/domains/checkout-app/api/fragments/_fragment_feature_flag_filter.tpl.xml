@@ -1,6 +1,6 @@
 <fragment>
     <set-variable name="requestIpAddress" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
-    <set-variable name="allowedIpsEnabledAuthentication" value="{{enable-authentication-ip-whitelist}}" />
+    <set-variable name="allowedIpsEnabledAuthentication" value="{{enable-checkout-authentication-ip-whitelist}}" />
     <!-- example of more feature flags -->
     <!-- <set-variable name="allowedIpsFeature_1" value="{{Feature1IpWhitelist}}" /> -->
     <!-- <set-variable name="allowedIpsFeature_2" value="{{Feature2IpWhitelist}}" /> -->
@@ -21,7 +21,7 @@
           }
           return false;
         }
-    
+
         var response = new {
           isAuthenticationEnabled = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsEnabledAuthentication", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
           // Feature_1 = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsFeature_1", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
