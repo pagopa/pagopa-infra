@@ -236,3 +236,18 @@ resource "azurerm_app_configuration_feature" "quicksight_dashboard_flag" {
     ]
   }
 }
+
+resource "azurerm_app_configuration_feature" "quicksight_product_free_trial" {
+  configuration_store_id = azurerm_app_configuration.selfcare_appconf.id
+  description            = "It disable the quicksight dashboard product's subscription check"
+  name                   = "quicksight-product-free-trial"
+  enabled                = false
+
+  lifecycle {
+    ignore_changes = [
+      enabled,
+      targeting_filter,
+      timewindow_filter
+    ]
+  }
+}
