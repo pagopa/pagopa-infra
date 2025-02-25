@@ -571,3 +571,8 @@ variable "aks_enable_workload_identity" {
   type    = bool
   default = false
 }
+
+variable "enable_elastic_agent" {
+  type    = bool
+  default = true
+}
