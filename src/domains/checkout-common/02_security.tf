@@ -99,3 +99,27 @@ resource "azurerm_key_vault_secret" "checkout_opsgenie_webhook_token" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "checkout_oneidentity_onboarding_api_key" {
+  name         = "checkout-oneidentity-onboarding-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "checkout_oneidentity_onboarding_params" {
+  name         = "checkout-oneidentity-onboarding-params"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
