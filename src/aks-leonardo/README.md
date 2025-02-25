@@ -131,6 +131,7 @@ Re-enable all the resource, commented before to complete the procedure
 | <a name="input_cidr_subnet_user_aks"></a> [cidr\_subnet\_user\_aks](#input\_cidr\_subnet\_user\_aks) | Subnet for generic user nodepool. | `list(string)` | n/a | yes |
 | <a name="input_default_service_port"></a> [default\_service\_port](#input\_default\_service\_port) | n/a | `number` | `8080` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
+| <a name="input_enable_elastic_agent"></a> [enable\_elastic\_agent](#input\_enable\_elastic\_agent) | n/a | `bool` | `true` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_ingress_load_balancer_ip"></a> [ingress\_load\_balancer\_ip](#input\_ingress\_load\_balancer\_ip) | n/a | `string` | n/a | yes |
