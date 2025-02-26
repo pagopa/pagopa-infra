@@ -220,7 +220,14 @@
         "summary": "Authentication endpoint",
         "description": "POST authentication endpoint with auth code",
         "requestBody": {
-          "$ref": "#/components/requestBodies/AuthRequest"
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthRequest"
+              }
+            }
+          }
         },
         "responses": {
           "200": {
@@ -426,18 +433,6 @@
           "authCode",
           "state"
         ]
-      }
-    },
-    "requestBodies": {
-      "AuthRequest": {
-        "required": true,
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/AuthRequest"
-            }
-          }
-        }
       }
     }
   }
