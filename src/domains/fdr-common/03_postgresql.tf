@@ -68,7 +68,8 @@ module "postgres_flexible_server_fdr" {
 
   custom_metric_alerts = var.custom_metric_alerts
   alerts_enabled       = var.pgres_flex_params.alerts_enabled
-  alert_action = [
+
+  alert_action = var.pgres_flex_params.alerts_enabled ? [
     {
       action_group_id    = data.azurerm_monitor_action_group.email.id
       webhook_properties = null
@@ -76,9 +77,12 @@ module "postgres_flexible_server_fdr" {
     {
       action_group_id    = data.azurerm_monitor_action_group.slack.id
       webhook_properties = null
+    },
+    {
+      action_group_id    = data.azurerm_monitor_action_group.opsgenie[0].id
+      webhook_properties = null
     }
-  ]
-
+  ] : []
 
   private_dns_registration = var.postgres_dns_registration_enabled
   private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
