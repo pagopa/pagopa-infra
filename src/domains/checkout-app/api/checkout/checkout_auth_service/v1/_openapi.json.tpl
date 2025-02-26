@@ -339,7 +339,8 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT"
+        "description": "authentication opaque token",
+        "bearerFormat": "opaque token"
       }
     },
     "schemas": {
@@ -400,19 +401,19 @@
             "type": "string",
             "description": "user unique id (fiscal code tokenization)"
           },
-          "name": {
+          "firstName": {
             "type": "string",
-            "description": "user name"
+            "description": "user first name"
           },
-          "familyName": {
+          "lastName": {
             "type": "string",
             "description": "user family name"
           }
         },
         "required": [
           "userId",
-          "name",
-          "familyName"
+          "firstName",
+          "lastName"
         ]
       },
       "AuthResponse": {
