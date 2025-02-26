@@ -86,3 +86,52 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 
   key_vault_id = module.key_vault.id
 }
+
+resource "azurerm_key_vault_secret" "checkout_opsgenie_webhook_token" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "checkout-opsgenie-webhook-token"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "redis_checkout_access_key" {
+  name         = "redis-checkout-access-key"
+  value        = module.pagopa_checkout_redis.primary_access_key
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "redis_checkout_hostname" {
+  name         = "redis-checkout-hostname"
+  value        = module.pagopa_checkout_redis.hostname
+  key_vault_id = module.key_vault.id
+}
+    
+resource "azurerm_key_vault_secret" "checkout_oneidentity_onboarding_api_key" {
+  name         = "checkout-oneidentity-onboarding-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "checkout_oneidentity_onboarding_params" {
+  name         = "checkout-oneidentity-onboarding-params"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

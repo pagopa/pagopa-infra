@@ -77,4 +77,5 @@ ingress_load_balancer_ip = "10.3.2.250"
 ingress_replica_count    = "2"
 nginx_helm_version       = "4.10.1"
 
-keda_helm_version = "2.14.0"
+keda_helm_version    = "2.14.0"
+enable_elastic_agent = false
