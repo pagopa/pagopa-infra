@@ -347,9 +347,13 @@
         "type": "object",
         "properties": {
           "urlRedirect": {
-            "type": "string"
+            "type": "string",
+            "description": "the login redirect URL"
           }
-        }
+        },
+        "required": [
+          "urlRedirect"
+        ]
       },
       "ProblemJson": {
         "type": "object",
@@ -392,41 +396,47 @@
       "UserInfoResponse": {
         "type": "object",
         "properties": {
-          "userInfo": {
-            "type": "object",
-            "properties": {
-              "userId": {
-                "type": "string"
-              },
-              "firstName": {
-                "type": "string"
-              },
-              "lastName": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string"
-              }
-            }
+          "userId": {
+            "type": "string",
+            "description": "user unique id (fiscal code tokenization)"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "user first name"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "user family name"
           }
-        }
+        },
+        "required": [
+          "userId",
+          "firstName",
+          "lastName"
+        ]
       },
       "AuthResponse": {
         "type": "object",
         "properties": {
           "authToken": {
-            "type": "string"
+            "type": "string",
+            "description": "authorization token"
           }
-        }
+        },
+        "required": [
+          "authToken"
+        ]
       },
       "AuthRequest": {
         "type": "object",
         "properties": {
           "authCode": {
-            "type": "string"
+            "type": "string",
+            "description": "OIDC auth code"
           },
           "state": {
-            "type": "string"
+            "type": "string",
+            "description": "state opaque token, used to correlate auth requests"
           }
         },
         "required": [
