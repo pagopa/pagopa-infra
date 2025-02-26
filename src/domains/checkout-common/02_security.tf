@@ -137,7 +137,7 @@ resource "azurerm_key_vault_secret" "checkout_oneidentity_onboarding_params" {
 }
 
 resource "azurerm_key_vault_secret" "one_identity_client_secret" {
-  name         = "one-identity-client-secret"
+  name         = "checkout-one-identity-client-secret"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
