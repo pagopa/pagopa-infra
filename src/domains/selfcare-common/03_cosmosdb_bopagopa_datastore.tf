@@ -58,9 +58,11 @@ module "bopagopa_cosmosdb_mongo_account" {
   allowed_virtual_network_subnet_ids = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
 
-  private_endpoint_enabled   = var.bopagopa_datastore_cosmos_db_params.private_endpoint_enabled
-  subnet_id                  = module.bopagopa_cosmosdb_mongodb_snet.id
-  private_dns_zone_mongo_ids = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_enabled              = var.bopagopa_datastore_cosmos_db_params.private_endpoint_enabled
+  subnet_id                             = module.bopagopa_cosmosdb_mongodb_snet.id
+  private_dns_zone_mongo_ids            = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_mongo_name           = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
+  private_service_connection_mongo_name = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
 
   tags = var.tags
 }
