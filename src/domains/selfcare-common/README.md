@@ -4,30 +4,31 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.30.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.53.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.47.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.110.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | = 3.1.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_bopagopa_cosmosdb_mongo_account"></a> [bopagopa\_cosmosdb\_mongo\_account](#module\_bopagopa\_cosmosdb\_mongo\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v6.7.0 |
-| <a name="module_bopagopa_cosmosdb_mongodb_snet"></a> [bopagopa\_cosmosdb\_mongodb\_snet](#module\_bopagopa\_cosmosdb\_mongodb\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.7.0 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | ce3200bf6673671bd6e641722e6c9d7500043fda |
+| <a name="module_bopagopa_cosmosdb_mongo_account"></a> [bopagopa\_cosmosdb\_mongo\_account](#module\_bopagopa\_cosmosdb\_mongo\_account) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
+| <a name="module_bopagopa_cosmosdb_mongodb_snet"></a> [bopagopa\_cosmosdb\_mongodb\_snet](#module\_bopagopa\_cosmosdb\_mongodb\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v7.45.0 |
 | <a name="module_identity_pr_01"></a> [identity\_pr\_01](#module\_identity\_pr\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v8.18.0 |
-| <a name="module_mongdb_collection_brokeribans"></a> [mongdb\_collection\_brokeribans](#module\_mongdb\_collection\_brokeribans) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v6.7.0 |
-| <a name="module_mongdb_collection_brokerinstitutions"></a> [mongdb\_collection\_brokerinstitutions](#module\_mongdb\_collection\_brokerinstitutions) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v6.7.0 |
-| <a name="module_mongdb_collection_maintenance"></a> [mongdb\_collection\_maintenance](#module\_mongdb\_collection\_maintenance) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v6.7.0 |
-| <a name="module_mongdb_collection_products"></a> [mongdb\_collection\_products](#module\_mongdb\_collection\_products) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v6.7.0 |
+| <a name="module_mongdb_collection_brokeribans"></a> [mongdb\_collection\_brokeribans](#module\_mongdb\_collection\_brokeribans) | ./.terraform/modules/__v3__/cosmosdb_mongodb_collection | n/a |
+| <a name="module_mongdb_collection_brokerinstitutions"></a> [mongdb\_collection\_brokerinstitutions](#module\_mongdb\_collection\_brokerinstitutions) | ./.terraform/modules/__v3__/cosmosdb_mongodb_collection | n/a |
+| <a name="module_mongdb_collection_maintenance"></a> [mongdb\_collection\_maintenance](#module\_mongdb\_collection\_maintenance) | ./.terraform/modules/__v3__/cosmosdb_mongodb_collection | n/a |
+| <a name="module_mongdb_collection_products"></a> [mongdb\_collection\_products](#module\_mongdb\_collection\_products) | ./.terraform/modules/__v3__/cosmosdb_mongodb_collection | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [azuread_application.selfcare](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/resources/application) | resource |
-| [azuread_application_password.selfcare](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/resources/application_password) | resource |
-| [azuread_service_principal.selfcare](https://registry.terraform.io/providers/hashicorp/azuread/2.30.0/docs/resources/service_principal) | resource |
+| [azuread_application.selfcare](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) | resource |
+| [azuread_application_password.selfcare](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) | resource |
+| [azuread_service_principal.selfcare](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
 | [azurerm_app_configuration.selfcare_appconf](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration) | resource |
 | [azurerm_app_configuration_feature.commission_bundles_flag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.commission_bundles_private_flag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
@@ -39,6 +40,7 @@
 | [azurerm_app_configuration_feature.payment_notices_flag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.payments_receipts_flag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.quicksight_dashboard_flag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
+| [azurerm_app_configuration_feature.quicksight_product_free_trial](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.station-odp-service](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.station-rest-section](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
 | [azurerm_app_configuration_feature.station_maintenances_flag](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/app_configuration_feature) | resource |
@@ -55,7 +57,6 @@
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_resource_group.bopagopa_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.selfcare_apim_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.selfcare_appconf_dataowner](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.selfcare_appconf_dataowner_sp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
 | [time_rotating.selfcare_application](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) | resource |

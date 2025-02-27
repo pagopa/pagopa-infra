@@ -8,11 +8,11 @@ resource "azurerm_app_configuration" "selfcare_appconf" {
 # ⚠️⚠️⚠️ iif on apply receive error 409 already exist a tricky u be ⚠️⚠️⚠️ :
 # 1. sh terraform.sh state weu-<ENV> rm azurerm_role_assignment.selfcare_appconf_dataowner_sp
 # 2. remove ✋ from portal pagopa-<ENV>-selfcare-appconfiguration > Role assignments > filter for "App Configuration Data Owner" and removed pagopa-<ENB>-seflcare
-resource "azurerm_role_assignment" "selfcare_appconf_dataowner" {
-  scope                = azurerm_app_configuration.selfcare_appconf.id
-  role_definition_name = "App Configuration Data Owner"
-  principal_id         = data.azurerm_client_config.current.object_id
-}
+# resource "azurerm_role_assignment" "selfcare_appconf_dataowner" {
+#   scope                = azurerm_app_configuration.selfcare_appconf.id
+#   role_definition_name = "App Configuration Data Owner"
+#   principal_id         = data.azurerm_client_config.current.object_id
+# }
 
 resource "azurerm_role_assignment" "selfcare_appconf_dataowner_sp" {
   scope                = azurerm_app_configuration.selfcare_appconf.id
