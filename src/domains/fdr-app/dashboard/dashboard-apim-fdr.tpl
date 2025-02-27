@@ -982,7 +982,7 @@
                   ]
                 },
                 "IsQueryContainTimeRange": false,
-                "Query": "let threshold = 0.99;\nAzureDiagnostics\n//| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/node-for-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3a', '63b6e2da2a92e811a8f338f8', '61e9633dea7c4a07cc7d480d')\n| summarize\n    Total=count(),\n    Success=count(responseCode_d < 500)\n    by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
+                "Query": "let threshold = 0.99;\nAzureDiagnostics\n//| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3a', '63b6e2da2a92e811a8f338f8', '61e9633dea7c4a07cc7d480d')\n| summarize\n    Total=count(),\n    Success=count(responseCode_d < 500)\n    by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
               }
             },
             "partHeader": {
@@ -1368,9 +1368,9 @@
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
             "settings": {
               "content": {
-                "Query": "requests\n//| where timestamp > ago(30m)\n| where name matches regex \"nodo(-auth){0,1}/((nodo-per-psp))\" or name matches regex \"nodo(-auth){0,1}/((node-for-psp))\"\n| where tostring(customDimensions[\"Request-Body\"]) contains 'nodoInviaFlussoRendicontazione'\n| extend esito = extract(\"<esito>(.*?)</esito>\", 1, tostring(customDimensions[\"Response-Body\"]))\n| extend faultCode = extract(\"<faultCode>(.*?)</faultCode>\", 1, tostring(customDimensions[\"Response-Body\"]))\n| summarize Count = count() by esito,faultCode,resultCode\n| order by Count desc\n\n",
+                "IsQueryContainTimeRange": false,
                 "PartTitle": "sssss",
-                "IsQueryContainTimeRange": false
+                "Query": "requests\n//| where timestamp > ago(30m)\n| where name matches regex \"nodo(-auth){0,1}/((nodo-per-psp))\" or name matches regex \"nodo(-auth){0,1}/((node-for-psp))\"\n| where tostring(customDimensions[\"Request-Body\"]) contains 'nodoInviaFlussoRendicontazione'\n| extend esito = extract(\"<esito>(.*?)</esito>\", 1, tostring(customDimensions[\"Response-Body\"]))\n| extend faultCode = extract(\"<faultCode>(.*?)</faultCode>\", 1, tostring(customDimensions[\"Response-Body\"]))\n| summarize Count = count() by esito,faultCode,resultCode\n| order by Count desc\n\n"
               }
             },
             "partHeader": {
@@ -1469,8 +1469,8 @@
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
             "settings": {
               "content": {
-                "PartTitle": "Sum Esisto nodoChiediFlussoRendicontazion",
-                "PartSubTitle": "nodoChiediFlussoRendicontazion"
+                "PartSubTitle": "nodoChiediFlussoRendicontazion",
+                "PartTitle": "Sum Esisto nodoChiediFlussoRendicontazion"
               }
             }
           }
@@ -1660,8 +1660,8 @@
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
             "settings": {
               "content": {
-                "Query": "requests\n//| where timestamp > ago(30m)\n| where name matches regex \"nodo(-auth){0,1}/((nodo-per-pa))\" or name matches regex \"nodo(-auth){0,1}/((node-for-pa))\"\n| where tostring(customDimensions[\"Request-Body\"]) contains 'nodoChiediFlussoRendicontazion'\n| extend esito = extract(\"<esito>(.*?)</esito>\", 1, tostring(customDimensions[\"Response-Body\"]))\n| extend faultCode = extract(\"<faultCode>(.*?)</faultCode>\", 1, tostring(customDimensions[\"Response-Body\"]))\n| extend idDominio = extract(\"<identificativoDominio>(.*?)</identificativoDominio>\", 1, tostring(customDimensions[\"Request-Body\"]))\n//| where esito == \"\" and faultCode == \"\"\n| where faultCode != \"\"\n| summarize count() by user_AuthenticatedId, idDominio, faultCode\n| order by count_ desc\n\n",
-                "PartTitle": "KO nodoChiediFlussoRendicontazion"
+                "PartTitle": "KO nodoChiediFlussoRendicontazion",
+                "Query": "requests\n//| where timestamp > ago(30m)\n| where name matches regex \"nodo(-auth){0,1}/((nodo-per-pa))\" or name matches regex \"nodo(-auth){0,1}/((node-for-pa))\"\n| where tostring(customDimensions[\"Request-Body\"]) contains 'nodoChiediFlussoRendicontazion'\n| extend esito = extract(\"<esito>(.*?)</esito>\", 1, tostring(customDimensions[\"Response-Body\"]))\n| extend faultCode = extract(\"<faultCode>(.*?)</faultCode>\", 1, tostring(customDimensions[\"Response-Body\"]))\n| extend idDominio = extract(\"<identificativoDominio>(.*?)</identificativoDominio>\", 1, tostring(customDimensions[\"Request-Body\"]))\n//| where esito == \"\" and faultCode == \"\"\n| where faultCode != \"\"\n| summarize count() by user_AuthenticatedId, idDominio, faultCode\n| order by count_ desc\n\n"
               }
             }
           }
@@ -1766,6 +1766,714 @@
                 },
                 "IsQueryContainTimeRange": false,
                 "Query": "AzureDiagnostics\n//| where TimeGenerated > ago(8m)\n| where url_s matches regex \"/nodo-auth/node-for-psp\" or url_s matches regex \"/nodo-auth/nodo-per-psp\" or url_s matches regex \"/nodo/nodo-per-psp\" or url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63b6e2da2a92e811a8f33901', '63ff4f22aca2fd18dcc4a6f7', '61e9633eea7c4a07cc7d4811', // nodo-invia-flusso-rendicontazione\n                          '63ff73adea7c4a1860530e3b', '63b6e2da2a92e811a8f338f9', '61e9633dea7c4a07cc7d480e', // nodo-chiedi-flusso-rendicontazione\n                          '63ff73adea7c4a1860530e3a', '63b6e2da2a92e811a8f338f8', '61e9633dea7c4a07cc7d480d') // nodo-chiedi-elenco-flussi-rendicontazioni\n//| summarize count() by backendUrl_s, url_s, backendResponseCode_d, bin(TimeGenerated,2m)\n| summarize count() by backendUrl_s, operationId_s, url_s\n\n"
+              }
+            }
+          }
+        },
+        "14": {
+          "position": {
+            "x": 0,
+            "y": 27,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourcegroups/pagopa-${env_short}-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "cpu_percent",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "CPU percent",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        }
+                      },
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourcegroups/pagopa-${env_short}-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "memory_percent",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Memory percent",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        }
+                      }
+                    ],
+                    "title": "Cpu and Memory",
+                    "titleKind": 2,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideHoverCard": false,
+                        "hideLabelNames": true
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      }
+                    },
+                    "timespan": {
+                      "relative": {
+                        "duration": 14400000
+                      },
+                      "showUTCTime": false,
+                      "grain": 1
+                    }
+                  }
+                },
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourcegroups/pagopa-${env_short}-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "cpu_percent",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "CPU percent",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        }
+                      },
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourcegroups/pagopa-${env_short}-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "memory_percent",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Memory percent",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        }
+                      }
+                    ],
+                    "title": "Cpu and Memory",
+                    "titleKind": 2,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideHoverCard": false,
+                        "hideLabelNames": true
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "15": {
+          "position": {
+            "x": 6,
+            "y": 27,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourcegroups/pagopa-${env_short}-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "storage_percent",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Storage percent",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        }
+                      }
+                    ],
+                    "title": "Storage",
+                    "titleKind": 2,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideHoverCard": false,
+                        "hideLabelNames": true
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      }
+                    },
+                    "timespan": {
+                      "relative": {
+                        "duration": 14400000
+                      },
+                      "showUTCTime": false,
+                      "grain": 1
+                    }
+                  }
+                },
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourcegroups/pagopa-${env_short}-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "storage_percent",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Storage percent",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        }
+                      }
+                    ],
+                    "title": "Storage",
+                    "titleKind": 2,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideHoverCard": false,
+                        "hideLabelNames": true
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "16": {
+          "position": {
+            "x": 12,
+            "y": 27,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "connections_failed",
+                        "aggregationType": 1,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Failed Connections",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        }
+                      },
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "connections_succeeded",
+                        "aggregationType": 1,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Succeeded Connections",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        }
+                      }
+                    ],
+                    "title": "DB Connections",
+                    "titleKind": 2,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideHoverCard": false,
+                        "hideLabelNames": true
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      }
+                    },
+                    "timespan": {
+                      "relative": {
+                        "duration": 14400000
+                      },
+                      "showUTCTime": false,
+                      "grain": 1
+                    }
+                  }
+                },
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "connections_failed",
+                        "aggregationType": 1,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Failed Connections",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        }
+                      },
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "connections_succeeded",
+                        "aggregationType": 1,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Succeeded Connections",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        }
+                      }
+                    ],
+                    "title": "DB Connections",
+                    "titleKind": 2,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideHoverCard": false,
+                        "hideLabelNames": true
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "17": {
+          "position": {
+            "x": 0,
+            "y": 31,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "iops",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "IOPS"
+                        }
+                      }
+                    ],
+                    "title": "Avg IOPS for pagopa-${env_short}-weu-fdr-flexible-postgresql",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideHoverCard": false,
+                        "hideLabelNames": true
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      }
+                    },
+                    "timespan": {
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false,
+                      "grain": 1
+                    }
+                  }
+                },
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "iops",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "IOPS"
+                        }
+                      }
+                    ],
+                    "title": "Avg IOPS for pagopa-${env_short}-weu-fdr-flexible-postgresql",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideHoverCard": false,
+                        "hideLabelNames": true
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "18": {
+          "position": {
+            "x": 6,
+            "y": 31,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "read_throughput",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Read Throughput Bytes/Sec"
+                        }
+                      }
+                    ],
+                    "title": "Avg Read Throughput Bytes/Sec for pagopa-${env_short}-weu-fdr-flexible-postgresql",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideHoverCard": false,
+                        "hideLabelNames": true
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      }
+                    },
+                    "timespan": {
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false,
+                      "grain": 1
+                    }
+                  }
+                },
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "read_throughput",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Read Throughput Bytes/Sec"
+                        }
+                      }
+                    ],
+                    "title": "Avg Read Throughput Bytes/Sec for pagopa-${env_short}-weu-fdr-flexible-postgresql",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideHoverCard": false,
+                        "hideLabelNames": true
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "19": {
+          "position": {
+            "x": 12,
+            "y": 31,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "write_throughput",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Write Throughput Bytes/Sec"
+                        }
+                      }
+                    ],
+                    "title": "Avg Write Throughput Bytes/Sec for pagopa-${env_short}-weu-fdr-flexible-postgresql",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideHoverCard": false,
+                        "hideLabelNames": true
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      }
+                    },
+                    "timespan": {
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false,
+                      "grain": 1
+                    }
+                  }
+                },
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "write_throughput",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Write Throughput Bytes/Sec"
+                        }
+                      }
+                    ],
+                    "title": "Avg Write Throughput Bytes/Sec for pagopa-${env_short}-weu-fdr-flexible-postgresql",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideHoverCard": false,
+                        "hideLabelNames": true
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
               }
             }
           }

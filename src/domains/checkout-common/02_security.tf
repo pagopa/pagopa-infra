@@ -111,7 +111,7 @@ resource "azurerm_key_vault_secret" "redis_checkout_hostname" {
   value        = module.pagopa_checkout_redis.hostname
   key_vault_id = module.key_vault.id
 }
-    
+
 resource "azurerm_key_vault_secret" "checkout_oneidentity_onboarding_api_key" {
   name         = "checkout-oneidentity-onboarding-api-key"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
@@ -126,6 +126,18 @@ resource "azurerm_key_vault_secret" "checkout_oneidentity_onboarding_api_key" {
 
 resource "azurerm_key_vault_secret" "checkout_oneidentity_onboarding_params" {
   name         = "checkout-oneidentity-onboarding-params"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "one_identity_client_secret" {
+  name         = "checkout-one-identity-client-secret"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
