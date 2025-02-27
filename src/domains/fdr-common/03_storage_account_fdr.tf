@@ -160,7 +160,8 @@ resource "azurerm_storage_management_policy" "fdr1_cached_response_blob_file_man
     name    = "deleteafterdays"
     enabled = true
     filters {
-      prefix_match = ["${azurerm_storage_container.fdr1_cached_response_blob_file.name}/"]
+      # https://learn.microsoft.com/en-us/answers/questions/139922/in-azure-blob-lifecycle-management-how-do-you-matc
+      prefix_match = ["${azurerm_storage_container.fdr1_cached_response_blob_file.name}"]
       blob_types   = ["blockBlob"]
     }
 
@@ -171,7 +172,7 @@ resource "azurerm_storage_management_policy" "fdr1_cached_response_blob_file_man
         delete_after_days_since_modification_greater_than = var.fdr1_cached_response_blob_file_retention_days
       }
       snapshot {
-        delete_after_days_since_creation_greater_than = 30
+        delete_after_days_since_creation_greater_than = 1
       }
     }
   }
