@@ -112,7 +112,6 @@ resource "kubernetes_manifest" "service_monitor" {
         "app.kubernetes.io/instance" : "prometheus"
         "app.kubernetes.io/part-of" : "kube-prometheus-stack"
         "app" : "kube-prometheus-stack-operator"
-        "release" : helm_release.kube_prometheus_stack.name
       }
     }
     "spec" : {

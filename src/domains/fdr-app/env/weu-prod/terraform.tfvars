@@ -77,13 +77,16 @@ image_name = "reporting-fdr"
 image_tag  = "latest"
 
 # FDR ( phase#1 and phase#3 cfg )
-enable_fdr3_features           = false
-enable_fdr_ci_soap_request     = true
-enable_fdr_psp_soap_request    = false
-fdr_soap_request_psp_whitelist = "NA"
-fdr_soap_request_ci_whitelist  = "NA"
+enable_fdr3_features              = false
+enable_fdr_ci_soap_request        = true
+enable_fdr_psp_soap_request       = true
+enable_fdr_nodoChiediElenco_cache = true
+# fdr_soap_request_psp_whitelist    = "ABI03084,BDBDIT22,BCVAIT2V,BPBAITR1,ABI03656"
+# fdr_soap_request_ci_whitelist     = "00493410583,00316820547,80018470171,86002050580,80184430587"
+fdr_soap_request_psp_whitelist = "ABI03589" # after monitoring with nexi we decide to change config to https://config.platform.pagopa.it/payment-service-providers/ABI03589
+fdr_soap_request_ci_whitelist  = "*"
 fdr1_cache_duration            = "1800" # sec
-apim_fdr_nodo_pagopa_enable    = true  # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
+apim_fdr_nodo_pagopa_enable    = true   # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 
 ftp_organization = "80078750587,00488410010,97532760580,12300020158"
 

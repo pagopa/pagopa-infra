@@ -108,6 +108,11 @@ variable "cidr_subnet_tools_cae" {
   description = "Address prefixes for container apps Tools in italy."
 }
 
+variable "cidr_common_private_endpoint_snet" {
+  type        = list(string)
+  description = "Common Private Endpoint network address space."
+}
+
 ### External resources
 
 variable "monitor_resource_group_name" {
