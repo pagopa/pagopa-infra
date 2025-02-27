@@ -14,3 +14,52 @@ data "azuread_group" "adgroup_externals" {
 data "azuread_group" "adgroup_security" {
   display_name = "${local.product}-adgroup-security"
 }
+
+# Acccording to 
+# Application Insights API Keys are deprecated and will be retired in March 2026. Please consider using API Accesss with Azure AD. Learn more about API Access with Azure AD
+# https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?tabs=aspnetcore
+
+resource "azuread_application" "qi_app" {
+  display_name = "${local.product}-qi"
+  owners       = ["c7636d10-4f78-43bd-89f6-555c7d82e02c"]
+}
+
+resource "azuread_service_principal" "qi_sp" {
+  application_id = azuread_application.qi_app.application_id
+}
+
+# https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#role-based-access-control-administrator
+resource "azurerm_role_assignment" "selfcare_apim_contributor" {
+  scope                = data.azurerm_api_management.apim.id
+  role_definition_name = "API Management Service Contributor"
+  principal_id         = azuread_service_principal.selfcare.object_id
+}
+
+resource "time_rotating" "selfcare_application" {
+  rotation_days = 300
+}
+
+resource "azuread_application_password" "selfcare" {
+  application_object_id = azuread_application.selfcare.object_id
+  display_name          = "managed by terraform"
+  end_date_relative     = "8640h" # 360 days
+  rotate_when_changed = {
+    rotation = time_rotating.selfcare_application.id
+  }
+}
+
+resource "azurerm_key_vault_secret" "selfcare_service_principal_client_id" {
+  name         = "${local.product}-selfcare-client-id"
+  value        = azuread_service_principal.selfcare.application_id
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "selfcare_service_principal_client_secret" {
+  name         = "${local.product}-selfcare-client-secret"
+  value        = azuread_application_password.selfcare.value
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
