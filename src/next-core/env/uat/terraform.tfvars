@@ -196,7 +196,7 @@ ehns_maximum_throughput_units = 5
 ehns_capacity                 = 5
 ehns_public_network_access    = true
 
-ehns_metric_alerts = {
+ehns03_metric_alerts = {
   no_trx = {
     aggregation = "Total"
     metric_name = "IncomingMessages"
@@ -244,6 +244,36 @@ ehns_metric_alerts = {
   },
 }
 
+ehns04_metric_alerts = {
+  no_trx = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "No transactions received from acquirer in the last 24h"
+    operator    = "LessThanOrEqual"
+    threshold   = 1000
+    frequency   = "PT1H"
+    window_size = "P1D"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values   = ["rtd-trx"]
+      }
+    ],
+  },
+  active_connections = {
+    aggregation = "Average"
+    metric_name = "ActiveConnections"
+    description = null
+    operator    = "LessThanOrEqual"
+    threshold   = 0
+    frequency   = "PT5M"
+    window_size = "PT15M"
+    dimension   = [],
+  },
+}
+
+ehns04_alerts_enabled = false
 
 eventhubs_03 = [
   {
@@ -676,8 +706,6 @@ eventhubs_04 = [
     ]
   }
 ]
-
-eh04_alerts_enabled = false
 
 node_forwarder_logging_level          = "DEBUG"
 node_forwarder_zone_balancing_enabled = false
