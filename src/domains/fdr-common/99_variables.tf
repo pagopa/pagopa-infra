@@ -347,7 +347,7 @@ variable "reporting_fdr_blobs_retention_days" {
 variable "fdr1_cached_response_blob_file_retention_days" {
   type        = number
   description = "The number of day for storage_management_policy"
-  default     = 30
+  default     = 1
 }
 
 variable "fdr_re_versioning" {
