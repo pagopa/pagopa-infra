@@ -1,5 +1,5 @@
 config:
-  logLevel: "debug"
+  logLevel: "info"
   receivers:
     - file:
         layout: {}
@@ -53,6 +53,7 @@ config:
         - reason: "NodeNotReady"
         - reason: "Drain|FailedMount|NetworkNotReady|VMEventScheduled"
           namespace: "default|kube-system"
+        - reason: "FailedAttachVolume|FailedMount|InvalidDiskCapacity"
         match:
           - receiver: "${opsgenie_receiver_name}-critical"
             type: "Warning"
