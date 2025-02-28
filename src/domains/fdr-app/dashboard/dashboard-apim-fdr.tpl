@@ -1712,7 +1712,7 @@
               },
               {
                 "name": "Query",
-                "value": "let threshold = 0.99;\ntraces\n//| where timestamp > ago(10m)\n| where message startswith \"End process [NodoInviaFlussoRendicontazioneFTP]\"\n| extend outcome = extract(\"End process \\\\[NodoInviaFlussoRendicontazioneFTP\\\\] -> \\\\[(.*?)\\\\]\", 1, message)\n| summarize\n    Total=count(),\n    Success=count(outcome == \"OK\")\n    by bin(timestamp, 5m)\n| extend availability=toreal(Success) / Total\n| project timestamp, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                "value": "let threshold = 0.99;\ntraces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == "fdr-nodo"\n| where message startswith \"End process [NodoInviaFlussoRendicontazioneFTP]\"\n| extend outcome = extract(\"End process \\\\[NodoInviaFlussoRendicontazioneFTP\\\\] -> \\\\[(.*?)\\\\]\", 1, message)\n| summarize\n    Total=count(),\n    Success=count(outcome == \"OK\")\n    by bin(timestamp, 5m)\n| extend availability=toreal(Success) / Total\n| project timestamp, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
                 "isOptional": true
               },
               {
