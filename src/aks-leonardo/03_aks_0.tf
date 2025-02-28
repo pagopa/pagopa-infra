@@ -21,7 +21,7 @@ module "aks_leonardo" {
   enable_prometheus_monitor_metrics = var.env_short != "p" ? true : false
 
   # ff: Enabled cost analysis on UAT/PROD
-  # cost_analysis_enabled = var.env_short != "d" ? true : false
+  cost_analysis_enabled = var.env_short != "d" ? true : false
 
   #
   # 🤖 System node pool
