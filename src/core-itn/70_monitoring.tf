@@ -50,6 +50,14 @@ resource "azurerm_private_dns_zone_virtual_network_link" "prometheus_dns_zone_vn
   private_dns_zone_name = azurerm_private_dns_zone.prometheus_dns_zone.0.name
 }
 
+resource "azurerm_private_dns_zone_virtual_network_link" "prometheus_core_dns_zone_vnet_link" {
+  count                 = var.env != "prod" ? 1 : 0
+  name                  = data.azurerm_virtual_network.vnet_core.name
+  resource_group_name   = module.vnet_italy.0.resource_group_name
+  virtual_network_id    = data.azurerm_virtual_network.vnet_core.id
+  private_dns_zone_name = azurerm_private_dns_zone.prometheus_dns_zone.0.name
+}
+
 resource "azurerm_private_endpoint" "monitor_workspace_private_endpoint" {
   count               = var.env != "prod" ? 1 : 0
   name                = "${var.prefix}-${var.location}-monitor-workspace-pe"
