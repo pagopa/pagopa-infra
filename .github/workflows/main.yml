@@ -19,6 +19,6 @@ jobs:
     steps:
       - name: Assign Me
         # You may pin to the exact commit or the version.
-        uses: AlbertHernandez/assign-me@v1.0.0
+        uses: AlbertHernandez/assign-me@23032ca0168647e8ff7a148165c2f1e10e6a89ef # v1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
