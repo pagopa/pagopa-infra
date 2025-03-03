@@ -4,11 +4,11 @@
     "title": "Biz-Events Service",
     "description": "Microservice for exposing REST APIs about payment receipts.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.1.57"
+    "version": "0.1.69"
   },
   "servers": [
     {
-      "url": "${host}/bizevents/service/v1",
+      "url": "http://localhost",
       "description": "Generated server url"
     }
   ],
@@ -70,8 +70,8 @@
               }
             }
           },
-          "422": {
-            "description": "Unable to process the request.",
+          "200": {
+            "description": "Obtained receipt.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -83,7 +83,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+                  "$ref": "#/components/schemas/CtReceiptModelResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -106,19 +117,8 @@
               }
             }
           },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Obtained receipt.",
+          "422": {
+            "description": "Unable to process the request.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -130,7 +130,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CtReceiptModelResponse"
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -220,8 +220,8 @@
               }
             }
           },
-          "422": {
-            "description": "Unable to process the request.",
+          "200": {
+            "description": "Obtained receipt.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -233,7 +233,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
+                  "$ref": "#/components/schemas/CtReceiptModelResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -256,19 +267,8 @@
               }
             }
           },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Obtained receipt.",
+          "422": {
+            "description": "Unable to process the request.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -280,7 +280,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CtReceiptModelResponse"
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -313,8 +313,8 @@
         "description": "Return OK if application is started",
         "operationId": "healthCheck",
         "responses": {
-          "400": {
-            "description": "Bad Request",
+          "500": {
+            "description": "Service unavailable",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -331,8 +331,8 @@
               }
             }
           },
-          "500": {
-            "description": "Service unavailable",
+          "400": {
+            "description": "Bad Request",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -367,8 +367,8 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
+          "403": {
+            "description": "Forbidden",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -389,8 +389,8 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
+          "401": {
+            "description": "Unauthorized",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -537,6 +537,10 @@
           "paymentDateTime": {
             "type": "string",
             "format": "date"
+          },
+          "paymentDateTimeFormatted": {
+            "type": "string",
+            "format": "date-time"
           },
           "applicationDate": {
             "type": "string",
