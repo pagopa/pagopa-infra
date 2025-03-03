@@ -81,10 +81,10 @@ enable_fdr3_features              = false
 enable_fdr_ci_soap_request        = true
 enable_fdr_psp_soap_request       = true
 enable_fdr_nodoChiediElenco_cache = false
-fdr_soap_request_psp_whitelist = "ABI03589,IFSPIT21,ABI36964,ABI18164,BCEPITMM,ABI36925"
-fdr_soap_request_ci_whitelist  = "*"
-fdr1_cache_duration            = "1800" # sec
-apim_fdr_nodo_pagopa_enable    = true   # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
+fdr_soap_request_psp_whitelist    = "ABI03589,IFSPIT21,ABI36964,ABI18164,BCEPITMM,ABI36925"
+fdr_soap_request_ci_whitelist     = "*"
+fdr1_cache_duration               = "1800" # sec
+apim_fdr_nodo_pagopa_enable       = true   # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 
 ftp_organization = "80078750587,00488410010,97532760580,12300020158"
 
