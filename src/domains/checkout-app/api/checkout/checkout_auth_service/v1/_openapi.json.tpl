@@ -299,17 +299,7 @@
         "responses": {
           "200": {
             "description": "Token is valid"
-          },
-          "400": {
-            "description": "Invalid token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
+          },,
           "401": {
             "description": "Unauthorized",
             "content": {
