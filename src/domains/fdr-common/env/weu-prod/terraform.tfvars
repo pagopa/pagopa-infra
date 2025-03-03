@@ -206,15 +206,15 @@ fdr_storage_account = {
 fdr_re_storage_account = {
   account_kind                       = "StorageV2"
   account_tier                       = "Standard"
-  account_replication_type           = "GZRS"
-  blob_versioning_enabled            = true
+  account_replication_type           = "ZRS"
+  blob_versioning_enabled            = false
   advanced_threat_protection         = true
   advanced_threat_protection_enabled = false
   public_network_access_enabled      = false
-  blob_delete_retention_days         = 90
+  blob_delete_retention_days         = 7
   enable_low_availability_alert      = true
-  backup_enabled                     = true
-  backup_retention                   = 30
+  backup_enabled                     = false
+  backup_retention                   = 0
 }
 
 fdr_history_storage_account = {

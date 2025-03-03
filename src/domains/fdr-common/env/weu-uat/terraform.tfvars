@@ -207,7 +207,7 @@ fdr_re_storage_account = {
   advanced_threat_protection         = true
   advanced_threat_protection_enabled = false
   public_network_access_enabled      = true
-  blob_delete_retention_days         = 90
+  blob_delete_retention_days         = 1
   enable_low_availability_alert      = false
 }
 
