@@ -199,7 +199,7 @@
                                 new JProperty("flowId", (string) context.Variables["identificativoFlusso"]),
                                 new JProperty("flowTimestamp", (string) context.Variables["dataOraFlusso"])
                                 ).ToString();}" />
-                        <send-request mode="new" response-variable-name="register_for_validation_result" timeout="10" ignore-error="false">
+                        <send-request mode="new" response-variable-name="register_for_validation_result" timeout="10" ignore-error="true">
                             <set-url>@("${base-url}/register-for-validation/fdr")</set-url>
                             <set-method>POST</set-method>
                             <set-header name="Content-Type" exists-action="override">
@@ -210,9 +210,9 @@
                             </set-body>
                         </send-request>
                         <choose>
-                            <when condition="@( context.Variables["register_for_validation_result"] != null && ((IResponse) context.Variables["register_for_validation_result"]).StatusCode != 200)">
+                            <when condition="@( context.Variables["register_for_validation_result"] == null || context.Variables["register_for_validation_result"] != null && ((IResponse) context.Variables["register_for_validation_result"]).StatusCode != 200)">
                                 <trace source="error_on_register_for_validation" severity="error">
-                                    <message>@{ return "[ALERT][FDR1][RegisterForValidation] Error while sending flow for registration on validation: [" + ((IResponse)context.Variables["register_for_validation_result"]).Body.As<string>() + "] -> Request: [" + (string)context.Variables["register_for_validation_request"] + "]"; }</message>
+                                    <message>@{ return "[ALERT][FDR1][RegisterForValidation] Error while sending flow for registration on validation, Request: [" + (string)context.Variables["register_for_validation_request"] + "]"; }</message>
                                 </trace>
                             </when>
                         </choose>
