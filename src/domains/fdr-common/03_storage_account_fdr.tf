@@ -215,9 +215,16 @@ resource "azurerm_storage_container" "fdr3_flows_blob_file" {
 }
 
 ## re payload blob container
-resource "azurerm_storage_container" "re_payload_blob_file" {
+resource "azurerm_storage_container" "re_payloads_blob_file" {
   name                 = "re-payload"
   storage_account_name = module.fdr_re_sa.name
+}
+
+## re payload blob container
+## TODO WARNING: this is the old one, it must be deleted only after data migration
+resource "azurerm_storage_container" "re_payload_blob_file" {
+  name                 = "re-payload"
+  storage_account_name = module.fdr_conversion_sa.name
 }
 
 # table#1 conversion error table
