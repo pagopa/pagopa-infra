@@ -1351,7 +1351,7 @@
               },
               {
                 "name": "Query",
-                "value": "let threshold = 0.99;\ntraces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == "fdr-nodo"\n| where message startswith \"End process [registerFdrForValidation]\"\n| extend outcome = extract(\"End process \\\\[registerFdrForValidation\\\\] -> \\\\[(.*?)\\\\]\", 1, message)\n| summarize\n    Total=count(),\n    Success=count(outcome == \"OK\")\n    by bin(timestamp, 5m)\n| extend availability=toreal(Success) / Total\n| project timestamp, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
+                "value": "let threshold = 0.99;\ntraces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == \"fdr-nodo\"\n| where message startswith \"End process [registerFdrForValidation]\"\n| extend outcome = extract(\"End process \\\\[registerFdrForValidation\\\\] -> \\\\[(.*?)\\\\]\", 1, message)\n| summarize\n    Total=count(),\n    Success=count(outcome == \"OK\")\n    by bin(timestamp, 5m)\n| extend availability=toreal(Success) / Total\n| project timestamp, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n",
                 "isOptional": true
               },
               {
@@ -1535,7 +1535,7 @@
                   "flowId": "261px",
                   "errorMessage": "464px"
                 },
-                "Query": "let threshold = 0.99;\ntraces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == "fdr-nodo"\n| where message startswith \"End process [registerFdrForValidation]\"\n| extend errorMessage = extract(\"End process \\\\[registerFdrForValidation\\\\] -> \\\\[(.*?)\\\\](.*?)$\", 2, message)\n| where errorMessage != \"\"\n| extend flowId = customDimensions[\"fdr\"]\n| extend sessionId = customDimensions[\"sessionId\"]\n| order by timestamp desc \n| project timestamp, flowId, errorMessage, sessionId\n\n",
+                "Query": "let threshold = 0.99;\ntraces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == \"fdr-nodo\"\n| where message startswith \"End process [registerFdrForValidation]\"\n| extend errorMessage = extract(\"End process \\\\[registerFdrForValidation\\\\] -> \\\\[(.*?)\\\\](.*?)$\", 2, message)\n| where errorMessage != \"\"\n| extend flowId = customDimensions[\"fdr\"]\n| extend sessionId = customDimensions[\"sessionId\"]\n| order by timestamp desc \n| project timestamp, flowId, errorMessage, sessionId\n\n",
                 "ControlType": "AnalyticsGrid",
                 "PartTitle": "KO on register for validation",
                 "PartSubTitle": "register-for-validation"
@@ -1594,7 +1594,7 @@
               },
               {
                 "name": "Query",
-                "value": "let threshold = 0.99;\ntraces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == "fdr-nodo"\n| where message startswith \"End process [NodoInviaFlussoRendicontazioneFTP]\"\n| extend outcome = extract(\"End process \\\\[NodoInviaFlussoRendicontazioneFTP\\\\] -> \\\\[(.*?)\\\\]\", 1, message)\n| summarize\n    Total=count(),\n    Success=count(outcome == \"OK\")\n    by bin(timestamp, 5m)\n| extend availability=toreal(Success) / Total\n| project timestamp, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                "value": "let threshold = 0.99;\ntraces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == \"fdr-nodo\"\n| where message startswith \"End process [NodoInviaFlussoRendicontazioneFTP]\"\n| extend outcome = extract(\"End process \\\\[NodoInviaFlussoRendicontazioneFTP\\\\] -> \\\\[(.*?)\\\\]\", 1, message)\n| summarize\n    Total=count(),\n    Success=count(outcome == \"OK\")\n    by bin(timestamp, 5m)\n| extend availability=toreal(Success) / Total\n| project timestamp, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
                 "isOptional": true
               },
               {
@@ -1712,7 +1712,7 @@
               },
               {
                 "name": "Query",
-                "value": "let threshold = 0.99;\ntraces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == "fdr-nodo"\n| where message startswith \"End process [NodoInviaFlussoRendicontazioneFTP]\"\n| extend outcome = extract(\"End process \\\\[NodoInviaFlussoRendicontazioneFTP\\\\] -> \\\\[(.*?)\\\\]\", 1, message)\n| summarize\n    Total=count(),\n    Success=count(outcome == \"OK\")\n    by bin(timestamp, 5m)\n| extend availability=toreal(Success) / Total\n| project timestamp, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
+                "value": "let threshold = 0.99;\ntraces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == \"fdr-nodo\"\n| where message startswith \"End process [NodoInviaFlussoRendicontazioneFTP]\"\n| extend outcome = extract(\"End process \\\\[NodoInviaFlussoRendicontazioneFTP\\\\] -> \\\\[(.*?)\\\\]\", 1, message)\n| summarize\n    Total=count(),\n    Success=count(outcome == \"OK\")\n    by bin(timestamp, 5m)\n| extend availability=toreal(Success) / Total\n| project timestamp, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
                 "isOptional": true
               },
               {
@@ -1780,7 +1780,7 @@
                   "flowId": "271px",
                   "timestamp": "139px"
                 },
-                "Query": "traces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == "fdr-nodo"\n| where message startswith \"End process [NodoInviaFlussoRendicontazioneFTP]\"\n| extend errorMessage = extract(\"End process \\\\[NodoInviaFlussoRendicontazioneFTP\\\\] -> \\\\[(.*?)\\\\](.*?)$\", 2, message)\n| where errorMessage != \"\"\n| extend flowId = customDimensions[\"fdr\"]\n| extend sessionId = customDimensions[\"sessionId\"]\n| order by timestamp desc \n| project timestamp, flowId, errorMessage, sessionId\n\n",
+                "Query": "traces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == \"fdr-nodo\"\n| where message startswith \"End process [NodoInviaFlussoRendicontazioneFTP]\"\n| extend errorMessage = extract(\"End process \\\\[NodoInviaFlussoRendicontazioneFTP\\\\] -> \\\\[(.*?)\\\\](.*?)$\", 2, message)\n| where errorMessage != \"\"\n| extend flowId = customDimensions[\"fdr\"]\n| extend sessionId = customDimensions[\"sessionId\"]\n| order by timestamp desc \n| project timestamp, flowId, errorMessage, sessionId\n\n",
                 "ControlType": "AnalyticsGrid",
                 "PartTitle": "KO on nodoInviaFlussoRendicontazioneFTP",
                 "PartSubTitle": "nodo-invia-flusso-rendicontazione-FTP"
