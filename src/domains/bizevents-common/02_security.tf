@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/key_vault"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -372,16 +372,19 @@ resource "azurerm_key_vault_secret" "list_lap_arc_4_io_api_keysubkey_store_kv" {
 
 // apikey biz-trx-api-key-4-perftest and save keys on KV
 data "azurerm_api_management_product" "apim_biz_events_service_product" {
+  count = var.env_short != "p" ? 1 : 0
+
   product_id          = "bizevents-all-in-one"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
 resource "azurerm_api_management_subscription" "biz_trx_api_key_4_perftest" {
-  count               = var.env_short != "p" ? 1 : 0
+  count = var.env_short != "p" ? 1 : 0
+
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  product_id    = data.azurerm_api_management_product.apim_biz_events_service_product.id
+  product_id    = data.azurerm_api_management_product.apim_biz_events_service_product[0].id
   display_name  = "Biz Events biz-trx-api-key-4-perftest"
   allow_tracing = false
   state         = "active"
