@@ -299,7 +299,7 @@
         "responses": {
           "200": {
             "description": "Token is valid"
-          },,
+          },
           "401": {
             "description": "Unauthorized",
             "content": {
