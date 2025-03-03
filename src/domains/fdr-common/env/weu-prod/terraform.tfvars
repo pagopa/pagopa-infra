@@ -199,8 +199,8 @@ fdr_storage_account = {
   public_network_access_enabled      = false
   blob_delete_retention_days         = 90
   enable_low_availability_alert      = true
-  backup_enabled                     = true
-  backup_retention                   = 30
+  backup_enabled                     = false
+  backup_retention                   = 0
 }
 
 fdr_re_storage_account = {
