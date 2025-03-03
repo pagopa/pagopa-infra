@@ -16,6 +16,11 @@ spec:
         check_interval: 1s
         limit_mib: 2000
       batch:
+      resource:
+        attributes:
+        - key: deployment.environment
+          value: ${deployment_env}
+          action: upsert
 
     exporters:
       logging:
@@ -32,10 +37,13 @@ spec:
       pipelines:
         traces:
           receivers: [otlp]
+          processors: [resource]
           exporters: [logging, otlphttp/elastic]
         metrics:
           receivers: [otlp]
+          processors: [resource]
           exporters: [logging, otlphttp/elastic]
         logs:
           receivers: [otlp]
+          processors: [resource]
           exporters: [logging, otlphttp/elastic]
