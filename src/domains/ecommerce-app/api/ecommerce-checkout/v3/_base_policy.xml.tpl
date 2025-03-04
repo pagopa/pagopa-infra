@@ -37,7 +37,7 @@
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
         </when>
       </choose>
-      <!-- Check authorization token END-->
+      <!-- Check authorization token START-->
       <set-variable name="authToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
       <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
         <set-url>"@("https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/validate")"</set-url>
