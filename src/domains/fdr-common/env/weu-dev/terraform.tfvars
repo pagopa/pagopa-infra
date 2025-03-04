@@ -189,15 +189,18 @@ fdr_storage_account = {
 }
 
 fdr_re_storage_account = {
-  account_kind                       = "StorageV2"
-  account_tier                       = "Standard"
-  account_replication_type           = "LRS"
-  blob_versioning_enabled            = false
-  advanced_threat_protection         = false
-  advanced_threat_protection_enabled = false
-  public_network_access_enabled      = true
-  blob_delete_retention_days         = 1
-  enable_low_availability_alert      = false
+  account_kind                                                 = "StorageV2"
+  account_tier                                                 = "Standard"
+  account_replication_type                                     = "LRS"
+  blob_versioning_enabled                                      = false
+  public_network_access_enabled                                = true
+  blob_delete_retention_days                                   = 1
+  enable_low_availability_alert                                = false
+  storage_defender_enabled                                     = false
+  storage_defender_override_subscription_settings_enabled      = false
+  storage_defender_sensitive_data_discovery_enabled            = false
+  storage_defender_malware_scanning_on_upload_enabled          = false
+  storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
 }
 
 

@@ -5,6 +5,20 @@ resource "azurerm_resource_group" "fdr_rg" {
   tags = var.tags
 }
 
+resource "azurerm_security_center_storage_defender" "fdr_re_storage_defender" {
+  count = var.fdr_re_storage_account.storage_defender_enabled ? 1 : 0
+
+  storage_account_id                          = module.fdr_re_sa.id
+  override_subscription_settings_enabled      = var.fdr_re_storage_account.storage_defender_override_subscription_settings_enabled
+  sensitive_data_discovery_enabled            = var.fdr_re_storage_account.storage_defender_sensitive_data_discovery_enabled
+  malware_scanning_on_upload_enabled          = var.fdr_re_storage_account.storage_defender_malware_scanning_on_upload_enabled
+  malware_scanning_on_upload_cap_gb_per_month = var.fdr_re_storage_account.storage_defender_malware_scanning_on_upload_cap_gb_per_month
+
+  depends_on = [
+    module.fdr_re_sa
+  ]
+}
+
 module "fdr_re_sa" {
   source = "./.terraform/modules/__v3__/storage_account"
 
@@ -16,7 +30,7 @@ module "fdr_re_sa" {
   blob_versioning_enabled         = var.fdr_re_storage_account.blob_versioning_enabled
   resource_group_name             = azurerm_resource_group.fdr_rg.name
   location                        = var.location
-  advanced_threat_protection      = var.fdr_re_storage_account.advanced_threat_protection
+  advanced_threat_protection      = false #var.fdr_re_storage_account.advanced_threat_protection
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = var.fdr_re_storage_account.public_network_access_enabled
   enable_low_availability_alert   = var.fdr_re_storage_account.enable_low_availability_alert
@@ -232,7 +246,6 @@ resource "azurerm_storage_table" "fdr1_conversion_error_table" {
   name                 = "fdr1conversionerror"
   storage_account_name = module.fdr_conversion_sa.name
 }
-
 
 
 
