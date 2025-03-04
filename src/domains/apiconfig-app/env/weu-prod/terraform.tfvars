@@ -1,12 +1,12 @@
-prefix          = "pagopa"
-env_short       = "p"
-env             = "prod"
-domain          = "apiconfig"
-location        = "westeurope"
-location_short  = "weu"
-location_string = "West Europe"
-instance        = "prod"
-
+prefix                 = "pagopa"
+env_short              = "p"
+env                    = "prod"
+domain                 = "apiconfig"
+location               = "westeurope"
+location_short         = "weu"
+location_string        = "West Europe"
+instance               = "prod"
+gh_runner_job_location = "italynorth"
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"
@@ -49,7 +49,7 @@ sku_name        = "P1v3"
 # API Config FE
 api_config_fe_enabled                = true
 cname_record_name                    = "config"
-cdn_storage_account_replication_type = "GRS"
+cdn_storage_account_replication_type = "GZRS"
 
 pod_disruption_budgets = {
   "apiconfig-selfcare-integration" = {

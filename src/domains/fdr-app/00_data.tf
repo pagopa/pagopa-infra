@@ -19,6 +19,11 @@ data "azurerm_storage_account" "fdr_flows_sa" {
   resource_group_name = data.azurerm_resource_group.data.name
 }
 
+data "azurerm_storage_account" "fdr_conversion_sa" {
+  name                = replace("${local.project}-sa", "-", "")
+  resource_group_name = data.azurerm_resource_group.fdr_rg.name
+}
+
 data "azurerm_resource_group" "data" {
   name = "${local.product}-data-rg"
 }
@@ -26,6 +31,11 @@ data "azurerm_resource_group" "data" {
 data "azurerm_storage_container" "fdr_rend_flow" {
   name                 = "${data.azurerm_storage_account.fdr_flows_sa.name}xmlfdrflow"
   storage_account_name = data.azurerm_storage_account.fdr_flows_sa.name
+}
+
+data "azurerm_storage_container" "fdr1_cached_response" {
+  name                 = "fdr1-cached-response"
+  storage_account_name = data.azurerm_storage_account.fdr_conversion_sa.name
 }
 
 data "azurerm_container_registry" "common-acr" {
@@ -127,4 +137,8 @@ data "azurerm_api_management_api" "apim_nodo_per_psp_api_v1_auth" {
 
 data "azurerm_resource_group" "rg_api" {
   name = "${local.product}-api-rg"
+}
+
+data "azurerm_resource_group" "identity_rg" {
+  name = "${local.product}-identity-rg"
 }

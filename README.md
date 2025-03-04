@@ -94,12 +94,23 @@ terraform-docs markdown . --sort-by required > README.md
 
 ## Utils
 
-Extract cidr subnet from AZ vnet:
+1. Extract cidr subnet from AZ vnet:
 
 `az network vnet subnet list -g pagopa-d-vnet-rg --vnet-name pagopa-d-vnet | grep "\"addressPrefix\"" | xargs -n2 | sort`
 
 <!-- markdownlint-disable -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+2. Sops MAC mismatch. File has 
+
+To resolve it typing : 
+
+```
+sops --ignore-mac ./secret/weu-<ENV>/noedit_secret_enc.json
+```
+
+change some stuff into file and save it.
+
 ## Requirements
 
 No requirements.

@@ -63,6 +63,8 @@ data "azurerm_resource_group" "rg_node_forwarder" {
 }
 
 data "azurerm_subnet" "subnet_node_forwarder" {
+  count = var.app_forwarder_enabled ? 1 : 0
+
   name                 = "pagopa-${var.env_short}-node-forwarder-snet"
   virtual_network_name = "pagopa-${var.env_short}-vnet"
   resource_group_name  = "pagopa-${var.env_short}-vnet-rg"
@@ -108,7 +110,7 @@ module "app_forwarder_app_service" {
   allowed_subnets = [data.azurerm_subnet.subnet_apim.id]
   allowed_ips     = []
 
-  subnet_id = data.azurerm_subnet.subnet_node_forwarder.id
+  subnet_id = data.azurerm_subnet.subnet_node_forwarder[0].id
 
   tags = var.tags
 }
@@ -139,7 +141,7 @@ module "app_forwarder_slot_staging" {
 
   allowed_subnets = [data.azurerm_subnet.subnet_apim.id]
   allowed_ips     = []
-  subnet_id       = data.azurerm_subnet.subnet_node_forwarder.id
+  subnet_id       = data.azurerm_subnet.subnet_node_forwarder[0].id
 
   tags = var.tags
 }

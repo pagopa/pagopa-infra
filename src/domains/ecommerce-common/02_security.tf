@@ -583,3 +583,28 @@ resource "azurerm_key_vault_secret" "helpdesk-service-testing-email-history" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "ecommerce_for_checkout_google_recaptcha_secret" {
+  name         = "ecommerce-for-checkout-google-recaptcha-secret"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_dev_sendpaymentresult_subscription_key" {
+  count        = var.env_short == "u" ? 1 : 0
+  name         = "ecommerce-dev-sendpaymentresult-subscription-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

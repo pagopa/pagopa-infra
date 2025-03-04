@@ -1,7 +1,7 @@
 # elk-monitoring
 
 <!-- markdownlint-disable -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -56,6 +56,7 @@
 | [null_resource.apm_log_ilm_policy](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.ecommerce_kibana_space](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.fdr_kibana_space](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.gpd_kibana_space](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.logs_ilm_policy](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.metrics_ilm_policy](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.ndp_kibana_space](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
@@ -133,6 +134,8 @@
 | [null_resource.ndp_wispsoapconverter_ingest_pipeline](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.ndp_wispsoapconverter_kibana_data_view](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.ndp_wispsoapconverter_upload_dashboard](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.pagofdr_ingest_pipeline](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.pagogpd_ingest_pipeline](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.pagopa_component_template_custom](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.pagopa_data_stream_rollover](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.pagopa_ingest_pipeline](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
@@ -142,18 +145,18 @@
 | [null_resource.pagopa_kibana_space](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.pagopa_upload_dashboard](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.pagopaecommerce_upload_dashboard](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.pagopafdrnodo_component_template_custom](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.pagopafdrnodo_component_template_package](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.pagopafdrnodo_data_stream_rollover](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.pagopafdrnodo_ilm_policy](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.pagopafdrnodo_index_template](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.pagopafdrnodo_ingest_pipeline](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.pagopafdrnodo_kibana_data_view](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.pagopafdr_component_template_custom](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.pagopafdr_data_stream_rollover](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.pagopafdr_ilm_policy](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.pagopafdr_index_template](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.pagopafdr_kibana_data_view](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.pagopafdrnodo_upload_dashboard](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.pagopapaymentspull_component_template_custom](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.pagopapaymentspull_data_stream_rollover](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.pagopapaymentspull_ilm_policy](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.pagopapaymentspull_index_template](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.pagopagpd_component_template_custom](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.pagopagpd_data_stream_rollover](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.pagopagpd_ilm_policy](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.pagopagpd_index_template](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.pagopagpd_kibana_data_view](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [null_resource.pagopapayments_data_stream_rollover](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.pagopapaymentspull_kibana_data_view](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.pagopapaywallet_migration_dashboard](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.pagopaprint_migration_dashboard](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
@@ -165,8 +168,6 @@
 | [null_resource.pagopaprintit_ingest_pipeline](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.pagopaprintit_kibana_data_view](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.pagopaprintit_service_data_stream_rollover](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.pagopaymentspull_ingest_pipeline](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
-| [null_resource.paymentspull_kibana_space](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.paywallet_kibana_space](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.printit_kibana_space](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [null_resource.snapshot_policy](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
@@ -179,6 +180,8 @@
 | [azuread_service_principal.iac_plan_legacy](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/service_principal) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_key_vault.core_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault_secret.apm_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
 | [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
@@ -201,6 +204,7 @@
 | <a name="input_apim_dns_zone_prefix"></a> [apim\_dns\_zone\_prefix](#input\_apim\_dns\_zone\_prefix) | The dns subdomain for apim. | `string` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
+| <a name="input_elastic_cloud_apm_endpoint"></a> [elastic\_cloud\_apm\_endpoint](#input\_elastic\_cloud\_apm\_endpoint) | APM endpoint for elastic cloud instance | `string` | n/a | yes |
 | <a name="input_elastic_cold_storage"></a> [elastic\_cold\_storage](#input\_elastic\_cold\_storage) | n/a | <pre>object({<br/>    storage_type           = string,<br/>    allow_volume_expansion = bool,<br/>    initialStorageSize     = string<br/>  })</pre> | n/a | yes |
 | <a name="input_elastic_hot_storage"></a> [elastic\_hot\_storage](#input\_elastic\_hot\_storage) | n/a | <pre>object({<br/>    storage_type           = string,<br/>    allow_volume_expansion = bool,<br/>    initialStorageSize     = string<br/>  })</pre> | n/a | yes |
 | <a name="input_elastic_node_pool"></a> [elastic\_node\_pool](#input\_elastic\_node\_pool) | AKS node pool user configuration | <pre>object({<br/>    enabled               = bool,<br/>    name                  = string,<br/>    vm_size               = string,<br/>    os_disk_type          = string,<br/>    os_disk_size_gb       = string,<br/>    node_count_min        = number,<br/>    node_count_max        = number,<br/>    node_labels           = map(any),<br/>    node_taints           = list(string),<br/>    node_tags             = map(any),<br/>    elastic_pool_max_pods = number,<br/>  })</pre> | n/a | yes |
@@ -225,6 +229,7 @@
 | <a name="input_nginx_helm"></a> [nginx\_helm](#input\_nginx\_helm) | nginx ingress helm chart configuration | <pre>object({<br/>    version = string,<br/>    controller = object({<br/>      image = object({<br/>        registry     = string,<br/>        image        = string,<br/>        tag          = string,<br/>        digest       = string,<br/>        digestchroot = string,<br/>      }),<br/>      config = object({<br/>        proxy-body-size : string<br/>      })<br/>    })<br/>  })</pre> | n/a | yes |
 | <a name="input_nodeset_config"></a> [nodeset\_config](#input\_nodeset\_config) | n/a | <pre>map(object({<br/>    count            = string<br/>    roles            = list(string)<br/>    storage          = string<br/>    storageClassName = string<br/>    requestMemory    = string<br/>    requestCPU       = string<br/>    limitsMemory     = string<br/>    limitsCPU        = string<br/>  }))</pre> | <pre>{<br/>  "default": {<br/>    "count": 1,<br/>    "limitsCPU": "1",<br/>    "limitsMemory": "2Gi",<br/>    "requestCPU": "1",<br/>    "requestMemory": "2Gi",<br/>    "roles": [<br/>      "master",<br/>      "data",<br/>      "data_content",<br/>      "data_hot",<br/>      "data_warm",<br/>      "data_cold",<br/>      "data_frozen",<br/>      "ingest",<br/>      "ml",<br/>      "remote_cluster_client",<br/>      "transform"<br/>    ],<br/>    "storage": "5Gi",<br/>    "storageClassName": "standard"<br/>  }<br/>}</pre> | no |
 | <a name="input_opentelemetry_operator_helm"></a> [opentelemetry\_operator\_helm](#input\_opentelemetry\_operator\_helm) | open-telemetry/opentelemetry-operator helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    values_file   = string<br/>  })</pre> | n/a | yes |
+| <a name="input_otel_collector_cloud_migration"></a> [otel\_collector\_cloud\_migration](#input\_otel\_collector\_cloud\_migration) | n/a | `bool` | `false` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_snapshot_storage_replication_type"></a> [snapshot\_storage\_replication\_type](#input\_snapshot\_storage\_replication\_type) | (Optional) ELK snapshot storage replication type | `string` | `"LRS"` | no |
 | <a name="input_subscription_name"></a> [subscription\_name](#input\_subscription\_name) | Subscription name | `string` | n/a | yes |
@@ -234,4 +239,4 @@
 ## Outputs
 
 No outputs.
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->

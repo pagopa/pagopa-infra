@@ -38,9 +38,11 @@ monitor_appinsights_name                    = "pagopa-d-appinsights"
 #
 # ⛴ AKS
 #
-aks_private_cluster_enabled = false
-aks_alerts_enabled          = false
-aks_kubernetes_version      = "1.29.4"
+aks_private_cluster_enabled  = false
+aks_alerts_enabled           = false
+aks_kubernetes_version       = "1.29.4"
+aks_enable_workload_identity = true
+
 aks_system_node_pool = {
   name            = "padaksleosys",
   vm_size         = "Standard_B2ms",
@@ -75,4 +77,5 @@ ingress_load_balancer_ip = "10.3.2.250"
 ingress_replica_count    = "2"
 nginx_helm_version       = "4.10.1"
 
-keda_helm_version = "2.14.0"
+keda_helm_version    = "2.14.0"
+enable_elastic_agent = false

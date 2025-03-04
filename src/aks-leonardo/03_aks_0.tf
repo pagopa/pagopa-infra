@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "rg_aks" {
 }
 
 module "aks_leonardo" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.58.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.84.1"
 
   name                       = local.aks_cluster_name
   location                   = var.location
@@ -15,6 +15,13 @@ module "aks_leonardo" {
   kubernetes_version         = var.aks_kubernetes_version
   log_analytics_workspace_id = var.env_short != "d" ? data.azurerm_log_analytics_workspace.log_analytics_italy.id : data.azurerm_log_analytics_workspace.log_analytics.id
   sku_tier                   = var.aks_sku_tier
+
+  ## Prometheus managed
+  # ff: enabled on DEV/UAT
+  enable_prometheus_monitor_metrics = var.env_short != "p" ? true : false
+
+  # ff: Enabled cost analysis on UAT/PROD
+  cost_analysis_enabled = var.env_short != "d" ? true : false
 
   #
   # 🤖 System node pool
@@ -55,6 +62,9 @@ module "aks_leonardo" {
   addon_azure_policy_enabled                     = true
   addon_azure_key_vault_secrets_provider_enabled = true
   addon_azure_pod_identity_enabled               = true
+  workload_identity_enabled                      = var.aks_enable_workload_identity
+  oidc_issuer_enabled                            = var.aks_enable_workload_identity
+
 
   alerts_enabled = var.aks_alerts_enabled
   # custom_metric_alerts = local.aks_metrics_alerts

@@ -566,3 +566,13 @@ variable "monitor_appinsights_name" {
   type        = string
   description = "App insight in europe name"
 }
+
+variable "aks_enable_workload_identity" {
+  type    = bool
+  default = false
+}
+
+variable "enable_elastic_agent" {
+  type    = bool
+  default = true
+}
