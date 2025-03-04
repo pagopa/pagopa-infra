@@ -29,36 +29,37 @@ resource "azuread_service_principal" "qi_sp" {
 }
 
 # https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#role-based-access-control-administrator
-resource "azurerm_role_assignment" "selfcare_apim_contributor" {
-  scope                = data.azurerm_api_management.apim.id
-  role_definition_name = "API Management Service Contributor"
-  principal_id         = azuread_service_principal.selfcare.object_id
+resource "azurerm_role_assignment" "qi_monitoring_contributor" {
+  scope = data.azurerm_subscription.current.id
+  #  https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/monitor#monitoring-reader
+  role_definition_name = "Monitoring Reader"
+  principal_id         = azuread_service_principal.qi_sp.object_id
 }
 
-resource "time_rotating" "selfcare_application" {
+resource "time_rotating" "qi_application_time" {
   rotation_days = 300
 }
 
-resource "azuread_application_password" "selfcare" {
-  application_object_id = azuread_application.selfcare.object_id
+resource "azuread_application_password" "qi_app_pwd" {
+  application_object_id = azuread_application.qi_app.object_id
   display_name          = "managed by terraform"
   end_date_relative     = "8640h" # 360 days
   rotate_when_changed = {
-    rotation = time_rotating.selfcare_application.id
+    rotation = time_rotating.qi_application_time.id
   }
 }
 
-resource "azurerm_key_vault_secret" "selfcare_service_principal_client_id" {
-  name         = "${local.product}-selfcare-client-id"
-  value        = azuread_service_principal.selfcare.application_id
+resource "azurerm_key_vault_secret" "qi_service_principal_client_id" {
+  name         = "${local.product}-qi-client-id"
+  value        = azuread_service_principal.qi_sp.application_id
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "selfcare_service_principal_client_secret" {
-  name         = "${local.product}-selfcare-client-secret"
-  value        = azuread_application_password.selfcare.value
+resource "azurerm_key_vault_secret" "qi_service_principal_client_secret" {
+  name         = "${local.product}-qi-client-secret"
+  value        = azuread_application_password.qi_app_pwd.value
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

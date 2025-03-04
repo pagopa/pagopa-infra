@@ -5,27 +5,28 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.38.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.30.0, <= 3.53.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | = 3.2.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_eventhub_namespace_qi"></a> [eventhub\_namespace\_qi](#module\_eventhub\_namespace\_qi) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub | v8.22.0 |
-| <a name="module_eventhub_qi_configuration"></a> [eventhub\_qi\_configuration](#module\_eventhub\_qi\_configuration) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration | v8.22.0 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
+| <a name="module_eventhub_namespace_qi"></a> [eventhub\_namespace\_qi](#module\_eventhub\_namespace\_qi) | ./.terraform/modules/__v3__/eventhub | n/a |
+| <a name="module_eventhub_qi_configuration"></a> [eventhub\_qi\_configuration](#module\_eventhub\_qi\_configuration) | ./.terraform/modules/__v3__/eventhub_configuration | n/a |
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | n/a |
 | <a name="module_identity_ci_01"></a> [identity\_ci\_01](#module\_identity\_ci\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | n/a |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v6.7.0 |
-| <a name="module_letsencrypt_qi"></a> [letsencrypt\_qi](#module\_letsencrypt\_qi) | git::https://github.com/pagopa/terraform-azurerm-v3.git//letsencrypt_credential | v6.8.0 |
-| <a name="module_qi_fn_sa"></a> [qi\_fn\_sa](#module\_qi\_fn\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v6.7.0 |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v3__/key_vault | n/a |
+| <a name="module_letsencrypt_qi"></a> [letsencrypt\_qi](#module\_letsencrypt\_qi) | ./.terraform/modules/__v3__/letsencrypt_credential | n/a |
+| <a name="module_qi_fn_sa"></a> [qi\_fn\_sa](#module\_qi\_fn\_sa) | ./.terraform/modules/__v3__/storage_account | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [azuread_application.qi_app](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/resources/application) | resource |
-| [azuread_application_password.selfcare](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/resources/application_password) | resource |
+| [azuread_application_password.qi_app_pwd](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/resources/application_password) | resource |
 | [azuread_service_principal.qi_sp](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/resources/service_principal) | resource |
 | [azurerm_key_vault_access_policy.ad_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
@@ -43,17 +44,17 @@
 | [azurerm_key_vault_secret.ehub_alert_qi_tx_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.elastic_otel_token_header](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.qi_azurewebjobsstorage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.selfcare_service_principal_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.selfcare_service_principal_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.qi_service_principal_client_id](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.qi_service_principal_client_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_resource_group.qi_evh_resource_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.qi_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
-| [azurerm_role_assignment.selfcare_apim_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.qi_monitoring_contributor](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_subnet.eventhub_qi_snet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/3.2.1/docs/resources/resource) | resource |
 | [null_resource.github_runner_app_permissions_to_namespace_ci_01](https://registry.terraform.io/providers/hashicorp/null/3.2.1/docs/resources/resource) | resource |
-| [time_rotating.selfcare_application](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) | resource |
+| [time_rotating.qi_application_time](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.38.0/docs/data-sources/group) | data source |
