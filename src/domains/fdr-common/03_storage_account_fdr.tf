@@ -147,34 +147,6 @@ resource "azurerm_private_endpoint" "fdr_queue_private_endpoint" {
 }
 
 # https://github.com/hashicorp/terraform-provider-azurerm/issues/5820
-resource "azurerm_private_endpoint" "fdr_re_table_private_endpoint" {
-  count = var.env_short == "d" ? 0 : 1
-
-  name                = format("%s-re-table-private-endpoint", local.project)
-  location            = var.location
-  resource_group_name = azurerm_resource_group.fdr_rg.name
-  subnet_id           = module.fdr_storage_snet[0].id
-
-  private_dns_zone_group {
-    name                 = "${local.project}-re-table-sa-private-dns-zone-group"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_table_azure_com.id]
-  }
-
-  private_service_connection {
-    name                           = "${local.project}-re-table-sa-private-service-connection"
-    private_connection_resource_id = module.fdr_re_sa.id
-    is_manual_connection           = false
-    subresource_names              = ["table"]
-  }
-
-  tags = var.tags
-
-  depends_on = [
-    module.fdr_re_sa
-  ]
-}
-
-# https://github.com/hashicorp/terraform-provider-azurerm/issues/5820
 resource "azurerm_private_endpoint" "fdr_table_private_endpoint" {
   count = var.env_short == "d" ? 0 : 1
 
