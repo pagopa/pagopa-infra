@@ -9,7 +9,6 @@
           <method>POST</method>
           <method>GET</method>
           <method>OPTIONS</method>
-          <method>DELETE</method>
         </allowed-methods>
         <allowed-headers>
           <header>Content-Type</header>
@@ -34,18 +33,14 @@
         <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationId","").Split(','), operations => operations == context.Operation.Id))">
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service")"/>
         </when>
-        <when condition="@(
-          Array.Exists(context.Variables.GetValueOrDefault("paymentRequestsOperationId","").Split(','), operations => operations == context.Operation.Id) 
-          || 
-          Array.Exists(context.Variables.GetValueOrDefault("cartsOperationId","").Split(','), operations => operations == context.Operation.Id)
-        )">
+        <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentRequestsOperationId","").Split(','), operations => operations == context.Operation.Id))">
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
         </when>
       </choose>
       <!-- Check authorization token END-->
       <set-variable name="authToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
       <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
-        <set-url>"@("https://${checkout_ingress_hostname}/pagopa-checkout-auth-service//auth/validate")"</set-url>
+        <set-url>"@("https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/validate")"</set-url>
         <set-method>GET</set-method>
         <set-header name="Authorization" exists-action="override">
             <value>@("Bearer " + (string)context.Variables["authToken"])</value>
