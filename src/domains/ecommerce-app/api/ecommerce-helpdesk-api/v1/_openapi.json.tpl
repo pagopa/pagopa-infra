@@ -1442,6 +1442,36 @@
           "endDate"
         ]
       },
+      "DeadLetterExcludedStatuses": {
+        "type": "object",
+        "properties": {
+          "ecommerceStatuses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of eCommerce statuses to exclude",
+            "example": [
+              "NOTIFIED_OK"
+            ]
+          },
+          "npgStatuses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of NPG statuses to exclude",
+            "example": [
+              "DECLINED",
+              "CANCELLED"
+            ]
+          }
+        },
+        "required": [
+          "ecommerceStatuses",
+          "npgStatuses"
+        ]
+      },
       "SearchPgsStatusResponse": {
         "type": "object",
         "properties": {
@@ -2147,6 +2177,9 @@
                 },
                 "timeRange": {
                   "$ref": "#/components/schemas/DeadLetterSearchDateTimeRange"
+                },
+                "excludedStatuses": {
+                  "$ref": "#/components/schemas/DeadLetterExcludedStatuses"
                 }
               },
               "required": [
@@ -2165,6 +2198,24 @@
                   "timeRange": {
                     "startDate": "2023-01-01T00:00:00.000Z",
                     "endDate": "2023-01-01T02:00:00.000Z"
+                  }
+                }
+              },
+              "search by source with time range and excluded statuses": {
+                "value": {
+                  "source": "ALL",
+                  "timeRange": {
+                    "startDate": "2023-01-01T00:00:00.000Z",
+                    "endDate": "2023-01-01T02:00:00.000Z"
+                  },
+                  "excludedStatuses": {
+                    "ecommerceStatuses": [
+                      "NOTIFIED_OK"
+                    ],
+                    "npgStatuses": [
+                      "DECLINED",
+                      "CANCELLED"
+                    ]
                   }
                 }
               }
