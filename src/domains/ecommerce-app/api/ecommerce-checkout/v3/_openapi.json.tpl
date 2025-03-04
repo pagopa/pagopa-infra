@@ -44,7 +44,7 @@
     "description": "Design review"
   },
   "paths": {
-    "/payment-requests/{rpt_id}": {
+    "/auth/payment-requests/{rpt_id}": {
       "get": {
         "summary": "Verify single payment notice",
         "description": "Api used to perform verify on payment notice by mean of Nodo call",
@@ -142,7 +142,7 @@
         }
       }
     },
-    "/transactions": {
+    "/auth/transactions": {
       "post": {
         "tags": [
           "ecommerce-transactions"
@@ -264,7 +264,7 @@
         }
       }
     },
-    "/payment-methods": {
+    "/auth/payment-methods": {
       "get": {
         "tags": [
           "ecommerce-methods"
@@ -301,7 +301,7 @@
         }
       }
     },
-    "/payment-methods/{id}/sessions": {
+    "/auth/payment-methods/{id}/sessions": {
       "post": {
         "tags": [
           "ecommerce-methods"
