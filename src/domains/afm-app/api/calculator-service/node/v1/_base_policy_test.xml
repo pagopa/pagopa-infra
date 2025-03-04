@@ -1,0 +1,361 @@
+<!--
+    IMPORTANT:
+    - Policy elements can appear only within the <inbound>, <outbound>, <backend> section elements.
+    - To apply a policy to the incoming request (before it is forwarded to the backend service), place a corresponding policy element within the <inbound> section element.
+    - To apply a policy to the outgoing response (before it is sent back to the caller), place a corresponding policy element within the <outbound> section element.
+    - To add a policy, place the cursor at the desired insertion point and select a policy from the sidebar.
+    - To remove a policy, delete the corresponding policy statement from the policy document.
+    - Position the <base> element within a section element to inherit all policies from the corresponding section element in the enclosing scope.
+    - Remove the <base> element to prevent inheriting policies from the corresponding section element in the enclosing scope.
+    - Policies are applied in the order of their appearance, from the top down.
+    - Comments within policy elements are not supported and may disappear. Place your comments between policy elements or at a higher level scope.
+-->
+<policies>
+    <inbound>
+        <base />
+    <set-backend-service base-url="https://${hostname}/pagopa-afm-calculator-service" />
+        <set-variable name="isMock" value="@(context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key","").Equals("{{afm-secondary-sub-key}}") || context.Request.Headers.GetValueOrDefault("Ocp-Apim-Subscription-Key","").Equals("{{afm-ndp-test-sub-key}}"))" />
+        <choose>
+            <when condition="@(context.Variables.GetValueOrDefault<bool>("isMock"))">
+                <!--Mock Responses-->
+                <set-variable name="paymentAmount" value="@(context.Request.Body.As<JObject>(true)["paymentAmount"].Value<string>())" />
+                <set-variable name="scenario1" value="@(context.Request.Body.As<JObject>(true)["paymentAmount"].Value<string>().Equals("7001"))" />
+                <set-variable name="scenario2" value="@(context.Request.Body.As<JObject>(true)["paymentAmount"].Value<string>().Equals("7002"))" />
+                <set-variable name="scenario3" value="@(context.Request.Body.As<JObject>(true)["paymentAmount"].Value<string>().Equals("7003"))" />
+                <set-variable name="scenario4" value="@{
+                    return (
+                        context.Request.Body.As<JObject>(true)["paymentAmount"].Value<string>().Equals("400") ||
+      context.Request.Body.As<JObject>(true)["paymentAmount"].Value<string>().Equals("401") ||
+      context.Request.Body.As<JObject>(true)["paymentAmount"].Value<string>().Equals("429") ||
+      context.Request.Body.As<JObject>(true)["paymentAmount"].Value<string>().Equals("500"));
+      }" />
+                <set-variable name="scenario5" value="@(context.Request.Body.As<JObject>(true)["paymentAmount"].Value<string>().Equals("7005"))" />
+                <set-variable name="scenario6" value="@(context.Request.Body.As<JObject>(true)["paymentAmount"].Value<string>().Equals("7006"))" />
+                <!--Scenario 1-->
+                <choose>
+                    <when condition="@(context.Variables.GetValueOrDefault<bool>("scenario1"))">
+                        <return-response>
+                            <set-status code="200" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-header name="X-Scenario-Id" exists-action="override">
+                                <value>scenario 1</value>
+                            </set-header>
+                            <set-body>@{
+            JObject data = new JObject();
+            data.Add("taxPayerFee", 130);
+            data.Add("primaryCiIncurredFee", 20);
+            data.Add("paymentMethod", "PO");
+            data.Add("touchpoint", "ATM");
+            data.Add("idBundle", "1");
+            data.Add("idCiBundle", "1");
+            if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+                data.Add("idChannel", context.Request.Body.As<JObject>(true)["idPspList"][0]["idChannel"]);
+            } else {
+                data.Add("idChannel", "88888888899_01");
+            }
+            if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+                data.Add("idBrokerPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idBrokerPsp"]);
+            } else {
+                data.Add("idBrokerPsp", "88888888899");
+            }
+            data.Add("bundleName", "bundle 1");
+            data.Add("bundleDescription", "bundle description 1");
+            data.Add("onUs", false);
+            data.Add("abi", "14156");
+            if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+                data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idPsp"]);
+            } else {
+                data.Add("idPsp", "00000000010");
+            }
+            JArray list = new JArray(data);
+
+            JObject response = new JObject();
+            response.Add("belowThreshold", false);
+            response.Add("bundleOptions", list);
+            return response.ToString();
+            }</set-body>
+                        </return-response>
+                    </when>
+                </choose>
+                <!--Scenario 2-->
+                <choose>
+                    <when condition="@(context.Variables.GetValueOrDefault<bool>("scenario2"))">
+                        <return-response>
+                            <set-status code="200" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-header name="X-Scenario-Id" exists-action="override">
+                                <value>scenario 2</value>
+                            </set-header>
+                            <set-body>@{
+          JArray list = new JArray();
+
+          JObject data = new JObject();
+          data.Add("taxPayerFee", 80);
+          data.Add("primaryCiIncurredFee", 0);
+          data.Add("paymentMethod", "CP");
+          data.Add("touchpoint", "PSP");
+          data.Add("idBundle", "2");
+          data.Add("idCiBundle", JValue.CreateNull());
+            if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+                data.Add("idChannel", context.Request.Body.As<JObject>(true)["idPspList"][0]["idChannel"]);
+            } else {
+                data.Add("idChannel", "88888888899_01");
+            }
+            if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+                data.Add("idBrokerPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idBrokerPsp"]);
+            } else {
+                data.Add("idBrokerPsp", "88888888899");
+            }
+          data.Add("bundleName", "bundle 2");
+          data.Add("bundleDescription", "bundle description 2");
+          data.Add("onUs", false);
+          data.Add("abi", "14156");
+          if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+            data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idPsp"]);
+          } else {
+                data.Add("idPsp", "00000000010");
+          }
+          list.Add(data);
+
+          data = new JObject();
+          data.Add("taxPayerFee", 130);
+          data.Add("primaryCiIncurredFee", 20);
+          data.Add("paymentMethod", "PO");
+          data.Add("touchpoint", "PSP");
+          data.Add("idBundle", "1");
+          data.Add("idCiBundle", "1");
+            if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+                data.Add("idChannel", context.Request.Body.As<JObject>(true)["idPspList"][0]["idChannel"]);
+            } else {
+                data.Add("idChannel", "88888888899_01");
+            }
+            if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+                data.Add("idBrokerPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idBrokerPsp"]);
+            } else {
+                data.Add("idBrokerPsp", "88888888899");
+            }
+          data.Add("bundleName", "bundle 1");
+          data.Add("bundleDescription", "bundle description 1");
+          data.Add("onUs", false);
+          data.Add("abi", "14156");
+          if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+            data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idPsp"]);
+          } else {
+                data.Add("idPsp", "00000000010");
+          }
+          list.Add(data);
+
+          data = new JObject();
+          data.Add("taxPayerFee", 80);
+          data.Add("primaryCiIncurredFee", 0);
+          data.Add("paymentMethod", "PO");
+          data.Add("touchpoint", "PSP");
+          data.Add("idBundle", "2");
+          data.Add("idCiBundle", JValue.CreateNull());
+            if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+                data.Add("idChannel", context.Request.Body.As<JObject>(true)["idPspList"][0]["idChannel"]);
+            } else {
+                data.Add("idChannel", "88888888899_01");
+            }
+            if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+                data.Add("idBrokerPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idBrokerPsp"]);
+            } else {
+                data.Add("idBrokerPsp", "88888888899");
+            }
+          data.Add("bundleName", "bundle 2");
+          data.Add("bundleDescription", "bundle description 3");
+          data.Add("onUs", false);
+          data.Add("abi", "14156");
+          if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+            data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idPsp"]);
+          } else {
+            data.Add("idPsp", "00000000010");
+          }
+          list.Add(data);
+
+          JObject response = new JObject();
+          response.Add("belowThreshold", false);
+          response.Add("bundleOptions", list);
+          return response.ToString();
+          }</set-body>
+                        </return-response>
+                    </when>
+                </choose>
+                <!--Scenario 3-->
+                <choose>
+                    <when condition="@(context.Variables.GetValueOrDefault<bool>("scenario3"))">
+                        <return-response>
+                            <set-status code="200" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-header name="X-Scenario-Id" exists-action="override">
+                                <value>scenario 3</value>
+                            </set-header>
+                            <set-body>[]</set-body>
+                        </return-response>
+                    </when>
+                </choose>
+                <!--Scenario 4-->
+                <choose>
+                    <when condition="@(context.Variables.GetValueOrDefault<bool>("scenario4"))">
+                        <return-response>
+                            <set-status code="@(int.Parse((string)context.Variables["paymentAmount"]))" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-header name="X-Scenario-Id" exists-action="override">
+                                <value>scenario 4</value>
+                            </set-header>
+                            <set-body>[{}]</set-body>
+                        </return-response>
+                    </when>
+                </choose>
+                <!--Scenario 5-->
+                <choose>
+                    <when condition="@(context.Variables.GetValueOrDefault<bool>("scenario5"))">
+                        <return-response>
+                            <set-status code="200" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-header name="X-Scenario-Id" exists-action="override">
+                                <value>scenario 5</value>
+                            </set-header>
+                            <set-body>@{
+    JArray list = new JArray();
+
+    JObject data = new JObject();
+    data.Add("taxPayerFee", 80);
+    data.Add("primaryCiIncurredFee", 0);
+    data.Add("paymentMethod", "CP");
+    data.Add("touchpoint", "PSP");
+    data.Add("idBundle", "3");
+    data.Add("idCiBundle", JValue.CreateNull());
+    if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+        data.Add("idChannel", context.Request.Body.As<JObject>(true)["idPspList"][0]["idChannel"]);
+    } else {
+        data.Add("idChannel", "88888888899_01");
+    }
+    if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+        data.Add("idBrokerPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idBrokerPsp"]);
+    } else {
+        data.Add("idBrokerPsp", "88888888899");
+    }
+    data.Add("bundleName", "bundle 3");
+    data.Add("bundleDescription", "bundle description 3");
+    data.Add("onUs", false);
+    data.Add("abi", "14156");
+    if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+        data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idPsp"]);
+    } else {
+        data.Add("idPsp", "00000000010");
+    }
+
+    list.Add(data);
+
+    data = new JObject();
+    data.Add("taxPayerFee", 130);
+    data.Add("primaryCiIncurredFee", 20);
+    data.Add("paymentMethod", "PO");
+    data.Add("touchpoint", "ATM");
+    data.Add("idBundle", "1");
+    data.Add("idCiBundle", "1");
+    if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+        data.Add("idChannel", context.Request.Body.As<JObject>(true)["idPspList"][0]["idChannel"]);
+    } else {
+        data.Add("idChannel", "88888888899_01");
+    }
+    if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+        data.Add("idBrokerPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idBrokerPsp"]);
+    } else {
+        data.Add("idBrokerPsp", "88888888899");
+    }
+    data.Add("bundleName", "bundle 1");
+    data.Add("bundleDescription", "bundle description 1");
+    data.Add("onUs", false);
+    data.Add("abi", "14156");
+    if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+        data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idPsp"]);
+    } else {
+        data.Add("idPsp", "00000000010");
+    }
+
+    list.Add(data);
+
+    JObject response = new JObject();
+    response.Add("belowThreshold", false);
+    response.Add("bundleOptions", list);
+    return response.ToString();
+    }</set-body>
+                        </return-response>
+                    </when>
+                </choose>
+                <!--Scenario 6-->
+                <choose>
+                    <when condition="@(context.Variables.GetValueOrDefault<bool>("scenario6"))">
+                        <return-response>
+                            <set-status code="200" />
+                            <set-header name="Content-Type" exists-action="override">
+                                <value>application/json</value>
+                            </set-header>
+                            <set-header name="X-Scenario-Id" exists-action="override">
+                                <value>scenario 6</value>
+                            </set-header>
+                            <set-body>@{
+    JArray list = new JArray();
+
+    JObject data = new JObject();
+    data.Add("taxPayerFee", 80);
+    data.Add("primaryCiIncurredFee", 0);
+    data.Add("paymentMethod", "CP");
+    data.Add("touchpoint", "PSP");
+    data.Add("idBundle", "5");
+    data.Add("idCiBundle", JValue.CreateNull());
+    if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+        data.Add("idChannel", context.Request.Body.As<JObject>(true)["idPspList"][0]["idChannel"]);
+    } else {
+        data.Add("idChannel", "88888888899_01");
+    }
+    if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+        data.Add("idBrokerPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idBrokerPsp"]);
+    } else {
+        data.Add("idBrokerPsp", "88888888899");
+    }
+    data.Add("bundleName", "bundle 5");
+    data.Add("bundleDescription", "bundle description 5");
+    data.Add("onUs", false);
+    data.Add("abi", "14156");
+    if (context.Request.Body.As<JObject>(true)["idPspList"] != null) {
+        data.Add("idPsp", context.Request.Body.As<JObject>(true)["idPspList"][0]["idPsp"]);
+    } else {
+        data.Add("idPsp", "00000000010");
+    }
+
+    list.Add(data);
+
+    JObject response = new JObject();
+    response.Add("belowThreshold", false);
+    response.Add("bundleOptions", list);
+    return response.ToString();
+    }</set-body>
+                        </return-response>
+                    </when>
+                </choose>
+            </when>
+        </choose>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
