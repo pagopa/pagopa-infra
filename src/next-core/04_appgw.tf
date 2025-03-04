@@ -659,7 +659,7 @@ module "app_gw" {
       description   = "${module.app_gw.name} Abnormal failed requests"
       frequency     = "PT5M"
       window_size   = "PT5M"
-      severity      = 1
+      severity      = 2
       auto_mitigate = true
 
       criteria = []
