@@ -26,7 +26,7 @@ module "tls_checker" {
 
 module "cert_mounter" {
   source                                 = "./.terraform/modules/__v3__/cert_mounter"
-  namespace    = var.domain
+  namespace                              = var.domain
   certificate_name                       = replace(local.ecommerce_hostname, ".", "-")
   kv_name                                = data.azurerm_key_vault.kv.name
   tenant_id                              = data.azurerm_subscription.current.tenant_id
