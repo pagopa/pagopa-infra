@@ -67,15 +67,6 @@
               "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
             },
             "required": true
-          },
-          {
-            "in": "query",
-            "name": "recaptchaResponse",
-            "description": "Recaptcha response",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
           }
         ],
         "responses": {
@@ -189,15 +180,6 @@
                 "WISP_REDIRECT"
               ]
             }
-          },
-          {
-            "in": "query",
-            "name": "recaptchaResponse",
-            "description": "Recaptcha response",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
           }
         ],
         "responses": {

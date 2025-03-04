@@ -40,7 +40,7 @@
       <!-- Check authorization token START-->
       <set-variable name="authToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
       <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
-        <set-url>"@("https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/validate")"</set-url>
+        <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/validate")</set-url>
         <set-method>GET</set-method>
         <set-header name="Authorization" exists-action="override">
             <value>@("Bearer " + (string)context.Variables["authToken"])</value>
