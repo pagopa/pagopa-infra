@@ -44,8 +44,8 @@
       </choose>
 
       <send-request ignore-error="true" timeout="10" response-variable-name="tokenValidate" mode="new">
-      <set-url>${checkout_auth_service_base_path}/validate</set-url>
-      <set-method>PUT</set-method>
+      <set-url>"@("https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/validate")"</set-url>
+      <set-method>POST</set-method>
       <set-header name="bearer" exists-action="override">
           <value>@((string)context.Variables["authToken"])</value>
       </set-header>

@@ -279,9 +279,9 @@ module "apim_ecommerce_checkout_api_v3" {
   })
 
   xml_content = templatefile("./api/ecommerce-checkout/v3/_base_policy.xml.tpl", {
-    ecommerce_ingress_hostname      = local.ecommerce_hostname
-    checkout_origin                 = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
-    checkout_auth_service_base_path = "testaddress"
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+    checkout_origin            = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
+    checkout_ingress_hostname  = local.checkout_hostname
   })
 }
 
