@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "cosmosdb_ecommerce_rg" {
 }
 
 module "cosmosdb_ecommerce_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.42.3"
 
   name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_ecommerce
@@ -23,7 +23,7 @@ module "cosmosdb_ecommerce_snet" {
 
 module "cosmosdb_account_mongodb" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.42.3"
 
 
   name                = "${local.project}-cosmos-account"
@@ -44,7 +44,7 @@ module "cosmosdb_account_mongodb" {
   public_network_access_enabled      = var.cosmos_mongo_db_params.public_network_access_enabled
   private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled
   subnet_id                          = module.cosmosdb_ecommerce_snet.id
-  private_dns_zone_ids               = [data.azurerm_private_dns_zone.cosmos.id]
+  private_dns_zone_mongo_ids         = [data.azurerm_private_dns_zone.cosmos.id]
   is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
   allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
@@ -187,7 +187,7 @@ locals {
 
 module "cosmosdb_ecommerce_collections" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.42.3"
 
 
   for_each = {
@@ -237,7 +237,7 @@ locals {
 
 module "cosmosdb_ecommerce_history_collections" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.42.3"
 
 
   for_each = {
