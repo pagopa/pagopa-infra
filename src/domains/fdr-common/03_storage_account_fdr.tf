@@ -16,7 +16,7 @@ module "fdr_re_sa" {
   blob_versioning_enabled         = var.fdr_re_storage_account.blob_versioning_enabled
   resource_group_name             = azurerm_resource_group.fdr_rg.name
   location                        = var.location
-  advanced_threat_protection      = false #var.fdr_re_storage_account.advanced_threat_protection
+  advanced_threat_protection      = false # using Storage Defender
   allow_nested_items_to_be_public = false
   public_network_access_enabled   = var.fdr_re_storage_account.public_network_access_enabled
   enable_low_availability_alert   = var.fdr_re_storage_account.enable_low_availability_alert
@@ -232,5 +232,40 @@ resource "azurerm_role_assignment" "fdrconversionsa_data_contributor_role" {
 
   depends_on = [
     module.fdr_conversion_sa
+  ]
+}
+
+## 🐞https://github.com/hashicorp/terraform-provider-azurerm/pull/15832
+## blob lifecycle policy
+# https://azure.microsoft.com/it-it/blog/azure-blob-storage-lifecycle-management-now-generally-available/
+resource "azurerm_storage_management_policy" "fdr1_re_payload_blob_file_management_policy" {
+  storage_account_id = module.fdr_re_sa.id
+
+  rule {
+    name    = "deleteafterdays"
+    enabled = true
+    filters {
+      # https://learn.microsoft.com/en-us/answers/questions/139922/in-azure-blob-lifecycle-management-how-do-you-matc
+      prefix_match = [azurerm_storage_container.re_payloads_blob_file.name]
+      blob_types   = ["blockBlob"]
+    }
+
+    # https://docs.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview
+    actions {
+      # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy#delete_after_days_since_modification_greater_than
+      base_blob {
+        delete_after_days_since_modification_greater_than = var.fdr_re_storage_account.blob_file_retention_days
+      }
+      snapshot {
+        delete_after_days_since_creation_greater_than = 1
+      }
+      version {
+        delete_after_days_since_creation = var.fdr_re_storage_account.blob_file_retention_days
+      }
+    }
+  }
+
+  depends_on = [
+    module.fdr_re_sa
   ]
 }

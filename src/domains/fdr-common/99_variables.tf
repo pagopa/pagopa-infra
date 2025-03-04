@@ -410,6 +410,7 @@ variable "fdr_re_storage_account" {
     storage_defender_sensitive_data_discovery_enabled            = bool
     storage_defender_malware_scanning_on_upload_enabled          = bool
     storage_defender_malware_scanning_on_upload_cap_gb_per_month = number
+    blob_file_retention_days                                     = number
   })
 
   default = {
@@ -427,6 +428,7 @@ variable "fdr_re_storage_account" {
     storage_defender_sensitive_data_discovery_enabled            = false
     storage_defender_malware_scanning_on_upload_enabled          = false
     storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
+    blob_file_retention_days                                     = 180
   }
 }
 
