@@ -44,7 +44,6 @@ module "cosmosdb_account_mongodb" {
   public_network_access_enabled      = var.cosmos_mongo_db_params.public_network_access_enabled
   private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled
   subnet_id                          = module.cosmosdb_ecommerce_snet.id
-  private_dns_zone_mongo_ids         = [data.azurerm_private_dns_zone.cosmos.id]
   is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
   allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
@@ -55,6 +54,10 @@ module "cosmosdb_account_mongodb" {
 
   backup_continuous_enabled                    = var.cosmos_mongo_db_params.backup_continuous_enabled
   enable_provisioned_throughput_exceeded_alert = var.cosmos_mongo_db_params.enable_provisioned_throughput_exceeded_alert
+
+  private_dns_zone_mongo_ids            = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_mongo_name           = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
+  private_service_connection_mongo_name = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
 
   tags = var.tags
 }
