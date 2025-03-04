@@ -22,6 +22,11 @@ data "azuread_group" "adgroup_security" {
 resource "azuread_application" "qi_app" {
   display_name = "${local.product}-qi"
   owners       = ["c7636d10-4f78-43bd-89f6-555c7d82e02c"]
+  lifecycle {
+    ignore_changes = [
+      owners
+    ]
+  }
 }
 
 resource "azuread_service_principal" "qi_sp" {
@@ -29,7 +34,7 @@ resource "azuread_service_principal" "qi_sp" {
 }
 
 # https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#role-based-access-control-administrator
-resource "azurerm_role_assignment" "qi_monitoring_contributor" {
+resource "azurerm_role_assignment" "qi_monitoring_reader" {
   scope = data.azurerm_subscription.current.id
   #  https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/monitor#monitoring-reader
   role_definition_name = "Monitoring Reader"
