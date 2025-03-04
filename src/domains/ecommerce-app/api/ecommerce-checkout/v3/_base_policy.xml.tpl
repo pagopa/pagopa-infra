@@ -42,16 +42,30 @@
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
         </when>
       </choose>
-
-      <send-request ignore-error="true" timeout="10" response-variable-name="tokenValidate" mode="new">
-      <set-url>"@("https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/validate")"</set-url>
-      <set-method>POST</set-method>
-      <set-header name="bearer" exists-action="override">
-          <value>@((string)context.Variables["authToken"])</value>
-      </set-header>
-    </send-request>
-
-
+      <!-- Check authorization token END-->
+      <set-variable name="authToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
+      <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
+        <set-url>"@("https://${checkout_ingress_hostname}/pagopa-checkout-auth-service//auth/validate")"</set-url>
+        <set-method>GET</set-method>
+        <set-header name="Authorization" exists-action="override">
+            <value>@("Bearer " + (string)context.Variables["authToken"])</value>
+        </set-header>
+      </send-request>
+      <choose>
+        <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) != 200)">
+          <return-response>
+            <set-status code="401" reason="Unauthorized" />
+            <set-body>
+              {
+                  "status": 401,
+                  "title": "Unauthorized",
+                  "detail": "Invalid token"
+              }
+            </set-body>
+          </return-response>
+        </when>
+      </choose>
+      <!-- Check authorization token END-->
   </inbound>
 
   <outbound>
