@@ -5,20 +5,6 @@ resource "azurerm_resource_group" "fdr_rg" {
   tags = var.tags
 }
 
-resource "azurerm_security_center_storage_defender" "fdr_re_storage_defender" {
-  count = var.fdr_re_storage_account.storage_defender_enabled ? 1 : 0
-
-  storage_account_id                          = module.fdr_re_sa.id
-  override_subscription_settings_enabled      = var.fdr_re_storage_account.storage_defender_override_subscription_settings_enabled
-  sensitive_data_discovery_enabled            = var.fdr_re_storage_account.storage_defender_sensitive_data_discovery_enabled
-  malware_scanning_on_upload_enabled          = var.fdr_re_storage_account.storage_defender_malware_scanning_on_upload_enabled
-  malware_scanning_on_upload_cap_gb_per_month = var.fdr_re_storage_account.storage_defender_malware_scanning_on_upload_cap_gb_per_month
-
-  depends_on = [
-    module.fdr_re_sa
-  ]
-}
-
 module "fdr_re_sa" {
   source = "./.terraform/modules/__v3__/storage_account"
 
@@ -247,6 +233,20 @@ resource "azurerm_storage_table" "fdr1_conversion_error_table" {
   storage_account_name = module.fdr_conversion_sa.name
 }
 
+# Defender for RE storage Account
+resource "azurerm_security_center_storage_defender" "fdr_re_storage_defender" {
+  count = var.fdr_re_storage_account.storage_defender_enabled ? 1 : 0
+
+  storage_account_id                          = module.fdr_re_sa.id
+  override_subscription_settings_enabled      = var.fdr_re_storage_account.storage_defender_override_subscription_settings_enabled
+  sensitive_data_discovery_enabled            = var.fdr_re_storage_account.storage_defender_sensitive_data_discovery_enabled
+  malware_scanning_on_upload_enabled          = var.fdr_re_storage_account.storage_defender_malware_scanning_on_upload_enabled
+  malware_scanning_on_upload_cap_gb_per_month = var.fdr_re_storage_account.storage_defender_malware_scanning_on_upload_cap_gb_per_month
+
+  depends_on = [
+    module.fdr_re_sa
+  ]
+}
 
 
 
