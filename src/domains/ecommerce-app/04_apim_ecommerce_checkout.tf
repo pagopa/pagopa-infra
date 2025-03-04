@@ -254,7 +254,7 @@ resource "azurerm_api_management_api_operation_policy" "get_fees_v2" {
   xml_content = file("./api/ecommerce-checkout/v2/_validate_transactions_jwt_token.tpl")
 }
 
-# pagopa-ecommerce APIs for checkout V2
+# pagopa-ecommerce APIs for checkout V3 (authenticated)
 
 module "apim_ecommerce_checkout_api_v3" {
   source = "./.terraform/modules/__v3__/api_management_api"
