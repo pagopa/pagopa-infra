@@ -175,8 +175,8 @@ module "event_hubprf" {
   }
   private_dns_zone_record_A_name = "event_hubprf"
 
-  alerts_enabled = var.ehns_alerts_enabled
-  metric_alerts  = var.ehns_metric_alerts
+  alerts_enabled = false # var.ehns_alerts_enabled
+  # metric_alerts  = var.ehns_metric_alerts
 
   # takes a list and replaces any elements that are lists with a
   # flattened sequence of the list contents.

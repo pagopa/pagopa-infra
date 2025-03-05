@@ -247,7 +247,7 @@ base_path_nodo_oncloud        = "/nodo-prd"
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
-ehns_maximum_throughput_units = 5
+ehns_maximum_throughput_units = 10
 ehns_capacity                 = 5
 ehns_zone_redundant           = true
 ehns_public_network_access    = true
