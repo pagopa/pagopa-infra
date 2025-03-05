@@ -282,56 +282,6 @@
           }
         }
       }
-    },
-    "/auth/validate": {
-      "get": {
-        "tags": [
-          "authService"
-        ],
-        "operationId": "validateToken",
-        "summary": "Validate a token",
-        "description": "GET endpoint to validate a token",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Token is valid"
-          },
-          "400": {
-            "description": "Invalid token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
