@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "redis_ecommerce_rg" {
 }
 
 module "pagopa_ecommerce_redis_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.42.3"
 
   name                                      = format("%s-redis-snet", local.project)
   address_prefixes                          = var.cidr_subnet_redis_ecommerce
@@ -16,7 +16,7 @@ module "pagopa_ecommerce_redis_snet" {
 }
 
 module "pagopa_ecommerce_redis" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v7.72.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.42.3"
 
   # name has been differentiated due to a migration instance created to handle the switch to an HA instance
   name                          = var.redis_ecommerce_params.ha_enabled ? "${local.project}-redis-ha" : "${local.project}-redis"
