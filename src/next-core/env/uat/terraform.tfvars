@@ -257,7 +257,7 @@ ehns04_metric_alerts = {
       {
         name     = "EntityName"
         operator = "Include"
-        values   = [
+        values = [
           "fdr-qi-reported-iuv",
           "fdr-qi-flows"
         ]
