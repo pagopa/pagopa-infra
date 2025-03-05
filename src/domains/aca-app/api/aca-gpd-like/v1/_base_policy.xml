@@ -6,7 +6,7 @@
     <set-variable name="subkey" value="@(context.Subscription.Key)" />
     <base />
     <!-- rate limit by subscription key -->
-    <rate-limit calls="50" renewal-period="10" remaining-calls-variable-name="remainingCallsPerSubscription" />
+    <rate-limit calls="3000" renewal-period="60" remaining-calls-variable-name="remainingCallsPerSubscription" />
     <!-- Calling Authorizer's fragment -->
     <set-variable name="application_domain" value="aca" />
     <set-variable name="metadata" value="no-metadata" />
