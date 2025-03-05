@@ -21,8 +21,9 @@
       <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
       <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
       <set-header name="X-Client-Id" exists-action="override" >
-      <value>CHECKOUT</value>
-    </set-header>
+        <value>CHECKOUT</value>
+      </set-header>
+      <rewrite-uri template="@((context.Request.Url.Path).Replace("auth/",""))" />
       <set-variable name="transactionsOperationId" value="newTransaction" />
       <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethods,createSession" />
       <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfo" />
@@ -43,7 +44,7 @@
         <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/validate")</set-url>
         <set-method>GET</set-method>
         <set-header name="Authorization" exists-action="override">
-            <value>@((string)context.Variables["authToken"])</value>
+            <value>@("Bearer " + (string)context.Variables["authToken"])</value>
         </set-header>
       </send-request>
       <choose>
