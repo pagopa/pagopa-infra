@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "qi_evh_resource_group" {
 }
 
 module "eventhub_namespace_qi" {
-  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v8.22.0"
+  source                   = "./.terraform/modules/__v3__/eventhub"
   name                     = "${local.project_itn}-evh"
   location                 = var.location_itn
   resource_group_name      = azurerm_resource_group.qi_evh_resource_group.name
@@ -48,7 +48,7 @@ module "eventhub_namespace_qi" {
 }
 
 module "eventhub_qi_configuration" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__/eventhub_configuration"
 
   event_hub_namespace_name                = module.eventhub_namespace_qi.name
   event_hub_namespace_resource_group_name = azurerm_resource_group.qi_evh_resource_group.name
