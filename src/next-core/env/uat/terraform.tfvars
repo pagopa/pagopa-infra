@@ -257,7 +257,10 @@ ehns04_metric_alerts = {
       {
         name     = "EntityName"
         operator = "Include"
-        values   = ["rtd-trx"]
+        values   = [
+          "fdr-qi-reported-iuv",
+          "fdr-qi-flows"
+        ]
       }
     ],
   },
