@@ -817,7 +817,7 @@ eventhubs_prf = [
   {
     name              = "nodo-dei-pagamenti-log"
     partitions        = 32
-    message_retention = 7
+    message_retention = 3
     consumers         = ["logstash-pdnd", "logstash-oper", "logstash-tech"]
     keys = [
       {
@@ -850,7 +850,7 @@ eventhubs_prf = [
   {
     name              = "nodo-dei-pagamenti-re"
     partitions        = 30
-    message_retention = 7
+    message_retention = 3
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"] #, "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
     keys = [
       {
@@ -889,7 +889,7 @@ eventhubs_prf = [
   {
     name              = "fdr-re" # used by FdR Fase 1 and Fase 3
     partitions        = 30
-    message_retention = 7
+    message_retention = 3
     consumers         = ["fdr-re-rx"]
     keys = [
       {
@@ -910,7 +910,7 @@ eventhubs_prf = [
   {
     name              = "nodo-dei-pagamenti-fdr" # used by Monitoring FdR
     partitions        = 32
-    message_retention = 7
+    message_retention = 3
     consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
     keys = [
       {
@@ -936,7 +936,7 @@ eventhubs_prf = [
   {
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 32
-    message_retention = 7
+    message_retention = 3
     consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
     keys = [
       {
@@ -968,7 +968,7 @@ eventhubs_prf = [
   {
     name              = "nodo-dei-pagamenti-biz-evt-enrich"
     partitions        = 32
-    message_retention = 7
+    message_retention = 3
     consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
     keys = [
       {
@@ -1000,7 +1000,7 @@ eventhubs_prf = [
   {
     name              = "nodo-dei-pagamenti-negative-biz-evt"
     partitions        = 32
-    message_retention = 7
+    message_retention = 3
     consumers         = ["pagopa-negative-biz-evt-rx"]
     keys = [
       {
@@ -1020,7 +1020,7 @@ eventhubs_prf = [
   {
     name              = "nodo-dei-pagamenti-verify-ko"
     partitions        = 32
-    message_retention = 7
+    message_retention = 3
     consumers         = ["nodo-dei-pagamenti-verify-ko-to-datastore-rx", "nodo-dei-pagamenti-verify-ko-to-tablestorage-rx", "nodo-dei-pagamenti-verify-ko-test-rx"]
     keys = [
       {
