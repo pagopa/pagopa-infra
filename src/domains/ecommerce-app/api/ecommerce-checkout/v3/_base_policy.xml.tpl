@@ -48,7 +48,7 @@
         </set-header>
       </send-request>
       <choose>
-        <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) != 200)">
+        <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) == 401)">
           <return-response>
             <set-status code="401" reason="Unauthorized" />
             <set-body>
@@ -56,6 +56,30 @@
                   "status": 401,
                   "title": "Unauthorized",
                   "detail": "Invalid token"
+              }
+            </set-body>
+          </return-response>
+        </when>
+        <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) == 500)">
+          <return-response>
+            <set-status code="502" reason="Internal server error" />
+            <set-body>
+              {
+                  "status": 502,
+                  "title": "Internal server error",
+                  "detail": "Error in token validation"
+              }
+            </set-body>
+          </return-response>
+        </when>
+        <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) != 200)">
+          <return-response>
+            <set-status code="502" reason="Internal server error" />
+            <set-body>
+              {
+                  "status": 502,
+                  "title": "Internal server error",
+                  "detail": "Unexpected error in token validation"
               }
             </set-body>
           </return-response>
