@@ -90,6 +90,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
           "404": {
             "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
             "content": {
@@ -203,6 +206,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
           "404": {
             "description": "Node cannot find the services needed to process this request in its configuration. This error is most likely to occur when submitting a non-existing RPT id.",
             "content": {
@@ -279,6 +285,29 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
+          },
+          "404": {
+            "description": "Payment methods not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "PagoPA services are not available or request is rejected by PagoPa",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
           }
         }
       }
@@ -326,6 +355,9 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized, access token missing or invalid"
           },
           "404": {
             "description": "Payment method not found",
@@ -1263,7 +1295,7 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "description": "authentication opaque token",
+        "description": "Authentication opaque token realeased by authorization service for checkout",
         "bearerFormat": "opaque token"
       }
     }
