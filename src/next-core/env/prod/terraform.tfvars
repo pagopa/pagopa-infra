@@ -327,25 +327,6 @@ ehns04_metric_alerts = {
     window_size = "PT15M"
     dimension   = [],
   },
-  error_trx = {
-    aggregation = "Total"
-    metric_name = "IncomingMessages"
-    description = "Transactions rejected from one acquirer file received. trx write on eventhub. check immediately"
-    operator    = "GreaterThan"
-    threshold   = 0
-    frequency   = "PT5M"
-    window_size = "PT30M"
-    dimension = [
-      {
-        name     = "EntityName"
-        operator = "Include"
-        values = [
-          "nodo-dei-pagamenti-log",
-          "nodo-dei-pagamenti-re"
-        ]
-      }
-    ],
-  },
 }
 
 ehns04_alerts_enabled = true

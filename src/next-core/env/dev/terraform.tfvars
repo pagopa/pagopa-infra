@@ -238,7 +238,7 @@ ehns04_metric_alerts = {
   no_trx = {
     aggregation = "Total"
     metric_name = "IncomingMessages"
-    description = "No messagge received in the last 24h"
+    description = "No transactions received from acquirer in the last 24h"
     operator    = "LessThanOrEqual"
     threshold   = 1000
     frequency   = "PT1H"
@@ -247,10 +247,7 @@ ehns04_metric_alerts = {
       {
         name     = "EntityName"
         operator = "Include"
-        values = [
-          "nodo-dei-pagamenti-log",
-          "nodo-dei-pagamenti-re"
-        ]
+        values   = ["rtd-trx"]
       }
     ],
   },
