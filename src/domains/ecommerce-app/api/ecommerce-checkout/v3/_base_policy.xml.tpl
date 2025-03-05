@@ -43,7 +43,7 @@
         <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/validate")</set-url>
         <set-method>GET</set-method>
         <set-header name="Authorization" exists-action="override">
-            <value>@("Bearer " + (string)context.Variables["authToken"])</value>
+            <value>@((string)context.Variables["authToken"])</value>
         </set-header>
       </send-request>
       <choose>
