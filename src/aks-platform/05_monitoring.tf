@@ -41,6 +41,12 @@ resource "helm_release" "kube_prometheus_stack" {
     "${file("${var.kube_prometheus_stack_helm.values_file}")}"
   ]
 
+  lifecycle {
+    ignore_changes = [
+      metadata
+    ]
+  }
+
 }
 
 resource "helm_release" "monitoring_reloader" {

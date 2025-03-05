@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "rg_aks" {
 }
 
 module "aks_leonardo" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.80.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.84.1"
 
   name                       = local.aks_cluster_name
   location                   = var.location
@@ -21,7 +21,7 @@ module "aks_leonardo" {
   enable_prometheus_monitor_metrics = var.env_short != "p" ? true : false
 
   # ff: Enabled cost analysis on UAT/PROD
-  # cost_analysis_enabled = var.env_short != "d" ? true : false
+  cost_analysis_enabled = var.env_short != "d" ? true : false
 
   #
   # 🤖 System node pool
