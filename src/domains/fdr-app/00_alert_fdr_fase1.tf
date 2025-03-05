@@ -101,6 +101,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-nodo-register-
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-2-event-hub-exception" {
+  count = var.env_short == "p" ? 1 : 0
+
   name                = "fdr-nodo-alert-fdr-2-event-hub-exception"
   resource_group_name = data.azurerm_resource_group.fdr_rg.name
   location            = var.location
@@ -137,7 +139,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-2-event-hub-ex
 }
 
 locals {
-  message_prefixes = {
+
+  message_prefixes = var.env_short == "p" ? {
     "FDR-E1" = {
       description   = "Error while sending to EventHub."
       email_subject = "FdR to EventHub common error FDR-E1"
@@ -150,7 +153,7 @@ locals {
       description   = "Error processing Blob in processFDR1BlobFiles function"
       email_subject = "FdR to EventHub error FDR1-E1"
     }
-  }
+  } : {}
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert" {
