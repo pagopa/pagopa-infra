@@ -290,7 +290,7 @@ resource "azurerm_api_management_api_operation_policy" "transaction_activation_r
   api_name            = "${local.project}-ecommerce-checkout-api-v3"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  operation_id        = "newTransaction"
+  operation_id        = "newTransactionV3"
 
   xml_content = templatefile("./api/ecommerce-checkout/v3/_transaction_policy.xml.tpl", {
     pdv_api_base_path = var.pdv_api_base_path
@@ -301,7 +301,7 @@ resource "azurerm_api_management_api_operation_policy" "create_session_v3" {
   api_name            = "${local.project}-ecommerce-checkout-api-v3"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  operation_id        = "createSession"
+  operation_id        = "createSessionV3"
 
   xml_content = file("./api/ecommerce-checkout/v3/_post_sessions.xml.tpl")
 }
@@ -310,7 +310,7 @@ resource "azurerm_api_management_api_operation_policy" "get_method_testing_v3" {
   api_name            = "${local.project}-ecommerce-checkout-api-v3"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  operation_id        = "getAllPaymentMethods"
+  operation_id        = "getAllPaymentMethodsV3"
 
   xml_content = file("./api/ecommerce-checkout/v3/_methods_testing_policy.xml.tpl")
 }
@@ -319,7 +319,7 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_request_info
   api_name            = "${local.project}-ecommerce-checkout-api-v3"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  operation_id        = "getPaymentRequestInfo"
+  operation_id        = "getPaymentRequestInfoV3"
 
   xml_content = file("./api/ecommerce-checkout/v3/_payment_request_policy.xml.tpl")
 }
