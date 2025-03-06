@@ -24,9 +24,9 @@
         <value>CHECKOUT</value>
       </set-header>
       <rewrite-uri template="@((context.Request.Url.Path).Replace("auth/",""))" />
-      <set-variable name="transactionsOperationId" value="newTransaction" />
-      <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethods,createSession" />
-      <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfo" />
+      <set-variable name="transactionsOperationId" value="newTransactionV3" />
+      <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethodsV3,createSessionV3" />
+      <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfoV3" />
       <choose>
         <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("transactionsOperationId","").Split(','), operations => operations == context.Operation.Id))">
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-transactions-service/v2.1")"/>

@@ -297,24 +297,6 @@ resource "azurerm_api_management_api_operation_policy" "transaction_activation_r
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "create_session_v3" {
-  api_name            = "${local.project}-ecommerce-checkout-api-v3"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "createSessionV3"
-
-  xml_content = file("./api/ecommerce-checkout/v3/_post_sessions.xml.tpl")
-}
-
-resource "azurerm_api_management_api_operation_policy" "get_method_testing_v3" {
-  api_name            = "${local.project}-ecommerce-checkout-api-v3"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "getAllPaymentMethodsV3"
-
-  xml_content = file("./api/ecommerce-checkout/v3/_methods_testing_policy.xml.tpl")
-}
-
 resource "azurerm_api_management_api_operation_policy" "get_payment_request_info_api_policy_v3" {
   api_name            = "${local.project}-ecommerce-checkout-api-v3"
   resource_group_name = local.pagopa_apim_rg

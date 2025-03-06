@@ -51,7 +51,7 @@
         "tags": [
           "ecommerce-payment-requests"
         ],
-        "operationId": "getPaymentRequestInfo",
+        "operationId": "getPaymentRequestInfoV3",
         "security": [
           {
             "bearerAuth": []
@@ -141,7 +141,7 @@
         "tags": [
           "ecommerce-transactions"
         ],
-        "operationId": "newTransaction",
+        "operationId": "newTransactionV3",
         "security": [
           {
             "bearerAuth": []
@@ -257,7 +257,7 @@
         "tags": [
           "ecommerce-methods"
         ],
-        "operationId": "getAllPaymentMethods",
+        "operationId": "getAllPaymentMethodsV3",
         "security": [
           {
             "bearerAuth": []
@@ -317,7 +317,7 @@
         "tags": [
           "ecommerce-methods"
         ],
-        "operationId": "createSession",
+        "operationId": "createSessionV3",
         "security": [
           {
             "bearerAuth": []
