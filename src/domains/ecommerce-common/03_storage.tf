@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "storage_ecommerce_rg" {
 
 
 module "ecommerce_storage_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.42.3"
 
   name                 = "${local.project}-storage-snet"
   address_prefixes     = var.cidr_subnet_storage_ecommerce
@@ -44,7 +44,7 @@ resource "azurerm_private_endpoint" "storage_transient_private_endpoint" {
 }
 
 module "ecommerce_storage_transient" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.42.3"
 
 
   name                            = replace("${local.project}-tr-sa", "-", "")
@@ -204,7 +204,7 @@ resource "azurerm_private_endpoint" "storage_deadletter_private_endpoint" {
 }
 
 module "ecommerce_storage_deadletter" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.42.3"
 
 
   name                            = replace("${local.project}-dl-sa", "-", "")
@@ -347,8 +347,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
     let OpCountForQueue = (operation: string, queueKey: string) {
         StorageQueueLogs
         | where OperationName == operation and ObjectKey startswith queueKey
-        | summarize count() 
-        | project count_ 
+        | summarize count()
+        | project count_
         | extend dummy=1
     };
     let PutMessages = (queueName: string) {
@@ -459,8 +459,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_enqueue_rate_a
         StorageQueueLogs
         | where OperationName == operation and ObjectKey startswith queueKey
         | where TimeGenerated between(timestart .. timeend)
-        | summarize count() 
-        | project count_ 
+        | summarize count()
+        | project count_
         | extend dummy=1
     };
     let PutMessages = (queueName: string, timestart: datetime, timeend: datetime) {
@@ -641,7 +641,7 @@ resource "azurerm_monitor_metric_alert" "queue_storage_account_average_messge_co
 ## storage to support pm transaction migration for helpdesk-service
 module "ecommerce_pm_history_storage" {
   count  = var.env_short == "p" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.42.3"
 
   name                            = replace("${local.project}-pm-h-sa", "-", "")
   account_kind                    = "StorageV2"

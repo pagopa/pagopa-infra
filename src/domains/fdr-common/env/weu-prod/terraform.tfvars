@@ -199,36 +199,26 @@ fdr_storage_account = {
   public_network_access_enabled      = false
   blob_delete_retention_days         = 90
   enable_low_availability_alert      = true
-  backup_enabled                     = true
-  backup_retention                   = 30
+  backup_enabled                     = false
+  backup_retention                   = 0
 }
 
 fdr_re_storage_account = {
-  account_kind                       = "StorageV2"
-  account_tier                       = "Standard"
-  account_replication_type           = "GZRS"
-  blob_versioning_enabled            = true
-  advanced_threat_protection         = true
-  advanced_threat_protection_enabled = false
-  public_network_access_enabled      = false
-  blob_delete_retention_days         = 90
-  enable_low_availability_alert      = true
-  backup_enabled                     = true
-  backup_retention                   = 30
-}
-
-fdr_history_storage_account = {
-  account_kind                       = "StorageV2"
-  account_tier                       = "Standard"
-  account_replication_type           = "GZRS"
-  blob_versioning_enabled            = true
-  advanced_threat_protection         = true
-  advanced_threat_protection_enabled = false
-  public_network_access_enabled      = false
-  blob_delete_retention_days         = 90
-  enable_low_availability_alert      = true
-  backup_enabled                     = true
-  backup_retention                   = 30
+  account_kind                                                 = "StorageV2"
+  account_tier                                                 = "Standard"
+  account_replication_type                                     = "ZRS"
+  blob_versioning_enabled                                      = false
+  public_network_access_enabled                                = false
+  blob_delete_retention_days                                   = 7
+  enable_low_availability_alert                                = true
+  backup_enabled                                               = false
+  backup_retention                                             = 0
+  storage_defender_enabled                                     = true
+  storage_defender_override_subscription_settings_enabled      = false
+  storage_defender_sensitive_data_discovery_enabled            = false
+  storage_defender_malware_scanning_on_upload_enabled          = false
+  storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
+  blob_file_retention_days                                     = 180 # 6 months
 }
 
 fdr_flow_storage_account = {

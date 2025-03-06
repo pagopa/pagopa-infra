@@ -71,8 +71,8 @@ module "event_hub03" {
   }
   private_dns_zone_record_A_name = "event_hub03"
 
-  alerts_enabled = var.ehns_alerts_enabled
-  metric_alerts  = var.ehns_metric_alerts
+  alerts_enabled = var.ehns03_alerts_enabled
+  metric_alerts  = var.ehns03_metric_alerts
 
   # takes a list and replaces any elements that are lists with a
   # flattened sequence of the list contents.
@@ -119,6 +119,9 @@ module "event_hub04" {
     name = [azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
   }
   private_dns_zone_record_A_name = "event_hub04"
+
+  alerts_enabled = var.ehns04_alerts_enabled
+  metric_alerts  = var.ehns04_metric_alerts
 
   eventhubs = var.eventhubs_04
 
@@ -172,8 +175,8 @@ module "event_hubprf" {
   }
   private_dns_zone_record_A_name = "event_hubprf"
 
-  alerts_enabled = var.ehns_alerts_enabled
-  metric_alerts  = var.ehns_metric_alerts
+  alerts_enabled = false # var.ehns_alerts_enabled
+  # metric_alerts  = var.ehns_metric_alerts
 
   # takes a list and replaces any elements that are lists with a
   # flattened sequence of the list contents.
