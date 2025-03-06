@@ -259,7 +259,7 @@ resource "azurerm_api_management_api_operation_policy" "get_fees_v2" {
 module "apim_ecommerce_checkout_api_v3" {
   source = "./.terraform/modules/__v3__/api_management_api"
 
-  name                  = "${local.project}-ecommerce-checkout-api"
+  name                  = "${local.project}-checkout-api"
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name
   product_ids           = [module.apim_ecommerce_checkout_product.product_id]
@@ -287,7 +287,7 @@ module "apim_ecommerce_checkout_api_v3" {
 
 resource "azurerm_api_management_api_operation_policy" "transaction_activation_request_v3" {
   depends_on          = [module.apim_ecommerce_checkout_api_v3]
-  api_name            = "${local.project}-ecommerce-checkout-api-v3"
+  api_name            = "${local.project}-checkout-api-v3"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   operation_id        = "newTransactionV3"
@@ -298,7 +298,7 @@ resource "azurerm_api_management_api_operation_policy" "transaction_activation_r
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_payment_request_info_api_policy_v3" {
-  api_name            = "${local.project}-ecommerce-checkout-api-v3"
+  api_name            = "${local.project}-checkout-api-v3"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "getPaymentRequestInfoV3"
