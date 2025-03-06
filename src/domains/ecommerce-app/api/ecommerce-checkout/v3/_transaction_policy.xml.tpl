@@ -23,7 +23,51 @@
         </choose>
         <!-- pass rptId value into header END -->
 
-        <!-- Post Token PDV START-->
+        <!-- pass x-user-id into header START-->
+        <send-request ignore-error="true" timeout="10" response-variable-name="userResponse" mode="new">
+            <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/user")</set-url>
+            <set-method>GET</set-method>
+            <set-header name="Authorization" exists-action="override">
+                <value>@("Bearer " + (string)context.Variables["authToken"])</value>
+            </set-header>
+        </send-request>
+
+        <!-- Post Token PDV for CF START-->
+        <set-variable name="userResponseJson" value="@(((IResponse)context.Variables["userResponse"]).Body.As<JObject>())" />
+        <send-request ignore-error="true" timeout="10" response-variable-name="cf-token" mode="new">
+            <set-url>${pdv_api_base_path}/tokens</set-url>
+            <set-method>PUT</set-method>
+            <set-header name="x-api-key" exists-action="override">
+                <value>{{ecommerce-personal-data-vault-api-key}}</value>
+            </set-header>
+            <set-body>@(new JObject(new JProperty("pii",  (((JObject)context.Variables["userResponseJson"])["userId"]))).ToString())</set-body>
+        </send-request>
+        <choose>
+            <when condition="@(((IResponse)context.Variables["cf-token"]).StatusCode != 200)">
+                <return-response>
+                    <set-status code="502" />
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>application/json</value>
+                    </set-header>
+                    <set-body>
+                    {
+                        "title" : "Bad gateway - Invalid PDV response",
+                        "status":  502,
+                        "detail":  "Cannot tokenize fiscal code"
+                    }
+                    </set-body>
+                </return-response>
+            </when>
+        </choose>
+        <!-- Post Token PDV for CF END-->
+        <set-variable name="cfToken" value="@(((IResponse)context.Variables["cf-token"]).Body.As<JObject>())" />
+        <set-variable name="xUserId" value="@((string)((JObject)context.Variables["cfToken"])["token"])" />
+        <set-header name="x-user-id" exists-action="override">
+            <value>@((String)context.Variables["xUserId"])</value>
+        </set-header>
+        <!-- pass x-user-id into header END-->
+
+        <!-- Post Token PDV for email START-->
         <send-request ignore-error="true" timeout="10" response-variable-name="pdv-token" mode="new">
             <set-url>${pdv_api_base_path}/tokens</set-url>
             <set-method>PUT</set-method>
@@ -48,7 +92,7 @@
                     {
                         "title" : "Bad gateway - Invalid PDV response",
                         "status":  502,
-                        "detail":  "Cannot tokenize fiscal code"
+                        "detail":  "Cannot tokenize email"
                     }
                     </set-body>
                 </return-response>
@@ -57,7 +101,7 @@
 
         <set-variable name="pdvToken" value="@(((IResponse)context.Variables["pdv-token"]).Body.As<JObject>())" />
         <set-variable name="emailToken" value="@((string)((JObject)context.Variables["pdvToken"])["token"])" />
-        <!-- Post Token PDV END-->
+        <!-- Post Token PDV for email END-->
         <set-body>@{
             JObject requestBody = (JObject)context.Request.Body.As<JObject>(true);
             string emailToken = (string) context.Variables["emailToken"];
