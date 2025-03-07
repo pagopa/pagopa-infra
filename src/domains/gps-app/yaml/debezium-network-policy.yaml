@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: debezium-connect-cluster-network-policy
+  namespace: {namespace}
+spec:
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              ingress: debezium
+        - podSelector:
+            matchLabels:
+              strimzi.io/cluster: debezium-connect-cluster
+              strimzi.io/kind: KafkaConnect
+              strimzi.io/name: debezium-connect-cluster-connect
+        - podSelector:
+            matchLabels:
+              strimzi.io/kind: cluster-operator
+      ports:
+        - port: 8083
+          protocol: TCP
+  podSelector:
+    matchLabels:
+      strimzi.io/cluster: debezium-connect-cluster
+      strimzi.io/kind: KafkaConnect
+      strimzi.io/name: debezium-connect-cluster-connect
+  policyTypes:
+    - Ingress
