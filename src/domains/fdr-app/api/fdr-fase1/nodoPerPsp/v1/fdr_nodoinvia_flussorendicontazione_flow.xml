@@ -192,7 +192,7 @@
 
                 <!-- Send info to FDR for validation -->
                 <choose>
-                    <when condition="@( !context.VariablesGetValueOrDefault<bool>("is-ftp-enabled", false) && !context.Variables.GetValueOrDefault<bool>("fdr_soap_request_is_whitelist", false) )">
+                    <when condition="@( !context.Variables.GetValueOrDefault<bool>("is-ftp-enabled", false) && !context.Variables.GetValueOrDefault<bool>("fdr_soap_request_is_whitelist", false) )">
                         <set-variable name="register_for_validation_request" value="@{return new JObject(
                                 new JProperty("pspId", (string) context.Variables["identificativoPSP"]),
                                 new JProperty("organizationId", (string) context.Variables["identificativoDominio"]),
