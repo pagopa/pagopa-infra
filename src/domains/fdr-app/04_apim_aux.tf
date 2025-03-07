@@ -54,37 +54,3 @@ resource "azurerm_api_management_named_value" "fdrsaname" {
   display_name        = "fdrsaname"
   value               = data.azurerm_storage_account.fdr_flows_sa.name
 }
-
-
-resource "azurerm_api_management_named_value" "fdr_cachedresponse_saname" {
-  name                = "fdr_cachedresponse_saname"
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  display_name        = "fdr_cachedresponse_saname"
-  value               = data.azurerm_storage_account.fdr_conversion_sa.name
-}
-
-resource "azurerm_api_management_named_value" "fdr_cachedresponse_containername" {
-  name                = "fdr_cachedresponse_containername"
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  display_name        = "fdr_cachedresponse_containername"
-  value               = "PLACEHOLDER" # "data.azurerm_storage_container.fdr1_cached_response.name" remose housekeeping !!!
-}
-
-resource "azurerm_api_management_named_value" "fdr1_cache_duration" {
-  name                = "fdr1_cache_duration"
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  display_name        = "fdr1_cache_duration"
-  value               = var.fdr1_cache_duration
-}
-
-// Enable FDR1 nodoChiediElencoFlussiRendicontazione cache
-resource "azurerm_api_management_named_value" "enable_fdr_nodoChiediElenco_cache" {
-  name                = "enable-fdr-nodoChiediElenco-cache-flag"
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  display_name        = "enable-fdr-nodoChiediElenco-cache-flag"
-  value               = var.enable_fdr_nodoChiediElenco_cache
-}
