@@ -25,7 +25,7 @@
 
         <!-- pass x-user-id into header START-->
         <send-request ignore-error="true" timeout="10" response-variable-name="userResponse" mode="new">
-            <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/user")</set-url>
+            <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/users")</set-url>
             <set-method>GET</set-method>
             <set-header name="Authorization" exists-action="override">
                 <value>@("Bearer " + (string)context.Variables["authToken"])</value>
