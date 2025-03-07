@@ -28,7 +28,7 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.dev.platform"
 
 ## CIDR nodo per database pgsql
-cidr_subnet_flex_dbms = ["10.1.160.0/24"]
+cidr_subnet_flex_dbms         = ["10.1.160.0/24"]
 cidr_subnet_flex_storico_dbms = ["10.1.176.0/24"]
 
 ## CIDR storage subnet
@@ -55,13 +55,14 @@ pgres_flex_params = {
   max_connections                                  = 1700
   enable_private_dns_registration                  = true
   enable_private_dns_registration_virtual_endpoint = false
+  public_network_access_enabled                    = true
 }
 
 pgres_flex_storico_params = {
 
   enabled    = true
-  sku_name   = "GP_Standard_D2s_v3"
-  db_version = "13"
+  sku_name   = "GP_Standard_D2ds_v5"
+  db_version = "16"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                             = 32768
@@ -76,6 +77,7 @@ pgres_flex_storico_params = {
   pgres_flex_diagnostic_settings_enabled = false
   max_connections                        = 850
   enable_private_dns_registration        = true
+  max_worker_processes                   = 16
 }
 
 sftp_account_replication_type = "LRS"
@@ -227,7 +229,7 @@ wisp_converter_cosmos_nosql_db_params = {
   private_endpoint_enabled          = false
   public_network_access_enabled     = true
   is_virtual_network_filter_enabled = false
-  burst_capacity_enabled            = true
+  burst_capacity_enabled            = false
   backup_continuous_enabled         = false
 
   data_ttl                           = 259200 # 3 days in second

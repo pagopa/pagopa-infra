@@ -124,6 +124,7 @@ variable "pgres_flex_params" {
     max_connections                                  = number
     enable_private_dns_registration                  = optional(bool, false)
     enable_private_dns_registration_virtual_endpoint = optional(bool, false)
+    public_network_access_enabled                    = optional(bool, false)
   })
 
 }
@@ -146,6 +147,7 @@ variable "pgres_flex_storico_params" {
     pgres_flex_diagnostic_settings_enabled = bool
     max_connections                        = number
     enable_private_dns_registration        = optional(bool, false)
+    max_worker_processes                   = number
   })
 
 }

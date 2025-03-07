@@ -10,7 +10,7 @@ data "azurerm_key_vault_secret" "pgres_storico_flex_admin_pwd" {
 
 # Postgres Flexible Server subnet
 module "postgres_storico_flexible_snet" {
-  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
+  source                                        = "./.terraform/modules/__v3__/subnet"
   name                                          = format("%s-storico-pgres-flexible-snet", local.project)
   address_prefixes                              = var.cidr_subnet_flex_storico_dbms
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
@@ -30,7 +30,7 @@ module "postgres_storico_flexible_snet" {
 }
 
 module "postgres_storico_flexible_server" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//postgres_flexible_server?ref=v6.2.1"
+  source              = "./.terraform/modules/__v3__/postgres_flexible_server"
   name                = format("%s-storico-flexible-postgresql", local.project)
   location            = azurerm_resource_group.db_rg.location
   resource_group_name = azurerm_resource_group.db_rg.name
@@ -52,6 +52,11 @@ module "postgres_storico_flexible_server" {
   backup_retention_days        = var.pgres_flex_storico_params.backup_retention_days
   geo_redundant_backup_enabled = var.pgres_flex_storico_params.geo_redundant_backup_enabled
   create_mode                  = var.pgres_flex_storico_params.create_mode
+
+  private_dns_registration = var.pgres_flex_storico_params.enable_private_dns_registration
+  private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
+  private_dns_zone_rg_name = data.azurerm_resource_group.rg_vnet.name
+  private_dns_record_cname = "nodo-storico-db"
 
   log_analytics_workspace_id = var.env_short != "d" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
   custom_metric_alerts       = var.custom_metric_alerts
@@ -115,4 +120,28 @@ resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_fle
   value     = 1000
 }
 
+resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_extension" {
+  name      = "azure.extensions"
+  server_id = module.postgres_storico_flexible_server.id
+  value     = "pg_cron,dblink,pglogical"
+}
+
+# parameters for logical replication
+resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_wal_level" {
+  name      = "wal_level"
+  server_id = module.postgres_storico_flexible_server.id
+  value     = "LOGICAL"
+}
+
+resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_preload_libraries" {
+  name      = "shared_preload_libraries"
+  server_id = module.postgres_storico_flexible_server.id
+  value     = "pg_cron,pg_stat_statements,pglogical"
+}
+
+resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_max_worker_processes" {
+  name      = "max_worker_processes"
+  server_id = module.postgres_storico_flexible_server.id
+  value     = var.pgres_flex_storico_params.max_worker_processes
+}
 
