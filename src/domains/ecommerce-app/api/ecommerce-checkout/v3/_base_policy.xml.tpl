@@ -23,13 +23,6 @@
         <when condition="@(((string)(context.Variables["authToken"])).Equals(""))">
         <return-response>
           <set-status code="401" reason="Unauthorized" />
-          <set-body>
-            {
-                "status": 401,
-                "title": "Unauthorized",
-                "detail": "Invalid token"
-            }
-          </set-body>
         </return-response>
         </when>
       </choose>
@@ -67,13 +60,6 @@
             <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) == 401)">
               <return-response>
                 <set-status code="401" reason="Unauthorized" />
-                <set-body>
-                  {
-                      "status": 401,
-                      "title": "Unauthorized",
-                      "detail": "Invalid token"
-                  }
-                </set-body>
               </return-response>
             </when>
             <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) == 500)">
