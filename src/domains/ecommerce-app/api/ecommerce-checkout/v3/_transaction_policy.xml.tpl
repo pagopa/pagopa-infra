@@ -1,6 +1,52 @@
 <policies>
     <inbound>
         <base />
+        <!-- custom token validate and store userId variable START -->
+
+        <send-request ignore-error="true" timeout="10" response-variable-name="userResponse" mode="new">
+        <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/users")</set-url>
+        <set-method>GET</set-method>
+        <set-header name="Authorization" exists-action="override">
+            <value>@("Bearer " + (string)context.Variables["authToken"])</value>
+        </set-header>
+        </send-request>
+        <choose>
+            <when condition="@(((int)((IResponse)context.Variables["userResponse"]).StatusCode) == 401 || ((int)((IResponse)context.Variables["userResponse"]).StatusCode) == 404)">
+            <return-response>
+                <set-status code="401" reason="Unauthorized" />
+            </return-response>
+            </when>
+            <when condition="@(((int)((IResponse)context.Variables["userResponse"]).StatusCode) == 500)">
+            <return-response>
+                <set-status code="502" reason="Internal server error" />
+                <set-body>
+                {
+                    "status": 502,
+                    "title": "Internal server error",
+                    "detail": "Error in token validation"
+                }
+                </set-body>
+            </return-response>
+            </when>
+            <when condition="@(((int)((IResponse)context.Variables["userResponse"]).StatusCode) != 200)">
+            <return-response>
+                <set-status code="502" reason="Internal server error" />
+                <set-body>
+                {
+                    "status": 502,
+                    "title": "Internal server error",
+                    "detail": "Unexpected error in token validation"
+                }
+                </set-body>
+            </return-response>
+            </when>
+            <otherwise>
+                <set-variable name="userResponseJson" value="@(((IResponse)context.Variables["userResponse"]).Body.As<JObject>())" />
+            </otherwise>
+        </choose>
+
+        <!-- custom token validate and store userId variable END -->
+
         <!-- pass rptId value into header START -->
         <set-header name="x-rpt-id" exists-action="delete" />
         <set-variable name="paymentNotices" value="@(((JArray)((JObject)context.Request.Body.As<JObject>(preserveContent: true))["paymentNotices"]))" />
@@ -24,47 +70,7 @@
         <!-- pass rptId value into header END -->
 
         <!-- pass x-user-id into header START-->
-        <send-request ignore-error="true" timeout="10" response-variable-name="userResponse" mode="new">
-            <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/users")</set-url>
-            <set-method>GET</set-method>
-            <set-header name="Authorization" exists-action="override">
-                <value>@("Bearer " + (string)context.Variables["authToken"])</value>
-            </set-header>
-        </send-request>
-        <choose>
-        <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) == 401 || ((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) == 404)">
-          <return-response>
-            <set-status code="401" reason="Invalid or missing token" />
-          </return-response>
-        </when>
-        <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) == 500)">
-          <return-response>
-            <set-status code="502" reason="Internal server error" />
-            <set-body>
-              {
-                  "status": 502,
-                  "title": "Internal server error",
-                  "detail": "Error in token validation"
-              }
-            </set-body>
-          </return-response>
-        </when>
-        <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) != 200)">
-          <return-response>
-            <set-status code="502" reason="Internal server error" />
-            <set-body>
-              {
-                  "status": 502,
-                  "title": "Internal server error",
-                  "detail": "Unexpected error in token validation"
-              }
-            </set-body>
-          </return-response>
-        </when>
-      </choose>
-
         <!-- Post Token PDV for CF START-->
-        <set-variable name="userResponseJson" value="@(((IResponse)context.Variables["userResponse"]).Body.As<JObject>())" />
         <send-request ignore-error="true" timeout="10" response-variable-name="cf-token" mode="new">
             <set-url>${pdv_api_base_path}/tokens</set-url>
             <set-method>PUT</set-method>
