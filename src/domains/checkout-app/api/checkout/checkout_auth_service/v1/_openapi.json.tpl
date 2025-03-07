@@ -351,19 +351,19 @@
             "type": "string",
             "description": "user unique id (fiscal code tokenization)"
           },
-          "firstName": {
+          "name": {
             "type": "string",
             "description": "user first name"
           },
-          "lastName": {
+          "familyName": {
             "type": "string",
             "description": "user family name"
           }
         },
         "required": [
           "userId",
-          "firstName",
-          "lastName"
+          "name",
+          "familyName"
         ]
       },
       "AuthResponse": {
