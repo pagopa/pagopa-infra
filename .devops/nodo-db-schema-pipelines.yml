@@ -405,7 +405,7 @@ stages:
                 END;
                 \$\$;
                 "
-          - ${{ if eq(variables.STORICO, true) }}:
+          - ${{ if eq(variables.STORICO, false) }}:
             - task: AzureCLI@2
               displayName: "partition scheduling"
               inputs:
