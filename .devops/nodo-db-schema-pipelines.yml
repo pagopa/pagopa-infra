@@ -17,10 +17,19 @@ parameters:
       - prf
       - uat
       - prd
+      - dev-storico
+      - uat-storico
+      - prd-storico
 
 variables:
   ${{ if eq(parameters.k8sEnv, 'dev') }}:
     DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+    KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-dev-linux-infra'
+  ${{ if eq(parameters.k8sEnv, 'dev-storico') }}:
+    DB_HOST: pagopa-d-weu-nodo-storico-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
     KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
     DATABASE_NAME: nodo
@@ -37,6 +46,12 @@ variables:
     KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
     DATABASE_NAME: nodo
     poolImage: 'pagopa-uat-linux-infra'
+  ${{ elseif eq(parameters.k8sEnv, 'uat-storico') }}:
+    DB_HOST: pagopa-u-weu-nodo-storico-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+    KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-uat-linux-infra'
   ${{ elseif eq(parameters.k8sEnv, 'prf') }}:
     DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
@@ -45,6 +60,12 @@ variables:
     poolImage: 'pagopa-uat-linux-infra'
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     DB_HOST: pagopa-p-weu-nodo-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+    KEY_VAULT_NAME: 'pagopa-p-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-prod-linux-infra'
+  ${{ elseif eq(parameters.k8sEnv, 'prd-storico') }}:
+    DB_HOST: pagopa-p-weu-nodo-storico-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
     KEY_VAULT_NAME: 'pagopa-p-nodo-kv'
     DATABASE_NAME: nodo
