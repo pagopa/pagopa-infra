@@ -58,6 +58,9 @@ module "postgres_storico_flexible_server" {
   private_dns_zone_rg_name = data.azurerm_resource_group.rg_vnet.name
   private_dns_record_cname = "nodo-storico-db"
 
+  public_network_access_enabled = var.pgres_flex_storico_params.public_network_access_enabled
+
+
   log_analytics_workspace_id = var.env_short != "d" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
   custom_metric_alerts       = var.custom_metric_alerts
   alert_action = [
