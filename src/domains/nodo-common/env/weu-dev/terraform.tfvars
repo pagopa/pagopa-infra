@@ -78,6 +78,7 @@ pgres_flex_storico_params = {
   max_connections                        = 850
   enable_private_dns_registration        = true
   max_worker_processes                   = 16
+  public_network_access_enabled          = true
 }
 
 sftp_account_replication_type = "LRS"
