@@ -18,6 +18,14 @@
         </allowed-headers>
       </cors>
       <base />
+      <set-variable name="authToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
+      <choose>
+        <when condition="@(((string)(context.Variables["authToken"])).Equals(""))">
+        <return-response>
+          <set-status code="401" reason="Unauthorized" />
+        </return-response>
+        </when>
+      </choose>
       <rate-limit-by-key calls="10" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("Authorization",""))" />
       <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
       <set-header name="X-Client-Id" exists-action="override" >
@@ -39,50 +47,46 @@
         </when>
       </choose>
       <!-- Check authorization token START-->
-      <set-variable name="authToken" value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))" />
-      <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
-        <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/validate")</set-url>
-        <set-method>GET</set-method>
-        <set-header name="Authorization" exists-action="override">
-            <value>@("Bearer " + (string)context.Variables["authToken"])</value>
-        </set-header>
-      </send-request>
       <choose>
-        <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) == 401)">
-          <return-response>
-            <set-status code="401" reason="Unauthorized" />
-            <set-body>
-              {
-                  "status": 401,
-                  "title": "Unauthorized",
-                  "detail": "Invalid token"
-              }
-            </set-body>
-          </return-response>
-        </when>
-        <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) == 500)">
-          <return-response>
-            <set-status code="502" reason="Internal server error" />
-            <set-body>
-              {
-                  "status": 502,
-                  "title": "Internal server error",
-                  "detail": "Error in token validation"
-              }
-            </set-body>
-          </return-response>
-        </when>
-        <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) != 200)">
-          <return-response>
-            <set-status code="502" reason="Internal server error" />
-            <set-body>
-              {
-                  "status": 502,
-                  "title": "Internal server error",
-                  "detail": "Unexpected error in token validation"
-              }
-            </set-body>
-          </return-response>
+        <when condition="@(context.Operation.Id != ("newTransactionV3"))">
+          <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
+          <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/validate")</set-url>
+          <set-method>GET</set-method>
+          <set-header name="Authorization" exists-action="override">
+              <value>@("Bearer " + (string)context.Variables["authToken"])</value>
+          </set-header>
+          </send-request>
+          <choose>
+            <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) == 401)">
+              <return-response>
+                <set-status code="401" reason="Unauthorized" />
+              </return-response>
+            </when>
+            <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) == 500)">
+              <return-response>
+                <set-status code="502" reason="Internal server error" />
+                <set-body>
+                  {
+                      "status": 502,
+                      "title": "Internal server error",
+                      "detail": "Error in token validation"
+                  }
+                </set-body>
+              </return-response>
+            </when>
+            <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) != 200)">
+              <return-response>
+                <set-status code="502" reason="Internal server error" />
+                <set-body>
+                  {
+                      "status": 502,
+                      "title": "Internal server error",
+                      "detail": "Unexpected error in token validation"
+                  }
+                </set-body>
+              </return-response>
+            </when>
+          </choose>
         </when>
       </choose>
       <!-- Check authorization token END-->
