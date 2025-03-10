@@ -188,16 +188,6 @@
               }
             }
           },
-          "404": {
-            "description": "User not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Internal server error",
             "content": {
@@ -351,19 +341,19 @@
             "type": "string",
             "description": "user unique id (fiscal code tokenization)"
           },
-          "firstName": {
+          "name": {
             "type": "string",
             "description": "user first name"
           },
-          "lastName": {
+          "familyName": {
             "type": "string",
             "description": "user family name"
           }
         },
         "required": [
           "userId",
-          "firstName",
-          "lastName"
+          "name",
+          "familyName"
         ]
       },
       "AuthResponse": {

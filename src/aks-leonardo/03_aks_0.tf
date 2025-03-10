@@ -17,8 +17,8 @@ module "aks_leonardo" {
   sku_tier                   = var.aks_sku_tier
 
   ## Prometheus managed
-  # ff: enabled on DEV/UAT
-  enable_prometheus_monitor_metrics = var.env_short != "p" ? true : false
+  # ffppa: ⚠️ Installed on all ENV please do not change
+  enable_prometheus_monitor_metrics = true
 
   # ff: Enabled cost analysis on UAT/PROD
   cost_analysis_enabled = var.env_short != "d" ? true : false
