@@ -60,6 +60,8 @@ module "postgres_flexible_server" {
   geo_redundant_backup_enabled = var.pgres_flex_params.geo_redundant_backup_enabled
   create_mode                  = var.pgres_flex_params.create_mode
 
+  public_network_access_enabled = var.pgres_flex_params.public_network_access_enabled
+
   log_analytics_workspace_id = var.env_short != "d" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
   custom_metric_alerts       = var.custom_metric_alerts
   alert_action = [

@@ -141,20 +141,18 @@ resource "kubernetes_manifest" "service_monitor" {
 
 # Refer: Resource created on next-core 02_monitor.tf
 data "azurerm_monitor_workspace" "workspace" {
-  count               = var.env != "prod" ? 1 : 0
   name                = "pagopa-${var.env_short}-monitor-workspace"
   resource_group_name = "pagopa-${var.env_short}-monitor-rg"
 }
 
 module "prometheus_managed_addon" {
-  count                  = var.env != "prod" ? 1 : 0
   source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.83.1"
   cluster_name           = module.aks.name
   resource_group_name    = module.aks.aks_resource_group_name
   location               = var.location
   location_short         = var.location_short
-  monitor_workspace_name = data.azurerm_monitor_workspace.workspace.0.name
-  monitor_workspace_rg   = data.azurerm_monitor_workspace.workspace.0.resource_group_name
+  monitor_workspace_name = data.azurerm_monitor_workspace.workspace.name
+  monitor_workspace_rg   = data.azurerm_monitor_workspace.workspace.resource_group_name
   grafana_name           = "pagopa-${var.env_short}-${var.location_short}-grafana"
   grafana_resource_group = "pagopa-${var.env_short}-${var.location_short}-grafana-rg"
 
