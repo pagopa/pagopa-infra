@@ -5,7 +5,7 @@
 CREATE OR REPLACE PROCEDURE partition.modify_partition(
 	a integer)
 LANGUAGE 'plpgsql'
-AS $BODY$
+AS $$
 
 DECLARE
 
@@ -115,7 +115,7 @@ WHEN OTHERS THEN
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
 
 END;
-$BODY$;
+$$;
 
 ALTER PROCEDURE partition.modify_partition(integer)
     OWNER TO partition;
