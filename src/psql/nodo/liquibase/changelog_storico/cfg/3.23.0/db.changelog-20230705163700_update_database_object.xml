@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+  http://www.liquibase.org/xml/ns/pro
+  http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+
+	<changeSet author="liquibase" id="202307051637">
+		<addUniqueConstraint columnNames="id_dominio"
+			constraintName="ID_DOMINIO_UNIQUE" deferrable="false"
+			initiallyDeferred="false" tableName="ica_binary_file" validate="true" />
+	</changeSet>
+
+
+
+	<!-- As per the PostgreSQL documentation:  -->
+	<!-- https://www.postgresql.org/docs/12/sql-createview.html -->
+	<!-- https://github.com/liquibase/liquibase/issues/2732#issuecomment-1092612725 -->
+	<!--  
+	<changeSet author="liquibase" id="202307061638_before">
+		<dropView viewName="iban_validi_per_pa"/>
+	</changeSet>
+	-->
+
+	<changeSet author="liquibase" id="202307061638">
+	    <renameView    
+            newViewName="iban_validi_per_pa_old"  
+            oldViewName="iban_validi_per_pa"  
+        />  
+        
+		<createView fullDefinition="false"
+			viewName="iban_validi_per_pa" replaceIfExists="true">
+	   SELECT mas.fk_pa,
+       det.iban          AS iban_accredito,
+       mas.validity_date AS data_inizio_validita,
+	   mas.inserted_date AS data_pubblicazione,
+       p.ID_DOMINIO   AS ragione_sociale,
+       NULL              AS id_merchant,
+       'NA'              AS id_banca_seller,
+       NULL              AS chiave_avvio,
+       NULL              AS chiave_esito,
+       mas.obj_id,
+       mas.obj_id        AS master_obj
+FROM   ((iban_master mas
+         JOIN (
+         SELECT iban_master.obj_id AS obj_id
+               FROM   iban_master
+               WHERE  ( iban_master.validity_date &lt;= current_timestamp )
+               ) right_id_by_pk ON (( mas.obj_id = right_id_by_pk.obj_id )))
+        JOIN iban det
+          ON (( mas.fk_iban = det.obj_id ))
+        JOIN PA p 
+          ON (( mas.fk_pa = p.obj_id))); 
+          </createView>
+	</changeSet>
+
+	<changeSet author="liquibase" id="202307061645">
+		<addColumn tableName="informative_pa_master">
+			<column name="fk_ica_binary_file" type="numeric" />
+		</addColumn>
+	</changeSet>
+
+	<changeSet author="liquibase" id="202307061647">
+		<addForeignKeyConstraint
+			baseColumnNames="fk_ica_binary_file"
+			baseTableName="informative_pa_master"
+			constraintName="fk_informative_pa_master_ica_binary_file"
+			deferrable="false" initiallyDeferred="false" onDelete="RESTRICT"
+			onUpdate="RESTRICT" referencedColumnNames="obj_id"
+			referencedTableName="ica_binary_file" validate="true" />
+	</changeSet>
+	
+	<changeSet author="liquibase" id="202307311500">
+		<addUniqueConstraint columnNames="iban"
+			constraintName="IBAN_UNIQUE" deferrable="false"
+			initiallyDeferred="false" tableName="iban" validate="true" />
+	</changeSet>
+	
+	<changeSet author="liquibase" id="202310311019">
+		<addUniqueConstraint columnNames="fk_iban, fk_pa"
+			constraintName="IBAN_PA_UNIQUE" deferrable="false"
+			initiallyDeferred="false" tableName="iban_master" validate="true" />
+	</changeSet>
+
+</databaseChangeLog>

@@ -52,6 +52,7 @@ module "postgres_storico_flexible_server" {
   backup_retention_days        = var.pgres_flex_storico_params.backup_retention_days
   geo_redundant_backup_enabled = var.pgres_flex_storico_params.geo_redundant_backup_enabled
   create_mode                  = var.pgres_flex_storico_params.create_mode
+  auto_grow_enabled            = var.pgres_flex_storico_params.auto_grow_enabled
 
   private_dns_registration = var.pgres_flex_storico_params.enable_private_dns_registration
   private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"

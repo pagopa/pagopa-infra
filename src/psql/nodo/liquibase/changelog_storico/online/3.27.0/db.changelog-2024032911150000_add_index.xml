@@ -1,0 +1,17 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="liquibase" id="20240329111700">
+        <createIndex indexName="POSITION_PAYMENT_TRANS_ID_TIMES_IDX" tableName="POSITION_PAYMENT">
+            <column name="TRANSACTION_ID"/>
+            <column name="INSERTED_TIMESTAMP"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="liquibase" id="20240329112100">
+        <createIndex indexName="PM_METADATA_TRANS_ID_IDX" tableName="PM_METADATA">
+            <column name="TRANSACTION_ID"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
