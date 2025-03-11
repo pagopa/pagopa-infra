@@ -149,6 +149,7 @@ variable "pgres_flex_storico_params" {
     enable_private_dns_registration        = optional(bool, false)
     max_worker_processes                   = number
     public_network_access_enabled          = optional(bool, false)
+    auto_grow_enabled                       = optional(bool, true)
   })
 
 }
