@@ -4,8 +4,8 @@
 
 CREATE OR REPLACE PROCEDURE partition.add_archive_partition(
 	)
-LANGUAGE 'plpgsql' AS $BODY$
-
+LANGUAGE 'plpgsql'
+AS $BODY$
 DECLARE
 
 l_partname TEXT;
