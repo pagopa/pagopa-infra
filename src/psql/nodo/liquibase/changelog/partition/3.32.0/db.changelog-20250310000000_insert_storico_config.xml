@@ -25,6 +25,7 @@
 
     <sqlFile
       encoding="UTF-8"
+      dbms="postgresql"
       path="sql/modify_partition.sql"
       relativeToChangelogFile="true"
       splitStatements="true"
