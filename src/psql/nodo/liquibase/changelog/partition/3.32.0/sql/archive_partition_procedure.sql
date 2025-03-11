@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE PROCEDURE partition.add_archive_partition(
 	)
-AS $BODY$
+AS $$
 DECLARE
 
 l_partname TEXT;
@@ -98,7 +98,7 @@ WHEN OTHERS THEN
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
 
 END;
-$BODY$ LANGUAGE 'plpgsql';
+$$ LANGUAGE 'plpgsql';
 
 ALTER PROCEDURE partition.add_archive_partition()
     OWNER TO partition;

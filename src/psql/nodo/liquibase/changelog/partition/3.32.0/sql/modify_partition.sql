@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE PROCEDURE partition.modify_partition(
 	a integer)
-AS $BODY$
+AS $$
 DECLARE
 
 l_partname TEXT;
@@ -113,7 +113,7 @@ WHEN OTHERS THEN
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
 
 END;
-$BODY$ LANGUAGE 'plpgsql';
+$$ LANGUAGE 'plpgsql';
 
 ALTER PROCEDURE partition.modify_partition(integer)
     OWNER TO partition;
