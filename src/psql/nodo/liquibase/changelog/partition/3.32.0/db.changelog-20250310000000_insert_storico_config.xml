@@ -18,6 +18,7 @@
 
     <sqlFile
       encoding="UTF-8"
+      dbms="postgresql"
       path="sql/archive_partition_procedure.sql"
       relativeToChangelogFile="true"
       splitStatements="true"
