@@ -5,6 +5,7 @@
 
   <include file="./db.changelog-master-3.31.0.xml"/>
 
+  <property name="version" value="3.32.0" global="false"/>
   <!-- 3.32.0 -->
   <include file="./${version}/db.changelog-20250310000000_insert_storico_config.xml" labels="${version}"/>
 
