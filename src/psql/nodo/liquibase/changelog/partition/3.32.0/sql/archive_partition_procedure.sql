@@ -5,7 +5,7 @@
 CREATE OR REPLACE PROCEDURE partition.add_archive_partition(
 	)
 LANGUAGE 'plpgsql'
-AS $BODY$
+AS $$
 
 DECLARE
 
@@ -100,7 +100,7 @@ WHEN OTHERS THEN
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
 
 END;
-$BODY$;
+$$;
 
 ALTER PROCEDURE partition.add_archive_partition()
     OWNER TO partition;
