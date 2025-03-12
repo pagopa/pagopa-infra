@@ -697,7 +697,7 @@ stages:
                 --defaultSchemaName="$(CRON_SCHEMA)" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
-                tag
+                tag ${{ parameters.dbVersion }}
               fi
             displayName: "Tag cron postgres db"
           - script: |
@@ -731,7 +731,7 @@ stages:
                 --defaultSchemaName="$(ADMIN_SCHEMA)" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
-                tag
+                tag ${{ parameters.dbVersion }}
               fi
             displayName: "Tag admin nodo"
           - script: |
@@ -769,6 +769,6 @@ stages:
                 --defaultSchemaName="$(ADMIN_SCHEMA)" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
-                tag
+                tag ${{ parameters.dbVersion }}
               fi
             displayName: "Tag admin postgres"
