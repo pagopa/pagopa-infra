@@ -16,22 +16,6 @@ data "azurerm_key_vault_secret" "monitor_aca_opsgenie_webhook_key" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_monitor_action_group" "aca_opsgenie" {
-  count               = var.env_short == "p" ? 1 : 0
-  name                = "AcaOpsgenie"
-  resource_group_name = azurerm_resource_group.rg_aca_alerts[0].name
-  short_name          = "AcaOps"
-
-  webhook_receiver {
-    name                    = "AcaOpsgenieWebhook"
-    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_aca_opsgenie_webhook_key[0].value}"
-    use_common_alert_schema = true
-  }
-
-  tags = var.tags
-}
-
-
 resource "azurerm_monitor_scheduled_query_rules_alert" "debt_positions_for_aca_availability_v1" {
   count = var.env_short == "p" ? 1 : 0
 
@@ -40,7 +24,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "debt_positions_for_aca_a
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.aca_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
     email_subject          = "[GPD for ACA V1] Availability Alert"
     custom_webhook_payload = "{}"
   }
