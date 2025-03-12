@@ -109,7 +109,12 @@ resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_fle
 # pgbouncer.server_idle_timeout       If a server connection has been idle more than this many seconds it will be dropped. If 0 then timeout is disabled.
 # pgbouncer.stats_users               Comma-separated list of database users that are allowed to connect and run read-only queries on the pgBouncer console.
 
-
+resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_ignore_startup_parameters" {
+  count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
+  name      = "pgbouncer.ignore_startup_parameters"
+  server_id = module.postgres_flexible_server.id
+  value     = "extra_float_digits,search_path"
+}
 
 resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_min_pool_size" {
   count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
