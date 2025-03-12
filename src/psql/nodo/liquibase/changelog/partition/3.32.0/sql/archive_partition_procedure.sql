@@ -1,8 +1,6 @@
 -- PROCEDURE: partition.add_archive_partition()
 
 -- DROP PROCEDURE IF EXISTS partition.add_archive_partition();
-DO $$
-BEGIN
 CREATE OR REPLACE PROCEDURE partition.add_archive_partition(
 	)
 LANGUAGE 'plpgsql'
@@ -102,14 +100,14 @@ WHEN OTHERS THEN
 END;
 $BODY$
 ;
+/
 
 ALTER PROCEDURE partition.add_archive_partition()
     OWNER TO partition;
-
+/
 GRANT EXECUTE ON PROCEDURE partition.add_archive_partition() TO PUBLIC;
-
+/
 GRANT EXECUTE ON PROCEDURE partition.add_archive_partition() TO azureuser;
-
+/
 GRANT EXECUTE ON PROCEDURE partition.add_archive_partition() TO partition;
-END;
-$$;
+/
