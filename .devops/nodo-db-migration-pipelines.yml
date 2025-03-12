@@ -742,7 +742,7 @@ stages:
                 --password="$(db-administrator-login-password)" \
                 --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin-postgres \
                 --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(ADMIN_SCHEMA)" \
+                --liquibaseSchemaName="public" \
                 --defaultSchemaName="$(ADMIN_SCHEMA)" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
@@ -759,7 +759,7 @@ stages:
                 --password="$(db-administrator-login-password)" \
                 --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin-postgres \
                 --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(ADMIN_SCHEMA)" \
+                --liquibaseSchemaName="public" \
                 --defaultSchemaName="$(ADMIN_SCHEMA)" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
