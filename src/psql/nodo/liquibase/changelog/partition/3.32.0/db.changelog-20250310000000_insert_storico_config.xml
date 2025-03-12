@@ -20,6 +20,7 @@
       encoding="UTF-8"
       dbms="postgresql"
       path="sql/archive_partition_procedure.sql"
+      endDelimiter="/"
       relativeToChangelogFile="true"
       splitStatements="true"
       stripComments="true"/>
