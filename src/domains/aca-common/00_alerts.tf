@@ -1,0 +1,71 @@
+data "azurerm_api_management" "apim" {
+  name                = "${local.product}-apim"
+  resource_group_name = "${local.product}-api-rg"
+}
+
+resource "azurerm_resource_group" "rg_aca_alerts" {
+  count    = var.env_short == "p" ? 1 : 0
+  name     = "${local.project}-alerts-rg"
+  location = var.location
+  tags     = var.tags
+}
+
+data "azurerm_key_vault_secret" "monitor_aca_opsgenie_webhook_key" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "aca-opsgenie-webhook-token"
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_monitor_action_group" "aca_opsgenie" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "AcaOpsgenie"
+  resource_group_name = azurerm_resource_group.rg_aca_alerts[0].name
+  short_name          = "AcaOps"
+
+  webhook_receiver {
+    name                    = "AcaOpsgenieWebhook"
+    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.monitor_aca_opsgenie_webhook_key[0].value}"
+    use_common_alert_schema = true
+  }
+
+  tags = var.tags
+}
+
+
+resource "azurerm_monitor_scheduled_query_rules_alert" "debt_positions_for_aca_availability_v1" {
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "debt-positions-for-aca-availability-alert-v1"
+  resource_group_name = azurerm_resource_group.rg_aca_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.aca_opsgenie[0].id]
+    email_subject          = "[GPD for ACA V1] Availability Alert"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "GPD for ACA V1 - Availability less than 90% in the last 30 minutes"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s startswith "https://api.platform.pagopa.it/aca/debt-positions-service/v1"
+| summarize
+    Total=count(),
+    Success=countif(
+        responseCode_d < 400 or
+        (url_s matches regex ".*/organizations/.*/debtpositions/.*" and method_s == "GET" and responseCode_d == 404) //404 for unknown debt positions are count as successful api calls
+    )
+    by Time = bin(TimeGenerated, 15m)
+| extend Availability=((Success * 1.0) / Total) * 100
+| where toint(Availability) < 90
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
