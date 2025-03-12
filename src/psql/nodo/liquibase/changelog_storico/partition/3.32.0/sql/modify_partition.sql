@@ -120,7 +120,8 @@ WHEN OTHERS THEN
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
 
 END;
-$BODY$;
+$BODY$
+;
 
 ALTER PROCEDURE partition.modify_partition(integer, integer)
     OWNER TO partition;

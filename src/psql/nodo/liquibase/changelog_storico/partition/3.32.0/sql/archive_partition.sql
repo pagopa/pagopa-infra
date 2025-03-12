@@ -177,7 +177,8 @@ WHEN OTHERS THEN
 								  CONCAT('Step:',tLabelStep,' , Message : ',tMessageRaise,' , tConnDbLink : ',tConnDbLink,', sqlerrm : ',sqlerrm));
 
 END;
-$BODY$;
+$BODY$
+;
 
 ALTER PROCEDURE partition.archive_partition()
     OWNER TO partition;
