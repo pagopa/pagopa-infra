@@ -6,8 +6,8 @@
       encoding="UTF-8"
       path="sql/schedule_archive_partition.sql"
       relativeToChangelogFile="true"
-      splitStatements="true"
-      stripComments="true"/>
+      splitStatements="false"
+      stripComments="false"/>
 
   </changeSet>
 
