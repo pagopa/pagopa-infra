@@ -20,10 +20,11 @@
       encoding="UTF-8"
       dbms="postgresql"
       path="sql/archive_partition_procedure.sql"
-      endDelimiter="/"
+      splitStatements="false"
+      stripComments="false"
+      endDelimiter=";"
       relativeToChangelogFile="true"
-      splitStatements="true"
-      stripComments="true"/>
+      />
 
     <sqlFile
       encoding="UTF-8"

@@ -1,12 +1,9 @@
 -- PROCEDURE: partition.add_archive_partition()
 
 -- DROP PROCEDURE IF EXISTS partition.add_archive_partition();
-do $$
-BEGIN
-CREATE OR REPLACE PROCEDURE partition.add_archive_partition(
+CREATE OR REPLACE PROCEDURE add_archive_partition(
 	)
-LANGUAGE 'plpgsql'
-AS $BODY$
+AS $function$
 DECLARE
 
 l_partname TEXT;
@@ -100,9 +97,6 @@ WHEN OTHERS THEN
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
 
 END;
-$BODY$;
-END;
-$$;
-$$;
-$$;
-/
+$function$
+LANGUAGE 'plpgsql'
+;
