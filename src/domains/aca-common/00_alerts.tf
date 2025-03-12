@@ -38,7 +38,7 @@ AzureDiagnostics
     Total=count(),
     Success=countif(
         responseCode_d < 400 or
-        (url_s matches regex ".*/organizations/.*/debtpositions/.*" and method_s == "GET" and responseCode_d == 404) //404 for unknown debt positions are count as successful api calls
+        (operationId_s == "getOrganizationDebtPositionByIUPD" and responseCode_d == 404) //404 for unknown debt positions are count as successful api calls
     )
     by Time = bin(TimeGenerated, 15m)
 | extend Availability=((Success * 1.0) / Total) * 100
