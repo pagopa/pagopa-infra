@@ -1,6 +1,8 @@
 -- PROCEDURE: partition.add_archive_partition()
 
 -- DROP PROCEDURE IF EXISTS partition.add_archive_partition();
+do $$
+BEGIN
 CREATE OR REPLACE PROCEDURE partition.add_archive_partition(
 	)
 LANGUAGE 'plpgsql'
@@ -99,4 +101,6 @@ WHEN OTHERS THEN
 
 END;
 $BODY$;
+END;
+$$;
 /
