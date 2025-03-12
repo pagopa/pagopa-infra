@@ -2,8 +2,8 @@
 
 -- DROP PROCEDURE IF EXISTS partition.add_archive_partition();
 
-CREATE OR REPLACE PROCEDURE partition.add_archive_partition(
-	)
+CREATE OR REPLACE PROCEDURE partition.add_archive_partition()
+LANGUAGE 'plpgsql'
 AS $BODY$
 DECLARE
 
@@ -98,7 +98,7 @@ WHEN OTHERS THEN
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
 
 END;
-$BODY$ LANGUAGE 'plpgsql';
+$BODY$ ;
 
 ALTER PROCEDURE partition.add_archive_partition()
     OWNER TO partition;
