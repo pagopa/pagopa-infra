@@ -2,10 +2,12 @@
 
 -- DROP PROCEDURE IF EXISTS partition.add_archive_partition();
 
-CREATE OR REPLACE PROCEDURE partition.add_archive_partition()
+CREATE OR REPLACE PROCEDURE partition.add_archive_partition(
+	)
 LANGUAGE 'plpgsql'
 AS $BODY$
 DECLARE
+
 l_partname TEXT;
 l_part_list date;
 l_part_listb date;
@@ -40,49 +42,71 @@ tProcedureName TEXT:= 'add_archive_partition';
     tNomePartizione TEXT;
     tNomeSchema TEXT;
     tNomeTabella TEXT;
+
 BEGIN
+
 tLabelStep := 'Init';
 iIdTrace := nextval('seq_log'::regclass);
 INSERT INTO PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','INIZIO',tLabelStep);
+
 OPEN tab_cursor;
    	LOOP
         FETCH NEXT FROM tab_cursor INTO tNomeSchema,tNomeTabella,tNomePartizione;
         EXIT WHEN NOT FOUND;
+
 ------------------------------------------------------------------------------------------------------
+
 --inserisco le partizioni da storicizzare
    IF NOT EXISTS
 	  (SELECT *
 		 FROM   partition.storico_part
 		   WHERE nome_tabella =tNomeTabella and nome_partition=tNomePartizione and nome_schema=tNomeSchema)
 	   THEN
+
 	   INSERT INTO partition.storico_part(
 		nome_tabella, nome_schema, nome_partition, stato, insert_date, modification_date, deleting_date)
 		VALUES (tNomeTabella, tNomeSchema, tNomePartizione, 'N', NOW(), NULL, NULL);
+
   	 END IF;
 ------------------------------------------------------------------------------------------------------
+
 	IF EXISTS
 	  (SELECT *
 		 FROM   partition.storico_part
 		   WHERE nome_tabella =tNomeTabella and  nome_partition=tNomePartizione and nome_schema=tNomeSchema AND STATO='Y') --partizioni storicizzate
 	   THEN
+
 	   	  l_sql := format('DROP TABLE %I.%I',  tNomeSchema, tNomePartizione);
 		  execute l_sql;
+
 		UPDATE partition.storico_part SET STATO='E', DELETING_DATE=NOW()
 		   WHERE nome_tabella =tNomeTabella and nome_partition=tNomePartizione and nome_schema=tNomeSchema AND STATO='Y';
+
   	 END IF;
+
  END LOOP;
+
  CLOSE tab_cursor;
+
 iIdTrace := nextval('seq_log'::regclass);
 INSERT INTO PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','FINE','Procedura eseguita con successo');
+
 EXCEPTION
 WHEN OTHERS THEN
+
 		iIdTrace := nextval('seq_log'::regclass);
 		INSERT INTO PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), ( clock_timestamp()- ptDataInizio) ,'KO','FINE',
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
+
 END;
-$BODY$;
+$BODY$
+;
+
 ALTER PROCEDURE partition.add_archive_partition()
     OWNER TO partition;
+
 GRANT EXECUTE ON PROCEDURE partition.add_archive_partition() TO PUBLIC;
+
 GRANT EXECUTE ON PROCEDURE partition.add_archive_partition() TO azureuser;
+
 GRANT EXECUTE ON PROCEDURE partition.add_archive_partition() TO partition;
