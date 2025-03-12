@@ -394,6 +394,23 @@ stages:
                 validate -Dschema=$(ADMIN_SCHEMA) -Dnodo-db-host=$(NODO_DB_HOST) -Dnodo-db-port=$(NODO_DB_PORT) -Dpartition-password=$(db-partition-password)
               fi
             displayName: "admin nodo db validate"
+          - script: |
+              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/admin-postgres/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
+                echo "Version not defined on admin!"
+              else
+                liquibase \
+                --url="$(POSTGRES_JDBC_URL)" \
+                --username="$(ADMIN_USERNAME)" \
+                --password="$(db-administrator-login-password)" \
+                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin \
+                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+                --liquibaseSchemaName="$(ADMIN_SCHEMA)" \
+                --defaultSchemaName="$(ADMIN_SCHEMA)" \
+                --contexts="${{ parameters.lbContexts }}" \
+                --log-level=${{ parameters.lbLogLevel }} \
+                validate -Dschema=$(ADMIN_SCHEMA)
+              fi
+            displayName: "admin postgres db validate"
       - job: approval
         dependsOn: liquibase_status_job
         condition: eq('${{ parameters.k8sEnv }}', 'prd')
@@ -715,3 +732,37 @@ stages:
                 tag -Dschema=$(ADMIN_SCHEMA) -Dnodo-db-host=$(NODO_DB_HOST) -Dnodo-db-port=$(NODO_DB_PORT) -Dpartition-password=$(db-partition-password)
               fi
             displayName: "Tag admin nodo"
+          - script: |
+              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/admin-postgres/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
+                echo "Version not defined on admin!"
+              else
+                liquibase \
+                --url="$(POSTGRES_JDBC_URL)" \
+                --username="$(ADMIN_USERNAME)" \
+                --password="$(db-administrator-login-password)" \
+                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin \
+                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+                --liquibaseSchemaName="$(ADMIN_SCHEMA)" \
+                --defaultSchemaName="$(ADMIN_SCHEMA)" \
+                --contexts="${{ parameters.lbContexts }}" \
+                --log-level=${{ parameters.lbLogLevel }} \
+                update -Dschema=$(ADMIN_SCHEMA)
+              fi
+            displayName: "Run Liquibase admin postgres"
+          - script: |
+              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/admin-postgres/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
+                echo "Version not defined on admin!"
+              else
+                liquibase \
+                --url="$(POSTGRES_JDBC_URL)" \
+                --username="$(ADMIN_USERNAME)" \
+                --password="$(db-administrator-login-password)" \
+                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin \
+                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+                --liquibaseSchemaName="$(ADMIN_SCHEMA)" \
+                --defaultSchemaName="$(ADMIN_SCHEMA)" \
+                --contexts="${{ parameters.lbContexts }}" \
+                --log-level=${{ parameters.lbLogLevel }} \
+                tag -Dschema=$(ADMIN_SCHEMA)
+              fi
+            displayName: "Tag admin postgres"
