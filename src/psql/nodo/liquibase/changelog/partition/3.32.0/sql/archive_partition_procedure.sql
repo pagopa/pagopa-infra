@@ -98,16 +98,5 @@ WHEN OTHERS THEN
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
 
 END;
-$BODY$
-;
-/
-
-ALTER PROCEDURE partition.add_archive_partition()
-    OWNER TO partition;
-/
-GRANT EXECUTE ON PROCEDURE partition.add_archive_partition() TO PUBLIC;
-/
-GRANT EXECUTE ON PROCEDURE partition.add_archive_partition() TO azureuser;
-/
-GRANT EXECUTE ON PROCEDURE partition.add_archive_partition() TO partition;
+$BODY$;
 /
