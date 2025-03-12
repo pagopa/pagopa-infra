@@ -2,6 +2,7 @@
 
 -- DROP PROCEDURE IF EXISTS partition.add_archive_partition();
 DO $$
+BEGIN
 CREATE OR REPLACE PROCEDURE partition.add_archive_partition(
 	)
 LANGUAGE 'plpgsql'
