@@ -31,8 +31,9 @@
       dbms="postgresql"
       path="sql/modify_partition.sql"
       relativeToChangelogFile="true"
-      splitStatements="true"
-      stripComments="true"/>
+      splitStatements="false"
+      stripComments="false"
+      endDelimiter=";"/>
   </changeSet>
 
 
