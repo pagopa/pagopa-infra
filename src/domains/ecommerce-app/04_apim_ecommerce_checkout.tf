@@ -253,3 +253,56 @@ resource "azurerm_api_management_api_operation_policy" "get_fees_v2" {
 
   xml_content = file("./api/ecommerce-checkout/v2/_validate_transactions_jwt_token.tpl")
 }
+
+# pagopa-ecommerce APIs for checkout V3 (authenticated)
+
+module "apim_ecommerce_checkout_api_v3" {
+  source = "./.terraform/modules/__v3__/api_management_api"
+
+  name                  = "${local.project}-checkout-api"
+  resource_group_name   = local.pagopa_apim_rg
+  api_management_name   = local.pagopa_apim_name
+  product_ids           = [module.apim_ecommerce_checkout_product.product_id]
+  subscription_required = local.apim_ecommerce_checkout_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.ecommerce_checkout_api_v1.id
+  api_version           = "v3"
+  service_url           = local.apim_ecommerce_checkout_api.service_url
+
+  description  = local.apim_ecommerce_checkout_api.description
+  display_name = local.apim_ecommerce_checkout_api.display_name
+  path         = local.apim_ecommerce_checkout_api.path
+  protocols    = ["https"]
+
+  content_format = "openapi"
+  content_value = templatefile("./api/ecommerce-checkout/v3/_openapi.json.tpl", {
+    host = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/ecommerce-checkout/v3/_base_policy.xml.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+    checkout_origin            = var.env_short == "d" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
+    checkout_ingress_hostname  = local.checkout_hostname
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "transaction_activation_request_v3" {
+  depends_on          = [module.apim_ecommerce_checkout_api_v3]
+  api_name            = "${local.project}-checkout-api-v3"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  operation_id        = "newTransactionV3"
+
+  xml_content = templatefile("./api/ecommerce-checkout/v3/_transaction_policy.xml.tpl", {
+    pdv_api_base_path         = var.pdv_api_base_path
+    checkout_ingress_hostname = local.checkout_hostname
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_payment_request_info_api_policy_v3" {
+  api_name            = "${local.project}-checkout-api-v3"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getPaymentRequestInfoV3"
+
+  xml_content = file("./api/ecommerce-checkout/v3/_payment_request_policy.xml.tpl")
+}

@@ -756,18 +756,72 @@ variable "eventhubs_04" {
   default = []
 }
 
-variable "ehns_alerts_enabled" {
+variable "eventhubs_prf" {
+  description = "A list of event hubs to add to namespace."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
+}
+
+variable "ehns03_alerts_enabled" {
   type        = bool
   default     = false
-  description = "Event hub alerts enabled?"
+  description = "Event hub 03 alerts enabled?"
 }
+
+variable "ehns04_alerts_enabled" {
+  type        = bool
+  default     = false
+  description = "Event hub 04 alerts enabled?"
+}
+
 
 variable "ehns_public_network_access" {
   type        = bool
   description = "(Required) enables public network access to the event hubs"
 }
 
-variable "ehns_metric_alerts" {
+variable "ehns03_metric_alerts" {
+  default = {}
+
+  description = <<EOD
+Map of name = criteria objects
+EOD
+
+  type = map(object({
+    # criteria.*.aggregation to be one of [Average Count Minimum Maximum Total]
+    aggregation = string
+    metric_name = string
+    description = string
+    # criteria.0.operator to be one of [Equals NotEquals GreaterThan GreaterThanOrEqual LessThan LessThanOrEqual]
+    operator  = string
+    threshold = number
+    # Possible values are PT1M, PT5M, PT15M, PT30M and PT1H
+    frequency = string
+    # Possible values are PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H and P1D.
+    window_size = string
+
+    dimension = list(object(
+      {
+        name     = string
+        operator = string
+        values   = list(string)
+      }
+    ))
+  }))
+}
+
+variable "ehns04_metric_alerts" {
   default = {}
 
   description = <<EOD

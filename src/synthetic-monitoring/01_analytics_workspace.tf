@@ -14,6 +14,12 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   reservation_capacity_in_gb_per_day = var.env_short == "p" ? 100 : null
 
   tags = var.tags
+
+  lifecycle {
+    ignore_changes = [
+      sku
+    ]
+  }
 }
 
 # Application insights

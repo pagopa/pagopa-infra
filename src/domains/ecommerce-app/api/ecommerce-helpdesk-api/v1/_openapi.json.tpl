@@ -124,6 +124,61 @@
         }
       }
     },
+    "/pm/searchBulkTransaction": {
+      "post": {
+        "tags": [
+          "PM"
+        ],
+        "operationId": "pmSearchBulkTransaction",
+        "summary": "Search bulk transaction by input parameters",
+        "description": "GET with body payload - no resources created",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/PmSearchBulkTransactionRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Transactions found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchBulkTransactionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/pm/searchPaymentMethod": {
       "post": {
         "tags": [
@@ -742,6 +797,13 @@
           "page"
         ]
       },
+      "SearchBulkTransactionResponse": {
+        "type": "array",
+        "description": "TransactionBulkResponse",
+        "items": {
+          "$ref": "#/components/schemas/TransactionBulkResult"
+        }
+      },
       "SearchTransactionRequestRptId": {
         "type": "object",
         "description": "Search transaction by user fiscal code",
@@ -832,6 +894,63 @@
           "pspInfo",
           "product"
         ]
+      },
+      "TransactionBulkResult": {
+        "type": "object",
+        "description": "TransactionResponse",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 32
+          },
+          "userInfo": {
+            "$ref": "#/components/schemas/UserInfoBulk"
+          },
+          "transactionInfo": {
+            "$ref": "#/components/schemas/TransactionInfo"
+          },
+          "paymentInfo": {
+            "$ref": "#/components/schemas/PaymentInfo"
+          },
+          "pspInfo": {
+            "$ref": "#/components/schemas/PspInfo"
+          },
+          "product": {
+            "$ref": "#/components/schemas/Product"
+          }
+        },
+        "required": [
+          "_id",
+          "userInfo",
+          "transactionInfo",
+          "paymentInfo",
+          "pspInfo",
+          "product"
+        ]
+      },
+      "UserInfoBulk": {
+        "type": "object",
+        "description": "User information",
+        "properties": {
+          "userFiscalCode": {
+            "type": "string",
+            "minLength": 16,
+            "maxLength": 16
+          },
+          "notificationEmail": {
+            "type": "string",
+            "pattern": "(?:[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
+          },
+          "authenticationType": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "userFiscalCode": "user_fiscal_code",
+          "notificationEmail": "test@test.it",
+          "authenticationType": "auth type"
+        }
       },
       "UserInfo": {
         "type": "object",
@@ -1321,6 +1440,36 @@
         "required": [
           "startDate",
           "endDate"
+        ]
+      },
+      "DeadLetterExcludedStatuses": {
+        "type": "object",
+        "properties": {
+          "ecommerceStatuses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of eCommerce statuses to exclude",
+            "example": [
+              "NOTIFIED_OK"
+            ]
+          },
+          "npgStatuses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of NPG statuses to exclude",
+            "example": [
+              "DECLINED",
+              "CANCELLED"
+            ]
+          }
+        },
+        "required": [
+          "ecommerceStatuses",
+          "npgStatuses"
         ]
       },
       "SearchPgsStatusResponse": {
@@ -1848,6 +1997,37 @@
           }
         }
       },
+      "PmSearchBulkTransactionRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/SearchTransactionRequestDateTimeRange"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "type",
+                "mapping": {
+                  "DATE_TIME_RANGE": "#/components/schemas/SearchTransactionRequestDate"
+                }
+              }
+            },
+            "examples": {
+              "search by date and time range": {
+                "value": {
+                  "type": "DATE_TIME_RANGE",
+                  "timeRange": {
+                    "startDate": "2022-11-30T14:50:27.001Z",
+                    "endDate": "2023-11-30T14:50:27.001Z"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "PmSearchTransactionResponse": {
         "required": true,
         "content": {
@@ -1997,6 +2177,9 @@
                 },
                 "timeRange": {
                   "$ref": "#/components/schemas/DeadLetterSearchDateTimeRange"
+                },
+                "excludedStatuses": {
+                  "$ref": "#/components/schemas/DeadLetterExcludedStatuses"
                 }
               },
               "required": [
@@ -2015,6 +2198,24 @@
                   "timeRange": {
                     "startDate": "2023-01-01T00:00:00.000Z",
                     "endDate": "2023-01-01T02:00:00.000Z"
+                  }
+                }
+              },
+              "search by source with time range and excluded statuses": {
+                "value": {
+                  "source": "ALL",
+                  "timeRange": {
+                    "startDate": "2023-01-01T00:00:00.000Z",
+                    "endDate": "2023-01-01T02:00:00.000Z"
+                  },
+                  "excludedStatuses": {
+                    "ecommerceStatuses": [
+                      "NOTIFIED_OK"
+                    ],
+                    "npgStatuses": [
+                      "DECLINED",
+                      "CANCELLED"
+                    ]
                   }
                 }
               }

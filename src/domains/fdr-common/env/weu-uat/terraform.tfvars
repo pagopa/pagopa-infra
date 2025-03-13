@@ -38,7 +38,7 @@ pgres_flex_params = {
   db_version = "15"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                             = 32768
+  storage_mb                             = 1048576 # 1Tib
   zone                                   = 1
   backup_retention_days                  = 7
   geo_redundant_backup_enabled           = false
@@ -116,7 +116,7 @@ cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
 cosmos_mongo_db_fdr_params = {
   enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo"]
+  capabilities = ["EnableMongo", "EnableUniqueCompoundNestedDocs"]
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -135,6 +135,9 @@ cosmos_mongo_db_fdr_params = {
   backup_continuous_enabled = false
 
   container_default_ttl = 2629800 # 1 month in second
+
+  fdr_flow_container_ttl    = "3024000" # 30 days + 5 days (deltaTime)
+  fdr_payment_container_ttl = "3024000" # 30 days + 5 days (deltaTime)
 
   enable_serverless  = false
   enable_autoscaling = true
@@ -197,29 +200,20 @@ reporting_fdr_storage_account = {
 }
 
 fdr_re_storage_account = {
-  account_kind                       = "StorageV2"
-  account_tier                       = "Standard"
-  account_replication_type           = "LRS"
-  blob_versioning_enabled            = false
-  advanced_threat_protection         = true
-  advanced_threat_protection_enabled = false
-  public_network_access_enabled      = true
-  blob_delete_retention_days         = 90
-  enable_low_availability_alert      = false
+  account_kind                                                 = "StorageV2"
+  account_tier                                                 = "Standard"
+  account_replication_type                                     = "LRS"
+  blob_versioning_enabled                                      = false
+  public_network_access_enabled                                = true
+  blob_delete_retention_days                                   = 1
+  enable_low_availability_alert                                = false
+  storage_defender_enabled                                     = true
+  storage_defender_override_subscription_settings_enabled      = false
+  storage_defender_sensitive_data_discovery_enabled            = false
+  storage_defender_malware_scanning_on_upload_enabled          = false
+  storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
+  blob_file_retention_days                                     = 14
 }
-
-fdr_history_storage_account = {
-  account_kind                       = "StorageV2"
-  account_tier                       = "Standard"
-  account_replication_type           = "LRS"
-  blob_versioning_enabled            = false
-  advanced_threat_protection         = true
-  advanced_threat_protection_enabled = false
-  public_network_access_enabled      = true
-  blob_delete_retention_days         = 90
-  enable_low_availability_alert      = false
-}
-
 
 
 #
