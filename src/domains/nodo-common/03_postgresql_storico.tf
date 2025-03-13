@@ -139,7 +139,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_fle
 resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_extension" {
   name      = "azure.extensions"
   server_id = module.postgres_storico_flexible_server.id
-  value     = "pg_cron,dblink,pglogical"
+  value     = "pg_cron,dblink,pglogical,postgres_fdw"
 }
 
 # parameters for logical replication
