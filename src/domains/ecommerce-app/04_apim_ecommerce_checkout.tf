@@ -306,3 +306,24 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_request_info
 
   xml_content = file("./api/ecommerce-checkout/v3/_payment_request_policy.xml.tpl")
 }
+
+resource "azurerm_api_management_api_operation_policy" "transaction_authorization_request_v3" {
+  api_name            = "${local.project}-ecommerce-checkout-api-v3"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "requestTransactionAuthorizationV3"
+
+  xml_content = templatefile("./api/ecommerce-checkout/v3/_auth_request.xml.tpl", {
+    ecommerce_xpay_psps_list = var.ecommerce_xpay_psps_list
+    ecommerce_vpos_psps_list = var.ecommerce_vpos_psps_list
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_transaction_info_v3" {
+  api_name            = "${local.project}-ecommerce-checkout-api-v3"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getTransactionInfoV3"
+
+  xml_content = file("./api/ecommerce-checkout/v3/_validate_transactions_jwt_token.xml.tpl")
+}
