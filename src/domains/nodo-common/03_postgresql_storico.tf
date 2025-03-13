@@ -120,13 +120,20 @@ resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_fle
   count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.min_pool_size"
   server_id = module.postgres_storico_flexible_server.id
-  value     = 500
+  value     = 20
 }
 resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_default_pool_size" {
   count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.default_pool_size"
   server_id = module.postgres_storico_flexible_server.id
-  value     = 1000
+  value     = 10
+}
+
+resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_pg_bouncer_max_client_conn" {
+  count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
+  name      = "pgbouncer.max_client_conn"
+  server_id = module.postgres_storico_flexible_server.id
+  value     = var.pgres_flex_nodo_storico_db_name.max_connections
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_extension" {
