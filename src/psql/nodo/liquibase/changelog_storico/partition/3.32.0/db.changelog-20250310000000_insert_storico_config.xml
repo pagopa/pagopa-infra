@@ -38,5 +38,15 @@
       stripComments="false"/>
   </changeSet>
 
+  <changeSet author="liquibase" id="202503110000">
+
+    <sqlFile
+      encoding="UTF-8"
+      path="sql/create_sequence_log.sql"
+      relativeToChangelogFile="true"
+      splitStatements="false"
+      stripComments="false"/>
+  </changeSet>
+
 
 </databaseChangeLog>
