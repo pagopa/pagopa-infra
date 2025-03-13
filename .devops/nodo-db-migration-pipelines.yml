@@ -120,7 +120,7 @@ variables:
   CRON_USERNAME: partition
   CRON_SCHEMA: cron
   ADMIN_USERNAME: azureuser
-  ADMIN_SCHEMA: cron
+  ADMIN_SCHEMA: public
 
 stages:
   - stage: liquibase_status
@@ -387,7 +387,9 @@ stages:
                 --password="$(db-administrator-login-password)" \
                 --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin \
                 --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(ADMIN_SCHEMA)" \
+                --liquibaseSchemaName="public" \
+                --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_ADMIN" \
+                --database-changelog-table-name="DATABASECHANGELOG_ADMIN" \
                 --defaultSchemaName="$(ADMIN_SCHEMA)" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
@@ -710,7 +712,9 @@ stages:
                 --password="$(db-administrator-login-password)" \
                 --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin \
                 --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(ADMIN_SCHEMA)" \
+                --liquibaseSchemaName="public" \
+                --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_ADMIN" \
+                --database-changelog-table-name="DATABASECHANGELOG_ADMIN" \
                 --defaultSchemaName="$(ADMIN_SCHEMA)" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
@@ -727,8 +731,10 @@ stages:
                 --password="$(db-administrator-login-password)" \
                 --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin \
                 --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(ADMIN_SCHEMA)" \
                 --defaultSchemaName="$(ADMIN_SCHEMA)" \
+                --liquibaseSchemaName="public" \
+                --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_ADMIN" \
+                --database-changelog-table-name="DATABASECHANGELOG_ADMIN" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
                 tag ${{ parameters.dbVersion }}

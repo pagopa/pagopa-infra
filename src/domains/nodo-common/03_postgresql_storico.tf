@@ -133,7 +133,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_fle
   count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.max_client_conn"
   server_id = module.postgres_storico_flexible_server.id
-  value     = var.pgres_flex_nodo_storico_db_name.max_connections
+  value     = var.pgres_flex_storico_params.max_connections
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_extension" {
