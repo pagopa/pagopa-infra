@@ -39,7 +39,7 @@ bizevents_datastore_cosmos_db_params = {
     max_staleness_prefix    = 100000
   }
   server_version                   = "4.0"
-  main_geo_location_zone_redundant = true
+  main_geo_location_zone_redundant = false
   enable_free_tier                 = false
 
   private_endpoint_enabled      = true
