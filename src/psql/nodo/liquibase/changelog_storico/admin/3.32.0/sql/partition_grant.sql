@@ -1,5 +1,5 @@
 GRANT azure_pg_admin TO partition;
-grant azureuser to partition;
+-- grant azureuser to partition;
 GRANT pg_read_all_settings TO partition;
 GRANT pg_read_all_stats TO partition;
 GRANT pg_stat_scan_tables TO partition;
