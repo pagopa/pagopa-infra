@@ -17,7 +17,7 @@
     }
   ],
   "paths": {
-    "/spid/login": {
+    "/login/spid": {
       "get": {
         "tags": [
           "spidLogin"
