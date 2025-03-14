@@ -108,6 +108,14 @@ resource "azurerm_kusto_eventhub_data_connection" "eventhub_connection_for_inges
   identity_id = azurerm_kusto_cluster.data_explorer_cluster[count.index].id
 }
 
+resource "azurerm_role_assignment" "fdr_qi_flow_data_evh_data_receiver_role" {
+  count = var.dexp_db.enable ? 1 : 0
+
+  scope                = data.azurerm_eventhub.pagopa-evh-ns04_nodo-dei-pagamenti-fdr-qi-flows.id # evh
+  role_definition_name = "Azure Event Hubs Data Receiver"
+  principal_id         = azurerm_kusto_cluster.data_explorer_cluster[count.index].identity[count.index].principal_id # data-exp
+}
+
 
 data "azurerm_eventhub" "pagopa-evh-ns04_nodo-dei-pagamenti-fdr-qi-fdr-iuvs" {
   name                = "fdr-qi-reported-iuv"
@@ -131,6 +139,15 @@ resource "azurerm_kusto_eventhub_data_connection" "eventhub_connection_for_inges
   data_format       = "JSON"
 
   identity_id = azurerm_kusto_cluster.data_explorer_cluster[count.index].id
+}
+
+
+resource "azurerm_role_assignment" "fdr_qi_fdr_iuvs_data_evh_data_receiver_role" {
+  count = var.dexp_db.enable ? 1 : 0
+
+  scope                = data.azurerm_eventhub.pagopa-evh-ns04_nodo-dei-pagamenti-fdr-qi-fdr-iuvs.id # evh
+  role_definition_name = "Azure Event Hubs Data Receiver"
+  principal_id         = azurerm_kusto_cluster.data_explorer_cluster[count.index].identity[count.index].principal_id # data-exp
 }
 
 # resource "azurerm_kusto_script" "create_tables" {
