@@ -41,7 +41,7 @@ tLabelStep TEXT;
 BEGIN
 
 tLabelStep := 'Init';
-iIdTrace := nextval('seq_log'::regclass);
+iIdTrace := nextval('partition.seq_log'::regclass);
 INSERT INTO PG_LOG values (iIdTrace,sUtente, 'modify_partition', ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','INIZIO',tLabelStep);
 
 IF A is null
@@ -110,12 +110,12 @@ END IF;
 
 END LOOP;
 
-		iIdTrace := nextval('seq_log'::regclass);
+		iIdTrace := nextval('partition.seq_log'::regclass);
 		INSERT INTO PG_LOG values (iIdTrace,sUtente, 'modify_partition', ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','FINE','Procedura eseguita con successo');
 EXCEPTION
 WHEN OTHERS THEN
 
-		iIdTrace := nextval('seq_log'::regclass);
+		iIdTrace := nextval('partition.seq_log'::regclass);
 		INSERT INTO PG_LOG values (iIdTrace,sUtente, 'modify_partition', ptDataInizio, clock_timestamp(), ( clock_timestamp()- ptDataInizio) ,'KO','FINE',
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
 
