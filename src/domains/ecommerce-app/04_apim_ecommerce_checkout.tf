@@ -327,3 +327,12 @@ resource "azurerm_api_management_api_operation_policy" "get_transaction_info_v3"
 
   xml_content = file("./api/ecommerce-checkout/v3/_validate_transactions_jwt_token.xml.tpl")
 }
+
+resource "azurerm_api_management_api_operation_policy" "delete_transaction_v3" {
+  api_name            = "${local.project}-ecommerce-checkout-api-v3"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "requestTransactionUserCancellationV3"
+
+  xml_content = file("./api/ecommerce-checkout/v3/_validate_transactions_jwt_token.tpl")
+}
