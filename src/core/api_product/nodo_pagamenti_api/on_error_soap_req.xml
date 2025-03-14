@@ -9,25 +9,39 @@
       <when condition="@(context.Variables.ContainsKey("soapAction") && context.Variables.GetValueOrDefault<string>("soapAction", "")!= "")">
       <set-variable name="contentType" value="text/xml"/>
       <!-- SOAP requests -->
-      <send-request mode="new" ignore-error="true" response-variable-name="risposta">
-        <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
-        <set-method>POST</set-method>
-        <set-header name="Content-Type" exists-action="override">
-          <value>text/xml</value>
-        </set-header>
-        <set-header name="ndphost" exists-action="override">
-          <value>@(context.Variables.GetValueOrDefault<string>("ndphost", ""))</value>
-        </set-header>
-        <set-header name="SOAPAction" exists-action="override">
-          <value>@(context.Variables.GetValueOrDefault<string>("soapAction", ""))</value>
-        </set-header>
-        <set-body>@{
-          return (string) context.Variables["renewrequest"];
-          }</set-body>
-      </send-request>
+      <choose>
+        <when condition="@{
+          string[] activatePaymentNotice = new string[] {"activatePaymentNotice", "activateIOPayment", "activatePaymentNoticeV2"};
+          return activatePaymentNotice.Contains((string)context.Variables["soapAction"]) && context.LastError.Reason.Equals("ClientConnectionFailure");
+        }">
+          <!-- ActivatePaymentNotice timeout, skip retry -->
+          <trace source="activate-skip-on-timeout" severity="information">skipping activate retry because of timeout</trace>
+          <set-variable name="send_response" value="false"/>
+        </when>
+        <otherwise>
+          <set-variable name="send_response" value="true"/>
+          <send-request mode="new" ignore-error="true" response-variable-name="risposta">
+            <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
+            <set-method>POST</set-method>
+            <set-header name="Content-Type" exists-action="override">
+              <value>text/xml</value>
+            </set-header>
+            <set-header name="ndphost" exists-action="override">
+              <value>@(context.Variables.GetValueOrDefault<string>("ndphost", ""))</value>
+            </set-header>
+            <set-header name="SOAPAction" exists-action="override">
+              <value>@(context.Variables.GetValueOrDefault<string>("soapAction", ""))</value>
+            </set-header>
+            <set-body>@{
+              return (string) context.Variables["renewrequest"];
+              }</set-body>
+          </send-request>
+        </otherwise>
+      </choose>  
     </when>
     <otherwise>
       <set-variable name="contentType" value="application/json"/>
+      <set-variable name="send_response" value="true"/>
       <!-- REST requests -->
       <send-request mode="new" ignore-error="true" response-variable-name="risposta">
         <set-url>@{return (string) context.Variables["baseUrl"] + "/" + (string)context.Request.Url.Path; }</set-url>
@@ -44,16 +58,20 @@
       </send-request>
     </otherwise>
   </choose>
-  <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["risposta"]).Body.As<string>(preserveContent: true))" />
-  <return-response>
-    <set-header name="Content-Type" exists-action="override">
-        <value>@((string)context.Variables["contentType"])</value>
-    </set-header>
-    <set-body>@{
-      string message = (string)context.Variables["leggirisposta"];
-      return message;
-      }</set-body>
-  </return-response>
+  <choose>
+    <when condition="@(context.Variables.GetValueOrDefault<string>("send_response", "true")=="true")">
+      <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["risposta"]).Body.As<string>(preserveContent: true))" />
+      <return-response>
+        <set-header name="Content-Type" exists-action="override">
+            <value>@((string)context.Variables["contentType"])</value>
+        </set-header>
+        <set-body>@{
+          string message = (string)context.Variables["leggirisposta"];
+          return message;
+          }</set-body>
+      </return-response>
+    </when>
+  </choose>
 </when>
 <otherwise>
 <trace source="on_soap_error" severity="error">
