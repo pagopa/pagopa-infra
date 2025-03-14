@@ -15,6 +15,8 @@
           <header>Authorization</header>
           <header>x-transaction-id-from-client</header>
           <header>lang</header>
+          <header>x-correlation-id</header>
+          <header>x-client-id-from-client</header>
         </allowed-headers>
       </cors>
       <base />
