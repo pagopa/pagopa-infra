@@ -149,17 +149,3 @@ resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
     ]
   }
 }
-
-
-resource "azurerm_key_vault_secret" "aca_opsgenie_webhook_token" {
-  name         = "aca-opsgenie-webhook-token"
-  value        = "<TO UPDATE MANUALLY ON PORTAL>"
-  key_vault_id = module.key_vault.id
-
-  lifecycle {
-    ignore_changes = [
-      value,
-    ]
-  }
-}
-
