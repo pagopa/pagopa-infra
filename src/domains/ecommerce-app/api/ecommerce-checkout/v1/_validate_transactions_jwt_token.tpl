@@ -9,6 +9,7 @@
                     return transactionId;
             }" />
         <set-header name="x-transaction-id" exists-action="delete" />
+        <set-header name="x-user-id" exists-action="delete" />
         <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
             <issuer-signing-keys>
                 <key>{{ecommerce-checkout-transaction-jwt-signing-key}}</key>
@@ -21,6 +22,20 @@
         }
         return "";
         }" />
+        <set-variable name="userId" value="@{
+        var jwt = (Jwt)context.Variables["jwtToken"];
+        if(jwt.Claims.ContainsKey("userId")){
+           return jwt.Claims["userId"][0];
+        }
+        return "";
+        }" />
+        <choose>
+            <when condition="@((string)context.Variables.GetValueOrDefault("userId","") != "")">
+                <set-header name="x-user-id" exists-action="override">
+                    <value>@((string)context.Variables.GetValueOrDefault("userId",""))</value>
+                </set-header>
+            </when>
+        </choose>
         <choose>
             <when condition="@((string)context.Variables.GetValueOrDefault("tokenTransactionId","") != (string)context.Variables.GetValueOrDefault("requestTransactionId",""))">
                 <return-response>
