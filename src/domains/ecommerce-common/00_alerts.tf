@@ -95,7 +95,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_s
   description    = "eCommerce Transactions service PATCH auth request KO detected, more than 10 KO in 30 minute time window"
   enabled        = true
   query = (<<-QUERY
-AzureDiagnostics
+AzureDiagnostics 
 | where url_s startswith "https://api.platform.pagopa.it/ecommerce/transaction-auth-requests-service/v1/transactions/"
 | where method_s == "PATCH"
 | where responseCode_d >= 500
@@ -128,7 +128,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_s
   description    = "eCommerce Transactions service POST user receipts KO detected, more than 10 KO in 30 minutes time window"
   enabled        = true
   query = (<<-QUERY
-AzureDiagnostics
+AzureDiagnostics 
 | where url_s endswith "?clientId=ecomm" and (url_s startswith "https://api.platform.pagopa.it/payment-manager/pm-per-nodo/v2/transactions/" or url_s startswith "https://api.platform.pagopa.it/receipt-ndp/v1/transactions/")
 | where method_s == "POST"
 | where set_has_element(dynamic([400, 404, 408, 422]), responseCode_d)
@@ -162,7 +162,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_payment_method
   description    = "eCommerce Payment methods service POST session KO/slow api detected, more than 10 KO or above 2 seconds as response time in 30 minutes time window"
   enabled        = true
   query = (<<-QUERY
-AzureDiagnostics
+AzureDiagnostics 
 | where url_s matches regex "https://api.platform.pagopa.it/ecommerce/checkout/v1/payment-methods/.*/sessions"
 | where method_s == "POST"
 | where responseCode_d != 200 or DurationMs > 2000
@@ -195,7 +195,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_authorization_
   description    = "eCommerce POST notification KO detected, more than 10 KO in 30 minutes time window"
   enabled        = true
   query = (<<-QUERY
-AzureDiagnostics
+AzureDiagnostics 
 | where url_s matches regex "https://api.platform.pagopa.it/ecommerce/npg/notifications/v1/sessions/.*/outcomes"
 | where method_s == "POST"
 | where responseCode_d != 200
@@ -242,7 +242,7 @@ AzureDiagnostics
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
-| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
   QUERY
