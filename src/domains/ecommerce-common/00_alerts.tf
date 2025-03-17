@@ -62,7 +62,7 @@ AzureDiagnostics
     by Time = bin(TimeGenerated, 15m)
 | extend trafficUp = Total-thresholdTrafficMin
 | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
-| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
+| extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability)) 
 | extend Availability=((Success * 1.0) / Total) * 100
 | where Availability < expectedAvailability
   QUERY
