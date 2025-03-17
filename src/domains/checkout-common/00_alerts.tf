@@ -5,11 +5,6 @@ resource "azurerm_resource_group" "rg_checkout_alerts" {
   tags     = var.tags
 }
 
-data "azurerm_api_management" "apim" {
-  name                = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-}
-
 #Checkout auth service internal (without external dependencies) api availability alert
 resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_service_v1_internal_api_availability_alert" {
   count = var.env_short == "p" ? 1 : 0
