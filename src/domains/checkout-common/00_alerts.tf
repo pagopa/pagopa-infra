@@ -134,7 +134,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_service_v1
   enabled        = true
   query = (<<-QUERY
 AzureDiagnostics
-| where url_s startswith 'https://api.uat.platform.pagopa.it/checkout/auth-service/v1'
+| where url_s startswith 'https://api.platform.pagopa.it/checkout/auth-service/v1'
 | summarize 
   Total = count() ,
   UnautorizedCount= countif(responseCode_d == 401) 
