@@ -116,5 +116,39 @@ by Time = bin(TimeGenerated, 15m)
   }
 }
 
+#Checkout auth service unauthorized percentage alert
+resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_service_v1_unauthorized_percentage_alert" {
+  count = var.env_short == "p" ? 1 : 0
 
+  name                = "checkout-auth-service-v1-unauthorized-percentage-alert"
+  resource_group_name = azurerm_resource_group.rg_checkout_alerts[0].name
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.checkout_opsgenie[0].id]
+    email_subject          = "[Checkout] Auth service unauthorized api call percentage alert"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = data.azurerm_api_management.apim.id
+  description    = "Checkout-auth-service unauthorized api call percentage greater than 10% of all api calls in the last 30 minutes"
+  enabled        = true
+  query = (<<-QUERY
+AzureDiagnostics
+| where url_s startswith 'https://api.uat.platform.pagopa.it/checkout/auth-service/v1'
+| summarize 
+  Total = count() ,
+  UnautorizedCount= countif(responseCode_d == 401) 
+  by Time = bin(TimeGenerated, 15m)
+| extend UnauthorizedPercentage = (UnautorizedCount * 1.0 / Total) * 100
+| where UnauthorizedPercentage > 10
+  QUERY
+  )
+  severity    = 1
+  frequency   = 30
+  time_window = 30
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 2
+  }
+}
 
