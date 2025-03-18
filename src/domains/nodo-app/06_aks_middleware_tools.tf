@@ -7,7 +7,6 @@ module "tls_checker" {
   alert_name = local.nodo_hostname
   alert_enabled = true
   helm_chart_present = true
-  namespace = kubernetes_namespace.namespace.metadata[0].name
   helm_chart_version                                        = var.tls_cert_check_helm.chart_version
   namespace                                                 = kubernetes_namespace.namespace.metadata[0].name
   helm_chart_image_name                                     = var.tls_cert_check_helm.image_name
