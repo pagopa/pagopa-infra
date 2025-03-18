@@ -79,43 +79,6 @@ AzureDiagnostics
   }
 }
 
-#Checkout auth service login success rate alert
-resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_service_v1_login_success_rate_alert" {
-  count = var.env_short == "p" ? 1 : 0
-
-  name                = "checkout-auth-service-v1-login-success-rate-alert"
-  resource_group_name = azurerm_resource_group.rg_checkout_alerts[0].name
-  location            = var.location
-
-  action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.checkout_opsgenie[0].id]
-    email_subject          = "[Checkout] Auth service login success rate alert"
-    custom_webhook_payload = "{}"
-  }
-  data_source_id = data.azurerm_api_management.apim.id
-  description    = "Checkout-auth-service login success rate less than or equal 95% in the last 30 minutes"
-  enabled        = true
-  query = (<<-QUERY
-
-AzureDiagnostics
-| where url_s startswith 'https://api.platform.pagopa.it/checkout/auth-service/v1'
-| summarize
-GetLoginCount=countif(responseCode_d == 200 and operationId_s == "authLogin"),
-PostAuthTokenCount=countif(responseCode_d == 200 and operationId_s == "authenticateWithAuthToken")
-by Time = bin(TimeGenerated, 15m)
-| extend Availability=((PostAuthTokenCount * 1.0) / GetLoginCount) * 100
-| where Availability < 95
-  QUERY
-  )
-  severity    = 1
-  frequency   = 30
-  time_window = 30
-  trigger {
-    operator  = "GreaterThanOrEqual"
-    threshold = 2
-  }
-}
-
 #Checkout auth service unauthorized percentage alert
 resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_service_v1_unauthorized_percentage_alert" {
   count = var.env_short == "p" ? 1 : 0
