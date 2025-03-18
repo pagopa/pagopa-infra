@@ -19,7 +19,7 @@
         </allowed-methods>
         <allowed-headers>
           <header>Content-Type</header>
-          <header>bearerAuth</header>
+          <header>Authorization</header>
         </allowed-headers>
       </cors>
       <!-- Feature flag check - is authentication enabled -->

@@ -188,16 +188,6 @@
               }
             }
           },
-          "404": {
-            "description": "User not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Internal server error",
             "content": {
@@ -262,56 +252,6 @@
           },
           "404": {
             "description": "User not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/validate": {
-      "get": {
-        "tags": [
-          "authService"
-        ],
-        "operationId": "validateToken",
-        "summary": "Validate a token",
-        "description": "GET endpoint to validate a token",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Token is valid"
-          },
-          "400": {
-            "description": "Invalid token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -401,19 +341,19 @@
             "type": "string",
             "description": "user unique id (fiscal code tokenization)"
           },
-          "firstName": {
+          "name": {
             "type": "string",
             "description": "user first name"
           },
-          "lastName": {
+          "familyName": {
             "type": "string",
             "description": "user family name"
           }
         },
         "required": [
           "userId",
-          "firstName",
-          "lastName"
+          "name",
+          "familyName"
         ]
       },
       "AuthResponse": {

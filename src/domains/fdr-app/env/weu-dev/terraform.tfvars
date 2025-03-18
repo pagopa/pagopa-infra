@@ -75,14 +75,12 @@ image_name = "reporting-fdr"
 image_tag  = "latest"
 
 # FDR ( phase#1 and phase#3 cfg )
-enable_fdr3_features              = true
-enable_fdr_ci_soap_request        = true
-enable_fdr_psp_soap_request       = true
-enable_fdr_nodoChiediElenco_cache = true
-fdr_soap_request_psp_whitelist    = "*"
-fdr_soap_request_ci_whitelist     = "*"
-fdr1_cache_duration               = "1800" # sec
-apim_fdr_nodo_pagopa_enable       = true   # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
+enable_fdr3_features           = true
+enable_fdr_ci_soap_request     = true
+enable_fdr_psp_soap_request    = true
+fdr_soap_request_psp_whitelist = "*"
+fdr_soap_request_ci_whitelist  = "*"
+apim_fdr_nodo_pagopa_enable    = true # 👀 https://pagopa.atlassian.net/wiki/spaces/PN5/pages/647497554/Design+Review+Flussi+di+Rendicontazione
 
 ftp_organization = "55555555555,90000000002,88888888888,11111111111,paStress4,44444444444,19721972197,11111122222,66666666666,55555666666,89898989898,20000000002,11111122223,11223344551,15376371009_FTP"
 

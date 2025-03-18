@@ -37,5 +37,5 @@ locals {
   apim_hostname      = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   ecommerce_hostname = "${var.location_short}${var.env}.ecommerce.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
   wallet_hostname    = "itn${var.env}.pay-wallet.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
-
+  checkout_hostname  = "${var.location_short}${var.env}.checkout.internal.${var.apim_dns_zone_prefix}.${var.external_domain}"
 }
