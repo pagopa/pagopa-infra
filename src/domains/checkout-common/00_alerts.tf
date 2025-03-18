@@ -98,7 +98,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_service_v1
   query = (<<-QUERY
 
 AzureDiagnostics
-| where url_s startswith 'https://api.uat.platform.pagopa.it/checkout/auth-service/v1'
+| where url_s startswith 'https://api.platform.pagopa.it/checkout/auth-service/v1'
 | summarize
 GetLoginCount=countif(responseCode_d == 200 and operationId_s == "authLogin"),
 PostAuthTokenCount=countif(responseCode_d == 200 and operationId_s == "authenticateWithAuthToken")
