@@ -31,6 +31,15 @@
         "description": "GET login endpoint with reCAPTCHA code",
         "parameters": [
           {
+            "in": "header",
+            "name": "x-rpt-id",
+            "required": false,
+            "description": "Optional RPTID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "in": "query",
             "name": "recaptcha",
             "required": true,
@@ -92,6 +101,17 @@
         "operationId": "authUsers",
         "summary": "Get user information",
         "description": "GET user information",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-rpt-id",
+            "required": false,
+            "description": "Optional RPTID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -159,6 +179,17 @@
         "operationId": "authLogout",
         "summary": "Logout endpoint",
         "description": "POST logout endpoint",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-rpt-id",
+            "required": false,
+            "description": "Optional RPTID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -209,6 +240,17 @@
         "operationId": "authenticateWithAuthToken",
         "summary": "Authentication endpoint",
         "description": "POST authentication endpoint with auth code",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-rpt-id",
+            "required": false,
+            "description": "Optional RPTID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
