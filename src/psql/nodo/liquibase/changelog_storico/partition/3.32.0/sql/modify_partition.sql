@@ -42,7 +42,7 @@ BEGIN
 
 tLabelStep := 'Init';
 iIdTrace := nextval('partition.seq_log'::regclass);
-INSERT INTO PG_LOG values (iIdTrace,sUtente, 'modify_partition', ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','INIZIO',tLabelStep);
+INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'modify_partition', ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','INIZIO',tLabelStep);
 
 IF A is null
 	THEN A=1;
@@ -111,12 +111,12 @@ END IF;
 END LOOP;
 
 		iIdTrace := nextval('partition.seq_log'::regclass);
-		INSERT INTO PG_LOG values (iIdTrace,sUtente, 'modify_partition', ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','FINE','Procedura eseguita con successo');
+		INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'modify_partition', ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','FINE','Procedura eseguita con successo');
 EXCEPTION
 WHEN OTHERS THEN
 
 		iIdTrace := nextval('partition.seq_log'::regclass);
-		INSERT INTO PG_LOG values (iIdTrace,sUtente, 'modify_partition', ptDataInizio, clock_timestamp(), ( clock_timestamp()- ptDataInizio) ,'KO','FINE',
+		INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'modify_partition', ptDataInizio, clock_timestamp(), ( clock_timestamp()- ptDataInizio) ,'KO','FINE',
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
 
 END;

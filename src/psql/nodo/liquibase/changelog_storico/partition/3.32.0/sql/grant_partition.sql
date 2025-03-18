@@ -34,7 +34,7 @@ GRANT EXECUTE ON FUNCTIONS TO azureuser;
 ALTER DEFAULT PRIVILEGES FOR ROLE partition IN SCHEMA partition
 GRANT USAGE ON TYPES TO azureuser;
 GRANT ALL ON TABLE partition.tab_part TO azureuser;
-
+GRANT TRUNCATE, UPDATE, INSERT, TRIGGER, DELETE, REFERENCES, SELECT ON TABLE "partition".pg_log TO azureuser;
 GRANT SELECT ON ALL TABLES IN SCHEMA online,offline,re,wfesp TO partition ;
 GRANT SELECT ON ALL SEQUENCES IN SCHEMA online,offline,re,wfesp TO partition ;
 GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA online,offline,re,wfesp TO partition ;

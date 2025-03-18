@@ -62,7 +62,7 @@ BEGIN
 
 tLabelStep := 'Init';
 iIdTrace := nextval('partition.seq_log'::regclass);
-INSERT INTO PG_LOG values (iIdTrace,sUtente, 'archive_partition', ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','INIZIO',tLabelStep);
+INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'archive_partition', ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','INIZIO',tLabelStep);
 tMessageRaise:= 'NULLO';
 
 BEGIN
@@ -130,7 +130,7 @@ if resultConnDBLINK = 'OK' THEN
 			execute l_sql;
 	 GET DIAGNOSTICS nRowInsert = ROW_COUNT;
 	 iIdTrace := nextval('partition.seq_log'::regclass);
-	 INSERT INTO PG_LOG values (iIdTrace,sUtente, 'archive_partition', ptDataInizioStep, clock_timestamp(), (clock_timestamp()- ptDataInizioStep) ,'OK','STEP INSERT',CONCAT(tLabelStep,' - nRowInsert=',nRowInsert));
+	 INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'archive_partition', ptDataInizioStep, clock_timestamp(), (clock_timestamp()- ptDataInizioStep) ,'OK','STEP INSERT',CONCAT(tLabelStep,' - nRowInsert=',nRowInsert));
 
 	------------------------------------------------------------------------------------------------------
 	-- AGGIORNO LA TABELLA STORICO_PART per settare che la storicizzazione è avvenuta
@@ -145,7 +145,7 @@ if resultConnDBLINK = 'OK' THEN
      		updated text);
 
 	iIdTrace := nextval('partition.seq_log'::regclass);
-	 INSERT INTO PG_LOG values (iIdTrace,sUtente, 'archive_partition', ptDataInizioStep, clock_timestamp(), (clock_timestamp()- ptDataInizioStep) ,'OK','STEP UPDATE',tLabelStep||' - '||esitoUpdate);
+	 INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'archive_partition', ptDataInizioStep, clock_timestamp(), (clock_timestamp()- ptDataInizioStep) ,'OK','STEP UPDATE',tLabelStep||' - '||esitoUpdate);
 
 	 END LOOP;
 
@@ -159,7 +159,7 @@ if resultConnDBLINK = 'OK' THEN
 			   */
 
 		iIdTrace := nextval('partition.seq_log'::regclass);
-		INSERT INTO PG_LOG values (iIdTrace,sUtente, 'archive_partition', ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','FINE','Procedura eseguita con successo');
+		INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'archive_partition', ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','FINE','Procedura eseguita con successo');
 
 ELSE
 
@@ -173,7 +173,7 @@ EXCEPTION
 WHEN OTHERS THEN
 
 		iIdTrace := nextval('partition.seq_log'::regclass);
-		INSERT INTO PG_LOG values (iIdTrace,sUtente, 'archive_partition', ptDataInizio, clock_timestamp(), ( clock_timestamp()- ptDataInizio) ,'KO','FINE',
+		INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'archive_partition', ptDataInizio, clock_timestamp(), ( clock_timestamp()- ptDataInizio) ,'KO','FINE',
 								  CONCAT('Step:',tLabelStep,' , Message : ',tMessageRaise,' , tConnDbLink : ',tConnDbLink,', sqlerrm : ',sqlerrm));
 
 END;
