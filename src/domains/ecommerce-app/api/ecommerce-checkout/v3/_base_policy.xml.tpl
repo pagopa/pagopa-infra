@@ -9,6 +9,7 @@
           <method>POST</method>
           <method>GET</method>
           <method>OPTIONS</method>
+          <method>DELETE</method>
         </allowed-methods>
         <allowed-headers>
           <header>Content-Type</header>
