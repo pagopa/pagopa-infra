@@ -313,10 +313,7 @@ resource "azurerm_api_management_api_operation_policy" "transaction_authorizatio
   api_management_name = local.pagopa_apim_name
   operation_id        = "requestTransactionAuthorizationV3"
 
-  xml_content = templatefile("./api/ecommerce-checkout/v3/_auth_request.xml.tpl", {
-    ecommerce_xpay_psps_list = var.ecommerce_xpay_psps_list
-    ecommerce_vpos_psps_list = var.ecommerce_vpos_psps_list
-  })
+  xml_content = file("./api/ecommerce-checkout/v3/_auth_request.xml.tpl")
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_transaction_info_v3" {

@@ -26,63 +26,33 @@
         }
         return "";
     }" />
-    <choose>
-      <when condition="@((string)context.Variables.GetValueOrDefault("userId","") != "")">
-        <set-header name="x-user-id" exists-action="override">
-          <value>@((string)context.Variables.GetValueOrDefault("userId",""))</value>
-        </set-header>
-      </when>
-    </choose>
-    <!-- START set pgsId -->
-    <set-variable name="XPAYPspsList" value="CIPBITMM" />
-    <set-variable name="VPOSPspsList" value="BNLIITRR,BCITITMM,UNCRITMM,BPPIITRRXXX,PPAYITR1XXX,BIC36019" />
+   
+    <set-header name="x-user-id" exists-action="override">
+      <value>@((string)context.Variables.GetValueOrDefault("userId",""))</value>
+    </set-header>
     <set-variable name="requestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
-    <set-variable name="pspId" value="@(((string)((JObject)context.Variables["requestBody"])["pspId"]))" />
     <set-variable name="detailType" value="@((string)((JObject)((JObject)context.Variables["requestBody"])["details"])["detailType"])" />
-    <set-variable name="pgsId" value="@{
-
-              string[] xpayList = ((string)context.Variables["XPAYPspsList"]).Split(',');
-              string[] vposList = ((string)context.Variables["VPOSPspsList"]).Split(',');
-
-              string pspId = (string)(context.Variables.GetValueOrDefault("pspId",""));
-    string detailType = (string)(context.Variables.GetValueOrDefault("detailType",""));
-
-    string pgsId = "";
-
-    // card -> ecommerce with PGS request
-    if ( detailType == "card" ){
-
-    if (xpayList.Contains(pspId)) {
-
-    pgsId = "XPAY";
-    } else if (vposList.Contains(pspId)) {
-
-    pgsId = "VPOS";
-    }
-
-    // cards or apm -> ecommerce with NPG request
-    } else if ( detailType == "cards" || detailType == "apm"){
-
-    pgsId = "NPG";
-
-    // redirect -> ecommerce with redirect
-    } else if ( detailType == "redirect"){
-
-    pgsId = "REDIRECT";
-    }
-
-    return pgsId;
+    <set-variable name="gatewayId" value="@{
+        string detailType = (string)(context.Variables.GetValueOrDefault("detailType",""));
+        string gatewayId = "";
+        // cards or apm -> ecommerce with NPG request
+        if ( detailType == "cards" || detailType == "apm"){
+          gatewayId = "NPG";
+        // redirect -> ecommerce with redirect
+        } else if ( detailType == "redirect"){
+          gatewayId = "REDIRECT";
+        }
+        return gatewayId;
     }" />
-    <!-- END set pgsId -->
     <choose>
       <when condition="@((string)context.Variables.GetValueOrDefault("tokenTransactionId","") != (string)context.Variables.GetValueOrDefault("requestTransactionId",""))">
         <return-response>
           <set-status code="401" reason="Unauthorized" />
         </return-response>
       </when>
-      <when condition="@((string)context.Variables["pgsId"] != "")">
+      <when condition="@((string)context.Variables["gatewayId"] != "")">
         <set-header name="x-pgs-id" exists-action="override">
-          <value>@((string)context.Variables.GetValueOrDefault("pgsId",""))</value>
+          <value>@((string)context.Variables.GetValueOrDefault("gatewayId",""))</value>
         </set-header>
       </when>
       <otherwise>
@@ -93,21 +63,17 @@
           </set-header>
           <set-body>@{
             return new JObject(
-            new JProperty("title", "Bad request - invalid idPsp"),
+            new JProperty("title", "Bad request"),
             new JProperty("status", 400),
-            new JProperty("detail", "Invalid PSP - gateway matching")
+            new JProperty("detail", "Cannot retrieve gateway for request")
             ).ToString();
             }</set-body>
         </return-response>
       </otherwise>
     </choose>
-    <choose>
-      <when condition="@((string)context.Variables.GetValueOrDefault("requestTransactionId","") != "")">
-        <set-header name="x-transaction-id" exists-action="override">
-          <value>@((string)context.Variables.GetValueOrDefault("requestTransactionId",""))</value>
-        </set-header>
-      </when>
-    </choose>
+    <set-header name="x-transaction-id" exists-action="override">
+      <value>@((string)context.Variables.GetValueOrDefault("requestTransactionId",""))</value>
+    </set-header>
   </inbound>
   <outbound>
     <base />

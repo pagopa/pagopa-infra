@@ -2,11 +2,11 @@
   <inbound>
     <base />
     <set-variable name="requestTransactionId" value="@{
-                    var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");
-    if(transactionId == ""){
-    transactionId = context.Request.Headers.GetValueOrDefault("x-transaction-id-from-client","");
-    }
-    return transactionId;
+      var transactionId = context.Request.MatchedParameters.GetValueOrDefault("transactionId","");
+      if(transactionId == ""){
+        transactionId = context.Request.Headers.GetValueOrDefault("x-transaction-id-from-client","");
+      }
+      return transactionId;
     }" />
     <set-header name="x-transaction-id" exists-action="delete" />
     <set-header name="x-user-id" exists-action="delete" />
@@ -29,13 +29,9 @@
         }
         return "";
     }" />
-    <choose>
-      <when condition="@((string)context.Variables.GetValueOrDefault("userId","") != "")">
-        <set-header name="x-user-id" exists-action="override">
-          <value>@((string)context.Variables.GetValueOrDefault("userId",""))</value>
-        </set-header>
-      </when>
-    </choose>
+    <set-header name="x-user-id" exists-action="override">
+      <value>@((string)context.Variables.GetValueOrDefault("userId",""))</value>
+    </set-header>
     <choose>
       <when condition="@((string)context.Variables.GetValueOrDefault("tokenTransactionId","") != (string)context.Variables.GetValueOrDefault("requestTransactionId",""))">
         <return-response>
