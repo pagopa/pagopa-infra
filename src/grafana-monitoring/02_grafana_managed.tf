@@ -21,6 +21,7 @@ resource "azurerm_dashboard_grafana" "grafana_dashboard" {
   lifecycle {
     ignore_changes = [
       azure_monitor_workspace_integrations,
+      grafana_major_version,
     ]
   }
   tags = var.tags
