@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+  <property name="version" value="3.24.0" global="false"/>
+
+  <include file="./db.changelog-master-3.23.0.xml"/>
+
+  <include file="./${version}/db.changelog-20231003000000_stand-in.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20231129000000_add_column_to_canali_nodo_and_canali_view.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20231129000000_add_column_to_stazioni.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20231129000000_set_standin-keys.xml" labels="${version}"/>
+
+</databaseChangeLog>

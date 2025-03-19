@@ -1,10 +1,12 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd"
                     >
-
+    <changeSet author="liquibase" id="1666281263874-4">
+        <createSequence cacheSize="20000" maxValue="9223372036854775807" sequenceName="RE_SEQ" startValue="1540001"/>
+    </changeSet>
     <changeSet author="liquibase" id="1666281263874-1">
         <createTable tableName="RE">
-            <column name="ID" type="NUMBER"/>
+            <column defaultValueSequenceNext="RE_SEQ" name="ID" type="NUMBER"/>
             <column name="DATA_ORA_EVENTO" type="VARCHAR2(23 )">
                 <constraints nullable="false"/>
             </column>
@@ -47,5 +49,49 @@
             <column name="ID_EVENTHUB" type="VARCHAR2(36 )"/>
         </createTable>
     </changeSet>
+<!--    <changeSet author="liquibase" id="1666281263874-2">-->
+<!--        <createView fullDefinition="true" viewName="MONITORING">CREATE OR REPLACE VIEW "MONITORING" ("ID", "INSERTED_TIMESTAMP", "BUSINESS_PROCESS", "ID_SESSIONE", "TIPO", "PRIMITIVA", "ID_FRUITORE", "ID_FRUITORE_DESCR", "ID_EROGATORE", "ID_EROGATORE_DESCR", "ESITO", "ID_PSP", "ID_PSP_DESCR", "ID_DOMINIO", "IUV", "CCP", "FAULT_CODE") AS select-->
+<!--            CAST(r.id AS NUMBER(38)) as id,-->
+<!--            r.inserted_Timestamp as inserted_Timestamp,-->
+<!--            CAST(r.business_process AS VARCHAR2(80)) as business_process,-->
+<!--            CAST(r.id_sessione AS VARCHAR2(80)) as id_sessione,-->
+<!--            CAST(r.sotto_tipo_evento AS VARCHAR2(80)) as tipo,-->
+<!--            CAST(r.tipo_evento AS VARCHAR2(80)) as primitiva,-->
+<!--            CAST(r.identificativo_fruitore AS VARCHAR2(80)) as id_fruitore,-->
+<!--            CAST(r.fruitore_descr AS VARCHAR2(80)) as id_fruitore_descr,-->
+<!--            CAST(r.identificativo_erogatore AS VARCHAR2(80)) as id_erogatore,-->
+<!--            CAST(r.erogatore_descr AS VARCHAR2(80)) as id_erogatore_descr,-->
+<!--            CAST(r.esito AS VARCHAR2(80)) as esito,-->
+<!--            CAST(r.identificativo_prestatore_servizi_pagamento AS VARCHAR2(80)) as id_psp,-->
+<!--            CAST(r.psp_descr AS VARCHAR2(80)) as id_psp_descr,-->
+<!--            CAST(r.identificativo_dominio AS VARCHAR2(80)) as id_dominio,-->
+<!--            CAST(r.identificativo_univoco_versamento AS VARCHAR2(80)) as iuv,-->
+<!--            CAST(r.codice_contesto_pagamento AS VARCHAR2(80)) as ccp,-->
+<!--            REGEXP_SUBSTR(utl_raw.cast_to_varchar2(dbms_lob.substr(r.payload,2000)),'&lt;faultCode&gt;(.*)&lt;/faultCode&gt;',1,1,NULL,1) as fault_code-->
+<!--            FROM RE.RE r-->
+<!--            where r.CATEGORIA_EVENTO = 'INTERFACCIA'</createView>-->
+<!--    </changeSet>-->
+<!--    <changeSet author="liquibase" id="1666281263874-3">-->
+<!--        <createView fullDefinition="true" viewName="MONITORING_GG">CREATE OR REPLACE FORCE VIEW "MONITORING_GG" ("ID", "INSERTED_TIMESTAMP", "BUSINESS_PROCESS", "ID_SESSIONE", "TIPO", "PRIMITIVA", "ID_FRUITORE", "ID_FRUITORE_DESCR", "ID_EROGATORE", "ID_EROGATORE_DESCR", "ESITO", "ID_PSP", "ID_PSP_DESCR", "ID_DOMINIO", "IUV", "CCP", "FAULT_CODE") AS select-->
+<!--            id,-->
+<!--            r.inserted_Timestamp as inserted_Timestamp,-->
+<!--            CAST(r.business_process AS VARCHAR2(80)) as business_process,-->
+<!--            CAST(r.id_sessione AS VARCHAR2(80)) as id_sessione,-->
+<!--            CAST(r.sotto_tipo_evento AS VARCHAR2(80)) as tipo,-->
+<!--            CAST(r.tipo_evento AS VARCHAR2(80)) as primitiva,-->
+<!--            CAST(r.identificativo_fruitore AS VARCHAR2(80)) as id_fruitore,-->
+<!--            CAST(r.fruitore_descr AS VARCHAR2(80)) as id_fruitore_descr,-->
+<!--            CAST(r.identificativo_erogatore AS VARCHAR2(80)) as id_erogatore,-->
+<!--            CAST(r.erogatore_descr AS VARCHAR2(80)) as id_erogatore_descr,-->
+<!--            CAST(r.esito AS VARCHAR2(80)) as esito,-->
+<!--            CAST(r.identificativo_prestatore_servizi_pagamento AS VARCHAR2(80)) as id_psp,-->
+<!--            CAST(r.psp_descr AS VARCHAR2(80)) as id_psp_descr,-->
+<!--            CAST(r.identificativo_dominio AS VARCHAR2(80)) as id_dominio,-->
+<!--            CAST(r.identificativo_univoco_versamento AS VARCHAR2(80)) as iuv,-->
+<!--            CAST(r.codice_contesto_pagamento AS VARCHAR2(80)) as ccp,-->
+<!--            REGEXP_SUBSTR(utl_raw.cast_to_varchar2(dbms_lob.substr(r.payload,2000)),'&lt;faultCode&gt;(.*)&lt;/faultCode&gt;',1,1,NULL,1) as fault_code-->
+<!--            FROM RE.RE r-->
+<!--            where r.CATEGORIA_EVENTO = 'INTERFACCIA'</createView>-->
+<!--    </changeSet>-->
 
 </databaseChangeLog>
