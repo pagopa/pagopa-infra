@@ -1,52 +1,65 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "PagoPA API Debt Position for PN ${service}",
-    "description" : "Progetto Gestione Posizioni Debitorie per PN",
+    "title" : "PagoPA API Debt Position ${service}",
+    "description" : "Progetto Gestione Posizioni Debitorie",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.11.10"
+    "version" : "0.13.2"
   },
   "servers" : [ {
-    "url": "${host}/${service}/v1",
-    "description" : "Generated server url"
-  } ],
-  "tags" : [ {
-    "name" : "Payments API"
+    "url" : "https://api.uat.platform.pagopa.it/pn-integration-gpd/api/v1",
+    "description" : "GPD Test environment"
+  }, {
+    "url" : "https://api.platform.pagopa.it/pn-integration-gpd/api/v1",
+    "description" : "GPD Production Environment"
   } ],
   "paths" : {
-    "/organizations/{organizationfiscalcode}/paymentoptions/{nav}/notificationfee" : {
-      "put" : {
-        "tags" : [ "Payments API" ],
-        "summary" : "The organization updates the notification fee of a payment option.",
-        "operationId" : "updateNotificationFee",
-        "parameters" : [ {
-          "name" : "organizationfiscalcode",
-          "in" : "path",
-          "description" : "Organization fiscal code, the fiscal code of the Organization.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "nav",
-          "in" : "path",
-          "description" : "NAV (notice number) is the unique reference assigned to the payment by a creditor institution.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/NotificationFeeUpdateModel"
+    "/info" : {
+      "get" : {
+        "tags" : [ "Home" ],
+        "summary" : "Return OK if application is started",
+        "operationId" : "healthCheck",
+        "responses" : {
+          "200" : {
+            "description" : "OK.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AppInfo"
+                }
               }
             }
           },
-          "required" : true
-        },
-        "responses" : {
+          "401" : {
+            "description" : "Wrong or missing function key.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "Forbidden.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
           "500" : {
             "description" : "Service unavailable.",
             "headers" : {
@@ -61,6 +74,63 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/organizations/{organizationfiscalcode}/paymentoptions/{nav}" : {
+      "get" : {
+        "tags" : [ "Payments API" ],
+        "summary" : "Return the details of a specific payment option.",
+        "operationId" : "getOrganizationPaymentOptionByNAV",
+        "parameters" : [ {
+          "name" : "organizationfiscalcode",
+          "in" : "path",
+          "description" : "Organization fiscal code, the fiscal code of the Organization.",
+          "required" : true,
+          "schema" : {
+            "pattern" : "\\d{1,30}",
+            "type" : "string"
+          }
+        }, {
+          "name" : "nav",
+          "in" : "path",
+          "description" : "NAV (notice number) is the unique reference assigned to the payment by a creditor institution.",
+          "required" : true,
+          "schema" : {
+            "pattern" : "^\\d{1,30}$",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Obtained payment option details.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PaymentsWithDebtorInfoModelResponse"
                 }
               }
             }
@@ -94,6 +164,71 @@
               }
             }
           },
+          "500" : {
+            "description" : "Service unavailable.",
+            "headers" : {
+              "X-Request-Id" : {
+                "description" : "This header identifies the call",
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "ApiKey" : [ ]
+        } ]
+      },
+      "parameters" : [ {
+        "name" : "X-Request-Id",
+        "in" : "header",
+        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+        "schema" : {
+          "type" : "string"
+        }
+      } ]
+    },
+    "/organizations/{organizationfiscalcode}/paymentoptions/{nav}/notificationfee" : {
+      "put" : {
+        "tags" : [ "Payments API" ],
+        "summary" : "The organization updates the notification fee of a payment option.",
+        "operationId" : "updateNotificationFee",
+        "parameters" : [ {
+          "name" : "organizationfiscalcode",
+          "in" : "path",
+          "description" : "Organization fiscal code, the fiscal code of the Organization.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "nav",
+          "in" : "path",
+          "description" : "NAV (notice number) is the unique reference assigned to the payment by a creditor institution.",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NotificationFeeUpdateModel"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
           "200" : {
             "description" : "Request updated.",
             "headers" : {
@@ -148,81 +283,6 @@
               }
             }
           },
-          "422" : {
-            "description" : "Unprocessable payment option.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        },
-        "security" : [ {
-          "ApiKey" : [ ]
-        }, {
-          "Authorization" : [ ]
-        } ]
-      },
-      "parameters" : [ {
-        "name" : "X-Request-Id",
-        "in" : "header",
-        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-        "schema" : {
-          "type" : "string"
-        }
-      } ]
-    },
-    "/organizations/{organizationfiscalcode}/paymentoptions/{nav}" : {
-      "get" : {
-        "tags" : [ "Payments API" ],
-        "summary" : "Return the details of a specific payment option.",
-        "operationId" : "getOrganizationPaymentOptionByNAV",
-        "parameters" : [ {
-          "name" : "organizationfiscalcode",
-          "in" : "path",
-          "description" : "Organization fiscal code, the fiscal code of the Organization.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "nav",
-          "in" : "path",
-          "description" : "NAV (notice number) is the unique reference assigned to the payment by a creditor institution.",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "500" : {
-            "description" : "Service unavailable.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
           "401" : {
             "description" : "Wrong or missing function key.",
             "headers" : {
@@ -252,8 +312,8 @@
               }
             }
           },
-          "200" : {
-            "description" : "Obtained payment option details.",
+          "422" : {
+            "description" : "Unprocessable payment option.",
             "headers" : {
               "X-Request-Id" : {
                 "description" : "This header identifies the call",
@@ -265,33 +325,11 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/PaymentsWithDebtorInfoModelResponse"
+                  "$ref" : "#/components/schemas/ProblemJson"
                 }
               }
             }
-          }
-        },
-        "security" : [ {
-          "ApiKey" : [ ]
-        }, {
-          "Authorization" : [ ]
-        } ]
-      },
-      "parameters" : [ {
-        "name" : "X-Request-Id",
-        "in" : "header",
-        "description" : "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
-        "schema" : {
-          "type" : "string"
-        }
-      } ]
-    },
-    "/info" : {
-      "get" : {
-        "tags" : [ "Home" ],
-        "summary" : "Return OK if application is started",
-        "operationId" : "healthCheck",
-        "responses" : {
+          },
           "500" : {
             "description" : "Service unavailable.",
             "headers" : {
@@ -309,52 +347,10 @@
                 }
               }
             }
-          },
-          "401" : {
-            "description" : "Wrong or missing function key.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "200" : {
-            "description" : "OK.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            },
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/AppInfo"
-                }
-              }
-            }
-          },
-          "403" : {
-            "description" : "Forbidden.",
-            "headers" : {
-              "X-Request-Id" : {
-                "description" : "This header identifies the call",
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
           }
         },
         "security" : [ {
           "ApiKey" : [ ]
-        }, {
-          "Authorization" : [ ]
         } ]
       },
       "parameters" : [ {
@@ -495,15 +491,53 @@
           "transfer" : {
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/PaymentsTransferModelResponse"
+              "$ref" : "#/components/schemas/TransferModelResponse"
             }
           }
         }
       },
-      "PaymentsTransferModelResponse" : {
+      "Stamp" : {
+        "required" : [ "hashDocument", "provincialResidence", "stampType" ],
+        "type" : "object",
+        "properties" : {
+          "hashDocument" : {
+            "maxLength" : 72,
+            "minLength" : 0,
+            "type" : "string",
+            "description" : "Document hash type is stBase64Binary72 as described in https://github.com/pagopa/pagopa-api."
+          },
+          "stampType" : {
+            "maxLength" : 2,
+            "minLength" : 2,
+            "type" : "string",
+            "description" : "The type of the stamp"
+          },
+          "provincialResidence" : {
+            "pattern" : "[A-Z]{2}",
+            "type" : "string",
+            "description" : "The provincial of the residence",
+            "example" : "RM"
+          }
+        }
+      },
+      "TransferMetadataModelResponse" : {
+        "type" : "object",
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
+      "TransferModelResponse" : {
         "type" : "object",
         "properties" : {
           "organizationFiscalCode" : {
+            "type" : "string"
+          },
+          "companyName" : {
             "type" : "string"
           },
           "idTransfer" : {
@@ -545,39 +579,6 @@
             "items" : {
               "$ref" : "#/components/schemas/TransferMetadataModelResponse"
             }
-          }
-        }
-      },
-      "Stamp" : {
-        "required" : [ "hashDocument", "provincialResidence", "stampType" ],
-        "type" : "object",
-        "properties" : {
-          "hashDocument" : {
-            "type" : "string",
-            "description" : "Document hash"
-          },
-          "stampType" : {
-            "maxLength" : 2,
-            "minLength" : 2,
-            "type" : "string",
-            "description" : "The type of the stamp"
-          },
-          "provincialResidence" : {
-            "pattern" : "[A-Z]{2}",
-            "type" : "string",
-            "description" : "The provincial of the residence",
-            "example" : "RM"
-          }
-        }
-      },
-      "TransferMetadataModelResponse" : {
-        "type" : "object",
-        "properties" : {
-          "key" : {
-            "type" : "string"
-          },
-          "value" : {
-            "type" : "string"
           }
         }
       },
@@ -706,7 +707,7 @@
           "transfer" : {
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/PaymentsTransferModelResponse"
+              "$ref" : "#/components/schemas/TransferModelResponse"
             }
           }
         }
@@ -732,12 +733,6 @@
         "description" : "The API key to access this function app.",
         "name" : "Ocp-Apim-Subscription-Key",
         "in" : "header"
-      },
-      "Authorization" : {
-        "type" : "http",
-        "description" : "JWT token get after Azure Login",
-        "scheme" : "bearer",
-        "bearerFormat" : "JWT"
       }
     }
   }
