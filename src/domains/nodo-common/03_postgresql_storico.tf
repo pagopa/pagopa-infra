@@ -112,7 +112,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_fle
 resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_ignore_startup_parameters" {
   count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.ignore_startup_parameters"
-  server_id = module.postgres_flexible_server.id
+  server_id = module.postgres_storico_flexible_server.id
   value     = "extra_float_digits,search_path"
 }
 
