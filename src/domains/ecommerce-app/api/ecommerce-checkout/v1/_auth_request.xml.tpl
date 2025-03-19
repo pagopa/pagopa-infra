@@ -42,17 +42,17 @@
         <set-variable name="detailType" value="@((string)((JObject)((JObject)context.Variables["requestBody"])["details"])["detailType"])"/>
 
         <set-variable name="pgsId" value="@{
-
+            
             string[] xpayList = ((string)context.Variables["XPAYPspsList"]).Split(',');
             string[] vposList = ((string)context.Variables["VPOSPspsList"]).Split(',');
-
+            
             string pspId = (string)(context.Variables.GetValueOrDefault("pspId",""));
             string detailType = (string)(context.Variables.GetValueOrDefault("detailType",""));
-
+            
             string pgsId = "";
 
             // card -> ecommerce with PGS request
-            if ( detailType == "card" ){
+            if ( detailType == "card" ){                                    
 
                 if (xpayList.Contains(pspId)) {
 
@@ -63,15 +63,15 @@
                 }
 
             // cards or apm -> ecommerce with NPG request
-            } else if ( detailType == "cards" || detailType == "apm"){
-
+            } else if ( detailType == "cards" || detailType == "apm"){      
+             
                 pgsId = "NPG";
 
             // redirect -> ecommerce with redirect
-            } else if ( detailType == "redirect"){
+            } else if ( detailType == "redirect"){      
 
-                pgsId = "REDIRECT";
-            }
+                pgsId = "REDIRECT";            
+            } 
 
             return pgsId;
         }"/>
