@@ -136,7 +136,7 @@
   {
     "apiName" : "status",
     "appName" : "apiConfig",
-    "url" :  "https://${internal_api_domain_prefix}.apiconfig.${internal_api_domain_suffix}/pagopa-api-config-core-service/o/info",
+    "url" :  "https://${internal_api_domain_prefix}.apiconfig.${internal_api_domain_suffix}/pagopa-api-config-core-service/p/info",
     "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
@@ -144,7 +144,7 @@
     "tags" : {
       "description" : "pagopa ${env_name} apiconfig status endpoint"
     },
-    "durationLimit" : 10000,
+    "durationLimit" : 20000,
     "alertConfiguration" : {
       "enabled" : ${alert_enabled}
     }
@@ -335,7 +335,7 @@
     "apiName" : "status",
     "appName" : "fdr",
     "enabled" : ${fdr_enabled},
-    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=fdrndpnew",
+    "url" :  "https://${api_dot_env_name}.platform.pagopa.it/shared/statuspage/v1/info?product=fdrfase3",
     "type" : "apim",
     "checkCertificate" : true,
     "method" : "GET",

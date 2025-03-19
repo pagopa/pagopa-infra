@@ -117,3 +117,10 @@ variable "tls_cert_check_helm" {
   })
   description = "tls cert helm chart configuration"
 }
+
+### ADX
+variable "dexp_re_db_linkes_service" {
+  type = object({
+    enable = bool
+  })
+}

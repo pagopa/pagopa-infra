@@ -1,10 +1,10 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "api-config core ${host}",
+    "title": "core",
     "description": "Spring application exposes APIs to manage configuration for CI/PSP on the Nodo dei Pagamenti",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.59.12"
+    "version": "0.59.26"
   },
   "servers": [
     {
@@ -630,6 +630,168 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ApiKey": []
+          },
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "parameters": [
+        {
+          "name": "X-Request-Id",
+          "in": "header",
+          "description": "This header identifies the call, if not passed it is self-generated. This ID is returned in the response.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/brokers/station-maintenances": {
+      "get": {
+        "tags": [
+          "Creditor Institutions"
+        ],
+        "summary": "Get a list of all stations' maintenance filtered by dates",
+        "operationId": "getAllStationsMaintenances",
+        "parameters": [
+          {
+            "name": "startDateTimeBefore",
+            "in": "query",
+            "description": "Start date of maintenance, used to retrieve all maintenance that start before the provided date (yyyy-MM-dd'T'HH:mm:ss.SSS'Z')",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-04-01T10:00:00.000Z"
+          },
+          {
+            "name": "startDateTimeAfter",
+            "in": "query",
+            "description": "Start date of maintenance, used to retrieve all maintenance that start after the provided date (yyyy-MM-dd'T'HH:mm:ss.SSS'Z')",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-04-01T10:00:00.000Z"
+          },
+          {
+            "name": "endDateTimeBefore",
+            "in": "query",
+            "description": "End date of maintenance, used to retrieve all maintenance that start before the provided date (yyyy-MM-dd'T'HH:mm:ss.SSS'Z')",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-04-01T13:00:00.000Z"
+          },
+          {
+            "name": "endDateTimeAfter",
+            "in": "query",
+            "description": "End date of maintenance, used to retrieve all maintenance that start after the provided date (yyyy-MM-dd'T'HH:mm:ss.SSS'Z')",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2024-04-01T13:00:00.000Z"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StationMaintenanceListResource"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
                 }
               }
             }
@@ -18538,6 +18700,7 @@
         "required": [
           "broker_code",
           "enabled",
+          "flag_standin",
           "port",
           "primitive_version",
           "protocol",
@@ -18716,6 +18879,16 @@
             "type": "integer",
             "description": "Primitive number version",
             "format": "int32"
+          },
+          "flag_standin": {
+            "type": "boolean",
+            "description": "Represents the authorization to use the standin mode with this station"
+          },
+          "is_payment_options_enabled": {
+            "type": "boolean"
+          },
+          "rest_endpoint": {
+            "type": "string"
           }
         }
       },
@@ -18853,6 +19026,13 @@
             "type": "string",
             "example": "Comune di Lorem Ipsum"
           },
+          "description": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "The description of the Creditor Institution",
+            "example": "Comune di Roma"
+          },
           "cbill_code": {
             "type": "string",
             "example": "1234567890100"
@@ -18919,6 +19099,9 @@
             "type": "boolean"
           },
           "stand_in": {
+            "type": "boolean"
+          },
+          "spontaneous_payment": {
             "type": "boolean"
           }
         }
@@ -19197,6 +19380,7 @@
           "digital_stamp_brand",
           "enabled",
           "flag_psp_cp",
+          "flag_standin",
           "on_us",
           "payment_model",
           "port",
@@ -19375,6 +19559,10 @@
           "flag_psp_cp": {
             "type": "boolean",
             "description": "Represents the authorization to carry out the transfer of the information present in additional payment information in the tags relating to payment by card for the PA in V1"
+          },
+          "flag_standin": {
+            "type": "boolean",
+            "description": "Represents the authorization to use the standin mode with this channel"
           }
         }
       },
@@ -19497,7 +19685,8 @@
             "type": "string",
             "description": "Code of the broker that owns the station"
           }
-        }
+        },
+        "description": "List of station's maintenance"
       },
       "PspChannelCode": {
         "required": [
@@ -19849,6 +20038,13 @@
             "type": "string",
             "example": "Comune di Lorem Ipsum"
           },
+          "description": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "The description of the Creditor Institution",
+            "example": "Comune di Roma"
+          },
           "application_code": {
             "type": "integer",
             "format": "int64"
@@ -19871,6 +20067,9 @@
             "type": "boolean"
           },
           "stand_in": {
+            "type": "boolean"
+          },
+          "spontaneous_payment": {
             "type": "boolean"
           }
         }
@@ -20260,6 +20459,13 @@
             "minLength": 0,
             "type": "string",
             "example": "Comune di Lorem Ipsum"
+          },
+          "description": {
+            "maxLength": 255,
+            "minLength": 0,
+            "type": "string",
+            "description": "The description of the Creditor Institution",
+            "example": "Comune di Roma"
           }
         }
       },
@@ -20354,6 +20560,9 @@
             "type": "boolean"
           },
           "stand_in": {
+            "type": "boolean"
+          },
+          "spontaneous_payment": {
             "type": "boolean"
           }
         }

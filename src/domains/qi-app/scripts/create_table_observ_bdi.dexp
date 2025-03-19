@@ -1,0 +1,7 @@
+.create table BDI_PERF_KPI (
+    timestamp: datetime,
+    startDate: datetime,
+    endDate: datetime,
+    kpiId: string,
+    kpiValue: decimal
+)

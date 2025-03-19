@@ -24,7 +24,7 @@ locals {
     # Spring Environment
     DEFAULT_LOGGING_LEVEL = var.node_forwarder_logging_level
     APP_LOGGING_LEVEL     = var.node_forwarder_logging_level
-    JAVA_OPTS             = "-Djavax.net.debug=ssl:handshake" // mTLS debug
+    JAVA_OPTS             = "" # "-Djavax.net.debug=ssl:handshake" // mTLS debug
 
     # Cert configuration
     CERTIFICATE_CRT = data.azurerm_key_vault_secret.certificate_crt_node_forwarder.value
@@ -39,8 +39,8 @@ locals {
     DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.container_registry.admin_password
 
     # Connection Pool
-    MAX_CONNECTIONS           = 80
-    MAX_CONNECTIONS_PER_ROUTE = 40
+    MAX_CONNECTIONS           = 120 #80
+    MAX_CONNECTIONS_PER_ROUTE = 60  #40
     CONN_TIMEOUT              = 8
 
   }

@@ -159,3 +159,5 @@ elk_snapshot_sa = {
 
 
 snapshot_storage_replication_type = "GZRS"
+
+elastic_cloud_apm_endpoint = "TBD"

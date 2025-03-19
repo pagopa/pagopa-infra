@@ -37,6 +37,6 @@ locals {
 
   monitor_appinsights_name = "${local.product}-appinsights"
 
-  evt_hub_location = "weu-core"
-
+  evt_hub_location                   = "weu-core"
+  monitor_action_group_opsgenie_name = "Opsgenie"
 }

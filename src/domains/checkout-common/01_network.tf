@@ -35,7 +35,7 @@ data "azurerm_api_management" "apim" {
   resource_group_name = data.azurerm_resource_group.rg_api.name
 }
 
-# DevOps Agent subnet
+# DevOps Agent subnet
 
 data "azurerm_subnet" "azdoa_snet" {
   name                 = format("%s-azdoa-snet", local.parent_project)
@@ -43,10 +43,10 @@ data "azurerm_subnet" "azdoa_snet" {
   virtual_network_name = data.azurerm_virtual_network.vnet.name
 }
 
-# pagopa-proxy Redis subnet
+# pagopa-proxy Redis subnet
 
 module "pagopa_proxy_redis_snet" {
-  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v7.69.1"
+  source                                    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.42.3"
   name                                      = format("%s-pagopa-proxy-redis-snet", local.parent_project)
   address_prefixes                          = var.cidr_subnet_pagopa_proxy_redis
   resource_group_name                       = data.azurerm_resource_group.rg_vnet.name

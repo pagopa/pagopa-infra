@@ -45,6 +45,8 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_legacy_policies" {
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = each.key
 
+  key_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Purge", "Recover", "Restore", "GetRotationPolicy"]
+
   secret_permissions = ["Get", "List", "Set", ]
 
   certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]

@@ -83,8 +83,8 @@ data "azurerm_linux_function_app" "mockec" {
 }
 
 data "azurerm_linux_web_app" "pdf_engine" {
-  name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java${var.env_short == "p" ? "-ha" : ""}"
-  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-${var.env_short == "p" ? "ha" : "pdf-engine"}-rg"
+  name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java"
+  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-pdf-engine-rg"
 }
 
 module "apim_api_statuspage_api_v1" {
@@ -138,7 +138,10 @@ module "apim_api_statuspage_api_v1" {
           "backofficepagopa-fe"         = format("%s", local.fe_backoffice_path)
           "backofficeexternalpagopa"    = format("%s/backoffice-external", format(local.aks_path, "selfcare"))
           "canoneunico"                 = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
-          "fdrndpnew"                   = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
+          "fdrfase1"                    = format("%s/pagopa-fdr-nodo-service", format(local.aks_path, "fdr"))
+          "fdrfase3"                    = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
+          "fdr2evh"                     = format("%s/pagopa-fdr-to-event-hub-service", format(local.aks_path, "fdr"))
+          "fdrts"                       = format("%s/pagopa-fdr-technical-support-service", format(local.aks_path, "fdr"))
           "wispconverter"               = format("%s/pagopa-wisp-converter", format(local.aks_path, "nodo"))
           "wispsoapconverter"           = format("%s/wisp-soap-converter", format(local.aks_path, "nodo"))
           "wispconverterts"             = format("%s/pagopa-wisp-converter-technical-support", format(local.aks_path, "nodo"))

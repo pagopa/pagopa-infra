@@ -76,21 +76,6 @@ locals {
       ]
       shard_key = null
     },
-    { # collection with event until 25/08/2024, replaced by payment-wallet-log-events
-      # DEPRECATED
-      name                = "wallet-log-events"
-      default_ttl_seconds = null
-      indexes = [{
-        keys   = ["_id"]
-        unique = true
-        },
-        {
-          keys   = ["walletId", "timestamp", "eventType"]
-          unique = true
-        }
-      ]
-      shard_key = null
-    },
     {
       name                = "wallets-migration-pm",
       default_ttl_seconds = null
@@ -135,21 +120,6 @@ locals {
         }
       ]
       shard_key = "userId"
-    },
-    { # collection with event from 25/08/2024
-      # DEPRECATED
-      name                = "payment-wallet-log-events"
-      default_ttl_seconds = null
-      indexes = [{
-        keys   = ["_id"]
-        unique = true
-        },
-        {
-          keys   = ["walletId", "timestamp", "eventType"]
-          unique = true
-        }
-      ]
-      shard_key = "walletId"
     },
     { # collection with new and detailed logging events
       name                = "payment-wallets-log-events"

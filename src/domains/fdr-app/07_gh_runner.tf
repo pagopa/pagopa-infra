@@ -22,6 +22,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-fdr", # FdR-3
       short_name : "fdr"
+    },
+    {
+      name : "pagopa-fdr-2-event-hub",
+      short_name : "fdr2evh"
     }
   ]
   job = {

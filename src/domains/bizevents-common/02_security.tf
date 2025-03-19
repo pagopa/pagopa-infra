@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v6.4.1"
+  source = "./.terraform/modules/__v3__/key_vault"
 
   name                       = "${local.product}-${var.domain}-kv"
   location                   = azurerm_resource_group.sec_rg.location
@@ -41,6 +41,24 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   secret_permissions  = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
   storage_permissions = []
   certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"
+  ]
+}
+
+## ad group policy ##
+resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
+  count = var.env_short != "p" ? 1 : 0
+
+  key_vault_id = module.key_vault.id
+
+  tenant_id = data.azurerm_client_config.current.tenant_id
+  object_id = data.azuread_group.adgroup_externals.object_id
+
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Recover", "Rotate", "GetRotationPolicy"]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", ]
+  storage_permissions = []
+  certificate_permissions = [
+    "Get", "List", "Update", "Create", "Import",
+    "Delete", "Restore", "Purge", "Recover"
   ]
 }
 
@@ -354,16 +372,19 @@ resource "azurerm_key_vault_secret" "list_lap_arc_4_io_api_keysubkey_store_kv" {
 
 // apikey biz-trx-api-key-4-perftest and save keys on KV
 data "azurerm_api_management_product" "apim_biz_events_service_product" {
+  count = var.env_short != "p" ? 1 : 0
+
   product_id          = "bizevents-all-in-one"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 }
 resource "azurerm_api_management_subscription" "biz_trx_api_key_4_perftest" {
-  count               = var.env_short != "p" ? 1 : 0
+  count = var.env_short != "p" ? 1 : 0
+
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  product_id    = data.azurerm_api_management_product.apim_biz_events_service_product.id
+  product_id    = data.azurerm_api_management_product.apim_biz_events_service_product[0].id
   display_name  = "Biz Events biz-trx-api-key-4-perftest"
   allow_tracing = false
   state         = "active"

@@ -1,21 +1,25 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Biz-Events LAP Service",
+    "title": "Biz-Events Service - Paid Notice REST APIs (aka LAP)",
     "description": "Microservice for exposing REST APIs about payment receipts.",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.1.55"
+    "version": "0.1.69"
   },
   "servers": [
     {
-      "url": "${host}/bizevents/notices-service/v1",
-      "description": "Generated server url"
+      "url": "http://localhost:8080"
+    },
+    {
+      "url": "https://api.platform.pagopa.it/bizevents/notices-service/v1"
     }
   ],
   "paths": {
     "/paids/{event-id}/disable": {
       "post": {
-        "tags": ["Paid Notice REST APIs"],
+        "tags": [
+          "Paid Notice REST APIs"
+        ],
         "summary": "Disable the paid notice details given its id.",
         "operationId": "disablePaidNotice",
         "parameters": [
@@ -56,33 +60,8 @@
               }
             }
           },
-          "200": {
-            "description": "Event Disabled.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {}
-            }
-          },
           "429": {
             "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -109,6 +88,31 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Event Disabled.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {}
+            }
           }
         },
         "security": [
@@ -131,7 +135,9 @@
     },
     "/paids": {
       "get": {
-        "tags": ["Paid Notice REST APIs"],
+        "tags": [
+          "Paid Notice REST APIs"
+        ],
         "summary": "Retrieve the paged transaction list from biz events.",
         "description": "This operation is deprecated. Use Paid Notice APIs instead",
         "operationId": "getPaidNotices",
@@ -188,7 +194,9 @@
             "schema": {
               "type": "string",
               "default": "TRANSACTION_DATE",
-              "enum": ["TRANSACTION_DATE"]
+              "enum": [
+                "TRANSACTION_DATE"
+              ]
             }
           },
           {
@@ -199,36 +207,14 @@
             "schema": {
               "type": "string",
               "default": "DESC",
-              "enum": ["ASC", "DESC"]
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Obtained paid notices list.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              },
-              "x-continuation-token": {
-                "description": "continuation token for paginated query",
-                "style": "simple",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NoticeListWrapResponse"
-                }
-              }
-            }
-          },
           "500": {
             "description": "Service unavailable.",
             "headers": {
@@ -254,6 +240,31 @@
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Obtained paid notices list.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "x-continuation-token": {
+                "description": "continuation token for paginated query",
+                "style": "simple",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeListWrapResponse"
                 }
               }
             }
@@ -308,7 +319,9 @@
     },
     "/paids/{event-id}": {
       "get": {
-        "tags": ["Paid Notice REST APIs"],
+        "tags": [
+          "Paid Notice REST APIs"
+        ],
         "summary": "Retrieve the paid notice details given its id.",
         "operationId": "getPaidNoticeDetail",
         "parameters": [
@@ -345,6 +358,24 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Obtained paid notice detail.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeDetailResponse"
                 }
               }
             }
@@ -388,24 +419,6 @@
                 }
               }
             }
-          },
-          "200": {
-            "description": "Obtained paid notice detail.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NoticeDetailResponse"
-                }
-              }
-            }
           }
         },
         "security": [
@@ -428,7 +441,9 @@
     },
     "/paids/{event-id}/pdf": {
       "get": {
-        "tags": ["Paid Notice REST APIs"],
+        "tags": [
+          "Paid Notice REST APIs"
+        ],
         "summary": "Retrieve the PDF receipt given event id.",
         "operationId": "generatePDF",
         "parameters": [
@@ -451,69 +466,26 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Service unavailable.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Too many requests.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Wrong or missing function key.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {}
-            }
-          },
-          "404": {
-            "description": "Not found the receipt.",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
           "422": {
             "description": "Unprocessable receipt.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Service unavailable.",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
@@ -555,6 +527,49 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not found the receipt.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong or missing function key.",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {}
+            }
           }
         },
         "security": [
@@ -577,11 +592,31 @@
     },
     "/info": {
       "get": {
-        "tags": ["Home"],
+        "tags": [
+          "Home"
+        ],
         "summary": "health check",
         "description": "Return OK if application is started",
         "operationId": "healthCheck",
         "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppInfo"
+                }
+              }
+            }
+          },
           "429": {
             "description": "Too many requests",
             "headers": {
@@ -593,13 +628,31 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
+          "401": {
+            "description": "Unauthorized",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "headers": {
+              "X-Request-Id": {
+                "description": "This header identifies the call",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -622,49 +675,13 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized",
+          "403": {
+            "description": "Forbidden",
             "headers": {
               "X-Request-Id": {
                 "description": "This header identifies the call",
                 "schema": {
                   "type": "string"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AppInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "headers": {
-              "X-Request-Id": {
-                "description": "This header identifies the call",
-                "schema": {
-                  "type": "string"
-                }
-              }
-            },
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
                 }
               }
             }
@@ -752,7 +769,9 @@
         }
       },
       "NoticeListWrapResponse": {
-        "required": ["notices"],
+        "required": [
+          "notices"
+        ],
         "type": "object",
         "properties": {
           "notices": {
@@ -764,7 +783,12 @@
         }
       },
       "CartItem": {
-        "required": ["amount", "refNumberType", "refNumberValue", "subject"],
+        "required": [
+          "amount",
+          "refNumberType",
+          "refNumberValue",
+          "subject"
+        ],
         "type": "object",
         "properties": {
           "subject": {
@@ -868,7 +892,9 @@
         }
       },
       "UserDetail": {
-        "required": ["taxCode"],
+        "required": [
+          "taxCode"
+        ],
         "type": "object",
         "properties": {
           "name": {
@@ -914,7 +940,7 @@
     "securitySchemes": {
       "ApiKey": {
         "type": "apiKey",
-        "description": "The API key to access this function app.",
+        "description": "The Azure Subscription Key to access this API.",
         "name": "Ocp-Apim-Subscription-Key",
         "in": "header"
       }

@@ -56,6 +56,29 @@ pgres_flex_params = {
   enable_private_dns_registration_virtual_endpoint = true
 }
 
+pgres_flex_storico_params = {
+
+  enabled    = true
+  sku_name   = "GP_Standard_D2ds_v5"
+  db_version = "16"
+  # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
+  # 2097152, 4194304, 8388608, 16777216, and 33554432.
+  storage_mb                             = 1048576
+  zone                                   = 3
+  standby_ha_zone                        = 2
+  backup_retention_days                  = 7
+  geo_redundant_backup_enabled           = false
+  create_mode                            = "Default"
+  pgres_flex_private_endpoint_enabled    = true
+  pgres_flex_ha_enabled                  = true
+  pgres_flex_pgbouncer_enabled           = true
+  pgres_flex_diagnostic_settings_enabled = true
+  max_connections                        = 5000
+  enable_private_dns_registration        = true
+  max_worker_processes                   = 16
+
+}
+
 sftp_account_replication_type = "GZRS"
 sftp_enable_private_endpoint  = true
 sftp_ip_rules                 = [] # List of public IP or IP ranges in CIDR Format allowed to access the storage account. Only IPV4 addresses are allowed

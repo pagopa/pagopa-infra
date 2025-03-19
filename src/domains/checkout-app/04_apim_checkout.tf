@@ -245,59 +245,6 @@ resource "azurerm_api_management_product_api" "apim_cd_info_wisp_product_v1_apim
   resource_group_name = data.azurerm_resource_group.rg_api.name
 }
 
-######################################
-## API checkout payment transaction ##
-######################################
-locals {
-  apim_checkout_transactions_api = {
-    # params for all api versions
-    display_name          = "Checkout payment transaction API"
-    description           = "API to support payment transaction"
-    path                  = "api/checkout/payment-transactions"
-    subscription_required = false
-    service_url           = null
-  }
-}
-
-resource "azurerm_api_management_api_version_set" "checkout_transactions_api" {
-  count = var.checkout_enabled ? 1 : 0
-
-  name                = format("%s-checkout-transactions-api", var.env_short)
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  api_management_name = data.azurerm_api_management.apim.name
-  display_name        = local.apim_checkout_transactions_api.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_checkout_transactions_api_v1" {
-  count = var.checkout_enabled ? 1 : 0
-
-  source = "./.terraform/modules/__v3__/api_management_api"
-
-  name                  = format("%s-checkout-transactions-api", var.env_short)
-  api_management_name   = data.azurerm_api_management.apim.name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_checkout_product[0].product_id]
-  subscription_required = local.apim_checkout_transactions_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.checkout_transactions_api[0].id
-  api_version           = "v1"
-  service_url           = local.apim_checkout_transactions_api.service_url
-
-  description  = local.apim_checkout_transactions_api.description
-  display_name = local.apim_checkout_transactions_api.display_name
-  path         = local.apim_checkout_transactions_api.path
-  protocols    = ["https"]
-
-  content_format = "swagger-json"
-  content_value = templatefile("./api/checkout/checkout_transactions/v1/_swagger.json.tpl", {
-    host = local.apim_hostname
-  })
-
-  xml_content = templatefile("./api/checkout/checkout_transactions/v1/_base_policy.xml.tpl", {
-    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
-  })
-}
-
 # pagopa-ecommerce APIs for checkout
 locals {
   apim_checkout_ecommerce_api = {

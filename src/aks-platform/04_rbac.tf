@@ -11,7 +11,7 @@ resource "kubernetes_cluster_role" "system_cluster_deployer" {
 
   rule {
     api_groups = ["rbac.authorization.k8s.io"]
-    resources  = ["rolebindings"]
+    resources  = ["rolebindings", "clusterroles", "clusterrolebindings"]
     verbs      = ["get", "list", "watch", ]
   }
 
@@ -51,7 +51,7 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
 
   rule {
     api_groups = ["apps"]
-    resources  = ["replicasets"]
+    resources  = ["replicasets", "daemonsets"]
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 
@@ -69,7 +69,7 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
 
   rule {
     api_groups = ["rbac.authorization.k8s.io"]
-    resources  = ["rolebindings"]
+    resources  = ["rolebindings", "roles"]
     verbs      = ["get", "list", "watch", ]
   }
 
@@ -91,6 +91,12 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
     resource_names    = []
     resources         = ["poddisruptionbudgets"]
     verbs             = ["get", "list", "watch", "create", "update", "patch", "delete"]
+  }
+
+  rule {
+    api_groups = ["opentelemetry.io"]
+    resources  = ["opentelemetrycollectors"]
+    verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
 
   depends_on = [

@@ -42,7 +42,7 @@ module "apim_gpd_payments_pull_product_and_debt_positions_product_test" {
   published             = false
   subscription_required = true
   approval_required     = false
-  subscriptions_limit   = 1 # only for test
+  subscriptions_limit   = 10 # only for test
 
   policy_xml = file("./api_product/payments-pull/_base_policy.xml")
 

@@ -152,55 +152,17 @@ variable "pagopa_proxy_autoscale_default" {
   default     = 5
 }
 
-# Checkout functions
-
-variable "checkout_function_kind" {
-  type        = string
-  description = "App service plan kind"
-  default     = null
-}
-
-variable "checkout_function_sku_tier" {
-  type        = string
-  description = "App service plan sku tier"
-  default     = null
-}
-
-variable "checkout_function_sku_size" {
-  type        = string
-  description = "App service plan sku size"
-  default     = null
-}
-
-variable "checkout_function_autoscale_minimum" {
-  type        = number
-  description = "The minimum number of instances for this resource."
-  default     = 1
-}
-
-variable "checkout_function_autoscale_maximum" {
-  type        = number
-  description = "The maximum number of instances for this resource."
-  default     = 3
-}
-
-variable "checkout_function_autoscale_default" {
-  type        = number
-  description = "The number of instances that are available for scaling if metrics are not available for evaluation."
-  default     = 1
-}
-
-variable "checkout_function_always_on" {
-  type        = bool
-  description = "Always on property"
-  default     = false
-}
-
 # Checkout APIM
 
 variable "ecommerce_ingress_hostname" {
   type        = string
   description = "ecommerce ingress hostname"
+  default     = null
+}
+
+variable "checkout_ingress_hostname" {
+  type        = string
+  description = "checkout ingress hostname"
   default     = null
 }
 
@@ -287,4 +249,23 @@ variable "checkout_ip_restriction_default_action" {
 variable "pagopa_proxy_ip_restriction_default_action" {
   type        = string
   description = "(Required) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. "
+}
+
+variable "tls_cert_check_helm" {
+  type = object({
+    chart_version = string,
+    image_name    = string,
+    image_tag     = string
+  })
+  description = "tls cert helm chart configuration"
+}
+
+variable "instance" {
+  type        = string
+  description = "One of beta, prod01, prod02"
+}
+
+variable "k8s_kube_config_path_prefix" {
+  type    = string
+  default = "~/.kube"
 }

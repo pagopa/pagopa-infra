@@ -176,8 +176,8 @@ module "apim" {
         aggregation              = "Average"
         operator                 = "GreaterThan"
         alert_sensitivity        = "High"
-        evaluation_total_count   = 2
-        evaluation_failure_count = 2
+        evaluation_total_count   = 4
+        evaluation_failure_count = 4
         skip_metric_validation   = false
         ignore_data_before       = "2021-01-01T00:00:00Z" # sample data
         dimension                = []
@@ -199,8 +199,8 @@ module "apim" {
         aggregation              = "Total"
         operator                 = "GreaterThan"
         alert_sensitivity        = "High"
-        evaluation_total_count   = 2
-        evaluation_failure_count = 2
+        evaluation_total_count   = 4
+        evaluation_failure_count = 4
         skip_metric_validation   = false
         ignore_data_before       = "2021-01-01T00:00:00Z" # sample data
         dimension = [{

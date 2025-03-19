@@ -91,3 +91,17 @@ resource "azurerm_subnet" "subnet_container_app_tools" {
   virtual_network_name = module.vnet_italy[0].name
   address_prefixes     = var.cidr_subnet_tools_cae
 }
+
+# subnet acr
+module "common_private_endpoint_snet" {
+  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.83.0"
+  name                 = "${local.product}-common-private-endpoint-snet"
+  address_prefixes     = var.cidr_common_private_endpoint_snet
+  resource_group_name  = azurerm_resource_group.rg_ita_vnet.name
+  virtual_network_name = module.vnet_italy.0.name
+
+  private_link_service_network_policies_enabled = true
+
+
+  service_endpoints = var.env_short == "p" ? ["Microsoft.Storage"] : []
+}

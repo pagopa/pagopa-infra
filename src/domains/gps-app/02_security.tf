@@ -83,3 +83,13 @@ resource "azurerm_key_vault_secret" "gps_mbd_service_integration_test_subscripti
 
   key_vault_id = data.azurerm_key_vault.gps_kv.id
 }
+
+#### QA secrets for integration testing
+resource "azurerm_key_vault_secret" "gpd_qa_integration_testing_subscription_key" {
+  count        = contains(["d", "u"], var.env_short) ? 1 : 0
+  name         = "apikey-gpd-qa-services"
+  value        = azurerm_api_management_subscription.gpd_integration_qa_subkey[count.index].primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}

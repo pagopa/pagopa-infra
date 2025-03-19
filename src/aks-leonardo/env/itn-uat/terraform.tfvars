@@ -61,7 +61,7 @@ aks_user_node_pool = {
   os_disk_type    = "Ephemeral",
   os_disk_size_gb = 300,
   node_count_min  = 1,
-  node_count_max  = 1,
+  node_count_max  = 2,
   node_labels     = { node_name : "aks-uat01-user", node_type : "user" },
   node_taints     = [],
   node_tags       = { node_tag_2 : "2" },
@@ -78,4 +78,5 @@ ingress_load_balancer_ip = "10.3.2.250"
 ingress_replica_count    = "2"
 nginx_helm_version       = "4.10.0"
 
-keda_helm_version = "2.14.0"
+keda_helm_version    = "2.14.0"
+enable_elastic_agent = false
