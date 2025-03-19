@@ -52,11 +52,14 @@
       <choose>
         <when condition="@(context.Operation.Id != ("newTransactionV3"))">
           <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
-          <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/validate")</set-url>
-          <set-method>GET</set-method>
-          <set-header name="Authorization" exists-action="override">
-              <value>@("Bearer " + (string)context.Variables["authToken"])</value>
-          </set-header>
+            <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/validate")</set-url>
+            <set-method>GET</set-method>
+            <set-header name="Authorization" exists-action="override">
+                <value>@("Bearer " + (string)context.Variables["authToken"])</value>
+            </set-header>
+            <set-header name="x-rpt-id" exists-action="override">
+              <value>@((string)context.Variables.GetValueOrDefault("rptId",""))</value>
+            </set-header>
           </send-request>
           <choose>
             <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) == 401)">
