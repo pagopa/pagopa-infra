@@ -26,7 +26,7 @@ CREATE SEQUENCE IF NOT EXISTS partition.seq_log
     CACHE 1;
 
 
-CREATE TABLE PG_LOG
+CREATE TABLE IF NOT EXISTS PG_LOG
 (
   ID_TRACE NUMERIC DEFAULT nextval('seq_log'::regclass) NOT NULL ,
   UTENTE character varying,
