@@ -2,19 +2,22 @@
     <inbound>
         <base />
 
-        <!-- custom token validate and store userId variable START -->
-
+        <!-- calculate rptId from request body -->
         <set-variable name="paymentNotices" value="@(((JArray)((JObject)context.Request.Body.As<JObject>(preserveContent: true))["paymentNotices"]))" />
         <set-variable name="rptIds" value="@{
             string result = "";
             foreach (JObject notice in ((JArray)(context.Variables["paymentNotices"]))) {
-                if( notice.ContainsKey("rptId") == true )
-                {
-                    result += notice["rptId"].Value<string>()+", ";
+                if(result != "") {
+                    result += ", ";
+                }
+                if( notice.ContainsKey("rptId") == true ){
+                    result += notice["rptId"].Value<string>();
                 }
             }
             return result;
         }" />
+
+        <!-- custom token validate and store userId variable START -->
         <send-request ignore-error="true" timeout="10" response-variable-name="userResponse" mode="new">
             <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/users")</set-url>
             <set-method>GET</set-method>
@@ -64,17 +67,6 @@
 
         <!-- pass rptId value into header START -->
         <set-header name="x-rpt-id" exists-action="delete" />
-        <set-variable name="paymentNotices" value="@(((JArray)((JObject)context.Request.Body.As<JObject>(preserveContent: true))["paymentNotices"]))" />
-        <set-variable name="rptIds" value="@{
-            string result = "";
-            foreach (JObject notice in ((JArray)(context.Variables["paymentNotices"]))) {
-                if( notice.ContainsKey("rptId") == true )
-                {
-                    result += notice["rptId"].Value<string>()+", ";
-                }
-            }
-            return result;
-        }" />
         <choose>
             <when condition="@((string)context.Variables["rptIds"] != "")">
                 <set-header name="x-rpt-id" exists-action="override">
