@@ -116,7 +116,6 @@ module "apim_api_pn_integration_gpd_api_v1" {
 
   content_format = "openapi"
   content_value = templatefile("./api/pn-integration/_openapi.json.tpl", {
-    host    = local.apim_hostname
     service = local.apim_pn_integration_rest_api.gpd_service.path
   })
 
