@@ -65,6 +65,11 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = local.content_security_policy_header_name
+        value  = " https://privacyportalde-cdn.onetrust.com/ https://privacyportal-de.onetrust.com"
+      },
+      {
+        action = "Append"
+        name   = local.content_security_policy_header_name
         value  = " https://acardste.vaservices.eu:* https://recaptcha.net/;"
       },
       {
@@ -75,17 +80,22 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "img-src 'self' https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it;"
+        value  = "img-src 'self' https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it https://privacyportalde-cdn.onetrust.com;"
       },
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname};"
+        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname} 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://privacyportalde-cdn.onetrust.com/;"
       },
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "style-src 'self'  'unsafe-inline'; worker-src www.recaptcha.net blob:;"
+        value  = "style-src 'self'  'unsafe-inline'; https://privacyportalde-cdn.onetrust.com; worker-src www.recaptcha.net blob:;"
+      },
+      {
+        action = "Append"
+        name   = local.content_security_policy_header_name
+        value  = "font-src 'self' https://privacyportalde-cdn.onetrust.com;"
       },
       {
         action = "Overwrite"
