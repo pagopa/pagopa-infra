@@ -1,4 +1,5 @@
 locals {
+  # because westeurope does not support any other container app environment creation
   tools_cae_name = "${local.product}-tools-cae"
   tools_cae_rg   = "${local.product}-core-tools-rg"
 }
@@ -56,7 +57,7 @@ module "gh_runner_job" {
     },
     {
       name : "pagopa-mbd"
-      short_name : "mdb"
+      short_name : "mbd"
     }
   ]
   job = {
