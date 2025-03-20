@@ -18,21 +18,19 @@
         <set-variable name="body" value="@(context.Response.Body.As<JObject>())" />
         <choose>
             <when condition="@( (context.Response.StatusCode == 200) && ((JObject) context.Variables["body"]) != null )">
-                <return-response>
-                    <set-status code="@(context.Response.StatusCode)" />
-                    <set-header name="Content-Type" exists-action="override">
-                        <value>application/json</value>
-                    </set-header>
-                    <set-body>@{
-                        return new JObject(
-                                new JProperty("name", ((JObject) context.Variables["body"])["name"]),
-                                new JProperty("familyName", ((JObject) context.Variables["body"])["familyName"])
-                               ).ToString();
-                            }</set-body>
-                </return-response>
+                <set-status code="@(context.Response.StatusCode)" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>application/json</value>
+                </set-header>
+                <set-body>@{
+                    return new JObject(
+                            new JProperty("name", ((JObject) context.Variables["body"])["name"]),
+                            new JProperty("familyName", ((JObject) context.Variables["body"])["familyName"])
+                            ).ToString();
+                        }</set-body>
                 <validate-content unspecified-content-type-action="prevent" max-size="512000" size-exceeded-action="detect" errors-variable-name="responseBodyValidation">
                     <content-type-map any-content-type-value="application/json" />
-                    <content type="application/json" validate-as="json" action="prevent" />
+                    <content type="application/json" validate-as="json" action="prevent" allow-additional-properties="false" />
                 </validate-content>
             </when>
         </choose>
