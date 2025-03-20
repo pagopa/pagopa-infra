@@ -1,7 +1,6 @@
 locals {
-  # because westeurope does not support any other container app environment creation
-  tools_cae_name = "${local.product}-tools-cae"
-  tools_cae_rg   = "${local.product}-core-tools-rg"
+  tools_cae_name = "${local.product}-${var.location_short}-core-tools-cae"
+  tools_cae_rg   = "${local.product}-${var.location_short}-core-tools-rg"
 }
 
 module "gh_runner_job" {
@@ -79,7 +78,7 @@ module "gh_runner_job" {
   location                = var.gh_runner_job_location
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
-  domain_security_rg_name = "${local.product}-${var.domain}-sec-rg"
+  domain_security_rg_name = "${local.project}-sec-rg"
   tags                    = var.tags
 
 }
