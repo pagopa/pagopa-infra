@@ -79,7 +79,7 @@ module "gh_runner_job" {
   location                = var.gh_runner_job_location
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
-  domain_security_rg_name = "${local.product_domain}-sec-rg"
+  domain_security_rg_name = "${local.product}-${var.domain}-sec-rg"
   tags                    = var.tags
 
 }
