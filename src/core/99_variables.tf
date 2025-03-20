@@ -207,24 +207,6 @@ variable "ecommerce_ingress_hostname" {
   default     = null
 }
 
-variable "buyerbanks_enable_versioning" {
-  type        = bool
-  description = "Enable buyerbanks sa versioning"
-  default     = false
-}
-
-variable "buyerbanks_advanced_threat_protection" {
-  type        = bool
-  description = "Enable contract threat advanced protection"
-  default     = false
-}
-
-variable "buyerbanks_delete_retention_days" {
-  type        = number
-  description = "Number of days to retain deleted buyerbanks."
-  default     = 30
-}
-
 
 
 
@@ -315,11 +297,6 @@ variable "function_app_storage_account_info" {
   }
 }
 
-variable "buyer_banks_storage_account_replication_type" {
-  type        = string
-  default     = "LRS"
-  description = "(Optional) Buyer banks storage account replication type"
-}
 
 
 

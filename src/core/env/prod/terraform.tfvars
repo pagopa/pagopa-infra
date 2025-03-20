@@ -103,8 +103,6 @@ ecommerce_ingress_hostname = "weuprod.ecommerce.internal.platform.pagopa.it"
 
 
 
-# buyerbanks functions
-buyerbanks_delete_retention_days = 30
 
 
 
@@ -139,7 +137,6 @@ function_app_storage_account_info = {
 }
 
 
-buyer_banks_storage_account_replication_type = "GZRS"
 
 
 apim_logger_resource_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim/loggers/pagopa-p-apim-logger"
