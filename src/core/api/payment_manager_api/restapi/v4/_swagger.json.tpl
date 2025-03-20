@@ -2080,61 +2080,6 @@
       },
       "title": "BPayPaymentInstrument"
     },
-    "BuyerBank": {
-      "type": "object",
-      "properties": {
-        "alias": {
-          "type": "string"
-        },
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "participant": {
-          "type": "string"
-        }
-      },
-      "title": "BuyerBank"
-    },
-    "BuyerBankListResponse": {
-      "type": "object",
-      "required": [
-        "data"
-      ],
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/BuyerBanks"
-        }
-      },
-      "title": "BuyerBankListResponse"
-    },
-    "BuyerBankResponse": {
-      "type": "object",
-      "required": [
-        "data"
-      ],
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/BuyerBank"
-        }
-      },
-      "title": "BuyerBankResponse"
-    },
-    "BuyerBanks": {
-      "type": "object",
-      "properties": {
-        "buyerBanks": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/BuyerBank"
-          }
-        },
-        "language": {
-          "type": "string"
-        }
-      },
-      "title": "BuyerBanks"
-    },
     "Card": {
       "type": "object",
       "properties": {
