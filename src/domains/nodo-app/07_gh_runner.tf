@@ -1,6 +1,6 @@
 locals {
-  tools_cae_name = "${local.product}-${var.location_short}-core-tools-cae"
-  tools_cae_rg   = "${local.product}-${var.location_short}-core-tools-rg"
+  tools_cae_name = "${local.product}-core-tools-cae"
+  tools_cae_rg   = "${local.product}-core-tools-rg"
 }
 
 module "gh_runner_job" {
