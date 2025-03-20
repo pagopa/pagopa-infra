@@ -52,6 +52,7 @@ module "postgres_storico_flexible_server" {
   backup_retention_days        = var.pgres_flex_storico_params.backup_retention_days
   geo_redundant_backup_enabled = var.pgres_flex_storico_params.geo_redundant_backup_enabled
   create_mode                  = var.pgres_flex_storico_params.create_mode
+  auto_grow_enabled            = var.pgres_flex_storico_params.auto_grow_enabled
 
   private_dns_registration = var.pgres_flex_storico_params.enable_private_dns_registration
   private_dns_zone_name    = "${var.env_short}.internal.postgresql.pagopa.it"
@@ -108,25 +109,37 @@ resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_fle
 # pgbouncer.server_idle_timeout       If a server connection has been idle more than this many seconds it will be dropped. If 0 then timeout is disabled.
 # pgbouncer.stats_users               Comma-separated list of database users that are allowed to connect and run read-only queries on the pgBouncer console.
 
-
+resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_ignore_startup_parameters" {
+  count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
+  name      = "pgbouncer.ignore_startup_parameters"
+  server_id = module.postgres_storico_flexible_server.id
+  value     = "extra_float_digits,search_path"
+}
 
 resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_min_pool_size" {
   count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.min_pool_size"
   server_id = module.postgres_storico_flexible_server.id
-  value     = 500
+  value     = 20
 }
 resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_default_pool_size" {
   count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
   name      = "pgbouncer.default_pool_size"
   server_id = module.postgres_storico_flexible_server.id
-  value     = 1000
+  value     = 10
+}
+
+resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_pg_bouncer_max_client_conn" {
+  count     = var.pgres_flex_storico_params.pgres_flex_pgbouncer_enabled ? 1 : 0
+  name      = "pgbouncer.max_client_conn"
+  server_id = module.postgres_storico_flexible_server.id
+  value     = var.pgres_flex_storico_params.max_connections
 }
 
 resource "azurerm_postgresql_flexible_server_configuration" "nodo_storico_db_flex_extension" {
   name      = "azure.extensions"
   server_id = module.postgres_storico_flexible_server.id
-  value     = "pg_cron,dblink,pglogical"
+  value     = "pg_cron,dblink,pglogical,postgres_fdw"
 }
 
 # parameters for logical replication
