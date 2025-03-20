@@ -82,6 +82,74 @@ resource "azurerm_kusto_eventhub_data_connection" "eventhub_connection_for_re_ev
   identity_id = azurerm_kusto_cluster.data_explorer_cluster[count.index].id
 }
 
+#pagopa-evh-ns04_nodo-dei-pagamenti-negative-awakable-biz-evt_pagopa-biz-evt-tx
+
+data "azurerm_eventhub" "pagopa-evh-ns04_nodo-dei-pagamenti-fdr-qi-flows" {
+  name                = "fdr-qi-flows"
+  resource_group_name = "${local.product}-msg-rg"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns04"
+}
+
+resource "azurerm_kusto_eventhub_data_connection" "eventhub_connection_for_ingestion_qi_fdr" {
+  count               = var.dexp_db.enable ? 1 : 0
+  name                = "dataexp-${var.env_short}-ingestion-qi-fdr"
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  location            = azurerm_kusto_cluster.data_explorer_cluster[count.index].location
+  cluster_name        = azurerm_kusto_cluster.data_explorer_cluster[count.index].name
+  database_name       = azurerm_kusto_database.re_db[0].name
+
+  eventhub_id    = data.azurerm_eventhub.pagopa-evh-ns04_nodo-dei-pagamenti-fdr-qi-flows.id
+  consumer_group = "fdr-qi-flows-rx"
+
+  table_name        = "FLUSSI_RENDICONTAZIONE"
+  mapping_rule_name = "IngestionFlussiEH"
+  data_format       = "JSON"
+
+  identity_id = azurerm_kusto_cluster.data_explorer_cluster[count.index].id
+}
+
+resource "azurerm_role_assignment" "fdr_qi_flow_data_evh_data_receiver_role" {
+  count = var.dexp_db.enable ? 1 : 0
+
+  scope                = data.azurerm_eventhub.pagopa-evh-ns04_nodo-dei-pagamenti-fdr-qi-flows.id # evh
+  role_definition_name = "Azure Event Hubs Data Receiver"
+  principal_id         = azurerm_kusto_cluster.data_explorer_cluster[count.index].identity[count.index].principal_id # data-exp
+}
+
+
+data "azurerm_eventhub" "pagopa-evh-ns04_nodo-dei-pagamenti-fdr-qi-fdr-iuvs" {
+  name                = "fdr-qi-reported-iuv"
+  resource_group_name = "${local.product}-msg-rg"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns04"
+}
+
+resource "azurerm_kusto_eventhub_data_connection" "eventhub_connection_for_ingestion_qi_iuvs" {
+  count               = var.dexp_db.enable ? 1 : 0
+  name                = "dataexp-${var.env_short}-ingestion-qi-iuvs"
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  location            = azurerm_kusto_cluster.data_explorer_cluster[count.index].location
+  cluster_name        = azurerm_kusto_cluster.data_explorer_cluster[count.index].name
+  database_name       = azurerm_kusto_database.re_db[0].name
+
+  eventhub_id    = data.azurerm_eventhub.pagopa-evh-ns04_nodo-dei-pagamenti-fdr-qi-fdr-iuvs.id
+  consumer_group = "fdr-qi-reported-iuv-rx"
+
+  table_name        = "IUV_RENDICONTATI"
+  mapping_rule_name = "IngestionIuvEH"
+  data_format       = "JSON"
+
+  identity_id = azurerm_kusto_cluster.data_explorer_cluster[count.index].id
+}
+
+
+resource "azurerm_role_assignment" "fdr_qi_fdr_iuvs_data_evh_data_receiver_role" {
+  count = var.dexp_db.enable ? 1 : 0
+
+  scope                = data.azurerm_eventhub.pagopa-evh-ns04_nodo-dei-pagamenti-fdr-qi-fdr-iuvs.id # evh
+  role_definition_name = "Azure Event Hubs Data Receiver"
+  principal_id         = azurerm_kusto_cluster.data_explorer_cluster[count.index].identity[count.index].principal_id # data-exp
+}
+
 # resource "azurerm_kusto_script" "create_tables" {
 
 #   count = var.dexp_re_db_linkes_service.enable ? 1 : 0
