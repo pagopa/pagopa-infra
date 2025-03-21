@@ -92,8 +92,6 @@ jobs:
           wait "$pid"
         done
 
-        echo "📢 Show space 3"
-
     - name: Show precommit version
       shell: bash
       run: |
