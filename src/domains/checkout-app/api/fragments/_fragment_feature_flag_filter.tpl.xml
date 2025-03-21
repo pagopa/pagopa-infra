@@ -1,6 +1,8 @@
 <fragment>
     <set-variable name="requestIpAddress" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
     <set-variable name="allowedIpsEnabledAuthentication" value="{{enable-checkout-authentication-ip-whitelist}}" />
+    <set-variable name="allowedIpsIsPspPickerPageEnabled" value="{{enable-checkout-authentication-psp-pickerp-page-ip-whitelist}}" />
+
     <!-- example of more feature flags -->
     <!-- <set-variable name="allowedIpsFeature_1" value="{{Feature1IpWhitelist}}" /> -->
     <!-- <set-variable name="allowedIpsFeature_2" value="{{Feature2IpWhitelist}}" /> -->
@@ -23,7 +25,8 @@
         }
     
         var response = new {
-          isAuthenticationEnabled = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsEnabledAuthentication", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
+          isAuthenticationEnabled = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsEnabledAuthentication", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
+          isPspPickerPageEnabled = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsIsPspPickerPageEnabled", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
           // Feature_1 = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsFeature_1", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
           // Feature_2 = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsFeature_2", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
           // Feature_3 = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsFeature_3", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
