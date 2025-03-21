@@ -10,7 +10,7 @@ jobs:
   static_analysis:
     runs-on: ubuntu-latest
     env:
-      TF_PLUGIN_CACHE_DIR: ~/.terraform.d/plugin-cache
+      TF_PLUGIN_CACHE_DIR: /home/runner/.terraform.d/plugin-cache
 
     steps:
     - name: ⚡ Checkout code
@@ -30,21 +30,21 @@ jobs:
     - name: 💾 Cache Terraform plugins
       uses: actions/cache@v4
       with:
-        path: ~/.terraform.d/plugin-cache
+        path: /home/runner/.terraform.d/plugin-cache
         key: ${{ runner.os }}-terraform-${{ env.TERRAFORM_VERSION }}-${{ hashFiles('**/.terraform.lock.hcl') }}
         restore-keys: |
           ${{ runner.os }}-terraform-${{ env.TERRAFORM_VERSION }}-
           ${{ runner.os }}-terraform-
 
-    - name: 🧹 Cleanup cache if needed
+    - name: 🧹 Pulizia cache se necessario
       if: github.event_name == 'workflow_dispatch'
       run: |
-        rm -rf ~/.terraform.d/plugin-cache/*
+        rm -rf /home/runner/.terraform.d/plugin-cache/*
 
-    - name: 🔧 Configuring cache directory
+    - name: 🔧 Configura directory cache
       run: |
-        mkdir -p ~/.terraform.d/plugin-cache
-        echo 'plugin_cache_dir = "~/.terraform.d/plugin-cache"' > ~/.terraformrc
+        mkdir -p /home/runner/.terraform.d/plugin-cache
+        echo 'plugin_cache_dir = "/home/runner/.terraform.d/plugin-cache"' > /home/runner/.terraformrc
 
     - name: 🏁 Init terraform folders
       id: init_terraform_folders
