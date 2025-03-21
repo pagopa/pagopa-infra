@@ -1,7 +1,7 @@
 <fragment>
     <set-variable name="requestIpAddress" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
     <set-variable name="allowedIpsEnabledAuthentication" value="{{enable-checkout-authentication-ip-whitelist}}" />
-    <set-variable name="allowedIpsIsPspPickerPageEnabled" value="{{enable-checkout-authentication-psp-picker-page-ip-whitelist}}" />
+    <set-variable name="allowedIpsEnabledPspPickerPage" value="{{enable-checkout-authentication-psp-picker-page-ip-whitelist}}" />
 
     <!-- example of more feature flags -->
     <!-- <set-variable name="allowedIpsFeature_1" value="{{Feature1IpWhitelist}}" /> -->
