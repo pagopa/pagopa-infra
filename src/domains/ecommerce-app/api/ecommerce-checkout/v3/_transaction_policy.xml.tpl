@@ -4,15 +4,12 @@
 
         <!-- calculate rptId from request body -->
         <set-variable name="paymentNotices" value="@(((JArray)((JObject)context.Request.Body.As<JObject>(preserveContent: true))["paymentNotices"]))" />
-        <set-variable name="rptIds" value="@{
+  <set-variable name="rptIds" value="@{
             string result = "";
-            foreach (JObject notice in ((JArray)(context.Variables["paymentNotices"]))) {
-                if(result != "") {
-                    result += ", ";
-                }
-                if( notice.ContainsKey("rptId") == true ){
-                    result += notice["rptId"].Value<string>();
-                }
+            JArray paymentNotices = ((JArray)(context.Variables["paymentNotices"]));
+            if(paymentNotices != null){
+                List<string> rptIds = paymentNotices.Select(notice => notice["rptId"]?.Value<string>()).ToList();
+                result =  String.Join(",",rptIds);
             }
             return result;
         }" />
