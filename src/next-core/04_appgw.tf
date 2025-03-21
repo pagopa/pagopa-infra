@@ -623,7 +623,7 @@ module "app_gw" {
       description   = "${module.app_gw.name} Abnormal compute units usage, probably an high traffic peak"
       frequency     = "PT5M"
       window_size   = "PT5M"
-      severity      = 2
+      severity      = 1
       auto_mitigate = true
 
       criteria = []
