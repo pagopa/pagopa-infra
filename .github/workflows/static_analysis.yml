@@ -9,6 +9,8 @@ on:
 jobs:
   static_analysis:
     runs-on: ubuntu-latest
+    env:
+      TF_PLUGIN_CACHE_DIR: ~/.terraform.d/plugin-cache
 
     steps:
     - name: ⚡ Checkout code
@@ -24,6 +26,25 @@ jobs:
       uses: hashicorp/setup-terraform@97f030cf6dc0b4f5e0da352c7bca9cca34579800 #v3.1.0
       with:
         terraform_version: "${{ env.TERRAFORM_VERSION }}"
+
+    - name: 💾 Cache Terraform plugins
+      uses: actions/cache@v4
+      with:
+        path: ~/.terraform.d/plugin-cache
+        key: ${{ runner.os }}-terraform-${{ env.TERRAFORM_VERSION }}-${{ hashFiles('**/.terraform.lock.hcl') }}
+        restore-keys: |
+          ${{ runner.os }}-terraform-${{ env.TERRAFORM_VERSION }}-
+          ${{ runner.os }}-terraform-
+
+    - name: 🧹 Cleanup cache if needed
+      if: github.event_name == 'workflow_dispatch'
+      run: |
+        rm -rf ~/.terraform.d/plugin-cache/*
+
+    - name: 🔧 Configuring cache directory
+      run: |
+        mkdir -p ~/.terraform.d/plugin-cache
+        echo 'plugin_cache_dir = "~/.terraform.d/plugin-cache"' > ~/.terraformrc
 
     - name: 🏁 Init terraform folders
       id: init_terraform_folders
