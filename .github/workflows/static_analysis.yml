@@ -36,12 +36,12 @@ jobs:
           ${{ runner.os }}-terraform-${{ env.TERRAFORM_VERSION }}-
           ${{ runner.os }}-terraform-
 
-    - name: 🧹 Pulizia cache se necessario
+    - name: 🧹 Cleanup cache if needed
       if: github.event_name == 'workflow_dispatch'
       run: |
         rm -rf /home/runner/.terraform.d/plugin-cache/*
 
-    - name: 🔧 Configura directory cache
+    - name: 🔧 Configuring cache directory
       run: |
         mkdir -p /home/runner/.terraform.d/plugin-cache
         echo 'plugin_cache_dir = "/home/runner/.terraform.d/plugin-cache"' > /home/runner/.terraformrc
