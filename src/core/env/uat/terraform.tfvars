@@ -98,6 +98,8 @@ nodo_auth_subscription_limit = 10000
 ecommerce_ingress_hostname = "weuuat.ecommerce.internal.uat.platform.pagopa.it"
 
 
+# buyerbanks functions
+buyerbanks_delete_retention_days = 30
 
 
 
