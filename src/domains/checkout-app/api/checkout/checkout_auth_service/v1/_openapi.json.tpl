@@ -32,9 +32,9 @@
         "parameters": [
           {
             "in": "header",
-            "name": "x-rpt-id",
+            "name": "x-rpt-ids",
             "required": false,
-            "description": "Optional RPT ID",
+            "description": "Optional RPT ID used to track login attempts to payment notices",
             "schema": {
               "type": "string"
             }
@@ -104,9 +104,9 @@
         "parameters": [
           {
             "in": "header",
-            "name": "x-rpt-id",
+            "name": "x-rpt-ids",
             "required": false,
-            "description": "Optional RPTID",
+            "description": "Optional RPT ID used to track get user information attempts to payment notices",
             "schema": {
               "type": "string"
             }
@@ -182,9 +182,9 @@
         "parameters": [
           {
             "in": "header",
-            "name": "x-rpt-id",
+            "name": "x-rpt-ids",
             "required": false,
-            "description": "Optional RPTID",
+            "description": "Optional RPT ID used to track logout attempts to payment notices",
             "schema": {
               "type": "string"
             }
@@ -243,9 +243,9 @@
         "parameters": [
           {
             "in": "header",
-            "name": "x-rpt-id",
+            "name": "x-rpt-ids",
             "required": false,
-            "description": "Optional RPTID",
+            "description": "Optional RPT ID used to track auth token generation attempts to payment notices",
             "schema": {
               "type": "string"
             }
