@@ -3,6 +3,7 @@
         <base />
         <set-header name="x-pgs-id" exists-action="delete" />
         <set-header name="x-transaction-id" exists-action="delete" />
+        <set-header name="x-user-id" exists-action="delete" />
         <set-variable name="requestTransactionId" value="@{
             return context.Request.MatchedParameters["transactionId"];
         }"/>
@@ -18,6 +19,20 @@
         }
         return "";
         }"/>
+        <set-variable name="userId" value="@{
+        var jwt = (Jwt)context.Variables["jwtToken"];
+        if(jwt.Claims.ContainsKey("userId")){
+           return jwt.Claims["userId"][0];
+        }
+        return "";
+        }" />
+        <choose>
+            <when condition="@((string)context.Variables.GetValueOrDefault("userId","") != "")">
+                <set-header name="x-user-id" exists-action="override">
+                    <value>@((string)context.Variables.GetValueOrDefault("userId",""))</value>
+                </set-header>
+            </when>
+        </choose>
         <!-- START set pgsId -->
         <set-variable name="XPAYPspsList" value="${ecommerce_xpay_psps_list}"/>
         <set-variable name="VPOSPspsList" value="${ecommerce_vpos_psps_list}"/>
