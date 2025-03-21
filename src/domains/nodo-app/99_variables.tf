@@ -478,9 +478,3 @@ variable "gh_runner_job_location" {
   description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
   default     = "westeurope"
 }
-
-variable "create_mbd" {
-  type        = bool
-  default     = false
-  description = "CREATE Rendicontazione Marca Bollo Digitale"
-}

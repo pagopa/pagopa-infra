@@ -7,7 +7,6 @@ locals {
 
 module "apim_mbd_product" {
   source = "./.terraform/modules/__v3__/api_management_product"
-  count  = var.create_mbd ? 1 : 0
 
   product_id   = "pagopa_mbd"
   display_name = local.apim_mbd_pagopa_api.display_name
