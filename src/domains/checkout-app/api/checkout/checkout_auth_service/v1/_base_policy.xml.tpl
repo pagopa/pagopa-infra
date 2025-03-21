@@ -20,6 +20,7 @@
         <allowed-headers>
           <header>Content-Type</header>
           <header>Authorization</header>
+          <header>x-rpt-ids</header>
         </allowed-headers>
       </cors>
       <!-- Feature flag check - is authentication enabled -->
