@@ -69,10 +69,13 @@ jobs:
         for f in $FOLDERS; do
           pushd "$(pwd)/${f}"
             sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            terraform init -upgrade &
-            pids+=($!)
+            terraform init -upgrade -lockfile=true &&
+            terraform providers lock \
+              -platform=darwin_arm64 \
+              -platform=darwin_amd64 \
+              -platform=linux_amd64 \
+              -platform=linux_arm64
           popd
-
         done
 
         # Wait for each specific process to terminate.
