@@ -34,7 +34,7 @@
             "in": "header",
             "name": "x-rpt-id",
             "required": false,
-            "description": "Optional RPTID",
+            "description": "Optional RPT ID",
             "schema": {
               "type": "string"
             }
