@@ -50,11 +50,6 @@ jobs:
       id: init_terraform_folders
       shell: bash
       run: |
-
-        echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
-        echo    "+ 🔨 CREATE CACHE FOLDER         +"
-        echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-\n"
-
         echo "📢 Show space"
         df -h
 
