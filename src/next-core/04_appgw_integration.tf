@@ -264,7 +264,7 @@ module "app_gw_integration" {
       description   = "${module.app_gw_integration.name} Abnormal compute units usage, probably an high traffic peak"
       frequency     = "PT5M"
       window_size   = "PT5M"
-      severity      = 2
+      severity      = 1
       auto_mitigate = true
 
       criteria = []
