@@ -17,6 +17,7 @@
           <header>lang</header>
           <header>x-correlation-id</header>
           <header>x-client-id-from-client</header>
+          <header>x-rpt-id</header>
         </allowed-headers>
       </cors>
       <base />
