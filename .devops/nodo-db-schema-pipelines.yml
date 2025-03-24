@@ -47,7 +47,7 @@ variables:
     DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
     KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
-    DATABASE_NAME: nodo
+    DATABASE_NAME: nodo-replica
     poolImage: 'pagopa-uat-linux-infra'
     STORICO: false
   ${{ elseif eq(parameters.k8sEnv, 'uat-storico') }}:
