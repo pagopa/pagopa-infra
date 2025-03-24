@@ -57,7 +57,7 @@
             <set-header name="Authorization" exists-action="override">
                 <value>@("Bearer " + (string)context.Variables["authToken"])</value>
             </set-header>
-            <set-header name="x-rpt-ids" exists-action="override">
+            <set-header name="x-rpt-id" exists-action="override">
               <value>@((string)context.Variables.GetValueOrDefault("rptId",""))</value>
             </set-header>
           </send-request>
