@@ -379,10 +379,6 @@
       "UserInfoResponse": {
         "type": "object",
         "properties": {
-          "userId": {
-            "type": "string",
-            "description": "user unique id (fiscal code tokenization)"
-          },
           "name": {
             "type": "string",
             "description": "user first name"
@@ -393,7 +389,6 @@
           }
         },
         "required": [
-          "userId",
           "name",
           "familyName"
         ]
