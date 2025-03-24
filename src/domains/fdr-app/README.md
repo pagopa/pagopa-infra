@@ -26,6 +26,9 @@
 | <a name="module_apim_fdr_product_psp"></a> [apim\_fdr\_product\_psp](#module\_apim\_fdr\_product\_psp) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_fdr_xml_to_json_product"></a> [apim\_fdr\_xml\_to\_json\_product](#module\_apim\_fdr\_xml\_to\_json\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
+| <a name="module_fdr_json_to_xml_function"></a> [fdr\_json\_to\_xml\_function](#module\_fdr\_json\_to\_xml\_function) | ./.terraform/modules/__v3__/function_app | n/a |
+| <a name="module_fdr_json_to_xml_function_slot_staging"></a> [fdr\_json\_to\_xml\_function\_slot\_staging](#module\_fdr\_json\_to\_xml\_function\_slot\_staging) | ./.terraform/modules/__v3__/function_app_slot | n/a |
+| <a name="module_fdr_json_to_xml_function_snet"></a> [fdr\_json\_to\_xml\_function\_snet](#module\_fdr\_json\_to\_xml\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_fdr_xml_to_json_function"></a> [fdr\_xml\_to\_json\_function](#module\_fdr\_xml\_to\_json\_function) | ./.terraform/modules/__v3__/function_app | n/a |
 | <a name="module_fdr_xml_to_json_function_slot_staging"></a> [fdr\_xml\_to\_json\_function\_slot\_staging](#module\_fdr\_xml\_to\_json\_function\_slot\_staging) | ./.terraform/modules/__v3__/function_app_slot | n/a |
 | <a name="module_fdr_xml_to_json_function_snet"></a> [fdr\_xml\_to\_json\_function\_snet](#module\_fdr\_xml\_to\_json\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
@@ -65,6 +68,7 @@
 | [azurerm_key_vault_secret.aks_apiserver_url](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_monitor_autoscale_setting.fdr_json_to_xml_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.fdr_xml_to_json_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.reporting_fdr_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -162,6 +166,11 @@
 | <a name="input_event_name"></a> [event\_name](#input\_event\_name) | Event name related to an EventHub | `string` | `null` | no |
 | <a name="input_eventhub_name"></a> [eventhub\_name](#input\_eventhub\_name) | EventHub name | `string` | `null` | no |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
+| <a name="input_fdr_json_to_xml_function"></a> [fdr\_json\_to\_xml\_function](#input\_fdr\_json\_to\_xml\_function) | FdR XML to JSON function | <pre>object({<br/>    always_on                    = bool<br/>    kind                         = string<br/>    sku_size                     = string<br/>    sku_tier                     = string<br/>    maximum_elastic_worker_count = number<br/>  })</pre> | <pre>{<br/>  "always_on": true,<br/>  "kind": "Linux",<br/>  "maximum_elastic_worker_count": 1,<br/>  "sku_size": "B1",<br/>  "sku_tier": "Basic"<br/>}</pre> | no |
+| <a name="input_fdr_json_to_xml_function_app_image_tag"></a> [fdr\_json\_to\_xml\_function\_app\_image\_tag](#input\_fdr\_json\_to\_xml\_function\_app\_image\_tag) | FdR XML to JSON function app docker image tag. Defaults to 'latest' | `string` | `"latest"` | no |
+| <a name="input_fdr_json_to_xml_function_autoscale"></a> [fdr\_json\_to\_xml\_function\_autoscale](#input\_fdr\_json\_to\_xml\_function\_autoscale) | FdR function autoscaling parameters | <pre>object({<br/>    default = number<br/>    minimum = number<br/>    maximum = number<br/>  })</pre> | n/a | yes |
+| <a name="input_fdr_json_to_xml_function_network_policies_enabled"></a> [fdr\_json\_to\_xml\_function\_network\_policies\_enabled](#input\_fdr\_json\_to\_xml\_function\_network\_policies\_enabled) | Network policies enabled | `bool` | `false` | no |
+| <a name="input_fdr_json_to_xml_function_subnet"></a> [fdr\_json\_to\_xml\_function\_subnet](#input\_fdr\_json\_to\_xml\_function\_subnet) | Address prefixes subnet | `list(string)` | `null` | no |
 | <a name="input_fdr_soap_request_ci_whitelist"></a> [fdr\_soap\_request\_ci\_whitelist](#input\_fdr\_soap\_request\_ci\_whitelist) | String list comma separated | `string` | n/a | yes |
 | <a name="input_fdr_soap_request_psp_whitelist"></a> [fdr\_soap\_request\_psp\_whitelist](#input\_fdr\_soap\_request\_psp\_whitelist) | String list comma separated | `string` | n/a | yes |
 | <a name="input_fdr_xml_to_json_function"></a> [fdr\_xml\_to\_json\_function](#input\_fdr\_xml\_to\_json\_function) | FdR XML to JSON function | <pre>object({<br/>    always_on                    = bool<br/>    kind                         = string<br/>    sku_size                     = string<br/>    sku_tier                     = string<br/>    maximum_elastic_worker_count = number<br/>  })</pre> | <pre>{<br/>  "always_on": true,<br/>  "kind": "Linux",<br/>  "maximum_elastic_worker_count": 1,<br/>  "sku_size": "B1",<br/>  "sku_tier": "Basic"<br/>}</pre> | no |

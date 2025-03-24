@@ -84,7 +84,7 @@ apim_fdr_nodo_pagopa_enable    = true # 👀 https://pagopa.atlassian.net/wiki/s
 
 ftp_organization = "99999999999,80078750587,88888888888,97532760580,12300020158,00488410010"
 
-# fdr xml to json
+# Start FdR XML to JSON configuration
 fdr_xml_to_json_function_subnet                   = ["10.1.182.0/24"]
 fdr_xml_to_json_function_network_policies_enabled = true
 fdr_xml_to_json_function = {
@@ -94,10 +94,26 @@ fdr_xml_to_json_function = {
   sku_tier                     = "Basic"
   maximum_elastic_worker_count = 0
 }
-
 fdr_xml_to_json_function_autoscale = {
   default = 1
   minimum = 1
   maximum = 1
 }
+# End FdR XML to JSON configuration
 
+# Start FdR JSON to XML configuration
+fdr_json_to_xml_function_subnet                   = ["10.1.181.0/24"]
+fdr_json_to_xml_function_network_policies_enabled = true
+fdr_json_to_xml_function = {
+  always_on                    = true
+  kind                         = "Linux"
+  sku_size                     = "B1"
+  sku_tier                     = "Basic"
+  maximum_elastic_worker_count = 0
+}
+fdr_json_to_xml_function_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 10
+}
+# End FdR JSON to XML configuration
