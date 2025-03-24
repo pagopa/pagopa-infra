@@ -41,8 +41,8 @@ tProcedureName TEXT:= 'add_archive_partition';
 BEGIN
 
 tLabelStep := 'Init';
-iIdTrace := nextval('seq_log'::regclass);
-INSERT INTO PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','INIZIO',tLabelStep);
+iIdTrace := nextval('partition.seq_log'::regclass);
+INSERT INTO partition.PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','INIZIO',tLabelStep);
 
 OPEN tab_cursor;
    	LOOP
@@ -83,14 +83,14 @@ OPEN tab_cursor;
 
  CLOSE tab_cursor;
 
-iIdTrace := nextval('seq_log'::regclass);
-INSERT INTO PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','FINE','Procedura eseguita con successo');
+iIdTrace := nextval('partition.seq_log'::regclass);
+INSERT INTO partition.PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','FINE','Procedura eseguita con successo');
 
 EXCEPTION
 WHEN OTHERS THEN
 
-		iIdTrace := nextval('seq_log'::regclass);
-		INSERT INTO PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), ( clock_timestamp()- ptDataInizio) ,'KO','FINE',
+		iIdTrace := nextval('partition.seq_log'::regclass);
+		INSERT INTO partition.PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), ( clock_timestamp()- ptDataInizio) ,'KO','FINE',
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
 
 END;
