@@ -2,18 +2,6 @@
     <inbound>
         <base />
 
-        <!-- calculate rptId from request body -->
-        <set-variable name="paymentNotices" value="@(((JArray)((JObject)context.Request.Body.As<JObject>(preserveContent: true))["paymentNotices"]))" />
-        <set-variable name="rptIds" value="@{
-            string result = "";
-            JArray paymentNotices = ((JArray)(context.Variables["paymentNotices"]));
-            if(paymentNotices != null){
-                List<string> rptIds = paymentNotices.Select(notice => notice["rptId"]?.Value<string>()).ToList();
-                result =  String.Join(",",rptIds);
-            }
-            return result;
-        }" />
-
         <!-- custom token validate and store userId variable START -->
         <send-request ignore-error="true" timeout="10" response-variable-name="userResponse" mode="new">
             <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/users")</set-url>
@@ -65,9 +53,9 @@
         <!-- pass rptId value into header START -->
         <set-header name="x-rpt-id" exists-action="delete" />
         <choose>
-            <when condition="@((string)context.Variables["rptIds"] != "")">
+            <when condition="@((string)context.Request.Headers.GetValueOrDefault("x-rpt-id","") != "")">
                 <set-header name="x-rpt-id" exists-action="override">
-                    <value>@((string)context.Variables.GetValueOrDefault("rptIds",""))</value>
+                    <value>@((string)context.Request.Headers.GetValueOrDefault("x-rpt-id",""))</value>
                 </set-header>
             </when>
         </choose>
