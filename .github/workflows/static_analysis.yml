@@ -9,6 +9,8 @@ on:
 jobs:
   static_analysis:
     runs-on: ubuntu-latest
+    env:
+      TF_PLUGIN_CACHE_DIR: /tmp/.terraform.d/plugin-cache
 
     steps:
     - name: ⚡ Checkout code
@@ -25,15 +27,30 @@ jobs:
       with:
         terraform_version: "${{ env.TERRAFORM_VERSION }}"
 
+    - name: 🧹 Clean provider directories
+      run: |
+        find . -type d -name ".terraform" -exec rm -rf {} +
+        find . -type f -name ".terraform.lock.hcl" -exec rm -f {} +
+        rm -rf /tmp/.terraform.d/plugin-cache/*
+
+    - name: 💾 Cache Terraform plugins
+      uses: actions/cache@v4
+      with:
+        path: /tmp/.terraform.d/plugin-cache
+        key: ${{ runner.os }}-terraform-${{ env.TERRAFORM_VERSION }}-${{ hashFiles('**/.terraform.lock.hcl') }}
+        restore-keys: |
+          ${{ runner.os }}-terraform-${{ env.TERRAFORM_VERSION }}-
+          ${{ runner.os }}-terraform-
+
+    - name: 🔧 Setup Terraform plugin cache directory
+      run: |
+        mkdir -p /tmp/.terraform.d/plugin-cache
+        echo 'plugin_cache_dir = "/tmp/.terraform.d/plugin-cache"' > ~/.terraformrc
+
     - name: 🏁 Init terraform folders
       id: init_terraform_folders
       shell: bash
       run: |
-
-        echo -e "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-"
-        echo    "+ 🔨 CREATE CACHE FOLDER         +"
-        echo -e "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-\n"
-
         echo "📢 Show space"
         df -h
 
@@ -52,10 +69,13 @@ jobs:
         for f in $FOLDERS; do
           pushd "$(pwd)/${f}"
             sed -i -e 's/  backend "azurerm" {}//g' 99_main.tf # use local backend
-            terraform init -upgrade &
-            pids+=($!)
+            terraform init -upgrade -lockfile=true &&
+            terraform providers lock \
+              -platform=darwin_arm64 \
+              -platform=darwin_amd64 \
+              -platform=linux_amd64 \
+              -platform=linux_arm64
           popd
-
         done
 
         # Wait for each specific process to terminate.
@@ -71,8 +91,6 @@ jobs:
           #
           wait "$pid"
         done
-
-        echo "📢 Show space 3"
 
     - name: Show precommit version
       shell: bash
