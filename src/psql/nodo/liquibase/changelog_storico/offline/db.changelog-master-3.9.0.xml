@@ -8,5 +8,7 @@
   <include file="./db.changelog-master-3.8.0.xml"/>
 
   <!-- 3.9.0 -->
+  <include file="./${version}/db.changelog-202211140000_views_payments_mbd.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-202211161046_insert_elenco_servizi_psp.xml" context="dev" labels="${version}"/>
 
-</databaseChangeLog>
+</databaseChangeLog> 

@@ -13,4 +13,8 @@ locals {
   internal_dns_zone_resource_group_name = "${local.product}-vnet-rg"
   monitor_action_group_slack_name       = "SlackPagoPA"
   monitor_action_group_email_name       = "PagoPA"
+
+  pagopa_apim_name = "${local.product}-apim"
+  pagopa_apim_rg   = "${local.product}-api-rg"
+
 }

@@ -39,29 +39,6 @@ module "elastic_agent" {
 
 }
 
-#
-# Kubernetes Event Exporter
-#
-module "kubernetes_event_exporter" {
-  count     = var.env_short != "p" ? 0 : 1
-  source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter?ref=v8.76.0"
-  namespace = "monitoring"
-
-  custom_config = "env/itn-prod/exporter/kubernetes-event-exporter-config.yml.tftpl"
-  custom_variables = {
-    enable_slack           = false
-    enable_opsgenie        = true
-    opsgenie_receiver_name = "opsgenie"
-    opsgenie_api_key       = data.azurerm_key_vault_secret.opsgenie_kubexporter_api_key.0.value
-  }
-}
-
-data "azurerm_key_vault_secret" "opsgenie_kubexporter_api_key" {
-  count        = var.env_short != "p" ? 0 : 1
-  key_vault_id = data.azurerm_key_vault.kv_italy.id
-  name         = "opsgenie-infra-kubexporter-webhook-token"
-}
-
 // TODO mettere nel kv il secret quickstart-es-elastic-user tramite sops
 
 
