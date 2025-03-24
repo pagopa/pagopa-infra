@@ -28,7 +28,7 @@
                             new JProperty("familyName", ((JObject) context.Variables["body"])["familyName"])
                             ).ToString();
                         }</set-body>
-                <validate-content unspecified-content-type-action="prevent" max-size="512000" size-exceeded-action="detect" errors-variable-name="responseBodyValidation">
+                <validate-content unspecified-content-type-action="prevent" max-size="1000" size-exceeded-action="detect" errors-variable-name="responseBodyValidation">
                     <content-type-map any-content-type-value="application/json" />
                     <content type="application/json" validate-as="json" action="prevent" allow-additional-properties="false" />
                 </validate-content>
