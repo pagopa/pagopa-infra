@@ -4,11 +4,11 @@
     "title": "Marketplace API for PagoPA AFM",
     "description": "marketplace-be",
     "termsOfService": "https://www.pagopa.gov.it/",
-    "version": "0.21.0"
+    "version": "0.21.4"
   },
   "servers": [
     {
-      "url": "http://localhost:8080"
+      "url": "${host}/afm/api/v1"
     },
     {
       "url": "https://{host}{basePath}",
@@ -5443,6 +5443,9 @@
           "validityDateTo": {
             "type": "string",
             "format": "date"
+          },
+          "onUs": {
+            "type": "boolean"
           }
         }
       },
@@ -5857,6 +5860,9 @@
           },
           "abi": {
             "type": "string"
+          },
+          "onUs": {
+            "type": "boolean"
           },
           "idBundle": {
             "type": "string"
