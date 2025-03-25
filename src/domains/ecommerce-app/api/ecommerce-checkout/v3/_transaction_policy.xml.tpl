@@ -51,7 +51,6 @@
         <!-- custom token validate and store userId variable END -->
 
         <!-- pass rptId value into header START -->
-        <set-header name="x-rpt-id" exists-action="delete" />
         <choose>
             <when condition="@((string)context.Request.Headers.GetValueOrDefault("x-rpt-id","") != "")">
                 <set-header name="x-rpt-id" exists-action="override">
