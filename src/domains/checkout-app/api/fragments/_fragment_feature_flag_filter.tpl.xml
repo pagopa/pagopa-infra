@@ -18,7 +18,7 @@
             return false;
         }
 
-        var featureFlagsStatusMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(context.Variables.GetValueOrDefault("featureFlagsStatusMap", "{}"));
+        var featureFlagsStatusMap = JsonConvert.DeserializeObject<IDictionary<string, string>>(context.Variables.GetValueOrDefault("featureFlagsStatusMap", "{}"));
 
         var response = new {
             isAuthenticationEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enableAuthIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
