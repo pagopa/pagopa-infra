@@ -2,41 +2,29 @@
     <set-variable name="requestIpAddress" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
     <set-variable name="featureFlagsStatusMap" value="{{checkout-feature-flag-map}}" />
 
-    <!-- Deserialize the feature flag status map once -->
-    <set-variable name="deserializedFeatureFlags" value="@{
-        return JsonConvert.DeserializeObject<Dictionary<string, string>>(context.Variables.GetValueOrDefault("featureFlagsStatusMap", "{}"));
-    }" />
-
-    <!-- Use the deserialized feature flag status map -->
-    <set-variable name="enableAuthIpWhiteList" value="@{
-        var featureFlagsStatusMap = context.Variables.GetValueOrDefault("deserializedFeatureFlags", new Dictionary<string, string>());
-        return featureFlagsStatusMap.GetValueOrDefault("enableAuthIpWhiteList", "-");
-    }" />
-
-    <set-variable name="enablePspPickerPageIpWhiteList" value="@{
-        var featureFlagsStatusMap = context.Variables.GetValueOrDefault("deserializedFeatureFlags", new Dictionary<string, string>());
-        return featureFlagsStatusMap.GetValueOrDefault("enablePspPickerPageIpWhiteList", "-");
-    }" />
-
+    <!-- Serialize and handle everything inside the checkout-feature-flag -->
     <set-variable name="checkout-feature-flag" value="@{
         bool IsIpAllowed(string allowedIps, string requestIpAddress) {
-          if (allowedIps == "*") {
-            return true;
-          }
-          var allowedIpsList = allowedIps.Split(',');
-          string[] callerIps = requestIpAddress.Split(',');
-          foreach (string callerIp in callerIps) {
-            if (allowedIpsList.Contains(callerIp)) {
-              return true;
+            if (allowedIps == "*") {
+                return true;
             }
-          }
-          return false;
+            var allowedIpsList = allowedIps.Split(',');
+            string[] callerIps = requestIpAddress.Split(',');
+            foreach (string callerIp in callerIps) {
+                if (allowedIpsList.Contains(callerIp)) {
+                    return true;
+                }
+            }
+            return false;
         }
-    
+
+        var featureFlagsStatusMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(context.Variables.GetValueOrDefault("featureFlagsStatusMap", "{}"));
+
         var response = new {
-            isAuthenticationEnabled = IsIpAllowed(context.Variables.GetValueOrDefault("enableAuthIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
-            isPspPickerPageEnabled = IsIpAllowed(context.Variables.GetValueOrDefault("enablePspPickerPageIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
+            isAuthenticationEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enableAuthIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
+            isPspPickerPageEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enablePspPickerPageIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
         };
+
         return JsonConvert.SerializeObject(response);
     }"/>
 </fragment>
