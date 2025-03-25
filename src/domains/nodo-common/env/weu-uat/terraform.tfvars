@@ -28,7 +28,8 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
 
 ## CIDR nodo per database pgsql
-cidr_subnet_flex_dbms = ["10.1.160.0/24"]
+cidr_subnet_flex_dbms         = ["10.1.160.0/24"]
+cidr_subnet_flex_storico_dbms = ["10.1.176.0/24"]
 
 ## CIDR storage subnet
 cidr_subnet_storage_account = ["10.1.137.16/29"]
@@ -37,11 +38,11 @@ cidr_subnet_storage_account = ["10.1.137.16/29"]
 pgres_flex_params = {
 
   enabled    = true
-  sku_name   = "GP_Standard_D4ds_v4"
+  sku_name   = "GP_Standard_D8ds_v4"
   db_version = "13"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
-  storage_mb                                       = 1048576
+  storage_mb                                       = 2097152
   zone                                             = 1
   standby_ha_zone                                  = 2
   backup_retention_days                            = 7
@@ -66,7 +67,7 @@ pgres_flex_storico_params = {
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                             = 1048576
-  zone                                   = 3
+  zone                                   = 1
   standby_ha_zone                        = 2
   backup_retention_days                  = 7
   geo_redundant_backup_enabled           = false
@@ -77,6 +78,8 @@ pgres_flex_storico_params = {
   pgres_flex_diagnostic_settings_enabled = false
   max_connections                        = 850
   enable_private_dns_registration        = true
+  max_worker_processes                   = 16
+  public_network_access_enabled          = false
 }
 
 sftp_account_replication_type = "LRS"
