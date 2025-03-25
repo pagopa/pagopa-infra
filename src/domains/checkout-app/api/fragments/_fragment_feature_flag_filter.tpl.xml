@@ -1,12 +1,17 @@
 <fragment>
     <set-variable name="requestIpAddress" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
-    <set-variable name="allowedIpsEnabledAuthentication" value="{{enable-checkout-authentication-ip-whitelist}}" />
-    <set-variable name="allowedIpsEnabledPspPickerPage" value="{{enable-checkout-psp-picker-page-ip-whitelist}}" />
+    <set-variable name="featureFlagsStatusMap" value="{{checkout-feature-flag-map}}" />
 
-    <!-- example of more feature flags -->
-    <!-- <set-variable name="allowedIpsFeature_1" value="{{Feature1IpWhitelist}}" /> -->
-    <!-- <set-variable name="allowedIpsFeature_2" value="{{Feature2IpWhitelist}}" /> -->
-    <!-- <set-variable name="allowedIpsFeature_3" value="{{Feature3IpWhitelist}}" /> -->
+
+    <!-- Parse the JSON feature flag status map -->
+    <set-variable name="enableAuthIpWhiteList" value="@{
+        var featureFlagsStatusMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(context.Variables.GetValueOrDefault("featureFlagsStatusMap", "{}"));
+        return featureFlagsStatusMap.GetValueOrDefault("enableAuthIpWhiteList", "-");
+    }" />
+    <set-variable name="enablePspPickerPageIpWhiteList" value="@{
+        var featureFlagsStatusMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(context.Variables.GetValueOrDefault("featureFlagsStatusMap", "{}"));
+        return featureFlagsStatusMap.GetValueOrDefault("enablePspPickerPageIpWhiteList", "-");
+    }" />
 
 
     <set-variable name="checkout-feature-flag" value="@{
@@ -25,11 +30,11 @@
         }
     
         var response = new {
-          isAuthenticationEnabled = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsEnabledAuthentication", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
-          isPspPickerPageEnabled = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsEnabledPspPickerPage", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
-          // Feature_1 = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsFeature_1", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
-          // Feature_2 = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsFeature_2", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
-          // Feature_3 = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsFeature_3", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
+            isAuthenticationEnabled = IsIpAllowed(context.Variables.GetValueOrDefault("enableAuthIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
+            isPspPickerPageEnabled = IsIpAllowed(context.Variables.GetValueOrDefault("enablePspPickerPageIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
+            // Feature_1 = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsFeature_1", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
+            // Feature_2 = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsFeature_2", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
+            // Feature_3 = IsIpAllowed(context.Variables.GetValueOrDefault("allowedIpsFeature_3", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
         };
         return JsonConvert.SerializeObject(response);
       }"/>
