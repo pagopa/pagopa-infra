@@ -77,11 +77,14 @@ tConnDbLink := 'NULLO';
 END;
 
 IF tConnDbLink != 'conn_db_link' OR tConnDbLink IS NULL THEN
+  RAISE NOTICE 'connessione non presente: creo';
 	SELECT dblink_connect('conn_db_link','connsvinodo') into resultConnDBLINK;
 ELSE
+  RAISE NOTICE 'connessione presente';
 	resultConnDBLINK = 'OK';
 END IF;
 
+RAISE NOTICE 'connessione: %', resultConnDBLINK;
 if resultConnDBLINK = 'OK' THEN
 
 	OPEN tab_cursor;
@@ -90,6 +93,7 @@ if resultConnDBLINK = 'OK' THEN
 			EXIT WHEN NOT FOUND;
 
 	------------------------------------------------------------------------------------------------------
+	RAISE NOTICE 'nome tabella: %, nome partizione: %', tNomeTabella, tNomePartizione;
 			--costruisco il type del record da copiare
 	tLabelStep := concat('nColonne - tNomeTabella:',tNomeTabella,' - tNomeSchema',tNomeSchema);
 		SELECT COUNT(*) into nColonne
@@ -126,12 +130,12 @@ if resultConnDBLINK = 'OK' THEN
 	 tLabelStep := concat('INSERT - NomePartizione:', tNomePartizione, ', NomeSchema:',tNomeSchema);
 			l_sql := format('INSERT INTO %I.%I SELECT * FROM dblink(''conn_db_link'', ''SELECT * FROM %I.%I'')
 							as t(%s)',  tNomeSchema, tNomePartizione, tNomeSchema, tNomePartizione, tTypeRecord );
-
+      RAISE NOTICE 'sql: %', l_sql;
 			execute l_sql;
 	 GET DIAGNOSTICS nRowInsert = ROW_COUNT;
 	 iIdTrace := nextval('partition.seq_log'::regclass);
 	 INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'archive_partition', ptDataInizioStep, clock_timestamp(), (clock_timestamp()- ptDataInizioStep) ,'OK','STEP INSERT',CONCAT(tLabelStep,' - nRowInsert=',nRowInsert));
-
+   RAISE NOTICE 'nRowInsert: %', nRowInsert;
 	------------------------------------------------------------------------------------------------------
 	-- AGGIORNO LA TABELLA STORICO_PART per settare che la storicizzazione è avvenuta
 	tLabelStep := concat('UPDATE - NomePartizione:', tNomePartizione, ', NomeSchema:',tNomeSchema);
@@ -146,7 +150,7 @@ if resultConnDBLINK = 'OK' THEN
 
 	iIdTrace := nextval('partition.seq_log'::regclass);
 	 INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'archive_partition', ptDataInizioStep, clock_timestamp(), (clock_timestamp()- ptDataInizioStep) ,'OK','STEP UPDATE',tLabelStep||' - '||esitoUpdate);
-
+   RAISE NOTICE 'esitoUpdate: %', esitoUpdate;
 	 END LOOP;
 
 	 CLOSE tab_cursor;
