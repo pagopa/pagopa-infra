@@ -24,7 +24,7 @@ jobs:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |
-            local apps=$(az containerapp list -g "${{parameters.RUNNER_RG}}" --query "[].name" -o tsv)
+            apps=$(az containerapp list -g "${{parameters.RUNNER_RG}}" --query "[].name" -o tsv)
             echo "runners: $apps"
             if [ -z "$apps" ]; then
               echo "no runners to delete"
