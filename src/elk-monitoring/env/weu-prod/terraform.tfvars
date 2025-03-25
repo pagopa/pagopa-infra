@@ -160,5 +160,5 @@ elk_snapshot_sa = {
 
 snapshot_storage_replication_type = "GZRS"
 
-elastic_cloud_apm_endpoint = "https://pagopa-p-weu-ec.apm.westeurope.azure.elastic-cloud.com"
+elastic_cloud_apm_endpoint     = "https://pagopa-p-weu-ec.apm.westeurope.azure.elastic-cloud.com"
 otel_collector_cloud_migration = true
