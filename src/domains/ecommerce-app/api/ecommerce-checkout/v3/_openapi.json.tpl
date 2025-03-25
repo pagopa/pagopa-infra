@@ -67,15 +67,6 @@
               "pattern": "([a-zA-Z0-9]{1,35})|(RFd{2}[a-zA-Z0-9]{1,21})"
             },
             "required": true
-          },
-          {
-            "in": "header",
-            "name": "x-rpt-id",
-            "required": false,
-            "description": "RPT ID used to track get payment-requests attempts to payment notices",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {

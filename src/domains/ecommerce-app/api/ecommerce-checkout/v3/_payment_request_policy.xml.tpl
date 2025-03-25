@@ -1,6 +1,7 @@
 <policies>
   <inbound>
     <!-- pass rptId value into header START -->
+    <set-header name="x-rpt-id" exists-action="delete" />
     <set-variable name="rptId" value="@{
       return context.Request.MatchedParameters["rpt_id"];
     }" />

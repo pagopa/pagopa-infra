@@ -50,16 +50,6 @@
 
         <!-- custom token validate and store userId variable END -->
 
-        <!-- pass rptId value into header START -->
-        <choose>
-            <when condition="@((string)context.Request.Headers.GetValueOrDefault("x-rpt-id","") != "")">
-                <set-header name="x-rpt-id" exists-action="override">
-                    <value>@((string)context.Request.Headers.GetValueOrDefault("x-rpt-id",""))</value>
-                </set-header>
-            </when>
-        </choose>
-        <!-- pass rptId value into header END -->
-
         <!-- pass x-user-id into header START-->
         <!-- Post Token PDV for CF START-->
         <send-request ignore-error="true" timeout="10" response-variable-name="cf-token" mode="new">
