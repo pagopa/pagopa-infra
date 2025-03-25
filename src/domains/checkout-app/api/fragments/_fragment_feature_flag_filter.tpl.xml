@@ -2,17 +2,21 @@
     <set-variable name="requestIpAddress" value="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For",""))" />
     <set-variable name="featureFlagsStatusMap" value="{{checkout-feature-flag-map}}" />
 
+    <!-- Deserialize the feature flag status map once -->
+    <set-variable name="deserializedFeatureFlags" value="@{
+        return JsonConvert.DeserializeObject<Dictionary<string, string>>(context.Variables.GetValueOrDefault("featureFlagsStatusMap", "{}"));
+    }" />
 
-    <!-- Parse the JSON feature flag status map -->
+    <!-- Use the deserialized feature flag status map -->
     <set-variable name="enableAuthIpWhiteList" value="@{
-        var featureFlagsStatusMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(context.Variables.GetValueOrDefault("featureFlagsStatusMap", "{}"));
+        var featureFlagsStatusMap = context.Variables.GetValueOrDefault("deserializedFeatureFlags", new Dictionary<string, string>());
         return featureFlagsStatusMap.GetValueOrDefault("enableAuthIpWhiteList", "-");
     }" />
+
     <set-variable name="enablePspPickerPageIpWhiteList" value="@{
-        var featureFlagsStatusMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(context.Variables.GetValueOrDefault("featureFlagsStatusMap", "{}"));
+        var featureFlagsStatusMap = context.Variables.GetValueOrDefault("deserializedFeatureFlags", new Dictionary<string, string>());
         return featureFlagsStatusMap.GetValueOrDefault("enablePspPickerPageIpWhiteList", "-");
     }" />
-
 
     <set-variable name="checkout-feature-flag" value="@{
         bool IsIpAllowed(string allowedIps, string requestIpAddress) {
@@ -34,5 +38,5 @@
             isPspPickerPageEnabled = IsIpAllowed(context.Variables.GetValueOrDefault("enablePspPickerPageIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
         };
         return JsonConvert.SerializeObject(response);
-      }"/>
+    }"/>
 </fragment>
