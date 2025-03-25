@@ -140,6 +140,14 @@ resource "azurerm_key_vault_secret" "ehub_negative_biz_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "ehub_views_biz_connection_string" {
+  name         = format("ehub-views-%s-biz-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx-views.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 // SWITCHns02ns04
 resource "azurerm_key_vault_secret" "ehub_awakable_negative_biz_connection_string" {
   name         = format("ehub-%s-tx-awakable-negative-biz-connection-string", var.env_short)
