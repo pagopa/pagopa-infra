@@ -1,0 +1,87 @@
+# only manual
+trigger: none
+pr: none
+
+parameters:
+  - name: 'DEV'
+    displayName: 'Run on DEV environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'UAT'
+    displayName: 'Run on UAT environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+  - name: 'PROD'
+    displayName: 'Run on PROD environment'
+    type: boolean
+    default: True
+    values:
+      - False
+      - True
+
+
+
+
+variables:
+  TIME_OUT: 10
+  # working dir
+  WORKING_DIR: 'src'
+  poolNameDev: '$(TF_POOL_NAME_DEV)'
+  poolNameUat: '$(TF_POOL_NAME_UAT)'
+  poolNameProd: '$(TF_POOL_NAME_PROD)'
+  #APPLY
+  azureServiceConnectionApplyNameDev: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
+  azureServiceConnectionApplyNameUat: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
+  azureServiceConnectionApplyNameProd: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+    - repository: terraform
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v6.2.0
+      endpoint: "io-azure-devops-github-ro"
+
+
+stages:
+  - stage: DEV
+    displayName: DEV cleanup
+    dependsOn: []
+    condition: and(succeeded(), eq(${{parameters.DEV}}, true))
+    jobs:
+      - template: templates/clean-runner-job.yml
+        parameters:
+          TIME_OUT: ${{variables.TIME_OUT}}
+          AZ_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
+          RUNNER_RG: 'pagopa-d-weu-github-runner-rg'
+
+  - stage: UAT
+    displayName: UAT cleanup
+    dependsOn: []
+    condition: and(succeeded(), eq(${{parameters.UAT}}, true))
+    jobs:
+      - template: templates/clean-runner-job.yml
+        parameters:
+          TIME_OUT: ${{variables.TIME_OUT}}
+          AZ_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
+          RUNNER_RG: 'pagopa-u-weu-github-runner-rg'
+
+  - stage: PROD
+    displayName: PROD cleanup
+    dependsOn: []
+    condition: and(succeeded(), eq(${{parameters.PROD}}, true))
+    jobs:
+      - template: templates/clean-runner-job.yml
+        parameters:
+          TIME_OUT: ${{variables.TIME_OUT}}
+          AZ_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
+          RUNNER_RG: 'pagopa-p-weu-github-runner-rg'
