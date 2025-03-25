@@ -61,7 +61,7 @@ stages:
       - template: templates/clean-runner-job.yml
         parameters:
           TIME_OUT: ${{variables.TIME_OUT}}
-          AZ_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
+          AZ_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)'
           RUNNER_RG: 'pagopa-d-weu-github-runner-rg'
 
   - stage: UAT
@@ -72,7 +72,7 @@ stages:
       - template: templates/clean-runner-job.yml
         parameters:
           TIME_OUT: ${{variables.TIME_OUT}}
-          AZ_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_PROD)'
+          AZ_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)'
           RUNNER_RG: 'pagopa-u-weu-github-runner-rg'
 
   - stage: PROD
