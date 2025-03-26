@@ -16,12 +16,3 @@ module "auto_dashboard" {
   //dashboard_directory_path = "pagopa"
 }
 
-
-
-output "sub" {
-  value = module.auto_dashboard.subfolder
-}
-
-output "folb" {
-  value = module.auto_dashboard.folder
-}
