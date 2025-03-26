@@ -6,7 +6,7 @@ data "azurerm_log_analytics_workspace" "log_analytics" {
 
 module "auto_dashboard" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//grafana_dashboard?ref=v1.22.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v4.git//grafana_dashboard?ref=v.1.24.0"
 
   grafana_url     = azurerm_dashboard_grafana.grafana_dashboard.endpoint
   grafana_api_key = data.azurerm_key_vault_secret.grafana-key.value
@@ -18,3 +18,10 @@ module "auto_dashboard" {
 
 
 
+output "sub" {
+  value = module.auto_dashboard.subfolder
+}
+
+output "folb" {
+  value = module.auto_dashboard.folder
+}
