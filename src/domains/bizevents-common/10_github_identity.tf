@@ -16,7 +16,8 @@ data "azurerm_key_vault" "key_vault" {
 locals {
   repos_01 = [
     "pagopa-biz-events-service",
-    "pagopa-biz-pm-ingestion"
+    "pagopa-biz-pm-ingestion",
+    "pagopa-biz-events-sync-nodo"
   ]
 
   federations_01 = [
@@ -73,9 +74,12 @@ resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
 
   secret_permissions = ["Get", "List", "Set", ]
 
-  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
+  certificate_permissions = [
+    "SetIssuers", "DeleteIssuers", "Purge", "List", "Get"
+  ]
   key_permissions = [
-    "Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"
+    "Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt",
+    "GetRotationPolicy"
   ]
 
   storage_permissions = []
