@@ -24,10 +24,18 @@ resource "azurerm_key_vault_access_policy" "ad_group_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_admin.object_id
 
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
-  secret_permissions      = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
-  storage_permissions     = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"]
+  key_permissions = [
+    "Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt",
+    "GetRotationPolicy", "Purge", "Recover", "Restore"
+  ]
+  secret_permissions = [
+    "Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"
+  ]
+  storage_permissions = []
+  certificate_permissions = [
+    "Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge",
+    "Recover"
+  ]
 }
 
 ## ad group policy ##
@@ -37,10 +45,17 @@ resource "azurerm_key_vault_access_policy" "adgroup_developers_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_developers.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy", "Purge", "Recover", "Restore"]
-  secret_permissions  = ["Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"]
+  key_permissions = [
+    "Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt",
+    "GetRotationPolicy", "Purge", "Recover", "Restore"
+  ]
+  secret_permissions = [
+    "Get", "List", "Set", "Delete", "Purge", "Recover", "Restore"
+  ]
   storage_permissions = []
-  certificate_permissions = ["Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge", "Recover"
+  certificate_permissions = [
+    "Get", "List", "Update", "Create", "Import", "Delete", "Restore", "Purge",
+    "Recover"
   ]
 }
 
@@ -53,7 +68,10 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_externals.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "Recover", "Rotate", "GetRotationPolicy"]
+  key_permissions = [
+    "Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt",
+    "Recover", "Rotate", "GetRotationPolicy"
+  ]
   secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", ]
   storage_permissions = []
   certificate_permissions = [
@@ -74,9 +92,13 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = data.azuread_service_principal.iac_principal[0].object_id
 
-  secret_permissions      = ["Get", "List", "Set", ]
-  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
-  key_permissions         = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"]
+  secret_permissions = ["Get", "List", "Set", ]
+  certificate_permissions = [
+    "SetIssuers", "DeleteIssuers", "Purge", "List", "Get"
+  ]
+  key_permissions = [
+    "Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt"
+  ]
 
   storage_permissions = []
 }
@@ -135,6 +157,14 @@ resource "azurerm_key_vault_secret" "ehub_biz_enrich_connection_string" {
 resource "azurerm_key_vault_secret" "ehub_negative_biz_connection_string" {
   name         = format("ehub-%s-rx-negative-biz-connection-string", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-rx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_views_biz_connection_string" {
+  name         = format("ehub-views-%s-biz-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-rx-views.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
@@ -251,7 +281,6 @@ data "azurerm_redis_cache" "redis_cache" {
 }
 
 
-
 resource "azurerm_key_vault_secret" "redis_password" {
   name         = "redis-password"
   value        = data.azurerm_redis_cache.redis_cache.primary_access_key
@@ -317,7 +346,9 @@ resource "azurerm_api_management_subscription" "list_trx_4_io_api_key_subkey" {
 }
 
 resource "azurerm_key_vault_secret" "list_trx_4_io_api_keysubkey_store_kv" {
-  depends_on   = [azurerm_api_management_subscription.list_trx_4_io_api_key_subkey]
+  depends_on = [
+    azurerm_api_management_subscription.list_trx_4_io_api_key_subkey
+  ]
   name         = "list-trx-4-io-api-key"
   value        = azurerm_api_management_subscription.list_trx_4_io_api_key_subkey.primary_key
   content_type = "text/plain"
@@ -343,7 +374,9 @@ resource "azurerm_api_management_subscription" "list_lap_4_io_api_key_subkey" {
 }
 
 resource "azurerm_key_vault_secret" "list_lap_4_io_api_keysubkey_store_kv" {
-  depends_on   = [azurerm_api_management_subscription.list_lap_4_io_api_key_subkey]
+  depends_on = [
+    azurerm_api_management_subscription.list_lap_4_io_api_key_subkey
+  ]
   name         = "list-lap-4-io-api-key"
   value        = azurerm_api_management_subscription.list_lap_4_io_api_key_subkey.primary_key
   content_type = "text/plain"
@@ -362,7 +395,9 @@ resource "azurerm_api_management_subscription" "list_lap_arc_4_io_api_key_subkey
 }
 
 resource "azurerm_key_vault_secret" "list_lap_arc_4_io_api_keysubkey_store_kv" {
-  depends_on   = [azurerm_api_management_subscription.list_lap_arc_4_io_api_key_subkey]
+  depends_on = [
+    azurerm_api_management_subscription.list_lap_arc_4_io_api_key_subkey
+  ]
   name         = "list-lap-arc-4-io-api-key"
   value        = azurerm_api_management_subscription.list_lap_arc_4_io_api_key_subkey.primary_key
   content_type = "text/plain"
@@ -391,8 +426,10 @@ resource "azurerm_api_management_subscription" "biz_trx_api_key_4_perftest" {
 }
 
 resource "azurerm_key_vault_secret" "biz_trx_api_key_4_perftest_store_kv" {
-  count        = var.env_short != "p" ? 1 : 0
-  depends_on   = [azurerm_api_management_subscription.biz_trx_api_key_4_perftest[0]]
+  count = var.env_short != "p" ? 1 : 0
+  depends_on = [
+    azurerm_api_management_subscription.biz_trx_api_key_4_perftest[0]
+  ]
   name         = "biz-trx-api-key-4-perftest"
   value        = azurerm_api_management_subscription.biz_trx_api_key_4_perftest[0].primary_key
   content_type = "text/plain"
@@ -438,29 +475,94 @@ resource "azurerm_api_management_subscription" "pdf_receipt_service_4_list_trx_s
 // save keys on KV
 
 resource "azurerm_key_vault_secret" "bizevent_pdf_engine_4_list_trx_subscription_key" {
-  depends_on   = [azurerm_api_management_subscription.pdf_engine_node_4_list_trx_subkey]
+  depends_on = [
+    azurerm_api_management_subscription.pdf_engine_node_4_list_trx_subkey
+  ]
   name         = format("bizevent-%s-pdfengine-subscription-key", var.env_short)
   value        = azurerm_api_management_subscription.pdf_engine_node_4_list_trx_subkey.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
-resource "azurerm_key_vault_secret" "bizevent_receiptpdfservice_4_list_trx_subscription_key" { // product apim "receipts"
-  depends_on   = [azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey]
+resource "azurerm_key_vault_secret" "bizevent_receiptpdfservice_4_list_trx_subscription_key" {
+  // product apim "receipts"
+  depends_on = [
+    azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey
+  ]
   name         = format("bizevent-%s-receiptpdfservice-subscription-key", var.env_short)
   value        = azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
-resource "azurerm_key_vault_secret" "bizevent_receiptpdfhelpdesk_4_list_trx_subscription_key" { // product apim "receipts"
-  depends_on   = [azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey]
+resource "azurerm_key_vault_secret" "bizevent_receiptpdfhelpdesk_4_list_trx_subscription_key" {
+  // product apim "receipts"
+  depends_on = [
+    azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey
+  ]
   name         = format("bizevent-%s-generatepdfservice-subscription-key", var.env_short)
   value        = azurerm_api_management_subscription.pdf_receipt_service_4_list_trx_subkey.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
 }
+
+
+data "azurerm_api_management_product" "apim_api_config_cache_product" {
+  product_id          = "apiconfig-cache"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+resource "azurerm_api_management_subscription" "api_config_cache_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_api_config_cache_product.id
+  display_name  = "APIConfig Cache for BizEvents system"
+  allow_tracing = false
+  state         = "active"
+}
+
+resource "azurerm_key_vault_secret" "api_config_cache_subscription_key_kv" {
+  depends_on = [
+    azurerm_api_management_subscription.api_config_cache_subkey
+  ]
+  name         = "api-config-cache-subscription-key"
+  value        = azurerm_api_management_subscription.api_config_cache_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
+
+data "azurerm_api_management_product" "apim_ecommerce_helpdesk_product" {
+  product_id          = "ecommerce-helpdesk"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+resource "azurerm_api_management_subscription" "ecommerce_helpdesk_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apim_ecommerce_helpdesk_product.id
+  display_name  = "eCommerce Helpdesk for BizEvents system"
+  allow_tracing = false
+  state         = "active"
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_helpdesk_subscription_key_kv" {
+  depends_on = [
+    azurerm_api_management_subscription.ecommerce_helpdesk_subkey
+  ]
+  name         = "ecommerce-helpdesk-subscription-key"
+  value        = azurerm_api_management_subscription.ecommerce_helpdesk_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 
 // examples extraction query:
 // select TOP 10000 * FROM c WHERE c.eventStatus = 'DONE' and c.timestamp < DateTimeToTimestamp('2024-05-05T16:00:00') order by c.timestamp DESC

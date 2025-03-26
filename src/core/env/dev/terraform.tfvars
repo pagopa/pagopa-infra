@@ -89,8 +89,6 @@ ecommerce_ingress_hostname = "weudev.ecommerce.internal.dev.platform.pagopa.it"
 
 
 
-# buyerbanks functions
-buyerbanks_delete_retention_days = 30
 
 
 
