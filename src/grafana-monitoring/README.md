@@ -14,7 +14,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_auto_dashboard"></a> [auto\_dashboard](#module\_auto\_dashboard) | git::https://github.com/pagopa/terraform-azurerm-v4.git//grafana_dashboard | v1.22.0 |
+| <a name="module_auto_dashboard"></a> [auto\_dashboard](#module\_auto\_dashboard) | git::https://github.com/pagopa/terraform-azurerm-v4.git//grafana_dashboard | v1.24.0 |
 
 ## Resources
 
