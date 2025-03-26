@@ -45,7 +45,11 @@ bizevents_datastore_cosmos_db_params = {
   private_endpoint_enabled      = true
   public_network_access_enabled = true
 
-  additional_geo_locations = []
+  additional_geo_locations = [{
+    location          = "northeurope"
+    failover_priority = 1
+    zone_redundant    = false
+  }]
 
   is_virtual_network_filter_enabled = false
 
