@@ -1,14 +1,17 @@
 <policies>
     <inbound>
         <base />
-        <!-- custom token validate and store userId variable START -->
 
+        <!-- custom token validate and store userId variable START -->
         <send-request ignore-error="true" timeout="10" response-variable-name="userResponse" mode="new">
-        <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/users")</set-url>
-        <set-method>GET</set-method>
-        <set-header name="Authorization" exists-action="override">
-            <value>@("Bearer " + (string)context.Variables["authToken"])</value>
-        </set-header>
+            <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/users")</set-url>
+            <set-method>GET</set-method>
+            <set-header name="Authorization" exists-action="override">
+                <value>@("Bearer " + (string)context.Variables["authToken"])</value>
+            </set-header>
+            <set-header name="x-rpt-id" exists-action="override">
+                <value>@((string)context.Request.Headers.GetValueOrDefault("x-rpt-id",""))</value>
+            </set-header>
         </send-request>
         <choose>
             <when condition="@(((int)((IResponse)context.Variables["userResponse"]).StatusCode) == 401 || ((int)((IResponse)context.Variables["userResponse"]).StatusCode) == 404)">
@@ -46,28 +49,6 @@
         </choose>
 
         <!-- custom token validate and store userId variable END -->
-
-        <!-- pass rptId value into header START -->
-        <set-header name="x-rpt-id" exists-action="delete" />
-        <set-variable name="paymentNotices" value="@(((JArray)((JObject)context.Request.Body.As<JObject>(preserveContent: true))["paymentNotices"]))" />
-        <set-variable name="rptIds" value="@{
-            string result = "";
-            foreach (JObject notice in ((JArray)(context.Variables["paymentNotices"]))) {
-                if( notice.ContainsKey("rptId") == true )
-                {
-                    result += notice["rptId"].Value<string>()+", ";
-                }
-            }
-            return result;
-        }" />
-        <choose>
-            <when condition="@((string)context.Variables["rptIds"] != "")">
-                <set-header name="x-rpt-id" exists-action="override">
-                    <value>@((string)context.Variables.GetValueOrDefault("rptIds",""))</value>
-                </set-header>
-            </when>
-        </choose>
-        <!-- pass rptId value into header END -->
 
         <!-- pass x-user-id into header START-->
         <!-- Post Token PDV for CF START-->
