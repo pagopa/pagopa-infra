@@ -97,7 +97,8 @@ module "elastic_stack" {
     /* apiconfig */ "pagopaapiconfig-postgresql", "pagopaapiconfig-oracle", "apiconfig-selfcare-integration-microservice-chart", "cache-oracle", "cache-postgresql", "cache-replica-oracle", "cache-replica-postgresql",
     /* ecommerce */ "pagopaecommerceeventdispatcherservice-microservice-chart", "pagopaecommercepaymentmethodsservice-microservice-chart", "pagopaecommercepaymentrequestsservice-microservice-chart", "pagopaecommercetransactionsservice-microservice-chart", "pagopaecommercetxschedulerservice-microservice-chart", "pagopanotificationsservice-microservice-chart",
     /* selfcare */ "pagopaselfcaremsbackofficebackend-microservice-chart", "backoffice-external",
-    /* gps */ "gpd-core-microservice-chart", "pagopagpdpayments-microservice-chart", "pagopareportingorgsenrollment-microservice-chart", "pagopaspontaneouspayments-microservice-chart", "gpd-payments-pull", "gpd-upload-microservice-chart", "pagopapagopagpdingestionmanager-microservice-chart"
+    /* gps */ "gpd-core-microservice-chart", "pagopagpdpayments-microservice-chart", "pagopareportingorgsenrollment-microservice-chart", "pagopaspontaneouspayments-microservice-chart", "gpd-payments-pull", "gpd-upload-microservice-chart", "pagopapagopagpdingestionmanager-microservice-chart",
+    /* fdr */ "fdr-nodo-fdrnodo", "pagopafdr-microservice-chart", "fdr-technicalsupport-microservice-chart", "pagopa-fdr-2-event-hub"
   ]
 
   eck_license = file("${path.module}/env/eck_license/pagopa-spa-4a1285e5-9c2c-4f9f-948a-9600095edc2f-orchestration.json")
@@ -139,55 +140,61 @@ locals {
 
 }
 
-## opentelemetry
-resource "helm_release" "opentelemetry_operator_helm" {
-  depends_on = [
-    module.elastic_stack
-  ]
+## opentelemetry moved to elasticcloud-infra. use that instead
+# resource "helm_release" "opentelemetry_operator_helm" {
+#   depends_on = [
+#     module.elastic_stack
+#   ]
+#
+#   # provisioner "local-exec" {
+#   #   when        = destroy
+#   #   command     = "kubectl delete crd opentelemetrycollectors.opentelemetry.io"
+#   #   interpreter = ["/bin/bash", "-c"]
+#   # }
+#   # provisioner "local-exec" {
+#   #   when        = destroy
+#   #   command     = "kubectl delete crd instrumentations.opentelemetry.io"
+#   #   interpreter = ["/bin/bash", "-c"]
+#   # }
+#
+#   name       = "opentelemetry-operator"
+#   repository = "https://open-telemetry.github.io/opentelemetry-helm-charts"
+#   chart      = "opentelemetry-operator"
+#   version    = var.opentelemetry_operator_helm.chart_version
+#   namespace  = local.elk_namespace
+#
+#   values = [
+#     "${file("${var.opentelemetry_operator_helm.values_file}")}"
+#   ]
+#
+# }
 
-  # provisioner "local-exec" {
-  #   when        = destroy
-  #   command     = "kubectl delete crd opentelemetrycollectors.opentelemetry.io"
-  #   interpreter = ["/bin/bash", "-c"]
-  # }
-  # provisioner "local-exec" {
-  #   when        = destroy
-  #   command     = "kubectl delete crd instrumentations.opentelemetry.io"
-  #   interpreter = ["/bin/bash", "-c"]
-  # }
-
-  name       = "opentelemetry-operator"
-  repository = "https://open-telemetry.github.io/opentelemetry-helm-charts"
-  chart      = "opentelemetry-operator"
-  version    = var.opentelemetry_operator_helm.chart_version
-  namespace  = local.elk_namespace
-
-  values = [
-    "${file("${var.opentelemetry_operator_helm.values_file}")}"
-  ]
-
-}
-
-data "kubernetes_secret" "get_apm_token" {
-  depends_on = [
-    helm_release.opentelemetry_operator_helm
-  ]
-
-  metadata {
-    name      = "quickstart-apm-token"
-    namespace = local.elk_namespace
-  }
-}
-
-resource "kubectl_manifest" "otel_collector" {
-  depends_on = [
-    data.kubernetes_secret.get_apm_token
-  ]
-  yaml_body = templatefile("${path.module}/env/opentelemetry_operator_helm/otel.yaml", {
-    namespace = local.elk_namespace
-    apm_token = data.kubernetes_secret.get_apm_token.data.secret-token
-  })
-
-  force_conflicts = true
-  wait            = true
-}
+# data "kubernetes_secret" "get_apm_token" {
+#   depends_on = [
+#     helm_release.opentelemetry_operator_helm
+#   ]
+#
+#   metadata {
+#     name      = "quickstart-apm-token"
+#     namespace = local.elk_namespace
+#   }
+# }
+#
+#
+#
+# resource "kubectl_manifest" "otel_collector" {
+#   depends_on = [
+#     data.kubernetes_secret.get_apm_token
+#   ]
+#   yaml_body = templatefile("${path.module}/env/opentelemetry_operator_helm/otel.yaml", {
+#     namespace = local.elk_namespace
+#
+#     apm_endpoint      = var.otel_collector_cloud_migration ? var.elastic_cloud_apm_endpoint : "http://quickstart-apm-http.elastic-system.svc.cluster.local:8200"
+#     apm_authorization = var.otel_collector_cloud_migration ? "ApiKey ${data.azurerm_key_vault_secret.apm_api_key[0].value}" : "Bearer ${data.kubernetes_secret.get_apm_token.data.secret-token}"
+#     deployment_env    = var.env
+#     elastic_namespace = "pagopa.${var.env}"
+#   })
+#
+#   force_conflicts = true
+#   wait            = true
+# }

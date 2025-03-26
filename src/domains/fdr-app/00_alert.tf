@@ -9,7 +9,7 @@ locals {
   action_groups_sev3 = var.env_short == "p" ? concat(local.action_groups_default) : local.action_groups_default
 
 
-  api_fdr_nodo_auth_alerts = [
+  api_fdr_nodo_auth_alerts = var.env_short == "p" ? [
     // Nodo per PA WS (AUTH)
     {
       operationId_s : "6352c3bcc257810f183b398b",
@@ -27,9 +27,9 @@ locals {
       primitiva : "nodoInviaFlussoRendicontazione",
       sub_service : "nodo-per-psp"
     }
-  ]
+  ] : []
 
-  api_fdr_nodo_alerts = [
+  api_fdr_nodo_alerts = var.env_short == "p" ? [
     // Nodo per PA WS
     {
       operationId_s : "6218976195aa0303ccfcf901",
@@ -47,6 +47,6 @@ locals {
       primitiva : "nodoInviaFlussoRendicontazione",
       sub_service : "nodo-per-psp"
     }
-  ]
+  ] : []
 }
 

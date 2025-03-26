@@ -62,8 +62,8 @@ aks_user_node_pool = {
   vm_size         = "Standard_D8ds_v5",
   os_disk_type    = "Ephemeral",
   os_disk_size_gb = 300,
-  node_count_min  = 1,
-  node_count_max  = 1,
+  node_count_min  = 2,
+  node_count_max  = 3,
   zones           = [1, 2, 3]
   node_labels     = { node_name : "aks-prod01-user", node_type : "user" },
   node_taints     = [],
@@ -82,3 +82,5 @@ ingress_replica_count    = "2"
 nginx_helm_version       = "4.10.0"
 
 keda_helm_version = "2.14.0"
+
+enable_elastic_agent = false

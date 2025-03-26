@@ -50,7 +50,7 @@ pgres_flex_params = {
   pgres_flex_pgbouncer_enabled           = true
   standby_availability_zone              = 2
   pgres_flex_diagnostic_settings_enabled = false
-  alerts_enabled                         = false
+  alerts_enabled                         = true
   max_connections                        = 5000
   pgbouncer_min_pool_size                = 10
   max_worker_process                     = 32
@@ -118,7 +118,7 @@ cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
 cosmos_mongo_db_fdr_params = {
   enabled      = true
   kind         = "MongoDB"
-  capabilities = ["EnableMongo"] # Serverless accounts do not support multiple regions
+  capabilities = ["EnableMongo", "EnableUniqueCompoundNestedDocs"] # Serverless accounts do not support multiple regions
   offer_type   = "Standard"
   consistency_policy = {
     consistency_level       = "BoundedStaleness"
@@ -142,6 +142,9 @@ cosmos_mongo_db_fdr_params = {
   backup_continuous_enabled = true
 
   container_default_ttl = 315576000 # 10 year in second
+
+  fdr_flow_container_ttl    = "3024000" # 30 days + 5 days (deltaTime)
+  fdr_payment_container_ttl = "3024000" # 30 days + 5 days (deltaTime)
 
   enable_serverless  = false
   enable_autoscaling = true
@@ -195,37 +198,27 @@ fdr_storage_account = {
   advanced_threat_protection_enabled = false
   public_network_access_enabled      = false
   blob_delete_retention_days         = 90
-  enable_low_availability_alert      = false
-  backup_enabled                     = true
-  backup_retention                   = 30
+  enable_low_availability_alert      = true
+  backup_enabled                     = false
+  backup_retention                   = 0
 }
 
 fdr_re_storage_account = {
-  account_kind                       = "StorageV2"
-  account_tier                       = "Standard"
-  account_replication_type           = "GZRS"
-  blob_versioning_enabled            = true
-  advanced_threat_protection         = true
-  advanced_threat_protection_enabled = false
-  public_network_access_enabled      = false
-  blob_delete_retention_days         = 90
-  enable_low_availability_alert      = false
-  backup_enabled                     = true
-  backup_retention                   = 30
-}
-
-fdr_history_storage_account = {
-  account_kind                       = "StorageV2"
-  account_tier                       = "Standard"
-  account_replication_type           = "GZRS"
-  blob_versioning_enabled            = true
-  advanced_threat_protection         = true
-  advanced_threat_protection_enabled = false
-  public_network_access_enabled      = false
-  blob_delete_retention_days         = 90
-  enable_low_availability_alert      = false
-  backup_enabled                     = true
-  backup_retention                   = 30
+  account_kind                                                 = "StorageV2"
+  account_tier                                                 = "Standard"
+  account_replication_type                                     = "ZRS"
+  blob_versioning_enabled                                      = false
+  public_network_access_enabled                                = false
+  blob_delete_retention_days                                   = 7
+  enable_low_availability_alert                                = true
+  backup_enabled                                               = false
+  backup_retention                                             = 0
+  storage_defender_enabled                                     = true
+  storage_defender_override_subscription_settings_enabled      = false
+  storage_defender_sensitive_data_discovery_enabled            = false
+  storage_defender_malware_scanning_on_upload_enabled          = false
+  storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
+  blob_file_retention_days                                     = 180 # 6 months
 }
 
 fdr_flow_storage_account = {
@@ -237,7 +230,7 @@ fdr_flow_storage_account = {
   advanced_threat_protection_enabled = false
   public_network_access_enabled      = false
   blob_delete_retention_days         = 90
-  enable_low_availability_alert      = false
+  enable_low_availability_alert      = true
 }
 
 #

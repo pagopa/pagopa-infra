@@ -289,6 +289,9 @@ variable "cosmos_mongo_db_fdr_params" {
     throughput                        = number
     max_throughput                    = number
     container_default_ttl             = number
+    # single container variables
+    fdr_flow_container_ttl    = string
+    fdr_payment_container_ttl = string
   })
 }
 
@@ -340,6 +343,13 @@ variable "reporting_fdr_blobs_retention_days" {
   default     = 30
 }
 
+
+variable "fdr1_cached_response_blob_file_retention_days" {
+  type        = number
+  description = "The number of day for storage_management_policy"
+  default     = 1
+}
+
 variable "fdr_re_versioning" {
   type        = bool
   description = "Enable sa versioning"
@@ -386,64 +396,41 @@ variable "fdr_storage_account" {
 
 variable "fdr_re_storage_account" {
   type = object({
-    account_kind                       = string
-    account_tier                       = string
-    account_replication_type           = string
-    advanced_threat_protection         = bool
-    advanced_threat_protection_enabled = bool
-    blob_versioning_enabled            = bool
-    public_network_access_enabled      = bool
-    blob_delete_retention_days         = number
-    enable_low_availability_alert      = bool
-    backup_enabled                     = optional(bool, false)
-    backup_retention                   = optional(number, 0)
+    account_kind                                                 = string
+    account_tier                                                 = string
+    account_replication_type                                     = string
+    blob_versioning_enabled                                      = bool
+    public_network_access_enabled                                = bool
+    blob_delete_retention_days                                   = number
+    enable_low_availability_alert                                = bool
+    backup_enabled                                               = optional(bool, false)
+    backup_retention                                             = optional(number, 0)
+    storage_defender_enabled                                     = bool
+    storage_defender_override_subscription_settings_enabled      = bool
+    storage_defender_sensitive_data_discovery_enabled            = bool
+    storage_defender_malware_scanning_on_upload_enabled          = bool
+    storage_defender_malware_scanning_on_upload_cap_gb_per_month = number
+    blob_file_retention_days                                     = number
   })
 
   default = {
-    account_kind                       = "StorageV2"
-    account_tier                       = "Standard"
-    account_replication_type           = "LRS"
-    blob_versioning_enabled            = false
-    advanced_threat_protection         = true
-    advanced_threat_protection_enabled = true
-    public_network_access_enabled      = false
-    blob_delete_retention_days         = 30
-    enable_low_availability_alert      = false
-    backup_enabled                     = false
-    backup_retention                   = 0
+    account_kind                                                 = "StorageV2"
+    account_tier                                                 = "Standard"
+    account_replication_type                                     = "LRS"
+    blob_versioning_enabled                                      = false
+    public_network_access_enabled                                = false
+    blob_delete_retention_days                                   = 30
+    enable_low_availability_alert                                = false
+    backup_enabled                                               = false
+    backup_retention                                             = 0
+    storage_defender_enabled                                     = true
+    storage_defender_override_subscription_settings_enabled      = false
+    storage_defender_sensitive_data_discovery_enabled            = false
+    storage_defender_malware_scanning_on_upload_enabled          = false
+    storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
+    blob_file_retention_days                                     = 180
   }
 }
-
-variable "fdr_history_storage_account" {
-  type = object({
-    account_kind                       = string
-    account_tier                       = string
-    account_replication_type           = string
-    advanced_threat_protection         = bool
-    advanced_threat_protection_enabled = bool
-    blob_versioning_enabled            = bool
-    public_network_access_enabled      = bool
-    blob_delete_retention_days         = number
-    enable_low_availability_alert      = bool
-    backup_enabled                     = optional(bool, false)
-    backup_retention                   = optional(number, 0)
-  })
-
-  default = {
-    account_kind                       = "StorageV2"
-    account_tier                       = "Standard"
-    account_replication_type           = "LRS"
-    blob_versioning_enabled            = false
-    advanced_threat_protection         = true
-    advanced_threat_protection_enabled = true
-    public_network_access_enabled      = false
-    blob_delete_retention_days         = 30
-    enable_low_availability_alert      = false
-    backup_enabled                     = false
-    backup_retention                   = 0
-  }
-}
-
 
 variable "reporting_fdr_storage_account" {
   type = object({

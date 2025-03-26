@@ -13,7 +13,7 @@ resource "azurerm_api_management_api_version_set" "api_debt_positions_for_aca_ap
 }
 
 module "apim_api_debt_positions_for_aca_api_v1" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3//api_management_api?ref=v6.11.2"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                = format("%s-debt-positions-for-aca-service-api", local.product)
   api_management_name = local.pagopa_apim_name
@@ -32,8 +32,7 @@ module "apim_api_debt_positions_for_aca_api_v1" {
 
   content_format = "openapi"
   // the content value is the GPD API v1
-  content_value = templatefile("./../gps-app/api/gpd_api/debt-position-services/v1/_openapi.json.tpl", {
-    host    = local.apim_hostname
+  content_value = templatefile("./api/aca-gpd-like/v1/_openapi.json.tpl", {
     service = module.apim_aca_product.product_id
   })
 
