@@ -137,6 +137,20 @@ route_aks = [
     address_prefix         = "10.222.214.134/32"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # aks nodo nexi oracle settimo onprem 
+    name                   = "aks-outbound-to-nexi-oracle-onprem-settimo-subnet"
+    address_prefix         = "10.102.175.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # aks nodo nexi oracle settimo onprem 
+    name                   = "aks-outbound-to-nexi-oracle-onprem-pero-subnet"
+    address_prefix         = "10.101.175.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
   }
 
 ]
