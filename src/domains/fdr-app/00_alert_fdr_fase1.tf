@@ -1,18 +1,19 @@
 // PROD AzureDiagnostics url_s operationId_s
 // UAT ApiManagementGatewayLogs Url OperationId
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-nodo-error" {
-  for_each            = { for c in local.api_fdr_nodo_alerts : c.operationId_s => c }
-  name                = "fdr-nodo-${each.value.primitiva}-app-exception"
+  count = var.env_short == "p" ? 1 : 0
+
+  name                = "fdr-nodo-PPT_SYSTEM_ERROR-app-exception"
   resource_group_name = data.azurerm_resource_group.fdr_rg.name
   location            = var.location
 
   action {
     action_group           = local.action_groups
-    email_subject          = "FdR Nodo Error - ${each.value.primitiva}"
+    email_subject          = "FdR Nodo Error - PPT_SYSTEM_ERROR"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "Problem calling - ${each.value.primitiva} Error"
+  description    = "Problem calling - PPT_SYSTEM_ERROR Error"
   enabled        = true
   query = (<<-QUERY
       traces
@@ -28,7 +29,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-nodo-error" {
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 1
+    threshold = 150 # gt
   }
 }
 
