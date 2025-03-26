@@ -70,27 +70,6 @@ resource "helm_release" "monitoring_reloader" {
   }
 }
 
-# Kubernetes Event Exporter
-module "kubernetes_event_exporter" {
-  count     = var.env_short != "p" ? 0 : 1
-  source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter?ref=v8.76.0"
-  namespace = "monitoring"
-
-  custom_config = "env/weu-prod/exporter/kubernetes-event-exporter-config.yml.tftpl"
-  custom_variables = {
-    enable_slack           = false
-    enable_opsgenie        = true
-    opsgenie_receiver_name = "opsgenie"
-    opsgenie_api_key       = data.azurerm_key_vault_secret.opsgenie_kubexporter_api_key.0.value
-  }
-}
-
-data "azurerm_key_vault_secret" "opsgenie_kubexporter_api_key" {
-  count        = var.env_short != "p" ? 0 : 1
-  key_vault_id = data.azurerm_key_vault.kv.id
-  name         = "opsgenie-infra-kubexporter-webhook-token"
-}
-
 module "opencosts" {
   enable_opencost      = var.env_short == "d" ? true : false
   source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_opencosts?ref=v8.71.0"
@@ -141,20 +120,18 @@ resource "kubernetes_manifest" "service_monitor" {
 
 # Refer: Resource created on next-core 02_monitor.tf
 data "azurerm_monitor_workspace" "workspace" {
-  count               = var.env != "prod" ? 1 : 0
   name                = "pagopa-${var.env_short}-monitor-workspace"
   resource_group_name = "pagopa-${var.env_short}-monitor-rg"
 }
 
 module "prometheus_managed_addon" {
-  count                  = var.env != "prod" ? 1 : 0
   source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.83.1"
   cluster_name           = module.aks.name
   resource_group_name    = module.aks.aks_resource_group_name
   location               = var.location
   location_short         = var.location_short
-  monitor_workspace_name = data.azurerm_monitor_workspace.workspace.0.name
-  monitor_workspace_rg   = data.azurerm_monitor_workspace.workspace.0.resource_group_name
+  monitor_workspace_name = data.azurerm_monitor_workspace.workspace.name
+  monitor_workspace_rg   = data.azurerm_monitor_workspace.workspace.resource_group_name
   grafana_name           = "pagopa-${var.env_short}-${var.location_short}-grafana"
   grafana_resource_group = "pagopa-${var.env_short}-${var.location_short}-grafana-rg"
 

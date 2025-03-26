@@ -293,7 +293,8 @@ resource "azurerm_api_management_api_operation_policy" "transaction_activation_r
   operation_id        = "newTransactionV3"
 
   xml_content = templatefile("./api/ecommerce-checkout/v3/_transaction_policy.xml.tpl", {
-    pdv_api_base_path = var.pdv_api_base_path
+    pdv_api_base_path         = var.pdv_api_base_path
+    checkout_ingress_hostname = local.checkout_hostname
   })
 }
 

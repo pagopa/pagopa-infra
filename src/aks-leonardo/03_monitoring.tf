@@ -39,50 +39,25 @@ module "elastic_agent" {
 
 }
 
-#
-# Kubernetes Event Exporter
-#
-module "kubernetes_event_exporter" {
-  count     = var.env_short != "p" ? 0 : 1
-  source    = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_event_exporter?ref=v8.76.0"
-  namespace = "monitoring"
-
-  custom_config = "env/itn-prod/exporter/kubernetes-event-exporter-config.yml.tftpl"
-  custom_variables = {
-    enable_slack           = false
-    enable_opsgenie        = true
-    opsgenie_receiver_name = "opsgenie"
-    opsgenie_api_key       = data.azurerm_key_vault_secret.opsgenie_kubexporter_api_key.0.value
-  }
-}
-
-data "azurerm_key_vault_secret" "opsgenie_kubexporter_api_key" {
-  count        = var.env_short != "p" ? 0 : 1
-  key_vault_id = data.azurerm_key_vault.kv_italy.id
-  name         = "opsgenie-infra-kubexporter-webhook-token"
-}
-
 // TODO mettere nel kv il secret quickstart-es-elastic-user tramite sops
 
 
 ## PROMETHUES MANAGED ON AKS
-# Refer: Resource created on next-core 02_monitor.tf
+# Refer: Resource created on core-itn 70_monitoring.tf
 data "azurerm_monitor_workspace" "workspace" {
-  count               = var.env != "prod" ? 1 : 0
   name                = "pagopa-${var.env_short}-${var.location}-monitor-workspace"
   resource_group_name = "pagopa-${var.env_short}-monitor-rg"
 }
 
 module "prometheus_managed_addon" {
-  count                  = var.env != "prod" ? 1 : 0
   source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.84.0"
   cluster_name           = module.aks_leonardo.name
   resource_group_name    = module.aks_leonardo.aks_resource_group_name
   location               = var.location
   custom_gf_location     = "westeurope"
   location_short         = var.location_short
-  monitor_workspace_name = data.azurerm_monitor_workspace.workspace.0.name
-  monitor_workspace_rg   = data.azurerm_monitor_workspace.workspace.0.resource_group_name
+  monitor_workspace_name = data.azurerm_monitor_workspace.workspace.name
+  monitor_workspace_rg   = data.azurerm_monitor_workspace.workspace.resource_group_name
   grafana_name           = "pagopa-${var.env_short}-weu-grafana"    # Integrate with weu grafana
   grafana_resource_group = "pagopa-${var.env_short}-weu-grafana-rg" # Integrate with weu grafana
 
