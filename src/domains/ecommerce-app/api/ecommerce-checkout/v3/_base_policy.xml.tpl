@@ -15,6 +15,8 @@
           <header>Authorization</header>
           <header>x-transaction-id-from-client</header>
           <header>lang</header>
+          <header>x-correlation-id</header>
+          <header>x-client-id-from-client</header>
         </allowed-headers>
       </cors>
       <base />
@@ -27,6 +29,8 @@
         </when>
       </choose>
       <rate-limit-by-key calls="10" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("Authorization",""))" />
+      <!-- use same threshold as for other checkout api's for IP rate limits -->
+      <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
       <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
       <set-header name="X-Client-Id" exists-action="override" >
         <value>CHECKOUT</value>
