@@ -13,7 +13,7 @@ module "gh_runner_job" {
   environment_rg     = local.tools_cae_rg
   gh_identity_suffix = "job-01"
   gh_env             = var.env
-  runner_labels      = ["self-hosted-job", "${var.env}"]
+  runner_labels      = ["self-hosted-job", var.env]
   gh_repositories = [
     {
       name : "pagopa-biz-events-service",
@@ -22,6 +22,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-biz-pm-ingestion",
       short_name : "biz-pm-ingest"
+    },
+    {
+      name : "pagopa-biz-events-sync-nodo",
+      short_name : "biz-sync-nodo"
     }
   ]
   job = {
@@ -29,9 +33,12 @@ module "gh_runner_job" {
   }
   job_meta = {}
   key_vault = {
-    name        = "${local.product}-kv"     # Name of the KeyVault which stores PAT as secret
-    rg          = "${local.product}-sec-rg" # Resource group of the KeyVault which stores PAT as secret
-    secret_name = "gh-runner-job-pat"       # Data of the KeyVault which stores PAT as secret
+    name = "${local.product}-kv"
+    # Name of the KeyVault which stores PAT as secret
+    rg = "${local.product}-sec-rg"
+    # Resource group of the KeyVault which stores PAT as secret
+    secret_name = "gh-runner-job-pat"
+    # Data of the KeyVault which stores PAT as secret
   }
   kubernetes_deploy = {
     enabled      = true
