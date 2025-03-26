@@ -14,6 +14,7 @@ locals {
     "pagopa-fdr",                    # FdR-3
     "pagopa-fdr-2-event-hub",
     "pagopa-fdr-xml-to-json",
+    "pagopa-fdr-json-to-xml",
   ]
 
   federations_01 = [
