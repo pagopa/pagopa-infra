@@ -22,6 +22,7 @@
 | <a name="module_apim_api_bizevents_transactions_api_jwt_v1"></a> [apim\_api\_bizevents\_transactions\_api\_jwt\_v1](#module\_apim\_api\_bizevents\_transactions\_api\_jwt\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_bizevents_transactions_api_v1"></a> [apim\_api\_bizevents\_transactions\_api\_v1](#module\_apim\_api\_bizevents\_transactions\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_bizevents_helpdesk_product"></a> [apim\_bizevents\_helpdesk\_product](#module\_apim\_bizevents\_helpdesk\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_bizevents_nodo_sync_product"></a> [apim\_bizevents\_nodo\_sync\_product](#module\_apim\_bizevents\_nodo\_sync\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_bizevents_product"></a> [apim\_bizevents\_product](#module\_apim\_bizevents\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_bizevents_product_all_in_one"></a> [apim\_bizevents\_product\_all\_in\_one](#module\_apim\_bizevents\_product\_all\_in\_one) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_lap_product"></a> [apim\_lap\_product](#module\_apim\_lap\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
