@@ -55,18 +55,6 @@ ddos_protection_plan = {
 }
 
 route_table_peering_sia_additional_routes = [
-  {
-    address_prefix         = "10.101.175.0/24"
-    name                   = "to-nodo-db-oracle-pero"
-    next_hop_in_ip_address = "10.70.249.10"
-    next_hop_type          = "VirtualAppliance"
-  },
-  {
-    address_prefix         = "10.102.175.0/24"
-    name                   = "to-nodo-db-oracle-settimo"
-    next_hop_in_ip_address = "10.70.249.10"
-    next_hop_type          = "VirtualAppliance"
-  }
 ]
 
 #
