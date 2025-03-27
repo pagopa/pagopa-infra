@@ -137,3 +137,7 @@ data "azurerm_resource_group" "rg_api" {
 data "azurerm_resource_group" "identity_rg" {
   name = "${local.product}-identity-rg"
 }
+
+data "azurerm_resource_group" "fdr_rg" {
+  name = "${local.project}-rg"
+}
