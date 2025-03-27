@@ -63,7 +63,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_psp_availabili
       | where availability < threshold
     QUERY
   )
-  severity    = 3
+  severity    = 0
   frequency   = 15
   time_window = 15
   trigger {
@@ -80,7 +80,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_org_availabili
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group           = local.action_groups
     email_subject          = "FdR Orgs - Error"
     custom_webhook_payload = "{}"
   }
@@ -100,7 +100,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_org_availabili
       | where availability < threshold
     QUERY
   )
-  severity    = 3
+  severity    = 0
   frequency   = 15
   time_window = 15
   trigger {
