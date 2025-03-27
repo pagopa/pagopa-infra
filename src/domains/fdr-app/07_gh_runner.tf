@@ -34,6 +34,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-fdr-json-to-xml",
       short_name : "fdr-json2xml"
+    },
+    {
+      name : "pagopa-fdr-technical-support",
+      short_name : "fdr-tech"
     }
   ]
   job = {
