@@ -15,8 +15,8 @@ locals {
     "pagopa-fdr-2-event-hub",
     "pagopa-fdr-xml-to-json",
     "pagopa-fdr-json-to-xml",
-    "pagopa-fdr-technical-support"  
-]
+    "pagopa-fdr-technical-support"
+  ]
 
   federations_01 = [
     for repo in local.repos_01 : {
