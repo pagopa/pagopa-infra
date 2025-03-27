@@ -21,6 +21,9 @@ spec:
         - key: deployment.environment
           value: ${deployment_env}
           action: upsert
+        - key: data_stream.namespace
+          value: ${elastic_namespace}
+          action: upsert
 
     exporters:
       logging:
