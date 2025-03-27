@@ -1,194 +1,241 @@
 -- PROCEDURE: partition.archive_partition()
-
 -- DROP PROCEDURE IF EXISTS partition.archive_partition();
+CREATE OR replace PROCEDURE PARTITION.archive_partition( ) LANGUAGE 'plpgsql'
+AS
+  $body$
+  DECLARE
+    l_partname text;
+    l_part_list  DATE;
+    l_part_listb DATE;
+    l_partab text;
+    l_sql text;
+    l_exist text;
+    l_var_exist  INTEGER;
+    loop_counter INTEGER;
+    ptdatainizio timestamp := clock_timestamp();
+    ptdatainiziostep timestamp;
+    iidtrace NUMERIC;
+    sutente text := USER;
+    tab_cursor
+    CURSOR FOR
+      SELECT *
+      FROM   dblink('conn_db_link', 'SELECT NOME_TABELLA, NOME_SCHEMA, NOME_PARTITION FROM partition.storico_part WHERE STATO=''N'' ORDER BY 3') AS t( campo1 CHARACTER varying, campo2 CHARACTER varying, campo3 CHARACTER varying);
 
-CREATE OR REPLACE PROCEDURE partition.archive_partition(
-	)
-LANGUAGE 'plpgsql'
-AS $BODY$
+tnomepartizione text;
+tnomeschema text;
+tnometabella text;
+ncolumns INTEGER;
+campi_cursor
+CURSOR FOR
+  SELECT column_name,
+         data_type,
+         ordinal_position
+  FROM   information_schema.COLUMNS
+  WHERE  table_name =tnometabella
+  AND    table_schema =tnomeschema;
 
-DECLARE
-
-l_partname TEXT;
-l_part_list date;
-l_part_listb date;
-l_partab TEXT;
-l_sql text;
-l_exist text;
-l_var_exist integer;
-loop_counter INTEGER;
-
-ptDataInizio timestamp :=  clock_timestamp();
-ptDataInizioStep timestamp;
-iIdTrace NUMERIC;
-sUtente         TEXT := USER;
-
-    tab_cursor CURSOR FOR
-        SELECT * FROM dblink('conn_db_link', 'SELECT
-			NOME_TABELLA,
-			NOME_SCHEMA,
-			NOME_PARTITION
-		FROM partition.storico_part
-		WHERE STATO=''N'' ORDER BY 3')
-		as t(
-		campo1  character varying,
-		campo2  character varying,
-		campo3  character varying);
-
-    tNomePartizione TEXT;
-    tNomeSchema TEXT;
-    tNomeTabella TEXT;
-	nColumns INTEGER;
-
-	campi_cursor CURSOR FOR
-		SELECT column_name, data_type, ordinal_position
-		FROM information_schema.columns
-		WHERE table_name =tNomeTabella and table_schema =tNomeSchema;
-
-	tNomeColonna TEXT;
-	tTipoColonna TEXT;
-	tLungColonna TEXT;
-	nPosizioneColonna INTEGER;
-	tTypeRecord TEXT;
-	nColonne INTEGER;
-	tLabelStep TEXT;
-	resultConnDBLINK TEXT;
---	koConnDBLINK EXCEPTION;
-	tMessageRaise TEXT;
-	tConnDbLink TEXT;
-	esitoUpdate TEXT;
-	nRowInsert NUMERIC;
+tnomecolonna text;
+ttipocolonna text;
+tlungcolonna text;
+nposizionecolonna INTEGER;
+ttyperecord text;
+ncolonne INTEGER;
+tlabelstep text;
+resultconndblink text;
+-- koConnDBLINK EXCEPTION;
+tmessageraise text;
+tconndblink text;
+esitoupdate text;
+nrowinsert NUMERIC;
 BEGIN
+  tlabelstep := 'Init';
+  iidtrace := NEXTVAL('partition.seq_log'::regclass);
+  INSERT INTO PARTITION.pg_log VALUES
+              (
+                          iidtrace,
+                          sutente,
+                          'archive_partition',
+                          ptdatainizio,
+                          clock_timestamp(),
+                          (clock_timestamp()- ptdatainizio) ,
+                          'OK',
+                          'INIZIO',
+                          tlabelstep
+              );
 
-tLabelStep := 'Init';
-iIdTrace := nextval('partition.seq_log'::regclass);
-INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'archive_partition', ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','INIZIO',tLabelStep);
-tMessageRaise:= 'NULLO';
+  tmessageraise:= 'NULLO';
+  BEGIN
+    SELECT elem
+    INTO   tconndblink
+    FROM   (
+                  SELECT unnest(dblink_get_connections()::text[]) AS elem ) x
+    WHERE  elem = 'conn_db_link';
 
-BEGIN
-	SELECT elem  into tConnDbLink
-FROM  (
-    SELECT unnest(dblink_get_connections()::text[]) AS elem
-    ) x WHERE ELEM = 'conn_db_link';
-EXCEPTION WHEN NO_DATA_FOUND THEN
+  EXCEPTION
+  WHEN no_data_found THEN
+    tconndblink := 'NULLO';
+  END;
+  IF tconndblink != 'conn_db_link'
+    OR
+    tconndblink IS NULL THEN
+    RAISE notice 'connessione non presente: creo';
+    SELECT dblink_connect('conn_db_link','connsvinodo')
+    INTO   resultconndblink;
 
-tConnDbLink := 'NULLO';
+  ELSE
+    RAISE notice 'connessione presente';
+    resultconndblink = 'OK';
+  END IF;
+  RAISE notice 'connessione: %', resultconndblink;
+  IF resultconndblink = 'OK' THEN
+    OPEN tab_cursor;
+    LOOP
+      FETCH NEXT
+      FROM  tab_cursor
+      INTO  tnometabella,
+            tnomeschema,
+            tnomepartizione;
 
-END;
+      EXIT
+    WHEN NOT FOUND;
+      ------------------------------------------------------------------------------------------------------
+      RAISE notice 'nome tabella: %, nome partizione: %', tnometabella, tnomepartizione;
+      --costruisco il type del record da copiare
+      tlabelstep := concat('nColonne - tNomeTabella:',tnometabella,' - tNomeSchema',tnomeschema);
+      SELECT count(*)
+      INTO   ncolonne
+      FROM   information_schema.COLUMNS
+      WHERE  table_name =tnometabella
+      AND    table_schema =tnomeschema;
 
-IF tConnDbLink != 'conn_db_link' OR tConnDbLink IS NULL THEN
-  RAISE NOTICE 'connessione non presente: creo';
-	SELECT dblink_connect('conn_db_link','connsvinodo') into resultConnDBLINK;
-ELSE
-  RAISE NOTICE 'connessione presente';
-	resultConnDBLINK = 'OK';
-END IF;
+      ttyperecord := NULL;
+      tlabelstep := 'OPEN campi_cursor';
+      OPEN campi_cursor;
+      LOOP
+        FETCH NEXT
+        FROM  campi_cursor
+        INTO  tnomecolonna,
+              ttipocolonna,
+              nposizionecolonna;
 
-RAISE NOTICE 'connessione: %', resultConnDBLINK;
-if resultConnDBLINK = 'OK' THEN
+        EXIT
+      WHEN NOT FOUND;
+        tlabelstep :=concat(tlabelstep,' - PosizioneColonna',nposizionecolonna);
+        ttyperecord := concat(ttyperecord,tnomecolonna,' ',ttipocolonna);
+        IF ncolonne != nposizionecolonna THEN
+          ttyperecord := concat(ttyperecord,', ');
+        END IF;
+      END LOOP;
+      CLOSE campi_cursor;
+      /* call online.PR_LOG(ptProcesso => CAST('archive_partition' AS TEXT),
+ptDataInizio => now(),
+ptEsito => CAST('OK' AS TEXT),
+ptMessaggio => CAST(tTypeRecord AS TEXT),
+ptNote => CAST('STEP pre-insert' AS TEXT));
+*/
+      --copio i dati della partizione
+      ptdatainiziostep :=clock_timestamp();
+      tlabelstep := concat('INSERT - NomePartizione:', tnomepartizione, ', NomeSchema:',tnomeschema);
+      l_sql := format('INSERT INTO %I.%I SELECT * FROM dblink(''conn_db_link'', ''SELECT * FROM %I.%I'') as t(%s)', tnomeschema, tnomepartizione, tnomeschema, tnomepartizione, ttyperecord );
+      RAISE notice 'sql: %', l_sql;
+      EXECUTE l_sql;
+      GET diagnostics nrowinsert = row_count;
+      iidtrace := NEXTVAL('partition.seq_log'::regclass);
+      INSERT INTO PARTITION.pg_log VALUES
+                  (
+                              iidtrace,
+                              sutente,
+                              'archive_partition',
+                              ptdatainiziostep,
+                              clock_timestamp(),
+                              (clock_timestamp()- ptdatainiziostep) ,
+                              'OK',
+                              'STEP INSERT',
+                                          concat(tlabelstep,' - nRowInsert=',nrowinsert)
+                  );
 
-	OPEN tab_cursor;
-		LOOP
-			FETCH NEXT FROM tab_cursor INTO tNomeTabella,tNomeSchema,tNomePartizione;
-			EXIT WHEN NOT FOUND;
+      RAISE notice 'nRowInsert: %', nrowinsert;
+      ------------------------------------------------------------------------------------------------------
+      -- AGGIORNO LA TABELLA STORICO_PART per settare che la storicizzazione è avvenuta
+      tlabelstep := concat('UPDATE - NomePartizione:', tnomepartizione, ', NomeSchema:',tnomeschema);
+      ptdatainiziostep :=clock_timestamp();
+      RAISE notice 'update sql: UPDATE partition.storico_part SET STATO=''Y'', MODIFICATION_DATE=NOW() WHERE nome_tabella =''%'' AND nome_partition =''%'' AND nome_schema =''%'' AND STATO=''N''', tnometabella, tnomepartizione, tnomeschema;
+      SELECT *
+      INTO   esitoupdate
+      FROM   dblink('conn_db_link', 'UPDATE partition.storico_part SET STATO=''Y'', MODIFICATION_DATE=NOW()  WHERE nome_tabella ='''
+                    ||tnometabella
+                    || ''' AND nome_partition ='''
+                    ||tnomepartizione
+                    || ''' AND nome_schema ='''
+                    ||tnomeschema
+                    || ''' AND STATO=''N''') tt( updated text);
 
-	------------------------------------------------------------------------------------------------------
-	RAISE NOTICE 'nome tabella: %, nome partizione: %', tNomeTabella, tNomePartizione;
-			--costruisco il type del record da copiare
-	tLabelStep := concat('nColonne - tNomeTabella:',tNomeTabella,' - tNomeSchema',tNomeSchema);
-		SELECT COUNT(*) into nColonne
-		FROM information_schema.columns
-		WHERE table_name =tNomeTabella and table_schema =tNomeSchema;
+      iidtrace := NEXTVAL('partition.seq_log'::regclass);
+      INSERT INTO PARTITION.pg_log VALUES
+                  (
+                              iidtrace,
+                              sutente,
+                              'archive_partition',
+                              ptdatainiziostep,
+                              clock_timestamp(),
+                              (clock_timestamp()- ptdatainiziostep) ,
+                              'OK',
+                              'STEP UPDATE',
+                              tlabelstep
+                                          ||' - '
+                                          ||esitoupdate
+                  );
 
-	tTypeRecord := NULL;
+      RAISE notice 'esitoUpdate: %', esitoupdate;
+    END LOOP;
+    CLOSE tab_cursor;
+    /*call online.PR_LOG(ptProcesso => CAST('archive_partition' AS TEXT),
+ptDataInizio => now(),
+ptEsito => CAST('OK' AS TEXT),
+ptMessaggio => CAST('FINE' AS TEXT),
+ptNote => CAST(l_sql AS TEXT));
+*/
+    iidtrace := NEXTVAL('partition.seq_log'::regclass);
+    INSERT INTO PARTITION.pg_log VALUES
+                (
+                            iidtrace,
+                            sutente,
+                            'archive_partition',
+                            ptdatainizio,
+                            clock_timestamp(),
+                            (clock_timestamp()- ptdatainizio) ,
+                            'OK',
+                            'FINE',
+                            'Procedura eseguita con successo'
+                );
 
-	tLabelStep := 'OPEN campi_cursor';
-		OPEN campi_cursor;
-			LOOP
-				FETCH NEXT FROM campi_cursor INTO tNomeColonna,tTipoColonna,nPosizioneColonna;
-				EXIT WHEN NOT FOUND;
-
-				tLabelStep :=concat(tLabelStep,' - PosizioneColonna',nPosizioneColonna);
-				tTypeRecord := concat(tTypeRecord,tNomeColonna,' ',tTipoColonna);
-
-				IF nColonne != nPosizioneColonna THEN
-					tTypeRecord := concat(tTypeRecord,', ');
-				END IF;
-
-		END LOOP;
-
-	 CLOSE campi_cursor;
-
-	 /*	call online.PR_LOG(ptProcesso => CAST('archive_partition' AS TEXT),
-			   ptDataInizio => now(),
-			   ptEsito => CAST('OK' AS TEXT),
-			   ptMessaggio => CAST(tTypeRecord AS TEXT),
-			   ptNote => CAST('STEP pre-insert' AS TEXT));
-			   */
-	--copio i dati della partizione
-	ptDataInizioStep :=clock_timestamp();
-	 tLabelStep := concat('INSERT - NomePartizione:', tNomePartizione, ', NomeSchema:',tNomeSchema);
-			l_sql := format('INSERT INTO %I.%I SELECT * FROM dblink(''conn_db_link'', ''SELECT * FROM %I.%I'')
-							as t(%s)',  tNomeSchema, tNomePartizione, tNomeSchema, tNomePartizione, tTypeRecord );
-      RAISE NOTICE 'sql: %', l_sql;
-			execute l_sql;
-	 GET DIAGNOSTICS nRowInsert = ROW_COUNT;
-	 iIdTrace := nextval('partition.seq_log'::regclass);
-	 INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'archive_partition', ptDataInizioStep, clock_timestamp(), (clock_timestamp()- ptDataInizioStep) ,'OK','STEP INSERT',CONCAT(tLabelStep,' - nRowInsert=',nRowInsert));
-   RAISE NOTICE 'nRowInsert: %', nRowInsert;
-	------------------------------------------------------------------------------------------------------
-	-- AGGIORNO LA TABELLA STORICO_PART per settare che la storicizzazione è avvenuta
-	tLabelStep := concat('UPDATE - NomePartizione:', tNomePartizione, ', NomeSchema:',tNomeSchema);
-	ptDataInizioStep :=clock_timestamp();
-	SELECT * into esitoUpdate
-			FROM dblink('conn_db_link', 'UPDATE partition.storico_part SET STATO=''Y'', MODIFICATION_DATE=NOW()
-						 WHERE nome_tabella ='''||tNomeTabella||
-						 ''' AND nome_partition ='''||tNomePartizione||
-						 ''' AND nome_schema ='''||tNomeSchema||
-						 ''' AND STATO=''N''') tt(
-     		updated text);
-
-	iIdTrace := nextval('partition.seq_log'::regclass);
-	 INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'archive_partition', ptDataInizioStep, clock_timestamp(), (clock_timestamp()- ptDataInizioStep) ,'OK','STEP UPDATE',tLabelStep||' - '||esitoUpdate);
-   RAISE NOTICE 'esitoUpdate: %', esitoUpdate;
-	 END LOOP;
-
-	 CLOSE tab_cursor;
-
-		/*call online.PR_LOG(ptProcesso => CAST('archive_partition' AS TEXT),
-			   ptDataInizio => now(),
-			   ptEsito => CAST('OK' AS TEXT),
-			   ptMessaggio => CAST('FINE' AS TEXT),
-			   ptNote => CAST(l_sql AS TEXT));
-			   */
-
-		iIdTrace := nextval('partition.seq_log'::regclass);
-		INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'archive_partition', ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','FINE','Procedura eseguita con successo');
-
-ELSE
-
---	RAISE EXCEPTION koConnDBLINK;
-tMessageRaise:= 'Errore connessione DBlink';
-RAISE;
-
-END IF;
-
+  ELSE
+    -- RAISE EXCEPTION koConnDBLINK;
+    tmessageraise:= 'Errore connessione DBlink';
+    RAISE;
+  END IF;
 EXCEPTION
 WHEN OTHERS THEN
-
-		iIdTrace := nextval('partition.seq_log'::regclass);
-		INSERT INTO partition.pg_log values (iIdTrace,sUtente, 'archive_partition', ptDataInizio, clock_timestamp(), ( clock_timestamp()- ptDataInizio) ,'KO','FINE',
-								  CONCAT('Step:',tLabelStep,' , Message : ',tMessageRaise,' , tConnDbLink : ',tConnDbLink,', sqlerrm : ',sqlerrm));
+  iidtrace := NEXTVAL('partition.seq_log'::regclass);
+  INSERT INTO PARTITION.pg_log VALUES
+              (
+                          iidtrace,
+                          sutente,
+                          'archive_partition',
+                          ptdatainizio,
+                          clock_timestamp(),
+                          ( clock_timestamp()- ptdatainizio) ,
+                          'KO',
+                          'FINE',
+                                      concat('Step:',tlabelstep,' , Message : ',tmessageraise,' , tConnDbLink : ',tconndblink,', sqlerrm : ',SQLERRM)
+              );
 
 END;
-$BODY$
-;
-
-ALTER PROCEDURE partition.archive_partition()
-    OWNER TO partition;
-
-GRANT EXECUTE ON PROCEDURE partition.archive_partition() TO PUBLIC;
-
-GRANT EXECUTE ON PROCEDURE partition.archive_partition() TO azureuser;
-
-GRANT EXECUTE ON PROCEDURE partition.archive_partition() TO partition;
+$body$ ;
+ALTERPROCEDURE PARTITION.archive_partition() owner TO PARTITION;
+  GRANT EXECUTE ON
+PROCEDURE PARTITION.archive_partition() TO PUBLIC;
+  GRANT EXECUTE ON
+PROCEDURE PARTITION.archive_partition() TO azureuser;
+  GRANT EXECUTE ON
+PROCEDURE PARTITION.archive_partition() TO PARTITION;
