@@ -56,3 +56,21 @@ resource "azurerm_api_management_api_operation_policy" "create_debt_position_v1_
     service_type_value = "ACA"
   })
 }
+
+resource "terraform_data" "sha256_service_type_set_fragment" {
+  input = sha256(file("./api/aca-gpd-like/service_type_set_fragment.xml"))
+}
+
+resource "azapi_resource" "service_type_set_fragment" {
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "service-type-set"
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Component that is used to set service type in ACA"
+      format      = "rawxml"
+      value       = templatefile("./api/aca-gpd-like/service_type_set_fragment.xml", {})
+    }
+  })
+}
