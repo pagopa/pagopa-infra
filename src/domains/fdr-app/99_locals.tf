@@ -13,6 +13,7 @@ locals {
 
   monitor_appinsights_name           = "${local.product}-appinsights"
   monitor_action_group_slack_name    = "SlackPagoPA"
+  monitor_action_group_slack_pagamenti_alert_name    = "PagamentiAlert"
   monitor_action_group_email_name    = "PagoPA"
   monitor_action_group_opsgenie_name = "Opsgenie"
 
