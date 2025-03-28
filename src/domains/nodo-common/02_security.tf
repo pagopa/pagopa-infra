@@ -150,6 +150,14 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_tablest
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_negative_biz_evt_pagopa_negative_biz_evt_tx" {
+  name         = "azure-event-hub-negative-biz-evt-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-tx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 /*****************
 CosmosDB
 *****************/
