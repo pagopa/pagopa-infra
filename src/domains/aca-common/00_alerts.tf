@@ -31,7 +31,7 @@ AzureDiagnostics
 | summarize
     Total=count(),
     Success=countif(
-        responseCode_d < 400 or
+        responseCode_d < 500 or
         (operationId_s == "getOrganizationDebtPositionByIUPD" and responseCode_d == 404) //404 for unknown debt positions are count as successful api calls
     )
     by Time = bin(TimeGenerated, 15m)
