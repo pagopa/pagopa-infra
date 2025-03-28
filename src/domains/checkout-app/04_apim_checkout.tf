@@ -44,13 +44,6 @@ module "apim_checkout_auth_product" {
 ## API checkout payment activation ##
 #####################################
 locals {
-  apim_checkout_payment_activations_api = {
-    display_name          = "Checkout 2.0 payment activations API"
-    description           = "API to support payment activations"
-    path                  = "checkout/payments"
-    subscription_required = false
-    service_url           = null
-  }
 
   apim_checkout_payment_activations_auth_api = {
     display_name          = "Checkout payment activations auth API"
@@ -59,60 +52,6 @@ locals {
     subscription_required = true
     service_url           = null
   }
-}
-
-# Payment activation APIs (new)
-resource "azurerm_api_management_api_version_set" "checkout_payment_activations_api" {
-  name                = format("%s-checkout-payment-activations-api", local.parent_project)
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  api_management_name = data.azurerm_api_management.apim.name
-  display_name        = local.apim_checkout_payment_activations_api.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_checkout_payment_activations_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
-
-  name                  = format("%s-checkout-payment-activations-api", local.parent_project)
-  api_management_name   = data.azurerm_api_management.apim.name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_checkout_product[0].product_id]
-  subscription_required = local.apim_checkout_payment_activations_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.checkout_payment_activations_api.id
-  api_version           = "v1"
-  service_url           = local.apim_checkout_payment_activations_api.service_url
-
-  description  = local.apim_checkout_payment_activations_api.description
-  display_name = local.apim_checkout_payment_activations_api.display_name
-  path         = local.apim_checkout_payment_activations_api.path
-  protocols    = ["https"]
-
-  content_format = "swagger-json"
-  content_value = templatefile("./api/checkout/checkout_payment_activations/v1/_swagger.json.tpl", {
-    host = local.apim_hostname
-  })
-
-  xml_content = templatefile(var.env_short == "d" ? "./api/checkout/checkout_payment_activations/v1/_base_policy_dev.xml.tpl" : "./api/checkout/checkout_payment_activations/v1/_base_policy.xml.tpl", {
-    origin = format("https://%s.%s/", var.dns_zone_checkout, var.external_domain)
-  })
-}
-
-resource "azurerm_api_management_api_operation_policy" "get_payment_info_api" {
-  api_name            = format("%s-checkout-payment-activations-api-v1", local.parent_project)
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  operation_id        = "getPaymentInfo"
-
-  xml_content = file("./api/checkout/checkout_payment_activations/v1/_recaptcha_check.xml.tpl")
-}
-
-resource "azurerm_api_management_api_operation_policy" "activate_payment_api" {
-  api_name            = format("%s-checkout-payment-activations-api-v1", local.parent_project)
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  operation_id        = "activatePayment"
-
-  xml_content = file("./api/checkout/checkout_payment_activations/v1/_recaptcha_check.xml.tpl")
 }
 
 # Payment activation authenticated APIs
@@ -243,75 +182,6 @@ resource "azurerm_api_management_product_api" "apim_cd_info_wisp_product_v1_apim
   api_name            = resource.azurerm_api_management_api.apim_cd_info_wisp_v1.name
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
-}
-
-# pagopa-ecommerce APIs for checkout
-locals {
-  apim_checkout_ecommerce_api = {
-    # params for all api versions
-    display_name          = "Checkout - ecommerce API"
-    description           = "API for the payment transaction and payment instrument microservices of ecommerce pagoPA platform"
-    path                  = "checkout/ecommerce"
-    subscription_required = false
-    service_url           = null
-  }
-}
-
-resource "azurerm_api_management_api_version_set" "checkout_ecommerce_api_v1" {
-  name                = "${local.parent_project}-checkout-ecommerce-api"
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  api_management_name = data.azurerm_api_management.apim.name
-  display_name        = local.apim_checkout_ecommerce_api.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_checkout_ecommerce_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
-
-  name                  = "${local.parent_project}-checkout-ecommerce-api"
-  api_management_name   = data.azurerm_api_management.apim.name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_checkout_product[0].product_id]
-  subscription_required = local.apim_checkout_ecommerce_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.checkout_ecommerce_api_v1.id
-  api_version           = "v1"
-  service_url           = local.apim_checkout_ecommerce_api.service_url
-
-  description  = local.apim_checkout_ecommerce_api.description
-  display_name = local.apim_checkout_ecommerce_api.display_name
-  path         = local.apim_checkout_ecommerce_api.path
-  protocols    = ["https"]
-
-  content_format = "openapi"
-  content_value = templatefile("./api/checkout/checkout_ecommerce/v1/_openapi.json.tpl", {
-    host = local.apim_hostname
-  })
-
-  xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_base_policy.xml.tpl", {
-    ecommerce_ingress_hostname = var.ecommerce_ingress_hostname,
-    checkout_origin            = var.env_short == "d" || var.env_short == "u" ? "*" : "https://${var.dns_zone_checkout}.${var.external_domain}"
-  })
-}
-
-resource "azurerm_api_management_api_operation_policy" "get_payment_request_info_api" {
-  api_name            = "${local.parent_project}-checkout-ecommerce-api-v1"
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  operation_id        = "getPaymentRequestInfo"
-
-  xml_content = file("./api/checkout/checkout_ecommerce/v1/_recaptcha_check.xml.tpl")
-}
-
-resource "azurerm_api_management_api_operation_policy" "transaction_authorization_request" {
-  api_name            = "${local.parent_project}-checkout-ecommerce-api-v1"
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  operation_id        = "requestTransactionAuthorization"
-
-  xml_content = templatefile("./api/checkout/checkout_ecommerce/v1/_auth_request.xml.tpl", {
-    ecommerce_xpay_psps_list = var.ecommerce_xpay_psps_list
-    ecommerce_vpos_psps_list = var.ecommerce_vpos_psps_list
-  })
 }
 
 ###############
