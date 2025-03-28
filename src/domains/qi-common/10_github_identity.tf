@@ -22,6 +22,13 @@ locals {
     }
   ]
 
+  federations_01_oidc = [
+    for repo in local.repos_01 : {
+      repository = repo
+      subject    = "oidc"
+    }
+  ]
+
   environment_cd_roles = {
     subscription = [
       "Contributor"
@@ -103,6 +110,29 @@ module "identity_ci_01" {
   ]
 }
 
+# create a module for each 20 repos
+module "identity_oidc_01" {
+  source    = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.36.1"
+  prefix    = var.prefix
+  env_short = var.env_short
+  domain    = "${var.domain}-01-oidc"
+
+  identity_role = "cd"
+
+  github_federations = local.federations_01_oidc
+
+  cd_rbac_roles = {
+    subscription_roles = local.environment_cd_roles.subscription
+    resource_groups    = local.environment_cd_roles.resource_groups
+  }
+
+  tags = var.tags
+
+  depends_on = [
+    data.azurerm_resource_group.identity_rg
+  ]
+}
+
 resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
   triggers = {
     aks_id               = data.azurerm_kubernetes_cluster.aks.id
@@ -170,3 +200,12 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_ci_01" {
   ]
 }
 
+# WL-IDENTITY
+# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#Init-workload-identity
+module "workload_identity" {
+  source = "./.terraform/modules/__v3__/kubernetes_workload_identity_init"
+
+  workload_identity_name_prefix         = var.domain
+  workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
+  workload_identity_location            = var.location
+}
