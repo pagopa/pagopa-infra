@@ -28,11 +28,11 @@ data "azurerm_key_vault_secret" "gpd_db_pwd" {
 #   resource_group_name = format("%s-gpd-rg", local.product)
 # }
 
-data "azurerm_postgresql_flexible_server" "postgres_flexible_server_private" {
-  count               = var.env_short == "p" ? 1 : 0 # NEWGPD-DB : DEPRECATED to remove after switch to new WEU gpd  
-  name                = format("%s-gpd-pgflex", local.product)
-  resource_group_name = format("%s-pgres-flex-rg", local.product)
-}
+# data "azurerm_postgresql_flexible_server" "postgres_flexible_server_private" {
+#   count               = var.env_short == "p" ? 1 : 0 # NEWGPD-DB : DEPRECATED to remove after switch to new WEU gpd  
+#   name                = format("%s-gpd-pgflex", local.product)
+#   resource_group_name = format("%s-pgres-flex-rg", local.product)
+# }
 
 data "azurerm_resource_group" "identity_rg" {
   name = "${local.product}-identity-rg"
@@ -58,6 +58,8 @@ data "azurerm_api_management_product" "apim_gpd_integration_product" {
 
 # fetch the apim qa user resource
 data "azurerm_api_management_user" "apim_qa_user" {
+  count = var.env_short != "p" ? 1 : 0
+
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   user_id             = "pagopa-qa-pagopa-it"
