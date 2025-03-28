@@ -174,6 +174,14 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_nodo_de
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_re_nodo_dei_pagamenti_SIA" {
+  name         = "azure-event-hub-re-connection-string"
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-SIA.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 
 /*****************
 CosmosDB
