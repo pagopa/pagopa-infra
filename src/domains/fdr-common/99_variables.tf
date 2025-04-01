@@ -261,40 +261,6 @@ variable "cidr_subnet_cosmosdb_fdr" {
   description = "Cosmos DB address space for fdr."
 }
 
-variable "cosmos_mongo_db_fdr_params" {
-  type = object({
-    enabled        = bool
-    capabilities   = list(string)
-    offer_type     = string
-    server_version = string
-    kind           = string
-    consistency_policy = object({
-      consistency_level       = string
-      max_interval_in_seconds = number
-      max_staleness_prefix    = number
-    })
-    main_geo_location_zone_redundant = bool
-    enable_free_tier                 = bool
-    additional_geo_locations = list(object({
-      location          = string
-      failover_priority = number
-      zone_redundant    = bool
-    }))
-    private_endpoint_enabled          = bool
-    public_network_access_enabled     = bool
-    is_virtual_network_filter_enabled = bool
-    backup_continuous_enabled         = bool
-    enable_serverless                 = bool
-    enable_autoscaling                = bool
-    throughput                        = number
-    max_throughput                    = number
-    container_default_ttl             = number
-    # single container variables
-    fdr_flow_container_ttl    = string
-    fdr_payment_container_ttl = string
-  })
-}
-
 variable "cosmos_mongo_db_fdr_re_params" {
   type = object({
     capabilities   = list(string)

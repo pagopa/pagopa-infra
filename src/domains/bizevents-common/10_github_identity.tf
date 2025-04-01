@@ -16,7 +16,9 @@ data "azurerm_key_vault" "key_vault" {
 locals {
   repos_01 = [
     "pagopa-biz-events-service",
-    "pagopa-biz-pm-ingestion"
+    "pagopa-biz-pm-ingestion",
+    "pagopa-biz-events-sync-nodo",
+    "pagopa-biz-events-datastore"
   ]
 
   federations_01 = [
@@ -73,9 +75,12 @@ resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
 
   secret_permissions = ["Get", "List", "Set", ]
 
-  certificate_permissions = ["SetIssuers", "DeleteIssuers", "Purge", "List", "Get"]
+  certificate_permissions = [
+    "SetIssuers", "DeleteIssuers", "Purge", "List", "Get"
+  ]
   key_permissions = [
-    "Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"
+    "Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt",
+    "GetRotationPolicy"
   ]
 
   storage_permissions = []
@@ -112,4 +117,14 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
   depends_on = [
     module.identity_cd_01
   ]
+}
+
+# WL-IDENTITY
+# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#Init-workload-identity
+module "workload_identity" {
+  source = "./.terraform/modules/__v3__/kubernetes_workload_identity_init"
+
+  workload_identity_name_prefix         = var.domain
+  workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
+  workload_identity_location            = var.location
 }

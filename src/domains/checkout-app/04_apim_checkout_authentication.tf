@@ -69,3 +69,12 @@ resource "azurerm_api_management_api_operation_policy" "checkout_auth_login_api"
 
   xml_content = file("./api/checkout/checkout_auth_service/v1/_recaptcha_check.xml.tpl")
 }
+
+resource "azurerm_api_management_api_operation_policy" "checkout_auth_get_users_api" {
+  api_name            = "${local.project_short}-auth-service-api-v1"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  operation_id        = "authUsers"
+
+  xml_content = file("./api/checkout/checkout_auth_service/v1/_get_user_filter.xml.tpl")
+}
