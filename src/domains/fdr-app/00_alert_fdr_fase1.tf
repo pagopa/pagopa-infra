@@ -1,5 +1,6 @@
-// PROD AzureDiagnostics url_s operationId_s
-// UAT ApiManagementGatewayLogs Url OperationId
+# PROD AzureDiagnostics url_s operationId_s
+# UAT ApiManagementGatewayLogs Url OperationId
+# severity -> 0: critical, 1: error, 2: warning, 3: informational, 4: verbose
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-nodo-error" {
   count = var.env_short == "p" ? 1 : 0
 
@@ -8,7 +9,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-nodo-error" {
   location            = var.location
 
   action {
-    action_group           = local.action_groups_sev3
+    action_group           = local.action_groups_opsgenie
     email_subject          = "FdR Nodo Error - PPT_SYSTEM_ERROR"
     custom_webhook_payload = "{}"
   }
@@ -24,7 +25,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-nodo-error" {
         | order by length desc
     QUERY
   )
-  severity    = 3
+  severity    = 0
   frequency   = 15
   time_window = 15
   trigger {
@@ -41,18 +42,18 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pagopa-fdr-nodo-rest-ava
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_slack_pagopa_pagamenti_alert
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Availability of pagopa-fdr-nodo REST APIs is less than or equal to 99%"
+  description    = "Availability of pagopa-fdr-nodo Internal REST APIs is less than or equal to 99%"
   enabled        = true
   query = (<<-QUERY
 let threshold = 0.99;
 AzureDiagnostics
-| where url_s matches regex "/fdr-legacy/"
+| where url_s matches regex "/fdr-nodo/"
 | summarize
     Total=count(),
     Success=count(responseCode_d < 500)
@@ -76,7 +77,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-nodo-register-
   location            = var.location
 
   action {
-    action_group           = local.action_groups
+    action_group           = local.action_groups_opsgenie
     email_subject          = "FdR Nodo Error - RegisterForValidation"
     custom_webhook_payload = "{}"
   }
@@ -92,7 +93,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-nodo-register-
         | order by length desc
     QUERY
   )
-  severity    = 1
+  severity    = 0
   frequency   = 5
   time_window = 5
   trigger {

@@ -1,4 +1,4 @@
-# AppException during conversion
+# AppException during conversion todo
 # resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appexception" {
 #   count               = (var.enable_fdr3_features && var.env_short == "p") ? 1 : 0
 #   name                = "${module.fdr_xml_to_json_function[0].name}-app-exception"
@@ -6,7 +6,7 @@
 #   location            = var.location
 #
 #   action {
-#     action_group           = local.action_groups_sev3
+#     action_group           = local.local.action_groups_default
 #     email_subject          = "AppException on FdR's XML-to-JSON conversion"
 #     custom_webhook_payload = "{}"
 #   }
@@ -32,7 +32,7 @@
 #   }
 # }
 
-# AppException during conversion (Last retry)
+# AppException during conversion (Last retry) todo update querying exceptions
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appexception_lastretry" {
   count               = (var.enable_fdr3_features && var.env_short == "p") ? 1 : 0
   name                = "fdr-xml-to-json-app-exception-lastretry"
@@ -40,7 +40,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appe
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.slack_pagopa_pagamenti_alert.id]
+    action_group           = local.action_groups_slack_pagopa_pagamenti_alert
     email_subject          = "[FDR-XML-TO-JSON] Last retry"
     custom_webhook_payload = "{}"
   }
@@ -57,7 +57,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appe
   QUERY
     , "pagopafdrxmltojson-queuetrigger"
   )
-  severity    = 1 # 0: critical, 1: error, 2: warning, 3: informational, 4: verbose
+  severity    = 1
   frequency   = 15
   time_window = 15
   trigger {

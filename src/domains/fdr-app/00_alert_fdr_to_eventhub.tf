@@ -16,6 +16,7 @@ locals {
   } : {}
 }
 
+// todo filter only the exceptions in last retry (!), after that set action_group = opsgenie and severity = 0
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-2-event-hub-exception" {
   count = var.env_short == "p" ? 1 : 0
 
@@ -24,7 +25,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-2-event-hub-ex
   location            = var.location
 
   action {
-    action_group  = local.action_groups
+    action_group  = local.action_groups_slack_pagopa_pagamenti_alert
     email_subject = "FdR to EventHub Exception while processing function"
     custom_webhook_payload = jsonencode({
       queryResult = <<-QUERY
@@ -54,6 +55,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-2-event-hub-ex
   }
 }
 
+// todo review exceptions caught: these exceptions should be thrown
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert" {
   for_each = local.message_prefixes
 
@@ -62,7 +64,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert" {
   location            = var.location
 
   action {
-    action_group  = local.action_groups
+    action_group  = local.action_groups_opsgenie
     email_subject = each.value.email_subject
     custom_webhook_payload = jsonencode({
       queryResult = <<-QUERY
