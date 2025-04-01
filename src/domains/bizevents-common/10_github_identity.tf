@@ -17,7 +17,8 @@ locals {
   repos_01 = [
     "pagopa-biz-events-service",
     "pagopa-biz-pm-ingestion",
-    "pagopa-biz-events-sync-nodo"
+    "pagopa-biz-events-sync-nodo",
+    "pagopa-biz-events-datastore"
   ]
 
   federations_01 = [
