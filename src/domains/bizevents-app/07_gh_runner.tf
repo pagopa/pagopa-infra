@@ -26,6 +26,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-biz-events-sync-nodo",
       short_name : "biz-sync-nodo"
+    },
+    {
+      name : "pagopa-biz-events-datastore",
+      short_name : "biz-datastore"
     }
   ]
   job = {
