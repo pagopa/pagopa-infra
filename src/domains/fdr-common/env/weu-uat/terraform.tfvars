@@ -152,11 +152,19 @@ fdr_storage_account = {
   account_tier                       = "Standard"
   account_replication_type           = "LRS"
   blob_versioning_enabled            = false
+  public_network_access_enabled      = false
+  blob_delete_retention_days         = 90
   advanced_threat_protection         = true
   advanced_threat_protection_enabled = false
-  public_network_access_enabled      = true
-  blob_delete_retention_days         = 90
   enable_low_availability_alert      = false
+  backup_enabled                                               = false
+  backup_retention                                             = 0
+  storage_defender_enabled                                     = true
+  storage_defender_override_subscription_settings_enabled      = false
+  storage_defender_sensitive_data_discovery_enabled            = false
+  storage_defender_malware_scanning_on_upload_enabled          = false
+  storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
+  blob_file_retention_days                                     = 14
 }
 
 reporting_fdr_storage_account = {
@@ -168,21 +176,22 @@ reporting_fdr_storage_account = {
   public_network_access_enabled      = true
 }
 
-fdr_re_storage_account = {
-  account_kind                                                 = "StorageV2"
-  account_tier                                                 = "Standard"
-  account_replication_type                                     = "LRS"
-  blob_versioning_enabled                                      = false
-  public_network_access_enabled                                = true
-  blob_delete_retention_days                                   = 1
-  enable_low_availability_alert                                = false
-  storage_defender_enabled                                     = true
-  storage_defender_override_subscription_settings_enabled      = false
-  storage_defender_sensitive_data_discovery_enabled            = false
-  storage_defender_malware_scanning_on_upload_enabled          = false
-  storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
-  blob_file_retention_days                                     = 14
-}
+## TODO [FC] remove
+# fdr_re_storage_account = {
+#   account_kind                                                 = "StorageV2"
+#   account_tier                                                 = "Standard"
+#   account_replication_type                                     = "LRS"
+#   blob_versioning_enabled                                      = false
+#   public_network_access_enabled                                = true
+#   blob_delete_retention_days                                   = 1
+#   enable_low_availability_alert                                = false
+#   storage_defender_enabled                                     = true
+#   storage_defender_override_subscription_settings_enabled      = false
+#   storage_defender_sensitive_data_discovery_enabled            = false
+#   storage_defender_malware_scanning_on_upload_enabled          = false
+#   storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
+#   blob_file_retention_days                                     = 14
+# }
 
 
 #
