@@ -619,11 +619,30 @@ module "app_gw" {
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftnetworkapplicationgateways
   monitor_metric_alert_criteria = {
 
+    compute_units_usage_critical = {
+      description   = "${module.app_gw_integration.name} Critical compute units usage, probably an high traffic peak"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 1
+      auto_mitigate = true
+
+      criteria = [
+        {
+          aggregation = "Average"
+          metric_name = "ComputeUnits"
+          operator    = "GreaterThan"
+          threshold   = 45
+          dimension   = []
+        }
+      ]
+      dynamic_criteria = []
+    }
+
     compute_units_usage = {
       description   = "${module.app_gw.name} Abnormal compute units usage, probably an high traffic peak"
       frequency     = "PT5M"
       window_size   = "PT5M"
-      severity      = 1
+      severity      = 2
       auto_mitigate = true
 
       criteria = []
