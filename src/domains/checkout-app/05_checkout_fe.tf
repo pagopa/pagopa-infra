@@ -132,26 +132,8 @@ module "checkout_cdn" {
       }
     },
     {
-      name  = "RewriteRulesPrivacy"
-      order = 4
-
-      conditions = [{
-        condition_type   = "url_path_condition"
-        operator         = "Equal"
-        match_values     = ["/informativa-privacy"]
-        transforms       = []
-        negate_condition = false
-      }]
-
-      url_rewrite_action = {
-        source_pattern          = "/"
-        destination             = "/privacypolicy/it.html"
-        preserve_unmatched_path = false
-      }
-    },
-    {
       name  = "RewriteRulesTerms"
-      order = 5
+      order = 4
 
       conditions = [{
         condition_type   = "url_path_condition"
@@ -172,7 +154,7 @@ module "checkout_cdn" {
   delivery_rule = [
     {
       name  = "CorsFontForNPG"
-      order = 6
+      order = 5
 
       // conditions
       url_path_conditions       = []
