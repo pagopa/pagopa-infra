@@ -547,17 +547,26 @@ resource "azurerm_key_vault_secret" "api_config_cache_subscription_key_kv" {
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
-data "azurerm_api_management_product" "apim_ecommerce_helpdesk_product" {
-  product_id          = "ecommerce-helpdesk"
+# data "azurerm_api_management_product" "apim_ecommerce_helpdesk_product" {
+#   product_id          = "ecommerce-helpdesk"
+#   api_management_name = local.pagopa_apim_name
+#   resource_group_name = local.pagopa_apim_rg
+# }
+
+data "azurerm_api_management_api" "apim_ecommerce_helpdesk_api_v2" {
+  name                = "pagopa-${var.env_short}-weu-ecommerce-helpdesk-service-api-v2"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
+  revision            = "1"
 }
+
 
 resource "azurerm_api_management_subscription" "ecommerce_helpdesk_subkey" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  product_id    = data.azurerm_api_management_product.apim_ecommerce_helpdesk_product.id
+  # product_id    = data.azurerm_api_management_product.apim_ecommerce_helpdesk_product.id
+  api_id        = replace(data.azurerm_api_management_api.apim_ecommerce_helpdesk_api_v2.id, ";rev=1", "")
   display_name  = "eCommerce Helpdesk for BizEvents system"
   allow_tracing = false
   state         = "active"
