@@ -703,6 +703,9 @@
           },
           {
             "$ref": "#/components/schemas/SearchTransactionRequestEmail"
+          },
+          {
+            "$ref": "#/components/schemas/SearchTransactionRequestFiscalCode"
           }
         ],
         "discriminator": {
@@ -711,7 +714,8 @@
             "RPT_ID": "#/components/schemas/SearchTransactionRequestRptId",
             "PAYMENT_TOKEN": "#/components/schemas/SearchTransactionRequestPaymentToken",
             "TRANSACTION_ID": "#/components/schemas/SearchTransactionRequestTransactionId",
-            "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail"
+            "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail",
+            "USER_FISCAL_CODE": "#/components/schemas/SearchTransactionRequestFiscalCode"
           }
         }
       },
@@ -1101,6 +1105,9 @@
                 },
                 {
                   "$ref": "#/components/schemas/SearchTransactionRequestEmail"
+                },
+                {
+                  "$ref": "#/components/schemas/SearchTransactionRequestFiscalCode"
                 }
               ],
               "discriminator": {
@@ -1109,7 +1116,8 @@
                   "RPT_ID": "#/components/schemas/SearchTransactionRequestRptId",
                   "PAYMENT_TOKEN": "#/components/schemas/SearchTransactionRequestPaymentToken",
                   "TRANSACTION_ID": "#/components/schemas/SearchTransactionRequestTransactionId",
-                  "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail"
+                  "USER_EMAIL": "#/components/schemas/SearchTransactionRequestEmail",
+                  "USER_FISCAL_CODE": "#/components/schemas/SearchTransactionRequestUserFiscalCode"
                 }
               }
             },
@@ -1136,6 +1144,12 @@
                 "value": {
                   "type": "USER_EMAIL",
                   "userEmail": "test@test.it"
+                }
+              },
+              "search by user fiscal code": {
+                "value": {
+                  "type": "USER_FISCAL_CODE",
+                  "userFiscalCode": "user_fiscal_code"
                 }
               }
             }
