@@ -68,6 +68,10 @@ resource "azurerm_kusto_database" "pm_db" {
   hot_cache_period   = var.dexp_pm_db.hot_cache_period
   soft_delete_period = var.dexp_pm_db.soft_delete_period
 
+  lifecycle {
+    prevent_destroy = true
+  }
+
 }
 
 
