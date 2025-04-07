@@ -5,7 +5,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | <= 1.13.1 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.47.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 3.0.2 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.116.0, < 4.0.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.2 |
 
@@ -30,6 +30,7 @@
 | <a name="module_postgres_flexible_snet_replica"></a> [postgres\_flexible\_snet\_replica](#module\_postgres\_flexible\_snet\_replica) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_postgresql_gpd_replica_db"></a> [postgresql\_gpd\_replica\_db](#module\_postgresql\_gpd\_replica\_db) | ./.terraform/modules/__v3__/postgres_flexible_server_replica | n/a |
 | <a name="module_storage_account_snet"></a> [storage\_account\_snet](#module\_storage\_account\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
 
