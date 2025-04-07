@@ -12,30 +12,30 @@
   ],
   "tags": [],
   "paths": {
-    "/notify/fdr": {
+    "/convert/fdr3": {
       "post": {
         "tags": [
           "Fdr fase 1"
         ],
-        "summary": "Notify fdr to convert",
-        "description": "Notify fdr to convert",
-        "operationId": "notifyFdrToConvert",
+        "summary": "Convert FdR 3 flow to FdR 1 flow",
+        "description": "Convert FdR 3 flow to FdR 1 flow and persist it on DB and Blob storage",
+        "operationId": "convertFlussoRendicontazione",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NotifyFdr"
+                "$ref": "#/components/schemas/ConvertRequest"
               }
             }
           }
         },
-        "responses" : {
-          "200" : {
-            "description" : "Success",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/GenericResponse"
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GenericResponse"
                 }
               }
             }
@@ -94,30 +94,6 @@
   },
   "components": {
     "schemas": {
-      "NotifyFdr": {
-        "type": "object",
-        "required": [
-          "fdr",
-          "pspId",
-          "retry",
-          "revision"
-        ],
-        "properties": {
-          "fdr": {
-            "type": "string"
-          },
-          "pspId": {
-            "type": "string"
-          },
-          "retry": {
-            "type": "integer"
-          },
-          "revision": {
-            "type": "integer"
-          }
-        },
-        "additionalProperties": false
-      },
       "GenericResponse": {
         "type": "object",
         "required": [
@@ -140,6 +116,23 @@
           "xmlRendicontazione": {
             "type": "string",
             "example": "Y2lhbwo="
+          }
+        }
+      },
+            "ConvertRequest": {
+        "required": [
+          "payload"
+        ],
+        "type": "object",
+        "properties": {
+          "payload": {
+            "description": "Payload with the encoded flow from FdR3",
+            "type": "string",
+            "example": "YWJjZGVmZw=="
+          },
+          "encoding": {
+            "type": "string",
+            "example": "base64"
           }
         }
       },
