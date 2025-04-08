@@ -631,7 +631,7 @@ module "app_gw" {
           aggregation = "Average"
           metric_name = "ComputeUnits"
           operator    = "GreaterThan"
-          threshold   = 45
+          threshold   = floor(var.app_gateway_max_capacity * 90 / 100)
           dimension   = []
         }
       ]
