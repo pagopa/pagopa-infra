@@ -1,94 +1,60 @@
-locals {
-
-  message_prefixes = var.env_short == "p" ? {
-    "FDR-E1" = {
-      description   = "Error while sending to EventHub."
-      email_subject = "FdR to EventHub common error FDR-E1"
-    },
-    "FDR-E2" = {
-      description   = "Error while process XML Blob."
-      email_subject = "FdR to EventHub common error FDR-E2"
-    },
-    "FDR1-E1" = {
-      description   = "Error processing Blob in processFDR1BlobFiles function"
-      email_subject = "FdR to EventHub error FDR1-E1"
-    }
-  } : {}
-}
-
-// todo filter only the exceptions in last retry (!), after that set action_group = opsgenie and severity = 0
-resource "azurerm_monitor_scheduled_query_rules_alert" "alert-fdr-2-event-hub-exception" {
+// todo filter only the exceptions in last retry (!), at the moment we're querying all traces (sampled!) and don't get the last retry exception.
+resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_1_exception_alert" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = "fdr-2-event-hub-alert-exception"
+  name                = "fdr-2-event-hub-alert-fdr-1-error"
   resource_group_name = data.azurerm_resource_group.fdr_rg.name
   location            = var.location
 
   action {
-    action_group  = local.action_groups_slack_pagopa_pagamenti_alert
-    email_subject = "FdR to EventHub Exception while processing function"
-    custom_webhook_payload = jsonencode({
-      queryResult = <<-QUERY
-        exceptions
-        | where timestamp > ago(5m)
-        | where cloud_RoleName == 'pagopafdrtoeventhub'
-        | summarize count() by outerType
-      QUERY
-    })
+    action_group           = local.action_groups_opsgenie
+    email_subject          = "FdR to EventHub error FDR1"
+    custom_webhook_payload = "{}"
   }
+
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "FdR to EventHub Exception while processing function"
+  description    = "Error processing Blob in processFDR1BlobFiles function"
   enabled        = true
-  query = (<<-QUERY
-            exceptions
-            | where timestamp > ago(10m)
-            | where cloud_RoleName == 'pagopafdrtoeventhub'
-            | summarize Total=count() by length=bin(timestamp,5m)
-          QUERY
-  )
-  severity    = 1
-  frequency   = 5
-  time_window = 5
+  query          = <<-QUERY
+      traces
+      | where timestamp > ago(5m)
+      | where cloud_RoleName == "pagopafdrtoeventhubfdr1blobtrigger"
+      | where message startswith "[FDR1-E1]"
+      | summarize Total=count() by length=bin(timestamp,5m)
+  QUERY
+  severity       = 0
+  frequency      = 5
+  time_window    = 5
   trigger {
     operator  = "GreaterThanOrEqual"
     threshold = 1
   }
 }
 
-// todo review exceptions caught: these exceptions should be thrown
-resource "azurerm_monitor_scheduled_query_rules_alert" "alert" {
-  for_each = local.message_prefixes
+resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_3_exception_alert" {
+  count = var.env_short == "p" ? 1 : 0
 
-  name                = "fdr-2-event-hub-alert-${each.key}-common-error"
+  name                = "fdr-2-event-hub-alert-fdr-3-error"
   resource_group_name = data.azurerm_resource_group.fdr_rg.name
   location            = var.location
 
   action {
-    action_group  = local.action_groups_opsgenie
-    email_subject = each.value.email_subject
-    custom_webhook_payload = jsonencode({
-      queryResult = <<-QUERY
-        traces
-        | where timestamp > ago(5m)
-        | where cloud_RoleName == 'pagopafdrtoeventhub'
-        | where message startswith "${each.key}"
-        | limit 1
-        | project message
-      QUERY
-    })
+    action_group           = local.action_groups_opsgenie
+    email_subject          = "FdR to EventHub error FDR3"
+    custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = each.value.description
+  description    = "Error processing Blob in processFDR3BlobFiles function"
   enabled        = true
   query          = <<-QUERY
-            traces
-            | where timestamp > ago(5m)
-            | where cloud_RoleName == 'pagopafdrtoeventhub'
-            | where message startswith "${each.key}"
-            | summarize Total=count() by length=bin(timestamp,5m)
-          QUERY
-  severity       = 1
+      traces
+      | where timestamp > ago(5m)
+      | where cloud_RoleName == "pagopafdrtoeventhubfdr3blobtrigger"
+      | where message startswith "[FDR3-E1]"
+      | summarize Total=count() by length=bin(timestamp,5m)
+  QUERY
+  severity       = 0
   frequency      = 5
   time_window    = 5
   trigger {

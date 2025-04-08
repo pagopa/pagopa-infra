@@ -1,6 +1,6 @@
 # AppException during conversion (Last retry)
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appexception_lastretry" {
-  count               = (var.enable_fdr3_features && var.env_short == "p") ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   name                = "fdr-xml-to-json-app-exception-lastretry"
   resource_group_name = data.azurerm_resource_group.fdr_rg.name
   location            = var.location
@@ -8,17 +8,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appe
   action {
     action_group           = local.action_groups_slack_pagopa_pagamenti_alert
     email_subject          = "[FDR-XML-TO-JSON] Last retry"
-    custom_webhook_payload = jsonencode({
-      queryResult = format(<<-QUERY
-        exceptions
-          | where cloud_RoleName == "%s"
-          | where message contains "[ALERT][FdrXmlToJson][LAST_RETRY]"
-          | project timestamp, innermostMessage
-          | order by timestamp desc
-      QUERY
-            , "pagopafdrxmltojson-queuetrigger"
-          )
-    })
+    custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "Last retry to convert an FdR from XML to JSON. Please, verify the error saved on fdr1conversion table storage and use /fdr-xml-to-json/service/v1/xmlerror API to perform manually the operation."

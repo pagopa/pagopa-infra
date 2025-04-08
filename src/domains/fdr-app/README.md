@@ -18,7 +18,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
-| <a name="module_apim_api_fdr_legacy_api_v1_internal"></a> [apim\_api\_fdr\_legacy\_api\_v1\_internal](#module\_apim\_api\_fdr\_legacy\_api\_v1\_internal) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_api_fdr_nodo_api_v1_internal"></a> [apim\_api\_fdr\_nodo\_api\_v1\_internal](#module\_apim\_api\_fdr\_nodo\_api\_v1\_internal) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_fdr_nodo_dei_pagamenti_legacy_product"></a> [apim\_fdr\_nodo\_dei\_pagamenti\_legacy\_product](#module\_apim\_fdr\_nodo\_dei\_pagamenti\_legacy\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_fdr_product_internal"></a> [apim\_fdr\_product\_internal](#module\_apim\_fdr\_product\_internal) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_fdr_product_org"></a> [apim\_fdr\_product\_org](#module\_apim\_fdr\_product\_org) | ./.terraform/modules/__v3__/api_management_product | n/a |
@@ -61,8 +61,6 @@
 | [azurerm_key_vault_secret.azure_devops_sa_cacrt](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.azure_devops_sa_token](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_monitor_autoscale_setting.reporting_fdr_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
-| [azurerm_monitor_scheduled_query_rules_alert.alert-fdr-2-event-hub-exception](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.alert-fdr-nodo-error](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.alert-fdr-nodo-register-for-validation-error](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.alert_fdr_internal_availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -70,6 +68,8 @@
 | [azurerm_monitor_scheduled_query_rules_alert.alert_fdr_org_availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.alert_fdr_psp_availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.alert_fdr_xmltojson_appexception_lastretry](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.fdr_1_exception_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
+| [azurerm_monitor_scheduled_query_rules_alert.fdr_3_exception_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.pagopa-fdr-nodo-rest-availability](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_portal_dashboard.fdr-dashboard](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/portal_dashboard) | resource |
 | [azurerm_resource_group.reporting_fdr_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |

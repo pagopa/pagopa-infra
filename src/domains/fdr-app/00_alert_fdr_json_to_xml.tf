@@ -1,21 +1,15 @@
 # AppException during conversion (Last retry)
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_jsontoxml_appexception_lastretry" {
-  count               = (var.enable_fdr3_features && var.env_short == "p") ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
+
   name                = "fdr-json-to-xml-app-exception-lastretry"
   resource_group_name = data.azurerm_resource_group.fdr_rg.name
   location            = var.location
 
   action {
-    action_group  = local.action_groups_slack_pagopa_pagamenti_alert
-    email_subject = "[FDR-JSON-TO-XML] Last retry"
-    custom_webhook_payload = jsonencode({
-      queryResult = <<-QUERY
-        exceptions
-        | where cloud_RoleName == "pagopafdrjsontoxml"
-        | where innermostMessage contains "AlertAppException"
-        | project timestamp, innermostMessage
-      QUERY
-    })
+    action_group           = local.action_groups_slack_pagopa_pagamenti_alert
+    email_subject          = "[FDR-JSON-TO-XML] Last retry"
+    custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_application_insights.application_insights.id
