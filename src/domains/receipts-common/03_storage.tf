@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "st_receipts_rg" {
 }
 
 module "receipts_st_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source = "./.terraform/modules/__v3__/subnet"
 
   name                 = "${local.project}-receipt-st-net"
   address_prefixes     = var.cidr_subnet_receipts_datastore_storage
@@ -66,7 +66,7 @@ resource "azurerm_private_endpoint" "queue_private_endpoint" {
 }
 
 module "receipts_datastore_fn_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                       = replace(format("%s-fn-sa", local.project), "-", "")
   account_kind               = "StorageV2"
