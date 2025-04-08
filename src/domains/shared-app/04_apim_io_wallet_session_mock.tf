@@ -8,7 +8,7 @@ locals {
     path                  = "session-wallet/mock"
     subscription_required = false
     service_url           = null
-    enabled               = var.env_short == "u" ? 1 : 0
+    enabled               = var.env_short != "p" ? 1 : 0
   }
 }
 
