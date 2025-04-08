@@ -7,17 +7,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_1_exception_alert" {
   location            = var.location
 
   action {
-    action_group  = local.action_groups_opsgenie
-    email_subject = "FdR to EventHub error FDR1"
-    custom_webhook_payload = jsonencode({
-      queryResult = <<-QUERY
-        traces
-        | where timestamp > ago(5m)
-        | where cloud_RoleName == "pagopafdrtoeventhubfdr1blobtrigger"
-        | where message startswith "[FDR1-E1]"
-        | project timestamp, message
-      QUERY
-    })
+    action_group           = local.action_groups_opsgenie
+    email_subject          = "FdR to EventHub error FDR1"
+    custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_application_insights.application_insights.id
@@ -47,17 +39,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_3_exception_alert" {
   location            = var.location
 
   action {
-    action_group  = local.action_groups_opsgenie
-    email_subject = "FdR to EventHub error FDR3"
-    custom_webhook_payload = jsonencode({
-      queryResult = <<-QUERY
-        traces
-        | where timestamp > ago(5m)
-        | where cloud_RoleName == "pagopafdrtoeventhubfdr3blobtrigger"
-        | where message startswith "[FDR1-E1]"
-        | project timestamp, message
-      QUERY
-    })
+    action_group           = local.action_groups_opsgenie
+    email_subject          = "FdR to EventHub error FDR3"
+    custom_webhook_payload = "{}"
   }
 
   data_source_id = data.azurerm_application_insights.application_insights.id
