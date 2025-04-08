@@ -6,8 +6,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appe
   location            = var.location
 
   action {
-    action_group           = local.action_groups_slack_pagopa_pagamenti_alert
-    email_subject          = "[FDR-XML-TO-JSON] Last retry"
+    action_group  = local.action_groups_slack_pagopa_pagamenti_alert
+    email_subject = "[FDR-XML-TO-JSON] Last retry"
     custom_webhook_payload = jsonencode({
       queryResult = format(<<-QUERY
         exceptions
@@ -16,8 +16,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appe
           | project timestamp, innermostMessage
           | order by timestamp desc
       QUERY
-            , "pagopafdrxmltojson-queuetrigger"
-          )
+        , "pagopafdrxmltojson-queuetrigger"
+      )
     })
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
