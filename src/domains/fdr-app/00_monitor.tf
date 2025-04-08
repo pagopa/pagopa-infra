@@ -41,3 +41,16 @@ resource "azurerm_portal_dashboard" "fdr-dashboard" {
     env_short       = var.env_short
   })
 }
+
+resource "azurerm_portal_dashboard" "fdr-general-dashboard" {
+  name                = "General-Dashboard-FDR-${var.env}"
+  resource_group_name = var.monitor_resource_group_name
+  location            = var.location
+  tags = {
+    source = "terraform"
+  }
+  dashboard_properties = templatefile("./dashboard/dashboard-general-fdr.json", {
+    subscription_id = data.azurerm_subscription.current.subscription_id,
+    env_short       = var.env_short
+  })
+}
