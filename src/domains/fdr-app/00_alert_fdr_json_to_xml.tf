@@ -19,7 +19,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_jsontoxml_appe
     exceptions
     | where cloud_RoleName == "%s"
     | where innermostMessage contains "AlertAppException"
-    | summarize Total=count()
   QUERY
     , "pagopafdrjsontoxml"
   )
