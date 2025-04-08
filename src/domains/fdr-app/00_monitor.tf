@@ -52,5 +52,7 @@ resource "azurerm_portal_dashboard" "fdr-general-dashboard" {
   dashboard_properties = templatefile("./dashboard/dashboard-general-fdr.json", {
     subscription_id = data.azurerm_subscription.current.subscription_id,
     env_short       = var.env_short
+    env_elk         = var.env_short == "p" ? "p" : "s"
+    env             = var.env
   })
 }
