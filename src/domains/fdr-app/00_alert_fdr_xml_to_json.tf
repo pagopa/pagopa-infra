@@ -13,6 +13,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_xmltojson_appe
         exceptions
           | where cloud_RoleName == "%s"
           | where message contains "[ALERT][FdrXmlToJson][LAST_RETRY]"
+          | project timestamp, innermostMessage
           | order by timestamp desc
       QUERY
             , "pagopafdrxmltojson-queuetrigger"
