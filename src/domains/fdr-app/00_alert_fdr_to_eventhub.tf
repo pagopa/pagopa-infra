@@ -32,7 +32,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_1_exception_alert" {
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "fdr_3_exception_alert" {
-  count = (var.enable_fdr3_features && var.env_short == "p") ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
 
   name                = "fdr-2-event-hub-alert-fdr-3-error"
   resource_group_name = data.azurerm_resource_group.fdr_rg.name

@@ -1,6 +1,6 @@
 # AppException during conversion (Last retry)
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_jsontoxml_appexception_lastretry" {
-  count = (var.enable_fdr3_features && var.env_short == "p") ? 1 : 0
+  count = var.env_short == "p" ? 1 : 0
 
   name                = "fdr-json-to-xml-app-exception-lastretry"
   resource_group_name = data.azurerm_resource_group.fdr_rg.name
