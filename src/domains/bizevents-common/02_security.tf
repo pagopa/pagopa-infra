@@ -572,13 +572,15 @@ resource "azurerm_api_management_subscription" "ecommerce_helpdesk_subkey" {
   state         = "active"
 }
 
-resource "azurerm_key_vault_secret" "ecommerce_helpdesk_subscription_key_kv" {
-  depends_on = [
-    azurerm_api_management_subscription.ecommerce_helpdesk_subkey
-  ]
-  name         = "ecommerce-helpdesk-subscription-key"
-  value        = azurerm_api_management_subscription.ecommerce_helpdesk_subkey.primary_key
-  content_type = "text/plain"
+# MOVE to biz-secrets
+#######
+# resource "azurerm_key_vault_secret" "ecommerce_helpdesk_subscription_key_kv" {
+#   depends_on = [
+#     azurerm_api_management_subscription.ecommerce_helpdesk_subkey
+#   ]
+#   name         = "ecommerce-helpdesk-subscription-key"
+#   value        = azurerm_api_management_subscription.ecommerce_helpdesk_subkey.primary_key
+#   content_type = "text/plain"
 
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
+#   key_vault_id = data.azurerm_key_vault.key_vault.id
+# }
