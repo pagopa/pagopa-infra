@@ -201,6 +201,39 @@ resource "azurerm_key_vault_secret" "ehub_tx_negative_biz_key" {
 }
 
 
+###  used by NPD for : 
+# event-hub-name = "nodo-dei-pagamenti-re"
+# event-hub-name = "nodo-dei-pagamenti-biz-evt"
+# event-hub-name = "nodo-dei-pagamenti-negative-biz-evt"
+# event-hub-name = "nodo-dei-pagamenti-verify-ko"
+# ⚠️  we use bizevents-kv for convenience and centralize all NDP's secret evh's secrets into a single KV
+############
+
+resource "azurerm_key_vault_secret" "ehub_tx_biz_conn_string" {
+  name         = format("ehub-tx-%s-biz-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-tx.primary_connection_string # used by NPD for Biz+ events
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ehub_tx_re_conn_string" {
+  name         = format("ehub-tx-%s-re-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-tx.primary_connection_string # used by NDP fo RE events
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "ehub_tx_biz_gen_conn_string" {
+  name         = format("ehub-tx-%s-biz-neg-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-tx.primary_connection_string # used by NDP fo BIZ- events
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+
+
 ####################
 ## EVENT HUB NS04
 ####################
@@ -253,6 +286,13 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 resource "azurerm_key_vault_secret" "biz_azurewebjobsstorage" {
   name         = format("bizevent-%s-azurewebjobsstorage", var.env_short)
   value        = module.bizevents_datastore_fn_sa.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "biz_view_azurewebjobsstorage" {
+  name         = format("bizevent-view-%s-azurewebjobsstorage", var.env_short)
+  value        = module.bizevents_datastore_fn_sa_bizview.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
