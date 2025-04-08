@@ -12,8 +12,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_jsontoxml_appe
       queryResult = <<-QUERY
         exceptions
         | where cloud_RoleName == "pagopafdrjsontoxml"
-        | where innermostMessage startswith "Result: Failure\nException: AlertAppException:[ALERT][FdrJsonToXml][LAST_RETRY]"
-        | order by timestamp desc
+        | where innermostMessage contains "AlertAppException"
+        | project timestamp, innermostMessage
       QUERY
     })
   }
@@ -24,7 +24,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_jsontoxml_appe
   query = format(<<-QUERY
     exceptions
     | where cloud_RoleName == "%s"
-    | where innermostMessage startswith "Result: Failure\nException: AlertAppException:[ALERT][FdrJsonToXml][LAST_RETRY]"
+    | where innermostMessage contains "AlertAppException"
     | summarize Total=count()
   QUERY
     , "pagopafdrjsontoxml"
