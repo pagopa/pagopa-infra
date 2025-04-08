@@ -114,6 +114,19 @@ variable "dexp_db" {
   })
 }
 
+variable "dexp_pm_db" {
+  type = object({
+    enable             = bool
+    hot_cache_period   = string
+    soft_delete_period = string
+  })
+  default = {
+    enable             = false
+    hot_cache_period   = "P5D"
+    soft_delete_period = "P365D" // "P1Y"
+  }
+}
+
 variable "dexp_re_db_linkes_service" {
   type = object({
     enable = bool
