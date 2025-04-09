@@ -7,6 +7,8 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "prod"
 
+gh_runner_job_location = "italynorth"
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"

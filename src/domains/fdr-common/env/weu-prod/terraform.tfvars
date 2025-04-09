@@ -146,7 +146,7 @@ cosmos_mongo_db_fdr_re_params = {
 
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 4000
+  max_throughput     = 5000
   throughput         = 1000
 }
 
