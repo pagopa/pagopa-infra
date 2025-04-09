@@ -220,12 +220,6 @@
             "type": "object",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/OutcomeVposGateway"
-              },
-              {
-                "$ref": "#/components/schemas/OutcomeXpayGateway"
-              },
-              {
                 "$ref": "#/components/schemas/OutcomeNpgGateway"
               },
               {
@@ -235,8 +229,6 @@
             "discriminator": {
               "propertyName": "paymentGatewayType",
               "mapping": {
-                "XPAY": "#/components/schemas/OutcomeXpayGateway",
-                "VPOS": "#/components/schemas/OutcomeVposGateway",
                 "NPG": "#/components/schemas/OutcomeNpgGateway",
                 "REDIRECT": "#/components/schemas/OutcomeRedirectGateway"
               }
@@ -341,121 +333,6 @@
         "maximum": 600,
         "exclusiveMaximum": true,
         "example": 200
-      },
-      "OutcomeVposGateway": {
-        "type": "object",
-        "properties": {
-          "paymentGatewayType": {
-            "type": "string",
-            "example": "VPOS"
-          },
-          "outcome": {
-            "type": "string",
-            "enum": [
-              "OK",
-              "KO"
-            ]
-          },
-          "rrn": {
-            "type": "string"
-          },
-          "authorizationCode": {
-            "type": "string"
-          },
-          "errorCode": {
-            "type": "string",
-            "description": "error code received from Vpos - https://github.com/pagopa/pagopa-wisp2.0-pp-server/blob/ff0e8e3354fc11d296fe5547b9b00941ead64e96/pp-server/pp-dto/src/main/java/com/pagopa/utils/VposResultCodeEnum.java",
-            "enum": [
-              "00",
-              "01",
-              "02",
-              "03",
-              "04",
-              "05",
-              "06",
-              "07",
-              "08",
-              "09",
-              "10",
-              "11",
-              "12",
-              "13",
-              "16",
-              "17",
-              "20",
-              "21",
-              "25",
-              "26",
-              "35",
-              "37",
-              "38",
-              "40",
-              "41",
-              "50",
-              "51",
-              "98",
-              "99"
-            ]
-          }
-        },
-        "required": [
-          "outcome",
-          "paymentGatewayType"
-        ]
-      },
-      "OutcomeXpayGateway": {
-        "type": "object",
-        "properties": {
-          "paymentGatewayType": {
-            "type": "string",
-            "example": "XPAY"
-          },
-          "outcome": {
-            "type": "string",
-            "enum": [
-              "OK",
-              "KO"
-            ]
-          },
-          "authorizationCode": {
-            "type": "string"
-          },
-          "errorCode": {
-            "type": "number",
-            "description": "error code received from XPay - https://ecommerce.nexi.it/specifiche-tecniche/tabelleecodifiche/codicierroreapirestful.html",
-            "enum": [
-              1,
-              2,
-              3,
-              4,
-              5,
-              7,
-              8,
-              9,
-              12,
-              13,
-              14,
-              15,
-              16,
-              17,
-              18,
-              19,
-              20,
-              21,
-              22,
-              50,
-              96,
-              97,
-              98,
-              99,
-              100
-            ]
-          }
-        },
-        "required": [
-          "outcome",
-          "paymentGatewayType"
-        ]
       },
       "UpdateAuthorizationResponse": {
         "type": "object",
