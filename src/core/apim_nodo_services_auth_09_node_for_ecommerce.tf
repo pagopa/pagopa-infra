@@ -6,7 +6,7 @@ locals {
     display_name          = "Node for eCommerce API"
     description           = "API to support eCommerce transactions"
     path                  = "nodo-auth/node-for-ecommerce"
-    subscription_required = var.nodo_pagamenti_subkey_required
+    subscription_required = true
     service_url           = null
   }
 }
