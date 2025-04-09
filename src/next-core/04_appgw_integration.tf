@@ -272,7 +272,7 @@ module "app_gw_integration" {
           aggregation = "Average"
           metric_name = "ComputeUnits"
           operator    = "GreaterThan"
-          threshold   = 45
+          threshold   = floor(var.integration_app_gateway_max_capacity * 90 / 100)
           dimension   = []
         }
       ]
