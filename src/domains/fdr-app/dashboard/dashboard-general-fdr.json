@@ -1467,7 +1467,7 @@
                         "name": "Transactions",
                         "namespace": "microsoft.storage/storageaccounts",
                         "resourceMetadata": {
-                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-rg/providers/Microsoft.Storage/storageAccounts/pagopadweufdrsa"
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-rg/providers/Microsoft.Storage/storageAccounts/pagopa${env_short}weufdrsa"
                         }
                       }
                     ],
@@ -1525,7 +1525,7 @@
                     "metrics": [
                       {
                         "resourceMetadata": {
-                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-rg/providers/Microsoft.Storage/storageAccounts/pagopauweufdrsa"
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-rg/providers/Microsoft.Storage/storageAccounts/pagopa${env_short}weufdrsa"
                         },
                         "name": "TableEntityCount",
                         "aggregationType": 4,
