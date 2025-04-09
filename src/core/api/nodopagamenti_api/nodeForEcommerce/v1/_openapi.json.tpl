@@ -9,7 +9,6 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "host": "${host}",
   "tags": [
     {
       "name": "eCommerce",
