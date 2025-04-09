@@ -61,7 +61,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionInfo"
+                  "$ref": "#/components/schemas/UpdateAuthorizationResponse"
                 }
               }
             }
@@ -455,6 +455,18 @@
         "required": [
           "outcome",
           "paymentGatewayType"
+        ]
+      },
+      "UpdateAuthorizationResponse": {
+        "type": "object",
+        "description": "Update authorization response",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          }
+        },
+        "required": [
+          "status"
         ]
       },
       "OutcomeNpgGateway": {
