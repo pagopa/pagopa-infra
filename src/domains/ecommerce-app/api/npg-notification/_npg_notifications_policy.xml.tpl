@@ -19,16 +19,7 @@
            var jwt = (Jwt)context.Variables["jwtToken"];
            if(jwt.Claims.ContainsKey("transactionId")){
                string uuidString = jwt.Claims["transactionId"][0];
-               uuidString = uuidString.Replace("-", "");
-               byte[] transactionIdBase64 = new byte[uuidString.Length / 2];
-               for (int i = 0; i < transactionIdBase64.Length; i++)
-               {
-                   transactionIdBase64[i] = Convert.ToByte(uuidString.Substring(i * 2, 2), 16);
-               }
-               return Convert.ToBase64String(transactionIdBase64)
-                   .Replace('+', '-')
-                   .Replace('/', '_')
-                   .Replace("=", "");
+               return uuidString.Replace("-", "");
            }
            return "";
         }" />
@@ -88,7 +79,7 @@
         <!-- end payment method verify session -->
         <!-- send transactions service PATCH request -->
         <set-backend-service base-url="@((string)context.Variables["transactionServiceBackendUri"])" />
-        <rewrite-uri template="@(String.Format("/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))" copy-unmatched-params="false"/>
+        <rewrite-uri template="@(String.Format("/v2/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))" copy-unmatched-params="false"/>
         <set-method>PATCH</set-method>
         <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
