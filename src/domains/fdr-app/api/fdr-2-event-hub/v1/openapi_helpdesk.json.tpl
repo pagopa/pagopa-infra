@@ -8,7 +8,7 @@
   },
   "servers": [
     {
-      "url": "${host}/fdr-2-event-hub/api/v1 - APIM",
+      "url": "${hostname}/fdr-2-event-hub/api/v1 - APIM",
       "description": "Default server url"
     }
   ],
