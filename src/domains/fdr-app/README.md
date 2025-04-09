@@ -150,7 +150,6 @@
 | <a name="input_cname_record_name"></a> [cname\_record\_name](#input\_cname\_record\_name) | n/a | `string` | `"config"` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
-| <a name="input_enable_fdr3_features"></a> [enable\_fdr3\_features](#input\_enable\_fdr3\_features) | Feature flag that enabled FdR-Fase3 APIs | `bool` | `false` | no |
 | <a name="input_enable_fdr_ci_soap_request"></a> [enable\_fdr\_ci\_soap\_request](#input\_enable\_fdr\_ci\_soap\_request) | Switch to pagoPA FdR SOAP request for Orgs | `bool` | n/a | yes |
 | <a name="input_enable_fdr_psp_soap_request"></a> [enable\_fdr\_psp\_soap\_request](#input\_enable\_fdr\_psp\_soap\_request) | Switch to pagoPA FdR SOAP request for PSP | `bool` | n/a | yes |
 | <a name="input_enabled_features"></a> [enabled\_features](#input\_enabled\_features) | Features enabled in this domain | <pre>object({<br/>  })</pre> | `{}` | no |
