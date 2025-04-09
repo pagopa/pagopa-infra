@@ -45,12 +45,12 @@ locals {
 
   apim_snet = "${local.product}-apim-snet"
 
-  fdr_hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
+  # hostname     = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
+  hostname = var.env == "prod" ? "${var.location_short}${var.env}.${var.domain}.internal.platform.pagopa.it" : "${var.location_short}${var.env}.${var.domain}.internal.${var.env}.platform.pagopa.it"
 
-  # TODO fix the following uing fdr_hostname
-  hostname                    = var.env == "prod" ? "weuprod.fdr.internal.platform.pagopa.it" : "weu${var.env}.fdr.internal.${var.env}.platform.pagopa.it"
-  hostnameAzFunctionXmlToJson = var.env == "prod" ? "pagopa-weu-fdr-xml-to-json-fn.azurewebsites.net" : "pagopa-${var.env_short}-weu-fdr-xml-to-json-fn.azurewebsites.net"
-  hostnameAzFunctionJsonToXml = var.env == "prod" ? "pagopa-weu-fdr-json-to-xml-fn.azurewebsites.net" : "pagopa-${var.env_short}-weu-fdr-json-to-xml-fn.azurewebsites.net"
+  fdr_2_eventhub-fdr1-blobtrigger = "${local.hostname}/fdr1-blobtrigger-notused"
+  fdr_2_eventhub-fdr3-blobtrigger = "${local.hostname}/fdr3-blobtrigger-notused"
+  fdr_2_eventhub-recovery         = "${local.hostname}/pagopa-fdr-to-event-hub-recovery-service"
 
   product_id            = "fdr"
   display_name          = "Flussi di rendicontazione"
