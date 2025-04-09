@@ -50,7 +50,7 @@ locals {
 
   fdr_2_eventhub-fdr1-blobtrigger = "${local.hostname}/fdr1-blobtrigger-notused"
   fdr_2_eventhub-fdr3-blobtrigger = "${local.hostname}/fdr3-blobtrigger-notused"
-  fdrt_2_eventhub-recovery        = "${local.hostname}/pagopa-fdr-to-event-hub-recovery-service"
+  fdr_2_eventhub-recovery         = "${local.hostname}/pagopa-fdr-to-event-hub-recovery-service"
 
   product_id            = "fdr"
   display_name          = "Flussi di rendicontazione"
