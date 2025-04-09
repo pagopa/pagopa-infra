@@ -48,17 +48,6 @@ module "apim_node_for_ecommerce_api_v1" {
   })
 }
 
-resource "azurerm_api_management_api_operation_policy" "auth_close_payment_api_v1" {
-  api_name            = "${local.project}-node-for-ecommerce-api-v1"
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  operation_id        = "closePayment"
-  xml_content = templatefile("./api/nodopagamenti_api/nodeForEcommerce/v1/_add_v1_policy.xml.tpl", {
-    is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
-  })
-}
-
-
 module "apim_node_for_ecommerce_api_v2" {
   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
 
