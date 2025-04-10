@@ -251,7 +251,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
 resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_exceeded_ProvisionedThroughput" { # https://github.com/pagopa/terraform-azurerm-v3/blob/58f14dc120e10bd3515bcc34e0685e74d1d11047/cosmosdb_account/main.tf#L205
   count = var.env_short == "p" ? 1 : 0
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${azurerm_cosmosdb_account.this.name}] Provisioned Throughput Exceeded - ProvisionedThroughput"
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.receipts_datastore_cosmosdb_account.name}] Provisioned Throughput Exceeded - ProvisionedThroughput"
   resource_group_name = azurerm_resource_group.receipts_rg.name
   scopes              = [module.receipts_datastore_cosmosdb_account.id]
   description         = "A collection throughput (RU/s) exceed provisioned throughput, and it's raising 429 errors. Please, consider to increase RU. Runbook: not needed."
@@ -290,13 +290,16 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_exceed
 
   }
 
-  dynamic "action" {
-    for_each = var.action
-    content {
-      action_group_id    = action.value["action_group_id"]
-      webhook_properties = action.value["webhook_properties"]
-    }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.email.id
   }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.slack.id
+  }
+  action {
+    action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
+  }
+
 
   tags = var.tags
 }
