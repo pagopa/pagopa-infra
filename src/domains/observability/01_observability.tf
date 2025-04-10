@@ -57,6 +57,23 @@ resource "azurerm_kusto_database" "re_db" {
 
 }
 
+resource "azurerm_kusto_database" "pm_db" {
+  count = var.dexp_pm_db.enable ? 1 : 0
+
+  name                = "pm"
+  resource_group_name = data.azurerm_resource_group.monitor_rg.name
+  location            = azurerm_kusto_cluster.data_explorer_cluster[count.index].location
+  cluster_name        = azurerm_kusto_cluster.data_explorer_cluster[count.index].name
+
+  hot_cache_period   = var.dexp_pm_db.hot_cache_period
+  soft_delete_period = var.dexp_pm_db.soft_delete_period
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
+}
+
 
 data "azurerm_eventhub" "pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti-re" {
   name                = "nodo-dei-pagamenti-re"
