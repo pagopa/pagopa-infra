@@ -1,3 +1,6 @@
+# Please consider these API are deprecated and will be removed in the future
+# The new API is defined in the file apim_nodo_services_auth_09_node_for_ecommerce
+
 ######################
 ## Nodo per PM API  ##
 ######################
