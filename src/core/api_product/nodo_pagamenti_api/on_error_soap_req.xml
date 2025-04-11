@@ -12,7 +12,6 @@
       <choose>
         <!-- TODO is it possible to substitute the baseUrl with Request.Url in case you want to redirect the call to an internal URI.?-->
         <when condition="@(context.Request.Url.ToString().Contains("/pagopa-fdr-nodo-service/webservices/input/"))">
-          <trace source="debugFdR" severity="information">"FDR"</trace>
           <return-response>
             <set-header name="Content-Type" exists-action="override">
               <value>@((string)context.Variables["contentType"])</value>
@@ -36,7 +35,6 @@
           </return-response>
         </when>
         <otherwise>
-          <trace source="debugFdR" severity="information">"NOT_FDR"</trace>
           <send-request mode="new" ignore-error="true" response-variable-name="risposta">
             <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
             <set-method>POST</set-method>
