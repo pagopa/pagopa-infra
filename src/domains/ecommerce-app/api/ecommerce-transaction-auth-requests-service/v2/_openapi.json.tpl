@@ -49,7 +49,7 @@
               "type": "string"
             },
             "required": true,
-            "description": "Base64 of bytes related to TransactionId"
+            "description": "Transaction ID"
           }
         ],
         "requestBody": {
