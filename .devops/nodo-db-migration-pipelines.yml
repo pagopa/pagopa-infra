@@ -73,8 +73,8 @@ variables:
     liquibase_folder: 'changelog'
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
-    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql-replica.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql-replica.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
+    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-u-nodo-kv
     poolImage: 'pagopa-uat-linux-infra'
     liquibase_folder: 'changelog'
