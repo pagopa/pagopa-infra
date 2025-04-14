@@ -164,7 +164,7 @@ resource "azurerm_postgresql_flexible_server_configuration" "pg_shared_preload_l
 }
 
 
-resource "azurerm_portal_dashboard" "postgresql-dashboard" {
+resource "azurerm_portal_dashboard" "debt_position_postgresql_dashboard" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "debt-position-postgresql-db-usage"
   resource_group_name = var.monitor_resource_group_name
