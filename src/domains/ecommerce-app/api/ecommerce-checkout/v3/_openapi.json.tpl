@@ -186,7 +186,7 @@
           },
           {
             "in": "header",
-            "name": "x-rpt-id",
+            "name": "x-rpt-ids",
             "required": false,
             "description": "Optional RPT ID used to track post transaction attempts to payment notices",
             "schema": {
@@ -285,7 +285,7 @@
           },
           {
             "in": "header",
-            "name": "x-rpt-id",
+            "name": "x-rpt-ids",
             "required": false,
             "description": "Optional RPT ID used to track get payment-methods attempts to payment notices",
             "schema": {
@@ -364,7 +364,7 @@
           },
           {
             "in": "header",
-            "name": "x-rpt-id",
+            "name": "x-rpt-ids",
             "required": false,
             "description": "Optional RPT ID used to track post session attempts to payment notices",
             "schema": {
