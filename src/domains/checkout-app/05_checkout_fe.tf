@@ -60,7 +60,7 @@ module "checkout_cdn" {
       {
         action = "Overwrite"
         name   = local.content_security_policy_header_name
-        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it", var.dns_zone_prefix, var.external_domain)
+        value  = format("default-src 'self'; connect-src 'self' https://api.%s.%s https://api-eu.mixpanel.com https://wisp2.pagopa.gov.it https://privacyportalde-cdn.onetrust.com https://privacyportal-de.onetrust.com", var.dns_zone_prefix, var.external_domain)
       },
       {
         action = "Append"
@@ -75,17 +75,17 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "img-src 'self' https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it;"
+        value  = "img-src 'self' https://acardste.vaservices.eu:* https://wisp2.pagopa.gov.it https://assets.cdn.io.italia.it www.gstatic.com/recaptcha data: https://assets.cdn.platform.pagopa.it https://privacyportalde-cdn.onetrust.com;"
       },
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "script-src 'self' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://${local.npg_sdk_hostname};"
+        value  = "script-src 'self' 'sha256-LIYUdRhA1kkKYXZ4mrNoTMM7+5ehEwuxwv4/FRhgems=' https://www.google.com https://www.gstatic.com https://www.recaptcha.net https://recaptcha.net https://www.gstatic.com/recaptcha/ https://www.gstatic.cn/recaptcha/ https://privacyportalde-cdn.onetrust.com https://${local.npg_sdk_hostname};"
       },
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = "style-src 'self'  'unsafe-inline'; worker-src www.recaptcha.net blob:;"
+        value  = "style-src 'self'  'unsafe-inline' https://privacyportalde-cdn.onetrust.com; font-src 'self' https://privacyportalde-cdn.onetrust.com; worker-src www.recaptcha.net blob:;"
       },
       {
         action = "Overwrite"
@@ -130,13 +130,31 @@ module "checkout_cdn" {
         destination             = "/ecommerce-fe/index.html"
         preserve_unmatched_path = false
       }
+    },
+    {
+      name  = "RewriteRulesTerms"
+      order = 4
+
+      conditions = [{
+        condition_type   = "url_path_condition"
+        operator         = "Equal"
+        match_values     = ["/termini-di-servizio"]
+        transforms       = []
+        negate_condition = false
+      }]
+
+      url_rewrite_action = {
+        source_pattern          = "/"
+        destination             = "/terms/it.html"
+        preserve_unmatched_path = false
+      }
     }
   ]
 
   delivery_rule = [
     {
       name  = "CorsFontForNPG"
-      order = 4
+      order = 5
 
       // conditions
       url_path_conditions       = []

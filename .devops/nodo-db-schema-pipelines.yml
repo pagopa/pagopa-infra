@@ -17,6 +17,9 @@ parameters:
       - prf
       - uat
       - prd
+      - dev-storico
+      - uat-storico
+      - prd-storico
 
 variables:
   ${{ if eq(parameters.k8sEnv, 'dev') }}:
@@ -25,30 +28,56 @@ variables:
     KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
     DATABASE_NAME: nodo
     poolImage: 'pagopa-dev-linux-infra'
+    STORICO: false
+  ${{ if eq(parameters.k8sEnv, 'dev-storico') }}:
+    DB_HOST: pagopa-d-weu-nodo-storico-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+    KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-dev-linux-infra'
+    STORICO: true
   ${{ if eq(parameters.k8sEnv, 'it') }}:
     DB_HOST: pagopa-d-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
     KEY_VAULT_NAME: 'pagopa-d-nodo-kv'
     DATABASE_NAME: 'nodo-replica'
     poolImage: 'pagopa-dev-linux-infra'
+    STORICO: false
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
     KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
     DATABASE_NAME: nodo
     poolImage: 'pagopa-uat-linux-infra'
+    STORICO: false
+  ${{ elseif eq(parameters.k8sEnv, 'uat-storico') }}:
+    DB_HOST: pagopa-u-weu-nodo-storico-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+    KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-uat-linux-infra'
+    STORICO: true
   ${{ elseif eq(parameters.k8sEnv, 'prf') }}:
     DB_HOST: pagopa-u-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
     KEY_VAULT_NAME: 'pagopa-u-nodo-kv'
     DATABASE_NAME: 'nodo-replica'
     poolImage: 'pagopa-uat-linux-infra'
+    STORICO: false
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     DB_HOST: pagopa-p-weu-nodo-flexible-postgresql
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
     KEY_VAULT_NAME: 'pagopa-p-nodo-kv'
     DATABASE_NAME: nodo
     poolImage: 'pagopa-prod-linux-infra'
+    STORICO: false
+  ${{ elseif eq(parameters.k8sEnv, 'prd-storico') }}:
+    DB_HOST: pagopa-p-weu-nodo-storico-flexible-postgresql
+    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+    KEY_VAULT_NAME: 'pagopa-p-nodo-kv'
+    DATABASE_NAME: nodo
+    poolImage: 'pagopa-prod-linux-infra'
+    STORICO: true
   ADMIN_USERNAME: azureuser
   CFG_USERNAME: cfg
   CFG_READ_USERNAME: cfgr
@@ -376,35 +405,35 @@ stages:
                 END;
                 \$\$;
                 "
+          - ${{ if eq(variables.STORICO, false) }}:
+            - task: AzureCLI@2
+              displayName: "partition scheduling"
+              inputs:
+                azureSubscription: $(AZURE_SERVICE_CONNECTION)
+                scriptLocation: inlineScript
+                scriptType: bash
+                inlineScript: |
 
-          - task: AzureCLI@2
-            displayName: "partition scheduling"
-            inputs:
-              azureSubscription: $(AZURE_SERVICE_CONNECTION)
-              scriptLocation: inlineScript
-              scriptType: bash
-              inlineScript: |
-
-                az config set extension.use_dynamic_install=yes_without_prompt
-                az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
-                --admin-password '$(db-administrator-login-password)' --database-name "postgres" \
-                --querytext "
-                do \$\$
-                BEGIN
-                  DECLARE
-                  job_id INT;
+                  az config set extension.use_dynamic_install=yes_without_prompt
+                  az postgres flexible-server execute --name $(DB_HOST) --admin-user $(ADMIN_USERNAME) \
+                  --admin-password '$(db-administrator-login-password)' --database-name "postgres" \
+                  --querytext "
+                  do \$\$
                   BEGIN
-                    SELECT j.jobid INTO job_id FROM cron.job j WHERE j.jobname = '$DATABASE_NAME';
+                    DECLARE
+                    job_id INT;
+                    BEGIN
+                      SELECT j.jobid INTO job_id FROM cron.job j WHERE j.jobname = '$DATABASE_NAME';
 
-                    -- use job id to cancel the schedule
-                    PERFORM cron.unschedule(job_id);
+                      -- use job id to cancel the schedule
+                      PERFORM cron.unschedule(job_id);
+                    END;
+
+                    PERFORM cron.schedule_in_database('$DATABASE_NAME', '00 23 * * *', 'call partition.modify_partition(7);','$DATABASE_NAME');
                   END;
 
-                  PERFORM cron.schedule_in_database('$DATABASE_NAME', '00 23 * * *', 'call partition.modify_partition(7);','$DATABASE_NAME');
-                END;
-
-                \$\$;
-                "
+                  \$\$;
+                  "
 
           - task: AzureCLI@2
             displayName: "create CFG user READ"

@@ -1,12 +1,11 @@
-prefix                 = "pagopa"
-env_short              = "p"
-env                    = "prod"
-domain                 = "nodo"
-location               = "westeurope"
-location_short         = "weu"
-location_string        = "West Europe"
-instance               = "prod"
-gh_runner_job_location = "italynorth"
+prefix          = "pagopa"
+env_short       = "p"
+env             = "prod"
+domain          = "nodo"
+location        = "westeurope"
+location_short  = "weu"
+location_string = "West Europe"
+instance        = "prod"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -136,6 +135,20 @@ route_aks = [
     # aks nodo nexi postgres onprem balancer 2
     name                   = "aks-outbound-to-nexi-postgres-onprem-balancer-2-subnet"
     address_prefix         = "10.222.214.134/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # aks nodo nexi oracle settimo onprem 
+    name                   = "aks-outbound-to-nexi-oracle-onprem-settimo-subnet"
+    address_prefix         = "10.102.175.0/24"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # aks nodo nexi oracle pero onprem 
+    name                   = "aks-outbound-to-nexi-oracle-onprem-pero-subnet"
+    address_prefix         = "10.101.175.0/24"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.10.150"
   }

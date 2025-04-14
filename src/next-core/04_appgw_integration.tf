@@ -260,8 +260,27 @@ module "app_gw_integration" {
   # https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftnetworkapplicationgateways
   monitor_metric_alert_criteria = {
 
+    compute_units_usage_critical = {
+      description   = "${module.app_gw_integration.name} Critical compute units usage, probably an high traffic peak"
+      frequency     = "PT5M"
+      window_size   = "PT5M"
+      severity      = 1
+      auto_mitigate = true
+
+      criteria = [
+        {
+          aggregation = "Average"
+          metric_name = "ComputeUnits"
+          operator    = "GreaterThan"
+          threshold   = floor(var.integration_app_gateway_max_capacity * 90 / 100)
+          dimension   = []
+        }
+      ]
+      dynamic_criteria = []
+    }
+
     compute_units_usage = {
-      description   = "${module.app_gw_integration.name} Abnormal compute units usage, probably an high traffic peak"
+      description   = "${module.app_gw.name} Abnormal compute units usage, probably an high traffic peak"
       frequency     = "PT5M"
       window_size   = "PT5M"
       severity      = 2
@@ -270,11 +289,10 @@ module "app_gw_integration" {
       criteria = []
       dynamic_criteria = [
         {
-          aggregation       = "Average"
-          metric_name       = "ComputeUnits"
-          operator          = "GreaterOrLessThan"
-          alert_sensitivity = "Low"
-          # todo after api app migration change to High
+          aggregation              = "Average"
+          metric_name              = "ComputeUnits"
+          operator                 = "GreaterOrLessThan"
+          alert_sensitivity        = "Low" # todo after api app migration change to High
           evaluation_total_count   = 2
           evaluation_failure_count = 2
           dimension                = []

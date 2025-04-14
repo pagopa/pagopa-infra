@@ -27,7 +27,7 @@ is_feature_enabled = {
   postgres_private_dns      = true,
   apim_core_import          = true
   use_new_apim              = false
-
+  elastic_on_prem           = false
 }
 
 #
@@ -427,7 +427,13 @@ eventhubs_03 = [
         listen = true
         send   = false
         manage = false
-      }
+      },
+      {
+        name   = "pagopa-biz-evt-rx-views"
+        listen = true
+        send   = false
+        manage = false
+      },
     ]
   },
   {

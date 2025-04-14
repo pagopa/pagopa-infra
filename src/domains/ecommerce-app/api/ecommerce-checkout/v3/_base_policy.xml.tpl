@@ -15,6 +15,9 @@
           <header>Authorization</header>
           <header>x-transaction-id-from-client</header>
           <header>lang</header>
+          <header>x-correlation-id</header>
+          <header>x-client-id-from-client</header>
+          <header>x-rpt-id</header>
         </allowed-headers>
       </cors>
       <base />
@@ -27,6 +30,8 @@
         </when>
       </choose>
       <rate-limit-by-key calls="10" renewal-period="5" counter-key="@(context.Request.Headers.GetValueOrDefault("Authorization",""))" />
+      <!-- use same threshold as for other checkout api's for IP rate limits -->
+      <rate-limit-by-key calls="150" renewal-period="10" counter-key="@(context.Request.Headers.GetValueOrDefault("X-Forwarded-For"))" />
       <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
       <set-header name="X-Client-Id" exists-action="override" >
         <value>CHECKOUT</value>
@@ -50,11 +55,14 @@
       <choose>
         <when condition="@(context.Operation.Id != ("newTransactionV3"))">
           <send-request ignore-error="true" timeout="10" response-variable-name="checkSessionResponse" mode="new">
-          <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/validate")</set-url>
-          <set-method>GET</set-method>
-          <set-header name="Authorization" exists-action="override">
-              <value>@("Bearer " + (string)context.Variables["authToken"])</value>
-          </set-header>
+            <set-url>@($"https://${checkout_ingress_hostname}/pagopa-checkout-auth-service/auth/validate")</set-url>
+            <set-method>GET</set-method>
+            <set-header name="Authorization" exists-action="override">
+                <value>@("Bearer " + (string)context.Variables["authToken"])</value>
+            </set-header>
+            <set-header name="x-rpt-id" exists-action="override">
+              <value>@((string)context.Request.Headers.GetValueOrDefault("x-rpt-id",""))</value>
+            </set-header>
           </send-request>
           <choose>
             <when condition="@(((int)((IResponse)context.Variables["checkSessionResponse"]).StatusCode) == 401)">

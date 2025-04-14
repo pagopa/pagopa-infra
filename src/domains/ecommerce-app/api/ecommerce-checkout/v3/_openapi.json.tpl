@@ -183,6 +183,15 @@
                 "WISP_REDIRECT"
               ]
             }
+          },
+          {
+            "in": "header",
+            "name": "x-rpt-id",
+            "required": false,
+            "description": "Optional RPT ID used to track post transaction attempts to payment notices",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -273,6 +282,15 @@
             "schema": {
               "type": "number"
             }
+          },
+          {
+            "in": "header",
+            "name": "x-rpt-id",
+            "required": false,
+            "description": "Optional RPT ID used to track get payment-methods attempts to payment notices",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -340,6 +358,15 @@
             "name": "lang",
             "required": false,
             "description": "Language requested by the user",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-rpt-id",
+            "required": false,
+            "description": "Optional RPT ID used to track post session attempts to payment notices",
             "schema": {
               "type": "string"
             }
