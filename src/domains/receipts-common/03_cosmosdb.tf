@@ -265,10 +265,10 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_exceed
   # https://learn.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported#microsoftdocumentdbdatabaseaccounts
   criteria {
     metric_namespace       = "Microsoft.DocumentDB/databaseAccounts"
-    metric_name            = "ProvisionedThroughput"
-    aggregation            = "Maximum"
+    metric_name            = "TotalRequestUnits"
+    aggregation            = "Total"
     operator               = "GreaterThan"
-    threshold              = var.receipts_datastore_cosmos_db_params.max_throughput
+    threshold              = 0 // var.receipts_datastore_cosmos_db_params.max_throughput
     skip_metric_validation = false
 
 
