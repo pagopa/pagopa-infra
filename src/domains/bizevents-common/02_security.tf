@@ -200,7 +200,6 @@ resource "azurerm_key_vault_secret" "ehub_tx_negative_biz_key" {
   key_vault_id = module.key_vault.id
 }
 
-
 ####################
 ## EVENT HUB NS04
 ####################
@@ -253,6 +252,13 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 resource "azurerm_key_vault_secret" "biz_azurewebjobsstorage" {
   name         = format("bizevent-%s-azurewebjobsstorage", var.env_short)
   value        = module.bizevents_datastore_fn_sa.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "biz_view_azurewebjobsstorage" {
+  name         = format("bizevent-view-%s-azurewebjobsstorage", var.env_short)
+  value        = module.bizevents_datastore_fn_sa_bizview.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

@@ -14,6 +14,7 @@ tags = {
   Owner       = "PAGOPA"
   Source      = "https://github.com/pagopa/pagopa-infrastructure"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "core"
 }
 
 ### Network
