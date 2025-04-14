@@ -4,6 +4,7 @@ resource "kubernetes_namespace" "ingress" {
   }
 }
 
+#ingress
 # from Microsoft docs https://docs.microsoft.com/it-it/azure/aks/ingress-internal-ip
 module "nginx_ingress" {
   source  = "terraform-module/release/helm"
@@ -20,7 +21,7 @@ module "nginx_ingress" {
   }
 
   values = [
-    "${templatefile("${path.module}/ingress/loadbalancer.yaml.tpl", { load_balancer_ip = var.ingress_load_balancer_ip })}",
+    "${templatefile("/src/aks-platform/ingress/loadbalancer.yaml.tpl", { load_balancer_ip = var.ingress_load_balancer_ip })}",
     templatefile(
       "${path.module}/ingress/autoscaling.yaml.tpl",
       {
