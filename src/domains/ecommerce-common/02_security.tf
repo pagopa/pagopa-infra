@@ -608,3 +608,15 @@ resource "azurerm_key_vault_secret" "ecommerce_dev_sendpaymentresult_subscriptio
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "transactions_service_auth_update_api_key_v2" {
+  name         = "transactions-service-auth-update-api-key-v2"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
