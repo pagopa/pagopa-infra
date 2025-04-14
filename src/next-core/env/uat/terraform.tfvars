@@ -905,27 +905,6 @@ eventhubs_prf = [
     ]
   },
   {
-    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
-    partitions        = 30
-    message_retention = 3
-    consumers         = ["fdr-re-rx"]
-    keys = [
-      {
-        name   = "fdr-re-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "fdr-re-rx"
-        listen = true
-        send   = false
-        manage = false
-      }
-
-    ]
-  },
-  {
     name              = "nodo-dei-pagamenti-fdr" # used by Monitoring FdR
     partitions        = 32
     message_retention = 3
