@@ -378,12 +378,6 @@ variable "gh_runner_job_location" {
   default     = "westeurope"
 }
 
-variable "enable_fdr3_features" {
-  type        = bool
-  default     = false
-  description = "Feature flag that enabled FdR-Fase3 APIs"
-}
-
 variable "enable_fdr_ci_soap_request" {
   type        = bool
   description = "Switch to pagoPA FdR SOAP request for Orgs"
