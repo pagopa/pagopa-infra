@@ -12,6 +12,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/paymentoptions-secrets"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "payopt"
 }
 
 ### External resources

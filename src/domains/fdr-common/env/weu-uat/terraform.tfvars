@@ -12,6 +12,7 @@ tags = {
   Owner       = "PagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/fdr"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "fdr"
 }
 
 ### External resources

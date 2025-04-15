@@ -12,6 +12,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/ebollo-common"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "ebollo"
 }
 
 ### External resources
