@@ -22,6 +22,7 @@
 | <a name="module_bizevents_datastore_cosmosdb_database_dev"></a> [bizevents\_datastore\_cosmosdb\_database\_dev](#module\_bizevents\_datastore\_cosmosdb\_database\_dev) | ./.terraform/modules/__v3__/cosmosdb_sql_database | n/a |
 | <a name="module_bizevents_datastore_cosmosdb_snet"></a> [bizevents\_datastore\_cosmosdb\_snet](#module\_bizevents\_datastore\_cosmosdb\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_bizevents_datastore_fn_sa"></a> [bizevents\_datastore\_fn\_sa](#module\_bizevents\_datastore\_fn\_sa) | ./.terraform/modules/__v3__/storage_account | n/a |
+| <a name="module_bizevents_datastore_fn_sa_bizview"></a> [bizevents\_datastore\_fn\_sa\_bizview](#module\_bizevents\_datastore\_fn\_sa\_bizview) | ./.terraform/modules/__v3__/storage_account | n/a |
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | n/a |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v3__/key_vault | n/a |
 | <a name="module_negative_bizevents_datastore_cosmosdb_account"></a> [negative\_bizevents\_datastore\_cosmosdb\_account](#module\_negative\_bizevents\_datastore\_cosmosdb\_account) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
@@ -62,6 +63,7 @@
 | [azurerm_key_vault_secret.biz_azurewebjobsstorage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.biz_events_datastore_cosmos_pkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.biz_trx_api_key_4_perftest_store_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.biz_view_azurewebjobsstorage](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.bizevent_pdf_engine_4_list_trx_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.bizevent_receiptpdfhelpdesk_4_list_trx_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.bizevent_receiptpdfservice_4_list_trx_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |

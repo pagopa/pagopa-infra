@@ -40,7 +40,7 @@ Re-enable all the resource, commented before to complete the procedure
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aks_leonardo"></a> [aks\_leonardo](#module\_aks\_leonardo) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster | v8.84.1 |
+| <a name="module_aks_leonardo"></a> [aks\_leonardo](#module\_aks\_leonardo) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster | v8.90.0 |
 | <a name="module_aks_prometheus_install"></a> [aks\_prometheus\_install](#module\_aks\_prometheus\_install) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_install | v8.78.1 |
 | <a name="module_aks_storage_class"></a> [aks\_storage\_class](#module\_aks\_storage\_class) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_storage_class | v8.17.1 |
 | <a name="module_elastic_agent"></a> [elastic\_agent](#module\_elastic\_agent) | git::https://github.com/pagopa/terraform-azurerm-v3.git//elastic_agent | v8.50.0 |
