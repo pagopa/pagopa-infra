@@ -92,7 +92,7 @@ nginx_helm = {
 # keda image tags: https://github.com/kedacore/keda/pkgs/container/keda/versions
 # keda-metrics-apiserver image tags: https://github.com/kedacore/keda/pkgs/container/keda-metrics-apiserver/versions
 keda_helm = {
-  chart_version = "2.16.1"
+  chart_version = "2.14.0"
   keda = {
     image_name = "ghcr.io/kedacore/keda"
     image_tag  = "2.11.2@sha256:d8d3ef2937e22da29daa7cd9485626a577f1166bab47c582c43ff776d47d764b"
