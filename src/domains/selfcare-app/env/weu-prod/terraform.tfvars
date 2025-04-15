@@ -14,6 +14,7 @@ tags = {
   Owner       = "IO"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/selfcare"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "selfcare"
 }
 
 ### External resources

@@ -12,6 +12,7 @@ tags = {
   Owner       = "pagopa"
   Source      = "https://github.com/pagopa/pagopa-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "core"
 }
 
 dns_forwarder_backup_image_version = "v5"
