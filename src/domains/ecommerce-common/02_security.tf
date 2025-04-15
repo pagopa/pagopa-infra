@@ -428,6 +428,7 @@ resource "azurerm_key_vault_secret" "node_for_ecommerce_api_v2_key" {
     ]
   }
 }
+
 resource "azurerm_key_vault_secret" "wallet-token-test-key" {
   count        = var.env_short != "p" ? 1 : 0
   name         = "wallet-token-test-key"
