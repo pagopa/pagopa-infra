@@ -644,3 +644,15 @@ resource "azurerm_key_vault_secret" "transactions_service_auth_update_api_key_v2
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "npg_google_pay_psp_keys" {
+  name         = "npg-google-pay-psp-keys"
+  value        = "{}"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
