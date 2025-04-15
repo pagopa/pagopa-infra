@@ -110,3 +110,19 @@ pagopa_vpn_dr = {
     "93.63.219.234", # PagoPA on prem VPN DR
   ]
 }
+
+idr_subnet_ecommerce_functions = "<TO_BE_DEFINED_>" //"10.1.157.0/24"
+
+ecommerce_function_always_on = false
+
+ecommerce_functions_app_sku = {
+  kind     = "Linux"
+  sku_tier = "Standard"
+  sku_size = "S1"
+}
+
+ecommerce_functions_autoscale = {
+  default = 1
+  minimum = 1
+  maximum = 3
+}
