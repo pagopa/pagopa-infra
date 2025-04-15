@@ -59,7 +59,7 @@ pagopa_vpn_dr = {
   ]
 }
 
-cidr_subnet_ecommerce_functions = "<TO_BE_DEFINED_>" //"10.1.157.0/24"
+cidr_subnet_ecommerce_functions = "<TO_BE_DEFINED_>" //"10.1.196.0/24"
 
 ecommerce_function_always_on = false
 
