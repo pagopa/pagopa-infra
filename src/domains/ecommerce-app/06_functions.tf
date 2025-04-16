@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "ecommerce_reporting_functions_rg" {
-  name     = format("%s-fn-rg", local.project)
+  name     = "${local.project}-reporting-fn-rg"
   location = var.location
 
   tags = var.tags
@@ -51,7 +51,7 @@ module "ecommerce_reporting_function_app" {
     zone_balancing_enabled       = true
   }
 
-  storage_account_name = replace("pagopa-${var.env}-${var.location_short}-ecommtx-sa-fn", "-", "")
+  storage_account_name = replace("pagopa-${var.env}-${var.location_short}-ecomm-reporting-sa-fn", "-", "")
 
   app_settings = {
     linux_fx_version         = "JAVA|21"
