@@ -1,4 +1,4 @@
-resource "azurerm_resource_group" "ecommerce_functions_rg" {
+resource "azurerm_resource_group" "ecommerce_reporting_functions_rg" {
   name     = format("%s-fn-rg", local.project)
   location = var.location
 
@@ -31,7 +31,7 @@ module "ecommerce_reporting_functions_snet" {
 module "ecommerce_reporting_function_app" {
   source = "./.terraform/modules/__v3__/function_app"
 
-  resource_group_name = azurerm_resource_group.ecommerce_functions_rg.name
+  resource_group_name = azurerm_resource_group.ecommerce_reporting_functions_rg.name
   name                = "${local.project}-reporting-fn"
   location            = var.location
   health_check_path   = "info"
@@ -69,7 +69,7 @@ resource "azurerm_monitor_autoscale_setting" "ecommerce_reporting_function" {
   count = var.env_short != "d" ? 1 : 0
 
   name                = "${module.ecommerce_reporting_function_app.name}-autoscale"
-  resource_group_name = azurerm_resource_group.ecommerce_functions_rg.name
+  resource_group_name = azurerm_resource_group.ecommerce_reporting_functions_rg.name
   location            = var.location
   target_resource_id  = module.ecommerce_reporting_function_app.app_service_plan_id
 
