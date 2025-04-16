@@ -121,8 +121,4 @@ ecommerce_functions_app_sku = {
   sku_size = "S1"
 }
 
-ecommerce_functions_autoscale = {
-  default = 1
-  minimum = 1
-  maximum = 3
-}
+enable_ecommerce_reporting_functions = false

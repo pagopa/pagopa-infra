@@ -29,6 +29,8 @@ module "ecommerce_reporting_functions_snet" {
 }
 
 module "ecommerce_reporting_function_app" {
+  count = var.enable_ecommerce_reporting_functions ? 1 : 0
+
   source = "./.terraform/modules/__v3__/function_app"
 
   resource_group_name = azurerm_resource_group.ecommerce_reporting_functions_rg.name

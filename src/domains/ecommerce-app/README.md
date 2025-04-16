@@ -197,10 +197,10 @@
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_ecommerce_function_always_on"></a> [ecommerce\_function\_always\_on](#input\_ecommerce\_function\_always\_on) | Should ecommerce-functions app be always on? | `bool` | n/a | yes |
 | <a name="input_ecommerce_functions_app_sku"></a> [ecommerce\_functions\_app\_sku](#input\_ecommerce\_functions\_app\_sku) | eCommerce functions app plan SKU | <pre>object({<br/>    kind     = string<br/>    sku_tier = string<br/>    sku_size = string<br/>  })</pre> | n/a | yes |
-| <a name="input_ecommerce_functions_autoscale"></a> [ecommerce\_functions\_autoscale](#input\_ecommerce\_functions\_autoscale) | eCommerce functions autoscaling parameters | <pre>object({<br/>    default = number<br/>    minimum = number<br/>    maximum = number<br/>  })</pre> | n/a | yes |
 | <a name="input_ecommerce_io_with_pm_enabled"></a> [ecommerce\_io\_with\_pm\_enabled](#input\_ecommerce\_io\_with\_pm\_enabled) | ecommerce for IO using Payment Manager enabled | `bool` | `false` | no |
 | <a name="input_ecommerce_vpos_psps_list"></a> [ecommerce\_vpos\_psps\_list](#input\_ecommerce\_vpos\_psps\_list) | psps list using vpos as comma separated value | `string` | `""` | no |
 | <a name="input_ecommerce_xpay_psps_list"></a> [ecommerce\_xpay\_psps\_list](#input\_ecommerce\_xpay\_psps\_list) | psps list using xpay as comma separated value | `string` | `""` | no |
+| <a name="input_enable_ecommerce_reporting_functions"></a> [enable\_ecommerce\_reporting\_functions](#input\_enable\_ecommerce\_reporting\_functions) | Should ecommerce-functions be enabled? | `bool` | n/a | yes |
 | <a name="input_enabled_payment_wallet_method_ids_pm"></a> [enabled\_payment\_wallet\_method\_ids\_pm](#input\_enabled\_payment\_wallet\_method\_ids\_pm) | Comma separated list of eCommerce payment method ids that are enabled with PM APIs | `string` | `""` | no |
 | <a name="input_env"></a> [env](#input\_env) | n/a | `string` | n/a | yes |
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |

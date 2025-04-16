@@ -203,11 +203,7 @@ variable "ecommerce_functions_app_sku" {
   description = "eCommerce functions app plan SKU"
 }
 
-variable "ecommerce_functions_autoscale" {
-  type = object({
-    default = number
-    minimum = number
-    maximum = number
-  })
-  description = "eCommerce functions autoscaling parameters"
+variable "enable_ecommerce_reporting_functions" {
+  type        = bool
+  description = "Should ecommerce-functions be enabled?"
 }
