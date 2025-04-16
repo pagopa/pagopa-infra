@@ -16,6 +16,7 @@ module "ecommerce_reporting_functions_snet" {
 
   service_endpoints = [
     "Microsoft.Web",
+    "Microsoft.Storage",
   ]
 
   delegation = {
