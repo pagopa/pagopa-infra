@@ -53,9 +53,8 @@ module "ecommerce_reporting_function_app" {
   storage_account_name = replace("pagopa-${var.env}-${var.location_short}-ecommtx-sa-fn", "-", "")
 
   app_settings = {
-    linux_fx_version               = "JAVA|21"
-    FUNCTIONS_WORKER_RUNTIME       = "java"
-    FUNCTIONS_WORKER_PROCESS_COUNT = 4
+    linux_fx_version         = "JAVA|21"
+    FUNCTIONS_WORKER_RUNTIME = "java"
   }
 
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
