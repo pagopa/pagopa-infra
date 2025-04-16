@@ -49,8 +49,8 @@
 | <a name="module_apim_pagopa_ecommerce_technical_helpdesk_service_api_v2"></a> [apim\_pagopa\_ecommerce\_technical\_helpdesk\_service\_api\_v2](#module\_apim\_pagopa\_ecommerce\_technical\_helpdesk\_service\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_pagopa_notifications_service_api_v1"></a> [apim\_pagopa\_notifications\_service\_api\_v1](#module\_apim\_pagopa\_notifications\_service\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
-| <a name="module_ecommerce_reporting_function_app"></a> [ecommerce\_reporting\_function\_app](#module\_ecommerce\_reporting\_function\_app) | git::https://github.com/pagopa/azurerm.git//function_app | v4.3.2 |
-| <a name="module_ecommerce_reporting_functions_snet"></a> [ecommerce\_reporting\_functions\_snet](#module\_ecommerce\_reporting\_functions\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v4.3.2 |
+| <a name="module_ecommerce_reporting_function_app"></a> [ecommerce\_reporting\_function\_app](#module\_ecommerce\_reporting\_function\_app) | ./.terraform/modules/__v3__/function_app | n/a |
+| <a name="module_ecommerce_reporting_functions_snet"></a> [ecommerce\_reporting\_functions\_snet](#module\_ecommerce\_reporting\_functions\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
 
