@@ -14,6 +14,7 @@ resource "kubernetes_cluster_role" "system_cluster_deployer" {
     resources  = ["rolebindings", "clusterroles", "clusterrolebindings"]
     verbs      = ["get", "list", "watch", ]
   }
+
   depends_on = [
     module.aks
   ]
