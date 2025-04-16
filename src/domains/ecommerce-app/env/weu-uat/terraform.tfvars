@@ -59,14 +59,14 @@ pagopa_vpn_dr = {
   ]
 }
 
-idr_subnet_ecommerce_functions = "<TO_BE_DEFINED_>" //"10.1.196.0/24"
+idr_subnet_ecommerce_functions = "10.1.152.24/29"
 
 ecommerce_function_always_on = false
 
 ecommerce_functions_app_sku = {
   kind     = "Linux"
-  sku_tier = "Standard"
-  sku_size = "S1"
+  sku_tier = "Basic"
+  sku_size = "B1"
 }
 
 ecommerce_functions_autoscale = {
