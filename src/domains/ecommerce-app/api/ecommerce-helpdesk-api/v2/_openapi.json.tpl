@@ -237,7 +237,7 @@
         }
       }
     },
-    "/v2/ecommerce/searchMetrics": {
+    "/ecommerce/searchMetrics": {
       "post": {
         "tags": [
           "ecommerce"
