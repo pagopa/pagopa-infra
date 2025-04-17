@@ -19,16 +19,7 @@
            var jwt = (Jwt)context.Variables["jwtToken"];
            if(jwt.Claims.ContainsKey("transactionId")){
                string uuidString = jwt.Claims["transactionId"][0];
-               uuidString = uuidString.Replace("-", "");
-               byte[] transactionIdBase64 = new byte[uuidString.Length / 2];
-               for (int i = 0; i < transactionIdBase64.Length; i++)
-               {
-                   transactionIdBase64[i] = Convert.ToByte(uuidString.Substring(i * 2, 2), 16);
-               }
-               return Convert.ToBase64String(transactionIdBase64)
-                   .Replace('+', '-')
-                   .Replace('/', '_')
-                   .Replace("=", "");
+               return uuidString.Replace("-", "");
            }
            return "";
         }" />
@@ -59,7 +50,7 @@
         <choose>
             <when condition="@((string)context.Variables["transactionId"] == "")">
                 <send-request mode="new" response-variable-name="paymentMethodSessionVerificationResponse" timeout="10" ignore-error="true">
-                    <set-url>@(String.Format((string)context.Variables["paymentMethodBackendUri"]+"/payment-methods/{0}/sessions/{1}/transactionId", (string)context.Variables["paymentMethodId"], (string)context.Variables["orderId"]))</set-url>
+                    <set-url>@(String.Format((string)context.Variables["paymentMethodBackendUri"]+"/v2/payment-methods/{0}/sessions/{1}/transactionId", (string)context.Variables["paymentMethodId"], (string)context.Variables["orderId"]))</set-url>
                     <set-method>GET</set-method>
                     <set-header name="Content-Type" exists-action="override">
                         <value>application/json</value>
@@ -88,7 +79,7 @@
         <!-- end payment method verify session -->
         <!-- send transactions service PATCH request -->
         <set-backend-service base-url="@((string)context.Variables["transactionServiceBackendUri"])" />
-        <rewrite-uri template="@(String.Format("/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))" copy-unmatched-params="false"/>
+        <rewrite-uri template="@(String.Format("/v2/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))" copy-unmatched-params="false"/>
         <set-method>PATCH</set-method>
         <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>

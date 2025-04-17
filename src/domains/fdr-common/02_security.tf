@@ -6,11 +6,6 @@ data "azurerm_key_vault" "key_vault" {
 ###############
 ## Event Hub ##
 ###############
-resource "azurerm_key_vault_secret" "fdr-re-tx" {
-  name         = "azure-event-hub-re-connection-string"
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns03_fdr-re-fdr-re-tx.primary_connection_string
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-}
 
 ### FdR Quality Improvement
 resource "azurerm_key_vault_secret" "evthub_fdr-qi-flows_tx" {

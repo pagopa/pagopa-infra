@@ -15,6 +15,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/qi-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "qi"
 }
 
 ### External resources
