@@ -33,13 +33,13 @@ module "ecommerce_reporting_function_app" {
 
   source = "./.terraform/modules/__v3__/function_app"
 
-  resource_group_name = azurerm_resource_group.ecommerce_reporting_functions_rg.name
-  name                = "${local.project}-reporting-fn"
-  location            = var.location
-  health_check_path   = "info"
-  subnet_id           = module.ecommerce_reporting_functions_snet.id
-  runtime_version     = "~4"
-
+  resource_group_name                      = azurerm_resource_group.ecommerce_reporting_functions_rg.name
+  name                                     = "${local.project}-reporting-fn"
+  location                                 = var.location
+  health_check_path                        = "info"
+  subnet_id                                = module.ecommerce_reporting_functions_snet.id
+  runtime_version                          = "~4"
+  java_version                             = "17"
   always_on                                = var.ecommerce_function_always_on
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
@@ -56,7 +56,7 @@ module "ecommerce_reporting_function_app" {
   storage_account_name = replace("pagopa-${var.env}-${var.location_short}-ecom-rep-sa-fn", "-", "")
 
   app_settings = {
-    linux_fx_version         = "JAVA|21"
+    linux_fx_version         = "JAVA|17"
     FUNCTIONS_WORKER_RUNTIME = "java"
   }
 
