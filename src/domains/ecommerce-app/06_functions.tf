@@ -1,4 +1,5 @@
 resource "azurerm_resource_group" "ecommerce_reporting_functions_rg" {
+  count    = var.enable_ecommerce_reporting_functions ? 1 : 0
   name     = "${local.project}-reporting-fn-rg"
   location = var.location
 
@@ -7,6 +8,7 @@ resource "azurerm_resource_group" "ecommerce_reporting_functions_rg" {
 
 # Subnet to host ecommerce reporting function
 module "ecommerce_reporting_functions_snet" {
+  count                                         = var.enable_ecommerce_reporting_functions ? 1 : 0
   source                                        = "./.terraform/modules/__v3__/subnet"
   name                                          = "${local.project}-reporting-fn-snet"
   address_prefixes                              = [var.cidr_subnet_ecommerce_functions]
@@ -33,11 +35,11 @@ module "ecommerce_reporting_function_app" {
 
   source = "./.terraform/modules/__v3__/function_app"
 
-  resource_group_name                      = azurerm_resource_group.ecommerce_reporting_functions_rg.name
+  resource_group_name                      = azurerm_resource_group.ecommerce_reporting_functions_rg[0].name
   name                                     = "${local.project}-reporting-fn"
   location                                 = var.location
   health_check_path                        = "info"
-  subnet_id                                = module.ecommerce_reporting_functions_snet.id
+  subnet_id                                = module.ecommerce_reporting_functions_snet[0].id
   runtime_version                          = "~4"
   java_version                             = "17"
   always_on                                = var.ecommerce_function_always_on
@@ -51,6 +53,16 @@ module "ecommerce_reporting_function_app" {
     sku_size                     = var.ecommerce_functions_app_sku.sku_size
     maximum_elastic_worker_count = 0
     zone_balancing_enabled       = true
+  }
+
+  storage_account_info = {
+    account_kind                      = "StorageV2"
+    account_tier                      = "Standard"
+    account_replication_type          = "ZRS"
+    access_tier                       = "Hot"
+    advanced_threat_protection_enable = false
+    use_legacy_defender_version       = true
+    public_network_access_enabled     = false
   }
 
   storage_account_name = replace("pagopa-${var.env}-${var.location_short}-ecom-rep-sa-fn", "-", "")
