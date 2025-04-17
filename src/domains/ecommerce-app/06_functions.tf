@@ -53,7 +53,7 @@ module "ecommerce_reporting_function_app" {
     zone_balancing_enabled       = true
   }
 
-  storage_account_name = replace("pagopa-${var.env}-${var.location_short}-ecomm-reporting-sa-fn", "-", "")
+  storage_account_name = replace("pagopa-${var.env}-${var.location_short}-ecom-rep-sa-fn", "-", "")
 
   app_settings = {
     linux_fx_version         = "JAVA|21"
