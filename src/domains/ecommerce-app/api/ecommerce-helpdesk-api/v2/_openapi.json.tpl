@@ -240,7 +240,7 @@
     "/ecommerce/searchMetrics": {
       "post": {
         "tags": [
-          "ecommerce"
+          "eCommerce"
         ],
         "operationId": "ecommerceSearchMetrics",
         "summary": "Search Metrics by input filters and time range",
