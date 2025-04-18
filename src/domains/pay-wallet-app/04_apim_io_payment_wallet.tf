@@ -83,6 +83,18 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_methods_for_
   )
 }
 
+resource "azurerm_api_management_api_operation_policy" "post_io_wallets" {
+  api_name            = "${local.project}-io-payment-wallet-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "createIOPaymentWallet"
+
+  xml_content = templatefile("./api/io-payment-wallet/v1/_post_wallets.xml.tpl", {
+    env                = var.env == "prod" ? "" : "${var.env}.",
+    ecommerce_hostname = local.ecommerce_hostname
+  })
+}
+
 resource "azurerm_api_management_named_value" "pay_wallet_family_friends_user_ids" {
   name                = "pay-wallet-family-friends-user-ids"
   api_management_name = local.pagopa_apim_name
