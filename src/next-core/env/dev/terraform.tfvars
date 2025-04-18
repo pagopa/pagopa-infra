@@ -15,6 +15,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "core"
 }
 
 ### Feature Flag
@@ -346,27 +347,6 @@ eventhubs_03 = [
       #        send   = false
       #        manage = false
       #      }
-    ]
-  },
-  {
-    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
-    partitions        = 1
-    message_retention = 1
-    consumers         = ["fdr-re-rx"]
-    keys = [
-      {
-        name   = "fdr-re-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "fdr-re-rx"
-        listen = true
-        send   = false
-        manage = false
-      }
-
     ]
   },
   {

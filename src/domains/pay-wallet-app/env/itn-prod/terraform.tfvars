@@ -13,6 +13,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/pay-wallet-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "paywallet"
 }
 
 ### External resources
