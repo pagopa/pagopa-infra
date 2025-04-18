@@ -144,6 +144,10 @@ locals {
         {
           keys   = ["email.data"]
           unique = false
+        },
+        {
+          keys   = ["userId"]
+          unique = false
         }
       ]
       shard_key           = "_id",
