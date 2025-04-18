@@ -83,6 +83,19 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_methods_for_
   )
 }
 
+resource "azurerm_api_management_named_value" "pay_wallet_family_friends_user_ids" {
+  name                = "pay-wallet-family-friends-user-ids"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "pay-wallet-family-friends-user-ids"
+  value               = "<TO_UPDATE_MANUALLY_BY_PORTAL>"
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 #######################################################################
 ## Fragment policy to extract user id from session token             ##
 #######################################################################
