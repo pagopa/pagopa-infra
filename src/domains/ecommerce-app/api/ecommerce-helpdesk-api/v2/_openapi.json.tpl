@@ -236,6 +236,61 @@
           }
         }
       }
+    },
+    "/ecommerce/searchMetrics": {
+      "post": {
+        "tags": [
+          "eCommerce"
+        ],
+        "operationId": "ecommerceSearchMetrics",
+        "summary": "Search Metrics by input filters and time range",
+        "description": "Search for aggregated transaction metrics based on optional filters  (clientId, pspId, paymentTypeCode) and a mandatory time range (max 1 hour).\n",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SearchMetricsRequest"
+        },
+        "responses": {
+          "200": {
+            "description": "Metrics found grouped by transaction status (as fixed JSON map)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionMetricsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input (e.g. missing required fields, time range > 1 hour)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Metrics not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1033,6 +1088,160 @@
           "username",
           "status"
         ]
+      },
+      "SearchMetricsRequest": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "description": "Filter by client ID"
+          },
+          "pspId": {
+            "type": "string",
+            "description": "Filter by PSP ID"
+          },
+          "paymentTypeCode": {
+            "type": "string",
+            "description": "Filter by payment type code"
+          },
+          "timeRange": {
+            "type": "object",
+            "required": [
+              "startDate",
+              "endDate"
+            ],
+            "properties": {
+              "startDate": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Start datetime (must be within one hour of endDate)"
+              },
+              "endDate": {
+                "type": "string",
+                "format": "date-time",
+                "description": "End datetime (must be within one hour of startDate)"
+              }
+            }
+          }
+        },
+        "required": [
+          "timeRange",
+          "clientId",
+          "pspId",
+          "paymentTypeCode"
+        ],
+        "example": {
+          "clientId": "client-app-123",
+          "pspId": "psp-001",
+          "paymentTypeCode": "TYPE_ABC",
+          "timeRange": {
+            "startDate": "2023-11-30T14:00:00.000Z",
+            "endDate": "2023-11-30T14:59:59.999Z"
+          }
+        }
+      },
+      "TransactionMetricsResponse": {
+        "type": "object",
+        "description": "Metrics grouped by transaction status (full map with all statuses)",
+        "properties": {
+          "ACTIVATED": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "AUTHORIZATION_REQUESTED": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "AUTHORIZATION_COMPLETED": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "CLOSURE_REQUESTED": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "CLOSED": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "CLOSURE_ERROR": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "NOTIFIED_OK": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "NOTIFIED_KO": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "NOTIFICATION_ERROR": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "NOTIFICATION_REQUESTED": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "EXPIRED": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "REFUNDED": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "CANCELED": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "EXPIRED_NOT_AUTHORIZED": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "UNAUTHORIZED": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "REFUND_ERROR": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "REFUND_REQUESTED": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "CANCELLATION_REQUESTED": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "CANCELLATION_EXPIRED": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "example": {
+          "ACTIVATED": 12,
+          "CLOSED": 45,
+          "NOTIFIED_OK": 20,
+          "EXPIRED": 0,
+          "REFUNDED": 0,
+          "CANCELED": 0,
+          "EXPIRED_NOT_AUTHORIZED": 0,
+          "UNAUTHORIZED": 0,
+          "REFUND_ERROR": 0,
+          "REFUND_REQUESTED": 0,
+          "CANCELLATION_REQUESTED": 0,
+          "CANCELLATION_EXPIRED": 0,
+          "AUTHORIZATION_REQUESTED": 0,
+          "AUTHORIZATION_COMPLETED": 0,
+          "CLOSURE_REQUESTED": 0,
+          "CLOSURE_ERROR": 0,
+          "NOTIFIED_KO": 0,
+          "NOTIFICATION_ERROR": 0,
+          "NOTIFICATION_REQUESTED": 0
+        }
       }
     },
     "requestBodies": {
@@ -1243,6 +1452,47 @@
                 "value": {
                   "type": "USER_EMAIL",
                   "userEmail": "test@test.it"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SearchMetricsRequest": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SearchMetricsRequest"
+            },
+            "examples": {
+              "full example": {
+                "value": {
+                  "clientId": "client-app-123",
+                  "pspId": "psp-001",
+                  "paymentTypeCode": "TYPE_ABC",
+                  "timeRange": {
+                    "startDate": "2023-11-30T14:00:00.000Z",
+                    "endDate": "2023-11-30T14:59:59.999Z"
+                  }
+                }
+              },
+              "only clientId": {
+                "value": {
+                  "clientId": "client-app-456",
+                  "timeRange": {
+                    "startDate": "2023-11-30T15:00:00.000Z",
+                    "endDate": "2023-11-30T15:45:00.000Z"
+                  }
+                }
+              },
+              "only pspId": {
+                "value": {
+                  "pspId": "psp-xyz",
+                  "timeRange": {
+                    "startDate": "2023-12-01T10:00:00.000Z",
+                    "endDate": "2023-12-01T10:50:00.000Z"
+                  }
                 }
               }
             }
