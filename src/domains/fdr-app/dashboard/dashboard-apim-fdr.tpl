@@ -16,10 +16,10 @@
             "settings": {
               "content": {
                 "content": "# Metriche e monitoring per API FdR-Fase1\n",
-                "title": "",
-                "subtitle": "",
                 "markdownSource": 1,
-                "markdownUri": ""
+                "markdownUri": "",
+                "subtitle": "",
+                "title": ""
               }
             }
           }
@@ -167,7 +167,7 @@
             }
           }
         },
-        "2":{
+        "2": {
           "position": {
             "x": 6,
             "y": 1,
@@ -240,7 +240,7 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-apim",
+                "value": "pagopa-${env_short}-apim",
                 "isOptional": true
               },
               {
@@ -312,7 +312,7 @@
             }
           }
         },
-        "3":{
+        "3": {
           "position": {
             "x": 12,
             "y": 1,
@@ -385,7 +385,7 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-apim",
+                "value": "pagopa-${env_short}-apim",
                 "isOptional": true
               },
               {
@@ -455,7 +455,7 @@
             }
           }
         },
-        "4":{
+        "4": {
           "position": {
             "x": 0,
             "y": 5,
@@ -527,7 +527,7 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-apim",
+                "value": "pagopa-${env_short}-apim",
                 "isOptional": true
               },
               {
@@ -581,7 +581,7 @@
             }
           }
         },
-        "5":{
+        "5": {
           "position": {
             "x": 6,
             "y": 5,
@@ -654,7 +654,7 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-apim",
+                "value": "pagopa-${env_short}-apim",
                 "isOptional": true
               },
               {
@@ -697,7 +697,6 @@
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
             "settings": {
               "content": {
-                "Query": "AzureDiagnostics\n//| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo-auth/node-for-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3b', '63b6e2da2a92e811a8f338f9', '61e9633dea7c4a07cc7d480e')\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
                 "Dimensions": {
                   "aggregation": "Sum",
                   "splitBy": [
@@ -717,7 +716,8 @@
                     }
                   ]
                 },
-                "IsQueryContainTimeRange": false
+                "IsQueryContainTimeRange": false,
+                "Query": "AzureDiagnostics\n//| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo-auth/node-for-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3b', '63b6e2da2a92e811a8f338f9', '61e9633dea7c4a07cc7d480e')\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n"
               }
             },
             "partHeader": {
@@ -726,7 +726,7 @@
             }
           }
         },
-        "6":{
+        "6": {
           "position": {
             "x": 12,
             "y": 5,
@@ -799,7 +799,7 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-apim",
+                "value": "pagopa-${env_short}-apim",
                 "isOptional": true
               },
               {
@@ -841,7 +841,6 @@
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
             "settings": {
               "content": {
-                "Query": "let threshold = 1;\nAzureDiagnostics\n//| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo-auth/node-for-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3b', '63b6e2da2a92e811a8f338f9', '61e9633dea7c4a07cc7d480e')\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs / 100.0, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
                 "Dimensions": {
                   "aggregation": "Sum",
                   "splitBy": [],
@@ -860,7 +859,8 @@
                     }
                   ]
                 },
-                "IsQueryContainTimeRange": false
+                "IsQueryContainTimeRange": false,
+                "Query": "let threshold = 1;\nAzureDiagnostics\n//| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo-auth/node-for-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3b', '63b6e2da2a92e811a8f338f9', '61e9633dea7c4a07cc7d480e')\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs / 100.0, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n"
               }
             },
             "partHeader": {
@@ -869,7 +869,7 @@
             }
           }
         },
-        "7":{
+        "7": {
           "position": {
             "x": 0,
             "y": 9,
@@ -942,7 +942,7 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-apim",
+                "value": "pagopa-${env_short}-apim",
                 "isOptional": true
               },
               {
@@ -984,7 +984,6 @@
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
             "settings": {
               "content": {
-                "Query": "let threshold = 0.99;\nAzureDiagnostics\n//| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo-auth/node-for-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3a', '63b6e2da2a92e811a8f338f8', '61e9633dea7c4a07cc7d480d')\n| summarize\n    Total=count(),\n    Success=count(responseCode_d < 500)\n    by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n",
                 "Dimensions": {
                   "aggregation": "Sum",
                   "splitBy": [],
@@ -1003,7 +1002,8 @@
                     }
                   ]
                 },
-                "IsQueryContainTimeRange": false
+                "IsQueryContainTimeRange": false,
+                "Query": "let threshold = 0.99;\nAzureDiagnostics\n//| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo-auth/node-for-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3a', '63b6e2da2a92e811a8f338f8', '61e9633dea7c4a07cc7d480d')\n| summarize\n    Total=count(),\n    Success=count(responseCode_d < 500)\n    by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| project TimeGenerated, availability, watermark=threshold\n| render timechart with (xtitle = \"time\", ytitle= \"availability(%)\")\n\n"
               }
             },
             "partHeader": {
@@ -1012,7 +1012,7 @@
             }
           }
         },
-        "8":{
+        "8": {
           "position": {
             "x": 6,
             "y": 9,
@@ -1085,7 +1085,7 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-apim",
+                "value": "pagopa-${env_short}-apim",
                 "isOptional": true
               },
               {
@@ -1128,7 +1128,6 @@
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
             "settings": {
               "content": {
-                "Query": "AzureDiagnostics\n//| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo-auth/node-for-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3a', '63b6e2da2a92e811a8f338f8', '61e9633dea7c4a07cc7d480d')\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n",
                 "Dimensions": {
                   "aggregation": "Sum",
                   "splitBy": [
@@ -1148,7 +1147,8 @@
                     }
                   ]
                 },
-                "IsQueryContainTimeRange": false
+                "IsQueryContainTimeRange": false,
+                "Query": "AzureDiagnostics\n//| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo-auth/node-for-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3a', '63b6e2da2a92e811a8f338f8', '61e9633dea7c4a07cc7d480d')\n| extend HTTPStatus = case(\n  responseCode_d between (100 .. 199), \"1XX\",\n  responseCode_d between (200 .. 299), \"2XX\",\n  responseCode_d between (300 .. 399), \"3XX\",\n  responseCode_d between (400 .. 499), \"4XX\",\n  \"5XX\")\n| summarize count() by HTTPStatus, bin(TimeGenerated, 5m)\n| render areachart with (xtitle = \"time\", ytitle= \"count\")\n\n"
               }
             },
             "partHeader": {
@@ -1157,7 +1157,7 @@
             }
           }
         },
-        "9":{
+        "9": {
           "position": {
             "x": 12,
             "y": 9,
@@ -1230,7 +1230,7 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-apim",
+                "value": "pagopa-${env_short}-apim",
                 "isOptional": true
               },
               {
@@ -1272,7 +1272,6 @@
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
             "settings": {
               "content": {
-                "Query": "let threshold = 1;\nAzureDiagnostics\n//| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo-auth/node-for-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3a', '63b6e2da2a92e811a8f338f8', '61e9633dea7c4a07cc7d480d')\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs / 100.0, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n",
                 "Dimensions": {
                   "aggregation": "Sum",
                   "splitBy": [],
@@ -1291,7 +1290,8 @@
                     }
                   ]
                 },
-                "IsQueryContainTimeRange": false
+                "IsQueryContainTimeRange": false,
+                "Query": "let threshold = 1;\nAzureDiagnostics\n//| where TimeGenerated > ago(30m)\n| where url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo-auth/node-for-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n| where operationId_s in ('63ff73adea7c4a1860530e3a', '63b6e2da2a92e811a8f338f8', '61e9633dea7c4a07cc7d480d')\n| summarize\n    watermark=threshold,\n    duration_percentile_95=percentiles(DurationMs / 100.0, 95) by bin(TimeGenerated, 5m)\n| render timechart with (xtitle = \"time\", ytitle= \"response time(s)\")\n\n"
               }
             },
             "partHeader": {
@@ -1300,7 +1300,7 @@
             }
           }
         },
-        "10":{
+        "10": {
           "position": {
             "x": 0,
             "y": 13,
@@ -1321,7 +1321,7 @@
                 "name": "Scope",
                 "value": {
                   "resourceIds": [
-                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-monitor-rg/providers/microsoft.insights/components/pagopa-${env_short}-appinsights"
                   ]
                 },
                 "isOptional": true
@@ -1371,12 +1371,14 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-appinsights",
+                "value": "pagopa-${env_short}-appinsights",
                 "isOptional": true
               },
               {
                 "name": "Dimensions",
                 "value": {
+                  "aggregation": "Sum",
+                  "splitBy": [],
                   "xAxis": {
                     "name": "timestamp",
                     "type": "datetime"
@@ -1390,9 +1392,7 @@
                       "name": "watermark",
                       "type": "real"
                     }
-                  ],
-                  "splitBy": [],
-                  "aggregation": "Sum"
+                  ]
                 },
                 "isOptional": true
               },
@@ -1418,7 +1418,7 @@
             }
           }
         },
-        "11":{
+        "11": {
           "position": {
             "x": 6,
             "y": 13,
@@ -1439,7 +1439,7 @@
                 "name": "Scope",
                 "value": {
                   "resourceIds": [
-                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-monitor-rg/providers/microsoft.insights/components/pagopa-${env_short}-appinsights"
                   ]
                 },
                 "isOptional": true
@@ -1489,12 +1489,14 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-appinsights",
+                "value": "pagopa-${env_short}-appinsights",
                 "isOptional": true
               },
               {
                 "name": "Dimensions",
                 "value": {
+                  "aggregation": "Sum",
+                  "splitBy": [],
                   "xAxis": {
                     "name": "timestamp",
                     "type": "datetime"
@@ -1508,9 +1510,7 @@
                       "name": "watermark",
                       "type": "real"
                     }
-                  ],
-                  "splitBy": [],
-                  "aggregation": "Sum"
+                  ]
                 },
                 "isOptional": true
               },
@@ -1531,19 +1531,19 @@
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
             "settings": {
               "content": {
-                "GridColumnsWidth": {
-                  "flowId": "261px",
-                  "errorMessage": "464px"
-                },
-                "Query": "let threshold = 0.99;\ntraces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == \"fdr-nodo\"\n| where message startswith \"End process [registerFdrForValidation]\"\n| extend errorMessage = extract(\"End process \\\\[registerFdrForValidation\\\\] -> \\\\[(.*?)\\\\](.*?)$\", 2, message)\n| where errorMessage != \"\"\n| extend flowId = customDimensions[\"fdr\"]\n| extend sessionId = customDimensions[\"sessionId\"]\n| order by timestamp desc \n| project timestamp, flowId, errorMessage, sessionId\n\n",
                 "ControlType": "AnalyticsGrid",
+                "GridColumnsWidth": {
+                  "errorMessage": "464px",
+                  "flowId": "261px"
+                },
+                "PartSubTitle": "register-for-validation",
                 "PartTitle": "KO on register for validation",
-                "PartSubTitle": "register-for-validation"
+                "Query": "let threshold = 0.99;\ntraces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == \"fdr-nodo\"\n| where message startswith \"End process [registerFdrForValidation]\"\n| extend errorMessage = extract(\"End process \\\\[registerFdrForValidation\\\\] -> \\\\[(.*?)\\\\](.*?)$\", 2, message)\n| where errorMessage != \"\"\n| extend flowId = customDimensions[\"fdr\"]\n| extend sessionId = customDimensions[\"sessionId\"]\n| order by timestamp desc \n| project timestamp, flowId, errorMessage, sessionId\n\n"
               }
             }
           }
         },
-        "12":{
+        "12": {
           "position": {
             "x": 0,
             "y": 17,
@@ -1564,7 +1564,7 @@
                 "name": "Scope",
                 "value": {
                   "resourceIds": [
-                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-monitor-rg/providers/microsoft.insights/components/pagopa-${env_short}-appinsights"
                   ]
                 },
                 "isOptional": true
@@ -1614,12 +1614,14 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-appinsights",
+                "value": "pagopa-${env_short}-appinsights",
                 "isOptional": true
               },
               {
                 "name": "Dimensions",
                 "value": {
+                  "aggregation": "Sum",
+                  "splitBy": [],
                   "xAxis": {
                     "name": "timestamp",
                     "type": "datetime"
@@ -1633,9 +1635,7 @@
                       "name": "watermark",
                       "type": "real"
                     }
-                  ],
-                  "splitBy": [],
-                  "aggregation": "Sum"
+                  ]
                 },
                 "isOptional": true
               },
@@ -1661,7 +1661,7 @@
             }
           }
         },
-        "13":{
+        "13": {
           "position": {
             "x": 6,
             "y": 17,
@@ -1682,7 +1682,7 @@
                 "name": "Scope",
                 "value": {
                   "resourceIds": [
-                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-monitor-rg/providers/microsoft.insights/components/pagopa-${env_short}-appinsights"
                   ]
                 },
                 "isOptional": true
@@ -1732,12 +1732,14 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-appinsights",
+                "value": "pagopa-${env_short}-appinsights",
                 "isOptional": true
               },
               {
                 "name": "Dimensions",
                 "value": {
+                  "aggregation": "Sum",
+                  "splitBy": [],
                   "xAxis": {
                     "name": "timestamp",
                     "type": "datetime"
@@ -1751,9 +1753,7 @@
                       "name": "watermark",
                       "type": "real"
                     }
-                  ],
-                  "splitBy": [],
-                  "aggregation": "Sum"
+                  ]
                 },
                 "isOptional": true
               },
@@ -1774,21 +1774,21 @@
             "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
             "settings": {
               "content": {
+                "ControlType": "AnalyticsGrid",
                 "GridColumnsWidth": {
-                  "sessionId": "151px",
                   "errorMessage": "470px",
                   "flowId": "271px",
+                  "sessionId": "151px",
                   "timestamp": "139px"
                 },
-                "Query": "traces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == \"fdr-nodo\"\n| where message startswith \"End process [NodoInviaFlussoRendicontazioneFTP]\"\n| extend errorMessage = extract(\"End process \\\\[NodoInviaFlussoRendicontazioneFTP\\\\] -> \\\\[(.*?)\\\\](.*?)$\", 2, message)\n| where errorMessage != \"\"\n| extend flowId = customDimensions[\"fdr\"]\n| extend sessionId = customDimensions[\"sessionId\"]\n| order by timestamp desc \n| project timestamp, flowId, errorMessage, sessionId\n\n",
-                "ControlType": "AnalyticsGrid",
+                "PartSubTitle": "nodo-invia-flusso-rendicontazione-FTP",
                 "PartTitle": "KO on nodoInviaFlussoRendicontazioneFTP",
-                "PartSubTitle": "nodo-invia-flusso-rendicontazione-FTP"
+                "Query": "traces\n//| where timestamp > ago(10m)\n| where cloud_RoleName == \"fdr-nodo\"\n| where message startswith \"End process [NodoInviaFlussoRendicontazioneFTP]\"\n| extend errorMessage = extract(\"End process \\\\[NodoInviaFlussoRendicontazioneFTP\\\\] -> \\\\[(.*?)\\\\](.*?)$\", 2, message)\n| where errorMessage != \"\"\n| extend flowId = customDimensions[\"fdr\"]\n| extend sessionId = customDimensions[\"sessionId\"]\n| order by timestamp desc \n| project timestamp, flowId, errorMessage, sessionId\n\n"
               }
             }
           }
         },
-        "14":{
+        "14": {
           "position": {
             "x": 0,
             "y": 21,
@@ -1857,7 +1857,7 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-appinsights",
+                "value": "pagopa-${env_short}-appinsights",
                 "isOptional": true
               },
               {
@@ -1888,7 +1888,7 @@
             }
           }
         },
-        "15":{
+        "15": {
           "position": {
             "x": 9,
             "y": 21,
@@ -1958,7 +1958,7 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-appinsights",
+                "value": "pagopa-${env_short}-appinsights",
                 "isOptional": true
               },
               {
@@ -1984,7 +1984,7 @@
             }
           }
         },
-        "16":{
+        "16": {
           "position": {
             "x": 0,
             "y": 26,
@@ -2054,7 +2054,7 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-appinsights",
+                "value": "pagopa-${env_short}-appinsights",
                 "isOptional": true
               },
               {
@@ -2079,7 +2079,7 @@
             }
           }
         },
-        "17":{
+        "17": {
           "position": {
             "x": 9,
             "y": 26,
@@ -2100,7 +2100,7 @@
                 "name": "Scope",
                 "value": {
                   "resourceIds": [
-                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-monitor-rg/providers/microsoft.insights/components/pagopa-p-appinsights"
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-monitor-rg/providers/microsoft.insights/components/pagopa-${env_short}-appinsights"
                   ]
                 },
                 "isOptional": true
@@ -2149,7 +2149,7 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-appinsights",
+                "value": "pagopa-${env_short}-appinsights",
                 "isOptional": true
               },
               {
@@ -2175,7 +2175,7 @@
             }
           }
         },
-        "18":{
+        "18": {
           "position": {
             "x": 0,
             "y": 31,
@@ -2196,7 +2196,7 @@
                 "name": "Scope",
                 "value": {
                   "resourceIds": [
-                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-p-apim"
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
                   ]
                 },
                 "isOptional": true
@@ -2247,7 +2247,7 @@
               },
               {
                 "name": "PartSubTitle",
-                "value": "pagopa-p-apim",
+                "value": "pagopa-${env_short}-apim",
                 "isOptional": true
               },
               {
@@ -2270,21 +2270,120 @@
                 "GridColumnsWidth": {
                   "backendUrl_s": "510px",
                   "count_": "126px",
+                  "endpoint": "369px",
                   "operationId_s": "338px",
-                  "url_s": "367px",
-                  "endpoint": "369px"
+                  "url_s": "367px"
                 },
-                "Query": "AzureDiagnostics\n//| where TimeGenerated > ago(8m)\n| where url_s matches regex \"/nodo-auth/node-for-psp\" or url_s matches regex \"/nodo-auth/nodo-per-psp\" or url_s matches regex \"/nodo/nodo-per-psp\" or url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n//| extend uri_entrypoint = case(\n//  url_s endswith \"v1/\", replace_string(url_s, \"v1/\", \"v1\"),\n//  url_s\n//)\n| extend uri_entrypoint = replace_regex(url_s, \"/v1(.*)\", \"/v1\")\n| extend uri_backend = replace_regex(backendUrl_s, \"/webservices/input(.*)\", \"/webservices/input\")\n| where operationId_s in ('63b6e2da2a92e811a8f33901', '63ff4f22aca2fd18dcc4a6f7', '61e9633eea7c4a07cc7d4811', // nodo-invia-flusso-rendicontazione\n                          '63ff73adea7c4a1860530e3b', '63b6e2da2a92e811a8f338f9', '61e9633dea7c4a07cc7d480e', // nodo-chiedi-flusso-rendicontazione\n                          '63ff73adea7c4a1860530e3a', '63b6e2da2a92e811a8f338f8', '61e9633dea7c4a07cc7d480d') // nodo-chiedi-elenco-flussi-rendicontazioni\n| extend endpoint = case(\n    operationId_s == \"63b6e2da2a92e811a8f33901\", \"nodoInviaFlussoRendicontazione (Auth)\",\n    operationId_s == \"63ff4f22aca2fd18dcc4a6f7\", \"nodoInviaFlussoRendicontazione (Auth english)\",\n    operationId_s == \"61e9633eea7c4a07cc7d4811\", \"nodoInviaFlussoRendicontazione (non-Auth)\",\n    operationId_s == \"63ff73adea7c4a1860530e3b\", \"nodoChiediFlussoRendicontazione (Auth english)\",\n    operationId_s == \"63b6e2da2a92e811a8f338f9\", \"nodoChiediFlussoRendicontazione (Auth)\",\n    operationId_s == \"61e9633dea7c4a07cc7d480e\", \"nodoChiediFlussoRendicontazione (non-Auth)\",\n    operationId_s == \"63ff73adea7c4a1860530e3a\", \"nodoChiediElencoFlussiRendicontazione (Auth english)\",\n    operationId_s == \"63b6e2da2a92e811a8f338f8\", \"nodoChiediElencoFlussiRendicontazione (Auth)\",\n    operationId_s == \"61e9633dea7c4a07cc7d480d\", \"nodoChiediElencoFlussiRendicontazione (non-Auth)\",\n    operationId_s // Mantieni il valore originale se non corrisponde a nessuno dei valori specificati\n)\n| extend backend = case ( \n    backendUrl_s startswith \"https://10.79.20.34\", \"to Nexi\",\n    backendUrl_s startswith \"https://weuprod.fdr.internal.platform.pagopa.it/pagopa-fdr-nodo-service\", \"to FdR-Fase1\",\n    backendUrl_s == \"\", \"cached by APIM\",\n    backendUrl_s\n)\n| summarize count() by backend, endpoint, uri_entrypoint, uri_backend\n| project backend, endpoint, count_, uri_entrypoint, uri_backend\n| order by endpoint, count_\n\n",
+                "IsQueryContainTimeRange": false,
                 "PartTitle": "Routing to NdP or FdR-Fase1",
-                "IsQueryContainTimeRange": false
+                "Query": "AzureDiagnostics\n//| where TimeGenerated > ago(8m)\n| where url_s matches regex \"/nodo-auth/node-for-psp\" or url_s matches regex \"/nodo-auth/nodo-per-psp\" or url_s matches regex \"/nodo/nodo-per-psp\" or url_s matches regex \"/nodo-auth/nodo-per-pa\" or url_s matches regex \"/nodo/nodo-per-pa\"\n//| extend uri_entrypoint = case(\n//  url_s endswith \"v1/\", replace_string(url_s, \"v1/\", \"v1\"),\n//  url_s\n//)\n| extend uri_entrypoint = replace_regex(url_s, \"/v1(.*)\", \"/v1\")\n| extend uri_backend = replace_regex(backendUrl_s, \"/webservices/input(.*)\", \"/webservices/input\")\n| where operationId_s in ('63b6e2da2a92e811a8f33901', '63ff4f22aca2fd18dcc4a6f7', '61e9633eea7c4a07cc7d4811', // nodo-invia-flusso-rendicontazione\n                          '63ff73adea7c4a1860530e3b', '63b6e2da2a92e811a8f338f9', '61e9633dea7c4a07cc7d480e', // nodo-chiedi-flusso-rendicontazione\n                          '63ff73adea7c4a1860530e3a', '63b6e2da2a92e811a8f338f8', '61e9633dea7c4a07cc7d480d') // nodo-chiedi-elenco-flussi-rendicontazioni\n| extend endpoint = case(\n    operationId_s == \"63b6e2da2a92e811a8f33901\", \"nodoInviaFlussoRendicontazione (Auth)\",\n    operationId_s == \"63ff4f22aca2fd18dcc4a6f7\", \"nodoInviaFlussoRendicontazione (Auth english)\",\n    operationId_s == \"61e9633eea7c4a07cc7d4811\", \"nodoInviaFlussoRendicontazione (non-Auth)\",\n    operationId_s == \"63ff73adea7c4a1860530e3b\", \"nodoChiediFlussoRendicontazione (Auth english)\",\n    operationId_s == \"63b6e2da2a92e811a8f338f9\", \"nodoChiediFlussoRendicontazione (Auth)\",\n    operationId_s == \"61e9633dea7c4a07cc7d480e\", \"nodoChiediFlussoRendicontazione (non-Auth)\",\n    operationId_s == \"63ff73adea7c4a1860530e3a\", \"nodoChiediElencoFlussiRendicontazione (Auth english)\",\n    operationId_s == \"63b6e2da2a92e811a8f338f8\", \"nodoChiediElencoFlussiRendicontazione (Auth)\",\n    operationId_s == \"61e9633dea7c4a07cc7d480d\", \"nodoChiediElencoFlussiRendicontazione (non-Auth)\",\n    operationId_s // Mantieni il valore originale se non corrisponde a nessuno dei valori specificati\n)\n| extend backend = case ( \n    backendUrl_s startswith \"https://10.79.20.34\", \"to Nexi\",\n    backendUrl_s startswith \"https://weuprod.fdr.internal.platform.pagopa.it/pagopa-fdr-nodo-service\", \"to FdR-Fase1\",\n    backendUrl_s == \"\", \"cached by APIM\",\n    backendUrl_s\n)\n| summarize count() by backend, endpoint, uri_entrypoint, uri_backend\n| project backend, endpoint, count_, uri_entrypoint, uri_backend\n| order by endpoint, count_\n\n"
               }
             }
           }
         },
-        "19":{
+        "19": {
           "position": {
             "x": 0,
             "y": 36,
+            "colSpan": 18,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "resourceTypeMode",
+                "isOptional": true
+              },
+              {
+                "name": "ComponentId",
+                "isOptional": true
+              },
+              {
+                "name": "Scope",
+                "value": {
+                  "resourceIds": [
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-monitor-rg/providers/microsoft.insights/components/pagopa-${env_short}-appinsights"
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "PartId",
+                "value": "7bd19742-ad2f-408d-b244-2c6dd89b2269",
+                "isOptional": true
+              },
+              {
+                "name": "Version",
+                "value": "2.0",
+                "isOptional": true
+              },
+              {
+                "name": "TimeRange",
+                "value": "PT30M",
+                "isOptional": true
+              },
+              {
+                "name": "DashboardId",
+                "isOptional": true
+              },
+              {
+                "name": "DraftRequestParameters",
+                "isOptional": true
+              },
+              {
+                "name": "Query",
+                "value": "traces\n| where cloud_RoleName == 'pagopafdrtoeventhub'\n| where message startswith \"FDR-E1\"\n    or message startswith \"FDR-E2\"\n    or message startswith \"FDR1-E1\"\n| summarize Total=count() by length=bin(timestamp, 5m), message\n",
+                "isOptional": true
+              },
+              {
+                "name": "ControlType",
+                "value": "AnalyticsGrid",
+                "isOptional": true
+              },
+              {
+                "name": "SpecificChart",
+                "isOptional": true
+              },
+              {
+                "name": "PartTitle",
+                "value": "Analytics",
+                "isOptional": true
+              },
+              {
+                "name": "PartSubTitle",
+                "value": "pagopa-${env_short}-appinsights",
+                "isOptional": true
+              },
+              {
+                "name": "Dimensions",
+                "isOptional": true
+              },
+              {
+                "name": "LegendOptions",
+                "isOptional": true
+              },
+              {
+                "name": "IsQueryContainTimeRange",
+                "value": false,
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+            "settings": {
+              "content": {
+                "GridColumnsWidth": {
+                  "Total": "1065px",
+                  "message": "1215px",
+                  "length": "214px"
+                }
+              }
+            }
+          }
+        },
+        "20": {
+          "position": {
+            "x": 0,
+            "y": 40,
             "colSpan": 18,
             "rowSpan": 1
           },
@@ -2294,18 +2393,18 @@
             "settings": {
               "content": {
                 "content": "# Metriche e monitoring per Database PostgreSQL\n",
-                "title": "",
-                "subtitle": "",
                 "markdownSource": 1,
-                "markdownUri": ""
+                "markdownUri": "",
+                "subtitle": "",
+                "title": ""
               }
             }
           }
         },
-        "20":{
+        "21": {
           "position": {
             "x": 0,
-            "y": 37,
+            "y": 41,
             "colSpan": 6,
             "rowSpan": 4
           },
@@ -2320,24 +2419,24 @@
                         "aggregationType": 4,
                         "metricVisualization": {
                           "displayName": "CPU percent",
-                          "resourceDisplayName": "pagopa-p-weu-fdr-flexible-postgresql"
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         },
                         "name": "cpu_percent",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/pagopa-p-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourcegroups/pagopa-${env_short}-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       },
                       {
                         "aggregationType": 4,
                         "metricVisualization": {
                           "displayName": "Memory percent",
-                          "resourceDisplayName": "pagopa-p-weu-fdr-flexible-postgresql"
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         },
                         "name": "memory_percent",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/pagopa-p-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourcegroups/pagopa-${env_short}-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       }
                     ],
@@ -2388,24 +2487,24 @@
                         "aggregationType": 4,
                         "metricVisualization": {
                           "displayName": "CPU percent",
-                          "resourceDisplayName": "pagopa-p-weu-fdr-flexible-postgresql"
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         },
                         "name": "cpu_percent",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/pagopa-p-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourcegroups/pagopa-${env_short}-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       },
                       {
                         "aggregationType": 4,
                         "metricVisualization": {
                           "displayName": "Memory percent",
-                          "resourceDisplayName": "pagopa-p-weu-fdr-flexible-postgresql"
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         },
                         "name": "memory_percent",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/pagopa-p-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourcegroups/pagopa-${env_short}-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       }
                     ],
@@ -2437,10 +2536,10 @@
             }
           }
         },
-        "21":{
+        "22": {
           "position": {
             "x": 6,
-            "y": 37,
+            "y": 41,
             "colSpan": 6,
             "rowSpan": 4
           },
@@ -2455,12 +2554,12 @@
                         "aggregationType": 4,
                         "metricVisualization": {
                           "displayName": "Storage percent",
-                          "resourceDisplayName": "pagopa-p-weu-fdr-flexible-postgresql"
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         },
                         "name": "storage_percent",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/pagopa-p-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourcegroups/pagopa-${env_short}-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       }
                     ],
@@ -2511,12 +2610,12 @@
                         "aggregationType": 4,
                         "metricVisualization": {
                           "displayName": "Storage percent",
-                          "resourceDisplayName": "pagopa-p-weu-fdr-flexible-postgresql"
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         },
                         "name": "storage_percent",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourcegroups/pagopa-p-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourcegroups/pagopa-${env_short}-weu-fdr-db-rg/providers/microsoft.dbforpostgresql/flexibleservers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       }
                     ],
@@ -2548,10 +2647,10 @@
             }
           }
         },
-        "22":{
+        "23": {
           "position": {
             "x": 12,
-            "y": 37,
+            "y": 41,
             "colSpan": 6,
             "rowSpan": 4
           },
@@ -2566,24 +2665,24 @@
                         "aggregationType": 1,
                         "metricVisualization": {
                           "displayName": "Failed Connections",
-                          "resourceDisplayName": "pagopa-p-weu-fdr-flexible-postgresql"
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         },
                         "name": "connections_failed",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       },
                       {
                         "aggregationType": 1,
                         "metricVisualization": {
                           "displayName": "Succeeded Connections",
-                          "resourceDisplayName": "pagopa-p-weu-fdr-flexible-postgresql"
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         },
                         "name": "connections_succeeded",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       }
                     ],
@@ -2634,24 +2733,24 @@
                         "aggregationType": 1,
                         "metricVisualization": {
                           "displayName": "Failed Connections",
-                          "resourceDisplayName": "pagopa-p-weu-fdr-flexible-postgresql"
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         },
                         "name": "connections_failed",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       },
                       {
                         "aggregationType": 1,
                         "metricVisualization": {
                           "displayName": "Succeeded Connections",
-                          "resourceDisplayName": "pagopa-p-weu-fdr-flexible-postgresql"
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         },
                         "name": "connections_succeeded",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       }
                     ],
@@ -2683,10 +2782,10 @@
             }
           }
         },
-        "23":{
+        "24": {
           "position": {
             "x": 0,
-            "y": 41,
+            "y": 45,
             "colSpan": 6,
             "rowSpan": 4
           },
@@ -2705,7 +2804,7 @@
                         "name": "iops",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       }
                     ],
@@ -2716,7 +2815,7 @@
                       },
                       "showUTCTime": false
                     },
-                    "title": "Avg IOPS for pagopa-p-weu-fdr-flexible-postgresql",
+                    "title": "Avg IOPS for pagopa-${env_short}-weu-fdr-flexible-postgresql",
                     "titleKind": 1,
                     "visualization": {
                       "axisVisualization": {
@@ -2760,11 +2859,11 @@
                         "name": "iops",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       }
                     ],
-                    "title": "Avg IOPS for pagopa-p-weu-fdr-flexible-postgresql",
+                    "title": "Avg IOPS for pagopa-${env_short}-weu-fdr-flexible-postgresql",
                     "titleKind": 1,
                     "visualization": {
                       "axisVisualization": {
@@ -2792,10 +2891,10 @@
             }
           }
         },
-        "24":{
+        "25": {
           "position": {
             "x": 6,
-            "y": 41,
+            "y": 45,
             "colSpan": 6,
             "rowSpan": 4
           },
@@ -2814,7 +2913,7 @@
                         "name": "read_throughput",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       }
                     ],
@@ -2825,7 +2924,7 @@
                       },
                       "showUTCTime": false
                     },
-                    "title": "Avg Read Throughput Bytes/Sec for pagopa-p-weu-fdr-flexible-postgresql",
+                    "title": "Avg Read Throughput Bytes/Sec for pagopa-${env_short}-weu-fdr-flexible-postgresql",
                     "titleKind": 1,
                     "visualization": {
                       "axisVisualization": {
@@ -2869,11 +2968,11 @@
                         "name": "read_throughput",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       }
                     ],
-                    "title": "Avg Read Throughput Bytes/Sec for pagopa-p-weu-fdr-flexible-postgresql",
+                    "title": "Avg Read Throughput Bytes/Sec for pagopa-${env_short}-weu-fdr-flexible-postgresql",
                     "titleKind": 1,
                     "visualization": {
                       "axisVisualization": {
@@ -2901,10 +3000,10 @@
             }
           }
         },
-        "25":{
+        "26": {
           "position": {
             "x": 12,
-            "y": 41,
+            "y": 45,
             "colSpan": 6,
             "rowSpan": 4
           },
@@ -2923,7 +3022,7 @@
                         "name": "write_throughput",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       }
                     ],
@@ -2934,7 +3033,7 @@
                       },
                       "showUTCTime": false
                     },
-                    "title": "Avg Write Throughput Bytes/Sec for pagopa-p-weu-fdr-flexible-postgresql",
+                    "title": "Avg Write Throughput Bytes/Sec for pagopa-${env_short}-weu-fdr-flexible-postgresql",
                     "titleKind": 1,
                     "visualization": {
                       "axisVisualization": {
@@ -2978,11 +3077,11 @@
                         "name": "write_throughput",
                         "namespace": "microsoft.dbforpostgresql/flexibleservers",
                         "resourceMetadata": {
-                          "id": "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-p-weu-fdr-flexible-postgresql"
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
                         }
                       }
                     ],
-                    "title": "Avg Write Throughput Bytes/Sec for pagopa-p-weu-fdr-flexible-postgresql",
+                    "title": "Avg Write Throughput Bytes/Sec for pagopa-${env_short}-weu-fdr-flexible-postgresql",
                     "titleKind": 1,
                     "visualization": {
                       "axisVisualization": {
