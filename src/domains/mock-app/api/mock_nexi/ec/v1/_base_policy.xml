@@ -4,7 +4,7 @@
         <set-header name="ndphost" exists-action="override">
           <value>mock-ec-prf.nexigroup.com</value>
         </set-header>
-        <set-backend-service base-url="{{default-nodo-backend-prf}}/servizio" />
+        <set-backend-service base-url="{{default-nodo-backend-prf}}/ec-mockprf/servizio" />
     </inbound>
     <backend>
         <base />

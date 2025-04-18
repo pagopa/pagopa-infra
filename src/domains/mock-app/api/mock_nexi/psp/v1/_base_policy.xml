@@ -4,7 +4,7 @@
         <set-header name="ndphost" exists-action="override">
           <value>mock-psp-prf.nexigroup.com</value>
         </set-header>
-        <set-backend-service base-url="{{default-nodo-backend-prf}}/simulatorePSP" />
+        <set-backend-service base-url="{{default-nodo-backend-prf}}/psp-mockprf/simulatorePSP" />
     </inbound>
     <backend>
         <base />

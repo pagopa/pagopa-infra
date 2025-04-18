@@ -208,7 +208,7 @@ module "apim_mock_pm_nexi_api" {
 
   xml_content = templatefile("./api/mock_nexi/pm/v1/_base_policy.xml", {
     ndphost = var.env_short == "u" ? "mock-pm-prf.nexigroup.com" : "mock-pm-sit.nexigroup.com"
-    backend = var.env_short == "u" ? "{{default-nodo-backend-prf}}/PerfPMMock/RestAPI" : "{{schema-ip-nexi}}/sit-mock-pm"
+    backend = var.env_short == "u" ? "{{default-nodo-backend-prf}}/mock-pm-prf/PerfPMMock/RestAPI" : "{{schema-ip-nexi}}/sit-mock-pm"
   })
 
 }
