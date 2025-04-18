@@ -667,3 +667,30 @@ resource "azurerm_storage_table" "pm_history_ingestion_log_table" {
   name                 = "pmHistoryIngestionLogTable"
   storage_account_name = module.ecommerce_pm_history_storage[0].name
 }
+
+## storage to support ecommerce reporting
+module "ecommerce_reporting_storage" {
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.42.3"
+
+  name                            = replace("${local.project}-reporting-sa", "-", "")
+  account_kind                    = "StorageV2"
+  account_tier                    = "Standard"
+  account_replication_type        = "GZRS"
+  access_tier                     = "Hot"
+  blob_versioning_enabled         = true
+  resource_group_name             = azurerm_resource_group.storage_ecommerce_rg.name
+  location                        = var.location
+  advanced_threat_protection      = true
+  allow_nested_items_to_be_public = false
+  public_network_access_enabled   = true
+  blob_delete_retention_days      = 30
+
+  network_rules = null
+
+  tags = var.tags
+}
+
+resource "azurerm_storage_table" "ecommerce_reporting_table" {
+  name                 = "StateReporting"
+  storage_account_name = module.ecommerce_reporting_storage.name
+}
