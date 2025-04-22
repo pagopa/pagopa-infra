@@ -7,7 +7,7 @@ provider "grafana" {
 
 locals {
   custom_dashboard_by_file = fileset("${path.module}/env/${var.location_short}-${var.instance}/dashboard/", "**")
-  
+
   dashboard_folder_map = flatten([
     for rt in local.custom_dashboard_by_file : {
       foldername = dirname(rt)
@@ -16,8 +16,8 @@ locals {
 
   dashboard_file_map = flatten([
     for rt in local.custom_dashboard_by_file : {
-        filename = "${dirname(rt)}/${basename(rt)}"
-     
+      filename = "${dirname(rt)}/${basename(rt)}"
+
     }
   ])
 
@@ -42,7 +42,7 @@ resource "grafana_dashboard" "azure_monitor_grafana" {
 
   config_json = file("${path.module}/env/${var.location_short}-${var.instance}/dashboard/${local.dashboard_file_map[each.value].filename}")
 
-  folder    = grafana_folder.customfolder["${split("/",local.dashboard_file_map[each.value].filename)[0]}"].id
+  folder    = grafana_folder.customfolder["${split("/", local.dashboard_file_map[each.value].filename)[0]}"].id
   overwrite = true
 }
 
