@@ -9,6 +9,7 @@
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.0.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.10.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.25.0 |
+| <a name="requirement_grafana"></a> [grafana](#requirement\_grafana) | ~> 3 |
 
 ## Modules
 
@@ -25,6 +26,8 @@
 | [azurerm_resource_group.grafana_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_role_assignment.grafana_dashboard_monitoring_data_reader](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.grafana_dashboard_monitoring_reader](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [grafana_dashboard.azure_monitor_grafana](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/dashboard) | resource |
+| [grafana_folder.customfolder](https://registry.terraform.io/providers/grafana/grafana/latest/docs/resources/folder) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.10.0/docs/data-sources/group) | data source |
