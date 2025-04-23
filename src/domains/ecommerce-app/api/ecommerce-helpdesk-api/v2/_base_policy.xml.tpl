@@ -4,7 +4,7 @@
       <choose>
         <when condition="@(context.Operation.Id == "ecommerceSearchMetrics")">
           <rate-limit-by-key 
-            calls="2" 
+            calls="10" 
             renewal-period="5" 
             counter-key="@(context.Subscription.Name + &quot;:ecommerceSearchMetrics&quot;)" 
             increment-condition="@(true)" />
