@@ -26,6 +26,14 @@ module "gh_runner_job" {
     {
       name : "pagopa-observability-bdi",
       short_name : "qi-bdi"
+    },
+    {
+      name : "pagopa-qi-alerts-management-function",
+      short_name : "qi-alerts"
+    },
+    {
+      name : "pagopa-qi-jsm-management-function",
+      short_name : "qi-jsm"
     }
   ]
   job = {
