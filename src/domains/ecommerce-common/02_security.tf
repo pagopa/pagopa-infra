@@ -658,7 +658,7 @@ resource "azurerm_key_vault_secret" "npg_google_pay_psp_keys" {
 }
 
 resource "azurerm_key_vault_secret" "ecommerce_reporting_webhook_url_slack" {
-  name         = "ecommerce_reporting_webhook_url_slack"
+  name         = "ecommerce-reporting-webhook-url-slack"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
