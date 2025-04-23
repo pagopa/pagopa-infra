@@ -110,23 +110,25 @@ No outputs.
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.6 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.47.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.106.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.116.0 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v8.22.0 |
-| <a name="module_cosmosdb_notices_collections"></a> [cosmosdb\_notices\_collections](#module\_cosmosdb\_notices\_collections) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection | v8.22.0 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 087a57940a67444c3b883030c54ceb78562c64ef |
+| <a name="module_cosmosdb_account_mongodb"></a> [cosmosdb\_account\_mongodb](#module\_cosmosdb\_account\_mongodb) | ./.terraform/modules/__v3__//cosmosdb_account | n/a |
+| <a name="module_cosmosdb_notices_collections"></a> [cosmosdb\_notices\_collections](#module\_cosmosdb\_notices\_collections) | ./.terraform/modules/__v3__//cosmosdb_mongodb_collection | n/a |
 | <a name="module_eventhub_namespace"></a> [eventhub\_namespace](#module\_eventhub\_namespace) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub | v8.22.0 |
-| <a name="module_eventhub_printit_configuration"></a> [eventhub\_printit\_configuration](#module\_eventhub\_printit\_configuration) | git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration | v8.22.0 |
+| <a name="module_eventhub_printit_configuration"></a> [eventhub\_printit\_configuration](#module\_eventhub\_printit\_configuration) | ./.terraform/modules/__v3__//eventhub_configuration | n/a |
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v8.22.0 |
 | <a name="module_identity_pr_01"></a> [identity\_pr\_01](#module\_identity\_pr\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v8.22.0 |
 | <a name="module_identity_ref_01"></a> [identity\_ref\_01](#module\_identity\_ref\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v8.36.1 |
-| <a name="module_institutions_sa"></a> [institutions\_sa](#module\_institutions\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.22.0 |
-| <a name="module_notices_sa"></a> [notices\_sa](#module\_notices\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.22.0 |
-| <a name="module_templates_sa"></a> [templates\_sa](#module\_templates\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.22.0 |
+| <a name="module_institutions_sa"></a> [institutions\_sa](#module\_institutions\_sa) | ./.terraform/modules/__v3__//storage_account | n/a |
+| <a name="module_notices_sa"></a> [notices\_sa](#module\_notices\_sa) | ./.terraform/modules/__v3__//storage_account | n/a |
+| <a name="module_templates_sa"></a> [templates\_sa](#module\_templates\_sa) | ./.terraform/modules/__v3__//storage_account | n/a |
+| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
 

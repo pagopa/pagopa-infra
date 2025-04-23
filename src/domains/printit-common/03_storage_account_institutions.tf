@@ -1,5 +1,5 @@
 module "institutions_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__//storage_account"
   count  = var.is_feature_enabled.storage_institutions ? 1 : 0
 
   name                            = replace("${local.project_short}-ci", "-", "")
