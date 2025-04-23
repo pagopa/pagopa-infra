@@ -670,9 +670,9 @@ resource "azurerm_storage_table" "pm_history_ingestion_log_table" {
 
 ## storage to support ecommerce reporting
 module "ecommerce_reporting_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.42.3"
+  source = "./.terraform/modules/__v3__/storage_account"
 
-  name                            = replace("${local.project}-reporting-sa", "-", "")
+  name                            = replace("${local.project}-rep-sa", "-", "")
   account_kind                    = "StorageV2"
   account_tier                    = "Standard"
   account_replication_type        = "GZRS"
@@ -691,6 +691,6 @@ module "ecommerce_reporting_storage" {
 }
 
 resource "azurerm_storage_table" "ecommerce_reporting_table" {
-  name                 = "StateReporting"
+  name                 = "TransactionStatusReporting"
   storage_account_name = module.ecommerce_reporting_storage.name
 }
