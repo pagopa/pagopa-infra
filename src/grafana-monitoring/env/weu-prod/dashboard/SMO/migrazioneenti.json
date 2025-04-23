@@ -1,0 +1,1263 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 36,
+    "links": [
+      {
+        "asDropdown": false,
+        "icon": "external link",
+        "includeVars": false,
+        "keepTime": false,
+        "tags": [],
+        "targetBlank": true,
+        "title": "Documentazione",
+        "tooltip": "",
+        "type": "link",
+        "url": "https://pagopa.atlassian.net/wiki/spaces/PPAOP/pages/583073816/Grafana+-+Monitoraggio+EC+migrati"
+      }
+    ],
+    "liveNow": false,
+    "panels": [
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 6,
+        "panels": [
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "none"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 1
+            },
+            "id": 2,
+            "options": {
+              "displayLabels": [
+                "percent",
+                "name"
+              ],
+              "legend": {
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true,
+                "values": [
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "/^TOTALE$/",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "9.1.8.1",
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "PT_REL_PA\n| where STAZIONE_ENABLED == \"Y\"\n| summarize TOTALE=count() by VERSIONE\n| extend label=strcat(\"Stazione v\", VERSIONE)\n| project label, TOTALE",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Percentuale delle associazioni ente/stazione",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": []
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 1
+            },
+            "id": 4,
+            "options": {
+              "displayLabels": [
+                "name",
+                "percent"
+              ],
+              "legend": {
+                "displayMode": "list",
+                "placement": "bottom",
+                "showLegend": true,
+                "values": [
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "/^TOTALE$/",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "PT_REL_PA\n| where STAZIONE_ENABLED == \"Y\"\n| project STAZIONE, VERSIONE\n| distinct STAZIONE, VERSIONE\n| summarize TOTALE=count() by VERSIONE\n| extend label=strcat(\"Stazioni a v\", VERSIONE)\n| project label, TOTALE\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Numero di stazioni singole presenti sul nodo",
+            "type": "piechart"
+          }
+        ],
+        "title": "Visuale globale su enti/stazioni",
+        "type": "row"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 1
+        },
+        "id": 10,
+        "panels": [
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "links": [
+                  {
+                    "title": "Stazione",
+                    "url": "https://pagopa-p-weu-grafana-avb5f4e0fqawgyea.weu.grafana.azure.com/d/Q9BbGbO4k/config-migrazioni-enti-stazioni?orgId=1&var-stazione=${__data.fields.STAZIONE}&${intermediario:queryparam}&${id_dominio:queryparam}﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿"
+                  }
+                ],
+                "mappings": []
+              },
+              "overrides": [
+                {
+                  "__systemRef": "hideSeriesFrom",
+                  "matcher": {
+                    "id": "byNames",
+                    "options": {
+                      "mode": "exclude",
+                      "names": [
+                        "TOTALE",
+                        "00838520880_02 (v1)",
+                        "03383350638_02 (v1)",
+                        "02695640421_01 (v1)",
+                        "15376371009_02 (v1)",
+                        "15376371009_04 (v2)",
+                        "00493410583_03 (v1)"
+                      ],
+                      "prefix": "All except:",
+                      "readOnly": true
+                    }
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.hideFrom",
+                      "value": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": true
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 10,
+              "x": 0,
+              "y": 2
+            },
+            "id": 14,
+            "options": {
+              "displayLabels": [
+                "percent"
+              ],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "/^TOTALE$/",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "PT_REL_PA\n| where ID_INTERMEDIARIO == $intermediario\n| extend l = strcat(STAZIONE, \" (v\", VERSIONE, \")\")\n| project-away STAZIONE\n| project-rename STAZIONE=l\n| summarize TOTALE=count() by STAZIONE",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Distribuzione Enti su Stazioni",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "custom": {
+                  "align": "auto",
+                  "cellOptions": {
+                    "type": "auto"
+                  },
+                  "inspect": false
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 7,
+              "w": 14,
+              "x": 10,
+              "y": 2
+            },
+            "id": 16,
+            "options": {
+              "cellHeight": "sm",
+              "footer": {
+                "countRows": false,
+                "fields": "",
+                "reducer": [
+                  "sum"
+                ],
+                "show": false
+              },
+              "showHeader": true
+            },
+            "pluginVersion": "9.5.13",
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "PT_REL_PA\n| where ID_INTERMEDIARIO == $intermediario\n| where STAZIONE == $stazione",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "$intermediario / $stazione",
+            "type": "table"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "custom": {
+                  "align": "auto",
+                  "cellOptions": {
+                    "type": "auto"
+                  },
+                  "inspect": true
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "PA_DESCR"
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.width",
+                      "value": 229
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 9,
+              "w": 24,
+              "x": 0,
+              "y": 9
+            },
+            "id": 12,
+            "options": {
+              "cellHeight": "sm",
+              "footer": {
+                "countRows": false,
+                "fields": "",
+                "reducer": [
+                  "sum"
+                ],
+                "show": false
+              },
+              "showHeader": true,
+              "sortBy": []
+            },
+            "pluginVersion": "9.5.13",
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "PT_REL_PA\n| where ID_INTERMEDIARIO == $intermediario",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Lista intermediati : $intermediario",
+            "type": "table"
+          }
+        ],
+        "title": "Dettaglio Intermediario: $intermediario",
+        "type": "row"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 2
+        },
+        "id": 20,
+        "panels": [],
+        "title": "Dettaglio su Ente Creditore: $id_dominio",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "INTERMEDIARIO"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 332
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "VERSIONE"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 85
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "VER"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 43
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "BCAST"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 65
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "ENABLED"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 83
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "AUX_DIGIT"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 88
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "SEGR"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 59
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 3
+        },
+        "id": 18,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "PT_REL_PA\n| where ID_DOMINIO in ($id_dominio)\n| project-away TIMEOUT, TIMEOUT_A, TIMEOUT_B, TIMEOUT_C, PA_RAGIONE_SOCIALE \n| project-rename INTERMEDIARIO=INTERMEDIARIO_DESCR , PA=PA_DESCR , ENABLED=STAZIONE_ENABLED, VER=VERSIONE, BCAST=BROADCAST, SEGR=SEGREGAZIONE , PROG=PROGRESSIVO \n| sort by INTERMEDIARIO asc\n| project ID_INTERMEDIARIO , INTERMEDIARIO , ID_DOMINIO , PA, STAZIONE, VER , BCAST, ENABLED, AUX_DIGIT , SEGR , PROG\n| join kind=inner PA on $left.ID_DOMINIO == $right.ID_DOMINIO\n| extend PA_DESCR=case(isempty(RAGIONE_SOCIALE), DESCRIZIONE, RAGIONE_SOCIALE)\n| project ID_INTERMEDIARIO , INTERMEDIARIO , ID_DOMINIO , PA_DESCR, STAZIONE, VER , BCAST, ENABLED, AUX_DIGIT , SEGR , PROG\n| project-rename  PA=PA_DESCR",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Ente Creditore: $id_dominio",
+        "type": "table"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 11
+        },
+        "id": 26,
+        "panels": [],
+        "title": "Stato Migrazione PT",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "links": [
+              {
+                "title": "",
+                "url": "https://pagopa-p-weu-grafana-avb5f4e0fqawgyea.weu.grafana.azure.com/d/Q9BbGbO4k/config-migrazioni-enti-stazioni?orgId=1&${stazione:queryparam}&${intermediario:queryparam}&${id_dominio:queryparam}&var-STATE=${__data.fields.STATE}"
+              }
+            ],
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 12
+        },
+        "id": 22,
+        "options": {
+          "displayLabels": [
+            "percent"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "value",
+              "percent"
+            ],
+            "width": 10
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "count"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let Int_V1 = PT_REL_PA\n| where STAZIONE_ENABLED == \"Y\"\n| distinct ID_INTERMEDIARIO, VERSIONE, STAZIONE\n| where VERSIONE == 1\n| summarize TOTALE_V1=count() by ID_INTERMEDIARIO, VERSIONE;\nlet Int_V2 = PT_REL_PA\n| where STAZIONE_ENABLED == \"Y\"\n| distinct ID_INTERMEDIARIO, VERSIONE, STAZIONE\n| where VERSIONE == 2\n| summarize TOTALE_V2=count() by ID_INTERMEDIARIO, VERSIONE;\nINTERMEDIARI_PA\n| where ENABLED == \"Y\"\n| project-rename ID_INTERMEDIARIO=ID_INTERMEDIARIO_PA\n| join kind=leftouter Int_V1 on ID_INTERMEDIARIO\n| join kind=leftouter Int_V2 on ID_INTERMEDIARIO\n| extend TOTALE_V1=case(isnull(TOTALE_V1),0,TOTALE_V1)\n| extend TOTALE_V2=case(isnull(TOTALE_V2),0,TOTALE_V2)\n| extend TOTALE=TOTALE_V1+TOTALE_V2\n| extend STATE = case(TOTALE_V1==0,\"Solo V2\", TOTALE_V2==0, \"Solo V1\", \"Ibrido\")\n| where TOTALE > 0\n| project ID_INTERMEDIARIO, INTERMEDIARIO_DESCR, STATE, TOTALE_V1, TOTALE_V2, TOTALE\n| summarize Situazione=count() by STATE",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Tipologia stazioni su Intermediari",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "filterable": false,
+              "inspect": false
+            },
+            "links": [
+              {
+                "title": "",
+                "url": "https://pagopa-p-weu-grafana-avb5f4e0fqawgyea.weu.grafana.azure.com/d/Q9BbGbO4k/config-migrazioni-enti-stazioni?orgId=1&${id_dominio:queryparam}&${STATE:queryparam}&var-intermediario=${__data.fields.CF}"
+              }
+            ],
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "CF"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "INTERMEDIARIO"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 368
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "V1"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 39
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "V2"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 43
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "TOTALE"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 69
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 12
+        },
+        "id": 24,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": true,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let Int_V1 = PT_REL_PA\n| where STAZIONE_ENABLED == \"Y\"\n| distinct ID_INTERMEDIARIO, VERSIONE, STAZIONE\n| where VERSIONE == 1\n| summarize TOTALE_V1=count() by ID_INTERMEDIARIO, VERSIONE;\nlet Int_V2 = PT_REL_PA\n| where STAZIONE_ENABLED == \"Y\"\n| distinct ID_INTERMEDIARIO, VERSIONE, STAZIONE\n| summarize TOTALE_V2=count() by ID_INTERMEDIARIO, VERSIONE\n| where VERSIONE == 2;\nINTERMEDIARI_PA\n| where ENABLED == \"Y\"\n| project-rename ID_INTERMEDIARIO=ID_INTERMEDIARIO_PA\n| join kind=leftouter Int_V1 on ID_INTERMEDIARIO\n| join kind=leftouter Int_V2 on ID_INTERMEDIARIO\n| extend TOTALE_V1=case(isnull(TOTALE_V1),0,TOTALE_V1)\n| extend TOTALE_V2=case(isnull(TOTALE_V2),0,TOTALE_V2)\n| extend TOTALE=TOTALE_V1+TOTALE_V2\n| extend STATE = case(TOTALE_V1==0,\"Solo V2\", TOTALE_V2==0, \"Solo V1\", \"Ibrido\")\n| where TOTALE > 0\n| where STATE in ($STATE)\n| project-rename CF=ID_INTERMEDIARIO, INTERMEDIARIO=INTERMEDIARIO_DESCR, V1=TOTALE_V1, V2=TOTALE_V2\n| sort by INTERMEDIARIO asc\n| project CF, INTERMEDIARIO, V1, V2, TOTALE\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Elenco Intermediati - $STATE",
+        "type": "table"
+      }
+    ],
+    "refresh": "",
+    "revision": 1,
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "definition": "INTERMEDIARI_PA\n| extend variable = strcat(ID_INTERMEDIARIO_PA,\"|\",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PA, \" |\", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
+          "hide": 0,
+          "includeAll": true,
+          "label": "Partner Tecnologico",
+          "multi": false,
+          "name": "intermediario",
+          "options": [],
+          "query": {
+            "database": "re",
+            "expression": {
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "INTERMEDIARI_PA\n| extend variable = strcat(ID_INTERMEDIARIO_PA,\"|\",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PA, \" |\", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "adx-INTERMEDIARI_PA\n| extend variable = strcat(ID_INTERMEDIARIO_PA,\"|\",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PA, \" |\", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
+            "resultFormat": "table"
+          },
+          "refresh": 1,
+          "regex": "/(?<value>.*)\\|(?<text>.*)/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "definition": "PT_REL_PA\n| where ID_INTERMEDIARIO == $intermediario\n| extend l = strcat(STAZIONE,\"|\",STAZIONE, \" (v\", VERSIONE, \")\")\n| project l",
+          "error": {},
+          "hide": 0,
+          "includeAll": true,
+          "label": "Stazione",
+          "multi": false,
+          "name": "stazione",
+          "options": [],
+          "query": {
+            "database": "re",
+            "expression": {
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "PT_REL_PA\n| where ID_INTERMEDIARIO == $intermediario\n| extend l = strcat(STAZIONE,\"|\",STAZIONE, \" (v\", VERSIONE, \")\")\n| project l",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "adx-PT_REL_PA\n| where ID_INTERMEDIARIO == $intermediario\n| extend l = strcat(STAZIONE,\"|\",STAZIONE, \" (v\", VERSIONE, \")\")\n| project l",
+            "resultFormat": "table"
+          },
+          "refresh": 1,
+          "regex": "/(?<value>.*)\\|(?<text>.*)/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "definition": "PA\n| where ENABLED == \"Y\"\n| extend DESCR=case(isempty(RAGIONE_SOCIALE), DESCRIZIONE, RAGIONE_SOCIALE)\n| extend l = strcat(ID_DOMINIO,\"|\", \"(\", ID_DOMINIO,\") \", DESCR)\n| project l",
+          "hide": 0,
+          "includeAll": true,
+          "label": "Ente Creditore",
+          "multi": false,
+          "name": "id_dominio",
+          "options": [],
+          "query": {
+            "database": "re",
+            "expression": {
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "PA\n| where ENABLED == \"Y\"\n| extend DESCR=case(isempty(RAGIONE_SOCIALE), DESCRIZIONE, RAGIONE_SOCIALE)\n| extend l = strcat(ID_DOMINIO,\"|\", \"(\", ID_DOMINIO,\") \", DESCR)\n| project l",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "adx-PA\n| where ENABLED == \"Y\"\n| extend l = strcat(ID_DOMINIO,\"|\", \"(\", ID_DOMINIO,\") \", DESCRIZIONE)\n| project l",
+            "resultFormat": "table"
+          },
+          "refresh": 1,
+          "regex": "/(?<value>.*)\\|(?<text>.*)/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "hide": 2,
+          "includeAll": true,
+          "multi": false,
+          "name": "STATE",
+          "options": [
+            {
+              "selected": true,
+              "text": "All",
+              "value": "$__all"
+            },
+            {
+              "selected": false,
+              "text": "Ibrido",
+              "value": "Ibrido"
+            },
+            {
+              "selected": false,
+              "text": "Solo V1",
+              "value": "Solo V1"
+            },
+            {
+              "selected": false,
+              "text": "Solo V2",
+              "value": "Solo V2"
+            }
+          ],
+          "query": "Ibrido,Solo V1,Solo V2",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {
+      "hidden": true
+    },
+    "timezone": "",
+    "title": "[CONFIG] - Migrazioni Enti/Stazioni",
+    "uid": "Q9BbGbO4k",
+    "version": 9,
+    "weekStart": ""
+  }

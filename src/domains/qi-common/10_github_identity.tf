@@ -17,7 +17,9 @@ locals {
   repos_01 = [
     "pagopa-qi-jira-snow",
     "pagopa-observability-bdi",
-    "pagopa-qa"
+    "pagopa-qa",
+    "pagopa-qi-alerts-management-function",
+    "pagopa-qi-jsm-management-function"
   ]
 
   federations_01 = [
