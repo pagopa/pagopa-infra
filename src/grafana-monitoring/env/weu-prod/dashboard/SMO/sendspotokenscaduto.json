@@ -1,0 +1,888 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 49,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 6,
+          "x": 0,
+          "y": 0
+        },
+        "id": 8,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOTALE$/",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.1.6",
+            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nReEvent\n| where insertedTimestamp between (start .. end)\n| project-away payload, sessionId, sessionIdOriginal\n| where tipoEvento in (\"activatePaymentNotice\", \"sendPaymentOutcome\")\n| where sottoTipoEvento == \"REQ\"\n| extend intermediario_psp = substring(canale, 0, strlen(canale)-3)\n| summarize TOTALE=count() by tipoEvento, intermediario_psp, psp\n| join kind=inner INTERMEDIARI_PSP on $left.intermediario_psp == $right.ID_INTERMEDIARIO_PSP\n| join kind=inner PSP on $left.psp == $right.ID_PSP\n| project-away ID_INTERMEDIARIO_PSP, ENABLED, ID_PSP, RAGIONE_SOCIALE, ENABLED1\n| project intermediario_psp, psp, tipoEvento, TOTALE, INTERMEDIARIO_DESCR, DESCRIZIONE\n| where intermediario_psp in ($Intermediario_psp)",
+            "querySource": "raw",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Totale activatePaymentNotice",
+        "transformations": [
+          {
+            "id": "filterByValue",
+            "options": {
+              "filters": [
+                {
+                  "config": {
+                    "id": "equal",
+                    "options": {
+                      "value": "activatePaymentNotice"
+                    }
+                  },
+                  "fieldName": "tipoEvento"
+                }
+              ],
+              "match": "all",
+              "type": "include"
+            }
+          }
+        ],
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 6,
+          "x": 6,
+          "y": 0
+        },
+        "id": 9,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "center",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOTALE$/",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 8,
+            "refId": "A"
+          }
+        ],
+        "title": "Totale SPO",
+        "transformations": [
+          {
+            "id": "filterByValue",
+            "options": {
+              "filters": [
+                {
+                  "config": {
+                    "id": "equal",
+                    "options": {
+                      "value": "sendPaymentOutcome"
+                    }
+                  },
+                  "fieldName": "tipoEvento"
+                }
+              ],
+              "match": "any",
+              "type": "include"
+            }
+          }
+        ],
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 6,
+          "x": 12,
+          "y": 0
+        },
+        "id": 4,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "count"
+            ],
+            "fields": "/^tipoEvento$/",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 2,
+            "refId": "A"
+          }
+        ],
+        "title": "Numero PPT_TOKEN_SCADUTO",
+        "transformations": [
+          {
+            "disabled": true,
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "insertedTimestamp": {
+                  "aggregations": [],
+                  "operation": "aggregate"
+                },
+                "tipoEvento": {
+                  "aggregations": []
+                }
+              }
+            }
+          }
+        ],
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Mixed --"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "percent"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 6,
+          "x": 18,
+          "y": 0
+        },
+        "id": 11,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.4.0",
+            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nlet TotaleSPO = ReEvent\n| where insertedTimestamp between (start .. end)\n| project-away payload, sessionId, sessionIdOriginal\n| where tipoEvento == \"sendPaymentOutcome\"\n| where sottoTipoEvento == \"REQ\"\n| extend intermediario_psp = substring(canale, 0, strlen(canale)-3)\n| summarize TOTALE=count() by tipoEvento, intermediario_psp, psp\n| where intermediario_psp in ($Intermediario_psp)\n| extend multiply = 100;\nlet totaleDuplicati = FAULT_CODE\n| where insertedTimestamp between (start .. end)\n| project-away faultDescription, sessionId , sessionIdOriginal , uniqueId\n| where faultCode == \"PPT_TOKEN_SCADUTO\"\n| extend intermediario_psp = substring(canale, 0, strlen(canale)-3)\n| summarize TOTALE_FAULT=count() by intermediario_psp, psp\n| where intermediario_psp in ($Intermediario_psp);\nTotaleSPO\n| join kind=leftouter totaleDuplicati on $left.intermediario_psp == $right.intermediario_psp, $left.psp == $right.psp\n| extend TOTALE_FAULT=case(isempty(TOTALE_FAULT) == true, 0, TOTALE_FAULT)\n| project tipoEvento, intermediario_psp, psp, TOTALE, multiply, TOTALE_FAULT",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "TotaleSPO",
+            "resultFormat": "table"
+          },
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "hide": true,
+            "pluginVersion": "4.4.0",
+            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| project-away faultDescription, sessionId , sessionIdOriginal , uniqueId\n| where faultCode == \"PPT_TOKEN_SCADUTO\"\n| extend intermediario_psp = substring(canale, 0, strlen(canale)-3)\n| summarize TOTALE_FAULT=count() by intermediario_psp, psp\n| where intermediario_psp in ($Intermediario_psp)",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "TotaleDuplicati",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Percentuale",
+        "transformations": [
+          {
+            "disabled": true,
+            "id": "joinByField",
+            "options": {
+              "byField": "psp",
+              "mode": "outer"
+            }
+          },
+          {
+            "disabled": true,
+            "id": "joinByField",
+            "options": {
+              "byField": "intermediario_psp 2",
+              "mode": "outer"
+            }
+          },
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "TOTALE": {
+                  "aggregations": [
+                    "sum"
+                  ],
+                  "operation": "aggregate"
+                },
+                "TOTALE_FAULT": {
+                  "aggregations": [
+                    "sum"
+                  ],
+                  "operation": "aggregate"
+                },
+                "multiply": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "tipoEvento": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                }
+              }
+            }
+          },
+          {
+            "id": "calculateField",
+            "options": {
+              "alias": "Percentuale",
+              "binary": {
+                "left": "TOTALE_FAULT (sum)",
+                "operator": "/",
+                "reducer": "sum",
+                "right": "TOTALE (sum)"
+              },
+              "mode": "binary",
+              "reduce": {
+                "include": [],
+                "reducer": "diffperc"
+              },
+              "replaceFields": false
+            }
+          },
+          {
+            "id": "calculateField",
+            "options": {
+              "alias": "Perc",
+              "binary": {
+                "left": "Percentuale",
+                "operator": "*",
+                "reducer": "sum",
+                "right": "multiply"
+              },
+              "mode": "binary",
+              "reduce": {
+                "reducer": "sum"
+              },
+              "replaceFields": true
+            }
+          }
+        ],
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 7
+        },
+        "id": 6,
+        "options": {
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [],
+            "fields": "/^insertedTimestamp \\(count\\)$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "9.2.7.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 2,
+            "refId": "A"
+          }
+        ],
+        "title": "Distribuzione su Intermediari",
+        "transformations": [
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "INTERMEDIARIO_DESCR": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "insertedTimestamp": {
+                  "aggregations": [
+                    "count"
+                  ],
+                  "operation": "aggregate"
+                },
+                "intermediario_psp": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                }
+              }
+            }
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "intermediario_psp": true
+              },
+              "indexByName": {
+                "INTERMEDIARIO_DESCR": 0,
+                "insertedTimestamp (count)": 2,
+                "intermediario_psp": 1
+              },
+              "renameByName": {}
+            }
+          }
+        ],
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "none"
+          },
+          "overrides": [
+            {
+              "__systemRef": "hideSeriesFrom",
+              "matcher": {
+                "id": "byNames",
+                "options": {
+                  "mode": "exclude",
+                  "names": [
+                    "insertedTimestamp (count)",
+                    "BANCA VALSABBINA S.C.p.A."
+                  ],
+                  "prefix": "All except:",
+                  "readOnly": true
+                }
+              },
+              "properties": [
+                {
+                  "id": "custom.hideFrom",
+                  "value": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": true
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 7
+        },
+        "id": 12,
+        "options": {
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [],
+            "fields": "/^insertedTimestamp \\(count\\)$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "9.2.7.1",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 2,
+            "refId": "A"
+          }
+        ],
+        "title": "Distribuzione su Intermediati",
+        "transformations": [
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "DESCRIZIONE": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "INTERMEDIARIO_DESCR": {
+                  "aggregations": []
+                },
+                "insertedTimestamp": {
+                  "aggregations": [
+                    "count"
+                  ],
+                  "operation": "aggregate"
+                },
+                "intermediario_psp": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                }
+              }
+            }
+          },
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "intermediario_psp": true
+              },
+              "indexByName": {
+                "INTERMEDIARIO_DESCR": 0,
+                "insertedTimestamp (count)": 2,
+                "intermediario_psp": 1
+              },
+              "renameByName": {}
+            }
+          }
+        ],
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "filterable": true,
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "faultCode"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 219
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 16,
+          "w": 24,
+          "x": 0,
+          "y": 15
+        },
+        "id": 2,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": true,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": false,
+              "displayName": "INTERMEDIARIO_DESCR"
+            }
+          ]
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from + 7200000));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to + 7200000));\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| project-away faultDescription, sessionId , sessionIdOriginal , uniqueId\n| where faultCode in (\"PPT_TOKEN_SCADUTO\",\"PPT_TOKEN_SCADUTO_KO\")\n| extend intermediario_psp = substring(canale, 0, strlen(canale)-3)\n| join kind=inner INTERMEDIARI_PSP on $left.intermediario_psp == $right.ID_INTERMEDIARIO_PSP\n| join kind=inner PSP on $left.psp == $right.ID_PSP\n| project-away ENABLED, RAGIONE_SOCIALE, ENABLED1, ID_PSP, ID_INTERMEDIARIO_PSP\n| where intermediario_psp in ($Intermediario_psp)\n| extend insertedTimestamp = datetime_add(\"hour\",-2, insertedTimestamp)",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Dettaglio fault",
+        "type": "table"
+      }
+    ],
+    "refresh": "",
+    "revision": 1,
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "definition": "INTERMEDIARI_PSP\n| extend variable = strcat(ID_INTERMEDIARIO_PSP,\"|\",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PSP, \" : \", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
+          "hide": 0,
+          "includeAll": true,
+          "multi": false,
+          "name": "Intermediario_psp",
+          "options": [],
+          "query": "INTERMEDIARI_PSP\n| extend variable = strcat(ID_INTERMEDIARIO_PSP,\"|\",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PSP, \" : \", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
+          "refresh": 1,
+          "regex": "/(?<value>.*)\\|(?<text>.*)/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "[GLOBAL] - Invio SPO a Token Scaduto",
+    "uid": "cN0B0RpVz",
+    "version": 3,
+    "weekStart": ""
+  }
