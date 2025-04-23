@@ -24,6 +24,7 @@ locals {
 
   api_fdr_product = [
     azurerm_api_management_api.apim_fdr_per_pa_api_v1.name,
+    azurerm_api_management_api.apim_fdr_per_psp_api_v1.name,
   ]
 
 }
@@ -40,23 +41,23 @@ resource "azurerm_api_management_product_api" "apim_fdr_nodo_dei_pagamenti_produ
 
 
 ###############################
-## WS FDR nodo legacy per PA ##
+## WS FDR nodo legacy        ##
 ###############################
 locals {
-  apim_fdr_per_pa_api = {
-    display_name          = "Nodo per PA Fdr Legacy WS"
-    description           = "Web services to support PA in payment activations, defined in nodoPerPa.wsdl"
-    path                  = "fdr-legacy/nodo-per-pa"
+  apim_fdr_legacy_api = {
+    display_name          = "Fdr Legacy WS"
+    description           = "Web services to support payment activations"
+    path                  = "fdr-legacy"
     subscription_required = true
     service_url           = null
   }
 }
 
-resource "azurerm_api_management_api_version_set" "fdr_per_pa_api" {
+resource "azurerm_api_management_api_version_set" "fdr_legacy_api" {
   name                = "${var.env_short}-fdr-per-pa-api"
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = local.apim_fdr_per_pa_api.display_name
+  display_name        = local.apim_fdr_legacy_api.display_name
   versioning_scheme   = "Segment"
 }
 
@@ -64,22 +65,22 @@ resource "azurerm_api_management_api" "apim_fdr_per_pa_api_v1" {
   name                  = "${var.env_short}-fdr-per-pa-api"
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  subscription_required = local.apim_fdr_per_pa_api.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.fdr_per_pa_api.id
+  subscription_required = local.apim_fdr_legacy_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.fdr_legacy_api.id
   version               = "v1"
-  service_url           = local.apim_fdr_per_pa_api.service_url
+  service_url           = local.apim_fdr_legacy_api.service_url
   revision              = "1"
 
-  description  = local.apim_fdr_per_pa_api.description
-  display_name = local.apim_fdr_per_pa_api.display_name
-  path         = local.apim_fdr_per_pa_api.path
+  description  = local.apim_fdr_legacy_api.description
+  display_name = local.apim_fdr_legacy_api.display_name
+  path         = local.apim_fdr_legacy_api.path
   protocols    = ["https"]
 
   soap_pass_through = true
 
   import {
     content_format = "wsdl"
-    content_value  = file("./api/fdr-legacy/nodoPerPa/v1/NodoPerPa.wsdl")
+    content_value  = file("./api/fdr-legacy/v1/NodoPerPa.wsdl")
     wsdl_selector {
       service_name  = "PagamentiTelematiciRPTservice"
       endpoint_name = "PagamentiTelematiciRPTPort"
@@ -88,10 +89,45 @@ resource "azurerm_api_management_api" "apim_fdr_per_pa_api_v1" {
 
 }
 
+resource "azurerm_api_management_api" "apim_fdr_per_psp_api_v1" {
+  name                  = "${var.env_short}-fdr-per-psp-api"
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  subscription_required = local.apim_fdr_legacy_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.fdr_legacy_api.id
+  version               = "v1"
+  service_url           = local.apim_fdr_legacy_api.service_url
+  revision              = "1"
+
+  description  = local.apim_fdr_legacy_api.description
+  display_name = local.apim_fdr_legacy_api.display_name
+  path         = local.apim_fdr_legacy_api.path
+  protocols    = ["https"]
+
+  soap_pass_through = true
+
+  import {
+    content_format = "wsdl"
+    content_value  = file("./api/fdr-legacy/v1/NodoPerPsp.wsdl")
+    wsdl_selector {
+      service_name  = "PagamentiTelematiciPspNodoservice"
+      endpoint_name = "PPTPort"
+    }
+  }
+}
+
 resource "azurerm_api_management_api_policy" "apim_fdr_per_pa_policy" {
   api_name            = resource.azurerm_api_management_api.apim_fdr_per_pa_api_v1.name
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  xml_content = file("./api/fdr-legacy/nodoPerPa/v1/_base_policy.xml")
+  xml_content = file("./api/fdr-legacy/v1/_base_policy.xml")
+}
+
+resource "azurerm_api_management_api_policy" "apim_fdr_per_psp_policy" {
+  api_name            = azurerm_api_management_api.apim_fdr_per_psp_api_v1.name
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  xml_content = file("./api/fdr-legacy/v1/_base_policy.xml")
 }
