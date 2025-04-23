@@ -1,0 +1,1376 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 52,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 9,
+        "panels": [],
+        "title": "LISPay - Canale Nuova Connettività",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 0,
+          "y": 1
+        },
+        "id": 2,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.2.0",
+            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"verifyPaymentNotice\"\n| where sottoTipoEvento == \"REQ\"\n| where canale == \"08658331007_04\"\n| summarize TOTALE=count()",
+            "querySource": "raw",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Totale verifyPaymentNotice",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 8,
+          "y": 1
+        },
+        "id": 10,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.2.0",
+            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"verifyPaymentNotice\"\n| where sottoTipoEvento == \"REQ\"\n| where canale == \"08658331007_04\"\n| summarize TOTALE=count()",
+            "querySource": "raw",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Totale activatePaymentNotice",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 16,
+          "y": 1
+        },
+        "id": 4,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.2.0",
+            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"sendPaymentOutcome\"\n| where sottoTipoEvento == \"REQ\"\n| where canale == \"08658331007_04\"\n| summarize TOTALE=count()",
+            "querySource": "raw",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Totale sendPaymentOutcome",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 0,
+          "y": 9
+        },
+        "id": 14,
+        "options": {
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.2.0",
+            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where canale == \"08658331007_04\"\n| where tipoEvento == \"verifyPaymentNotice\"\n| summarize TOTALE=count() by faultCode",
+            "querySource": "raw",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Fault Code Restituiti a LISPay su verifyPaymentNotice",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 8,
+          "y": 9
+        },
+        "id": 15,
+        "options": {
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.2.0",
+            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where canale == \"08658331007_04\"\n| where tipoEvento == \"activatePaymentNotice\"\n| summarize TOTALE=count() by faultCode",
+            "querySource": "raw",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Fault Code Restituiti a LISPay su activatePaymentNotice",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 16,
+          "y": 9
+        },
+        "id": 16,
+        "options": {
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.2.0",
+            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where canale == \"08658331007_04\"\n| where tipoEvento == \"sendPaymentOutcome\"\n| summarize TOTALE=count() by faultCode",
+            "querySource": "raw",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Fault Code Restituiti a LISPay su sendPaymentOutcome",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 25,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "normal"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ms"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 24,
+          "x": 0,
+          "y": 17
+        },
+        "id": 6,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.2.0",
+            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nlet verifyPaymentNotice_req = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"verifyPaymentNotice\"\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| where canale == \"08658331007_04\"\n| project dataOraEvento, idDominio, iuv, ccp, psp, sessionId, stazione;\nlet verifyPaymentNotice_Resp = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"verifyPaymentNotice\"\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"RESP\"\n| where canale == \"08658331007_04\"\n| project dataOraEvento, idDominio, iuv, ccp, psp, sessionId;\nverifyPaymentNotice_req\n| join kind=leftouter verifyPaymentNotice_Resp on idDominio, iuv, ccp, sessionId\n| project-rename REQUEST_TIMESTAMP=dataOraEvento, RESPONSE_TIMESTAMP=dataOraEvento1\n| extend intermediario = substring(stazione, 0, strlen(stazione)-3)\n| extend diff_time=datetime_diff(\"millisecond\", RESPONSE_TIMESTAMP, REQUEST_TIMESTAMP)\n//| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, diff_time, idDominio, iuv, ccp, intermediario\n| project REQUEST_TIMESTAMP, diff_time, intermediario\n| join kind=inner INTERMEDIARI_PA on $left.intermediario == $right.ID_INTERMEDIARIO_PA\n| project REQUEST_TIMESTAMP, INTERMEDIARIO=INTERMEDIARIO_DESCR, diff_time\n| sort by REQUEST_TIMESTAMP asc, INTERMEDIARIO, diff_time\n",
+            "querySource": "raw",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Tempi verifyPaymentNotice",
+        "transformations": [
+          {
+            "id": "labelsToFields",
+            "options": {
+              "valueLabel": "INTERMEDIARIO"
+            }
+          }
+        ],
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 25,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "normal"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "ms"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 24,
+          "x": 0,
+          "y": 29
+        },
+        "id": 7,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.2.0",
+            "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nlet verifyPaymentNotice_req = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"activatePaymentNotice\"\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"REQ\"\n| where canale == \"08658331007_04\"\n| project dataOraEvento, idDominio, iuv, ccp, psp, sessionId, stazione;\nlet verifyPaymentNotice_Resp = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"activatePaymentNotice\"\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"RESP\"\n| where canale == \"08658331007_04\"\n| project dataOraEvento, idDominio, iuv, ccp, psp, sessionId;\nverifyPaymentNotice_req\n| join kind=leftouter verifyPaymentNotice_Resp on idDominio, iuv, ccp, sessionId\n| project-rename REQUEST_TIMESTAMP=dataOraEvento, RESPONSE_TIMESTAMP=dataOraEvento1\n| extend intermediario = substring(stazione, 0, strlen(stazione)-3)\n| extend diff_time=datetime_diff(\"millisecond\", RESPONSE_TIMESTAMP, REQUEST_TIMESTAMP)\n//| project REQUEST_TIMESTAMP, RESPONSE_TIMESTAMP, diff_time, idDominio, iuv, ccp, intermediario\n| project REQUEST_TIMESTAMP, diff_time, intermediario\n| join kind=inner INTERMEDIARI_PA on $left.intermediario == $right.ID_INTERMEDIARIO_PA\n| project REQUEST_TIMESTAMP, INTERMEDIARIO=INTERMEDIARIO_DESCR, diff_time\n| sort by REQUEST_TIMESTAMP asc, INTERMEDIARIO, diff_time\n",
+            "querySource": "raw",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Tempi activatePaymentNotice",
+        "transformations": [
+          {
+            "id": "labelsToFields",
+            "options": {
+              "valueLabel": "INTERMEDIARIO"
+            }
+          }
+        ],
+        "type": "timeseries"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 41
+        },
+        "id": 12,
+        "panels": [
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 1
+            },
+            "id": 3,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "textMode": "auto"
+            },
+            "pluginVersion": "9.3.6",
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.2.0",
+                "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"verifyPaymentNotice\"\n| where sottoTipoEvento == \"REQ\"\n| extend canale_int = substring(canale, 0, strlen(canale)-3)\n| where canale_int == \"08658331007\"\n| where canale != \"08658331007_04\"\n| summarize TOTALE=count()",
+                "querySource": "raw",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Totale verifyPaymentNotice",
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 8,
+              "y": 1
+            },
+            "id": 17,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "textMode": "auto"
+            },
+            "pluginVersion": "9.3.6",
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.2.0",
+                "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"activatePaymentNotice\"\n| where sottoTipoEvento == \"REQ\"\n| extend canale_int = substring(canale, 0, strlen(canale)-3)\n| where canale_int == \"08658331007\"\n| where canale != \"08658331007_04\"\n| summarize TOTALE=count()",
+                "querySource": "raw",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Totale activatePaymentNotice",
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 16,
+              "y": 1
+            },
+            "id": 18,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "textMode": "auto"
+            },
+            "pluginVersion": "9.3.6",
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.2.0",
+                "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"sendPaymentOutcome\"\n| where sottoTipoEvento == \"REQ\"\n| extend canale_int = substring(canale, 0, strlen(canale)-3)\n| where canale_int == \"08658331007\"\n| where canale != \"08658331007_04\"\n| summarize TOTALE=count()",
+                "querySource": "raw",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Totale sendPaymentOutcome",
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "none"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 0,
+              "y": 9
+            },
+            "id": 19,
+            "options": {
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [],
+                "width": 20
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.2.0",
+                "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"verifyPaymentNotice\"\n| extend canale_int = substring(canale, 0, strlen(canale)-3)\n| where canale_int == \"08658331007\"\n| where canale != \"08658331007_04\"\n| summarize TOTALE=count() by faultCode",
+                "querySource": "raw",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Fault Code Restituiti a LISPay su verifyPaymentNotice",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "none"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 8,
+              "y": 9
+            },
+            "id": 20,
+            "options": {
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": []
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.2.0",
+                "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"activatePaymentNotice\"\n| extend canale_int = substring(canale, 0, strlen(canale)-3)\n| where canale_int == \"08658331007\"\n| where canale != \"08658331007_04\"\n| summarize TOTALE=count() by faultCode",
+                "querySource": "raw",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Fault Code Restituiti a LISPay su activatePaymentNotice",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "none"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 8,
+              "x": 16,
+              "y": 9
+            },
+            "id": 21,
+            "options": {
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": []
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.2.0",
+                "query": "let start=todatetime(unixtime_milliseconds_todatetime($__from));\nlet end=todatetime(unixtime_milliseconds_todatetime($__to));\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| where tipoEvento == \"activatePaymentNotice\"\n| extend canale_int = substring(canale, 0, strlen(canale)-3)\n| where canale_int == \"08658331007\"\n| where canale != \"08658331007_04\"\n| summarize TOTALE=count() by faultCode",
+                "querySource": "raw",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Fault Code Restituiti a LISPay su sendPaymentOutcome",
+            "type": "piechart"
+          }
+        ],
+        "title": "LISpay - GAD",
+        "type": "row"
+      }
+    ],
+    "refresh": "",
+    "revision": 1,
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-30m",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "[NC] - Monitoraggio LisPAY",
+    "uid": "kbmu07-Vk",
+    "version": 2,
+    "weekStart": ""
+  }

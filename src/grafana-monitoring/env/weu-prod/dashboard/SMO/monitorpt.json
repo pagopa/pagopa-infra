@@ -1,0 +1,4579 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 2,
+    "id": 43,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 7,
+        "panels": [
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 6,
+              "w": 6,
+              "x": 0,
+              "y": 1
+            },
+            "id": 2,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOTALE$/",
+                "values": false
+              },
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
+            },
+            "pluginVersion": "10.4.7",
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"verifyPaymentNotice\", \"nodoVerificaRPT\",\"verificaBollettino\")\n| where categoriaEvento == \"INTERFACCIA\"\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0, strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| summarize TOTALE=count() by sottoTipoEvento, stazione, idDominio, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Totale verifyPaymentNotice pervenute dai PSP",
+            "transformations": [
+              {
+                "id": "filterByValue",
+                "options": {
+                  "filters": [
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": "REQ"
+                        }
+                      },
+                      "fieldName": "sottoTipoEvento"
+                    }
+                  ],
+                  "match": "all",
+                  "type": "include"
+                }
+              }
+            ],
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 6,
+              "w": 6,
+              "x": 6,
+              "y": 1
+            },
+            "id": 4,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOTALE$/",
+                "values": false
+              },
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
+            },
+            "pluginVersion": "10.4.7",
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"verifyPaymentNotice\", \"nodoVerificaRPT\",\"verificaBollettino\")\n| where categoriaEvento == \"INTERFACCIA\"\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0, strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| summarize TOTALE=count() by sottoTipoEvento, stazione, idDominio, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Totale verifyPaymentNotice risposte ai PSP",
+            "transformations": [
+              {
+                "id": "filterByValue",
+                "options": {
+                  "filters": [
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": "REQ"
+                        }
+                      },
+                      "fieldName": "sottoTipoEvento"
+                    }
+                  ],
+                  "match": "all",
+                  "type": "include"
+                }
+              }
+            ],
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 6,
+              "w": 6,
+              "x": 12,
+              "y": 1
+            },
+            "id": 3,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOTALE$/",
+                "values": false
+              },
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
+            },
+            "pluginVersion": "10.4.7",
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"paVerifyPaymentNotice\", \"paaVerificaRPT\")\n| where categoriaEvento == \"INTERFACCIA\"\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0, strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| summarize TOTALE=count() by sottoTipoEvento, stazione, idDominio, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Totale Request di Verifica agli EC",
+            "transformations": [
+              {
+                "id": "filterByValue",
+                "options": {
+                  "filters": [
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": "REQ"
+                        }
+                      },
+                      "fieldName": "sottoTipoEvento"
+                    }
+                  ],
+                  "match": "all",
+                  "type": "include"
+                }
+              }
+            ],
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "thresholds"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 6,
+              "w": 6,
+              "x": 18,
+              "y": 1
+            },
+            "id": 5,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "none",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOTALE$/",
+                "values": false
+              },
+              "showPercentChange": false,
+              "textMode": "auto",
+              "wideLayout": true
+            },
+            "pluginVersion": "10.4.7",
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"paVerifyPaymentNotice\", \"paaVerificaRPT\")\n| where categoriaEvento == \"INTERFACCIA\"\n| where sottoTipoEvento == \"RESP\"\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0, strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| summarize TOTALE=count() by sottoTipoEvento, stazione, idDominio, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Totale Response di Verifica ricevute dagli EC",
+            "transformations": [
+              {
+                "id": "filterByValue",
+                "options": {
+                  "filters": [
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": "RESP"
+                        }
+                      },
+                      "fieldName": "sottoTipoEvento"
+                    }
+                  ],
+                  "match": "all",
+                  "type": "include"
+                }
+              }
+            ],
+            "type": "stat"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 7
+            },
+            "id": 19,
+            "options": {
+              "displayLabels": [
+                "value"
+              ],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOT$/",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nReEvent \n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where tipoEvento in~ ('nodoVerificaRPT', 'verifyPaymentNotice', 'verificaBollettino')\n| where sottoTipoEvento == \"REQ\"\n| summarize TOTALE=count() by idDominio, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by intermediario_psp\n| join kind=inner INTERMEDIARI_PSP on $left.intermediario_psp == $right.ID_INTERMEDIARIO_PSP\n| extend INTERMEDIARIO_DESCR=case(ID_INTERMEDIARIO_PSP == \"97735020584\",\"TouchPoing PagoPA\",INTERMEDIARIO_DESCR)\n| project INTERMEDIARIO_DESCR, TOT\n\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Distribuzione Verifiche PSP Intermediari",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 7
+            },
+            "id": 20,
+            "options": {
+              "displayLabels": [
+                "value"
+              ],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOT$/",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nReEvent \n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where tipoEvento in~ ('nodoVerificaRPT', 'verifyPaymentNotice', 'verificaBollettino')\n| where sottoTipoEvento == \"REQ\"\n| summarize TOTALE=count() by idDominio, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by psp\n| join kind=inner PSP on $left.psp == $right.ID_PSP\n| extend RAGIONE_SOCIALE=case(psp == \"AGID_01\",\"TouchPoing PagoPA\",RAGIONE_SOCIALE)\n| project RAGIONE_SOCIALE, TOT\n\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Distribuzione Verifiche PSP Intermediati",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": [
+                {
+                  "__systemRef": "hideSeriesFrom",
+                  "matcher": {
+                    "id": "byNames",
+                    "options": {
+                      "mode": "exclude",
+                      "names": [
+                        "TOT"
+                      ],
+                      "prefix": "All except:",
+                      "readOnly": true
+                    }
+                  },
+                  "properties": [
+                    {
+                      "id": "custom.hideFrom",
+                      "value": {
+                        "legend": false,
+                        "tooltip": false,
+                        "viz": true
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 15
+            },
+            "id": 9,
+            "options": {
+              "displayLabels": [
+                "value"
+              ],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOT$/",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in~ ('nodoVerificaRPT', 'verifyPaymentNotice', 'verificaBollettino')\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by faultCode\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Distribuzione Fault Infrastrutturali",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 15
+            },
+            "id": 10,
+            "options": {
+              "displayLabels": [
+                "value"
+              ],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOT$/",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in~ ('nodoVerificaRPT', 'verifyPaymentNotice', 'verificaBollettino')\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by faultCode\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Distribuzione Fault Applicativi",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 23
+            },
+            "id": 11,
+            "options": {
+              "displayLabels": [
+                "value"
+              ],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOT$/",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in~ ('nodoVerificaRPT', 'verifyPaymentNotice', 'verificaBollettino')\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by intermediario_psp\n| join kind=inner INTERMEDIARI_PSP on $left.intermediario_psp == $right.ID_INTERMEDIARIO_PSP\n| extend INTERMEDIARIO_DESCR = case(intermediario_psp == \"97735020584\", \"TouchPoing PagoPA\", INTERMEDIARIO_DESCR)\n| project INTERMEDIARIO_DESCR, TOT",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "PSP Intermediari Impattati (infr.)",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 23
+            },
+            "id": 12,
+            "options": {
+              "displayLabels": [
+                "value"
+              ],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOT$/",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in~ ('nodoVerificaRPT', 'verifyPaymentNotice', 'verificaBollettino')\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by intermediario_psp\n| join kind=inner INTERMEDIARI_PSP on $left.intermediario_psp == $right.ID_INTERMEDIARIO_PSP\n| extend INTERMEDIARIO_DESCR = case(intermediario_psp == \"97735020584\", \"TouchPoing PagoPA\", INTERMEDIARIO_DESCR)\n| project INTERMEDIARIO_DESCR, TOT \n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              },
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "hide": true,
+                "pluginVersion": "4.3.0",
+                "query": "INTERMEDIARI_PSP\n| extend INTERMEDIARIO_DESCR = case(ID_INTERMEDIARIO_PSP == \"15376371009\", \"Touchpoing PagoPA\", INTERMEDIARIO_DESCR)",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "B",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "PSP Intermediari Impattati (appl.)",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 31
+            },
+            "id": 13,
+            "options": {
+              "displayLabels": [
+                "value"
+              ],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOT$/",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in~ ('nodoVerificaRPT', 'verifyPaymentNotice', 'verificaBollettino')\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by psp\n| join kind=inner PSP on $left.psp == $right.ID_PSP\n| extend RAGIONE_SOCIALE = case(psp == \"AGID_01\", \"Touchpoing PagoPA\", RAGIONE_SOCIALE)\n| project RAGIONE_SOCIALE, TOT\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "PSP Intermediati Impattati (infr.)",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 31
+            },
+            "id": 14,
+            "options": {
+              "displayLabels": [
+                "value"
+              ],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOT$/",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in~ ('nodoVerificaRPT', 'verifyPaymentNotice', 'verificaBollettino')\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by psp\n| join kind=inner PSP on $left.psp == $right.ID_PSP\n| extend RAGIONE_SOCIALE = case(psp == \"AGID_01\", \"Touchpoing PagoPA\", RAGIONE_SOCIALE)\n| project RAGIONE_SOCIALE, TOT\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "PSP Intermediati Impattati (appl.)",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 0,
+              "y": 39
+            },
+            "id": 15,
+            "options": {
+              "displayLabels": [
+                "value"
+              ],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOT$/",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.7.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in~ ('nodoVerificaRPT', 'verifyPaymentNotice', 'verificaBollettino')\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by idDominio\n| join kind=inner PA on $left.idDominio == $right.ID_DOMINIO\n| project RAGIONE_SOCIALE, TOT\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "EC Intermediati Impattati (infr.)",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 12,
+              "x": 12,
+              "y": 39
+            },
+            "id": 16,
+            "options": {
+              "displayLabels": [
+                "value"
+              ],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "sum"
+                ],
+                "fields": "/^TOT$/",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "multi",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.7.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in~ ('nodoVerificaRPT', 'verifyPaymentNotice', 'verificaBollettino')\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by idDominio\n| join kind=inner PA on $left.idDominio == $right.ID_DOMINIO\n| project RAGIONE_SOCIALE, TOT\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "EC Intermediati Impattati (appl.)",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "bars",
+                  "fillOpacity": 90,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "stepAfter",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 9,
+              "w": 24,
+              "x": 0,
+              "y": 47
+            },
+            "id": 51,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "sum"
+                ],
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in~ ('nodoVerificaRPT', 'verifyPaymentNotice')\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOTALE=count() by bin(insertedTimestamp, $Step), faultCode\n| extend insertedTimestamp = datetime_local_to_utc(insertedTimestamp, \"Europe/Rome\")\n| sort by insertedTimestamp asc, faultCode\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "time_series"
+              }
+            ],
+            "title": "Distribuzione nel tempo Infrastrutturali",
+            "transformations": [
+              {
+                "disabled": true,
+                "id": "partitionByValues",
+                "options": {
+                  "fields": [
+                    "faultCode"
+                  ]
+                }
+              },
+              {
+                "id": "labelsToFields",
+                "options": {
+                  "valueLabel": "faultCode"
+                }
+              }
+            ],
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "bars",
+                  "fillOpacity": 90,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "stepAfter",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": false,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "off"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                },
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 9,
+              "w": 24,
+              "x": 0,
+              "y": 56
+            },
+            "id": 52,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "sum"
+                ],
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in~ ('nodoVerificaRPT', 'verifyPaymentNotice')\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOTALE=count() by bin(insertedTimestamp, $Step), faultCode\n| extend insertedTimestamp = datetime_local_to_utc(insertedTimestamp, \"Europe/Rome\")\n| sort by insertedTimestamp asc, faultCode\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "time_series"
+              }
+            ],
+            "title": "Distribuzione nel tempo Applicativi",
+            "transformations": [
+              {
+                "disabled": true,
+                "id": "partitionByValues",
+                "options": {
+                  "fields": [
+                    "faultCode"
+                  ]
+                }
+              },
+              {
+                "id": "labelsToFields",
+                "options": {
+                  "valueLabel": "faultCode"
+                }
+              }
+            ],
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "Milliseconds",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 25,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": true,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "dashed"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 2000
+                    }
+                  ]
+                },
+                "unit": "ms"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 17,
+              "x": 0,
+              "y": 65
+            },
+            "id": 18,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean",
+                  "count"
+                ],
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet verificaReq = ReEvent\n| where insertedTimestamp between (start .. end) \n| where tipoEvento in (\"paaVerificaRPT\", \"paVerifyPaymentNotice\")\n| where sottoTipoEvento == \"REQ\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa ==  $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet verificaResp = ReEvent\n| where insertedTimestamp between (start .. end) \n| where tipoEvento in (\"paaVerificaRPT\", \"paVerifyPaymentNotice\")\n| where sottoTipoEvento == \"RESP\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet verificaReq_Resp = verificaReq\n| join kind=leftouter verificaResp on tipoEvento, idDominio, iuv, sessionId\n| extend diff_ec = datetime_diff(\"millisecond\", insertedTimestamp1, insertedTimestamp)\n| extend diff_ec = case(isnull(diff_ec), 7000, diff_ec)\n| project insertedTimestamp, tipoEvento, idDominio, iuv, ccp, psp, canale, sessionId, diff_ec, insertedTimestamp1;\nverificaReq_Resp\n| extend insertedTimestamp = datetime_local_to_utc(insertedTimestamp, \"Europe/Rome\")\n| join kind=inner PA on $left.idDominio == $right.ID_DOMINIO\n| sort by insertedTimestamp asc\n| project insertedTimestamp , RAGIONE_SOCIALE, diff_ec ",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "time_series"
+              }
+            ],
+            "title": "Verifica diretto verso la PA",
+            "transformations": [
+              {
+                "id": "labelsToFields",
+                "options": {
+                  "valueLabel": "RAGIONE_SOCIALE"
+                }
+              }
+            ],
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 17,
+              "w": 7,
+              "x": 17,
+              "y": 65
+            },
+            "id": 42,
+            "options": {
+              "displayLabels": [],
+              "legend": {
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet verificaReq = ReEvent\n| where insertedTimestamp between (start .. end) \n| where tipoEvento in (\"paaVerificaRPT\", \"paVerifyPaymentNotice\")\n| where sottoTipoEvento == \"REQ\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa ==  $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet verificaResp = ReEvent\n| where insertedTimestamp between (start .. end) \n| where tipoEvento in (\"paaVerificaRPT\", \"paVerifyPaymentNotice\")\n| where sottoTipoEvento == \"RESP\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet verificaReq_Resp = verificaReq\n| join kind=leftouter verificaResp on tipoEvento, idDominio, iuv, sessionId\n| extend diff_ec = datetime_diff(\"millisecond\", insertedTimestamp1, insertedTimestamp)\n| extend diff_ec = case(isnull(diff_ec), 7000, diff_ec)\n| project insertedTimestamp, tipoEvento, idDominio, iuv, ccp, psp, canale, sessionId, diff_ec, insertedTimestamp1;\nverificaReq_Resp\n| summarize TOTALE=count() by bin(diff_ec, 1000)\n| extend bucket = case(\ndiff_ec == 0, \"< 1 sec\",\ndiff_ec == 1000, \"Tra 1s e 2s\",\ndiff_ec == 2000, \"Tra 2s e 3s\",\ndiff_ec == 3000, \"Tra 3s e 4s\",\ndiff_ec == 4000, \"Tra 4s e 5s\",\ndiff_ec == 5000, \"Tra 5s e 6s\",\ndiff_ec == 6000, \"Tra 6s e 7s\",\ndiff_ec >= 7000, \"TIMEOUT\",\ntostring(diff_ec)\n) \n| summarize TOTALE=sum(TOTALE) by bucket\n| project bucket, TOTALE\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Range di tempi su Verifica",
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "Milliseconds",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 25,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": true,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "dashed"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 2000
+                    }
+                  ]
+                },
+                "unit": "ms"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 9,
+              "w": 17,
+              "x": 0,
+              "y": 73
+            },
+            "id": 21,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean",
+                  "count"
+                ],
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet verificaReq = ReEvent\n| where insertedTimestamp between (start .. end) \n| where tipoEvento in (\"nodoVerificaRPT\", \"verifyPaymentNotice\")\n| where sottoTipoEvento == \"REQ\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa ==  $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet verificaResp = ReEvent\n| where insertedTimestamp between (start .. end) \n| where tipoEvento in (\"nodoVerificaRPT\", \"verifyPaymentNotice\")\n| where sottoTipoEvento == \"RESP\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet verificaReq_Resp = verificaReq\n| join kind=leftouter verificaResp on tipoEvento, idDominio, iuv, sessionId\n| extend diff_ec = datetime_diff(\"millisecond\", insertedTimestamp1, insertedTimestamp)\n| extend diff_ec = case(isnull(diff_ec), 7000, diff_ec)\n| project insertedTimestamp, tipoEvento, idDominio, iuv, ccp, psp, canale, sessionId, diff_ec, insertedTimestamp1;\nverificaReq_Resp\n| extend insertedTimestamp = datetime_local_to_utc(insertedTimestamp, \"Europe/Rome\")\n| join kind=inner PA on $left.idDominio == $right.ID_DOMINIO\n| sort by insertedTimestamp asc\n| project insertedTimestamp , RAGIONE_SOCIALE, diff_ec",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "time_series"
+              }
+            ],
+            "title": "Tempi di verifica visti dal PSP",
+            "transformations": [
+              {
+                "id": "labelsToFields",
+                "options": {
+                  "valueLabel": "RAGIONE_SOCIALE"
+                }
+              }
+            ],
+            "type": "timeseries"
+          }
+        ],
+        "title": "Fase di Verifica",
+        "type": "row"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 1
+        },
+        "id": 23,
+        "panels": [],
+        "title": "Fase di Attivazione",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 0,
+          "y": 2
+        },
+        "id": 24,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOTALE$/",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| where categoriaEvento == \"INTERFACCIA\"\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0, strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| summarize TOTALE=count() by sottoTipoEvento, stazione, idDominio, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Totale activatePaymentNotice pervenute dai PSP",
+        "transformations": [
+          {
+            "id": "filterByValue",
+            "options": {
+              "filters": [
+                {
+                  "config": {
+                    "id": "equal",
+                    "options": {
+                      "value": "REQ"
+                    }
+                  },
+                  "fieldName": "sottoTipoEvento"
+                }
+              ],
+              "match": "all",
+              "type": "include"
+            }
+          }
+        ],
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 6,
+          "y": 2
+        },
+        "id": 25,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOTALE$/",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| where categoriaEvento == \"INTERFACCIA\"\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0, strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| summarize TOTALE=count() by sottoTipoEvento, stazione, idDominio, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Totale activatePaymentNotice risposte ai PSP",
+        "transformations": [
+          {
+            "id": "filterByValue",
+            "options": {
+              "filters": [
+                {
+                  "config": {
+                    "id": "equal",
+                    "options": {
+                      "value": "RESP"
+                    }
+                  },
+                  "fieldName": "sottoTipoEvento"
+                }
+              ],
+              "match": "all",
+              "type": "include"
+            }
+          }
+        ],
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 12,
+          "y": 2
+        },
+        "id": 27,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOTALE$/",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"paGetPayment\", \"paaAttivaRPT\", \"paGetPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0, strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| summarize TOTALE=count() by sottoTipoEvento, stazione, idDominio, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Totale Request di Attivazione agli EC",
+        "transformations": [
+          {
+            "id": "filterByValue",
+            "options": {
+              "filters": [
+                {
+                  "config": {
+                    "id": "equal",
+                    "options": {
+                      "value": "REQ"
+                    }
+                  },
+                  "fieldName": "sottoTipoEvento"
+                }
+              ],
+              "match": "all",
+              "type": "include"
+            }
+          }
+        ],
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 18,
+          "y": 2
+        },
+        "id": 28,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "none",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOTALE$/",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"paGetPayment\", \"paaAttivaRPT\", \"paGetPaymentV2\")\n| where categoriaEvento == \"INTERFACCIA\"\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0, strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| summarize TOTALE=count() by sottoTipoEvento, stazione, idDominio, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Totale Response di Attivazione dagli EC",
+        "transformations": [
+          {
+            "id": "filterByValue",
+            "options": {
+              "filters": [
+                {
+                  "config": {
+                    "id": "equal",
+                    "options": {
+                      "value": "RESP"
+                    }
+                  },
+                  "fieldName": "sottoTipoEvento"
+                }
+              ],
+              "match": "all",
+              "type": "include"
+            }
+          }
+        ],
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "id": 29,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOT$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nReEvent \n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| where sottoTipoEvento == \"REQ\"\n| summarize TOTALE=count() by idDominio, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by intermediario_psp\n| join kind=inner INTERMEDIARI_PSP on $left.intermediario_psp == $right.ID_INTERMEDIARIO_PSP\n| extend INTERMEDIARIO_DESCR=case(ID_INTERMEDIARIO_PSP == \"97735020584\",\"TouchPoing PagoPA\",INTERMEDIARIO_DESCR)\n| project INTERMEDIARIO_DESCR, TOT\n\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Distribuzione Attivazione PSP Intermediari",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "id": 30,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOT$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nReEvent \n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| where sottoTipoEvento == \"REQ\"\n| summarize TOTALE=count() by idDominio, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by psp\n| join kind=inner PSP on $left.psp == $right.ID_PSP\n| extend RAGIONE_SOCIALE=case(psp == \"AGID_01\",\"TouchPoing PagoPA\",RAGIONE_SOCIALE)\n| project RAGIONE_SOCIALE, TOT\n\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Distribuzione Attivazione PSP Intermediati",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 16
+        },
+        "id": 31,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOT$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by faultCode\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Distribuzione Fault Infrastrutturali",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 16
+        },
+        "id": 32,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOT$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by faultCode\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Distribuzione Fault Applicativi",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 24
+        },
+        "id": 33,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOT$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by intermediario_psp\n| join kind=inner INTERMEDIARI_PSP on $left.intermediario_psp == $right.ID_INTERMEDIARIO_PSP\n| extend INTERMEDIARIO_DESCR = case(intermediario_psp == \"97735020584\", \"TouchPoing PagoPA\", INTERMEDIARIO_DESCR)\n| project INTERMEDIARIO_DESCR, TOT",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "PSP Intermediari Impattati (infr.)",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 24
+        },
+        "id": 34,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOT$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by intermediario_psp\n| join kind=inner INTERMEDIARI_PSP on $left.intermediario_psp == $right.ID_INTERMEDIARIO_PSP\n| extend INTERMEDIARIO_DESCR = case(intermediario_psp == \"97735020584\", \"TouchPoing PagoPA\", INTERMEDIARIO_DESCR)\n| project INTERMEDIARIO_DESCR, TOT",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "PSP Intermediari Impattati (appl.)",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 32
+        },
+        "id": 35,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOT$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by psp\n| join kind=inner PSP on $left.psp == $right.ID_PSP\n| extend RAGIONE_SOCIALE = case(psp == \"AGID_01\", \"Touchpoing PagoPA\", RAGIONE_SOCIALE)\n| project RAGIONE_SOCIALE, TOT\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "PSP Intermediati Impattati (infr.)",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 32
+        },
+        "id": 36,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOT$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by psp\n| join kind=inner PSP on $left.psp == $right.ID_PSP\n| extend RAGIONE_SOCIALE = case(psp == \"AGID_01\", \"Touchpoing PagoPA\", RAGIONE_SOCIALE)\n| project RAGIONE_SOCIALE, TOT\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "PSP Intermediati Impattati (appl.)",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 40
+        },
+        "id": 37,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOT$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by idDominio\n| join kind=inner PA on $left.idDominio == $right.ID_DOMINIO\n| project RAGIONE_SOCIALE, TOT\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "EC Intermediati Impattati (infr.)",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 40
+        },
+        "id": 38,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "sum"
+            ],
+            "fields": "/^TOT$/",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "multi",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| summarize TOTALE=count() by idDominio, faultCode, stazione, intermediario_psp, psp\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOT=sum(TOTALE) by idDominio\n| join kind=inner PA on $left.idDominio == $right.ID_DOMINIO\n| project RAGIONE_SOCIALE, TOT\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "EC Intermediati Impattati (appl.)",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "bars",
+              "fillOpacity": 90,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "stepAfter",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 48
+        },
+        "id": 49,
+        "options": {
+          "legend": {
+            "calcs": [
+              "sum"
+            ],
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOTALE=count() by bin(insertedTimestamp, $Step), faultCode\n| extend insertedTimestamp = datetime_local_to_utc(insertedTimestamp, \"Europe/Rome\")\n| sort by insertedTimestamp asc, faultCode\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Distribuzione nel tempo Infrastrutturali",
+        "transformations": [
+          {
+            "disabled": true,
+            "id": "partitionByValues",
+            "options": {
+              "fields": [
+                "faultCode"
+              ]
+            }
+          },
+          {
+            "id": "labelsToFields",
+            "options": {
+              "valueLabel": "faultCode"
+            }
+          }
+        ],
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "bars",
+              "fillOpacity": 90,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "stepBefore",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 57
+        },
+        "id": 50,
+        "options": {
+          "legend": {
+            "calcs": [
+              "sum"
+            ],
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nFAULT_CODE\n| where insertedTimestamp between (start .. end)\n| extend intermediario_pa = substring(stazione, 0, strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 , strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where faultCode !in~ ('PPT_STAZIONE_INT_PA_IRRAGGIUNGIBILE', 'PPT_STAZIONE_INT_PA_TIMEOUT', 'PPT_STAZIONE_INT_PA_SERVIZIO_NONATTIVO')\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| where stazione in ($Stazione)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP)\n| where idDominio in ($EC)\n| summarize TOTALE=count() by bin(insertedTimestamp, $Step), faultCode\n| extend insertedTimestamp = datetime_local_to_utc(insertedTimestamp, \"Europe/Rome\")\n| sort by insertedTimestamp asc, faultCode\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Distribuzione nel tempo Applicativi",
+        "transformations": [
+          {
+            "disabled": true,
+            "id": "partitionByValues",
+            "options": {
+              "fields": [
+                "faultCode"
+              ]
+            }
+          },
+          {
+            "id": "labelsToFields",
+            "options": {
+              "valueLabel": "faultCode"
+            }
+          }
+        ],
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "Milliseconds",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 25,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": true,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "dashed"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "dark-red",
+                  "value": 2000
+                }
+              ]
+            },
+            "unit": "ms"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 17,
+          "x": 0,
+          "y": 66
+        },
+        "id": 39,
+        "options": {
+          "legend": {
+            "calcs": [
+              "min",
+              "max",
+              "mean",
+              "count"
+            ],
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet activateReq = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"paGetPayment\", \"paaAttivaRPT\")\n| where sottoTipoEvento == \"REQ\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet activateResp = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"paGetPayment\", \"paaAttivaRPT\")\n| where sottoTipoEvento == \"RESP\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet activateReq_Resp = activateReq\n| join kind=leftouter activateResp on tipoEvento, idDominio, iuv, sessionId\n| extend diff_act = datetime_diff(\"millisecond\", insertedTimestamp1, insertedTimestamp)\n| extend diff_act = case(isnull(diff_act), 8000, diff_act)\n| project insertedTimestamp, tipoEvento, idDominio, iuv, ccp, psp, canale, sessionId, diff_act, intermediario_pa, intermediario_psp;\nactivateReq_Resp\n| extend insertedTimestamp = datetime_local_to_utc(insertedTimestamp, \"Europe/Rome\")\n| join kind=inner PA on $left.idDominio == $right.ID_DOMINIO\n| sort by insertedTimestamp asc\n| project insertedTimestamp , RAGIONE_SOCIALE, diff_act",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Attivazioni diretto verso la PA",
+        "transformations": [
+          {
+            "id": "labelsToFields",
+            "options": {
+              "valueLabel": "RAGIONE_SOCIALE"
+            }
+          }
+        ],
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": [],
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 17,
+          "w": 7,
+          "x": 17,
+          "y": 66
+        },
+        "id": 43,
+        "options": {
+          "displayLabels": [],
+          "legend": {
+            "displayMode": "table",
+            "placement": "bottom",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet activateReq = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"paGetPayment\", \"paaAttivaRPT\")\n| where sottoTipoEvento == \"REQ\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet activateResp = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"paGetPayment\", \"paaAttivaRPT\")\n| where sottoTipoEvento == \"RESP\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet activateReq_Resp = activateReq\n| join kind=leftouter activateResp on tipoEvento, idDominio, iuv, sessionId\n| extend diff_act = datetime_diff(\"millisecond\", insertedTimestamp1, insertedTimestamp)\n| extend diff_act = case(isnull(diff_act), 8000, diff_act)\n| project insertedTimestamp, tipoEvento, idDominio, iuv, ccp, psp, canale, sessionId, diff_act, intermediario_pa, intermediario_psp;\nactivateReq_Resp\n| summarize TOTALE=count() by bin(diff_act, 1000)\n| extend bucket = case(\ndiff_act == 0, \"< 1 sec\",\ndiff_act == 1000, \"Tra 1s e 2s\",\ndiff_act == 2000, \"Tra 2s e 3s\",\ndiff_act == 3000, \"Tra 3s e 4s\",\ndiff_act == 4000, \"Tra 4s e 5s\",\ndiff_act == 5000, \"Tra 5s e 6s\",\ndiff_act == 6000, \"Tra 6s e 7s\",\ndiff_act >= 7000, \"TIMEOUT\",\ntostring(diff_act)\n) \n| summarize TOTALE=sum(TOTALE) by bucket\n| project bucket, TOTALE\n",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Range di tempi su Attivazione",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "Milliseconds",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 25,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": true,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "dashed"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "dark-red",
+                  "value": 2000
+                }
+              ]
+            },
+            "unit": "ms"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 17,
+          "x": 0,
+          "y": 75
+        },
+        "id": 40,
+        "options": {
+          "legend": {
+            "calcs": [
+              "min",
+              "max",
+              "mean",
+              "count"
+            ],
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet activateReq = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| where sottoTipoEvento == \"REQ\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet activateResp = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"activateIOPayment\", \"activatePaymentNotice\", \"nodoAttivaRPT\")\n| where sottoTipoEvento == \"RESP\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet activateReq_Resp = activateReq\n| join kind=leftouter activateResp on tipoEvento, idDominio, iuv, sessionId\n| extend diff_act = datetime_diff(\"millisecond\", insertedTimestamp1, insertedTimestamp)\n| extend diff_act = case(isnull(diff_act), 8000, diff_act)\n| project insertedTimestamp, tipoEvento, idDominio, iuv, ccp, psp, canale, sessionId, diff_act, intermediario_pa, intermediario_psp;\nactivateReq_Resp\n| extend insertedTimestamp = datetime_local_to_utc(insertedTimestamp, \"Europe/Rome\")\n| join kind=inner PA on $left.idDominio == $right.ID_DOMINIO\n| sort by insertedTimestamp asc\n| project insertedTimestamp , RAGIONE_SOCIALE, diff_act",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "time_series"
+          }
+        ],
+        "title": "Tempi di Attivazione visti dal PSP",
+        "transformations": [
+          {
+            "id": "labelsToFields",
+            "options": {
+              "valueLabel": "RAGIONE_SOCIALE"
+            }
+          }
+        ],
+        "type": "timeseries"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 83
+        },
+        "id": 45,
+        "panels": [
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "axisBorderShow": false,
+                  "axisCenteredZero": false,
+                  "axisColorMode": "text",
+                  "axisLabel": "Milliseconds",
+                  "axisPlacement": "auto",
+                  "barAlignment": 0,
+                  "drawStyle": "line",
+                  "fillOpacity": 25,
+                  "gradientMode": "none",
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  },
+                  "insertNulls": false,
+                  "lineInterpolation": "linear",
+                  "lineWidth": 1,
+                  "pointSize": 5,
+                  "scaleDistribution": {
+                    "type": "linear"
+                  },
+                  "showPoints": "auto",
+                  "spanNulls": true,
+                  "stacking": {
+                    "group": "A",
+                    "mode": "none"
+                  },
+                  "thresholdsStyle": {
+                    "mode": "dashed"
+                  }
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green"
+                    },
+                    {
+                      "color": "dark-red",
+                      "value": 2000
+                    }
+                  ]
+                },
+                "unit": "ms"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 9,
+              "w": 17,
+              "x": 0,
+              "y": 3
+            },
+            "id": 46,
+            "options": {
+              "legend": {
+                "calcs": [
+                  "min",
+                  "max",
+                  "mean",
+                  "count"
+                ],
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet activateReq = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"paSendRT\", \"paaInviaRT\")\n| where sottoTipoEvento == \"REQ\"\n| extend stazione = case(\ntipoEvento == \"paaInviaRT\",\nextract(\"<identificativoStazioneIntermediarioPA>(.*)</identificativoStazioneIntermediarioPA>\", 1, base64_decode_tostring(payload)),\ntipoEvento == \"paSendRT\",\nextract(\"<idStation>(.*)</idStation>\", 1, base64_decode_tostring(payload)),\nstazione\n ) \n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet activateResp = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"paSendRT\", \"paaInviaRT\")\n| where sottoTipoEvento == \"RESP\"\n| extend stazione = case(isempty(stazione), \"no\", stazione)\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet activateReq_Resp = activateReq\n| join kind=leftouter activateResp on tipoEvento, idDominio, iuv, sessionId\n| extend diff_act = datetime_diff(\"millisecond\", insertedTimestamp1, insertedTimestamp)\n| extend diff_act = case(isnull(diff_act), 8000, diff_act)\n| project insertedTimestamp, tipoEvento, idDominio, iuv, ccp, psp, canale, sessionId, diff_act, intermediario_pa, intermediario_psp;\nactivateReq_Resp\n| extend insertedTimestamp = datetime_local_to_utc(insertedTimestamp, \"Europe/Rome\")\n| join kind=inner PA on $left.idDominio == $right.ID_DOMINIO\n| sort by insertedTimestamp asc\n| project insertedTimestamp , RAGIONE_SOCIALE, diff_act",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "time_series"
+              }
+            ],
+            "title": "Invio RT/Receipt verso la PA",
+            "transformations": [
+              {
+                "id": "labelsToFields",
+                "options": {
+                  "valueLabel": "RAGIONE_SOCIALE"
+                }
+              }
+            ],
+            "type": "timeseries"
+          },
+          {
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 17,
+              "w": 7,
+              "x": 17,
+              "y": 3
+            },
+            "id": 47,
+            "options": {
+              "displayLabels": [],
+              "legend": {
+                "displayMode": "table",
+                "placement": "bottom",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "targets": [
+              {
+                "database": "re",
+                "datasource": {
+                  "type": "grafana-azure-data-explorer-datasource",
+                  "uid": "2mZ1xay4z"
+                },
+                "expression": {
+                  "from": {
+                    "property": {
+                      "name": "ReEvent",
+                      "type": "string"
+                    },
+                    "type": "property"
+                  },
+                  "groupBy": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "reduce": {
+                    "expressions": [],
+                    "type": "and"
+                  },
+                  "where": {
+                    "expressions": [],
+                    "type": "and"
+                  }
+                },
+                "pluginVersion": "4.3.0",
+                "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet activateReq = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"paSendRT\", \"paaInviaRT\")\n| where sottoTipoEvento == \"REQ\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet activateResp = ReEvent\n| where insertedTimestamp between (start .. end)\n| where tipoEvento in (\"paSendRT\", \"paaInviaRT\")\n| where sottoTipoEvento == \"RESP\"\n| extend intermediario_pa = substring(stazione, 0 ,strlen(stazione)-3)\n| extend intermediario_psp = substring(canale, 0 ,strlen(canale)-3)\n| where intermediario_pa == $IntermediarioPa\n| where idDominio in ($EC)\n| where intermediario_psp in ($IntermediarioPSP)\n| where psp in ($PSP);\nlet activateReq_Resp = activateReq\n| join kind=leftouter activateResp on tipoEvento, idDominio, iuv, sessionId\n| extend diff_act = datetime_diff(\"millisecond\", insertedTimestamp1, insertedTimestamp)\n| extend diff_act = case(isnull(diff_act), 8000, diff_act)\n| project insertedTimestamp, tipoEvento, idDominio, iuv, ccp, psp, canale, sessionId, diff_act, intermediario_pa, intermediario_psp;\nactivateReq_Resp\n| summarize TOTALE=count() by bin(diff_act, 1000)\n| extend bucket = case(\ndiff_act == 0, \"< 1 sec\",\ndiff_act == 1000, \"Tra 1s e 2s\",\ndiff_act == 2000, \"Tra 2s e 3s\",\ndiff_act == 3000, \"Tra 3s e 4s\",\ndiff_act == 4000, \"Tra 4s e 5s\",\ndiff_act == 5000, \"Tra 5s e 6s\",\ndiff_act == 6000, \"Tra 6s e 7s\",\ndiff_act >= 7000, \"TIMEOUT\",\ntostring(diff_act)\n) \n| summarize TOTALE=sum(TOTALE) by bucket\n| project bucket, TOTALE\n",
+                "querySource": "raw",
+                "queryType": "KQL",
+                "rawMode": true,
+                "refId": "A",
+                "resultFormat": "table"
+              }
+            ],
+            "title": "Range di tempi su Invio RT/Ricevute",
+            "type": "piechart"
+          }
+        ],
+        "title": "Fase di Pagamento",
+        "type": "row"
+      }
+    ],
+    "refresh": false,
+    "revision": 1,
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "definition": "INTERMEDIARI_PA\n| extend variable = strcat(ID_INTERMEDIARIO_PA,\"|\",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PA, \" : \", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
+          "hide": 0,
+          "includeAll": true,
+          "label": "Partner Tecnologico",
+          "multi": false,
+          "name": "IntermediarioPa",
+          "options": [],
+          "query": "INTERMEDIARI_PA\n| extend variable = strcat(ID_INTERMEDIARIO_PA,\"|\",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PA, \" : \", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
+          "refresh": 1,
+          "regex": "/(?<value>.*)\\|(?<text>.*)/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "isNone": true,
+            "selected": false,
+            "text": "None",
+            "value": ""
+          },
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "definition": "PT_REL_PA\n| where ID_INTERMEDIARIO == $IntermediarioPa\n| extend v = strcat(STAZIONE, \"|\", STAZIONE)\n| sort by STAZIONE asc\n| project v",
+          "error": {},
+          "hide": 0,
+          "includeAll": true,
+          "label": "Stazione",
+          "multi": false,
+          "name": "Stazione",
+          "options": [],
+          "query": "PT_REL_PA\n| where ID_INTERMEDIARIO == $IntermediarioPa\n| extend v = strcat(STAZIONE, \"|\", STAZIONE)\n| sort by STAZIONE asc\n| project v",
+          "refresh": 1,
+          "regex": "/(?<value>.*)\\|(?<text>.*)/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "definition": "PT_REL_PA\n| where ID_INTERMEDIARIO in ($IntermediarioPa)\n| where STAZIONE in ($Stazione)\n| extend v = strcat(ID_DOMINIO, \"|\", PA_DESCR)\n| sort by PA_DESCR asc\n| project v",
+          "hide": 0,
+          "includeAll": true,
+          "label": "EC",
+          "multi": true,
+          "name": "EC",
+          "options": [],
+          "query": "PT_REL_PA\n| where ID_INTERMEDIARIO in ($IntermediarioPa)\n| where STAZIONE in ($Stazione)\n| extend v = strcat(ID_DOMINIO, \"|\", PA_DESCR)\n| sort by PA_DESCR asc\n| project v",
+          "refresh": 1,
+          "regex": "/(?<value>.*)\\|(?<text>.*)/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "definition": "INTERMEDIARI_PSP\n| extend variable = strcat(ID_INTERMEDIARIO_PSP,\"|\",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PSP, \" : \", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
+          "hide": 0,
+          "includeAll": true,
+          "label": "PSP Intermediario",
+          "multi": false,
+          "name": "IntermediarioPSP",
+          "options": [],
+          "query": "INTERMEDIARI_PSP\n| extend variable = strcat(ID_INTERMEDIARIO_PSP,\"|\",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PSP, \" : \", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
+          "refresh": 1,
+          "regex": "/(?<value>.*)\\|(?<text>.*)/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "definition": "PT_REL_PSP\n| where ID_INTERMEDIARIO in ($IntermediarioPSP)\n| where CANALE_ENABLED == \"Y\"\n| extend v = strcat(ID_PSP, \"|\", PSP_RAGIONE_SOCIALE)\n| distinct v\n| project v",
+          "hide": 0,
+          "includeAll": true,
+          "label": "PSP",
+          "multi": false,
+          "name": "PSP",
+          "options": [],
+          "query": "PT_REL_PSP\n| where ID_INTERMEDIARIO in ($IntermediarioPSP)\n| where CANALE_ENABLED == \"Y\"\n| extend v = strcat(ID_PSP, \"|\", PSP_RAGIONE_SOCIALE)\n| distinct v\n| project v",
+          "refresh": 1,
+          "regex": "/(?<value>.*)\\|(?<text>.*)/",
+          "skipUrlSync": false,
+          "sort": 5,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "10s",
+            "value": "10s"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Campionameno",
+          "multi": false,
+          "name": "Step",
+          "options": [
+            {
+              "selected": true,
+              "text": "10s",
+              "value": "10s"
+            },
+            {
+              "selected": false,
+              "text": "30s",
+              "value": "30s"
+            },
+            {
+              "selected": false,
+              "text": "1m",
+              "value": "1m"
+            },
+            {
+              "selected": false,
+              "text": "5m",
+              "value": "5m"
+            },
+            {
+              "selected": false,
+              "text": "15m",
+              "value": "15m"
+            },
+            {
+              "selected": false,
+              "text": "30m",
+              "value": "30m"
+            },
+            {
+              "selected": false,
+              "text": "1h",
+              "value": "1h"
+            },
+            {
+              "selected": false,
+              "text": "2h",
+              "value": "2h"
+            }
+          ],
+          "query": "10s, 30s, 1m, 5m, 15m, 30m, 1h, 2h",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        },
+        {
+          "description": "",
+          "hide": 2,
+          "name": "ms_offset",
+          "query": "7200000",
+          "skipUrlSync": false,
+          "type": "constant"
+        },
+        {
+          "description": "",
+          "hide": 2,
+          "name": "h_offset",
+          "query": "-2",
+          "skipUrlSync": false,
+          "type": "constant"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-30m",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "Monitoraggio PT",
+    "uid": "-V-OT5t4z",
+    "version": 11,
+    "weekStart": ""
+  }
