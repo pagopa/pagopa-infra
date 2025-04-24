@@ -21,6 +21,7 @@
 | <a name="module_apim_selfcare_backoffice_external_psp_product"></a> [apim\_selfcare\_backoffice\_external\_psp\_product](#module\_apim\_selfcare\_backoffice\_external\_psp\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_selfcare_backoffice_helpdesk_product"></a> [apim\_selfcare\_backoffice\_helpdesk\_product](#module\_apim\_selfcare\_backoffice\_helpdesk\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_selfcare_product"></a> [apim\_selfcare\_product](#module\_apim\_selfcare\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
 | <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
 | <a name="module_selfcare_cdn"></a> [selfcare\_cdn](#module\_selfcare\_cdn) | ./.terraform/modules/__v3__/cdn | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
@@ -56,7 +57,6 @@
 | [azurerm_resource_group.selfcare_fe_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_static_web_app.selfcare_backoffice_static_web_app](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/static_web_app) | resource |
 | [azurerm_storage_container.pagopa_oidc_config](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
-| [helm_release.cert_mounter](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [helm_release.reloader](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_namespace.namespace](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
 | [kubernetes_namespace.namespace_system](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/namespace) | resource |
