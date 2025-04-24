@@ -22,7 +22,6 @@
 | <a name="module_apim_selfcare_backoffice_helpdesk_product"></a> [apim\_selfcare\_backoffice\_helpdesk\_product](#module\_apim\_selfcare\_backoffice\_helpdesk\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_selfcare_product"></a> [apim\_selfcare\_product](#module\_apim\_selfcare\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_gh_runner_job"></a> [gh\_runner\_job](#module\_gh\_runner\_job) | ./.terraform/modules/__v3__/gh_runner_container_app_job_domain_setup | n/a |
-| <a name="module_pod_identity"></a> [pod\_identity](#module\_pod\_identity) | ./.terraform/modules/__v3__/kubernetes_pod_identity | n/a |
 | <a name="module_selfcare_cdn"></a> [selfcare\_cdn](#module\_selfcare\_cdn) | ./.terraform/modules/__v3__/cdn | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
