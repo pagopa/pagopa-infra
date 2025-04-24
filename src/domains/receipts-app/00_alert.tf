@@ -52,7 +52,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-sending-receipt
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 20
+    threshold = 50
   }
 
 }
@@ -238,7 +238,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-pdf-engine-resp
   time_window = 15
   trigger {
     operator  = "GreaterThanOrEqual"
-    threshold = 20
+    threshold = 50
   }
 }
 
@@ -316,7 +316,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "receipts-to-notify-in-re
   trigger {
     operator = "GreaterThanOrEqual"
     # threshold = 1
-    threshold = 20
+    threshold = 150
   }
 }
 
