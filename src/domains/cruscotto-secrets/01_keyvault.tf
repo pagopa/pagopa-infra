@@ -91,7 +91,7 @@ resource "azurerm_key_vault_access_policy" "azdevops_iac_policy" {
 
 # create json letsencrypt inside kv
 # requierd: Docker
-module "letsencrypt_cruscotto" {
+module "letsencrypt_crusc8" {
   source = "./.terraform/modules/__v3__/letsencrypt_credential"
 
   prefix            = var.prefix

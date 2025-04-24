@@ -1,4 +1,4 @@
 resource_group_name  = "terraform-state-rg"
 storage_account_name = "tfinfdevpagopa"
 container_name       = "terraform-state"
-key                  = "cruscotto-secret-dev.terraform.tfstate"
+key                  = "crusc8-secret-dev.terraform.tfstate"
