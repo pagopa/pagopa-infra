@@ -15,9 +15,8 @@ data "azurerm_key_vault" "key_vault" {
 # repos must be lower than 20 items
 locals {
   repos_01 = [
-    "pagopa-mbd-service",
-    "pagopa-gps-mbd-service",
-    # "pagopa-mbd-error-manager"
+    "pagopa-cruscotto-frontend",
+    "pagopa-cruscotto-backend",
   ]
 
   federations_01 = [

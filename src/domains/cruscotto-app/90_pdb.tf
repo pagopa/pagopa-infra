@@ -1,4 +1,4 @@
-resource "kubernetes_pod_disruption_budget_v1" "ebollo" {
+resource "kubernetes_pod_disruption_budget_v1" "crusc8" {
 
   for_each = var.pod_disruption_budgets
 

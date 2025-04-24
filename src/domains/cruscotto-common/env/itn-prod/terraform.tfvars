@@ -1,7 +1,7 @@
 prefix         = "pagopa"
 env_short      = "p"
 env            = "prod"
-domain         = "ebollo"
+domain         = "crusc8"
 location       = "italynorth"
 location_short = "itn"
 instance       = "prod"
@@ -10,9 +10,9 @@ tags = {
   CreatedBy   = "Terraform"
   Environment = "Prod"
   Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/ebollo-common"
+  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/crusc8-common"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "ebollo"
+  domain      = "crusc8"
 }
 
 ### External resources

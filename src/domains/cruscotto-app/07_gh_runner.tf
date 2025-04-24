@@ -15,12 +15,12 @@ module "gh_runner_job" {
   runner_labels      = ["self-hosted-job", "${var.env}"]
   gh_repositories = [
     {
-      name : "pagopa-mbd-service",
-      short_name : "mbd-svc"
+      name : "pagopa-cruscotto-frontend",
+      short_name : "crusc8-fe"
     },
     {
-      name : "pagopa-gps-mbd-service",
-      short_name : "gps-mbd-svc"
+      name : "pagopa-cruscotto-backend",
+      short_name : "crusc8-be"
     }
   ]
   job = {
