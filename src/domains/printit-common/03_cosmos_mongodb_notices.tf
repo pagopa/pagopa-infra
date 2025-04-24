@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "db_rg" {
 }
 
 module "cosmosdb_account_mongodb" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__//cosmosdb_account"
   count  = var.is_feature_enabled.cosmosdb_notice ? 1 : 0
 
   domain              = var.domain
@@ -86,7 +86,7 @@ locals {
 }
 
 module "cosmosdb_notices_collections" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__//cosmosdb_mongodb_collection"
 
   for_each = var.is_feature_enabled.cosmosdb_notice ? { for index, coll in local.collections : coll.name => coll } : {}
 
