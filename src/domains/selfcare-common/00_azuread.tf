@@ -18,9 +18,9 @@ resource "time_rotating" "selfcare_application" {
 }
 
 resource "azuread_application_password" "selfcare" {
-  application_id = azuread_application.selfcare.id
-  display_name          = "managed by terraform"
-  end_date_relative     = "8640h" # 360 days
+  application_id    = azuread_application.selfcare.id
+  display_name      = "managed by terraform"
+  end_date_relative = "8640h" # 360 days
   rotate_when_changed = {
     rotation = time_rotating.selfcare_application.id
   }
