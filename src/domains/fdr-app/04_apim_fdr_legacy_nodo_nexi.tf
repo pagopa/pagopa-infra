@@ -16,7 +16,7 @@ module "apim_fdr_nodo_dei_pagamenti_legacy_product" {
   subscription_required = true
   approval_required     = false
 
-  policy_xml = file("./api_product/nodoPerPa/_base_policy.xml")
+  policy_xml = file("./api_product/fdr-legacy/_base_policy.xml")
 
 }
 
