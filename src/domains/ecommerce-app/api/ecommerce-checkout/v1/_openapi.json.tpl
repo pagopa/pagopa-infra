@@ -377,7 +377,7 @@
         "tags": [
           "ecommerce-transactions"
         ],
-        "operationId": "transactionOutcomes",
+        "operationId": "getTransactionOutcomes",
         "summary": "Get transaction outcome",
         "description": "Return outcome information for the input specific transaction resource",
         "parameters": [
