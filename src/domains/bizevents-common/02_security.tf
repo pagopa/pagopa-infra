@@ -160,6 +160,14 @@ resource "azurerm_key_vault_secret" "ehub_biz_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "ehub_biz_tx_connection_string" {
+  name         = format("ehub-tx-%s-biz-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-tx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}
+
 resource "azurerm_key_vault_secret" "ehub_biz_enrich_connection_string" {
   name         = format("ehub-%s-biz-enrich-connection-string", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt-enrich_pagopa-biz-evt-tx.primary_connection_string
@@ -565,7 +573,6 @@ data "azurerm_api_management_api" "apim_ecommerce_helpdesk_api_v2" {
   resource_group_name = local.pagopa_apim_rg
   revision            = "1"
 }
-
 
 resource "azurerm_api_management_subscription" "ecommerce_helpdesk_subkey" {
   api_management_name = local.pagopa_apim_name
