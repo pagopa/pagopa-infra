@@ -950,7 +950,7 @@
       },
       "TransactionOutcomeInfo" : {
         "type": "object",
-        "description": "Transaction outocome info returned when querying for an existing transaction outcome status",
+        "description": "Transaction outcome info returned when querying for an existing transaction outcome status",
         "properties": {
           "transactionId": {
             "type": "string",
