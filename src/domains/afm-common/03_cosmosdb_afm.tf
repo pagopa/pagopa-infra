@@ -30,10 +30,12 @@ module "afm_marketplace_cosmosdb_account" {
   resource_group_name = azurerm_resource_group.afm_rg.name
   domain              = var.domain
 
-  offer_type                 = var.afm_marketplace_cosmos_db_params.offer_type
-  kind                       = var.afm_marketplace_cosmos_db_params.kind
-  capabilities               = var.afm_marketplace_cosmos_db_params.capabilities
-  enable_free_tier           = var.afm_marketplace_cosmos_db_params.enable_free_tier
+  offer_type             = var.afm_marketplace_cosmos_db_params.offer_type
+  kind                   = var.afm_marketplace_cosmos_db_params.kind
+  capabilities           = var.afm_marketplace_cosmos_db_params.capabilities
+  enable_free_tier       = var.afm_marketplace_cosmos_db_params.enable_free_tier
+  burst_capacity_enabled = var.env_short == "p"
+
   analytical_storage_enabled = var.afm_marketplace_cosmos_db_params.analytical_storage_enabled
 
   private_endpoint_sql_name           = "${local.project}-marketplace-cosmos-sql-endpoint" # forced after update module vers
