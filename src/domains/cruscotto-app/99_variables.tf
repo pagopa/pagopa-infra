@@ -146,3 +146,26 @@ variable "pod_disruption_budgets" {
   description = "Pod disruption budget for domain namespace"
   default     = {}
 }
+
+# cruscotto_fe
+
+# Single Page Applications
+variable "spa" {
+  type        = list(string)
+  description = "spa root dirs"
+  default = [
+    "ui"
+  ]
+}
+
+variable "robots_indexed_paths" {
+  type        = list(string)
+  description = "List of cdn paths to allow robots index"
+  default     = []
+}
+
+variable "crusc8_storage_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) crusc8 cdn storage account replication type"
+}
