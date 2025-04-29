@@ -60,7 +60,7 @@
         </choose>
 
     <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
-    <set-variable name="transactionsOperationId" value="newTransactionForIO,getTransactionInfoForIO,requestTransactionUserCancellationForIO,requestTransactionAuthorizationForIO" />
+    <set-variable name="transactionsOperationId" value="newTransactionForIO,getTransactionInfoForIO,transactionOutcomesForIO,requestTransactionUserCancellationForIO,requestTransactionAuthorizationForIO" />
     <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethodsForIO,calculateFeesForIO" />
     <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfoForIO" />
     <set-variable name="lastPaymentMethodUsedOperationId" value="getUserLastPaymentMethodUsed" />
@@ -86,6 +86,11 @@
 
   <outbound>
       <base />
+        <set-body>@{
+          JObject inBody = context.Response.Body.As<JObject>(preserveContent: true);
+          inBody.Remove("totalAmount");
+          return inBody.ToString();
+        }</set-body>
   </outbound>
 
   <backend>

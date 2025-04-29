@@ -372,6 +372,103 @@
         }
       }
     },
+    "/transactions/{transactionId}/outcomes": {
+      "get": {
+        "tags": [
+          "ecommerce-transactions"
+        ],
+        "operationId": "transactionOutcomes",
+        "summary": "Get transaction outcome",
+        "description": "Return outcome information for the input specific transaction resource",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-user-id",
+            "schema": {
+              "$ref": "#/components/schemas/UserId"
+            },
+            "required": false,
+            "description": "User id (valued for authenticated payments) owner of the transaction"
+          },
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Transaction ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction authorization request successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionOutcomeInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid transaction id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad gateway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "Gateway timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/transactions/{transactionId}/auth-requests": {
       "post": {
         "summary": "Request authorization",
@@ -1958,6 +2055,40 @@
             ]
           }
         ]
+      },
+      "TransactionOutcomeInfo" : {
+        "type": "object",
+        "description": "Transaction outocome info returned when querying for an existing transaction outcome status",
+        "properties": {
+          "transactionId": {
+            "type": "string",
+            "description": "The transaction unique identifier"
+          },
+          "outcome": {
+            "type": "number",
+            "enum": [
+              0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 25, 99, 116, 117, 121
+            ],
+            "description": "`0` - Success `1` - Generic error `2` - Authorization error `3` - Invalid data `4` - Timeout `5` - Unsupported circuit `6` - Missing data `7` - Invalid card: expired card etc `8` - Canceled by the user `9` - Double transaction `10` - Excessive amount `11` - Order not present `12` - Invalid method `13` - Retriable KO `14` - Invalid session `17` - Taken in charge `25` - PSP Error `99` - Backend Error `116` - Balance not available `117` - CVV Error `121` - Limit exceeded"
+          },
+          "isFinalStatus": {
+            "type": "boolean",
+            "description": "A flag that mark a status as final for a transaction"
+          },
+          "totalAmount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          }
+        },
+        "required": [
+          "transactionId",
+          "outcome",
+          "isFinalStatus"
+        ]
+      },
+      "UserId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Unique user identifier"
       },
       "AmountEuroCents": {
         "description": "Amount for payments, in euro cents",
