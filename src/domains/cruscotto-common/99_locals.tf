@@ -30,6 +30,8 @@ locals {
     "azdo-${var.env}-pagopa-iac-plan"]
   )
 
+  pagopa_apim_name        = "${local.product}-apim"
+  pagopa_apim_rg          = "${local.product}-api-rg"
   msg_resource_group_name = "${local.product}-msg-rg"
 
   monitor_action_group_opsgenie_name = "Opsgenie"

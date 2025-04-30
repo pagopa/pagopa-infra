@@ -33,4 +33,9 @@ locals {
   apim_hostname = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   hostname      = var.env == "prod" ? "${var.domain}.itn.internal.platform.pagopa.it" : "${var.domain}.itn.internal.${var.env}.platform.pagopa.it"
 
+  # crusc8
+  dns_zone_crusc8     = "crusc8"
+  dns_zone_platform   = var.env == "prod" ? "platform" : "${var.env}.platform"
+  external_domain     = "pagopa.it"
+  selfcare_pagopa_cdn = "${var.prefix}${var.env_short}${local.dns_zone_crusc8}sa"
 }
