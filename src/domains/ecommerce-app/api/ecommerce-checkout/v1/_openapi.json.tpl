@@ -2061,7 +2061,7 @@
         "description": "Transaction outcome info returned when querying for an existing transaction outcome status",
         "properties": {
           "outcome": {
-            "type": "integer",
+            "type": "number",
             "enum": [
               0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 25, 99, 116, 117, 121
             ],
