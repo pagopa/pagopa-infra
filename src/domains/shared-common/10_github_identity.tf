@@ -14,6 +14,9 @@ locals {
     "pagopa-platform-authorizer",
     "pagopa-platform-authorizer-config",
     "pagopa-iuvgenerator",
+    "pagopa-mocker",
+    "pagopa-mocker-config",
+    "pagopa-pdf-engine",
     "pagopa-infra"
   ]
 
@@ -64,6 +67,13 @@ module "identity_cd_01" {
   ]
 }
 
+module "workload_identity" {
+  source = "./.terraform/modules/__v3__/kubernetes_workload_identity_init"
+
+  workload_identity_name_prefix         = var.domain
+  workload_identity_resource_group_name = local.aks_resource_group_name
+  workload_identity_location            = var.location
+}
 
 resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
   key_vault_id = module.key_vault.id
