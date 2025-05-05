@@ -1837,7 +1837,7 @@
           },
           "isFinalStatus": {
             "type": "boolean",
-            "description": "A flag that describe the outcome as final or not. If true, the outcome will not change in the future ad the client polling can stop."
+            "description": "A flag that describe the outcome as final or not. If true, the outcome will not change in the future and the client can interrupt polling."
           }
         },
         "required": [
