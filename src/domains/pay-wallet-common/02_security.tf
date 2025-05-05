@@ -318,7 +318,7 @@ resource "azurerm_key_vault_secret" "sender_evt_tx_event_hub_connection_string_s
 
 resource "azurerm_key_vault_secret" "payment_wallet_gha_bot_pat" {
   count        = var.env_short == "p" ? 1 : 0
-  name         = "payment_wallet_gha_bot_pat"
+  name         = "payment-wallet-gha-bot-pat"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 
