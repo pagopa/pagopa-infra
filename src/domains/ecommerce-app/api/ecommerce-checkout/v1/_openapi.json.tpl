@@ -2073,7 +2073,7 @@
           "outcome",
           "isFinalStatus"
         ]
-      }
+      },
       "AmountEuroCents": {
         "description": "Amount for payments, in euro cents",
         "type": "integer",
