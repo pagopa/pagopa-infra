@@ -382,15 +382,6 @@
         "description": "Return outcome information for the input specific transaction resource",
         "parameters": [
           {
-            "in": "header",
-            "name": "x-user-id",
-            "schema": {
-              "$ref": "#/components/schemas/UserId"
-            },
-            "required": false,
-            "description": "User id (valued for authenticated payments) owner of the transaction"
-          },
-          {
             "in": "path",
             "name": "transactionId",
             "schema": {
@@ -2082,12 +2073,7 @@
           "outcome",
           "isFinalStatus"
         ]
-      },
-      "UserId": {
-        "type": "string",
-        "format": "uuid",
-        "description": "Unique user identifier"
-      },
+      }
       "AmountEuroCents": {
         "description": "Amount for payments, in euro cents",
         "type": "integer",
