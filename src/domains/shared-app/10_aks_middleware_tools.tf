@@ -25,16 +25,37 @@ module "tls_checker" {
   workload_identity_client_id                               = module.workload_identity.workload_identity_client_id
 }
 
-module "cert_mounter" {
-  depends_on                             = [module.workload_identity]
-  source                                 = "./.terraform/modules/__v3__/cert_mounter"
-  namespace                              = var.domain
-  certificate_name                       = replace(local.shared_hostname, ".", "-")
-  kv_name                                = data.azurerm_key_vault.kv.name
-  tenant_id                              = data.azurerm_subscription.current.tenant_id
-  workload_identity_enabled              = true
-  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
-  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
+# module "cert_mounter" {
+#   depends_on                             = [module.workload_identity]
+#   source                                 = "./.terraform/modules/__v3__/cert_mounter"
+#   namespace                              = var.domain
+#   certificate_name                       = replace(local.shared_hostname, ".", "-")
+#   kv_name                                = data.azurerm_key_vault.kv.name
+#   tenant_id                              = data.azurerm_subscription.current.tenant_id
+#   workload_identity_enabled              = true
+#   workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
+#   workload_identity_client_id            = module.workload_identity.workload_identity_client_id
+# }
+
+resource "helm_release" "cert_mounter" {
+  name         = "cert-mounter-blueprint"
+  repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
+  chart        = "cert-mounter-blueprint"
+  version      = "2.0.2"
+  namespace    = var.domain
+  timeout      = 120
+  force_update = true
+
+  values = [
+      templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
+        NAMESPACE        = var.domain,
+        DOMAIN           = var.domain,
+        CERTIFICATE_NAME = replace(local.shared_hostname, ".", "-"),
+        ENV_SHORT        = var.env_short,
+        SERVICE_ACCOUNT_NAME = module.workload_identity.workload_identity_service_account_name,
+        WORKLOAD_IDENTITY_CLIENT_ID = module.workload_identity.workload_identity_client_id,
+      })
+  ]
 }
 
 resource "helm_release" "reloader" {
