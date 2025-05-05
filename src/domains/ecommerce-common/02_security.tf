@@ -692,3 +692,16 @@ resource "azurerm_key_vault_secret" "ecommerce_storage_reporting_connection_stri
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "ecommerce_gha_bot_pat" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "ecommerce_gha_bot_pat"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
