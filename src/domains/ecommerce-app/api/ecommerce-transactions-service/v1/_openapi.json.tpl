@@ -968,6 +968,7 @@
           }
         },
         "required": [
+          "outcome",
           "isFinalStatus"
         ]
       },

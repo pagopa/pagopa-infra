@@ -1847,6 +1847,7 @@
           }
         },
         "required": [
+          "outcome",
           "isFinalStatus"
         ]
       },

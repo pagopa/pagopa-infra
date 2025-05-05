@@ -2076,6 +2076,7 @@
           }
         },
         "required": [
+          "outcome",
           "isFinalStatus"
         ]
       },
