@@ -106,12 +106,3 @@ module "apim_ecommerce_webview_api_v2" {
     ecommerce_ingress_hostname = local.ecommerce_hostname
   })
 }
-
-resource "azurerm_api_management_api_operation_policy" "io_get_transaction_outcome" {
-  api_name            = "${local.project}-ecommerce-webview-api-v2"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  operation_id        = "getTransactionOutcomes"
-
-  xml_content = file("./api/ecommerce-webview/v2/_outcome_info.xml.tpl")
-}

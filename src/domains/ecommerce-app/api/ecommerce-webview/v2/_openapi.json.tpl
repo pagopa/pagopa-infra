@@ -414,6 +414,12 @@
           "isFinalStatus": {
             "type": "boolean",
             "description": "A flag that describe the outcome as final or not. If true, the outcome will not change in the future and the client can interrupt polling."
+          },
+          "totalAmount": {
+            "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "fees": {
+            "$ref": "#/components/schemas/AmountEuroCents"
           }
         },
         "required": [
