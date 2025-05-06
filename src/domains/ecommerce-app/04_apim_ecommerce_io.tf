@@ -296,14 +296,11 @@ resource "azurerm_api_management_api_operation_policy" "io_get_all_payment_metho
   })
 }
 
-
 resource "azurerm_api_management_api_operation_policy" "io_get_transaction_outcome" {
   api_name            = "${local.project}-ecommerce-io-api-v2"
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
   operation_id        = "getTransactionOutcomesForIO"
 
-  xml_content = templatefile("./api/ecommerce-io/v2/_outcome_info.xml.tpl", {
-    enabled_payment_wallet_method_ids_pm = var.enabled_payment_wallet_method_ids_pm
-  })
+  xml_content = file("./api/ecommerce-io/v2/_outcome_info.xml.tpl")
 }

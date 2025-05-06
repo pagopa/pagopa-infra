@@ -482,7 +482,7 @@
         ],
         "security": [
           {
-            "bearerAuth": []
+            "pagoPAPlatformSessionToken": []
           }
         ],
         "responses": {
