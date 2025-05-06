@@ -2067,6 +2067,9 @@
           },
           "totalAmount": {
             "$ref": "#/components/schemas/AmountEuroCents"
+          },
+          "fees": {
+            "$ref": "#/components/schemas/AmountEuroCents"
           }
         },
         "required": [
