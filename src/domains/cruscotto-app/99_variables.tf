@@ -36,7 +36,7 @@ variable "domain" {
 
 variable "location" {
   type        = string
-  description = "One of westeurope, northeurope"
+  description = "One of .."
 }
 
 variable "location_short" {
@@ -47,10 +47,32 @@ variable "location_short" {
     )
     error_message = "Length must be 3 chars."
   }
-  description = "One of wue, neu"
+  description = "One of ..."
 }
 
 variable "location_string" {
+  type        = string
+  description = "One of ..."
+}
+
+
+variable "location_weu" {
+  type        = string
+  description = "One of westeurope, northeurope"
+}
+
+variable "location_short_weu" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_short_weu) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "One of wue, neu"
+}
+
+variable "location_string_weu" {
   type        = string
   description = "One of West Europe, North Europe"
 }
