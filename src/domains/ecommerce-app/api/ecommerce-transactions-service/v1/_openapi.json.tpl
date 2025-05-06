@@ -944,7 +944,7 @@
       },
       "TransactionOutcomeInfo" : {
         "type": "object",
-        "description": "Transaction outcome info returned when querying for an existing transaction outcome status",
+        "description": "Transaction outcome info returned when querying for an existing transaction outcome status. The field totalAmount, if present, is intended as the total amount paid for the transaction in eurocents fees excluded. Fees too, if present, is in eurocents",
         "properties": {
           "outcome": {
             "type": "number",
@@ -958,6 +958,9 @@
             "description": "A flag that describe the outcome as final or not. If true, the outcome will not change in the future and the client can interrupt polling."
           },
           "totalAmount": {
+            "$ref": "#/components/schemas/AmountEuroCents"    
+          },
+          "fees": {
             "$ref": "#/components/schemas/AmountEuroCents"
           }
         },

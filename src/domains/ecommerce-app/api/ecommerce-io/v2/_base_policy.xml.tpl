@@ -86,11 +86,6 @@
 
   <outbound>
       <base />
-        <set-body>@{
-          JObject inBody = context.Response.Body.As<JObject>(preserveContent: true);
-          inBody.Remove("totalAmount");
-          return inBody.ToString();
-        }</set-body>
   </outbound>
 
   <backend>
