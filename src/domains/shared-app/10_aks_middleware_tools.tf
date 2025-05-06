@@ -15,9 +15,9 @@ module "tls_checker" {
   application_insights_id                                   = data.azurerm_application_insights.application_insights.id
   application_insights_action_group_ids                     = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id]
 
-  workload_identity_enabled = true
+  workload_identity_enabled              = true
   workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
-  workload_identity_client_id = module.workload_identity.workload_identity_client_id
+  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
 }
 
 resource "helm_release" "cert_mounter" {
@@ -30,14 +30,14 @@ resource "helm_release" "cert_mounter" {
   force_update = true
 
   values = [
-      templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
-        NAMESPACE        = var.domain,
-        DOMAIN           = var.domain,
-        CERTIFICATE_NAME = replace(local.shared_hostname, ".", "-"),
-        ENV_SHORT        = var.env_short,
-        SERVICE_ACCOUNT_NAME = module.workload_identity.workload_identity_service_account_name,
-        WORKLOAD_IDENTITY_CLIENT_ID = module.workload_identity.workload_identity_client_id,
-      })
+    templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
+      NAMESPACE                   = var.domain,
+      DOMAIN                      = var.domain,
+      CERTIFICATE_NAME            = replace(local.shared_hostname, ".", "-"),
+      ENV_SHORT                   = var.env_short,
+      SERVICE_ACCOUNT_NAME        = module.workload_identity.workload_identity_service_account_name,
+      WORKLOAD_IDENTITY_CLIENT_ID = module.workload_identity.workload_identity_client_id,
+    })
   ]
 }
 
