@@ -269,11 +269,6 @@
             "description": "Transaction ID"
           }
         ],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "Transaction authorization request successfully updated",
