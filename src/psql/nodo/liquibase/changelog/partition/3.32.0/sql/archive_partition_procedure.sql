@@ -41,23 +41,23 @@ tProcedureName TEXT:= 'add_archive_partition';
 BEGIN
 
 tLabelStep := 'Init';
-iIdTrace := nextval('seq_log'::regclass);
-INSERT INTO PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','INIZIO',tLabelStep);
-
+iIdTrace := nextval('partition.seq_log'::regclass);
+INSERT INTO partition.PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','INIZIO',tLabelStep);
+RAISE NOTICE 'fuori cursore';
 OPEN tab_cursor;
    	LOOP
         FETCH NEXT FROM tab_cursor INTO tNomeSchema,tNomeTabella,tNomePartizione;
         EXIT WHEN NOT FOUND;
 
 ------------------------------------------------------------------------------------------------------
-
+  RAISE NOTICE 'nome tabella: %, nome partizione: %', tNomeTabella, tNomePartizione;
 --inserisco le partizioni da storicizzare
    IF NOT EXISTS
 	  (SELECT *
 		 FROM   partition.storico_part
 		   WHERE nome_tabella =tNomeTabella and nome_partition=tNomePartizione and nome_schema=tNomeSchema)
 	   THEN
-
+      RAISE NOTICE 'partizione non presente in storico_part';
 	   INSERT INTO partition.storico_part(
 		nome_tabella, nome_schema, nome_partition, stato, insert_date, modification_date, deleting_date)
 		VALUES (tNomeTabella, tNomeSchema, tNomePartizione, 'N', NOW(), NULL, NULL);
@@ -83,14 +83,14 @@ OPEN tab_cursor;
 
  CLOSE tab_cursor;
 
-iIdTrace := nextval('seq_log'::regclass);
-INSERT INTO PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','FINE','Procedura eseguita con successo');
+iIdTrace := nextval('partition.seq_log'::regclass);
+INSERT INTO partition.PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), (clock_timestamp()- ptDataInizio) ,'OK','FINE','Procedura eseguita con successo');
 
 EXCEPTION
 WHEN OTHERS THEN
 
-		iIdTrace := nextval('seq_log'::regclass);
-		INSERT INTO PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), ( clock_timestamp()- ptDataInizio) ,'KO','FINE',
+		iIdTrace := nextval('partition.seq_log'::regclass);
+		INSERT INTO partition.PG_LOG values (iIdTrace,sUtente, tProcedureName, ptDataInizio, clock_timestamp(), ( clock_timestamp()- ptDataInizio) ,'KO','FINE',
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
 
 END;

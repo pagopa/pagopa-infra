@@ -1,0 +1,1305 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 217,
+    "links": [],
+    "panels": [
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "b2efbf1a-5596-4ec4-b64e-b8e076a1e5ff"
+        },
+        "description": "Numero di activatePaymentNoticeV2 che producono un nuovo token. Attenzione, questo numero può essere influenzato da chiamate per le quali il nodo risponde grazie all'idempotenza",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                }
+              ]
+            },
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 5,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "count"
+            ],
+            "fields": "/^TOKEN$/",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "OpenAI": false,
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "b2efbf1a-5596-4ec4-b64e-b8e076a1e5ff"
+            },
+            "expression": {
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "5.0.5",
+            "query": "let start=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__from)), \"Europe/Rome\");\nlet end=datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\");\nlet end_offset=datetime_add(\"minute\", $Offset, datetime_utc_to_local(todatetime(unixtime_milliseconds_todatetime($__to)), \"Europe/Rome\"));\nlet activate = ACTIVATE_CHECKOUT\n| where ACTIVATE_CHECKOUT_TIMESTAMP between (start .. end)\n| project ACTIVATE_CHECKOUT_TIMESTAMP, NAV, ID_DOMINIO, IUV, TOKEN, CREDITOR_REFERENCE_ID, STAZIONE;\nlet closeP = CLOSEPAYMENT_ECOMMERCE\n| where CLOSE_PAYMENT_REQ_TIMESTAMP between (start .. end_offset)\n| project CLOSE_PAYMENT_REQ_TIMESTAMP, TOKEN, OUTCOME, PAYMENT_METHOD, TRANSACTION_STATUS, TRANSACTION_ID, PSP, CANALE;\nlet pspNotify = PSPNOTIFY_PAYMENT\n| where PSP_NOTIFY_TIMESTAMP between (start .. end_offset)\n| project PSP_NOTIFY_TIMESTAMP, TIPO_EVENTO, TOKEN;\nlet SPO = SPO_ECOMMERCE_PAYMENT\n| where SPO_TIMESTAMP between (start .. end_offset)\n| project SPO_TIMESTAMP, TOKEN, OUTCOME;\nactivate\n| join kind=leftouter closeP on TOKEN\n| join kind=leftouter pspNotify on TOKEN\n| join kind=leftouter SPO on TOKEN\n| project-away TOKEN1, TOKEN2, TOKEN3\n| extend HAVE_CP=case(isempty(CLOSE_PAYMENT_REQ_TIMESTAMP), false, true)\n| extend HAVE_PSP=case(isempty(PSP_NOTIFY_TIMESTAMP), false, true)\n| extend HAVE_SPO=case(isempty(SPO_TIMESTAMP), false, true)\n| extend HAVE_CP_LABEL=case(HAVE_CP == true, \"Pervenute\", \"Non pervenute\")\n| extend HAVE_PSP_LABEL=case(HAVE_PSP == true, \"Pervenute\", \"Non pervenute\")\n| extend HAVE_SPO_LABEL=case(HAVE_SPO == true, \"Pervenute\", \"Non pervenute\")\n//| summarize count() by HAVE_CP\n//| extend HAVE_CP=case(HAVE_CP == true, \"Pervenute\", \"Non pervenute\")",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "Query_Generale",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Numero di attivazioni Checkout",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "description": "",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "fieldMinMax": false,
+            "mappings": [],
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 5,
+          "y": 0
+        },
+        "id": 5,
+        "options": {
+          "displayLabels": [],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "count"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "10.4.11",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 1,
+            "refId": "A"
+          }
+        ],
+        "title": "Percentuale di closePayment presenti",
+        "transformations": [
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "ACTIVATE_CHECKOUT_TIMESTAMP": {
+                  "aggregations": [
+                    "count"
+                  ]
+                },
+                "HAVE_CP": {
+                  "aggregations": []
+                },
+                "HAVE_CP_LABEL": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "TOKEN": {
+                  "aggregations": [
+                    "count"
+                  ],
+                  "operation": "aggregate"
+                }
+              }
+            }
+          }
+        ],
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "description": "Le percentuali sotto riportate si riferiscono solo a quelle attivazioni che hanno ricevuto una closePaymentV2",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "fieldMinMax": false,
+            "mappings": [],
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 11,
+          "y": 0
+        },
+        "id": 6,
+        "options": {
+          "displayLabels": [],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "count"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "10.4.11",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 1,
+            "refId": "A",
+            "withTransforms": false
+          }
+        ],
+        "title": "Percentuale di pspNotifyPayment presenti",
+        "transformations": [
+          {
+            "id": "filterByValue",
+            "options": {
+              "filters": [
+                {
+                  "config": {
+                    "id": "equal",
+                    "options": {
+                      "value": true
+                    }
+                  },
+                  "fieldName": "HAVE_CP"
+                }
+              ],
+              "match": "any",
+              "type": "include"
+            }
+          },
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "ACTIVATE_CHECKOUT_TIMESTAMP": {
+                  "aggregations": [
+                    "count"
+                  ]
+                },
+                "HAVE_CP": {
+                  "aggregations": []
+                },
+                "HAVE_PSP": {
+                  "aggregations": []
+                },
+                "HAVE_PSP_LABEL": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "TOKEN": {
+                  "aggregations": [
+                    "count"
+                  ],
+                  "operation": "aggregate"
+                }
+              }
+            }
+          }
+        ],
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "datasource",
+          "uid": "-- Dashboard --"
+        },
+        "description": "La percentuale di sendPaymentOutcomeV2 è calcolata solo su quelle attivazioni che hanno già ricevuto una closePaymentV2 e pspNotifyPaymentV2",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "fieldMinMax": false,
+            "mappings": [],
+            "unit": "short"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 17,
+          "y": 0
+        },
+        "id": 7,
+        "options": {
+          "displayLabels": [],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "count"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "10.4.11",
+        "targets": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "panelId": 1,
+            "refId": "A",
+            "withTransforms": false
+          }
+        ],
+        "title": "Percentuale di sendPaymentOutcome presenti",
+        "transformations": [
+          {
+            "id": "filterByValue",
+            "options": {
+              "filters": [
+                {
+                  "config": {
+                    "id": "equal",
+                    "options": {
+                      "value": true
+                    }
+                  },
+                  "fieldName": "HAVE_CP"
+                },
+                {
+                  "config": {
+                    "id": "equal",
+                    "options": {
+                      "value": true
+                    }
+                  },
+                  "fieldName": "HAVE_PSP"
+                }
+              ],
+              "match": "all",
+              "type": "include"
+            }
+          },
+          {
+            "id": "groupBy",
+            "options": {
+              "fields": {
+                "ACTIVATE_CHECKOUT_TIMESTAMP": {
+                  "aggregations": [
+                    "count"
+                  ]
+                },
+                "HAVE_CP": {
+                  "aggregations": []
+                },
+                "HAVE_PSP": {
+                  "aggregations": []
+                },
+                "HAVE_PSP_LABEL": {
+                  "aggregations": []
+                },
+                "HAVE_SPO_LABEL": {
+                  "aggregations": [],
+                  "operation": "groupby"
+                },
+                "TOKEN": {
+                  "aggregations": [
+                    "count"
+                  ],
+                  "operation": "aggregate"
+                }
+              }
+            }
+          }
+        ],
+        "type": "piechart"
+      },
+      {
+        "collapsed": true,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 8
+        },
+        "id": 13,
+        "panels": [
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "fieldMinMax": false,
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 12,
+              "w": 6,
+              "x": 0,
+              "y": 9
+            },
+            "id": 8,
+            "options": {
+              "displayLabels": [],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "count"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "10.4.11",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "datasource",
+                  "uid": "-- Dashboard --"
+                },
+                "panelId": 1,
+                "refId": "A"
+              }
+            ],
+            "title": "Valore Outcome closePayment Pervenute",
+            "transformations": [
+              {
+                "id": "filterByValue",
+                "options": {
+                  "filters": [
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": true
+                        }
+                      },
+                      "fieldName": "HAVE_CP"
+                    }
+                  ],
+                  "match": "any",
+                  "type": "include"
+                }
+              },
+              {
+                "id": "groupBy",
+                "options": {
+                  "fields": {
+                    "OUTCOME": {
+                      "aggregations": [],
+                      "operation": "groupby"
+                    },
+                    "TOKEN": {
+                      "aggregations": [
+                        "count"
+                      ],
+                      "operation": "aggregate"
+                    }
+                  }
+                }
+              }
+            ],
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "fieldMinMax": false,
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "PAYMENT_METHOD"
+                  },
+                  "properties": [
+                    {
+                      "id": "mappings",
+                      "value": [
+                        {
+                          "options": {
+                            "APPL": {
+                              "index": 3,
+                              "text": "Apple Pay"
+                            },
+                            "BPAY": {
+                              "index": 5,
+                              "text": "Bancomat Pay"
+                            },
+                            "CP": {
+                              "index": 0,
+                              "text": "Carta di Credito"
+                            },
+                            "MYBK": {
+                              "index": 2,
+                              "text": "My Bank"
+                            },
+                            "PPAL": {
+                              "index": 1,
+                              "text": "Paypal"
+                            },
+                            "SATY": {
+                              "index": 4,
+                              "text": "Satispay"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 12,
+              "w": 6,
+              "x": 6,
+              "y": 9
+            },
+            "id": 9,
+            "options": {
+              "displayLabels": [],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "count"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "10.4.11",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "datasource",
+                  "uid": "-- Dashboard --"
+                },
+                "panelId": 1,
+                "refId": "A"
+              }
+            ],
+            "title": "Payment Method per OK",
+            "transformations": [
+              {
+                "id": "filterByValue",
+                "options": {
+                  "filters": [
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": true
+                        }
+                      },
+                      "fieldName": "HAVE_CP"
+                    },
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": "OK"
+                        }
+                      },
+                      "fieldName": "OUTCOME"
+                    }
+                  ],
+                  "match": "all",
+                  "type": "include"
+                }
+              },
+              {
+                "id": "groupBy",
+                "options": {
+                  "fields": {
+                    "OUTCOME": {
+                      "aggregations": []
+                    },
+                    "PAYMENT_METHOD": {
+                      "aggregations": [],
+                      "operation": "groupby"
+                    },
+                    "TOKEN": {
+                      "aggregations": [
+                        "count"
+                      ],
+                      "operation": "aggregate"
+                    }
+                  }
+                }
+              }
+            ],
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "fieldMinMax": false,
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "PAYMENT_METHOD"
+                  },
+                  "properties": [
+                    {
+                      "id": "mappings",
+                      "value": [
+                        {
+                          "options": {
+                            "APPL": {
+                              "index": 2,
+                              "text": "Apple Pay"
+                            },
+                            "BPAY": {
+                              "index": 4,
+                              "text": "Bancomat Pay"
+                            },
+                            "CP": {
+                              "index": 0,
+                              "text": "Carta di Credito"
+                            },
+                            "MYBK": {
+                              "index": 3,
+                              "text": "My Bank"
+                            },
+                            "PPAL": {
+                              "index": 1,
+                              "text": "Paypal"
+                            },
+                            "SATY": {
+                              "index": 5,
+                              "text": "Satispay"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 12,
+              "w": 6,
+              "x": 12,
+              "y": 9
+            },
+            "id": 11,
+            "options": {
+              "displayLabels": [],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "count"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "10.4.11",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "datasource",
+                  "uid": "-- Dashboard --"
+                },
+                "panelId": 1,
+                "refId": "A"
+              }
+            ],
+            "title": "Payment Method per KO",
+            "transformations": [
+              {
+                "id": "filterByValue",
+                "options": {
+                  "filters": [
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": true
+                        }
+                      },
+                      "fieldName": "HAVE_CP"
+                    },
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": "KO"
+                        }
+                      },
+                      "fieldName": "OUTCOME"
+                    }
+                  ],
+                  "match": "all",
+                  "type": "include"
+                }
+              },
+              {
+                "id": "groupBy",
+                "options": {
+                  "fields": {
+                    "OUTCOME": {
+                      "aggregations": []
+                    },
+                    "PAYMENT_METHOD": {
+                      "aggregations": [],
+                      "operation": "groupby"
+                    },
+                    "TOKEN": {
+                      "aggregations": [
+                        "count"
+                      ],
+                      "operation": "aggregate"
+                    }
+                  }
+                }
+              }
+            ],
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "fieldMinMax": false,
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 12,
+              "w": 6,
+              "x": 18,
+              "y": 9
+            },
+            "id": 12,
+            "options": {
+              "displayLabels": [],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "count"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "10.4.11",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "datasource",
+                  "uid": "-- Dashboard --"
+                },
+                "panelId": 1,
+                "refId": "A"
+              }
+            ],
+            "title": "Transaction Status per KO",
+            "transformations": [
+              {
+                "id": "filterByValue",
+                "options": {
+                  "filters": [
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": true
+                        }
+                      },
+                      "fieldName": "HAVE_CP"
+                    }
+                  ],
+                  "match": "all",
+                  "type": "include"
+                }
+              },
+              {
+                "id": "groupBy",
+                "options": {
+                  "fields": {
+                    "OUTCOME": {
+                      "aggregations": []
+                    },
+                    "PAYMENT_METHOD": {
+                      "aggregations": []
+                    },
+                    "TOKEN": {
+                      "aggregations": [
+                        "count"
+                      ],
+                      "operation": "aggregate"
+                    },
+                    "TRANSACTION_STATUS": {
+                      "aggregations": [],
+                      "operation": "groupby"
+                    }
+                  }
+                }
+              }
+            ],
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "fieldMinMax": false,
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 12,
+              "w": 6,
+              "x": 6,
+              "y": 21
+            },
+            "id": 14,
+            "options": {
+              "displayLabels": [],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "count"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "10.4.11",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "datasource",
+                  "uid": "-- Dashboard --"
+                },
+                "panelId": 1,
+                "refId": "A"
+              }
+            ],
+            "title": "ClosePayment con Outcome OK",
+            "transformations": [
+              {
+                "id": "filterByValue",
+                "options": {
+                  "filters": [
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": true
+                        }
+                      },
+                      "fieldName": "HAVE_CP"
+                    },
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": "OK"
+                        }
+                      },
+                      "fieldName": "OUTCOME"
+                    }
+                  ],
+                  "match": "all",
+                  "type": "include"
+                }
+              },
+              {
+                "id": "groupBy",
+                "options": {
+                  "fields": {
+                    "OUTCOME": {
+                      "aggregations": []
+                    },
+                    "PAYMENT_METHOD": {
+                      "aggregations": []
+                    },
+                    "PSP": {
+                      "aggregations": [],
+                      "operation": "groupby"
+                    },
+                    "TOKEN": {
+                      "aggregations": [
+                        "count"
+                      ],
+                      "operation": "aggregate"
+                    },
+                    "TRANSACTION_STATUS": {
+                      "aggregations": []
+                    }
+                  }
+                }
+              }
+            ],
+            "type": "piechart"
+          },
+          {
+            "datasource": {
+              "type": "datasource",
+              "uid": "-- Dashboard --"
+            },
+            "description": "",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "mode": "palette-classic"
+                },
+                "custom": {
+                  "hideFrom": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": false
+                  }
+                },
+                "fieldMinMax": false,
+                "mappings": [],
+                "unit": "short"
+              },
+              "overrides": [
+                {
+                  "matcher": {
+                    "id": "byName",
+                    "options": "PSP"
+                  },
+                  "properties": [
+                    {
+                      "id": "noValue",
+                      "value": "PSP Sconosciuto"
+                    }
+                  ]
+                }
+              ]
+            },
+            "gridPos": {
+              "h": 12,
+              "w": 6,
+              "x": 12,
+              "y": 21
+            },
+            "id": 15,
+            "options": {
+              "displayLabels": [],
+              "legend": {
+                "displayMode": "table",
+                "placement": "right",
+                "showLegend": true,
+                "values": [
+                  "percent",
+                  "value"
+                ]
+              },
+              "pieType": "pie",
+              "reduceOptions": {
+                "calcs": [
+                  "count"
+                ],
+                "fields": "",
+                "values": true
+              },
+              "tooltip": {
+                "mode": "single",
+                "sort": "none"
+              }
+            },
+            "pluginVersion": "10.4.11",
+            "targets": [
+              {
+                "datasource": {
+                  "type": "datasource",
+                  "uid": "-- Dashboard --"
+                },
+                "panelId": 1,
+                "refId": "A"
+              }
+            ],
+            "title": "ClosePayment con Outcome KO",
+            "transformations": [
+              {
+                "id": "filterByValue",
+                "options": {
+                  "filters": [
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": true
+                        }
+                      },
+                      "fieldName": "HAVE_CP"
+                    },
+                    {
+                      "config": {
+                        "id": "equal",
+                        "options": {
+                          "value": "KO"
+                        }
+                      },
+                      "fieldName": "OUTCOME"
+                    }
+                  ],
+                  "match": "all",
+                  "type": "include"
+                }
+              },
+              {
+                "id": "groupBy",
+                "options": {
+                  "fields": {
+                    "OUTCOME": {
+                      "aggregations": []
+                    },
+                    "PAYMENT_METHOD": {
+                      "aggregations": []
+                    },
+                    "PSP": {
+                      "aggregations": [],
+                      "operation": "groupby"
+                    },
+                    "TOKEN": {
+                      "aggregations": [
+                        "count"
+                      ],
+                      "operation": "aggregate"
+                    },
+                    "TRANSACTION_STATUS": {
+                      "aggregations": []
+                    }
+                  }
+                }
+              }
+            ],
+            "type": "piechart"
+          }
+        ],
+        "title": "Close Payment",
+        "type": "row"
+      }
+    ],
+    "refresh": "",
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "30",
+            "value": "30"
+          },
+          "description": "Indica quanto in avanti cercare gli eventi di closePayment, pspNotifyPayment, sendPaymentOutcome.\nEs. se l'intervallo scelto sulla dashboard è 09:00 / 10:00, per gli eventi di attivazioni prossimi alle 10:00 è impossibile trovare eventi di closePayment/pspNotifyPayment/sendPaymentOutcome, quindi bisogna allargare la finestra di ricerca per questi eventi. Di quanto allargare la finestra lo indica questo valore espresso in minuti. Nell'esempio fatto sopra, per le attivazioni dalle 09:00 / 10:00 , gli altri eventi verranno ricercati fino alle 10:30 (offset=30)",
+          "hide": 0,
+          "label": "Offset",
+          "name": "Offset",
+          "options": [
+            {
+              "selected": true,
+              "text": "30",
+              "value": "30"
+            }
+          ],
+          "query": "30",
+          "skipUrlSync": false,
+          "type": "textbox"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-30m",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "Monitoraggio Checkout",
+    "uid": "ce6pe5l8gag3ke",
+    "version": 7,
+    "weekStart": ""
+  }

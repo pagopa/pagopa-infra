@@ -4,7 +4,7 @@ resource "azuread_application" "selfcare" {
 }
 
 resource "azuread_service_principal" "selfcare" {
-  application_id = azuread_application.selfcare.application_id
+  client_id = azuread_application.selfcare.client_id
 }
 
 resource "azurerm_role_assignment" "selfcare_apim_contributor" {
@@ -18,9 +18,9 @@ resource "time_rotating" "selfcare_application" {
 }
 
 resource "azuread_application_password" "selfcare" {
-  application_object_id = azuread_application.selfcare.object_id
-  display_name          = "managed by terraform"
-  end_date_relative     = "8640h" # 360 days
+  application_id    = azuread_application.selfcare.id
+  display_name      = "managed by terraform"
+  end_date_relative = "8640h" # 360 days
   rotate_when_changed = {
     rotation = time_rotating.selfcare_application.id
   }
@@ -28,7 +28,7 @@ resource "azuread_application_password" "selfcare" {
 
 resource "azurerm_key_vault_secret" "selfcare_service_principal_client_id" {
   name         = "${local.product}-selfcare-client-id"
-  value        = azuread_service_principal.selfcare.application_id
+  value        = azuread_service_principal.selfcare.client_id
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id

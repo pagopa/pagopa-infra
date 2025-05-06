@@ -13,6 +13,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "core"
 }
 
 ### External resources
@@ -67,7 +68,7 @@ ingress_load_balancer_ip  = "10.1.100.250"
 # ingress-nginx helm charts releases 4.X.X: https://github.com/kubernetes/ingress-nginx/releases?expanded=true&page=1&q=tag%3Ahelm-chart-4
 # Pinned versions from "4.7.2" release: https://github.com/kubernetes/ingress-nginx/blob/helm-chart-4.7.2/charts/ingress-nginx/values.yaml
 nginx_helm = {
-  version = "4.10.0"
+  version = "4.12.1"
   controller = {
     image = {
       registry     = "k8s.gcr.io"

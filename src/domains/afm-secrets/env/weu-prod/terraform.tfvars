@@ -13,6 +13,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/afm-secret"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "afm"
 }
 
 ### External resources

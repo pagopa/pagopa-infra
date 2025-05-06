@@ -13,6 +13,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/receipts"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "receipts"
 }
 
 ### External resources

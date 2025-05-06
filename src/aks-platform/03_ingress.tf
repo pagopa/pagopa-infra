@@ -4,6 +4,7 @@ resource "kubernetes_namespace" "ingress" {
   }
 }
 
+#ingress
 # from Microsoft docs https://docs.microsoft.com/it-it/azure/aks/ingress-internal-ip
 module "nginx_ingress" {
   source  = "terraform-module/release/helm"
