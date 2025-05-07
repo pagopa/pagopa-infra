@@ -36,7 +36,7 @@ variable "domain" {
 
 variable "location" {
   type        = string
-  description = "One of westeurope, northeurope"
+  description = "One of .."
 }
 
 variable "location_short" {
@@ -47,10 +47,32 @@ variable "location_short" {
     )
     error_message = "Length must be 3 chars."
   }
-  description = "One of wue, neu"
+  description = "One of ..."
 }
 
 variable "location_string" {
+  type        = string
+  description = "One of ..."
+}
+
+
+variable "location_weu" {
+  type        = string
+  description = "One of westeurope, northeurope"
+}
+
+variable "location_short_weu" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_short_weu) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "One of wue, neu"
+}
+
+variable "location_string_weu" {
   type        = string
   description = "One of West Europe, North Europe"
 }
@@ -145,4 +167,27 @@ variable "pod_disruption_budgets" {
   }))
   description = "Pod disruption budget for domain namespace"
   default     = {}
+}
+
+# cruscotto_fe
+
+# Single Page Applications
+variable "spa" {
+  type        = list(string)
+  description = "spa root dirs"
+  default = [
+    "ui"
+  ]
+}
+
+variable "robots_indexed_paths" {
+  type        = list(string)
+  description = "List of cdn paths to allow robots index"
+  default     = []
+}
+
+variable "crusc8_storage_replication_type" {
+  type        = string
+  default     = "GRS"
+  description = "(Optional) crusc8 cdn storage account replication type"
 }

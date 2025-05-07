@@ -10,6 +10,9 @@ locals {
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
 
+  vnet_name                = "${local.product}-vnet"
+  vnet_resource_group_name = "${local.product}-vnet-rg"
+
   vnet_italy_name                = "${local.product}-itn-vnet"
   vnet_italy_resource_group_name = "${local.product}-itn-vnet-rg"
   vnet_core_resource_group_name  = "${local.product}-vnet-rg"
@@ -27,6 +30,9 @@ locals {
     "azdo-${var.env}-pagopa-iac-plan"]
   )
 
+  pagopa_apim_name        = "${local.product}-apim"
+  pagopa_apim_rg          = "${local.product}-api-rg"
   msg_resource_group_name = "${local.product}-msg-rg"
 
+  monitor_action_group_opsgenie_name = "Opsgenie"
 }

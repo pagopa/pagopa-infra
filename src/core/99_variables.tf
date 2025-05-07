@@ -177,7 +177,7 @@ variable "app_gateway_allowed_paths_pagopa_onprem_only" {
 # https://api.<ENV>.platform.pagopa.it/nodo/nodo-per-psp/v1
 
 # nodoChiediFlussoRendicontazione && nodoChiediElencoFlussiRendicontazione
-# https://api.<ENV>.platform.pagopa.it/fdr-legacy/nodo-per-pa/v1
+# https://api.<ENV>.platform.pagopa.it/fdr-legacy/v1
 # https://api.<ENV>.platform.pagopa.it/nodo/nodo-per-pa/v1
 # https://api.<ENV>.platform.pagopa.it/nodo-auth/nodo-per-pa/v1
 # https://api.<ENV>.platform.pagopa.it/nodo-auth/node-for-pa/v1
