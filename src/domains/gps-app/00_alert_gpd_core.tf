@@ -203,6 +203,7 @@ traces
 | where timestamp > ago(10m)
 | where message startswith "[GPD-ERR-SEND-00]"
 | summarize count()
+| where count_ > 1
   QUERY
   )
   severity    = 2
