@@ -1,0 +1,16 @@
+<policies>
+  <inbound>
+    <base/>
+    <!-- set ndphost header -->
+    <include-fragment fragment-id="ndphost-header"/>
+  </inbound>
+  <backend>
+    <base/>
+  </backend>
+  <outbound>
+    <base/>
+  </outbound>
+  <on-error>
+    <base/>
+  </on-error>
+</policies>

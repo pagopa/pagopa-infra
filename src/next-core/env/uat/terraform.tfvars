@@ -816,9 +816,8 @@ app_gateway_allowed_paths_upload = [
   "/nodo/nodo-per-pa/.*",
   "/nodo-auth/nodo-per-pa/.*",
   "/nodo-auth/node-for-pa/.*",
-  "/nodo/node-for-psp/.*",
-  "/fdr-legacy/nodo-per-pa/.*",
-  "/fdr-psp/.*" # Added temporarily as workaround for bug https://pagopa.atlassian.net/browse/PAGOPA-2263
+  "/nodo/node-for-psp/.*", # "/fdr-legacy/nodo-per-pa/.* and "/fdr-legacy/nodo-per-psp/.*"
+  "/fdr-psp/.*"            # ⚠️⚠️⚠️ Added temporarily as workaround for bug https://pagopa.atlassian.net/browse/PAGOPA-2263
 ]
 
 
