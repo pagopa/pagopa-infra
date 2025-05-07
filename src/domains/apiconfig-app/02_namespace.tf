@@ -1,3 +1,8 @@
+data "azurerm_key_vault" "kv_domain" {
+  name                = "${local.product}-${var.domain}-kv"
+  resource_group_name = "${local.product}-${var.domain}-sec-rg"
+}
+
 resource "kubernetes_namespace" "namespace" {
   metadata {
     name = var.domain
@@ -33,4 +38,17 @@ resource "kubernetes_pod_disruption_budget_v1" "api_config" {
       match_labels = each.value.matchLabels
     }
   }
+}
+
+module "workload_identity_configuration" {
+  source = "./.terraform/modules/__v3__/kubernetes_workload_identity_configuration"
+  workload_identity_name_prefix         = "${var.domain}"
+  workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
+  aks_name                              = data.azurerm_kubernetes_cluster.aks.name
+  aks_resource_group_name               = data.azurerm_kubernetes_cluster.aks.resource_group_name
+  namespace                             = var.domain
+  key_vault_id                      = data.azurerm_key_vault.kv_domain.id
+  key_vault_certificate_permissions = ["Get"]
+  key_vault_key_permissions         = ["Get"]
+  key_vault_secret_permissions      = ["Get"]
 }

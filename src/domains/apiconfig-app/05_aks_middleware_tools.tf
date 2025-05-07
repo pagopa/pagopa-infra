@@ -18,10 +18,10 @@ module "tls_checker" {
   keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
 
   workload_identity_enabled              = true
-  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
-  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
+  workload_identity_service_account_name = module.workload_identity_configuration.workload_identity_service_account_name
+  workload_identity_client_id            = module.workload_identity_configuration.workload_identity_client_id
 
-  depends_on = [module.workload_identity]
+  depends_on = [module.workload_identity_configuration]
 }
 
 
@@ -40,10 +40,10 @@ module "cert_mounter" {
   tenant_id        = data.azurerm_subscription.current.tenant_id
 
   workload_identity_enabled              = true
-  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
-  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
+  workload_identity_service_account_name = module.workload_identity_configuration.workload_identity_service_account_name
+  workload_identity_client_id            = module.workload_identity_configuration.workload_identity_client_id
 
-  depends_on = [module.workload_identity]
+  depends_on = [module.workload_identity_configuration]
 }
 
 resource "helm_release" "status_app" {
