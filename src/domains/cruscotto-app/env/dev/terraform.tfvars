@@ -1,11 +1,17 @@
-prefix          = "pagopa"
-env_short       = "d"
-env             = "dev"
-domain          = "crusc8"
+prefix    = "pagopa"
+env_short = "d"
+env       = "dev"
+domain    = "crusc8"
+
 location        = "italynorth"
 location_short  = "itn"
 location_string = "Italy North"
-instance        = "dev"
+
+location_weu        = "westeurope"
+location_short_weu  = "weu"
+location_string_weu = "West Europe"
+
+instance = "dev"
 
 tags = {
   CreatedBy   = "Terraform"
