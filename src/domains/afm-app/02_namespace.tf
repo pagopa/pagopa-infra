@@ -36,7 +36,7 @@ resource "kubernetes_pod_disruption_budget_v1" "afm" {
   }
 }
 
-module "workload_identity" {
+module "workload_identity_configuration" {
   source                                = "./.terraform/modules/__v3__/kubernetes_workload_identity_configuration"
   workload_identity_name_prefix         = var.domain
   workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name

@@ -1,4 +1,4 @@
-module "workload_identity" {
+module "workload_identity_init" {
   source = "./.terraform/modules/__v3__/kubernetes_workload_identity_init"
 
   workload_identity_name_prefix         = var.domain
