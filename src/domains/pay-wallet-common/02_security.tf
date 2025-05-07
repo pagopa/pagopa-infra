@@ -313,3 +313,18 @@ resource "azurerm_key_vault_secret" "sender_evt_tx_event_hub_connection_string_s
   value        = data.azurerm_eventhub_authorization_rule.sender_evt_tx_event_hub_connection_string_staging[0].primary_connection_string
   key_vault_id = module.key_vault.id
 }
+
+
+
+resource "azurerm_key_vault_secret" "payment_wallet_gha_bot_pat" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "payment-wallet-gha-bot-pat"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
