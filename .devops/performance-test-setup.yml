@@ -89,6 +89,18 @@ variables:
     ${{ if eq(parameters.ACTION, 'teardown') }}:
       value: 2
 
+  - name: appgwIntegMinCapacity
+    ${{ if eq(parameters.ACTION, 'setup') }}:
+      value: 8
+    ${{ if eq(parameters.ACTION, 'teardown') }}:
+      value: 0
+
+  - name: appgwIntegMaxCapacity
+    ${{ if eq(parameters.ACTION, 'setup') }}:
+      value: 30
+    ${{ if eq(parameters.ACTION, 'teardown') }}:
+      value: 2
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -140,7 +152,7 @@ stages:
               scriptLocation: 'inlineScript'
               failOnStandardError: true
               inlineScript: |
-                az network application-gateway update --name ${{ variables.appgwIntegName }} --resource-group ${{ variables.appgwIntegRg}} --max-capacity ${{ variables.appgwMaxCapacity }} --min-capacity ${{ variables.appgwMinCapacity }}
+                az network application-gateway update --name ${{ variables.appgwIntegName }} --resource-group ${{ variables.appgwIntegRg}} --max-capacity ${{ variables.appgwIntegMaxCapacity }} --min-capacity ${{ variables.appgwIntegMinCapacity }}
 
       - job: wait_for_update
         displayName: "Wait for infra updated"
