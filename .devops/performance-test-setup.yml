@@ -115,7 +115,7 @@ resources:
       ref: refs/tags/v6.11.0
       endpoint: "io-azure-devops-github-ro"
 
-name: "${{parameters.ACTION}} ${{ parameters.ENV }} for: ${{ parameters.REASON }} -  $(Date:yyyyMMdd).$(Rev:r)"
+name: "${{parameters.ACTION}} ${{ parameters.ENV }} for ${{ parameters.REASON }} -  $(Date:yyyyMMdd).$(Rev:r)"
 stages:
   - stage: perform_${{parameters.ACTION}}_on_${{parameters.ENV}}
     pool:
