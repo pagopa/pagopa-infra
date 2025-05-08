@@ -109,7 +109,7 @@ stages:
     jobs:
       - job: perform_infra_updates
         displayName: "Perform infra updates on environment"
-        timeoutInMinutes: $[ variables('TIME_OUT') ]
+        timeoutInMinutes: ${{ variables.TIME_OUT }}
         steps:
           - task: AzureCLI@2
             displayName: 'Update APIM'
@@ -145,7 +145,7 @@ stages:
       - job: wait_for_update
         displayName: "Wait for infra updated"
         condition: succeeded()
-        timeoutInMinutes: $[ variables('TIME_OUT') ]
+        timeoutInMinutes: ${{ variables.TIME_OUT }}
         steps:
           - task: AzureCLI@2
             displayName: 'wait for apim update'
