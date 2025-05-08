@@ -107,13 +107,12 @@ stages:
       name: "${{variables.poolName}}"
 
     jobs:
-      - job: setup_performance_test
-        displayName: "Set up environment for performance tests"
-        condition: eq(parameters.ACTION, 'setup')
+      - job: perform_infra_updates
+        displayName: "Perform infra updates on environment"
         timeoutInMinutes: $[ variables('TIME_OUT') ]
         steps:
           - task: AzureCLI@2
-            displayName: 'Scale up APIM'
+            displayName: 'Update APIM'
             inputs:
               azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
@@ -123,7 +122,7 @@ stages:
               inlineScript: |
                 az apim update --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --sku-name "${{ variables.apimSku }}"
           - task: AzureCLI@2
-            displayName: 'Scale up APPGW'
+            displayName: 'Update APPGW'
             inputs:
               azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
@@ -133,7 +132,7 @@ stages:
               inlineScript: |
                 az network application-gateway update --name ${{ variables.appgwName }} --resource-group ${{ variables.appgwRg}} --max-capacity ${{ variables.appgwMaxCapacity }} --min-capacity ${{ variables.appgwMinCapacity }}
           - task: AzureCLI@2
-            displayName: 'Scale up APPGW Integration'
+            displayName: 'Update APPGW Integration'
             inputs:
               azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
