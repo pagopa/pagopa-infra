@@ -1,0 +1,208 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 392,
+    "links": [],
+    "panels": [
+      {
+        "datasource": {
+          "default": false,
+          "type": "grafana-azure-monitor-datasource",
+          "uid": "azure-monitor-oob"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "filterable": true,
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 18,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "cellHeight": "md",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true
+        },
+        "pluginVersion": "11.2.2+security-01",
+        "targets": [
+          {
+            "azureLogAnalytics": {
+              "dashboardTime": false,
+              "query": "AzureNetworkAnalytics_CL \n| where SubType_s == \"FlowLog\"\n| extend FlowDirection = iff(FlowDirection_s == 'O', 'Outbound', 'Inbound')\n| extend AllowedOrDenied = iff(FlowStatus_s == 'A', 'Allowed', 'Denied')\n| extend SourceIP = iff(isempty(SrcIP_s), extract_all(@\"(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})\", SrcPublicIPs_s), SrcIP_s)\n| extend DestinationIP = iff(isempty(DestIP_s), extract_all(@\"(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})\", DestPublicIPs_s), DestIP_s)\n| extend Protocol = case(L4Protocol_s == 'T', \"TCP\", L4Protocol_s == 'U', \"UDP\", L4Protocol_s)\n| project-rename NSGFL_Version = FASchemaVersion_s\n| project TimeGenerated, FlowDirection, AllowedOrDenied, SourceIP, DestinationIP, DestPort_d, Protocol, L7Protocol_s, NSGList_s, NSGRule_s, NSGFL_Version\n| limit 100\n//| where SourceIP contains \"XXX.XXX.XXX.XXX\" and DestPort_d == XXXXX",
+              "resources": [
+                "$loganalytics"
+              ],
+              "resultFormat": "logs"
+            },
+            "datasource": {
+              "type": "grafana-azure-monitor-datasource",
+              "uid": "azure-monitor-oob"
+            },
+            "queryType": "Azure Log Analytics",
+            "refId": "A"
+          }
+        ],
+        "title": "New Panel",
+        "transformations": [
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {},
+              "includeByName": {
+                "AllowedOrDenied": true,
+                "DestPort_d": true,
+                "DestinationIP": true,
+                "FlowDirection": true,
+                "NSGRule_s": true,
+                "Protocol": true,
+                "SourceIP": true,
+                "TimeGenerated": true
+              },
+              "indexByName": {
+                "AllowedOrDenied": 2,
+                "DestPort_d": 5,
+                "DestinationIP": 4,
+                "FlowDirection": 1,
+                "L7Protocol_s": 7,
+                "NSGFL_Version": 10,
+                "NSGList_s": 8,
+                "NSGRule_s": 9,
+                "Protocol": 6,
+                "SourceIP": 3,
+                "TimeGenerated": 0
+              },
+              "renameByName": {}
+            }
+          }
+        ],
+        "transparent": true,
+        "type": "table"
+      }
+    ],
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "pagopa-d-weu-synthetic-law",
+            "value": "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-weu-synthetic-rg/providers/Microsoft.OperationalInsights/workspaces/pagopa-d-weu-synthetic-law"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "definition": "",
+          "hide": 0,
+          "includeAll": false,
+          "multi": false,
+          "name": "loganalytics",
+          "options": [],
+          "query": {
+            "azureLogAnalytics": {
+              "query": "",
+              "resources": []
+            },
+            "queryType": "Azure Workspaces",
+            "refId": "A",
+            "subscription": "$subscription"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "DEV-pagoPA",
+            "value": "bbe47ad4-08b3-4925-94c5-1278e5819b86"
+          },
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "definition": "",
+          "hide": 0,
+          "includeAll": false,
+          "multi": false,
+          "name": "subscription",
+          "options": [],
+          "query": {
+            "azureLogAnalytics": {
+              "query": "",
+              "resources": []
+            },
+            "queryType": "Azure Subscriptions",
+            "refId": "A"
+          },
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-3h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "Networking - NSG Flow logs",
+    "uid": "dejric53e251ce",
+    "weekStart": ""
+  }

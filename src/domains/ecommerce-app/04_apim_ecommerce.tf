@@ -192,6 +192,33 @@ module "apim_ecommerce_transaction_auth_requests_service_api_v1" {
   })
 }
 
+module "apim_ecommerce_transaction_auth_requests_service_api_v2" {
+  source = "./.terraform/modules/__v3__/api_management_api"
+
+  name                  = format("%s-transaction-auth-requests-service-api", local.project)
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
+  product_ids           = [module.apim_ecommerce_product.product_id]
+  subscription_required = local.apim_ecommerce_transaction_auth_requests_service_api.subscription_required
+  version_set_id        = azurerm_api_management_api_version_set.ecommerce_transaction_auth_requests_service_api.id
+  api_version           = "v2"
+
+  description  = local.apim_ecommerce_transaction_auth_requests_service_api.description
+  display_name = local.apim_ecommerce_transaction_auth_requests_service_api.display_name
+  path         = local.apim_ecommerce_transaction_auth_requests_service_api.path
+  protocols    = ["https"]
+  service_url  = local.apim_ecommerce_transaction_auth_requests_service_api.service_url
+
+  content_format = "openapi"
+  content_value = templatefile("./api/ecommerce-transaction-auth-requests-service/v2/_openapi.json.tpl", {
+    hostname = local.apim_hostname
+  })
+
+  xml_content = templatefile("./api/ecommerce-transaction-auth-requests-service/v2/_base_policy.xml.tpl", {
+    hostname = local.ecommerce_hostname
+  })
+}
+
 resource "azurerm_api_management_api_operation_policy" "auth_request_gateway_policy" {
   api_name            = module.apim_ecommerce_transaction_auth_requests_service_api_v1.name
   resource_group_name = local.pagopa_apim_rg
@@ -199,6 +226,15 @@ resource "azurerm_api_management_api_operation_policy" "auth_request_gateway_pol
   operation_id        = "updateTransactionAuthorization"
 
   xml_content = file("./api/ecommerce-transaction-auth-requests-service/v1/_auth_request_gateway_policy.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "auth_request_gateway_policy_v2" {
+  api_name            = module.apim_ecommerce_transaction_auth_requests_service_api_v2.name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "updateTransactionAuthorization"
+
+  xml_content = file("./api/ecommerce-transaction-auth-requests-service/v2/_auth_request_gateway_policy.xml.tpl")
 }
 
 #####################################

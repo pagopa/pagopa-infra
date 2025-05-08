@@ -19,7 +19,7 @@ jobs:
         with:
           ignore_patterns: ".github,.devops,.vscode,.terraform-version"
           start_folder: "src"
-          default_end_folder_depth: 3
+          default_end_folder_depth: 2
           include_patterns: "src,domains"
 
       - name: 👀 See folders downloaded

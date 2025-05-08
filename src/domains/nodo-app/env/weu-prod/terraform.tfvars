@@ -13,6 +13,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/nodo-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "nodo"
 }
 
 ### External resources
@@ -39,7 +40,7 @@ nodo_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Managed"
   os_disk_size_gb = "300"
-  node_count_min  = "3"
+  node_count_min  = "4"
   node_count_max  = "10"
   node_labels = {
   "nodo" = "true", },
@@ -139,14 +140,14 @@ route_aks = [
     next_hop_in_ip_address = "10.230.10.150"
   },
   {
-    # aks nodo nexi oracle settimo onprem 
+    # aks nodo nexi oracle settimo onprem
     name                   = "aks-outbound-to-nexi-oracle-onprem-settimo-subnet"
     address_prefix         = "10.102.175.0/24"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.10.150"
   },
   {
-    # aks nodo nexi oracle pero onprem 
+    # aks nodo nexi oracle pero onprem
     name                   = "aks-outbound-to-nexi-oracle-onprem-pero-subnet"
     address_prefix         = "10.101.175.0/24"
     next_hop_type          = "VirtualAppliance"

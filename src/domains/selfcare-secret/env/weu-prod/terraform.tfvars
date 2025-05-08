@@ -13,6 +13,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/selfcare-secret"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "selfcare"
 }
 
 ### External resources

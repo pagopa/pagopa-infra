@@ -1,6 +1,6 @@
 # Exception FdR Fase3 - Internal APIs
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_internal_availability" {
-  count               = (var.enable_fdr3_features && var.env_short == "p") ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "fdr-internal-app-exception"
   location            = var.location
@@ -37,7 +37,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_internal_avail
 
 # Exception FdR Fase3 - PSP APIs
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_psp_availability" {
-  count               = (var.enable_fdr3_features && var.env_short == "p") ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "fdr-psp-app-exception"
   location            = var.location
@@ -74,7 +74,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_psp_availabili
 
 # Exception FdR Fase3 - Organizations APIs
 resource "azurerm_monitor_scheduled_query_rules_alert" "alert_fdr_org_availability" {
-  count               = (var.enable_fdr3_features && var.env_short == "p") ? 1 : 0
+  count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
   name                = "fdr-org-app-exception"
   location            = var.location

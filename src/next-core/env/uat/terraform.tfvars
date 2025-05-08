@@ -15,6 +15,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "core"
 }
 
 ### Feature Flag
@@ -349,27 +350,6 @@ eventhubs_03 = [
       #        send   = false
       #        manage = false
       #      }
-    ]
-  },
-  {
-    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
-    partitions        = 30
-    message_retention = 7
-    consumers         = ["fdr-re-rx"]
-    keys = [
-      {
-        name   = "fdr-re-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "fdr-re-rx"
-        listen = true
-        send   = false
-        manage = false
-      }
-
     ]
   },
   {
@@ -836,9 +816,8 @@ app_gateway_allowed_paths_upload = [
   "/nodo/nodo-per-pa/.*",
   "/nodo-auth/nodo-per-pa/.*",
   "/nodo-auth/node-for-pa/.*",
-  "/nodo/node-for-psp/.*",
-  "/fdr-legacy/nodo-per-pa/.*",
-  "/fdr-psp/.*" # Added temporarily as workaround for bug https://pagopa.atlassian.net/browse/PAGOPA-2263
+  "/nodo/node-for-psp/.*", # "/fdr-legacy/nodo-per-pa/.* and "/fdr-legacy/nodo-per-psp/.*"
+  "/fdr-psp/.*"            # ⚠️⚠️⚠️ Added temporarily as workaround for bug https://pagopa.atlassian.net/browse/PAGOPA-2263
 ]
 
 
@@ -923,27 +902,6 @@ eventhubs_prf = [
       #        send   = false
       #        manage = false
       #      }
-    ]
-  },
-  {
-    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
-    partitions        = 30
-    message_retention = 3
-    consumers         = ["fdr-re-rx"]
-    keys = [
-      {
-        name   = "fdr-re-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "fdr-re-rx"
-        listen = true
-        send   = false
-        manage = false
-      }
-
     ]
   },
   {
