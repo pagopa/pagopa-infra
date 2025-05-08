@@ -99,7 +99,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'Scale up APIM'
             inputs:
-              azureSubscription: '${{ parameters.AZURE_APPLY_SERVICE_CONNECTION_NAME }}'
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
@@ -109,7 +109,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'Scale up APPGW'
             inputs:
-              azureSubscription: '${{ parameters.AZURE_APPLY_SERVICE_CONNECTION_NAME }}'
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
@@ -119,7 +119,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'Scale up APPGW Integration'
             inputs:
-              azureSubscription: '${{ parameters.AZURE_APPLY_SERVICE_CONNECTION_NAME }}'
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
@@ -134,7 +134,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'wait for apim update'
             inputs:
-              azureSubscription: '${{ parameters.AZURE_APPLY_SERVICE_CONNECTION_NAME }}'
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
@@ -144,7 +144,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'wait for APPGW update'
             inputs:
-              azureSubscription: '${{ parameters.AZURE_APPLY_SERVICE_CONNECTION_NAME }}'
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
@@ -154,7 +154,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'wait for APPGW update'
             inputs:
-              azureSubscription: '${{ parameters.AZURE_APPLY_SERVICE_CONNECTION_NAME }}'
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
@@ -175,7 +175,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'Scale down APIM'
             inputs:
-              azureSubscription: '${{ parameters.AZURE_APPLY_SERVICE_CONNECTION_NAME }}'
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
@@ -185,7 +185,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'Scale down APPGW'
             inputs:
-              azureSubscription: '${{ parameters.AZURE_APPLY_SERVICE_CONNECTION_NAME }}'
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
@@ -195,7 +195,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'Scale down APPGW Integration'
             inputs:
-              azureSubscription: '${{ parameters.AZURE_APPLY_SERVICE_CONNECTION_NAME }}'
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
@@ -210,7 +210,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'wait for apim update'
             inputs:
-              azureSubscription: '${{ parameters.AZURE_APPLY_SERVICE_CONNECTION_NAME }}'
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
@@ -220,7 +220,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'wait for APPGW update'
             inputs:
-              azureSubscription: '${{ parameters.AZURE_APPLY_SERVICE_CONNECTION_NAME }}'
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
@@ -230,7 +230,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'wait for APPGW update'
             inputs:
-              azureSubscription: '${{ parameters.AZURE_APPLY_SERVICE_CONNECTION_NAME }}'
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
