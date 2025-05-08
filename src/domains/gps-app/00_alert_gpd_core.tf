@@ -179,3 +179,38 @@ AzureDiagnostics
     threshold = 1
   }
 }
+
+## GPD-SEND communication status ##
+resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-send-communication-exception" {
+  count               = var.env_short == "p" ? 1 : 0
+  resource_group_name = "dashboards"
+  name                = "pagopa-${var.env_short}-opex_pagopa-gpd-send-comm-exception"
+  location            = var.location
+
+  action {
+    action_group           = [data.azurerm_monitor_action_group.slack_pagopa_pagamenti_alert.id]
+    email_subject          = "GPD-SEND-STATUS"
+    custom_webhook_payload = "{}"
+  }
+
+  data_source_id = data.azurerm_application_insights.application_insights.id
+  description    = "An exception occurred when GPD tries to call SEND for updating notifications, it does NOT cause failures to asynchronous payments."
+  enabled        = true
+  query = (<<-QUERY
+let threshold = 0.99;
+traces
+| where cloud_RoleName == 'pagopa-p-gpd-core-service'
+| where timestamp > ago(10m)
+| where message startswith "[GPD-ERR-SEND-00]"
+| summarize count()
+| where count_ > 1
+  QUERY
+  )
+  severity    = 2
+  frequency   = 10
+  time_window = 10
+  trigger {
+    operator  = "GreaterThanOrEqual"
+    threshold = 1
+  }
+}
