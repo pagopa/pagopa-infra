@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "afm_rg" {
 }
 
 module "afm_marketplace_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source               = "./.terraform/modules/__v3__/subnet"
   name                 = "${local.project}-marketplace-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_afm_marketplace_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
@@ -23,7 +23,7 @@ module "afm_marketplace_cosmosdb_snet" {
 }
 
 module "afm_marketplace_cosmosdb_account" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=add-analytical_storage_enabled-2-cosmos"
+  source              = "./.terraform/modules/__v3__/cosmosdb_account"
 
   name                = "${local.project}-marketplace-cosmos-account"
   location            = var.location
@@ -62,7 +62,7 @@ module "afm_marketplace_cosmosdb_account" {
 
 # cosmosdb database for marketplace
 module "afm_marketplace_cosmosdb_database" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=add-analytical_storage_enabled-2-cosmos"
+  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
 
   name                = "db"
   resource_group_name = azurerm_resource_group.afm_rg.name
@@ -185,7 +185,7 @@ locals {
 
 # cosmosdb container for marketplace
 module "afm_marketplace_cosmosdb_containers" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=add-analytical_storage_enabled-2-cosmos"
+  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
 
   for_each = { for c in local.afm_marketplace_cosmosdb_containers : c.name => c }
 
