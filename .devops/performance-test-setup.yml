@@ -145,6 +145,7 @@ stages:
       - job: wait_for_update
         displayName: "Wait for infra updated"
         condition: succeeded()
+        dependsOn: perform_infra_updates
         timeoutInMinutes: ${{ variables.TIME_OUT }}
         steps:
           - task: AzureCLI@2
