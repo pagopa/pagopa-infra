@@ -71,6 +71,23 @@ variables:
     ${{ if eq(parameters.ENV, 'uat') }}:
       value: "pagopa-u-vnet-rg"
 
+  - name: apimSku
+    ${{ if eq(parameters.ACTION, 'setup') }}:
+      value: "Premium"
+    ${{ if eq(parameters.ACTION, 'teardown') }}:
+      value: "Standard"
+
+  - name: appgwMinCapacity
+    ${{ if eq(parameters.ACTION, 'setup') }}:
+      value: 8
+    ${{ if eq(parameters.ACTION, 'teardown') }}:
+      value: 0
+
+  - name: appgwMaxCapacity
+    ${{ if eq(parameters.ACTION, 'setup') }}:
+      value: 50
+    ${{ if eq(parameters.ACTION, 'teardown') }}:
+      value: 2
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -85,15 +102,14 @@ resources:
 
 name: "${{parameters.ACTION}} ${{ parameters.ENV }} for performance tests "
 stages:
-  - stage: setup_${{parameters.ENV}}
-    condition: eq(parameters.ACTION, 'setup')
+  - stage: perform_${{parameters.ACTION}}_on_${{parameters.ENV}}
     pool:
       name: "${{variables.poolName}}"
 
     jobs:
       - job: setup_performance_test
         displayName: "Set up environment for performance tests"
-        condition: succeeded()
+        condition: eq(parameters.ACTION, 'setup')
         timeoutInMinutes: $[ variables('TIME_OUT') ]
         steps:
           - task: AzureCLI@2
@@ -105,7 +121,7 @@ stages:
               scriptLocation: 'inlineScript'
               failOnStandardError: true
               inlineScript: |
-                az apim update --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --sku-name "Premium"
+                az apim update --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --sku-name "${{ variables.apimSku }}"
           - task: AzureCLI@2
             displayName: 'Scale up APPGW'
             inputs:
@@ -115,7 +131,7 @@ stages:
               scriptLocation: 'inlineScript'
               failOnStandardError: true
               inlineScript: |
-                az network application-gateway update --name ${{ variables.appgwName }} --resource-group ${{ variables.appgwRg}} --max-capacity 50 --min-capacity 8
+                az network application-gateway update --name ${{ variables.appgwName }} --resource-group ${{ variables.appgwRg}} --max-capacity ${{ variables.appgwMaxCapacity }} --min-capacity ${{ variables.appgwMinCapacity }}
           - task: AzureCLI@2
             displayName: 'Scale up APPGW Integration'
             inputs:
@@ -125,9 +141,10 @@ stages:
               scriptLocation: 'inlineScript'
               failOnStandardError: true
               inlineScript: |
-                az network application-gateway update --name ${{ variables.appgwIntegName }} --resource-group ${{ variables.appgwIntegRg}} --max-capacity 50 --min-capacity 8
-      - job: wait_for_apim
-        displayName: "Wait for apim updated"
+                az network application-gateway update --name ${{ variables.appgwIntegName }} --resource-group ${{ variables.appgwIntegRg}} --max-capacity ${{ variables.appgwMaxCapacity }} --min-capacity ${{ variables.appgwMinCapacity }}
+
+      - job: wait_for_update
+        displayName: "Wait for infra updated"
         condition: succeeded()
         timeoutInMinutes: $[ variables('TIME_OUT') ]
         steps:
@@ -161,80 +178,3 @@ stages:
               failOnStandardError: true
               inlineScript: |
                 az network application-gateway wait --name ${{ variables.appgwIntegName }} --resource-group ${{ variables.appgwIntegRg}} --updated
-
-  - stage: teardown_${{parameters.ENV}}
-    condition: eq(parameters.ACTION, 'teardown')
-    pool:
-      name: "${{variables.poolName}}"
-    jobs:
-      - job: teardown_performance_test
-        displayName: "Tear down environment for performance tests"
-        condition: succeeded()
-        timeoutInMinutes: $[ variables('TIME_OUT') ]
-        steps:
-          - task: AzureCLI@2
-            displayName: 'Scale down APIM'
-            inputs:
-              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
-              addSpnToEnvironment: true
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              failOnStandardError: true
-              inlineScript: |
-                az apim update --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --sku-name "Standard"
-          - task: AzureCLI@2
-            displayName: 'Scale down APPGW'
-            inputs:
-              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
-              addSpnToEnvironment: true
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              failOnStandardError: true
-              inlineScript: |
-                az network application-gateway update --name ${{ variables.appgwName }} --resource-group ${{ variables.appgwRg}} --max-capacity 2 --min-capacity 0
-          - task: AzureCLI@2
-            displayName: 'Scale down APPGW Integration'
-            inputs:
-              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
-              addSpnToEnvironment: true
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              failOnStandardError: true
-              inlineScript: |
-                az network application-gateway update --name ${{ variables.appgwIntegName }} --resource-group ${{ variables.appgwIntegRg}} --max-capacity 2 --min-capacity 0
-      - job: wait_for_apim
-        displayName: "Wait for apim updated"
-        condition: succeeded()
-        timeoutInMinutes: $[ variables('TIME_OUT') ]
-        steps:
-          - task: AzureCLI@2
-            displayName: 'wait for apim update'
-            inputs:
-              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
-              addSpnToEnvironment: true
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              failOnStandardError: true
-              inlineScript: |
-                az apim wait --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --updated
-          - task: AzureCLI@2
-            displayName: 'wait for APPGW update'
-            inputs:
-              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
-              addSpnToEnvironment: true
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              failOnStandardError: true
-              inlineScript: |
-                az network application-gateway wait --name ${{ variables.appgwName }} --resource-group ${{ variables.appgwRg}} --updated
-          - task: AzureCLI@2
-            displayName: 'wait for APPGW update'
-            inputs:
-              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
-              addSpnToEnvironment: true
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              failOnStandardError: true
-              inlineScript: |
-                az network application-gateway wait --name ${{ variables.appgwIntegName }} --resource-group ${{ variables.appgwIntegRg}} --updated
-
