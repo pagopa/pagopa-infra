@@ -704,6 +704,29 @@ eventhubs_04 = [
   }
 ]
 
+eventhubs_rtp = [
+  {
+    name              = "rtp-events"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["rtp-events-processor"]
+    keys = [
+      {
+        name   = "rtp-events-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "rtp-events-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
+]
+
 node_forwarder_autoscale_enabled      = false
 node_forwarder_zone_balancing_enabled = false
 node_forwarder_sku                    = "B1"
