@@ -161,7 +161,7 @@ stages:
         timeoutInMinutes: ${{ variables.TIME_OUT }}
         steps:
           - task: AzureCLI@2
-            displayName: 'wait for apim update'
+            displayName: 'Wait for apim update'
             inputs:
               azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
@@ -171,7 +171,7 @@ stages:
               inlineScript: |
                 az apim wait --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --updated
           - task: AzureCLI@2
-            displayName: 'wait for APPGW update'
+            displayName: 'Wait for APPGW update'
             inputs:
               azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
@@ -181,7 +181,7 @@ stages:
               inlineScript: |
                 az network application-gateway wait --name ${{ variables.appgwName }} --resource-group ${{ variables.appgwRg}} --updated
           - task: AzureCLI@2
-            displayName: 'wait for APPGW update'
+            displayName: 'Wait for APPGW update'
             inputs:
               azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
               addSpnToEnvironment: true
