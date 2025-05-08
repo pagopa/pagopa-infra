@@ -97,7 +97,7 @@ variables:
 
   - name: appgwIntegMaxCapacity
     ${{ if eq(parameters.ACTION, 'setup') }}:
-      value: 30
+      value: 25
     ${{ if eq(parameters.ACTION, 'teardown') }}:
       value: 2
 
