@@ -1182,4 +1182,3 @@ variable "route_tools" {
   }))
   description = "AKS routing table"
 }
-

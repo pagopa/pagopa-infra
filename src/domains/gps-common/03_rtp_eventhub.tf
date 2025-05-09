@@ -22,7 +22,6 @@ module "eventhub_rtp_namespace" {
 
   alerts_enabled = false
 
-
   action = flatten([
     [
       {
