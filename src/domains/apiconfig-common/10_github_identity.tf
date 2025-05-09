@@ -11,6 +11,7 @@ data "azurerm_kubernetes_cluster" "aks" {
 locals {
   repos_01 = [
     "pagopa-api-config-cache",
+    "pagopa-api-config",
   ]
 
   federations_01 = [
