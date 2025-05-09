@@ -1,9 +1,12 @@
+# Please consider these API are deprecated and will be removed in the future
+# The new API is defined in the file apim_nodo_services_auth_09_node_for_ecommerce
+
 ######################
 ## Nodo per PM API  ##
 ######################
 locals {
   apim_nodo_per_pm_api = {
-    display_name          = "Nodo per Payment Manager API"
+    display_name          = "Nodo per Payment Manager API [Deprecated]"
     description           = "API to support Payment Manager"
     path                  = "nodo/nodo-per-pm"
     subscription_required = var.nodo_pagamenti_subkey_required
