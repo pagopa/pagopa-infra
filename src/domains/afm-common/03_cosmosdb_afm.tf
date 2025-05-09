@@ -23,7 +23,7 @@ module "afm_marketplace_cosmosdb_snet" {
 }
 
 module "afm_marketplace_cosmosdb_account" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_account"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=add-analytical_storage_enabled-2-cosmos"
 
   name                = "${local.project}-marketplace-cosmos-account"
   location            = var.location
