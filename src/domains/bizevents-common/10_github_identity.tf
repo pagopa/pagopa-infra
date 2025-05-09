@@ -18,7 +18,8 @@ locals {
     "pagopa-biz-events-service",
     "pagopa-biz-pm-ingestion",
     "pagopa-biz-events-sync-nodo",
-    "pagopa-biz-events-datastore"
+    "pagopa-biz-events-datastore",
+    "pagopa-negative-biz-events-datastore"
   ]
 
   federations_01 = [
