@@ -124,6 +124,29 @@ cosmos_gpd_payments_db_params = {
   }
 }
 
+eventhubs_rtp = [
+  {
+    name              = "rtp-events"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["rtp-events-processor"]
+    keys = [
+      {
+        name   = "rtp-events-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "rtp-events-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
+]
+
 cidr_subnet_gpd_payments_cosmosdb = ["10.1.149.0/24"]
 
 enable_iac_pipeline                   = true
