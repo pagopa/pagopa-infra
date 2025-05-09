@@ -16,6 +16,9 @@ parameters:
     values:
       - setup
       - teardown
+  - name: 'REASON'
+    displayName: 'Reason for this execution'
+    type: string
 
 variables:
   - name: TIME_OUT
@@ -112,7 +115,7 @@ resources:
       ref: refs/tags/v6.11.0
       endpoint: "io-azure-devops-github-ro"
 
-name: "${{parameters.ACTION}} ${{ parameters.ENV }} for performance tests "
+name: "${{parameters.ACTION}} ${{ parameters.ENV }} for ${{ parameters.REASON }} -  $(Date:yyyyMMdd).$(Rev:r)"
 stages:
   - stage: perform_${{parameters.ACTION}}_on_${{parameters.ENV}}
     pool:
