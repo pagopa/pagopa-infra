@@ -202,4 +202,3 @@ module "event_hubprf" {
 
   tags = var.tags
 }
-
