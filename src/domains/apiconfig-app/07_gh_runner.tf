@@ -18,6 +18,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-api-config-cache",
       short_name : "apicfg-cache"
+    },
+    {
+      name : "pagopa-api-config",
+      short_name : "apicfg"
     }
   ]
   job = {

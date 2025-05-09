@@ -17,6 +17,7 @@
 | <a name="module_api_config_ica_sa"></a> [api\_config\_ica\_sa](#module\_api\_config\_ica\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v7.45.0 |
 | <a name="module_letsencrypt_apiconfig"></a> [letsencrypt\_apiconfig](#module\_letsencrypt\_apiconfig) | git::https://github.com/pagopa/terraform-azurerm-v3.git//letsencrypt_credential | v8.11.0 |
+| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
 
