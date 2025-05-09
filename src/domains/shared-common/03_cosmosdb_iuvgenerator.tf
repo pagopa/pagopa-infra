@@ -29,7 +29,7 @@ module "iuvgenerator_cosmosdb_snet" {
 }
 
 module "iuvgenerator_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.53.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.93.1"
   name     = "${local.project}-iuv-gen-cosmos-account"
   location = var.location
   domain   = var.domain
