@@ -50,6 +50,13 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+### Italy location
+variable "location_ita" {
+  type        = string
+  description = "Main location"
+  default     = "italynorth"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -467,4 +474,21 @@ variable "gpd_cdc_enabled" {
   type        = bool
   description = "Enable CDC for GDP"
   default     = false
+}
+
+variable "eventhubs_rtp" {
+  description = "A list of event hubs to add to namespace."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
 }

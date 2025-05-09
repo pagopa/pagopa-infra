@@ -146,6 +146,29 @@ reporting_storage_account = {
   backup_retention           = 30
 }
 
+eventhubs_rtp = [
+  {
+    name              = "rtp-events"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["rtp-events-processor"]
+    keys = [
+      {
+        name   = "rtp-events-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "rtp-events-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
+]
+
 geo_replica_enabled                = true
 location_replica                   = "northeurope"
 location_replica_short             = "neu"
