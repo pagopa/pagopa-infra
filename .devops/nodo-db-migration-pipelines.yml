@@ -393,7 +393,7 @@ stages:
                 --defaultSchemaName="$(ADMIN_SCHEMA)" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
-                validate -Dschema=$(ADMIN_SCHEMA) -Dnodo-db-host=$(NODO_DB_HOST) -Dnodo-db-port=$(NODO_DB_PORT) -Dpartition-password=$(db-partition-password)
+                validate -Dschema=$(ADMIN_SCHEMA) -Dnodo-db-host=$(NODO_DB_HOST) -Dnodo-db-port=$(NODO_DB_PORT) -Dpartition-password=$(db-partition-password) -Dadmin-password=$(db-administrator-login-password)
               fi
             displayName: "admin nodo db validate"
           - script: |
@@ -718,7 +718,7 @@ stages:
                 --defaultSchemaName="$(ADMIN_SCHEMA)" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
-                update -Dschema=$(ADMIN_SCHEMA) -Dnodo-db-host=$(NODO_DB_HOST) -Dnodo-db-port=$(NODO_DB_PORT) -Dpartition-password=$(db-partition-password)
+                update -Dschema=$(ADMIN_SCHEMA) -Dnodo-db-host=$(NODO_DB_HOST) -Dnodo-db-port=$(NODO_DB_PORT) -Dpartition-password=$(db-partition-password) -Dadmin-password=$(db-administrator-login-password)
               fi
             displayName: "Run Liquibase admin nodo"
           - script: |

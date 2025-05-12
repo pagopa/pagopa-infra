@@ -12,7 +12,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-cup-csv-pars
 
   data_source_id = data.azurerm_application_insights.application_insights.id
   description    = "There were some errors for function CuCsvParsingFunction. Check on application insight"
-  enabled        = true
+  enabled        = false # DISABLED
   query = (<<-QUERY
   traces
   | where cloud_RoleName == "pagopa-p-fn-canoneunico"

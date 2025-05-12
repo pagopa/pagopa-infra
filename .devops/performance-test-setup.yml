@@ -1,0 +1,195 @@
+trigger: none
+pr: none
+
+parameters:
+  - name: 'ENV'
+    displayName: 'Environment to switch'
+    type: string
+    default: dev
+    values:
+      - dev
+      - uat
+  - name: 'ACTION'
+    displayName: 'Action to perform'
+    type: string
+    default: setup
+    values:
+      - setup
+      - teardown
+  - name: 'REASON'
+    displayName: 'Reason for this execution'
+    type: string
+
+variables:
+  - name: TIME_OUT
+    value: 60
+  - name: APPROVE_NOTIFY_ADMIN
+    value: '[pagoPA-iac]\Project Administrators'
+
+  - name: azureServiceConnectionApplyName
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_DEV)"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "$(TF_AZURE_SERVICE_CONNECTION_APPLY_NAME_UAT)"
+
+  - name: poolName
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "$(TF_POOL_NAME_DEV)"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "$(TF_POOL_NAME_UAT)"
+
+  - name: apimName
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "pagopa-d-apim"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "pagopa-u-apim"
+
+  - name: apimRg
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "pagopa-d-api-rg"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "pagopa-u-api-rg"
+
+  - name: appgwName
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "pagopa-d-app-gw"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "pagopa-u-app-gw"
+
+  - name: appgwRg
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "pagopa-d-vnet-rg"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "pagopa-u-vnet-rg"
+
+  - name: appgwIntegName
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "pagopa-d-weu-integration-app-gw"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "pagopa-u-weu-integration-app-gw"
+
+  - name: appgwIntegRg
+    ${{ if eq(parameters.ENV, 'dev') }}:
+      value: "pagopa-d-vnet-rg"
+    ${{ if eq(parameters.ENV, 'uat') }}:
+      value: "pagopa-u-vnet-rg"
+
+  - name: apimSku
+    ${{ if eq(parameters.ACTION, 'setup') }}:
+      value: "Premium"
+    ${{ if eq(parameters.ACTION, 'teardown') }}:
+      value: "Standard"
+
+  - name: appgwMinCapacity
+    ${{ if eq(parameters.ACTION, 'setup') }}:
+      value: 8
+    ${{ if eq(parameters.ACTION, 'teardown') }}:
+      value: 0
+
+  - name: appgwMaxCapacity
+    ${{ if eq(parameters.ACTION, 'setup') }}:
+      value: 50
+    ${{ if eq(parameters.ACTION, 'teardown') }}:
+      value: 2
+
+  - name: appgwIntegMinCapacity
+    ${{ if eq(parameters.ACTION, 'setup') }}:
+      value: 8
+    ${{ if eq(parameters.ACTION, 'teardown') }}:
+      value: 0
+
+  - name: appgwIntegMaxCapacity
+    ${{ if eq(parameters.ACTION, 'setup') }}:
+      value: 25
+    ${{ if eq(parameters.ACTION, 'teardown') }}:
+      value: 2
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+    - repository: terraform
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v6.11.0
+      endpoint: "io-azure-devops-github-ro"
+
+name: "${{parameters.ACTION}} ${{ parameters.ENV }} for ${{ parameters.REASON }} -  $(Date:yyyyMMdd).$(Rev:r)"
+stages:
+  - stage: perform_${{parameters.ACTION}}_on_${{parameters.ENV}}
+    pool:
+      name: "${{variables.poolName}}"
+
+    jobs:
+      - job: perform_infra_updates
+        displayName: "Perform infra updates on environment"
+        timeoutInMinutes: ${{ variables.TIME_OUT }}
+        steps:
+          - task: AzureCLI@2
+            displayName: 'Update APIM'
+            inputs:
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
+              addSpnToEnvironment: true
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              failOnStandardError: true
+              inlineScript: |
+                az apim update --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --sku-name "${{ variables.apimSku }}"
+          - task: AzureCLI@2
+            displayName: 'Update APPGW'
+            inputs:
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
+              addSpnToEnvironment: true
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              failOnStandardError: true
+              inlineScript: |
+                az network application-gateway update --name ${{ variables.appgwName }} --resource-group ${{ variables.appgwRg}} --max-capacity ${{ variables.appgwMaxCapacity }} --min-capacity ${{ variables.appgwMinCapacity }}
+          - task: AzureCLI@2
+            displayName: 'Update APPGW Integration'
+            inputs:
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
+              addSpnToEnvironment: true
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              failOnStandardError: true
+              inlineScript: |
+                az network application-gateway update --name ${{ variables.appgwIntegName }} --resource-group ${{ variables.appgwIntegRg}} --max-capacity ${{ variables.appgwIntegMaxCapacity }} --min-capacity ${{ variables.appgwIntegMinCapacity }}
+
+      - job: wait_for_update
+        displayName: "Wait for infra updated"
+        condition: succeeded()
+        dependsOn: perform_infra_updates
+        timeoutInMinutes: ${{ variables.TIME_OUT }}
+        steps:
+          - task: AzureCLI@2
+            displayName: 'Wait for apim update'
+            inputs:
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
+              addSpnToEnvironment: true
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              failOnStandardError: true
+              inlineScript: |
+                az apim wait --resource-group ${{ variables.apimRg }} --name ${{ variables.apimName }} --updated
+          - task: AzureCLI@2
+            displayName: 'Wait for APPGW update'
+            inputs:
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
+              addSpnToEnvironment: true
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              failOnStandardError: true
+              inlineScript: |
+                az network application-gateway wait --name ${{ variables.appgwName }} --resource-group ${{ variables.appgwRg}} --updated
+          - task: AzureCLI@2
+            displayName: 'Wait for APPGW update'
+            inputs:
+              azureSubscription: '${{ variables.azureServiceConnectionApplyName }}'
+              addSpnToEnvironment: true
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              failOnStandardError: true
+              inlineScript: |
+                az network application-gateway wait --name ${{ variables.appgwIntegName }} --resource-group ${{ variables.appgwIntegRg}} --updated

@@ -644,3 +644,64 @@ resource "azurerm_key_vault_secret" "transactions_service_auth_update_api_key_v2
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "npg_google_pay_psp_keys" {
+  name         = "npg-google-pay-psp-keys"
+  value        = "{}"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_reporting_webhook_url_slack" {
+  name         = "ecommerce-reporting-webhook-url-slack"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "helpdesk_service_api_key_for_reporting" {
+  name         = "helpdesk-service-api-key-for-reporting"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_storage_reporting_connection_string" {
+  name         = "ecommerce-storage-reporting-connection-string"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_gha_bot_pat" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "ecommerce-gha-bot-pat"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
