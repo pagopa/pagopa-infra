@@ -6,8 +6,8 @@
 ######################
 locals {
   apim_nodo_per_pm_api = {
-    display_name          = "Nodo per Payment Manager API [Deprecated]"
-    description           = "API to support Payment Manager"
+    display_name          = "[Deprecated] Nodo per Payment Manager API"
+    description           = "[Deprecated] API to support Payment Manager"
     path                  = "nodo/nodo-per-pm"
     subscription_required = var.nodo_pagamenti_subkey_required
     service_url           = null
