@@ -477,7 +477,7 @@ eventhubs_03 = [
         listen = false
         send   = true
         manage = false
-      }
+      },
       {
         name   = "pagopa-negative-biz-evt-rx"
         listen = true
