@@ -12,6 +12,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/receipts"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "receipts"
 }
 
 ### External resources
@@ -56,7 +57,7 @@ receipts_datastore_cosmos_db_params = {
 
   container_default_ttl = 315576000 # 10 year in second
 
-  max_throughput     = 20000
+  max_throughput     = 45000 # increase before 20k
   max_throughput_alt = 2000
 }
 

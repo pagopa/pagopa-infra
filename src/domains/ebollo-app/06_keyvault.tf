@@ -59,3 +59,21 @@ resource "azurerm_key_vault_secret" "gps_mbd_service_integration_test_subscripti
 
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+resource "azurerm_key_vault_secret" "mbd_service_integration_test_subscription_key" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "apikey-mbd-integration-test"
+  value        = azurerm_api_management_subscription.mbd_service_integration_test_subkey[0].primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_key_vault_secret" "gdp_debt_positions_test_sub_key" {
+  count        = var.env_short != "p" ? 1 : 0
+  name         = "gpd-api-key-test"
+  value        = azurerm_api_management_subscription.gdp_debt_positions_product_integration_test_subkey[0].primary_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.kv.id
+}

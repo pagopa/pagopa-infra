@@ -1,4 +1,4 @@
-name: Static Analysis PR
+name: 🛃 Static Analysis PR
 
 on:
   push:
@@ -15,10 +15,11 @@ jobs:
 
       - name: 🔨 Get Modified Paths
         id: get-paths
-        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@v1.19.0
+        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@v1.22.0
         with:
+          ignore_patterns: ".github,.devops,.vscode,.terraform-version"
           start_folder: "src"
-          default_end_folder_depth: 3
+          default_end_folder_depth: 2
           include_patterns: "src,domains"
 
       - name: 👀 See folders downloaded

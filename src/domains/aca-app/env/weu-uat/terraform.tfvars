@@ -13,6 +13,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/aca-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "aca"
 }
 
 ### External resources

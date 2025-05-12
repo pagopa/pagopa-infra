@@ -15,6 +15,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "core"
 }
 
 ### Feature Flag
@@ -27,7 +28,7 @@ is_feature_enabled = {
   postgres_private_dns      = true,
   apim_core_import          = true
   use_new_apim              = false
-
+  elastic_on_prem           = false
 }
 
 #
@@ -196,7 +197,7 @@ ehns_maximum_throughput_units = 5
 ehns_capacity                 = 5
 ehns_public_network_access    = true
 
-ehns_metric_alerts = {
+ehns03_metric_alerts = {
   no_trx = {
     aggregation = "Total"
     metric_name = "IncomingMessages"
@@ -244,6 +245,39 @@ ehns_metric_alerts = {
   },
 }
 
+ehns04_metric_alerts = {
+  no_trx = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "No transactions received from acquirer in the last 24h"
+    operator    = "LessThanOrEqual"
+    threshold   = 1000
+    frequency   = "PT1H"
+    window_size = "P1D"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values = [
+          "fdr-qi-reported-iuv",
+          "fdr-qi-flows"
+        ]
+      }
+    ],
+  },
+  active_connections = {
+    aggregation = "Average"
+    metric_name = "ActiveConnections"
+    description = null
+    operator    = "LessThanOrEqual"
+    threshold   = 0
+    frequency   = "PT5M"
+    window_size = "PT15M"
+    dimension   = [],
+  },
+}
+
+ehns04_alerts_enabled = false
 
 eventhubs_03 = [
   {
@@ -292,6 +326,12 @@ eventhubs_03 = [
         manage = false
       },
       {
+        name   = "nodo-dei-pagamenti-PAGOPA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
         name   = "nodo-dei-pagamenti-pdnd" # pdnd
         listen = true
         send   = false
@@ -316,27 +356,6 @@ eventhubs_03 = [
       #        send   = false
       #        manage = false
       #      }
-    ]
-  },
-  {
-    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
-    partitions        = 30
-    message_retention = 7
-    consumers         = ["fdr-re-rx"]
-    keys = [
-      {
-        name   = "fdr-re-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "fdr-re-rx"
-        listen = true
-        send   = false
-        manage = false
-      }
-
     ]
   },
   {
@@ -378,6 +397,12 @@ eventhubs_03 = [
         manage = false
       },
       {
+        name   = "pagopa-biz-evt-tx-PAGOPA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
         name   = "pagopa-biz-evt-rx"
         listen = true
         send   = false
@@ -394,7 +419,13 @@ eventhubs_03 = [
         listen = true
         send   = false
         manage = false
-      }
+      },
+      {
+        name   = "pagopa-biz-evt-rx-views"
+        listen = true
+        send   = false
+        manage = false
+      },
     ]
   },
   {
@@ -442,6 +473,12 @@ eventhubs_03 = [
         manage = false
       },
       {
+        name   = "pagopa-negative-biz-evt-tx-PAGOPA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
         name   = "pagopa-negative-biz-evt-rx"
         listen = true
         send   = false
@@ -457,6 +494,12 @@ eventhubs_03 = [
     keys = [
       {
         name   = "nodo-dei-pagamenti-verify-ko-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tx-PAGOPA"
         listen = false
         send   = true
         manage = false
@@ -797,7 +840,234 @@ app_gateway_allowed_paths_upload = [
   "/nodo/nodo-per-pa/.*",
   "/nodo-auth/nodo-per-pa/.*",
   "/nodo-auth/node-for-pa/.*",
-  "/nodo/node-for-psp/.*",
-  "/fdr-legacy/nodo-per-pa/.*",
-  "/fdr-psp/.*" # Added temporarily as workaround for bug https://pagopa.atlassian.net/browse/PAGOPA-2263
+  "/nodo/node-for-psp/.*", # "/fdr-legacy/nodo-per-pa/.* and "/fdr-legacy/nodo-per-psp/.*"
+  "/fdr-psp/.*"            # ⚠️⚠️⚠️ Added temporarily as workaround for bug https://pagopa.atlassian.net/browse/PAGOPA-2263
+]
+
+
+route_tools = [
+  {
+    # dev aks nodo oncloud
+    name                   = "tools-outbound-to-nexy-nodo"
+    address_prefix         = "10.70.74.200/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  }
+]
+
+eventhubs_prf = [
+  {
+    name              = "nodo-dei-pagamenti-log"
+    partitions        = 32
+    message_retention = 3
+    consumers         = ["logstash-pdnd", "logstash-oper", "logstash-tech"]
+    keys = [
+      {
+        name   = "logstash-SIA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "logstash-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "logstash-oper"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "logstash-tech"
+        listen = true
+        send   = false
+        manage = false
+      }
+
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-re"
+    partitions        = 30
+    message_retention = 3
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"] #, "nodo-dei-pagamenti-re-to-datastore-rx", "nodo-dei-pagamenti-re-to-tablestorage-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-SIA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-pdnd" # pdnd
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-oper" # oper
+        listen = true
+        send   = false
+        manage = false
+      },
+      #     disabled because at the moment not used
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-datastore-rx" # re->cosmos
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      },
+      #      {
+      #        name   = "nodo-dei-pagamenti-re-to-tablestorage-rx" # re->table storage
+      #        listen = true
+      #        send   = false
+      #        manage = false
+      #      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-fdr" # used by Monitoring FdR
+    partitions        = 32
+    message_retention = 3
+    consumers         = ["nodo-dei-pagamenti-pdnd", "nodo-dei-pagamenti-oper"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-pdnd" # pdnd
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-oper" # oper
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-biz-evt"
+    partitions        = 32
+    message_retention = 3
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-io"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-biz-evt-enrich"
+    partitions        = 32
+    message_retention = 3
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-pn"]
+    keys = [
+      {
+        name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pdnd"
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-rx-pn"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-negative-biz-evt"
+    partitions        = 32
+    message_retention = 3
+    consumers         = ["pagopa-negative-biz-evt-rx"]
+    keys = [
+      {
+        name   = "pagopa-negative-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-negative-biz-evt-rx"
+        listen = true
+        send   = false
+        manage = false
+      },
+    ]
+  },
+  {
+    name              = "nodo-dei-pagamenti-verify-ko"
+    partitions        = 32
+    message_retention = 3
+    consumers         = ["nodo-dei-pagamenti-verify-ko-to-datastore-rx", "nodo-dei-pagamenti-verify-ko-to-tablestorage-rx", "nodo-dei-pagamenti-verify-ko-test-rx"]
+    keys = [
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-datastore-rx" # re->cosmos
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tablestorage-rx" # re->table storage
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-test-rx" # re->anywhere for test
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
 ]

@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "sec_rg" {
 }
 
 module "key_vault" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault?ref=v6.7.0"
+  source = "./.terraform/modules/__v3__/key_vault"
 
 
   name                       = "${local.product}-${var.domain}-kv"
@@ -163,10 +163,58 @@ resource "azurerm_key_vault_secret" "qi_azurewebjobsstorage" {
 # create json letsencrypt inside kv
 # requierd: Docker
 module "letsencrypt_qi" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//letsencrypt_credential?ref=v6.8.0"
+  source = "./.terraform/modules/__v3__/letsencrypt_credential"
 
   prefix            = var.prefix
   env               = var.env_short
   key_vault_name    = "${local.product}-${var.domain}-kv"
   subscription_name = local.subscription_name
+}
+
+### TODO migrate in SOPS
+resource "azurerm_key_vault_secret" "azure_data_explorer_re_client_id" {
+  name         = "azure-data-explorer-re-client-id"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+### TODO migrate in SOPS
+resource "azurerm_key_vault_secret" "azure_data_explorer_re_application_key" {
+  name         = "azure-data-explorer-re-application-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+### TODO migrate in SOPS
+resource "azurerm_key_vault_secret" "elastic_otel_token_header" {
+  name         = "elastic-otel-token-header"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+### observability bdi secrets
+resource "azurerm_key_vault_secret" "bdi_kpi_ingestion_dl_evt_tx_key" {
+  name         = "evh-tx-bdi-kpi-key"
+  value        = module.eventhub_qi_configuration.keys["bdi-kpi-ingestion-dl.bdi-kpi-ingestion-dl-evt-tx"].primary_key
+  key_vault_id = module.key_vault.id
 }

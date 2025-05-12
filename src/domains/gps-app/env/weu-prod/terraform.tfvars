@@ -14,6 +14,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/gps"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "gps"
 }
 
 ### External resources
@@ -125,7 +126,7 @@ zookeeper_jvm_xmx        = "1024m"
 zookeeper_storage_size   = "100Gi"
 
 ### debezium kafka_connect_yaml
-replicas           = 2
+replicas           = 1 # set 2 in PROD iif want a new istance replicate
 request_cpu        = 0.5
 limits_cpu         = 2
 request_memory     = "512Mi"
@@ -134,4 +135,4 @@ postgres_db_name   = "apd"
 tasks_max          = "1"
 container_registry = "pagopapcommonacr.azurecr.io"
 max_threads        = 10
-gpd_cdc_enabled    = false
+gpd_cdc_enabled    = true

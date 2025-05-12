@@ -15,6 +15,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "core"
 }
 
 ### Feature Flag
@@ -27,6 +28,7 @@ is_feature_enabled = {
   postgres_private_dns      = true,
   apim_core_import          = true,
   use_new_apim              = false
+  elastic_on_prem           = false
 }
 
 ### Network west europe
@@ -183,7 +185,7 @@ base_path_nodo_oncloud        = "/nodo-sit"
 
 
 ehns_public_network_access = true
-ehns_metric_alerts = {
+ehns03_metric_alerts = {
   no_trx = {
     aggregation = "Total"
     metric_name = "IncomingMessages"
@@ -234,6 +236,40 @@ ehns_metric_alerts = {
   },
 }
 
+ehns04_metric_alerts = {
+  no_trx = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "No transactions received from acquirer in the last 24h"
+    operator    = "LessThanOrEqual"
+    threshold   = 1000
+    frequency   = "PT1H"
+    window_size = "P1D"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values = [
+          "fdr-qi-reported-iuv",
+          "fdr-qi-flows"
+        ]
+      }
+    ],
+  },
+  active_connections = {
+    aggregation = "Average"
+    metric_name = "ActiveConnections"
+    description = null
+    operator    = "LessThanOrEqual"
+    threshold   = 0
+    frequency   = "PT5M"
+    window_size = "PT15M"
+    dimension   = [],
+  }
+}
+
+ehns04_alerts_enabled = false
+
 eventhubs_03 = [
   {
     name              = "nodo-dei-pagamenti-log"
@@ -281,6 +317,12 @@ eventhubs_03 = [
         manage = false
       },
       {
+        name   = "nodo-dei-pagamenti-PAGOPA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
         name   = "nodo-dei-pagamenti-pdnd" # pdnd
         listen = true
         send   = false
@@ -311,27 +353,6 @@ eventhubs_03 = [
       #        send   = false
       #        manage = false
       #      }
-    ]
-  },
-  {
-    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
-    partitions        = 1
-    message_retention = 1
-    consumers         = ["fdr-re-rx"]
-    keys = [
-      {
-        name   = "fdr-re-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "fdr-re-rx"
-        listen = true
-        send   = false
-        manage = false
-      }
-
     ]
   },
   {
@@ -373,6 +394,12 @@ eventhubs_03 = [
         manage = false
       },
       {
+        name   = "pagopa-biz-evt-tx-PAGOPA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
         name   = "pagopa-biz-evt-rx"
         listen = true
         send   = false
@@ -395,7 +422,13 @@ eventhubs_03 = [
         listen = true
         send   = false
         manage = false
-      }
+      },
+      {
+        name   = "pagopa-biz-evt-rx-views"
+        listen = true
+        send   = false
+        manage = false
+      },
     ]
   },
   {
@@ -406,6 +439,12 @@ eventhubs_03 = [
     keys = [
       {
         name   = "pagopa-negative-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-negative-biz-evt-tx-PAGOPA"
         listen = false
         send   = true
         manage = false
@@ -464,6 +503,12 @@ eventhubs_03 = [
     keys = [
       {
         name   = "nodo-dei-pagamenti-verify-ko-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tx-PAGOPA"
         listen = false
         send   = true
         manage = false
@@ -750,3 +795,12 @@ apicfg_selfcare_integ_service_path_value = "pagopa-api-config-selfcare-integrati
 law_sku               = "PerGB2018"
 law_retention_in_days = 30
 law_daily_quota_gb    = 10
+route_tools = [
+  {
+    # dev aks nodo oncloud
+    name                   = "tools-outbound-to-nexy-nodo"
+    address_prefix         = "10.70.66.200/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.8.150"
+  }
+]

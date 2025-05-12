@@ -5,6 +5,7 @@ domain          = "checkout"
 location        = "westeurope"
 location_short  = "weu"
 location_string = "West Europe"
+instance        = "dev"
 
 tags = {
   CreatedBy   = "Terraform"
@@ -12,6 +13,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/checkout-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "checkout"
 }
 
 ### External resources
@@ -44,17 +46,16 @@ pagopa_proxy_ha_enabled           = true
 
 checkout_enabled = true
 
-# Checkout functions
-
-checkout_function_kind                   = "Linux"
-checkout_function_sku_tier               = "Standard"
-checkout_function_sku_size               = "S1"
-checkout_function_autoscale_minimum      = 1
-checkout_function_autoscale_maximum      = 3
-checkout_function_autoscale_default      = 1
-checkout_function_zone_balancing_enabled = false
-
 # ecommerce ingress hostname
 ecommerce_ingress_hostname                 = "weudev.ecommerce.internal.dev.platform.pagopa.it"
+checkout_ingress_hostname                  = "weudev.checkout.internal.dev.platform.pagopa.it"
 checkout_ip_restriction_default_action     = "Allow"
 pagopa_proxy_ip_restriction_default_action = "Allow"
+
+# chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
+# image tags: https://github.com/pagopa/infra-ssl-check/releases
+tls_cert_check_helm = {
+  chart_version = "2.0.0"
+  image_name    = "ghcr.io/pagopa/infra-ssl-check"
+  image_tag     = "v1.3.4@sha256:c3d45736706c981493b6216451fc65e99a69d5d64409ccb1c4ca93fef57c921d"
+}

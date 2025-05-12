@@ -14,6 +14,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/observability"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "observ"
 }
 
 ### External resources
@@ -42,6 +43,12 @@ dexp_db = {
   enable             = true
   hot_cache_period   = "P5D"
   soft_delete_period = "P365D" // "P1Y"
+}
+
+dexp_pm_db = {
+  enable             = true
+  hot_cache_period   = "P5D"
+  soft_delete_period = "P10Y"
 }
 
 dexp_re_db_linkes_service = {
@@ -275,6 +282,24 @@ ehns_metric_alerts = {
           "gec-ingestion-cibundles-evt-rx-pdnd",
           "gec-ingestion-paymenttypes-evt-rx-pdnd",
           "gec-ingestion-touchpoints-evt-rx-pdnd"
+        ]
+      }
+    ],
+  },
+  no_wallet_ingestion_alert = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "Payment wallet onboarding written events less than 1000 detected in the last 24h"
+    operator    = "LessThanOrEqual"
+    threshold   = 1000
+    frequency   = "PT1H"
+    window_size = "P1D"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values = [
+          "payment-wallet-ingestion-dl",
         ]
       }
     ],

@@ -12,6 +12,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/bizevents"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "bizevents"
 }
 
 ### External resources
@@ -56,8 +57,8 @@ bizevents_datastore_cosmos_db_params = {
 
   container_default_ttl = 2629800 # 1 month in second
 
-  max_throughput     = 1000
-  max_throughput_alt = 1000
+  max_throughput     = 2000
+  max_throughput_alt = 2000
 }
 
 # CosmosDB Negative Biz Events Datastore

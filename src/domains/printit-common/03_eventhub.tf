@@ -52,7 +52,7 @@ module "eventhub_namespace" {
 # CONFIGURATION
 #
 module "eventhub_printit_configuration" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__//eventhub_configuration"
   count  = var.is_feature_enabled.eventhub ? 1 : 0
 
   event_hub_namespace_name                = module.eventhub_namespace.name

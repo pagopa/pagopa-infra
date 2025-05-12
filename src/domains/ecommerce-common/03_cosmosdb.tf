@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "cosmosdb_ecommerce_rg" {
 }
 
 module "cosmosdb_ecommerce_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.42.3"
 
   name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_ecommerce
@@ -23,7 +23,7 @@ module "cosmosdb_ecommerce_snet" {
 
 module "cosmosdb_account_mongodb" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.42.3"
 
 
   name                = "${local.project}-cosmos-account"
@@ -34,7 +34,7 @@ module "cosmosdb_account_mongodb" {
   offer_type   = var.cosmos_mongo_db_params.offer_type
   kind         = var.cosmos_mongo_db_params.kind
   capabilities = var.cosmos_mongo_db_params.capabilities
-  #version commented out since using 6.0 version here raise the following error 
+  #version commented out since using 6.0 version here raise the following error
   # `expected mongo_server_version to be one of [3.2 3.6 4.0 4.2], got 6.0``
   # Leaving mongo_server_version parameter here causes plan diff for each plan
   # so it was simply commented out so that actual version is ignored
@@ -44,7 +44,6 @@ module "cosmosdb_account_mongodb" {
   public_network_access_enabled      = var.cosmos_mongo_db_params.public_network_access_enabled
   private_endpoint_enabled           = var.cosmos_mongo_db_params.private_endpoint_enabled
   subnet_id                          = module.cosmosdb_ecommerce_snet.id
-  private_dns_zone_ids               = [data.azurerm_private_dns_zone.cosmos.id]
   is_virtual_network_filter_enabled  = var.cosmos_mongo_db_params.is_virtual_network_filter_enabled
   allowed_virtual_network_subnet_ids = var.cosmos_mongo_db_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
@@ -55,6 +54,10 @@ module "cosmosdb_account_mongodb" {
 
   backup_continuous_enabled                    = var.cosmos_mongo_db_params.backup_continuous_enabled
   enable_provisioned_throughput_exceeded_alert = var.cosmos_mongo_db_params.enable_provisioned_throughput_exceeded_alert
+
+  private_dns_zone_mongo_ids            = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_mongo_name           = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
+  private_service_connection_mongo_name = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
 
   tags = var.tags
 }
@@ -141,6 +144,10 @@ locals {
         {
           keys   = ["email.data"]
           unique = false
+        },
+        {
+          keys   = ["userId"]
+          unique = false
         }
       ]
       shard_key           = "_id",
@@ -158,6 +165,14 @@ locals {
         },
         {
           keys   = ["insertionDate"]
+          unique = false
+        },
+        {
+          keys   = ["transactionInfo.eCommerceStatus"]
+          unique = false
+        },
+        {
+          keys   = ["transactionInfo.details.operationResult"]
           unique = false
         }
       ]
@@ -179,7 +194,7 @@ locals {
 
 module "cosmosdb_ecommerce_collections" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.42.3"
 
 
   for_each = {
@@ -229,7 +244,7 @@ locals {
 
 module "cosmosdb_ecommerce_history_collections" {
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v6.7.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.42.3"
 
 
   for_each = {

@@ -13,6 +13,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/paymentoptions-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "payopt"
 }
 
 ### External resources
@@ -34,8 +35,7 @@ apim_dns_zone_prefix     = "platform"
 ingress_load_balancer_ip = "10.3.2.250"
 
 is_feature_enabled = {
-  paymentoptions      = true
-  paymentoptions_mock = false
+  paymentoptions = true
 }
 
 pod_disruption_budgets = {

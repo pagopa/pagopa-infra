@@ -12,6 +12,7 @@ tags = {
   Owner       = "PagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/fdr"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "fdr"
 }
 
 ### External resources
@@ -50,7 +51,7 @@ pgres_flex_params = {
   pgres_flex_pgbouncer_enabled           = true
   standby_availability_zone              = 2
   pgres_flex_diagnostic_settings_enabled = false
-  alerts_enabled                         = false
+  alerts_enabled                         = true
   max_connections                        = 5000
   pgbouncer_min_pool_size                = 10
   max_worker_process                     = 32
@@ -115,39 +116,6 @@ custom_metric_alerts = {
 
 ### Cosmos
 cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
-cosmos_mongo_db_fdr_params = {
-  enabled      = true
-  kind         = "MongoDB"
-  capabilities = ["EnableMongo"] # Serverless accounts do not support multiple regions
-  offer_type   = "Standard"
-  consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 300 # must be greater then 300 (5min) when more then one geo_location is used
-    max_staleness_prefix    = 100000
-  }
-  server_version                   = "4.0"
-  main_geo_location_zone_redundant = true
-  enable_free_tier                 = false
-
-  additional_geo_locations = [{
-    location          = "northeurope"
-    failover_priority = 1
-    zone_redundant    = false
-  }]
-
-  private_endpoint_enabled          = true
-  public_network_access_enabled     = false
-  is_virtual_network_filter_enabled = true
-
-  backup_continuous_enabled = true
-
-  container_default_ttl = 315576000 # 10 year in second
-
-  enable_serverless  = false
-  enable_autoscaling = true
-  max_throughput     = 2000
-  throughput         = 1000
-}
 
 cosmos_mongo_db_fdr_re_params = {
   enabled      = true
@@ -179,7 +147,7 @@ cosmos_mongo_db_fdr_re_params = {
 
   enable_serverless  = false
   enable_autoscaling = true
-  max_throughput     = 2000
+  max_throughput     = 6000
   throughput         = 1000
 }
 
@@ -195,37 +163,27 @@ fdr_storage_account = {
   advanced_threat_protection_enabled = false
   public_network_access_enabled      = false
   blob_delete_retention_days         = 90
-  enable_low_availability_alert      = false
-  backup_enabled                     = true
-  backup_retention                   = 30
+  enable_low_availability_alert      = true
+  backup_enabled                     = false
+  backup_retention                   = 0
 }
 
 fdr_re_storage_account = {
-  account_kind                       = "StorageV2"
-  account_tier                       = "Standard"
-  account_replication_type           = "GZRS"
-  blob_versioning_enabled            = true
-  advanced_threat_protection         = true
-  advanced_threat_protection_enabled = false
-  public_network_access_enabled      = false
-  blob_delete_retention_days         = 90
-  enable_low_availability_alert      = false
-  backup_enabled                     = true
-  backup_retention                   = 30
-}
-
-fdr_history_storage_account = {
-  account_kind                       = "StorageV2"
-  account_tier                       = "Standard"
-  account_replication_type           = "GZRS"
-  blob_versioning_enabled            = true
-  advanced_threat_protection         = true
-  advanced_threat_protection_enabled = false
-  public_network_access_enabled      = false
-  blob_delete_retention_days         = 90
-  enable_low_availability_alert      = false
-  backup_enabled                     = true
-  backup_retention                   = 30
+  account_kind                                                 = "StorageV2"
+  account_tier                                                 = "Standard"
+  account_replication_type                                     = "ZRS"
+  blob_versioning_enabled                                      = false
+  public_network_access_enabled                                = false
+  blob_delete_retention_days                                   = 7
+  enable_low_availability_alert                                = true
+  backup_enabled                                               = false
+  backup_retention                                             = 0
+  storage_defender_enabled                                     = true
+  storage_defender_override_subscription_settings_enabled      = false
+  storage_defender_sensitive_data_discovery_enabled            = false
+  storage_defender_malware_scanning_on_upload_enabled          = false
+  storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
+  blob_file_retention_days                                     = 180 # 6 months
 }
 
 fdr_flow_storage_account = {
@@ -237,7 +195,7 @@ fdr_flow_storage_account = {
   advanced_threat_protection_enabled = false
   public_network_access_enabled      = false
   blob_delete_retention_days         = 90
-  enable_low_availability_alert      = false
+  enable_low_availability_alert      = true
 }
 
 #

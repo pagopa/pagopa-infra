@@ -24,7 +24,7 @@ locals {
     # Spring Environment
     DEFAULT_LOGGING_LEVEL = var.node_forwarder_logging_level
     APP_LOGGING_LEVEL     = var.node_forwarder_logging_level
-    JAVA_OPTS             = "-Djavax.net.debug=ssl:handshake" // mTLS debug
+    JAVA_OPTS             = "" # "-Djavax.net.debug=ssl:handshake" // mTLS debug
 
     # Cert configuration
     CERTIFICATE_CRT = data.azurerm_key_vault_secret.certificate_crt_node_forwarder.value
@@ -39,8 +39,8 @@ locals {
     DOCKER_REGISTRY_SERVER_PASSWORD = data.azurerm_container_registry.container_registry.admin_password
 
     # Connection Pool
-    MAX_CONNECTIONS           = 80
-    MAX_CONNECTIONS_PER_ROUTE = 40
+    MAX_CONNECTIONS           = 120 #80
+    MAX_CONNECTIONS_PER_ROUTE = 60  #40
     CONN_TIMEOUT              = 8
 
   }
@@ -472,9 +472,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.apim[0].id
-  description    = "Response time for /forward is less than or equal to 9s - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
-  enabled        = true
+  data_source_id          = module.apim[0].id
+  description             = "Response time for /forward is less than or equal to 9s - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
+  enabled                 = true
+  auto_mitigation_enabled = true
   query = (<<-QUERY
 let threshold = 9000;
 AzureDiagnostics
@@ -502,15 +503,16 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id, azurerm_monitor_action_group.infra_opsgenie.0.id]
+    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-  data_source_id = module.apim[0].id
-  description    = "Availability for /forward is less than or equal to 99% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
-  enabled        = true
+  data_source_id          = module.apim[0].id
+  description             = "Availability for /forward is less than or equal to 99% - https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/dashboards/providers/Microsoft.Portal/dashboards/pagopa-p-opex_pagopa-node-forwarder"
+  enabled                 = true
+  auto_mitigation_enabled = true
   query = (<<-QUERY
-let threshold = 0.99;
+let threshold = 0.96;
 let threshold_low_traffic = 0.90;
 let low_traffic = 3000;
 AzureDiagnostics

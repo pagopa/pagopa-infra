@@ -83,8 +83,8 @@ data "azurerm_linux_function_app" "mockec" {
 }
 
 data "azurerm_linux_web_app" "pdf_engine" {
-  name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java${var.env_short == "p" ? "-ha" : ""}"
-  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-${var.env_short == "p" ? "ha" : "pdf-engine"}-rg"
+  name                = "${var.prefix}-${var.env_short}-${var.location_short}-shared-app-pdf-engine-java"
+  resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-shared-pdf-engine-rg"
 }
 
 module "apim_api_statuspage_api_v1" {
@@ -129,16 +129,28 @@ module "apim_api_statuspage_api_v1" {
           "apiconfigcachep"   = format("%s/api-config-cache/p", format(local.aks_path, "apiconfig"))
           "apiconfigselfcare" = format("%s/{{apicfg-selfcare-integ-service-path}}", format(local.aks_path, "apiconfig"))
           // show status only one instances Ora OR Pgflex
-          "authorizer"                  = format("%s//authorizer-functions", format(local.aks_path, "shared"))
-          "authorizerconfig"            = format("%s//authorizer-config", format(local.aks_path, "shared"))
-          "bizevents"                   = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
-          "bizeventsdatastoreneg"       = format("%s/pagopa-negative-biz-events-datastore-service", format(local.aks_path, "bizevents"))
-          "bizeventsdatastorepos"       = format("%s/pagopa-biz-events-datastore-service", format(local.aks_path, "bizevents"))
-          "backofficepagopa"            = format("%s/selfcare/pagopa/v1", format(local.aks_path, "selfcare"))
-          "backofficepagopa-fe"         = format("%s", local.fe_backoffice_path)
-          "backofficeexternalpagopa"    = format("%s/backoffice-external", format(local.aks_path, "selfcare"))
-          "canoneunico"                 = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
-          "fdrndpnew"                   = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
+          "authorizer"               = format("%s//authorizer-functions", format(local.aks_path, "shared"))
+          "authorizerconfig"         = format("%s//authorizer-config", format(local.aks_path, "shared"))
+          "bizevents"                = format("%s/pagopa-biz-events-service", format(local.aks_path, "bizevents"))
+          "bizeventsdatastoreneg"    = format("%s/pagopa-negative-biz-events-datastore-service", format(local.aks_path, "bizevents"))
+          "bizeventsdatastorepos"    = format("%s/pagopa-biz-events-datastore-service", format(local.aks_path, "bizevents"))
+          "backofficepagopa"         = format("%s/selfcare/pagopa/v1", format(local.aks_path, "selfcare"))
+          "backofficepagopa-fe"      = format("%s", local.fe_backoffice_path)
+          "backofficeexternalpagopa" = format("%s/backoffice-external", format(local.aks_path, "selfcare"))
+          "canoneunico"              = format("%s/", data.azurerm_function_app.canone_unico.default_hostname)
+          // FdR - All instances
+          "fdrfase1"                = format("%s/pagopa-fdr-nodo-service", format(local.aks_path, "fdr"))
+          "fdrfase3"                = format("%s/pagopa-fdr-service", format(local.aks_path, "fdr"))
+          "fdrfase3scheduler"       = format("%s/pagopa-fdr-service-scheduler-unused", format(local.aks_path, "fdr"))
+          "fdr2evhfdr1"             = format("%s/fdr1-blobtrigger-notused", format(local.aks_path, "fdr"))
+          "fdr2evhfdr3"             = format("%s/fdr3-blobtrigger-notused", format(local.aks_path, "fdr"))
+          "fdr2evhrecovery"         = format("%s/pagopa-fdr-to-event-hub-recovery-service", format(local.aks_path, "fdr"))
+          "fdrjson2xml"             = format("%s/pagopa-fdr-json-to-xml", format(local.aks_path, "fdr"))
+          "fdrxml2jsonblobtrigger"  = format("%s/pagopa-fdr-xml-to-json/blobtrigger-notuser", format(local.aks_path, "fdr"))
+          "fdrxml2jsonhttptrigger"  = format("%s/pagopa-fdr-xml-to-json", format(local.aks_path, "fdr"))
+          "fdrxml2jsonqueuetrigger" = format("%s/pagopa-fdr-xml-to-json/queuetrigger-notuser", format(local.aks_path, "fdr"))
+          "fdrts"                   = format("%s/pagopa-fdr-technical-support-service", format(local.aks_path, "fdr"))
+          // WISP Dismantling
           "wispconverter"               = format("%s/pagopa-wisp-converter", format(local.aks_path, "nodo"))
           "wispsoapconverter"           = format("%s/wisp-soap-converter", format(local.aks_path, "nodo"))
           "wispconverterts"             = format("%s/pagopa-wisp-converter-technical-support", format(local.aks_path, "nodo"))

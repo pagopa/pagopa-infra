@@ -173,6 +173,12 @@ resource "null_resource" "wait_kafka_connect" {
     command     = "while [ true ]; do STATUS=`kubectl -n gps get KafkaConnect -o json | jq -r '.items[] | select(.status).status | .conditions | any(.[]; .type == \"Ready\")' | uniq`; if [ \"$STATUS\" = \"true\" ]; then echo \"Kafka Connect SUCCEEDED\" ; break ; else echo \"Kafka Connect INPROGRESS\"; sleep 3; fi ; done"
     interpreter = ["/bin/bash", "-c"]
   }
+
+  lifecycle {
+    ignore_changes = [
+      id,
+    ]
+  }
 }
 
 resource "kubectl_manifest" "postgres_connector" {
@@ -194,6 +200,12 @@ resource "null_resource" "wait_postgres_connector" {
   provisioner "local-exec" {
     command     = "while [ true ]; do STATUS=`kubectl -n gps get KafkaConnector -o json | jq -r '.items[] | select(.status).status | .conditions | any(.[]; .type == \"Ready\")' | uniq`; if [ \"$STATUS\" = \"true\" ]; then echo \"Postgres Connector SUCCEEDED\" ; break ; else echo \"Postgres Connector INPROGRESS\"; sleep 3; fi ; done"
     interpreter = ["/bin/bash", "-c"]
+  }
+
+  lifecycle {
+    ignore_changes = [
+      id,
+    ]
   }
 }
 

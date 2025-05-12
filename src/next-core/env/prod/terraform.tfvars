@@ -15,6 +15,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "core"
 }
 
 ### Feature Flag
@@ -27,6 +28,7 @@ is_feature_enabled = {
   postgres_private_dns      = true,
   apim_core_import          = true
   use_new_apim              = false
+  pm_import_sa              = true
 }
 
 #
@@ -55,18 +57,6 @@ ddos_protection_plan = {
 }
 
 route_table_peering_sia_additional_routes = [
-  {
-    address_prefix         = "10.101.175.0/24"
-    name                   = "to-nodo-db-oracle-pero"
-    next_hop_in_ip_address = "10.70.249.10"
-    next_hop_type          = "VirtualAppliance"
-  },
-  {
-    address_prefix         = "10.102.175.0/24"
-    name                   = "to-nodo-db-oracle-settimo"
-    next_hop_in_ip_address = "10.70.249.10"
-    next_hop_type          = "VirtualAppliance"
-  }
 ]
 
 #
@@ -76,8 +66,8 @@ external_domain                                 = "pagopa.it"
 dns_zone_internal_prefix                        = "internal.platform"
 dns_zone_wfesp                                  = "wfesp"
 private_dns_zone_db_nodo_pagamenti              = "p.db-nodo-pagamenti.com"
-dns_a_reconds_dbnodo_ips                        = ["10.101.35.37", "10.101.35.38"]                                     # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
-dns_a_reconds_dbnodo_ips_dr                     = ["10.250.45.145", "10.250.45.146", "10.250.45.147", "10.250.45.148"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
+dns_a_reconds_dbnodo_ips                        = ["10.102.175.23", "10.102.175.24"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
+dns_a_reconds_dbnodo_ips_dr                     = ["10.101.175.23", "10.101.175.24"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
 dns_a_reconds_dbnodonexipostgres_ips            = ["10.222.209.84"]
 dns_a_reconds_dbnodonexipostgres_balancer_1_ips = ["10.222.214.129"] # db onPrem PostgreSQL
 dns_a_reconds_dbnodonexipostgres_balancer_2_ips = ["10.222.214.134"] # db onPrem PostgreSQL
@@ -247,12 +237,12 @@ base_path_nodo_oncloud        = "/nodo-prd"
 
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
-ehns_maximum_throughput_units = 5
+ehns_maximum_throughput_units = 10
 ehns_capacity                 = 5
 ehns_zone_redundant           = true
 ehns_public_network_access    = true
 
-ehns_metric_alerts = {
+ehns03_metric_alerts = {
   no_trx = {
     aggregation = "Total"
     metric_name = "IncomingMessages"
@@ -300,7 +290,39 @@ ehns_metric_alerts = {
   },
 }
 
+ehns04_metric_alerts = {
+  no_trx = {
+    aggregation = "Total"
+    metric_name = "IncomingMessages"
+    description = "No transactions received from acquirer in the last 24h"
+    operator    = "LessThanOrEqual"
+    threshold   = 1000
+    frequency   = "PT1H"
+    window_size = "P1D"
+    dimension = [
+      {
+        name     = "EntityName"
+        operator = "Include"
+        values = [
+          "fdr-qi-reported-iuv",
+          "fdr-qi-flows"
+        ]
+      }
+    ],
+  },
+  active_connections = {
+    aggregation = "Average"
+    metric_name = "ActiveConnections"
+    description = null
+    operator    = "LessThanOrEqual"
+    threshold   = 0
+    frequency   = "PT5M"
+    window_size = "PT15M"
+    dimension   = [],
+  },
+}
 
+ehns04_alerts_enabled = true
 
 eventhubs_03 = [
   {
@@ -349,6 +371,12 @@ eventhubs_03 = [
         manage = false
       },
       {
+        name   = "nodo-dei-pagamenti-PAGOPA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
         name   = "nodo-dei-pagamenti-pdnd" # pdnd
         listen = true
         send   = false
@@ -373,27 +401,6 @@ eventhubs_03 = [
       #        send   = false
       #        manage = false
       #      }
-    ]
-  },
-  {
-    name              = "fdr-re" # used by FdR Fase 1 and Fase 3
-    partitions        = 32
-    message_retention = 7
-    consumers         = ["fdr-re-rx"]
-    keys = [
-      {
-        name   = "fdr-re-tx"
-        listen = false
-        send   = true
-        manage = false
-      },
-      {
-        name   = "fdr-re-rx"
-        listen = true
-        send   = false
-        manage = false
-      }
-
     ]
   },
   {
@@ -435,6 +442,12 @@ eventhubs_03 = [
         manage = false
       },
       {
+        name   = "pagopa-biz-evt-tx-PAGOPA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
         name   = "pagopa-biz-evt-rx"
         listen = true
         send   = false
@@ -451,7 +464,13 @@ eventhubs_03 = [
         listen = true
         send   = false
         manage = false
-      }
+      },
+      {
+        name   = "pagopa-biz-evt-rx-views"
+        listen = true
+        send   = false
+        manage = false
+      },
     ]
   },
   {
@@ -499,6 +518,12 @@ eventhubs_03 = [
         manage = false
       },
       {
+        name   = "pagopa-negative-biz-evt-tx-PAGOPA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
         name   = "pagopa-negative-biz-evt-rx"
         listen = true
         send   = false
@@ -514,6 +539,12 @@ eventhubs_03 = [
     keys = [
       {
         name   = "nodo-dei-pagamenti-verify-ko-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tx-PAGOPA"
         listen = false
         send   = true
         manage = false
@@ -854,3 +885,12 @@ monitor_env_test_urls = [
 ]
 
 enable_node_forwarder_debug_instance = false
+route_tools = [
+  {
+    # dev aks nodo oncloud
+    name                   = "tools-outbound-to-nexy-nodo"
+    address_prefix         = "10.79.20.34/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  }
+]

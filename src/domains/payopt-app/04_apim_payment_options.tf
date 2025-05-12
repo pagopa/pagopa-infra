@@ -19,7 +19,7 @@ module "apim_payment_options_product" {
   published             = false
   subscription_required = true
   approval_required     = false
-  # subscriptions_limit   = 1000
+  subscriptions_limit   = 1000
 
   policy_xml = file("./api_product/_base_policy.xml")
 }

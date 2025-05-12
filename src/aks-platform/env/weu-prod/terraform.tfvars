@@ -13,6 +13,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "core"
 }
 
 ### External resources
@@ -50,8 +51,8 @@ aks_user_node_pool = {
   vm_size         = "Standard_D8ds_v5"
   os_disk_type    = "Ephemeral"
   os_disk_size_gb = "300"
-  node_count_min  = "8"
-  node_count_max  = "9"
+  node_count_min  = "10"
+  node_count_max  = "11"
   node_labels     = { node_name : "aks-user-01", node_type : "user" },
   node_taints     = [],
   node_tags       = { node_tag_1 : "1" },

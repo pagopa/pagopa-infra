@@ -13,6 +13,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/pay-wallet-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "paywallet"
 }
 
 ### External resources
@@ -59,6 +60,12 @@ pod_disruption_budgets = {
     minAvailable = 4
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopawalletservice"
+    }
+  },
+  "pagopapaymentwalletcdcservice" = {
+    minAvailable = 1
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopapaymentwalletcdcservice"
     }
   },
 }

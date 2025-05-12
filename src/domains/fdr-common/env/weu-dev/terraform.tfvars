@@ -12,6 +12,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/fdr"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "fdr"
 }
 
 ### External resources
@@ -113,35 +114,6 @@ custom_metric_alerts = {
 ### Cosmos
 cidr_subnet_cosmosdb_fdr = ["10.1.136.0/24"]
 
-cosmos_mongo_db_fdr_params = {
-  enabled      = true
-  kind         = "MongoDB"
-  capabilities = ["EnableMongo"]
-  offer_type   = "Standard"
-  consistency_policy = {
-    consistency_level       = "BoundedStaleness"
-    max_interval_in_seconds = 5
-    max_staleness_prefix    = 100000
-  }
-  server_version                   = "4.0"
-  main_geo_location_zone_redundant = false
-  enable_free_tier                 = false
-
-  additional_geo_locations          = []
-  private_endpoint_enabled          = false
-  public_network_access_enabled     = true
-  is_virtual_network_filter_enabled = false
-
-  backup_continuous_enabled = false
-
-  enable_serverless  = false
-  enable_autoscaling = true
-  max_throughput     = 2000
-  throughput         = 1000
-
-  container_default_ttl = 604800 # 7 days
-}
-
 cosmos_mongo_db_fdr_re_params = {
   kind         = "MongoDB"
   capabilities = ["EnableMongo"]
@@ -186,27 +158,19 @@ fdr_storage_account = {
 }
 
 fdr_re_storage_account = {
-  account_kind                       = "StorageV2"
-  account_tier                       = "Standard"
-  account_replication_type           = "LRS"
-  blob_versioning_enabled            = false
-  advanced_threat_protection         = false
-  advanced_threat_protection_enabled = false
-  public_network_access_enabled      = true
-  blob_delete_retention_days         = 30
-  enable_low_availability_alert      = false
-}
-
-fdr_history_storage_account = {
-  account_kind                       = "StorageV2"
-  account_tier                       = "Standard"
-  account_replication_type           = "LRS"
-  blob_versioning_enabled            = false
-  advanced_threat_protection         = false
-  advanced_threat_protection_enabled = false
-  public_network_access_enabled      = true
-  blob_delete_retention_days         = 30
-  enable_low_availability_alert      = false
+  account_kind                                                 = "StorageV2"
+  account_tier                                                 = "Standard"
+  account_replication_type                                     = "LRS"
+  blob_versioning_enabled                                      = false
+  public_network_access_enabled                                = true
+  blob_delete_retention_days                                   = 1
+  enable_low_availability_alert                                = false
+  storage_defender_enabled                                     = false
+  storage_defender_override_subscription_settings_enabled      = false
+  storage_defender_sensitive_data_discovery_enabled            = false
+  storage_defender_malware_scanning_on_upload_enabled          = false
+  storage_defender_malware_scanning_on_upload_cap_gb_per_month = -1
+  blob_file_retention_days                                     = 7
 }
 
 

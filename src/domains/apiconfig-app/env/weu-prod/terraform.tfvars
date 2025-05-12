@@ -13,6 +13,7 @@ tags = {
   Owner       = "pagoPa"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/apiconfig"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "apiconfig"
 }
 
 ### External resources
@@ -49,7 +50,7 @@ sku_name        = "P1v3"
 # API Config FE
 api_config_fe_enabled                = true
 cname_record_name                    = "config"
-cdn_storage_account_replication_type = "GRS"
+cdn_storage_account_replication_type = "GZRS"
 
 pod_disruption_budgets = {
   "apiconfig-selfcare-integration" = {

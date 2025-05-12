@@ -67,6 +67,10 @@ stages:
           POOL_NAME: '$(TF_POOL_NAME_DEV)'
           TIME_OUT: ${{ variables.TIME_OUT }}
           TF_SUMMARIZE: true
+          AKS_APISERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
+          AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
+          AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
+          AKS_NAME: '$(TF_AKS_DEV_NAME)'
 
   #UAT
   - ${{ if eq(parameters['UAT'], true) }}:
@@ -80,6 +84,10 @@ stages:
           POOL_NAME: '$(TF_POOL_NAME_UAT)'
           TIME_OUT: ${{ variables.TIME_OUT }}
           TF_SUMMARIZE: true
+          AKS_APISERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
+          AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
+          AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
+          AKS_NAME: '$(TF_AKS_UAT_NAME)'
 
 
   #PROD
@@ -94,3 +102,7 @@ stages:
           POOL_NAME: '$(TF_POOL_NAME_PROD)'
           TIME_OUT: ${{ variables.TIME_OUT }}
           TF_SUMMARIZE: true
+          AKS_APISERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
+          AKS_AZURE_DEVOPS_SA_CACRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
+          AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
+          AKS_NAME: '$(TF_AKS_PROD_NAME)'

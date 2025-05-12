@@ -19,6 +19,11 @@ data "azurerm_storage_account" "fdr_flows_sa" {
   resource_group_name = data.azurerm_resource_group.data.name
 }
 
+data "azurerm_storage_account" "fdr_conversion_sa" {
+  name                = replace("${local.project}-sa", "-", "")
+  resource_group_name = data.azurerm_resource_group.fdr_rg.name
+}
+
 data "azurerm_resource_group" "data" {
   name = "${local.product}-data-rg"
 }
@@ -131,4 +136,8 @@ data "azurerm_resource_group" "rg_api" {
 
 data "azurerm_resource_group" "identity_rg" {
   name = "${local.product}-identity-rg"
+}
+
+data "azurerm_resource_group" "fdr_rg" {
+  name = "${local.project}-rg"
 }

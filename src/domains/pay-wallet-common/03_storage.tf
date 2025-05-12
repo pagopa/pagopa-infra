@@ -139,25 +139,20 @@ resource "azurerm_monitor_diagnostic_setting" "pay_wallet_queue_diagnostics" {
 locals {
   queue_alert_props = var.env_short == "p" ? [
     {
-      queue_key   = "usage-update-queue"
-      severity    = 1
-      time_window = 30
-      frequency   = 15
-      threshold   = 10
+      queue_key    = "cdc-queue"
+      severity     = 1
+      time_window  = 30
+      frequency    = 15
+      threshold    = 10
+      action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     },
     {
-      queue_key   = "expiration-queue"
-      severity    = 1
-      time_window = 30
-      frequency   = 15
-      threshold   = 10
-    },
-    {
-      queue_key   = "logged-action-dead-letter-queue"
-      severity    = 1
-      time_window = 30
-      frequency   = 15
-      threshold   = 10
+      queue_key    = "logged-action-dead-letter-queue"
+      severity     = 1
+      time_window  = 30
+      frequency    = 15
+      threshold    = 10
+      action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
     },
   ] : []
 }
@@ -170,7 +165,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
+    action_group           = each.value.action_group
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -179,17 +174,102 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
   enabled        = true
   query = format(<<-QUERY
     let OpCountForQueue = (operation: string, queueKey: string) {
-      StorageQueueLogs
-      | where OperationName == operation and ObjectKey startswith queueKey
-      | summarize count()
+        StorageQueueLogs
+        | where OperationName == operation and ObjectKey startswith queueKey
+        | summarize count() 
+        | project count_ 
+        | extend dummy=1
+    };
+    let PutMessages = (queueName: string) {
+      OpCountForQueue("PutMessage", queueName)
+        | project PutCount = count_
+        | extend dummy = 1
+    };
+    let DeletedMessages =  (queueName: string) {
+      OpCountForQueue("DeleteMessage", queueName)
+        | project DeleteCount = count_
+        | extend dummy = 1
     };
     let MessageRateForQueue = (queueKey: string) {
-      OpCountForQueue("PutMessage", queueKey)
-      | join kind=fullouter OpCountForQueue("DeleteMessage", queueKey) on count_
-      | project name = queueKey, Count = count_ - count_1
+        PutMessages(queueKey)
+        | join kind=inner (DeletedMessages(queueKey)) on dummy
+        | extend Diff = PutCount - DeleteCount
+        | project PutCount, DeleteCount, Diff
     };
     MessageRateForQueue("%s")
-    | where Count > ${each.value.threshold}
+    | where Diff > ${each.value.threshold}
+    QUERY
+    , "/${module.pay_wallet_storage[0].name}/${local.project}-${each.value.queue_key}"
+  )
+  severity    = each.value.severity
+  frequency   = each.value.frequency
+  time_window = each.value.time_window
+  trigger {
+    operator  = "GreaterThan"
+    threshold = 0
+  }
+}
+
+
+locals {
+  queue_expiration_alert_props = var.env_short == "p" ? [
+    {
+      queue_key    = "expiration-queue"
+      severity     = 1
+      time_window  = 30
+      frequency    = 15
+      threshold    = 10
+      action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.payment_wallet_opsgenie[0].id]
+    },
+  ] : []
+}
+
+# Queue size: wallet - wallet queues enqueues rate alert
+resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_alert_visibility_timeout_diff" {
+  for_each            = var.is_feature_enabled.storage ? { for q in local.queue_expiration_alert_props : q.queue_key => q } : {}
+  name                = "${local.project}-${each.value.queue_key}-rate-alert"
+  resource_group_name = azurerm_resource_group.storage_pay_wallet_rg.name
+  location            = var.location
+
+  action {
+    action_group           = each.value.action_group
+    email_subject          = "[pay-wallet] Enqueue rate for wallet queue too high"
+    custom_webhook_payload = "{}"
+  }
+  data_source_id = module.pay_wallet_storage[0].id
+  description    = format("Enqueuing rate for queue %s > ${each.value.threshold} during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
+  enabled        = true
+  query = format(<<-QUERY
+    let endDelete = datetime_local_to_utc(now(), 'Europe/Rome');
+    let startDelete = endDelete - ${each.value.time_window}m;
+    let endPut = startDelete;
+    let startPut = endPut - ${each.value.time_window}m;
+    let OpCountForQueue = (operation: string, queueKey: string, timestart: datetime, timeend: datetime) {
+        StorageQueueLogs
+        | where OperationName == operation and ObjectKey startswith queueKey
+        | where TimeGenerated between(timestart .. timeend)
+        | summarize count() 
+        | project count_ 
+        | extend dummy=1
+    };
+    let PutMessages = (queueName: string, timestart: datetime, timeend: datetime) {
+      OpCountForQueue("PutMessage", queueName, timestart, timeend)
+        | project PutCount = count_
+        | extend dummy = 1
+    };
+    let DeletedMessages =  (queueName: string, timestart: datetime, timeend: datetime) {
+      OpCountForQueue("DeleteMessage", queueName, timestart, timeend)
+        | project DeleteCount = count_
+        | extend dummy = 1
+    };
+    let MessageRateForQueue = (queueKey: string, timestartPut: datetime, timeendPut: datetime, timestartDelete: datetime, timeendDelete: datetime) {
+        PutMessages(queueKey, timestartPut, timeendPut)
+        | join kind=inner (DeletedMessages(queueKey, timestartDelete, timeendDelete)) on dummy
+        | extend Diff = PutCount - DeleteCount
+        | project PutCount, DeleteCount, Diff
+    };
+    MessageRateForQueue("%s", startPut, endPut, startDelete, endDelete)
+    | where Diff > ${each.value.threshold}
     QUERY
     , "/${module.pay_wallet_storage[0].name}/${local.project}-${each.value.queue_key}"
   )

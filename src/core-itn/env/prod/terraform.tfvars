@@ -13,6 +13,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "core"
 }
 
 ### Feature Flag
@@ -34,6 +35,7 @@ cidr_cosmosdb_wallet_italy         = ["10.3.8.0/24"]  #placeholder
 cird_redis_wallet_italy            = ["10.3.9.0/24"]  #placeholder
 cidr_storage_wallet_italy          = ["10.3.10.0/24"] #placeholder
 cidr_subnet_pdf_engine_app_service = ["10.3.11.0/27"] #placeholder
+cidr_common_private_endpoint_snet  = ["10.3.144.0/23"]
 
 cird_printit_domain = ["10.3.12.0/24"] #placeholder for domain printit
 

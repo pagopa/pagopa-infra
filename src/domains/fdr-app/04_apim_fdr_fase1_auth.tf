@@ -16,8 +16,18 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoIn
 
   xml_content = templatefile("./api/fdr-fase1/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
-    base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
+    base-url                  = "https://${local.hostname}/pagopa-fdr-nodo-service"
   })
+}
+
+# fragment sha
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
+# https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+resource "terraform_data" "sha256_fdr_pagopa_policy_nodoInviaFlussoRendicontazione_auth" {
+  input = sha256(templatefile("./api/fdr-fase1/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
+    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.hostname}/pagopa-fdr-nodo-service"
+  }))
 }
 
 # ENG
@@ -33,10 +43,19 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoIn
 
   xml_content = templatefile("./api/fdr-fase1/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
-    base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
+    base-url                  = "https://${local.hostname}/pagopa-fdr-nodo-service"
   })
 }
 
+# fragment sha
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
+# https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+resource "terraform_data" "sha256_fdr_pagopa_policy_nodoInviaFlussoRendicontazione_auth_eng" {
+  input = sha256(templatefile("./api/fdr-fase1/nodoPerPsp/v1/fdr_nodoinvia_flussorendicontazione_flow.xml", {
+    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.hostname}/pagopa-fdr-nodo-service"
+  }))
+}
 #########
 ## PA ##
 #########
@@ -52,10 +71,20 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   operation_id        = var.env_short == "d" ? "6352c3bcc257810f183b398c" : var.env_short == "u" ? "636cb7e9451c1c01c4186999" : "63b6e2da2a92e811a8f338f9"
 
   #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
+  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediFlussoRendicontazione.xml.tpl", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
-    base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
+    base-url                  = "https://${local.hostname}/pagopa-fdr-nodo-service"
   })
+}
+
+# fragment sha
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
+# https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+resource "terraform_data" "sha256_fdr_pagopa_policy_nodoChiediFlussoRendicontazione_auth" {
+  input = sha256(templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediFlussoRendicontazione.xml.tpl", {
+    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.hostname}/pagopa-fdr-nodo-service"
+  }))
 }
 
 # nodoChiediFlussoRendicontazione DEV 63fc79f63b3a670f709d79c4
@@ -69,10 +98,20 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   operation_id        = var.env_short == "d" ? "63fc79f63b3a670f709d79c4" : var.env_short == "u" ? "63f85b45451c1c1f24639434" : "63ff73adea7c4a1860530e3b"
 
   #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
+  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediFlussoRendicontazione.xml.tpl", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
-    base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
+    base-url                  = "https://${local.hostname}/pagopa-fdr-nodo-service"
   })
+}
+
+# fragment sha
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
+# https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+resource "terraform_data" "sha256_fdr_pagopa_policy_nodoChiediFlussoRendicontazione_auth_eng" {
+  input = sha256(templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediFlussoRendicontazione.xml.tpl", {
+    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.hostname}/pagopa-fdr-nodo-service"
+  }))
 }
 
 # nodoChiediElencoFlussiRendicontazione DEV 6352c3bcc257810f183b398b
@@ -86,10 +125,20 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   operation_id        = var.env_short == "d" ? "6352c3bcc257810f183b398b" : var.env_short == "u" ? "636cb7e9451c1c01c4186998" : "63b6e2da2a92e811a8f338f8"
 
   #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
+  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediElencoFlussiRendicontazione.xml.tpl", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
-    base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
+    base-url                  = "https://${local.hostname}/pagopa-fdr-nodo-service"
   })
+}
+
+# fragment sha
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
+# https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+resource "terraform_data" "sha256_fdr_pagopa_policy_nodoChiediElencoFlussiRendicontazione_auth" {
+  input = sha256(templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediElencoFlussiRendicontazione.xml.tpl", {
+    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.hostname}/pagopa-fdr-nodo-service"
+  }))
 }
 
 # nodoChiediElencoFlussiRendicontazione DEV 63fc79f53b3a670f709d79c3
@@ -102,8 +151,18 @@ resource "azurerm_api_management_api_operation_policy" "fdr_pagopa_policy_nodoCh
   operation_id        = var.env_short == "d" ? "63fc79f53b3a670f709d79c3" : var.env_short == "u" ? "63f85b45451c1c1f24639433" : "63ff73adea7c4a1860530e3a"
 
   #tfsec:ignore:GEN005
-  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa.xml.tpl", {
+  xml_content = templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediElencoFlussiRendicontazione.xml.tpl", {
     is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
-    base-url                  = "https://${local.fdr_hostname}/pagopa-fdr-nodo-service"
+    base-url                  = "https://${local.hostname}/pagopa-fdr-nodo-service"
   })
+}
+
+# fragment sha
+# https://github.com/hashicorp/terraform-provider-azurerm/issues/17016#issuecomment-1314991599
+# https://learn.microsoft.com/en-us/azure/templates/microsoft.apimanagement/2022-04-01-preview/service/policyfragments?pivots=deployment-language-terraform
+resource "terraform_data" "sha256_fdr_pagopa_policy_nodoChiediElencoFlussiRendicontazione_auth_eng" {
+  input = sha256(templatefile("./api/fdr-fase1/nodoPerPa/v1/fdr_pagopa_nodoChiediElencoFlussiRendicontazione.xml.tpl", {
+    is-fdr-nodo-pagopa-enable = var.apim_fdr_nodo_pagopa_enable
+    base-url                  = "https://${local.hostname}/pagopa-fdr-nodo-service"
+  }))
 }

@@ -117,3 +117,26 @@ variable "tls_cert_check_helm" {
   })
   description = "tls cert helm chart configuration"
 }
+
+### ADX
+variable "dexp_re_db_linkes_service" {
+  type = object({
+    enable = bool
+  })
+}
+
+variable "gh_runner_job_location" {
+  type        = string
+  description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
+  default     = "westeurope"
+}
+
+variable "pod_disruption_budgets" {
+  type = map(object({
+    name         = optional(string, null)
+    minAvailable = optional(number, null)
+    matchLabels  = optional(map(any), {})
+  }))
+  description = "Pod disruption budget for domain namespace"
+  default     = {}
+}

@@ -13,6 +13,7 @@ tags = {
   Owner       = "pagoPA"
   Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/ecommerce-app"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  domain      = "ecommerce"
 }
 
 ### External resources
@@ -82,6 +83,12 @@ pod_disruption_budgets = {
     minAvailable = 3
     matchLabels = {
       "app.kubernetes.io/instance" = "pagopanotificationsservice"
+    }
+  },
+  "pagopaecommerceuserstatsservice" = {
+    minAvailable = 3
+    matchLabels = {
+      "app.kubernetes.io/instance" = "pagopaecommerceuserstatsservice"
     }
   },
 }

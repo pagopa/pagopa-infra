@@ -1,0 +1,1737 @@
+{
+  "lenses": {
+    "0": {
+      "order": 0,
+      "parts": {
+        "0": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "resourceTypeMode",
+                "isOptional": true
+              },
+              {
+                "name": "ComponentId",
+                "isOptional": true
+              },
+              {
+                "name": "Scope",
+                "value": {
+                  "resourceIds": [
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "PartId",
+                "value": "15a8f066-89bf-4e98-961c-1b80e65ef597",
+                "isOptional": true
+              },
+              {
+                "name": "Version",
+                "value": "2.0",
+                "isOptional": true
+              },
+              {
+                "name": "TimeRange",
+                "value": "P1D",
+                "isOptional": true
+              },
+              {
+                "name": "DashboardId",
+                "isOptional": true
+              },
+              {
+                "name": "DraftRequestParameters",
+                "value": {
+                  "scope": "hierarchy"
+                },
+                "isOptional": true
+              },
+              {
+                "name": "Query",
+                "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/fdr-org/service/\"\n| summarize\n    Total=count(),\n    Success=count(responseCode_d < 500)\n    by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| render timechart \n\n",
+                "isOptional": true
+              },
+              {
+                "name": "ControlType",
+                "value": "FrameControlChart",
+                "isOptional": true
+              },
+              {
+                "name": "SpecificChart",
+                "value": "Line",
+                "isOptional": true
+              },
+              {
+                "name": "PartTitle",
+                "value": "Analytics",
+                "isOptional": true
+              },
+              {
+                "name": "PartSubTitle",
+                "value": "pagopa-${env_short}-apim",
+                "isOptional": true
+              },
+              {
+                "name": "Dimensions",
+                "value": {
+                  "aggregation": "Sum",
+                  "splitBy": [],
+                  "xAxis": {
+                    "name": "TimeGenerated",
+                    "type": "datetime"
+                  },
+                  "yAxis": [
+                    {
+                      "name": "availability",
+                      "type": "real"
+                    }
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "LegendOptions",
+                "value": {
+                  "isEnabled": true,
+                  "position": "Bottom"
+                },
+                "isOptional": true
+              },
+              {
+                "name": "IsQueryContainTimeRange",
+                "value": false,
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+            "settings": {
+              "content": {
+                "Query": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/fdr-org/service/\"\n| summarize\n    Total=count(),\n    Success=count(responseCode_d < 500)\n    by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| extend watermark = threshold\n| render timechart\n",
+                "PartTitle": "Availability ORG",
+                "PartSubTitle": "alert",
+                "Dimensions": {
+                  "xAxis": {
+                    "name": "TimeGenerated",
+                    "type": "datetime"
+                  },
+                  "yAxis": [
+                    {
+                      "name": "availability",
+                      "type": "real"
+                    },
+                    {
+                      "name": "watermark",
+                      "type": "real"
+                    }
+                  ],
+                  "splitBy": [],
+                  "aggregation": "Sum"
+                }
+              }
+            }
+          }
+        },
+        "1": {
+          "position": {
+            "x": 6,
+            "y": 0,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "resourceTypeMode",
+                "isOptional": true
+              },
+              {
+                "name": "ComponentId",
+                "isOptional": true
+              },
+              {
+                "name": "Scope",
+                "value": {
+                  "resourceIds": [
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "PartId",
+                "value": "395d8145-004d-4eb2-9f21-77dcf2104f3b",
+                "isOptional": true
+              },
+              {
+                "name": "Version",
+                "value": "2.0",
+                "isOptional": true
+              },
+              {
+                "name": "TimeRange",
+                "value": "P1D",
+                "isOptional": true
+              },
+              {
+                "name": "DashboardId",
+                "isOptional": true
+              },
+              {
+                "name": "DraftRequestParameters",
+                "value": {
+                  "scope": "hierarchy"
+                },
+                "isOptional": true
+              },
+              {
+                "name": "Query",
+                "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/fdr-psp/service/\"\n| summarize\n    Total=count(),\n    Success=count(responseCode_d < 500)\n    by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| render timechart \n\n",
+                "isOptional": true
+              },
+              {
+                "name": "ControlType",
+                "value": "FrameControlChart",
+                "isOptional": true
+              },
+              {
+                "name": "SpecificChart",
+                "value": "Line",
+                "isOptional": true
+              },
+              {
+                "name": "PartTitle",
+                "value": "Analytics",
+                "isOptional": true
+              },
+              {
+                "name": "PartSubTitle",
+                "value": "pagopa-${env_short}-apim",
+                "isOptional": true
+              },
+              {
+                "name": "Dimensions",
+                "value": {
+                  "aggregation": "Sum",
+                  "splitBy": [],
+                  "xAxis": {
+                    "name": "TimeGenerated",
+                    "type": "datetime"
+                  },
+                  "yAxis": [
+                    {
+                      "name": "availability",
+                      "type": "real"
+                    }
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "LegendOptions",
+                "value": {
+                  "isEnabled": true,
+                  "position": "Bottom"
+                },
+                "isOptional": true
+              },
+              {
+                "name": "IsQueryContainTimeRange",
+                "value": false,
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+            "settings": {
+              "content": {
+                "Query": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/fdr-psp/service/\"\n| summarize\n    Total=count(),\n    Success=count(responseCode_d < 500)\n    by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| extend watermark = threshold\n| render timechart\n\n",
+                "PartTitle": "Availability PSP",
+                "PartSubTitle": "alert",
+                "Dimensions": {
+                  "xAxis": {
+                    "name": "TimeGenerated",
+                    "type": "datetime"
+                  },
+                  "yAxis": [
+                    {
+                      "name": "availability",
+                      "type": "real"
+                    },
+                    {
+                      "name": "watermark",
+                      "type": "real"
+                    }
+                  ],
+                  "splitBy": [],
+                  "aggregation": "Sum"
+                }
+              }
+            }
+          }
+        },
+        "2": {
+          "position": {
+            "x": 12,
+            "y": 0,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "resourceTypeMode",
+                "isOptional": true
+              },
+              {
+                "name": "ComponentId",
+                "isOptional": true
+              },
+              {
+                "name": "Scope",
+                "value": {
+                  "resourceIds": [
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "PartId",
+                "value": "7560b893-19b0-4e64-9693-b0d71c122804",
+                "isOptional": true
+              },
+              {
+                "name": "Version",
+                "value": "2.0",
+                "isOptional": true
+              },
+              {
+                "name": "TimeRange",
+                "value": "P1D",
+                "isOptional": true
+              },
+              {
+                "name": "DashboardId",
+                "isOptional": true
+              },
+              {
+                "name": "DraftRequestParameters",
+                "value": {
+                  "scope": "hierarchy"
+                },
+                "isOptional": true
+              },
+              {
+                "name": "Query",
+                "value": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/fdr-internal/service/\"\n| summarize\n    Total=count(),\n    Success=count(responseCode_d < 500)\n    by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n\n",
+                "isOptional": true
+              },
+              {
+                "name": "ControlType",
+                "value": "FrameControlChart",
+                "isOptional": true
+              },
+              {
+                "name": "SpecificChart",
+                "value": "Line",
+                "isOptional": true
+              },
+              {
+                "name": "PartTitle",
+                "value": "Analytics",
+                "isOptional": true
+              },
+              {
+                "name": "PartSubTitle",
+                "value": "pagopa-${env_short}-apim",
+                "isOptional": true
+              },
+              {
+                "name": "Dimensions",
+                "value": {
+                  "aggregation": "Sum",
+                  "splitBy": [],
+                  "xAxis": {
+                    "name": "TimeGenerated",
+                    "type": "datetime"
+                  },
+                  "yAxis": [
+                    {
+                      "name": "availability",
+                      "type": "real"
+                    },
+                    {
+                      "name": "Success",
+                      "type": "long"
+                    },
+                    {
+                      "name": "Total",
+                      "type": "long"
+                    }
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "LegendOptions",
+                "value": {
+                  "isEnabled": true,
+                  "position": "Bottom"
+                },
+                "isOptional": true
+              },
+              {
+                "name": "IsQueryContainTimeRange",
+                "value": false,
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+            "settings": {
+              "content": {
+                "Query": "let threshold = 0.99;\nAzureDiagnostics\n| where url_s matches regex \"/fdr-internal/service/\"\n| summarize\n    Total=count(),\n    Success=count(responseCode_d < 500)\n    by bin(TimeGenerated, 5m)\n| extend availability=toreal(Success) / Total\n| extend watermark = threshold\n| render timechart\n\n",
+                "PartTitle": "Availability Internal",
+                "PartSubTitle": "alert",
+                "Dimensions": {
+                  "xAxis": {
+                    "name": "TimeGenerated",
+                    "type": "datetime"
+                  },
+                  "yAxis": [
+                    {
+                      "name": "availability",
+                      "type": "real"
+                    },
+                    {
+                      "name": "watermark",
+                      "type": "real"
+                    }
+                  ],
+                  "splitBy": [],
+                  "aggregation": "Sum"
+                }
+              }
+            }
+          }
+        },
+        "3": {
+          "position": {
+            "x": 0,
+            "y": 4,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "resourceTypeMode",
+                "isOptional": true
+              },
+              {
+                "name": "ComponentId",
+                "isOptional": true
+              },
+              {
+                "name": "Scope",
+                "value": {
+                  "resourceIds": [
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "PartId",
+                "value": "4c7d785b-50ab-44bb-9778-fa3ed052676d",
+                "isOptional": true
+              },
+              {
+                "name": "Version",
+                "value": "2.0",
+                "isOptional": true
+              },
+              {
+                "name": "TimeRange",
+                "value": "P1D",
+                "isOptional": true
+              },
+              {
+                "name": "DashboardId",
+                "isOptional": true
+              },
+              {
+                "name": "DraftRequestParameters",
+                "value": {
+                  "scope": "hierarchy"
+                },
+                "isOptional": true
+              },
+              {
+                "name": "Query",
+                "value": "AzureDiagnostics\n| where url_s contains \"fdr-org\"\n| summarize count() by ResultType\n| render piechart \n\n",
+                "isOptional": true
+              },
+              {
+                "name": "ControlType",
+                "value": "FrameControlChart",
+                "isOptional": true
+              },
+              {
+                "name": "SpecificChart",
+                "value": "Pie",
+                "isOptional": true
+              },
+              {
+                "name": "PartTitle",
+                "value": "Analytics",
+                "isOptional": true
+              },
+              {
+                "name": "PartSubTitle",
+                "value": "pagopa-${env_short}-apim",
+                "isOptional": true
+              },
+              {
+                "name": "Dimensions",
+                "value": {
+                  "aggregation": "Sum",
+                  "splitBy": [],
+                  "xAxis": {
+                    "name": "ResultType",
+                    "type": "string"
+                  },
+                  "yAxis": [
+                    {
+                      "name": "count_",
+                      "type": "long"
+                    }
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "LegendOptions",
+                "value": {
+                  "isEnabled": true,
+                  "position": "Bottom"
+                },
+                "isOptional": true
+              },
+              {
+                "name": "IsQueryContainTimeRange",
+                "value": false,
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+            "settings": {
+              "content": {
+                "PartTitle": "Status Org"
+              }
+            }
+          }
+        },
+        "4": {
+          "position": {
+            "x": 6,
+            "y": 4,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "resourceTypeMode",
+                "isOptional": true
+              },
+              {
+                "name": "ComponentId",
+                "isOptional": true
+              },
+              {
+                "name": "Scope",
+                "value": {
+                  "resourceIds": [
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "PartId",
+                "value": "7709a006-04d4-48ed-ae38-47c5cc4cd75a",
+                "isOptional": true
+              },
+              {
+                "name": "Version",
+                "value": "2.0",
+                "isOptional": true
+              },
+              {
+                "name": "TimeRange",
+                "value": "P1D",
+                "isOptional": true
+              },
+              {
+                "name": "DashboardId",
+                "isOptional": true
+              },
+              {
+                "name": "DraftRequestParameters",
+                "value": {
+                  "scope": "hierarchy"
+                },
+                "isOptional": true
+              },
+              {
+                "name": "Query",
+                "value": "AzureDiagnostics\n| where url_s contains \"fdr-org\"\n| summarize count() by ResultType\n| render piechart \n\n",
+                "isOptional": true
+              },
+              {
+                "name": "ControlType",
+                "value": "FrameControlChart",
+                "isOptional": true
+              },
+              {
+                "name": "SpecificChart",
+                "value": "Pie",
+                "isOptional": true
+              },
+              {
+                "name": "PartTitle",
+                "value": "Analytics",
+                "isOptional": true
+              },
+              {
+                "name": "PartSubTitle",
+                "value": "pagopa-${env_short}-apim",
+                "isOptional": true
+              },
+              {
+                "name": "Dimensions",
+                "value": {
+                  "aggregation": "Sum",
+                  "splitBy": [],
+                  "xAxis": {
+                    "name": "ResultType",
+                    "type": "string"
+                  },
+                  "yAxis": [
+                    {
+                      "name": "count_",
+                      "type": "long"
+                    }
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "LegendOptions",
+                "value": {
+                  "isEnabled": true,
+                  "position": "Bottom"
+                },
+                "isOptional": true
+              },
+              {
+                "name": "IsQueryContainTimeRange",
+                "value": false,
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+            "settings": {
+              "content": {
+                "PartTitle": "Status PSP",
+                "Query": "AzureDiagnostics\n| where url_s contains \"fdr-psp\"\n| summarize count() by ResultType\n| render piechart \n\n"
+              }
+            }
+          }
+        },
+        "5": {
+          "position": {
+            "x": 12,
+            "y": 4,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "resourceTypeMode",
+                "isOptional": true
+              },
+              {
+                "name": "ComponentId",
+                "isOptional": true
+              },
+              {
+                "name": "Scope",
+                "value": {
+                  "resourceIds": [
+                    "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "PartId",
+                "value": "13245622-1568-4d02-8667-680dd763731d",
+                "isOptional": true
+              },
+              {
+                "name": "Version",
+                "value": "2.0",
+                "isOptional": true
+              },
+              {
+                "name": "TimeRange",
+                "value": "P1D",
+                "isOptional": true
+              },
+              {
+                "name": "DashboardId",
+                "isOptional": true
+              },
+              {
+                "name": "DraftRequestParameters",
+                "value": {
+                  "scope": "hierarchy"
+                },
+                "isOptional": true
+              },
+              {
+                "name": "Query",
+                "value": "AzureDiagnostics\n| where url_s contains \"fdr-org\"\n| summarize count() by ResultType\n| render piechart \n\n",
+                "isOptional": true
+              },
+              {
+                "name": "ControlType",
+                "value": "FrameControlChart",
+                "isOptional": true
+              },
+              {
+                "name": "SpecificChart",
+                "value": "Pie",
+                "isOptional": true
+              },
+              {
+                "name": "PartTitle",
+                "value": "Analytics",
+                "isOptional": true
+              },
+              {
+                "name": "PartSubTitle",
+                "value": "pagopa-${env_short}-apim",
+                "isOptional": true
+              },
+              {
+                "name": "Dimensions",
+                "value": {
+                  "aggregation": "Sum",
+                  "splitBy": [],
+                  "xAxis": {
+                    "name": "ResultType",
+                    "type": "string"
+                  },
+                  "yAxis": [
+                    {
+                      "name": "count_",
+                      "type": "long"
+                    }
+                  ]
+                },
+                "isOptional": true
+              },
+              {
+                "name": "LegendOptions",
+                "value": {
+                  "isEnabled": true,
+                  "position": "Bottom"
+                },
+                "isOptional": true
+              },
+              {
+                "name": "IsQueryContainTimeRange",
+                "value": false,
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
+            "settings": {
+              "content": {
+                "PartTitle": "Status Internal",
+                "Query": "AzureDiagnostics\n| where url_s contains \"fdr-internal\"\n| summarize count() by ResultType\n| render piechart \n\n"
+              }
+            }
+          }
+        },
+        "6": {
+          "position": {
+            "x": 0,
+            "y": 8,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "grouping": {
+                      "dimension": "BackendResponseCode",
+                      "sort": 2,
+                      "top": 10
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 1,
+                        "metricVisualization": {
+                          "displayName": "Requests",
+                          "resourceDisplayName": "pagopa-${env_short}-apim"
+                        },
+                        "name": "Requests",
+                        "namespace": "microsoft.apimanagement/service",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                        }
+                      }
+                    ],
+                    "title": "Status Code nel Tempo ORG",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "filters": {
+              "ApiId": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "pagopa-${env_short}-weu-fdr-fdr-service-api-internal-v1"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "7": {
+          "position": {
+            "x": 6,
+            "y": 8,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "grouping": {
+                      "dimension": "GatewayResponseCode",
+                      "sort": 2,
+                      "top": 10
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 1,
+                        "metricVisualization": {
+                          "displayName": "Requests",
+                          "resourceDisplayName": "pagopa-${env_short}-apim"
+                        },
+                        "name": "Requests",
+                        "namespace": "microsoft.apimanagement/service",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                        }
+                      }
+                    ],
+                    "title": "Status Code nel Tempo PSP",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "filters": {
+              "ApiId": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "pagopa-${env_short}-weu-fdr-fdr-service-api-psp-v1"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "8": {
+          "position": {
+            "x": 12,
+            "y": 8,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "grouping": {
+                      "dimension": "GatewayResponseCode",
+                      "sort": 2,
+                      "top": 10
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 1,
+                        "metricVisualization": {
+                          "displayName": "Requests",
+                          "resourceDisplayName": "pagopa-${env_short}-apim"
+                        },
+                        "name": "Requests",
+                        "namespace": "microsoft.apimanagement/service",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                        }
+                      }
+                    ],
+                    "title": "Status Code nel Tempo Internal",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "filters": {
+              "ApiId": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "pagopa-${env_short}-weu-fdr-fdr-service-api-internal-v1"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "9": {
+          "position": {
+            "x": 0,
+            "y": 12,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Duration of Backend Requests",
+                          "resourceDisplayName": "pagopa-${env_short}-apim"
+                        },
+                        "name": "BackendDuration",
+                        "namespace": "microsoft.apimanagement/service",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                        }
+                      },
+                      {
+                        "aggregationType": 3,
+                        "metricVisualization": {
+                          "displayName": "Duration of Backend Requests",
+                          "resourceDisplayName": "pagopa-${env_short}-apim"
+                        },
+                        "name": "BackendDuration",
+                        "namespace": "microsoft.apimanagement/service",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                        }
+                      }
+                    ],
+                    "title": "Response Time ORG",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "filters": {
+              "ApiId": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "pagopa-${env_short}-weu-fdr-fdr-service-api-org-v1"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "10": {
+          "position": {
+            "x": 6,
+            "y": 12,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Duration of Backend Requests",
+                          "resourceDisplayName": "pagopa-${env_short}-apim"
+                        },
+                        "name": "BackendDuration",
+                        "namespace": "microsoft.apimanagement/service",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                        }
+                      },
+                      {
+                        "aggregationType": 3,
+                        "metricVisualization": {
+                          "displayName": "Duration of Backend Requests",
+                          "resourceDisplayName": "pagopa-${env_short}-apim"
+                        },
+                        "name": "BackendDuration",
+                        "namespace": "microsoft.apimanagement/service",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                        }
+                      }
+                    ],
+                    "title": "Response Time PSP",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "filters": {
+              "ApiId": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "pagopa-${env_short}-weu-fdr-fdr-service-api-psp-v1"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "11": {
+          "position": {
+            "x": 12,
+            "y": 12,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Duration of Backend Requests",
+                          "resourceDisplayName": "pagopa-${env_short}-apim"
+                        },
+                        "name": "BackendDuration",
+                        "namespace": "microsoft.apimanagement/service",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                        }
+                      },
+                      {
+                        "aggregationType": 3,
+                        "metricVisualization": {
+                          "displayName": "Duration of Backend Requests",
+                          "resourceDisplayName": "pagopa-${env_short}-apim"
+                        },
+                        "name": "BackendDuration",
+                        "namespace": "microsoft.apimanagement/service",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-api-rg/providers/Microsoft.ApiManagement/service/pagopa-${env_short}-apim"
+                        }
+                      }
+                    ],
+                    "title": "Response Time Internal",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "filters": {
+              "ApiId": {
+                "model": {
+                  "operator": "equals",
+                  "values": [
+                    "pagopa-${env_short}-weu-fdr-fdr-service-api-internal-v1"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "12": {
+          "position": {
+            "x": 0,
+            "y": 16,
+            "colSpan": 9,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "CPU percent",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "cpu_percent",
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        }
+                      },
+                      {
+                        "aggregationType": 4,
+                        "metricVisualization": {
+                          "displayName": "Memory percent",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        },
+                        "name": "memory_percent",
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DBforPostgreSQL/flexibleServers/pagopa-${env_short}-weu-fdr-flexible-postgresql"
+                        }
+                      }
+                    ],
+                    "title": "CPU and Memory del Postgres",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "13": {
+          "position": {
+            "x": 9,
+            "y": 16,
+            "colSpan": 9,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "aggregationType": 3,
+                        "metricVisualization": {
+                          "displayName": "Autoscaled RU",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-re-cosmos-account"
+                        },
+                        "name": "AutoscaledRU",
+                        "namespace": "microsoft.documentdb/databaseaccounts",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-${env_short}-weu-fdr-re-cosmos-account"
+                        }
+                      },
+                      {
+                        "aggregationType": 3,
+                        "metricVisualization": {
+                          "displayName": "Normalized RU Consumption",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-fdr-re-cosmos-account"
+                        },
+                        "name": "NormalizedRUConsumption",
+                        "namespace": "microsoft.documentdb/databaseaccounts",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-db-rg/providers/Microsoft.DocumentDB/databaseAccounts/pagopa-${env_short}-weu-fdr-re-cosmos-account"
+                        }
+                      }
+                    ],
+                    "title": "Registro Eventi RU",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "14": {
+          "position": {
+            "x": 0,
+            "y": 20,
+            "colSpan": 9,
+            "rowSpan": 5
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "grouping": {
+                      "dimension": "ApiName",
+                      "sort": 2,
+                      "top": 10
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 1,
+                        "metricVisualization": {
+                          "displayName": "Transactions"
+                        },
+                        "name": "Transactions",
+                        "namespace": "microsoft.storage/storageaccounts",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-rg/providers/Microsoft.Storage/storageAccounts/pagopa${env_short}weufdrsa"
+                        }
+                      }
+                    ],
+                    "title": "Transazioni su Storage Account",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "15": {
+          "position": {
+            "x": 9,
+            "y": 20,
+            "colSpan": 9,
+            "rowSpan": 5
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-weu-fdr-rg/providers/Microsoft.Storage/storageAccounts/pagopa${env_short}weufdrsa"
+                        },
+                        "name": "TableEntityCount",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.storage/storageaccounts/tableservices",
+                        "metricVisualization": {
+                          "displayName": "Table Entity Count"
+                        }
+                      }
+                    ],
+                    "title": "Table Entity su Table Storage",
+                    "titleKind": 2,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideHoverCard": false,
+                        "hideLabelNames": true
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "16": {
+          "position": {
+            "x": 0,
+            "y": 25,
+            "colSpan": 9,
+            "rowSpan": 5
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-msg-rg/providers/Microsoft.EventHub/namespaces/pagopa-${env_short}-weu-core-evh-ns04"
+                        },
+                        "name": "ServerErrors",
+                        "aggregationType": 1,
+                        "namespace": "microsoft.eventhub/namespaces",
+                        "metricVisualization": {
+                          "displayName": "Server Errors.",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-core-evh-ns04"
+                        }
+                      },
+                      {
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-msg-rg/providers/Microsoft.EventHub/namespaces/pagopa-${env_short}-weu-core-evh-ns04"
+                        },
+                        "name": "UserErrors",
+                        "aggregationType": 1,
+                        "namespace": "microsoft.eventhub/namespaces",
+                        "metricVisualization": {
+                          "displayName": "User Errors.",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-core-evh-ns04"
+                        }
+                      }
+                    ],
+                    "title": "Errori su EventHub",
+                    "titleKind": 2,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "17": {
+          "position": {
+            "x": 9,
+            "y": 25,
+            "colSpan": 9,
+            "rowSpan": 5
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "grouping": {
+                      "dimension": "EntityName",
+                      "sort": 2,
+                      "top": 10
+                    },
+                    "metrics": [
+                      {
+                        "aggregationType": 1,
+                        "metricVisualization": {
+                          "displayName": "Incoming Messages",
+                          "resourceDisplayName": "pagopa-${env_short}-weu-core-evh-ns04"
+                        },
+                        "name": "IncomingMessages",
+                        "namespace": "microsoft.eventhub/namespaces",
+                        "resourceMetadata": {
+                          "id": "/subscriptions/${subscription_id}/resourceGroups/pagopa-${env_short}-msg-rg/providers/Microsoft.EventHub/namespaces/pagopa-${env_short}-weu-core-evh-ns04"
+                        }
+                      }
+                    ],
+                    "title": "Messaggi Inviati su EventHub",
+                    "titleKind": 2,
+                    "visualization": {
+                      "axisVisualization": {
+                        "x": {
+                          "axisType": 2,
+                          "isVisible": true
+                        },
+                        "y": {
+                          "axisType": 1,
+                          "isVisible": true
+                        }
+                      },
+                      "chartType": 2,
+                      "disablePinning": true,
+                      "legendVisualization": {
+                        "hideHoverCard": false,
+                        "hideLabelNames": true,
+                        "isVisible": true,
+                        "position": 2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "18": {
+          "position": {
+            "x": 0,
+            "y": 30,
+            "colSpan": 9,
+            "rowSpan": 5
+          },
+          "metadata": {
+            "inputs": [],
+            "type": "Extension/HubsExtension/PartType/MarkdownPart",
+            "settings": {
+              "content": {
+                "content": "# FDR Nodo (fase 1)\nDashboard [Azure](https://portal.azure.com/#@pagopait.onmicrosoft.com/dashboard/arm/subscriptions/${subscription_id}/resourcegroups/pagopa-${env_elk}-monitor-rg/providers/microsoft.portal/dashboards/flussidirendicontazione-prod-fdr) dedicata a FDR Nodo (fase 1)\n\n# Logs\nLog sullo spazio dedicato su [Kibana](https://pagopa-${env_short}-weu-ec.kb.westeurope.azure.elastic-cloud.com/s/fdr-${env}/app/discover#)\n\n# Grafana Dashboard\n\n[Postgres](https://pagopa-${env_short}-weu-grafana-avb5f4e0fqawgyea.weu.grafana.azure.com/d/ce4p94uhcgbuod/azure-azure-postgresql-flexible-server-monitoring?orgId=1&refresh=1m&var-ds=azure-monitor-oob&var-sub=${subscription_id}&var-rg=pagopa-${env_short}-weu-fdr-db-rg&var-ns=Microsoft.DBforPostgreSQL%2FflexibleServers&var-resource=pagopa-${env_short}-weu-fdr-flexible-postgresql&from=now-15m&to=now)\n\n[RU cosmos](https://pagopa-${env_short}-weu-grafana-avb5f4e0fqawgyea.weu.grafana.azure.com/d/INH9berMk/azure-insights-cosmos-db?orgId=1&var-ds=azure-monitor-oob&var-sub=${subscription_id}&var-rg=pagopa-${env_short}-weu-fdr-db-rg&var-ns=Microsoft.DocumentDb%2FdatabaseAccounts&var-resource=pagopa-${env_short}-weu-fdr-re-cosmos-account)\n\n[RE status](https://pagopa-${env_short}-weu-grafana-avb5f4e0fqawgyea.weu.grafana.azure.com/d/3n2E8CrGk/azure-insights-storage-accounts?orgId=1&var-ds=azure-monitor-oob&var-sub=${subscription_id}&var-ns=microsoft.storage%2Fstorageaccounts&var-rg=pagopa-${env_short}-weu-fdr-rg&var-resource=pagopapweufdrsa)",
+                "title": "Link Utili",
+                "subtitle": "",
+                "markdownSource": 1,
+                "markdownUri": ""
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
