@@ -12,6 +12,7 @@ locals {
   repos_01 = [
     "pagopa-api-config-cache",
     "pagopa-api-config",
+    "pagopa-api-config-selfcare-integration"
   ]
 
   federations_01 = [
