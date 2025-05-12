@@ -512,7 +512,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
   enabled                 = true
   auto_mitigation_enabled = true
   query = (<<-QUERY
-let threshold = 0.99;
+let threshold = 0.96;
 let threshold_low_traffic = 0.90;
 let low_traffic = 3000;
 AzureDiagnostics
