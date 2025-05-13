@@ -1,6 +1,6 @@
 module "tls_checker" {
-  # source = "./.terraform/modules/__v3__/tls_checker"
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=tls-checker-update"
+  source = "./.terraform/modules/__v3__/tls_checker"
+  # source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker?ref=tls-checker-update"
 
   https_endpoint                                            = local.shared_hostname
   alert_name                                                = local.shared_hostname

@@ -30,6 +30,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-iuvgenerator",
       short_name : "iuv-gen"
+    },
+    {
+      name : "pagopa-pdf-engine",
+      short_name : "pdf-eng"
     }
   ]
   job = {
