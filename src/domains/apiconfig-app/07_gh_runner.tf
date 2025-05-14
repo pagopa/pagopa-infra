@@ -26,6 +26,10 @@ module "gh_runner_job" {
     {
       name: "pagopa-api-config-selfcare-integration",
       short_name : "apicfg-slfcr"
+    },
+        {
+      name: "pagopa-api-config-testing-support",
+      short_name : "apicfg-tst-supp"
     }
   ]
   job = {
