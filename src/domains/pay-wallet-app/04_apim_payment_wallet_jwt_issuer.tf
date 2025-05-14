@@ -1,17 +1,17 @@
 
 # product definition
 module "apim_payment_wallet_jwt_issuer_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
-  product_id   = "payment-wallet-jwt-issuer"
-  display_name = "payment-wallet JWT issuer service"
-  description  = "payment-wallet pagoPA product for JWT token issuer service"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
+  source                = "./.terraform/modules/__v3__/api_management_product"
+  product_id            = "payment-wallet-jwt-issuer"
+  display_name          = "payment-wallet JWT issuer service"
+  description           = "payment-wallet pagoPA product for JWT token issuer service"
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
   published             = true
   subscription_required = true
   approval_required     = true
   subscriptions_limit   = 1000
-  policy_xml = file("./api_product/_base_policy.xml")
+  policy_xml            = file("./api_product/_base_policy.xml")
 }
 
 locals {
@@ -44,7 +44,7 @@ resource "azurerm_api_management_api_version_set" "apim_payment_wallet_token_cre
 
 #api module
 module "apim_payment_wallet_token_creation_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source                = "./.terraform/modules/__v3__/api_management_api"
   name                  = "${local.project}-payment-wallet-jwt-token-creation-api"
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name
@@ -83,7 +83,7 @@ resource "azurerm_api_management_api_version_set" "apim_payment_wallet_token_val
 
 #api module
 module "apim_payment_wallet_token_validation_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source                = "./.terraform/modules/__v3__/api_management_api"
   name                  = "${local.project}-payment-wallet-jwt-token-validation-api"
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name

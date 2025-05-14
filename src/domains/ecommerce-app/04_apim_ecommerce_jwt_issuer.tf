@@ -1,17 +1,17 @@
 
 # product definition
 module "apim_ecommerce_jwt_issuer_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
-  product_id   = "ecommerce-jwt-issuer"
-  display_name = "eCommerce JWT issuer service"
-  description  = "eCommerce pagoPA product for JWT token issuer service"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
+  source                = "./.terraform/modules/__v3__/api_management_product"
+  product_id            = "ecommerce-jwt-issuer"
+  display_name          = "eCommerce JWT issuer service"
+  description           = "eCommerce pagoPA product for JWT token issuer service"
+  api_management_name   = local.pagopa_apim_name
+  resource_group_name   = local.pagopa_apim_rg
   published             = true
   subscription_required = true
   approval_required     = true
   subscriptions_limit   = 1000
-  policy_xml = file("./api_product/_base_policy.xml")
+  policy_xml            = file("./api_product/_base_policy.xml")
 }
 
 locals {
@@ -44,7 +44,7 @@ resource "azurerm_api_management_api_version_set" "apim_ecommerce_token_creation
 
 #api module
 module "apim_ecommerce_token_creation_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source                = "./.terraform/modules/__v3__/api_management_api"
   name                  = "${local.project}-ecommerce-jwt-token-creation-api"
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name
@@ -83,7 +83,7 @@ resource "azurerm_api_management_api_version_set" "apim_ecommerce_token_validati
 
 #api module
 module "apim_ecommerce_token_validation_api_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
+  source                = "./.terraform/modules/__v3__/api_management_api"
   name                  = "${local.project}-ecommerce-jwt-token-validation-api"
   resource_group_name   = local.pagopa_apim_rg
   api_management_name   = local.pagopa_apim_name
