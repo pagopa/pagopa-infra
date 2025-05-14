@@ -57,6 +57,12 @@ variable "location_ita" {
   default     = "italynorth"
 }
 
+variable "location_short_ita" {
+  type        = string
+  description = "Main location"
+  default     = "itn"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -474,6 +480,20 @@ variable "gpd_cdc_enabled" {
   type        = bool
   description = "Enable CDC for GDP"
   default     = false
+}
+
+variable "eventhub_namespace_rtp" {
+  description = "Namespace configuration"
+  type = object({
+    auto_inflate_enabled     = bool
+    sku_name                 = string
+    capacity                 = string
+    maximum_throughput_units = number
+    public_network_access    = bool
+    private_endpoint_created = bool
+    metric_alerts_create     = bool
+    metric_alerts            = object({})
+  })
 }
 
 variable "eventhubs_rtp" {
