@@ -66,24 +66,70 @@ pgbouncer_enabled = false
 # WISP-dismantling-cfg
 create_wisp_converter = true
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ### debezium zookeeper_yaml
-zookeeper_replicas       = "1"
+zookeeper_replicas       = 3
 zookeeper_request_memory = "512Mi"
-zookeeper_request_cpu    = "0.5"
-zookeeper_limits_memory  = "512Mi"
-zookeeper_limits_cpu     = "0.5"
+zookeeper_request_cpu    = 0.5
+zookeeper_limits_memory  = "1024Mi"
+zookeeper_limits_cpu     = 1
 zookeeper_jvm_xms        = "512m"
-zookeeper_jvm_xmx        = "512m"
+zookeeper_jvm_xmx        = "1024m"
 zookeeper_storage_size   = "100Gi"
 
 ### debezium kafka_connect_yaml
 replicas           = 1
 request_cpu        = 0.5
-limits_cpu         = 0.5
+limits_cpu         = 2
 request_memory     = "512Mi"
-limits_memory      = "512Mi"
+limits_memory      = "1024Mi"
 postgres_db_name   = "apd"
 tasks_max          = "1"
 container_registry = "pagopadcommonacr.azurecr.io"
-max_threads        = 1
+max_threads        = 10
 gpd_cdc_enabled    = true
