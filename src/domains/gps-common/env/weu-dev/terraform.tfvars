@@ -144,3 +144,40 @@ gpd_sftp_sa_delete                                             = 2
 # GPD Archive account
 gpd_archive_replication_type = "LRS"
 gpd_cdc_enabled              = true
+
+### EventHub
+
+# RTP EventHub
+eventhubs_rtp = [
+  {
+    name              = "rtp-events"
+    partitions        = 1 # in PROD shall be changed
+    message_retention = 1 # in PROD shall be changed
+    consumers         = ["rtp-events-processor"]
+    keys = [
+      {
+        name   = "rtp-events-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "rtp-events-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
+]
+
+eventhub_namespace_rtp = {
+  auto_inflate_enabled     = false
+  sku_name                 = "Standard"
+  capacity                 = null // optional
+  maximum_throughput_units = null // necessary if auto_inflate_enabled
+  public_network_access    = true
+  private_endpoint_created = true
+  metric_alerts_create     = false
+  metric_alerts            = {}
+}
