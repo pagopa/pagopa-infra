@@ -330,7 +330,7 @@ resource "azurerm_key_vault_secret" "payment_wallet_gha_bot_pat" {
 }
 
 
-resource "azurerm_key_vault_certificate" "ecommerce-jwt-token-issuer-certificate" {
+resource "azurerm_key_vault_certificate" "pay-wallet-jwt-token-issuer-certificate" {
   name         = "jwt-token-issuer-cert"
   key_vault_id = module.key_vault.id
 
