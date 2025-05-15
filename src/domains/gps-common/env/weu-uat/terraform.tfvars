@@ -173,7 +173,7 @@ eventhub_namespace_rtp = {
   public_network_access    = true
   private_endpoint_created = true
   metric_alerts_create     = true
-  metric_alerts            = {
+  metric_alerts = {
     no_trx = {
       aggregation = "Total"
       metric_name = "IncomingMessages"
@@ -182,7 +182,7 @@ eventhub_namespace_rtp = {
       threshold   = 1000
       frequency   = "PT1H"
       window_size = "P1D"
-      dimension = [],
+      dimension   = [],
     },
     active_connections = {
       aggregation = "Average"
@@ -202,7 +202,7 @@ eventhub_namespace_rtp = {
       threshold   = 0
       frequency   = "PT5M"
       window_size = "PT30M"
-      dimension = [],
+      dimension   = [],
     },
   }
 }
