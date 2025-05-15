@@ -34,7 +34,6 @@ module "afm_marketplace_cosmosdb_account" {
   kind                   = var.afm_marketplace_cosmos_db_params.kind
   capabilities           = var.afm_marketplace_cosmos_db_params.capabilities
   enable_free_tier       = var.afm_marketplace_cosmos_db_params.enable_free_tier
-  burst_capacity_enabled = var.env_short == "p"
 
   analytical_storage_enabled = var.afm_marketplace_cosmos_db_params.analytical_storage_enabled
 
@@ -185,7 +184,7 @@ locals {
 
 # cosmosdb container for marketplace
 module "afm_marketplace_cosmosdb_containers" {
-  source   = "./.terraform/modules/__v3__/cosmosdb_sql_container"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container?ref=add-analytical_storage_enabled-2-cosmos"
 
   for_each = { for c in local.afm_marketplace_cosmosdb_containers : c.name => c }
 
