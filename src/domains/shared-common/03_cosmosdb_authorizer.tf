@@ -15,7 +15,7 @@ module "authorizer_cosmosdb_snet" {
 }
 
 module "authorizer_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.53.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.93.1"
   name     = "${local.project}-auth-cosmos-account"
   location = var.location
   domain   = "shared"
