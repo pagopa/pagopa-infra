@@ -29,6 +29,8 @@ az eventhubs eventhub delete \
 -n "connect-cluster-configs" \
 --namespace-name pagopa-$env-itn-observ-gpd-evh
 
+# https://learn.microsoft.com/en-us/azure/event-hubs/event-hubs-features#event-retention
+
 # ==============================================================
 # logical topics
 # ==============================================================

@@ -16,6 +16,12 @@ env=$1
 #     retentiontime=168 #hh = 1week
 # fi
 
+
+# --retention-time --retention-time-in-hours
+# Numero di ore per conservare gli eventi per l'hub eventi. 
+# Questo valore viene usato solo quando cleanupPolicy è Delete. 
+# Se cleanupPolicy è Compaction, il valore restituito di questa proprietà è Long.MaxValue.
+
 partitioncount=32
 retentiontime=168 #hh = 1week
 
