@@ -30,10 +30,10 @@ module "afm_marketplace_cosmosdb_account" {
   resource_group_name = azurerm_resource_group.afm_rg.name
   domain              = var.domain
 
-  offer_type             = var.afm_marketplace_cosmos_db_params.offer_type
-  kind                   = var.afm_marketplace_cosmos_db_params.kind
-  capabilities           = var.afm_marketplace_cosmos_db_params.capabilities
-  enable_free_tier       = var.afm_marketplace_cosmos_db_params.enable_free_tier
+  offer_type       = var.afm_marketplace_cosmos_db_params.offer_type
+  kind             = var.afm_marketplace_cosmos_db_params.kind
+  capabilities     = var.afm_marketplace_cosmos_db_params.capabilities
+  enable_free_tier = var.afm_marketplace_cosmos_db_params.enable_free_tier
 
   analytical_storage_enabled = var.afm_marketplace_cosmos_db_params.analytical_storage_enabled
 
@@ -61,7 +61,7 @@ module "afm_marketplace_cosmosdb_account" {
 
 # cosmosdb database for marketplace
 module "afm_marketplace_cosmosdb_database" {
-  source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
+  source = "./.terraform/modules/__v3__/cosmosdb_sql_database"
 
   name                = "db"
   resource_group_name = azurerm_resource_group.afm_rg.name

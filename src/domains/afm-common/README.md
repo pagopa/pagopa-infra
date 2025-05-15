@@ -4,9 +4,9 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 3.0.2 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | = 3.116.0 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.3.2 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.53 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.117 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.2 |
 
 ## Modules
 
@@ -15,36 +15,36 @@
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 179dddb9c85e412da5e807b430322155f30aeda5 |
 | <a name="module_afm_marketplace_cosmosdb_account"></a> [afm\_marketplace\_cosmosdb\_account](#module\_afm\_marketplace\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | add-analytical_storage_enabled-2-cosmos |
 | <a name="module_afm_marketplace_cosmosdb_containers"></a> [afm\_marketplace\_cosmosdb\_containers](#module\_afm\_marketplace\_cosmosdb\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | add-analytical_storage_enabled-2-cosmos |
-| <a name="module_afm_marketplace_cosmosdb_database"></a> [afm\_marketplace\_cosmosdb\_database](#module\_afm\_marketplace\_cosmosdb\_database) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | add-analytical_storage_enabled-2-cosmos |
-| <a name="module_afm_marketplace_cosmosdb_snet"></a> [afm\_marketplace\_cosmosdb\_snet](#module\_afm\_marketplace\_cosmosdb\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.7.0 |
-| <a name="module_afm_storage"></a> [afm\_storage](#module\_afm\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
+| <a name="module_afm_marketplace_cosmosdb_database"></a> [afm\_marketplace\_cosmosdb\_database](#module\_afm\_marketplace\_cosmosdb\_database) | ./.terraform/modules/__v3__/cosmosdb_sql_database | n/a |
+| <a name="module_afm_marketplace_cosmosdb_snet"></a> [afm\_marketplace\_cosmosdb\_snet](#module\_afm\_marketplace\_cosmosdb\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_afm_storage"></a> [afm\_storage](#module\_afm\_storage) | ./.terraform/modules/__v3__/storage_account | n/a |
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | ./.terraform/modules/__v3__/github_federated_identity | n/a |
-| <a name="module_identity_ci_01"></a> [identity\_ci\_01](#module\_identity\_ci\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v7.45.0 |
-| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v6.7.0 |
-| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
+| <a name="module_identity_ci_01"></a> [identity\_ci\_01](#module\_identity\_ci\_01) | ./.terraform/modules/__v3__/github_federated_identity | n/a |
+| <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./.terraform/modules/__v3__/key_vault | n/a |
+| <a name="module_workload_identity_init"></a> [workload\_identity\_init](#module\_workload\_identity\_init) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [azurerm_key_vault_access_policy.ad_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_access_policy) | resource |
-| [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_access_policy) | resource |
-| [azurerm_key_vault_access_policy.adgroup_externals_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_access_policy) | resource |
-| [azurerm_key_vault_access_policy.adgroup_tpm_policy](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_access_policy) | resource |
-| [azurerm_key_vault_access_policy.azdevops_iac_legacy_policies](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_access_policy) | resource |
-| [azurerm_key_vault_access_policy.azdevops_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_access_policy) | resource |
-| [azurerm_key_vault_access_policy.gha_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_access_policy) | resource |
-| [azurerm_key_vault_secret.afm_calculator_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.afm_fee_reporting_cosmos_pkey](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.afm_marketplace_cosmos_pkey](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.afm_marketplace_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.ai_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.db_cfg_password_read_ndp_du](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/key_vault_secret) | resource |
-| [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/private_dns_a_record) | resource |
-| [azurerm_resource_group.afm_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/resource_group) | resource |
-| [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/resource_group) | resource |
-| [azurerm_storage_table.issuer_range_table](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/resources/storage_table) | resource |
+| [azurerm_key_vault_access_policy.ad_group_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_access_policy.adgroup_developers_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_access_policy.adgroup_externals_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_access_policy.adgroup_tpm_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_access_policy.azdevops_iac_legacy_policies](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_access_policy.azdevops_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_access_policy.gha_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_secret.afm_calculator_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.afm_fee_reporting_cosmos_pkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.afm_marketplace_cosmos_pkey](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.afm_marketplace_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.ai_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.db_cfg_password_read_ndp_du](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.storage_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
+| [azurerm_resource_group.afm_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_storage_table.issuer_range_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
@@ -53,23 +53,23 @@
 | [azuread_group.adgroup_tpm](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azuread_service_principal.iac_deploy_legacy](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
 | [azuread_service_principal.iac_plan_legacy](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
-| [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/application_insights) | data source |
-| [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/client_config) | data source |
-| [azurerm_key_vault.kv_nodo](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/key_vault) | data source |
-| [azurerm_key_vault_secret.db_cfg_password_read_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/key_vault_secret) | data source |
-| [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/kubernetes_cluster) | data source |
-| [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/log_analytics_workspace) | data source |
-| [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/monitor_action_group) | data source |
-| [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/monitor_action_group) | data source |
-| [azurerm_private_dns_zone.cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/private_dns_zone) | data source |
-| [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/private_dns_zone) | data source |
-| [azurerm_resource_group.identity_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/resource_group) | data source |
-| [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/resource_group) | data source |
-| [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/subnet) | data source |
-| [azurerm_subnet.apiconfig_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/subnet) | data source |
-| [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/subscription) | data source |
-| [azurerm_user_assigned_identity.iac_federated_azdo](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/user_assigned_identity) | data source |
-| [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/3.116.0/docs/data-sources/virtual_network) | data source |
+| [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
+| [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_key_vault.kv_nodo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault_secret.db_cfg_password_read_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
+| [azurerm_log_analytics_workspace.log_analytics](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/log_analytics_workspace) | data source |
+| [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
+| [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/monitor_action_group) | data source |
+| [azurerm_private_dns_zone.cosmos](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/private_dns_zone) | data source |
+| [azurerm_resource_group.identity_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_subnet.aks_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
+| [azurerm_subnet.apiconfig_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
+| [azurerm_subscription.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subscription) | data source |
+| [azurerm_user_assigned_identity.iac_federated_azdo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/user_assigned_identity) | data source |
+| [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
 ## Inputs
 

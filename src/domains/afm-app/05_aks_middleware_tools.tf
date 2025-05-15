@@ -18,11 +18,11 @@ module "tls_checker" {
   kv_secret_name_for_application_insights_connection_string = "ai-${var.env_short}-connection-string"
   keyvault_name                                             = data.azurerm_key_vault.kv.name
   keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
-  
-  workload_identity_enabled                                 = true
-  workload_identity_service_account_name                    = module.workload_identity_configuration.workload_identity_service_account_name
-  workload_identity_client_id                               = module.workload_identity_configuration.workload_identity_client_id
-  
+
+  workload_identity_enabled              = true
+  workload_identity_service_account_name = module.workload_identity_configuration.workload_identity_service_account_name
+  workload_identity_client_id            = module.workload_identity_configuration.workload_identity_client_id
+
   depends_on = [module.workload_identity_configuration]
 }
 
