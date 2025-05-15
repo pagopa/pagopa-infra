@@ -1,8 +1,7 @@
 module "tls_checker" {
   source                              = "./.terraform/modules/__v3__/tls_checker"
-  depends_on                          = [module.workload_identity]
-  https_endpoint                      = local.selfcare_hostname
-  alert_name                          = local.selfcare_hostname
+  https_endpoint                      = local.afm_hostname
+  alert_name                          = local.afm_hostname
   alert_enabled                       = true
   helm_chart_present                  = true
   helm_chart_version                  = var.tls_cert_check_helm.chart_version
@@ -19,21 +18,24 @@ module "tls_checker" {
   kv_secret_name_for_application_insights_connection_string = "ai-${var.env_short}-connection-string"
   keyvault_name                                             = data.azurerm_key_vault.kv.name
   keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
+  
   workload_identity_enabled                                 = true
-  workload_identity_service_account_name                    = module.workload_identity.workload_identity_service_account_name
-  workload_identity_client_id                               = module.workload_identity.workload_identity_client_id
+  workload_identity_service_account_name                    = module.workload_identity_configuration.workload_identity_service_account_name
+  workload_identity_client_id                               = module.workload_identity_configuration.workload_identity_client_id
+  
+  depends_on = [module.workload_identity_configuration]
 }
 
 module "cert_mounter" {
-  depends_on                             = [module.workload_identity]
+  depends_on                             = [module.workload_identity_configuration]
   source                                 = "./.terraform/modules/__v3__/cert_mounter"
   namespace                              = var.domain
-  certificate_name                       = replace(local.selfcare_hostname, ".", "-")
+  certificate_name                       = replace(local.afm_hostname, ".", "-")
   kv_name                                = data.azurerm_key_vault.kv.name
   tenant_id                              = data.azurerm_subscription.current.tenant_id
   workload_identity_enabled              = true
-  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
-  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
+  workload_identity_service_account_name = module.workload_identity_configuration.workload_identity_service_account_name
+  workload_identity_client_id            = module.workload_identity_configuration.workload_identity_client_id
 }
 
 resource "helm_release" "reloader" {
