@@ -22,10 +22,13 @@
 | <a name="module_apim_io_payment_wallet_product"></a> [apim\_io\_payment\_wallet\_product](#module\_apim\_io\_payment\_wallet\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_pay_wallet_healthcheck_api_v1"></a> [apim\_pay\_wallet\_healthcheck\_api\_v1](#module\_apim\_pay\_wallet\_healthcheck\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_payment_wallet_for_ecommerce_api_v1"></a> [apim\_payment\_wallet\_for\_ecommerce\_api\_v1](#module\_apim\_payment\_wallet\_for\_ecommerce\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_payment_wallet_jwt_issuer_product"></a> [apim\_payment\_wallet\_jwt\_issuer\_product](#module\_apim\_payment\_wallet\_jwt\_issuer\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_payment_wallet_migrations_api_v1"></a> [apim\_payment\_wallet\_migrations\_api\_v1](#module\_apim\_payment\_wallet\_migrations\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_payment_wallet_migrations_for_cstar_api_v1"></a> [apim\_payment\_wallet\_migrations\_for\_cstar\_api\_v1](#module\_apim\_payment\_wallet\_migrations\_for\_cstar\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_payment_wallet_outcomes_api_v1"></a> [apim\_payment\_wallet\_outcomes\_api\_v1](#module\_apim\_payment\_wallet\_outcomes\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_payment_wallet_product"></a> [apim\_payment\_wallet\_product](#module\_apim\_payment\_wallet\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_payment_wallet_token_creation_api_v1"></a> [apim\_payment\_wallet\_token\_creation\_api\_v1](#module\_apim\_payment\_wallet\_token\_creation\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_payment_wallet_token_validation_api_v1"></a> [apim\_payment\_wallet\_token\_validation\_api\_v1](#module\_apim\_payment\_wallet\_token\_validation\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_wallet_service_notifications_api_v1"></a> [apim\_wallet\_service\_notifications\_api\_v1](#module\_apim\_wallet\_service\_notifications\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_webview_payment_wallet_api_v1"></a> [apim\_webview\_payment\_wallet\_api\_v1](#module\_apim\_webview\_payment\_wallet\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
@@ -42,6 +45,8 @@
 | [azurerm_api_management_api_operation_policy.get_payment_methods_for_io](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_psps_for_wallet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.post_io_wallets](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_version_set.apim_payment_wallet_token_creation_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.apim_payment_wallet_token_validation_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.io_payment_wallet_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.npg_notifications_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.pay_wallet_healthcheck_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
