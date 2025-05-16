@@ -28,7 +28,6 @@ is_feature_enabled = {
   postgres_private_dns      = true,
   apim_core_import          = true
   use_new_apim              = false
-  pm_import_sa              = true
 }
 
 #
