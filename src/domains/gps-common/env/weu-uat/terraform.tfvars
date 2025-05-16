@@ -138,3 +138,71 @@ gpd_sftp_sa_delete                                             = 7
 # GPD Archive account
 gpd_archive_replication_type = "GRS"
 gpd_cdc_enabled              = true
+
+### EventHub
+
+# RTP EventHub
+eventhubs_rtp = [
+  {
+    name              = "rtp-events"
+    partitions        = 32
+    message_retention = 7
+    consumers         = ["rtp-events-processor"]
+    keys = [
+      {
+        name   = "rtp-events-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "rtp-events-rx"
+        listen = true
+        send   = false
+        manage = false
+      }
+    ]
+  }
+]
+
+eventhub_namespace_rtp = {
+  auto_inflate_enabled     = true
+  sku_name                 = "Standard"
+  capacity                 = 5
+  maximum_throughput_units = 5
+  public_network_access    = true
+  private_endpoint_created = true
+  metric_alerts_create     = true
+  metric_alerts = {
+    no_trx = {
+      aggregation = "Total"
+      metric_name = "IncomingMessages"
+      description = "No transactions received from acquirer in the last 24h"
+      operator    = "LessThanOrEqual"
+      threshold   = 1000
+      frequency   = "PT1H"
+      window_size = "P1D"
+      dimension   = [],
+    },
+    active_connections = {
+      aggregation = "Average"
+      metric_name = "ActiveConnections"
+      description = null
+      operator    = "LessThanOrEqual"
+      threshold   = 0
+      frequency   = "PT5M"
+      window_size = "PT15M"
+      dimension   = [],
+    },
+    error_trx = {
+      aggregation = "Total"
+      metric_name = "IncomingMessages"
+      description = "Transactions rejected from one acquirer file received. trx write on eventhub. check immediately"
+      operator    = "GreaterThan"
+      threshold   = 0
+      frequency   = "PT5M"
+      window_size = "PT30M"
+      dimension   = [],
+    },
+  }
+}
