@@ -1,5 +1,5 @@
 module "afm_storage" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                            = replace("${local.project}-sa", "-", "")
   account_kind                    = var.afm_storage_params.kind

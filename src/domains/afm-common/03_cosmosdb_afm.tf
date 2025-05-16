@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "afm_rg" {
 }
 
 module "afm_marketplace_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source               = "./.terraform/modules/__v3__/subnet"
   name                 = "${local.project}-marketplace-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_afm_marketplace_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
@@ -30,10 +30,11 @@ module "afm_marketplace_cosmosdb_account" {
   resource_group_name = azurerm_resource_group.afm_rg.name
   domain              = var.domain
 
-  offer_type                 = var.afm_marketplace_cosmos_db_params.offer_type
-  kind                       = var.afm_marketplace_cosmos_db_params.kind
-  capabilities               = var.afm_marketplace_cosmos_db_params.capabilities
-  enable_free_tier           = var.afm_marketplace_cosmos_db_params.enable_free_tier
+  offer_type       = var.afm_marketplace_cosmos_db_params.offer_type
+  kind             = var.afm_marketplace_cosmos_db_params.kind
+  capabilities     = var.afm_marketplace_cosmos_db_params.capabilities
+  enable_free_tier = var.afm_marketplace_cosmos_db_params.enable_free_tier
+
   analytical_storage_enabled = var.afm_marketplace_cosmos_db_params.analytical_storage_enabled
 
   private_endpoint_sql_name           = "${local.project}-marketplace-cosmos-sql-endpoint" # forced after update module vers
@@ -60,7 +61,7 @@ module "afm_marketplace_cosmosdb_account" {
 
 # cosmosdb database for marketplace
 module "afm_marketplace_cosmosdb_database" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database?ref=add-analytical_storage_enabled-2-cosmos"
+  source = "./.terraform/modules/__v3__/cosmosdb_sql_database"
 
   name                = "db"
   resource_group_name = azurerm_resource_group.afm_rg.name
