@@ -53,3 +53,13 @@ data "azurerm_public_ip" "appgateway_public_ip" {
   name                = format("%s-appgateway-pip", local.product)
   resource_group_name = data.azurerm_resource_group.rg_vnet_core.name
 }
+
+#
+# 🔒 Secrets
+#
+
+data "azurerm_key_vault" "key_vault" {
+  name                = local.key_vault_name
+  resource_group_name = local.key_vault_rg_name
+}
+
