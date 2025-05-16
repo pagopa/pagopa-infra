@@ -99,7 +99,7 @@
         }
       }
     },
-        "/transactions/{transactionId}/outcomes": {
+      "/transactions/{transactionId}/outcomes": {
       "get": {
         "tags": [
           "ecommerce-transactions"
