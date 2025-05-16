@@ -58,14 +58,6 @@ locals {
     service_url           = null
   }
 
-  apim_ecommerce_io_webview_pay = {
-    display_name          = "eCommerce-PM web view for IO App"
-    description           = "Web view designed to aid compatibility between eCommerce API for IO App and Payment Manager"
-    path                  = "ecommerce/io-webview"
-    subscription_required = false
-    service_url           = null
-  }
-
   apim_ecommerce_io_outcomes = {
     display_name          = "eCommerce API for app IO outcomes"
     description           = "API's exposed from eCommerce services to app IO to handle pagoPA payment outcomes"
@@ -81,41 +73,6 @@ resource "azurerm_api_management_api_version_set" "ecommerce_io_api_v1" {
   api_management_name = local.pagopa_apim_name
   display_name        = local.apim_ecommerce_io_api.display_name
   versioning_scheme   = "Segment"
-}
-
-resource "azurerm_api_management_api_version_set" "ecommerce_io_webview_pay_v1" {
-  name                = "${local.project}-io-api-webview-pay"
-  resource_group_name = local.pagopa_apim_rg
-  api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_ecommerce_io_webview_pay.display_name
-  versioning_scheme   = "Segment"
-}
-
-module "apim_ecommerce_io_webview_pay_v1" {
-  source = "./.terraform/modules/__v3__/api_management_api"
-
-  name                  = "${local.project}-io-api-webiew-pay"
-  resource_group_name   = local.pagopa_apim_rg
-  api_management_name   = local.pagopa_apim_name
-  product_ids           = [module.apim_ecommerce_io_product.product_id]
-  subscription_required = local.apim_ecommerce_io_webview_pay.subscription_required
-  version_set_id        = azurerm_api_management_api_version_set.ecommerce_io_webview_pay_v1.id
-  api_version           = "v1"
-  service_url           = local.apim_ecommerce_io_webview_pay.service_url
-
-  description  = local.apim_ecommerce_io_webview_pay.description
-  display_name = local.apim_ecommerce_io_webview_pay.display_name
-  path         = local.apim_ecommerce_io_webview_pay.path
-  protocols    = ["https"]
-
-  content_format = "openapi"
-  content_value = templatefile("./api/ecommerce-io/v1/_webview_openapi.json.tpl", {
-    hostname = local.apim_hostname
-  })
-
-  xml_content = templatefile("./api/ecommerce-io/v1/pay-pm-webview.xml.tpl", {
-    pm_webview_path = "${local.apim_hostname}/pp-restapi-CD/v3/webview/transactions/pay"
-  })
 }
 
 data "azurerm_key_vault_secret" "ecommerce_io_sessions_jwt_secret" {
