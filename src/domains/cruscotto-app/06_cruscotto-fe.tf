@@ -49,7 +49,7 @@ locals {
 // public storage used to serve FE
 #tfsec:ignore:azure-storage-default-action-deny
 module "crusc8_cdn" {
-  source = "./.terraform/modules/__v3__/cdn"
+  source = "./.terraform/modules/__v4__/cdn"
 
   name                = "crusc8"
   prefix              = local.product
