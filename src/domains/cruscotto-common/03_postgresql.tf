@@ -17,15 +17,15 @@ data "azurerm_key_vault_secret" "pgres_flex_admin_pwd" {
 
 # Postgres Flexible Server subnet
 module "postgres_flexible_snet" {
-  source                                        = "./.terraform/modules/__v4__/IDH/subnet"
-  name                                          = "${local.project}-pgres-flexible-snet"
-  resource_group_name                           = data.azurerm_resource_group.rg_vnet_italy.name
-  virtual_network_name                          = data.azurerm_virtual_network.vnet_italy.name
-  service_endpoints                             = ["Microsoft.Storage"]
+  source               = "./.terraform/modules/__v4__/IDH/subnet"
+  name                 = "${local.project}-pgres-flexible-snet"
+  resource_group_name  = data.azurerm_resource_group.rg_vnet_italy.name
+  virtual_network_name = data.azurerm_virtual_network.vnet_italy.name
+  service_endpoints    = ["Microsoft.Storage"]
 
-  env = var.env
+  env          = var.env
   idh_resource = "postgres_flexible"
-  prefix = var.prefix
+  prefix       = var.prefix
 }
 
 module "postgres_flexible_server_crus8" {
@@ -35,12 +35,12 @@ module "postgres_flexible_server_crus8" {
   location            = azurerm_resource_group.db_rg.location
   resource_group_name = azurerm_resource_group.db_rg.name
 
-  env  = var.env
+  env          = var.env
   idh_resource = var.pgres_flex_params.idh_resource
-  prefix = var.prefix
+  prefix       = var.prefix
 
-  private_dns_zone_id           = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
-  delegated_subnet_id           = module.postgres_flexible_snet.id
+  private_dns_zone_id = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
+  delegated_subnet_id = module.postgres_flexible_snet.id
 
   administrator_login    = data.azurerm_key_vault_secret.pgres_flex_admin_login.value
   administrator_password = data.azurerm_key_vault_secret.pgres_flex_admin_pwd.value

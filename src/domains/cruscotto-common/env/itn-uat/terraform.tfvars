@@ -33,6 +33,6 @@ external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
 
 pgres_flex_db_names = [
-    "cruscotto",
-    "cruscotto-replica"
+  "cruscotto",
+  "cruscotto-replica"
 ]

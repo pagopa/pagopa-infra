@@ -165,7 +165,7 @@ variable "pgres_flex_crus8_db_name" {
 variable "pgres_flex_db_names" {
   type        = list(string)
   description = "List of database names to be created"
-  default     = [
+  default = [
     "Cruscotto",
     "cruscotto"
   ]

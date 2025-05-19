@@ -36,9 +36,9 @@ dns_zone_internal_prefix = "internal.dev.platform"
 cidr_subnet_flex_dbms = ["10.3.7.0/27"]
 
 pgres_flex_params = {
-  idh_resource                           = "pgflex2"
-  sku_name   = "GP_Standard_D2ds_v4"
-  db_version = "16"
+  idh_resource = "pgflex2"
+  sku_name     = "GP_Standard_D2ds_v4"
+  db_version   = "16"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                             = 32768
@@ -61,8 +61,8 @@ pgres_flex_params = {
 }
 
 pgres_flex_db_names = [
-    "cruscotto",
-    "cruscotto-replica"
+  "cruscotto",
+  "cruscotto-replica"
 ]
 
 custom_metric_alerts = {
