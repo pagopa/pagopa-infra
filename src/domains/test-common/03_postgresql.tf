@@ -22,7 +22,6 @@ module "postgres_flexible_snet" {
   resource_group_name                           = data.azurerm_resource_group.rg_vnet.name
   virtual_network_name                          = data.azurerm_virtual_network.vnet.name
   service_endpoints                             = ["Microsoft.Storage"]
-  private_link_service_network_policies_enabled = true
 
   idh_resource = "postgres_flexible"
   prefix = var.prefix
@@ -43,20 +42,15 @@ module "postgres_flexible_server_fdr" {
 
   private_dns_zone_id           = var.env_short != "d" ? data.azurerm_private_dns_zone.postgres[0].id : null
   delegated_subnet_id           = module.postgres_flexible_snet.id
-  public_network_access_enabled = var.pgres_flex_params.public_network_access_enabled
 
   administrator_login    = data.azurerm_key_vault_secret.pgres_flex_admin_login.value
   administrator_password = data.azurerm_key_vault_secret.pgres_flex_admin_pwd.value
 
-  zone                         = var.pgres_flex_params.zone
-
-  standby_availability_zone = var.pgres_flex_params.standby_zone
 
   diagnostic_settings_enabled = var.pgres_flex_params.pgres_flex_diagnostic_settings_enabled
   log_analytics_workspace_id  = data.azurerm_log_analytics_workspace.log_analytics.id
 
   custom_metric_alerts = var.custom_metric_alerts
-  alerts_enabled       = var.pgres_flex_params.alerts_enabled
 
   alert_action = var.pgres_flex_params.alerts_enabled ? [
     {
