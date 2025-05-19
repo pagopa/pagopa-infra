@@ -132,6 +132,7 @@ variable "cidr_subnet_flex_dbms" {
 
 variable "pgres_flex_params" {
   type = object({
+    idh_resource                           = string
     sku_name                               = string
     db_version                             = string
     storage_mb                             = string
@@ -159,6 +160,15 @@ variable "pgres_flex_crus8_db_name" {
   type        = string
   description = "Cruscotto DB name"
   default     = "Cruscotto"
+}
+
+variable "pgres_flex_db_names" {
+  type        = list(string)
+  description = "List of database names to be created"
+  default = [
+    "Cruscotto",
+    "cruscotto"
+  ]
 }
 
 variable "custom_metric_alerts" {
