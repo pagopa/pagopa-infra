@@ -61,7 +61,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_for_checkout_a
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, data.azurerm_monitor_action_group.service_management_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, azurerm_monitor_action_group.service_management_opsgenie[0].id]
     email_subject          = "[eCommerce] Availability Alert"
     custom_webhook_payload = "{}"
   }
@@ -108,7 +108,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_s
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, data.azurerm_monitor_action_group.service_management_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, azurerm_monitor_action_group.service_management_opsgenie[0].id]
     email_subject          = "[eCommerce] Transactions service PATCH auth request KO"
     custom_webhook_payload = "{}"
   }
@@ -141,7 +141,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transactions_s
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, data.azurerm_monitor_action_group.service_management_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, azurerm_monitor_action_group.service_management_opsgenie[0].id]
     email_subject          = "[eCommerce] Transactions service POST user receipts (sendPaymentResultV2) KO"
     custom_webhook_payload = "{}"
   }
@@ -329,7 +329,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_notifications_
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, data.azurerm_monitor_action_group.service_management_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, azurerm_monitor_action_group.service_management_opsgenie[0].id]
     email_subject          = "[eCommerce] Notifications service Availability Alert"
     custom_webhook_payload = "{}"
   }
@@ -375,7 +375,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_payment_reques
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, data.azurerm_monitor_action_group.service_management_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, azurerm_monitor_action_group.service_management_opsgenie[0].id]
     email_subject          = "[eCommerce] Payment requests service availability less than 99% in the last 30 minutes"
     custom_webhook_payload = "{}"
   }
