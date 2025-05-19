@@ -36,7 +36,7 @@ resource "azurerm_monitor_action_group" "service_management_opsgenie" {
   count               = var.env_short == "p" ? 1 : 0
   name                = "EcomServiceManagementOpsgenie"
   resource_group_name = azurerm_resource_group.rg_ecommerce_alerts[0].name
-  short_name          = "EcomServiceManagementOpsgenie"
+  short_name          = "EcomSMOpsgenie"
 
   webhook_receiver {
     name                    = "EcommerceServiceManagementOpsgenieWebhook"
