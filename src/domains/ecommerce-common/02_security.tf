@@ -705,3 +705,16 @@ resource "azurerm_key_vault_secret" "ecommerce_gha_bot_pat" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "service_management_opsgenie_webhook_token" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "service-management-opsgenie-webhook-token"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
