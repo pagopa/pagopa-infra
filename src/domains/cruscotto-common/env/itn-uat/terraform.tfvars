@@ -31,3 +31,8 @@ ingress_load_balancer_ip = "10.3.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
+
+pgres_flex_db_names = [
+  "cruscotto",
+  "cruscotto-replica"
+]

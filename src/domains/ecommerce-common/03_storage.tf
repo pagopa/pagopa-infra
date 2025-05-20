@@ -336,7 +336,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, azurerm_monitor_action_group.service_management_opsgenie[0].id]
     email_subject          = "[eCommerce] Enqueue rate for transient queue too high (instant processing)"
     custom_webhook_payload = "{}"
   }
@@ -443,7 +443,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_enqueue_rate_a
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, azurerm_monitor_action_group.service_management_opsgenie[0].id]
     email_subject          = "[eCommerce] Enqueue rate for transient queue too high (delayed processing)"
     custom_webhook_payload = "{}"
   }
@@ -558,7 +558,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, azurerm_monitor_action_group.service_management_opsgenie[0].id]
     email_subject          = "[eCommerce] Writes for dead letter queue too high"
     custom_webhook_payload = "{}"
   }
@@ -616,6 +616,10 @@ resource "azurerm_monitor_metric_alert" "queue_storage_account_average_messge_co
 
   action {
     action_group_id = azurerm_monitor_action_group.ecommerce_opsgenie[0].id
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.service_management_opsgenie[0].id
   }
 
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${each.value.storage_account_name}] Queue message count average exceeds ${each.value.threshold}"

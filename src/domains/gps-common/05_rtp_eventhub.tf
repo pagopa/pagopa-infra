@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "rtp_rg" {
 module "eventhub_rtp_namespace" {
   source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v8.93.1"
   name                     = "${local.project_itn}-rtp-evh"
-  location                 = var.location_ita  # <-- italy north
+  location                 = var.location_ita # <-- italy north
   resource_group_name      = azurerm_resource_group.rtp_rg.name
   auto_inflate_enabled     = var.eventhub_namespace_rtp.auto_inflate_enabled
   sku                      = var.eventhub_namespace_rtp.sku_name
@@ -17,22 +17,22 @@ module "eventhub_rtp_namespace" {
   maximum_throughput_units = var.eventhub_namespace_rtp.maximum_throughput_units
   #zone_redundat is always true
 
-  virtual_network_ids                  = [data.azurerm_virtual_network.vnet_italy.id]
-  public_network_access_enabled        = var.eventhub_namespace_rtp.public_network_access
-  private_endpoint_subnet_id           = data.azurerm_subnet.common_itn_private_endpoint_subnet.id
-  private_endpoint_created             = var.eventhub_namespace_rtp.private_endpoint_created
+  virtual_network_ids           = [data.azurerm_virtual_network.vnet_italy.id]
+  public_network_access_enabled = var.eventhub_namespace_rtp.public_network_access
+  private_endpoint_subnet_id    = data.azurerm_subnet.common_itn_private_endpoint_subnet.id
+  private_endpoint_created      = var.eventhub_namespace_rtp.private_endpoint_created
 
   private_endpoint_resource_group_name = azurerm_resource_group.rtp_rg.name
 
   private_dns_zones = {
-    id   = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
-    name = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
+    id                  = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.id]
+    name                = [data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.name]
     resource_group_name = data.azurerm_resource_group.rg_event_private_dns_zone.name
   }
 
   private_dns_zone_record_A_name = "${var.domain}.${var.location_short_ita}.eventhub_rtp"
 
-  eventhubs                     = var.eventhubs_rtp
+  eventhubs = var.eventhubs_rtp
 
   action = flatten([
     [
