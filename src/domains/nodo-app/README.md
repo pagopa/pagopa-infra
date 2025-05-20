@@ -184,6 +184,9 @@
 | [azurerm_kusto_database_principal_assignment.nodo_pod_identity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_database_principal_assignment) | resource |
 | [azurerm_kusto_database_principal_assignment.nodo_workload_identity_kusto_principal_assignment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kusto_database_principal_assignment) | resource |
 | [azurerm_linux_virtual_machine_scale_set.vmss-egress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine_scale_set) | resource |
+| [azurerm_logic_app_action_http.nodo_cron_suspend_job_lapp_wh](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_action_http) | resource |
+| [azurerm_logic_app_workflow.nodo_cron_suspend_job_lapp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_workflow) | resource |
+| [azurerm_monitor_action_group.nodo_cron_suspend_job_action_group](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_autoscale_setting.nodo_re_to_datastore_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.nodo_re_to_tablestorage_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
 | [azurerm_monitor_autoscale_setting.nodo_verifyko_to_datastore_function](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_autoscale_setting) | resource |
