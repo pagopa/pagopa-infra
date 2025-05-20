@@ -65,7 +65,7 @@ module "crusc8_cdn" {
   #                             <ENV>.platform.pagopa.it
   # create_dns_record            = false # Skip creation
   dns_zone_name                = "${local.dns_zone_platform}.${local.external_domain}"
-  dns_zone_resource_group_name = local.vnet_resource_group_name
+  dns_zone_resource_group_name = local.vnet_resource_group_name_weu
 
   keyvault_resource_group_name = data.azurerm_key_vault.kv.resource_group_name
   keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
