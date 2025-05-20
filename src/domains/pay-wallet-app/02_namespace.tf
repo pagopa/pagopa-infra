@@ -12,7 +12,7 @@ module "workload_identity" {
   aks_resource_group_name               = data.azurerm_kubernetes_cluster.aks.resource_group_name
   namespace                             = var.domain
   key_vault_id                          = data.azurerm_key_vault.kv.id
-  key_vault_certificate_permissions     = ["Get"]
+  key_vault_certificate_permissions     = ["Get", "List"]
   key_vault_key_permissions             = ["Get"]
   key_vault_secret_permissions          = ["Get"]
 }
