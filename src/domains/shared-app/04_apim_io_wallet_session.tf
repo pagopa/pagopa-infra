@@ -143,5 +143,3 @@ resource "azapi_resource" "fragment_chk_jwt_session_token" {
   }
 
 }
-
-
