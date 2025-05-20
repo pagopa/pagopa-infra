@@ -11,6 +11,9 @@ data "azurerm_kubernetes_cluster" "aks" {
 locals {
   repos_01 = [
     "pagopa-api-config-cache",
+    "pagopa-api-config",
+    "pagopa-api-config-selfcare-integration",
+    "pagopa-api-config-testing-support"
   ]
 
   federations_01 = [
@@ -37,7 +40,7 @@ locals {
 
 # create a module for each 20 repos
 module "identity_cd_01" {
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v7.45.0"
+  source = "./.terraform/modules/__v3__/github_federated_identity"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short
@@ -90,4 +93,11 @@ resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
   depends_on = [
     module.identity_cd_01
   ]
+}
+
+module "workload_identity_init" {
+  source = "./.terraform/modules/__v3__/kubernetes_workload_identity_init"
+  workload_identity_name_prefix         = "${var.domain}"
+  workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
+  workload_identity_location            = var.location
 }

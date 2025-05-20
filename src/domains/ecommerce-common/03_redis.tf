@@ -108,6 +108,10 @@ resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
     action_group_id = azurerm_monitor_action_group.ecommerce_opsgenie[0].id
   }
 
+  action {
+    action_group_id = azurerm_monitor_action_group.service_management_opsgenie[0].id
+  }
+
   tags = var.tags
 }
 
