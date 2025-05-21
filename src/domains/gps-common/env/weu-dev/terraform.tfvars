@@ -181,3 +181,5 @@ eventhub_namespace_rtp = {
   metric_alerts_create     = false
   metric_alerts            = {}
 }
+
+redis_ha_enabled = false

@@ -512,3 +512,8 @@ variable "eventhubs_rtp" {
   }))
   default = []
 }
+
+variable "redis_ha_enabled" {
+  type        = bool
+  description = "(Required) If true, enables the usage of HA redis instance"
+}
