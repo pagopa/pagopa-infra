@@ -15,13 +15,13 @@ jobs:
 
       - name: 🔨 Get Modified Paths
         id: get-paths
-        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@fix-sub-to-sub-dir-on-get-modified-folder-template # v1.22.1
+        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@v1.22.2
         with:
           ignore_patterns: ".github,.devops,.vscode,.terraform-version"
           start_folder: "src"
           default_end_folder_depth: 2
           include_patterns: "src,domains"
-          stopper_folders: "env,tests,api,api_product,helm,logos"
+          stopper_folders: "env,tests,api,api_product,helm"
 
       - name: 👀 See folders downloaded
         if: env.dir_changes_detected == 'true'
