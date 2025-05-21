@@ -624,3 +624,25 @@ resource "azurerm_key_vault_secret" "ehub_rtp_connection_string" {
 
   key_vault_id = module.key_vault.id
 }
+
+data "azurerm_redis_cache" "redis_cache" {
+  name                = var.redis_ha_enabled ? format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short) : format("%s-%s-redis", var.prefix, var.env_short)
+  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
+}
+
+resource "azurerm_key_vault_secret" "redis_password" {
+  name         = "redis-password"
+  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "redis_hostname" {
+  name         = "redis-hostname"
+  value        = data.azurerm_redis_cache.redis_cache.hostname
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
