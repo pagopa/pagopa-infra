@@ -1,6 +1,7 @@
 <fragment>
   <!-- the following block code is to override password XML element with default nodoAuthPassword -->
   <set-variable name="password" value="{{nodoAuthPassword}}" />
+
   <set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction"))" />
   <set-body>
     @{

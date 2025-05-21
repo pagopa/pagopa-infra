@@ -73,4 +73,7 @@ locals {
   # clientId            by KV
   # clientSecret        by KV
   # subscriptionKey     by KV # ecommerce pagoPA - transaction user receipts service API
+
+  pagopa_apim_migrated_name = "${var.prefix}-${var.env_short}-apim"
+  pagopa_apim_migrated_rg   = "${var.prefix}-${var.env_short}-api-rg"
 }

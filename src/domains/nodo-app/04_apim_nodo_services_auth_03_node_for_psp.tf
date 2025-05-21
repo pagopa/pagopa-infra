@@ -13,7 +13,7 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_psp_api_auth" {
-  name                  = format("%s-node-for-psp-api-auth", var.env_short)
+  name                  = format("%s-node-for-psp-api-auth-2", var.env_short) # TODO
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   display_name          = "Node for PSP (AUTH 2.0)" #TODO [FCADAC] remove 2.0

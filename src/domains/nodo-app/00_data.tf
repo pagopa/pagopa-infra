@@ -21,3 +21,12 @@ data "azurerm_resource_group" "node_cfg_sync_rg" {
 data "azurerm_resource_group" "identity_rg" {
   name = "${local.product}-identity-rg"
 }
+
+# data "azurerm_api_management" "apim_migrated" {
+#   name                = local.pagopa_apim_migrated_name
+#   resource_group_name = local.pagopa_apim_migrated_rg
+# }
+#
+# data "azurerm_resource_group" "api_rg_api" {
+#   name = local.pagopa_apim_migrated_rg
+# }

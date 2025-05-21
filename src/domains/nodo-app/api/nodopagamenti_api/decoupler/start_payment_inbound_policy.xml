@@ -1,3 +1,44 @@
 <fragment>
-  <trace source="ciaone" severity="information" />
+
+  <!-- extract info from request -->
+  <set-variable name="requestInfo" value="@{
+        // retrieve data from request body
+        XElement request = context.Request.Body.As<XElement>(preserveContent: true);
+        XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
+
+        var requestInfo = new JObject();
+
+        requestInfo.Add(new JProperty("fiscalCode", ""));
+  requestInfo.Add(new JProperty("noticeNumber", ""));
+  requestInfo.Add(new JProperty("transactionId", ""));
+
+  try {
+  if (body != null ) {
+  XElement primitive = (XElement) body.FirstNode;
+  var fiscalCode = primitive.Descendants("fiscalCode").FirstOrDefault().Value;
+  var noticeNumber = primitive.Descendants("noticeNumber").FirstOrDefault().Value;
+
+  requestInfo.Add(new JProperty("fiscalCode", fiscalCode));
+  requestInfo.Add(new JProperty("noticeNumber", noticeNumber));
+
+  }
+  }
+  catch (Exception e) {
+  // do nothing
+  }
+  return requestInfo.ToString();
+  }" />
+
+  <!-- the requestInfo MUST contains fiscalCode, noticeNumber and transactionId info -->
+
+  <!--
+<cache-lookup-value key="@{
+      var domain = (string)context.Variables["domain"];
+      var requestData = JObject.Parse((string)context.Variables["requestData"]);
+      return domain + "_" + (string)requestData["key"];
+      }" variable-name="nodeId" default-value="LIST" caching-type="external" />
+  -->
+
+
+
 </fragment>

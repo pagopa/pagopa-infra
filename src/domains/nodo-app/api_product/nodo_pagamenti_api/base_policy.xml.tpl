@@ -27,7 +27,7 @@
     <choose>
       <when condition="@(${is-nodo-auth-pwd-replace})">
         <!-- apply nuova connettivita logic (placeholder) -->
-        <include-fragment fragment-id="nuova-connettivita" />
+        <include-fragment fragment-id="ndp-nuova-connettivita" />
       </when>
       <otherwise>
         <!-- blacklist for appgateway-snet  -->
