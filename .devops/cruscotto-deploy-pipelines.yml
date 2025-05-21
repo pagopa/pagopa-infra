@@ -45,8 +45,8 @@ variables:
   WORKING_DIR_APP: 'src/domains/cruscotto-app'
   WORKING_DIR_COMMON: 'src/domains/cruscotto-common'
   WORKING_DIR_SECRET: 'src/domains/cruscotto-secrets'
-  DOMAIN_NAME: qi
-  REGION_SHORT: "weu"
+  DOMAIN_NAME: cruscotto
+  REGION_SHORT: "itn"
 
 stages:
   #DEV
