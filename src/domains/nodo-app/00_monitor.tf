@@ -40,7 +40,6 @@ data "azurerm_monitor_action_group" "smo_opsgenie" {
   name                = "SmoOpsgenie"
 }
 
-
 resource "azurerm_monitor_metric_alert" "aks_nodo_moetrics" {
   name                = "${local.aks_name}-nodo-cron-pod_number"
   resource_group_name = var.monitor_resource_group_name
