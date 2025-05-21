@@ -28,8 +28,7 @@ jobs:
         id: see
         shell: bash
         run: |
-          ls -la
-          du -h -d 3 .
+          tree -R -d -a .
 
       - name: Static Analysis
         if: env.dir_changes_detected == 'true'
