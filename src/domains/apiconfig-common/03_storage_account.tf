@@ -15,7 +15,7 @@ data "azurerm_storage_account" "api_config_ica_sa" {
 }
 
 module "api_config_ica_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                            = replace(format("%s-sa", local.project), "-", "")
   account_kind                    = "StorageV2"

@@ -16,6 +16,12 @@ module "tls_checker" {
   application_insights_action_group_ids                     = [data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.email.id]
   keyvault_name                                             = data.azurerm_key_vault.kv.name
   keyvault_tenant_id                                        = data.azurerm_client_config.current.tenant_id
+
+  workload_identity_enabled              = true
+  workload_identity_service_account_name = module.workload_identity_configuration.workload_identity_service_account_name
+  workload_identity_client_id            = module.workload_identity_configuration.workload_identity_client_id
+
+  depends_on = [module.workload_identity_configuration]
 }
 
 
@@ -23,24 +29,21 @@ output "pa" {
   value = "${path.root}/env/${var.location_short}-${var.env}/helm/cert-mounter.yaml"
 }
 
-resource "helm_release" "cert_mounter" {
-  name         = "cert-mounter-blueprint"
-  repository   = "https://pagopa.github.io/aks-helm-cert-mounter-blueprint"
-  chart        = "cert-mounter-blueprint"
-  version      = "1.0.4"
-  namespace    = var.domain
-  timeout      = 120
-  force_update = true
+# WL-IDENTITY
+# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#%3Acertificate%3A-cert-mounter
+module "cert_mounter" {
+  source = "./.terraform/modules/__v3__/cert_mounter"
 
-  values = [
-    "${
-      templatefile("${path.root}/helm/cert-mounter.yaml.tpl", {
-        NAMESPACE        = var.domain,
-        CERTIFICATE_NAME = replace(local.apiconfig_cache_locals.hostname, ".", "-"),
-        ENV_SHORT        = var.env_short,
-      })
-    }"
-  ]
+  namespace        = var.domain
+  certificate_name = replace(local.hostname, ".", "-")
+  kv_name          = data.azurerm_key_vault.kv.name
+  tenant_id        = data.azurerm_subscription.current.tenant_id
+
+  workload_identity_enabled              = true
+  workload_identity_service_account_name = module.workload_identity_configuration.workload_identity_service_account_name
+  workload_identity_client_id            = module.workload_identity_configuration.workload_identity_client_id
+
+  depends_on = [module.workload_identity_configuration]
 }
 
 resource "helm_release" "status_app" {
