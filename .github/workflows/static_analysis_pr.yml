@@ -15,20 +15,19 @@ jobs:
 
       - name: 🔨 Get Modified Paths
         id: get-paths
-        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@v1.22.0
+        uses: pagopa/eng-github-actions-iac-template/global/get-modifed-folders@84db073e6ae48f141ffce4c52d16a67ef5c4662d #v1.22.2
         with:
           ignore_patterns: ".github,.devops,.vscode,.terraform-version"
           start_folder: "src"
-          default_end_folder_depth: 2
           include_patterns: "src,domains"
+          stopper_folders: "env,tests,api,api_product,helm"
 
       - name: 👀 See folders downloaded
         if: env.dir_changes_detected == 'true'
         id: see
         shell: bash
         run: |
-          ls -la
-          du -h -d 3 .
+          tree -R -d -a .
 
       - name: Static Analysis
         if: env.dir_changes_detected == 'true'
