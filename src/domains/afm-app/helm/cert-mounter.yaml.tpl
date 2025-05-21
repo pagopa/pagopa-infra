@@ -10,4 +10,4 @@ kvCertificatesName:
 
 keyvault:
   name: "pagopa-${ENV_SHORT}-afm-kv"
-  tenantId: "7788edaf-0346-4068-9d79-c868aed15b3d-test"
+  tenantId: "7788edaf-0346-4068-9d79-c868aed15b3d"
