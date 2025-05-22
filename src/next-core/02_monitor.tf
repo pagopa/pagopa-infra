@@ -171,6 +171,21 @@ resource "azurerm_monitor_action_group" "infra_opsgenie" { #
   tags = var.tags
 }
 
+resource "azurerm_monitor_action_group" "smo_opsgenie" { # pagoPA - Service Management and Operation - Reperibilità_SMO → https://pagopa.atlassian.net/wiki/x/TgA9XQ
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "SmoOpsgenie"
+  resource_group_name = azurerm_resource_group.monitor_rg.name
+  short_name          = "SmoOpsgenie"
+
+  webhook_receiver {
+    name                    = "SmoOpsgenieWebhook"
+    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.opsgenie_smo_webhook_key[0].value}"
+    use_common_alert_schema = true
+  }
+
+  tags = var.tags
+}
+
 #
 # Alerts
 #

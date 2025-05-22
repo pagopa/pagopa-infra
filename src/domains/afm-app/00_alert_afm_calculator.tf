@@ -18,7 +18,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
-
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Response time for V1 version of /fees is less than or equal to 1.5s - ${local.afm-calculator-dash.calculator-v1}"
   enabled        = true
