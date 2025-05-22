@@ -236,3 +236,5 @@ eventhub_namespace_rtp = {
     },
   }
 }
+
+redis_ha_enabled = true
