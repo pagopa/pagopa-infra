@@ -172,3 +172,11 @@ data "azurerm_key_vault_secret" "opsgenie_infra_webhook_key" {
 
   key_vault_id = module.key_vault.id
 }
+
+# pagoPA - Service Management and Operation - Reperibilità_SMO → https://pagopa.atlassian.net/wiki/x/TgA9XQ
+data "azurerm_key_vault_secret" "opsgenie_smo_webhook_key" {
+  count = var.env_short == "p" ? 1 : 0
+  name  = "opsgenie-smo-webhook-token"
+
+  key_vault_id = module.key_vault.id
+}

@@ -24,8 +24,6 @@ enabled_features = {
 }
 
 
-
-
 # main vnet
 
 # common
