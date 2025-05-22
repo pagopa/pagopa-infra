@@ -20,7 +20,7 @@ module "gh_runner_job" {
       short_name : "mockr"
     },
     {
-      name : "pagopa-platform-authorizer",
+      name : "pagopa-mocker-config",
       short_name : "mockr-cfg"
     }
   ]
@@ -35,7 +35,7 @@ module "gh_runner_job" {
   }
   kubernetes_deploy = {
     enabled      = true
-    namespaces   = [kubernetes_namespace.namespace.metadata[0].name]
+    namespaces   = var.mock_enabled ? [kubernetes_namespace.namespace[0].metadata[0].name] : []
     cluster_name = "${local.product}-${var.location_short}-${var.instance}-aks"
     rg           = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
   }
