@@ -29,7 +29,7 @@ resource "terraform_data" "sha256_apim_nodo_dei_pagamenti_product_auth" {
 module "apim_nodo_dei_pagamenti_product_auth" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
-  product_id   = "nodo-auth-2-0"  #TODO [FCADAC] remove 2.0
+  product_id   = "nodo-auth-2-0" #TODO [FCADAC] remove 2.0
   display_name = "AAA Nodo dei Pagamenti (Nuova Connettività) 2.0"
   description  = "AAA Product for Nodo dei Pagamenti (Nuova Connettività) 2.0"
 

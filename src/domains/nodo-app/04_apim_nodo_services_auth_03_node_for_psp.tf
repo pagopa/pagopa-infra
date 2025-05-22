@@ -2,7 +2,7 @@
 # ## WS node for psp (NM3) ##
 # ############################
 locals {
-  apim_node_for_psp_api_auth_policy_file =  file("./api/nodopagamenti_api/nodeForPsp/v1/base_policy.xml")
+  apim_node_for_psp_api_auth_policy_file = file("./api/nodopagamenti_api/nodeForPsp/v1/base_policy.xml")
 
 
   #   display_name          = "Node for PSP WS (NM3) (AUTH)"
@@ -14,10 +14,10 @@ locals {
 
 resource "azurerm_api_management_api_version_set" "node_for_psp_api_auth" {
   # name                  = format("%s-node-for-psp-api-auth-2", var.env_short) # TODO
-  name                  = "${var.env_short}-node-for-psp-api-auth-2"
-  api_management_name   = data.azurerm_api_management.apim.name
-  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
-  display_name          = "Node for PSP (AUTH 2.0)" #TODO [FCADAC] remove 2.0
+  name                = "${var.env_short}-node-for-psp-api-auth-2"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  display_name        = "Node for PSP (AUTH 2.0)" #TODO [FCADAC] remove 2.0
   versioning_scheme   = "Segment"
 }
 #
@@ -73,8 +73,8 @@ module "apim_node_for_psp_api_v1_auth" {
   content_format = "wsdl"
   content_value  = file("./api/nodopagamenti_api/nodeForPsp/v1/wsdl/auth/nodeForPsp.wsdl")
   wsdl_selector = {
-      service_name  = "nodeForPsp_Service"
-      endpoint_name = "nodeForPsp_Port"
+    service_name  = "nodeForPsp_Service"
+    endpoint_name = "nodeForPsp_Port"
   }
 
   xml_content = local.apim_node_for_psp_api_auth_policy_file
