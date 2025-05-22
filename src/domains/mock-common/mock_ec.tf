@@ -25,32 +25,28 @@ module "mock_ec_snet" {
   }
 }
 
-# Service Plan
-resource "azurerm_service_plan" "mock_ec_plan" {
-  count               = var.mock_ec_enabled ? 1 : 0
-  name                = format("%s-plan-mock-ec", local.project_legacy)
-  location            = var.location
+module "mock_ec" {
+  count  = var.mock_ec_enabled ? 1 : 0
+  source = "./.terraform/modules/__v3__/app_service"
+
   resource_group_name = azurerm_resource_group.mock_ec_rg[0].name
+  location            = var.location
 
-  sku_name = var.mock_ec_size
-  os_type  = "Linux"
+  # App service plan vars
+  plan_name = format("%s-plan-mock-ec", local.project_legacy)
+  # plan_kind = "Linux"
+  plan_type = "internal"
+  sku_name  = var.mock_ec_size
 
-  tags = var.tags
-}
-
-# Linux Web App
-resource "azurerm_linux_web_app" "mock_ec" {
-  count               = var.mock_ec_enabled ? 1 : 0
+  # App service plan
   name                = format("%s-app-mock-ec", local.project_legacy)
-  location            = var.location
-  resource_group_name = azurerm_resource_group.mock_ec_rg[0].name
-  service_plan_id     = azurerm_service_plan.mock_ec_plan[0].id
-
-  client_certificate_enabled = false
-  https_only                 = true
+  client_cert_enabled = false
+  always_on           = var.mock_ec_always_on
+  app_command_line    = "node /home/site/wwwroot/dist/index.js"
+  health_check_path   = "/mock-ec/info"
+  node_version        = "12-lts"
 
   app_settings = {
-
     WEBSITE_RUN_FROM_PACKAGE     = "1"
     WEBSITE_NODE_DEFAULT_VERSION = "12.18.0"
     NODE_ENV                     = "production"
@@ -80,58 +76,13 @@ resource "azurerm_linux_web_app" "mock_ec" {
     CC_BANK_THIRD_EC     = "IT80E0306904013100000046039"
     TIMEOUT_DELAY        = 500000
 
-    # DNS Server for vnet integration
-    WEBSITE_DNS_SERVER = "168.63.129.16"
   }
 
-  site_config {
-    always_on        = var.mock_ec_always_on
-    app_command_line = "node /home/site/wwwroot/dist/index.js"
+  allowed_subnets = [data.azurerm_subnet.apim_snet.id]
+  allowed_ips     = []
 
-    application_stack {
-      node_version = "12-lts"
-    }
-
-    health_check_path                 = "/mock-ec/info"
-    health_check_eviction_time_in_min = 10
-    # health_check_maxpingfailures      = 10
-
-    ip_restriction_default_action = "Deny"
-
-    dynamic "ip_restriction" {
-      for_each = [data.azurerm_subnet.apim_snet.id]
-      content {
-        virtual_network_subnet_id = ip_restriction.value
-        name                      = "rule"
-      }
-    }
-
-    vnet_route_all_enabled = true
-    minimum_tls_version    = "1.2"
-    http2_enabled          = true
-  }
-
-  identity {
-    type = "SystemAssigned"
-  }
-
-  lifecycle {
-    ignore_changes = [
-      app_settings["DOCKER_CUSTOM_IMAGE_NAME"],
-      virtual_network_subnet_id,
-      app_settings["WEBSITE_HEALTHCHECK_MAXPINGFAILURES"],
-      tags["hidden-link: /app-insights-conn-string"],
-      tags["hidden-link: /app-insights-instrumentation-key"],
-      tags["hidden-link: /app-insights-resource-id"]
-    ]
-  }
+  subnet_id = module.mock_ec_snet[0].id
 
   tags = var.tags
-}
-
-# VNet Integration
-resource "azurerm_app_service_virtual_network_swift_connection" "mock_ec_vnet_connection" {
-  count          = var.mock_ec_enabled ? 1 : 0
-  app_service_id = azurerm_linux_web_app.mock_ec[0].id
-  subnet_id      = module.mock_ec_snet[0].id
+  ip_restriction_default_action = "Allow"
 }
