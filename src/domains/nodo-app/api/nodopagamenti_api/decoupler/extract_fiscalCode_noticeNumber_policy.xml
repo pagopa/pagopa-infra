@@ -9,6 +9,7 @@
 
         requestInfo.Add(new JProperty("fiscalCode", ""));
   requestInfo.Add(new JProperty("noticeNumber", ""));
+  requestInfo.Add(new JProperty("idChannel", ""));
   requestInfo.Add(new JProperty("transactionId", ""));
 
   try {
@@ -16,9 +17,11 @@
   XElement primitive = (XElement) body.FirstNode;
   var fiscalCode = primitive.Descendants("fiscalCode").FirstOrDefault().Value;
   var noticeNumber = primitive.Descendants("noticeNumber").FirstOrDefault().Value;
+  var idChannel = primitive.Descendants("idChannel").FirstOrDefault().Value;
 
   requestInfo["fiscalCode"] = fiscalCode;
   requestInfo["noticeNumber"] = noticeNumber;
+  requestInfo["idChannel"] = idChannel;
   }
   }
   catch (Exception e) {
