@@ -2,10 +2,10 @@
   <!-- start temporary patch: eCommerce bridge to default -->
   <set-variable name="eCommerceChannel" value="{{wisp-ecommerce-channels}}" />
   <!-- Extract 'channel' from requestInfo -->
-  <set-variable name="channel" value="@(context.Variables.GetValueOrDefault<JObject>("requestInfo")?.GetValue("idChannel")?.ToString() ?? string.Empty)" />
+  <set-variable name="channel" value="@(((JValue)JObject.Parse((string)context.Variables["requestInfo"])["idChannel"]).ToString())" />
   <choose>
     <!-- if eCommerceChannel set default baseNodeId and cache nodo_<fiscalCode>_<noticeNumber> -->
-    <when condition="@(!context.Variables.GetValueOrDefault<string>("channel").Equals(context.Variables.GetValueOrDefault<string>("eCommerceChannel")))">
+    <when condition="@(context.Variables.GetValueOrDefault<string>("channel").Equals(context.Variables.GetValueOrDefault<string>("eCommerceChannel")))">
     <set-variable name="baseNodeId" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" />
     <!-- cache store (key = nodo_fiscalCode_noticeNumber, value = baseNodeId) -->
     <cache-store-value key="@{
@@ -53,8 +53,12 @@
         <set-variable name="ndp_eCommerce_transactionId_ttl" value="{{ndp-eCommerce-transactionId-ttl}}" />
         <set-variable name="ndp_nodo_fiscalCode_noticeNumber_ttl" value="{{ndp-nodo-fiscalCode-noticeNumber-ttl}}" />
         <!-- Sort configuration according to list priority -->
+        <!-- Export following configuration set in root policy -->
+        <set-variable name="configuration" value="@{return "[{\"node_id\":\"NDP002SIT\",\"description\":\"Nodo OnCloud Nexi\",\"node_uri\":\"http:\\/\\/10.70.66.200/nodo-sit\",\"routing\":100,\"broker_psps\":[],\"cis\":[],\"list_priority\":3},{\"node_id\":\"NDP001DEV\",\"description\":\"Nodo Azure PagoPA\",\"node_uri\":\"https:\\/\\/weudev.nodo.internal.dev.platform.pagopa.it/nodo\",\"routing\":0,\"broker_psps\":[],\"cis\":[\"15376371009\"],\"list_priority\":1},{\"node_id\":\"NDP004IT\",\"description\":\"Nodo PostgreSQL OnPrem Nexi\",\"node_uri\":\"https:\\/\\/10.79.20.32/sit\",\"routing\":0,\"broker_psps\":[],\"cis\":[\"88888888888\"],\"list_priority\":2}]";}" />
         <set-variable name="configuration" value="@{
+                                // catch exception!!!
                                 JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
+                                return json_configuration.ToString();
                                 JArray sorted = new JArray(json_configuration.OrderBy(obj => (int)obj["list_priority"]));
                                 return sorted.ToString();
                             }" />
@@ -76,6 +80,7 @@
         return context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
         }" />
         <!-- cache store (key = eCommerce_transactionId, value = baseNodeId) -->
+        <!-- todo fix string to int -->
         <cache-store-value key="@{
                                 var domain = context.Variables.GetValueOrDefault<string>("domain_eCommerce", "eCommerce");
                                 var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
