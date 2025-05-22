@@ -15,9 +15,9 @@ module "tls_checker" {
   keyvault_name                                             = data.azurerm_key_vault.kv.name
   keyvault_tenant_id                                        = data.azurerm_key_vault.kv.tenant_id
   kv_secret_name_for_application_insights_connection_string = "ai-connection-string"
-  workload_identity_enabled              = true
-  workload_identity_service_account_name = module.workload_identity.workload_identity_service_account_name
-  workload_identity_client_id            = module.workload_identity.workload_identity_client_id
+  workload_identity_enabled                                 = true
+  workload_identity_service_account_name                    = module.workload_identity.workload_identity_service_account_name
+  workload_identity_client_id                               = module.workload_identity.workload_identity_client_id
 }
 
 resource "helm_release" "cert_mounter" {

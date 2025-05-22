@@ -35,7 +35,7 @@ module "mock_payment_gateway" {
   plan_name = format("%s-plan-mock-payment-gateway", local.project_legacy)
   plan_type = "internal"
   # plan_id = ""
-  sku_name  = var.mock_payment_gateway_size
+  sku_name = var.mock_payment_gateway_size
 
   ip_restriction_default_action = "Allow"
 

@@ -83,6 +83,6 @@ module "mock_ec" {
 
   subnet_id = module.mock_ec_snet[0].id
 
-  tags = var.tags
+  tags                          = var.tags
   ip_restriction_default_action = "Allow"
 }
