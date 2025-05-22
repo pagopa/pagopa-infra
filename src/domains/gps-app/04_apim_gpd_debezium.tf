@@ -8,7 +8,11 @@ locals {
     subscription_required = true
     approval_required     = false
     subscriptions_limit   = 1000
-    service_url           = format("https://%s/debezium-gpd", local.gps_hostname)
+
+    description  = "Api to monitor and manage GPD Debezium Connector"
+    display_name = "GPD Debezium API"
+    path         = "gpd-debezium/api"
+    service_url  = format("https://%s/debezium-gpd", local.gps_hostname)
   }
 }
 
@@ -43,7 +47,7 @@ resource "azurerm_api_management_api_version_set" "api_gpd_debezium_api" {
   name                = format("%s-api-gpd-debezium-api", var.env_short)
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
-  display_name        = "GPD Debezium API"
+  display_name        = local.apim_gpd_debezium_api.display_name
   versioning_scheme   = "Segment"
 }
 
@@ -54,15 +58,15 @@ module "apim_api_gpd_debezium_api" {
   name                  = format("%s-api-gpd-debezium-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
   resource_group_name   = local.pagopa_apim_rg
-  product_ids           = [module.apim_gpd_debezium_product.product_id, module.apim_gpd_debezium_product.product_id]
+  product_ids           = [module.apim_gpd_debezium_product.product_id]
   subscription_required = local.apim_gpd_debezium_api.subscription_required
   api_version           = "v1"
   version_set_id        = azurerm_api_management_api_version_set.api_gpd_debezium_api.id
-  service_url           = format("https://%s", module.reporting_analysis_function.default_hostname)
+  service_url           = local.apim_gpd_debezium_api.service_url
 
-  description  = "Api GPD Debezium"
-  display_name = "GPD Debezium API pagoPA"
-  path         = "gpd-debezium/api"
+  description  = local.apim_gpd_debezium_api.description
+  display_name = local.apim_gpd_debezium_api.display_name
+  path         = local.apim_gpd_debezium_api.path
   protocols    = ["https"]
 
   content_format = "openapi"
@@ -71,6 +75,6 @@ module "apim_api_gpd_debezium_api" {
   })
 
   xml_content = templatefile("./api/debezium-api/v1/_base_policy.xml", {
-    origin = format("https://%s.%s.%s", var.cname_record_name, var.apim_dns_zone_prefix, var.external_domain)
+    hostname = local.gps_hostname
   })
 }

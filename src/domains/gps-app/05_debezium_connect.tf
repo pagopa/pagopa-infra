@@ -226,17 +226,17 @@ resource "kubectl_manifest" "healthchecker-cron" {
 }
 
 resource "kubectl_manifest" "debezium-ingress" {
-  depends_on = [
-    kubectl_manifest.kafka_connect
-  ]
+#   depends_on = [
+#     kubectl_manifest.kafka_connect
+#   ]
   force_conflicts = true
   yaml_body       = local.debezium_ingress_yaml
 }
 
 resource "kubectl_manifest" "debezium-network-policy" {
-  depends_on = [
-    kubectl_manifest.kafka_connect
-  ]
+#   depends_on = [
+#     kubectl_manifest.kafka_connect
+#   ]
   force_conflicts = true
   yaml_body       = local.debezium_network_policy_yaml
 }

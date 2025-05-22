@@ -26,7 +26,7 @@ data:
     echo "$TASKS" | while read -r TASK_ID TASK_STATE; do
       if [[ "$TASK_STATE" != "RUNNING" ]]; then
         echo "Task $TASK_ID is not running (state: $TASK_STATE). Restarting..."
-        TASK_RESTART_API="${TASK_RESTART_URL}/${TASK_ID}/restart"
+        TASK_RESTART_API="$TASK_RESTART_URL/$TASK_ID/restart"
         curl -s -X POST "$TASK_RESTART_API" && echo "Task $TASK_ID restart command issued."
       else
         echo "Task $TASK_ID is running normally."
