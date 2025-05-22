@@ -36,7 +36,7 @@ resource "helm_release" "kube_prometheus_stack" {
   chart      = "kube-prometheus-stack"
   version    = var.kube_prometheus_stack_helm.chart_version
   namespace  = "elastic-system" #kubernetes_namespace.monitoring.metadata[0].name
-  #test
+
   values = [
     "${file("${var.kube_prometheus_stack_helm.values_file}")}"
   ]
