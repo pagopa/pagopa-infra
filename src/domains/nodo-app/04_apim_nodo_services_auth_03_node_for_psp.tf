@@ -71,10 +71,10 @@ module "apim_node_for_psp_api_v1_auth" {
 
   content_format = "wsdl"
   content_value  = file("./api/nodopagamenti_api/nodeForPsp/v1/wsdl/auth/nodeForPsp.wsdl")
-  # wsdl_selector = { #TODO
-  #     service_name  = "nodeForPsp_Service"
-  #     endpoint_name = "nodeForPsp_Port"
-  # }
+  wsdl_selector = {
+      service_name  = "nodeForPsp_Service"
+      endpoint_name = "nodeForPsp_Port"
+  }
 
   xml_content = local.apim_node_for_psp_api_auth_policy_file
 
