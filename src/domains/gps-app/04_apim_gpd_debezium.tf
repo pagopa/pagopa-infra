@@ -61,7 +61,7 @@ module "apim_api_gpd_debezium_api" {
   service_url           = format("https://%s", module.reporting_analysis_function.default_hostname)
 
   description  = "Api GPD Debezium"
-  display_name = "GPDDebezium API pagoPA"
+  display_name = "GPD Debezium API pagoPA"
   path         = "gpd-debezium/api"
   protocols    = ["https"]
 
