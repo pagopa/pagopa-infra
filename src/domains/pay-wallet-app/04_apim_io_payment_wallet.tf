@@ -94,32 +94,3 @@ resource "azurerm_api_management_api_operation_policy" "post_io_wallets" {
     ecommerce_hostname = local.ecommerce_hostname
   })
 }
-
-#######################################################################
-## Fragment policy to extract user id from session token             ##
-#######################################################################
-resource "terraform_data" "sha256_pay_wallet_fragment_user_id_from_session_token" {
-  input = sha256(file("./api/fragments/_fragment_policy_user_id_from_session_token.tpl.xml"))
-}
-
-resource "azapi_resource" "pay_wallet_fragment_user_id_from_session_token" {
-
-  # provider  = azapi.apim
-  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
-  name      = "pay-wallet-user-id-from-session-token"
-  parent_id = data.azurerm_api_management.apim.id
-
-  body = jsonencode({
-    properties = {
-      description = "Component that extract userId from JWT session token"
-      format      = "rawxml"
-      value = templatefile("./api/fragments/_fragment_policy_user_id_from_session_token.tpl.xml", {
-      })
-
-    }
-  })
-
-  lifecycle {
-    ignore_changes = [output]
-  }
-}
