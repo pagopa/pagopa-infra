@@ -39,6 +39,7 @@
 
     <!-- used for convention in the cache key -->
     <set-variable name="domain" value="nodo" />
+    <set-variable name="domain_eCommerce" value="ecommerce" />
 
     <!-- the following is the default baseUrl and baseNodeId -->
     <set-variable name="baseUrl" value="{{default-nodo-backend}}" />
