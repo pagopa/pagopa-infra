@@ -60,49 +60,53 @@
     </when>
     <!-- False, False -->
     <otherwise>
+      <!-- temporary patch: eCommerce bridge to default -->
+
       <!-- LIST algorithm -->
       <set-variable name="enable_nm3_switch" value="{{enable-nm3-decoupler-switch}}" />
-      <set-variable name="dataToSet" value="@{
-var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
-var requestData = JObject.Parse((string)context.Variables["requestData"]);
-bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true");
+      <!-- Sort configuration according to list priority -->
+      <set-variable name="configuration" value="@{
+            JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
+            JArray sorted = new JArray(json_configuration.OrderBy(obj => (int)obj["list_priority"]));
+            return sorted.ToString();
+        }" />
+      <set-variable name="baseNodeId" value="@{
+            bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true");
+      var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
+      var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
 
       if (enable_nm3_switch) {
       foreach (JObject item in configuration) {
-      bool ciFound = false;
       var cis = item.GetValue("cis").ToList();
 
-      if (cis.Count == 0 || (cis.Count > 0 && cis.Contains(requestData.GetValue("ci")))) {
-      ciFound = true;
-      }
-      if (ciFound) {
-      return new JObject(
-      new JProperty("nodeId", item.GetValue("node_id").ToString()),
-      new JProperty("nodeUri", item.GetValue("node_uri").ToString()),
-      new JProperty("ttl", requestData.GetValue("ttl"))
-      ).ToString();
+      if (cis.Count == 0 || (cis.Count > 0 && cis.Contains((string)requestInfo["fiscalCode"]))) {
+      return item.GetValue("node_id").ToString();
       }
       }
       }
 
-      var baseNodeId = context.Variables.GetValueOrDefault<string>("baseNodeId", "");
-      var baseUrl = context.Variables.GetValueOrDefault<string>("baseUrl", "");
-      return new JObject(
-      new JProperty("nodeId", baseNodeId),
-      new JProperty("nodeUri", baseUrl),
-      new JProperty("ttl", requestData.GetValue("ttl"))
-      ).ToString();
+      return context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
       }" />
 
       <!-- cache store (key = eCommerce_transactionId, value = baseNodeId) -->
+      <cache-store-value key="@{
+        var domain = context.Variables.GetValueOrDefault<string>("domain_eCommerce", "eCommerce");
+        var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+
+        return domain + "_" + (string)requestInfo["transactionId"];
+      }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="{{ndp-nodo-eCommerce-transactionId-ttl}}" caching-type="external" />
     </otherwise>
   </choose>
   <!-- cache store (key = nodo_fiscalCode_noticeNumber, value = baseNodeId) -->
+  <cache-store-value key="@{
+        var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+        var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+
+        return domain + "_" + (string)requestInfo["fiscalCode"] + "_" + (string)requestInfo["noticeNumber"];
+    }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="{{ndp-nodo-fiscalCode-noticeNumber-ttl}}" caching-type="external" />
 </otherwise>
   </choose>
 
-
-
-
+  <!-- set BASE_URL -->
 
   </fragment>
