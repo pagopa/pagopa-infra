@@ -80,9 +80,7 @@ module "apim_node_for_psp_api_v1_auth" {
   xml_content = local.apim_node_for_psp_api_auth_policy_file
 
   depends_on = [
-    module.apim_nodo_dei_pagamenti_product_auth,
-    azurerm_api_management_named_value.ndp_eCommerce_trxId_ttl,
-    azurerm_api_management_named_value.ndp_nodo_fc_nav_ttl
+    module.apim_nodo_dei_pagamenti_product_auth
   ]
 }
 

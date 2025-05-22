@@ -64,6 +64,8 @@
 
       <!-- LIST algorithm -->
       <set-variable name="enable_nm3_switch" value="{{enable-nm3-decoupler-switch}}" />
+      <set-variable name="ndp_eCommerce_transactionId_ttl" value="{{ndp-eCommerce-transactionId-ttl}}" />
+      <set-variable name="ndp_nodo_fiscalCode_noticeNumber_ttl" value="{{ndp-nodo-fiscalCode-noticeNumber-ttl}}" />
       <!-- Sort configuration according to list priority -->
       <set-variable name="configuration" value="@{
             JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
@@ -94,7 +96,7 @@
         var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
 
         return domain + "_" + (string)requestInfo["transactionId"];
-      }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="{{ndp-nodo-eCommerce-transactionId-ttl}}" caching-type="external" />
+      }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@((int)context.Variables.GetValueOrDefault("ndp_eCommerce_transactionId_ttl", 86400))" caching-type="external" />
     </otherwise>
   </choose>
   <!-- cache store (key = nodo_fiscalCode_noticeNumber, value = baseNodeId) -->
@@ -103,7 +105,7 @@
         var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
 
         return domain + "_" + (string)requestInfo["fiscalCode"] + "_" + (string)requestInfo["noticeNumber"];
-    }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="{{ndp-nodo-fiscalCode-noticeNumber-ttl}}" caching-type="external" />
+    }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@((int)context.Variables.GetValueOrDefault("ndp_nodo_fiscalCode_noticeNumber_ttl", 5184000))" caching-type="external" />
 </otherwise>
   </choose>
 
