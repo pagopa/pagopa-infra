@@ -1,5 +1,4 @@
 <fragment>
-
   <!-- extract info from request -->
   <set-variable name="requestInfo" value="@{
         // retrieve data from request body
@@ -18,9 +17,8 @@
   var fiscalCode = primitive.Descendants("fiscalCode").FirstOrDefault().Value;
   var noticeNumber = primitive.Descendants("noticeNumber").FirstOrDefault().Value;
 
-  requestInfo.Add(new JProperty("fiscalCode", fiscalCode));
-  requestInfo.Add(new JProperty("noticeNumber", noticeNumber));
-
+  requestInfo["fiscalCode"] = fiscalCode;
+  requestInfo["noticeNumber"] = noticeNumber;
   }
   }
   catch (Exception e) {
@@ -30,15 +28,41 @@
   }" />
 
   <!-- the requestInfo MUST contains fiscalCode, noticeNumber and transactionId info -->
+  <cache-lookup-value key="@{
+        var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+        var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
 
-  <!--
-<cache-lookup-value key="@{
-      var domain = (string)context.Variables["domain"];
-      var requestData = JObject.Parse((string)context.Variables["requestData"]);
-      return domain + "_" + (string)requestData["key"];
-      }" variable-name="nodeId" default-value="LIST" caching-type="external" />
-  -->
+        return domain + "_" + (string)requestInfo["fiscalCode"] + "_" + (string)requestInfo["noticeNumber"];
+      }" variable-name="nodo_fiscalCode_noticeNumber" default-value="NONE" caching-type="external" />
+
+  <cache-lookup-value key="@{
+        var domain = context.Variables.GetValueOrDefault<string>("domain_eCommerce", "eCommerce");
+        var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+
+        return domain + "_" + (string)requestInfo["transactionId"];
+      }" variable-name="eCommerce_transactionId" default-value="NONE" caching-type="external" />
 
 
+  <!-- Setting baseNodeId based on nodo_fiscalCode_noticeNumber and eCommerce_transactionId values. NONE is False, !NONE is True -->
+  <choose>
+    <!-- True, * -->
+    <when condition="@(!context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_noticeNumber", "NONE").Equals("NONE"))">
+    <!-- set baseNodeId -->
+    <set-variable name="baseNodeId" value="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_noticeNumber", "NONE"))" />
+  </when>
+  <!-- False, * -->
+  <otherwise>
+    <choose>
+      <!-- False, True -->
+      <when condition="Boolean expression | Boolean constant">
+        <!— one or more policy statements to be applied if the above condition is true  -->
+      </when>
+      <!-- False, False -->
+      <otherwise>
+        <!— one or more policy statements to be applied if the above condition is true  -->
+      </otherwise>
+    </choose>
+  </otherwise>
+</choose>
 
-</fragment>
+  </fragment>
