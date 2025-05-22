@@ -13,7 +13,8 @@ locals {
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_psp_api_auth" {
-  name                  = format("%s-node-for-psp-api-auth-2", var.env_short) # TODO
+  # name                  = format("%s-node-for-psp-api-auth-2", var.env_short) # TODO
+  name                  = "${var.env_short}-node-for-psp-api-auth-2"
   api_management_name   = data.azurerm_api_management.apim.name
   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
   display_name          = "Node for PSP (AUTH 2.0)" #TODO [FCADAC] remove 2.0
@@ -79,8 +80,29 @@ module "apim_node_for_psp_api_v1_auth" {
   xml_content = local.apim_node_for_psp_api_auth_policy_file
 
   depends_on = [
-    module.apim_nodo_dei_pagamenti_product_auth]
+    module.apim_nodo_dei_pagamenti_product_auth,
+    azurerm_api_management_named_value.ndp_eCommerce_trxId_ttl,
+    azurerm_api_management_named_value.ndp_nodo_fc_nav_ttl
+  ]
 }
+
+
+###### verifyPaymentNotice
+# resource "azurerm_api_management_api_operation_policy" "verifyPaymentNotice_policy_auth" {
+#
+#   api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
+#   api_management_name   = data.azurerm_api_management.apim.name
+#   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
+#   operation_id        = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0"
+#
+#   #tfsec:ignore:GEN005
+#   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
+#     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+#     urlenvpath                = var.env_short
+#     url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
+#   })
+# }
+
 
 
 # resource "azurerm_api_management_api_policy" "apim_node_for_psp_policy_auth" {

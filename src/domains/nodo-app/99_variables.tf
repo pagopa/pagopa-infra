@@ -478,3 +478,15 @@ variable "gh_runner_job_location" {
   description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
   default     = "westeurope"
 }
+
+variable "decoupler_configuration" {
+  type = object({
+    ndp_eCommerce_trxId_ttl    = number
+    ndp_nodo_fc_nav_ttl = number
+  })
+
+  default = {
+    ndp_eCommerce_trxId_ttl    = 86400  // 1 day in seconds
+    ndp_nodo_fc_nav_ttl        = 5184000 // 60 days in seconds
+  }
+}
