@@ -1,0 +1,30 @@
+<fragment>
+  <!-- extract info from request -->
+  <set-variable name="requestInfo" value="@{
+        // retrieve data from request body
+        XElement request = context.Request.Body.As<XElement>(preserveContent: true);
+        XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
+
+        var requestInfo = new JObject();
+
+        requestInfo.Add(new JProperty("fiscalCode", ""));
+  requestInfo.Add(new JProperty("noticeNumber", ""));
+  requestInfo.Add(new JProperty("transactionId", ""));
+
+  try {
+  if (body != null ) {
+  XElement primitive = (XElement) body.FirstNode;
+  var fiscalCode = primitive.Descendants("fiscalCode").FirstOrDefault().Value;
+  var noticeNumber = primitive.Descendants("noticeNumber").FirstOrDefault().Value;
+
+  requestInfo["fiscalCode"] = fiscalCode;
+  requestInfo["noticeNumber"] = noticeNumber;
+  }
+  }
+  catch (Exception e) {
+  // do nothing
+  }
+  return requestInfo.ToString();
+  }" />
+
+  </fragment>

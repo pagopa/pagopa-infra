@@ -9,6 +9,7 @@ locals {
   nuova_connettivita_policy_file = file("./api_product/nodo_pagamenti_api/nuova_connettivita_policy.xml")
 
   start_payment_inbound_policy_file = file("./api/nodopagamenti_api/decoupler/start_payment_inbound_policy.xml")
+  extract_fc_nav_policy_file = file("./api/nodopagamenti_api/decoupler/extract_fiscalCode_noticeNumber_policy.xml")
 }
 
 resource "terraform_data" "sha256_ndphost_header" {
@@ -84,5 +85,29 @@ resource "azapi_resource" "start_payment_inbound_policy" {
     azurerm_api_management_named_value.ndp_eCommerce_trxId_ttl,
     azurerm_api_management_named_value.ndp_nodo_fc_nav_ttl
     // #TODO [FCADAC] add data on enable_nm3_switch
+  ]
+}
+
+resource "terraform_data" "sha256_extract_fc_nav_policy" {
+  input = sha256(local.extract_fc_nav_policy_file)
+}
+resource "azapi_resource" "extract_fc_nav_policy" {
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "ndp-extract-fiscalCode-noticeNumber"
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Fragment to create requestInfo needed for start_payment_inbound_policy"
+      format      = "rawxml"
+      value       = local.extract_fc_nav_policy_file
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+
+  depends_on = [
   ]
 }
