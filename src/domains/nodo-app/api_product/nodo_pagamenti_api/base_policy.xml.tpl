@@ -12,7 +12,9 @@
 -->
 <policies>
   <inbound>
+    <!-- product before base policy -->
     <base/>
+    <!-- product after base policy -->
 
     <!-- set ndphost header -->
     <include-fragment fragment-id="ndphost-header" />
@@ -48,16 +50,24 @@
     <set-variable name="baseUrl" value="{{default-nodo-backend}}" />
     <set-variable name="baseNodeId" value="{{default-nodo-id}}" />
 
+    <set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction", "NONE"))" />
+
     <!-- set backend service url -->
     <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
   </inbound>
   <backend>
+    <!-- product before base policy -->
     <base/>
+    <!-- product after base policy -->
   </backend>
   <outbound>
+    <!-- product before base policy -->
     <base/>
+    <!-- product after base policy -->
   </outbound>
   <on-error>
+    <!-- product before base policy -->
     <base/>
+    <!-- product after base policy -->
   </on-error>
 </policies>
