@@ -13,6 +13,12 @@
 -target="terraform_data.sha256_extract_fc_nav_policy" \
 -target=azapi_resource.extract_fc_nav_policy \
 -target=terraform_data.sha256_verifyPaymentNotice_v1_policy_auth \
--target=azurerm_api_management_api_operation_policy.verifyPaymentNotice_v1_policy_auth
+-target=azurerm_api_management_api_operation_policy.verifyPaymentNotice_v1_policy_auth \
+-target=terraform_data.sha256_activePaymentNotice_v1_policy_auth \
+-target=azurerm_api_management_api_operation_policy.activePaymentNotice_v1_policy_auth \
+-target=terraform_data.sha256_verificatore_inbound_policy \
+-target=azapi_resource.verificatore_inbound_policy \
+-target=terraform_data.sha256_verificatore_outbound_policy \
+-target=azapi_resource.verificatore_outbound_policy
 
 
