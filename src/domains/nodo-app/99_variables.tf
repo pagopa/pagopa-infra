@@ -483,10 +483,12 @@ variable "decoupler_configuration" {
   type = object({
     ndp_eCommerce_trxId_ttl = number
     ndp_nodo_fc_nav_ttl     = number
+    ndp_nodo_fc_iuv_ttl     = number
   })
 
   default = {
     ndp_eCommerce_trxId_ttl = 86400   // 1 day in seconds
+    ndp_nodo_fc_iuv_ttl     = 5184000 // 60 days in seconds
     ndp_nodo_fc_nav_ttl     = 5184000 // 60 days in seconds
   }
 }
