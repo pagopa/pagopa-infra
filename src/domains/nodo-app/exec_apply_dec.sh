@@ -19,6 +19,10 @@
 -target=terraform_data.sha256_verificatore_inbound_policy \
 -target=azapi_resource.verificatore_inbound_policy \
 -target=terraform_data.sha256_verificatore_outbound_policy \
--target=azapi_resource.verificatore_outbound_policy
+-target=azapi_resource.verificatore_outbound_policy \
+-target=terraform_data.sha256_wisp_activate_inbound_policy \
+-target=azapi_resource.wisp_activate_inbound_policy \
+-target=terraform_data.sha256_wisp_activate_outbound_policy \
+-target=azapi_resource.wisp_activate_outbound_policy
 
 

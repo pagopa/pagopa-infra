@@ -5,6 +5,7 @@ locals {
   apim_node_for_psp_api_auth_policy_file = file("./api/nodopagamenti_api/nodeForPsp/v1/base_policy.xml")
   verifyPaymentNotice_v1_policy_file     = file("./api/nodopagamenti_api/nodeForPsp/v1/base_policy_verifyPaymentNotice.xml")
   activePaymentNotice_v1_policy_file     = file("./api/nodopagamenti_api/nodeForPsp/v1/base_policy_activePaymentNotice.xml")
+  activePaymentNoticeV2_v1_policy_file     = file("./api/nodopagamenti_api/nodeForPsp/v1/base_policy_activePaymentNoticeV2.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_psp_api_auth" {
@@ -80,11 +81,25 @@ resource "azurerm_api_management_api_operation_policy" "activePaymentNotice_v1_p
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   # operation_id          = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0" #TODO [FCADAC] replace
-  # operation_id = var.env_short == "d" ? "683085050a23231b90313d95" : ""
-  operation_id = "683085050a23231b90313d95"
+  operation_id = var.env_short == "d" ? "683085050a23231b90313d95" : ""
 
   #tfsec:ignore:GEN005
   xml_content = local.activePaymentNotice_v1_policy_file
+}
+
+###### activatePaymentNoticeV2
+resource "terraform_data" "sha256_activePaymentNoticeV2_v1_policy_auth" {
+  input = sha256(local.activePaymentNoticeV2_v1_policy_file)
+}
+resource "azurerm_api_management_api_operation_policy" "activePaymentNoticeV2_v1_policy_auth" {
+  api_name            = module.apim_node_for_psp_api_v1_auth.name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  # operation_id          = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0" #TODO [FCADAC] replace
+  operation_id = var.env_short == "d" ? "683085050a23231b90313d9a" : ""
+
+  #tfsec:ignore:GEN005
+  xml_content = local.activePaymentNoticeV2_v1_policy_file
 }
 
 

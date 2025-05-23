@@ -17,6 +17,8 @@ locals {
   end_payment_cache_removal_outbound_policy_file  = file("./api/nodopagamenti_api/decoupler/end_payment_cache_removal_outbound_policy.xml")
   verificatore_inbound_policy_file                = file("./api/nodopagamenti_api/decoupler/verificatore_inbound_policy.xml")
   verificatore_outbound_policy_file               = file("./api/nodopagamenti_api/decoupler/verificatore_outbound_policy.xml")
+  wisp_activate_inbound_policy_file               = file("./api/nodopagamenti_api/decoupler/wisp_activate_inbound_policy.xml")
+  wisp_activate_outbound_policy_file               = file("./api/nodopagamenti_api/decoupler/wisp_activate_outbound_policy.xml")
 }
 
 resource "terraform_data" "sha256_ndphost_header" {
@@ -286,6 +288,56 @@ resource "azapi_resource" "verificatore_outbound_policy" {
       description = "Fragment to handle outbound logic regarding verificatore"
       format      = "rawxml"
       value       = local.verificatore_outbound_policy_file
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+
+  depends_on = [
+  ]
+}
+
+# Fragment: ndp-wisp-activate-inbound-policy
+resource "terraform_data" "sha256_wisp_activate_inbound_policy" {
+  input = sha256(local.wisp_activate_inbound_policy_file)
+}
+resource "azapi_resource" "wisp_activate_inbound_policy" {
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "ndp-wisp-activate-inbound-policy"
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Fragment to handle inbound logic regarding wisp dismantling"
+      format      = "rawxml"
+      value       = local.wisp_activate_inbound_policy_file
+    }
+  })
+
+  lifecycle {
+    ignore_changes = [output]
+  }
+
+  depends_on = [
+  ]
+}
+
+# Fragment: ndp-wisp-activate-outbound-policy
+resource "terraform_data" "sha256_wisp_activate_outbound_policy" {
+  input = sha256(local.wisp_activate_outbound_policy_file)
+}
+resource "azapi_resource" "wisp_activate_outbound_policy" {
+  type      = "Microsoft.ApiManagement/service/policyFragments@2022-04-01-preview"
+  name      = "ndp-wisp-activate-outbound-policy"
+  parent_id = data.azurerm_api_management.apim.id
+
+  body = jsonencode({
+    properties = {
+      description = "Fragment to handle outbound logic regarding wisp dismantling"
+      format      = "rawxml"
+      value       = local.wisp_activate_outbound_policy_file
     }
   })
 
