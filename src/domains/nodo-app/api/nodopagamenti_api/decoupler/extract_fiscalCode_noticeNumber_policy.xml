@@ -1,33 +1,39 @@
 <fragment>
-  <!-- extract info from request -->
-  <set-variable name="requestInfo" value="@{
-        // retrieve data from request body
-        XElement request = context.Request.Body.As<XElement>(preserveContent: true);
-        XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
 
-        var requestInfo = new JObject();
+	<!-- ######################################################### -->
+	<!-- START NDP-EXTRACT-FISCALCODE-NOTICENUMBER-POLICY FRAGMENT -->
+	<!-- ######################################################### -->
 
-        requestInfo.Add(new JProperty("fiscalCode", ""));
-  requestInfo.Add(new JProperty("noticeNumber", ""));
-  requestInfo.Add(new JProperty("idChannel", ""));
-  requestInfo.Add(new JProperty("transactionId", ""));
+	<!-- Extract RequestInfo from request -->
+	<set-variable name="requestInfo" value="@{
 
-  try {
-  if (body != null ) {
-  XElement primitive = (XElement) body.FirstNode;
-  var fiscalCode = primitive.Descendants("fiscalCode").FirstOrDefault().Value;
-  var noticeNumber = primitive.Descendants("noticeNumber").FirstOrDefault().Value;
-  var idChannel = primitive.Descendants("idChannel").FirstOrDefault().Value;
+		// Retrieve data from request body
+		XElement request = context.Request.Body.As<XElement>(preserveContent: true);
+		XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
 
-  requestInfo["fiscalCode"] = fiscalCode;
-  requestInfo["noticeNumber"] = noticeNumber;
-  requestInfo["idChannel"] = idChannel;
-  }
-  }
-  catch (Exception e) {
-  // do nothing
-  }
-  return requestInfo.ToString();
-  }" />
+		// Generating RequestInfo object
+		var requestInfo = new JObject();
+		requestInfo.Add(new JProperty("fiscalCode", ""));
+		requestInfo.Add(new JProperty("noticeNumber", ""));
+		requestInfo.Add(new JProperty("idChannel", ""));
+		requestInfo.Add(new JProperty("transactionId", ""));
 
-  </fragment>
+		try {
+			// If body is not null, populate RequestInfo content
+			if (body != null ) {
+			XElement primitive = (XElement) body.FirstNode;
+				requestInfo["fiscalCode"] = primitive.Descendants("fiscalCode").FirstOrDefault().Value;
+				requestInfo["noticeNumber"] = primitive.Descendants("noticeNumber").FirstOrDefault().Value;
+				requestInfo["idChannel"] = primitive.Descendants("idChannel").FirstOrDefault().Value;
+			}
+		}
+		catch (Exception e) {
+			// do nothing
+		}
+		return requestInfo.ToString();
+	}" />
+
+	<!-- ####################################################### -->
+	<!-- END NDP-EXTRACT-FISCALCODE-NOTICENUMBER-POLICY FRAGMENT -->
+	<!-- ####################################################### -->
+</fragment>
