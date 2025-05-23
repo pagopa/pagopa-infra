@@ -163,7 +163,7 @@ locals {
 # 🔱 APP GW Integration
 #
 module "app_gw_integration" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v7.50.0"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_gateway?ref=v8.93.1"
 
   resource_group_name = module.vnet_integration.resource_group_name
   location            = var.location

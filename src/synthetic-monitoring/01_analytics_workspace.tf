@@ -17,7 +17,8 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
 
   lifecycle {
     ignore_changes = [
-      sku
+      sku,
+      reservation_capacity_in_gb_per_day
     ]
   }
 }
