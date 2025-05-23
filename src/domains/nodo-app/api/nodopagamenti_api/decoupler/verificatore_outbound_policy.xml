@@ -1,0 +1,4 @@
+<fragment>
+  <!-- on activatePaymentNotice response delete cache attvazionePrenotata #2 -->
+  <cache-remove-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" caching-type="internal" />
+</fragment>
