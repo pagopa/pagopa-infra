@@ -4,7 +4,7 @@
 
 module "apim_mock_ec_product" {
   count  = var.mock_ec_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "product-mock-ec"
   display_name = "product-mock-ec"
@@ -32,7 +32,7 @@ resource "azurerm_api_management_api_version_set" "mock_ec_api" {
 
 module "apim_mock_ec_api" {
   count  = var.mock_ec_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-mock-ec-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
@@ -77,7 +77,7 @@ resource "azurerm_api_management_api_operation_policy" "apim_mock_ec_api_policy"
 #############################
 module "apim_secondary_mock_ec_product" {
   count  = var.mock_ec_secondary_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "product-secondary-mock-ec"
   display_name = "product-secondary-mock-ec"
@@ -105,7 +105,7 @@ resource "azurerm_api_management_api_version_set" "secondary_mock_ec_api" {
 
 module "apim_secondary_mock_ec_api" {
   count  = var.mock_ec_secondary_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-secondary-mock-ec-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
@@ -151,7 +151,7 @@ resource "azurerm_api_management_api_version_set" "secondary_mock_ec_forwarder_a
 
 module "apim_mock_ec_forwarder_api" {
   count  = var.env_short != "p" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v2.1.13"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-mock-ec-forwarder-api", var.env_short)
   api_management_name   = local.pagopa_apim_name

@@ -9,7 +9,7 @@ resource "azurerm_api_management_api_version_set" "mocker_core_api" {
 
 module "apim_mocker_core_api_v1" {
   count  = var.env_short != "p" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.7.0"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-mocker-api", var.env_short)
   api_management_name   = local.pagopa_apim_name
