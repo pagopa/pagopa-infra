@@ -22,11 +22,19 @@
 	}" />
 	<cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken_key", "NONE"))" variable-name="nodo_paymentToken" default-value="NONE" caching-type="external" />
 
-  <!-- Include the code in these comments when new service will be deployed -->
-<!--	<choose>-->
-		<!-- If payment token is not found, APIM will call internal service that provide to forward this request to all Nodo instances -->
-<!--		<when condition="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE").Equals("NONE"))">-->
+	<choose>
 
+		<!-- If payment token is found, then set the baseNodeId reference for Base URL setting -->
+		<when condition="@(!context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE").Equals("NONE"))">
+			<set-variable name="baseNodeId" value="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE"))" />
+		</when>
+
+		<!-- If payment token is not found, APIM will call internal service that provide to forward this request to all Nodo instances -->
+		<otherwise>
+
+			<trace source="forward_to_all_nodes_skipped">FORWARD_TO_ALL_NODES currently skipped</trace>
+
+			<!-- !!!!!! INCLUDE THE CODE IN THESE COMMENTS WHEN NEW SERVICE WILL BE DEPLOYED !!!!!! -->
 			<!-- Call internal service with received request -->
 <!--			<send-request mode="new" response-variable-name="merged_sendPaymentResult_response" timeout="8" ignore-error="false">-->
 <!--				<set-url>https://URL_TO_NEW_SERVICE_PLACEHOLDER</set-url>-->
@@ -50,7 +58,8 @@
 <!--					}-->
 <!--				</set-body>-->
 <!--			</return-response>-->
-<!--		</when>-->
-<!--	</choose>-->
+
+		</otherwise>
+	</choose>
 
 </fragment>
