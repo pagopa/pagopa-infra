@@ -1,8 +1,8 @@
 <fragment>
 
-	<!-- ######################################################### -->
-	<!-- START NDP-EXTRACT-FISCALCODE-NOTICENUMBER-POLICY FRAGMENT -->
-	<!-- ######################################################### -->
+	<!-- ##################################################### -->
+	<!-- START EXTRACT-FISCALCODE-NOTICENUMBER-POLICY FRAGMENT -->
+	<!-- ##################################################### -->
 
 	<!-- Extract RequestInfo from request -->
 	<set-variable name="requestInfo" value="@{
@@ -33,7 +33,7 @@
 		return requestInfo.ToString();
 	}" />
 
-	<!-- ####################################################### -->
-	<!-- END NDP-EXTRACT-FISCALCODE-NOTICENUMBER-POLICY FRAGMENT -->
-	<!-- ####################################################### -->
+	<!-- ################################################### -->
+	<!-- END EXTRACT-FISCALCODE-NOTICENUMBER-POLICY FRAGMENT -->
+	<!-- ################################################### -->
 </fragment>
