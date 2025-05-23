@@ -11,6 +11,8 @@
 -target="terraform_data.sha256_apim_node_for_psp_api_v1_auth" \
 -target="module.apim_node_for_psp_api_v1_auth" \
 -target="terraform_data.sha256_extract_fc_nav_policy" \
--target=azapi_resource.extract_fc_nav_policy
+-target=azapi_resource.extract_fc_nav_policy \
+-target=terraform_data.sha256_verifyPaymentNotice_v1_policy_auth \
+-target=azurerm_api_management_api_operation_policy.verifyPaymentNotice_v1_policy_auth
 
 

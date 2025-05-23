@@ -3,13 +3,7 @@
 # ############################
 locals {
   apim_node_for_psp_api_auth_policy_file = file("./api/nodopagamenti_api/nodeForPsp/v1/base_policy.xml")
-
-
-  #   display_name          = "Node for PSP WS (NM3) (AUTH)"
-  #   description           = "Web services to support PSP in payment activations, defined in nodeForPsp.wsdl"
-  #   path                  = "nodo-auth/node-for-psp"
-  #   service_url           = null
-  # }
+  verifyPaymentNotice_v1_policy_file = ("./api/nodopagamenti_api/nodeForPsp/v1/base_policy_verifyPaymentNotice.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_psp_api_auth" {
@@ -70,6 +64,9 @@ module "apim_node_for_psp_api_v1_auth" {
 
   service_url = null
 
+  # api_type          = "soap"
+  # soap_pass_through = true
+
   content_format = "wsdl"
   content_value  = file("./api/nodopagamenti_api/nodeForPsp/v1/wsdl/auth/nodeForPsp.wsdl")
   wsdl_selector = {
@@ -86,20 +83,25 @@ module "apim_node_for_psp_api_v1_auth" {
 
 
 ###### verifyPaymentNotice
-# resource "azurerm_api_management_api_operation_policy" "verifyPaymentNotice_policy_auth" {
-#
-#   api_name            = azurerm_api_management_api.apim_node_for_psp_api_v1_auth.name
-#   api_management_name   = data.azurerm_api_management.apim.name
-#   resource_group_name   = data.azurerm_api_management.apim.resource_group_name
-#   operation_id        = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0"
-#
-#   #tfsec:ignore:GEN005
-#   xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
-#     is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
-#     urlenvpath                = var.env_short
-#     url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
-#   })
-# }
+resource "terraform_data" "sha256_verifyPaymentNotice_v1_policy_auth" {
+  input = sha256(local.verifyPaymentNotice_v1_policy_file)
+}
+resource "azurerm_api_management_api_operation_policy" "verifyPaymentNotice_v1_policy_auth" {
+  api_name              = module.apim_node_for_psp_api_v1_auth.name
+  api_management_name   = data.azurerm_api_management.apim.name
+  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
+  operation_id          = var.env_short == "d" ? "637608a0c257810fc0ecfe1cAAA" : var.env_short == "u" ? "636cb7e439519a17ec9bf98bAAA" : "63b6e2daea7c4a25440fdaa0AAA" #TODO [FCADAC] remove AAA
+
+  #tfsec:ignore:GEN005
+  xml_content = local.verifyPaymentNotice_v1_policy_file
+  #TODO [FCADAC] trasformare tutto in namedValue -> url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
+
+  # xml_content = templatefile("./api/nodopagamenti_api/nodeForPsp/v1/activate_nm3.xml", {
+  #   is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
+  #   urlenvpath                = var.env_short
+  #   url_aks                   = var.env_short == "p" ? "weu${var.env}.apiconfig.internal.platform.pagopa.it" : "weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
+  # })
+}
 
 
 
