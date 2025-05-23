@@ -105,8 +105,8 @@ locals {
 
   debezium_ingress_yaml = templatefile("${path.module}/yaml/debezium-ingress.yaml", {
     namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
-    host = "${var.location_short}${var.env_short}.gps.internal.${var.env_short}.platform.pagopa.it"
-    secret = "${var.location_short}${var.env_short}-gps-internal-${var.env_short}-platform-pagopa-it"
+    host = local.gps_hostname
+    secret = "${var.location_short}${var.env}-gps-internal-${var.env}-platform-pagopa-it"
   })
 
 }

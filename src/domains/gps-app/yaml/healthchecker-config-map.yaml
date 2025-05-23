@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: health-checker-script
+  name: debezium-health-checker-script
   namespace: ${namespace}
 data:
   check_kafka_connect.sh: |

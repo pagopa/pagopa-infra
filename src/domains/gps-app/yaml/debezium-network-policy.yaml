@@ -17,6 +17,9 @@ spec:
         - podSelector:
             matchLabels:
               strimzi.io/kind: cluster-operator
+        - podSelector:
+            matchLabels:
+              app: debezium-health-checker-cron
       ports:
         - port: 8083
           protocol: TCP

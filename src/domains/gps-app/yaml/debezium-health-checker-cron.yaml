@@ -3,6 +3,7 @@ kind: CronJob
 metadata:
   name: debezium-health-checker-cron
   namespace: ${namespace}
+  app: debezium-health-checker-cron
 spec:
   schedule: "*/5 * * * *"  # Runs every 5 minutes
   successfulJobsHistoryLimit: 0
@@ -23,4 +24,4 @@ spec:
           volumes:
           - name: script-volume
             configMap:
-              name: health-checker-script
+              name: debezium-health-checker-script
