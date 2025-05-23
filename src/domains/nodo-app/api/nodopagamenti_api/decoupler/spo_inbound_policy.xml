@@ -1,4 +1,7 @@
 <fragment>
+	<!-- ################################# -->
+	<!-- START SPO-INBOUND-POLICY FRAGMENT -->
+	<!-- ################################# -->
 
 	<!-- Extracting payment token value from request -->
 	<set-variable name="paymentToken" value="@{
@@ -62,4 +65,7 @@
 		</otherwise>
 	</choose>
 
+	<!-- ############################### -->
+	<!-- END SPO-INBOUND-POLICY FRAGMENT -->
+	<!-- ############################### -->
 </fragment>

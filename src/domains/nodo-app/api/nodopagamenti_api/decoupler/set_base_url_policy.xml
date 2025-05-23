@@ -1,4 +1,7 @@
 <fragment>
+	<!-- ################################# -->
+	<!-- START SET-BASE-URL-POLICY FRAGMENT -->
+	<!-- ################################# -->
 
 	<!-- Replacing base URL value, searching the correct value from configured Nodo instances -->
 	<set-variable name="baseUrl" value="@{
@@ -18,4 +21,7 @@
 		return context.Variables.GetValueOrDefault<string>("baseUrl", "NONE");
 	}" />
 
+	<!-- ################################ -->
+	<!-- END SET-BASE-URL-POLICY FRAGMENT -->
+	<!-- ################################ -->
 </fragment>
