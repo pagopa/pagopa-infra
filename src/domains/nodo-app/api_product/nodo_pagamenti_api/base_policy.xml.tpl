@@ -37,6 +37,9 @@
       </otherwise>
     </choose>
 
+    <!-- Loading decoupler configuration -->
+    <include-fragment fragment-id="decoupler-configuration" />
+
     <!-- used for convention in the cache key -->
     <set-variable name="domain" value="nodo" />
     <set-variable name="domain_eCommerce" value="ecommerce" />
