@@ -17,6 +17,10 @@
 -target=azurerm_api_management_api_operation_policy.activePaymentNoticeV2_v1_policy_auth \
 -target=terraform_data.sha256_activeIOPayment_v1_policy_auth \
 -target=azurerm_api_management_api_operation_policy.activeIOPayment_v1_policy_auth \
+-target=terraform_data.sha256_sendPaymentOutcome_v1_policy_auth \
+-target=azurerm_api_management_api_operation_policy.sendPaymentOutcome_v1_policy_auth \
+-target=terraform_data.sha256_sendPaymentOutcomeV2_v1_policy_auth \
+-target=azurerm_api_management_api_operation_policy.sendPaymentOutcomeV2_v1_policy_auth \
 -target=azurerm_api_management_policy_fragment.nuova_connettivita_policy \
 -target=azurerm_api_management_policy_fragment.set_base_url_policy \
 -target=azurerm_api_management_policy_fragment.start_payment_inbound_policy \

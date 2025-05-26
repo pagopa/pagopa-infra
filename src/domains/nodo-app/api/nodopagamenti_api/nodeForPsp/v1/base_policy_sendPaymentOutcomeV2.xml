@@ -1,0 +1,27 @@
+'<policies>
+    <inbound>
+        <!-- operation before base policy -->
+        <base />
+        <!-- operation after base policy -->
+        <include-fragment fragment-id="ndp-spo-inbound-policy" />
+        <include-fragment fragment-id="ndp-set-base-url-policy" />
+
+    </inbound>
+    <backend>
+        <!-- operation before base policy -->
+        <base />
+        <!-- operation after base policy -->
+    </backend>
+    <outbound>
+        <!-- operation before base policy -->
+        <base />
+        <!-- operation after base policy -->
+        <!-- estrai tokens in split da variabile "paymentTokens", esegui fragment x5 volte -->
+        <include-fragment fragment-id="ndp-end-payment-cache-removal-outbound-policy" />
+    </outbound>
+    <on-error>
+        <!-- operation before base policy -->
+        <base />
+        <!-- operation after base policy -->
+    </on-error>
+</policies>
