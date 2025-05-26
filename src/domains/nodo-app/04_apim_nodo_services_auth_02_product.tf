@@ -44,7 +44,7 @@ module "apim_nodo_dei_pagamenti_product_auth" {
   policy_xml = local.base_policy_nodo
 
   depends_on = [
-    azapi_resource.nuova_connettivita_policy
+    azurerm_api_management_policy_fragment.nuova_connettivita_policy
   ]
 }
 
