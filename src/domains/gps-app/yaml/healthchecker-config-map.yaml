@@ -6,6 +6,8 @@ metadata:
 data:
   check_kafka_connect.sh: |
     #!/bin/bash
+    echo "Debezium health checker monitor start."
+
     STATUS_URL="http://debezium-connect-cluster-connect-api:8083/connectors/debezium-connector-postgres/status"
     CONNECTOR_RESTART_URL="http://debezium-connect-cluster-connect-api:8083/connectors/debezium-connector-postgres/restart"
     TASK_RESTART_URL="http://debezium-connect-cluster-connect-api:8083/connectors/debezium-connector-postgres/tasks"
@@ -21,7 +23,7 @@ data:
       echo "Connector is running normally."
     fi
 
-    TASKS=$(echo "$STATUS_RESPONSE" | grep -o '"id":[0-9]*,"state":"[^"]*"' | sed 's/"id"://;s/"state":"//;s/,/ /')
+    TASKS=$(echo "$STATUS_RESPONSE" | grep -o '"id":[0-9]*,"state":"[^"]*"' | sed 's/"id"://;s/"state":"//;s/,/ /;s/"/ /')
 
     echo "$TASKS" | while read -r TASK_ID TASK_STATE; do
       if [[ "$TASK_STATE" != "RUNNING" ]]; then
@@ -32,3 +34,5 @@ data:
         echo "Task $TASK_ID is running normally."
       fi
     done
+
+    echo "Debezium health checker monitor end."
