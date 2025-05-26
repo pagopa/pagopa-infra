@@ -76,12 +76,31 @@
 	}" />
 
 
-  	<cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", "NONE"))" variable-name="nodo_fiscalCode_iuv" default-value="NONE" caching-type="external" />
+	<cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", "NONE"))" variable-name="nodo_fiscalCode_iuv" default-value="NONE" caching-type="external" />
 
 	<choose>
 		<when condition="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv", "NONE").Equals("NONE"))">
 
-			<!-- insert here LIST ALGORITHM and set baseNodeId -->
+			<!-- Executing LIST algorithm, setting baseNodeId -->
+			<set-variable name="baseNodeId" value="@{
+				try {
+					// Extracting configuration from parsed JSON
+					JArray jsonConfiguration = JArray.Parse(((string) context.Variables["configuration"]));
+					JArray sortedConfiguration = new JArray(jsonConfiguration.OrderBy(obj => (int)obj["list_priority"]));
+					var requestInfo = JObject.Parse((string)context.Variables["rptRequestInfo"]);
+
+					// Cycling for each configured node and select the related baseNodeId
+					foreach (JObject item in sortedConfiguration) {
+						var cis = item.GetValue("cis").ToList();
+						if (cis.Count == 0 || (cis.Count > 0 && cis.Contains((string)requestInfo["fiscalCode"]))) {
+							return item.GetValue("node_id").ToString();
+						}
+					}
+				} catch (Exception e) {
+					// Nothing to do
+				}
+				return context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
+			}" />
 
 			<!-- Store element in cache with fiscal code and IUV as key and the Node instance as value -->
 			<set-variable name="ndp_nodo_fiscalCode_iuv_ttl" value="{{ndp-nodo-fiscalCode-iuv-ttl}}" />
@@ -90,6 +109,7 @@
 			<!-- If the primitive is an "Old PA"-related one, store element in cache with fiscal code and notice number as key and the Node instance as value -->
 			<choose>
 				<when condition="@(context.Variables.GetValueOrDefault<bool>("isOldPaRPTPrimitive", false))">
+					<set-variable name="ndp_nodo_fiscalCode_noticeNumber_ttl" value="{{ndp-nodo-fiscalCode-noticeNumber-ttl}}" />
 					<set-variable name="nodo_fiscalCode_noticeNumber_key" value="@{
 						var requestInfo = JObject.Parse((string)context.Variables["rptRequestInfo"]);
 						var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
