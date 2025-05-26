@@ -936,7 +936,7 @@
     "apiName" : "getConnectorStatus",
     "appName" : "debeziumConnectorPostgres",
     "url" : "https://${internal_api_domain_prefix}.gps.${internal_api_domain_suffix}/debezium-gpd/connectors/debezium-connector-postgres/status",
-    "type" : "apim",
+    "type" : "aks",
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
