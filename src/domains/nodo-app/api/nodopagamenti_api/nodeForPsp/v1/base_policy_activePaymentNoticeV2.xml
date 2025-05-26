@@ -19,10 +19,10 @@
     <outbound>
         <!-- operation before base policy -->
         <base />
+        <!-- operation after base policy -->
         <include-fragment fragment-id="ndp-cache-token-object-outbound-policy" />
         <include-fragment fragment-id="ndp-wisp-activate-outbound-policy" />
         <include-fragment fragment-id="ndp-verificatore-outbound-policy" />
-        <!-- operation after base policy -->
     </outbound>
     <on-error>
         <!-- operation before base policy -->

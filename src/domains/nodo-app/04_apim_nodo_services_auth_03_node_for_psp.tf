@@ -5,7 +5,7 @@ locals {
   apim_node_for_psp_api_auth_policy_file = file("./api/nodopagamenti_api/nodeForPsp/v1/base_policy.xml")
   verifyPaymentNotice_v1_policy_file     = file("./api/nodopagamenti_api/nodeForPsp/v1/base_policy_verifyPaymentNotice.xml")
   activePaymentNotice_v1_policy_file     = file("./api/nodopagamenti_api/nodeForPsp/v1/base_policy_activePaymentNotice.xml")
-  activePaymentNoticeV2_v1_policy_file     = file("./api/nodopagamenti_api/nodeForPsp/v1/base_policy_activePaymentNoticeV2.xml")
+  activePaymentNoticeV2_v1_policy_file   = file("./api/nodopagamenti_api/nodeForPsp/v1/base_policy_activePaymentNoticeV2.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_psp_api_auth" {
@@ -19,7 +19,6 @@ resource "azurerm_api_management_api_version_set" "node_for_psp_api_auth" {
 resource "terraform_data" "sha256_apim_node_for_psp_api_v1_auth" {
   input = sha256(local.apim_node_for_psp_api_auth_policy_file)
 }
-
 module "apim_node_for_psp_api_v1_auth" {
   # source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_api?ref=v6.7.0"
   source = "./.terraform/modules/__v3__/api_management_api"

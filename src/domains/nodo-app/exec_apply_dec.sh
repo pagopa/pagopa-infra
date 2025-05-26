@@ -6,10 +6,17 @@
 -target="azurerm_api_management_api_version_set.node_for_psp_api_auth" \
 -target="terraform_data.sha256_apim_node_for_psp_api_v1_auth" \
 -target="module.apim_node_for_psp_api_v1_auth" \
+-target=azurerm_api_management_api_version_set.node_for_io_api_auth \
+-target=module.apim_node_for_io_api_v1_auth \
+-target=terraform_data.sha256_apim_node_for_io_api_v1_auth \
 -target=terraform_data.sha256_verifyPaymentNotice_v1_policy_auth \
 -target=azurerm_api_management_api_operation_policy.verifyPaymentNotice_v1_policy_auth \
 -target=terraform_data.sha256_activePaymentNotice_v1_policy_auth \
 -target=azurerm_api_management_api_operation_policy.activePaymentNotice_v1_policy_auth \
+-target=terraform_data.sha256_activePaymentNoticeV2_v1_policy_auth \
+-target=azurerm_api_management_api_operation_policy.activePaymentNoticeV2_v1_policy_auth \
+-target=terraform_data.sha256_activeIOPayment_v1_policy_auth \
+-target=azurerm_api_management_api_operation_policy.activeIOPayment_v1_policy_auth \
 -target=azurerm_api_management_policy_fragment.nuova_connettivita_policy \
 -target=azurerm_api_management_policy_fragment.set_base_url_policy \
 -target=azurerm_api_management_policy_fragment.start_payment_inbound_policy \
