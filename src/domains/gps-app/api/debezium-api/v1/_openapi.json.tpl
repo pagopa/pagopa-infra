@@ -10,44 +10,6 @@
     }
   ],
   "paths": {
-    "/connectors": {
-      "get": {
-        "tags": [
-          "Get Connectors List"
-        ],
-        "summary": "getConnectors",
-        "parameters": [
-          {
-            "name": "expand",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "status",
-                "info"
-              ]
-            },
-            "description": "Retrieves additional state or metadata information for each connector."
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-              }
-            }
-          },
-          "400": {
-            "description": "Error response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
     "/connectors/{connectorId}/status": {
       "get": {
         "tags": [
