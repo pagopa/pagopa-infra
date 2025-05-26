@@ -17,8 +17,10 @@ locals {
   end_payment_cache_removal_outbound_policy_file  = file("./api/nodopagamenti_api/decoupler/end_payment_cache_removal_outbound_policy.xml")
   verificatore_inbound_policy_file                = file("./api/nodopagamenti_api/decoupler/verificatore_inbound_policy.xml")
   verificatore_outbound_policy_file               = file("./api/nodopagamenti_api/decoupler/verificatore_outbound_policy.xml")
-  wisp_activate_inbound_policy_file               = file("./api/nodopagamenti_api/decoupler/wisp_activate_inbound_policy.xml")
-  wisp_activate_outbound_policy_file               = file("./api/nodopagamenti_api/decoupler/wisp_activate_outbound_policy.xml")
+  verificatore_activateIOPayment_inbound_policy_file    = file("./api/nodopagamenti_api/decoupler/verificatore_activateIOPayment_inbound_policy.xml")
+  verificatore_activateIOPayment_outbound_policy_file   = file("./api/nodopagamenti_api/decoupler/verificatore_activateIOPayment_outbound_policy.xml")
+  wisp_activate_inbound_policy_file                     = file("./api/nodopagamenti_api/decoupler/wisp_activate_inbound_policy.xml")
+  wisp_activate_outbound_policy_file                    = file("./api/nodopagamenti_api/decoupler/wisp_activate_outbound_policy.xml")
 }
 
 resource "terraform_data" "sha256_ndphost_header" {
@@ -155,6 +157,24 @@ resource "azurerm_api_management_policy_fragment" "verificatore_outbound_policy"
   description       = "Fragment to handle outbound logic regarding verificatore"
   format            = "rawxml"
   value             = local.verificatore_outbound_policy_file
+}
+
+# Fragment: ndp-verificatore-activateIOPayment-inbound-policy
+resource "azurerm_api_management_policy_fragment" "verificatore_activateIOPayment_inbound_policy" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "ndp-verificatore-activateIOPayment-inbound-policy"
+  description       = "Fragment to handle inbound logic regarding verificatore for activateIOPayment"
+  format            = "rawxml"
+  value             = local.verificatore_activateIOPayment_inbound_policy_file
+}
+
+# Fragment: ndp-verificatore-activateIOPayment-outbound-policy
+resource "azurerm_api_management_policy_fragment" "verificatore_activateIOPayment_outbound_policy" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "ndp-verificatore-activateIOPayment-outbound-policy"
+  description       = "Fragment to handle outbound logic regarding verificatore for activateIOPayment"
+  format            = "rawxml"
+  value             = local.verificatore_activateIOPayment_outbound_policy_file
 }
 
 # Fragment: ndp-wisp-activate-inbound-policy

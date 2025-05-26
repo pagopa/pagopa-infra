@@ -65,6 +65,11 @@ resource "azurerm_api_management_api_operation_policy" "activeIOPayment_v1_polic
 
   #tfsec:ignore:GEN005
   xml_content = local.activeIOPayment_v1_policy_file
+
+  depends_on = [
+    azurerm_api_management_policy_fragment.verificatore_activateIOPayment_inbound_policy,
+    azurerm_api_management_policy_fragment.verificatore_activateIOPayment_outbound_policy
+  ]
 }
 
 
