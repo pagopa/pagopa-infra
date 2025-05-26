@@ -1,3 +1,74 @@
 <fragment>
+  <!-- Extract ResponseInfo(creditorReferenceId, paymentToken) from response -->
+  <!-- 1. creditorReferenceId -->
+  <set-variable name="creditorReferenceId" value="@{
+		// Retrieve data from response body
+		XElement response = context.Response.Body.As<XElement>(preserveContent: true);
+		XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
+        var creditorReferenceId = "";
+  try {
+  // If body is not null, populate creditorReferenceId content
+  if (body != null ) {
+  XElement primitive = (XElement) body.FirstNode;
+  creditorReferenceId = primitive.Descendants("creditorReferenceId").FirstOrDefault().Value;
+  }
+  }
+  catch (Exception e) {
+  // do nothing
+  }
+  return creditorReferenceId.ToString();
+  }" />
+  <!-- 2. paymentToken -->
+  <set-variable name="paymentToken" value="@{
+		// Retrieve data from response body
+		XElement response = context.Response.Body.As<XElement>(preserveContent: true);
+		XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
+        var paymentToken = "";
 
+  try {
+  // If body is not null, populate paymentToken content
+  if (body != null ) {
+  XElement primitive = (XElement) body.FirstNode;
+  paymentToken = primitive.Descendants("paymentToken").FirstOrDefault().Value;
+  }
+  }
+  catch (Exception e) {
+  // do nothing
+  }
+  return paymentToken.ToString();
+  }" />
+  <!-- if creditorReferenceId is null or empty, skip? -->
+  <!-- cache store (key = nodo_fiscalCode_creditorReferenceId, value = baseNodeId) -->
+  <cache-store-value key="@{
+        var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+        var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+        var creditorReferenceId = (string)context.Variables["creditorReferenceId"];
+
+        return domain + "_" + (string)requestInfo["fiscalCode"] + "_" + creditorReferenceId;
+    }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.TryParse(context.Variables.GetValueOrDefault<string>("ndp_nodo_fiscalCode_noticeNumber_ttl", "5184000"), out var ttl) ? ttl : 5184000)" caching-type="external" />
+  <!-- 1. Build JSON token object key -->
+  <set-variable name="tokenObjectKey" value="@{
+        var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+        var paymentToken = (string)context.Variables["paymentToken"];
+
+        return domain + "_" + paymentToken;
+    }" />
+  <!-- 2. Build JSON token object value -->
+  <set-variable name="tokenObjectValue" value="@{
+        var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+        var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+        var creditorReferenceId = context.Variables.GetValueOrDefault<string>("creditorReferenceId", "NONE");
+
+        var jsonObject = new JObject
+        {
+            ["nodeId"] = context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"),
+            ["nodo_fiscalCode_noticeNumber"] = domain + "_" + (string)requestInfo["fiscalCode"] + "_" + (string)requestInfo["noticeNumber"],
+            ["nodo_fiscalCode_iuv"] = domain + "_" + (string)requestInfo["fiscalCode"] + "_" + creditorReferenceId,
+            ["ecommerce_transactionId"] = domain + "_" + (string)requestInfo["transactionId"]
+        };
+
+        return jsonObject.ToString();
+    }" />
+  <!-- 3. Store JSON token object -->
+  <cache-store-value key="@((string)context.Variables["tokenObjectKey"])" value="@((string)context.Variables["tokenObjectValue"])" duration="@(int.TryParse(context.Variables.GetValueOrDefault<string>("ndp_nodo_fiscalCode_noticeNumber_ttl", "5184000"), out var ttl) ? ttl : 5184000)" caching-type="external" />
 </fragment>
