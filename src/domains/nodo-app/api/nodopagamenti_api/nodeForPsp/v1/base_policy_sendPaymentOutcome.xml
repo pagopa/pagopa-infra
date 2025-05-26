@@ -1,4 +1,4 @@
-'<policies>
+<policies>
     <inbound>
         <!-- operation before base policy -->
         <base />
