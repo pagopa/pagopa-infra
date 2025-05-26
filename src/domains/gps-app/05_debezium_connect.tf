@@ -170,7 +170,18 @@ resource "null_resource" "wait_kafka_connect" {
     kubectl_manifest.kafka_connect
   ]
   provisioner "local-exec" {
-    command     = "while [ true ]; do STATUS=`kubectl -n gps get KafkaConnect -o json | jq -r '.items[] | select(.status).status | .conditions | any(.[]; .type == \"Ready\")' | uniq`; if [ \"$STATUS\" = \"true\" ]; then echo \"Kafka Connect SUCCEEDED\" ; break ; else echo \"Kafka Connect INPROGRESS\"; sleep 3; fi ; done"
+    command     = <<EOT
+                    while [ true ]; do
+                      STATUS=$(kubectl -n gps get KafkaConnect -o json | jq -r '.items[] | select(.status != null) | .status.conditions | map(select(.type == "Ready")) | .[].status' | uniq);
+                      if [ "$STATUS" = "True" ]; then
+                        echo "Kafka Connect SUCCEEDED";
+                        break;
+                      else
+                        echo "Kafka Connect INPROGRESS";
+                        sleep 3;
+                      fi
+                    done
+                    EOT
     interpreter = ["/bin/bash", "-c"]
   }
 
@@ -198,7 +209,18 @@ resource "null_resource" "wait_postgres_connector" {
     kubectl_manifest.kafka_connect
   ]
   provisioner "local-exec" {
-    command     = "while [ true ]; do STATUS=`kubectl -n gps get KafkaConnector -o json | jq -r '.items[] | select(.status).status | .conditions | any(.[]; .type == \"Ready\")' | uniq`; if [ \"$STATUS\" = \"true\" ]; then echo \"Postgres Connector SUCCEEDED\" ; break ; else echo \"Postgres Connector INPROGRESS\"; sleep 3; fi ; done"
+    command     = <<EOT
+                    while [ true ]; do
+                      STATUS=$(kubectl -n gps get KafkaConnector -o json | jq -r '.items[] | select(.status != null) | .status.conditions | map(select(.type == "Ready")) | .[].status' | uniq);
+                      if [ "$STATUS" = "True" ]; then
+                        echo "Postgres Connector SUCCEEDED";
+                        break;
+                      else
+                        echo "Postgres Connector INPROGRESS";
+                        sleep 3;
+                      fi
+                    done
+                    EOT
     interpreter = ["/bin/bash", "-c"]
   }
 
