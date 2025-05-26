@@ -74,8 +74,6 @@
 		var iuv = requestInfo["iuv"];
 		return domain + "_" + fiscalCode + iuv;
 	}" />
-
-
 	<cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", "NONE"))" variable-name="nodo_fiscalCode_iuv" default-value="NONE" caching-type="external" />
 
 	<choose>

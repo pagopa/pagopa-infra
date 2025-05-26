@@ -3,18 +3,25 @@
 	<!-- START SPO-INBOUND-POLICY FRAGMENT -->
 	<!-- ################################# -->
 
-	<!-- Extracting payment token value from request -->
-	<set-variable name="paymentToken" value="@{
+	<!-- Extracting all payments tokens, then extract the first for routing purposes. The other tokens will be used in outbound policy. -->
+	<set-variable name="paymentTokens" value="@{
 		// Setting payment token value with default value
-		var paymentToken = "";
+		var paymentTokens = "";
 		// Extracting required field from request body
 		XElement request = context.Request.Body.As<XElement>(preserveContent: true);
 		XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
 		if (body != null ) {
 			XElement primitive = (XElement) body.FirstNode;
-			paymentToken = primitive.Descendants("paymentToken").FirstOrDefault().Value;
+			XElement paymentTokensNode = primitive.Descendants("paymentTokens").FirstOrDefault();
+			if (paymentTokensNode != null) {
+				paymentTokens = String.Join(",", paymentTokensNode.Elements().Select(token => token.Value));
+			}
 		}
-		return paymentToken;
+		return paymentTokens;
+	}" />
+	<set-variable name="paymentToken" value="@{
+		var paymentTokens = context.Variables.GetValueOrDefault<string>("paymentTokens", "NONE");
+		return paymentTokens.Split(',')[0];
 	}" />
 
 	<!-- Extracting key value, merging payment token with domain and searching in cache -->
@@ -39,28 +46,28 @@
 
 			<!-- !!!!!! INCLUDE THE CODE IN THESE COMMENTS WHEN NEW SERVICE WILL BE DEPLOYED !!!!!! -->
 			<!-- Call internal service with received request -->
-<!--			<send-request mode="new" response-variable-name="merged_sendPaymentResult_response" timeout="8" ignore-error="false">-->
-<!--				<set-url>https://URL_TO_NEW_SERVICE_PLACEHOLDER</set-url>-->
-<!--				<set-method>POST</set-method>-->
-<!--				<set-header name="SOAPAction" exists-action="override">-->
-<!--					<value>@((string)context.Request.Headers.GetValueOrDefault("SOAPAction", ""))</value>-->
-<!--				</set-header>-->
-<!--				<set-body>@(context.Request.Body.As<XElement>(preserveContent: true).ToString())</set-body>-->
-<!--			</send-request>-->
+			<!--			<send-request mode="new" response-variable-name="merged_sendPaymentResult_response" timeout="8" ignore-error="false">-->
+			<!--				<set-url>https://URL_TO_NEW_SERVICE_PLACEHOLDER</set-url>-->
+			<!--				<set-method>POST</set-method>-->
+			<!--				<set-header name="SOAPAction" exists-action="override">-->
+			<!--					<value>@((string)context.Request.Headers.GetValueOrDefault("SOAPAction", ""))</value>-->
+			<!--				</set-header>-->
+			<!--				<set-body>@(context.Request.Body.As<XElement>(preserveContent: true).ToString())</set-body>-->
+			<!--			</send-request>-->
 
 			<!-- Return the response generated from internal service -->
-<!--			<return-response>-->
-<!--				<set-status code="@(((IResponse)context.Variables["merged_sendPaymentResult_response"]).StatusCode)" />-->
-<!--				<set-header name="Content-Type" exists-action="override">-->
-<!--					<value>text/xml</value>-->
-<!--				</set-header>-->
-<!--				<set-body>-->
-<!--					@{-->
-<!--						XElement response = ((IResponse)context.Variables["merged_sendPaymentResult_response"]).Body.As<XElement>(preserveContent: true);-->
-<!--						return response.ToString();-->
-<!--					}-->
-<!--				</set-body>-->
-<!--			</return-response>-->
+			<!--			<return-response>-->
+			<!--				<set-status code="@(((IResponse)context.Variables["merged_sendPaymentResult_response"]).StatusCode)" />-->
+			<!--				<set-header name="Content-Type" exists-action="override">-->
+			<!--					<value>text/xml</value>-->
+			<!--				</set-header>-->
+			<!--				<set-body>-->
+			<!--					@{-->
+			<!--						XElement response = ((IResponse)context.Variables["merged_sendPaymentResult_response"]).Body.As<XElement>(preserveContent: true);-->
+			<!--						return response.ToString();-->
+			<!--					}-->
+			<!--				</set-body>-->
+			<!--			</return-response>-->
 
 		</otherwise>
 	</choose>
