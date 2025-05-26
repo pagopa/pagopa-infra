@@ -81,39 +81,6 @@
         }
       }
     },
-    "/connectors/{connectorId}/config": {
-      "get": {
-        "tags": [
-          "Get Detail on Connector Configuration"
-        ],
-        "summary": "getConnectorConfig",
-        "parameters": [
-          {
-            "name": "connectorId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "example": "debezium-connector-postgres"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
     "/connectors/{connectorId}/restart": {
       "post": {
         "tags": [
