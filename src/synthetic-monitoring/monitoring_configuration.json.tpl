@@ -947,10 +947,8 @@
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
-      "enabled" : ${alert_enabled}
-    },
-    "customActionGroupIds": ${developers_action_group_ids}
+      "enabled" : ${alert_enabled},
+      "customActionGroupIds" : ${developers_action_group_ids}
+    }
   }
-
-
 ]

@@ -1,3 +1,8 @@
+locals {
+  foo       = join(",", (can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]))
+  foo_split = split(",", local.foo)
+}
+
 module "monitoring_function" {
   depends_on = [azurerm_application_insights.application_insights]
   source     = "./.terraform/modules/__v3__/monitoring_function"
@@ -48,6 +53,6 @@ module "monitoring_function" {
     nexi_node_ip                             = var.nexi_node_ip
     fdr_enabled                              = var.env == "prod" ? false : true
     nexi_ndp_host                            = var.nexi_ndp_host
-    developers_action_group_ids              = can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
+    developers_action_group_ids              = jsonencode((can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]))
   })
 }
