@@ -4,7 +4,7 @@
     <!-- operation before base policy -->
     <base/>
     <!-- operation after base policy -->
-
+    <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
     <set-variable name="receipt_query_param" value="@{
           XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
           string queryParam = "NONE";
