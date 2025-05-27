@@ -5,6 +5,7 @@
         <base/>
         <!-- operation after base policy -->
 
+        <include-fragment fragment-id="wisp-batch-migration" />
         <include-fragment fragment-id="ndp-wisp-nodoinviarpt-nodoinviacarrellorpt-inbound-policy"/>
         <choose>
             <!-- If previous fragment execution returned 'is_whitelisted' is true, use Wisp Dismantling's backend-url -->
