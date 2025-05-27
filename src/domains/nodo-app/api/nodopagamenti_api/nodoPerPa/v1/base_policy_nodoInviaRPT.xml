@@ -1,0 +1,35 @@
+<!-- @formatter:off -->
+<policies>
+    <inbound>
+        <!-- operation before base policy -->
+        <base/>
+        <!-- operation after base policy -->
+
+        <include-fragment fragment-id="ndp-wisp-nodoinviarpt-nodoinviacarrellorpt-inbound-policy"/>
+        <choose>
+            <!-- If previous fragment execution returned 'is_whitelisted' is true, use Wisp Dismantling's backend-url -->
+            <when condition="@( context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && context.Variables.GetValueOrDefault<bool>("is_whitelisted", false) )">
+                <set-variable name="baseUrl" value="{{wisp-dismantling-backend-url}}" />
+            </when>
+            <!-- If previous fragment execution returned 'is_whitelisted' as false, use standard Decoupler algorithms -->
+            <otherwise>
+                <include-fragment fragment-id="ndp-rpt-inbound-policy"/>
+                <include-fragment fragment-id="ndp-set-base-url-policy"/>
+            </otherwise>
+        </choose>
+
+    </inbound>
+    <backend>
+        <base/>
+    </backend>
+    <outbound>
+        <!-- operation before base policy -->
+        <base/>
+        <!-- operation after base policy -->
+
+        <include-fragment fragment-id="ndp-wisp-nodoinviarpt-nodoinviacarrellorpt-outbound-policy"/>
+    </outbound>
+    <on-error>
+        <base/>
+    </on-error>
+</policies>

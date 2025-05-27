@@ -8,19 +8,21 @@ locals {
 
   nuova_connettivita_policy_file = file("./api_product/nodo_pagamenti_api/nuova_connettivita_policy.xml")
 
-  start_payment_inbound_policy_file               = file("./api/nodopagamenti_api/decoupler/start_payment_inbound_policy.xml")
-  ndp_extract_fiscalcode_noticenumber_policy_file = file("./api/nodopagamenti_api/decoupler/extract_fiscalCode_noticeNumber_policy.xml")
-  set_base_url_policy_file                        = file("./api/nodopagamenti_api/decoupler/set_base_url_policy.xml")
-  spo_inbound_policy_file                         = file("./api/nodopagamenti_api/decoupler/spo_inbound_policy.xml")
-  rpt_inbound_policy_file                         = file("./api/nodopagamenti_api/decoupler/rpt_inbound_policy.xml")
-  cache_token_object_outbound_policy_file         = file("./api/nodopagamenti_api/decoupler/cache_token_object_outbound_policy.xml")
-  end_payment_cache_removal_outbound_policy_file  = file("./api/nodopagamenti_api/decoupler/end_payment_cache_removal_outbound_policy.xml")
-  verificatore_inbound_policy_file                = file("./api/nodopagamenti_api/decoupler/verificatore_inbound_policy.xml")
-  verificatore_outbound_policy_file               = file("./api/nodopagamenti_api/decoupler/verificatore_outbound_policy.xml")
-  verificatore_activateIOPayment_inbound_policy_file    = file("./api/nodopagamenti_api/decoupler/verificatore_activateIOPayment_inbound_policy.xml")
-  verificatore_activateIOPayment_outbound_policy_file   = file("./api/nodopagamenti_api/decoupler/verificatore_activateIOPayment_outbound_policy.xml")
-  wisp_activate_inbound_policy_file                     = file("./api/nodopagamenti_api/decoupler/wisp_activate_inbound_policy.xml")
-  wisp_activate_outbound_policy_file                    = file("./api/nodopagamenti_api/decoupler/wisp_activate_outbound_policy.xml")
+  start_payment_inbound_policy_file                           = file("./api/nodopagamenti_api/decoupler/start_payment_inbound_policy.xml")
+  ndp_extract_fiscalcode_noticenumber_policy_file             = file("./api/nodopagamenti_api/decoupler/extract_fiscalCode_noticeNumber_policy.xml")
+  set_base_url_policy_file                                    = file("./api/nodopagamenti_api/decoupler/set_base_url_policy.xml")
+  spo_inbound_policy_file                                     = file("./api/nodopagamenti_api/decoupler/spo_inbound_policy.xml")
+  rpt_inbound_policy_file                                     = file("./api/nodopagamenti_api/decoupler/rpt_inbound_policy.xml")
+  cache_token_object_outbound_policy_file                     = file("./api/nodopagamenti_api/decoupler/cache_token_object_outbound_policy.xml")
+  end_payment_cache_removal_outbound_policy_file              = file("./api/nodopagamenti_api/decoupler/end_payment_cache_removal_outbound_policy.xml")
+  verificatore_inbound_policy_file                            = file("./api/nodopagamenti_api/decoupler/verificatore_inbound_policy.xml")
+  verificatore_outbound_policy_file                           = file("./api/nodopagamenti_api/decoupler/verificatore_outbound_policy.xml")
+  verificatore_activateIOPayment_inbound_policy_file          = file("./api/nodopagamenti_api/decoupler/verificatore_activateIOPayment_inbound_policy.xml")
+  verificatore_activateIOPayment_outbound_policy_file         = file("./api/nodopagamenti_api/decoupler/verificatore_activateIOPayment_outbound_policy.xml")
+  wisp_activate_inbound_policy_file                           = file("./api/nodopagamenti_api/decoupler/wisp_activate_inbound_policy.xml")
+  wisp_activate_outbound_policy_file                          = file("./api/nodopagamenti_api/decoupler/wisp_activate_outbound_policy.xml")
+  wisp_nodoInviaRPT_nodoInviaCarrelloRPT_inbound_policy_file  = file("./api/nodopagamenti_api/decoupler/wisp_nodoInviaRPT_nodoInviaCarrelloRPT_inbound_policy.xml")
+  wisp_nodoInviaRPT_nodoInviaCarrelloRPT_outbound_policy_file = file("./api/nodopagamenti_api/decoupler/wisp_nodoInviaRPT_nodoInviaCarrelloRPT_outbound_policy.xml")
 }
 
 resource "terraform_data" "sha256_ndphost_header" {
@@ -196,4 +198,22 @@ resource "azurerm_api_management_policy_fragment" "wisp_activate_outbound_policy
   description       = "Fragment to handle outbound logic regarding wisp dismantling"
   format            = "rawxml"
   value             = local.wisp_activate_outbound_policy_file
+}
+
+# Fragment: ndp-wisp-nodoinviarpt-nodoinviacarrellorpt-inbound-policy
+resource "azurerm_api_management_policy_fragment" "wisp_nodoinviarpt_nodoinviacarrellorpt_inbound_policy" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "ndp-wisp-nodoinviarpt-nodoinviacarrellorpt-inbound-policy"
+  description       = "Fragment to handle inbound logic regarding wisp dismantling for trigger primitives"
+  format            = "rawxml"
+  value             = local.wisp_nodoInviaRPT_nodoInviaCarrelloRPT_inbound_policy_file
+}
+
+# Fragment: ndp-wisp-nodoinviarpt-nodoinviacarrellorpt-outbound-policy
+resource "azurerm_api_management_policy_fragment" "wisp_nodoinviarpt_nodoinviacarrellorpt_outbound_policy" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "ndp-wisp-nodoinviarpt-nodoinviacarrellorpt-outbound-policy"
+  description       = "Fragment to handle outbound logic regarding wisp dismantling for trigger primitives"
+  format            = "rawxml"
+  value             = local.wisp_nodoInviaRPT_nodoInviaCarrelloRPT_outbound_policy_file
 }

@@ -1,0 +1,32 @@
+<policies>
+    <inbound>
+        <!-- api group before base policy -->
+        <base />
+        <!-- api group after base policy -->
+
+        <set-backend-service base-url="${base-url}" />
+
+        <!-- if prf env set backend-service -->
+        <choose>
+            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
+                <set-backend-service base-url="{{default-nodo-backend-prf}}/webservices/input" />
+            </when>
+        </choose>
+
+    </inbound>
+    <backend>
+        <!-- api group before base policy -->
+        <base />
+        <!-- api group after base policy -->
+    </backend>
+    <outbound>
+        <!-- api group before base policy -->
+        <base />
+        <!-- api group after base policy -->
+    </outbound>
+    <on-error>
+        <!-- api group before base policy -->
+        <base />
+        <!-- api group after base policy -->
+    </on-error>
+</policies>

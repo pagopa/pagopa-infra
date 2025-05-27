@@ -40,9 +40,9 @@ module "apim_node_for_io_api_v1_auth" {
 
   content_format = "wsdl"
   content_value  = file("./api/nodopagamenti_api/nodeForIO/v1/wsdl/auth/nodeForIO.wsdl")
-  wsdl_selector  = {
-    service_name    = "nodeForIO_Service"
-    endpoint_name   = "nodeForIO_Port"
+  wsdl_selector = {
+    service_name  = "nodeForIO_Service"
+    endpoint_name = "nodeForIO_Port"
   }
 
   xml_content = local.apim_node_for_io_api_auth_policy_file
