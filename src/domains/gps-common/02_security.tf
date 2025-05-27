@@ -646,3 +646,10 @@ resource "azurerm_key_vault_secret" "redis_hostname" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "rtp_storage_account_connection_string" {
+  name         = "rtp-storage-account-connection-string"
+  value        = module.gpd_rtp_sa.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
