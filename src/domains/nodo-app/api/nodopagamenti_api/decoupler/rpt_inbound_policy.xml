@@ -3,8 +3,6 @@
 	<!-- START RPT-INBOUND-POLICY FRAGMENT -->
 	<!-- ################################# -->
 
-	<!-- estrai primitiva da body di richiesta (NON DA HEADER, POTREBBERO NON INVIARLO) -->
-	<set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction", ""))" />
 	<set-variable name="isOldPaRPTPrimitive" value="@{
 		var soapAction = context.Variables.GetValueOrDefault<string>("soapAction", "NONE");
 		return soapAction.Equals("nodoAttivaRPT") || soapAction.Equals("nodoVerificaRPT");
