@@ -50,6 +50,18 @@ module "gh_runner_job" {
     {
       name : "pagopa-gpd-ingestion-manager"
       short_name : "gpd-ingst-mgr"
+    },
+    {
+      name : "pagopa-reporting-orgs-enrollment"
+      short_name : "gpd-rep-org"
+    },
+    {
+      name : "pagopa-spontaneous-payments"
+      short_name : "gpd-spopaym"
+    },
+    {
+      name : "pagopa-debt-position"
+      short_name : "gpd-debt-pos"
     }
   ]
   job = {
