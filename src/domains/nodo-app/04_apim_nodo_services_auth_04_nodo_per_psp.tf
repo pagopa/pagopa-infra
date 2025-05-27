@@ -57,7 +57,7 @@ resource "terraform_data" "sha256_nodoInviaRT_v1_policy_auth" {
   input = sha256(local.nodoInviaRT_v1_policy_file)
 }
 resource "azurerm_api_management_api_operation_policy" "nodoInviaRT_v1_policy_auth" {
-  api_name            = module.apim_nodo_per_pa_api_v1_auth.name
+  api_name            = module.apim_nodo_per_psp_api_v1_auth.name
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   # operation_id          = var.env_short == "d" ? "6352c3bcc257810f183b3985" : var.env_short == "u" ? "63e5237639519a0f7094b47f" : "63e5d8212a92e80448d38e00" #TODO [FCADAC] replace
