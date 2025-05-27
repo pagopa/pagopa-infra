@@ -5,14 +5,14 @@ locals {
   apim_nodo_per_pa_api_auth_policy_file = file("./api/nodopagamenti_api/nodoPerPa/v1/base_policy.xml")
   nodoInviaRPT_v1_policy_file           = file("./api/nodopagamenti_api/nodoPerPa/v1/base_policy_nodoInviaRPT.xml")
   nodoInviaCarrelloRPT_v1_policy_file   = file("./api/nodopagamenti_api/nodoPerPa/v1/base_policy_nodoInviaCarrelloRPT.xml")
+  nodoChiediCopiaRT_v1_policy_file      = file("./api/nodopagamenti_api/nodoPerPa/v1/base_policy_nodoChiediCopiaRT.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_pa_api_auth" {
-  name = format("%s-nodo-per-pa-api-auth-2", var.env_short)
-  #TODO [FCADAC] remove 2
+  name                = "${var.env_short}-nodo-per-pa-api-auth-2" #TODO [FCADAC] remove 2
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  display_name        = "Nodo per PA WS (AUTH 2.0)"
+  display_name        = "Nodo per PA (AUTH 2.0)"
   versioning_scheme   = "Segment"
 }
 
@@ -41,7 +41,7 @@ module "apim_nodo_per_pa_api_v1_auth" {
   api_type = "soap"
 
   content_format = "wsdl"
-  content_value  = file("./api/nodopagamenti_api/nodoPerPa/v1/NodoPerPa.wsdl")
+  content_value  = file("./api/nodopagamenti_api/nodoPerPa/v1/wsdl/auth/NodoPerPa.wsdl")
   wsdl_selector = {
     service_name  = "PagamentiTelematiciRPTservice"
     endpoint_name = "PagamentiTelematiciRPTPort"
@@ -82,4 +82,19 @@ resource "azurerm_api_management_api_operation_policy" "nodoInviaCarrelloRPT_v1_
 
   #tfsec:ignore:GEN005
   xml_content = local.nodoInviaCarrelloRPT_v1_policy_file
+}
+
+###### nodoChiediCopiaRT
+resource "terraform_data" "sha256_nodoChiediCopiaRT_v1_policy_auth" {
+  input = sha256(local.nodoChiediCopiaRT_v1_policy_file)
+}
+resource "azurerm_api_management_api_operation_policy" "nodoChiediCopiaRT_v1_policy_auth" {
+  api_name            = module.apim_nodo_per_pa_api_v1_auth.name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  # operation_id          = var.env_short == "d" ? "6352c3bcc257810f183b3985" : var.env_short == "u" ? "63e5237639519a0f7094b47f" : "63e5d8212a92e80448d38e00" #TODO [FCADAC] replace
+  operation_id = var.env_short == "d" ? "68357e4c0a23231b9031e44c" : ""
+
+  #tfsec:ignore:GEN005
+  xml_content = local.nodoChiediCopiaRT_v1_policy_file
 }

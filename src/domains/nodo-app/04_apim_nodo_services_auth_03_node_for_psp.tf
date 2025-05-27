@@ -1,5 +1,5 @@
 # ############################
-# ## WS node for psp (NM3) ##
+# ## WS node for PSP (NM3) ##
 # ############################
 locals {
   apim_node_for_psp_api_auth_policy_file = file("./api/nodopagamenti_api/nodeForPsp/v1/base_policy.xml")
