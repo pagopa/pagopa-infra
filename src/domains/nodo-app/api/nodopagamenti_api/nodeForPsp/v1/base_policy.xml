@@ -7,15 +7,15 @@
         <!-- if prf env set backend-service -->
         <choose>
             <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
-                <set-backend-service base-url="{{default-nodo-backend-prf}}/webservices/input" />
+                <set-backend-service base-url="{{default-nodo-backend-prf}}" />
             </when>
         </choose>
 
         <!-- if soap request set uri -->
         <choose>
             <when condition="@(!context.Variables.GetValueOrDefault<string>("soapAction", "NONE").Equals("NONE"))">
-              <rewrite-uri template="/webservices/input/" copy-unmatched-params="true" />
-          </when>
+                <rewrite-uri template="/webservices/input/" copy-unmatched-params="true" />
+            </when>
         </choose>
 
     </inbound>
