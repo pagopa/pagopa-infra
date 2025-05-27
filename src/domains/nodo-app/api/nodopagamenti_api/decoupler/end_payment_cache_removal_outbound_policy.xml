@@ -1,3 +1,161 @@
 <fragment>
+	<!-- ######################################################## -->
+	<!-- START END-PAYMENT-CACHE-REMOVAL-OUTBOUND-POLICY FRAGMENT -->
+	<!-- ######################################################## -->
 
+	<set-variable name="numberOfPaymentTokens" value="@{
+		var paymentTokens = context.Variables.GetValueOrDefault<string>("paymentTokens", "");
+		return paymentTokens.Split(',').Length;
+	}" />
+
+	<choose>
+		<!-- ######### EVALUATION OF TOKEN: ITERATION 1 ######### -->
+		<when condition="@((int) context.Variables.GetValueOrDefault<int>("numberOfPaymentTokens", 0) > 0)">
+
+			<!-- Extracting key value, merging payment token with domain and searching in cache -->
+			<set-variable name="nodo_paymentToken_key" value="@{
+				var paymentTokenKey = context.Variables.GetValueOrDefault<string>("domain", "nodo") + "_";
+				try {
+					var paymentToken = context.Variables.GetValueOrDefault<string>("paymentTokens", "").Split(',')[0];
+					paymentTokenKey = paymentTokenKey + paymentToken;
+				} catch (Exception e) {
+					// Nothing to do
+				}
+				return paymentTokenKey;
+			}" />
+			<cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken_key", "NONE"))" variable-name="nodo_paymentToken" default-value="NONE" caching-type="external" />
+
+			<!-- If the composite object related to payment token is present, delete all cached keys -->
+			<choose>
+				<when condition="@(!context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE").Equals("NONE"))">
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["nodo_fiscalCode_noticeNumber"])" caching-type="external" />
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["nodo_fiscalCode_iuv"])" caching-type="external" />
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["ecommerce_transactionId"])" caching-type="external" />
+					<cache-remove-value key="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE"))" caching-type="external" />
+				</when>
+			</choose>
+		</when>
+	</choose>
+
+	<choose>
+		<!-- ######### EVALUATION OF TOKEN: ITERATION 2 ######### -->
+		<when condition="@((int) context.Variables.GetValueOrDefault<int>("numberOfPaymentTokens", 0) > 1)">
+
+			<!-- Extracting key value, merging payment token with domain and searching in cache -->
+			<set-variable name="nodo_paymentToken_key" value="@{
+				var paymentTokenKey = context.Variables.GetValueOrDefault<string>("domain", "nodo") + "_";
+				try {
+					var paymentToken = context.Variables.GetValueOrDefault<string>("paymentTokens", "").Split(',')[1];
+					paymentTokenKey = paymentTokenKey + paymentToken;
+				} catch (Exception e) {
+					// Nothing to do
+				}
+				return paymentTokenKey;
+			}" />
+			<cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken_key", "NONE"))" variable-name="nodo_paymentToken" default-value="NONE" caching-type="external" />
+
+			<!-- If the composite object related to payment token is present, delete all cached keys -->
+			<choose>
+				<when condition="@(!context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE").Equals("NONE"))">
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["nodo_fiscalCode_noticeNumber"])" caching-type="external" />
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["nodo_fiscalCode_iuv"])" caching-type="external" />
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["ecommerce_transactionId"])" caching-type="external" />
+					<cache-remove-value key="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE"))" caching-type="external" />
+				</when>
+			</choose>
+		</when>
+	</choose>
+
+	<choose>
+		<!-- ######### EVALUATION OF TOKEN: ITERATION 3 ######### -->
+		<when condition="@((int) context.Variables.GetValueOrDefault<int>("numberOfPaymentTokens", 0) > 2)">
+
+			<!-- Extracting key value, merging payment token with domain and searching in cache -->
+			<set-variable name="nodo_paymentToken_key" value="@{
+				var paymentTokenKey = context.Variables.GetValueOrDefault<string>("domain", "nodo") + "_";
+				try {
+					var paymentToken = context.Variables.GetValueOrDefault<string>("paymentTokens", "").Split(',')[2];
+					paymentTokenKey = paymentTokenKey + paymentToken;
+				} catch (Exception e) {
+					// Nothing to do
+				}
+				return paymentTokenKey;
+			}" />
+			<cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken_key", "NONE"))" variable-name="nodo_paymentToken" default-value="NONE" caching-type="external" />
+
+			<!-- If the composite object related to payment token is present, delete all cached keys -->
+			<choose>
+				<when condition="@(!context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE").Equals("NONE"))">
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["nodo_fiscalCode_noticeNumber"])" caching-type="external" />
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["nodo_fiscalCode_iuv"])" caching-type="external" />
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["ecommerce_transactionId"])" caching-type="external" />
+					<cache-remove-value key="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE"))" caching-type="external" />
+				</when>
+			</choose>
+		</when>
+	</choose>
+
+	<choose>
+		<!-- ######### EVALUATION OF TOKEN: ITERATION 4 ######### -->
+		<when condition="@((int) context.Variables.GetValueOrDefault<int>("numberOfPaymentTokens", 0) > 3)">
+
+			<!-- Extracting key value, merging payment token with domain and searching in cache -->
+			<set-variable name="nodo_paymentToken_key" value="@{
+				var paymentTokenKey = context.Variables.GetValueOrDefault<string>("domain", "nodo") + "_";
+				try {
+					var paymentToken = context.Variables.GetValueOrDefault<string>("paymentTokens", "").Split(',')[3];
+					paymentTokenKey = paymentTokenKey + paymentToken;
+				} catch (Exception e) {
+					// Nothing to do
+				}
+				return paymentTokenKey;
+			}" />
+			<cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken_key", "NONE"))" variable-name="nodo_paymentToken" default-value="NONE" caching-type="external" />
+
+			<!-- If the composite object related to payment token is present, delete all cached keys -->
+			<choose>
+				<when condition="@(!context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE").Equals("NONE"))">
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["nodo_fiscalCode_noticeNumber"])" caching-type="external" />
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["nodo_fiscalCode_iuv"])" caching-type="external" />
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["ecommerce_transactionId"])" caching-type="external" />
+					<cache-remove-value key="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE"))" caching-type="external" />
+				</when>
+			</choose>
+		</when>
+	</choose>
+
+	<choose>
+		<!-- ######### EVALUATION OF TOKEN: ITERATION 5 ######### -->
+		<when condition="@((int) context.Variables.GetValueOrDefault<int>("numberOfPaymentTokens", 0) > 4)">
+
+			<!-- Extracting key value, merging payment token with domain and searching in cache -->
+			<set-variable name="nodo_paymentToken_key" value="@{
+				var paymentTokenKey = context.Variables.GetValueOrDefault<string>("domain", "nodo") + "_";
+				try {
+					var paymentToken = context.Variables.GetValueOrDefault<string>("paymentTokens", "").Split(',')[4];
+					paymentTokenKey = paymentTokenKey + paymentToken;
+				} catch (Exception e) {
+					// Nothing to do
+				}
+				return paymentTokenKey;
+			}" />
+			<cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken_key", "NONE"))" variable-name="nodo_paymentToken" default-value="NONE" caching-type="external" />
+
+			<!-- If the composite object related to payment token is present, delete all cached keys -->
+			<choose>
+				<when condition="@(!context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE").Equals("NONE"))">
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["nodo_fiscalCode_noticeNumber"])" caching-type="external" />
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["nodo_fiscalCode_iuv"])" caching-type="external" />
+					<cache-remove-value key="@((string) JObject.Parse((string)context.Variables["nodo_paymentToken"])["ecommerce_transactionId"])" caching-type="external" />
+					<cache-remove-value key="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE"))" caching-type="external" />
+				</when>
+			</choose>
+		</when>
+	</choose>
+
+
+	<!-- ###################################################### -->
+	<!-- END END-PAYMENT-CACHE-REMOVAL-OUTBOUND-POLICY FRAGMENT -->
+	<!-- ###################################################### -->
 </fragment>
+
