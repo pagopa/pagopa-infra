@@ -35,9 +35,9 @@
 				</when>
 			</choose>
 		</when>
-    </choose>
+	</choose>
 
-    <choose>
+	<choose>
 		<!-- ######### EVALUATION OF TOKEN: ITERATION 2 ######### -->
 		<when condition="@((int) context.Variables.GetValueOrDefault<int>("numberOfPaymentTokens", 0) > 1)">
 
@@ -64,9 +64,9 @@
 				</when>
 			</choose>
 		</when>
-    </choose>
+	</choose>
 
-    <choose>
+	<choose>
 		<!-- ######### EVALUATION OF TOKEN: ITERATION 3 ######### -->
 		<when condition="@((int) context.Variables.GetValueOrDefault<int>("numberOfPaymentTokens", 0) > 2)">
 
@@ -93,9 +93,9 @@
 				</when>
 			</choose>
 		</when>
-    </choose>
+	</choose>
 
-    <choose>
+	<choose>
 		<!-- ######### EVALUATION OF TOKEN: ITERATION 4 ######### -->
 		<when condition="@((int) context.Variables.GetValueOrDefault<int>("numberOfPaymentTokens", 0) > 3)">
 
@@ -122,9 +122,9 @@
 				</when>
 			</choose>
 		</when>
-    </choose>
+	</choose>
 
-    <choose>
+	<choose>
 		<!-- ######### EVALUATION OF TOKEN: ITERATION 5 ######### -->
 		<when condition="@((int) context.Variables.GetValueOrDefault<int>("numberOfPaymentTokens", 0) > 4)">
 
