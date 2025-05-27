@@ -163,9 +163,7 @@
       <!--                        <trace source="ottimizzazione-ec-buoni" severity="information">ottimizzazione-ec-buoni-start</trace>-->
       <send-request ignore-error="true" timeout="10" response-variable-name="ec-stations-body" mode="new">
         <!-- Get station details and relation info with creditor institution -->
-        <!-- <set-url>@(String.Format("https://api.${urlenvpath}platform.pagopa.it/apiconfig/auth/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url> -->
-        <!--                            <set-url>@(String.Format("https://pagopa-${urlenvpath}-app-api-config.azurewebsites.net/apiconfig/api/v1/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>-->
-        <set-url>@(String.Format("https://${url_aks}/{{apicfg-core-service-path}}/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>
+        <set-url>@(String.Format("{{apicfg-aks}}/{{apicfg-core-service-path}}/creditorinstitutions/{0}/stations", (string) context.Variables["fiscalCode"] ))</set-url>
         <set-method>GET</set-method>
         <set-header name="Content-Type" exists-action="override">
           <value>application/json</value>
@@ -628,4 +626,4 @@
   </choose>
   </otherwise>
   </choose>
-</fragment>
+  </fragment>

@@ -9,8 +9,8 @@
   try {
   // If body is not null, populate creditorReferenceId content
   if (body != null ) {
-  XElement primitive = (XElement) body.FirstNode;
-  creditorReferenceId = primitive.Descendants("creditorReferenceId").FirstOrDefault().Value;
+    XElement primitive = body.Elements().FirstOrDefault();
+    creditorReferenceId = primitive.Descendants("creditorReferenceId").FirstOrDefault().Value ?? "";
   }
   }
   catch (Exception e) {
@@ -28,8 +28,9 @@
   try {
   // If body is not null, populate paymentToken content
   if (body != null ) {
-  XElement primitive = (XElement) body.FirstNode;
-  paymentToken = primitive.Descendants("paymentToken").FirstOrDefault().Value;
+  //XElement primitive = (XElement) body.FirstNode;
+  XElement primitive = body.Elements().FirstOrDefault();
+  paymentToken = primitive.Descendants("paymentToken").FirstOrDefault().Value ?? "";
   }
   }
   catch (Exception e) {

@@ -21,14 +21,16 @@
 		try {
 			// If body is not null, populate RequestInfo content
 			if (body != null ) {
-			XElement primitive = (XElement) body.FirstNode;
-				requestInfo["fiscalCode"] = primitive.Descendants("fiscalCode").FirstOrDefault().Value;
-				requestInfo["noticeNumber"] = primitive.Descendants("noticeNumber").FirstOrDefault().Value;
-				requestInfo["idChannel"] = primitive.Descendants("idChannel").FirstOrDefault().Value;
+			  XElement primitive = body.Elements().FirstOrDefault();
+
+        requestInfo["fiscalCode"] = primitive.Descendants("fiscalCode").FirstOrDefault().Value ?? "";
+				requestInfo["noticeNumber"] = primitive.Descendants("noticeNumber").FirstOrDefault().Value ?? "";
+				requestInfo["idChannel"] = primitive.Descendants("idChannel").FirstOrDefault().Value ?? "";
 			}
 		}
 		catch (Exception e) {
 			// do nothing
+      requestInfo.Add(new JProperty("error", e.ToString()));
 		}
 		return requestInfo.ToString();
 	}" />

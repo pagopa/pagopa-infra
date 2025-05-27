@@ -148,6 +148,9 @@ resource "azurerm_api_management_policy_fragment" "verificatore_inbound_policy" 
   description       = "Fragment to handle inbound logic regarding verificatore"
   format            = "rawxml"
   value             = local.verificatore_inbound_policy_file
+  depends_on = [
+    azurerm_api_management_named_value.api_config_aks
+  ]
 }
 
 # Fragment: ndp-verificatore-outbound-policy
