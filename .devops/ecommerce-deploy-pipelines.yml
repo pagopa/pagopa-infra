@@ -69,6 +69,7 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
         AKS_NAME: '$(TF_AKS_DEV_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_DEV)'
+        COMMON_USE_AKS: false
   # E2E test
   - stage: "E2E_Tests_Checkout_DEV_environment"
     displayName: '🧪 Running E2E test on DEV env'
@@ -98,6 +99,7 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
         AKS_NAME: '$(TF_AKS_UAT_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_UAT)'
+        COMMON_USE_AKS: false
       # E2E test
     - stage: "E2E_Tests_Checkout_UAT_environment"
       displayName: '🧪 Running E2E test on UAT env'
@@ -127,6 +129,7 @@ stages:
         AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
         AKS_NAME: '$(TF_AKS_PROD_NAME)'
         POOL_NAME: '$(TF_POOL_NAME_PROD)'
+        COMMON_USE_AKS: false
     - stage:
       displayName: '💻 Dashboards generation GHA'
       jobs:
