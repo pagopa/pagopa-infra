@@ -1,8 +1,3 @@
-locals {
-  foo       = join(",", (can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]))
-  foo_split = split(",", local.foo)
-}
-
 module "monitoring_function" {
   depends_on = [azurerm_application_insights.application_insights]
   source     = "./.terraform/modules/__v3__/monitoring_function"
