@@ -2,6 +2,7 @@ locals {
   product       = "${var.prefix}-${var.env_short}"
   project_short = "${var.prefix}-${var.env_short}-${var.domain}"
   project       = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
+  project_weu   = "${var.prefix}-${var.env_short}-${var.location_short_weu}-${var.domain}"
 
   project_core_itn = "${var.prefix}-${var.env_short}-${var.location_short}-core"
 
@@ -13,6 +14,9 @@ locals {
 
   vnet_name                = "${var.prefix}-${var.env_short}-${var.location_short}-vnet"
   vnet_resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-vnet-rg"
+
+  vnet_name_weu                = "${var.prefix}-${var.env_short}-vnet"
+  vnet_resource_group_name_weu = "${var.prefix}-${var.env_short}-vnet-rg"
 
   aks_name                = "${local.product}-${var.location_short}-${var.instance}-aks"
   aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"

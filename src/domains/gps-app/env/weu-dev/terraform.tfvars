@@ -79,9 +79,9 @@ zookeeper_storage_size   = "100Gi"
 ### debezium kafka_connect_yaml
 replicas           = 1
 request_cpu        = 0.5
-limits_cpu         = 0.5
+limits_cpu         = 2
 request_memory     = "512Mi"
-limits_memory      = "512Mi"
+limits_memory      = "1024Mi"
 postgres_db_name   = "apd"
 tasks_max          = "1"
 container_registry = "pagopadcommonacr.azurecr.io"

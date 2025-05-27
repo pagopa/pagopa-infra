@@ -7,6 +7,7 @@ locals {
   monitor_appinsights_name                 = "${local.product}-appinsights"
   monitor_action_group_slack_name          = "SlackPagoPA"
   monitor_action_group_email_name          = "PagoPA"
+  monitor_action_group_opsgenie_name       = "Opsgenie"
   monitor_action_group_infra_opsgenie_name = "InfraOpsgenie"
   monitor_resource_group_name              = "${local.product}-monitor-rg"
 

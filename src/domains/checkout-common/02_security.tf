@@ -161,3 +161,16 @@ resource "azurerm_key_vault_secret" "one_identity_client_secret_test" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "checkout_gha_bot_pat" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "checkout-gha-bot-pat"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}

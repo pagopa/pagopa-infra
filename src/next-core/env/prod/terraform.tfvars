@@ -28,7 +28,6 @@ is_feature_enabled = {
   postgres_private_dns      = true,
   apim_core_import          = true
   use_new_apim              = false
-  pm_import_sa              = true
 }
 
 #
@@ -371,6 +370,12 @@ eventhubs_03 = [
         manage = false
       },
       {
+        name   = "nodo-dei-pagamenti-PAGOPA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
         name   = "nodo-dei-pagamenti-pdnd" # pdnd
         listen = true
         send   = false
@@ -427,10 +432,16 @@ eventhubs_03 = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 32
     message_retention = 7
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-views"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "pagopa-biz-evt-tx-PAGOPA"
         listen = false
         send   = true
         manage = false
@@ -506,6 +517,12 @@ eventhubs_03 = [
         manage = false
       },
       {
+        name   = "pagopa-negative-biz-evt-tx-PAGOPA"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
         name   = "pagopa-negative-biz-evt-rx"
         listen = true
         send   = false
@@ -521,6 +538,12 @@ eventhubs_03 = [
     keys = [
       {
         name   = "nodo-dei-pagamenti-verify-ko-tx"
+        listen = false
+        send   = true
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-verify-ko-tx-PAGOPA"
         listen = false
         send   = true
         manage = false
