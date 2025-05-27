@@ -3,66 +3,49 @@
 	<!-- START RPT-INBOUND-POLICY FRAGMENT -->
 	<!-- ################################# -->
 
-	<set-variable name="isOldPaRPTPrimitive" value="@{
+	<set-variable name="isNodoVerificaRPTOrNodoAttivaRPT" value="@{
 		var soapAction = context.Variables.GetValueOrDefault<string>("soapAction", "NONE");
 		return soapAction.Equals("nodoAttivaRPT") || soapAction.Equals("nodoVerificaRPT");
 	}" />
-	<set-variable name="requestContent" value="@(context.Request.Body.As<string>(preserveContent: true))" />
 
 	<!-- Extracting Fiscal code and IUV, using different approaches for retrieve data according to different primitive type -->
-	<choose>
+  <set-variable name="rptRequestInfo" value="@{
+    // Setting RPT request info object value with default values
+    var requestInfo = new JObject();
+    requestInfo.Add(new JProperty("fiscalCode", ""));
+    requestInfo.Add(new JProperty("noticeNumber", ""));
+    requestInfo.Add(new JProperty("iuv", ""));
 
-		<!-- Extracting fiscal code, IUV and notice number from old PA's primitives -->
-		<when condition="@(context.Variables.GetValueOrDefault<bool>("isOldPaRPTPrimitive", false))">
-			<set-variable name="rptRequestInfo" value="@{
-				// Setting RPT request info object value with default values
-				var requestInfo = new JObject();
-				requestInfo.Add(new JProperty("fiscalCode", ""));
-				requestInfo.Add(new JProperty("noticeNumber", ""));
-				requestInfo.Add(new JProperty("iuv", ""));
+    // Extracting required field from request body
+    XElement request = context.Request.Body.As<XElement>(preserveContent: true);
+    try {
+      var isNodoVerificaRPTOrNodoAttivaRPT = context.Variables.GetValueOrDefault<bool>("isNodoVerificaRPTOrNodoAttivaRPT", false);
 
-				// Extracting required field from request body
-				XElement request = context.Variables.GetValueOrDefault<XElement>("requestContent");
-				XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
-				try {
-					if (body != null ) {
-						XElement primitive = (XElement) body.FirstNode;
-						requestInfo["fiscalCode"] = primitive.Descendants("CF").FirstOrDefault().Value;
-						requestInfo["iuv"] = primitive.Descendants("CodIUV").FirstOrDefault().Value;
-						requestInfo["noticeNumber"] = primitive.Descendants("AuxDigit").FirstOrDefault().Value + requestInfo["iuv"];
-					}
-				} catch (Exception e) {
-					// do nothing
-				}
-				return requestInfo.ToString();
-			}" />
-		</when>
+      // Extracting fiscal code, IUV and notice number from old PA's primitives (nodoAttivaRPT, nodoVerificaRPT)
+      if (isNodoVerificaRPTOrNodoAttivaRPT) {
+        XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
+        if (body != null) {
+          XElement primitive = (XElement) body.FirstNode;
+          requestInfo["fiscalCode"] = primitive.Descendants("CF").FirstOrDefault().Value;
+          requestInfo["iuv"] = primitive.Descendants("CodIUV").FirstOrDefault().Value;
+          requestInfo["noticeNumber"] = primitive.Descendants("AuxDigit").FirstOrDefault().Value + requestInfo["iuv"];
+        }
+      }
 
-		<!-- Extracting fiscal code and IUV from nodoInviaRPT -->
-		<otherwise>
-			<set-variable name="rptRequestInfo" value="@{
-				// Setting RPT request info object value with default values
-				var requestInfo = new JObject();
-				requestInfo.Add(new JProperty("fiscalCode", ""));
-				requestInfo.Add(new JProperty("noticeNumber", ""));
-				requestInfo.Add(new JProperty("iuv", ""));
-
-				// Extracting required field from request body
-				XElement request = context.Variables.GetValueOrDefault<XElement>("requestContent");
-				XElement header = request.Descendants(request.Name.Namespace + "Header").FirstOrDefault();
-				try {
-					if (header != null ) {
-						XElement pptHeader = (XElement) header.FirstNode;
-						requestInfo["fiscalCode"] = pptHeader.Descendants("identificativoDominio").FirstOrDefault().Value;
-						requestInfo["iuv"] = pptHeader.Descendants("identificativoUnivocoVersamento").FirstOrDefault().Value;
-					}
-				} catch (Exception e) {
-					// do nothing
-				}
-				return requestInfo.ToString();
-			}" />
-		</otherwise>
-	</choose>
+      // Extracting fiscal code and IUV from nodoInviaRPT, nodoInviaRT
+      else {
+        XElement header = request.Descendants(request.Name.Namespace + "Header").FirstOrDefault();
+        if (header != null) {
+          XElement pptHeader = (XElement) header.FirstNode;
+          requestInfo["fiscalCode"] = pptHeader.Descendants("identificativoDominio").FirstOrDefault().Value;
+          requestInfo["iuv"] = pptHeader.Descendants("identificativoUnivocoVersamento").FirstOrDefault().Value;
+        }
+      }
+    } catch (Exception e) {
+      // do nothing
+    }
+    return requestInfo.ToString();
+  }" />
 
 	<!-- Extracting key value, merging IUV with domain and searching in cache -->
 	<set-variable name="nodo_fiscalCode_iuv_key" value="@{
@@ -70,7 +53,7 @@
 		var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
 		var fiscalCode = requestInfo["fiscalCode"];
 		var iuv = requestInfo["iuv"];
-		return domain + "_" + fiscalCode + iuv;
+		return domain + "_" + fiscalCode + "_" + iuv;
 	}" />
 	<cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", "NONE"))" variable-name="nodo_fiscalCode_iuv" default-value="NONE" caching-type="external" />
 
@@ -104,16 +87,18 @@
 
 			<!-- If the primitive is an "Old PA"-related one, store element in cache with fiscal code and notice number as key and the Node instance as value -->
 			<choose>
-				<when condition="@(context.Variables.GetValueOrDefault<bool>("isOldPaRPTPrimitive", false))">
+				<when condition="@(context.Variables.GetValueOrDefault<bool>("isNodoVerificaRPTOrNodoAttivaRPT", false))">
 					<set-variable name="ndp_nodo_fiscalCode_noticeNumber_ttl" value="{{ndp-nodo-fiscalCode-noticeNumber-ttl}}" />
 					<set-variable name="nodo_fiscalCode_noticeNumber_key" value="@{
 						var requestInfo = JObject.Parse((string)context.Variables["rptRequestInfo"]);
 						var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
 						var fiscalCode = requestInfo["fiscalCode"];
 						var iuv = requestInfo["iuv"];
-						return domain + "_" + fiscalCode + iuv;
+						return domain + "_" + fiscalCode + "_" + iuv;
 					}" />
-					<cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_noticeNumber_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.TryParse(context.Variables.GetValueOrDefault<string>("ndp_nodo_fiscalCode_noticeNumber_ttl", "5184000"), out var ttl) ? ttl : 5184000)" caching-type="external" />
+          <set-variable name="nodo_fiscalCode_iuv_mapping_key" value="@((string) context.Variables["nodo_fiscalCode_iuv_key"] + "_to_nav")" />
+					<cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.TryParse(context.Variables.GetValueOrDefault<string>("ndp_nodo_fiscalCode_noticeNumber_ttl", "5184000"), out var ttl) ? ttl : 5184000)" caching-type="external" />
+          <cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_mapping_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", ""))" duration="@(int.TryParse(context.Variables.GetValueOrDefault<string>("ndp_nodo_fiscalCode_iuv_ttl", "5184000"), out var ttl) ? ttl : 5184000)" caching-type="external" />
 				</when>
 			</choose>
 
