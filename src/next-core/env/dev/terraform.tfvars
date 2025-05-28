@@ -9,14 +9,6 @@ location_ita       = "italynorth"
 location_short_ita = "itn"
 instance           = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "DEV"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "core"
-}
 
 ### Feature Flag
 is_feature_enabled = {

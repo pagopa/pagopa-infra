@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "printit_rg" {
   name     = "${local.project}-pdf-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "notices_sa" {
@@ -33,7 +33,7 @@ module "notices_sa" {
     blob_restore_policy_days   = var.notices_storage_account.backup_retention
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "notices_blob_private_endpoint" {
@@ -56,7 +56,7 @@ resource "azurerm_private_endpoint" "notices_blob_private_endpoint" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.notices_sa
@@ -108,7 +108,7 @@ resource "azurerm_user_assigned_identity" "identity_blob_storage_pdf" {
   location            = data.azurerm_resource_group.identity_rg.location
   name                = "${local.project}-service"
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_role_assignment" "role_blob_storage_pdf" {

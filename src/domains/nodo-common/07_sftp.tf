@@ -40,7 +40,7 @@ module "sftp" {
     virtual_network_subnet_ids = []
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "sftp_blob" {
@@ -63,7 +63,7 @@ resource "azurerm_private_endpoint" "sftp_blob" {
     private_dns_zone_ids = [data.azurerm_private_dns_zone.storage[0].id]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_storage_container" "sogei" {

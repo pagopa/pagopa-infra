@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "taxonomy_rg" {
   name     = "${local.project}-${local.taxonomy_label}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "taxonomy_sa" {
@@ -37,7 +37,7 @@ module "taxonomy_sa" {
   }
   network_rules = var.taxonomy_network_rules
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "taxonomy_blob_private_endpoint" {
@@ -60,7 +60,7 @@ resource "azurerm_private_endpoint" "taxonomy_blob_private_endpoint" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.taxonomy_sa

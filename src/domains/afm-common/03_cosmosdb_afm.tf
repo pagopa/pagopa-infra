@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "afm_rg" {
   name     = "${local.project}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "afm_marketplace_cosmosdb_snet" {
@@ -56,7 +56,7 @@ module "afm_marketplace_cosmosdb_account" {
   enable_automatic_failover = true
   ip_range                  = ""
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb database for marketplace
@@ -221,7 +221,7 @@ module "afm_marketplace_cosmosdb_containers" {
 #     subresource_names              = ["Analytical"]
 #   }
 
-#   tags = var.tags
+#   tags = module.tag_config.tags
 
 #   depends_on = [
 #     module.afm_marketplace_cosmosdb_account

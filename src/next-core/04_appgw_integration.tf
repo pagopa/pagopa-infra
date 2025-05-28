@@ -12,7 +12,7 @@ resource "azurerm_user_assigned_identity" "appgateway" {
   location            = azurerm_resource_group.sec_rg.location
   name                = "${local.product_region}-integration-appgateway-identity"
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_access_policy" "app_gateway_policy" {
@@ -33,7 +33,7 @@ resource "azurerm_public_ip" "integration_appgateway_public_ip" {
   allocation_method   = "Static"
   zones               = var.integration_appgateway_zones
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 locals {
@@ -363,5 +363,5 @@ module "app_gw_integration" {
 
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
