@@ -28,14 +28,14 @@
             </when>
         </choose>
         <choose>
-            <when condition="@(true)">
+          <when condition="@(${is-nodo-auth-pwd-replace})">
                 <!-- apply nuova connettivita logic (placeholder) -->
                 <include-fragment fragment-id="ndp-nuova-connettivita" />
             </when>
             <otherwise>
                 <!-- blacklist for appgateway-snet  -->
                 <ip-filter action="forbid">
-                    <address-range from="0.0.0.0" to="0.0.0.0" />
+                  <address-range from="${address-range-from}" to="${address-range-to}"/>
                 </ip-filter>
             </otherwise>
         </choose>
