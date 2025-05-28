@@ -68,6 +68,11 @@
 -target=azurerm_api_management_policy_fragment.extract_json_tokens_policy \
 -target=azurerm_api_management_named_value.api_config_aks \
 -target=azurerm_api_management_policy_fragment.routing_inbound_policy \
- -target="azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api" \
- -target="terraform_data.sha256_apim_nodo_per_psp_richiesta_avvisi_api_v1" \
- -target="module.apim_nodo_per_psp_richiesta_avvisi_api_v1"
+-target="azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api" \
+-target="terraform_data.sha256_apim_nodo_per_psp_richiesta_avvisi_api_v1" \
+-target="module.apim_nodo_per_psp_richiesta_avvisi_api_v1" \
+-target="terraform_data.sha256_nodoChiediNumeroAvviso_v1_policy_auth"  \
+-target="azurerm_api_management_api_operation_policy.nodoChiediNumeroAvviso_v1_policy_auth" \
+-target="terraform_data.sha256_nodoChiediCatalogoServizi_v1_policy_auth" \
+-target="azurerm_api_management_api_operation_policy.nodoChiediCatalogoServizi_v1_policy_auth"
+

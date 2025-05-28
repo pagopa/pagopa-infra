@@ -2,7 +2,6 @@
 	<!-- ################################## -->
 	<!-- START SET-BASE-URL-POLICY FRAGMENT -->
 	<!-- ################################## -->
-
 	<!-- Replacing base URL value, searching the correct value from configured Nodo instances -->
 	<set-variable name="baseUrl" value="@{
 		try {
@@ -24,11 +23,12 @@
 		return context.Variables.GetValueOrDefault<string>("baseUrl", "NONE");
 	}" />
 
-<!--  TODO if !=PRF then set backend url -->
-  <!-- set backend service url -->
-  <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
-
-
+	<choose>
+		<when condition="@(!((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") && !((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
+			<!-- set backend service url -->
+			<set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
+		</when>
+	</choose>
 	<!-- ################################ -->
 	<!-- END SET-BASE-URL-POLICY FRAGMENT -->
 	<!-- ################################ -->
