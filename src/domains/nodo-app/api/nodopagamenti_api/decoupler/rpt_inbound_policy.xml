@@ -32,13 +32,23 @@
         }
       }
 
-      // Extracting fiscal code and IUV from nodoInviaRPT, nodoInviaRT
-      else {
+      // Extracting fiscal code and IUV from nodoInviaRPT
+      else if ("nodoInviaRPT".Equals(context.Variables.GetValueOrDefault<string>("soapAction", "NONE"))) {
         XElement header = request.Descendants(request.Name.Namespace + "Header").FirstOrDefault();
         if (header != null) {
           XElement pptHeader = (XElement) header.FirstNode;
           requestInfo["fiscalCode"] = pptHeader.Descendants("identificativoDominio").FirstOrDefault().Value;
           requestInfo["iuv"] = pptHeader.Descendants("identificativoUnivocoVersamento").FirstOrDefault().Value;
+        }
+      }
+
+      // Extracting fiscal code and IUV from nodoInviaCarrelloRPT, nodoInviaRT
+      else {
+        XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
+        if (body != null) {
+          XElement primitive = (XElement) body.FirstNode;
+          requestInfo["fiscalCode"] = primitive.Descendants("identificativoDominio").FirstOrDefault().Value;
+          requestInfo["iuv"] = primitive.Descendants("identificativoUnivocoVersamento").FirstOrDefault().Value;
         }
       }
     } catch (Exception e) {
