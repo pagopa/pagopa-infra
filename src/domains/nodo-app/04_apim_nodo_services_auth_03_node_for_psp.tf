@@ -148,3 +148,18 @@ resource "azurerm_api_management_api_operation_policy" "nodoChiediCatalogoServiz
   #tfsec:ignore:GEN005
   xml_content = local.base_policy_nodeForPsp_routing_file
 }
+
+###### demandPaymentNotice
+resource "terraform_data" "sha256_demandPaymentNotice_v1_policy_auth" {
+  input = sha256(local.base_policy_nodeForPsp_routing_file)
+}
+resource "azurerm_api_management_api_operation_policy" "demandPaymentNotice_v1_policy_auth" {
+  api_name            = module.apim_node_for_psp_api_v1_auth.name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  # operation_id          = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0" #TODO [FCADAC] replace
+  operation_id = var.env_short == "d" ? "683085050a23231b90313d98" : ""
+
+  #tfsec:ignore:GEN005
+  xml_content = local.base_policy_nodeForPsp_routing_file
+}
