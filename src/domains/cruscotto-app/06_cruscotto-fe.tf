@@ -60,7 +60,7 @@ module "crusc8_cdn" {
   https_rewrite_enabled = true
 
   index_document     = "index.html"
-  error_404_document = "error.html"
+  error_404_document = "index.html"
 
   #                             <ENV>.platform.pagopa.it
   # create_dns_record            = false # Skip creation
