@@ -89,12 +89,6 @@ variable "lock_enable" {
   description = "Apply locks to block accedentaly deletions."
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 ### Network
 
 variable "cidr_vnet_italy" {

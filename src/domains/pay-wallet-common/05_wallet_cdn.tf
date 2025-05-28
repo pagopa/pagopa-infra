@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "wallet_fe_rg" {
   name     = "${local.project}-fe-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 /**
@@ -97,7 +97,7 @@ module "wallet_fe_cdn" {
     }
   }]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 

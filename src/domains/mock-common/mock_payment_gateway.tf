@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "mock_payment_gateway_rg" {
   count    = var.mock_payment_gateway_enabled ? 1 : 0
   name     = format("%s-mock-payment-gateway-rg", local.project_legacy)
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 # Subnet to host the mock mock-payment-gateway
@@ -55,7 +55,7 @@ module "mock_payment_gateway" {
 
   subnet_id = module.mock_payment_gateway_snet[0].id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 data "azurerm_key_vault_secret" "mock_pgs_xpay_apikey_alias" {

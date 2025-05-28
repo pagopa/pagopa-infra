@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "bopagopa_rg" {
   name     = "${local.project}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 locals {
@@ -66,7 +66,7 @@ module "bopagopa_cosmosdb_mongo_account" {
   private_service_connection_mongo_name = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
 
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 

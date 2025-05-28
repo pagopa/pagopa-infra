@@ -92,7 +92,7 @@ module "taxonomy_function" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "taxonomy_function_slot_staging" {
@@ -127,7 +127,7 @@ module "taxonomy_function_slot_staging" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_autoscale_setting" "taxonomy_function" {

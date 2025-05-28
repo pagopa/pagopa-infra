@@ -16,7 +16,7 @@ module "bizevents_datastore_fn_sa" {
   public_network_access_enabled   = true
 
   blob_delete_retention_days = var.bizevents_datastore_fn_sa_delete_retention_days
-  tags                       = var.tags
+  tags                       = module.tag_config.tags
 }
 
 
@@ -37,5 +37,5 @@ module "bizevents_datastore_fn_sa_bizview" {
   public_network_access_enabled   = true
 
   blob_delete_retention_days = var.bizevents_datastore_fn_sa_delete_retention_days
-  tags                       = var.tags
+  tags                       = module.tag_config.tags
 }

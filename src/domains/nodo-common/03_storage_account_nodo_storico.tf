@@ -3,7 +3,7 @@ resource "azurerm_resource_group" "nodo_storico_rg" {
   name     = format("%s-storico-rg", local.project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "nodo_storico_storage_account" {
@@ -40,7 +40,7 @@ module "nodo_storico_storage_account" {
     virtual_network_subnet_ids = [data.azurerm_subnet.private_endpoint_snet.id]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "nodo_storico_private_endpoint" {
@@ -63,7 +63,7 @@ resource "azurerm_private_endpoint" "nodo_storico_private_endpoint" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.nodo_storico_storage_account

@@ -3,7 +3,7 @@ resource "azurerm_resource_group" "checkout_be_rg" {
   name     = format("%s-checkout-be-rg", local.parent_project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # Availability: Checkout functions & pagopa-proxy

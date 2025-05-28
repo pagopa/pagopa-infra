@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "gps_rg" {
   name     = "${local.project}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "gps_cosmosdb_snet" {
@@ -59,7 +59,7 @@ module "gps_cosmosdb_account" {
   subnet_id                           = module.gps_cosmosdb_snet.id
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb database
@@ -170,7 +170,7 @@ module "gpd_payments_cosmosdb_account" {
   private_dns_zone_sql_ids   = [data.azurerm_private_dns_zone.cosmos.id]
   private_dns_zone_table_ids = [data.azurerm_private_dns_zone.cosmos_table.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb gpd payments table

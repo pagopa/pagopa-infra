@@ -52,6 +52,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "nodo_pool" {
     node_soak_duration_in_minutes = 0
   }
 
-  tags = merge(var.tags, var.nodo_user_node_pool.node_tags)
+  tags = merge(module.tag_config.tags, var.nodo_user_node_pool.node_tags)
 
 }

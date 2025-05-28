@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "qi_rg" {
   name     = "${local.project}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "qi_fn_sa" {
@@ -22,5 +22,5 @@ module "qi_fn_sa" {
   public_network_access_enabled   = true
 
   blob_delete_retention_days = var.qi_storage_params.retention_days
-  tags                       = var.tags
+  tags                       = module.tag_config.tags
 }

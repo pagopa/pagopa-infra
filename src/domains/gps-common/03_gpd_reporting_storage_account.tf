@@ -3,7 +3,7 @@ resource "azurerm_resource_group" "gpd_rg" {
   name     = "${local.product}-gpd-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "flows" {
@@ -32,7 +32,7 @@ module "flows" {
     blob_restore_policy_days   = var.reporting_storage_account.backup_retention
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## table#1 storage

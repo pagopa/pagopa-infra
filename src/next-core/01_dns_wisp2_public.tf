@@ -3,7 +3,7 @@ resource "azurerm_dns_zone" "wisp2_public" {
   name                = join(".", [var.dns_zone_wisp2, var.external_domain])
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 //Prod ONLY record to DEV public DNS delegation
@@ -19,7 +19,7 @@ resource "azurerm_dns_ns_record" "dev_wisp2" {
     "ns4-09.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 //Prod ONLY record to UAT public DNS delegation
@@ -35,7 +35,7 @@ resource "azurerm_dns_ns_record" "uat_wisp2" {
     "ns4-06.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_dns_caa_record" "wisp2_pagopa_it" {
@@ -56,7 +56,7 @@ resource "azurerm_dns_caa_record" "wisp2_pagopa_it" {
     value = "mailto:security+caa@pagopa.it"
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # application gateway records
@@ -66,5 +66,5 @@ resource "azurerm_dns_a_record" "dns_a_wisp2_at" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
