@@ -30,6 +30,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-biz-events-datastore",
       short_name : "biz-datastore"
+    },
+    {
+      name : "pagopa-negative-biz-events-datastore",
+      short_name : "biz-data-neg"
     }
   ]
   job = {
