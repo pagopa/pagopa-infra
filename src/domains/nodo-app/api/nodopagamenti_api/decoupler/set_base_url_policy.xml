@@ -23,6 +23,12 @@
 		// Return a default value, associated to the default URL
 		return context.Variables.GetValueOrDefault<string>("baseUrl", "NONE");
 	}" />
+
+<!--  TODO if !=PRF then set backend url -->
+  <!-- set backend service url -->
+  <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
+
+
 	<!-- ################################ -->
 	<!-- END SET-BASE-URL-POLICY FRAGMENT -->
 	<!-- ################################ -->

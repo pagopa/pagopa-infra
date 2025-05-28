@@ -27,6 +27,7 @@ locals {
   wisp_nodoInviaRPT_nodoInviaCarrelloRPT_outbound_policy_file = file("./api/nodopagamenti_api/decoupler/wisp_nodoInviaRPT_nodoInviaCarrelloRPT_outbound_policy.xml")
   wisp_nodoInviaCarrelloRPT_posfisici_inbound_policy_file     = file("./api/nodopagamenti_api/decoupler/wisp_nodoInviaCarrelloRPT_posfisici_inbound_policy.xml")
   wisp_nodoInviaCarrelloRPT_posfisici_outbound_policy_file    = file("./api/nodopagamenti_api/decoupler/wisp_nodoInviaCarrelloRPT_posfisici_outbound_policy.xml")
+  routing_inbound_policy_file                                 = file("./api/nodopagamenti_api/decoupler/routing_inbound_policy.xml")
 }
 
 resource "terraform_data" "sha256_ndphost_header" {
@@ -262,4 +263,13 @@ resource "azurerm_api_management_policy_fragment" "wisp_nodoinviacarrellorpt_pos
   description       = "Fragment to handle outbound logic regarding WFESP/POS fisici for trigger primitives"
   format            = "rawxml"
   value             = local.wisp_nodoInviaCarrelloRPT_posfisici_outbound_policy_file
+}
+
+# Fragment: ndp-routing-inbound-policy
+resource "azurerm_api_management_policy_fragment" "routing_inbound_policy" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "ndp-routing-inbound-policy"
+  description       = "Fragment to handle inbound logic regarding routing algorithm"
+  format            = "rawxml"
+  value             = local.routing_inbound_policy_file
 }

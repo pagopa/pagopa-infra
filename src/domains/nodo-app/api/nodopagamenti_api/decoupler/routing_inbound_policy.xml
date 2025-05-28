@@ -1,0 +1,28 @@
+<fragment>
+  <set-variable name="configuration" value="@{
+    JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
+    JArray sorted = new JArray(json_configuration.OrderByDescending(obj => (int)obj["routing"]));
+    return sorted.ToString();
+    }" />
+  <choose>
+    <when condition="@(context.Variables.GetValueOrDefault<string>("enable_routing_switch", "").Equals("true"))">
+    <set-variable name="baseUrl" value="@{
+                        var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
+                        // get random number
+                        var rand = new Random();
+                        int random = rand.Next(0, 100);
+                        // priority is given by list order. add field for sorting the priority
+                        int currentRouting = 0;
+                        foreach (JObject item in configuration) {
+                            currentRouting += int.Parse(item.GetValue("routing").ToString());
+                            if (random <= currentRouting) {
+                                return item.GetValue("node_uri").ToString();
+                            }
+                        }
+                        return context.Variables.GetValueOrDefault<string>("baseUrl", "");
+    }" />
+    <!-- set backend service url -->
+    <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
+  </when>
+</choose>
+</fragment>
