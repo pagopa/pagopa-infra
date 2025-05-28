@@ -93,7 +93,7 @@
 
 			<!-- Store element in cache with fiscal code and IUV as key and the Node instance as value -->
 			<set-variable name="ndp_nodo_fiscalCode_iuv_ttl" value="{{ndp-nodo-fiscalCode-iuv-ttl}}" />
-			<cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse(context.Variables["ndp_nodo_fiscalCode_iuv_ttl"]))" caching-type="external" />
+			<cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse((string)context.Variables["ndp_nodo_fiscalCode_iuv_ttl"]))" caching-type="external" />
 
 			<!-- If the primitive is an "Old PA"-related one, store element in cache with fiscal code and notice number as key and the Node instance as value -->
 			<choose>
@@ -107,8 +107,8 @@
 						return domain + "_" + fiscalCode + "_" + iuv;
 					}" />
           <set-variable name="nodo_fiscalCode_iuv_mapping_key" value="@((string) context.Variables["nodo_fiscalCode_iuv_key"] + "_to_nav")" />
-					<cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse(context.Variables["ndp_nodo_fiscalCode_iuv_ttl"]))" caching-type="external" />
-          <cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_mapping_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", ""))" duration="@(int.Parse(context.Variables["ndp_nodo_fiscalCode_noticeNumber_ttl"]))" caching-type="external" />
+					<cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse((string)context.Variables["ndp_nodo_fiscalCode_iuv_ttl"]))" caching-type="external" />
+          <cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_mapping_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", ""))" duration="@(int.Parse((string)context.Variables["ndp_nodo_fiscalCode_noticeNumber_ttl"]))" caching-type="external" />
 				</when>
 			</choose>
 

@@ -60,7 +60,7 @@
                 var creditorReferenceId = (string)context.Variables["creditorReferenceId"];
 
                 return domain + "_" + (string)requestInfo["fiscalCode"] + "_" + creditorReferenceId;
-            }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse(context.Variables["ndp_nodo_fiscalCode_iuv_ttl"]))" caching-type="external" />
+            }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse((string)context.Variables["ndp_nodo_fiscalCode_iuv_ttl"]))" caching-type="external" />
     <!-- 1. Build JSON token object key -->
     <set-variable name="tokenObjectKey" value="@{
                 var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
@@ -85,7 +85,7 @@
                 return jsonObject.ToString();
             }" />
     <!-- 3. Store JSON token object TODO ndp_nodo_paymentToken_ttl -->
-    <cache-store-value key="@((string)context.Variables["tokenObjectKey"])" value="@((string)context.Variables["tokenObjectValue"])" duration="@(int.Parse(context.Variables["ndp_nodo_paymentToken_ttl"]))" caching-type="external" />
+    <cache-store-value key="@((string)context.Variables["tokenObjectKey"])" value="@((string)context.Variables["tokenObjectValue"])" duration="@(int.Parse((string)context.Variables["ndp_nodo_paymentToken_ttl"]))" caching-type="external" />
   </when>
   <otherwise>
     <!-- Do nothing -->

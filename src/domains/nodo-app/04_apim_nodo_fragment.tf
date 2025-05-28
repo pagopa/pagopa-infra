@@ -92,6 +92,11 @@ resource "azurerm_api_management_policy_fragment" "start_payment_inbound_policy"
   depends_on = [
     // #TODO [FCADAC] add data on enable_nm3_switch
   ]
+
+  timeouts {
+    create = "1m"
+    update = "1m"
+  }
 }
 
 # Fragment: ndp-extract-fiscalCode-noticeNumber
