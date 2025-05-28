@@ -3,6 +3,21 @@
         <!-- operation before base policy -->
         <base />
         <!-- operation after base policy -->
+
+        <set-variable name="paymentTokens" value="@{
+          // Setting payment token value with default value
+          var paymentTokens = "";
+          // Extracting required field from request body
+          XElement request = context.Request.Body.As<XElement>(preserveContent: true);
+          XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
+          if (body != null ) {
+            XElement primitive = (XElement) body.FirstNode;
+            paymentTokens = primitive.Descendants("paymentToken").FirstOrDefault().Value ?? "";
+          }
+          return paymentTokens;
+        }" />
+
+        <include-fragment fragment-id="ndp-set-node-id-by-token-policy" />
         <include-fragment fragment-id="ndp-spo-inbound-policy" />
         <include-fragment fragment-id="ndp-set-base-url-policy" />
 

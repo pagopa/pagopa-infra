@@ -1,10 +1,10 @@
-##############
-## Products ##
-##############
+########################
+## Nodo Auth Products ##
+########################
 
 locals {
 
-  base_policy_nodo = templatefile("./api_product/nodo_pagamenti_api/base_policy.xml.tpl", { # decoupler ON
+  base_policy_nodo_auth = templatefile("./api_product/nodo_pagamenti_api/base_policy.xml.tpl", { # decoupler ON
     address-range-from       = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
     address-range-to         = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
     is-nodo-auth-pwd-replace = true
@@ -23,7 +23,7 @@ locals {
 }
 
 resource "terraform_data" "sha256_apim_nodo_dei_pagamenti_product_auth" {
-  input = sha256(local.base_policy_nodo)
+  input = sha256(local.base_policy_nodo_auth)
 }
 
 module "apim_nodo_dei_pagamenti_product_auth" {
@@ -41,7 +41,7 @@ module "apim_nodo_dei_pagamenti_product_auth" {
   approval_required     = var.env_short == "p" ? true : false
   subscriptions_limit   = var.nodo_auth_subscription_limit
 
-  policy_xml = local.base_policy_nodo
+  policy_xml = local.base_policy_nodo_auth
 
   depends_on = [
     azurerm_api_management_policy_fragment.nuova_connettivita_policy

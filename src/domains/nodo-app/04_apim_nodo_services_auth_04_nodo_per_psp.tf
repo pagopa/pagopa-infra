@@ -2,10 +2,10 @@
 ## WS nodo per PSP ##
 ######################
 locals {
-  apim_nodo_per_psp_api_auth_policy_file  = file("./api/nodopagamenti_api/nodoPerPsp/v1/base_policy.xml")
-  nodoInviaRT_v1_policy_file              = file("./api/nodopagamenti_api/nodoPerPsp/v1/base_policy_nodoInviaRT.xml")
-  nodoVerificaRPT_v1_policy_file          = file("./api/nodopagamenti_api/nodoPerPsp/v1/base_policy_nodoVerificaRPT_nodoAttivaRPT.xml")
-  nodoAttivaRPT_v1_policy_file            = file("./api/nodopagamenti_api/nodoPerPsp/v1/base_policy_nodoVerificaRPT_nodoAttivaRPT.xml")
+  apim_nodo_per_psp_api_auth_policy_file = file("./api/nodopagamenti_api/nodoPerPsp/v1/base_policy.xml")
+  nodoInviaRT_v1_policy_file             = file("./api/nodopagamenti_api/nodoPerPsp/v1/base_policy_nodoInviaRT.xml")
+  nodoVerificaRPT_v1_policy_file         = file("./api/nodopagamenti_api/nodoPerPsp/v1/base_policy_nodoVerificaRPT_nodoAttivaRPT.xml")
+  nodoAttivaRPT_v1_policy_file           = file("./api/nodopagamenti_api/nodoPerPsp/v1/base_policy_nodoVerificaRPT_nodoAttivaRPT.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_psp_api_auth" {

@@ -84,7 +84,7 @@
 
                 return jsonObject.ToString();
             }" />
-    <!-- 3. Store JSON token object -->
+    <!-- 3. Store JSON token object TODO ndp_nodo_paymentToken_ttl -->
     <cache-store-value key="@((string)context.Variables["tokenObjectKey"])" value="@((string)context.Variables["tokenObjectValue"])" duration="@(int.TryParse(context.Variables.GetValueOrDefault<string>("ndp_nodo_fiscalCode_noticeNumber_ttl", "5184000"), out var ttl) ? ttl : 5184000)" caching-type="external" />
   </when>
   <otherwise>

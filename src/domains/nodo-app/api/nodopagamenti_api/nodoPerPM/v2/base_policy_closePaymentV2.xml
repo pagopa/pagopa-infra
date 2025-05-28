@@ -1,0 +1,72 @@
+<policies>
+  <inbound>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
+
+    <!-- set paymentTokens variable -->
+    <include-fragment fragment-id="ndp-extract-paymentTokens-json-policy"/>
+
+    <!-- Start WISP ClosePaymentV2 inbound -->
+    <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
+    <choose>
+      <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
+        <set-variable name="primitive-ko" value="closePaymentV2" />
+        <set-variable name="request-body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
+        <set-variable name="wisp-payment-tokens" value="@{
+            try {
+              return (string) context.Variables["paymentTokens"];
+            } catch (Exception e) {
+              return "";
+            }
+        }" />
+        <include-fragment fragment-id="wisp-disable-payment-token-timer" />
+      </when>
+    </choose>
+    <!-- End WISP ClosePaymentV2 inbound -->
+
+    <include-fragment fragment-id="ndp-set-node-id-by-token-policy" />
+    <include-fragment fragment-id="ndp-set-base-url-policy" />
+
+  </inbound>
+  <backend>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
+  </backend>
+  <outbound>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
+
+    <!-- extract outcome -->
+    <set-variable name="outcome" value="@{
+        try {
+            JObject requestBody = (JObject) context.Request.Body.As<JObject>(preserveContent: true);
+            return ((string) requestBody["outcome"]).ToUpper();
+        } catch (Exception e) {
+            return "NONE";
+        }
+    }" />
+
+    <choose>
+        <!-- check if outcome in request is KO -->
+        <when condition="@(context.Variables.GetValueOrDefault<string>("outcome", "NONE").Equals("KO"))">
+
+            <!-- Start WISP ClosePaymentV2 outbound  -->
+            <include-fragment fragment-id="wisp-receipt-ko" />
+            <!-- End WISP ClosePaymentV2 outbound  -->
+
+            <!-- Remove objects in cache iff outcome is KO, otherwise do nothing -->
+            <!-- estrai tokens in split da variabile "paymentTokens", esegui fragment x5 volte -->
+            <include-fragment fragment-id="ndp-end-payment-cache-removal-outbound-policy" />
+        </when>
+    </choose>
+
+  </outbound>
+  <on-error>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
+  </on-error>
+</policies>

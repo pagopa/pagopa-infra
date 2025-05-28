@@ -1,0 +1,19 @@
+<fragment>
+  <!-- ########################################## -->
+  <!-- START ClosePayment extract tokens FRAGMENT -->
+  <!-- ########################################## -->
+
+  <set-variable name="paymentTokens" value="@{
+      try {
+        JObject request = (JObject) context.Request.Body.As<JObject>(preserveContent: true);
+        JArray paymentsTokens = (JArray) request.Property("paymentTokens").Value;
+        return string.Join(",", paymentsTokens.Select(token => token.ToString()));
+      } catch (Exception e) {
+        return "";
+      }
+  }" />
+
+  <!-- ######################################## -->
+  <!-- END ClosePayment extract tokens FRAGMENT -->
+  <!-- ######################################## -->
+</fragment>

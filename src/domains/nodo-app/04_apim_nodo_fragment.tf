@@ -10,8 +10,10 @@ locals {
 
   start_payment_inbound_policy_file                           = file("./api/nodopagamenti_api/decoupler/start_payment_inbound_policy.xml")
   ndp_extract_fiscalcode_noticenumber_policy_file             = file("./api/nodopagamenti_api/decoupler/extract_fiscalCode_noticeNumber_policy.xml")
+  ndp_extract_paymentTokens_json_policy_file                  = file("./api/nodopagamenti_api/decoupler/extract_paymentTokens_json_policy.xml")
   set_base_url_policy_file                                    = file("./api/nodopagamenti_api/decoupler/set_base_url_policy.xml")
-  spo_inbound_policy_file                                     = file("./api/nodopagamenti_api/decoupler/spo_inbound_policy.xml")
+  set_node_id_by_token_inbound_policy_file                    = file("./api/nodopagamenti_api/decoupler/set_nodeId_by_token_inbound_policy.xml")
+  spo_forward_inbound_policy_file                             = file("./api/nodopagamenti_api/decoupler/spo_forward_inbound_policy.xml")
   rpt_inbound_policy_file                                     = file("./api/nodopagamenti_api/decoupler/rpt_inbound_policy.xml")
   cache_token_object_outbound_policy_file                     = file("./api/nodopagamenti_api/decoupler/cache_token_object_outbound_policy.xml")
   end_payment_cache_removal_outbound_policy_file              = file("./api/nodopagamenti_api/decoupler/end_payment_cache_removal_outbound_policy.xml")
@@ -70,6 +72,15 @@ resource "azurerm_api_management_policy_fragment" "set_base_url_policy" {
   value             = local.set_base_url_policy_file
 }
 
+# Fragment: ndp-set-node-id-by-token-policy
+resource "azurerm_api_management_policy_fragment" "set_node_id_policy" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "ndp-set-node-id-by-token-policy"
+  description       = "Fragment to extract baseNodeId, starting from paymentToken"
+  format            = "rawxml"
+  value             = local.set_node_id_by_token_inbound_policy_file
+}
+
 # Fragment: ndp-start-payment-policy
 resource "azurerm_api_management_policy_fragment" "start_payment_inbound_policy" {
   api_management_id = data.azurerm_api_management.apim.id
@@ -97,13 +108,25 @@ resource "azurerm_api_management_policy_fragment" "extract_fc_nav_policy" {
   ]
 }
 
+# Fragment: ndp-extract-paymentTokens-json-policy
+resource "azurerm_api_management_policy_fragment" "extract_json_tokens_policy" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "ndp-extract-paymentTokens-json-policy"
+  description       = "Fragment to create paymentTokens variable from JSON body, needed for ClosePayment ndp-set-node-id-by-token-policy"
+  format            = "rawxml"
+  value             = local.ndp_extract_paymentTokens_json_policy_file
+
+  depends_on = [
+  ]
+}
+
 # Fragment: ndp-spo-inbound-policy
 resource "azurerm_api_management_policy_fragment" "spo_inbound_policy" {
   api_management_id = data.azurerm_api_management.apim.id
   name              = "ndp-spo-inbound-policy"
   description       = "Fragment to handle inbound logic regarding SendPaymentOutcome primitives"
   format            = "rawxml"
-  value             = local.spo_inbound_policy_file
+  value             = local.spo_forward_inbound_policy_file
 
   depends_on = [
   ]
