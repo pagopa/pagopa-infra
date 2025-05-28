@@ -41,6 +41,11 @@
 -target="module.apim_nodo_per_psp_api_v1_auth" \
 -target="terraform_data.sha256_nodoInviaRT_v1_policy_auth" \
 -target="azurerm_api_management_api_operation_policy.nodoInviaRT_v1_policy_auth" \
+-target="terraform_data.sha256_apim_nodo_dei_pagamenti_product" \
+-target="module.apim_nodo_dei_pagamenti_product" \
+-target="azurerm_api_management_api_version_set.nodo_per_pm_api" \
+-target="terraform_data.sha256_apim_nodo_per_pm_api_v1" \
+-target="module.apim_nodo_per_pm_api_v1" \
 -target=azurerm_api_management_policy_fragment.nuova_connettivita_policy \
 -target=azurerm_api_management_policy_fragment.set_base_url_policy \
 -target=azurerm_api_management_policy_fragment.start_payment_inbound_policy \

@@ -18,8 +18,8 @@ module "apim_nodo_dei_pagamenti_product" {
   source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "nodo-2-0"                           #TODO [FCADAC] remove -2-0
-  display_name = "Nodo dei Pagamenti 2.0"             #TODO [FCADAC] remove AAA 2.0
-  description  = "Product for Nodo dei Pagamenti 2.0" #TODO [FCADAC] remove AAA 2.0
+  display_name = "AAA Nodo dei Pagamenti 2.0"             #TODO [FCADAC] remove AAA 2.0
+  description  = "AAA Product for Nodo dei Pagamenti 2.0" #TODO [FCADAC] remove AAA 2.0
 
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
