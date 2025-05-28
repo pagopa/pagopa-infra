@@ -35,12 +35,3 @@ resource "azurerm_application_insights" "application_insights" {
   tags = module.tag_config.tags
 }
 
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry
-resource "azurerm_key_vault_secret" "application_insights_monitoring_connection_string" {
-  name         = "appinsights-monitoring-connection-string"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-  value        = azurerm_application_insights.application_insights.connection_string
-
-  tags = module.tag_config.tags
-}
-
