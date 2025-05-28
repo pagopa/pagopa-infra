@@ -6,6 +6,10 @@
 -target="azurerm_api_management_api_version_set.node_for_psp_api_auth" \
 -target="terraform_data.sha256_apim_node_for_psp_api_v1_auth" \
 -target="module.apim_node_for_psp_api_v1_auth" \
+-target=terraform_data.sha256_nodoVerificaRPT_v1_policy_auth \
+-target=azurerm_api_management_api_operation_policy.nodoVerificaRPT_v1_policy_auth \
+-target=terraform_data.sha256_nodoAttivaRPT_v1_policy_auth \
+-target=azurerm_api_management_api_operation_policy.nodoAttivaRPT_v1_policy_auth \
 -target=azurerm_api_management_api_version_set.node_for_io_api_auth \
 -target=module.apim_node_for_io_api_v1_auth \
 -target=terraform_data.sha256_apim_node_for_io_api_v1_auth \

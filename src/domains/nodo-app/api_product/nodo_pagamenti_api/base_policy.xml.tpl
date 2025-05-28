@@ -50,6 +50,9 @@
     <set-variable name="baseUrl" value="{{default-nodo-backend}}" />
     <set-variable name="baseNodeId" value="{{default-nodo-id}}" />
 
+    <!-- the following is the TTL used to cache tagging regarding payments -->
+    <set-variable name="ndp_nodo_fiscalCode_iuv_ttl" value="{{ndp-nodo-fiscalCode-iuv-ttl}}" />
+
     <set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction", "NONE"))" />
 
     <!-- set backend service url -->
