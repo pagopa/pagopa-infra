@@ -58,6 +58,12 @@
     SELECT * FROM pg_publication;
     SELECT * FROM pg_replication_slots;
     ```
+1. Grant usage on `pglogical` public (useful for RTP)
+
+    ```sql
+    -- as admin
+    GRANT USAGE ON SCHEMA pglogical TO public
+    ```
 
 1. create `src/domains/gps-app/set_registry_secrets.sh` ( ACR pull )
     ```
