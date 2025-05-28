@@ -1,6 +1,8 @@
  ./terraform.sh apply weu-dev  \
 -target="azurerm_api_management_named_value.ndp_eCommerce_trxId_ttl" \
 -target="azurerm_api_management_named_value.ndp_nodo_fc_nav_ttl" \
+-target="azurerm_api_management_named_value.ndp_nodo_fc_iuv_ttl" \
+-target="azurerm_api_management_named_value.ndp_nodo_paymentToken_ttl" \
 -target=module.apim_nodo_dei_pagamenti_product_auth \
 -target=terraform_data.sha256_apim_nodo_dei_pagamenti_product_auth \
 -target="azurerm_api_management_api_version_set.node_for_psp_api_auth" \

@@ -44,7 +44,11 @@ module "apim_nodo_dei_pagamenti_product_auth" {
   policy_xml = local.base_policy_nodo
 
   depends_on = [
-    azurerm_api_management_policy_fragment.nuova_connettivita_policy
+    azurerm_api_management_policy_fragment.nuova_connettivita_policy,
+    azurerm_api_management_named_value.ndp_eCommerce_trxId_ttl,
+    azurerm_api_management_named_value.ndp_nodo_fc_iuv_ttl,
+    azurerm_api_management_named_value.ndp_nodo_fc_nav_ttl,
+    azurerm_api_management_named_value.ndp_nodo_paymentToken_ttl
   ]
 }
 
