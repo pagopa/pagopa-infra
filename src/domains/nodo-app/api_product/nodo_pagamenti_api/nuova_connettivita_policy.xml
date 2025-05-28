@@ -2,7 +2,6 @@
   <!-- the following block code is to override password XML element with default nodoAuthPassword -->
   <set-variable name="password" value="{{nodoAuthPassword}}" />
 
-  <set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction"))" />
   <set-body>
     @{
     // get request body content
@@ -11,6 +10,7 @@
     XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
     // get primitive
     XElement primitive = (XElement) body.FirstNode;
+    // variable soapAction is defined in the product base policy
     var soapAction = (string)context.Variables["soapAction"];
     var primitives = new string[]{"nodoInviaRPT", "nodoInviaCarrelloRPT"};
     if (primitives.Contains(soapAction)) {

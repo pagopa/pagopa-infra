@@ -17,6 +17,10 @@
         <!-- product after base policy -->
         <!-- set ndphost header -->
         <include-fragment fragment-id="ndphost-header" />
+
+        <!-- get SOAPAction info from header -->
+        <set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction", "NONE"))" />
+
         <choose>
             <when condition="@(context.Request.Body != null)">
                 <!-- copy request body into renewrequest variable -->
@@ -61,8 +65,6 @@
             return success ? ttl.ToString() : "86400";  // 1 day
         }" />
 
-        <!-- get SOAPAction info from header -->
-        <set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction", "NONE"))" />
         <!-- set backend service url -->
         <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
     </inbound>
