@@ -84,7 +84,19 @@
     -target="kubectl_manifest.kafka_connect" \
     -target="null_resource.wait_kafka_connect" \
     -target="kubectl_manifest.postgres_connector" \
-    -target="null_resource.wait_postgres_connector"
+    -target="null_resource.wait_postgres_connector" \
+    -target="module.apim_gpd_debezium_product" \
+    -target="azurerm_api_management_api_version_set.api_gpd_debezium_api" \
+    -target="module.apim_api_gpd_debezium_api" \
+    -target="kubectl_manifest.healthchecker-config-map" \
+    -target="kubectl_manifest.healthchecker-cron" \
+    -target="kubectl_manifest.debezium-ingress" \
+    -target="kubectl_manifest.debezium-network-policy"
+    ```    
+1. debezium connector alert `src/synthetic-monitoring`
+
+    ```sh
+    ./terraform.sh apply weu-<ENV> -target="module.monitoring_function"
     ```    
 
 1. secret for gpd-mng-ingestion `src/domains/gps-common`
