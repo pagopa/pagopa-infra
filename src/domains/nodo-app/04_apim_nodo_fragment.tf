@@ -90,8 +90,6 @@ resource "azurerm_api_management_policy_fragment" "start_payment_inbound_policy"
   value             = local.start_payment_inbound_policy_file
 
   depends_on = [
-    azurerm_api_management_named_value.ndp_eCommerce_trxId_ttl,
-    azurerm_api_management_named_value.ndp_nodo_fc_nav_ttl
     // #TODO [FCADAC] add data on enable_nm3_switch
   ]
 }
