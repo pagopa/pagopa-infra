@@ -85,6 +85,8 @@
 -target="terraform_data.sha256_nodoChiediTemplateInformativaPSP_v1_policy_auth" \
 -target="azurerm_api_management_api_operation_policy.nodoChiediTemplateInformativaPSP_v1_policy_auth" \
 -target="terraform_data.sha256_nodoPAChiediInformativaPA_v1_policy_auth" \
--target="azurerm_api_management_api_operation_policy.nodoPAChiediInformativaPA_v1_policy_auth"
+-target="azurerm_api_management_api_operation_policy.nodoPAChiediInformativaPA_v1_policy_auth" \
+-target="terraform_data.sha256_nodoChiediCatalogoServiziV2_v1_policy_auth" \
+-target="azurerm_api_management_api_operation_policy.nodoChiediCatalogoServiziV2_v1_policy_auth"
 
 
