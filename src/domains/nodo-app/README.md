@@ -47,16 +47,19 @@
 | <a name="module_apim_mock_psp_secondary_product_replica"></a> [apim\_mock\_psp\_secondary\_product\_replica](#module\_apim\_mock\_psp\_secondary\_product\_replica) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_node_for_io_api_v1_auth"></a> [apim\_node\_for\_io\_api\_v1\_auth](#module\_apim\_node\_for\_io\_api\_v1\_auth) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_node_for_psp_api_v1_auth"></a> [apim\_node\_for\_psp\_api\_v1\_auth](#module\_apim\_node\_for\_psp\_api\_v1\_auth) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_nodo_dei_pagamenti_product"></a> [apim\_nodo\_dei\_pagamenti\_product](#module\_apim\_nodo\_dei\_pagamenti\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_nodo_dei_pagamenti_product_auth"></a> [apim\_nodo\_dei\_pagamenti\_product\_auth](#module\_apim\_nodo\_dei\_pagamenti\_product\_auth) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_nodo_dei_pagamenti_product_ndp"></a> [apim\_nodo\_dei\_pagamenti\_product\_ndp](#module\_apim\_nodo\_dei\_pagamenti\_product\_ndp) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_nodo_dei_pagamenti_product_replica_ndp"></a> [apim\_nodo\_dei\_pagamenti\_product\_replica\_ndp](#module\_apim\_nodo\_dei\_pagamenti\_product\_replica\_ndp) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_nodo_monitoring_api_ndp"></a> [apim\_nodo\_monitoring\_api\_ndp](#module\_apim\_nodo\_monitoring\_api\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_nodo_monitoring_api_replica_ndp"></a> [apim\_nodo\_monitoring\_api\_replica\_ndp](#module\_apim\_nodo\_monitoring\_api\_replica\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_nodo_per_pa_api_v1_auth"></a> [apim\_nodo\_per\_pa\_api\_v1\_auth](#module\_apim\_nodo\_per\_pa\_api\_v1\_auth) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_nodo_per_pm_api_v1"></a> [apim\_nodo\_per\_pm\_api\_v1](#module\_apim\_nodo\_per\_pm\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_nodo_per_pm_api_v1_ndp"></a> [apim\_nodo\_per\_pm\_api\_v1\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v1\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_nodo_per_pm_api_v1_replica_ndp"></a> [apim\_nodo\_per\_pm\_api\_v1\_replica\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v1\_replica\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_nodo_per_pm_api_v2_ndp"></a> [apim\_nodo\_per\_pm\_api\_v2\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v2\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_nodo_per_pm_api_v2_replica_ndp"></a> [apim\_nodo\_per\_pm\_api\_v2\_replica\_ndp](#module\_apim\_nodo\_per\_pm\_api\_v2\_replica\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_nodo_per_psp_api_v1_auth"></a> [apim\_nodo\_per\_psp\_api\_v1\_auth](#module\_apim\_nodo\_per\_psp\_api\_v1\_auth) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_nododatamigration_product"></a> [apim\_nododatamigration\_product](#module\_apim\_nododatamigration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_prometheus_product"></a> [apim\_prometheus\_product](#module\_apim\_prometheus\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_receipt_for_ndp_product"></a> [apim\_receipt\_for\_ndp\_product](#module\_apim\_receipt\_for\_ndp\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
@@ -117,6 +120,7 @@
 | [azurerm_api_management_api_operation_policy.delete_sessionId_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.nm3_activate_v2_verify_policy_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.nm3_activate_verify_policy_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.nodoAttivaRPT_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.nodoChiediCopiaRT_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.nodoInviaCarrelloRPT_api_v1_policy_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.nodoInviaCarrelloRPT_api_v1_policy_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
@@ -124,6 +128,8 @@
 | [azurerm_api_management_api_operation_policy.nodoInviaRPT_api_v1_policy_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.nodoInviaRPT_api_v1_policy_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.nodoInviaRPT_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.nodoInviaRT_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.nodoVerificaRPT_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.parked_list_api_v1_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.parked_list_api_v1_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.payments_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
@@ -169,8 +175,10 @@
 | [azurerm_api_management_api_version_set.nodo_per_pa_api_auth](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_pa_api_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_pa_api_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.nodo_per_pm_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_pm_api_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_pm_api_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
+| [azurerm_api_management_api_version_set.nodo_per_psp_api_auth](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_psp_api_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_psp_api_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
@@ -196,9 +204,11 @@
 | [azurerm_api_management_policy_fragment.cache_token_object_outbound_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
 | [azurerm_api_management_policy_fragment.end_payment_cache_removal_outbound_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
 | [azurerm_api_management_policy_fragment.extract_fc_nav_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
+| [azurerm_api_management_policy_fragment.extract_json_tokens_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
 | [azurerm_api_management_policy_fragment.nuova_connettivita_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
 | [azurerm_api_management_policy_fragment.rpt_inbound_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
 | [azurerm_api_management_policy_fragment.set_base_url_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
+| [azurerm_api_management_policy_fragment.set_node_id_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
 | [azurerm_api_management_policy_fragment.spo_inbound_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
 | [azurerm_api_management_policy_fragment.start_payment_inbound_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
 | [azurerm_api_management_policy_fragment.verificatore_activateIOPayment_inbound_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
@@ -269,13 +279,18 @@
 | [terraform_data.sha256_activePaymentNotice_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_apim_node_for_io_api_v1_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_apim_node_for_psp_api_v1_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
+| [terraform_data.sha256_apim_nodo_dei_pagamenti_product](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_apim_nodo_dei_pagamenti_product_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_apim_nodo_per_pa_api_v1_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
+| [terraform_data.sha256_apim_nodo_per_psp_api_v1_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_delete_sessionId_api_v1](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_ndphost_header](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
+| [terraform_data.sha256_nodoAttivaRPT_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_nodoChiediCopiaRT_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_nodoInviaCarrelloRPT_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_nodoInviaRPT_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
+| [terraform_data.sha256_nodoInviaRT_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
+| [terraform_data.sha256_nodoVerificaRPT_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_payments_api_v1](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_save_cart_mapping_api_v1](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_save_mapping_api_v1](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
