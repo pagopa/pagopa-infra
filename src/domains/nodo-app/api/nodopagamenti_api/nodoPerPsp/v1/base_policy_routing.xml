@@ -1,0 +1,21 @@
+<!-- @formatter:off -->
+<policies>
+  <inbound>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
+    <include-fragment fragment-id="ndp-routing-inbound-policy" />
+
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
