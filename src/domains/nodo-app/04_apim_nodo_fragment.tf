@@ -23,6 +23,8 @@ locals {
   wisp_activate_outbound_policy_file                          = file("./api/nodopagamenti_api/decoupler/wisp_activate_outbound_policy.xml")
   wisp_nodoInviaRPT_nodoInviaCarrelloRPT_inbound_policy_file  = file("./api/nodopagamenti_api/decoupler/wisp_nodoInviaRPT_nodoInviaCarrelloRPT_inbound_policy.xml")
   wisp_nodoInviaRPT_nodoInviaCarrelloRPT_outbound_policy_file = file("./api/nodopagamenti_api/decoupler/wisp_nodoInviaRPT_nodoInviaCarrelloRPT_outbound_policy.xml")
+  wisp_nodoInviaCarrelloRPT_posfisici_inbound_policy_file     = file("./api/nodopagamenti_api/decoupler/wisp_nodoInviaCarrelloRPT_posfisici_inbound_policy.xml")
+  wisp_nodoInviaCarrelloRPT_posfisici_outbound_policy_file    = file("./api/nodopagamenti_api/decoupler/wisp_nodoInviaCarrelloRPT_posfisici_outbound_policy.xml")
 }
 
 resource "terraform_data" "sha256_ndphost_header" {
@@ -216,4 +218,22 @@ resource "azurerm_api_management_policy_fragment" "wisp_nodoinviarpt_nodoinviaca
   description       = "Fragment to handle outbound logic regarding wisp dismantling for trigger primitives"
   format            = "rawxml"
   value             = local.wisp_nodoInviaRPT_nodoInviaCarrelloRPT_outbound_policy_file
+}
+
+# Fragment: ndp-wisp-nodoinviacarrellorpt-posfisici-inbound-policy
+resource "azurerm_api_management_policy_fragment" "wisp_nodoinviacarrellorpt_posfisici_inbound_policy" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "ndp-wisp-nodoinviacarrellorpt-posfisici-inbound-policy"
+  description       = "Fragment to handle inbound logic regarding WFESP/POS fisici for trigger primitives"
+  format            = "rawxml"
+  value             = local.wisp_nodoInviaCarrelloRPT_posfisici_inbound_policy_file
+}
+
+# Fragment: ndp-wisp-nodoinviacarrellorpt-posfisici-outbound-policy
+resource "azurerm_api_management_policy_fragment" "wisp_nodoinviacarrellorpt_posfisici_outbound_policy" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "ndp-wisp-nodoinviacarrellorpt-posfisici-outbound-policy"
+  description       = "Fragment to handle outbound logic regarding WFESP/POS fisici for trigger primitives"
+  format            = "rawxml"
+  value             = local.wisp_nodoInviaCarrelloRPT_posfisici_outbound_policy_file
 }
