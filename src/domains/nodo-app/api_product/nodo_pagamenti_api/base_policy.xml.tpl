@@ -19,7 +19,10 @@
         <include-fragment fragment-id="ndphost-header" />
 
         <!-- get SOAPAction info from header -->
-        <set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction", "NONE"))" />
+        <set-variable name="soapAction" value="@{
+            var soapAction = (string)context.Request.Headers.GetValueOrDefault("SOAPAction", "NONE");
+            return soapAction.Replace("\"", "").Replace("'","");
+        }" />
 
         <choose>
             <when condition="@(context.Request.Body != null)">

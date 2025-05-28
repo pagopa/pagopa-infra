@@ -27,7 +27,6 @@ module "apim_nodo_dei_pagamenti_product" {
   published             = true
   subscription_required = false
   approval_required     = false
-  subscriptions_limit   = var.nodo_auth_subscription_limit
 
   policy_xml = local.base_policy_nodo
 }
