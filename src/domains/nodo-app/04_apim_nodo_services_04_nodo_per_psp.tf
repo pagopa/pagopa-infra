@@ -68,3 +68,18 @@ resource "azurerm_api_management_api_operation_policy" "nodoChiediInformativaPA_
   #tfsec:ignore:GEN005
   xml_content = local.base_policy_nodoPerPsp_routing_file
 }
+
+###### nodoChiediTemplateInformativaPSP
+resource "terraform_data" "sha256_nodoChiediTemplateInformativaPSP_v1_policy_auth" {
+  input = sha256(local.base_policy_nodoPerPsp_routing_file)
+}
+resource "azurerm_api_management_api_operation_policy" "nodoChiediTemplateInformativaPSP_v1_policy_auth" {
+  api_name            = module.apim_nodo_per_psp_api_v1.name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  # operation_id          = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0" #TODO [FCADAC] replace
+  operation_id = var.env_short == "d" ? "68378d750a23231b90323475" : ""
+
+  #tfsec:ignore:GEN005
+  xml_content = local.base_policy_nodoPerPsp_routing_file
+}
