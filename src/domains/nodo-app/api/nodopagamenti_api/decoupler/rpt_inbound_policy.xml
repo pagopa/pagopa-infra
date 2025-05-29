@@ -34,7 +34,7 @@
             string codStazPA = primitive.Descendants("CodStazPA").FirstOrDefault().Value;
             requestInfo["noticeNumber"] = auxDigit + codStazPA + requestInfo["iuv"];
           } else {
-            requestInfo["noticeNumber"] = auxDigit + requestInfo["iuv"]
+            requestInfo["noticeNumber"] = auxDigit + requestInfo["iuv"];
           }
         }
       }

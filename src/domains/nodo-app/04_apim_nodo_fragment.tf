@@ -6,7 +6,8 @@ locals {
     content = file("./api_product/nodo_pagamenti_api/env/${var.env}/ndphost_header.xml")
   })
 
-  nuova_connettivita_policy_file = file("./api_product/nodo_pagamenti_api/nuova_connettivita_policy.xml")
+  nuova_connettivita_policy_file       = file("./api_product/nodo_pagamenti_api/nuova_connettivita_policy.xml")
+  trace_variable_as_header_policy_file = file("./api/nodopagamenti_api/v1/trace_variable_as_header_policy.xml")
 
   start_payment_inbound_policy_file                           = file("./api/nodopagamenti_api/decoupler/start_payment_inbound_policy.xml")
   ndp_extract_fiscalcode_noticenumber_policy_file             = file("./api/nodopagamenti_api/decoupler/extract_fiscalCode_noticeNumber_policy.xml")
@@ -59,6 +60,16 @@ resource "azurerm_api_management_policy_fragment" "nuova_connettivita_policy" {
   description       = "Setting placeholder value for nuova connettività"
   format            = "rawxml"
   value             = local.nuova_connettivita_policy_file
+}
+
+
+# Fragment: ndp-routing-inbound-policy
+resource "azurerm_api_management_policy_fragment" "trace_variable_as_header_policy" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "trace-variable-as-header-policy"
+  description       = "Fragment that permits to retrieve variables defined in APIM as response headers"
+  format            = "rawxml"
+  value             = local.trace_variable_as_header_policy_file
 }
 
 ########################################

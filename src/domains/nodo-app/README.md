@@ -227,6 +227,7 @@
 | [azurerm_api_management_policy_fragment.set_outcome_request_response_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
 | [azurerm_api_management_policy_fragment.spo_inbound_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
 | [azurerm_api_management_policy_fragment.start_payment_inbound_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
+| [azurerm_api_management_policy_fragment.trace_variable_as_header_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
 | [azurerm_api_management_policy_fragment.verificatore_activateIOPayment_inbound_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
 | [azurerm_api_management_policy_fragment.verificatore_activateIOPayment_outbound_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |
 | [azurerm_api_management_policy_fragment.verificatore_inbound_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_policy_fragment) | resource |

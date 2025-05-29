@@ -1,0 +1,37 @@
+<!-- @formatter:off -->
+<fragment>
+  <!-- ############################################## -->
+  <!-- START TRACE-VARIABLE-AS-HEADER-POLICY FRAGMENT -->
+  <!-- ############################################## -->
+
+  <choose>
+    <!-- Execute variable tracing using X-APIM-Trace-Vars header -->
+    <when condition="@(!"NONE".Equals(context.Request.Headers.GetValueOrDefault("X-APIM-Trace-Vars","NONE")))">
+
+
+      <set-variable name="apimTraceValues" value="@{
+        string apimTraceHeader = (string) context.Request.Headers.GetValueOrDefault("X-APIM-Trace-Vars", "-");
+        string[] variables = apimTraceHeader.Split(',');
+
+        JObject apimTraceObject = new JObject();
+        foreach (string variableName in variables) {
+            var variableValue = (string) context.Variables.GetValueOrDefault(variableName, "<not-available>");
+            apimTraceObject.Add(variableName, variableValue);
+        }
+        return apimTraceObject.ToString();
+      }" />
+      <set-header name="X-APIM-Trace-Values" exists-action="override">
+        <value>
+          @{
+            string value = (string) context.Variables.GetValueOrDefault("apimTraceValues", "<not-available>");
+            return value.Replace('\n', ' ').Replace('\t', ' ').Replace('\r', ' ');
+          }
+        </value>
+      </set-header>
+    </when>
+  </choose>
+
+  <!-- ############################################ -->
+  <!-- END TRACE-VARIABLE-AS-HEADER-POLICY FRAGMENT -->
+  <!-- ############################################ -->
+</fragment>
