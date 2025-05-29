@@ -1,35 +1,37 @@
 <fragment>
-	<!-- ################################## -->
-	<!-- START SET-BASE-URL-POLICY FRAGMENT -->
-	<!-- ################################## -->
-	<!-- Replacing base URL value, searching the correct value from configured Nodo instances -->
-	<set-variable name="baseUrl" value="@{
-		try {
-			var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
-			var nodeId = context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
+  <!-- ################################## -->
+  <!-- START SET-BASE-URL-POLICY FRAGMENT -->
+  <!-- ################################## -->
 
-			// Searching by node_id in decoupler configuration: if something is found, return the associated node_uri
-			foreach (JObject item in configuration) {
-				var currentNodeId = item.GetValue("node_id").ToString();
-				if (currentNodeId.Equals(nodeId)) {
-					return item.GetValue("node_uri").ToString();
-				}
-			}
-		} catch (Exception e) {
-			// Nothing to do
-		}
+  <!-- Replacing base URL value, searching the correct value from configured Nodo instances -->
+  <set-variable name="baseUrl" value="@{
+    try {
+      var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
+      var nodeId = context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
 
-		// Return a default value, associated to the default URL
-		return context.Variables.GetValueOrDefault<string>("baseUrl", "NONE");
-	}" />
+      // Searching by node_id in decoupler configuration: if something is found, return the associated node_uri
+      foreach (JObject item in configuration) {
+        var currentNodeId = item.GetValue("node_id").ToString();
+        if (currentNodeId.Equals(nodeId)) {
+          return item.GetValue("node_uri").ToString();
+        }
+      }
+    } catch (Exception e) {
+      // Nothing to do
+    }
 
-	<choose>
-		<when condition="@(!((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") && !((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
-			<!-- set backend service url -->
-			<set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
-		</when>
-	</choose>
-	<!-- ################################ -->
-	<!-- END SET-BASE-URL-POLICY FRAGMENT -->
-	<!-- ################################ -->
+    // Return a default value, associated to the default URL
+    return context.Variables.GetValueOrDefault<string>("baseUrl", "NONE");
+  }" />
+
+  <!-- Set backend service URL if and only if the request is not made for PRF -->
+  <choose>
+    <when condition="@(!((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") && !((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
+      <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
+    </when>
+  </choose>
+
+  <!-- ################################ -->
+  <!-- END SET-BASE-URL-POLICY FRAGMENT -->
+  <!-- ################################ -->
 </fragment>

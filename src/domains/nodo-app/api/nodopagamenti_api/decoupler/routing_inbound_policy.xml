@@ -1,32 +1,48 @@
 <fragment>
+  <!-- ##################################### -->
+  <!-- START ROUTING-INBOUND-POLICY FRAGMENT -->
+  <!-- ##################################### -->
+
 	<choose>
+
+    <!-- -->
 		<when condition="@(!((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") && !((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
+
+      <!-- Acquiring Decoupler configuration and order by routing weight -->
 			<set-variable name="configuration" value="@{
-    JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
-    JArray sorted = new JArray(json_configuration.OrderByDescending(obj => (int)obj["routing"]));
-    return sorted.ToString();
-    }" />
+        JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
+        JArray sorted = new JArray(json_configuration.OrderByDescending(obj => (int)obj["routing"]));
+        return sorted.ToString();
+      }" />
+
+      <!-- Changing baseUrl applying routing algorithm  -->
 			<choose>
 				<when condition="@(context.Variables.GetValueOrDefault<string>("enable_routing_switch", "").Equals("true"))">
 					<set-variable name="baseUrl" value="@{
-                        var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
-                        // get random number
-                        var rand = new Random();
-                        int random = rand.Next(0, 100);
-                        // priority is given by list order. add field for sorting the priority
-                        int currentRouting = 0;
-                        foreach (JObject item in configuration) {
-                            currentRouting += int.Parse(item.GetValue("routing").ToString());
-                            if (random <= currentRouting) {
-                                return item.GetValue("node_uri").ToString();
-                            }
-                        }
-                        return context.Variables.GetValueOrDefault<string>("baseUrl", "");
-    }" />
-					<!-- set backend service url -->
+            var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
+
+            // Generate a random number
+            var rand = new Random();
+            int random = rand.Next(0, 100);
+
+            // The priority is given by list order
+            int currentRouting = 0;
+            foreach (JObject item in configuration) {
+              currentRouting += int.Parse(item.GetValue("routing").ToString());
+              if (random <= currentRouting) {
+                return item.GetValue("node_uri").ToString();
+              }
+            }
+            return context.Variables.GetValueOrDefault<string>("baseUrl", "");
+          }" />
 					<set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
 				</when>
 			</choose>
 		</when>
+
 	</choose>
+
+  <!-- ################################### -->
+  <!-- END ROUTING-INBOUND-POLICY FRAGMENT -->
+  <!-- ################################### -->
 </fragment>
