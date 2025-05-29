@@ -3,7 +3,7 @@
         <!-- operation before base policy -->
         <base />
         <!-- operation after base policy -->
-
+        <!-- Extracting all payments tokens, then extract the first for routing purposes. The other tokens will be used in outbound policy. -->
         <set-variable name="paymentTokens" value="@{
           // Setting payment token value with default value
           var paymentTokens = "";
@@ -20,7 +20,6 @@
         <include-fragment fragment-id="ndp-set-node-id-by-token-policy" />
         <include-fragment fragment-id="ndp-spo-inbound-policy" />
         <include-fragment fragment-id="ndp-set-base-url-policy" />
-
     </inbound>
     <backend>
         <!-- operation before base policy -->
@@ -31,8 +30,31 @@
         <!-- operation before base policy -->
         <base />
         <!-- operation after base policy -->
-        <!-- estrai tokens in split da variabile "paymentTokens", esegui fragment x5 volte -->
-        <include-fragment fragment-id="ndp-end-payment-cache-removal-outbound-policy" />
+        <!-- start decoupler outbound logic -->
+        <!-- extract requestOutcome and responseOutcome-->
+        <include-fragment fragment-id="ndp-set-outcome-request-response-xml-policy" />
+        <!-- extract responseFaultCode -->
+        <set-variable name="responseFaultCode" value="@{
+          // Retrieve data from response body
+          XElement response = context.Response.Body.As<XElement>(preserveContent: true);
+          XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
+          XElement primitive = body.Elements().FirstOrDefault();
+          var outcome = primitive.Descendants("faultCode").FirstOrDefault().Value ?? "";
+        return outcome.ToString();
+        }" />
+        <!-- faultCodeRemoval are the fault codes for which keys can be removed from the cache -->
+        <set-variable name="faultCodeRemoval" value="PPT_TOKEN_SCADUTO, PPT_PAGAMENTO_DUPLICATO, PPT_TOKEN_SCADUTO_KO, PPT_ESITO_GIA_ACQUISITO, PPT_TOKEN_SCONOSCIUTO" />
+        <!-- Remove objects in cache if responseOutcome is OK or (responseOutcome is KO and faultCode is one of faultCodeRemoval) -->
+        <choose>
+            <when condition="@(
+                context.Variables.GetValueOrDefault<string>("responseOutcome", "NONE").Equals("OK") ||
+                context.Variables.GetValueOrDefault<string>("faultCodeRemoval", "NONE").Contains(context.Variables.GetValueOrDefault<string>("responseFaultCode", "NONE"))
+            )">
+                <!-- extract tokens from paymentTokens var and cache-remove 5 times -->
+                <include-fragment fragment-id="ndp-end-payment-cache-removal-outbound-policy" />
+            </when>
+        </choose>
+        <!-- end decoupler outbound logic -->
     </outbound>
     <on-error>
         <!-- operation before base policy -->

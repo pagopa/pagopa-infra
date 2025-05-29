@@ -14,7 +14,8 @@ locals {
   ndp_extract_paymentTokens_json_policy_file                  = file("./api/nodopagamenti_api/decoupler/extract_paymentTokens_json_policy.xml")
   set_base_url_policy_file                                    = file("./api/nodopagamenti_api/decoupler/set_base_url_policy.xml")
   set_node_id_by_token_inbound_policy_file                    = file("./api/nodopagamenti_api/decoupler/set_nodeId_by_token_inbound_policy.xml")
-  set_outcome_request_response_policy_file                    = file("./api/nodopagamenti_api/decoupler/set_req_res_outcome_policy.xml")
+  set_outcome_request_response_json_policy_file               = file("./api/nodopagamenti_api/decoupler/set_req_res_outcome_json_policy.xml")
+  set_outcome_request_response_xml_policy_file               = file("./api/nodopagamenti_api/decoupler/set_req_res_outcome_xml_policy.xml")
   spo_forward_inbound_policy_file                             = file("./api/nodopagamenti_api/decoupler/spo_forward_inbound_policy.xml")
   rpt_inbound_policy_file                                     = file("./api/nodopagamenti_api/decoupler/rpt_inbound_policy.xml")
   cache_token_object_outbound_policy_file                     = file("./api/nodopagamenti_api/decoupler/cache_token_object_outbound_policy.xml")
@@ -96,12 +97,21 @@ resource "azurerm_api_management_policy_fragment" "set_node_id_policy" {
 }
 
 # Fragment: ndp-set-outcome-request-response-policy
-resource "azurerm_api_management_policy_fragment" "set_outcome_request_response_policy" {
+resource "azurerm_api_management_policy_fragment" "set_outcome_request_response_json_policy" {
   api_management_id = data.azurerm_api_management.apim.id
-  name              = "ndp-set-outcome-request-response-policy"
-  description       = "Fragment to extract requestOutcome and responseOutcome"
+  name              = "ndp-set-outcome-request-response-json-policy"
+  description       = "Fragment to extract requestOutcome and responseOutcome from JSON"
   format            = "rawxml"
-  value             = local.set_outcome_request_response_policy_file
+  value             = local.set_outcome_request_response_json_policy_file
+}
+
+# Fragment: ndp-set-outcome-request-response-policy
+resource "azurerm_api_management_policy_fragment" "set_outcome_request_response_xml_policy" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "ndp-set-outcome-request-response-xml-policy"
+  description       = "Fragment to extract requestOutcome and responseOutcome from XML"
+  format            = "rawxml"
+  value             = local.set_outcome_request_response_xml_policy_file
 }
 
 # Fragment: ndp-start-payment-policy

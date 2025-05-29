@@ -51,7 +51,8 @@
 -target=azurerm_api_management_policy_fragment.nuova_connettivita_policy \
 -target=azurerm_api_management_policy_fragment.trace_variable_as_header_policy \
 -target=azurerm_api_management_policy_fragment.set_base_url_policy \
--target=azurerm_api_management_policy_fragment.set_outcome_request_response_policy \
+-target=azurerm_api_management_policy_fragment.set_outcome_request_response_json_policy \
+-target=azurerm_api_management_policy_fragment.set_outcome_request_response_xml_policy \
 -target=azurerm_api_management_policy_fragment.start_payment_inbound_policy \
 -target=azurerm_api_management_policy_fragment.extract_fc_nav_policy \
 -target=azurerm_api_management_policy_fragment.spo_inbound_policy \

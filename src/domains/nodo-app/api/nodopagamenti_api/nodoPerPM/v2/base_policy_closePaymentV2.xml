@@ -40,7 +40,7 @@
     <!-- operation after base policy -->
 
     <!-- extract requestOutcome and responseOutcome-->
-    <include-fragment fragment-id="ndp-set-outcome-request-response-policy" />
+    <include-fragment fragment-id="ndp-set-outcome-request-response-json-policy" />
 
     <choose>
         <!-- check if outcome in request is KO -->
