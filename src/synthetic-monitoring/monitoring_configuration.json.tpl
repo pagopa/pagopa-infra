@@ -940,7 +940,7 @@
     "checkCertificate" : true,
     "method" : "GET",
     "expectedCodes" : ["200"],
-    "expectedBody": {"debezium-connector-postgres":{"status":{"name":"debezium-connector-postgres","connector":{"state":"RUNNING"},"tasks":[{"id":0,"state":"RUNNING"}]}}},
+    "expectedBody": {"name":"debezium-connector-postgres","connector":{"state":"RUNNING"},"tasks":[{"state":"RUNNING"}]},
     "bodyCompareStrategy": "contains",
     "tags" : {
       "description" : "pagopa gpd debezium-connector-postgres ${env_name} status monitor"
