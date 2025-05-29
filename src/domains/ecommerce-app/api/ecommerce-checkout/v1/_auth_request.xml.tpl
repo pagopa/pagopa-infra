@@ -31,6 +31,9 @@
             <when condition="@(bool.Parse(context.Variables.GetValueOrDefault<string>("useOpenId")))">
                 <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
                     <openid-config url="https://${ecommerce_ingress_hostname}/pagopa-jwt-issuer-service/.well-known/openid-configuration" />
+                    <audiences>
+                      <audience>ecommerce</audience>
+                    </audiences>
                 </validate-jwt>
             </when>
             <otherwise>
