@@ -30,6 +30,7 @@ locals {
   wisp_nodoInviaCarrelloRPT_posfisici_inbound_policy_file     = file("./api/nodopagamenti_api/decoupler/wisp_nodoInviaCarrelloRPT_posfisici_inbound_policy.xml")
   wisp_nodoInviaCarrelloRPT_posfisici_outbound_policy_file    = file("./api/nodopagamenti_api/decoupler/wisp_nodoInviaCarrelloRPT_posfisici_outbound_policy.xml")
   routing_inbound_policy_file                                 = file("./api/nodopagamenti_api/decoupler/routing_inbound_policy.xml")
+  perf_env_policy_file                                        = file("./api/nodopagamenti_api/decoupler/prf_env_policy.xml")
 }
 
 resource "terraform_data" "sha256_ndphost_header" {
@@ -293,4 +294,13 @@ resource "azurerm_api_management_policy_fragment" "routing_inbound_policy" {
   description       = "Fragment to handle inbound logic regarding routing algorithm"
   format            = "rawxml"
   value             = local.routing_inbound_policy_file
+}
+
+# Fragment: ndp-perf-env-policy
+resource "azurerm_api_management_policy_fragment" "perf_env_policy" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "ndp-perf-env-policy"
+  description       = "Fragment to handle performance environment"
+  format            = "rawxml"
+  value             = local.perf_env_policy_file
 }

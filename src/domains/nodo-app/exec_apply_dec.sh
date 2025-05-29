@@ -97,6 +97,8 @@
 -target="terraform_data.sha256_closePayment_v1_policy" \
 -target="azurerm_api_management_api_operation_policy.closePayment_v1_policy" \
 -target="terraform_data.sha256_closePaymentV2_v1_policy" \
--target="azurerm_api_management_api_operation_policy.closePaymentV2_v1_policy"
+-target="azurerm_api_management_api_operation_policy.closePaymentV2_v1_policy" \
+-target="terraform_data.sha256_ndphost_header" \
+-target="azapi_resource.ndphost_header"
 
 

@@ -25,8 +25,9 @@
   }" />
 
   <!-- Set backend service URL if and only if the request is not made for PRF -->
+  <!-- is_perf_env is defined in ndphost_header fragment -->
   <choose>
-    <when condition="@(!((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") && !((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
+    <when condition="@(!context.Variables.GetValueOrDefault<bool>("is_perf_env", false))">
       <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
     </when>
   </choose>
