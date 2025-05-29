@@ -20,7 +20,7 @@
     <!-- operation after base policy -->
 
     <!-- extract requestOutcome and responseOutcome-->
-    <include-fragment fragment-id="ndp-set-outcome-request-response-policy" />
+    <include-fragment fragment-id="ndp-set-outcome-request-response-json-policy" />
 
     <!-- Remove objects in cache iff outcome is KO, otherwise do nothing -->
     <choose>
