@@ -6,7 +6,7 @@ locals {
   nodoInviaRPT_v1_policy_file           = file("./api/nodopagamenti_api/nodoPerPa/v1/base_policy_nodoInviaRPT.xml")
   nodoInviaCarrelloRPT_v1_policy_file   = file("./api/nodopagamenti_api/nodoPerPa/v1/base_policy_nodoInviaCarrelloRPT.xml")
   nodoChiediCopiaRT_v1_policy_file      = file("./api/nodopagamenti_api/nodoPerPa/v1/base_policy_nodoChiediCopiaRT.xml")
-  base_policy_nodoPerPa_routing_file   = file("./api/nodopagamenti_api/nodoPerPa/v1/base_policy_routing.xml")
+  base_policy_nodoPerPa_routing_file    = file("./api/nodopagamenti_api/nodoPerPa/v1/base_policy_routing.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "nodo_per_pa_api_auth" {

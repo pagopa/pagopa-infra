@@ -11,7 +11,7 @@ resource "azurerm_api_management_api_version_set" "nodo_per_psp_richiesta_avvisi
   name                = "${var.env_short}-nodo-per-psp-richiesta-avvisi-api-2" #TODO [FCADAC] remove 2
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   api_management_name = data.azurerm_api_management.apim.name
-  display_name        = "Nodo per PSP Richiesta Avvisi 2.0"   #TODO [FCADAC] remove 2.0
+  display_name        = "Nodo per PSP Richiesta Avvisi 2.0" #TODO [FCADAC] remove 2.0
   versioning_scheme   = "Segment"
 }
 
@@ -21,21 +21,21 @@ resource "terraform_data" "sha256_apim_nodo_per_psp_richiesta_avvisi_api_v1" {
 module "apim_nodo_per_psp_richiesta_avvisi_api_v1" {
   source = "./.terraform/modules/__v3__/api_management_api"
 
-  name                  = azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api.name
-  api_management_name   = data.azurerm_api_management.apim.name
-  resource_group_name   = data.azurerm_api_management.apim.resource_group_name
+  name                = azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api.name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
 
-  product_ids           = [module.apim_nodo_dei_pagamenti_product.product_id]
+  product_ids = [module.apim_nodo_dei_pagamenti_product.product_id]
 
   subscription_required = false
 
-  version_set_id        = azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api.id
-  api_version           = "v1"
-  service_url           = null
+  version_set_id = azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api.id
+  api_version    = "v1"
+  service_url    = null
 
   description  = "Web services to support check of pending payments to PSP, defined in NodoPerPspRichiestaAvvisi.wsdl 2.0" #TODO [FCADAC] remove 2.0
   display_name = azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api.display_name
-  path         = "nodo-2/nodo-per-psp-richiesta-avvisi"  #TODO [FCADAC] remove 2
+  path         = "nodo-2/nodo-per-psp-richiesta-avvisi" #TODO [FCADAC] remove 2
   protocols    = ["https"]
 
   api_type = "soap"

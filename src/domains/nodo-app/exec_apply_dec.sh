@@ -48,6 +48,7 @@
 -target="module.apim_nodo_per_pm_api_v1" \
 -target=azurerm_api_management_policy_fragment.nuova_connettivita_policy \
 -target=azurerm_api_management_policy_fragment.set_base_url_policy \
+-target=azurerm_api_management_policy_fragment.set_outcome_request_response_policy \
 -target=azurerm_api_management_policy_fragment.start_payment_inbound_policy \
 -target=azurerm_api_management_policy_fragment.extract_fc_nav_policy \
 -target=azurerm_api_management_policy_fragment.spo_inbound_policy \

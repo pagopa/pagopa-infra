@@ -28,7 +28,14 @@
           XElement primitive = (XElement) body.FirstNode;
           requestInfo["fiscalCode"] = primitive.Descendants("CF").FirstOrDefault().Value;
           requestInfo["iuv"] = primitive.Descendants("CodIUV").FirstOrDefault().Value;
-          requestInfo["noticeNumber"] = primitive.Descendants("AuxDigit").FirstOrDefault().Value + requestInfo["iuv"];
+          string auxDigit = primitive.Descendants("AuxDigit").FirstOrDefault().Value;
+          if("0".Equals(auxDigit)) {
+            // Get segregation code from CodStazPA
+            string codStazPA = primitive.Descendants("CodStazPA").FirstOrDefault().Value;
+            requestInfo["noticeNumber"] = auxDigit + codStazPA + requestInfo["iuv"];
+          } else {
+            requestInfo["noticeNumber"] = auxDigit + requestInfo["iuv"]
+          }
         }
       }
 
