@@ -17,7 +17,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 316db2c64b56ae2ab8ffcbb795184e2f95e03c82 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 3c0fe5bea7ad6cea223a7e319055639bae2cffc5 |
 | <a name="module_apim_api_mock_ec_api_replica_v1"></a> [apim\_api\_mock\_ec\_api\_replica\_v1](#module\_apim\_api\_mock\_ec\_api\_replica\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_mock_ec_api_v1"></a> [apim\_api\_mock\_ec\_api\_v1](#module\_apim\_api\_mock\_ec\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_api_mock_ec_secondary_api_replica_v1"></a> [apim\_api\_mock\_ec\_secondary\_api\_replica\_v1](#module\_apim\_api\_mock\_ec\_secondary\_api\_replica\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -114,6 +114,7 @@
 | [azurerm_api_management_api_operation_policy.activeIOPayment_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.activePaymentNoticeV2_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.activePaymentNotice_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.closePayment_v1_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.close_payment_api_v1_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.close_payment_api_v1_replica_ndp](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.close_payment_api_v2_ndp_wisp_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
@@ -190,6 +191,7 @@
 | [azurerm_api_management_named_value.ndp_eCommerce_trxId_ttl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.ndp_nodo_fc_iuv_ttl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.ndp_nodo_fc_nav_ttl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.ndp_nodo_paymentToken_ttl](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.wfesp_channel_list_named_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.wfesp_fixed_url_named_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.wisp_brokerPSP_whitelist_named_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
@@ -282,7 +284,9 @@
 | [terraform_data.sha256_apim_nodo_dei_pagamenti_product](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_apim_nodo_dei_pagamenti_product_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_apim_nodo_per_pa_api_v1_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
+| [terraform_data.sha256_apim_nodo_per_pm_api_v1](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_apim_nodo_per_psp_api_v1_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
+| [terraform_data.sha256_closePayment_v1_policy](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_delete_sessionId_api_v1](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_ndphost_header](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [terraform_data.sha256_nodoAttivaRPT_v1_policy_auth](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
@@ -364,7 +368,7 @@
 | <a name="input_cidr_subnet_vmss"></a> [cidr\_subnet\_vmss](#input\_cidr\_subnet\_vmss) | VMSS network address space. | `list(string)` | n/a | yes |
 | <a name="input_cname_record_name"></a> [cname\_record\_name](#input\_cname\_record\_name) | n/a | `string` | `"config"` | no |
 | <a name="input_create_wisp_converter"></a> [create\_wisp\_converter](#input\_create\_wisp\_converter) | CREATE WISP dismantling system infra | `bool` | `false` | no |
-| <a name="input_decoupler_configuration"></a> [decoupler\_configuration](#input\_decoupler\_configuration) | n/a | <pre>object({<br/>    ndp_eCommerce_trxId_ttl = number<br/>    ndp_nodo_fc_nav_ttl     = number<br/>    ndp_nodo_fc_iuv_ttl     = number<br/>  })</pre> | <pre>{<br/>  "ndp_eCommerce_trxId_ttl": 86400,<br/>  "ndp_nodo_fc_iuv_ttl": 5184000,<br/>  "ndp_nodo_fc_nav_ttl": 5184000<br/>}</pre> | no |
+| <a name="input_decoupler_configuration"></a> [decoupler\_configuration](#input\_decoupler\_configuration) | n/a | <pre>object({<br/>    ndp_eCommerce_trxId_ttl   = number<br/>    ndp_nodo_fc_nav_ttl       = number<br/>    ndp_nodo_fc_iuv_ttl       = number<br/>    ndp_nodo_paymentToken_ttl = number<br/>  })</pre> | <pre>{<br/>  "ndp_eCommerce_trxId_ttl": 86400,<br/>  "ndp_nodo_fc_iuv_ttl": 5184000,<br/>  "ndp_nodo_fc_nav_ttl": 5184000,<br/>  "ndp_nodo_paymentToken_ttl": 5184000<br/>}</pre> | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_nodo_re"></a> [enable\_nodo\_re](#input\_enable\_nodo\_re) | Enables dumping nodo re | `bool` | `false` | no |
