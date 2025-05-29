@@ -3,7 +3,7 @@ resource "azurerm_resource_group" "mock_ec_rg" {
   name     = format("%s-mock-ec-rg", local.project_legacy)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # Subnet to host the mock ec
@@ -83,5 +83,5 @@ module "mock_ec" {
 
   subnet_id = module.mock_ec_snet[0].id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

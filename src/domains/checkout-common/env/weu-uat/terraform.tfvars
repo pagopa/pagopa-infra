@@ -5,14 +5,6 @@ domain         = "checkout"
 location       = "westeurope"
 location_short = "weu"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/checkout-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "checkout"
-}
 
 ### External resources
 

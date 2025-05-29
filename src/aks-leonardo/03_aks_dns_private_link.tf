@@ -21,7 +21,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "aks_dns_private_link_v
     module.aks_leonardo,
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "aks_dns_private_link_vs_vnet_core_weu" {
@@ -36,5 +36,5 @@ resource "azurerm_private_dns_zone_virtual_network_link" "aks_dns_private_link_v
     module.aks_leonardo,
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

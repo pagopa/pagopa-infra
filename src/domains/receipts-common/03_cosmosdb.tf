@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "receipts_rg" {
   name     = "${local.project}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -87,7 +87,7 @@ module "receipts_datastore_cosmosdb_account" {
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb database for receipts
@@ -244,7 +244,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
     action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -301,5 +301,5 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_provisioned_throughput_exceed
   }
 
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

@@ -29,7 +29,7 @@ module "monitoring_function" {
 
   private_endpoint_subnet_id = var.use_private_endpoint ? data.azurerm_subnet.private_endpoint_subnet[0].id : null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   self_alert_configuration = {
     enabled = var.self_alert_enabled

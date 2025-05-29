@@ -7,14 +7,6 @@ cdn_location   = "westeurope"
 location_short = "itn"
 instance       = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/pay-wallet-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "paywallet"
-}
 
 ### FEATURES FLAGS
 is_feature_enabled = {

@@ -39,7 +39,7 @@ module "eventhub_namespace_observability_gpd" {
   metric_alerts_create = var.ehns_alerts_enabled
   metric_alerts        = var.ehns_metric_alerts_gpd
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #

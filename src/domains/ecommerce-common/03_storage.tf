@@ -1,7 +1,7 @@
 resource "azurerm_resource_group" "storage_ecommerce_rg" {
   name     = "${local.project}-storage-rg"
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 
@@ -40,7 +40,7 @@ resource "azurerm_private_endpoint" "storage_transient_private_endpoint" {
     subresource_names              = ["queue"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "ecommerce_storage_transient" {
@@ -67,7 +67,7 @@ module "ecommerce_storage_transient" {
     virtual_network_subnet_ids = [module.ecommerce_storage_snet.id]
     bypass                     = ["AzureServices"]
   } : null
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_storage_queue" "notifications_service_retry_queue" {
@@ -200,7 +200,7 @@ resource "azurerm_private_endpoint" "storage_deadletter_private_endpoint" {
     subresource_names              = ["queue"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "ecommerce_storage_deadletter" {
@@ -228,7 +228,7 @@ module "ecommerce_storage_deadletter" {
     bypass                     = ["AzureServices"]
   } : null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_storage_queue" "transactions_dead_letter_queue" {
@@ -662,7 +662,7 @@ module "ecommerce_pm_history_storage" {
 
   network_rules = null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## table#1 storage pm-transaction-ecommerce-history-logs
@@ -691,7 +691,7 @@ module "ecommerce_reporting_storage" {
 
   network_rules = null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_storage_table" "ecommerce_reporting_table" {

@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "fdr_rg" {
   name     = "${local.project}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "fdr_re_sa" {
@@ -31,7 +31,7 @@ module "fdr_re_sa" {
     blob_restore_policy_days   = var.fdr_re_storage_account.backup_retention
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "fdr_conversion_sa" {
@@ -60,7 +60,7 @@ module "fdr_conversion_sa" {
     blob_restore_policy_days   = var.fdr_storage_account.backup_retention
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "fdr_re_blob_private_endpoint" {
@@ -83,7 +83,7 @@ resource "azurerm_private_endpoint" "fdr_re_blob_private_endpoint" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.fdr_re_sa
@@ -111,7 +111,7 @@ resource "azurerm_private_endpoint" "fdr_blob_private_endpoint" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.fdr_conversion_sa
@@ -139,7 +139,7 @@ resource "azurerm_private_endpoint" "fdr_queue_private_endpoint" {
     subresource_names              = ["queue"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.fdr_conversion_sa
@@ -167,7 +167,7 @@ resource "azurerm_private_endpoint" "fdr_table_private_endpoint" {
     subresource_names              = ["table"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.fdr_conversion_sa

@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "selfcare_fe_rg" {
   name     = "${local.product}-fe-rg" #-${var.domain}
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 locals {
@@ -288,7 +288,7 @@ module "selfcare_cdn" {
     }
   ]
 
-  tags                       = var.tags
+  tags                       = module.tag_config.tags
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 }
 

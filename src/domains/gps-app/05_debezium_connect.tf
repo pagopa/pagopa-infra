@@ -105,8 +105,8 @@ locals {
 
   debezium_ingress_yaml = templatefile("${path.module}/yaml/debezium-ingress.yaml", {
     namespace = "gps" # kubernetes_namespace.namespace.metadata[0].name
-    host = local.gps_hostname
-    secret = "${var.location_short}${var.env}-gps-internal-${var.env}-platform-pagopa-it"
+    host      = local.gps_hostname
+    secret    = "${var.location_short}${var.env}-gps-internal-${var.env}-platform-pagopa-it"
   })
 
 }
@@ -248,17 +248,17 @@ resource "kubectl_manifest" "healthchecker-cron" {
 }
 
 resource "kubectl_manifest" "debezium-ingress" {
-#   depends_on = [
-#     kubectl_manifest.kafka_connect
-#   ]
+  #   depends_on = [
+  #     kubectl_manifest.kafka_connect
+  #   ]
   force_conflicts = true
   yaml_body       = local.debezium_ingress_yaml
 }
 
 resource "kubectl_manifest" "debezium-network-policy" {
-#   depends_on = [
-#     kubectl_manifest.kafka_connect
-#   ]
+  #   depends_on = [
+  #     kubectl_manifest.kafka_connect
+  #   ]
   force_conflicts = true
   yaml_body       = local.debezium_network_policy_yaml
 }

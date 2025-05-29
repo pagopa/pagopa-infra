@@ -13,14 +13,6 @@ location_string_weu = "West Europe"
 
 instance = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/crusc8-app"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "crusc8"
-}
 
 ### External resources
 
