@@ -19,24 +19,8 @@
     <base />
     <!-- operation after base policy -->
 
-    <!-- extract outcome -->
-    <set-variable name="requestOutcome" value="@{
-        try {
-            JObject requestBody = (JObject) context.Request.Body.As<JObject>(preserveContent: true);
-            return ((string) requestBody["outcome"]).ToUpper();
-        } catch (Exception e) {
-            return "NONE";
-        }
-    }" />
-    <set-variable name="responseOutcome" value="@{
-        try {
-            JObject responseBody = (JObject) context.Response.Body.As<JObject>(preserveContent: true);
-            return ((string) responseBody["outcome"]).ToUpper();
-        } catch (Exception e) {
-            return "NONE";
-        }
-    }" />
-
+    <!-- extract requestOutcome and responseOutcome-->
+    <include-fragment fragment-id="ndp-set-outcome-request-response-policy" />
 
     <!-- Remove objects in cache iff outcome is KO, otherwise do nothing -->
     <choose>
