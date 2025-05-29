@@ -87,10 +87,10 @@
 -target="azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api" \
 -target="terraform_data.sha256_apim_nodo_per_psp_richiesta_avvisi_api_v1" \
 -target="module.apim_nodo_per_psp_richiesta_avvisi_api_v1" \
--target="terraform_data.sha256_nodoChiediNumeroAvviso_v1_policy_auth"  \
--target="azurerm_api_management_api_operation_policy.nodoChiediNumeroAvviso_v1_policy_auth" \
--target="terraform_data.sha256_nodoChiediCatalogoServizi_v1_policy_auth" \
--target="azurerm_api_management_api_operation_policy.nodoChiediCatalogoServizi_v1_policy_auth" \
+-target="terraform_data.sha256_nodoChiediNumeroAvviso_v1_policy"  \
+-target="azurerm_api_management_api_operation_policy.nodoChiediNumeroAvviso_v1_policy" \
+-target="terraform_data.sha256_nodoChiediCatalogoServizi_v1_policy" \
+-target="azurerm_api_management_api_operation_policy.nodoChiediCatalogoServizi_v1_policy" \
 -target="azurerm_api_management_api_version_set.nodo_per_psp_api" \
 -target="terraform_data.sha256_apim_nodo_per_psp_api_v1" \
 -target="module.apim_nodo_per_psp_api_v1" \
@@ -111,6 +111,14 @@
 -target="terraform_data.sha256_closePaymentV2_v1_policy" \
 -target="azurerm_api_management_api_operation_policy.closePaymentV2_v1_policy" \
 -target="terraform_data.sha256_ndphost_header" \
--target="azapi_resource.ndphost_header"
+-target="azapi_resource.ndphost_header" \
+-target="azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api_auth" \
+-target="terraform_data.sha256_apim_nodo_per_psp_richiesta_avvisi_api_v1_auth" \
+-target="module.apim_nodo_per_psp_richiesta_avvisi_api_v1_auth" \
+-target="terraform_data.sha256_nodoChiediNumeroAvviso_v1_policy_auth" \
+-target="azurerm_api_management_api_operation_policy.nodoChiediNumeroAvviso_v1_policy_auth" \
+-target="terraform_data.sha256_nodoChiediCatalogoServizi_v1_policy_auth" \
+-target="azurerm_api_management_api_operation_policy.nodoChiediCatalogoServizi_v1_policy_auth"
+
 
 

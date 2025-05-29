@@ -55,10 +55,10 @@ module "apim_nodo_per_psp_richiesta_avvisi_api_v1" {
 }
 
 ###### nodoChiediNumeroAvviso
-resource "terraform_data" "sha256_nodoChiediNumeroAvviso_v1_policy_auth" {
+resource "terraform_data" "sha256_nodoChiediNumeroAvviso_v1_policy" {
   input = sha256(local.base_policy_nodoPerPspRichiestaAvvisi_routing_file)
 }
-resource "azurerm_api_management_api_operation_policy" "nodoChiediNumeroAvviso_v1_policy_auth" {
+resource "azurerm_api_management_api_operation_policy" "nodoChiediNumeroAvviso_v1_policy" {
   api_name            = module.apim_nodo_per_psp_richiesta_avvisi_api_v1.name
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
@@ -70,10 +70,10 @@ resource "azurerm_api_management_api_operation_policy" "nodoChiediNumeroAvviso_v
 }
 
 ###### nodoChiediCatalogoServizi
-resource "terraform_data" "sha256_nodoChiediCatalogoServizi_v1_policy_auth" {
+resource "terraform_data" "sha256_nodoChiediCatalogoServizi_v1_policy" {
   input = sha256(local.base_policy_nodoPerPspRichiestaAvvisi_routing_file)
 }
-resource "azurerm_api_management_api_operation_policy" "nodoChiediCatalogoServizi_v1_policy_auth" {
+resource "azurerm_api_management_api_operation_policy" "nodoChiediCatalogoServizi_v1_policy" {
   api_name            = module.apim_nodo_per_psp_richiesta_avvisi_api_v1.name
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
