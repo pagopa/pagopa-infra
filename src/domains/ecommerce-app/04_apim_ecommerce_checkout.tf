@@ -181,8 +181,8 @@ resource "azurerm_api_management_api_operation_policy" "transaction_authorizatio
   operation_id        = "requestTransactionAuthorization"
 
   xml_content = templatefile("./api/ecommerce-checkout/v1/_auth_request.xml.tpl", {
-    ecommerce_xpay_psps_list = var.ecommerce_xpay_psps_list
-    ecommerce_vpos_psps_list = var.ecommerce_vpos_psps_list
+    ecommerce_xpay_psps_list   = var.ecommerce_xpay_psps_list
+    ecommerce_vpos_psps_list   = var.ecommerce_vpos_psps_list
     ecommerce_ingress_hostname = local.ecommerce_hostname
   })
 }
