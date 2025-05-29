@@ -15,7 +15,7 @@ locals {
   set_base_url_policy_file                                    = file("./api/nodopagamenti_api/decoupler/set_base_url_policy.xml")
   set_node_id_by_token_inbound_policy_file                    = file("./api/nodopagamenti_api/decoupler/set_nodeId_by_token_inbound_policy.xml")
   set_outcome_request_response_json_policy_file               = file("./api/nodopagamenti_api/decoupler/set_req_res_outcome_json_policy.xml")
-  set_outcome_request_response_xml_policy_file               = file("./api/nodopagamenti_api/decoupler/set_req_res_outcome_xml_policy.xml")
+  set_outcome_request_response_xml_policy_file                = file("./api/nodopagamenti_api/decoupler/set_req_res_outcome_xml_policy.xml")
   spo_forward_inbound_policy_file                             = file("./api/nodopagamenti_api/decoupler/spo_forward_inbound_policy.xml")
   rpt_inbound_policy_file                                     = file("./api/nodopagamenti_api/decoupler/rpt_inbound_policy.xml")
   cache_token_object_outbound_policy_file                     = file("./api/nodopagamenti_api/decoupler/cache_token_object_outbound_policy.xml")

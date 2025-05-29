@@ -36,6 +36,17 @@
 -target="azurerm_api_management_api_operation_policy.nodoInviaCarrelloRPT_v1_policy_auth" \
 -target="terraform_data.sha256_nodoChiediCopiaRT_v1_policy_auth" \
 -target="azurerm_api_management_api_operation_policy.nodoChiediCopiaRT_v1_policy_auth" \
+-target="azurerm_api_management_api_version_set.nodo_per_pa_api" \
+-target="terraform_data.sha256_apim_nodo_per_pa_api_v1" \
+-target="module.apim_nodo_per_pa_api_v1" \
+-target="terraform_data.sha256_nodoInviaRPT_v1_policy" \
+-target="azurerm_api_management_api_operation_policy.nodoInviaRPT_v1_policy" \
+-target="terraform_data.sha256_nodoInviaCarrelloRPT_v1_policy" \
+-target="azurerm_api_management_api_operation_policy.nodoInviaCarrelloRPT_v1_policy" \
+-target="terraform_data.sha256_nodoChiediCopiaRT_v1_policy" \
+-target="azurerm_api_management_api_operation_policy.nodoChiediCopiaRT_v1_policy" \
+-target="terraform_data.sha256_nodoChiediInformativaPSP_v1_policy" \
+-target="azurerm_api_management_api_operation_policy.nodoChiediInformativaPSP_v1_policy" \
 -target="azurerm_api_management_api_version_set.nodo_per_psp_api_auth" \
 -target="terraform_data.sha256_apim_nodo_per_psp_api_v1_auth" \
 -target="module.apim_nodo_per_psp_api_v1_auth" \
