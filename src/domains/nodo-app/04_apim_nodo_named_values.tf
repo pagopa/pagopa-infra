@@ -45,3 +45,11 @@ resource "azurerm_api_management_named_value" "decoupler_aux_service_url_v1" {
   display_name        = "decoupler-aux-service-url-v1"
   value               = var.decoupler_configuration.decoupler_aux_service_url_v1
 }
+
+resource "azurerm_api_management_named_value" "trace_variable_as_header_varnames" {
+  name                = "trace-variable-as-header-varnames"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "trace-variable-as-header-varnames"
+  value               = var.trace_variable_as_header_varnames
+}

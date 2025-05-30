@@ -479,6 +479,12 @@ variable "gh_runner_job_location" {
   default     = "westeurope"
 }
 
+variable "trace_variable_as_header_varnames" {
+  type        = string
+  description = "The list of default variable in APIM that can be returned in X-APIM-Trace-Values header in response. For no default values, set NONE. For disabling trace, set DISABLED."
+  default     = "DISABLED"
+}
+
 variable "decoupler_configuration" {
   type = object({
     ndp_eCommerce_trxId_ttl      = number

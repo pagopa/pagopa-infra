@@ -4,19 +4,24 @@
   <!-- START TRACE-VARIABLE-AS-HEADER-POLICY FRAGMENT -->
   <!-- ############################################## -->
 
+  <set-variable name="traceVariablesSetInConfig" value="{{trace-variable-as-header-varnames}}" />
   <choose>
-    <!-- Execute variable tracing using X-APIM-Trace-Vars header -->
-    <when condition="@(!"NONE".Equals(context.Request.Headers.GetValueOrDefault("X-APIM-Trace-Vars","NONE")))">
 
+    <!-- Execute variable tracing IF AND ONLY IF it is not disabled -->
+    <when condition="@(!"DISABLED".Equals((string) context.Variables.GetValueOrDefault("traceVariablesSetInConfig","DISABLED"), StringComparison.OrdinalIgnoreCase))">
 
       <set-variable name="apimTraceValues" value="@{
-        string apimTraceHeader = (string) context.Request.Headers.GetValueOrDefault("X-APIM-Trace-Vars", "-");
-        string[] variables = apimTraceHeader.Split(',');
+        string apimTraceFromHeader = (string) context.Request.Headers.GetValueOrDefault("X-APIM-Trace-Vars", "NONE");
+        string apimTraceFromConfig = (string) context.Variables.GetValueOrDefault("traceVariablesSetInConfig", "NONE");
+        string apimTraceMerged = apimTraceFromConfig + "," + apimTraceFromHeader;
+        string[] variables = apimTraceMerged.Split(',');
 
         JObject apimTraceObject = new JObject();
         foreach (string variableName in variables) {
+          if (!"NONE".Equals(variableName, StringComparison.OrdinalIgnoreCase) && !apimTraceObject.ContainsKey(variableName)) {
             var variableValue = (string) context.Variables.GetValueOrDefault(variableName, "<not-available>");
             apimTraceObject.Add(variableName, variableValue);
+          }
         }
         return apimTraceObject.ToString();
       }" />

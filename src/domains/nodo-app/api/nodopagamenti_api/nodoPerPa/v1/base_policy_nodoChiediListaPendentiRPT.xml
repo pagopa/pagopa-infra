@@ -15,6 +15,7 @@
     <!-- operation before base policy -->
     <base/>
     <!-- operation after base policy -->
+    <include-fragment fragment-id="trace-variable-as-header-policy" />
   </outbound>
   <on-error>
     <!-- operation before base policy -->
