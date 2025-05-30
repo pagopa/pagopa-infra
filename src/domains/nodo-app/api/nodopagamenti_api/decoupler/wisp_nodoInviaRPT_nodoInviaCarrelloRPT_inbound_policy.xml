@@ -1,98 +1,98 @@
 <!-- @formatter:off -->
 <fragment>
-    <!-- #################################################################### -->
-    <!-- START WISP-NODOINVIARPT-NODOINVIACARRELLORPT-INBOUND-POLICY FRAGMENT -->
-    <!-- #################################################################### -->
+  <!-- #################################################################### -->
+  <!-- START WISP-NODOINVIARPT-NODOINVIACARRELLORPT-INBOUND-POLICY FRAGMENT -->
+  <!-- #################################################################### -->
 
-    <set-variable name="wisp_whitelisted_brokers" value="{{wisp-brokerPSP-whitelist}}" />
-    <set-variable name="wisp_whitelisted_channels" value="{{wisp-channel-whitelist}}" />
+  <set-variable name="wisp_whitelisted_brokers" value="{{wisp-brokerPSP-whitelist}}" />
+  <set-variable name="wisp_whitelisted_channels" value="{{wisp-channel-whitelist}}" />
 
-    <!-- whitelisted variables of cis and stations are included through fragment in the base policy -->
-    <set-variable name="wisp_whitelisted_nodoinviarpt_paymenttypes" value="{{wisp-nodoinviarpt-paymenttype-whitelist}}" />
-    <set-variable name="is_whitelisted" value="@{
-        // isWhiteListed if:
-        // - lists are empties
-        // - channelId, brokerPSP, stationId and creditorInstitutionId belong to relative lists
-        // - if nodoInviaRPT, the 'tipoVersamento' field is accepted
-        string brokersList = (string) context.Variables["wisp_whitelisted_brokers"];
-        string channelsList = (string) context.Variables["wisp_whitelisted_channels"];
-        string stationsList = (string) context.Variables["wisp_whitelisted_stations"];
-        string cisList = (string) context.Variables["wisp_whitelisted_cis"];
-        bool brokersWhitelisted = brokersList.Equals("*");
-        bool channelsWhitelisted = channelsList.Equals("*");
-        bool stationsWhitelisted = stationsList.Equals("*");
-        bool cisWhitelisted = cisList.Equals("*");
-        bool isWhitelisted = false;
-        if (brokersWhitelisted && channelsWhitelisted && stationsWhitelisted && cisWhitelisted) {
-            isWhitelisted = true;
-            return isWhitelisted;
+  <!-- whitelisted variables of cis and stations are included through fragment in the base policy -->
+  <set-variable name="wisp_whitelisted_nodoinviarpt_paymenttypes" value="{{wisp-nodoinviarpt-paymenttype-whitelist}}" />
+  <set-variable name="is_whitelisted" value="@{
+    // isWhiteListed if:
+    // - lists are empties
+    // - channelId, brokerPSP, stationId and creditorInstitutionId belong to relative lists
+    // - if nodoInviaRPT, the 'tipoVersamento' field is accepted
+    string brokersList = (string) context.Variables["wisp_whitelisted_brokers"];
+    string channelsList = (string) context.Variables["wisp_whitelisted_channels"];
+    string stationsList = (string) context.Variables["wisp_whitelisted_stations"];
+    string cisList = (string) context.Variables["wisp_whitelisted_cis"];
+    bool brokersWhitelisted = brokersList.Equals("*");
+    bool channelsWhitelisted = channelsList.Equals("*");
+    bool stationsWhitelisted = stationsList.Equals("*");
+    bool cisWhitelisted = cisList.Equals("*");
+    bool isWhitelisted = false;
+    if (brokersWhitelisted && channelsWhitelisted && stationsWhitelisted && cisWhitelisted) {
+      isWhitelisted = true;
+      return isWhitelisted;
+    }
+    string[] brokers = !brokersWhitelisted ? ((string) context.Variables["wisp_whitelisted_brokers"]).Split(',') : new string[] {};
+    string[] channels = !channelsWhitelisted ? ((string) context.Variables["wisp_whitelisted_channels"]).Split(',') : new string[] {};
+    string[] stations =  !stationsWhitelisted ? ((string) context.Variables["wisp_whitelisted_stations"]).Split(',') : new string[] {};
+    string[] cis = !cisWhitelisted ? ((string) context.Variables["wisp_whitelisted_cis"]).Split(',') : new string[] {};
+    XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
+    try {
+      XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+      XElement primitive = (XElement) body.FirstNode;
+      string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
+      string pspBrokerId = (string) primitive.Descendants("identificativoIntermediarioPSP").FirstOrDefault();
+
+      // check if nodoInviaRPT or nodoInviaCarrelloRPT, to set CI value correctly
+      XElement header = doc.Descendants(doc.Name.Namespace + "Header").FirstOrDefault();
+      string ciId = "";
+
+      // listaRPT is set only in nodoInviaCarrelloRPT: in this case we retrieve the ci from the first RPT (primaryCI)
+      if(primitive.Descendants("listaRPT").FirstOrDefault() != null) {
+        XElement listaRPT = primitive.Descendants("listaRPT").FirstOrDefault();
+        XElement firstRPT = listaRPT.Descendants("elementoListaRPT").FirstOrDefault();
+        ciId = (string) firstRPT.Descendants("identificativoDominio").FirstOrDefault();
+      } else {
+        ciId = (string) header.Descendants("identificativoDominio").FirstOrDefault();
+      }
+
+      // check CIs only if whitelist contains at least one element.
+      // Variable isCiAndStationOk is set automatically to true but if CI and station are not whitelisted, then it will be set to false
+      bool isCiAndStationOk = true;
+      if (cis.Count() > 0) {
+        // check if ciId is whitelisted
+        if(cis.Contains(ciId)) {
+          // check if CI relation with some station is present
+          if(stationsList.Contains(ciId + "-")) {
+            // if present, check if CI-station relation is whitelisted
+            string stationId = (string) header.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
+            if(!stations.Contains(ciId + "-" + stationId)) {
+              isCiAndStationOk = false;
+            }
+          }
+        } else {
+          isCiAndStationOk = false;
         }
-        string[] brokers = !brokersWhitelisted ? ((string) context.Variables["wisp_whitelisted_brokers"]).Split(',') : new string[] {};
-        string[] channels = !channelsWhitelisted ? ((string) context.Variables["wisp_whitelisted_channels"]).Split(',') : new string[] {};
-        string[] stations =  !stationsWhitelisted ? ((string) context.Variables["wisp_whitelisted_stations"]).Split(',') : new string[] {};
-        string[] cis = !cisWhitelisted ? ((string) context.Variables["wisp_whitelisted_cis"]).Split(',') : new string[] {};
-        XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
-        try {
-            XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
-            XElement primitive = (XElement) body.FirstNode;
-            string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
-            string pspBrokerId = (string) primitive.Descendants("identificativoIntermediarioPSP").FirstOrDefault();
+      }
 
-            // check if nodoInviaRPT or nodoInviaCarrelloRPT, to set CI value correctly
-            XElement header = doc.Descendants(doc.Name.Namespace + "Header").FirstOrDefault();
-            string ciId = "";
+      // check if 'tipoVersamento' is accepted for WISP dismantling only if the request is a 'nodoInviaRPT'
+      bool isNodoInviaRptWithAllowedPaymentType = false;
+      bool isNodoInviaRPT = "nodoInviaRPT".Equals((string)context.Variables["soapAction"]);
+      if (isNodoInviaRPT) {
+        byte[] rptAsBytearray = Convert.FromBase64String((string) primitive.Descendants("rpt").FirstOrDefault());
+        string rptAsString = System.Text.Encoding.UTF8.GetString(rptAsBytearray);
+        XElement rpt = XElement.Parse(rptAsString);
+        string rptPaymentType = rpt.Descendants(rpt.Name.Namespace + "tipoVersamento").FirstOrDefault()?.Value;
+        string[] paymentTypes =  ((string) context.Variables["wisp_whitelisted_nodoinviarpt_paymenttypes"]).Split(',');
+        isNodoInviaRptWithAllowedPaymentType = paymentTypes.Contains(rptPaymentType);
+      }
+      bool isValidNodoInviaRptOrNodoInviaCarrelloRPT = !isNodoInviaRPT || isNodoInviaRptWithAllowedPaymentType;
 
-            // listaRPT is set only in nodoInviaCarrelloRPT: in this case we retrieve the ci from the first RPT (primaryCI)
-            if(primitive.Descendants("listaRPT").FirstOrDefault() != null) {
-                XElement listaRPT = primitive.Descendants("listaRPT").FirstOrDefault();
-                XElement firstRPT = listaRPT.Descendants("elementoListaRPT").FirstOrDefault();
-                ciId = (string) firstRPT.Descendants("identificativoDominio").FirstOrDefault();
-            } else {
-                ciId = (string) header.Descendants("identificativoDominio").FirstOrDefault();
-            }
+      // as last step, check all the conditions and return the final result
+      isWhitelisted = (brokersWhitelisted || brokers.Contains(pspBrokerId)) && (channelsWhitelisted || channels.Contains(channelId)) && isCiAndStationOk && isValidNodoInviaRptOrNodoInviaCarrelloRPT;
+    } catch (Exception e) {
+      // do nothing
+    }
 
-            // check CIs only if whitelist contains at least one element.
-            // Variable isCiAndStationOk is set automatically to true but if CI and station are not whitelisted, then it will be set to false
-            bool isCiAndStationOk = true;
-            if (cis.Count() > 0) {
-                // check if ciId is whitelisted
-                if(cis.Contains(ciId)) {
-                    // check if CI relation with some station is present
-                    if(stationsList.Contains(ciId + "-")) {
-                        // if present, check if CI-station relation is whitelisted
-                        string stationId = (string) header.Descendants("identificativoStazioneIntermediarioPA").FirstOrDefault();
-                        if(!stations.Contains(ciId + "-" + stationId)) {
-                            isCiAndStationOk = false;
-                        }
-                    }
-                } else {
-                    isCiAndStationOk = false;
-                }
-            }
+    return isWhitelisted;
+    }" />
 
-            // check if 'tipoVersamento' is accepted for WISP dismantling only if the request is a 'nodoInviaRPT'
-            bool isNodoInviaRptWithAllowedPaymentType = false;
-            bool isNodoInviaRPT = "nodoInviaRPT".Equals((string)context.Variables["soapAction"]);
-            if (isNodoInviaRPT) {
-                byte[] rptAsBytearray = Convert.FromBase64String((string) primitive.Descendants("rpt").FirstOrDefault());
-                string rptAsString = System.Text.Encoding.UTF8.GetString(rptAsBytearray);
-                XElement rpt = XElement.Parse(rptAsString);
-                string rptPaymentType = rpt.Descendants(rpt.Name.Namespace + "tipoVersamento").FirstOrDefault()?.Value;
-                string[] paymentTypes =  ((string) context.Variables["wisp_whitelisted_nodoinviarpt_paymenttypes"]).Split(',');
-                isNodoInviaRptWithAllowedPaymentType = paymentTypes.Contains(rptPaymentType);
-            }
-            bool isValidNodoInviaRptOrNodoInviaCarrelloRPT = !isNodoInviaRPT || isNodoInviaRptWithAllowedPaymentType;
-
-            // as last step, check all the conditions and return the final result
-            isWhitelisted = (brokersWhitelisted || brokers.Contains(pspBrokerId)) && (channelsWhitelisted || channels.Contains(channelId)) && isCiAndStationOk && isValidNodoInviaRptOrNodoInviaCarrelloRPT;
-        } catch (Exception e) {
-            // do nothing
-        }
-
-        return isWhitelisted;
-        }" />
-
-    <!-- ################################################################## -->
-    <!-- END WISP-NODOINVIARPT-NODOINVIACARRELLORPT-INBOUND-POLICY FRAGMENT -->
-    <!-- ################################################################## -->
+  <!-- ################################################################## -->
+  <!-- END WISP-NODOINVIARPT-NODOINVIACARRELLORPT-INBOUND-POLICY FRAGMENT -->
+  <!-- ################################################################## -->
 </fragment>
