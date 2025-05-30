@@ -20,10 +20,13 @@ spec:
     database.user: ${postgres_username}
     database.password: ${postgres_password}
     database.dbname: ${postgres_db_name}
+    database.tcpKeepAlive: true
+    heartbeat.interval.ms : 10000
     topic.prefix: ${postgres_topic_prefix}
     schema.include.list: "apd"
     table.include.list: "apd.payment_option,apd.payment_position,apd.transfer"
     plugin.name: "pgoutput"
     snapshot.max.threads: ${max_threads}
+    snapshot.mode: "initial"
     publication.autocreate.mode: "disabled" # shall be create before 
     # publication.autocreate.mode: "filtered"  # create it
