@@ -1,14 +1,23 @@
 <fragment>
-	<set-variable name="is_perf_env" value="@{
-        if (((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it")) {
-          return true;
-      }
-      return false;
+  <!-- ################################################ -->
+  <!-- START EXTRACT-PAYMENTTOKENS-JSON-POLICY FRAGMENT -->
+  <!-- ################################################ -->
+
+  <!-- Calculating if request must be sent on PRF instance (Nexi's Performance) -->
+  <set-variable name="is_perf_env" value="@{
+    bool usingDnsForPrfValueInHeader = ((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it");
+    bool usingDnsForPrfValueInOriginalURL = ((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it");
+    return usingDnsForPrfValueInHeader || usingDnsForPrfValueInOriginalURL;
   }" />
-	<!-- if prf env set backend-service -->
-	<choose>
-		<when condition="@(context.Variables.GetValueOrDefault<bool>("is_perf_env", false))">
-			<set-backend-service base-url="{{default-nodo-backend-prf}}" />
-		</when>
-	</choose>
+
+  <!-- If the request must be sent on PRF instance, then set the backend-service -->
+  <choose>
+    <when condition="@(context.Variables.GetValueOrDefault<bool>("is_perf_env", false))">
+      <set-backend-service base-url="{{default-nodo-backend-prf}}" />
+    </when>
+  </choose>
+
+  <!-- ############################################## -->
+  <!-- END EXTRACT-PAYMENTTOKENS-JSON-POLICY FRAGMENT -->
+  <!-- ############################################## -->
 </fragment>
