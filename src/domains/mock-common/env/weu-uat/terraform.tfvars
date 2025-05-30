@@ -61,3 +61,5 @@ mocker_cosmosdb_params = {
 cosmosdb_mongodb_extra_capabilities = ["EnableServerless"]
 
 mock_ec_size = "P1v3"
+
+pagopa_proxy_ip_restriction_default_action = "Allow"

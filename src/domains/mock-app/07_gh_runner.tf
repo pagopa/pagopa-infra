@@ -16,56 +16,12 @@ module "gh_runner_job" {
   runner_labels      = ["self-hosted-job", "${var.env}"]
   gh_repositories = [
     {
-      name : "pagopa-gpd-upload",
-      short_name : "gpd-upload"
+      name : "pagopa-mocker",
+      short_name : "mockr"
     },
     {
-      name : "pagopa-gpd-upload-function",
-      short_name : "gpd-upload-fn"
-    },
-    {
-      name : "pagopa-gpd-payments-pull",
-      short_name : "gpd-pay-pull"
-    },
-    {
-      name : "pagopa-gps-donation-service",
-      short_name : "gpd-donation"
-    },
-    {
-      name : "pagopa-gpd-payments",
-      short_name : "gpd-payments"
-    },
-    {
-      name : "pagopa-gpd-reporting-batch",
-      short_name : "gpd-rpt-batch"
-    },
-    {
-      name : "pagopa-gpd-reporting-analysis",
-      short_name : "gpd-rpt-an"
-    },
-    {
-      name : "pagopa-gpd-reporting-service",
-      short_name : "gpd-rpt-svc"
-    },
-    {
-      name : "pagopa-gpd-ingestion-manager"
-      short_name : "gpd-ingst-mgr"
-    },
-    {
-      name : "pagopa-reporting-orgs-enrollment"
-      short_name : "gpd-rep-org"
-    },
-    {
-      name : "pagopa-spontaneous-payments"
-      short_name : "gpd-spopaym"
-    },
-    {
-      name : "pagopa-debt-position"
-      short_name : "gpd-debt-pos"
-    },
-    {
-      name : "pagopa-gpd-rtp"
-      short_name : "gpd-rtp"
+      name : "pagopa-mocker-config",
+      short_name : "mockr-cfg"
     }
   ]
   job = {
@@ -79,11 +35,12 @@ module "gh_runner_job" {
   }
   kubernetes_deploy = {
     enabled      = true
-    namespaces   = [kubernetes_namespace.namespace.metadata[0].name]
+    namespaces   = var.mock_enabled ? [kubernetes_namespace.namespace[0].metadata[0].name] : []
     cluster_name = "${local.product}-${var.location_short}-${var.instance}-aks"
     rg           = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
   }
-  location                = var.gh_runner_job_location
+
+  location                = var.location
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
   domain_security_rg_name = "${local.product}-${var.domain}-sec-rg"
