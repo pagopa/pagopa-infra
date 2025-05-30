@@ -472,3 +472,28 @@ variable "gh_runner_job_location" {
   description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
   default     = "westeurope"
 }
+
+variable "trace_variable_as_header_varnames" {
+  type        = string
+  description = "The list of default variable in APIM that can be returned in X-APIM-Trace-Values header in response. For no default values, set NONE. For disabling trace, set DISABLED."
+  default     = "DISABLED"
+}
+
+variable "decoupler_configuration" {
+  type = object({
+    ndp_eCommerce_trxId_ttl      = number
+    ndp_nodo_fc_nav_ttl          = number
+    ndp_nodo_fc_iuv_ttl          = number
+    ndp_nodo_paymentToken_ttl    = number
+    decoupler_aux_service_url_v1 = string
+  })
+
+  # TODO [FCADAC] set in ENV
+  default = {
+    ndp_eCommerce_trxId_ttl      = 86400   // 1 day in seconds
+    ndp_nodo_fc_iuv_ttl          = 5184000 // 60 days in seconds
+    ndp_nodo_fc_nav_ttl          = 5184000 // 60 days in seconds
+    ndp_nodo_paymentToken_ttl    = 5184000 // 60 days in seconds
+    decoupler_aux_service_url_v1 = "https://api.dev.platform.pagopa.it/fake-decoupler/v1"
+  }
+}

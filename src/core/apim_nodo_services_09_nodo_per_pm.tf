@@ -111,4 +111,3 @@ resource "azurerm_api_management_api_operation_policy" "close_payment_api_v2_wis
   operation_id        = "closePaymentV2"
   xml_content         = file("./api/nodopagamenti_api/nodoPerPM/v2/wisp-closepayment.xml")
 }
-
