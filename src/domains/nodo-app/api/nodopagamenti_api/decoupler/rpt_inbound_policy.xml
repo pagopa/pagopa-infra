@@ -1,15 +1,16 @@
 <fragment>
-	<!-- ################################# -->
-	<!-- START RPT-INBOUND-POLICY FRAGMENT -->
-	<!-- ################################# -->
+  <!-- ################################# -->
+  <!-- START RPT-INBOUND-POLICY FRAGMENT -->
+  <!-- ################################# -->
 
-	<set-variable name="isNodoVerificaRPTOrNodoAttivaRPT" value="@{
-		var soapAction = context.Variables.GetValueOrDefault<string>("soapAction", "NONE");
-		return soapAction.Equals("nodoAttivaRPT") || soapAction.Equals("nodoVerificaRPT");
-	}" />
+  <set-variable name="isNodoVerificaRPTOrNodoAttivaRPT" value="@{
+    var soapAction = context.Variables.GetValueOrDefault<string>("soapAction", "NONE");
+    return soapAction.Equals("nodoAttivaRPT") || soapAction.Equals("nodoVerificaRPT");
+  }" />
 
-	<!-- Extracting Fiscal code and IUV, using different approaches for retrieve data according to different primitive type -->
+  <!-- Extracting Fiscal code and IUV, using different approaches for retrieve data according to different primitive type -->
   <set-variable name="rptRequestInfo" value="@{
+
     // Setting RPT request info object value with default values
     var requestInfo = new JObject();
     requestInfo.Add(new JProperty("fiscalCode", ""));
@@ -30,6 +31,7 @@
           requestInfo["iuv"] = primitive.Descendants("CodIUV").FirstOrDefault().Value;
           string auxDigit = primitive.Descendants("AuxDigit").FirstOrDefault().Value;
           if("0".Equals(auxDigit)) {
+
             // Get segregation code from CodStazPA
             string codStazPA = primitive.Descendants("CodStazPA").FirstOrDefault().Value;
             requestInfo["noticeNumber"] = auxDigit + codStazPA + requestInfo["iuv"];
@@ -64,65 +66,65 @@
     return requestInfo.ToString();
   }" />
 
-	<!-- Extracting key value, merging IUV with domain and searching in cache -->
-	<set-variable name="nodo_fiscalCode_iuv_key" value="@{
-		var requestInfo = JObject.Parse((string)context.Variables["rptRequestInfo"]);
-		var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
-		var fiscalCode = requestInfo["fiscalCode"];
-		var iuv = requestInfo["iuv"];
-		return domain + "_" + fiscalCode + "_" + iuv;
-	}" />
-	<cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", "NONE"))" variable-name="nodo_fiscalCode_iuv" default-value="NONE" caching-type="external" />
+  <!-- Extracting key value, merging IUV with domain and searching in cache -->
+  <set-variable name="nodo_fiscalCode_iuv_key" value="@{
+    var requestInfo = JObject.Parse((string)context.Variables["rptRequestInfo"]);
+    var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+    var fiscalCode = requestInfo["fiscalCode"];
+    var iuv = requestInfo["iuv"];
+    return domain + "_" + fiscalCode + "_" + iuv;
+  }" />
+  <cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", "NONE"))" variable-name="nodo_fiscalCode_iuv" default-value="NONE" caching-type="external" />
 
-	<choose>
-		<when condition="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv", "NONE").Equals("NONE"))">
+  <choose>
+    <when condition="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv", "NONE").Equals("NONE"))">
 
-			<!-- Executing LIST algorithm, setting baseNodeId -->
-			<set-variable name="baseNodeId" value="@{
-				try {
-					// Extracting configuration from parsed JSON
-					JArray jsonConfiguration = JArray.Parse(((string) context.Variables["configuration"]));
-					JArray sortedConfiguration = new JArray(jsonConfiguration.OrderBy(obj => (int)obj["list_priority"]));
-					var requestInfo = JObject.Parse((string)context.Variables["rptRequestInfo"]);
+      <!-- Executing LIST algorithm if nodo_fiscalCode_iuv does not exists, setting baseNodeId -->
+      <set-variable name="baseNodeId" value="@{
+        try {
+          // Extracting configuration from parsed JSON
+          JArray jsonConfiguration = JArray.Parse(((string) context.Variables["configuration"]));
+          JArray sortedConfiguration = new JArray(jsonConfiguration.OrderBy(obj => (int)obj["list_priority"]));
+          var requestInfo = JObject.Parse((string)context.Variables["rptRequestInfo"]);
 
-					// Cycling for each configured node and select the related baseNodeId
-					foreach (JObject item in sortedConfiguration) {
-						var cis = item.GetValue("cis").ToList();
-						if (cis.Count == 0 || (cis.Count > 0 && cis.Contains((string)requestInfo["fiscalCode"]))) {
-							return item.GetValue("node_id").ToString();
-						}
-					}
-				} catch (Exception e) {
-					// Nothing to do
-				}
-				return context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
-			}" />
+          // Cycling for each configured node and select the related baseNodeId
+          foreach (JObject item in sortedConfiguration) {
+            var cis = item.GetValue("cis").ToList();
+            if (cis.Count == 0 || (cis.Count > 0 && cis.Contains((string)requestInfo["fiscalCode"]))) {
+              return item.GetValue("node_id").ToString();
+            }
+          }
+        } catch (Exception e) {
+          // Nothing to do
+        }
+        return context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
+      }" />
 
-			<!-- Store element in cache with fiscal code and IUV as key and the Node instance as value -->
-			<set-variable name="ndp_nodo_fiscalCode_iuv_ttl" value="{{ndp-nodo-fiscalCode-iuv-ttl}}" />
-			<cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse((string)context.Variables["ndp_nodo_fiscalCode_iuv_ttl"]))" caching-type="external" />
+      <!-- Store element in cache with fiscal code and IUV as key and the Node instance as value -->
+      <set-variable name="ndp_nodo_fiscalCode_iuv_ttl" value="{{ndp-nodo-fiscalCode-iuv-ttl}}" />
+      <cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse((string)context.Variables["ndp_nodo_fiscalCode_iuv_ttl"]))" caching-type="external" />
 
-			<!-- If the primitive is an "Old PA"-related one, store element in cache with fiscal code and notice number as key and the Node instance as value -->
-			<choose>
-				<when condition="@(context.Variables.GetValueOrDefault<bool>("isNodoVerificaRPTOrNodoAttivaRPT", false))">
-					<set-variable name="ndp_nodo_fiscalCode_noticeNumber_ttl" value="{{ndp-nodo-fiscalCode-noticeNumber-ttl}}" />
-					<set-variable name="nodo_fiscalCode_noticeNumber_key" value="@{
-						var requestInfo = JObject.Parse((string)context.Variables["rptRequestInfo"]);
-						var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
-						var fiscalCode = requestInfo["fiscalCode"];
-						var iuv = requestInfo["iuv"];
-						return domain + "_" + fiscalCode + "_" + iuv;
-					}" />
+      <!-- If the primitive is an "Old PA"-related one, store element in cache with fiscal code and notice number as key and the Node instance as value -->
+      <choose>
+        <when condition="@(context.Variables.GetValueOrDefault<bool>("isNodoVerificaRPTOrNodoAttivaRPT", false))">
+          <set-variable name="ndp_nodo_fiscalCode_noticeNumber_ttl" value="{{ndp-nodo-fiscalCode-noticeNumber-ttl}}" />
+          <set-variable name="nodo_fiscalCode_noticeNumber_key" value="@{
+            var requestInfo = JObject.Parse((string)context.Variables["rptRequestInfo"]);
+            var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+            var fiscalCode = requestInfo["fiscalCode"];
+            var iuv = requestInfo["iuv"];
+            return domain + "_" + fiscalCode + "_" + iuv;
+          }" />
           <set-variable name="nodo_fiscalCode_iuv_mapping_key" value="@((string) context.Variables["nodo_fiscalCode_iuv_key"] + "_to_nav")" />
-					<cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse((string)context.Variables["ndp_nodo_fiscalCode_iuv_ttl"]))" caching-type="external" />
+          <cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse((string)context.Variables["ndp_nodo_fiscalCode_iuv_ttl"]))" caching-type="external" />
           <cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_mapping_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_iuv_key", ""))" duration="@(int.Parse((string)context.Variables["ndp_nodo_fiscalCode_noticeNumber_ttl"]))" caching-type="external" />
-				</when>
-			</choose>
+        </when>
+      </choose>
 
-		</when>
-	</choose>
+    </when>
+  </choose>
 
-	<!-- ############################### -->
-	<!-- END RPT-INBOUND-POLICY FRAGMENT -->
-	<!-- ############################### -->
+  <!-- ############################### -->
+  <!-- END RPT-INBOUND-POLICY FRAGMENT -->
+  <!-- ############################### -->
 </fragment>
