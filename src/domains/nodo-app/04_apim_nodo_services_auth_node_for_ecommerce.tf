@@ -15,9 +15,9 @@ module "apim_node_for_ecommerce_product" {
 
   source = "./.terraform/modules/__v3__/api_management_product"
 
-  product_id   = "node-for-ecommerce"                                
-  display_name = "Nodo dei Pagamenti - node for eCommerce"             
-  description  = "Product for Nodo dei Pagamenti API dedicated to eCommerce transactions"  
+  product_id   = "node-for-ecommerce"
+  display_name = "Nodo dei Pagamenti - node for eCommerce"
+  description  = "Product for Nodo dei Pagamenti API dedicated to eCommerce transactions"
 
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
@@ -48,10 +48,10 @@ module "apim_node_for_ecommerce_api_v1" {
   product_ids           = [module.apim_node_for_ecommerce_product.product_id]
   subscription_required = local.apim_node_for_ecommerce_api.subscription_required
 
-  version_set_id        = azurerm_api_management_api_version_set.node_for_ecommerce_api.id
-  api_version           = "v1"
+  version_set_id = azurerm_api_management_api_version_set.node_for_ecommerce_api.id
+  api_version    = "v1"
 
-  service_url           = local.apim_node_for_ecommerce_api.service_url
+  service_url = local.apim_node_for_ecommerce_api.service_url
 
   description  = local.apim_node_for_ecommerce_api.description
   display_name = local.apim_node_for_ecommerce_api.display_name
@@ -64,9 +64,7 @@ module "apim_node_for_ecommerce_api_v1" {
     service = module.apim_node_for_ecommerce_product.product_id
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodeForEcommerce/v1/_base_policy.xml.tpl", {
-    is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
-  })
+  xml_content = file("./api/nodopagamenti_api/nodeForEcommerce/v1/_base_policy.xml.tpl")
 }
 
 module "apim_node_for_ecommerce_api_v2" {
@@ -79,10 +77,10 @@ module "apim_node_for_ecommerce_api_v2" {
   product_ids           = [module.apim_node_for_ecommerce_product.product_id]
   subscription_required = local.apim_node_for_ecommerce_api.subscription_required
 
-  version_set_id        = azurerm_api_management_api_version_set.node_for_ecommerce_api.id
-  api_version           = "v2"
+  version_set_id = azurerm_api_management_api_version_set.node_for_ecommerce_api.id
+  api_version    = "v2"
 
-  service_url           = local.apim_node_for_ecommerce_api.service_url
+  service_url = local.apim_node_for_ecommerce_api.service_url
 
   description  = local.apim_node_for_ecommerce_api.description
   display_name = local.apim_node_for_ecommerce_api.display_name
@@ -94,9 +92,7 @@ module "apim_node_for_ecommerce_api_v2" {
     host = "api.${var.apim_dns_zone_prefix}.${var.external_domain}"
   })
 
-  xml_content = templatefile("./api/nodopagamenti_api/nodeForEcommerce/v2/_base_policy.xml.tpl", {
-    is-nodo-decoupler-enabled = var.apim_nodo_decoupler_enable
-  })
+  xml_content = file("./api/nodopagamenti_api/nodeForEcommerce/v2/_base_policy.xml.tpl")
 }
 
 # WISP closePaymentV2

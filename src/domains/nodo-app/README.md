@@ -45,8 +45,9 @@
 | <a name="module_apim_mock_psp_product_replica"></a> [apim\_mock\_psp\_product\_replica](#module\_apim\_mock\_psp\_product\_replica) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_mock_psp_secondary_product"></a> [apim\_mock\_psp\_secondary\_product](#module\_apim\_mock\_psp\_secondary\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_mock_psp_secondary_product_replica"></a> [apim\_mock\_psp\_secondary\_product\_replica](#module\_apim\_mock\_psp\_secondary\_product\_replica) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_node_for_ecommerce_api_v1"></a> [apim\_node\_for\_ecommerce\_api\_v1](#module\_apim\_node\_for\_ecommerce\_api\_v1) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
-| <a name="module_apim_node_for_ecommerce_api_v2"></a> [apim\_node\_for\_ecommerce\_api\_v2](#module\_apim\_node\_for\_ecommerce\_api\_v2) | git::https://github.com/pagopa/azurerm.git//api_management_api | v2.1.13 |
+| <a name="module_apim_node_for_ecommerce_api_v1"></a> [apim\_node\_for\_ecommerce\_api\_v1](#module\_apim\_node\_for\_ecommerce\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_node_for_ecommerce_api_v2"></a> [apim\_node\_for\_ecommerce\_api\_v2](#module\_apim\_node\_for\_ecommerce\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
+| <a name="module_apim_node_for_ecommerce_product"></a> [apim\_node\_for\_ecommerce\_product](#module\_apim\_node\_for\_ecommerce\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_nodo_dei_pagamenti_product_ndp"></a> [apim\_nodo\_dei\_pagamenti\_product\_ndp](#module\_apim\_nodo\_dei\_pagamenti\_product\_ndp) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_nodo_dei_pagamenti_product_replica_ndp"></a> [apim\_nodo\_dei\_pagamenti\_product\_replica\_ndp](#module\_apim\_nodo\_dei\_pagamenti\_product\_replica\_ndp) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_nodo_monitoring_api_ndp"></a> [apim\_nodo\_monitoring\_api\_ndp](#module\_apim\_nodo\_monitoring\_api\_ndp) | ./.terraform/modules/__v3__/api_management_api | n/a |
