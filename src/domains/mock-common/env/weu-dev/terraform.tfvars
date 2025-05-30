@@ -59,3 +59,5 @@ mocker_cosmosdb_params = {
 
 # CosmosDb MongoDb
 cosmosdb_mongodb_extra_capabilities = ["EnableServerless"]
+
+pagopa_proxy_ip_restriction_default_action = "Allow"

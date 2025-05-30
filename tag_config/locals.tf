@@ -1,6 +1,6 @@
 locals {
-  cwd_split = split("/", path.cwd)
-  src_idx = index(local.cwd_split, "src")
+  cwd_split       = split("/", path.cwd)
+  src_idx         = index(local.cwd_split, "src")
   relative_folder = join("/", slice(local.cwd_split, local.src_idx + 1, length(local.cwd_split)))
   tags = {
     CreatedBy   = "Terraform"
