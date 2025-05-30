@@ -37,3 +37,11 @@ resource "azurerm_api_management_named_value" "api_config_aks" {
   display_name        = "apicfg-aks"
   value               = var.env_short == "p" ? "https://weu${var.env}.apiconfig.internal.platform.pagopa.it" : "https://weu${var.env}.apiconfig.internal.${var.env}.platform.pagopa.it"
 }
+
+resource "azurerm_api_management_named_value" "decoupler_aux_service_url_v1" {
+  name                = "decoupler-aux-service-url-v1"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "decoupler-aux-service-url-v1"
+  value               = var.decoupler_configuration.decoupler_aux_service_url_v1
+}

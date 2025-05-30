@@ -32,6 +32,7 @@ locals {
   wisp_nodoInviaCarrelloRPT_posfisici_outbound_policy_file    = file("./api/nodopagamenti_api/decoupler/wisp_nodoInviaCarrelloRPT_posfisici_outbound_policy.xml")
   routing_inbound_policy_file                                 = file("./api/nodopagamenti_api/decoupler/routing_inbound_policy.xml")
   perf_env_policy_file                                        = file("./api/nodopagamenti_api/decoupler/prf_env_policy.xml")
+  set_backendservice_for_decoupler_service_policy_file        = file("./api/nodopagamenti_api/decoupler/set_backendservice_for_decoupler_service_policy.xml")
 }
 
 resource "terraform_data" "sha256_ndphost_header" {
@@ -313,4 +314,16 @@ resource "azurerm_api_management_policy_fragment" "perf_env_policy" {
   description       = "Fragment to handle performance environment"
   format            = "rawxml"
   value             = local.perf_env_policy_file
+}
+
+# Fragment: ndp-set-backendservice-for_decoupler-service-policy
+resource "azurerm_api_management_policy_fragment" "set_backendservice_for_decoupler_service_policy" {
+  api_management_id = data.azurerm_api_management.apim.id
+  name              = "ndp-set-backendservice-for-decoupler-service-policy"
+  description       = "Fragment to set backend-service URL in order to send request to Decoupler auxiliary microservice"
+  format            = "rawxml"
+  value             = local.set_backendservice_for_decoupler_service_policy_file
+  depends_on = [
+    azurerm_api_management_named_value.decoupler_aux_service_url_v1
+  ]
 }

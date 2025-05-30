@@ -1,0 +1,22 @@
+<!-- @formatter:off -->
+<fragment>
+  <!-- ############################################################## -->
+  <!-- START SET-BACKENDSERVICE-FOR-DECOUPLER-SERVICE-POLICY FRAGMENT -->
+  <!-- ############################################################## -->
+  
+  <set-variable name="decoupler-auxiliary-service-baseurl-v1" value="{{decoupler-aux-service-url-v1}}" />
+  <set-variable name="decoupler-auxiliary-service-backend-url" value="@{
+    string baseUrl = (string)context.Variables.GetValueOrDefault("decoupler-auxiliary-service-baseurl-v1", "NONE");
+    string soapAction = (string)context.Variables.GetValueOrDefault("soapAction", "NONE");
+    if (!"NONE".Equals(soapAction)) {
+        baseUrl += soapAction;
+    }
+    return baseUrl;
+  }" />
+
+  <set-backend-service base-url="@((string)context.Variables.GetValueOrDefault("decoupler-auxiliary-service-backend-url"))" />
+  
+  <!-- ############################################################ -->
+  <!-- END SET-BACKENDSERVICE-FOR-DECOUPLER-SERVICE-POLICY FRAGMENT -->
+  <!-- ############################################################ -->
+</fragment>

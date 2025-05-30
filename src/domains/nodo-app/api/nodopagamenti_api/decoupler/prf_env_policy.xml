@@ -1,7 +1,7 @@
 <fragment>
-  <!-- ################################################ -->
-  <!-- START EXTRACT-PAYMENTTOKENS-JSON-POLICY FRAGMENT -->
-  <!-- ################################################ -->
+  <!-- ############################# -->
+  <!-- START PRF-ENV-POLICY FRAGMENT -->
+  <!-- ############################# -->
 
   <!-- Calculating if request must be sent on PRF instance (Nexi's Performance) -->
   <set-variable name="is_perf_env" value="@{
@@ -17,7 +17,7 @@
     </when>
   </choose>
 
-  <!-- ############################################## -->
-  <!-- END EXTRACT-PAYMENTTOKENS-JSON-POLICY FRAGMENT -->
-  <!-- ############################################## -->
+  <!-- ########################### -->
+  <!-- END PRF-ENV-POLICY FRAGMENT -->
+  <!-- ########################### -->
 </fragment>

@@ -1,0 +1,23 @@
+<!-- @formatter:off -->
+<policies>
+  <inbound>
+    <!-- operation before base policy -->
+    <base/>
+    <!-- operation after base policy -->
+  </inbound>
+  <backend>
+    <!-- operation before base policy -->
+    <base/>
+    <!-- operation after base policy -->
+  </backend>
+  <outbound>
+    <!-- operation before base policy -->
+    <base/>
+    <!-- operation after base policy -->
+  </outbound>
+  <on-error>
+    <!-- operation before base policy -->
+    <base/>
+    <!-- operation after base policy -->
+  </on-error>
+</policies>
