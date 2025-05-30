@@ -1,4 +1,12 @@
 <fragment>
+  <!-- ############################################################# -->
+  <!-- START VERIFICATORE-ACTIVATEIOPAYMENT-OUTBOUND-POLICY FRAGMENT -->
+  <!-- ############################################################# -->
+
   <!-- on activatePaymentNotice response delete cache attvazionePrenotata #2 -->
   <cache-remove-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" caching-type="internal" />
+
+  <!-- ########################################################### -->
+  <!-- END VERIFICATORE-ACTIVATEIOPAYMENT-OUTBOUND-POLICY FRAGMENT -->
+  <!-- ########################################################### -->
 </fragment>
