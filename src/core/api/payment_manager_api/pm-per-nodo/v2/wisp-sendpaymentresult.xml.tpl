@@ -44,8 +44,24 @@
 </backend>
 <outbound>
 <base />
-<!-- fragment necessary for WISP Dismantling -->
-<include-fragment fragment-id="wisp-receipt-ko" />
+    <!-- start decoupler policy for cache remove -->
+    <!-- extract requestOutcome and responseOutcome -->
+    <include-fragment fragment-id="ndp-set-outcome-request-response-json-policy" />
+    <!-- Remove objects in cache iff outcome is KO, otherwise do nothing -->
+    <choose>
+        <!-- check if outcome in request is KO -->
+        <when condition="@(context.Variables.GetValueOrDefault<string>("requestOutcome", "NONE").Equals("KO"))">
+            <!-- set paymentTokens var used in fragment-id="ndp-end-payment-cache-removal-outbound-policy -->
+            <set-variable name="paymentTokens" value="@{
+                return (string) context.Variables["wisp-payment-tokens"];
+            }" />
+            <!-- remove keys from cache based on paymentToken -->
+            <include-fragment fragment-id="ndp-end-payment-cache-removal-outbound-policy" />
+        </when>
+    </choose>
+    <!-- end decoupler policy for cache remove -->
+    <!-- fragment necessary for WISP Dismantling -->
+    <include-fragment fragment-id="wisp-receipt-ko" />
 </outbound>
 <on-error>
 <base />
