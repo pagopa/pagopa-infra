@@ -220,3 +220,13 @@ wfesp_dismantling = {
   channel_list    = "13212880150_90"
   wfesp_fixed_url = "https://wfesp.pagopa.gov.it/redirect/wpl05/get?idSession="
 }
+
+# Decoupler config
+decoupler_configuration = {
+  ndp_eCommerce_trxId_ttl      = 86400   // 1 day in seconds
+  ndp_nodo_fc_iuv_ttl          = 5184000 // 60 days in seconds
+  ndp_nodo_fc_nav_ttl          = 5184000 // 60 days in seconds
+  ndp_nodo_paymentToken_ttl    = 5184000 // 60 days in seconds
+  decoupler_aux_service_url_v1 = "https://api.dev.platform.pagopa.it/fake-decoupler/v1"
+}
+trace_variable_as_header_varnames = "baseNodeId,nodo_fiscalCode_iuv_key,nodo_fiscalCode_noticeNumber_key,nodo_fiscalCode_iuv_mapping_key,nodo_paymentToken,eCommerce_transactionId"

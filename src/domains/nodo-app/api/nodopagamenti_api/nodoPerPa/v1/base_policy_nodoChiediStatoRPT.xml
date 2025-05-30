@@ -3,13 +3,12 @@
   <inbound>
     <!-- operation before base policy -->
     <base/>
-    <include-fragment fragment-id="ndp-set-backendservice-for-decoupler-service-policy" />
     <!-- operation after base policy -->
+
+    <include-fragment fragment-id="ndp-set-backendservice-for-decoupler-service-policy" />
   </inbound>
   <backend>
-    <!-- operation before base policy -->
     <base/>
-    <!-- operation after base policy -->
   </backend>
   <outbound>
     <!-- operation before base policy -->
@@ -20,8 +19,6 @@
     <include-fragment fragment-id="trace-variable-as-header-policy" />
   </outbound>
   <on-error>
-    <!-- operation before base policy -->
     <base/>
-    <!-- operation after base policy -->
   </on-error>
 </policies>

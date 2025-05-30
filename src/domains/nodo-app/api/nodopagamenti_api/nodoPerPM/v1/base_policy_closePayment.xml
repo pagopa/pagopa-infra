@@ -1,3 +1,4 @@
+<!-- @formatter:off -->
 <policies>
   <inbound>
     <!-- operation before base policy -->
@@ -10,9 +11,7 @@
 
   </inbound>
   <backend>
-    <!-- operation before base policy -->
     <base />
-    <!-- operation after base policy -->
   </backend>
   <outbound>
     <!-- operation before base policy -->
@@ -24,11 +23,11 @@
 
     <!-- Remove objects in cache iff outcome is KO, otherwise do nothing -->
     <choose>
-        <!-- check if outcome in request is KO -->
-        <when condition="@(context.Variables.GetValueOrDefault<string>("requestOutcome", "NONE").Equals("KO") || context.Variables.GetValueOrDefault<string>("responseOutcome", "NONE").Equals("KO"))">
-            <!-- estrai tokens in split da variabile "paymentTokens", esegui fragment x5 volte -->
-            <include-fragment fragment-id="ndp-end-payment-cache-removal-outbound-policy" />
-        </when>
+      <!-- check if outcome in request is KO -->
+      <when condition="@(context.Variables.GetValueOrDefault<string>("requestOutcome", "NONE").Equals("KO") || context.Variables.GetValueOrDefault<string>("responseOutcome", "NONE").Equals("KO"))">
+        <!-- extract tokens from paymentTokens var and cache-remove 5 times -->
+        <include-fragment fragment-id="ndp-end-payment-cache-removal-outbound-policy" />
+      </when>
     </choose>
   
     <!-- Trace variables dinamically as response headers -->
@@ -36,8 +35,6 @@
 
   </outbound>
   <on-error>
-    <!-- operation before base policy -->
     <base />
-    <!-- operation after base policy -->
   </on-error>
 </policies>
