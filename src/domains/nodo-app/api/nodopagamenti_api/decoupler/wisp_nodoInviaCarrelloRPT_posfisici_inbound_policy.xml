@@ -1,27 +1,27 @@
 <!-- @formatter:off -->
 <fragment>
-    <!-- ################################################################# -->
-    <!-- START WISP-NODOINVIACARRELLORPT-POSFISICI-INBOUND-POLICY FRAGMENT -->
-    <!-- ################################################################# -->
+  <!-- ################################################################# -->
+  <!-- START WISP-NODOINVIACARRELLORPT-POSFISICI-INBOUND-POLICY FRAGMENT -->
+  <!-- ################################################################# -->
 
-    <set-variable name="wfesp_channels" value="{{wfesp-channels}}" />
-    <set-variable name="is_wfesp" value="@{
-        // is a WFESP request if channel in body is equal to 13212880150_90
-        string[] wfespChannels = ((string) context.Variables["wfesp_channels"]).Split(',');
-        bool isWfesp = false;
-        try {
-            XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
-            XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
-            XElement primitive = (XElement) body.FirstNode;
-            string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
-            isWfesp = wfespChannels.Contains(channelId);
-        } catch (Exception e) {
-            // nothing to do
-        }
-        return isWfesp;
-        }" />
+  <set-variable name="wfesp_channels" value="{{wfesp-channels}}" />
+  <set-variable name="is_wfesp" value="@{
+    // is a WFESP request if channel in body is equal to 13212880150_90
+    string[] wfespChannels = ((string) context.Variables["wfesp_channels"]).Split(',');
+    bool isWfesp = false;
+    try {
+      XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
+      XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+      XElement primitive = (XElement) body.FirstNode;
+      string channelId = (string) primitive.Descendants("identificativoCanale").FirstOrDefault();
+      isWfesp = wfespChannels.Contains(channelId);
+    } catch (Exception e) {
+      // nothing to do
+    }
+    return isWfesp;
+    }" />
 
-    <!-- ############################################################### -->
-    <!-- END WISP-NODOINVIACARRELLORPT-POSFISICI-INBOUND-POLICY FRAGMENT -->
-    <!-- ############################################################### -->
+  <!-- ############################################################### -->
+  <!-- END WISP-NODOINVIACARRELLORPT-POSFISICI-INBOUND-POLICY FRAGMENT -->
+  <!-- ############################################################### -->
 </fragment>
