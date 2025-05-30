@@ -4,8 +4,8 @@
     <!-- operation before base policy -->
     <base />
     <!-- operation after base policy -->
-    <include-fragment fragment-id="ndp-routing-inbound-policy" />
 
+    <include-fragment fragment-id="ndp-routing-inbound-policy" />
   </inbound>
   <backend>
     <base />
