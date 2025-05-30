@@ -49,6 +49,21 @@ module "apim_nodo_per_psp_api_v1_auth" {
 
   xml_content = local.apim_nodo_per_psp_api_auth_policy_file
 
+  api_operation_policies = [
+    {
+      operation_id = "nodoInviaRT"
+      xml_content = local.nodoInviaRT_v1_policy_file
+    },
+    {
+      operation_id = "nodoVerificaRPT"
+      xml_content = local.nodoVerificaRPT_v1_policy_file
+    },
+    {
+      operation_id = "nodoAttivaRPT"
+      xml_content = local.nodoAttivaRPT_v1_policy_file
+    }
+  ]
+
   depends_on = [
     module.apim_nodo_dei_pagamenti_product_auth
   ]
@@ -58,43 +73,13 @@ module "apim_nodo_per_psp_api_v1_auth" {
 resource "terraform_data" "sha256_nodoInviaRT_v1_policy_auth" {
   input = sha256(local.nodoInviaRT_v1_policy_file)
 }
-resource "azurerm_api_management_api_operation_policy" "nodoInviaRT_v1_policy_auth" {
-  api_name            = module.apim_nodo_per_psp_api_v1_auth.name
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  # operation_id          = var.env_short == "d" ? "6352c3bcc257810f183b3985" : var.env_short == "u" ? "63e5237639519a0f7094b47f" : "63e5d8212a92e80448d38e00" #TODO [FCADAC] replace
-  operation_id = var.env_short == "d" ? "6835d2860a23231b9031f98a" : ""
-
-  #tfsec:ignore:GEN005
-  xml_content = local.nodoInviaRT_v1_policy_file
-}
 
 ####### nodoVerificaRPT
 resource "terraform_data" "sha256_nodoVerificaRPT_v1_policy_auth" {
   input = sha256(local.nodoVerificaRPT_v1_policy_file)
 }
-resource "azurerm_api_management_api_operation_policy" "nodoVerificaRPT_v1_policy_auth" {
-  api_name            = module.apim_nodo_per_psp_api_v1_auth.name
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  # operation_id          = var.env_short == "d" ? "6352c3bcc257810f183b3985" : var.env_short == "u" ? "63e5237639519a0f7094b47f" : "63e5d8212a92e80448d38e00" #TODO [FCADAC] replace
-  operation_id = var.env_short == "d" ? "6835d2860a23231b9031f988" : ""
-
-  #tfsec:ignore:GEN005
-  xml_content = local.nodoVerificaRPT_v1_policy_file
-}
 
 ####### nodoAttivaRPT
 resource "terraform_data" "sha256_nodoAttivaRPT_v1_policy_auth" {
   input = sha256(local.nodoAttivaRPT_v1_policy_file)
-}
-resource "azurerm_api_management_api_operation_policy" "nodoAttivaRPT_v1_policy_auth" {
-  api_name            = module.apim_nodo_per_psp_api_v1_auth.name
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  # operation_id          = var.env_short == "d" ? "6352c3bcc257810f183b3985" : var.env_short == "u" ? "63e5237639519a0f7094b47f" : "63e5d8212a92e80448d38e00" #TODO [FCADAC] replace
-  operation_id = var.env_short == "d" ? "6835d2860a23231b9031f989" : ""
-
-  #tfsec:ignore:GEN005
-  xml_content = local.nodoAttivaRPT_v1_policy_file
 }

@@ -53,6 +53,37 @@ module "apim_node_for_psp_api_v1_auth" {
 
   xml_content = local.apim_node_for_psp_api_auth_policy_file
 
+  api_operation_policies = [
+    {
+      operation_id = "verifyPaymentNotice"
+      xml_content = local.verifyPaymentNotice_v1_policy_file
+    },
+    {
+      operation_id = "activatePaymentNotice"
+      xml_content = local.activePaymentNotice_v1_policy_file
+    },
+    {
+      operation_id = "activatePaymentNoticeV2"
+      xml_content = local.activePaymentNoticeV2_v1_policy_file
+    },
+    {
+      operation_id = "sendPaymentOutcome"
+      xml_content = local.sendPaymentOutcome_v1_policy_file
+    },
+    {
+      operation_id = "sendPaymentOutcomeV2"
+      xml_content = local.sendPaymentOutcomeV2_v1_policy_file
+    },
+    {
+      operation_id = "nodoChiediCatalogoServiziV2"
+      xml_content = local.base_policy_nodeForPsp_routing_file
+    },
+    {
+      operation_id = "demandPaymentNotice"
+      xml_content = local.base_policy_nodeForPsp_routing_file
+    }
+  ]
+
   depends_on = [
     module.apim_nodo_dei_pagamenti_product_auth
   ]
@@ -63,103 +94,33 @@ module "apim_node_for_psp_api_v1_auth" {
 resource "terraform_data" "sha256_verifyPaymentNotice_v1_policy_auth" {
   input = sha256(local.verifyPaymentNotice_v1_policy_file)
 }
-resource "azurerm_api_management_api_operation_policy" "verifyPaymentNotice_v1_policy_auth" {
-  api_name            = module.apim_node_for_psp_api_v1_auth.name
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  # operation_id          = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0" #TODO [FCADAC] replace
-  operation_id = var.env_short == "d" ? "683085050a23231b90313d94" : ""
-
-  #tfsec:ignore:GEN005
-  xml_content = local.verifyPaymentNotice_v1_policy_file
-}
 
 ###### activatePaymentNotice
 resource "terraform_data" "sha256_activePaymentNotice_v1_policy_auth" {
   input = sha256(local.activePaymentNotice_v1_policy_file)
-}
-resource "azurerm_api_management_api_operation_policy" "activePaymentNotice_v1_policy_auth" {
-  api_name            = module.apim_node_for_psp_api_v1_auth.name
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  # operation_id          = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0" #TODO [FCADAC] replace
-  operation_id = var.env_short == "d" ? "683085050a23231b90313d95" : ""
-
-  #tfsec:ignore:GEN005
-  xml_content = local.activePaymentNotice_v1_policy_file
 }
 
 ###### activatePaymentNoticeV2
 resource "terraform_data" "sha256_activePaymentNoticeV2_v1_policy_auth" {
   input = sha256(local.activePaymentNoticeV2_v1_policy_file)
 }
-resource "azurerm_api_management_api_operation_policy" "activePaymentNoticeV2_v1_policy_auth" {
-  api_name            = module.apim_node_for_psp_api_v1_auth.name
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  # operation_id          = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0" #TODO [FCADAC] replace
-  operation_id = var.env_short == "d" ? "683085050a23231b90313d9a" : ""
-
-  #tfsec:ignore:GEN005
-  xml_content = local.activePaymentNoticeV2_v1_policy_file
-}
 
 ###### sendPaymentOutcome
 resource "terraform_data" "sha256_sendPaymentOutcome_v1_policy_auth" {
   input = sha256(local.sendPaymentOutcome_v1_policy_file)
-}
-resource "azurerm_api_management_api_operation_policy" "sendPaymentOutcome_v1_policy_auth" {
-  api_name            = module.apim_node_for_psp_api_v1_auth.name
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  # operation_id          = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0" #TODO [FCADAC] replace
-  operation_id = var.env_short == "d" ? "683085050a23231b90313d96" : ""
-
-  #tfsec:ignore:GEN005
-  xml_content = local.sendPaymentOutcome_v1_policy_file
 }
 
 ###### sendPaymentOutcomeV2
 resource "terraform_data" "sha256_sendPaymentOutcomeV2_v1_policy_auth" {
   input = sha256(local.sendPaymentOutcomeV2_v1_policy_file)
 }
-resource "azurerm_api_management_api_operation_policy" "sendPaymentOutcomeV2_v1_policy_auth" {
-  api_name            = module.apim_node_for_psp_api_v1_auth.name
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  # operation_id          = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0" #TODO [FCADAC] replace
-  operation_id = var.env_short == "d" ? "683085050a23231b90313d9b" : ""
-
-  #tfsec:ignore:GEN005
-  xml_content = local.sendPaymentOutcomeV2_v1_policy_file
-}
 
 ###### nodoChiediCatalogoServiziV2
 resource "terraform_data" "sha256_nodoChiediCatalogoServiziV2_v1_policy_auth" {
   input = sha256(local.base_policy_nodeForPsp_routing_file)
 }
-resource "azurerm_api_management_api_operation_policy" "nodoChiediCatalogoServiziV2_v1_policy_auth" {
-  api_name            = module.apim_node_for_psp_api_v1_auth.name
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  # operation_id          = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0" #TODO [FCADAC] replace
-  operation_id = var.env_short == "d" ? "683085050a23231b90313d99" : ""
-
-  #tfsec:ignore:GEN005
-  xml_content = local.base_policy_nodeForPsp_routing_file
-}
 
 ###### demandPaymentNotice
 resource "terraform_data" "sha256_demandPaymentNotice_v1_policy_auth" {
   input = sha256(local.base_policy_nodeForPsp_routing_file)
-}
-resource "azurerm_api_management_api_operation_policy" "demandPaymentNotice_v1_policy_auth" {
-  api_name            = module.apim_node_for_psp_api_v1_auth.name
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  # operation_id          = var.env_short == "d" ? "637608a0c257810fc0ecfe1c" : var.env_short == "u" ? "636cb7e439519a17ec9bf98b" : "63b6e2daea7c4a25440fdaa0" #TODO [FCADAC] replace
-  operation_id = var.env_short == "d" ? "683085050a23231b90313d98" : ""
-
-  #tfsec:ignore:GEN005
-  xml_content = local.base_policy_nodeForPsp_routing_file
 }

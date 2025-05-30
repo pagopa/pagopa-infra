@@ -29,7 +29,6 @@
 -target=azurerm_api_management_api_operation_policy.sendPaymentOutcome_v1_policy_auth \
 -target=terraform_data.sha256_sendPaymentOutcomeV2_v1_policy_auth \
 -target=azurerm_api_management_api_operation_policy.sendPaymentOutcomeV2_v1_policy_auth \
-
 -target="module.apim_nodo_per_pa_api_v1_auth" \
 -target="azurerm_api_management_api_version_set.nodo_per_pa_api_auth" \
 -target="terraform_data.sha256_apim_nodo_per_pa_api_v1_auth" \
@@ -43,7 +42,6 @@
 -target="azurerm_api_management_api_operation_policy.nodoChiediStatoRPT_v1_policy_auth" \
 -target="terraform_data.sha256_nodoChiediListaPendentiRPT_v1_policy_auth" \
 -target="azurerm_api_management_api_operation_policy.nodoChiediListaPendentiRPT_v1_policy_auth" \
-
 -target="module.apim_nodo_per_pa_api_v1" \
 -target="azurerm_api_management_api_version_set.nodo_per_pa_api" \
 -target="terraform_data.sha256_apim_nodo_per_pa_api_v1" \
@@ -59,7 +57,6 @@
 -target="azurerm_api_management_api_operation_policy.nodoChiediStatoRPT_v1_policy" \
 -target="terraform_data.sha256_nodoChiediListaPendentiRPT_v1_policy" \
 -target="azurerm_api_management_api_operation_policy.nodoChiediListaPendentiRPT_v1_policy" \
-
 -target="module.apim_nodo_per_psp_api_v1_auth" \
 -target="azurerm_api_management_api_version_set.nodo_per_psp_api_auth" \
 -target="terraform_data.sha256_apim_nodo_per_psp_api_v1_auth" \

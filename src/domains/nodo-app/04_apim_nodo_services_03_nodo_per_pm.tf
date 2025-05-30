@@ -49,6 +49,13 @@ module "apim_nodo_per_pm_api_v1" {
   })
 
   xml_content = local.apim_nodo_per_pm_api_v1_policy_file
+
+  api_operation_policies = [
+    {
+      operation_id = "closePayment"
+      xml_content = local.closePayment_v1_policy_file
+    }
+  ]
 }
 
 resource "terraform_data" "sha256_apim_nodo_per_pm_api_v2" {
@@ -81,34 +88,21 @@ module "apim_nodo_per_pm_api_v2" {
   })
 
   xml_content = local.apim_nodo_per_pm_api_v2_policy_file
+
+  api_operation_policies = [
+    {
+      operation_id = "closePaymentV2"
+      xml_content = local.closePaymentV2_v1_policy_file
+    }
+  ]
 }
 
 ###### ClosePayment #
 resource "terraform_data" "sha256_closePayment_v1_policy" {
   input = sha256(local.closePayment_v1_policy_file)
 }
-resource "azurerm_api_management_api_operation_policy" "closePayment_v1_policy" {
-  api_name            = module.apim_nodo_per_pm_api_v1.name
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-
-  operation_id = var.env_short == "d" ? "closePayment" : ""
-
-  #tfsec:ignore:GEN005
-  xml_content = local.closePayment_v1_policy_file
-}
 
 ###### ClosePaymentV2 #
 resource "terraform_data" "sha256_closePaymentV2_v1_policy" {
   input = sha256(local.closePaymentV2_v1_policy_file)
-}
-resource "azurerm_api_management_api_operation_policy" "closePaymentV2_v1_policy" {
-  api_name            = module.apim_nodo_per_pm_api_v2.name
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-
-  operation_id = var.env_short == "d" ? "closePaymentV2" : ""
-
-  #tfsec:ignore:GEN005
-  xml_content = local.closePaymentV2_v1_policy_file
 }
