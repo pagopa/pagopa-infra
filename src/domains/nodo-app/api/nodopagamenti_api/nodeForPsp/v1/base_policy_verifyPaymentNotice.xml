@@ -1,27 +1,30 @@
 <policies>
     <inbound>
         <!-- operation before base policy -->
-        <base />
+        <base/>
         <!-- operation after base policy -->
-
-        <include-fragment fragment-id="ndp-extract-fiscalCode-noticeNumber-policy" />
-        <include-fragment fragment-id="ndp-start-payment-policy" />
-        <include-fragment fragment-id="ndp-set-base-url-policy" />
-
+        
+        <include-fragment fragment-id="ndp-extract-fiscalCode-noticeNumber-policy"/>
+        <include-fragment fragment-id="ndp-start-payment-policy"/>
+        <include-fragment fragment-id="ndp-set-base-url-policy"/>
+    
     </inbound>
     <backend>
         <!-- operation before base policy -->
-        <base />
+        <base/>
         <!-- operation after base policy -->
     </backend>
     <outbound>
         <!-- operation before base policy -->
-        <base />
+        <base/>
         <!-- operation after base policy -->
+        
+        <!-- Trace variables dinamically as response headers -->
+        <include-fragment fragment-id="trace-variable-as-header-policy"/>
     </outbound>
     <on-error>
         <!-- operation before base policy -->
-        <base />
+        <base/>
         <!-- operation after base policy -->
     </on-error>
 </policies>

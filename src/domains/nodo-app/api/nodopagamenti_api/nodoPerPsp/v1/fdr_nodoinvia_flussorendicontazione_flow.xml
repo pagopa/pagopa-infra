@@ -137,6 +137,9 @@
             <set-body>@((string)context.Variables["originalrsp"])</set-body>
         </return-response>
         <base />
+        
+        <!-- Trace variables dinamically as response headers -->
+        <include-fragment fragment-id="trace-variable-as-header-policy" />
     </outbound>
     <on-error>
         <base />

@@ -5,6 +5,8 @@
 -target=azurerm_api_management_named_value.ndp_nodo_paymentToken_ttl \
 -target=azurerm_api_management_named_value.api_config_aks \
 -target=azurerm_api_management_named_value.decoupler_aux_service_url_v1 \
+-target=azurerm_api_management_named_value.trace_variable_as_header_varnames \
+
 -target=module.apim_nodo_dei_pagamenti_product_auth \
 -target=terraform_data.sha256_apim_nodo_dei_pagamenti_product_auth \
 -target="azurerm_api_management_api_version_set.node_for_psp_api_auth" \

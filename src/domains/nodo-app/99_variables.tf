@@ -479,6 +479,12 @@ variable "gh_runner_job_location" {
   default     = "westeurope"
 }
 
+variable "trace_variable_as_header_varnames" {
+  type        = string
+  description = "The list of default variable in APIM that can be returned in X-APIM-Trace-Values header in response. For no default values, set NONE. For disabling trace, set DISABLED."
+  default     = "DISABLED"
+}
+
 variable "decoupler_configuration" {
   type = object({
     ndp_eCommerce_trxId_ttl      = number
@@ -494,6 +500,6 @@ variable "decoupler_configuration" {
     ndp_nodo_fc_iuv_ttl          = 5184000 // 60 days in seconds
     ndp_nodo_fc_nav_ttl          = 5184000 // 60 days in seconds
     ndp_nodo_paymentToken_ttl    = 5184000 // 60 days in seconds
-    decoupler_aux_service_url_v1 = "TODO"
+    decoupler_aux_service_url_v1 = "https://api.dev.platform.pagopa.it/fake-decoupler/v1"
   }
 }
