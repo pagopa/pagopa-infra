@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "mock_rg" {
   name     = "${local.product}-mock-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "mocker_cosmosdb_snet" {
@@ -62,7 +62,7 @@ module "mocker_cosmosdb_account" {
   subnet_id                  = module.mocker_cosmosdb_snet.id
   private_dns_zone_mongo_ids = [data.azurerm_private_dns_zone.cosmos.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_cosmosdb_mongo_database" "mocker" {

@@ -31,7 +31,7 @@ module "nodo_re_storage_account" {
     blob_restore_policy_days   = var.nodo_re_storage_account.backup_retention
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
@@ -54,7 +54,7 @@ resource "azurerm_private_endpoint" "nodo_re_private_endpoint" {
     subresource_names              = ["table"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.nodo_re_storage_account

@@ -34,7 +34,7 @@ resource "azurerm_logic_app_workflow" "nodo_switcher_step_1" {
     identity_ids = [azurerm_user_assigned_identity.nodo_switcher_identity.id]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -84,7 +84,7 @@ resource "azurerm_logic_app_workflow" "nodo_switcher_step_2" {
     identity_ids = [azurerm_user_assigned_identity.nodo_switcher_identity.id]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 

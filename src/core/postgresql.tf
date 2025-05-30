@@ -22,7 +22,7 @@ resource "azurerm_private_dns_zone" "privatelink_postgres_database_azure_com" {
   name                = "privatelink.postgres.database.azure.com"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_database_azure_com_vnet" {
@@ -33,7 +33,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_d
   virtual_network_id    = data.azurerm_virtual_network.vnet.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 

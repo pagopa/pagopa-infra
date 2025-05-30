@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "pagopa_proxy_rg" {
   name     = format("%s-pagopa-proxy-rg", local.parent_project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -55,7 +55,7 @@ module "pagopa_proxy_redis" {
     },
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # -----------------------------------------------
@@ -71,7 +71,7 @@ module "pagopa_proxy_redis" {
 resource "azurerm_resource_group" "redis_checkout_rg" {
   name     = "${local.project}-redis-rg"
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 # Redis cache subnet
@@ -132,7 +132,7 @@ module "pagopa_checkout_redis" {
     },
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -178,7 +178,7 @@ resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
     action_group_id = azurerm_monitor_action_group.checkout_opsgenie[0].id
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # -----------------------------------------------

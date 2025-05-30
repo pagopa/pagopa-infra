@@ -19,12 +19,10 @@ variable "env_short" {
   type = string
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
+variable "env" {
+  type = string
 }
+
 
 variable "dns_zone_prefix" {
   type        = string

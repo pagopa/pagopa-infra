@@ -6,14 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/bizevents"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "bizevents"
-}
 
 ### External resources
 
