@@ -3,20 +3,21 @@
   <!-- START ROUTING-INBOUND-POLICY FRAGMENT -->
   <!-- ##################################### -->
 
-	<choose>
+  <choose>
     <!-- is_perf_env is defined in ndphost_header fragment -->
     <when condition="@(!context.Variables.GetValueOrDefault<bool>("is_perf_env", false))">
+
       <!-- Acquiring Decoupler configuration and order by routing weight -->
-			<set-variable name="configuration" value="@{
+      <set-variable name="configuration" value="@{
         JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
         JArray sorted = new JArray(json_configuration.OrderByDescending(obj => (int)obj["routing"]));
         return sorted.ToString();
       }" />
 
       <!-- Changing baseUrl applying routing algorithm  -->
-			<choose>
-				<when condition="@(context.Variables.GetValueOrDefault<string>("enable_routing_switch", "").Equals("true"))">
-					<set-variable name="baseUrl" value="@{
+      <choose>
+        <when condition="@(context.Variables.GetValueOrDefault<string>("enable_routing_switch", "").Equals("true"))">
+          <set-variable name="baseUrl" value="@{
             var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
 
             // Generate a random number
@@ -33,12 +34,12 @@
             }
             return context.Variables.GetValueOrDefault<string>("baseUrl", "");
           }" />
-					<set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
-				</when>
-			</choose>
-		</when>
+          <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
+        </when>
+      </choose>
+    </when>
 
-	</choose>
+  </choose>
 
   <!-- ################################### -->
   <!-- END ROUTING-INBOUND-POLICY FRAGMENT -->
