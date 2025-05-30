@@ -1,34 +1,34 @@
 <!-- @formatter:off -->
 <policies>
-    <inbound>
-        <!-- operation before base policy -->
-        <base />
-        <!-- operation after base policy -->
-        <include-fragment fragment-id="ndp-rpt-inbound-policy" />
-        <include-fragment fragment-id="ndp-set-base-url-policy" />
+  <inbound>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
+    <include-fragment fragment-id="ndp-rpt-inbound-policy" />
+    <include-fragment fragment-id="ndp-set-base-url-policy" />
 
-        <set-variable name="nodo_fiscalCode_noticeNumber_key" value="@{
-            var requestInfo = JObject.Parse((string)context.Variables["rptRequestInfo"]);
-            var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
-            var fiscalCode = requestInfo["fiscalCode"];
-            var noticeNumber = requestInfo["noticeNumber"];
-            return domain + "_" + fiscalCode + "_" + noticeNumber;
-        }" />
+    <set-variable name="nodo_fiscalCode_noticeNumber_key" value="@{
+      var requestInfo = JObject.Parse((string)context.Variables["rptRequestInfo"]);
+      var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+      var fiscalCode = requestInfo["fiscalCode"];
+      var noticeNumber = requestInfo["noticeNumber"];
+      return domain + "_" + fiscalCode + "_" + noticeNumber;
+    }" />
 
-        <cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_noticeNumber_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.TryParse(context.Variables.GetValueOrDefault<string>("ndp_nodo_fiscalCode_iuv_ttl", "5184000"), out var ttl) ? ttl : 5184000)" caching-type="external" />
-    </inbound>
-    <backend>
-        <base />
-    </backend>
-    <outbound>
-        <!-- operation before base policy -->
-        <base />
-        <!-- operation after base policy -->
-        
-        <!-- Trace variables dinamically as response headers -->
-        <include-fragment fragment-id="trace-variable-as-header-policy" />
-    </outbound>
-    <on-error>
-        <base />
-    </on-error>
+    <cache-store-value key="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_noticeNumber_key", ""))" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.TryParse(context.Variables.GetValueOrDefault<string>("ndp_nodo_fiscalCode_iuv_ttl", "5184000"), out var ttl) ? ttl : 5184000)" caching-type="external" />
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
+    
+    <!-- Trace variables dinamically as response headers -->
+    <include-fragment fragment-id="trace-variable-as-header-policy" />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
 </policies>
