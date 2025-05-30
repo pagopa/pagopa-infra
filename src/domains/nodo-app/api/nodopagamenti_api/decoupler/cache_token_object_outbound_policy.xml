@@ -72,18 +72,17 @@
 
       <!-- 2. Build JSON token object value -->
       <set-variable name="tokenObjectValue" value="@{
-          var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
-          var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
-          var creditorReferenceId = context.Variables.GetValueOrDefault<string>("creditorReferenceId", "NONE");
+        var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+        var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+        var creditorReferenceId = context.Variables.GetValueOrDefault<string>("creditorReferenceId", "NONE");
 
-          var jsonObject = new JObject
-          {
-            ["nodeId"] = context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"),
-            ["nodo_fiscalCode_noticeNumber"] = domain + "_" + (string)requestInfo["fiscalCode"] + "_" + (string)requestInfo["noticeNumber"],
-            ["nodo_fiscalCode_iuv"] = domain + "_" + (string)requestInfo["fiscalCode"] + "_" + creditorReferenceId,
-            ["ecommerce_transactionId"] = domain + "_" + (string)requestInfo["transactionId"]
-          };
-          return jsonObject.ToString();
+        var jsonObject = new JObject{
+          ["nodeId"] = context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"),
+          ["nodo_fiscalCode_noticeNumber"] = domain + "_" + (string)requestInfo["fiscalCode"] + "_" + (string)requestInfo["noticeNumber"],
+          ["nodo_fiscalCode_iuv"] = domain + "_" + (string)requestInfo["fiscalCode"] + "_" + creditorReferenceId,
+          ["ecommerce_transactionId"] = domain + "_" + (string)requestInfo["transactionId"]
+        };
+        return jsonObject.ToString();
       }" />
 
       <!-- 3. Store JSON token object -->
