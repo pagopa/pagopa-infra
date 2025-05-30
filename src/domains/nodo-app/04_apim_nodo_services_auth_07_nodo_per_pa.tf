@@ -107,7 +107,7 @@ resource "terraform_data" "sha256_nodoChiediStatoRPT_v1_policy_auth" {
   input = sha256(local.nodoChiediStatoRPT_v1_policy_file)
 }
 resource "azurerm_api_management_api_operation_policy" "nodoChiediStatoRPT_v1_policy_auth" {
-  api_name            = module.apim_nodo_per_pa_api_v1.name
+  api_name            = module.apim_nodo_per_pa_api_v1_auth.name
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   # operation_id          = var.env_short == "d" ? "xx" : var.env_short == "u" ? "xx" : "xx" #TODO [FCADAC] replace
@@ -122,7 +122,7 @@ resource "terraform_data" "sha256_nodoChiediListaPendentiRPT_v1_policy_auth" {
   input = sha256(local.nodoChiediListaPendentiRPT_v1_policy_file)
 }
 resource "azurerm_api_management_api_operation_policy" "nodoChiediListaPendentiRPT_v1_policy_auth" {
-  api_name            = module.apim_nodo_per_pa_api_v1.name
+  api_name            = module.apim_nodo_per_pa_api_v1_auth.name
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   # operation_id          = var.env_short == "d" ? "xx" : var.env_short == "u" ? "xx" : "xx" #TODO [FCADAC] replace
