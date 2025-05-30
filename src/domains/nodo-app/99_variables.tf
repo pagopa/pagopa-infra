@@ -494,6 +494,6 @@ variable "decoupler_configuration" {
     ndp_nodo_fc_iuv_ttl          = 5184000 // 60 days in seconds
     ndp_nodo_fc_nav_ttl          = 5184000 // 60 days in seconds
     ndp_nodo_paymentToken_ttl    = 5184000 // 60 days in seconds
-    decoupler_aux_service_url_v1 = "TODO"
+    decoupler_aux_service_url_v1 = "https://api.dev.platform.pagopa.it/fake-decoupler/v1"
   }
 }

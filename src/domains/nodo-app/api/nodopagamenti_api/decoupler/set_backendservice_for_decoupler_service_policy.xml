@@ -9,12 +9,17 @@
     string baseUrl = (string)context.Variables.GetValueOrDefault("decoupler-auxiliary-service-baseurl-v1", "NONE");
     string soapAction = (string)context.Variables.GetValueOrDefault("soapAction", "NONE");
     if (!"NONE".Equals(soapAction)) {
-        baseUrl += soapAction;
+      if (!baseUrl.EndsWith("/")) {
+        baseUrl += "/";
+      }
+      baseUrl += soapAction;
     }
     return baseUrl;
   }" />
 
+  <!-- Changing backend service base URL and endpoint URI -->
   <set-backend-service base-url="@((string)context.Variables.GetValueOrDefault("decoupler-auxiliary-service-backend-url"))" />
+  <rewrite-uri template="/" copy-unmatched-params="true" />
   
   <!-- ############################################################ -->
   <!-- END SET-BACKENDSERVICE-FOR-DECOUPLER-SERVICE-POLICY FRAGMENT -->
