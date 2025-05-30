@@ -1,48 +1,48 @@
 <!-- @formatter:off -->
 <policies>
-    <inbound>
-        <!-- operation before base policy -->
-        <base />
-        <!-- operation after base policy -->
+  <inbound>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
 
-        <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
+    <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
 
-        <include-fragment fragment-id="wisp-batch-migration" />
-        <include-fragment fragment-id="ndp-wisp-nodoinviarpt-nodoinviacarrellorpt-inbound-policy" />
-        <choose>
-            <!-- If previous fragment execution returned 'is_whitelisted' is true, use Wisp Dismantling's backend-url -->
-            <when condition="@( context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && context.Variables.GetValueOrDefault<bool>("is_whitelisted", false) )">
-                <set-backend-service base-url="{{wisp-dismantling-backend-url}}" />
-            </when>
-            <!-- If previous fragment execution returned 'is_whitelisted' as false, use standard Decoupler algorithms -->
-            <otherwise>
-                <include-fragment fragment-id="ndp-rpt-inbound-policy" />
-                <include-fragment fragment-id="ndp-set-base-url-policy" />
-            </otherwise>
-        </choose>
+    <include-fragment fragment-id="wisp-batch-migration" />
+    <include-fragment fragment-id="ndp-wisp-nodoinviarpt-nodoinviacarrellorpt-inbound-policy" />
+    <choose>
+      <!-- If previous fragment execution returned 'is_whitelisted' is true, use Wisp Dismantling's backend-url -->
+      <when condition="@( context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && context.Variables.GetValueOrDefault<bool>("is_whitelisted", false) )">
+        <set-backend-service base-url="{{wisp-dismantling-backend-url}}" />
+      </when>
+      <!-- If previous fragment execution returned 'is_whitelisted' as false, use standard Decoupler algorithms -->
+      <otherwise>
+        <include-fragment fragment-id="ndp-rpt-inbound-policy" />
+        <include-fragment fragment-id="ndp-set-base-url-policy" />
+      </otherwise>
+    </choose>
 
-        <!-- Check if channel is related to WFESP: this is required for "POS Fisici" URL-replacing strategy in outbound -->
-        <include-fragment fragment-id="ndp-wisp-nodoinviacarrellorpt-posfisici-inbound-policy" />
+    <!-- Check if channel is related to WFESP: this is required for "POS Fisici" URL-replacing strategy in outbound -->
+    <include-fragment fragment-id="ndp-wisp-nodoinviacarrellorpt-posfisici-inbound-policy" />
 
-    </inbound>
-    <backend>
-        <base />
-    </backend>
-    <outbound>
-        <!-- operation before base policy -->
-        <base />
-        <!-- operation after base policy -->
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
 
-        <!-- If channel is related to WFESP, then execute "POS Fisici" URL-replacing strategy -->
-        <include-fragment fragment-id="ndp-wisp-nodoinviacarrellorpt-posfisici-outbound-policy" />
+    <!-- If channel is related to WFESP, then execute "POS Fisici" URL-replacing strategy -->
+    <include-fragment fragment-id="ndp-wisp-nodoinviacarrellorpt-posfisici-outbound-policy" />
 
-        <!-- Apply outbound strategy for WISP Dismantling -->
-        <include-fragment fragment-id="wisp-nodoinviarpt-nodoinviacarrellorpt-outbound" />
-        
-        <!-- Trace variables dinamically as response headers -->
-        <include-fragment fragment-id="trace-variable-as-header-policy" />
-    </outbound>
-    <on-error>
-        <base />
-    </on-error>
+    <!-- Apply outbound strategy for WISP Dismantling -->
+    <include-fragment fragment-id="wisp-nodoinviarpt-nodoinviacarrellorpt-outbound" />
+    
+    <!-- Trace variables dinamically as response headers -->
+    <include-fragment fragment-id="trace-variable-as-header-policy" />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
 </policies>

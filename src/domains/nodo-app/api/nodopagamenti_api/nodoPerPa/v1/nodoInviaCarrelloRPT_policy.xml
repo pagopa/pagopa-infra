@@ -1,18 +1,24 @@
+<!-- @formatter:off -->
 <policies>
-    <inbound>
-        <base/>
-    </inbound>
-    <backend>
-        <base/>
-    </backend>
-    <outbound>
-        <base/>
-        <include-fragment fragment-id="wisp-nodoinviarpt-nodoinviacarrellorpt-outbound"/>
-        
-        <!-- Trace variables dinamically as response headers -->
-        <include-fragment fragment-id="trace-variable-as-header-policy"/>
-    </outbound>
-    <on-error>
-        <base/>
-    </on-error>
+  <inbound>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
+  </inbound>
+  <backend>
+    <base/>
+  </backend>
+  <outbound>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
+    
+    <include-fragment fragment-id="wisp-nodoinviarpt-nodoinviacarrellorpt-outbound"/>
+
+    <!-- Trace variables dinamically as response headers -->
+    <include-fragment fragment-id="trace-variable-as-header-policy"/>
+  </outbound>
+  <on-error>
+    <base/>
+  </on-error>
 </policies>

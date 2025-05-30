@@ -2,63 +2,68 @@
 <policies>
   <inbound>
     <!-- operation before base policy -->
-    <base/>
+    <base />
     <!-- operation after base policy -->
+
     <set-variable name="enable_wisp_dismantling_switch" value="{{enable-wisp-dismantling-switch}}" />
     <set-variable name="receipt_query_param" value="@{
-          XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
-          string queryParam = "NONE";
-          // if NONE the request is sent to default backend url
-          try {
-            XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
-            XElement primitive = (XElement) body.FirstNode;
-            string creditorInstitution = (string) primitive.Descendants("identificativoDominio").FirstOrDefault();
-            string iuv = (string) primitive.Descendants("identificativoUnivocoVersamento").FirstOrDefault();
-            string ccp = (string) primitive.Descendants("codiceContestoPagamento").FirstOrDefault();
-            if (creditorInstitution != null && iuv != null && ccp != null) {
-              queryParam = "ci=" + creditorInstitution + "&iuv=" + iuv + "&ccp=" + ccp;
-    }
-    } catch (Exception e) {
-    // do nothing
-    }
-    return queryParam;
-    }" />
+      XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
+      string queryParam = "NONE";
 
+      // if NONE the request is sent to default backend url
+      try {
+        XElement body = doc.Descendants(doc.Name.Namespace + "Body").FirstOrDefault();
+        XElement primitive = (XElement) body.FirstNode;
+        string creditorInstitution = (string) primitive.Descendants("identificativoDominio").FirstOrDefault();
+        string iuv = (string) primitive.Descendants("identificativoUnivocoVersamento").FirstOrDefault();
+        string ccp = (string) primitive.Descendants("codiceContestoPagamento").FirstOrDefault();
+        if (creditorInstitution != null && iuv != null && ccp != null) {
+          queryParam = "ci=" + creditorInstitution + "&iuv=" + iuv + "&ccp=" + ccp;
+        }
+      } catch (Exception e) {
+        // do nothing
+      }
+      return queryParam;
+    }" />
     <choose>
       <when condition="@( context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") && !context.Variables.GetValueOrDefault<string>("receipt_query_param", "NONE").Equals("NONE") )">
-      <set-variable name="wisp_converter_url" value="{{wisp-dismantling-converter-base-url}}" />
-      <!-- call wisp-converter -->
-      <send-request mode="new" response-variable-name="receipt_response">
-        <set-url>@(context.Variables["wisp_converter_url"] + "/receipt?" + context.Variables["receipt_query_param"])</set-url>
-        <set-method>GET</set-method>
-        <set-header name="Content-Type" exists-action="override">
-          <value>application/json</value>
-        </set-header>
-      </send-request>
-      <choose>
-        <when condition="@(((IResponse)context.Variables["receipt_response"]).StatusCode == 200)">
-          <set-variable name="baseUrl" value="{{wisp-dismantling-backend-url}}" />
+
+        <set-variable name="wisp_converter_url" value="{{wisp-dismantling-converter-base-url}}" />
+
+        <!-- call wisp-converter -->
+        <send-request mode="new" response-variable-name="receipt_response">
+          <set-url>@(context.Variables["wisp_converter_url"] + "/receipt?" + context.Variables["receipt_query_param"])</set-url>
+          <set-method>GET</set-method>
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/json</value>
+          </set-header>
+        </send-request>
+
+        <choose>
+          <when condition="@(((IResponse)context.Variables["receipt_response"]).StatusCode == 200)">
+            <set-variable name="baseUrl" value="{{wisp-dismantling-backend-url}}" />
+          </when>
+          <otherwise>
+            <!-- TODO call pagopa-decoupler to forward request to each node instance -->
+          </otherwise>
+
+        </choose>
       </when>
-      <otherwise>
-        <!-- TODO call pagopa-decoupler to forward request to each node instance -->
-      </otherwise>
     </choose>
-  </when>
-</choose>
 
   </inbound>
-<backend>
-<base/>
-</backend>
-<outbound>
-<!-- operation before base policy -->
-<base/>
-<!-- operation after base policy -->
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
 
-<!-- Trace variables dinamically as response headers -->
-<include-fragment fragment-id="trace-variable-as-header-policy" />
-</outbound>
-<on-error>
-<base/>
-</on-error>
-  </policies>
+    <!-- Trace variables dinamically as response headers -->
+    <include-fragment fragment-id="trace-variable-as-header-policy" />
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>
