@@ -89,12 +89,6 @@ variable "lock_enable" {
   description = "Apply locks to block accedentaly deletions."
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 ### Network
 
 variable "cidr_vnet_italy" {
@@ -535,6 +529,7 @@ variable "app_gateway_wisp2govit_certificate_name" {
 variable "app_gateway_wfespgovit_certificate_name" {
   type        = string
   description = "Application gateway wfespgovit certificate name on Key Vault"
+  default     = ""
 }
 variable "app_gateway_kibana_certificate_name" {
   type        = string
@@ -864,7 +859,6 @@ variable "is_feature_enabled" {
     use_new_apim              = optional(bool, false)
     azdoa_extension           = optional(bool, false)
     elastic_on_prem           = optional(bool, true)
-    pm_import_sa              = optional(bool, false)
   })
   description = "Features enabled in this domain"
 }

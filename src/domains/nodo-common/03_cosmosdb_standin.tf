@@ -31,7 +31,7 @@ module "cosmosdb_account_standin" {
 
   backup_continuous_enabled = var.standin_cosmos_nosql_db_params.backup_continuous_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb database for standin

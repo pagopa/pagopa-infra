@@ -40,5 +40,5 @@ resource "azurerm_monitor_action_group" "opsgenie" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

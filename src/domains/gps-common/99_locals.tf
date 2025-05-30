@@ -1,6 +1,6 @@
 locals {
   project         = "${var.prefix}-${var.env_short}-${var.location_short}-${var.domain}"
-  project_itn         = "${var.prefix}-${var.env_short}-${var.location_short_ita}-${var.domain}"
+  project_itn     = "${var.prefix}-${var.env_short}-${var.location_short_ita}-${var.domain}"
   project_replica = "${var.prefix}-${var.env_short}-${var.location_replica_short}-${var.domain}"
   product         = "${var.prefix}-${var.env_short}"
 
@@ -57,5 +57,5 @@ locals {
   monitor_action_group_infra_opsgenie_name = "InfraOpsgenie"
   monitor_resource_group_name              = "${local.product}-monitor-rg"
 
-  msg_resource_group_name      = "${local.product}-msg-rg"
+  msg_resource_group_name = "${local.product}-msg-rg"
 }

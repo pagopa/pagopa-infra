@@ -6,14 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/aca-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "aca"
-}
 
 ### External resources
 

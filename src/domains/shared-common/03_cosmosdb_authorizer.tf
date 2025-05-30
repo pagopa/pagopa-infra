@@ -53,7 +53,7 @@ module "authorizer_cosmosdb_account" {
   subnet_id                           = module.authorizer_cosmosdb_snet.id
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "authorizer_cosmosdb_database" {

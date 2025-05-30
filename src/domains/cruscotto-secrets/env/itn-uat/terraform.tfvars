@@ -6,15 +6,6 @@ location       = "italynorth"
 location_short = "itn"
 instance       = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/crusc8-secrets"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "crusc8"
-}
-
 ### External resources
 
 monitor_italy_resource_group_name                 = "pagopa-u-itn-core-monitor-rg"

@@ -6,14 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/gps"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "gps"
-}
 
 ### External resources
 
@@ -77,8 +69,8 @@ pgres_flex_params = {
   enable_private_dns_registration                  = true
   enable_private_dns_registration_virtual_endpoint = false
   max_worker_process                               = 32
-  wal_level                                        = "logical"                     # gpd_cdc_enabled
-  shared_preoload_libraries                        = "pg_failover_slots,pglogical" # gpd_cdc_enabled
+  wal_level                                        = "logical"   # gpd_cdc_enabled
+  shared_preoload_libraries                        = "pglogical" # gpd_cdc_enabled
   public_network_access_enabled                    = false
 }
 
@@ -173,7 +165,7 @@ eventhub_namespace_rtp = {
   public_network_access    = true
   private_endpoint_created = true
   metric_alerts_create     = true
-  metric_alerts            = {
+  metric_alerts = {
     no_trx = {
       aggregation = "Total"
       metric_name = "IncomingMessages"
@@ -182,7 +174,7 @@ eventhub_namespace_rtp = {
       threshold   = 1000
       frequency   = "PT1H"
       window_size = "P1D"
-      dimension = [],
+      dimension   = [],
     },
     active_connections = {
       aggregation = "Average"
@@ -202,7 +194,21 @@ eventhub_namespace_rtp = {
       threshold   = 0
       frequency   = "PT5M"
       window_size = "PT30M"
-      dimension = [],
+      dimension   = [],
     },
   }
+}
+
+redis_ha_enabled = false
+
+rtp_storage_account = {
+  account_kind                       = "StorageV2"
+  account_tier                       = "Standard"
+  account_replication_type           = "LRS"
+  blob_versioning_enabled            = false
+  advanced_threat_protection         = false
+  advanced_threat_protection_enabled = false
+  public_network_access_enabled      = true
+  blob_delete_retention_days         = 90
+  enable_low_availability_alert      = false
 }

@@ -11,7 +11,7 @@ module "vnet_replica" {
   address_space        = var.geo_replica_cidr_vnet
   ddos_protection_plan = var.geo_replica_ddos_protection_plan
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## Peering between the vnet(main) and replica vnet

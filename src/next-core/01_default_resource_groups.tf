@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "managed_identities_rg" {
   name     = "${local.product}-identity-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_resource_group" "default_roleassignment_rg" {
@@ -10,5 +10,5 @@ resource "azurerm_resource_group" "default_roleassignment_rg" {
   name     = "default-roleassignment-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

@@ -20,7 +20,7 @@
 
 #   // blob section not used & not cfg
 
-#   tags = var.tags
+#   tags = module.tag_config.tags
 # }
 
 

@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "gpd_rg" {
   name     = format("%s-gpd-rg", local.project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_app_service_plan" "gpd_reporting_service_plan" {
@@ -24,7 +24,7 @@ resource "azurerm_app_service_plan" "gpd_reporting_service_plan" {
     capacity = 1
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 locals {
@@ -185,7 +185,7 @@ module "reporting_batch_function" {
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_app_service_plan.gpd_reporting_service_plan
@@ -224,7 +224,7 @@ module "reporting_batch_function_slot_staging" {
   allowed_ips     = []
   subnet_id       = module.reporting_function_snet.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## Function reporting_service
@@ -269,7 +269,7 @@ module "reporting_service_function" {
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_app_service_plan.gpd_reporting_service_plan
@@ -308,7 +308,7 @@ module "reporting_service_function_slot_staging" {
   allowed_ips     = []
   subnet_id       = module.reporting_function_snet.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## Function reporting_analysis
@@ -349,7 +349,7 @@ module "reporting_analysis_function" {
   allowed_subnets = [data.azurerm_subnet.apim_snet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_app_service_plan.gpd_reporting_service_plan
@@ -389,7 +389,7 @@ module "reporting_analysis_function_slot_staging" {
   allowed_ips     = []
   subnet_id       = module.reporting_function_snet.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # autoscaling - reporting_batch & reporting_service & reporting_analysis ( shared service plan )

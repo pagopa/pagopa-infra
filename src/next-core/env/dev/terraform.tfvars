@@ -9,14 +9,6 @@ location_ita       = "italynorth"
 location_short_ita = "itn"
 instance           = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "DEV"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "core"
-}
 
 ### Feature Flag
 is_feature_enabled = {
@@ -163,9 +155,9 @@ integration_appgateway_private_ip  = "10.230.8.200"
 integration_app_gateway_sku_name   = "Standard_v2"
 integration_app_gateway_sku_tier   = "Standard_v2"
 
-integration_app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
-integration_app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
-integration_app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
+integration_app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it-stable"
+integration_app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it-stable"
+integration_app_gateway_management_certificate_name = "management-dev-platform-pagopa-it-stable"
 integration_appgateway_zones                        = []
 
 nodo_pagamenti_psp            = "06529501006,97249640588,06874351007,08301100015,00194450219,02113530345,01369030935,07783020725"
@@ -385,7 +377,7 @@ eventhubs_03 = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-test", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-test", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-views"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -738,12 +730,12 @@ azdo_agent_vm_image_name    = "pagopa-d-azdo-agent-ubuntu2204-image-v3"
 
 # public app gateway
 # app_gateway
-app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it"
-app_gateway_upload_certificate_name     = "upload-dev-platform-pagopa-it"
+app_gateway_api_certificate_name        = "api-dev-platform-pagopa-it-stable"
+app_gateway_upload_certificate_name     = "upload-dev-platform-pagopa-it-stable"
 upload_endpoint_enabled                 = true
-app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it"
-app_gateway_management_certificate_name = "management-dev-platform-pagopa-it"
-app_gateway_wisp2_certificate_name      = "dev-wisp2-pagopa-it"
+app_gateway_portal_certificate_name     = "portal-dev-platform-pagopa-it-stable"
+app_gateway_management_certificate_name = "management-dev-platform-pagopa-it-stable"
+app_gateway_wisp2_certificate_name      = "dev-wisp2-pagopa-it-stable"
 app_gateway_wisp2govit_certificate_name = ""
 app_gateway_wfespgovit_certificate_name = ""
 app_gateway_kibana_certificate_name     = "kibana-dev-platform-pagopa-it"
