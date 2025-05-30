@@ -22,9 +22,7 @@
 
   </inbound>
   <backend>
-    <!-- api group before base policy -->
     <base />
-    <!-- api group after base policy -->
   </backend>
   <outbound>
     <!-- api group before base policy -->
@@ -32,8 +30,6 @@
     <!-- api group after base policy -->
   </outbound>
   <on-error>
-    <!-- api group before base policy -->
     <base />
-    <!-- api group after base policy -->
   </on-error>
 </policies>

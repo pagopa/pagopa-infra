@@ -1,3 +1,4 @@
+<!-- @formatter:off -->
 <policies>
   <inbound>
     <!-- operation before base policy -->
@@ -14,11 +15,11 @@
         <set-variable name="primitive-ko" value="closePaymentV2" />
         <set-variable name="request-body" value="@(context.Request.Body.As<JObject>(preserveContent: true))" />
         <set-variable name="wisp-payment-tokens" value="@{
-            try {
-              return (string) context.Variables["paymentTokens"];
-            } catch (Exception e) {
-              return "";
-            }
+          try {
+            return (string) context.Variables["paymentTokens"];
+          } catch (Exception e) {
+            return "";
+          }
         }" />
         <include-fragment fragment-id="wisp-disable-payment-token-timer" />
       </when>
@@ -30,9 +31,7 @@
 
   </inbound>
   <backend>
-    <!-- operation before base policy -->
     <base />
-    <!-- operation after base policy -->
   </backend>
   <outbound>
     <!-- operation before base policy -->
@@ -43,17 +42,17 @@
     <include-fragment fragment-id="ndp-set-outcome-request-response-json-policy" />
 
     <choose>
-        <!-- check if outcome in request is KO -->
+      <!-- check if outcome in request is KO -->
       <when condition="@(context.Variables.GetValueOrDefault<string>("requestOutcome", "NONE").Equals("KO") || context.Variables.GetValueOrDefault<string>("responseOutcome", "NONE").Equals("KO"))">
 
-            <!-- Start WISP ClosePaymentV2 outbound  -->
-            <include-fragment fragment-id="wisp-receipt-ko" />
-            <!-- End WISP ClosePaymentV2 outbound  -->
+        <!-- Start WISP ClosePaymentV2 outbound  -->
+        <include-fragment fragment-id="wisp-receipt-ko" />
+        <!-- End WISP ClosePaymentV2 outbound  -->
 
-            <!-- Remove objects in cache iff outcome is KO, otherwise do nothing -->
-            <!-- estrai tokens in split da variabile "paymentTokens", esegui fragment x5 volte -->
-            <include-fragment fragment-id="ndp-end-payment-cache-removal-outbound-policy" />
-        </when>
+        <!-- Remove objects in cache iff outcome is KO, otherwise do nothing -->
+        <!-- estrai tokens in split da variabile "paymentTokens", esegui fragment x5 volte -->
+        <include-fragment fragment-id="ndp-end-payment-cache-removal-outbound-policy" />
+      </when>
     </choose>
 
     <!-- Trace variables dinamically as response headers -->
@@ -61,8 +60,6 @@
 
   </outbound>
   <on-error>
-    <!-- operation before base policy -->
     <base />
-    <!-- operation after base policy -->
   </on-error>
 </policies>
