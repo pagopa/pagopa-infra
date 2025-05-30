@@ -56,6 +56,9 @@
         </when>
     </choose>
 
+    <!-- Trace variables dinamically as response headers -->
+    <include-fragment fragment-id="trace-variable-as-header-policy" />
+
   </outbound>
   <on-error>
     <!-- operation before base policy -->

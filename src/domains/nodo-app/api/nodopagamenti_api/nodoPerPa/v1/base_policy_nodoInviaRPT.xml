@@ -31,6 +31,9 @@
         <!-- operation after base policy -->
 
         <include-fragment fragment-id="ndp-wisp-nodoinviarpt-nodoinviacarrellorpt-outbound-policy"/>
+        
+        <!-- Trace variables dinamically as response headers -->
+        <include-fragment fragment-id="trace-variable-as-header-policy" />
     </outbound>
     <on-error>
         <base/>

@@ -20,6 +20,9 @@
         <include-fragment fragment-id="ndp-set-node-id-by-token-policy" />
         <include-fragment fragment-id="ndp-spo-inbound-policy" />
         <include-fragment fragment-id="ndp-set-base-url-policy" />
+        
+        <!-- Trace variables dinamically as response headers -->
+        <include-fragment fragment-id="trace-variable-as-header-policy" />
     </inbound>
     <backend>
         <!-- operation before base policy -->

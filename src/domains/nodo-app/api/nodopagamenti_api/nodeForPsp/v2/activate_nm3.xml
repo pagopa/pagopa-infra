@@ -639,6 +639,9 @@
         <!-- on activatePaymentNotice response delete cache attvazionePrenotata #2 -->
         <cache-remove-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" caching-type="internal" />
         <base />
+        
+        <!-- Trace variables dinamically as response headers -->
+        <include-fragment fragment-id="trace-variable-as-header-policy" />
     </outbound>
     <on-error>
         <base />

@@ -30,6 +30,9 @@
             <include-fragment fragment-id="ndp-end-payment-cache-removal-outbound-policy" />
         </when>
     </choose>
+  
+    <!-- Trace variables dinamically as response headers -->
+    <include-fragment fragment-id="trace-variable-as-header-policy" />
 
   </outbound>
   <on-error>
