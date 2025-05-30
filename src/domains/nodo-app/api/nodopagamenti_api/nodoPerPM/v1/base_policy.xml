@@ -1,38 +1,39 @@
+<!-- @formatter:off -->
 <policies>
-    <inbound>
-        <!-- api group before base policy -->
-        <base />
-        <!-- api group after base policy -->
+  <inbound>
+    <!-- api group before base policy -->
+    <base />
+    <!-- api group after base policy -->
 
-        <!-- if prf env set backend-service -->
-        <!-- is_perf_env is defined in ndphost_header fragment -->
-        <choose>
-            <when condition="@(context.Variables.GetValueOrDefault<bool>("is_perf_env", false))">
-                <set-backend-service base-url="{{default-nodo-backend-prf}}" />
-            </when>
-        </choose>
+    <!-- if prf env set backend-service -->
+    <!-- is_perf_env is defined in ndphost_header fragment -->
+    <choose>
+      <when condition="@(context.Variables.GetValueOrDefault<bool>("is_perf_env", false))">
+        <set-backend-service base-url="{{default-nodo-backend-prf}}" />
+      </when>
+    </choose>
 
-        <!-- if soap request set uri -->
-        <choose>
-          <when condition="@(!context.Variables.GetValueOrDefault<string>("soapAction", "NONE").Equals("NONE"))">
-          <rewrite-uri template="/webservices/input/" copy-unmatched-params="true" />
-        </when>
-      </choose>
+    <!-- if soap request set uri -->
+    <choose>
+      <when condition="@(!context.Variables.GetValueOrDefault<string>("soapAction", "NONE").Equals("NONE"))">
+      <rewrite-uri template="/webservices/input/" copy-unmatched-params="true" />
+    </when>
+    </choose>
 
-    </inbound>
-    <backend>
-        <!-- api group before base policy -->
-        <base />
-        <!-- api group after base policy -->
-    </backend>
-    <outbound>
-        <!-- api group before base policy -->
-        <base />
-        <!-- api group after base policy -->
-    </outbound>
-    <on-error>
-        <!-- api group before base policy -->
-        <base />
-        <!-- api group after base policy -->
-    </on-error>
+  </inbound>
+  <backend>
+    <!-- api group before base policy -->
+    <base />
+    <!-- api group after base policy -->
+  </backend>
+  <outbound>
+    <!-- api group before base policy -->
+    <base />
+    <!-- api group after base policy -->
+  </outbound>
+  <on-error>
+    <!-- api group before base policy -->
+    <base />
+    <!-- api group after base policy -->
+  </on-error>
 </policies>
