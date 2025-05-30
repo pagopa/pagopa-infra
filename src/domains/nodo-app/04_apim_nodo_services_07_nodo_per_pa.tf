@@ -98,6 +98,36 @@ resource "azurerm_api_management_api_operation_policy" "nodoChiediCopiaRT_v1_pol
   xml_content = local.nodoChiediCopiaRT_v1_policy_file
 }
 
+###### nodoChiediStatoRPT
+resource "terraform_data" "sha256_nodoChiediStatoRPT_v1_policy" {
+  input = sha256(local.nodoChiediStatoRPT_v1_policy_file)
+}
+resource "azurerm_api_management_api_operation_policy" "nodoChiediStatoRPT_v1_policy" {
+  api_name            = module.apim_nodo_per_pa_api_v1.name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  # operation_id          = var.env_short == "d" ? "xx" : var.env_short == "u" ? "xx" : "xx" #TODO [FCADAC] replace
+  operation_id = var.env_short == "d" ? "683890480a23231b903260f9" : ""
+
+  #tfsec:ignore:GEN005
+  xml_content = local.nodoChiediStatoRPT_v1_policy_file
+}
+
+###### nodoChiediListaPendentiRPT
+resource "terraform_data" "sha256_nodoChiediListaPendentiRPT_v1_policy" {
+  input = sha256(local.nodoChiediListaPendentiRPT_v1_policy_file)
+}
+resource "azurerm_api_management_api_operation_policy" "nodoChiediListaPendentiRPT_v1_policy" {
+  api_name            = module.apim_nodo_per_pa_api_v1.name
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_api_management.apim.resource_group_name
+  # operation_id          = var.env_short == "d" ? "xx" : var.env_short == "u" ? "xx" : "xx" #TODO [FCADAC] replace
+  operation_id = var.env_short == "d" ? "683890480a23231b903260fa" : ""
+
+  #tfsec:ignore:GEN005
+  xml_content = local.nodoChiediListaPendentiRPT_v1_policy_file
+}
+
 ###### nodoChiediInformativaPSP
 resource "terraform_data" "sha256_nodoChiediInformativaPSP_v1_policy" {
   input = sha256(local.base_policy_nodoPerPa_routing_file)

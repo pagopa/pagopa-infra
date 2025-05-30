@@ -1,8 +1,10 @@
  ./terraform.sh apply weu-dev  \
--target="azurerm_api_management_named_value.ndp_eCommerce_trxId_ttl" \
--target="azurerm_api_management_named_value.ndp_nodo_fc_nav_ttl" \
--target="azurerm_api_management_named_value.ndp_nodo_fc_iuv_ttl" \
--target="azurerm_api_management_named_value.ndp_nodo_paymentToken_ttl" \
+-target=azurerm_api_management_named_value.ndp_eCommerce_trxId_ttl \
+-target=azurerm_api_management_named_value.ndp_nodo_fc_nav_ttl \
+-target=azurerm_api_management_named_value.ndp_nodo_fc_iuv_ttl \
+-target=azurerm_api_management_named_value.ndp_nodo_paymentToken_ttl \
+-target=azurerm_api_management_named_value.api_config_aks \
+-target=azurerm_api_management_named_value.decoupler_aux_service_url_v1 \
 -target=module.apim_nodo_dei_pagamenti_product_auth \
 -target=terraform_data.sha256_apim_nodo_dei_pagamenti_product_auth \
 -target="azurerm_api_management_api_version_set.node_for_psp_api_auth" \
@@ -27,18 +29,24 @@
 -target=azurerm_api_management_api_operation_policy.sendPaymentOutcome_v1_policy_auth \
 -target=terraform_data.sha256_sendPaymentOutcomeV2_v1_policy_auth \
 -target=azurerm_api_management_api_operation_policy.sendPaymentOutcomeV2_v1_policy_auth \
+
+-target="module.apim_nodo_per_pa_api_v1_auth" \
 -target="azurerm_api_management_api_version_set.nodo_per_pa_api_auth" \
 -target="terraform_data.sha256_apim_nodo_per_pa_api_v1_auth" \
--target="module.apim_nodo_per_pa_api_v1_auth" \
 -target="terraform_data.sha256_nodoInviaRPT_v1_policy_auth" \
 -target="azurerm_api_management_api_operation_policy.nodoInviaRPT_v1_policy_auth" \
 -target="terraform_data.sha256_nodoInviaCarrelloRPT_v1_policy_auth" \
 -target="azurerm_api_management_api_operation_policy.nodoInviaCarrelloRPT_v1_policy_auth" \
 -target="terraform_data.sha256_nodoChiediCopiaRT_v1_policy_auth" \
 -target="azurerm_api_management_api_operation_policy.nodoChiediCopiaRT_v1_policy_auth" \
+-target="terraform_data.sha256_nodoChiediStatoRPT_v1_policy_auth" \
+-target="azurerm_api_management_api_operation_policy.nodoChiediStatoRPT_v1_policy_auth" \
+-target="terraform_data.sha256_nodoChiediListaPendentiRPT_v1_policy_auth" \
+-target="azurerm_api_management_api_operation_policy.nodoChiediListaPendentiRPT_v1_policy_auth" \
+
+-target="module.apim_nodo_per_pa_api_v1" \
 -target="azurerm_api_management_api_version_set.nodo_per_pa_api" \
 -target="terraform_data.sha256_apim_nodo_per_pa_api_v1" \
--target="module.apim_nodo_per_pa_api_v1" \
 -target="terraform_data.sha256_nodoInviaRPT_v1_policy" \
 -target="azurerm_api_management_api_operation_policy.nodoInviaRPT_v1_policy" \
 -target="terraform_data.sha256_nodoInviaCarrelloRPT_v1_policy" \
@@ -47,9 +55,14 @@
 -target="azurerm_api_management_api_operation_policy.nodoChiediCopiaRT_v1_policy" \
 -target="terraform_data.sha256_nodoChiediInformativaPSP_v1_policy" \
 -target="azurerm_api_management_api_operation_policy.nodoChiediInformativaPSP_v1_policy" \
+-target="terraform_data.sha256_nodoChiediStatoRPT_v1_policy" \
+-target="azurerm_api_management_api_operation_policy.nodoChiediStatoRPT_v1_policy" \
+-target="terraform_data.sha256_nodoChiediListaPendentiRPT_v1_policy" \
+-target="azurerm_api_management_api_operation_policy.nodoChiediListaPendentiRPT_v1_policy" \
+
+-target="module.apim_nodo_per_psp_api_v1_auth" \
 -target="azurerm_api_management_api_version_set.nodo_per_psp_api_auth" \
 -target="terraform_data.sha256_apim_nodo_per_psp_api_v1_auth" \
--target="module.apim_nodo_per_psp_api_v1_auth" \
 -target="terraform_data.sha256_nodoInviaRT_v1_policy_auth" \
 -target="azurerm_api_management_api_operation_policy.nodoInviaRT_v1_policy_auth" \
 -target="terraform_data.sha256_apim_nodo_dei_pagamenti_product" \
@@ -82,8 +95,8 @@
 -target=azurerm_api_management_policy_fragment.wisp_nodoinviacarrellorpt_posfisici_outbound_policy \
 -target=azurerm_api_management_policy_fragment.set_node_id_policy \
 -target=azurerm_api_management_policy_fragment.extract_json_tokens_policy \
--target=azurerm_api_management_named_value.api_config_aks \
 -target=azurerm_api_management_policy_fragment.routing_inbound_policy \
+-target=azurerm_api_management_policy_fragment.set_backendservice_for_decoupler_service_policy \
 -target="azurerm_api_management_api_version_set.nodo_per_psp_richiesta_avvisi_api" \
 -target="terraform_data.sha256_apim_nodo_per_psp_richiesta_avvisi_api_v1" \
 -target="module.apim_nodo_per_psp_richiesta_avvisi_api_v1" \
