@@ -1,41 +1,39 @@
 <fragment>
+  <!-- ##################################################### -->
+  <!-- START EXTRACT-FISCALCODE-NOTICENUMBER-POLICY FRAGMENT -->
+  <!-- ##################################################### -->
 
-	<!-- ##################################################### -->
-	<!-- START EXTRACT-FISCALCODE-NOTICENUMBER-POLICY FRAGMENT -->
-	<!-- ##################################################### -->
+  <!-- Extract RequestInfo from request -->
+  <set-variable name="requestInfo" value="@{
 
-	<!-- Extract RequestInfo from request -->
-	<set-variable name="requestInfo" value="@{
+    // Retrieve data from request body
+    XElement request = context.Request.Body.As<XElement>(preserveContent: true);
+    XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
 
-		// Retrieve data from request body
-		XElement request = context.Request.Body.As<XElement>(preserveContent: true);
-		XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
+    // Generating RequestInfo object
+    var requestInfo = new JObject();
+    requestInfo.Add(new JProperty("fiscalCode", ""));
+    requestInfo.Add(new JProperty("noticeNumber", ""));
+    requestInfo.Add(new JProperty("idChannel", ""));
+    requestInfo.Add(new JProperty("transactionId", ""));
 
-		// Generating RequestInfo object
-		var requestInfo = new JObject();
-		requestInfo.Add(new JProperty("fiscalCode", ""));
-		requestInfo.Add(new JProperty("noticeNumber", ""));
-		requestInfo.Add(new JProperty("idChannel", ""));
-		requestInfo.Add(new JProperty("transactionId", ""));
-
-		try {
-			// If body is not null, populate RequestInfo content
-			if (body != null ) {
-			  XElement primitive = body.Elements().FirstOrDefault();
-
+    try {
+      // If body is not null, populate RequestInfo content
+      if (body != null ) {
+        XElement primitive = body.Elements().FirstOrDefault();
         requestInfo["fiscalCode"] = primitive.Descendants("fiscalCode").FirstOrDefault().Value ?? "";
-				requestInfo["noticeNumber"] = primitive.Descendants("noticeNumber").FirstOrDefault().Value ?? "";
-				requestInfo["idChannel"] = primitive.Descendants("idChannel").FirstOrDefault().Value ?? "";
-			}
-		}
-		catch (Exception e) {
-			// do nothing
+        requestInfo["noticeNumber"] = primitive.Descendants("noticeNumber").FirstOrDefault().Value ?? "";
+        requestInfo["idChannel"] = primitive.Descendants("idChannel").FirstOrDefault().Value ?? "";
+      }
+    }
+    catch (Exception e) {
+      // do nothing
       requestInfo.Add(new JProperty("error", e.ToString()));
-		}
-		return requestInfo.ToString();
-	}" />
+    }
+    return requestInfo.ToString();
+  }" />
 
-	<!-- ################################################### -->
-	<!-- END EXTRACT-FISCALCODE-NOTICENUMBER-POLICY FRAGMENT -->
-	<!-- ################################################### -->
+  <!-- ################################################### -->
+  <!-- END EXTRACT-FISCALCODE-NOTICENUMBER-POLICY FRAGMENT -->
+  <!-- ################################################### -->
 </fragment>
