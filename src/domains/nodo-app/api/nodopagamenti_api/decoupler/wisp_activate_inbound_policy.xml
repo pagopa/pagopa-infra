@@ -1,65 +1,86 @@
 <fragment>
+  <!-- ########################################### -->
+  <!-- START WISP-ACTIVATE-INBOUND-POLICY FRAGMENT -->
+  <!-- ########################################### -->
 
   <choose>
     <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
-    <!-- check if fiscalcode and notice number belongs to wisp dismantling -->
-    <set-variable name="wisp_fiscalcode_noticenumber" value="@{
-                    // requestInfo is set in ndp-extract-fiscalCode-noticeNumber fragment (executed in operation policy)
-            try {
-                    var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
-                    var noticeNumber = (string) requestInfo["noticeNumber"];
-                    var ci = (string) requestInfo["fiscalCode"];
-                    return "wisp_" + ci + "_" + noticeNumber;
-            } catch (Exception e) {
-                return "wisp_requestData_not_set";
-            }
-      }" />
-    <cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
 
-    <choose>
-      <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
-      <set-variable name="wisp_ecommerce_channels" value="{{wisp-ecommerce-channels}}" />
-      <choose>
-        <when condition="@{
-                    string[] ecommerceChannels = ((string)context.Variables["wisp_ecommerce_channels"] ?? "").Split(',');
+      <!-- Retrieve fiscalcode and notice number belonging to WISP dismantling -->
+      <set-variable name="wisp_fiscalcode_noticenumber" value="@{
+        // requestInfo is set in ndp-extract-fiscalCode-noticeNumber fragment (executed in operation policy)
         try {
-        var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
-        string channelId = (string) requestInfo["idChannel"];
-        return ecommerceChannels.Contains(channelId);
+          var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+          var noticeNumber = (string) requestInfo["noticeNumber"];
+          var ci = (string) requestInfo["fiscalCode"];
+          return "wisp_" + ci + "_" + noticeNumber;
         } catch (Exception e) {
-        return false;
+          return "wisp_requestData_not_set";
         }
-        }">
-        <cache-lookup-value key="@("wisp_timer_hang_" + ((string)context.Variables["wisp_ecommerce_paymentNote"] ?? "") + (((string) context.Variables["wisp_fiscalcode_noticenumber"])).Substring(4))" variable-name="wisp_checkout_timeout" default-value="NONE" caching-type="external" />
-        <choose>
-          <when condition="@(context.Variables.GetValueOrDefault<string>("wisp_checkout_timeout", "NONE").Equals("NONE"))">
-          <return-response>
-            <set-status code="200" reason="OK" />
-            <set-header name="Content-Type" exists-action="override">
-              <value>text/xml</value>
-            </set-header>
-            <set-body><![CDATA[
-                                <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/" xmlns:nfp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
-                                    <soapenv:Body>
-                                        <nfp:activatePaymentNoticeV2Response>
-                                            <outcome>KO</outcome>
-                                            <fault>
-                                                <faultCode>PPT_WISP_SESSIONE_SCONOSCIUTA</faultCode>
-                                                <faultString>User session expired.</faultString>
-                                                <id>NodoDeiPagamentiSPC</id>
-                                                <description>Too many times occurred between Checkout redirect and activatePaymentNoticeV2</description>
-                                            </fault>
-                                        </nfp:activatePaymentNoticeV2Response>
-                                    </soapenv:Body>
-                                </soapenv:Envelope>
-                                                            ]]></set-body>
-          </return-response>
+      }" />
+      <cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
+      
+      <choose>
+
+        <!-- If fiscalcode and notice number belongs to WISP dismantling, then check Checkout session duration -->
+        <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+          <set-variable name="wisp_ecommerce_channels" value="{{wisp-ecommerce-channels}}" />
+          <choose>
+
+            <!-- Execute this if the request channel is eCommerce's -->
+            <when condition="@{
+              string[] ecommerceChannels = ((string)context.Variables["wisp_ecommerce_channels"] ?? "").Split(',');
+              try {
+                var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+                string channelId = (string) requestInfo["idChannel"];
+                return ecommerceChannels.Contains(channelId);
+              } catch (Exception e) {
+                return false;
+              }
+            }">
+              <cache-lookup-value key="@("wisp_timer_hang_" + ((string)context.Variables["wisp_ecommerce_paymentNote"] ?? "") + (((string) context.Variables["wisp_fiscalcode_noticenumber"])).Substring(4))" variable-name="wisp_checkout_timeout" default-value="NONE" caching-type="external" />
+              <choose>
+
+                <!-- If no valid cached key related to Checkout timeout exists, it means that the session is expired. So return an error response -->
+                <when condition="@(context.Variables.GetValueOrDefault<string>("wisp_checkout_timeout", "NONE").Equals("NONE"))">
+                  <return-response>
+                    <set-status code="200" reason="OK" />
+                    <set-header name="Content-Type" exists-action="override">
+                      <value>text/xml</value>
+                    </set-header>
+
+                    <!-- Setting error message for response body -->
+                    <set-body>
+                      <![CDATA[
+                        <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/" xmlns:nfp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+                          <soapenv:Body>
+                            <nfp:activatePaymentNoticeV2Response>
+                              <outcome>KO</outcome>
+                              <fault>
+                                  <faultCode>PPT_WISP_SESSIONE_SCONOSCIUTA</faultCode>
+                                  <faultString>User session expired.</faultString>
+                                  <id>NodoDeiPagamentiSPC</id>
+                                  <description>Too many times occurred between Checkout redirect and activatePaymentNoticeV2</description>
+                              </fault>
+                            </nfp:activatePaymentNoticeV2Response>
+                          </soapenv:Body>
+                        </soapenv:Envelope>
+                      ]]>
+                    </set-body>
+                  </return-response>
+                </when>
+
+              </choose>
+            </when>
+
+          </choose>
         </when>
+        
       </choose>
     </when>
   </choose>
-</when>
-  </choose>
-  </when>
-  </choose>
-  </fragment>
+
+  <!-- ######################################### -->
+  <!-- END WISP-ACTIVATE-INBOUND-POLICY FRAGMENT -->
+  <!-- ######################################### -->
+</fragment>
