@@ -1,100 +1,115 @@
 <fragment>
-	<!-- start temporary patch: eCommerce bridge to default -->
-	<set-variable name="eCommerceChannel" value="{{wisp-ecommerce-channels}}" />
-	<!-- Extract 'channel' from requestInfo -->
-	<set-variable name="channel" value="@(((JValue)JObject.Parse((string)context.Variables["requestInfo"])["idChannel"]).ToString())" />
-	<choose>
-		<!-- if eCommerceChannel set default baseNodeId and cache nodo_<fiscalCode>_<noticeNumber> -->
-		<when condition="@(context.Variables.GetValueOrDefault<string>("channel").Equals(context.Variables.GetValueOrDefault<string>("eCommerceChannel")))">
-			<set-variable name="baseNodeId" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" />
-			<!-- cache store (key = nodo_fiscalCode_noticeNumber, value = baseNodeId) -->
-			<cache-store-value key="@{
-                var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+  <!-- ########################################### -->
+  <!-- START START-PAYMENT-INBOUND-POLICY FRAGMENT -->
+  <!-- ########################################### -->
+
+  <!-- start temporary patch: eCommerce bridge to default -->
+  <set-variable name="eCommerceChannel" value="{{wisp-ecommerce-channels}}" />
+
+  <!-- Extract 'channel' from requestInfo -->
+  <set-variable name="channel" value="@(((JValue)JObject.Parse((string)context.Variables["requestInfo"])["idChannel"]).ToString())" />
+  <choose>
+
+    <!-- if eCommerceChannel set default baseNodeId and cache nodo_<fiscalCode>_<noticeNumber> -->
+    <when condition="@(context.Variables.GetValueOrDefault<string>("channel").Equals(context.Variables.GetValueOrDefault<string>("eCommerceChannel")))">
+      <set-variable name="baseNodeId" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" />
+      <!-- cache store (key = nodo_fiscalCode_noticeNumber, value = baseNodeId) -->
+      <cache-store-value key="@{
+        var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+        var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+        return domain + "_" + (string)requestInfo["fiscalCode"] + "_" + (string)requestInfo["noticeNumber"];
+      }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@((int)context.Variables.GetValueOrDefault("ndp_nodo_fiscalCode_noticeNumber_ttl", 5184000))" caching-type="external" />
+    </when>
+
+    <!-- end temporary patch: eCommerce bridge to default -->
+    <otherwise>
+
+      <!-- when transactionId became available in requestInfo the following part is the fragment -->
+      <!-- the requestInfo MUST contains fiscalCode, noticeNumber and transactionId info -->
+      <cache-lookup-value key="@{
+        var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+        var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+        return domain + "_" + (string)requestInfo["fiscalCode"] + "_" + (string)requestInfo["noticeNumber"];
+      }" variable-name="nodo_fiscalCode_noticeNumber" default-value="NONE" caching-type="external" />
+      <cache-lookup-value key="@{
+        var domain = context.Variables.GetValueOrDefault<string>("domain_eCommerce", "eCommerce");
+        var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+        return domain + "_" + (string)requestInfo["transactionId"];
+      }" variable-name="eCommerce_transactionId" default-value="NONE" caching-type="external" />
+
+      <!-- Setting baseNodeId based on nodo_<fiscalCode>_<noticeNumber> and eCommerce_<transactionId> values. NONE is False, !NONE is True -->
+      <choose>
+
+        <!-- True, * -->
+        <when condition="@(!context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_noticeNumber", "NONE").Equals("NONE"))">
+          <!-- set baseNodeId -->
+          <set-variable name="baseNodeId" value="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_noticeNumber", "NONE"))" />
+        </when>
+
+        <!-- False, * -->
+        <otherwise>
+          <choose>
+
+            <!-- False, True -->
+            <when condition="@(!context.Variables.GetValueOrDefault<string>("eCommerce_transactionId", "NONE").Equals("NONE"))">
+              <!-- set baseNodeId -->
+              <set-variable name="baseNodeId" value="@(context.Variables.GetValueOrDefault<string>("eCommerce_transactionId", "NONE"))" />
+            </when>
+
+            <!-- False, False -->
+            <otherwise>
+
+              <!-- LIST algorithm -->
+              <set-variable name="enable_nm3_switch" value="{{enable-nm3-decoupler-switch}}" />
+              <set-variable name="ndp_eCommerce_transactionId_ttl" value="{{ndp-eCommerce-transactionId-ttl}}" />
+              <set-variable name="ndp_nodo_fiscalCode_noticeNumber_ttl" value="{{ndp-nodo-fiscalCode-noticeNumber-ttl}}" />
+
+              <!-- Sort configuration according to list priority -->
+              <set-variable name="configuration" value="@{
+                // catch exception!!!
+                JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
+                JArray sorted = new JArray(json_configuration.OrderBy(obj => (int)obj["list_priority"]));
+                return sorted.ToString();
+              }" />
+
+              <!-- Set baseNodeId using LIST algorithm -->
+              <set-variable name="baseNodeId" value="@{
+                bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true");
+                var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
                 var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
 
-                return domain + "_" + (string)requestInfo["fiscalCode"] + "_" + (string)requestInfo["noticeNumber"];
-            }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@((int)context.Variables.GetValueOrDefault("ndp_nodo_fiscalCode_noticeNumber_ttl", 5184000))" caching-type="external" />
-		</when>
-		<!-- end temporary patch: eCommerce bridge to default -->
-		<otherwise>
-			<!-- when transactionId became available in requestInfo the following part is the fragment -->
-			<!-- the requestInfo MUST contains fiscalCode, noticeNumber and transactionId info -->
-			<cache-lookup-value key="@{
-                var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
-                var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+                if (enable_nm3_switch) {
+                  foreach (JObject item in configuration) {
+                    var cis = item.GetValue("cis").ToList();
+                    if (cis.Count == 0 || (cis.Count > 0 && cis.Contains((string)requestInfo["fiscalCode"]))) {
+                      return item.GetValue("node_id").ToString();
+                    }
+                  }
+                }
+              return context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
+              }" />
 
-                return domain + "_" + (string)requestInfo["fiscalCode"] + "_" + (string)requestInfo["noticeNumber"];
-            }" variable-name="nodo_fiscalCode_noticeNumber" default-value="NONE" caching-type="external" />
-			<cache-lookup-value key="@{
+              <!-- cache store (key = eCommerce_transactionId, value = baseNodeId) -->
+              <cache-store-value key="@{
                 var domain = context.Variables.GetValueOrDefault<string>("domain_eCommerce", "eCommerce");
                 var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
-
                 return domain + "_" + (string)requestInfo["transactionId"];
-            }" variable-name="eCommerce_transactionId" default-value="NONE" caching-type="external" />
-			<!-- Setting baseNodeId based on nodo_<fiscalCode>_<noticeNumber> and eCommerce_<transactionId> values. NONE is False, !NONE is True -->
-			<choose>
-				<!-- True, * -->
-				<when condition="@(!context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_noticeNumber", "NONE").Equals("NONE"))">
-					<!-- set baseNodeId -->
-					<set-variable name="baseNodeId" value="@(context.Variables.GetValueOrDefault<string>("nodo_fiscalCode_noticeNumber", "NONE"))" />
-				</when>
-				<!-- False, * -->
-				<otherwise>
-					<choose>
-						<!-- False, True -->
-						<when condition="@(!context.Variables.GetValueOrDefault<string>("eCommerce_transactionId", "NONE").Equals("NONE"))">
-							<!-- set baseNodeId -->
-							<set-variable name="baseNodeId" value="@(context.Variables.GetValueOrDefault<string>("eCommerce_transactionId", "NONE"))" />
-						</when>
-						<!-- False, False -->
-						<otherwise>
-							<!-- LIST algorithm -->
-							<set-variable name="enable_nm3_switch" value="{{enable-nm3-decoupler-switch}}" />
-							<set-variable name="ndp_eCommerce_transactionId_ttl" value="{{ndp-eCommerce-transactionId-ttl}}" />
-							<set-variable name="ndp_nodo_fiscalCode_noticeNumber_ttl" value="{{ndp-nodo-fiscalCode-noticeNumber-ttl}}" />
-							<!-- Sort configuration according to list priority -->
-							<set-variable name="configuration" value="@{
-                                // catch exception!!!
-                                JArray json_configuration = JArray.Parse(((string) context.Variables["configuration"]));
-                                return json_configuration.ToString();
-                                JArray sorted = new JArray(json_configuration.OrderBy(obj => (int)obj["list_priority"]));
-                                return sorted.ToString();
-                            }" />
-							<!-- Set baseNodeId using LIST algorithm -->
-							<set-variable name="baseNodeId" value="@{
-                                bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true");
-        var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
-        var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+              }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse((string)context.Variables["ndp_eCommerce_transactionId_ttl"]))" caching-type="external" />
+            </otherwise>
+          </choose>
 
-        if (enable_nm3_switch) {
-        foreach (JObject item in configuration) {
-        var cis = item.GetValue("cis").ToList();
+          <!-- cache store (key = nodo_fiscalCode_noticeNumber, value = baseNodeId) -->
+          <cache-store-value key="@{
+            var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+            var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
+            return domain + "_" + (string)requestInfo["fiscalCode"] + "_" + (string)requestInfo["noticeNumber"];
+          }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse((string)context.Variables["ndp_nodo_fiscalCode_noticeNumber_ttl"]))" caching-type="external" />
+        </otherwise>
+      </choose>
+    </otherwise>
+  </choose>
 
-        if (cis.Count == 0 || (cis.Count > 0 && cis.Contains((string)requestInfo["fiscalCode"]))) {
-        return item.GetValue("node_id").ToString();
-        }
-        }
-        }
-        return context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
-        }" />
-							<!-- cache store (key = eCommerce_transactionId, value = baseNodeId) -->
-							<cache-store-value key="@{
-                                var domain = context.Variables.GetValueOrDefault<string>("domain_eCommerce", "eCommerce");
-                                var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
-
-                                return domain + "_" + (string)requestInfo["transactionId"];
-                            }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse((string)context.Variables["ndp_eCommerce_transactionId_ttl"]))" caching-type="external" />
-						</otherwise>
-					</choose>
-					<!-- cache store (key = nodo_fiscalCode_noticeNumber, value = baseNodeId) -->
-					<cache-store-value key="@{
-                        var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
-                        var requestInfo = JObject.Parse((string)context.Variables["requestInfo"]);
-
-                        return domain + "_" + (string)requestInfo["fiscalCode"] + "_" + (string)requestInfo["noticeNumber"];
-                    }" value="@(context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE"))" duration="@(int.Parse((string)context.Variables["ndp_nodo_fiscalCode_noticeNumber_ttl"]))" caching-type="external" />
-				</otherwise>
-			</choose>
-		</otherwise>
-	</choose>
+  <!-- ########################################### -->
+  <!-- START START-PAYMENT-INBOUND-POLICY FRAGMENT -->
+  <!-- ########################################### -->
 </fragment>

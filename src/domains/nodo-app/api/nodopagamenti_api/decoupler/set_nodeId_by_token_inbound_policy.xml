@@ -4,26 +4,27 @@
   <!-- ################################################## -->
 
   <!-- Fragment requirements: paymentTokens variable as: paymentToken1,paymentToken2,paymentToken3,[..] -->
-
   <set-variable name="paymentToken" value="@{
-		var paymentTokens = context.Variables.GetValueOrDefault<string>("paymentTokens", "NONE");
-		return paymentTokens.Split(',')[0];
-	}" />
+    var paymentTokens = context.Variables.GetValueOrDefault<string>("paymentTokens", "NONE");
+    return paymentTokens.Split(',')[0];
+  }" />
 
   <!-- Extracting key value, merging payment token with domain and searching in cache -->
   <set-variable name="nodo_paymentToken_key" value="@{
-		var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
-		var paymentToken = context.Variables.GetValueOrDefault<string>("paymentToken", "");
-  return domain + "_" + paymentToken;
+    var domain = context.Variables.GetValueOrDefault<string>("domain", "nodo");
+    var paymentToken = context.Variables.GetValueOrDefault<string>("paymentToken", "");
+    return domain + "_" + paymentToken;
   }" />
   <cache-lookup-value key="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken_key", "NONE"))" variable-name="nodo_paymentToken" default-value="NONE" caching-type="external" />
 
   <choose>
-
     <!-- If payment token is found, then set the baseNodeId reference for Base URL setting -->
     <when condition="@(!context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE").Equals("NONE"))">
       <set-variable name="baseNodeId" value="@(context.Variables.GetValueOrDefault<string>("nodo_paymentToken", "NONE"))" />
     </when>
-
   </choose>
+
+  <!-- ################################################ -->
+  <!-- END SET-NODE-ID-BY-TOKEN-INBOUND-POLICY FRAGMENT -->
+  <!-- ################################################ -->
 </fragment>

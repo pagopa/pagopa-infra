@@ -1,19 +1,27 @@
 <fragment>
-  <!-- extract and set requestOutcome, responseOutcome -->
+  <!-- ####################################################### -->
+  <!-- START SET-OUTCOME-REQUEST-RESPONSE-JSON-POLICY FRAGMENT -->
+  <!-- ####################################################### -->
+
+  <!-- Extract and set requestOutcome and responseOutcome -->
   <set-variable name="requestOutcome" value="@{
-        try {
-            JObject requestBody = (JObject) context.Request.Body.As<JObject>(preserveContent: true);
-            return ((string) requestBody["outcome"]).ToUpper();
-        } catch (Exception e) {
-            return "NONE";
-        }
-    }" />
+    try {
+      JObject requestBody = (JObject) context.Request.Body.As<JObject>(preserveContent: true);
+      return ((string) requestBody["outcome"]).ToUpper();
+    } catch (Exception e) {
+      return "NONE";
+    }
+  }" />
   <set-variable name="responseOutcome" value="@{
-        try {
-            JObject responseBody = (JObject) context.Response.Body.As<JObject>(preserveContent: true);
-            return ((string) responseBody["outcome"]).ToUpper();
-        } catch (Exception e) {
-            return "NONE";
-        }
-    }" />
+    try {
+      JObject responseBody = (JObject) context.Response.Body.As<JObject>(preserveContent: true);
+      return ((string) responseBody["outcome"]).ToUpper();
+    } catch (Exception e) {
+      return "NONE";
+    }
+  }" />
+
+  <!-- ##################################################### -->
+  <!-- END SET-OUTCOME-REQUEST-RESPONSE-JSON-POLICY FRAGMENT -->
+  <!-- ##################################################### -->
 </fragment>

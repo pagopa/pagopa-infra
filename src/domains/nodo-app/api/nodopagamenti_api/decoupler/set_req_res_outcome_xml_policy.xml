@@ -1,20 +1,28 @@
 <fragment>
-  <!-- extract and set requestOutcome, responseOutcome from XML -->
+  <!-- ###################################################### -->
+  <!-- START SET-OUTCOME-REQUEST-RESPONSE-XML-POLICY FRAGMENT -->
+  <!-- ###################################################### -->
+
+  <!-- Extract and set requestOutcome and responseOutcome from XML -->
   <set-variable name="requestOutcome" value="@{
-          // Retrieve data from response body
-          XElement request = context.Request.Body.As<XElement>(preserveContent: true);
-          XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
-          XElement primitive = body.Elements().FirstOrDefault();
-          var outcome = primitive.Descendants("outcome").FirstOrDefault().Value ?? "";
-  return outcome.ToString();
+    // Retrieve data from response body
+    XElement request = context.Request.Body.As<XElement>(preserveContent: true);
+    XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
+    XElement primitive = body.Elements().FirstOrDefault();
+    var outcome = primitive.Descendants("outcome").FirstOrDefault().Value ?? "";
+    return outcome.ToString();
   }" />
 
   <set-variable name="responseOutcome" value="@{
-          // Retrieve data from response body
-          XElement response = context.Response.Body.As<XElement>(preserveContent: true);
-          XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
-          XElement primitive = body.Elements().FirstOrDefault();
-          var outcome = primitive.Descendants("outcome").FirstOrDefault().Value ?? "";
-  return outcome.ToString();
+    // Retrieve data from response body
+    XElement response = context.Response.Body.As<XElement>(preserveContent: true);
+    XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
+    XElement primitive = body.Elements().FirstOrDefault();
+    var outcome = primitive.Descendants("outcome").FirstOrDefault().Value ?? "";
+    return outcome.ToString();
   }" />
+
+  <!-- #################################################### -->
+  <!-- END SET-OUTCOME-REQUEST-RESPONSE-XML-POLICY FRAGMENT -->
+  <!-- #################################################### -->
 </fragment>
