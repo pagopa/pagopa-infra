@@ -76,7 +76,8 @@ module "apim_wallet_service_notifications_api_v1" {
   })
 
   xml_content = templatefile("./api/npg-notifications/v1/_base_policy.xml.tpl", {
-    hostname = local.payment_wallet_hostname
+    hostname = local.payment_wallet_hostname,
+    ecommerce_hostname = local.ecommerce_hostname
   })
 }
 
