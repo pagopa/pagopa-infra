@@ -6,14 +6,6 @@ location       = "italynorth"
 location_short = "itn"
 instance       = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/crusc8-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "crusc8"
-}
 
 ### External resources
 
@@ -31,3 +23,8 @@ ingress_load_balancer_ip = "10.3.100.250"
 
 external_domain          = "pagopa.it"
 dns_zone_internal_prefix = "internal.uat.platform"
+
+pgres_flex_db_names = [
+  "cruscotto",
+  "cruscotto-replica"
+]

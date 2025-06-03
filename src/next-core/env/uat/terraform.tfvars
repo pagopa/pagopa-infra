@@ -9,14 +9,6 @@ location_ita       = "italynorth"
 location_short_ita = "itn"
 instance           = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "core"
-}
 
 ### Feature Flag
 is_feature_enabled = {
@@ -168,9 +160,9 @@ cidr_subnet_appgateway_integration                  = ["10.230.9.192/27"]
 integration_appgateway_private_ip                   = "10.230.9.200"
 integration_app_gateway_sku_name                    = "Standard_v2"
 integration_app_gateway_sku_tier                    = "Standard_v2"
-integration_app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
-integration_app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it"
-integration_app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
+integration_app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it-stable"
+integration_app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it-stable"
+integration_app_gateway_management_certificate_name = "management-uat-platform-pagopa-it-stable"
 integration_appgateway_zones                        = []
 
 nodo_pagamenti_psp                           = "06529501006,97249640588,08301100015,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
@@ -185,7 +177,7 @@ base_path_nodo_fatturazione                  = "/fatturazione-uat"
 base_path_nodo_web_bo                        = "/web-bo-uat"
 base_path_nodo_web_bo_history                = "/web-bo-history-uat"
 dns_zone_wisp2                               = "uat.wisp2"
-integration_app_gateway_prf_certificate_name = "api-prf-platform-pagopa-it"
+integration_app_gateway_prf_certificate_name = "api-prf-platform-pagopa-it-stable"
 base_path_nodo_oncloud                       = "/nodo-uat"
 
 
@@ -388,7 +380,7 @@ eventhubs_03 = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 32
     message_retention = 7
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-views"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -729,16 +721,16 @@ azdo_agent_vm_image_name              = "pagopa-u-azdo-agent-ubuntu2204-image-v3
 
 # public app gateway
 # app_gateway
-app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it"
-app_gateway_upload_certificate_name     = "upload-uat-platform-pagopa-it"
+app_gateway_api_certificate_name        = "api-uat-platform-pagopa-it-stable"
+app_gateway_upload_certificate_name     = "upload-uat-platform-pagopa-it-stable"
 upload_endpoint_enabled                 = true
-app_gateway_prf_certificate_name        = "api-prf-platform-pagopa-it"
-app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it"
-app_gateway_management_certificate_name = "management-uat-platform-pagopa-it"
-app_gateway_wisp2_certificate_name      = "uat-wisp2-pagopa-it"
+app_gateway_prf_certificate_name        = "api-prf-platform-pagopa-it-stable"
+app_gateway_portal_certificate_name     = "portal-uat-platform-pagopa-it-stable"
+app_gateway_management_certificate_name = "management-uat-platform-pagopa-it-stable"
+app_gateway_wisp2_certificate_name      = "uat-wisp2-pagopa-it-stable"
 app_gateway_wisp2govit_certificate_name = "uat-wisp2-pagopa-gov-it"
-app_gateway_wfespgovit_certificate_name = "wfesp-test-pagopa-gov-it"
-app_gateway_kibana_certificate_name     = "kibana-uat-platform-pagopa-it"
+#app_gateway_wfespgovit_certificate_name = "wfesp-test-pagopa-gov-it-stable" # Rimosso in quando non usato
+app_gateway_kibana_certificate_name = "kibana-uat-platform-pagopa-it"
 #app_gateway_sku_name                    = "WAF_v2"
 #app_gateway_sku_tier                    = "WAF_v2"
 #app_gateway_waf_enabled                 = true

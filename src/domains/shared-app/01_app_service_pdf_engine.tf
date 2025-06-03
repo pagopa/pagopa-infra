@@ -25,7 +25,7 @@ resource "azurerm_resource_group" "shared_pdf_engine_app_service_rg" {
   name     = format("%s-pdf-engine-rg", local.project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 data "azurerm_container_registry" "container_registry" {
@@ -68,7 +68,7 @@ module "shared_pdf_engine_app_service" {
   ip_restriction_default_action = var.function_app_ip_restriction_default_action
 
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "shared_pdf_engine_slot_staging" {
@@ -98,7 +98,7 @@ module "shared_pdf_engine_slot_staging" {
   allowed_ips     = []
   subnet_id       = module.shared_pdf_engine_app_service_snet.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_autoscale" {
@@ -298,7 +298,7 @@ module "shared_pdf_engine_app_service_java" {
   ip_restriction_default_action = var.function_app_ip_restriction_default_action
 
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "shared_pdf_engine_java_slot_staging" {
@@ -330,7 +330,7 @@ module "shared_pdf_engine_java_slot_staging" {
   allowed_ips     = []
   subnet_id       = module.shared_pdf_engine_app_service_snet.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_autoscale_setting" "autoscale_app_service_shared_pdf_engine_java_autoscale" {

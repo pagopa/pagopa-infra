@@ -86,12 +86,6 @@ variable "velero_backup_sa_replication_type" {
   description = "(Optional) backup storage account replication type"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 variable "velero_sa_backup_retention_days" {
   type        = number

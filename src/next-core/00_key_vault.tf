@@ -147,6 +147,11 @@ data "azurerm_key_vault_secret" "alert_error_notification_slack" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "alert_cert_pipeline_status_notification_slack" {
+  name         = "alert-cert-pipeline-status-notification-slack"
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_secret" "monitor_pm_opsgenie_webhook_key" {
   count        = var.env_short == "p" ? 1 : 0
   name         = "pm-opsgenie-webhook-token"
@@ -169,6 +174,14 @@ data "azurerm_key_vault_secret" "sec_storage_id" {
 data "azurerm_key_vault_secret" "opsgenie_infra_webhook_key" {
   count = var.env_short == "p" ? 1 : 0
   name  = "opsgenie-infra-webhook-token"
+
+  key_vault_id = module.key_vault.id
+}
+
+# pagoPA - Service Management and Operation - Reperibilità_SMO → https://pagopa.atlassian.net/wiki/x/TgA9XQ
+data "azurerm_key_vault_secret" "opsgenie_smo_webhook_key" {
+  count = var.env_short == "p" ? 1 : 0
+  name  = "opsgenie-smo-webhook-token"
 
   key_vault_id = module.key_vault.id
 }

@@ -395,7 +395,7 @@ locals {
             },
             {
               header_name  = "X-Environment"
-              header_value = lower(var.tags["Environment"])
+              header_value = lower(module.tag_config.tags["Environment"])
             },
           ]
           response_header_configurations = []
@@ -500,7 +500,7 @@ resource "azurerm_public_ip" "appgateway_public_ip" {
   allocation_method   = "Static"
   zones               = [1, 2, 3]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # Subnet to host the application gateway
@@ -722,5 +722,5 @@ module "app_gw" {
 
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

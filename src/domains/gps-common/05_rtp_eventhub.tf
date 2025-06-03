@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "rtp_rg" {
   name     = local.rtp_resource_group_name
   location = var.location_ita
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -56,5 +56,5 @@ module "eventhub_rtp_namespace" {
   metric_alerts_create = var.eventhub_namespace_rtp.metric_alerts_create
   metric_alerts        = var.eventhub_namespace_rtp.metric_alerts
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

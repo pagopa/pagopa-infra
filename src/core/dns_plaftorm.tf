@@ -9,7 +9,7 @@ resource "azurerm_dns_txt_record" "dns-txt-platform-pagopa-it-aws-ses" {
   record {
     value = "SW221oAKrdhBtFHNARTTx6FBfDqQZpR/kIg++6+fjYs="
   }
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 locals {
@@ -36,7 +36,7 @@ resource "azurerm_dns_cname_record" "dkim-aws-ses-platform-pagopa-it" {
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   record              = each.value.value
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
 # MX record for sub domain email
@@ -53,7 +53,7 @@ resource "azurerm_dns_mx_record" "dns-mx-email-platform-pagopa-it" {
     exchange   = "feedback-smtp.eu-central-1.amazonses.com"
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # spf record
@@ -66,5 +66,5 @@ resource "azurerm_dns_txt_record" "dns-txt-email-platform-pagopa-it-aws-ses" {
   record {
     value = "v=spf1 include:amazonses.com -all"
   }
-  tags = var.tags
+  tags = module.tag_config.tags
 }

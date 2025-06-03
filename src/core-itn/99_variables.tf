@@ -85,12 +85,6 @@ variable "vnet_ita_ddos_protection_plan" {
   default = null
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 ### Network
 
 variable "cidr_vnet_italy" {
