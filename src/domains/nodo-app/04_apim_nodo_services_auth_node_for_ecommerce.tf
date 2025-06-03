@@ -9,7 +9,7 @@ locals {
     subscription_required = true
     service_url           = null
   }
-  closePaymentV2_v1_policy_file = file("./api/nodopagamenti_api/nodeForEcommerce/v2/base_policy_closePaymentV2.xml")
+  nodeForECommerce_closePaymentV2_v1_policy_file = file("./api/nodopagamenti_api/nodeForEcommerce/v2/base_policy_closePaymentV2.xml")
 }
 
 module "apim_node_for_ecommerce_product" {
@@ -98,13 +98,13 @@ module "apim_node_for_ecommerce_api_v2" {
   api_operation_policies = [
     {
       operation_id = "closePaymentV2" # it includes DWISP policy
-      xml_content = local.closePaymentV2_v1_policy_file
+      xml_content  = local.nodeForECommerce_closePaymentV2_v1_policy_file
     }
   ]
 }
 
 ###### ClosePaymentV2 #
-resource "terraform_data" "sha256_closePaymentV2_v1_policy" {
-  input = sha256(local.closePaymentV2_v1_policy_file)
+resource "terraform_data" "sha256_nodeForECommerce_closePaymentV2_v1_policy" {
+  input = sha256(local.nodeForECommerce_closePaymentV2_v1_policy_file)
 }
 
