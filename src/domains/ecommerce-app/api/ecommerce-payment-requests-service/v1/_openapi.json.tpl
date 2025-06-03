@@ -192,8 +192,7 @@
           }
         },
         "required": [
-          "amount",
-          "paymentContextCode"
+          "amount"
         ]
       },
       "ValidationFaultPaymentUnavailableProblemJson": {
