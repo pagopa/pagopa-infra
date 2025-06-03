@@ -52,11 +52,11 @@ module "apim_nodo_per_psp_richiesta_avvisi_api_v1" {
   api_operation_policies = [
     {
       operation_id = "nodoChiediNumeroAvviso"
-      xml_content = local.base_policy_nodoPerPspRichiestaAvvisi_routing_file
+      xml_content  = local.base_policy_nodoPerPspRichiestaAvvisi_routing_file
     },
     {
       operation_id = "nodoChiediCatalogoServizi"
-      xml_content = local.base_policy_nodoPerPspRichiestaAvvisi_routing_file
+      xml_content  = local.base_policy_nodoPerPspRichiestaAvvisi_routing_file
     }
   ]
 

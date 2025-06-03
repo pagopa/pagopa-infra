@@ -55,31 +55,31 @@ module "apim_nodo_per_pa_api_v1_auth" {
   api_operation_policies = [
     {
       operation_id = "nodoInviaRPT"
-      xml_content = local.nodoInviaRPT_v1_policy_file
+      xml_content  = local.nodoInviaRPT_v1_policy_file
     },
     {
       operation_id = "nodoInviaCarrelloRPT"
-      xml_content = local.nodoInviaCarrelloRPT_v1_policy_file
+      xml_content  = local.nodoInviaCarrelloRPT_v1_policy_file
     },
     {
       operation_id = "nodoChiediCopiaRT"
-      xml_content = local.nodoChiediCopiaRT_v1_policy_file
+      xml_content  = local.nodoChiediCopiaRT_v1_policy_file
     },
     {
       operation_id = "nodoChiediStatoRPT"
-      xml_content = local.nodoChiediStatoRPT_v1_policy_file
+      xml_content  = local.nodoChiediStatoRPT_v1_policy_file
     },
     {
       operation_id = "nodoChiediListaPendentiRPT"
-      xml_content = local.nodoChiediListaPendentiRPT_v1_policy_file
+      xml_content  = local.nodoChiediListaPendentiRPT_v1_policy_file
     },
     {
       operation_id = "nodoChiediInformativaPSP"
-      xml_content = local.base_policy_nodoPerPa_routing_file
+      xml_content  = local.base_policy_nodoPerPa_routing_file
     },
     {
       operation_id = "nodoPAChiediInformativaPA"
-      xml_content = local.base_policy_nodoPerPa_routing_file
+      xml_content  = local.base_policy_nodoPerPa_routing_file
     }
   ]
 

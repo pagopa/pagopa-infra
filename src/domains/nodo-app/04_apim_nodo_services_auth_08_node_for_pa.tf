@@ -2,7 +2,7 @@
 ## Node for PA API  ##
 ######################
 locals {
-  apim_node_for_pa_api_auth_policy_file     = file("./api/nodopagamenti_api/nodeForPa/v1/base_policy.xml")
+  apim_node_for_pa_api_auth_policy_file = file("./api/nodopagamenti_api/nodeForPa/v1/base_policy.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "node_for_pa_api_auth" {

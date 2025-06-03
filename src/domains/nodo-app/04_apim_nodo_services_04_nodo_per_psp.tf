@@ -52,11 +52,11 @@ module "apim_nodo_per_psp_api_v1" {
   api_operation_policies = [
     {
       operation_id = "nodoChiediInformativaPA",
-      xml_content = local.base_policy_nodoPerPsp_routing_file
+      xml_content  = local.base_policy_nodoPerPsp_routing_file
     },
     {
       operation_id = "nodoChiediTemplateInformativaPSP",
-      xml_content = local.base_policy_nodoPerPsp_routing_file
+      xml_content  = local.base_policy_nodoPerPsp_routing_file
     }
   ]
 

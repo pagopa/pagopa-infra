@@ -50,7 +50,7 @@ module "apim_node_for_io_api_v1_auth" {
   api_operation_policies = [
     {
       operation_id = "activateIOPayment"
-      xml_content = local.activeIOPayment_v1_policy_file
+      xml_content  = local.activeIOPayment_v1_policy_file
     }
   ]
 

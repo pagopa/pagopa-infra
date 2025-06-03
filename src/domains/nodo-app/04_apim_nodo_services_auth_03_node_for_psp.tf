@@ -56,31 +56,31 @@ module "apim_node_for_psp_api_v1_auth" {
   api_operation_policies = [
     {
       operation_id = "verifyPaymentNotice"
-      xml_content = local.verifyPaymentNotice_v1_policy_file
+      xml_content  = local.verifyPaymentNotice_v1_policy_file
     },
     {
       operation_id = "activatePaymentNotice"
-      xml_content = local.activePaymentNotice_v1_policy_file
+      xml_content  = local.activePaymentNotice_v1_policy_file
     },
     {
       operation_id = "activatePaymentNoticeV2"
-      xml_content = local.activePaymentNoticeV2_v1_policy_file
+      xml_content  = local.activePaymentNoticeV2_v1_policy_file
     },
     {
       operation_id = "sendPaymentOutcome"
-      xml_content = local.sendPaymentOutcome_v1_policy_file
+      xml_content  = local.sendPaymentOutcome_v1_policy_file
     },
     {
       operation_id = "sendPaymentOutcomeV2"
-      xml_content = local.sendPaymentOutcomeV2_v1_policy_file
+      xml_content  = local.sendPaymentOutcomeV2_v1_policy_file
     },
     {
       operation_id = "nodoChiediCatalogoServiziV2"
-      xml_content = local.base_policy_nodeForPsp_routing_file
+      xml_content  = local.base_policy_nodeForPsp_routing_file
     },
     {
       operation_id = "demandPaymentNotice"
-      xml_content = local.base_policy_nodeForPsp_routing_file
+      xml_content  = local.base_policy_nodeForPsp_routing_file
     }
   ]
 

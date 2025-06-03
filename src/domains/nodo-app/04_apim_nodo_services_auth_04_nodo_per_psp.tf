@@ -52,15 +52,15 @@ module "apim_nodo_per_psp_api_v1_auth" {
   api_operation_policies = [
     {
       operation_id = "nodoInviaRT"
-      xml_content = local.nodoInviaRT_v1_policy_file
+      xml_content  = local.nodoInviaRT_v1_policy_file
     },
     {
       operation_id = "nodoVerificaRPT"
-      xml_content = local.nodoVerificaRPT_v1_policy_file
+      xml_content  = local.nodoVerificaRPT_v1_policy_file
     },
     {
       operation_id = "nodoAttivaRPT"
-      xml_content = local.nodoAttivaRPT_v1_policy_file
+      xml_content  = local.nodoAttivaRPT_v1_policy_file
     }
   ]
 

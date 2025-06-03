@@ -54,7 +54,7 @@ module "apim_nodo_per_pm_api_v1" {
   api_operation_policies = [
     {
       operation_id = "closePayment"
-      xml_content = local.closePayment_v1_policy_file
+      xml_content  = local.closePayment_v1_policy_file
     }
   ]
 }
@@ -93,7 +93,7 @@ module "apim_nodo_per_pm_api_v2" {
   api_operation_policies = [
     {
       operation_id = "closePaymentV2"
-      xml_content = local.closePaymentV2_v1_policy_file
+      xml_content  = local.closePaymentV2_v1_policy_file
     }
   ]
 }
