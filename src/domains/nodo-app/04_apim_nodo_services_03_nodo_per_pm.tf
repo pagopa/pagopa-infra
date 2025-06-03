@@ -1,6 +1,7 @@
 # #########################
 # ## WS Nodo per PM API ##
 # #########################
+# TODO After nodo-per-pm API and Product dismantling remove these resources and all associated policy (/api/nodopagamenti_api/nodoPerPM/*)
 locals {
 
   apim_nodo_per_pm_api_v1_policy_file = file("./api/nodopagamenti_api/nodoPerPM/v1/base_policy.xml")

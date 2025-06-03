@@ -70,6 +70,11 @@
 -target="module.apim_nodo_per_pm_api_v1" \
 -target="terraform_data.sha256_apim_nodo_per_pm_api_v2" \
 -target="module.apim_nodo_per_pm_api_v2" \
+-target="module.apim_node_for_ecommerce_product" \
+-target="azurerm_api_management_api_version_set.node_for_ecommerce_api" \
+-target="module.apim_node_for_ecommerce_api_v1" \
+-target="module.apim_node_for_ecommerce_api_v2" \
+-target="terraform_data.sha256_closePaymentV2_v1_policy" \
 -target=azurerm_api_management_policy_fragment.nuova_connettivita_policy \
 -target=azurerm_api_management_policy_fragment.trace_variable_as_header_policy \
 -target=azurerm_api_management_policy_fragment.set_base_url_policy \
@@ -119,7 +124,6 @@
 -target="azurerm_api_management_api_operation_policy.demandPaymentNotice_v1_policy_auth" \
 -target="terraform_data.sha256_closePayment_v1_policy" \
 -target="azurerm_api_management_api_operation_policy.closePayment_v1_policy" \
--target="terraform_data.sha256_closePaymentV2_v1_policy" \
 -target="azurerm_api_management_api_operation_policy.closePaymentV2_v1_policy" \
 -target="terraform_data.sha256_ndphost_header" \
 -target="azapi_resource.ndphost_header" \

@@ -9,6 +9,7 @@ locals {
     subscription_required = true
     service_url           = null
   }
+  closePaymentV2_v1_policy_file = file("./api/nodopagamenti_api/nodeForEcommerce/v2/base_policy_closePaymentV2.xml")
 }
 
 module "apim_node_for_ecommerce_product" {
@@ -93,15 +94,17 @@ module "apim_node_for_ecommerce_api_v2" {
   })
 
   xml_content = file("./api/nodopagamenti_api/nodeForEcommerce/v2/_base_policy.xml.tpl")
+
+  api_operation_policies = [
+    {
+      operation_id = "closePaymentV2" # it includes DWISP policy
+      xml_content = local.closePaymentV2_v1_policy_file
+    }
+  ]
 }
 
-# WISP closePaymentV2
-resource "azurerm_api_management_api_operation_policy" "auth_close_payment_api_v2_wisp_policy" {
-  count               = var.create_wisp_converter ? 1 : 0
-  api_name            = module.apim_node_for_ecommerce_api_v2.name
-  resource_group_name = data.azurerm_api_management.apim.resource_group_name
-  api_management_name = data.azurerm_api_management.apim.name
-  operation_id        = "closePaymentV2"
-  xml_content         = file("./api/nodopagamenti_api/nodeForEcommerce/v2/wisp-closepayment.xml")
+###### ClosePaymentV2 #
+resource "terraform_data" "sha256_closePaymentV2_v1_policy" {
+  input = sha256(local.closePaymentV2_v1_policy_file)
 }
 
