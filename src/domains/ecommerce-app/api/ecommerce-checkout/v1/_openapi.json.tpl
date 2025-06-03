@@ -2081,7 +2081,7 @@
         "description": "Amount for payments, in euro cents",
         "type": "integer",
         "minimum": 0,
-        "maximum": 99999999
+        "maximum": 999999999
       },
       "AuthorizationResult": {
         "description": "Authorization result",
