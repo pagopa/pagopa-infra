@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "vmss_rg" {
   name     = format("%s-vmss-rg", local.project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 data "azurerm_virtual_network" "vnet_integration" {
@@ -128,7 +128,7 @@ module "load_balancer_nodo_egress" {
     }
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = []
 }
@@ -148,7 +148,7 @@ module "route_table_peering_nexi" {
 
   routes = var.route_aks
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #

@@ -147,6 +147,11 @@ data "azurerm_key_vault_secret" "alert_error_notification_slack" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_key_vault_secret" "alert_cert_pipeline_status_notification_slack" {
+  name         = "alert-cert-pipeline-status-notification-slack"
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_key_vault_secret" "monitor_pm_opsgenie_webhook_key" {
   count        = var.env_short == "p" ? 1 : 0
   name         = "pm-opsgenie-webhook-token"

@@ -24,7 +24,7 @@ module "nodocerts_sa" {
   }
   blob_delete_retention_days = var.nodo_cert_storage_account.blob_delete_retention_days
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 resource "azurerm_storage_share" "firmatore" {
   name                 = var.az_nodo_sa_share_name_firmatore

@@ -65,7 +65,7 @@ resource "azurerm_key_vault_secret" "node_cfg_sync_re_sa_connection_string" {
   depends_on = [
     module.nodo_cfg_sync_re_storage_account
   ]
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -76,7 +76,7 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "wisp_converter_re_sa_connection_string" {
@@ -89,7 +89,7 @@ resource "azurerm_key_vault_secret" "wisp_converter_re_sa_connection_string" {
     module.nodo_cfg_sync_re_storage_account
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "verifyko_tablestorage_connection_string" {
@@ -99,7 +99,7 @@ resource "azurerm_key_vault_secret" "verifyko_tablestorage_connection_string" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 /**********
@@ -113,7 +113,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_cache_sync_rx" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ### stand-in
@@ -124,7 +124,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_stand_in_tx" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_stand_in_sync_rx" {
@@ -134,7 +134,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_stand_in_sync_rx"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ### verify ko
@@ -145,7 +145,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_tx" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_datastore_rx" {
@@ -155,7 +155,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_datasto
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_tablestorage_rx" {
@@ -165,7 +165,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_tablest
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_negative_biz_evt_pagopa_negative_biz_evt_tx" {
@@ -175,7 +175,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_negative_biz_evt_
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_biz_evt_pagopa_biz_evt_tx" {
@@ -185,7 +185,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_biz_evt_pagopa_bi
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_nodo_dei_pagamenti_verify_ko_tx" {
@@ -195,7 +195,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_verify_ko_nodo_de
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_re_nodo_dei_pagamenti" {
@@ -205,7 +205,7 @@ resource "azurerm_key_vault_secret" "evthub_nodo_dei_pagamenti_re_nodo_dei_pagam
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -223,7 +223,7 @@ resource "azurerm_key_vault_secret" "wisp_converter_cosmosdb_account_key" {
     module.cosmosdb_account_wispconv
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "cosmos_neg_biz_account_key" {
@@ -233,7 +233,7 @@ resource "azurerm_key_vault_secret" "cosmos_neg_biz_account_key" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "cosmos_biz_account_key" {
@@ -243,7 +243,7 @@ resource "azurerm_key_vault_secret" "cosmos_biz_account_key" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "cosmos_verifyko_account_key" {
@@ -253,7 +253,7 @@ resource "azurerm_key_vault_secret" "cosmos_verifyko_account_key" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "verifyko_datastore_primary_key" {
@@ -263,7 +263,7 @@ resource "azurerm_key_vault_secret" "verifyko_datastore_primary_key" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 /*****************
@@ -277,7 +277,7 @@ resource "azurerm_key_vault_secret" "redis_primary_key" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -288,7 +288,7 @@ resource "azurerm_key_vault_secret" "redis_hostname" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 /*****************
@@ -303,7 +303,7 @@ resource "azurerm_key_vault_secret" "wisp_payment_timeout_key" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "ecommerce_hang_timeout_key" {
@@ -315,7 +315,7 @@ resource "azurerm_key_vault_secret" "ecommerce_hang_timeout_key" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "wisp_paainviart_key" {
@@ -327,7 +327,7 @@ resource "azurerm_key_vault_secret" "wisp_paainviart_key" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "wisp_rpt_timeout_key" {
@@ -339,7 +339,7 @@ resource "azurerm_key_vault_secret" "wisp_rpt_timeout_key" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -372,7 +372,7 @@ resource "azurerm_key_vault_secret" "integration_test_forwarder_subscription_key
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # Subscription key taken from GPD product and used for integration tests
@@ -400,7 +400,7 @@ resource "azurerm_key_vault_secret" "integration_test_gpd_subscription_key_kv" {
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # Subscription key taken from Nodo dei Pagamenti product and used for integration tests
@@ -428,7 +428,7 @@ resource "azurerm_key_vault_secret" "integration_test_nodo_subscription_key_kv" 
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # Subscription key taken from Technical Support APIs product and used for integration tests
@@ -456,5 +456,5 @@ resource "azurerm_key_vault_secret" "integration_test_technical_support_subscrip
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

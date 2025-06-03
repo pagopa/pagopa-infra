@@ -50,12 +50,6 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 variable "checkout_enabled" {
   type    = bool

@@ -48,7 +48,7 @@ module "postgresql_fdr_replica_db" {
 
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
   zone                       = 2
-  tags                       = var.tags
+  tags                       = module.tag_config.tags
 
   alerts_enabled = var.pgres_flex_params.alerts_enabled
 }

@@ -25,7 +25,7 @@ module "cosmosdb_account_mongodb_fdr_re" {
 
   backup_continuous_enabled = var.cosmos_mongo_db_fdr_re_params.backup_continuous_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_cosmosdb_mongo_database" "fdr_re" {

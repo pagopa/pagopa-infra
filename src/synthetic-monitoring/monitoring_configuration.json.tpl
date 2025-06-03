@@ -931,8 +931,24 @@
     "alertConfiguration" : {
       "enabled" : ${alert_enabled}
     }
+  },
+  {
+    "apiName" : "getConnectorStatus",
+    "appName" : "debeziumConnectorPostgres",
+    "url" : "https://${internal_api_domain_prefix}.gps.${internal_api_domain_suffix}/debezium-gpd/connectors/debezium-connector-postgres/status",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "expectedBody": {"name":"debezium-connector-postgres","connector":{"state":"RUNNING"},"tasks":[{"state":"RUNNING"}]},
+    "bodyCompareStrategy": "contains",
+    "tags" : {
+      "description" : "pagopa gpd debezium-connector-postgres ${env_name} status monitor"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled},
+      "customActionGroupIds" : ${developers_action_group_ids}
+    }
   }
-
-
-
 ]

@@ -13,11 +13,12 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   daily_quota_gb                     = var.law_daily_quota_gb
   reservation_capacity_in_gb_per_day = var.env_short == "p" ? 100 : null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   lifecycle {
     ignore_changes = [
-      sku
+      sku,
+      reservation_capacity_in_gb_per_day
     ]
   }
 }
@@ -31,15 +32,6 @@ resource "azurerm_application_insights" "application_insights" {
 
   workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
-  tags = var.tags
-}
-
-#tfsec:ignore:azure-keyvault-ensure-secret-expiry
-resource "azurerm_key_vault_secret" "application_insights_monitoring_connection_string" {
-  name         = "appinsights-monitoring-connection-string"
-  key_vault_id = data.azurerm_key_vault.key_vault.id
-  value        = azurerm_application_insights.application_insights.connection_string
-
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 

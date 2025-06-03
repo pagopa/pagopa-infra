@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "db_rg" {
   name     = "${local.project}-db-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 data "azurerm_key_vault_secret" "pgres_flex_admin_login" {
@@ -72,6 +72,6 @@ module "postgres_flexible_server_crus8" {
   private_dns_zone_rg_name = data.azurerm_resource_group.rg_vnet.name
   private_dns_record_cname = "crus8-db"
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
 }

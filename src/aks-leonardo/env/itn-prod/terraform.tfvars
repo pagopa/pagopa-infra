@@ -9,14 +9,6 @@ location_short      = "itn"
 location_westeurope = "westeurope"
 
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "PROD"
-  Owner       = "PAGOPA"
-  Source      = "https://github.com/pagopa/pagopa-infrastructure"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "core"
-}
 
 ### Network
 
