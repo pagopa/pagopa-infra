@@ -58,7 +58,11 @@ module "gh_runner_job" {
     {
       name : "pagopa-mbd"
       short_name : "mbd"
-    }
+    },
+    {
+      name : "pagopa-decoupler",
+      short_name : "decoupler"
+    },
   ]
   job = {
     name = var.domain
