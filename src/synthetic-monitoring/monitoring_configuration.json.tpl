@@ -932,22 +932,6 @@
       "enabled" : ${alert_enabled}
     }
   },
-{
-    "apiName": "iuvgenerator",
-    "appName": "shared",
-    "url": "https://${internal_api_domain_prefix}.shared.${internal_api_domain_suffix}/pagopa-iuvgenerator/info",
-    "type": "aks",
-    "checkCertificate": true,
-    "method": "GET",
-    "expectedCodes": ["200"],
-    "tags": {
-      "description": "pagopa ${env_name} shared status endpoint"
-    },
-    "durationLimit": 10000,
-    "alertConfiguration": {
-      "enabled": ${alert_enabled}
-    }
-  },
   {
     "apiName": "getConnectorStatus",
     "appName": "debeziumConnectorPostgres",
@@ -976,5 +960,21 @@
       "enabled": ${alert_enabled},
       "customActionGroupIds": ${developers_action_group_ids}
     }
-  }
+  },  
+  {
+      "apiName": "iuvgenerator",
+      "appName": "shared",
+      "url": "https://${internal_api_domain_prefix}.shared.${internal_api_domain_suffix}/pagopa-iuvgenerator/info",
+      "type": "aks",
+      "checkCertificate": true,
+      "method": "GET",
+      "expectedCodes": ["200"],
+      "tags": {
+        "description": "pagopa ${env_name} shared status endpoint"
+      },
+      "durationLimit": 10000,
+      "alertConfiguration": {
+        "enabled": ${alert_enabled}
+      }
+    }
 ]
