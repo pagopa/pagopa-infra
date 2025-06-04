@@ -14,7 +14,6 @@ locals {
     "pagopa-platform-authorizer",
     "pagopa-platform-authorizer-config",
     "pagopa-iuvgenerator",
-    "pagopa-pdf-engine",
     "pagopa-infra"
   ]
 
