@@ -28,8 +28,8 @@ dns_zone_internal_prefix = "internal.uat.platform"
 cidr_subnet_flex_dbms = ["10.3.7.0/27"]
 
 pgres_flex_params = {
-  idh_resource = "pgflex2"
-  sku_name     = "GP_Standard_D4ds_v4"
+  idh_resource = "pgflex4" # https://github.com/pagopa/terraform-azurerm-v4/blob/44df8cdf0615a2d1c39efd05996edc4bf28e0dec/IDH/postgres_flexible_server/LIBRARY.md
+  sku_name     = "GP_Standard_D4ds_v5"
   db_version   = "16"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
