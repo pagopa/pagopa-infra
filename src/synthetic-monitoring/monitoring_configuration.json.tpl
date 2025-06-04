@@ -950,7 +950,7 @@
       "enabled" : ${alert_enabled},
       "customActionGroupIds" : ${developers_action_group_ids}
     }
-  }
+  },
   {
       "apiName": "iuvgenerator",
       "appName": "shared",
