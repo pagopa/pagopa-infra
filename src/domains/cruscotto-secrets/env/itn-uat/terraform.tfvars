@@ -6,6 +6,7 @@ location       = "italynorth"
 location_short = "itn"
 instance       = "uat"
 
+
 ### External resources
 
 monitor_italy_resource_group_name                 = "pagopa-u-itn-core-monitor-rg"
