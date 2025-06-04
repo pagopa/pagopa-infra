@@ -203,6 +203,7 @@ traces
 | where cloud_RoleName == 'pagopa-p-gpd-core-service'
 | where timestamp > ago(10m)
 | where message startswith "[GPD-ERR-SEND-00]"
+| where message !contains "404 Not Found"
 | summarize count()
 | where count_ > 1
   QUERY
