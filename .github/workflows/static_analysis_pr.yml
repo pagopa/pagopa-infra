@@ -28,10 +28,10 @@ jobs:
         id: see
         shell: bash
         run: |
-          tree -R -a .
+          tree -R -d -a .
 
       - name: Static Analysis
         if: env.dir_changes_detected == 'true'
-        uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@v1.14.1
+        uses: pagopa/eng-github-actions-iac-template/azure/terraform-static-analysis@1ebbc517106add22c92fe7d68b12965eba71c1a9
         with:
           precommit_version: 'v1.96.2@sha256:01f870b7689b5a09c1a370914fcddcac42c4b6478c9d369e1d2590dd0a66ffd0'
