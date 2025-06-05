@@ -996,7 +996,6 @@ variable "app_gateway_allowed_paths_upload" {
     "/nodo-auth/nodo-per-psp/.*",
     "/nodo/nodo-per-psp/.*",
     "/nodo/nodo-per-pa/.*",
-    "/fdr-legacy/nodo-per-pa/.*",
     "/nodo-auth/nodo-per-pa/.*",
     "/nodo-auth/node-for-pa/.*",
     "/nodo/node-for-psp/.*",
