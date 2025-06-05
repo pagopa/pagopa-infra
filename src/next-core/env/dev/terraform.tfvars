@@ -20,7 +20,6 @@ is_feature_enabled = {
   postgres_private_dns      = true,
   apim_core_import          = true,
   use_new_apim              = false
-  elastic_on_prem           = false
 }
 
 ### Network west europe

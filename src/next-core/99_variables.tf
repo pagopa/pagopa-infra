@@ -858,7 +858,6 @@ variable "is_feature_enabled" {
     apim_core_import          = optional(bool, false)
     use_new_apim              = optional(bool, false)
     azdoa_extension           = optional(bool, false)
-    elastic_on_prem           = optional(bool, true)
   })
   description = "Features enabled in this domain"
 }
