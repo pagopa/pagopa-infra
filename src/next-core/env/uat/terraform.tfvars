@@ -59,7 +59,7 @@ dns_a_reconds_dbnodonexipostgres_ips = ["10.222.214.174"] # db onPrem PostgreSQL
 
 dns_a_reconds_dbnodonexipostgres_balancer_1_ips     = ["10.222.214.174"] # db onPrem UAT PostgreSQL
 dns_a_reconds_dbnodonexipostgres_balancer_2_ips     = ["10.222.214.176"] # db onPrem UAT PostgreSQL
-dns_a_reconds_dbnodonexipostgres_prf_ips            = ["10.222.214.184"] # db onPrem PostgreSQL
+dns_a_reconds_dbnodonexipostgres_prf_ips            = ["10.6.52.93"]     # db onPrem PRF balancer PostgreSQL
 dns_a_reconds_dbnodonexipostgres_prf_balancer_1_ips = ["10.222.214.127"] # db onPrem PRF PostgreSQL
 dns_a_reconds_dbnodonexipostgres_prf_balancer_2_ips = ["10.222.214.128"] # db onPrem PRF PostgreSQL
 ### External resources
