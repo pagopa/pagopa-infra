@@ -8,7 +8,7 @@
           <!-- Token JWT START-->
           <set-variable name="walletId" value="@((string)((context.Response.Body.As<JObject>(preserveContent: true))["walletId"]))" />
           <send-request ignore-error="true" timeout="10" response-variable-name="x-jwt-token" mode="new">
-              <set-url>https://${wallet_ingress_hostname}/pagopa-jwt-issuer-service/tokens</set-url>
+              <set-url>https://${hostname}/pagopa-jwt-issuer-service/tokens</set-url>
               <set-method>POST</set-method>
               <set-header name="Content-Type" exists-action="override">
                   <value>application/json</value>
