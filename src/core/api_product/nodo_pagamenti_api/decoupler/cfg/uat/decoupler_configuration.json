@@ -14,7 +14,9 @@
     "node_uri": "https://weuuat.nodo.internal.uat.platform.pagopa.it/nodo",
     "routing": 0,
     "broker_psps": [],
-    "cis": ["80023530167"],
+    "cis": [
+      "80023530167"
+    ],
     "list_priority": 1
   },
   {
@@ -23,7 +25,10 @@
     "node_uri": "https://10.79.20.32",
     "routing": 0,
     "broker_psps": [],
-    "cis": ["80005570561"],
+    "cis": [
+      "12621570154",
+      "80005570561"
+    ],
     "list_priority": 2
   }
 ]
