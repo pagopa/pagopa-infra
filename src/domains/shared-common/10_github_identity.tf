@@ -4,7 +4,7 @@ data "azurerm_resource_group" "identity_rg" {
 
 data "azurerm_kubernetes_cluster" "aks" {
   name                = "${local.product}-${var.location_short}-${var.instance}-aks"
-  resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
+  resource_group_name = local.aks_resource_group_name
 }
 
 # repos must be lower than 20 items
@@ -42,7 +42,7 @@ locals {
 
 # create a module for each 20 repos
 module "identity_cd_01" {
-  source = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.53.0"
+  source = "./.terraform/modules/__v3__/github_federated_identity"
   # pagopa-<ENV><DOMAIN>-<COUNTER>-github-<PERMS>-identity
   prefix    = var.prefix
   env_short = var.env_short
@@ -64,6 +64,13 @@ module "identity_cd_01" {
   ]
 }
 
+module "workload_identity" {
+  source = "./.terraform/modules/__v3__/kubernetes_workload_identity_init"
+
+  workload_identity_name_prefix         = var.domain
+  workload_identity_resource_group_name = local.aks_resource_group_name
+  workload_identity_location            = var.location
+}
 
 resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
   key_vault_id = module.key_vault.id
