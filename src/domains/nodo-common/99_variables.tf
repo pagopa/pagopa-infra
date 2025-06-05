@@ -579,6 +579,20 @@ variable "wisp_converter_storage_account" {
   })
 }
 
+variable "mbd_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_delete_retention_days    = number
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    backup_enabled                = bool
+    backup_retention_days         = number
+  })
+}
+
 variable "enabled_features" {
   type = object({
   })
