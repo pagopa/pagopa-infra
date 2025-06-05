@@ -1,111 +1,124 @@
 <fragment>
-  <!-- set ndphost header -->
-  ${ndphost_variable}
-  <trace source="renewrequestdebug" severity="information">@((string) context.Variables["renewrequest"])</trace>
-  <choose>
-    <when condition="@(context.Variables.ContainsKey("baseUrl") && context.Variables.ContainsKey("renewrequest") && context.Variables.ContainsKey("renewrequest")!= null)">
-    <trace source="first-when" severity="information">execute on-error request</trace>
-    <choose>
-      <when condition="@(context.Variables.ContainsKey("soapAction") && context.Variables.GetValueOrDefault<string>("soapAction", "")!= "")">
-      <set-variable name="contentType" value="text/xml"/>
-      <!-- SOAP requests -->
-      <choose>
-        <!-- TODO is it possible to substitute the baseUrl with Request.Url in case you want to redirect the call to an internal URI.?-->
-        <when condition="@(context.Request.Url.ToString().Contains("/pagopa-fdr-nodo-service/webservices/input/"))">
-          <return-response>
-            <set-header name="Content-Type" exists-action="override">
-              <value>@((string)context.Variables["contentType"])</value>
-            </set-header>
-            <set-body template="liquid">
-              <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bc="http://PuntoAccessoPSP.spcoop.gov.it/BarCode_GS1_128_Modified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:pay_i="http://www.digitpa.gov.it/schemas/2011/Pagamenti/" xmlns:ppt="http://ws.pagamenti.telematici.gov/" xmlns:tns="http://PuntoAccessoPSP.spcoop.gov.it/servizi/PagamentiTelematiciPspNodo" xmlns:qrc="http://PuntoAccessoPSP.spcoop.gov.it/QrCode">
-                <soapenv:Header /> 
-                <soapenv:Body>
-                  <ppt:nodoInviaFlussoRendicontazioneRisposta>
-                    <fault>
-                      <faultCode>PPT_SYSTEM_ERROR</faultCode>
-                      <faultString>Errore generico.</faultString>
-                      <id>NodoDeiPagamentiSPC</id>
-                      <description>Errore generico Flussi di Rendicontazione.</description>
-                    </fault>
-                    <esito>KO</esito>
-                  </ppt:nodoInviaFlussoRendicontazioneRisposta>
-                </soapenv:Body>
-              </soapenv:Envelope>
-            </set-body>
-          </return-response>
-        </when>
-        <otherwise>
-          <send-request mode="new" ignore-error="true" response-variable-name="risposta">
-            <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
-            <set-method>POST</set-method>
-            <set-header name="Content-Type" exists-action="override">
-              <value>text/xml</value>
-            </set-header>
-            <set-header name="ndphost" exists-action="override">
-              <value>@(context.Variables.GetValueOrDefault<string>("ndphost", ""))</value>
-            </set-header>
-            <set-header name="SOAPAction" exists-action="override">
-              <value>@(context.Variables.GetValueOrDefault<string>("soapAction", ""))</value>
-            </set-header>
-            <set-body>@{
-              return (string) context.Variables["renewrequest"];
-              }</set-body>
-          </send-request>
-        </otherwise>
-      </choose>
-    </when>
-    <otherwise>
-      <set-variable name="contentType" value="application/json"/>
-      <!-- REST requests -->
-      <send-request mode="new" ignore-error="true" response-variable-name="risposta">
-        <set-url>@{return (string) context.Variables["baseUrl"] + "/" + (string)context.Request.Url.Path; }</set-url>
-        <set-method>POST</set-method>
-        <set-header name="Content-Type" exists-action="override">
-          <value>application/json</value>
-        </set-header>
-        <set-header name="ndphost" exists-action="override">
-          <value>@(context.Variables.GetValueOrDefault<string>("ndphost", ""))</value>
-        </set-header>
-        <set-body>@{
-          return (string) context.Variables["renewrequest"];
-          }</set-body>
-      </send-request>
-    </otherwise>
-  </choose>
-  <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["risposta"]).Body.As<string>(preserveContent: true))" />
-  <return-response>
-    <set-header name="Content-Type" exists-action="override">
-        <value>@((string)context.Variables["contentType"])</value>
-    </set-header>
-    <set-body>@{
-      string message = (string)context.Variables["leggirisposta"];
-      return message;
-      }</set-body>
-  </return-response>
-</when>
-<otherwise>
-<trace source="on_soap_error" severity="error">
-  <message>@{
-    string error = "[ALERT][ON-SOAP-ERROR][REASON] A policy error has occurred, " +
-    "Reason:" + context.LastError.Reason;
-    return error;
-    }</message>
-</trace>
-<trace source="on_soap_error" severity="error">
-  <message>@{
-    string error = "[ALERT][ON-SOAP-ERROR][STACK-TRACE] A policy error has occurred, " +
-    "Source: " + context.LastError.Source + ", " +
-    "Reason: " + context.LastError.Reason + ", " +
-    "Message: " + context.LastError.Message + ", " +
-    "Scope: " + context.LastError.Scope + ", " +
-    "Section: " + context.LastError.Section + ", " +
-    "Path: " + context.LastError.Path + ", " +
-    "PolicyId: " + context.LastError.PolicyId;
-    return error;
-    }</message>
-  <!-- soapAction is required!  -->
-  <metadata name="Operation Name" value="@((context.Variables.ContainsKey("soapAction") ? (string)context.Variables["soapAction"] : "Unknown"))" />
-</trace>
-</otherwise>
-  </choose>
-  </fragment>
+<!--  &lt;!&ndash; set ndphost header &ndash;&gt;-->
+<!--  ${ndphost_variable}-->
+<!--  <trace source="renewrequestdebug" severity="information">@((string) context.Variables["renewrequest"])</trace>-->
+<!--  <choose>-->
+<!--    <when condition="@(context.Variables.ContainsKey("baseUrl") && context.Variables.ContainsKey("renewrequest") && context.Variables.ContainsKey("renewrequest")!= null)">-->
+<!--    <trace source="first-when" severity="information">execute on-error request</trace>-->
+<!--    <choose>-->
+<!--      <when condition="@(context.Variables.ContainsKey("soapAction") && context.Variables.GetValueOrDefault<string>("soapAction", "")!= "")">-->
+<!--      <set-variable name="contentType" value="text/xml"/>-->
+<!--      &lt;!&ndash; SOAP requests &ndash;&gt;-->
+<!--      <choose>-->
+<!--        &lt;!&ndash; TODO is it possible to substitute the baseUrl with Request.Url in case you want to redirect the call to an internal URI.?&ndash;&gt;-->
+<!--        <when condition="@(context.Request.Url.ToString().Contains("/pagopa-fdr-nodo-service/webservices/input/"))">-->
+<!--          <return-response>-->
+<!--            <set-header name="Content-Type" exists-action="override">-->
+<!--              <value>@((string)context.Variables["contentType"])</value>-->
+<!--            </set-header>-->
+<!--            <set-body template="liquid">-->
+<!--              <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:bc="http://PuntoAccessoPSP.spcoop.gov.it/BarCode_GS1_128_Modified" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:pay_i="http://www.digitpa.gov.it/schemas/2011/Pagamenti/" xmlns:ppt="http://ws.pagamenti.telematici.gov/" xmlns:tns="http://PuntoAccessoPSP.spcoop.gov.it/servizi/PagamentiTelematiciPspNodo" xmlns:qrc="http://PuntoAccessoPSP.spcoop.gov.it/QrCode">-->
+<!--                <soapenv:Header />-->
+<!--                <soapenv:Body>-->
+<!--                  <ppt:nodoInviaFlussoRendicontazioneRisposta>-->
+<!--                    <fault>-->
+<!--                      <faultCode>PPT_SYSTEM_ERROR</faultCode>-->
+<!--                      <faultString>Errore generico.</faultString>-->
+<!--                      <id>NodoDeiPagamentiSPC</id>-->
+<!--                      <description>Errore generico Flussi di Rendicontazione.</description>-->
+<!--                    </fault>-->
+<!--                    <esito>KO</esito>-->
+<!--                  </ppt:nodoInviaFlussoRendicontazioneRisposta>-->
+<!--                </soapenv:Body>-->
+<!--              </soapenv:Envelope>-->
+<!--            </set-body>-->
+<!--          </return-response>-->
+<!--        </when>-->
+<!--        <otherwise>-->
+<!--          <send-request mode="new" ignore-error="true" response-variable-name="risposta">-->
+<!--            <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>-->
+<!--            <set-method>POST</set-method>-->
+<!--            <set-header name="Content-Type" exists-action="override">-->
+<!--              <value>text/xml</value>-->
+<!--            </set-header>-->
+<!--            <set-header name="ndphost" exists-action="override">-->
+<!--              <value>@(context.Variables.GetValueOrDefault<string>("ndphost", ""))</value>-->
+<!--            </set-header>-->
+<!--            <set-header name="SOAPAction" exists-action="override">-->
+<!--              <value>@(context.Variables.GetValueOrDefault<string>("soapAction", ""))</value>-->
+<!--            </set-header>-->
+<!--            <set-body>@{-->
+<!--              return (string) context.Variables["renewrequest"];-->
+<!--              }</set-body>-->
+<!--          </send-request>-->
+<!--        </otherwise>-->
+<!--      </choose>-->
+<!--    </when>-->
+<!--    <otherwise>-->
+<!--      <set-variable name="contentType" value="application/json"/>-->
+<!--      &lt;!&ndash; REST requests &ndash;&gt;-->
+<!--      <send-request mode="new" ignore-error="true" response-variable-name="risposta">-->
+<!--        <set-url>@{return (string) context.Variables["baseUrl"] + "/" + (string)context.Request.Url.Path; }</set-url>-->
+<!--        <set-method>POST</set-method>-->
+<!--        <set-header name="Content-Type" exists-action="override">-->
+<!--          <value>application/json</value>-->
+<!--        </set-header>-->
+<!--        <set-header name="ndphost" exists-action="override">-->
+<!--          <value>@(context.Variables.GetValueOrDefault<string>("ndphost", ""))</value>-->
+<!--        </set-header>-->
+<!--        <set-body>@{-->
+<!--          return (string) context.Variables["renewrequest"];-->
+<!--          }</set-body>-->
+<!--      </send-request>-->
+<!--    </otherwise>-->
+<!--  </choose>-->
+<!--  <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["risposta"]).Body.As<string>(preserveContent: true))" />-->
+<!--  <return-response>-->
+<!--    <set-header name="Content-Type" exists-action="override">-->
+<!--        <value>@((string)context.Variables["contentType"])</value>-->
+<!--    </set-header>-->
+<!--    <set-body>@{-->
+<!--      string message = (string)context.Variables["leggirisposta"];-->
+<!--      return message;-->
+<!--      }</set-body>-->
+<!--  </return-response>-->
+<!--</when>-->
+<!--<otherwise>-->
+<!--<trace source="on_soap_error" severity="error">-->
+<!--  <message>@{-->
+<!--    string error = "[ALERT][ON-SOAP-ERROR][REASON] A policy error has occurred, " +-->
+<!--    "Reason:" + context.LastError.Reason;-->
+<!--    return error;-->
+<!--    }</message>-->
+<!--</trace>-->
+<!--<trace source="on_soap_error" severity="error">-->
+<!--  <message>@{-->
+<!--    string error = "[ALERT][ON-SOAP-ERROR][STACK-TRACE] A policy error has occurred, " +-->
+<!--    "Source: " + context.LastError.Source + ", " +-->
+<!--    "Reason: " + context.LastError.Reason + ", " +-->
+<!--    "Message: " + context.LastError.Message + ", " +-->
+<!--    "Scope: " + context.LastError.Scope + ", " +-->
+<!--    "Section: " + context.LastError.Section + ", " +-->
+<!--    "Path: " + context.LastError.Path + ", " +-->
+<!--    "PolicyId: " + context.LastError.PolicyId;-->
+<!--    return error;-->
+<!--    }</message>-->
+<!--  &lt;!&ndash; soapAction is required!  &ndash;&gt;-->
+<!--  <metadata name="Operation Name" value="@((context.Variables.ContainsKey("soapAction") ? (string)context.Variables["soapAction"] : "Unknown"))" />-->
+<!--</trace>-->
+<!--</otherwise>-->
+<!--  </choose>-->
+
+
+  <trace source="on_soap_error" severity="error">
+    <message>@{
+      string error = "[ON-SOAP-ERROR] " +
+      "Reason:" + context.LastError.Reason + ", " +
+      "Message:" + context.LastError.Message + ", " +
+      "Section:" + context.LastError.Section + ", " +
+      "Path:" + context.LastError.Path;
+      return error;
+      }</message>
+  </trace>
+
+</fragment>
