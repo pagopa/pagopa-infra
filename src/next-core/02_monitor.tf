@@ -221,7 +221,7 @@ resource "azurerm_monitor_action_group" "cert_pipeline_status" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #
