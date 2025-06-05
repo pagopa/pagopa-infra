@@ -42,6 +42,7 @@
                 <openid-config url="https://${ecommerce_ingress_hostname}/pagopa-jwt-issuer-service/.well-known/openid-configuration" />
                 <audiences>
                   <audience>ecommerce</audience>
+                  <audience>iosession</audience>
                 </audiences>
             </validate-jwt>
         </when>
