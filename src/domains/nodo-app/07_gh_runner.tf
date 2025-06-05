@@ -60,6 +60,9 @@ module "gh_runner_job" {
       short_name : "mbd"
     },
     {
+      name : "pagopa-decoupler",
+      short_name : "decoupler"
+    },
       name : "pagopa-nodo-cfg-data-migration",
       short_name : "node-cfg-dm"
     }
