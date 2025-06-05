@@ -1,5 +1,10 @@
+data "azurerm_kubernetes_cluster" "aks" {
+  name                = local.aks_name
+  resource_group_name = local.aks_resource_group_name
+}
+
 resource "azurerm_kubernetes_cluster_node_pool" "elastic" {
-  kubernetes_cluster_id = "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-weu-prod-aks-rg/providers/Microsoft.ContainerService/managedClusters/pagopa-p-weu-prod-aks"
+  kubernetes_cluster_id = data.azurerm_kubernetes_cluster.aks.id
 
   name = var.elastic_node_pool.name
 
