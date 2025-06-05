@@ -13,6 +13,7 @@ resource "azurerm_key_vault_secret" "evthub_fdr-qi-flows_tx" {
   value        = data.azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_fdr-qi-flows-tx.primary_connection_string
   content_type = "text/plain"
 
+
   key_vault_id = data.azurerm_key_vault.key_vault.id
 }
 
