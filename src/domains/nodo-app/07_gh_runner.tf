@@ -63,6 +63,7 @@ module "gh_runner_job" {
       name : "pagopa-decoupler",
       short_name : "decoupler"
     },
+    {
       name : "pagopa-nodo-cfg-data-migration",
       short_name : "node-cfg-dm"
     }
