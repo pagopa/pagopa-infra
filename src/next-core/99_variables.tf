@@ -531,11 +531,6 @@ variable "app_gateway_wfespgovit_certificate_name" {
   description = "Application gateway wfespgovit certificate name on Key Vault"
   default     = ""
 }
-variable "app_gateway_kibana_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
-  default     = ""
-}
 
 variable "app_gateway_sku_name" {
   type        = string
@@ -971,12 +966,6 @@ variable "app_gateway_deny_paths" {
   default     = []
 }
 
-variable "app_gateway_kibana_deny_paths" {
-  type        = list(string)
-  description = "Deny paths on app gateway kibana"
-  default     = []
-}
-
 # needs to be less than 512 characters. For more details refer to the documentation here: https://aka.ms/appgwheadercrud."
 variable "app_gateway_deny_paths_2" {
   type        = list(string)
@@ -1007,6 +996,7 @@ variable "app_gateway_allowed_paths_upload" {
     "/nodo-auth/nodo-per-psp/.*",
     "/nodo/nodo-per-psp/.*",
     "/nodo/nodo-per-pa/.*",
+    "/fdr-legacy/nodo-per-pa/.*",
     "/nodo-auth/nodo-per-pa/.*",
     "/nodo-auth/node-for-pa/.*",
     "/nodo/node-for-psp/.*",

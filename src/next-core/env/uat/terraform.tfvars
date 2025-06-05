@@ -729,7 +729,6 @@ app_gateway_management_certificate_name = "management-uat-platform-pagopa-it-sta
 app_gateway_wisp2_certificate_name      = "uat-wisp2-pagopa-it-stable"
 app_gateway_wisp2govit_certificate_name = "uat-wisp2-pagopa-gov-it"
 #app_gateway_wfespgovit_certificate_name = "wfesp-test-pagopa-gov-it-stable" # Rimosso in quando non usato
-app_gateway_kibana_certificate_name = "kibana-uat-platform-pagopa-it"
 #app_gateway_sku_name                    = "WAF_v2"
 #app_gateway_sku_tier                    = "WAF_v2"
 #app_gateway_waf_enabled                 = true
@@ -760,9 +759,6 @@ app_gateway_deny_paths_2 = [
   "/fatturazione/.*",
   "/payment-manager/pp-restapi-server/.*",
   "/shared/authorizer/.*", # internal use no sub-keys
-]
-app_gateway_kibana_deny_paths = [
-  "/kibana/*",
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [
