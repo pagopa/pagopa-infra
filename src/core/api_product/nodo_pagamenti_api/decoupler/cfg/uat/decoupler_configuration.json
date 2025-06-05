@@ -6,7 +6,7 @@
     "routing": 100,
     "broker_psps": [],
     "cis": [],
-    "list_priority": 3
+    "list_priority": 2
   },
   {
     "node_id": "NDP001UAT",
@@ -17,7 +17,7 @@
     "cis": [
       "80023530167"
     ],
-    "list_priority": 1
+    "list_priority": 3
   },
   {
     "node_id": "NDP004UAT",
@@ -29,6 +29,6 @@
       "12621570154",
       "80005570561"
     ],
-    "list_priority": 2
+    "list_priority": 1
   }
 ]
