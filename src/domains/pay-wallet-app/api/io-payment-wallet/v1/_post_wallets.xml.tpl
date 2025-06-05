@@ -33,12 +33,13 @@
                 </return-response>
             </when>
         </choose>
+                <set-variable name="token" value="@( (string) ( ((IResponse)context.Variables["x-jwt-token"] ).Body.As<JObject>(preserveContent: true)) ["token"])" />
         <!-- Token JWT END-->
         <!-- pagoPA platform wallet JWT session token : END -->
         <set-body>@{
             JObject inBody = context.Response.Body.As<JObject>(preserveContent: true);
             var redirectUrl = inBody["redirectUrl"];
-            inBody["redirectUrl"] = redirectUrl + "&sessionToken=" + ((string)context.Variables.GetValueOrDefault("x-jwt-token",""));
+            inBody["redirectUrl"] = redirectUrl + "&sessionToken=" + ((string)context.Variables["token"]);
             inBody.Remove("walletId");
             return inBody.ToString();
         }</set-body>
