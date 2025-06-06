@@ -19,7 +19,7 @@ module "apim_anonymizer_product" {
   resource_group_name = local.pagopa_apim_rg
 
   published             = false
-  subscription_required = false
+  subscription_required = true
   approval_required     = false
   # subscriptions_limit   = 1000
 
