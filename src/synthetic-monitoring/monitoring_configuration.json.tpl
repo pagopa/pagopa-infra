@@ -761,7 +761,7 @@
       "Content-Type": "application/xml"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to external service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -793,7 +793,7 @@
       "Content-Type": "application/xml"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to internal service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -826,7 +826,7 @@
       "Host": "${api_dot_env_name}.platform.pagopa.it"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to internal service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -859,7 +859,7 @@
       "Host": "${nexi_ndp_host}"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to internal service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -892,7 +892,7 @@
       "Host": "${api_dot_env_name}.platform.pagopa.it"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to external service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -925,7 +925,7 @@
       "Host": "${nexi_ndp_host}"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to external service trough nexi"
+      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
