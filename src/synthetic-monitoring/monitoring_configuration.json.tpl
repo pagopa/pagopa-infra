@@ -737,7 +737,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeExternal",
+    "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
     "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo-auth/node-for-psp/v1",
     "type" : "apim",
@@ -769,7 +769,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeInternal",
+    "apiName" : "verifyPaymentNoticeOnGPD",
     "appName" : "nodo",
     "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo-auth/node-for-psp/v1",
     "type" : "apim",
@@ -801,7 +801,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeInternal",
+    "apiName" : "verifyPaymentNoticeOnGPD",
     "appName" : "nodo",
     "url" : "https://${appgw_public_ip}/nodo-auth/node-for-psp/v1",
     "type" : "appgw",
@@ -834,7 +834,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeInternal",
+    "apiName" : "verifyPaymentNoticeOnGPD",
     "appName" : "nodo",
     "url" : "https://${nexi_node_ip}/webservices/input",
     "type" : "nexi",
@@ -867,7 +867,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeExternal",
+    "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
     "url" : "https://${appgw_public_ip}/nodo-auth/node-for-psp/v1",
     "type" : "appgw",
@@ -900,7 +900,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeExternal",
+    "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
     "url" : "https://${nexi_node_ip}/webservices/input",
     "type" : "nexi",
