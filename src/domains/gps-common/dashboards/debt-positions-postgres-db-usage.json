@@ -1,0 +1,908 @@
+{
+  "lenses": [
+    {
+      "order": 0,
+      "parts": [
+        {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "colSpan": 1,
+            "rowSpan": 1
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "resourceId",
+                "value": "${resourceId}"
+              }
+            ],
+            "type": "Extension/Microsoft_Azure_OSSDatabases/PartType/PostgreSqlFlexibleServerAssetPart",
+            "asset": {
+              "idInputName": "resourceId",
+              "type": "PostgreSqlFlexibleServer"
+            },
+            "deepLink": "#@pagopait.onmicrosoft.com/resource${resourceId}/overview"
+          }
+        },
+        {
+          "position": {
+            "x": 1,
+            "y": 0,
+            "colSpan": 17,
+            "rowSpan": 1
+          },
+          "metadata": {
+            "inputs": [],
+            "type": "Extension/HubsExtension/PartType/MarkdownPart",
+            "settings": {
+              "content": {
+                "settings": {
+                  "content": "Azure Database for PostgreSQL flexible server\n==",
+                  "title": "",
+                  "subtitle": "",
+                  "markdownSource": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "position": {
+            "x": 0,
+            "y": 1,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "cpu_percent",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "CPU percent"
+                        }
+                      }
+                    ],
+                    "title": "Avg CPU percent for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      }
+                    },
+                    "timespan": {
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false,
+                      "grain": 1
+                    }
+                  }
+                },
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "cpu_percent",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "CPU percent"
+                        }
+                      }
+                    ],
+                    "title": "Avg CPU percent for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "position": {
+            "x": 6,
+            "y": 1,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "memory_percent",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Memory percent"
+                        }
+                      }
+                    ],
+                    "title": "Avg Memory percent for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      }
+                    },
+                    "timespan": {
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false,
+                      "grain": 1
+                    }
+                  }
+                },
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "memory_percent",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Memory percent"
+                        }
+                      }
+                    ],
+                    "title": "Avg Memory percent for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "position": {
+            "x": 12,
+            "y": 1,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "read_iops",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Read IOPS"
+                        }
+                      },
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "write_iops",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Write IOPS"
+                        }
+                      }
+                    ],
+                    "title": "Avg Read IOPS and Avg Write IOPS for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      }
+                    },
+                    "timespan": {
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false,
+                      "grain": 1
+                    }
+                  }
+                },
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "read_iops",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Read IOPS"
+                        }
+                      },
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "write_iops",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Write IOPS"
+                        }
+                      }
+                    ],
+                    "title": "Avg Read IOPS and Avg Write IOPS for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "position": {
+            "x": 0,
+            "y": 5,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "active_connections",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Active Connections"
+                        }
+                      }
+                    ],
+                    "title": "Avg Active Connections for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      }
+                    },
+                    "timespan": {
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false,
+                      "grain": 1
+                    }
+                  }
+                },
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "active_connections",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Active Connections"
+                        }
+                      }
+                    ],
+                    "title": "Avg Active Connections for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "position": {
+            "x": 6,
+            "y": 5,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "network_bytes_ingress",
+                        "aggregationType": 1,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Network In"
+                        }
+                      },
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "network_bytes_egress",
+                        "aggregationType": 1,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Network Out"
+                        }
+                      }
+                    ],
+                    "title": "Sum Network In and Sum Network Out for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      }
+                    },
+                    "timespan": {
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false,
+                      "grain": 1
+                    }
+                  }
+                },
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "network_bytes_ingress",
+                        "aggregationType": 1,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Network In"
+                        }
+                      },
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "network_bytes_egress",
+                        "aggregationType": 1,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Network Out"
+                        }
+                      }
+                    ],
+                    "title": "Sum Network In and Sum Network Out for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "position": {
+            "x": 12,
+            "y": 5,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "read_throughput",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Read Throughput Bytes/Sec"
+                        }
+                      },
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "write_throughput",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Write Throughput Bytes/Sec"
+                        }
+                      }
+                    ],
+                    "title": "Avg Read Throughput Bytes/Sec and Avg Write Throughput Bytes/Sec for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      }
+                    },
+                    "timespan": {
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false,
+                      "grain": 1
+                    }
+                  }
+                },
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "read_throughput",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Read Throughput Bytes/Sec"
+                        }
+                      },
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "write_throughput",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Write Throughput Bytes/Sec"
+                        }
+                      }
+                    ],
+                    "title": "Avg Read Throughput Bytes/Sec and Avg Write Throughput Bytes/Sec for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "position": {
+            "x": 0,
+            "y": 9,
+            "colSpan": 6,
+            "rowSpan": 4
+          },
+          "metadata": {
+            "inputs": [
+              {
+                "name": "options",
+                "value": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "storage_percent",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Storage percent"
+                        }
+                      }
+                    ],
+                    "title": "Avg Storage percent for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      }
+                    },
+                    "timespan": {
+                      "relative": {
+                        "duration": 86400000
+                      },
+                      "showUTCTime": false,
+                      "grain": 1
+                    }
+                  }
+                },
+                "isOptional": true
+              },
+              {
+                "name": "sharedTimeRange",
+                "isOptional": true
+              }
+            ],
+            "type": "Extension/HubsExtension/PartType/MonitorChartPart",
+            "settings": {
+              "content": {
+                "options": {
+                  "chart": {
+                    "metrics": [
+                      {
+                        "resourceMetadata": {
+                          "id": "${resourceId}"
+                        },
+                        "name": "storage_percent",
+                        "aggregationType": 4,
+                        "namespace": "microsoft.dbforpostgresql/flexibleservers",
+                        "metricVisualization": {
+                          "displayName": "Storage percent"
+                        }
+                      }
+                    ],
+                    "title": "Avg Storage percent for ${resourceName}",
+                    "titleKind": 1,
+                    "visualization": {
+                      "chartType": 2,
+                      "legendVisualization": {
+                        "isVisible": true,
+                        "position": 2,
+                        "hideSubtitle": false
+                      },
+                      "axisVisualization": {
+                        "x": {
+                          "isVisible": true,
+                          "axisType": 2
+                        },
+                        "y": {
+                          "isVisible": true,
+                          "axisType": 1
+                        }
+                      },
+                      "disablePinning": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "model": {
+      "timeRange": {
+        "value": {
+          "relative": {
+            "duration": 24,
+            "timeUnit": 1
+          }
+        },
+        "type": "MsPortalFx.Composition.Configuration.ValueTypes.TimeRange"
+      },
+      "filterLocale": {
+        "value": "en-us"
+      },
+      "filters": {
+        "value": {
+          "MsPortalFx_TimeRange": {
+            "model": {
+              "format": "local",
+              "granularity": "auto",
+              "relative": "24h"
+            },
+            "displayCache": {
+              "name": "Local Time",
+              "value": "Past 24 hours"
+            },
+            "filteredPartIds": [
+              "StartboardPart-MonitorChartPart-3758e273-5a5c-4d62-b44c-ee8e1ead6020",
+              "StartboardPart-MonitorChartPart-3758e273-5a5c-4d62-b44c-ee8e1ead6022",
+              "StartboardPart-MonitorChartPart-3758e273-5a5c-4d62-b44c-ee8e1ead6024",
+              "StartboardPart-MonitorChartPart-3758e273-5a5c-4d62-b44c-ee8e1ead6026",
+              "StartboardPart-MonitorChartPart-3758e273-5a5c-4d62-b44c-ee8e1ead6028",
+              "StartboardPart-MonitorChartPart-3758e273-5a5c-4d62-b44c-ee8e1ead602a",
+              "StartboardPart-MonitorChartPart-3758e273-5a5c-4d62-b44c-ee8e1ead602c"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
