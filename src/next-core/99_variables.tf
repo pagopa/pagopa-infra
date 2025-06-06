@@ -531,11 +531,6 @@ variable "app_gateway_wfespgovit_certificate_name" {
   description = "Application gateway wfespgovit certificate name on Key Vault"
   default     = ""
 }
-variable "app_gateway_kibana_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
-  default     = ""
-}
 
 variable "app_gateway_sku_name" {
   type        = string
@@ -858,7 +853,6 @@ variable "is_feature_enabled" {
     apim_core_import          = optional(bool, false)
     use_new_apim              = optional(bool, false)
     azdoa_extension           = optional(bool, false)
-    elastic_on_prem           = optional(bool, true)
   })
   description = "Features enabled in this domain"
 }
@@ -969,12 +963,6 @@ variable "app_gateway_max_capacity" {
 variable "app_gateway_deny_paths" {
   type        = list(string)
   description = "Deny paths on app gateway"
-  default     = []
-}
-
-variable "app_gateway_kibana_deny_paths" {
-  type        = list(string)
-  description = "Deny paths on app gateway kibana"
   default     = []
 }
 
