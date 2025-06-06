@@ -30,6 +30,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-iuvgenerator",
       short_name : "iuv-gen"
+    },
+    {
+      name : "pagopa-anonymizer",
+      short_name : "anonym"
     }
   ]
   job = {
