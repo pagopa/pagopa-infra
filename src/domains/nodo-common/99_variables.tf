@@ -590,6 +590,7 @@ variable "mbd_storage_account" {
     public_network_access_enabled = bool
     backup_enabled                = bool
     backup_retention_days         = number
+    use_legacy_defender_version   = bool
   })
 }
 

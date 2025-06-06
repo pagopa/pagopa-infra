@@ -350,6 +350,7 @@ mbd_storage_account = {
   public_network_access_enabled = false
   backup_enabled                = true
   backup_retention_days         = 30
+  use_legacy_defender_version   = false
 }
 
 redis_ha_enabled = true
