@@ -105,9 +105,10 @@ module "apim_session_wallet_api_v1" {
   })
 
   xml_content = templatefile("./api/session-wallet/v1/_base_policy.xml.tpl", {
-    hostname             = null
-    io_backend_base_path = var.io_backend_base_path
-    pdv_api_base_path    = var.pdv_api_base_path
+    hostname                   = null
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+    io_backend_base_path       = var.io_backend_base_path
+    pdv_api_base_path          = var.pdv_api_base_path
   })
 }
 
