@@ -737,7 +737,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeExternal",
+    "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
     "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo-auth/node-for-psp/v1",
     "type" : "apim",
@@ -761,7 +761,7 @@
       "Content-Type": "application/xml"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to external service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -769,7 +769,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeInternal",
+    "apiName" : "verifyPaymentNoticeOnGPD",
     "appName" : "nodo",
     "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo-auth/node-for-psp/v1",
     "type" : "apim",
@@ -793,7 +793,7 @@
       "Content-Type": "application/xml"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to internal service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -801,7 +801,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeInternal",
+    "apiName" : "verifyPaymentNoticeOnGPD",
     "appName" : "nodo",
     "url" : "https://${appgw_public_ip}/nodo-auth/node-for-psp/v1",
     "type" : "appgw",
@@ -826,7 +826,7 @@
       "Host": "${api_dot_env_name}.platform.pagopa.it"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to internal service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -834,7 +834,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeInternal",
+    "apiName" : "verifyPaymentNoticeOnGPD",
     "appName" : "nodo",
     "url" : "https://${nexi_node_ip}/webservices/input",
     "type" : "nexi",
@@ -859,7 +859,7 @@
       "Host": "${nexi_ndp_host}"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to internal service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -867,7 +867,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeExternal",
+    "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
     "url" : "https://${appgw_public_ip}/nodo-auth/node-for-psp/v1",
     "type" : "appgw",
@@ -892,7 +892,7 @@
       "Host": "${api_dot_env_name}.platform.pagopa.it"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to external service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -900,7 +900,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeExternal",
+    "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
     "url" : "https://${nexi_node_ip}/webservices/input",
     "type" : "nexi",
@@ -925,7 +925,7 @@
       "Host": "${nexi_ndp_host}"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to external service trough nexi"
+      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
