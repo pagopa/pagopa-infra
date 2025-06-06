@@ -5,10 +5,95 @@
     - Copy and paste your code here or simply start coding
 -->
 <fragment>
-  <choose>
-    <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
-    <!-- check if fiscalcode and notice number belongs to wisp dismantling -->
-    <set-variable name="wisp_fiscalcode_noticenumber" value="@{
+    <set-variable name="disable_ndp_activate" value="{{ndp-disable-activate}}" />
+    <choose>
+        <when condition="@{
+            var soapAction = (string)context.Variables["soapAction"];
+            bool disable_activate = context.Variables.GetValueOrDefault<string>("disable_ndp_activate", "false").Equals("true");
+            return soapAction.Equals("activatePaymentNotice") && disable_activate;
+        }">
+            <return-response>
+                <set-status code="200" reason="OK" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>text/xml</value>
+                </set-header>
+                <set-body><![CDATA[
+                    <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/" xmlns:nfp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+                        <soapenv:Body>
+                            <nfp:activatePaymentNoticeRes>
+                                <outcome>KO</outcome>
+                                <fault>
+                                    <faultCode>PPT_SYSTEM_ERROR</faultCode>
+                                    <faultString>Maintenance</faultString>
+                                    <id>NodoDeiPagamentiSPC</id>
+                                    <description>System under maintenance.</description>
+                                </fault>
+                            </nfp:activatePaymentNoticeRes>
+                        </soapenv:Body>
+                    </soapenv:Envelope>
+                ]]></set-body>
+            </return-response>
+        </when>
+        <when condition="@{
+            var soapAction = (string)context.Variables["soapAction"];
+            bool disable_activate = context.Variables.GetValueOrDefault<string>("disable_ndp_activate", "false").Equals("true");
+            return soapAction.Equals("activatePaymentNoticeV2") && disable_activate;
+        }">
+            <return-response>
+                <set-status code="200" reason="OK" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>text/xml</value>
+                </set-header>
+                <set-body><![CDATA[
+                    <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/" xmlns:nfp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+                        <soapenv:Body>
+                            <nfp:activatePaymentNoticeV2Response>
+                                <outcome>KO</outcome>
+                                <fault>
+                                    <faultCode>PPT_SYSTEM_ERROR</faultCode>
+                                    <faultString>Maintenance</faultString>
+                                    <id>NodoDeiPagamentiSPC</id>
+                                    <description>System under maintenance.</description>
+                                </fault>
+                            </nfp:activatePaymentNoticeV2Response>
+                        </soapenv:Body>
+                    </soapenv:Envelope>
+                ]]></set-body>
+            </return-response>
+        </when>
+        <when condition="@{
+            var soapAction = (string)context.Variables["soapAction"];
+            bool disable_activate = context.Variables.GetValueOrDefault<string>("disable_ndp_activate", "false").Equals("true");
+            return soapAction.Equals("activateIOPayment") && disable_activate;
+        }">
+            <return-response>
+                <set-status code="200" reason="OK" />
+                <set-header name="Content-Type" exists-action="override">
+                    <value>text/xml</value>
+                </set-header>
+                <set-body><![CDATA[
+                    <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/" xmlns:nfp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
+                        <soapenv:Body>
+                            <nfp:activateIOPaymentRes>
+                                <outcome>KO</outcome>
+                                <fault>
+                                    <faultCode>PPT_SYSTEM_ERROR</faultCode>
+                                    <faultString>Maintenance</faultString>
+                                    <id>NodoDeiPagamentiSPC</id>
+                                    <description>System under maintenance.</description>
+                                </fault>
+                            </nfp:activateIOPaymentRes>
+                        </soapenv:Body>
+                    </soapenv:Envelope>
+                ]]></set-body>
+            </return-response>
+        </when>
+    </choose>
+
+	<choose>
+		<when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true"))">
+			<!-- check if fiscalcode and notice number belongs to wisp dismantling -->
+			<set-variable name="wisp_fiscalcode_noticenumber" value="@{
                 // requestData should be set in decoupler-algorithm fragment (executed in product policy)
                 try {
                 var requestData = JObject.Parse((string)context.Variables["requestData"]);
@@ -19,12 +104,12 @@
     return "wisp_requestData_not_set";
     }
     }" />
-    <cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
-    <choose>
-      <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
-      <set-variable name="wisp_ecommerce_channels" value="{{wisp-ecommerce-channels}}" />
-      <choose>
-        <when condition="@{
+			<cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
+			<choose>
+				<when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+					<set-variable name="wisp_ecommerce_channels" value="{{wisp-ecommerce-channels}}" />
+					<choose>
+						<when condition="@{
                             string[] activatePayment = new string[] {"activatePaymentNoticeV2"};
                             string[] ecommerceChannels = ((string)context.Variables["wisp_ecommerce_channels"] ?? "").Split(',');
 
@@ -40,7 +125,7 @@
         return false;
         }
         }">
-        <set-variable name="wisp_ecommerce_paymentNote" value="@{
+							<set-variable name="wisp_ecommerce_paymentNote" value="@{
                                 // eCommerce set in paymentNote the idCart that is the WISP sessionId
                                 try {
                                     XElement doc = context.Request.Body.As<XElement>(preserveContent: true);
@@ -52,15 +137,15 @@
                                     return "NOTSET";
                                 }
                             }" />
-        <cache-lookup-value key="@("wisp_timer_hang_" + ((string)context.Variables["wisp_ecommerce_paymentNote"] ?? "") + (((string) context.Variables["wisp_fiscalcode_noticenumber"])).Substring(4))" variable-name="wisp_checkout_timeout" default-value="NONE" caching-type="external" />
-        <choose>
-          <when condition="@(context.Variables.GetValueOrDefault<string>("wisp_checkout_timeout", "NONE").Equals("NONE"))">
-          <return-response>
-            <set-status code="200" reason="OK" />
-            <set-header name="Content-Type" exists-action="override">
-              <value>text/xml</value>
-            </set-header>
-            <set-body><![CDATA[
+							<cache-lookup-value key="@("wisp_timer_hang_" + ((string)context.Variables["wisp_ecommerce_paymentNote"] ?? "") + (((string) context.Variables["wisp_fiscalcode_noticenumber"])).Substring(4))" variable-name="wisp_checkout_timeout" default-value="NONE" caching-type="external" />
+							<choose>
+								<when condition="@(context.Variables.GetValueOrDefault<string>("wisp_checkout_timeout", "NONE").Equals("NONE"))">
+									<return-response>
+										<set-status code="200" reason="OK" />
+										<set-header name="Content-Type" exists-action="override">
+											<value>text/xml</value>
+										</set-header>
+										<set-body><![CDATA[
 <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="http://pagopa-api.pagopa.gov.it/xsd/common-types/v1.0.0/" xmlns:nfp="http://pagopa-api.pagopa.gov.it/node/nodeForPsp.xsd">
     <soapenv:Body>
         <nfp:activatePaymentNoticeV2Response>
@@ -75,19 +160,13 @@
     </soapenv:Body>
 </soapenv:Envelope>
                                         ]]></set-body>
-          </return-response>
-        </when>
-      </choose>
-
-    </when>
-  </choose>
-
-</when>
-  </choose>
-  </when>
-  </choose>
-
-
-
-
-  </fragment>
+									</return-response>
+								</when>
+							</choose>
+						</when>
+					</choose>
+				</when>
+			</choose>
+		</when>
+	</choose>
+</fragment>
