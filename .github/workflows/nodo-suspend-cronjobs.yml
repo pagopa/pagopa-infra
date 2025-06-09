@@ -41,13 +41,6 @@ jobs:
     environment: ${{ inputs.environment }}
     runs-on: [ self-hosted-job, "${{ inputs.environment }}" ]
     steps:
-      - name: Alert Azure!
-        run: echo "Hello, world!"
-      - name: Debug secrets
-        run: |
-          echo "client-id: ${{ secrets.CLIENT_ID }}"
-          echo "tenant-id: ${{ secrets.TENANT_ID }}"
-          echo "subscription-id: ${{ secrets.SUBSCRIPTION_ID }}"
       - name: Login
         uses: azure/login@v2
         with:
