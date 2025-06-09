@@ -42,7 +42,7 @@ jobs:
     runs-on: [ self-hosted-job, "${{ inputs.environment }}" ]
     steps:
       - name: Login
-        uses: azure/login@v2
+        uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5
         with:
           client-id: ${{ secrets.CLIENT_ID }}
           tenant-id: ${{ secrets.TENANT_ID }}
