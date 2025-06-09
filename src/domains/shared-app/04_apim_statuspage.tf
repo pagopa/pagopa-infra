@@ -152,7 +152,7 @@ module "apim_api_statuspage_api_v1" {
           "fdrts"                   = format("%s/pagopa-fdr-technical-support-service", format(local.aks_path, "fdr"))
           // WISP Dismantling
           "wispconverter"               = format("%s/pagopa-wispconverter", format(local.aks_path, "nodo"))
-          "wispsoapconverter"           = format("%s/wisp-soap-converter", format(local.aks_path, "nodo"))
+          "wispsoapconverter"           = format("%s/wisp-soapconverter", format(local.aks_path, "nodo"))
           "wispconverterts"             = format("%s/pagopa-wisp-converter-technical-support", format(local.aks_path, "nodo"))
           "gpd"                         = format("%s/pagopa-gpd-core", format(local.aks_path, "gps"))
           "gpdpayments"                 = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
