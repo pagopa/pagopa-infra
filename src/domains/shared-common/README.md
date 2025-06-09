@@ -169,7 +169,7 @@ No outputs.
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.53.0 |
 | <a name="module_pagopa_wallet_jwt"></a> [pagopa\_wallet\_jwt](#module\_pagopa\_wallet\_jwt) | github.com/pagopa/terraform-azurerm-v3//jwt_keys | v8.21.0 |
 | <a name="module_poc_reporting_enrollment_sa"></a> [poc\_reporting\_enrollment\_sa](#module\_poc\_reporting\_enrollment\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.53.0 |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_taxonomy_sa"></a> [taxonomy\_sa](#module\_taxonomy\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.53.0 |
 | <a name="module_taxonomy_storage_snet"></a> [taxonomy\_storage\_snet](#module\_taxonomy\_storage\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.53.0 |
 | <a name="module_test_data_sa"></a> [test\_data\_sa](#module\_test\_data\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.53.0 |
