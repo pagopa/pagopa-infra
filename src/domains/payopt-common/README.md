@@ -20,7 +20,7 @@
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | ./.terraform/modules/__v3__/github_federated_identity | n/a |
 | <a name="module_identity_pr_01"></a> [identity\_pr\_01](#module\_identity\_pr\_01) | ./.terraform/modules/__v3__/github_federated_identity | n/a |
 | <a name="module_identity_ref_01"></a> [identity\_ref\_01](#module\_identity\_ref\_01) | ./.terraform/modules/__v3__/github_federated_identity | n/a |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
 
 ## Resources

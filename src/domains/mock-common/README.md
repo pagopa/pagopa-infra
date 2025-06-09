@@ -23,7 +23,7 @@
 | <a name="module_mock_payment_gateway_snet"></a> [mock\_payment\_gateway\_snet](#module\_mock\_payment\_gateway\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_mocker_cosmosdb_account"></a> [mocker\_cosmosdb\_account](#module\_mocker\_cosmosdb\_account) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
 | <a name="module_mocker_cosmosdb_snet"></a> [mocker\_cosmosdb\_snet](#module\_mocker\_cosmosdb\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_workload_identity_init"></a> [workload\_identity\_init](#module\_workload\_identity\_init) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
 
 ## Resources

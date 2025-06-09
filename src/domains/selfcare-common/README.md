@@ -21,7 +21,7 @@
 | <a name="module_mongdb_collection_brokerinstitutions"></a> [mongdb\_collection\_brokerinstitutions](#module\_mongdb\_collection\_brokerinstitutions) | ./.terraform/modules/__v3__/cosmosdb_mongodb_collection | n/a |
 | <a name="module_mongdb_collection_maintenance"></a> [mongdb\_collection\_maintenance](#module\_mongdb\_collection\_maintenance) | ./.terraform/modules/__v3__/cosmosdb_mongodb_collection | n/a |
 | <a name="module_mongdb_collection_products"></a> [mongdb\_collection\_products](#module\_mongdb\_collection\_products) | ./.terraform/modules/__v3__/cosmosdb_mongodb_collection | n/a |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
