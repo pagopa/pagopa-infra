@@ -34,7 +34,10 @@ module "gh_runner_job" {
   }
 
   kubernetes_deploy = {
-    enabled = false
+    enabled      = true
+    namespaces   = ["all"]
+    cluster_name = data.azurerm_kubernetes_cluster.aks.name
+    rg           = data.azurerm_kubernetes_cluster.aks.resource_group_name
   }
 
   location                = var.gh_runner_job_location
