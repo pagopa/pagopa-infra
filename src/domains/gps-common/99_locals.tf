@@ -58,4 +58,7 @@ locals {
   monitor_resource_group_name              = "${local.product}-monitor-rg"
 
   msg_resource_group_name = "${local.product}-msg-rg"
+
+  pagopa_apim_name = "${local.product}-apim"
+  pagopa_apim_rg   = "${local.product}-api-rg"
 }

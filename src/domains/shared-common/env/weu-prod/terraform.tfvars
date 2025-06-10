@@ -1,10 +1,12 @@
-prefix         = "pagopa"
-env_short      = "p"
-env            = "prod"
-domain         = "shared"
-location       = "westeurope"
-location_short = "weu"
-instance       = "prod"
+prefix               = "pagopa"
+env_short            = "p"
+env                  = "prod"
+domain               = "shared"
+location             = "westeurope"
+location_short       = "weu"
+instance             = "prod"
+location_short_italy = "itn"
+location_italy       = "italynorth"
 
 
 ### External resources
@@ -102,4 +104,5 @@ taxonomy_network_rules = {
   bypass                     = ["AzureServices"]
 }
 
-redis_ha_enabled = true
+redis_ha_enabled          = true
+github_runner_ita_enabled = false

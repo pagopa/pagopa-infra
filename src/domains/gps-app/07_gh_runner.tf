@@ -62,6 +62,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-debt-position"
       short_name : "gpd-debt-pos"
+    },
+    {
+      name : "pagopa-gpd-rtp"
+      short_name : "gpd-rtp"
     }
   ]
   job = {

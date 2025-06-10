@@ -18,7 +18,7 @@ module "apim_cruscotto_product" {
   published             = false
   subscription_required = false
   approval_required     = false
-  subscriptions_limit   = 1
+  subscriptions_limit   = 0 # false
 
   policy_xml = file("./api_product/_base_policy.xml")
 }

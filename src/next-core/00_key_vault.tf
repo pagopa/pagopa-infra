@@ -78,11 +78,6 @@ data "azurerm_key_vault_certificate" "wisp2" {
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_key_vault_certificate" "kibana" {
-  name         = var.app_gateway_kibana_certificate_name
-  key_vault_id = module.key_vault.id
-}
-
 data "azurerm_key_vault_certificate" "wisp2govit" {
   count = (var.app_gateway_wisp2govit_certificate_name == "") ? 0 : 1
 
@@ -144,6 +139,11 @@ data "azurerm_key_vault_secret" "alert_error_notification_email" {
 
 data "azurerm_key_vault_secret" "alert_error_notification_slack" {
   name         = "alert-error-notification-slack"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_key_vault_secret" "alert_cert_pipeline_status_notification_slack" {
+  name         = "alert-cert-pipeline-status-notification-slack"
   key_vault_id = module.key_vault.id
 }
 
