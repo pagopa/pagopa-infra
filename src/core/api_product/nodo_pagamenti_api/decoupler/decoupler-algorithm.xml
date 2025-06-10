@@ -157,8 +157,8 @@ new JProperty("ttl", 1)
 					</choose>
 					<choose>
 						<when condition="@(context.Variables.GetValueOrDefault<string>("set_cache", "true")=="true")">
-                            <!-- extract channel from request -->
-                            <set-variable name="idChannel" value="@{
+							<!-- extract channel from request -->
+							<set-variable name="idChannel" value="@{
                                 // Retrieve data from request body
                                 XElement request = context.Request.Body.As<XElement>(preserveContent: true);
                                 XElement body = request.Descendants(request.Name.Namespace + "Body").FirstOrDefault();
@@ -175,15 +175,14 @@ new JProperty("ttl", 1)
                                 }
                                 return "NONE";
                             }" />
-
 							<!-- evaluate list algorithm -->
-                            <set-variable name="eCommerceChannel" value="{{wisp-ecommerce-channels}}" />
+							<set-variable name="eCommerceChannel" value="{{wisp-ecommerce-channels}}" />
 							<set-variable name="dataToSet" value="@{
                             var configuration = JArray.Parse(context.Variables.GetValueOrDefault<string>("configuration"));
                             var requestData = JObject.Parse((string)context.Variables["requestData"]);
                             bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true");
 
-if (enable_nm3_switch && !context.Variables.GetValueOrDefault<string>("idChannel", "NONE").Equals((string)context.Variables["eCommerceChannel"])) {
+if (enable_nm3_switch && !((string)context.Variables["eCommerceChannel"]).Contains(context.Variables.GetValueOrDefault<string>("idChannel", "NONE"))) {
 foreach (JObject item in configuration) {
 bool brokerPspFound = false;
 bool ciFound = false;
