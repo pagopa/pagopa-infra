@@ -1,0 +1,40 @@
+<!-- @formatter:off -->
+<policies>
+  <inbound>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
+
+    <include-fragment fragment-id="ndp-extract-paymentTokens-json-policy"/>
+    <include-fragment fragment-id="ndp-set-node-id-by-token-policy" />
+    <include-fragment fragment-id="ndp-set-base-url-policy" />
+
+  </inbound>
+  <backend>
+    <base />
+  </backend>
+  <outbound>
+    <!-- operation before base policy -->
+    <base />
+    <!-- operation after base policy -->
+
+    <!-- extract requestOutcome and responseOutcome-->
+    <include-fragment fragment-id="ndp-set-outcome-request-response-json-policy" />
+
+    <!-- Remove objects in cache iff outcome is KO, otherwise do nothing -->
+    <choose>
+      <!-- check if outcome in request is KO -->
+      <when condition="@(context.Variables.GetValueOrDefault<string>("requestOutcome", "NONE").Equals("KO") || context.Variables.GetValueOrDefault<string>("responseOutcome", "NONE").Equals("KO"))">
+        <!-- extract tokens from paymentTokens var and cache-remove 5 times -->
+        <include-fragment fragment-id="ndp-end-payment-cache-removal-outbound-policy" />
+      </when>
+    </choose>
+  
+    <!-- Trace variables dinamically as response headers -->
+    <include-fragment fragment-id="trace-variable-as-header-policy" />
+
+  </outbound>
+  <on-error>
+    <base />
+  </on-error>
+</policies>

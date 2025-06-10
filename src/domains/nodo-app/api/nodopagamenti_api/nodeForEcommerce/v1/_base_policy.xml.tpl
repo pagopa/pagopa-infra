@@ -1,11 +1,12 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="{{default-nodo-backend}}" />
+        <!-- if prf env set backend-service -->
+        <!-- is_perf_env is defined in ndphost_header fragment -->
         <choose>
-            <when condition="@(((string)context.Request.Headers.GetValueOrDefault("X-Orginal-Host-For","")).Equals("api.prf.platform.pagopa.it") || ((string)context.Request.OriginalUrl.ToUri().Host).Equals("api.prf.platform.pagopa.it"))">
-                <set-backend-service base-url="{{default-nodo-backend-prf}}" />
-            </when>
+          <when condition="@(context.Variables.GetValueOrDefault<bool>("is_perf_env", false))">
+            <set-backend-service base-url="{{default-nodo-backend-prf}}" />
+          </when>
         </choose>
     </inbound>
     <backend>
