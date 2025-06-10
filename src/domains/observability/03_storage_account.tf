@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "st_observability_rg" {
 }
 
 module "observability_st_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source = "./.terraform/modules/__v3__/subnet"
 
   name                 = "${local.project_itn}-observability-st-net"
   address_prefixes     = var.cidr_subnet_observability_storage
@@ -45,7 +45,7 @@ resource "azurerm_private_endpoint" "observability_storage_private_endpoint" {
 
 
 module "observability_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                       = replace(format("%s-sa", local.project_itn), "-", "")
   account_kind               = "StorageV2"
