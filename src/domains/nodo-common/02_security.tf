@@ -102,9 +102,19 @@ resource "azurerm_key_vault_secret" "verifyko_tablestorage_connection_string" {
   tags = module.tag_config.tags
 }
 
-resource "azurerm_key_vault_secret" "mbd_storage_connection_string" {
-  name         = "mbd-storage-connection-string"
-  value        = module.mbd_storage_account.primary_connection_string
+resource "azurerm_key_vault_secret" "mbd_storage_key" {
+  name         = "mbd-storage-key"
+  value        = module.mbd_storage_account.primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  tags = module.tag_config.tags
+}
+
+resource "azurerm_key_vault_secret" "mbd_storage_name" {
+  name         = "mbd-storage-name"
+  value        = module.mbd_storage_account.name
   content_type = "text/plain"
 
   key_vault_id = data.azurerm_key_vault.key_vault.id
