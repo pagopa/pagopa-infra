@@ -44,7 +44,7 @@
 | <a name="module_postgresql_nodo_replica_db"></a> [postgresql\_nodo\_replica\_db](#module\_postgresql\_nodo\_replica\_db) | ./.terraform/modules/__v3__/postgres_flexible_server_replica | n/a |
 | <a name="module_sftp"></a> [sftp](#module\_sftp) | ./.terraform/modules/__v3__/storage_account | n/a |
 | <a name="module_storage_account_snet"></a> [storage\_account\_snet](#module\_storage\_account\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_wisp_converter_storage_account"></a> [wisp\_converter\_storage\_account](#module\_wisp\_converter\_storage\_account) | ./.terraform/modules/__v3__/storage_account | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
 

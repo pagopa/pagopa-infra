@@ -26,7 +26,7 @@
 | <a name="module_gpd_ingestion_sa"></a> [gpd\_ingestion\_sa](#module\_gpd\_ingestion\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 | <a name="module_observability_sa"></a> [observability\_sa](#module\_observability\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 | <a name="module_observability_st_snet"></a> [observability\_st\_snet](#module\_observability\_st\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.7.0 |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 
 ## Resources
 
