@@ -16,7 +16,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_auto_dashboard"></a> [auto\_dashboard](#module\_auto\_dashboard) | git::https://github.com/pagopa/terraform-azurerm-v4.git//grafana_dashboard | v1.24.0 |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
 
 ## Resources
 

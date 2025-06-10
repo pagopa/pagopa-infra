@@ -14,7 +14,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_grafana_managed"></a> [grafana\_managed](#module\_grafana\_managed) | git::https://github.com/pagopa/terraform-azurerm-v3.git//grafana | v3.4.3 |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 
 ## Resources
 

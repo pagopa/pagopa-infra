@@ -28,7 +28,7 @@
 | <a name="module_negative_bizevents_datastore_cosmosdb_account"></a> [negative\_bizevents\_datastore\_cosmosdb\_account](#module\_negative\_bizevents\_datastore\_cosmosdb\_account) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
 | <a name="module_negative_bizevents_datastore_cosmosdb_containers"></a> [negative\_bizevents\_datastore\_cosmosdb\_containers](#module\_negative\_bizevents\_datastore\_cosmosdb\_containers) | ./.terraform/modules/__v3__/cosmosdb_sql_container | n/a |
 | <a name="module_negative_bizevents_datastore_cosmosdb_database"></a> [negative\_bizevents\_datastore\_cosmosdb\_database](#module\_negative\_bizevents\_datastore\_cosmosdb\_database) | ./.terraform/modules/__v3__/cosmosdb_sql_database | n/a |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
 
 ## Resources

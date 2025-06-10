@@ -148,7 +148,7 @@ No outputs.
 | <a name="module_printit_pdf_engine_app_service_java"></a> [printit\_pdf\_engine\_app\_service\_java](#module\_printit\_pdf\_engine\_app\_service\_java) | ./.terraform/modules/__v3__/app_service | n/a |
 | <a name="module_printit_pdf_engine_java_slot_staging"></a> [printit\_pdf\_engine\_java\_slot\_staging](#module\_printit\_pdf\_engine\_java\_slot\_staging) | ./.terraform/modules/__v3__/app_service_slot | n/a |
 | <a name="module_printit_pdf_engine_slot_staging"></a> [printit\_pdf\_engine\_slot\_staging](#module\_printit\_pdf\_engine\_slot\_staging) | ./.terraform/modules/__v3__/app_service_slot | n/a |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
 

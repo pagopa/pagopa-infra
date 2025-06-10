@@ -19,7 +19,7 @@
 | <a name="module_canoneunico_function"></a> [canoneunico\_function](#module\_canoneunico\_function) | git::https://github.com/pagopa/terraform-azurerm-v3.git//function_app | v6.15.2 |
 | <a name="module_canoneunico_function_snet"></a> [canoneunico\_function\_snet](#module\_canoneunico\_function\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.15.0 |
 | <a name="module_canoneunico_sa"></a> [canoneunico\_sa](#module\_canoneunico\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 
 ## Resources
 

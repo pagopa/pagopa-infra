@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "grafana_rg" {
   name     = format("%s-rg", local.project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -24,7 +24,7 @@ resource "azurerm_dashboard_grafana" "grafana_dashboard" {
       grafana_major_version,
     ]
   }
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_role_assignment" "grafana_dashboard_monitoring_reader" {

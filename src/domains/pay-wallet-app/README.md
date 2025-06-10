@@ -30,7 +30,7 @@
 | <a name="module_apim_webview_payment_wallet_api_v1"></a> [apim\_webview\_payment\_wallet\_api\_v1](#module\_apim\_webview\_payment\_wallet\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
 | <a name="module_kubernetes_service_account"></a> [kubernetes\_service\_account](#module\_kubernetes\_service\_account) | ./.terraform/modules/__v3__/kubernetes_service_account | n/a |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
 
