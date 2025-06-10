@@ -317,12 +317,12 @@ mbd_storage_account = {
   account_kind                  = "StorageV2"
   account_tier                  = "Standard"
   account_replication_type      = "ZRS"
-  blob_versioning_enabled       = false
+  blob_versioning_enabled       = true
   advanced_threat_protection    = false
   blob_delete_retention_days    = 90
   public_network_access_enabled = false
-  backup_enabled                = false
-  backup_retention_days         = 0
+  backup_enabled                = true
+  backup_retention_days         = 7
   use_legacy_defender_version   = false
 }
 

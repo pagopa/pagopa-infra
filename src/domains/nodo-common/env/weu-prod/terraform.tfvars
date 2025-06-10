@@ -349,7 +349,7 @@ mbd_storage_account = {
   blob_delete_retention_days    = 90
   public_network_access_enabled = false
   backup_enabled                = true
-  backup_retention_days         = 30
+  backup_retention_days         = 60
   use_legacy_defender_version   = false
 }
 
