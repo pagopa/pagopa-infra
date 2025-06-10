@@ -38,40 +38,9 @@ module "mbd_storage_account" {
   ]
 }
 
-# blob mbd csv
-resource "azurerm_storage_container" "mbd_container" {
-  name                 = "csv"
+resource "azurerm_storage_share" "firmatore_mbd" {
+  name                 = "firmatore"
   storage_account_name = module.mbd_storage_account.name
-
-  depends_on = [
-    module.mbd_storage_account
-  ]
+  quota                = 50
 }
 
-resource "azurerm_private_endpoint" "mbd_private_endpoint_blob" {
-  count = var.env_short == "d" ? 0 : 1
-
-  name                = "${local.project}-mbd-private-endpoint-blob"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.mbd_rg.name
-  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
-
-  private_dns_zone_group {
-    name                 = "${local.project}-mbd-private-dns-zone-group-blob"
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_blob_azure_com.id]
-  }
-
-  private_service_connection {
-    name                           = "${local.project}-mbd-private-service-connection-blob"
-    private_connection_resource_id = module.mbd_storage_account.id
-    is_manual_connection           = false
-    subresource_names              = ["blob"]
-  }
-
-  tags = module.tag_config.tags
-
-  depends_on = [
-    azurerm_resource_group.mbd_rg,
-    module.mbd_storage_account
-  ]
-}
