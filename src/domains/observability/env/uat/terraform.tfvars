@@ -337,7 +337,7 @@ eventhubs_gpd = [
   },
 ]
 
-
+app_forwarder_ip_restriction_default_action = "Allow"
 #  alert evh
 ehns_metric_alerts_gpd = {
   no_trx = {
