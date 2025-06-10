@@ -68,4 +68,3 @@ robots_indexed_paths = []
 // wallet session token
 io_backend_base_path = "https://api-app.io.pagopa.it"
 pdv_api_base_path    = "https://api.uat.tokenizer.pdv.pagopa.it/tokenizer/v1"
-

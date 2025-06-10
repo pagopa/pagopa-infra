@@ -50,6 +50,22 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+variable "location_italy" {
+  type        = string
+  description = "italy north"
+}
+
+variable "location_short_italy" {
+  type = string
+  validation {
+    condition = (
+      length(var.location_short_italy) == 3
+    )
+    error_message = "Length must be 3 chars."
+  }
+  description = "italy itn"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
@@ -201,6 +217,21 @@ variable "github_runner" {
   }
 }
 
+variable "github_runner_italy" {
+  type = object({
+    subnet_address_prefixes = list(string)
+  })
+  description = "GitHub runner variables"
+  default = {
+    subnet_address_prefixes = ["10.3.16.0/23"]
+  }
+}
+
+variable "github_runner_ita_enabled" {
+  type        = bool
+  description = "Enable github runner ita"
+  default     = false
+}
 
 variable "taxonomy_storage_account" {
   type = object({
