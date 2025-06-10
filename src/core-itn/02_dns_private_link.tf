@@ -109,3 +109,12 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_cosm
   virtual_network_id    = module.vnet_italy[0].id
   tags                  = module.tag_config.tags
 }
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_azure_com_vnet_link" {
+  count                 = var.env_short != "d" ? 1 : 0
+  name                  = module.vnet_italy[0].name
+  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_postgres_azure_com[0].name
+  resource_group_name   = data.azurerm_private_dns_zone.privatelink_postgres_azure_com[0].resource_group_name
+  virtual_network_id    = module.vnet_italy[0].id
+  tags                  = module.tag_config.tags
+}
