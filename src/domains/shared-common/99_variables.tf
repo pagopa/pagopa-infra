@@ -233,6 +233,11 @@ variable "github_runner_italy" {
   }
 }
 
+variable "github_runner_ita_enabled" {
+  type        = bool
+  description = "Enable github runner ita"
+  default     = false
+}
 
 variable "taxonomy_storage_account" {
   type = object({

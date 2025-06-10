@@ -104,3 +104,5 @@ test_data_storage_account = {
 }
 
 redis_ha_enabled = false
+
+github_runner_ita_enabled = true
