@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: debezium-health-checker-cron
+  namespace: ${namespace}
+spec:
+  schedule: "*/5 * * * *"  # Runs every 5 minutes
+  successfulJobsHistoryLimit: 0
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 100
+      template:
+        metadata:
+          labels:
+            app: debezium-health-checker-cron
+        spec:
+          containers:
+          - name: debezium-health-checker
+            image: bitnami/kubectl:latest
+            command: ["/bin/bash", "/scripts/check_kafka_connect.sh"]
+            volumeMounts:
+            - name: script-volume
+              mountPath: /scripts
+          restartPolicy: OnFailure
+          volumes:
+          - name: script-volume
+            configMap:
+              name: debezium-health-checker-script

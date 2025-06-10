@@ -43,12 +43,6 @@ variable "location_short" {
 
 
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 #
 # Feature flags
 #

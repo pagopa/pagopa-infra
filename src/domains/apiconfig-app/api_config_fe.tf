@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "api_config_fe_rg" {
   name     = format("%s-api-config-fe-rg", local.product)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 /**
@@ -83,7 +83,7 @@ module "api_config_fe_cdn" {
 
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "storage_account_key" {

@@ -2,14 +2,6 @@
 env_short = "u"
 env       = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "canoneunico"
-}
 
 # dns/network
 external_domain                           = "pagopa.it"

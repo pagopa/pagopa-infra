@@ -50,17 +50,24 @@ variable "location_short" {
   description = "One of wue, neu"
 }
 
+### Italy location
+variable "location_ita" {
+  type        = string
+  description = "Main location"
+  default     = "italynorth"
+}
+
+variable "location_short_ita" {
+  type        = string
+  description = "Main location"
+  default     = "itn"
+}
+
 variable "instance" {
   type        = string
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 variable "gpd_archive_advanced_threat_protection" {
   type        = bool
@@ -467,4 +474,68 @@ variable "gpd_cdc_enabled" {
   type        = bool
   description = "Enable CDC for GDP"
   default     = false
+}
+
+variable "eventhub_namespace_rtp" {
+  description = "Namespace configuration"
+  type = object({
+    auto_inflate_enabled     = bool
+    sku_name                 = string
+    capacity                 = string
+    maximum_throughput_units = number
+    public_network_access    = bool
+    private_endpoint_created = bool
+    metric_alerts_create     = bool
+    metric_alerts            = object({})
+  })
+}
+
+variable "eventhubs_rtp" {
+  description = "A list of event hubs to add to namespace."
+  type = list(object({
+    name              = string
+    partitions        = number
+    message_retention = number
+    consumers         = list(string)
+    keys = list(object({
+      name   = string
+      listen = bool
+      send   = bool
+      manage = bool
+    }))
+  }))
+  default = []
+}
+
+variable "redis_ha_enabled" {
+  type        = bool
+  description = "(Required) If true, enables the usage of HA redis instance"
+}
+
+variable "rtp_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    blob_delete_retention_days    = number
+    enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
+  })
+
+  default = {
+    account_kind                  = "StorageV2"
+    account_tier                  = "Standard"
+    account_replication_type      = "LRS"
+    blob_versioning_enabled       = false
+    advanced_threat_protection    = true
+    public_network_access_enabled = false
+    blob_delete_retention_days    = 30
+    enable_low_availability_alert = false
+    backup_enabled                = false
+    backup_retention              = 0
+  }
 }

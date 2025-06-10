@@ -18,7 +18,11 @@ locals {
     "pagopa-gpd-reporting-batch",
     "pagopa-gpd-reporting-analysis",
     "pagopa-gpd-reporting-service",
-    "pagopa-gpd-ingestion-manager"
+    "pagopa-gpd-ingestion-manager",
+    "pagopa-reporting-orgs-enrollment",
+    "pagopa-spontaneous-payments",
+    "pagopa-debt-position",
+    "pagopa-gpd-rtp"
   ]
 
   federations_01 = [
@@ -61,7 +65,7 @@ module "identity_cd_01" {
     resource_groups    = local.environment_cd_roles.resource_groups
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     data.azurerm_resource_group.identity_rg

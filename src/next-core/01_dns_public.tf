@@ -3,7 +3,7 @@ resource "azurerm_dns_zone" "public" {
   name                = join(".", [var.dns_zone_prefix, var.external_domain])
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_dns_zone" "public_prf" {
@@ -11,7 +11,7 @@ resource "azurerm_dns_zone" "public_prf" {
   name                = join(".", [var.dns_zone_prefix_prf, var.external_domain])
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_dns_cname_record" "statuspage_platform_pagopa_it_cname" {
@@ -21,7 +21,7 @@ resource "azurerm_dns_cname_record" "statuspage_platform_pagopa_it_cname" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   record              = "statuspage.betteruptime.com"
   ttl                 = var.dns_default_ttl_sec
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
 # Prod ONLY record to DEV public DNS delegation
@@ -37,7 +37,7 @@ resource "azurerm_dns_ns_record" "dev_pagopa_it_ns" {
     "ns4-08.azure-dns.info.",
   ]
   ttl  = var.dns_default_ttl_sec
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # Prod ONLY record to UAT public DNS delegation
@@ -53,7 +53,7 @@ resource "azurerm_dns_ns_record" "uat_pagopa_it_ns" {
     "ns4-07.azure-dns.info.",
   ]
   ttl  = var.dns_default_ttl_sec
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # Prod ONLY record to PRF public DNS delegation
@@ -69,7 +69,7 @@ resource "azurerm_dns_ns_record" "prf_pagopa_it_ns" {
     "ns4-02.azure-dns.info.",
   ]
   ttl  = var.dns_default_ttl_sec
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_dns_caa_record" "api_platform_pagopa_it" {
@@ -95,7 +95,7 @@ resource "azurerm_dns_caa_record" "api_platform_pagopa_it" {
     value = "mailto:security+caa@pagopa.it"
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -106,7 +106,7 @@ resource "azurerm_dns_a_record" "dns_a_api" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
 resource "azurerm_dns_a_record" "dns_a_upload" {
@@ -115,7 +115,7 @@ resource "azurerm_dns_a_record" "dns_a_upload" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
 resource "azurerm_dns_a_record" "dns_a_portal" {
@@ -124,7 +124,7 @@ resource "azurerm_dns_a_record" "dns_a_portal" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
 resource "azurerm_dns_a_record" "dns_a_management" {
@@ -133,18 +133,9 @@ resource "azurerm_dns_a_record" "dns_a_management" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
-resource "azurerm_dns_a_record" "dns_a_kibana" {
-  count               = var.is_feature_enabled.elastic_on_prem ? 1 : 0
-  name                = "kibana"
-  zone_name           = azurerm_dns_zone.public[0].name
-  resource_group_name = azurerm_resource_group.rg_vnet.name
-  ttl                 = var.dns_default_ttl_sec
-  records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
-  tags                = var.tags
-}
 # #####################
 # Replicate to PRF env
 # #####################
@@ -168,7 +159,7 @@ resource "azurerm_dns_caa_record" "api_platform_pagopa_it_prf" {
     value = "mailto:security+caa@pagopa.it"
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # application gateway records
@@ -180,7 +171,7 @@ resource "azurerm_dns_a_record" "dns_a_api_prf" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
 resource "azurerm_dns_a_record" "dns_a_portal_prf" {
@@ -191,7 +182,7 @@ resource "azurerm_dns_a_record" "dns_a_portal_prf" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
 resource "azurerm_dns_a_record" "dns_a_management_prf" {
@@ -202,5 +193,5 @@ resource "azurerm_dns_a_record" "dns_a_management_prf" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = [azurerm_public_ip.appgateway_public_ip.ip_address]
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }

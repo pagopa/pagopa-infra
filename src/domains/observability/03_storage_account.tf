@@ -1,7 +1,7 @@
 resource "azurerm_resource_group" "st_observability_rg" {
   name     = "${local.project_itn}-st-rg"
   location = var.location_itn
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 module "observability_st_snet" {
@@ -39,7 +39,7 @@ resource "azurerm_private_endpoint" "observability_storage_private_endpoint" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -61,7 +61,7 @@ module "observability_sa" {
   public_network_access_enabled   = true
 
   blob_delete_retention_days = var.observability_sa_delete_retention_days
-  tags                       = var.tags
+  tags                       = module.tag_config.tags
 
   blob_last_access_time_enabled = true
 

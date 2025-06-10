@@ -64,13 +64,6 @@ variable "env" {
 }
 
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
-
 #
 # Feature Flag
 #

@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "eventhub_observability_rg" {
   name     = local.eventhub_resource_group_name
   location = var.location_itn
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "eventhub_namespace_observability" {
@@ -45,7 +45,7 @@ module "eventhub_namespace_observability" {
   metric_alerts_create = var.ehns_alerts_enabled
   metric_alerts        = var.ehns_metric_alerts
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #

@@ -34,7 +34,7 @@ resource "azurerm_kusto_cluster" "data_explorer_cluster" {
   double_encryption_enabled     = var.dexp_params.double_encryption_enabled
   engine                        = "V3"
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   lifecycle {
     ignore_changes = [

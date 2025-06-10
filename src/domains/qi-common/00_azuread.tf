@@ -15,6 +15,10 @@ data "azuread_group" "adgroup_security" {
   display_name = "${local.product}-adgroup-security"
 }
 
+data "azuread_group" "adgroup_operations" {
+  display_name = "${local.product}-adgroup-operations"
+}
+
 # Acccording to 
 # Application Insights API Keys are deprecated and will be retired in March 2026. Please consider using API Accesss with Azure AD. Learn more about API Access with Azure AD
 # https://learn.microsoft.com/en-us/azure/azure-monitor/app/azure-ad-authentication?tabs=aspnetcore

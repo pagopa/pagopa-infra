@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "key_vault" {
@@ -19,7 +19,7 @@ module "key_vault" {
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days = 90
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## ad group policy ##
@@ -351,7 +351,7 @@ module "pagopa_wallet_jwt" {
   cert_common_name = "pagoPA platform session wallet token for IO"
   cert_password    = ""
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 # JWT_SIGNATURE_KEY   = trimspace(module.pagopa_wallet_jwt.jwt_private_key_pem) # to avoid unwanted changes
 

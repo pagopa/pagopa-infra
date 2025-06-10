@@ -18,6 +18,18 @@ module "gh_runner_job" {
     {
       name : "pagopa-api-config-cache",
       short_name : "apicfg-cache"
+    },
+    {
+      name : "pagopa-api-config",
+      short_name : "apicfg"
+    },
+    {
+      name : "pagopa-api-config-selfcare-integration",
+      short_name : "apicfg-slfcr"
+    },
+    {
+      name : "pagopa-api-config-testing-support",
+      short_name : "apicfg-tst-supp"
     }
   ]
   job = {
@@ -40,6 +52,6 @@ module "gh_runner_job" {
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
   domain_security_rg_name = "${local.product}-${var.domain}-sec-rg"
-  tags                    = var.tags
+  tags                    = module.tag_config.tags
 
 }

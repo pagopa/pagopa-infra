@@ -3,7 +3,7 @@ resource "azurerm_resource_group" "reporting_fdr_rg" {
   name     = "${local.product}-reporting-fdr-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # Subnet to host reporting-fdr function
@@ -81,7 +81,7 @@ module "reporting_fdr_function" {
 
   allowed_ips = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_autoscale_setting" "reporting_fdr_function" {

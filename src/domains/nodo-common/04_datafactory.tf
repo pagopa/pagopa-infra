@@ -1,7 +1,7 @@
 resource "azurerm_resource_group" "data_factory_rg" {
   name     = format("%s-df-rg", local.project)
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 resource "azurerm_data_factory" "data_factory" {
@@ -17,7 +17,7 @@ resource "azurerm_data_factory" "data_factory" {
     type = "SystemAssigned"
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_data_factory_integration_runtime_azure" "autoresolve" {
@@ -45,7 +45,7 @@ resource "azurerm_private_endpoint" "data_factory_pe" {
     subresource_names              = ["datafactory"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_a_record" "data_factory_a_record" {
@@ -55,5 +55,5 @@ resource "azurerm_private_dns_a_record" "data_factory_a_record" {
   ttl                 = 300
   records             = azurerm_private_endpoint.data_factory_pe.private_service_connection.*.private_ip_address
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

@@ -6,13 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/src/domains/mock-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 monitor_resource_group_name                 = "pagopa-u-monitor-rg"
@@ -68,3 +61,5 @@ mocker_cosmosdb_params = {
 cosmosdb_mongodb_extra_capabilities = ["EnableServerless"]
 
 mock_ec_size = "P1v3"
+
+pagopa_proxy_ip_restriction_default_action = "Allow"

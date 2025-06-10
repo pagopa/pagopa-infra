@@ -9,14 +9,6 @@ location_short_itn               = "itn"
 instance                         = "dev"
 ehns_private_endpoint_is_present = false
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/qi-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "qi"
-}
 
 ### External resources
 

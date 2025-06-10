@@ -25,7 +25,7 @@ module "institutions_sa" {
     blob_restore_policy_days   = var.institutions_storage_account.backup_retention
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "institutions_blob_private_endpoint" {
@@ -48,7 +48,7 @@ resource "azurerm_private_endpoint" "institutions_blob_private_endpoint" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.institutions_sa

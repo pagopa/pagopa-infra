@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "rg_ita_vnet" {
   name     = "${local.product_ita}-vnet-rg"
   location = var.location_ita
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "vnet_italy" {
@@ -18,7 +18,7 @@ module "vnet_italy" {
   address_space        = var.cidr_vnet_italy
   ddos_protection_plan = var.vnet_ita_ddos_protection_plan
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #
@@ -72,7 +72,7 @@ resource "azurerm_public_ip" "aks_leonardo_public_ip" {
 
   zones = [1, 2, 3]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #

@@ -1,19 +1,13 @@
-prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
-domain         = "shared"
-location       = "westeurope"
-location_short = "weu"
-instance       = "dev"
+prefix               = "pagopa"
+env_short            = "d"
+env                  = "dev"
+domain               = "shared"
+location             = "westeurope"
+location_short       = "weu"
+instance             = "dev"
+location_short_italy = "itn"
+location_italy       = "italynorth"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/shared"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "shared"
-}
 
 ### External resources
 
@@ -102,3 +96,5 @@ test_data_storage_account = {
 }
 
 redis_ha_enabled = false
+
+github_runner_ita_enabled = true

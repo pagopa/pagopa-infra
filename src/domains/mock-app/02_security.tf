@@ -19,7 +19,7 @@ data "azurerm_key_vault_secret" "monitor_notification_slack_email" {
 # requierd: Docker
 module "letsencrypt_mock" {
   count  = var.mock_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//letsencrypt_credential?ref=v3.8.1"
+  source = "./.terraform/modules/__v3__/letsencrypt_credential"
 
   prefix            = var.prefix
   env               = var.env_short

@@ -33,7 +33,7 @@ module "cosmosdb_account_wispconv" {
 
   backup_continuous_enabled = var.wisp_converter_cosmos_nosql_db_params.backup_continuous_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_resource_group.wisp_converter_rg,
@@ -198,7 +198,7 @@ resource "azurerm_monitor_metric_alert" "cosmos_wisp_normalized_ru_exceeded" {
     action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 

@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: debezium-health-checker-script
+  namespace: ${namespace}
+data:
+  check_kafka_connect.sh: |
+    #!/bin/bash
+    echo "Debezium health checker monitor start."
+
+    STATUS_URL="http://debezium-connect-cluster-connect-api:8083/connectors/debezium-connector-postgres/status"
+    CONNECTOR_RESTART_URL="http://debezium-connect-cluster-connect-api:8083/connectors/debezium-connector-postgres/restart"
+    TASK_RESTART_URL="http://debezium-connect-cluster-connect-api:8083/connectors/debezium-connector-postgres/tasks"
+
+    STATUS_RESPONSE=$(curl -s -X GET "$STATUS_URL")
+
+    CONNECTOR_STATUS=$(echo "$STATUS_RESPONSE" | grep -o '"connector":{"state":"[^"]*"' | sed 's/"connector":{"state":"//;s/"//')
+
+    if [[ "$CONNECTOR_STATUS" != "RUNNING" ]]; then
+      echo "Connector is not running (state: $CONNECTOR_STATUS). Restarting..."
+      curl -s -X POST "$CONNECTOR_RESTART_URL" && echo "Connector restart command issued."
+    else
+      echo "Connector is running normally."
+    fi
+
+    TASKS=$(echo "$STATUS_RESPONSE" | grep -o '"id":[0-9]*,"state":"[^"]*"' | sed 's/"id"://;s/"state":"//;s/,/ /;s/"/ /')
+
+    echo "$TASKS" | while read -r TASK_ID TASK_STATE; do
+      if [[ "$TASK_STATE" != "RUNNING" ]]; then
+        echo "Task $TASK_ID is not running (state: $TASK_STATE). Restarting..."
+        TASK_RESTART_API="$TASK_RESTART_URL/$TASK_ID/restart"
+        curl -s -X POST "$TASK_RESTART_API" && echo "Task $TASK_ID restart command issued."
+      else
+        echo "Task $TASK_ID is running normally."
+      fi
+    done
+
+    echo "Debezium health checker monitor end."

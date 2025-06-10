@@ -1,6 +1,6 @@
 module "apim_mocker_core_product" {
   count  = var.env_short != "p" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v5.1.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = local.mocker_core_api_locals.product_id
   display_name = local.mocker_core_api_locals.display_name
@@ -19,7 +19,7 @@ module "apim_mocker_core_product" {
 
 module "apim_mocker_config_product" {
   count  = var.env_short != "p" ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//api_management_product?ref=v5.1.0"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = local.mocker_config_api_locals.product_id
   display_name = local.mocker_config_api_locals.display_name

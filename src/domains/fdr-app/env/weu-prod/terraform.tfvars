@@ -9,14 +9,6 @@ instance        = "prod"
 
 gh_runner_job_location = "italynorth"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/fdr"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "fdr"
-}
 
 # function app
 reporting_fdr_function_always_on = true

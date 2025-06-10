@@ -47,12 +47,6 @@ variable "location_short" {
   description = "Location short like eg: neu, weu.."
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 variable "dns_forwarder_backup_image_version" {
   type        = string

@@ -8,14 +8,6 @@ location_itn       = "italynorth" # itn
 location_short_itn = "itn"        # itn
 instance           = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/observability"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "observ"
-}
 
 ### External resources
 

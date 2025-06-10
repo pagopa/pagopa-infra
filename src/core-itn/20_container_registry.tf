@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "acr_ita_rg" {
   name     = "${local.product_ita}-acr-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "container_registry_ita" {
@@ -26,5 +26,5 @@ module "container_registry_ita" {
     virtual_network = []
   }]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

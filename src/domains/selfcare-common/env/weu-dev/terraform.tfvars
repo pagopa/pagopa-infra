@@ -7,14 +7,6 @@ location_short = "weu"
 instance       = "dev"
 env_capital    = "Dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "IO"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/selfcare"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "selfcare"
-}
 
 ### External resources
 

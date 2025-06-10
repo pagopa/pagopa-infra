@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "msg_rg" {
   name     = format("%s-msg-rg", local.product)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## Eventhub subnet
@@ -20,7 +20,7 @@ module "eventhub_snet" {
 resource "azurerm_private_dns_zone" "privatelink_servicebus_windows_net" {
   name                = "privatelink.servicebus.windows.net"
   resource_group_name = azurerm_resource_group.msg_rg.name
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_core_link_privatelink_servicebus_windows_net" {
@@ -31,7 +31,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_core_link_private
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_integration_link_privatelink_servicebus_windows_net" {
@@ -42,7 +42,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_integration_link_
   virtual_network_id    = module.vnet_integration.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -96,7 +96,7 @@ module "event_hub03" {
     ] : [])
   ])
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 //replaces ns02
@@ -147,7 +147,7 @@ module "event_hub04" {
     ] : [])
   ])
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "event_hubprf" {
@@ -200,5 +200,5 @@ module "event_hubprf" {
     ] : [])
   ])
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

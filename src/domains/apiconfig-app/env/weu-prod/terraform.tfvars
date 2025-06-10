@@ -7,14 +7,6 @@ location_short         = "weu"
 location_string        = "West Europe"
 instance               = "prod"
 gh_runner_job_location = "italynorth"
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPa"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/apiconfig"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "apiconfig"
-}
 
 ### External resources
 

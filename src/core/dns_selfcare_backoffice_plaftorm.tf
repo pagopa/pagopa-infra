@@ -9,7 +9,7 @@ resource "azurerm_dns_txt_record" "dns-txt-backoffice-platform-pagopa-it-aws-ses
   record {
     value = "DfSNFJT1w6TrNS1ldh4x8eESozPslq1Mfpqj9WtT09s="
   }
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 locals {
@@ -37,7 +37,7 @@ resource "azurerm_dns_cname_record" "dkim-aws-ses-backoffice-platform-pagopa-it"
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   record              = each.value.value
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
 
@@ -54,7 +54,7 @@ resource "azurerm_dns_mx_record" "dns-mx-backoffice-platform-pagopa-it" {
     exchange   = "feedback-smtp.eu-south-1.amazonses.com"
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # TXT record
@@ -67,5 +67,5 @@ resource "azurerm_dns_txt_record" "dns-txt-backoffice-platform-pagopa-it-aws-ses
   record {
     value = "v=spf1 include:amazonses.com ~all"
   }
-  tags = var.tags
+  tags = module.tag_config.tags
 }

@@ -9,7 +9,7 @@
         <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>
         </set-header>
-        <set-body template="liquid">
+        <!-- <set-body template="liquid"> -->
         <set-body template="liquid">{"positionslist":[{"fiscalCode":"00311740609","noticeNumber":"301000000000000000"}]}</set-body>
     </inbound>
     <outbound>

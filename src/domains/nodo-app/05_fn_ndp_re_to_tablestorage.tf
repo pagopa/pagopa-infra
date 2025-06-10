@@ -99,7 +99,7 @@ module "nodo_re_to_tablestorage_function" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "nodo_re_to_tablestorage_function_slot_staging" {
@@ -134,7 +134,7 @@ module "nodo_re_to_tablestorage_function_slot_staging" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_autoscale_setting" "nodo_re_to_tablestorage_function" {

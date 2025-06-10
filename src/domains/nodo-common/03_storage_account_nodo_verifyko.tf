@@ -23,7 +23,7 @@ module "nodo_verifyko_storage_account" {
     blob_restore_policy_days   = var.nodo_verifyko_storage_account.backup_retention_days
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "nodo_verifyko_private_endpoint_table" {
@@ -46,7 +46,7 @@ resource "azurerm_private_endpoint" "nodo_verifyko_private_endpoint_table" {
     subresource_names              = ["table"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.nodo_verifyko_storage_account
@@ -73,7 +73,7 @@ resource "azurerm_private_endpoint" "nodo_verifyko_private_endpoint_blob" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.nodo_verifyko_storage_account

@@ -24,7 +24,7 @@ module "wisp_converter_storage_account" {
     blob_restore_policy_days   = var.wisp_converter_storage_account.backup_retention_days
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_resource_group.wisp_converter_rg
@@ -51,7 +51,7 @@ resource "azurerm_private_endpoint" "wispconv_private_endpoint_container" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_resource_group.wisp_converter_rg,
@@ -91,7 +91,7 @@ resource "azurerm_private_endpoint" "wispconv_private_endpoint_table" {
     subresource_names              = ["table"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_resource_group.wisp_converter_rg,
@@ -130,7 +130,7 @@ resource "azurerm_private_endpoint" "wispconv_private_endpoint_blob" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     azurerm_resource_group.wisp_converter_rg,

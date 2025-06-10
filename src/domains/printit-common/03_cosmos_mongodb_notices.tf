@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "db_rg" {
   name     = "${local.project}-db-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "cosmosdb_account_mongodb" {
@@ -33,7 +33,7 @@ module "cosmosdb_account_mongodb" {
 
   backup_continuous_enabled = var.cosmos_mongo_db_notices_params.backup_continuous_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_cosmosdb_mongo_database" "notices_mongo_db" {

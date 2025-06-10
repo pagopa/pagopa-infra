@@ -112,7 +112,7 @@ module "app_forwarder_app_service" {
 
   subnet_id = data.azurerm_subnet.subnet_node_forwarder[0].id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "app_forwarder_slot_staging" {
@@ -143,7 +143,7 @@ module "app_forwarder_slot_staging" {
   allowed_ips     = []
   subnet_id       = data.azurerm_subnet.subnet_node_forwarder[0].id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 

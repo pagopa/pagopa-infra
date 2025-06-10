@@ -3,7 +3,7 @@ resource "azurerm_dns_zone" "checkout_public" {
   name                = join(".", [var.dns_zone_checkout, var.external_domain])
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 //Prod ONLY record to DEV public DNS delegation
@@ -19,7 +19,7 @@ resource "azurerm_dns_ns_record" "dev_checkout" {
     "ns4-07.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 //Prod ONLY record to UAT public DNS delegation
@@ -35,7 +35,7 @@ resource "azurerm_dns_ns_record" "uat_checkout" {
     "ns4-01.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_dns_caa_record" "checkout_pagopa_it" {
@@ -56,5 +56,5 @@ resource "azurerm_dns_caa_record" "checkout_pagopa_it" {
     value = "mailto:security+caa@pagopa.it"
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

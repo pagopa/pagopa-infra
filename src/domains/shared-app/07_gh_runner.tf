@@ -30,6 +30,10 @@ module "gh_runner_job" {
     {
       name : "pagopa-iuvgenerator",
       short_name : "iuv-gen"
+    },
+    {
+      name : "pagopa-anonymizer",
+      short_name : "anonym"
     }
   ]
   job = {
@@ -52,6 +56,6 @@ module "gh_runner_job" {
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
   domain_security_rg_name = "${local.product}-${var.domain}-sec-rg"
-  tags                    = var.tags
+  tags                    = module.tag_config.tags
 
 }

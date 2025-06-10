@@ -15,7 +15,7 @@ module "authorizer_cosmosdb_snet" {
 }
 
 module "authorizer_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.53.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.93.1"
   name     = "${local.project}-auth-cosmos-account"
   location = var.location
   domain   = "shared"
@@ -53,7 +53,7 @@ module "authorizer_cosmosdb_account" {
   subnet_id                           = module.authorizer_cosmosdb_snet.id
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "authorizer_cosmosdb_database" {

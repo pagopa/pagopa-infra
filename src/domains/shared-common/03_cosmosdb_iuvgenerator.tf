@@ -2,14 +2,14 @@ resource "azurerm_resource_group" "shared_rg" {
   name     = "${local.project}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_resource_group" "iuvgenerator_rg" {
   name     = "${local.project}-iuvgenerator-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "iuvgenerator_cosmosdb_snet" {
@@ -29,7 +29,7 @@ module "iuvgenerator_cosmosdb_snet" {
 }
 
 module "iuvgenerator_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.53.0"
+  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.93.1"
   name     = "${local.project}-iuv-gen-cosmos-account"
   location = var.location
   domain   = var.domain
@@ -66,7 +66,7 @@ module "iuvgenerator_cosmosdb_account" {
   private_dns_zone_sql_ids   = [data.azurerm_private_dns_zone.cosmos.id]
   private_dns_zone_table_ids = [data.azurerm_private_dns_zone.cosmos_table.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb table storage

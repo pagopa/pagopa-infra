@@ -21,5 +21,5 @@ module "dns_forwarder_backup_vmss_li" {
   location            = var.location
   source_image_name   = var.dns_forwarder_vm_image_name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

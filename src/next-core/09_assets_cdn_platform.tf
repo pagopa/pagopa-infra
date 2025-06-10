@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "assets_cdn_platform_rg" {
   name     = format("%s-assets-cdn-platform-rg", local.product)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 /**
@@ -140,7 +140,7 @@ module "assets_cdn_platform" {
     }
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_application_insights_web_test" "assets_cdn_platform_web_test" {

@@ -16,6 +16,7 @@
 |------|--------|---------|
 | <a name="module_aks_namespace_backup"></a> [aks\_namespace\_backup](#module\_aks\_namespace\_backup) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_velero_backup | v8.53.0 |
 | <a name="module_aks_single_namespace_backup"></a> [aks\_single\_namespace\_backup](#module\_aks\_single\_namespace\_backup) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_velero_backup | v8.53.0 |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
 | <a name="module_velero"></a> [velero](#module\_velero) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster_velero | v8.56.0 |
 | <a name="module_velero_workload_identity_init"></a> [velero\_workload\_identity\_init](#module\_velero\_workload\_identity\_init) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_workload_identity_init | v8.53.0 |
 
@@ -52,7 +53,6 @@
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_velero_backup_sa_replication_type"></a> [velero\_backup\_sa\_replication\_type](#input\_velero\_backup\_sa\_replication\_type) | (Optional) backup storage account replication type | `string` | `"GZRS"` | no |
 | <a name="input_velero_backup_schedule"></a> [velero\_backup\_schedule](#input\_velero\_backup\_schedule) | (Optional) cron expression defining when to run the backups, expressed in UTC | `string` | `"0 3 * * *"` | no |
 | <a name="input_velero_backup_single_namespace_schedule"></a> [velero\_backup\_single\_namespace\_schedule](#input\_velero\_backup\_single\_namespace\_schedule) | (Optional) cron expression defining when to run the backups, expressed in UTC | `string` | `"0 2 * * *"` | no |

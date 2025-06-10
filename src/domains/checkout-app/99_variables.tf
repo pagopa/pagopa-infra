@@ -55,12 +55,6 @@ variable "location_string" {
   description = "One of West Europe, North Europe"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 variable "checkout_enabled" {
   type    = bool

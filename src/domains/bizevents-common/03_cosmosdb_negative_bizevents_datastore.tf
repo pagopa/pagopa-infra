@@ -35,7 +35,7 @@ module "negative_bizevents_datastore_cosmosdb_account" {
   subnet_id                           = module.bizevents_datastore_cosmosdb_snet.id
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb database for negative biz-events

@@ -1,7 +1,7 @@
 resource "azurerm_resource_group" "storage_ecommerce_rg" {
   name     = "${local.project}-storage-rg"
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 
@@ -40,7 +40,7 @@ resource "azurerm_private_endpoint" "storage_transient_private_endpoint" {
     subresource_names              = ["queue"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "ecommerce_storage_transient" {
@@ -67,7 +67,7 @@ module "ecommerce_storage_transient" {
     virtual_network_subnet_ids = [module.ecommerce_storage_snet.id]
     bypass                     = ["AzureServices"]
   } : null
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_storage_queue" "notifications_service_retry_queue" {
@@ -200,7 +200,7 @@ resource "azurerm_private_endpoint" "storage_deadletter_private_endpoint" {
     subresource_names              = ["queue"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "ecommerce_storage_deadletter" {
@@ -228,7 +228,7 @@ module "ecommerce_storage_deadletter" {
     bypass                     = ["AzureServices"]
   } : null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_storage_queue" "transactions_dead_letter_queue" {
@@ -336,7 +336,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, azurerm_monitor_action_group.service_management_opsgenie[0].id]
     email_subject          = "[eCommerce] Enqueue rate for transient queue too high (instant processing)"
     custom_webhook_payload = "{}"
   }
@@ -443,7 +443,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_enqueue_rate_a
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, azurerm_monitor_action_group.service_management_opsgenie[0].id]
     email_subject          = "[eCommerce] Enqueue rate for transient queue too high (delayed processing)"
     custom_webhook_payload = "{}"
   }
@@ -558,7 +558,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_deadletter_fil
   location            = var.location
 
   action {
-    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.ecommerce_opsgenie[0].id, azurerm_monitor_action_group.service_management_opsgenie[0].id]
     email_subject          = "[eCommerce] Writes for dead letter queue too high"
     custom_webhook_payload = "{}"
   }
@@ -618,6 +618,10 @@ resource "azurerm_monitor_metric_alert" "queue_storage_account_average_messge_co
     action_group_id = azurerm_monitor_action_group.ecommerce_opsgenie[0].id
   }
 
+  action {
+    action_group_id = azurerm_monitor_action_group.service_management_opsgenie[0].id
+  }
+
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${each.value.storage_account_name}] Queue message count average exceeds ${each.value.threshold}"
   resource_group_name = azurerm_resource_group.storage_ecommerce_rg.name
   scopes              = ["${each.value.storage_account_id}/queueServices/default"]
@@ -658,7 +662,7 @@ module "ecommerce_pm_history_storage" {
 
   network_rules = null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## table#1 storage pm-transaction-ecommerce-history-logs
@@ -687,7 +691,7 @@ module "ecommerce_reporting_storage" {
 
   network_rules = null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_storage_table" "ecommerce_reporting_table" {

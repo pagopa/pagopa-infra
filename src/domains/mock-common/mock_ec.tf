@@ -3,13 +3,13 @@ resource "azurerm_resource_group" "mock_ec_rg" {
   name     = format("%s-mock-ec-rg", local.project_legacy)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # Subnet to host the mock ec
 module "mock_ec_snet" {
   count                                         = var.mock_ec_enabled && var.cidr_subnet_mock_ec != null ? 1 : 0
-  source                                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.2.1"
+  source                                        = "./.terraform/modules/__v3__/subnet"
   name                                          = format("%s-mock-ec-snet", local.project_legacy)
   address_prefixes                              = var.cidr_subnet_mock_ec
   resource_group_name                           = local.vnet_resource_group_name
@@ -27,16 +27,16 @@ module "mock_ec_snet" {
 
 module "mock_ec" {
   count  = var.mock_ec_enabled ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v6.14.1"
+  source = "./.terraform/modules/__v3__/app_service"
 
   resource_group_name = azurerm_resource_group.mock_ec_rg[0].name
   location            = var.location
 
   # App service plan vars
   plan_name = format("%s-plan-mock-ec", local.project_legacy)
-  plan_kind = "Linux"
+  # plan_kind = "Linux"
+  plan_type = "internal"
   sku_name  = var.mock_ec_size
-
 
   # App service plan
   name                = format("%s-app-mock-ec", local.project_legacy)
@@ -66,7 +66,7 @@ module "mock_ec" {
     XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled"
     XDT_MicrosoftApplicationInsights_Mode           = "recommended"
     XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
+    # WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
 
     # custom
     CC_POST_PRIMARY_EC   = "IT57N0760114800000011050036"
@@ -83,5 +83,6 @@ module "mock_ec" {
 
   subnet_id = module.mock_ec_snet[0].id
 
-  tags = var.tags
+  tags                          = module.tag_config.tags
+  ip_restriction_default_action = "Allow"
 }

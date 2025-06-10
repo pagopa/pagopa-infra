@@ -1,7 +1,7 @@
 resource "azurerm_resource_group" "st_receipts_rg" {
   name     = "${local.project}-st-rg"
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 module "receipts_st_snet" {
@@ -39,7 +39,7 @@ resource "azurerm_private_endpoint" "storage_private_endpoint" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "queue_private_endpoint" {
@@ -62,7 +62,7 @@ resource "azurerm_private_endpoint" "queue_private_endpoint" {
     subresource_names              = ["queue"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "receipts_datastore_fn_sa" {
@@ -83,7 +83,7 @@ module "receipts_datastore_fn_sa" {
   public_network_access_enabled   = true
 
   blob_delete_retention_days = var.receipts_datastore_fn_sa_delete_retention_days
-  tags                       = var.tags
+  tags                       = module.tag_config.tags
 
   blob_last_access_time_enabled = true
 

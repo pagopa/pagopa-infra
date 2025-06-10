@@ -14,7 +14,7 @@ module "grafana_managed" {
 
   api_key_enabled = true
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
 }
 
@@ -26,5 +26,5 @@ resource "azurerm_dns_cname_record" "grafana" {
   ttl                 = 3600
   record              = module.grafana_managed.hostname
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

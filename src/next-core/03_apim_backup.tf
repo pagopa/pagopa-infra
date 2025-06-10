@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "data" {
   name     = format("%s-data-rg", local.product)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -23,7 +23,7 @@ module "backupstorage" {
   public_network_access_enabled   = true
 
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "backup_blob_private_endpoint" {
@@ -46,7 +46,7 @@ resource "azurerm_private_endpoint" "backup_blob_private_endpoint" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     module.backupstorage

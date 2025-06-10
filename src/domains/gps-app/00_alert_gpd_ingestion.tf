@@ -19,7 +19,7 @@ locals {
   action_groups_default = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
 
   # ENABLE PROD afert deploy
-  action_groups = var.env_short == "p" ? concat(local.action_groups_default, [data.azurerm_monitor_action_group.opsgenie[0].id]) : local.action_groups_default
+  action_groups = var.env_short == "p" ? concat(local.action_groups_default, [data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]) : local.action_groups_default
   # action_groups = local.action_groups_default
 }
 
@@ -30,7 +30,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-av
   location            = var.location
 
   action {
-    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
     # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "gpd-ingestion-manager-availability ${each.value.name}"
     custom_webhook_payload = "{}"
@@ -69,7 +69,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   location            = var.location
 
   action {
-    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
     # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "gpd-ingestion-manager-error-json ${each.value.name}"
     custom_webhook_payload = "{}"
@@ -101,7 +101,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   location            = var.location
 
   action {
-    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
     # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "gpd-ingestion-manager-error-generic ${each.value.name}"
     custom_webhook_payload = "{}"
@@ -133,7 +133,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   location            = var.location
 
   action {
-    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
     # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "gpd-ingestion-manager-error-pdv-tokenizer ${each.value.name}"
     custom_webhook_payload = "{}"
@@ -165,7 +165,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-ingestion-manager-er
   location            = var.location
 
   action {
-    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id]
+    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
     # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "gpd-ingestion-manager-error-unexpected-pdv-tokenizer ${each.value.name}"
     custom_webhook_payload = "{}"

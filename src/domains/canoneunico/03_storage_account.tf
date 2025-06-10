@@ -19,7 +19,7 @@ module "canoneunico_sa" {
   blob_last_access_time_enabled = true
 
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 

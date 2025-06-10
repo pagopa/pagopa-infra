@@ -3,7 +3,7 @@ resource "azurerm_private_dns_zone" "db_nodo_dns_zone" {
   name                = var.private_dns_zone_db_nodo_pagamenti
   resource_group_name = azurerm_resource_group.data.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "db_nodo_dns_zone_virtual_link" {
@@ -12,7 +12,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "db_nodo_dns_zone_virtu
   private_dns_zone_name = azurerm_private_dns_zone.db_nodo_dns_zone.name
   virtual_network_id    = module.vnet_integration.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_a_record" "private_dns_a_record_db_nodo" {
@@ -100,7 +100,7 @@ resource "azurerm_private_dns_zone" "privatelink_redis_cache_windows_net" {
   name                = "privatelink.redis.cache.windows.net"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_redis_cache_windows_net_vnet" {
@@ -111,7 +111,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_redis_cach
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ### 🔮 Private dns zone: storage queue
@@ -122,7 +122,7 @@ resource "azurerm_private_dns_zone" "privatelink_queue_core_windows_net" {
   name                = "privatelink.queue.core.windows.net"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_link_privatelink_queue_core_windows_net" {
@@ -134,7 +134,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_link_privatelink_
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ### 🔮 DNS private 👉 <prod|uat|dev>.platform.pagopa.it
@@ -142,7 +142,7 @@ resource "azurerm_private_dns_zone" "platform_private_dns_zone" {
   name                = "${var.dns_zone_prefix}.${var.external_domain}"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_a_record" "platform_dns_a_private_apim" {
@@ -153,7 +153,7 @@ resource "azurerm_private_dns_a_record" "platform_dns_a_private_apim" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = module.apim[0].private_ip_addresses
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet" {
@@ -163,7 +163,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet_integration" {
@@ -173,7 +173,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet
   virtual_network_id    = module.vnet_integration.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ### 🔮 DNS private 👉 prf.platform.pagopa.it
@@ -183,7 +183,7 @@ resource "azurerm_private_dns_zone" "platform_private_dns_zone_prf" {
   name                = "${var.dns_zone_prefix_prf}.${var.external_domain}"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_a_record" "platform_dns_a_private_prf" {
@@ -193,7 +193,7 @@ resource "azurerm_private_dns_a_record" "platform_dns_a_private_prf" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = module.apim[0].private_ip_addresses
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet_prf" {
@@ -204,7 +204,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet_integration_prf" {
@@ -215,7 +215,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "platform_vnetlink_vnet
   virtual_network_id    = module.vnet_integration.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ### 🔮 Private DNS Zone for Postgres Databases
@@ -242,7 +242,7 @@ resource "azurerm_private_dns_zone" "privatelink_azurecr_pagopa" {
   name                = "privatelink.azurecr.io"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ### 🔮 Private DNS Zone for Cosmos Document DB
@@ -251,7 +251,7 @@ resource "azurerm_private_dns_zone" "privatelink_documents_azure_com" {
   name                = "privatelink.documents.azure.com"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_documents_azure_com_vnet" {
@@ -261,7 +261,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_documents_
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_documents_azure_com_vnet_integration" {
@@ -271,7 +271,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_documents_
   virtual_network_id    = module.vnet_integration.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ### 🔮 Private DNS Zone for Cosmos DB Table API
@@ -280,7 +280,7 @@ resource "azurerm_private_dns_zone" "privatelink_table_cosmos_azure_com" {
   name                = "privatelink.table.cosmos.azure.com"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_cosmos_azure_com_vnet" {
@@ -290,7 +290,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_cosm
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_cosmos_azure_com_vnet_integration" {
@@ -300,7 +300,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_cosm
   virtual_network_id    = module.vnet_integration.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ### 🔮 Private DNS Zone for Storage Accounts
@@ -309,7 +309,7 @@ resource "azurerm_private_dns_zone" "storage_account" {
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_blob_azure_com_vnet" {
@@ -319,7 +319,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_blob_azure
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_blob_azure_com_vnet_integration" {
@@ -329,7 +329,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_blob_azure
   virtual_network_id    = module.vnet_integration.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ### 🔮 DNS private: internal.dev.platform.pagopa.it
@@ -338,7 +338,7 @@ resource "azurerm_private_dns_zone" "internal_platform_pagopa_it" {
   name                = "internal.${var.dns_zone_prefix}.${var.external_domain}"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "internal_platform_pagopa_it_private_vnet" {
@@ -348,7 +348,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "internal_platform_pago
   virtual_network_id    = module.vnet_integration.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "internal_platform_vnetlink_vnet_core" {
@@ -358,7 +358,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "internal_platform_vnet
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ### 🔮 Cosmos MongoDB for ecommerce - private dns zone
@@ -368,7 +368,7 @@ resource "azurerm_private_dns_zone" "privatelink_mongo_cosmos_azure_com" {
   name                = "privatelink.mongo.cosmos.azure.com"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "vnet_privatelink_mongo_cosmos_azure_com" {
@@ -379,7 +379,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_privatelink_mongo
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ### 🔮 Private DNS Zone for Table Storage Account
@@ -388,7 +388,7 @@ resource "azurerm_private_dns_zone" "table_storage_account" {
   name                = "privatelink.table.core.windows.net"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_azure_com_vnet" {
@@ -398,7 +398,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_table_azur
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_dns_a_record" "dns_a_forwarder" {
@@ -408,14 +408,14 @@ resource "azurerm_dns_a_record" "dns_a_forwarder" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   ttl                 = var.dns_default_ttl_sec
   records             = tolist(data.azurerm_public_ip.natgateway_public_ip.*.ip_address)
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone" "appservice_private_dns" {
   name                = "privatelink.azurewebsites.net"
   resource_group_name = azurerm_resource_group.rg_vnet.name
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurewebsite_vnet" {
@@ -425,7 +425,7 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurewebsi
   virtual_network_id    = module.vnet.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurewebsite_vnet_integration" {
@@ -435,5 +435,5 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurewebsi
   virtual_network_id    = module.vnet_integration.id
   registration_enabled  = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

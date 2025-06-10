@@ -3,7 +3,7 @@ resource "azurerm_resource_group" "pagopa_shared_toolbox_rg" {
   name     = format("%s-pagopa-shared-toolbox-rg", local.product)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -244,7 +244,7 @@ module "pagopa_shared_toolbox_cdn" {
   }]
 
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_key_vault_secret" "pagopa_shared_toolbox_storage_account_key" {
