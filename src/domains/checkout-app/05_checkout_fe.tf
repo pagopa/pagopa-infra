@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "checkout_fe_rg" {
   name     = format("%s-checkout-fe-rg", local.parent_project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 /**
@@ -192,7 +192,7 @@ module "checkout_cdn" {
     }
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_application_insights_web_test" "checkout_fe_web_test" {

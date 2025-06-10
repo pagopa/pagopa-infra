@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "printit_pdf_engine_app_service_rg" {
   name     = "${local.project}-pdf-engine-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 data "azurerm_container_registry" "container_registry" {
@@ -48,7 +48,7 @@ module "printit_pdf_engine_app_service" {
 
   subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
 }
 
@@ -80,7 +80,7 @@ module "printit_pdf_engine_slot_staging" {
   allowed_ips     = []
   subnet_id       = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
 
 }
@@ -282,7 +282,7 @@ module "printit_pdf_engine_app_service_java" {
 
   subnet_id = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
 
 }
@@ -315,7 +315,7 @@ module "printit_pdf_engine_java_slot_staging" {
   allowed_ips     = []
   subnet_id       = data.azurerm_subnet.printit_pdf_engine_app_service_snet[0].id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
 
 }

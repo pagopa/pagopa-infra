@@ -7,14 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/nodo-app"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "nodo"
-}
 
 ### External resources
 
@@ -122,6 +114,13 @@ route_aks = [
     #  prf aks nodo nexi postgres onprem prf
     name                   = "aks-outbound-to-nexi-postgres-prf-onprem-balancer-2-subnet"
     address_prefix         = "10.222.214.128/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.9.150"
+  },
+  {
+    #  prf aks nodo nexi postgres onprem prf new
+    name                   = "aks-outbound-to-nexi-postgres-prf-onprem-balancer-new-subnet"
+    address_prefix         = "10.6.52.93/32"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.9.150"
   }

@@ -91,26 +91,6 @@ locals {
     }
   }
 
-  public_listener_elastic = {
-    kibana = {
-      protocol           = "Https"
-      host               = format("kibana.%s.%s", var.dns_zone_prefix, var.external_domain)
-      port               = 443
-      ssl_profile_name   = format("%s-ssl-profile", local.product)
-      firewall_policy_id = null
-
-      certificate = {
-        name = var.app_gateway_kibana_certificate_name
-        id = replace(
-          data.azurerm_key_vault_certificate.kibana.secret_id,
-          "/${data.azurerm_key_vault_certificate.kibana.version}",
-          ""
-        )
-      }
-    }
-  }
-
-
   public_listeners_wisp2govit = {
     wisp2govit = {
       protocol           = "Https"
@@ -209,15 +189,6 @@ locals {
     }
   }
 
-  public_routes_elastic = {
-    kibana = {
-      listener              = "kibana"
-      backend               = "kibana"
-      rewrite_rule_set_name = "rewrite-rule-set-kibana"
-      priority              = 40
-    }
-  }
-
   public_routes_wisp2govit = {
     wisp2govit = {
       listener              = "wisp2govit"
@@ -302,20 +273,6 @@ locals {
     }
   }
 
-  public_backends_elastic = {
-    kibana = {
-      protocol                    = "Https"
-      host                        = var.env == "prod" ? "weu${var.env}.kibana.internal.platform.pagopa.it" : "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"
-      port                        = 443
-      ip_addresses                = [var.ingress_elk_load_balancer_ip]
-      fqdns                       = [var.env == "prod" ? "weu${var.env}.kibana.internal.platform.pagopa.it" : "weu${var.env}.kibana.internal.${var.env}.platform.pagopa.it"]
-      probe                       = "/kibana"
-      probe_name                  = "probe-kibana"
-      request_timeout             = 10
-      pick_host_name_from_backend = false
-    }
-  }
-
   ## rewrite rule sets
 
   rewrite_rule_set = [
@@ -395,7 +352,7 @@ locals {
             },
             {
               header_name  = "X-Environment"
-              header_value = lower(var.tags["Environment"])
+              header_value = lower(module.tag_config.tags["Environment"])
             },
           ]
           response_header_configurations = []
@@ -458,31 +415,6 @@ locals {
       ]
     }
   ]
-
-  rewrite_rule_set_elastic = [
-    {
-      name = "rewrite-rule-set-kibana"
-      rewrite_rules = [
-        {
-          name          = "http-kibana-deny-path"
-          rule_sequence = 1
-          conditions = [{
-            variable    = "var_uri_path"
-            pattern     = join("|", var.app_gateway_kibana_deny_paths)
-            ignore_case = true
-            negate      = false
-          }]
-          request_header_configurations  = []
-          response_header_configurations = []
-          url = {
-            path         = "notfound"
-            query_string = null
-          }
-        },
-      ]
-    }
-  ]
-
 }
 
 data "azurerm_user_assigned_identity" "public_appgateway" {
@@ -500,7 +432,7 @@ resource "azurerm_public_ip" "appgateway_public_ip" {
   allocation_method   = "Static"
   zones               = [1, 2, 3]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # Subnet to host the application gateway
@@ -537,8 +469,7 @@ module "app_gw" {
   # Configure 3.backends
   backends = merge(
     local.public_backends,
-    var.upload_endpoint_enabled ? local.public_backends_upload : {},
-    var.is_feature_enabled.elastic_on_prem ? local.public_backends_elastic : {}
+    var.upload_endpoint_enabled ? local.public_backends_upload : {}
   )
 
   ssl_profiles = [{
@@ -566,7 +497,6 @@ module "app_gw" {
     var.app_gateway_wisp2govit_certificate_name != "" ? local.public_listeners_wisp2govit : {},
     var.app_gateway_wfespgovit_certificate_name != "" ? local.public_listeners_wfespgovit : {},
     var.upload_endpoint_enabled ? local.public_listeners_apiupload : {},
-    var.is_feature_enabled.elastic_on_prem ? local.public_listener_elastic : {}
   )
 
   # maps listener to backend
@@ -576,12 +506,10 @@ module "app_gw" {
     var.app_gateway_wisp2govit_certificate_name != "" ? local.public_routes_wisp2govit : {},
     var.app_gateway_wfespgovit_certificate_name != "" ? local.public_routes_wfespgovit : {},
     var.upload_endpoint_enabled ? local.public_routes_apiupload : {},
-    var.is_feature_enabled.elastic_on_prem ? local.public_routes_elastic : {}
   )
 
   rewrite_rule_sets = concat(
     local.rewrite_rule_set,
-    var.is_feature_enabled.elastic_on_prem ? local.rewrite_rule_set_elastic : []
   )
 
   # TLS
@@ -722,5 +650,5 @@ module "app_gw" {
 
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

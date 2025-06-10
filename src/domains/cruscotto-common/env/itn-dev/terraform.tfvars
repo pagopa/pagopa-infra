@@ -6,14 +6,6 @@ location       = "italynorth"
 location_short = "itn"
 instance       = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/crusc8-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "crusc8"
-}
 
 ### External resources
 
@@ -36,7 +28,7 @@ dns_zone_internal_prefix = "internal.dev.platform"
 cidr_subnet_flex_dbms = ["10.3.7.0/27"]
 
 pgres_flex_params = {
-  idh_resource = "pgflex2"
+  idh_resource = "pgflex2" # https://github.com/pagopa/terraform-azurerm-v4/blob/44df8cdf0615a2d1c39efd05996edc4bf28e0dec/IDH/postgres_flexible_server/LIBRARY.md
   sku_name     = "GP_Standard_D2ds_v4"
   db_version   = "16"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,

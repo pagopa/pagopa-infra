@@ -54,7 +54,7 @@ module "vpn" {
     }
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -93,6 +93,6 @@ module "dns_forwarder" {
   resource_group_name = azurerm_resource_group.rg_vnet.name
   subnet_id           = module.dns_forwarder_snet[0].id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 

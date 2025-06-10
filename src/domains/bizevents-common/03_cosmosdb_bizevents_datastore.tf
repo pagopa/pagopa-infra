@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "bizevents_rg" {
   name     = "${local.project}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "bizevents_datastore_cosmosdb_snet" {
@@ -58,11 +58,11 @@ module "bizevents_datastore_cosmosdb_account" {
   subnet_id                           = module.bizevents_datastore_cosmosdb_snet.id
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "bizevents_datastore_cosmosdb_account_dev" {
-  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer 
+  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer
 
   source              = "./.terraform/modules/__v3__/cosmosdb_account"
   name                = "${local.project}-ds-cosmos-account-dev"
@@ -100,7 +100,7 @@ module "bizevents_datastore_cosmosdb_account_dev" {
   subnet_id                           = module.bizevents_datastore_cosmosdb_snet.id
   private_dns_zone_sql_ids            = [data.azurerm_private_dns_zone.cosmos.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb database for biz-events
@@ -111,7 +111,7 @@ module "bizevents_datastore_cosmosdb_database" {
   account_name        = module.bizevents_datastore_cosmosdb_account.name
 }
 module "bizevents_datastore_cosmosdb_database_dev" {
-  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer 
+  count = var.env_short == "d" ? 1 : 0 # used for ADF biz test developer
 
   source              = "./.terraform/modules/__v3__/cosmosdb_sql_database"
   name                = "db"
@@ -250,5 +250,5 @@ resource "azurerm_monitor_metric_alert" "cosmos_biz_db_normalized_ru_exceeded" {
     action_group_id = data.azurerm_monitor_action_group.opsgenie[0].id
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

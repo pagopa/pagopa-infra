@@ -26,6 +26,7 @@
 | <a name="module_gpd_ingestion_sa"></a> [gpd\_ingestion\_sa](#module\_gpd\_ingestion\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 | <a name="module_observability_sa"></a> [observability\_sa](#module\_observability\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
 | <a name="module_observability_st_snet"></a> [observability\_st\_snet](#module\_observability\_st\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.7.0 |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
 
 ## Resources
 
@@ -84,6 +85,7 @@
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_TPNP](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_WAFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_trigger_schedule) | resource |
 | [azurerm_data_factory_trigger_schedule.Trigger_PDND_KPI_WPNFDR](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/data_factory_trigger_schedule) | resource |
+| [azurerm_eventhub_consumer_group.rtp_consumer_gpd](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/eventhub_consumer_group) | resource |
 | [azurerm_eventhub_namespace_authorization_rule.cdc_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/eventhub_namespace_authorization_rule) | resource |
 | [azurerm_eventhub_namespace_authorization_rule.cdc_test_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/eventhub_namespace_authorization_rule) | resource |
 | [azurerm_key_vault_secret.apim_app_forwarder_subscription_key](https://registry.terraform.io/providers/hashicorp/azurerm/3.53.0/docs/resources/key_vault_secret) | resource |
@@ -181,7 +183,6 @@
 | <a name="input_observability_storage_account_replication_type"></a> [observability\_storage\_account\_replication\_type](#input\_observability\_storage\_account\_replication\_type) | (Optional) observability datastore storage account replication type | `string` | `"LRS"` | no |
 | <a name="input_observability_tier_to_archive_after_days_since_last_access_time_greater_than"></a> [observability\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than](#input\_observability\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than) | Number of days since last access to blob before moving to archive tier | `number` | `730` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 

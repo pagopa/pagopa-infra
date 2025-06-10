@@ -8,14 +8,6 @@ instance             = "uat"
 location_short_italy = "itn"
 location_italy       = "italynorth"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/shared"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "shared"
-}
 
 ### External resources
 

@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "key_vault" {
@@ -14,7 +14,7 @@ module "key_vault" {
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days = 90
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## ad group policy ##
@@ -607,5 +607,76 @@ resource "azurerm_key_vault_secret" "gpd_ingestion_apd_payment_option_transfer_t
   name         = "transfer-topic-output-conn-string"
   value        = data.azurerm_eventhub_authorization_rule.gpd_ingestion_apd_payment_option_transfer_tx[0].primary_connection_string
   content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-tx" {
+  name                = "rtp-events-tx"
+  namespace_name      = "${local.project_itn}-rtp-evh"
+  eventhub_name       = "rtp-events"
+  resource_group_name = azurerm_resource_group.rtp_rg.name
+}
+
+resource "azurerm_key_vault_secret" "ehub_rtp_connection_string" {
+  name         = format("ehub-%s-tx-rtp-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-rtp-tx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_redis_cache" "redis_cache" {
+  name                = var.redis_ha_enabled ? format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short) : format("%s-%s-redis", var.prefix, var.env_short)
+  resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
+}
+
+resource "azurerm_key_vault_secret" "redis_password" {
+  name         = "redis-password"
+  value        = data.azurerm_redis_cache.redis_cache.primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "redis_hostname" {
+  name         = "redis-hostname"
+  value        = data.azurerm_redis_cache.redis_cache.hostname
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "rtp_storage_account_connection_string" {
+  name         = "rtp-storage-account-connection-string"
+  value        = module.gpd_rtp_sa.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+# ##########################
+# Anonymizer Shared domain subkey
+# ##########################
+data "azurerm_api_management_product" "anonymizer_product" {
+  product_id          = "anonymizer"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+resource "azurerm_api_management_subscription" "shared_anonymizer_api_key_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.anonymizer_product.id
+  display_name  = "Anonymizer shared-anonymizer-api-key"
+  allow_tracing = false
+  state         = "active"
+}
+resource "azurerm_key_vault_secret" "shared_anonymizer_api_keysubkey_store_kv" {
+  depends_on = [
+    azurerm_api_management_subscription.shared_anonymizer_api_key_subkey
+  ]
+  name         = "shared-anonymizer-api-key"
+  value        = azurerm_api_management_subscription.shared_anonymizer_api_key_subkey.primary_key
+  content_type = "text/plain"
+
   key_vault_id = module.key_vault.id
 }

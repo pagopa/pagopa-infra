@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "tools_rg" {
   name     = "${local.project}-tools-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_container_app_environment" "tools_cae" {
