@@ -1,10 +1,12 @@
-prefix         = "pagopa"
-env_short      = "d"
-env            = "dev"
-domain         = "shared"
-location       = "westeurope"
-location_short = "weu"
-instance       = "dev"
+prefix               = "pagopa"
+env_short            = "d"
+env                  = "dev"
+domain               = "shared"
+location             = "westeurope"
+location_short       = "weu"
+instance             = "dev"
+location_short_italy = "itn"
+location_italy       = "italynorth"
 
 
 ### External resources
@@ -94,3 +96,5 @@ test_data_storage_account = {
 }
 
 redis_ha_enabled = false
+
+github_runner_ita_enabled = true
