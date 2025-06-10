@@ -59,7 +59,7 @@ dns_zone_wfesp                                  = "wfesp"
 private_dns_zone_db_nodo_pagamenti              = "p.db-nodo-pagamenti.com"
 dns_a_reconds_dbnodo_ips                        = ["10.102.175.23", "10.102.175.24"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
 dns_a_reconds_dbnodo_ips_dr                     = ["10.101.175.23", "10.101.175.24"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
-dns_a_reconds_dbnodonexipostgres_ips            = ["10.222.209.84"]
+dns_a_reconds_dbnodonexipostgres_ips            = ["10.102.1.93"]
 dns_a_reconds_dbnodonexipostgres_balancer_1_ips = ["10.222.214.129"] # db onPrem PostgreSQL
 dns_a_reconds_dbnodonexipostgres_balancer_2_ips = ["10.222.214.134"] # db onPrem PostgreSQL
 
