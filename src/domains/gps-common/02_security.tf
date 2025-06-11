@@ -653,3 +653,30 @@ resource "azurerm_key_vault_secret" "rtp_storage_account_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+# ##########################
+# Anonymizer Shared domain subkey
+# ##########################
+data "azurerm_api_management_product" "anonymizer_product" {
+  product_id          = "anonymizer"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+resource "azurerm_api_management_subscription" "shared_anonymizer_api_key_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.anonymizer_product.id
+  display_name  = "Anonymizer shared-anonymizer-api-key"
+  allow_tracing = false
+  state         = "active"
+}
+resource "azurerm_key_vault_secret" "shared_anonymizer_api_keysubkey_store_kv" {
+  depends_on = [
+    azurerm_api_management_subscription.shared_anonymizer_api_key_subkey
+  ]
+  name         = "shared-anonymizer-api-key"
+  value        = azurerm_api_management_subscription.shared_anonymizer_api_key_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
