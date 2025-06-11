@@ -56,4 +56,7 @@ locals {
   azdo_iac_managed_identities   = toset(["azdo-${var.env}-pagopa-iac-deploy", "azdo-${var.env}-pagopa-iac-plan"])
 
   aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"
+
+  pagopa_apim_name = "${local.product}-apim"
+  pagopa_apim_rg   = "${local.product}-api-rg"
 }
