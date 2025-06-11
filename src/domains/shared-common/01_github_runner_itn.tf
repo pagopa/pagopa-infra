@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "github_runner_rg_italy" {
   name     = "${var.prefix}-${var.env_short}-${var.location_short_italy}-github-runner-rg"
   location = var.location_italy
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_subnet" "github_runner_snet_italy" {
@@ -33,6 +33,6 @@ module "github_runner_environment_italy" { # itn
   zone_redundant             = false
   internal_load_balancer     = true
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
