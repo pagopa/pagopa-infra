@@ -98,6 +98,8 @@ resource "azurerm_subnet" "eventhubs_italy" {
   resource_group_name  = module.vnet_italy[0].resource_group_name
   virtual_network_name = module.vnet_italy[0].name
   address_prefixes     = var.cidr_eventhubs_italy
+
+  private_endpoint_network_policies = "Enabled"
 }
 
 resource "azurerm_subnet" "subnet_container_app_tools" {
@@ -105,6 +107,9 @@ resource "azurerm_subnet" "subnet_container_app_tools" {
   resource_group_name  = module.vnet_italy[0].resource_group_name
   virtual_network_name = module.vnet_italy[0].name
   address_prefixes     = var.cidr_subnet_tools_cae
+
+    private_endpoint_network_policies = "Enabled"
+
 }
 
 # subnet acr
