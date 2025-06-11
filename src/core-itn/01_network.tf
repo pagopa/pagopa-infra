@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "rg_ita_vnet" {
 }
 
 module "vnet_italy" {
-  source              = "./.terraform/modules/__v3__/virtual_network"
+  source              = "./.terraform/modules/__v4__/virtual_network"
   count               = 1
   name                = "${local.product_ita}-vnet"
   location            = var.location_ita
@@ -23,7 +23,7 @@ module "vnet_italy" {
 
 
 # module "vnet_integration_cstar" {
-#   source              = "./.terraform/modules/__v3__/virtual_network"
+#   source              = "./.terraform/modules/__v4__/virtual_network"
 #   count               = 1
 #   name                = "${local.product_ita}-vnet"
 #   location            = var.location_ita
@@ -42,7 +42,7 @@ module "vnet_italy" {
 
 ## Peering between the vnet(main) and italy vnet
 module "vnet_ita_peering" {
-  source                           = "./.terraform/modules/__v3__/virtual_network_peering"
+  source                           = "./.terraform/modules/__v4__/virtual_network_peering"
   count                            = 1
   source_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
   source_virtual_network_name      = module.vnet_italy[0].name
@@ -59,7 +59,7 @@ module "vnet_ita_peering" {
 }
 
 module "vnet_ita_to_integration_peering" {
-  source                           = "./.terraform/modules/__v3__/virtual_network_peering"
+  source                           = "./.terraform/modules/__v4__/virtual_network_peering"
   count                            = 1
   source_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
   source_virtual_network_name      = module.vnet_italy[0].name
@@ -114,7 +114,7 @@ resource "azurerm_subnet" "subnet_container_app_tools" {
 
 # subnet acr
 module "common_private_endpoint_snet" {
-  source               = "./.terraform/modules/__v3__/subnet"
+  source               = "./.terraform/modules/__v4__/subnet"
   name                 = "${local.product}-common-private-endpoint-snet"
   address_prefixes     = var.cidr_common_private_endpoint_snet
   resource_group_name  = azurerm_resource_group.rg_ita_vnet.name

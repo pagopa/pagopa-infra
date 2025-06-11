@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "acr_ita_rg" {
 }
 
 module "container_registry_ita" {
-  source = "./.terraform/modules/__v3__/container_registry"
+  source = "./.terraform/modules/__v4__/container_registry"
 
   name                = replace("${local.project}-acr", "-", "")
   resource_group_name = azurerm_resource_group.acr_ita_rg.name
