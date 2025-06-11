@@ -18,7 +18,8 @@ locals {
     "pagopa-biz-events-service",
     "pagopa-biz-pm-ingestion",
     "pagopa-biz-events-sync-nodo",
-    "pagopa-biz-events-datastore"
+    "pagopa-biz-events-datastore",
+    "pagopa-negative-biz-events-datastore"
   ]
 
   federations_01 = [
@@ -61,7 +62,7 @@ module "identity_cd_01" {
     resource_groups    = local.environment_cd_roles.resource_groups
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     data.azurerm_resource_group.identity_rg

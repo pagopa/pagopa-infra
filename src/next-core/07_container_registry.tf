@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "container_registry_rg" {
   name     = format("%s-container-registry-rg", local.product)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "container_registry" {
@@ -26,5 +26,5 @@ module "container_registry" {
     virtual_network = []
   }]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

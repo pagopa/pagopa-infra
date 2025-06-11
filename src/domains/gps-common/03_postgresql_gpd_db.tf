@@ -15,7 +15,7 @@ resource "azurerm_resource_group" "flex_data" {
   name = format("%s-pgres-flex-rg", local.product)
 
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 data "azurerm_resource_group" "data" {
@@ -87,7 +87,7 @@ module "postgres_flexible_server_private_db" {
 
   diagnostic_settings_enabled = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   # alert section
   custom_metric_alerts = var.pgres_flex_params.alerts_enabled ? var.pgflex_public_metric_alerts : {}

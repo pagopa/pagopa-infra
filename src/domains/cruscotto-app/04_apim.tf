@@ -6,7 +6,7 @@ locals {
 }
 
 module "apim_cruscotto_product" {
-  source = "./.terraform/modules/__v3__/api_management_product"
+  source = "./.terraform/modules/__v4__/api_management_product"
 
   product_id   = "pagopa-smo-cruscotto"
   display_name = local.apim_cruscotto_pagopa_api.display_name
@@ -18,7 +18,7 @@ module "apim_cruscotto_product" {
   published             = false
   subscription_required = false
   approval_required     = false
-  subscriptions_limit   = 1
+  subscriptions_limit   = 0 # false
 
   policy_xml = file("./api_product/_base_policy.xml")
 }

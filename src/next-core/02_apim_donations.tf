@@ -24,7 +24,7 @@ module "logos_donation_flows_sa" {
   blob_delete_retention_days = var.logos_backup_retention + 1
 
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 

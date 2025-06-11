@@ -9,14 +9,6 @@ location_ita       = "italynorth"
 location_short_ita = "itn"
 instance           = "prod"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "PROD"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "core"
-}
 
 ### Feature Flag
 is_feature_enabled = {
@@ -67,7 +59,7 @@ dns_zone_wfesp                                  = "wfesp"
 private_dns_zone_db_nodo_pagamenti              = "p.db-nodo-pagamenti.com"
 dns_a_reconds_dbnodo_ips                        = ["10.102.175.23", "10.102.175.24"] # scan: "10.102.35.61", "10.102.35.62", "10.102.35.63", vip: "10.102.35.60", "10.102.35.59",
 dns_a_reconds_dbnodo_ips_dr                     = ["10.101.175.23", "10.101.175.24"] # authdbsep01-vip.carte.local   NAT 10.250.45.145 authdbsep02-vip.carte.local   NAT 10.250.45.146 authdbpep01-vip.carte.local   NAT 10.250.45.147 authdbpep02-vip.carte.local   NAT 10.250.45.148
-dns_a_reconds_dbnodonexipostgres_ips            = ["10.222.209.84"]
+dns_a_reconds_dbnodonexipostgres_ips            = ["10.102.1.93"]
 dns_a_reconds_dbnodonexipostgres_balancer_1_ips = ["10.222.214.129"] # db onPrem PostgreSQL
 dns_a_reconds_dbnodonexipostgres_balancer_2_ips = ["10.222.214.134"] # db onPrem PostgreSQL
 
@@ -432,7 +424,7 @@ eventhubs_03 = [
     name              = "nodo-dei-pagamenti-biz-evt"
     partitions        = 32
     message_retention = 7
-    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd"]
+    consumers         = ["pagopa-biz-evt-rx", "pagopa-biz-evt-rx-io", "pagopa-biz-evt-rx-pdnd", "pagopa-biz-evt-rx-views"]
     keys = [
       {
         name   = "pagopa-biz-evt-tx"
@@ -781,7 +773,6 @@ app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
 app_gateway_management_certificate_name = "management-platform-pagopa-it"
 app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
-app_gateway_kibana_certificate_name     = "kibana-platform-pagopa-it"
 app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
 app_gateway_min_capacity                = 8 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
 app_gateway_max_capacity                = 50
@@ -816,9 +807,6 @@ app_gateway_deny_paths_2 = [
   "/gps/spontaneous-payments-service/.*", # internal use no sub-keys
   "/shared/authorizer/.*",                # internal use no sub-keys
   "/gpd/api/.*",                          # internal use no sub-keys
-]
-app_gateway_kibana_deny_paths = [
-  "/kibana/*",
 ]
 app_gateway_allowed_paths_pagopa_onprem_only = {
   paths = [

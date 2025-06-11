@@ -14,7 +14,7 @@ resource "azurerm_resource_group" "rg_api" {
   name     = format("%s-api-rg", local.product)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_network_security_group" "apimv2_snet_nsg" {
@@ -64,7 +64,7 @@ resource "azurerm_public_ip" "apim_pip" {
 
   zones = var.apim_v2_zones
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -212,7 +212,7 @@ module "apim" {
     }
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
 }
 

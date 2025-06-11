@@ -15,8 +15,8 @@ locals {
   vnet_name                = "${var.prefix}-${var.env_short}-${var.location_short}-vnet"
   vnet_resource_group_name = "${var.prefix}-${var.env_short}-${var.location_short}-vnet-rg"
 
-  vnet_name_weu                = "${var.prefix}-${var.env_short}-${var.location_short_weu}-vnet"
-  vnet_resource_group_name_weu = "${var.prefix}-${var.env_short}-${var.location_short_weu}-vnet-rg"
+  vnet_name_weu                = "${var.prefix}-${var.env_short}-vnet"
+  vnet_resource_group_name_weu = "${var.prefix}-${var.env_short}-vnet-rg"
 
   aks_name                = "${local.product}-${var.location_short}-${var.instance}-aks"
   aks_resource_group_name = "${local.product}-${var.location_short}-${var.instance}-aks-rg"

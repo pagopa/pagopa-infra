@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "monitor_rg" {
   name     = format("%s-monitor-rg", local.product)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
@@ -15,7 +15,7 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   reservation_capacity_in_gb_per_day = var.env_short == "p" ? 100 : null
   allow_resource_only_permissions    = var.env_short != "p"
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   lifecycle {
     ignore_changes = [
@@ -30,7 +30,7 @@ resource "azurerm_monitor_workspace" "monitor_workspace" {
   resource_group_name           = "${var.prefix}-${var.env_short}-monitor-rg"
   location                      = var.location
   public_network_access_enabled = false
-  tags                          = var.tags
+  tags                          = module.tag_config.tags
 }
 
 # Create workspace private DNS zone
@@ -68,7 +68,7 @@ resource "azurerm_private_endpoint" "monitor_workspace_private_endpoint" {
 
   depends_on = [azurerm_monitor_workspace.monitor_workspace]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # Application insights
@@ -80,7 +80,7 @@ resource "azurerm_application_insights" "application_insights" {
 
   workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -95,7 +95,7 @@ resource "azurerm_monitor_action_group" "email" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_action_group" "slack" {
@@ -109,7 +109,7 @@ resource "azurerm_monitor_action_group" "slack" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_action_group" "mo_email" {
@@ -123,7 +123,7 @@ resource "azurerm_monitor_action_group" "mo_email" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_action_group" "pm_opsgenie" { # https://pagopa.atlassian.net/wiki/spaces/PPR/pages/647921690/PM
@@ -138,7 +138,7 @@ resource "azurerm_monitor_action_group" "pm_opsgenie" { # https://pagopa.atlassi
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_action_group" "new_conn_srv_opsgenie" { # https://pagopa.atlassian.net/wiki/spaces/PPR/pages/647921720/Nuova+Connettivit
@@ -153,7 +153,7 @@ resource "azurerm_monitor_action_group" "new_conn_srv_opsgenie" { # https://pago
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_action_group" "infra_opsgenie" { #
@@ -168,7 +168,22 @@ resource "azurerm_monitor_action_group" "infra_opsgenie" { #
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
+}
+
+resource "azurerm_monitor_action_group" "smo_opsgenie" { # pagoPA - Service Management and Operation - Reperibilità_SMO → https://pagopa.atlassian.net/wiki/x/TgA9XQ
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "SmoOpsgenie"
+  resource_group_name = azurerm_resource_group.monitor_rg.name
+  short_name          = "SmoOpsgenie"
+
+  webhook_receiver {
+    name                    = "SmoOpsgenieWebhook"
+    service_uri             = "https://api.opsgenie.com/v1/json/azure?apiKey=${data.azurerm_key_vault_secret.opsgenie_smo_webhook_key[0].value}"
+    use_common_alert_schema = true
+  }
+
+  tags = module.tag_config.tags
 }
 
 #
@@ -191,7 +206,22 @@ resource "azurerm_monitor_action_group" "error_action_group" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
+}
+
+
+resource "azurerm_monitor_action_group" "cert_pipeline_status" {
+  resource_group_name = azurerm_resource_group.monitor_rg.name
+  name                = "${var.prefix}${var.env_short}-cert-pipeline-status"
+  short_name          = "${var.prefix}${var.env_short}cerst"
+
+  email_receiver {
+    name                    = "slack"
+    email_address           = data.azurerm_key_vault_secret.alert_cert_pipeline_status_notification_slack.value
+    use_common_alert_schema = true
+  }
+
+  tags = module.tag_config.tags
 }
 
 #
@@ -202,43 +232,43 @@ locals {
     # api.env.platform.pagopa.it
     {
       host = join(".",
-      compact(["api", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
+      compact(["api", var.env_short != "p" ? lower(module.tag_config.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "/status-0123456789abcdef",
     },
     # portal.env.platform.pagopa.it
     {
       host = join(".",
-      compact(["portal", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
+      compact(["portal", var.env_short != "p" ? lower(module.tag_config.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "",
     },
     # management.env.platform.pagopa.it
     {
       host = join(".",
-      compact(["management", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
+      compact(["management", var.env_short != "p" ? lower(module.tag_config.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "/ServiceStatus",
     },
     # config.env.platform.pagopa.it
     {
       host = join(".",
-      compact(["config", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
+      compact(["config", var.env_short != "p" ? lower(module.tag_config.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "",
     },
     # env.checkout.pagopa.it
     {
       host = join(".",
-      compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "checkout.pagopa.it"])),
+      compact([var.env_short != "p" ? lower(module.tag_config.tags["Environment"]) : null, "checkout.pagopa.it"])),
       path = "",
     },
     # env.wisp2.pagopa.it
     {
       host = join(".",
-      compact([var.env_short != "p" ? lower(var.tags["Environment"]) : null, "wisp2.pagopa.it"])),
+      compact([var.env_short != "p" ? lower(module.tag_config.tags["Environment"]) : null, "wisp2.pagopa.it"])),
       path = "",
     },
     # selfcare.env.platform.pagopa.it
     {
       host = join(".",
-      compact(["selfcare", var.env_short != "p" ? lower(var.tags["Environment"]) : null, "platform.pagopa.it"])),
+      compact(["selfcare", var.env_short != "p" ? lower(module.tag_config.tags["Environment"]) : null, "platform.pagopa.it"])),
       path = "",
     }
   ]

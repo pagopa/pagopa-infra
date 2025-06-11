@@ -50,6 +50,22 @@ module "gh_runner_job" {
     {
       name : "pagopa-gpd-ingestion-manager"
       short_name : "gpd-ingst-mgr"
+    },
+    {
+      name : "pagopa-reporting-orgs-enrollment"
+      short_name : "gpd-rep-org"
+    },
+    {
+      name : "pagopa-spontaneous-payments"
+      short_name : "gpd-spopaym"
+    },
+    {
+      name : "pagopa-debt-position"
+      short_name : "gpd-debt-pos"
+    },
+    {
+      name : "pagopa-gpd-rtp"
+      short_name : "gpd-rtp"
     }
   ]
   job = {
@@ -71,6 +87,6 @@ module "gh_runner_job" {
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
   domain_security_rg_name = "${local.product}-${var.domain}-sec-rg"
-  tags                    = var.tags
+  tags                    = module.tag_config.tags
 
 }

@@ -68,12 +68,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 variable "gpd_archive_advanced_threat_protection" {
   type        = bool
@@ -511,4 +505,37 @@ variable "eventhubs_rtp" {
     }))
   }))
   default = []
+}
+
+variable "redis_ha_enabled" {
+  type        = bool
+  description = "(Required) If true, enables the usage of HA redis instance"
+}
+
+variable "rtp_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    blob_delete_retention_days    = number
+    enable_low_availability_alert = bool
+    backup_enabled                = optional(bool, false)
+    backup_retention              = optional(number, 0)
+  })
+
+  default = {
+    account_kind                  = "StorageV2"
+    account_tier                  = "Standard"
+    account_replication_type      = "LRS"
+    blob_versioning_enabled       = false
+    advanced_threat_protection    = true
+    public_network_access_enabled = false
+    blob_delete_retention_days    = 30
+    enable_low_availability_alert = false
+    backup_enabled                = false
+    backup_retention              = 0
+  }
 }

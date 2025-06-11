@@ -3,7 +3,7 @@ resource "azurerm_resource_group" "azdo_rg" {
   name     = "${local.product}-azdoa-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "azdoa_snet" {
@@ -35,7 +35,7 @@ module "azdoa_li_app" {
   zones        = var.devops_agent_zones
   zone_balance = var.devops_agent_balance_zones
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "azdoa_li_infra" {
@@ -53,7 +53,7 @@ module "azdoa_li_infra" {
   zones        = var.devops_agent_zones
   zone_balance = var.devops_agent_balance_zones
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_virtual_machine_scale_set_extension" "custom_script_extension_infra" {
@@ -123,7 +123,7 @@ module "azdoa_loadtest_li" {
 
   vm_sku = "Standard_D8ds_v5"
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 

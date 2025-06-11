@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "aks_rg" {
   name     = "${local.project}-aks-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -116,7 +116,7 @@ module "aks" {
 
   microsoft_defender_log_analytics_workspace_id = var.env == "prod" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 data "azurerm_container_registry" "acr" {

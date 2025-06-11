@@ -52,7 +52,7 @@ resource "azurerm_resource_group" "node_forwarder_rg" {
   name     = format("%s-node-forwarder-rg", local.product)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -137,7 +137,7 @@ module "node_forwarder_app_service" {
 
   zone_balancing_enabled = var.node_forwarder_zone_balancing_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "node_forwarder_slot_staging" {
@@ -167,7 +167,7 @@ module "node_forwarder_slot_staging" {
   subnet_id                     = var.is_feature_enabled.node_forwarder_ha_enabled ? module.node_forwarder_ha_snet[0].id : module.node_forwarder_snet[0].id
   public_network_access_enabled = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "forwarder_input_private_endpoint" {
@@ -189,7 +189,7 @@ resource "azurerm_private_endpoint" "forwarder_input_private_endpoint" {
     subresource_names              = ["sites"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "forwarder_staging_input_private_endpoint" {
@@ -211,7 +211,7 @@ resource "azurerm_private_endpoint" "forwarder_staging_input_private_endpoint" {
     subresource_names              = ["sites-staging"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_autoscale_setting" "node_forwarder_app_service_autoscale" {
@@ -369,7 +369,7 @@ resource "azurerm_monitor_metric_alert" "app_service_over_cpu_usage" {
   }
 
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_metric_alert" "app_service_over_mem_usage" {
@@ -409,7 +409,7 @@ resource "azurerm_monitor_metric_alert" "app_service_over_mem_usage" {
     action_group_id = azurerm_monitor_action_group.infra_opsgenie.0.id
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -468,7 +468,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id, azurerm_monitor_action_group.infra_opsgenie.0.id]
+    action_group = [
+      azurerm_monitor_action_group.email.id,
+      azurerm_monitor_action_group.slack.id,
+      azurerm_monitor_action_group.mo_email.id,
+      azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id,
+      azurerm_monitor_action_group.infra_opsgenie.0.id,
+    azurerm_monitor_action_group.smo_opsgenie.0.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }
@@ -503,7 +509,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-node-forward
   location            = var.location
 
   action {
-    action_group           = [azurerm_monitor_action_group.email.id, azurerm_monitor_action_group.slack.id, azurerm_monitor_action_group.mo_email.id, azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id]
+    action_group = [
+      azurerm_monitor_action_group.email.id,
+      azurerm_monitor_action_group.slack.id,
+      azurerm_monitor_action_group.mo_email.id,
+      azurerm_monitor_action_group.new_conn_srv_opsgenie[0].id,
+    azurerm_monitor_action_group.smo_opsgenie.0.id]
     email_subject          = "Email Header"
     custom_webhook_payload = "{}"
   }

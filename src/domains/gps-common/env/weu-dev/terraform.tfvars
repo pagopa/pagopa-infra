@@ -6,14 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/gps"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "gps"
-}
 
 ### External resources
 
@@ -76,7 +68,7 @@ pgres_flex_params = {
   enable_private_dns_registration_virtual_endpoint = false
   max_worker_process                               = 16
   wal_level                                        = "logical"
-  shared_preoload_libraries                        = "pg_failover_slots,pglogical"
+  shared_preoload_libraries                        = "pglogical"
   public_network_access_enabled                    = true
 }
 
@@ -180,4 +172,18 @@ eventhub_namespace_rtp = {
   private_endpoint_created = true
   metric_alerts_create     = false
   metric_alerts            = {}
+}
+
+redis_ha_enabled = false
+
+rtp_storage_account = {
+  account_kind                       = "StorageV2"
+  account_tier                       = "Standard"
+  account_replication_type           = "LRS"
+  blob_versioning_enabled            = false
+  advanced_threat_protection         = false
+  advanced_threat_protection_enabled = false
+  public_network_access_enabled      = true
+  blob_delete_retention_days         = 30
+  enable_low_availability_alert      = false
 }

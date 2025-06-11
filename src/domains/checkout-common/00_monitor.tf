@@ -36,5 +36,5 @@ resource "azurerm_monitor_action_group" "checkout_opsgenie" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

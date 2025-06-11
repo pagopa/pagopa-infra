@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "monitor_rg" {
   name     = "${local.project}-monitor-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
@@ -15,7 +15,7 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
 
   internet_query_enabled = var.law_internet_query_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   lifecycle {
     ignore_changes = [
@@ -30,7 +30,7 @@ resource "azurerm_monitor_workspace" "monitor_workspace" {
   resource_group_name           = "${var.prefix}-${var.env_short}-monitor-rg"
   location                      = var.location
   public_network_access_enabled = false
-  tags                          = var.tags
+  tags                          = module.tag_config.tags
 }
 
 # Create workspace private DNS zone
@@ -75,7 +75,7 @@ resource "azurerm_private_endpoint" "monitor_workspace_private_endpoint" {
 
   depends_on = [azurerm_monitor_workspace.monitor_workspace]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -90,7 +90,7 @@ resource "azurerm_application_insights" "application_insights" {
 
   workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #
@@ -107,7 +107,7 @@ resource "azurerm_monitor_action_group" "email" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_action_group" "slack" {
@@ -121,5 +121,5 @@ resource "azurerm_monitor_action_group" "slack" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

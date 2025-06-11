@@ -4,14 +4,6 @@ env            = "dev"
 location       = "westeurope"
 location_short = "weu"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/elk-monitoring"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "core"
-}
 
 storage_account_replication_type = "LRS"
 use_private_endpoint             = false

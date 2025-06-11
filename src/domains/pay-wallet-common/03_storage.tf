@@ -1,7 +1,7 @@
 resource "azurerm_resource_group" "storage_pay_wallet_rg" {
   name     = "${local.project}-storage-rg"
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 module "pay_wallet_storage" {
@@ -29,7 +29,7 @@ module "pay_wallet_storage" {
     virtual_network_subnet_ids = [module.storage_pay_wallet_snet.id]
     bypass                     = ["AzureServices"]
   } : null
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -52,7 +52,7 @@ resource "azurerm_private_endpoint" "storage_private_endpoint" {
     subresource_names              = ["queue"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_storage_queue" "pay_wallet_wallet_expiration_queue" {
@@ -176,8 +176,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
     let OpCountForQueue = (operation: string, queueKey: string) {
         StorageQueueLogs
         | where OperationName == operation and ObjectKey startswith queueKey
-        | summarize count() 
-        | project count_ 
+        | summarize count()
+        | project count_
         | extend dummy=1
     };
     let PutMessages = (queueName: string) {
@@ -248,8 +248,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "pay_wallet_enqueue_rate_
         StorageQueueLogs
         | where OperationName == operation and ObjectKey startswith queueKey
         | where TimeGenerated between(timestart .. timeend)
-        | summarize count() 
-        | project count_ 
+        | summarize count()
+        | project count_
         | extend dummy=1
     };
     let PutMessages = (queueName: string, timestart: datetime, timeend: datetime) {
