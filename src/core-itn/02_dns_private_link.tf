@@ -30,6 +30,11 @@ resource "azurerm_private_dns_zone_virtual_network_link" "internal_env_platform_
   tags                  = module.tag_config.tags
 }
 
+moved {
+  from =azurerm_private_dns_zone_virtual_network_link.internal_dev_platform_pagopa_it_vnet_link
+  to   =azurerm_private_dns_zone_virtual_network_link.internal_env_platform_pagopa_it_vnet_link
+}
+
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_link" {
   name                  = module.vnet_italy[0].name
   private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_azurecr_io.name

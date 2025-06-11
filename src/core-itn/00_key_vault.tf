@@ -5,7 +5,7 @@ data "azurerm_key_vault" "kv_core" {
 
 
 module "domain_key_vault_secrets_query" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault_secrets_query?ref=v8.13.0"
+  source = "./.terraform/modules/__v3__/key_vault_secrets_query"
 
   key_vault_name = data.azurerm_key_vault.kv_core.name
   resource_group = data.azurerm_key_vault.kv_core.resource_group_name

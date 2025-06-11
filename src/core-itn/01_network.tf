@@ -9,7 +9,7 @@ resource "azurerm_resource_group" "rg_ita_vnet" {
 }
 
 module "vnet_italy" {
-  source              = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network?ref=v8.13.0"
+  source              = "./.terraform/modules/__v3__/virtual_network"
   count               = 1
   name                = "${local.product_ita}-vnet"
   location            = var.location_ita
@@ -21,13 +21,28 @@ module "vnet_italy" {
   tags = module.tag_config.tags
 }
 
+
+# module "vnet_integration_cstar" {
+#   source              = "./.terraform/modules/__v3__/virtual_network"
+#   count               = 1
+#   name                = "${local.product_ita}-vnet"
+#   location            = var.location_ita
+#   resource_group_name = azurerm_resource_group.rg_ita_vnet.name
+#
+#   address_space        = var.cidr_vnet_italy
+#   ddos_protection_plan = var.vnet_ita_ddos_protection_plan
+#
+#   tags = module.tag_config.tags
+# }
+
+
 #
 # 🔗 PEERING
 #
 
 ## Peering between the vnet(main) and italy vnet
 module "vnet_ita_peering" {
-  source                           = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v8.13.0"
+  source                           = "./.terraform/modules/__v3__/virtual_network_peering"
   count                            = 1
   source_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
   source_virtual_network_name      = module.vnet_italy[0].name
@@ -44,7 +59,7 @@ module "vnet_ita_peering" {
 }
 
 module "vnet_ita_to_integration_peering" {
-  source                           = "git::https://github.com/pagopa/terraform-azurerm-v3.git//virtual_network_peering?ref=v8.13.0"
+  source                           = "./.terraform/modules/__v3__/virtual_network_peering"
   count                            = 1
   source_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
   source_virtual_network_name      = module.vnet_italy[0].name
@@ -94,7 +109,7 @@ resource "azurerm_subnet" "subnet_container_app_tools" {
 
 # subnet acr
 module "common_private_endpoint_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.83.0"
+  source               = "./.terraform/modules/__v3__/subnet"
   name                 = "${local.product}-common-private-endpoint-snet"
   address_prefixes     = var.cidr_common_private_endpoint_snet
   resource_group_name  = azurerm_resource_group.rg_ita_vnet.name

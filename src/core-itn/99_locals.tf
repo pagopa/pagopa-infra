@@ -17,4 +17,7 @@ locals {
   vnet_integration_name                = "${local.product}-vnet-integration"
   vnet_integration_resource_group_name = "${local.product}-vnet-rg"
 
+  cstar_vnet_rg_name = "cstar-${var.env_short}-weu-${var.env}01-vnet-rg"
+  cstar_vnet_name    = "cstar-${var.env_short}-weu-${var.env}01-vnet"
+
 }
