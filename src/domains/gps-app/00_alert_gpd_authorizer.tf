@@ -24,7 +24,6 @@ AzureDiagnostics
 | where url_s matches regex "/gpd/debt-positions-service/"
 | and url_s matches regex "/gps/spontaneous-payments-enrollments-service"
 | and url_s matches regex "/upload/gpd/debt-positions-service"
-| and url_s matches regex "/gpd/api"
 | and url_s matches regex "/gpd/payments-receipts-service"
 | and url_s matches regex "/gpd-reporting/api"
 | and url_s matches regex "/gps/gpd-reporting-orgs-enrollment/api"
