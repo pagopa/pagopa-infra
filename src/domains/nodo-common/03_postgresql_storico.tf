@@ -78,7 +78,7 @@ module "postgres_storico_flexible_server" {
     #   webhook_properties = null
     # }
   ]
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # Nodo database

@@ -15,7 +15,7 @@ resource "azurerm_public_ip" "nat_ip_03" {
   sku                 = "Standard"
   zones               = local.zones
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_public_ip" "nat_ip_04" {
@@ -27,7 +27,7 @@ resource "azurerm_public_ip" "nat_ip_04" {
   sku                 = "Standard"
   zones               = local.zones
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "nat_gw" {
@@ -43,7 +43,7 @@ module "nat_gw" {
   # commented out, waiting for EC to allow the new ips
   #   additional_public_ip_ids = var.env == "p" ? [azurerm_public_ip.nat_ip_03[0].id, azurerm_public_ip.nat_ip_04[0].id] : []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -85,5 +85,5 @@ resource "azurerm_monitor_metric_alert" "snat_connection_over_10K" {
     action_group_id = azurerm_monitor_action_group.infra_opsgenie.0.id
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

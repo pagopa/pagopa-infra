@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "bopagopa_rg" {
   name     = "${local.project}-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 locals {
@@ -40,7 +40,8 @@ module "bopagopa_cosmosdb_mongo_account" {
 
   main_geo_location_zone_redundant = var.bopagopa_datastore_cosmos_db_params.main_geo_location_zone_redundant
 
-  enable_free_tier = var.bopagopa_datastore_cosmos_db_params.enable_free_tier
+  enable_free_tier       = var.bopagopa_datastore_cosmos_db_params.enable_free_tier
+  burst_capacity_enabled = var.env_short == "p"
 
   public_network_access_enabled = var.bopagopa_datastore_cosmos_db_params.public_network_access_enabled
 
@@ -64,7 +65,8 @@ module "bopagopa_cosmosdb_mongo_account" {
   private_endpoint_mongo_name           = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
   private_service_connection_mongo_name = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
 
-  tags = var.tags
+
+  tags = module.tag_config.tags
 }
 
 

@@ -25,7 +25,7 @@ module "gpd_sa_sftp" {
     virtual_network_subnet_ids = var.gpd_sftp_disable_network_rules ? [] : [data.azurerm_subnet.aks_snet.id, data.azurerm_subnet.azdo_snet.id]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "gpd_blob" {
@@ -52,7 +52,7 @@ resource "azurerm_private_endpoint" "gpd_blob" {
     module.gpd_sa_sftp
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_storage_management_policy" "gpd_sa_lifecycle_policy" {

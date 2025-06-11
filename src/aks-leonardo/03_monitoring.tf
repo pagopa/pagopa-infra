@@ -74,5 +74,5 @@ module "prometheus_managed_addon" {
     ] : [])
   ])
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

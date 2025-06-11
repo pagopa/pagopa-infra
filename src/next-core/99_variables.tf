@@ -89,12 +89,6 @@ variable "lock_enable" {
   description = "Apply locks to block accedentaly deletions."
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 ### Network
 
 variable "cidr_vnet_italy" {
@@ -535,10 +529,6 @@ variable "app_gateway_wisp2govit_certificate_name" {
 variable "app_gateway_wfespgovit_certificate_name" {
   type        = string
   description = "Application gateway wfespgovit certificate name on Key Vault"
-}
-variable "app_gateway_kibana_certificate_name" {
-  type        = string
-  description = "Application gateway api certificate name on Key Vault"
   default     = ""
 }
 
@@ -863,8 +853,6 @@ variable "is_feature_enabled" {
     apim_core_import          = optional(bool, false)
     use_new_apim              = optional(bool, false)
     azdoa_extension           = optional(bool, false)
-    elastic_on_prem           = optional(bool, true)
-    pm_import_sa              = optional(bool, false)
   })
   description = "Features enabled in this domain"
 }
@@ -978,12 +966,6 @@ variable "app_gateway_deny_paths" {
   default     = []
 }
 
-variable "app_gateway_kibana_deny_paths" {
-  type        = list(string)
-  description = "Deny paths on app gateway kibana"
-  default     = []
-}
-
 # needs to be less than 512 characters. For more details refer to the documentation here: https://aka.ms/appgwheadercrud."
 variable "app_gateway_deny_paths_2" {
   type        = list(string)
@@ -1013,11 +995,11 @@ variable "app_gateway_allowed_paths_upload" {
     "/nodo-auth/node-for-psp/.*",
     "/nodo-auth/nodo-per-psp/.*",
     "/nodo/nodo-per-psp/.*",
-    "/fdr-legacy/nodo-per-pa/.*",
     "/nodo/nodo-per-pa/.*",
     "/nodo-auth/nodo-per-pa/.*",
     "/nodo-auth/node-for-pa/.*",
-  "/nodo/node-for-psp/.*"]
+    "/nodo/node-for-psp/.*",
+  ]
 }
 
 

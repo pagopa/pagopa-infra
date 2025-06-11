@@ -107,7 +107,7 @@ resource "azurerm_key_vault_secret" "redis_hostname" {
 # create json letsencrypt inside kv
 # requierd: Docker
 module "letsencrypt_apiconfig" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//letsencrypt_credential?ref=v8.11.0"
+  source = "./.terraform/modules/__v3__/letsencrypt_credential"
 
   prefix            = var.prefix
   env               = var.env_short

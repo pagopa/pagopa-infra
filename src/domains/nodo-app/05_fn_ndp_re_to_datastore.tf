@@ -46,7 +46,7 @@ resource "azurerm_resource_group" "nodo_re_to_datastore_rg" {
   name     = format("%s-re-to-datastore-rg", local.project)
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 locals {
@@ -141,7 +141,7 @@ module "nodo_re_to_datastore_function" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "nodo_re_to_datastore_function_slot_staging" {
@@ -176,7 +176,7 @@ module "nodo_re_to_datastore_function_slot_staging" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_autoscale_setting" "nodo_re_to_datastore_function" {

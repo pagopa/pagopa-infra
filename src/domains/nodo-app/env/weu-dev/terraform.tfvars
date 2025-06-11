@@ -7,14 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/nodo-app"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "nodo"
-}
 
 ### External resources
 
@@ -210,7 +202,7 @@ wisp_converter = {
   dismantling_primitives              = "nodoInviaRPT,nodoInviaCarrelloRPT"
   dismantling_rt_primitives           = "nodoChiediCopiaRT"
   checkout_predefined_expiration_time = 1800
-  wisp_ecommerce_channels             = "97735020584_03"
+  wisp_ecommerce_channels             = "97735020584_03,97735020584_09"
 }
 
 enable_sendPaymentResultV2_SWClient = true

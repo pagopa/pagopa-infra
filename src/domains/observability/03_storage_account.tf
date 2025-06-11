@@ -1,11 +1,11 @@
 resource "azurerm_resource_group" "st_observability_rg" {
   name     = "${local.project_itn}-st-rg"
   location = var.location_itn
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 module "observability_st_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source = "./.terraform/modules/__v3__/subnet"
 
   name                 = "${local.project_itn}-observability-st-net"
   address_prefixes     = var.cidr_subnet_observability_storage
@@ -39,13 +39,13 @@ resource "azurerm_private_endpoint" "observability_storage_private_endpoint" {
     subresource_names              = ["blob"]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
 
 module "observability_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                       = replace(format("%s-sa", local.project_itn), "-", "")
   account_kind               = "StorageV2"
@@ -61,7 +61,7 @@ module "observability_sa" {
   public_network_access_enabled   = true
 
   blob_delete_retention_days = var.observability_sa_delete_retention_days
-  tags                       = var.tags
+  tags                       = module.tag_config.tags
 
   blob_last_access_time_enabled = true
 

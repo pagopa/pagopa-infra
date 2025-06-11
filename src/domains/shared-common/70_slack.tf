@@ -10,5 +10,5 @@ resource "azurerm_monitor_action_group" "slack_channel_pagopa_pagamenti_alert" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

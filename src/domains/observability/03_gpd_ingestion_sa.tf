@@ -3,11 +3,11 @@ resource "azurerm_resource_group" "gpd_ingestion_rg" {
   name     = "${local.project_itn}-gpd-rg"
   location = var.location_itn
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "gpd_ingestion_sa" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v7.18.0"
+  source = "./.terraform/modules/__v3__/storage_account"
 
   name                            = replace(format("%s-gpd-ingest-sa", local.product), "-", "")
   account_kind                    = "StorageV2"
@@ -32,5 +32,5 @@ module "gpd_ingestion_sa" {
     blob_restore_policy_days   = var.gpd_ingestion_storage_account.backup_retention
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

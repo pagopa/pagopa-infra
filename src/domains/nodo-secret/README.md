@@ -19,6 +19,7 @@
 |------|--------|---------|
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v6.4.1 |
 | <a name="module_nodocerts_sa"></a> [nodocerts\_sa](#module\_nodocerts\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 
 ## Resources
 
@@ -78,7 +79,6 @@
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_nodo_cert_storage_account"></a> [nodo\_cert\_storage\_account](#input\_nodo\_cert\_storage\_account) | n/a | <pre>object({<br/>    advanced_threat_protection    = bool<br/>    blob_delete_retention_days    = number<br/>    blob_versioning_enabled       = bool<br/>    public_network_access_enabled = bool<br/>    backup_enabled                = bool<br/>    backup_retention              = optional(number, 0)<br/>  })</pre> | <pre>{<br/>  "advanced_threat_protection": false,<br/>  "backup_enabled": false,<br/>  "backup_retention": 0,<br/>  "blob_delete_retention_days": 30,<br/>  "blob_versioning_enabled": false,<br/>  "public_network_access_enabled": false<br/>}</pre> | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | general | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_upload_firmatore"></a> [upload\_firmatore](#input\_upload\_firmatore) | n/a | `map(string)` | n/a | yes |
 
 ## Outputs

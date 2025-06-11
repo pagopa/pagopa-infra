@@ -56,12 +56,6 @@ variable "location_string" {
 }
 
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 variable "nodo_switcher" {
   type = object({

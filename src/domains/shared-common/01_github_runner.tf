@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "github_runner_rg" {
   name     = "${var.prefix}-${var.env_short}-${var.location_short}-github-runner-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_subnet" "github_runner_snet" {
@@ -24,6 +24,6 @@ module "github_runner_environment" {
   zone_redundant             = false
   internal_load_balancer     = true
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 

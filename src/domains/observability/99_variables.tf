@@ -70,12 +70,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### External resources
 
@@ -384,4 +378,10 @@ variable "gpd_ingestion_storage_account" {
     account_replication_type      = "LRS" // changhe to GZRS for PROD
     public_network_access_enabled = true
   }
+}
+
+
+variable "app_forwarder_ip_restriction_default_action" {
+  type        = string
+  description = "(Required) The Default action for traffic that does not match any ip_restriction rule. possible values include Allow and Deny. "
 }

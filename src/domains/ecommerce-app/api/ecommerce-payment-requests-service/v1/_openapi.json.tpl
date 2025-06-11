@@ -178,11 +178,17 @@
             "minLength": 1,
             "maxLength": 140
           },
+          "paymentContextCode": {
+            "description": "Payment context code",
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 32
+          },
           "amount": {
             "description": "Payment notice amount",
             "type": "integer",
             "minimum": 0,
-            "maximum": 99999999
+            "maximum": 999999999
           },
           "dueDate": {
             "description": "Payment notice due date",
@@ -192,8 +198,7 @@
           }
         },
         "required": [
-          "amount",
-          "paymentContextCode"
+          "amount"
         ]
       },
       "ValidationFaultPaymentUnavailableProblemJson": {

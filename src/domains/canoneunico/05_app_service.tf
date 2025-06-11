@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "canoneunico_rg" {
   name     = "${local.project}-canoneunico-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # canone unico service plan
@@ -20,5 +20,5 @@ resource "azurerm_app_service_plan" "canoneunico_service_plan" {
     size = var.canoneunico_plan_sku_size
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

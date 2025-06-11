@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "key_vault" {
@@ -19,7 +19,7 @@ module "key_vault" {
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days = 90
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## ad group policy ##
@@ -351,7 +351,7 @@ module "pagopa_wallet_jwt" {
   cert_common_name = "pagoPA platform session wallet token for IO"
   cert_password    = ""
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 # JWT_SIGNATURE_KEY   = trimspace(module.pagopa_wallet_jwt.jwt_private_key_pem) # to avoid unwanted changes
 
@@ -369,3 +369,30 @@ resource "azurerm_key_vault_secret" "wallet_session_pdv_api_key" {
   }
 }
 
+# ##########################
+# Anonymizer Shared domain subkey
+# ##########################
+data "azurerm_api_management_product" "anonymizer_product" {
+  product_id          = "anonymizer"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+resource "azurerm_api_management_subscription" "shared_anonymizer_api_key_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.anonymizer_product.id
+  display_name  = "Anonymizer shared-anonymizer-api-key"
+  allow_tracing = false
+  state         = "active"
+}
+resource "azurerm_key_vault_secret" "shared_anonymizer_api_keysubkey_store_kv" {
+  depends_on = [
+    azurerm_api_management_subscription.shared_anonymizer_api_key_subkey
+  ]
+  name         = "shared-anonymizer-api-key"
+  value        = azurerm_api_management_subscription.shared_anonymizer_api_key_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
