@@ -719,6 +719,30 @@ resource "azurerm_key_vault_secret" "service_management_opsgenie_webhook_token" 
   }
 }
 
+resource "azurerm_key_vault_secret" "ecommerce_payment_requests_primary_api_key" {
+  name         = "ecommerce-payment-requests-primary-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_payment_requests_secondary_api_key" {
+  name         = "ecommerce-payment-requests-secondary-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 resource "azurerm_key_vault_certificate" "ecommerce-jwt-token-issuer-certificate" {
   name         = "jwt-token-issuer-cert"
   key_vault_id = module.key_vault.id
