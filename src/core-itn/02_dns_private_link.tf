@@ -31,8 +31,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "internal_env_platform_
 }
 
 moved {
-  from =azurerm_private_dns_zone_virtual_network_link.internal_dev_platform_pagopa_it_vnet_link
-  to   =azurerm_private_dns_zone_virtual_network_link.internal_env_platform_pagopa_it_vnet_link
+  from = azurerm_private_dns_zone_virtual_network_link.internal_dev_platform_pagopa_it_vnet_link
+  to   = azurerm_private_dns_zone_virtual_network_link.internal_env_platform_pagopa_it_vnet_link
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_azurecr_io_vnet_link" {
@@ -121,5 +121,16 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_a
   private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_postgres_azure_com[0].name
   resource_group_name   = data.azurerm_private_dns_zone.privatelink_postgres_azure_com[0].resource_group_name
   virtual_network_id    = module.vnet_italy[0].id
+  tags                  = module.tag_config.tags
+}
+
+
+# cstar integration vnet links
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_servicebus_windows_net_vnet_cstar_integration_link" {
+  name                  = module.vnet_integration_cstar.name
+  private_dns_zone_name = data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.name
+  resource_group_name   = data.azurerm_private_dns_zone.privatelink_servicebus_windows_net.resource_group_name
+  virtual_network_id    = module.vnet_integration_cstar.id
   tags                  = module.tag_config.tags
 }

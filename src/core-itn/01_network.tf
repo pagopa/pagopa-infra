@@ -22,18 +22,17 @@ module "vnet_italy" {
 }
 
 
-# module "vnet_integration_cstar" {
-#   source              = "./.terraform/modules/__v4__/virtual_network"
-#   count               = 1
-#   name                = "${local.product_ita}-vnet"
-#   location            = var.location_ita
-#   resource_group_name = azurerm_resource_group.rg_ita_vnet.name
-#
-#   address_space        = var.cidr_vnet_italy
-#   ddos_protection_plan = var.vnet_ita_ddos_protection_plan
-#
-#   tags = module.tag_config.tags
-# }
+module "vnet_integration_cstar" {
+  source              = "./.terraform/modules/__v4__/virtual_network"
+  name                = "${local.product_ita}-cstar-integration-vnet"
+  location            = var.location_ita
+  resource_group_name = azurerm_resource_group.rg_ita_vnet.name
+
+  address_space        = var.cidr_vnet_italy_cstar_integration
+  ddos_protection_plan = var.vnet_ita_ddos_protection_plan
+
+  tags = module.tag_config.tags
+}
 
 
 #
@@ -47,6 +46,38 @@ module "vnet_ita_peering" {
   source_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
   source_virtual_network_name      = module.vnet_italy[0].name
   source_remote_virtual_network_id = module.vnet_italy[0].id
+  source_use_remote_gateways       = true
+  source_allow_forwarded_traffic   = true
+  source_allow_gateway_transit     = true
+
+  target_resource_group_name       = data.azurerm_resource_group.rg_vnet_core.name
+  target_virtual_network_name      = data.azurerm_virtual_network.vnet_core.name
+  target_remote_virtual_network_id = data.azurerm_virtual_network.vnet_core.id
+  target_allow_gateway_transit     = true
+  target_allow_forwarded_traffic   = true
+}
+
+module "vnet_cstar_integration_to_vnet_ita_peering" {
+  source                           = "./.terraform/modules/__v4__/virtual_network_peering"
+  source_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
+  source_virtual_network_name      = module.vnet_integration_cstar.name
+  source_remote_virtual_network_id = module.vnet_integration_cstar.id
+  source_use_remote_gateways       = false
+  source_allow_forwarded_traffic   = true
+  source_allow_gateway_transit     = true
+
+  target_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
+  target_virtual_network_name      = module.vnet_italy[0].name
+  target_remote_virtual_network_id = module.vnet_italy[0].id
+  target_allow_gateway_transit     = true
+  target_allow_forwarded_traffic   = true
+}
+
+module "vnet_cstar_integration_to_vnet_weu_peering" {
+  source                           = "./.terraform/modules/__v4__/virtual_network_peering"
+  source_resource_group_name       = azurerm_resource_group.rg_ita_vnet.name
+  source_virtual_network_name      = module.vnet_integration_cstar.name
+  source_remote_virtual_network_id = module.vnet_integration_cstar.id
   source_use_remote_gateways       = true
   source_allow_forwarded_traffic   = true
   source_allow_gateway_transit     = true
@@ -108,7 +139,7 @@ resource "azurerm_subnet" "subnet_container_app_tools" {
   virtual_network_name = module.vnet_italy[0].name
   address_prefixes     = var.cidr_subnet_tools_cae
 
-    private_endpoint_network_policies = "Enabled"
+  private_endpoint_network_policies = "Enabled"
 
 }
 
@@ -124,4 +155,17 @@ module "common_private_endpoint_snet" {
 
 
   service_endpoints = var.env_short == "p" ? ["Microsoft.Storage"] : []
+}
+
+
+module "cstar_integration_private_endpoint_snet" {
+  source = "./.terraform/modules/__v4__/IDH/subnet"
+
+  env               = var.env
+  idh_resource_tier = "private_endpoint"
+  product_name      = var.prefix
+
+  name                 = "${local.product_ita}-private-endpoint-snet"
+  resource_group_name  = azurerm_resource_group.rg_ita_vnet.name
+  virtual_network_name = module.vnet_integration_cstar.name
 }

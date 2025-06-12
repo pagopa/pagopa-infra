@@ -8,6 +8,11 @@ data "azurerm_virtual_network" "vnet_italy" {
   resource_group_name = local.vnet_italy_resource_group_name
 }
 
+data "azurerm_virtual_network" "vnet_italy_cstar_integration" {
+  name                = local.vnet_italy_name
+  resource_group_name = local.vnet_italy_resource_group_name
+}
+
 data "azurerm_private_dns_zone" "internal" {
   name                = local.internal_dns_zone_name
   resource_group_name = local.internal_dns_zone_resource_group_name
@@ -50,6 +55,12 @@ data "azurerm_subnet" "aks_subnet" {
 data "azurerm_subnet" "common_itn_private_endpoint_subnet" {
   name                 = local.common_private_endpoint_snet
   virtual_network_name = local.vnet_italy_name
+  resource_group_name  = local.vnet_italy_resource_group_name
+}
+
+data "azurerm_subnet" "common_itn_cstar_integration_private_endpoint_subnet" {
+  name                 = local.common_private_endpoint_snet_cstar_integration
+  virtual_network_name = local.vnet_italy_cstar_integration_name
   resource_group_name  = local.vnet_italy_resource_group_name
 }
 
