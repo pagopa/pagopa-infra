@@ -330,3 +330,17 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_request_info
 
   xml_content = file("./api/ecommerce-checkout/v3/_payment_request_policy.xml.tpl")
 }
+
+data "azurerm_key_vault_secret" "ecommerce_payment_requests_primary_api_for_checkout_key" {
+  name         = "ecommerce-payment-requests-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_payment_requests_api_key_value_for_checkout" {
+  name                = "ecommerce-payment-requests-api-key-for-checkout-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-payment-requests-api-key-for-checkout-value"
+  value               = data.azurerm_key_vault_secret.ecommerce_payment_requests_primary_api_for_checkout_key.value
+  secret              = true
+}
