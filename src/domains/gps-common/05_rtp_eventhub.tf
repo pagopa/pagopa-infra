@@ -72,7 +72,7 @@ module "eventhub_rtp_namespace_integration" {
   #zone_redundat is always true
 
   virtual_network_ids           = [data.azurerm_virtual_network.vnet_italy_cstar_integration.id]
-  public_network_access_enabled = false #var.eventhub_namespace_rtp.public_network_access
+  public_network_access_enabled = false
   private_endpoint_subnet_id    = data.azurerm_subnet.common_itn_cstar_integration_private_endpoint_subnet.id
   private_endpoint_created      = var.eventhub_namespace_rtp.private_endpoint_created
 
