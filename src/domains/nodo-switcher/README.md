@@ -39,7 +39,7 @@ opening slack on your browser and navigating to the desired channel, you will fi
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 
 ## Resources
 
