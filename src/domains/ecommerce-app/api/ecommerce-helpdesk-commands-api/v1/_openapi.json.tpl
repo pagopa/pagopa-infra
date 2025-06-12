@@ -129,6 +129,213 @@
           }
         }
       }
+    },
+    "/commands/transactions/{transactionId}/refund": {
+      "post": {
+        "tags": [
+          "ecommerce"
+        ],
+        "operationId": "requestTransactionRefund",
+        "summary": "Request a refund for a transaction",
+        "description": "Sends a refund request to the dedicated service for processing",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The unique identifier of the transaction"
+          },
+          {
+            "in": "header",
+            "name": "X-User-Id",
+            "required": true,
+            "description": "User ID (populated by APIM policy)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Forwarded-For",
+            "required": true,
+            "description": "Client Source IP Address",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "TransactionRefundRequested message successfully queued to the dedicated service"
+          },
+          "400": {
+            "description": "Formally invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "type": "https://example.com/problem/constraint-violation",
+                  "title": "Bad Request",
+                  "status": 400,
+                  "detail": "There was an error processing the request",
+                  "instance": "/commands/transactions/{transactionId}/refund"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "type": "https://example.com/problem/not-found",
+                  "title": "Not Found",
+                  "status": 404,
+                  "detail": "Transaction not found",
+                  "instance": "/commands/transactions/{transactionId}/refund"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Transaction not in a refundable state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "type": "https://example.com/problem/unprocessable-entity",
+                  "title": "Unprocessable Entity",
+                  "status": 422,
+                  "detail": "Transaction not in a refundable state",
+                  "instance": "/commands/transactions/{transactionId}/refund"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "type": "https://example.com/problem/internal-error",
+                  "title": "Internal Server Error",
+                  "status": 500,
+                  "detail": "There was an internal server error",
+                  "instance": "/commands/transactions/{transactionId}/refund"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/commands/transactions/{transactionId}/resend-email": {
+      "post": {
+        "tags": [
+          "ecommerce"
+        ],
+        "operationId": "resendTransactionEmail",
+        "summary": "Request to resend the transaction email notification",
+        "description": "Sends an email notification request to the dedicated service for processing",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "transactionId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "The unique identifier of the transaction"
+          },
+          {
+            "in": "header",
+            "name": "X-User-Id",
+            "required": true,
+            "description": "User ID (populated by APIM policy)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Forwarded-For",
+            "required": true,
+            "description": "Client Source IP Address",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "TransactionUserReceipt message successfully queued to the dedicated service"
+          },
+          "400": {
+            "description": "Invalid transaction ID format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "type": "https://example.com/problem/constraint-violation",
+                  "title": "Bad Request",
+                  "status": 400,
+                  "detail": "Invalid transaction ID format",
+                  "instance": "/commands/transactions/{transactionId}/resend-email"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "type": "https://example.com/problem/not-found",
+                  "title": "Not Found",
+                  "status": 404,
+                  "detail": "Transaction not found",
+                  "instance": "/commands/transactions/{transactionId}/resend-email"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemJson"
+                },
+                "example": {
+                  "type": "https://example.com/problem/internal-error",
+                  "title": "Internal Server Error",
+                  "status": 500,
+                  "detail": "There was an internal server error",
+                  "instance": "/commands/transactions/{transactionId}/resend-email"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
