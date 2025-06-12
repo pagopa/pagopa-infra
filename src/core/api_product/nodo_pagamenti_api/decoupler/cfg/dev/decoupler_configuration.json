@@ -23,7 +23,7 @@
     "node_uri": "https://10.79.20.63",
     "routing": 100,
     "broker_psps": [],
-    "cis": ["88888888888"],
+    "cis": [],
     "list_priority": 2
   }
 ]
