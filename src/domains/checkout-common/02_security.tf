@@ -174,3 +174,15 @@ resource "azurerm_key_vault_secret" "checkout_gha_bot_pat" {
     ]
   }
 }
+
+resource "azurerm_key_vault_secret" "ecommerce_payment_requests_active_api_key" {
+  name         = "ecommerce-payment-requests-active-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
