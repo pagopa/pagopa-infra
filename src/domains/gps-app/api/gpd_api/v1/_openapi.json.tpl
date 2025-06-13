@@ -4,7 +4,7 @@
     "title" : "PagoPA API Debt Position ${service}",
     "description" : "Progetto Gestione Posizioni Debitorie",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.13.4"
+    "version" : "0.14.4"
   },
   "servers" : [ {
     "url" : "https://api.uat.platform.pagopa.it/gpd/api/v1",
@@ -2554,9 +2554,13 @@
             "type" : "string"
           },
           "pspCode" : {
+            "maxLength" : 35,
+            "minLength" : 0,
             "type" : "string"
           },
           "pspTaxCode" : {
+            "maxLength" : 70,
+            "minLength" : 0,
             "type" : "string"
           },
           "pspCompany" : {
@@ -2639,6 +2643,9 @@
           "isPartialPayment" : {
             "type" : "boolean"
           },
+          "payStandIn" : {
+            "type" : "boolean"
+          },
           "dueDate" : {
             "type" : "string",
             "format" : "date-time"
@@ -2677,6 +2684,9 @@
             "type" : "string"
           },
           "idFlowReporting" : {
+            "type" : "string"
+          },
+          "serviceType" : {
             "type" : "string"
           },
           "status" : {
