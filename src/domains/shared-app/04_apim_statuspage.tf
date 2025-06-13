@@ -151,8 +151,8 @@ module "apim_api_statuspage_api_v1" {
           "fdrxml2jsonqueuetrigger" = format("%s/pagopa-fdr-xml-to-json/queuetrigger-notuser", format(local.aks_path, "fdr"))
           "fdrts"                   = format("%s/pagopa-fdr-technical-support-service", format(local.aks_path, "fdr"))
           // WISP Dismantling
-          "wispconverter"               = format("%s/pagopa-wisp-converter", format(local.aks_path, "nodo"))
-          "wispsoapconverter"           = format("%s/wisp-soap-converter", format(local.aks_path, "nodo"))
+          "wispconverter"               = format("%s/pagopa-wispconverter", format(local.aks_path, "nodo"))
+          "wispsoapconverter"           = format("%s/wisp-soapconverter", format(local.aks_path, "nodo"))
           "wispconverterts"             = format("%s/pagopa-wisp-converter-technical-support", format(local.aks_path, "nodo"))
           "gpd"                         = format("%s/pagopa-gpd-core", format(local.aks_path, "gps"))
           "gpdpayments"                 = format("%s/pagopa-gpd-payments", format(local.aks_path, "gps"))
