@@ -2,7 +2,8 @@
   <inbound>
     <base/>
     <!-- the following is the default baseUrl -->
-    <set-variable name="baseUrl" value="${base-url}" />
+    <include-fragment fragment-id="ndphost-header" />
+    <set-variable name="baseUrl" value="{{default-nodo-backend}}" />
   </inbound>
   <backend>
     <base/>
