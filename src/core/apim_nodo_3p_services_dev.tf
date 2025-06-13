@@ -135,68 +135,68 @@
 ## 4. Nodo Fatturazione DEV ##
 ############################
 
-module "apim_nodo_fatturazione_dev_product" {
-  count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
-
-  product_id   = "product-nodo-fatturazione-dev"
-  display_name = "product-nodo-fatturazione-dev"
-  description  = "product-nodo-fatturazione-dev"
-
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-
-  published             = true
-  subscription_required = false
-  approval_required     = false
-
-  policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
-    address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
-    address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
-  })
-}
-
-resource "azurerm_api_management_api_version_set" "nodo_fatturazione_dev_api" {
-  count = var.env_short == "d" ? 1 : 0
-
-  name                = format("%s-nodo-fatturazione-dev-api", var.env_short)
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  api_management_name = data.azurerm_api_management.apim_migrated[0].name
-  display_name        = "Nodo OnCloud FATTURAZIONE DEV"
-  versioning_scheme   = "Segment"
-}
-
-module "apim_nodo_fatturazione_dev_api" {
-  count  = var.env_short == "d" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
-
-  name                  = format("%s-nodo-fatturazione-dev-api", var.env_short)
-  api_management_name   = data.azurerm_api_management.apim_migrated[0].name
-  resource_group_name   = data.azurerm_resource_group.rg_api.name
-  product_ids           = [module.apim_nodo_fatturazione_dev_product[0].product_id]
-  subscription_required = false
-
-  version_set_id = azurerm_api_management_api_version_set.nodo_fatturazione_dev_api[0].id
-  api_version    = "v1"
-
-  description  = "NodeDeiPagamenti (fatturazione) DEV"
-  display_name = "NodeDeiPagamenti (fatturazione) DEV"
-  path         = "fatturazione-dev/api"
-  protocols    = ["https"]
-
-  service_url = null
-
-  content_format = "openapi"
-  content_value = templatefile("./api/nodopagamenti_api/nodoServices/fatturazione/v1/_NodoDeiPagamenti.openapi.json.tpl", {
-    host = local.api_domain
-  })
-
-  xml_content = templatefile("./api/nodopagamenti_api/nodoServices/fatturazione/v1/_base_policy_dev.xml", {
-    dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
-    apim_base_path      = "/fatturazione-dev/api/v1"
-  })
-
-}
+# module "apim_nodo_fatturazione_dev_product" {
+#   count  = var.env_short == "d" ? 1 : 0
+#   source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+#
+#   product_id   = "product-nodo-fatturazione-dev"
+#   display_name = "product-nodo-fatturazione-dev"
+#   description  = "product-nodo-fatturazione-dev"
+#
+#   api_management_name = data.azurerm_api_management.apim_migrated[0].name
+#   resource_group_name = data.azurerm_resource_group.rg_api.name
+#
+#   published             = true
+#   subscription_required = false
+#   approval_required     = false
+#
+#   policy_xml = templatefile("./api_product/nodo_pagamenti_api/_base_policy.xml", {
+#     address-range-from = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
+#     address-range-to   = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
+#   })
+# }
+#
+# resource "azurerm_api_management_api_version_set" "nodo_fatturazione_dev_api" {
+#   count = var.env_short == "d" ? 1 : 0
+#
+#   name                = format("%s-nodo-fatturazione-dev-api", var.env_short)
+#   resource_group_name = data.azurerm_resource_group.rg_api.name
+#   api_management_name = data.azurerm_api_management.apim_migrated[0].name
+#   display_name        = "Nodo OnCloud FATTURAZIONE DEV"
+#   versioning_scheme   = "Segment"
+# }
+#
+# module "apim_nodo_fatturazione_dev_api" {
+#   count  = var.env_short == "d" ? 1 : 0
+#   source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+#
+#   name                  = format("%s-nodo-fatturazione-dev-api", var.env_short)
+#   api_management_name   = data.azurerm_api_management.apim_migrated[0].name
+#   resource_group_name   = data.azurerm_resource_group.rg_api.name
+#   product_ids           = [module.apim_nodo_fatturazione_dev_product[0].product_id]
+#   subscription_required = false
+#
+#   version_set_id = azurerm_api_management_api_version_set.nodo_fatturazione_dev_api[0].id
+#   api_version    = "v1"
+#
+#   description  = "NodeDeiPagamenti (fatturazione) DEV"
+#   display_name = "NodeDeiPagamenti (fatturazione) DEV"
+#   path         = "fatturazione-dev/api"
+#   protocols    = ["https"]
+#
+#   service_url = null
+#
+#   content_format = "openapi"
+#   content_value = templatefile("./api/nodopagamenti_api/nodoServices/fatturazione/v1/_NodoDeiPagamenti.openapi.json.tpl", {
+#     host = local.api_domain
+#   })
+#
+#   xml_content = templatefile("./api/nodopagamenti_api/nodoServices/fatturazione/v1/_base_policy_dev.xml", {
+#     dns_pagopa_platform = format("api.%s.%s", var.dns_zone_prefix, var.external_domain),
+#     apim_base_path      = "/fatturazione-dev/api/v1"
+#   })
+#
+# }
 
 ############################
 ## 5. Nodo Web-BO DEV     ##
