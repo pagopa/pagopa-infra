@@ -92,6 +92,11 @@ variable "cidr_vnet_italy" {
   description = "Address prefixes for vnet in italy."
 }
 
+variable "cidr_vnet_italy_cstar_integration" {
+  type        = list(string)
+  description = "Address prefixes for vnet cstar integration in italy."
+}
+
 variable "cidr_eventhubs_italy" {
   type        = list(string)
   description = "Address prefixes for all evenhubs in italy."
