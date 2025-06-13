@@ -5,7 +5,7 @@
         <!-- Including header for service type -->
         <set-header name="X-Client-Service-Type" exists-action="override">
         	<value>ACA</value>
-        </set-query-parameter>
+        </set-header>
 
         <rewrite-uri template="/" />
         <set-backend-service base-url="https://${hostname}/pagopa-gpd-payments/partner" />
