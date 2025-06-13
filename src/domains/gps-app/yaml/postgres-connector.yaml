@@ -25,5 +25,5 @@ spec:
     table.include.list: "apd.payment_option,apd.payment_position,apd.transfer"
     plugin.name: "pgoutput"
     snapshot.max.threads: ${max_threads}
-    publication.autocreate.mode: "disabled" # shall be create before 
+    publication.autocreate.mode: "disabled" # shall be create before
     # publication.autocreate.mode: "filtered"  # create it
