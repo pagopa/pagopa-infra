@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "key_vault" {
@@ -14,7 +14,7 @@ module "key_vault" {
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days = 90
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## ad group policy ##
@@ -152,6 +152,19 @@ resource "azurerm_key_vault_secret" "one_identity_client_secret" {
 resource "azurerm_key_vault_secret" "one_identity_client_secret_test" {
   count        = var.env_short == "u" ? 1 : 0
   name         = "checkout-one-identity-client-secret-test"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "checkout_gha_bot_pat" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "checkout-gha-bot-pat"
   value        = "<TO UPDATE MANUALLY ON PORTAL>"
   key_vault_id = module.key_vault.id
 

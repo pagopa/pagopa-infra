@@ -58,6 +58,14 @@ module "gh_runner_job" {
     {
       name : "pagopa-mbd"
       short_name : "mbd"
+    },
+    {
+      name : "pagopa-decoupler",
+      short_name : "decoupler"
+    },
+    {
+      name : "pagopa-nodo-cfg-data-migration",
+      short_name : "node-cfg-dm"
     }
   ]
   job = {
@@ -80,6 +88,6 @@ module "gh_runner_job" {
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
   domain_security_rg_name = "${local.product}-${var.domain}-sec-rg"
-  tags                    = var.tags
+  tags                    = module.tag_config.tags
 
 }

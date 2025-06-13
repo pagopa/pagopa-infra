@@ -15,7 +15,7 @@ resource "azurerm_resource_group" "flex_data" {
   name = format("%s-pgres-flex-rg", local.product)
 
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 data "azurerm_resource_group" "data" {
@@ -87,7 +87,7 @@ module "postgres_flexible_server_private_db" {
 
   diagnostic_settings_enabled = false
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   # alert section
   custom_metric_alerts = var.pgres_flex_params.alerts_enabled ? var.pgflex_public_metric_alerts : {}
@@ -161,4 +161,39 @@ resource "azurerm_postgresql_flexible_server_configuration" "pg_shared_preload_l
   name      = "shared_preload_libraries"
   server_id = module.postgres_flexible_server_private_db.id
   value     = var.pgres_flex_params.shared_preoload_libraries # "pg_failover_slots"
+}
+
+
+resource "azurerm_portal_dashboard" "debt_position_postgresql_dashboard" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "debt-position-postgresql-db-usage"
+  resource_group_name = var.monitor_resource_group_name
+  location            = var.location
+  tags = {
+    source = "terraform"
+  }
+  #convert json dashboard output from Azure export function to the one handled by azurerm portal dashboard provider
+  #see https://github.com/hashicorp/terraform-provider-azurerm/issues/27117 issue for more info
+  dashboard_properties = jsonencode(
+    merge(
+      jsondecode(templatefile("dashboards/debt-positions-postgres-db-usage.json", {
+        resourceId   = module.postgres_flexible_server_private_db.name,
+        resourceName = module.postgres_flexible_server_private_db.id
+      })),
+      {
+        "lenses" = {
+          for lens_index, lens in jsondecode(templatefile("dashboards/debt-positions-postgres-db-usage.json", {
+            resourceId   = module.postgres_flexible_server_private_db.id,
+            resourceName = module.postgres_flexible_server_private_db.name
+          })).lenses :
+          tostring(lens_index) => merge(lens, {
+            "parts" = {
+              for part_index, part in lens.parts :
+              tostring(part_index) => part
+            }
+          })
+        }
+      }
+    )
+  )
 }

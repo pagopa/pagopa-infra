@@ -17,7 +17,9 @@ locals {
   repos_01 = [
     "pagopa-qi-jira-snow",
     "pagopa-observability-bdi",
-    "pagopa-qa"
+    "pagopa-qa",
+    "pagopa-qi-alerts-management-function",
+    "pagopa-qi-jsm-management-function"
   ]
 
   federations_01 = [
@@ -76,7 +78,7 @@ module "identity_cd_01" {
     resource_groups    = local.environment_cd_roles.resource_groups
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     data.azurerm_resource_group.identity_rg

@@ -2,11 +2,11 @@ resource "azurerm_resource_group" "db_rg" {
   name     = "${local.project}-db-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "cosmosdb_account_mongodb" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__//cosmosdb_account"
   count  = var.is_feature_enabled.cosmosdb_notice ? 1 : 0
 
   domain              = var.domain
@@ -33,7 +33,7 @@ module "cosmosdb_account_mongodb" {
 
   backup_continuous_enabled = var.cosmos_mongo_db_notices_params.backup_continuous_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_cosmosdb_mongo_database" "notices_mongo_db" {
@@ -86,7 +86,7 @@ locals {
 }
 
 module "cosmosdb_notices_collections" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_mongodb_collection?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__//cosmosdb_mongodb_collection"
 
   for_each = var.is_feature_enabled.cosmosdb_notice ? { for index, coll in local.collections : coll.name => coll } : {}
 

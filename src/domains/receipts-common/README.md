@@ -22,6 +22,8 @@
 | <a name="module_receipts_datastore_cosmosdb_snet"></a> [receipts\_datastore\_cosmosdb\_snet](#module\_receipts\_datastore\_cosmosdb\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_receipts_datastore_fn_sa"></a> [receipts\_datastore\_fn\_sa](#module\_receipts\_datastore\_fn\_sa) | ./.terraform/modules/__v3__/storage_account | n/a |
 | <a name="module_receipts_st_snet"></a> [receipts\_st\_snet](#module\_receipts\_st\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
+| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
 
@@ -99,7 +101,6 @@
 | <a name="input_receipts_queue_retention_sec"></a> [receipts\_queue\_retention\_sec](#input\_receipts\_queue\_retention\_sec) | The maximum time to allow the message to be in the queue. | `number` | `86400` | no |
 | <a name="input_receipts_storage_account_replication_type"></a> [receipts\_storage\_account\_replication\_type](#input\_receipts\_storage\_account\_replication\_type) | (Optional) Receipts datastore storage account replication type | `string` | `"LRS"` | no |
 | <a name="input_receipts_tier_to_archive_after_days_since_last_access_time_greater_than"></a> [receipts\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than](#input\_receipts\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than) | Number of days since last access to blob before moving to archive tier | `number` | `730` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 

@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "monitor_rg" {
   name     = "${local.project}-monitor-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
@@ -15,7 +15,7 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
 
   internet_query_enabled = var.law_internet_query_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   lifecycle {
     ignore_changes = [
@@ -30,13 +30,15 @@ resource "azurerm_monitor_workspace" "monitor_workspace" {
   resource_group_name           = "${var.prefix}-${var.env_short}-monitor-rg"
   location                      = var.location
   public_network_access_enabled = false
-  tags                          = var.tags
+  tags                          = module.tag_config.tags
 }
 
 # Create workspace private DNS zone
 resource "azurerm_private_dns_zone" "prometheus_dns_zone" {
   name                = "privatelink.${var.location}.prometheus.monitor.azure.com"
   resource_group_name = module.vnet_italy.0.resource_group_name
+
+  tags = module.tag_config.tags
 }
 
 # Create virtual network link for workspace private dns zone
@@ -45,6 +47,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "prometheus_dns_zone_vn
   resource_group_name   = module.vnet_italy.0.resource_group_name
   virtual_network_id    = module.vnet_italy.0.id
   private_dns_zone_name = azurerm_private_dns_zone.prometheus_dns_zone.name
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "prometheus_core_dns_zone_vnet_link" {
@@ -52,6 +56,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "prometheus_core_dns_zo
   resource_group_name   = module.vnet_italy.0.resource_group_name
   virtual_network_id    = data.azurerm_virtual_network.vnet_core.id
   private_dns_zone_name = azurerm_private_dns_zone.prometheus_dns_zone.name
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "monitor_workspace_private_endpoint" {
@@ -75,7 +81,7 @@ resource "azurerm_private_endpoint" "monitor_workspace_private_endpoint" {
 
   depends_on = [azurerm_monitor_workspace.monitor_workspace]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -90,7 +96,7 @@ resource "azurerm_application_insights" "application_insights" {
 
   workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #
@@ -107,7 +113,7 @@ resource "azurerm_monitor_action_group" "email" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_action_group" "slack" {
@@ -121,5 +127,5 @@ resource "azurerm_monitor_action_group" "slack" {
     use_common_alert_schema = true
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

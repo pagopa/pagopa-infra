@@ -77,7 +77,7 @@ module "identity_cd_01" {
     resource_groups    = local.environment_cd_roles.resource_groups
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     data.azurerm_resource_group.identity_rg
@@ -148,7 +148,7 @@ module "identity_pr_01" {
     resource_groups    = local.environment_cd_roles.resource_groups
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     data.azurerm_resource_group.identity_rg
@@ -187,7 +187,7 @@ module "identity_ref_01" {
     resource_groups    = local.environment_cd_roles.resource_groups
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   depends_on = [
     data.azurerm_resource_group.identity_rg
@@ -207,4 +207,14 @@ resource "azurerm_key_vault_access_policy" "gha_ref_iac_managed_identities" {
   ]
 
   storage_permissions = []
+}
+
+# WL-IDENTITY
+# https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/1227751458/Migrazione+pod+Identity+vs+workload+Identity#Init-workload-identity
+module "workload_identity" {
+  source = "./.terraform/modules/__v3__/kubernetes_workload_identity_init"
+
+  workload_identity_name_prefix         = var.domain
+  workload_identity_resource_group_name = data.azurerm_kubernetes_cluster.aks.resource_group_name
+  workload_identity_location            = var.location
 }

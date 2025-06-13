@@ -4,7 +4,7 @@
 
 module "apim_mock_receipt_pdf" {
   count  = var.env_short != "p" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_product?ref=v1.0.90"
+  source = "./.terraform/modules/__v3__/api_management_product"
 
   product_id   = "product-mock-receipt-pdf"
   display_name = "Mock 4 Receipt PDF"
@@ -33,7 +33,7 @@ resource "azurerm_api_management_api_version_set" "mock_receipt_pdf" {
 
 module "apim_receipt_pdf_api" {
   count  = var.env_short != "p" ? 1 : 0
-  source = "git::https://github.com/pagopa/azurerm.git//api_management_api?ref=v1.0.90"
+  source = "./.terraform/modules/__v3__/api_management_api"
 
   name                  = format("%s-mock-receipt-pdf", var.env_short)
   api_management_name   = local.pagopa_apim_name

@@ -20,7 +20,7 @@ module "fdr_flows_sa" {
   blob_delete_retention_days    = var.reporting_fdr_storage_account.blob_delete_retention_days
   public_network_access_enabled = true
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## blob container flows
@@ -141,5 +141,5 @@ resource "azurerm_resource_group" "data" {
   name     = "${local.product}-data-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
