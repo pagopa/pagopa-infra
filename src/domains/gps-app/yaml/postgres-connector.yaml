@@ -27,8 +27,6 @@ spec:
     snapshot.max.threads: ${max_threads}
     publication.autocreate.mode: "disabled" # shall be create before
     # publication.autocreate.mode: "filtered"  # create it
-  nodeSelector: { }
-  tolerations: [ ]
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
