@@ -46,6 +46,7 @@
 | <a name="module_apim_gps_donation_product"></a> [apim\_gps\_donation\_product](#module\_apim\_gps\_donation\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gps_enrollments_product"></a> [apim\_gps\_enrollments\_product](#module\_apim\_gps\_enrollments\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gps_product"></a> [apim\_gps\_product](#module\_apim\_gps\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
+| <a name="module_apim_gps_rtp_product"></a> [apim\_gps\_rtp\_product](#module\_apim\_gps\_rtp\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_gps_spontaneous_payments_services_product"></a> [apim\_gps\_spontaneous\_payments\_services\_product](#module\_apim\_gps\_spontaneous\_payments\_services\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_pn_integration_product"></a> [apim\_pn\_integration\_product](#module\_apim\_pn\_integration\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
@@ -58,7 +59,7 @@
 | <a name="module_reporting_function_snet"></a> [reporting\_function\_snet](#module\_reporting\_function\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_reporting_service_function"></a> [reporting\_service\_function](#module\_reporting\_service\_function) | ./.terraform/modules/__v3__/function_app | n/a |
 | <a name="module_reporting_service_function_slot_staging"></a> [reporting\_service\_function\_slot\_staging](#module\_reporting\_service\_function\_slot\_staging) | ./.terraform/modules/__v3__/function_app_slot | n/a |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
 
@@ -203,7 +204,7 @@
 | <a name="input_cname_record_name"></a> [cname\_record\_name](#input\_cname\_record\_name) | n/a | `string` | n/a | yes |
 | <a name="input_container_registry"></a> [container\_registry](#input\_container\_registry) | Container Registry | `string` | n/a | yes |
 | <a name="input_create_wisp_converter"></a> [create\_wisp\_converter](#input\_create\_wisp\_converter) | CREATE WISP dismantling system infra | `bool` | `false` | no |
-| <a name="input_ddos_protection_plan"></a> [ddos\_protection\_plan](#input\_ddos\_protection\_plan) | Network | <pre>object({<br/>    id     = string<br/>    enable = bool<br/>  })</pre> | `null` | no |
+| <a name="input_ddos_protection_plan"></a> [ddos\_protection\_plan](#input\_ddos\_protection\_plan) | Network | <pre>object({<br>    id     = string<br>    enable = bool<br>  })</pre> | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_enable_client_retry"></a> [enable\_client\_retry](#input\_enable\_client\_retry) | Enable client retry | `bool` | `false` | no |
@@ -211,7 +212,7 @@
 | <a name="input_env_short"></a> [env\_short](#input\_env\_short) | n/a | `string` | n/a | yes |
 | <a name="input_external_domain"></a> [external\_domain](#input\_external\_domain) | Domain for delegation | `string` | `null` | no |
 | <a name="input_flag_responsetime_alert"></a> [flag\_responsetime\_alert](#input\_flag\_responsetime\_alert) | Flag to enable if payments-pull response time alert is available | `number` | `0` | no |
-| <a name="input_fn_app_storage_account_info"></a> [fn\_app\_storage\_account\_info](#input\_fn\_app\_storage\_account\_info) | n/a | <pre>object({<br/>    account_kind                      = optional(string, "StorageV2")<br/>    account_tier                      = optional(string, "Standard")<br/>    account_replication_type          = optional(string, "LRS")<br/>    advanced_threat_protection_enable = optional(bool, true)<br/>    access_tier                       = optional(string, "Hot")<br/>    public_network_access_enabled     = optional(bool, false)<br/>    use_legacy_defender_version       = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "access_tier": "Hot",<br/>  "account_kind": "StorageV2",<br/>  "account_replication_type": "LRS",<br/>  "account_tier": "Standard",<br/>  "advanced_threat_protection_enable": true,<br/>  "public_network_access_enabled": false,<br/>  "use_legacy_defender_version": true<br/>}</pre> | no |
+| <a name="input_fn_app_storage_account_info"></a> [fn\_app\_storage\_account\_info](#input\_fn\_app\_storage\_account\_info) | n/a | <pre>object({<br>    account_kind                      = optional(string, "StorageV2")<br>    account_tier                      = optional(string, "Standard")<br>    account_replication_type          = optional(string, "LRS")<br>    advanced_threat_protection_enable = optional(bool, true)<br>    access_tier                       = optional(string, "Hot")<br>    public_network_access_enabled     = optional(bool, false)<br>    use_legacy_defender_version       = optional(bool, false)<br>  })</pre> | <pre>{<br>  "access_tier": "Hot",<br>  "account_kind": "StorageV2",<br>  "account_replication_type": "LRS",<br>  "account_tier": "Standard",<br>  "advanced_threat_protection_enable": true,<br>  "public_network_access_enabled": false,<br>  "use_legacy_defender_version": true<br>}</pre> | no |
 | <a name="input_gh_runner_job_location"></a> [gh\_runner\_job\_location](#input\_gh\_runner\_job\_location) | (Optional) The GH runner container app job location. Consistent with the container app environment location | `string` | `"westeurope"` | no |
 | <a name="input_gpd_always_on"></a> [gpd\_always\_on](#input\_gpd\_always\_on) | Always on property | `bool` | `true` | no |
 | <a name="input_gpd_autoscale_default"></a> [gpd\_autoscale\_default](#input\_gpd\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `1` | no |
@@ -249,7 +250,7 @@
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | `"pagopa-p-monitor-rg"` | no |
 | <a name="input_multiplier"></a> [multiplier](#input\_multiplier) | Multiplier for the client backoff procedure | `number` | `1.5` | no |
 | <a name="input_pgbouncer_enabled"></a> [pgbouncer\_enabled](#input\_pgbouncer\_enabled) | Built-in connection pooling solution | `bool` | `false` | no |
-| <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br/>    name         = optional(string, null)<br/>    minAvailable = optional(number, null)<br/>    matchLabels  = optional(map(any), {})<br/>  }))</pre> | `{}` | no |
+| <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br>    name         = optional(string, null)<br>    minAvailable = optional(number, null)<br>    matchLabels  = optional(map(any), {})<br>  }))</pre> | `{}` | no |
 | <a name="input_postgres_db_name"></a> [postgres\_db\_name](#input\_postgres\_db\_name) | Postgres Database Name | `string` | `"apd"` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_randomization_factor"></a> [randomization\_factor](#input\_randomization\_factor) | Randomization factor for the backoff procedure | `number` | `0.5` | no |
@@ -265,14 +266,14 @@
 | <a name="input_reporting_function_autoscale_default"></a> [reporting\_function\_autoscale\_default](#input\_reporting\_function\_autoscale\_default) | The number of instances that are available for scaling if metrics are not available for evaluation. | `number` | `5` | no |
 | <a name="input_reporting_function_autoscale_maximum"></a> [reporting\_function\_autoscale\_maximum](#input\_reporting\_function\_autoscale\_maximum) | The maximum number of instances for this resource. | `number` | `10` | no |
 | <a name="input_reporting_function_autoscale_minimum"></a> [reporting\_function\_autoscale\_minimum](#input\_reporting\_function\_autoscale\_minimum) | The minimum number of instances for this resource. | `number` | `1` | no |
-| <a name="input_reporting_functions_app_sku"></a> [reporting\_functions\_app\_sku](#input\_reporting\_functions\_app\_sku) | Reporting functions app plan SKU | <pre>object({<br/>    kind     = string<br/>    sku_tier = string<br/>    sku_size = string<br/>  })</pre> | n/a | yes |
+| <a name="input_reporting_functions_app_sku"></a> [reporting\_functions\_app\_sku](#input\_reporting\_functions\_app\_sku) | Reporting functions app plan SKU | <pre>object({<br>    kind     = string<br>    sku_tier = string<br>    sku_size = string<br>  })</pre> | n/a | yes |
 | <a name="input_reporting_service_dotnet_version"></a> [reporting\_service\_dotnet\_version](#input\_reporting\_service\_dotnet\_version) | n/a | `string` | `null` | no |
 | <a name="input_reporting_service_function_always_on"></a> [reporting\_service\_function\_always\_on](#input\_reporting\_service\_function\_always\_on) | Always on property | `bool` | `false` | no |
 | <a name="input_reporting_service_image"></a> [reporting\_service\_image](#input\_reporting\_service\_image) | reporting\_service\_function docker image | `string` | `""` | no |
 | <a name="input_request_cpu"></a> [request\_cpu](#input\_request\_cpu) | Connect Request CPU | `string` | `"0.5"` | no |
 | <a name="input_request_memory"></a> [request\_memory](#input\_request\_memory) | Connect Request Memory | `string` | `"512m"` | no |
 | <a name="input_tasks_max"></a> [tasks\_max](#input\_tasks\_max) | Number of tasks | `string` | `"1"` | no |
-| <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image_name    = string,<br/>    image_tag     = string<br/>  })</pre> | n/a | yes |
+| <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br>    chart_version = string,<br>    image_name    = string,<br>    image_tag     = string<br>  })</pre> | n/a | yes |
 | <a name="input_zookeeper_jvm_xms"></a> [zookeeper\_jvm\_xms](#input\_zookeeper\_jvm\_xms) | Zookeeper Jvm Xms | `string` | `"512mi"` | no |
 | <a name="input_zookeeper_jvm_xmx"></a> [zookeeper\_jvm\_xmx](#input\_zookeeper\_jvm\_xmx) | Zookeeper Jvm Xmx | `string` | `"512mi"` | no |
 | <a name="input_zookeeper_limits_cpu"></a> [zookeeper\_limits\_cpu](#input\_zookeeper\_limits\_cpu) | Zookeeper Limit CPU | `string` | `"0.5"` | no |
