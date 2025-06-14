@@ -178,6 +178,26 @@
               "type": "string",
               "default": "true"
             }
+          },
+          {
+            "name": "onUsFirst",
+            "in": "query",
+            "description": "Affects the sorting logic [default = true]. true: if the onus bundle is present, it is returned in the first position, regardless of the chosen sorting logic. false: the sorting logic is also applied to the onus bundle, which may therefore appear in positions other than the first",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "true"
+            }
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "description": "Sorting logic to be applied to the bundles [default = RANDOM]. random: bundles are sorted randomly. fee: sorted by increasing fee, if fees are equal then by PSP name. pspname : sorted by PSP name.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "random"
+            }
           }
         ],
         "requestBody": {
@@ -356,6 +376,26 @@
             "schema": {
               "type": "string",
               "default": "true"
+            }
+          },
+          {
+            "name": "onUsFirst",
+            "in": "query",
+            "description": "Affects the sorting logic [default = true]. true: if the onus bundle is present, it is returned in the first position, regardless of the chosen sorting logic. false: the sorting logic is also applied to the onus bundle, which may therefore appear in positions other than the first",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "true"
+            }
+          },
+          {
+            "name": "orderBy",
+            "in": "query",
+            "description": "Sorting logic to be applied to the bundles [default = RANDOM]. random: bundles are sorted randomly. fee: sorted by increasing fee, if fees are equal then by PSP name. pspname : sorted by PSP name.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "random"
             }
           }
         ],
