@@ -28,3 +28,9 @@ data "azurerm_application_gateway" "app_gw_integration" {
   name                = "pagopa-${var.env_short}-weu-integration-app-gw"
   resource_group_name = "pagopa-${var.env_short}-vnet-rg"
 }
+
+
+data "azurerm_key_vault_secret" "cstar_subscription_id" {
+  name         = "cstar-subscription-id"
+  key_vault_id = module.key_vault.id
+}

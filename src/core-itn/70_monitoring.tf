@@ -37,6 +37,8 @@ resource "azurerm_monitor_workspace" "monitor_workspace" {
 resource "azurerm_private_dns_zone" "prometheus_dns_zone" {
   name                = "privatelink.${var.location}.prometheus.monitor.azure.com"
   resource_group_name = module.vnet_italy.0.resource_group_name
+
+  tags = module.tag_config.tags
 }
 
 # Create virtual network link for workspace private dns zone
@@ -45,6 +47,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "prometheus_dns_zone_vn
   resource_group_name   = module.vnet_italy.0.resource_group_name
   virtual_network_id    = module.vnet_italy.0.id
   private_dns_zone_name = azurerm_private_dns_zone.prometheus_dns_zone.name
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_dns_zone_virtual_network_link" "prometheus_core_dns_zone_vnet_link" {
@@ -52,6 +56,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "prometheus_core_dns_zo
   resource_group_name   = module.vnet_italy.0.resource_group_name
   virtual_network_id    = data.azurerm_virtual_network.vnet_core.id
   private_dns_zone_name = azurerm_private_dns_zone.prometheus_dns_zone.name
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "monitor_workspace_private_endpoint" {
