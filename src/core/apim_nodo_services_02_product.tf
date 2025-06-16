@@ -16,7 +16,7 @@ module "apim_nodo_dei_pagamenti_product" {
   subscription_required = var.nodo_pagamenti_subkey_required
   approval_required     = false
 
-  policy_xml = var.apim_nodo_decoupler_enable ? templatefile("base_policy.xml", { # decoupler ON
+  policy_xml = var.apim_nodo_decoupler_enable ? templatefile("./api_product/nodo_pagamenti_api/decoupler/base_policy.xml.tpl", { # decoupler ON
     address-range-from       = var.env_short == "p" ? "10.1.128.0" : "0.0.0.0"
     address-range-to         = var.env_short == "p" ? "10.1.128.255" : "0.0.0.0"
     is-nodo-auth-pwd-replace = false
