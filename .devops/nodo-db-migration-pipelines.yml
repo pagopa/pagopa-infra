@@ -485,6 +485,7 @@ stages:
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/partition/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
                 echo "Version not defined on partition!"
               else
+                echo "partition on db nodo"
                 liquibase \
                 --url="$(JDBC_URL)" \
                 --username="$(PARTITION_USERNAME)" \
@@ -496,6 +497,7 @@ stages:
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
                 validate -Dschema=$(PARTITION_SCHEMA)
+                echo "partition on db nodo-storico"
                 liquibase \
                 --url="$(JDBC_URL_STORICO)" \
                 --username="$(PARTITION_USERNAME)" \
@@ -507,24 +509,33 @@ stages:
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
                 validate -Dschema=$(PARTITION_SCHEMA)
-
+              fi
+              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo)/partition/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
+                echo "Version ${{ parameters.dbVersionSt }} not defined on partition!"
+              else
+                echo "partition st on db nodo"
                 liquibase \
                 --url="$(JDBC_URL)" \
                 --username="$(PARTITION_USERNAME)" \
                 --password="$(db-partition-password)" \
                 --classpath=src/psql/nodo/liquibase/$(liquibase_folder_st_nodo)/partition \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+                --changeLogFile=db.changelog-master-${{ parameters.dbVersionSt }}.xml \
                 --liquibaseSchemaName="$(PARTITION_SCHEMA)" \
                 --defaultSchemaName="$(PARTITION_SCHEMA)" \
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
                 validate -Dschema=$(PARTITION_SCHEMA)
+              fi
+              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo_storico)/partition/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
+                echo "Version ${{ parameters.dbVersionSt }} not defined on partition!"
+              else
+                echo "partition st on db nodo-storico"
                 liquibase \
                 --url="$(JDBC_URL_STORICO)" \
                 --username="$(PARTITION_USERNAME)" \
                 --password="$(db-partition-password)" \
                 --classpath=src/psql/nodo/liquibase/$(liquibase_folder_st_nodo_storico)/partition \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+                --changeLogFile=db.changelog-master-${{ parameters.dbVersionSt }}.xml \
                 --liquibaseSchemaName="$(PARTITION_SCHEMA)" \
                 --defaultSchemaName="$(PARTITION_SCHEMA)" \
                 --contexts="${{ parameters.lbContexts }}" \
