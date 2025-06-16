@@ -1,10 +1,10 @@
 <policies>
     <inbound>
       <base />
-      <set-variable name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />     
+      <set-variable name="walletToken"  value="@(context.Request.Headers.GetValueOrDefault("Authorization", "").Replace("Bearer ",""))"  />
       <!-- Get User IO : START-->
       <send-request ignore-error="true" timeout="10" response-variable-name="user-auth-body" mode="new">
-        <set-url>@("${io_backend_base_path}/pagopa/api/v1/user?version=20200114")</set-url> 
+        <set-url>@("${io_backend_base_path}/pagopa/api/v1/user?version=20200114")</set-url>
         <set-method>GET</set-method>
         <set-header name="Accept" exists-action="override">
           <value>application/json</value>
@@ -130,31 +130,32 @@
 
       <!-- pagoPA platform wallet JWT session token : START -->
       <!-- Token JWT START-->
-            <set-variable name="x-jwt-token" value="@{
-              //Construct the Base64Url-encoded header
-              var header = new { typ = "JWT", alg = "HS512" };
-              var jwtHeaderBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(header))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-
-              // Construct the Base64Url-encoded payload
-              var jti = Guid.NewGuid().ToString(); //sets the iat claim. Random uuid added to prevent the reuse of this token
-              var date = DateTime.Now;
-              var iat = new DateTimeOffset(date).ToUnixTimeSeconds(); // sets the issued time of the token now
-              var exp = new DateTimeOffset(date.AddMinutes(20)).ToUnixTimeSeconds();  // sets the expiration of the token to be 20 minutes from now
-              String userId = ((string)context.Variables.GetValueOrDefault("userId",""));
-
-              // Read email and pass it to the JWT. By now the email in shared as is. It MUST be encoded (by pdv) but POST transaction need to updated to not match email address as email field
-              string email = (string) context.Variables["email"];
-              
-              var payload = new { iat, exp, jti, email, userId};
-              var jwtPayloadBase64UrlEncoded = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload))).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-
-              // Construct the Base64Url-encoded signature
-              var signature = new HMACSHA512(Convert.FromBase64String("{{pagopa-wallet-session-jwt-signing-key}}")).ComputeHash(Encoding.UTF8.GetBytes($"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}"));
-              var jwtSignatureBase64UrlEncoded = Convert.ToBase64String(signature).Replace("/", "_").Replace("+", "-"). Replace("=", "");
-
-              // Return the HMAC SHA512-signed JWT as the value for the Authorization header
-              return $"{jwtHeaderBase64UrlEncoded}.{jwtPayloadBase64UrlEncoded}.{jwtSignatureBase64UrlEncoded}"; 
-          }" />
+      <send-request ignore-error="true" timeout="10" response-variable-name="x-jwt-token" mode="new">
+          <set-url>https://${ecommerce_ingress_hostname}/pagopa-jwt-issuer-service/tokens</set-url>
+          <set-method>POST</set-method>
+          <set-header name="Content-Type" exists-action="override">
+              <value>application/json</value>
+          </set-header>
+          <set-body>@{
+          String userId = ((string)context.Variables.GetValueOrDefault("userId",""));
+          string email = (string) context.Variables["email"];
+          return new JObject(
+                  new JProperty("audience", "iosession"),
+                  new JProperty("duration", 1200),
+                  new JProperty("privateClaims", new JObject(
+                      new JProperty("email", email),
+                      new JProperty("userId", userId)
+                  ))
+              ).ToString();
+          }</set-body>
+      </send-request>
+      <choose>
+          <when condition="@(((IResponse)context.Variables["x-jwt-token"]).StatusCode != 200)">
+              <return-response>
+                  <set-status code="502" reason="Bad Gateway" />
+              </return-response>
+          </when>
+      </choose>
       <!-- Token JWT END-->
       <!-- pagoPA platform wallet JWT session token : END -->
       <return-response>
@@ -162,10 +163,8 @@
           <set-header name="Content-Type" exists-action="override">
               <value>application/json</value>
           </set-header>
-          <set-body>@{ return new JObject(new JProperty("token", (string)context.Variables.GetValueOrDefault("x-jwt-token",""))).ToString(); }
-          </set-body>
+          <set-body>@{ return ((IResponse)context.Variables["x-jwt-token"]).Body.As<string>();; }</set-body>
       </return-response>
-
     </inbound>
     <outbound>
       <base />
