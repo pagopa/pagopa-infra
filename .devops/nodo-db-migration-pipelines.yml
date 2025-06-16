@@ -53,8 +53,6 @@ variables:
     POSTGRES_JDBC_URL_STORICO: jdbc:postgresql://pagopa-d-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-d-nodo-kv
     poolImage: 'pagopa-dev-linux-infra'
-    liquibase_folder_st_nodo: 'changelog_st_nodo'
-    liquibase_folder_st_nodo_storico: 'changelog_st_nodo_storico'
     NODO_DB_HOST: pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com
     NODO_DB_PORT: 6432
   ${{ if eq(parameters.k8sEnv, 'it') }}:
