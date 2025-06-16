@@ -113,7 +113,7 @@ route_aks = [
   {
     # aks nodo nexi postgres onprem
     name                   = "aks-outbound-to-nexi-postgres-onprem-subnet"
-    address_prefix         = "10.222.209.84/32"
+    address_prefix         = "10.102.1.93/32"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.10.150"
   },
@@ -303,7 +303,7 @@ wisp_converter = {
   dismantling_primitives              = "nodoInviaRPT,nodoInviaCarrelloRPT"
   dismantling_rt_primitives           = "nodoChiediCopiaRT"
   checkout_predefined_expiration_time = 1800
-  wisp_ecommerce_channels             = "97735020584_03"
+  wisp_ecommerce_channels             = "97735020584_03,97735020584_09"
 }
 
 enable_sendPaymentResultV2_SWClient = false
