@@ -103,7 +103,7 @@ resource "azurerm_key_vault_secret" "verifyko_tablestorage_connection_string" {
 }
 
 resource "azurerm_key_vault_secret" "mbd_storage_key" {
-  name         = "mbd-storage-key"
+  name         = "azurestorageaccountkey"
   value        = module.mbd_storage_account.primary_access_key
   content_type = "text/plain"
 
@@ -113,7 +113,7 @@ resource "azurerm_key_vault_secret" "mbd_storage_key" {
 }
 
 resource "azurerm_key_vault_secret" "mbd_storage_name" {
-  name         = "mbd-storage-name"
+  name         = "azurestorageaccountname"
   value        = module.mbd_storage_account.name
   content_type = "text/plain"
 
