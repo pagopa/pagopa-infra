@@ -31,11 +31,17 @@ resource "azurerm_storage_share" "firmatore" {
   storage_account_name = module.nodocerts_sa.name
   quota                = 50
 }
-resource "azurerm_storage_share_file" "upload_firmatore" {
-  for_each         = var.upload_firmatore
-  name             = each.key
-  source           = each.value
-  storage_share_id = azurerm_storage_share.firmatore.id
-}
+
+# :warning: The following resource is deprecated and should not be used in new deployments.\
+# ⚠️⚠️⚠️
+# DEPRACATED: upload manually ✋ via Az portal or Az CLI
+# ⚠️⚠️⚠️
+
+# resource "azurerm_storage_share_file" "upload_firmatore" {
+#   for_each         = var.upload_firmatore
+#   name             = each.key
+#   source           = each.value
+#   storage_share_id = azurerm_storage_share.firmatore.id
+# }
 
 
