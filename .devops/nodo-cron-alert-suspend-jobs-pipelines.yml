@@ -1,0 +1,33 @@
+trigger: none
+
+pr: none
+
+resources:
+  repositories:
+    - repository: self
+      type: git
+      trigger:
+        branches:
+          include:
+            - refs/heads/alert-suspend-cron-55FG123SD-*
+
+variables:
+  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/alert-suspend-cron-') }}:
+    branchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
+    alertKey: $[ split(variables['branchName'], '-')[3] ]
+    timestamp: $[ split(variables['branchName'], '-')[4] ]
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+jobs:
+  - job: SuspendCronJobs
+    displayName: 'Suspend Nodo Cron Jobs'
+    steps:
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: '$(AZURE_SUBSCRIPTION)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            kubectl get cronjobs -n nodo-cron
