@@ -16,7 +16,8 @@ is_feature_enabled = {
 #
 # CIRDs
 #
-cidr_vnet_italy = ["10.3.0.0/16"]
+cidr_vnet_italy                   = ["10.3.0.0/16"]
+cidr_vnet_italy_cstar_integration = ["10.4.0.0/16"]
 
 cidr_aks_system      = ["10.3.1.0/24"] #see aks-leonardo
 cidr_aks_user        = ["10.3.2.0/24"] #see aks-leonardo
