@@ -551,7 +551,7 @@ stages:
                 --url="$(JDBC_URL_STORICO)" \
                 --username="$(ADMIN_USERNAME)" \
                 --password="$(db-administrator-login-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin \
+                --classpath=src/psql/nodo/liquibase/$(liquibase_folder_st_nodo_storico)/admin \
                 --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
                 --liquibaseSchemaName="public" \
                 --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_ADMIN" \
@@ -561,7 +561,7 @@ stages:
                 --log-level=${{ parameters.lbLogLevel }} \
                 validate -Dschema=$(ADMIN_SCHEMA) -Dnodo-db-host=$(NODO_DB_HOST) -Dnodo-db-port=$(NODO_DB_PORT) -Dpartition-password=$(db-partition-password) -Dadmin-password=$(db-administrator-login-password)
               fi
-            displayName: "admin nodo db validate"
+            displayName: "admin nodo storico db validate"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo)/admin-postgres/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
                 echo "Version ${{ parameters.dbVersionSt }} not defined on admin!"
