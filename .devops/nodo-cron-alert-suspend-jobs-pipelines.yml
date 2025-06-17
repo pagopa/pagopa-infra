@@ -40,7 +40,7 @@ parameters:
   - name: mode
     displayName: 'Mode'
     type: string
-    default: 'Fix'
+    default: 'fix'
     values:
     - 'fix'
     - 'resume'
