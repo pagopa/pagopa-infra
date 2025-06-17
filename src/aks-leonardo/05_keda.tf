@@ -2,10 +2,6 @@ resource "kubernetes_namespace" "keda" {
   metadata {
     name = "keda"
   }
-
-  depends_on = [
-    module.aks_leonardo
-  ]
 }
 
 locals {
@@ -52,8 +48,4 @@ resource "helm_release" "keda" {
     name  = "podIdentity.activeDirectory.identity"
     value = "${local.keda_namespace_name}-pod-identity"
   }
-
-  depends_on = [
-    module.aks_leonardo
-  ]
 }

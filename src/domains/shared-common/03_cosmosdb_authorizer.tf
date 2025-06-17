@@ -20,6 +20,8 @@ module "authorizer_cosmosdb_account" {
   location = var.location
   domain   = "shared"
 
+  burst_capacity_enabled = true
+
   resource_group_name = azurerm_resource_group.shared_rg.name
   offer_type          = var.cosmos_authorizer_db_params.offer_type
   kind                = var.cosmos_authorizer_db_params.kind
