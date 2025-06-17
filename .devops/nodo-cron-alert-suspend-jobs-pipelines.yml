@@ -16,17 +16,27 @@ variables:
     branchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
     alertKey: $[ split(variables['branchName'], '-')[3] ]
     timestamp: $[ split(variables['branchName'], '-')[4] ]
+    env: $[ split(variables['branchName'], '-')[5] ]
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: '$(TF_POOL_NAME_DEV)'
 
 jobs:
+  - ${{ if eq(variables['env'], 'dev') }}:
+    - template: templates/azure-kubeconfig-generator/template.yaml
+      parameters:
+        AZURE_SERVICE_CONNECTION_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+        AKS_NAME: '$(TF_AKS_DEV_NAME)'
+        AKS_API_SERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
+        AKS_AZURE_DEVOPS_SA_CA_CRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
+        AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
+
   - job: SuspendCronJobs
     displayName: 'Suspend Nodo Cron Jobs'
     steps:
       - task: AzureCLI@2
         inputs:
-          azureSubscription: '$(AZURE_SUBSCRIPTION)'
+          azureSubscription: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
           scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: |
