@@ -30,9 +30,12 @@ variables:
 
 
 parameters:
+  # Operation mode for the cron jobs suspension pipeline
+  # Fix: fix jobs (Recommended on disaster)
+  # Resume: resume all suspended jobs
+  # Soft: Check and suspend jobs.
   - name: mode
     displayName: 'Mode'
-    description: 'Operation mode for the cron jobs suspension pipeline (Fix: fix jobs (Recommended on disaster), Resume: resume all suspended jobs, Soft: Check and suspend jobs.)'
     type: string
     default: 'Fix'
     values:
