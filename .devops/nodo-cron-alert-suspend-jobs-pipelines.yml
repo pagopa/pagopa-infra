@@ -61,6 +61,21 @@ jobs:
           AKS_AZURE_DEVOPS_SA_CA_CRT: '$(AKS_AZURE_DEVOPS_SA_CA_CRT)'
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(AKS_AZURE_DEVOPS_SA_TOKEN)'
 
+      - script: |
+          ls -l $(System.DefaultWorkingDirectory)/
+          cat $(System.DefaultWorkingDirectory)/config-$(AKS_NAME)
+        displayName: 'Debug: verifica esistenza kubeconfig'
+      - script: |
+          export KUBECONFIG=$(System.DefaultWorkingDirectory)/config-$(AKS_NAME)
+          kubectl config view
+          kubectl get namespaces
+          kubectl get cronjobs -n nodo-cron
+        displayName: 'Testa kubeconfig generato'
+      - script: |
+          echo "AKS_NAME impostato: $(AKS_NAME)"
+          echo "Path kubeconfig: $(System.DefaultWorkingDirectory)/config-$(AKS_NAME)"
+        displayName: 'Debug variabili'
+
       - task: AzureCLI@2
         inputs:
           azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
