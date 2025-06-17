@@ -67,13 +67,24 @@ jobs:
             # Verify installation
             kubelogin --version
 
+      - task: AzureCLI@2
+        displayName: 'Get short-lived Kubernetes ServiceAccount token'
+        inputs:
+          azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            export K8S_TEMP_TOKEN=$(kubectl create token azure-devops-sa -n nodo-cron --duration=1h)
+            echo "##vso[task.setvariable variable=K8S_TEMP_TOKEN;issecret=true]$K8S_TEMP_TOKEN"
+
+
       - template: templates/azure-kubeconfig-generator/template.yaml@templates
         parameters:
           AZURE_SERVICE_CONNECTION_NAME: '$(AZURE_SERVICE_CONNECTION_NAME)'
           AKS_NAME: '$(AKS_NAME)'
           AKS_API_SERVER_URL: '$(AKS_API_SERVER_URL)'
           AKS_AZURE_DEVOPS_SA_CA_CRT: '$(AKS_AZURE_DEVOPS_SA_CA_CRT)'
-          AKS_AZURE_DEVOPS_SA_TOKEN: '$(AKS_AZURE_DEVOPS_SA_TOKEN)'
+          AKS_AZURE_DEVOPS_SA_TOKEN: '$(K8S_TEMP_TOKEN)'
           WORKINGDIR: '$(System.DefaultWorkingDirectory)'
 
       - task: AzureCLI@2
