@@ -1,0 +1,89 @@
+trigger: none
+
+pr: none
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v6.9.0
+      endpoint: "io-azure-devops-github-ro"
+    - repository: self
+      type: git
+      trigger:
+        branches:
+          include:
+            - refs/heads/alert-suspend-cron-55FG123SD-*
+
+variables:
+  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/alert-suspend-cron-') }}:
+    branchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
+    alertKey: $[ split(variables['branchName'], '-')[3] ]
+    timestamp: $[ split(variables['branchName'], '-')[4] ]
+    env: $[ split(variables['branchName'], '-')[5] ]
+  AZURE_SERVICE_CONNECTION_NAME: $[ format('$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_{0})', coalesce(upper(variables['env']), 'DEV')) ]
+  AKS_NAME: $[ format('$(TF_AKS_{0}_NAME)', coalesce(upper(variables['env']), 'DEV')) ]
+  AKS_API_SERVER_URL: $[ format('$(TF_{0}_AKS_APISERVER_URL)', coalesce(upper(variables['env']), 'DEV')) ]
+  AKS_AZURE_DEVOPS_SA_CA_CRT: $[ format('$(TF_{0}_AKS_AZURE_DEVOPS_SA_CACRT)', coalesce(upper(variables['env']), 'DEV')) ]
+  AKS_AZURE_DEVOPS_SA_TOKEN: $[ format('$(TF_{0}_AKS_AZURE_DEVOPS_SA_TOKEN)', coalesce(upper(variables['env']), 'DEV')) ]
+
+
+parameters:
+  # Operation mode for the cron jobs suspension pipeline
+  # Fix: fix jobs (Recommended on disaster)
+  # Resume: resume all suspended jobs
+  # Soft: Check and suspend jobs.
+  - name: mode
+    displayName: 'Mode'
+    type: string
+    default: 'Fix'
+    values:
+    - 'fix'
+    - 'resume'
+    - 'soft'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+jobs:
+  - job: SuspendCronJobs
+    displayName: 'Suspend Nodo Cron Jobs'
+    steps:
+      - task: AzureCLI@2
+        displayName: 'Check For Requirements'
+        inputs:
+          azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            # Install kubelogin
+            echo "Installing kubelogin..."
+            curl -LO https://github.com/Azure/kubelogin/releases/latest/download/kubelogin-linux-amd64.zip
+            unzip kubelogin-linux-amd64.zip
+            sudo mv bin/linux_amd64/kubelogin /usr/local/bin/
+            rm -rf bin/ kubelogin-linux-amd64.zip
+
+            # Verify installation
+            kubelogin --version
+
+      - template: templates/azure-kubeconfig-generator/template.yaml@templates
+        parameters:
+          AZURE_SERVICE_CONNECTION_NAME: '$(AZURE_SERVICE_CONNECTION_NAME)'
+          AKS_NAME: '$(AKS_NAME)'
+          AKS_API_SERVER_URL: '$(AKS_API_SERVER_URL)'
+          AKS_AZURE_DEVOPS_SA_CA_CRT: '$(AKS_AZURE_DEVOPS_SA_CA_CRT)'
+          AKS_AZURE_DEVOPS_SA_TOKEN: '$(AKS_AZURE_DEVOPS_SA_TOKEN)'
+          WORKINGDIR: '$(System.DefaultWorkingDirectory)'
+
+
+      - task: AzureCLI@2
+        displayName: "Perform CRON GROM (Generic Recovery & Outage Mitigator)"
+        inputs:
+          azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            export KUBECONFIG=$(System.DefaultWorkingDirectory)/config-$(AKS_NAME)
+
+            curl https://raw.githubusercontent.com/pagopa/eng-common-scripts/refs/heads/main/global/cron-grom/cron-grom.sh | bash -s "${{ parameters.mode }}" nodo-cron
