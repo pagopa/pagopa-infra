@@ -31,13 +31,13 @@ variables:
 
 parameters:
   - name: mode
-displayName: 'Mode'
-type: string
-default: 'Fix'
-values:
-  - 'Fix'
-  - 'Resume'
-  - 'Soft'
+    displayName: 'Mode'
+    type: string
+    default: 'Fix'
+    values:
+    - 'Fix'
+    - 'Resume'
+    - 'Soft'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -83,9 +83,3 @@ jobs:
             kubectl config view
             # List and verify cron jobs existence
             echo "Checking for cron jobs in nodo-cron namespace..."
-            if ! kubectl get cronjobs -n nodo-cron; then
-              echo "No cron jobs found in nodo-cron namespace"
-              exit 1
-            fi
-
-            echo "Mode: ${{ parameters.mode }}"
