@@ -340,6 +340,19 @@ wisp_converter_storage_account = {
   backup_retention_days         = 30
 }
 
+mbd_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
+  blob_delete_retention_days    = 90
+  public_network_access_enabled = false
+  backup_enabled                = true
+  backup_retention_days         = 60
+  use_legacy_defender_version   = false
+}
+
 redis_ha_enabled = true
 
 enabled_features = {

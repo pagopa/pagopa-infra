@@ -102,6 +102,27 @@ resource "azurerm_key_vault_secret" "verifyko_tablestorage_connection_string" {
   tags = module.tag_config.tags
 }
 
+resource "azurerm_key_vault_secret" "mbd_storage_key" {
+  name         = "azurestorageaccountkey"
+  value        = module.mbd_storage_account.primary_access_key
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  tags = module.tag_config.tags
+}
+
+resource "azurerm_key_vault_secret" "mbd_storage_name" {
+  name         = "azurestorageaccountname"
+  value        = module.mbd_storage_account.name
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+
+  tags = module.tag_config.tags
+}
+
+
 /**********
 Event Hub
 ***********/
