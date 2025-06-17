@@ -77,8 +77,8 @@ jobs:
           WORKINGDIR: '$(System.DefaultWorkingDirectory)'
 
       - task: AzureCLI@2
+        displayName: "Perform CRON GROM (Generic Recovery & Outage Mitigator)"
         inputs:
-          displayName: "Perform CRON GROM (Generic Recovery & Outage Mitigator)"
           azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
           scriptType: 'bash'
           scriptLocation: 'inlineScript'
