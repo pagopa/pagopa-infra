@@ -22,11 +22,11 @@ variables:
     alertKey: $[ split(variables['branchName'], '-')[3] ]
     timestamp: $[ split(variables['branchName'], '-')[4] ]
     env: $[ split(variables['branchName'], '-')[5] ]
-    AZURE_SERVICE_CONNECTION_NAME: "$[ format('$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_{0})', toUpper(variables['env'])) ]"
-    AKS_NAME: "$[ format('$(TF_AKS_{0}_NAME)', toUpper(variables['env'])) ]"
-    AKS_API_SERVER_URL: "$[ format('$(TF_{0}_AKS_APISERVER_URL)', toUpper(variables['env'])) ]"
-    AKS_AZURE_DEVOPS_SA_CA_CRT: "$[ format('$(TF_{0}_AKS_AZURE_DEVOPS_SA_CACRT)', toUpper(variables['env'])) ]"
-    AKS_AZURE_DEVOPS_SA_TOKEN: "$[ format('$(TF_{0}_AKS_AZURE_DEVOPS_SA_TOKEN)', toUpper(variables['env'])) ]"
+  AZURE_SERVICE_CONNECTION_NAME: "$[ format('$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_{0})', if(ne(toUpper(variables['env'], ''), toUpper(variables['env'], 'dev')) ]"
+  AKS_NAME: "$[ format('$(TF_AKS_{0}_NAME)', if(ne(toUpper(variables['env'], ''), toUpper(variables['env'], 'dev')) ]"
+  AKS_API_SERVER_URL: "$[ format('$(TF_{0}_AKS_APISERVER_URL)', if(ne(toUpper(variables['env'], ''), toUpper(variables['env'], 'dev')) ]"
+  AKS_AZURE_DEVOPS_SA_CA_CRT: "$[ format('$(TF_{0}_AKS_AZURE_DEVOPS_SA_CACRT)', if(ne(toUpper(variables['env'], ''), toUpper(variables['env'], 'dev')) ]"
+  AKS_AZURE_DEVOPS_SA_TOKEN: "$[ format('$(TF_{0}_AKS_AZURE_DEVOPS_SA_TOKEN)', if(ne(toUpper(variables['env'], ''), toUpper(variables['env'], 'dev')) ]"
 
 
 pool:
