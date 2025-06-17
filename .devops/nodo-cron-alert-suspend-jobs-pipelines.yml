@@ -32,6 +32,7 @@ variables:
 parameters:
   - name: mode
     displayName: 'Mode'
+    description: 'Operation mode for the cron jobs suspension pipeline (Fix: fix jobs (Recommended on disaster), Resume: resume all suspended jobs, Soft: Check and suspend jobs.)'
     type: string
     default: 'Fix'
     values:
@@ -74,12 +75,13 @@ jobs:
 
       - task: AzureCLI@2
         inputs:
+          displayName: "Perform CRON GROM (Generic Recovery & Outage Mitigator)"
           azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
           scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: |
             export KUBECONFIG=$(System.DefaultWorkingDirectory)/config-$(AKS_NAME)
 
-            kubectl config view
-            # List and verify cron jobs existence
-            echo "Checking for cron jobs in nodo-cron namespace..."
+            curl \
+              https://raw.githubusercontent.com/pagopa/eng-common-scripts/a6220e40851065606a979d04ec2734ef26b8866c/global/cron-grom/cron-grom.sh \
+            | bash -s --help
