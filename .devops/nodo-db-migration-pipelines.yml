@@ -47,42 +47,42 @@ parameters:
 variables:
   ${{ if eq(parameters.k8sEnv, 'dev') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
-    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-    JDBC_URL_STORICO: jdbc:postgresql://pagopa-d-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL_STORICO: jdbc:postgresql://pagopa-d-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
+    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+    JDBC_URL_STORICO: jdbc:postgresql://pagopa-d-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL_STORICO: jdbc:postgresql://pagopa-d-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-d-nodo-kv
     poolImage: 'pagopa-dev-linux-infra'
     NODO_DB_HOST: pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com
     NODO_DB_PORT: 6432
   ${{ if eq(parameters.k8sEnv, 'it') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
-    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo-replica?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
+    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo-replica?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-d-nodo-kv
     poolImage: 'pagopa-dev-linux-infra'
   ${{ elseif eq(parameters.k8sEnv, 'prf') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
-    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo-replica?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
+    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo-replica?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-u-nodo-kv
     poolImage: 'pagopa-uat-linux-infra'
   ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
-    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-    JDBC_URL_STORICO: jdbc:postgresql://pagopa-u-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL_STORICO: jdbc:postgresql://pagopa-u-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
+    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+    JDBC_URL_STORICO: jdbc:postgresql://pagopa-u-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL_STORICO: jdbc:postgresql://pagopa-u-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
     NODO_DB_HOST: pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com
     NODO_DB_PORT: 6432
     KEY_VAULT_NAME: pagopa-u-nodo-kv
     poolImage: 'pagopa-uat-linux-infra'
   ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
-    JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-    JDBC_URL__STORICO: jdbc:postgresql://pagopa-p-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:6432/nodo?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL_STORICO: jdbc:postgresql://pagopa-p-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:6432/postgres?sslmode=require&prepareThreshold=0
+    JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+    JDBC_URL__STORICO: jdbc:postgresql://pagopa-p-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
+    POSTGRES_JDBC_URL_STORICO: jdbc:postgresql://pagopa-p-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
     KEY_VAULT_NAME: pagopa-p-nodo-kv
     NODO_DB_HOST: pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com
     NODO_DB_PORT: 6432
