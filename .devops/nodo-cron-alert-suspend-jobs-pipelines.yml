@@ -60,6 +60,7 @@ jobs:
           AKS_API_SERVER_URL: '$(AKS_API_SERVER_URL)'
           AKS_AZURE_DEVOPS_SA_CA_CRT: '$(AKS_AZURE_DEVOPS_SA_CA_CRT)'
           AKS_AZURE_DEVOPS_SA_TOKEN: '$(AKS_AZURE_DEVOPS_SA_TOKEN)'
+          WORKINGDIR: '$(System.DefaultWorkingDirectory)'
 
       - script: |
           ls -l $(System.DefaultWorkingDirectory)/
