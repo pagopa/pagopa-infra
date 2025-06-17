@@ -552,7 +552,7 @@ stages:
                 --username="$(ADMIN_USERNAME)" \
                 --password="$(db-administrator-login-password)" \
                 --classpath=src/psql/nodo/liquibase/$(liquibase_folder_st_nodo_storico)/admin \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+                --changeLogFile=db.changelog-master-${{ parameters.dbVersionSt }}.xml \
                 --liquibaseSchemaName="public" \
                 --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_ADMIN" \
                 --database-changelog-table-name="DATABASECHANGELOG_ADMIN" \
@@ -570,8 +570,8 @@ stages:
                 --url="$(POSTGRES_JDBC_URL)" \
                 --username="$(ADMIN_USERNAME)" \
                 --password="$(db-administrator-login-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/admin-postgres \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+                --classpath=src/psql/nodo/liquibase/$(liquibase_folder_st_nodo)/admin-postgres \
+                --changeLogFile=db.changelog-master-${{ parameters.dbVersionSt }}.xml \
                 --liquibaseSchemaName="public" \
                 --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_CRON" \
                 --database-changelog-table-name="DATABASECHANGELOG_CRON" \
