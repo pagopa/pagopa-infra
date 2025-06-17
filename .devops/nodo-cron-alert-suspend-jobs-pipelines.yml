@@ -22,7 +22,7 @@ variables:
     alertKey: $[ split(variables['branchName'], '-')[3] ]
     timestamp: $[ split(variables['branchName'], '-')[4] ]
     env: $[ split(variables['branchName'], '-')[5] ]
-  AZURE_SERVICE_CONNECTION_NAME: $[ format('$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_{0})', coalesce(toUpper(variables['env']), 'DEV')) ]
+  AZURE_SERVICE_CONNECTION_NAME: $[ format('$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_{0})', coalesce(upper(variables['env']), 'DEV')) ]
   AKS_NAME: $[ format('$(TF_AKS_{0}_NAME)', coalesce(upper(variables['env']), 'DEV')) ]
   AKS_API_SERVER_URL: $[ format('$(TF_{0}_AKS_APISERVER_URL)', coalesce(upper(variables['env']), 'DEV')) ]
   AKS_AZURE_DEVOPS_SA_CA_CRT: $[ format('$(TF_{0}_AKS_AZURE_DEVOPS_SA_CACRT)', coalesce(upper(variables['env']), 'DEV')) ]
