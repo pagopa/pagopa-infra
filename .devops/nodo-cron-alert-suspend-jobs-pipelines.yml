@@ -4,6 +4,11 @@ pr: none
 
 resources:
   repositories:
+    - repository: terraform
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v6.9.0
+      endpoint: "io-azure-devops-github-ro"
     - repository: self
       type: git
       trigger:
