@@ -145,7 +145,7 @@ stages:
               secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password,db-administrator-login-password'
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/cfg/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on cfg!"
+                echo "Version ${{ parameters.dbVersion }} not defined on cfg!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -173,7 +173,7 @@ stages:
             displayName: "cfg db status"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/online/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on online!"
+                echo "Version ${{ parameters.dbVersion }} not defined on online!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -201,7 +201,7 @@ stages:
             displayName: "online db status"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/offline/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on offline!"
+                echo "Version ${{ parameters.dbVersion }} not defined on offline!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -229,7 +229,7 @@ stages:
             displayName: "offline db status"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/re/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on re!"
+                echo "Version ${{ parameters.dbVersion }} not defined on re!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -257,7 +257,7 @@ stages:
             displayName: "re db status"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/wfesp/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on wfesp!"
+                echo "Version ${{ parameters.dbVersion }} not defined on wfesp!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -285,7 +285,7 @@ stages:
             displayName: "wfeps db status"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/partition/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on partition!"
+                echo "Version ${{ parameters.dbVersion }} not defined on partition!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -311,7 +311,7 @@ stages:
                 status -Dschema=$(PARTITION_SCHEMA)
               fi
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo)/partition/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
-                echo "Version not defined on partition st_nodo!"
+                echo "Version ${{ parameters.dbVersionSt }} not defined on partition st_nodo!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -326,7 +326,7 @@ stages:
                 status -Dschema=$(PARTITION_SCHEMA)
               fi
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo_storico)/partition/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
-                echo "Version not defined on partition st_nodo_storico!"
+                echo "Version ${{ parameters.dbVersionSt }} not defined on partition st_nodo_storico!"
               else
                 liquibase \
                 --url="$(JDBC_URL_STORICO)" \
@@ -343,7 +343,7 @@ stages:
             displayName: "partition db status"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/cfg/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on cfg!"
+                echo "Version ${{ parameters.dbVersion }} not defined on cfg!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -371,7 +371,7 @@ stages:
             displayName: "cfg db validate"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/online/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on online!"
+                echo "Version ${{ parameters.dbVersion }} not defined on online!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -399,7 +399,7 @@ stages:
             displayName: "online db validate"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/offline/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on offline!"
+                echo "Version ${{ parameters.dbVersion }} not defined on offline!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -427,7 +427,7 @@ stages:
             displayName: "offline db validate"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/re/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on re!"
+                echo "Version ${{ parameters.dbVersion }} not defined on re!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -455,7 +455,7 @@ stages:
             displayName: "re db validate"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/wfesp/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on wfesp!"
+                echo "Version ${{ parameters.dbVersion }} not defined on wfesp!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -483,7 +483,7 @@ stages:
             displayName: "wfeps db validate"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/partition/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on partition!"
+                echo "Version ${{ parameters.dbVersion }} not defined on partition!"
               else
                 echo "partition on db nodo"
                 liquibase \
@@ -511,7 +511,7 @@ stages:
                 validate -Dschema=$(PARTITION_SCHEMA)
               fi
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo)/partition/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
-                echo "Version ${{ parameters.dbVersionSt }} not defined on partition!"
+                echo "Version ${{ parameters.dbVersionSt }} not defined on partition st nodo!"
               else
                 echo "partition st on db nodo"
                 liquibase \
@@ -527,7 +527,7 @@ stages:
                 validate -Dschema=$(PARTITION_SCHEMA)
               fi
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo_storico)/partition/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
-                echo "Version ${{ parameters.dbVersionSt }} not defined on partition!"
+                echo "Version ${{ parameters.dbVersionSt }} not defined on partition st storico!"
               else
                 echo "partition st on db nodo-storico"
                 liquibase \
@@ -545,7 +545,7 @@ stages:
             displayName: "partition db validate"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo_storico)/admin/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
-                echo "Version ${{ parameters.dbVersionSt }} not defined on admin!"
+                echo "Version ${{ parameters.dbVersionSt }} not defined on admin st storico!"
               else
                 liquibase \
                 --url="$(JDBC_URL_STORICO)" \
@@ -564,7 +564,7 @@ stages:
             displayName: "admin nodo storico db validate"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo)/admin-postgres/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
-                echo "Version ${{ parameters.dbVersionSt }} not defined on admin!"
+                echo "Version ${{ parameters.dbVersionSt }} not defined on admin st nodo!"
               else
                 liquibase \
                 --url="$(POSTGRES_JDBC_URL)" \
@@ -632,7 +632,7 @@ stages:
               secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password,db-administrator-login-password'
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/cfg/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on cfg!"
+                echo "Version ${{ parameters.dbVersion }} not defined on cfg!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -660,7 +660,7 @@ stages:
             displayName: "Run Liquibase cfg"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/cfg/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on cfg!"
+                echo "Version ${{ parameters.dbVersion }} not defined on cfg!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -688,7 +688,7 @@ stages:
             displayName: "Tag cfg"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/online/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on online!"
+                echo "Version ${{ parameters.dbVersion }} not defined on online!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -716,7 +716,7 @@ stages:
             displayName: "Run Liquibase online"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/online/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on online!"
+                echo "Version ${{ parameters.dbVersion }} not defined on online!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -744,7 +744,7 @@ stages:
             displayName: "Tag online"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/offline/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on offline!"
+                echo "Version ${{ parameters.dbVersion }} not defined on offline!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -772,7 +772,7 @@ stages:
             displayName: "Run Liquibase offline"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/offline/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on offline!"
+                echo "Version ${{ parameters.dbVersion }} not defined on offline!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -800,7 +800,7 @@ stages:
             displayName: "Tag offline"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/re/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on re!"
+                echo "Version ${{ parameters.dbVersion }} not defined on re!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -828,7 +828,7 @@ stages:
             displayName: "Run Liquibase re"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/re/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on re!"
+                echo "Version ${{ parameters.dbVersion }} not defined on re!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -856,7 +856,7 @@ stages:
             displayName: "Tag re"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/wfesp/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on wfesp!"
+                echo "Version ${{ parameters.dbVersion }} not defined on wfesp!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -884,7 +884,7 @@ stages:
             displayName: "Run Liquibase wfesp"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/wfesp/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on wfesp!"
+                echo "Version ${{ parameters.dbVersion }} not defined on wfesp!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -912,7 +912,7 @@ stages:
             displayName: "Tag wfesp"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/partition/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on partition!"
+                echo "Version ${{ parameters.dbVersion }} not defined on partition!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -939,7 +939,7 @@ stages:
               fi
 
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo)/partition/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
-                echo "Version not defined on partition st_nodo!"
+                echo "Version ${{ parameters.dbVersionSt }} not defined on partition st_nodo!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -954,7 +954,7 @@ stages:
                 update -Dschema=$(PARTITION_SCHEMA)
               fi
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo_storico)/partition/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
-                echo "Version not defined on partition st_nodo_storico!"
+                echo "Version ${{ parameters.dbVersionSt }} not defined on partition st_nodo_storico!"
               else
                 liquibase \
                 --url="$(JDBC_URL_STORICO)" \
@@ -971,7 +971,7 @@ stages:
             displayName: "Run Liquibase partition"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/partition/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version not defined on partition!"
+                echo "Version ${{ parameters.dbVersion }} not defined on partition!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -997,7 +997,7 @@ stages:
                 tag ${{ parameters.dbVersion }}
               fi
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo)/partition/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
-                echo "Version not defined on partition st_nodo!"
+                echo "Version ${{ parameters.dbVersionSt }} not defined on partition st_nodo!"
               else
                 liquibase \
                 --url="$(JDBC_URL)" \
@@ -1012,7 +1012,7 @@ stages:
                 tag ${{ parameters.dbVersion }}
               fi
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo_storico)/partition/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
-                echo "Version not defined on partition st_nodo!"
+                echo "Version ${{ parameters.dbVersionSt }} not defined on partition st_nodo_storico!"
               else
                 liquibase \
                 --url="$(JDBC_URL_STORICO)" \
@@ -1045,7 +1045,7 @@ stages:
                 --log-level=${{ parameters.lbLogLevel }} \
                 update -Dschema=$(ADMIN_SCHEMA) -Dnodo-db-host=$(NODO_DB_HOST) -Dnodo-db-port=$(NODO_DB_PORT) -Dpartition-password=$(db-partition-password) -Dadmin-password=$(db-administrator-login-password)
               fi
-            displayName: "Run Liquibase admin nodo"
+            displayName: "Run Liquibase st admin nodo storico"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo_storico)/admin/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
                 echo "Version ${{ parameters.dbVersionSt }} not defined on admin st_nodo_storico!"
@@ -1064,7 +1064,7 @@ stages:
                 --log-level=${{ parameters.lbLogLevel }} \
                 tag ${{ parameters.dbVersion }}
               fi
-            displayName: "Tag admin nodo"
+            displayName: "Tag admin st nodo storico"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo)/admin-postgres/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
                 echo "Version ${{ parameters.dbVersionSt }} not defined on admin st_nodo!"
@@ -1083,7 +1083,7 @@ stages:
                 --log-level=${{ parameters.lbLogLevel }} \
                 update -Dschema=$(ADMIN_SCHEMA)
               fi
-            displayName: "Run Liquibase admin postgres"
+            displayName: "Run Liquibase admin st nodo postgres"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo)/admin-postgres/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
                 echo "Version ${{ parameters.dbVersionSt }} not defined on admin st_nodo!"
@@ -1102,4 +1102,4 @@ stages:
                 --log-level=${{ parameters.lbLogLevel }} \
                 tag ${{ parameters.dbVersion }}
               fi
-            displayName: "Tag admin postgres"
+            displayName: "Tag admin st nodo postgres"
