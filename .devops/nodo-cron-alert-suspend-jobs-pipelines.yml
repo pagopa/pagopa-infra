@@ -22,24 +22,6 @@ variables:
     alertKey: $[ split(variables['branchName'], '-')[3] ]
     timestamp: $[ split(variables['branchName'], '-')[4] ]
     env: $[ split(variables['branchName'], '-')[5] ]
-  ${{ if eq(variables['env'], 'dev') }}:
-    AZURE_SERVICE_CONNECTION_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
-    AKS_NAME: '$(TF_AKS_DEV_NAME)'
-    AKS_API_SERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
-    AKS_AZURE_DEVOPS_SA_CA_CRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
-    AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
-  ${{ if eq(variables['env'], 'uat') }}:
-    AZURE_SERVICE_CONNECTION_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
-    AKS_NAME: '$(TF_AKS_UAT_NAME)'
-    AKS_API_SERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
-    AKS_AZURE_DEVOPS_SA_CA_CRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
-    AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
-  ${{ if eq(variables['env'], 'prod') }}:
-    AZURE_SERVICE_CONNECTION_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
-    AKS_NAME: '$(TF_AKS_PROD_NAME)'
-    AKS_API_SERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
-    AKS_AZURE_DEVOPS_SA_CA_CRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
-    AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -50,7 +32,7 @@ jobs:
     steps:
       - task: AzureCLI@2
         inputs:
-          azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
+          azureSubscription: '$[ format('$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_{0})', toUpper(variables['env'])) ]'
           scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: |
@@ -74,15 +56,15 @@ jobs:
     steps:
       - template: templates/azure-kubeconfig-generator/template.yaml@templates
         parameters:
-          AZURE_SERVICE_CONNECTION_NAME: '$(AZURE_SERVICE_CONNECTION_NAME)'
-          AKS_NAME: '$(AKS_NAME)'
-          AKS_API_SERVER_URL: '$(AKS_API_SERVER_URL)'
-          AKS_AZURE_DEVOPS_SA_CA_CRT: '$(AKS_AZURE_DEVOPS_SA_CA_CRT)'
-          AKS_AZURE_DEVOPS_SA_TOKEN: '$(AKS_AZURE_DEVOPS_SA_TOKEN)'
+          AZURE_SERVICE_CONNECTION_NAME: '$[ format('$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_{0})', toUpper(variables['env'])) ]'
+          AKS_NAME: '$[ format('$(TF_AKS_{0}_NAME)', toUpper(variables['env'])) ]'
+          AKS_API_SERVER_URL: '$[ format('$(TF_{0}_AKS_APISERVER_URL)', toUpper(variables['env'])) ]'
+          AKS_AZURE_DEVOPS_SA_CA_CRT: '$[ format('$(TF_{0}_AKS_AZURE_DEVOPS_SA_CACRT)', toUpper(variables['env'])) ]'
+          AKS_AZURE_DEVOPS_SA_TOKEN: '$[ format('$(TF_{0}_AKS_AZURE_DEVOPS_SA_TOKEN)', toUpper(variables['env'])) ]'
 
       - task: AzureCLI@2
         inputs:
-          azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
+          azureSubscription: '$[ format('$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_{0})', toUpper(variables['env'])) ]'
           scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: |
