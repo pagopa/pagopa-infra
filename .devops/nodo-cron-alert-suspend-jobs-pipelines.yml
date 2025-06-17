@@ -53,13 +53,6 @@ jobs:
             # Verify installation
             kubelogin --version
 
-      - script: |
-          echo "AKS_NAME: $(AKS_NAME)"
-          echo "AKS_API_SERVER_URL: $(AKS_API_SERVER_URL)"
-          echo "AKS_AZURE_DEVOPS_SA_CA_CRT: $(AKS_AZURE_DEVOPS_SA_CA_CRT)"
-          echo "AKS_AZURE_DEVOPS_SA_TOKEN: $(AKS_AZURE_DEVOPS_SA_TOKEN)"
-        displayName: 'Controllo parametri AKS'
-
       - template: templates/azure-kubeconfig-generator/template.yaml@templates
         parameters:
           AZURE_SERVICE_CONNECTION_NAME: '$(AZURE_SERVICE_CONNECTION_NAME)'
@@ -74,6 +67,8 @@ jobs:
           scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: |
+            export KUBECONFIG=$(System.DefaultWorkingDirectory)/config-$(AKS_NAME)
+
             kubectl config view
             # List and verify cron jobs existence
             echo "Checking for cron jobs in nodo-cron namespace..."
