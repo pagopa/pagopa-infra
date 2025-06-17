@@ -4,7 +4,7 @@ pr: none
 
 resources:
   repositories:
-    - repository: terraform
+    - repository: templates
       type: github
       name: pagopa/azure-pipeline-templates
       ref: refs/tags/v6.9.0
@@ -30,7 +30,7 @@ jobs:
   - job: SuspendCronJobs
     displayName: 'Suspend Nodo Cron Jobs'
     steps:
-      - template: templates/azure-kubeconfig-generator/template.yaml
+      - template: templates/azure-kubeconfig-generator/template.yaml@templates
         parameters:
           AZURE_SERVICE_CONNECTION_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
           AKS_NAME: '$(TF_AKS_DEV_NAME)'
