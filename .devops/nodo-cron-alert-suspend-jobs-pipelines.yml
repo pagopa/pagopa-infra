@@ -19,7 +19,7 @@ variables:
     env: $[ split(variables['branchName'], '-')[5] ]
 
 pool:
-  vmImage: '$(TF_POOL_NAME_DEV)'
+  vmImage: 'ubuntu-latest'
 
 jobs:
   - ${{ if eq(variables['env'], 'dev') }}:
