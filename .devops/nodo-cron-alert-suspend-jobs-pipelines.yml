@@ -22,26 +22,73 @@ variables:
     alertKey: $[ split(variables['branchName'], '-')[3] ]
     timestamp: $[ split(variables['branchName'], '-')[4] ]
     env: $[ split(variables['branchName'], '-')[5] ]
+  ${{ if eq(variables['env'], 'dev') }}:
+    AZURE_SERVICE_CONNECTION_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+    AKS_NAME: '$(TF_AKS_DEV_NAME)'
+    AKS_API_SERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
+    AKS_AZURE_DEVOPS_SA_CA_CRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
+    AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
+  ${{ if eq(variables['env'], 'uat') }}:
+    AZURE_SERVICE_CONNECTION_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
+    AKS_NAME: '$(TF_AKS_UAT_NAME)'
+    AKS_API_SERVER_URL: '$(TF_UAT_AKS_APISERVER_URL)'
+    AKS_AZURE_DEVOPS_SA_CA_CRT: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_CACRT)'
+    AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_UAT_AKS_AZURE_DEVOPS_SA_TOKEN)'
+  ${{ if eq(variables['env'], 'prod') }}:
+    AZURE_SERVICE_CONNECTION_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
+    AKS_NAME: '$(TF_AKS_PROD_NAME)'
+    AKS_API_SERVER_URL: '$(TF_PROD_AKS_APISERVER_URL)'
+    AKS_AZURE_DEVOPS_SA_CA_CRT: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_CACRT)'
+    AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_PROD_AKS_AZURE_DEVOPS_SA_TOKEN)'
 
 pool:
   vmImage: 'ubuntu-latest'
 
 jobs:
+  - job: Requirements
+    displayName: 'Check For Requirements'
+    steps:
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            # Install kubelogin
+            echo "Installing kubelogin..."
+            curl -LO https://github.com/Azure/kubelogin/releases/latest/download/kubelogin-linux-amd64.zip
+            unzip kubelogin-linux-amd64.zip
+            sudo mv bin/linux_amd64/kubelogin /usr/local/bin/
+            rm -rf bin/ kubelogin-linux-amd64.zip
+
+            # Verify installation
+            kubelogin --version
+
+            # Check if required variables are set
+            if [ -z "$alertKey" ] || [ -z "$timestamp" ] || [ -z "$env" ]; then
+              echo "Required variables are not set. Please check branch name format."
+              exit 1
+            fi
   - job: SuspendCronJobs
     displayName: 'Suspend Nodo Cron Jobs'
     steps:
       - template: templates/azure-kubeconfig-generator/template.yaml@templates
         parameters:
-          AZURE_SERVICE_CONNECTION_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
-          AKS_NAME: '$(TF_AKS_DEV_NAME)'
-          AKS_API_SERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
-          AKS_AZURE_DEVOPS_SA_CA_CRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
-          AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
+          AZURE_SERVICE_CONNECTION_NAME: '$(AZURE_SERVICE_CONNECTION_NAME)'
+          AKS_NAME: '$(AKS_NAME)'
+          AKS_API_SERVER_URL: '$(AKS_API_SERVER_URL)'
+          AKS_AZURE_DEVOPS_SA_CA_CRT: '$(AKS_AZURE_DEVOPS_SA_CA_CRT)'
+          AKS_AZURE_DEVOPS_SA_TOKEN: '$(AKS_AZURE_DEVOPS_SA_TOKEN)'
 
       - task: AzureCLI@2
         inputs:
-          azureSubscription: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+          azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
           scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: |
-            kubectl get cronjobs -n nodo-cron
+            # List and verify cron jobs existence
+            echo "Checking for cron jobs in nodo-cron namespace..."
+            if ! kubectl get cronjobs -n nodo-cron; then
+              echo "No cron jobs found in nodo-cron namespace"
+              exit 1
+            fi
