@@ -85,6 +85,4 @@ jobs:
           inlineScript: |
             export KUBECONFIG=$(System.DefaultWorkingDirectory)/config-$(AKS_NAME)
 
-            curl \
-              https://raw.githubusercontent.com/pagopa/eng-common-scripts/refs/heads/main/global/cron-grom/cron-grom.sh \
-            | bash -s --help
+            curl https://raw.githubusercontent.com/pagopa/eng-common-scripts/refs/heads/main/global/cron-grom/cron-grom.sh | bash -s --help
