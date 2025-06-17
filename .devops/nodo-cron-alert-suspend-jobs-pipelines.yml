@@ -39,9 +39,9 @@ parameters:
     type: string
     default: 'Fix'
     values:
-    - 'Fix'
-    - 'Resume'
-    - 'Soft'
+    - 'fix'
+    - 'resume'
+    - 'soft'
 
 pool:
   vmImage: 'ubuntu-latest'
