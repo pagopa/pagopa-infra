@@ -33,10 +33,11 @@ pool:
   vmImage: 'ubuntu-latest'
 
 jobs:
-  - job: Requirements
-    displayName: 'Check For Requirements'
+  - job: SuspendCronJobs
+    displayName: 'Suspend Nodo Cron Jobs'
     steps:
       - task: AzureCLI@2
+        displayName: 'Check For Requirements'
         inputs:
           azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
           scriptType: 'bash'
@@ -51,9 +52,7 @@ jobs:
 
             # Verify installation
             kubelogin --version
-  - job: SuspendCronJobs
-    displayName: 'Suspend Nodo Cron Jobs'
-    steps:
+
       - template: templates/azure-kubeconfig-generator/template.yaml@templates
         parameters:
           AZURE_SERVICE_CONNECTION_NAME: '$(AZURE_SERVICE_CONNECTION_NAME)'
