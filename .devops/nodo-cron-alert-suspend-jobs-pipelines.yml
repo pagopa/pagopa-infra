@@ -1,4 +1,7 @@
-trigger: none
+trigger:
+  branches:
+    include:
+      - alert-suspend-cron-55FG123SD-*
 
 pr: none
 
