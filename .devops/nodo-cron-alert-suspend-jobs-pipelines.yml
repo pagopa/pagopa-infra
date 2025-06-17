@@ -51,12 +51,6 @@ jobs:
 
             # Verify installation
             kubelogin --version
-
-            # Check if required variables are set
-            if [ -z "$alertKey" ] || [ -z "$timestamp" ] || [ -z "$env" ]; then
-              echo "Required variables are not set. Please check branch name format."
-              exit 1
-            fi
   - job: SuspendCronJobs
     displayName: 'Suspend Nodo Cron Jobs'
     steps:
