@@ -12,12 +12,6 @@ resources:
       name: pagopa/azure-pipeline-templates
       ref: refs/tags/v6.9.0
       endpoint: "io-azure-devops-github-ro"
-    - repository: self
-      type: git
-      trigger:
-        branches:
-          include:
-            - refs/heads/alert-suspend-cron-55FG123SD-*
 
 variables:
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/alert-suspend-cron-') }}:
