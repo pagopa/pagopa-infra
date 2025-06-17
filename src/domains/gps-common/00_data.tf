@@ -124,3 +124,10 @@ data "azurerm_monitor_action_group" "opsgenie" {
   resource_group_name = var.monitor_resource_group_name
   name                = local.monitor_action_group_opsgenie_name
 }
+
+data "azurerm_eventhub_authorization_rule" "nodo_dei_pagamenti_cache_aca_rx" {
+  name                = "nodo-dei-pagamenti-cache-aca-rx"
+  namespace_name      = "${local.product}-weu-core-evh-ns04"
+  eventhub_name       = "nodo-dei-pagamenti-cache"
+  resource_group_name = "${local.product}-msg-rg"
+}
