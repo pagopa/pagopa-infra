@@ -87,14 +87,14 @@ jobs:
             export K8S_TEMP_TOKEN=$(kubectl create token azure-devops-sa -n nodo-cron --duration=3h)
             echo "##vso[task.setvariable variable=K8S_TEMP_TOKEN;issecret=true]$K8S_TEMP_TOKEN"
 
-      - template: templates/azure-kubeconfig-generator/template.yaml@templates
-        parameters:
-          AZURE_SERVICE_CONNECTION_NAME: '$(AZURE_SERVICE_CONNECTION_NAME)'
-          AKS_NAME: '$(AKS_NAME)'
-          AKS_API_SERVER_URL: '$(AKS_API_SERVER_URL)'
-          AKS_AZURE_DEVOPS_SA_CA_CRT: '$(AKS_AZURE_DEVOPS_SA_CA_CRT)'
-          AKS_AZURE_DEVOPS_SA_TOKEN: '$(K8S_TEMP_TOKEN)'
-          WORKINGDIR: '$(System.DefaultWorkingDirectory)'
+      - task: Bash@3
+        displayName: 'Update kubeconfig token'
+        inputs:
+          targetType: 'inline'
+          script: |
+            CONFIG="$(System.DefaultWorkingDirectory)/config-$(AKS_NAME)"
+            sed -i.bak "s/token: .*/token: $(K8S_TEMP_TOKEN)/" "$CONFIG"
+
 
       - task: AzureCLI@2
         displayName: "Perform CRON GROM (Generic Recovery & Outage Mitigator)"
