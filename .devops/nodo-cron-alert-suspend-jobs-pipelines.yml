@@ -67,6 +67,7 @@ jobs:
           scriptType: 'bash'
           scriptLocation: 'inlineScript'
           inlineScript: |
+            kubectl config view
             # List and verify cron jobs existence
             echo "Checking for cron jobs in nodo-cron namespace..."
             if ! kubectl get cronjobs -n nodo-cron; then
