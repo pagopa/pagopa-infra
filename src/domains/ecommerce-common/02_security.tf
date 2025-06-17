@@ -729,12 +729,6 @@ resource "random_password" "ecommerce_payment_requests_secondary_api_key_pass" {
   special = false
 }
 
-variable "ecommerce_payment_requests_api_key_use_primary" {
-  type    = bool
-  default = true
-}
-
-
 resource "azurerm_key_vault_secret" "ecommerce_payment_requests_primary_api_key" {
   name         = "ecommerce-payment-requests-primary-api-key"
   value        = random_password.ecommerce_payment_requests_primary_api_key_pass.result
