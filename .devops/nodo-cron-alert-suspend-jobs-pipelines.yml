@@ -22,17 +22,17 @@ pool:
   vmImage: 'ubuntu-latest'
 
 jobs:
-  - template: templates/azure-kubeconfig-generator/template.yaml
-    parameters:
-      AZURE_SERVICE_CONNECTION_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
-      AKS_NAME: '$(TF_AKS_DEV_NAME)'
-      AKS_API_SERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
-      AKS_AZURE_DEVOPS_SA_CA_CRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
-      AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
-
   - job: SuspendCronJobs
     displayName: 'Suspend Nodo Cron Jobs'
     steps:
+      - template: templates/azure-kubeconfig-generator/template.yaml
+        parameters:
+          AZURE_SERVICE_CONNECTION_NAME: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
+          AKS_NAME: '$(TF_AKS_DEV_NAME)'
+          AKS_API_SERVER_URL: '$(TF_DEV_AKS_APISERVER_URL)'
+          AKS_AZURE_DEVOPS_SA_CA_CRT: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_CACRT)'
+          AKS_AZURE_DEVOPS_SA_TOKEN: '$(TF_DEV_AKS_AZURE_DEVOPS_SA_TOKEN)'
+
       - task: AzureCLI@2
         inputs:
           azureSubscription: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
