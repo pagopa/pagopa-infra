@@ -96,3 +96,5 @@ ecommerce_storage_deadletter_params = {
 }
 
 enable_iac_pipeline = true
+
+helpdesk_service_requests_api_key_use_primary = true
