@@ -83,5 +83,5 @@ jobs:
             export KUBECONFIG=$(System.DefaultWorkingDirectory)/config-$(AKS_NAME)
 
             curl \
-              https://raw.githubusercontent.com/pagopa/eng-common-scripts/a6220e40851065606a979d04ec2734ef26b8866c/global/cron-grom/cron-grom.sh \
+              https://raw.githubusercontent.com/pagopa/eng-common-scripts/refs/heads/main/global/cron-grom/cron-grom.sh \
             | bash -s --help
