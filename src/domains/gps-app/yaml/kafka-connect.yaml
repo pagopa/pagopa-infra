@@ -52,7 +52,7 @@ spec:
     otel.expoerter.oltp.header: "${otlp_headers}"
   build:
     output:
-        type: docker
+      type: docker
       image: ${container_registry}/debezium-connector-postgres:latest
       # src/domains/gps-app/set_registry_secrets.sh
       pushSecret: acr-credential
