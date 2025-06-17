@@ -33,7 +33,7 @@ monitor_appinsights_name                    = "pagopa-d-appinsights"
 #
 aks_private_cluster_enabled  = false
 aks_alerts_enabled           = false
-aks_kubernetes_version       = "1.29.4"
+aks_kubernetes_version       = "1.32.4"
 aks_enable_workload_identity = true
 
 aks_system_node_pool = {
@@ -70,5 +70,5 @@ ingress_load_balancer_ip = "10.3.2.250"
 ingress_replica_count    = "2"
 nginx_helm_version       = "4.12.1"
 
-keda_helm_version    = "2.16.1"
+keda_helm_version    = "2.17.1"
 enable_elastic_agent = false

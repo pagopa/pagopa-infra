@@ -21,8 +21,9 @@ locals {
   vnet_replica_name        = "${local.product}-${var.location_replica_short}-core-replica-vnet"
   vnet_resource_group_name = "${local.product}-vnet-rg"
 
-  vnet_italy_name                = "${local.product}-itn-vnet"
-  vnet_italy_resource_group_name = "${local.product}-itn-vnet-rg"
+  vnet_italy_name                   = "${local.product}-itn-vnet"
+  vnet_italy_cstar_integration_name = "${local.product}-itn-cstar-integration-vnet"
+  vnet_italy_resource_group_name    = "${local.product}-itn-vnet-rg"
 
   acr_name                = replace("${local.product}commonacr", "-", "")
   acr_resource_group_name = "${local.product}-container-registry-rg"
@@ -38,12 +39,14 @@ locals {
   cosmos_table_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
   storage_dns_zone_name                = "privatelink.blob.core.windows.net"
+  storage_queue_dns_zone_name          = "privatelink.queue.core.windows.net"
   storage_dns_zone_resource_group_name = "${local.product}-vnet-rg"
 
   aks_subnet_name  = "${var.prefix}-${var.env_short}-${var.location_short}-${var.env}-aks-snet"
   azdo_subnet_name = "${local.product}-azdoa-snet"
 
-  common_private_endpoint_snet = "${var.prefix}-${var.env_short}-common-private-endpoint-snet"
+  common_private_endpoint_snet                   = "${var.prefix}-${var.env_short}-common-private-endpoint-snet"
+  common_private_endpoint_snet_cstar_integration = "${var.prefix}-${var.env_short}-${var.location_short_ita}-private-endpoint-snet"
 
   gpd_hostname        = module.postgres_flexible_server_private_db.fqdn
   gpd_dbmsport        = "6432"
@@ -58,4 +61,7 @@ locals {
   monitor_resource_group_name              = "${local.product}-monitor-rg"
 
   msg_resource_group_name = "${local.product}-msg-rg"
+
+  pagopa_apim_name = "${local.product}-apim"
+  pagopa_apim_rg   = "${local.product}-api-rg"
 }

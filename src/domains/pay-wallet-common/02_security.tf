@@ -369,3 +369,44 @@ resource "azurerm_key_vault_certificate" "pay-wallet-jwt-token-issuer-certificat
     }
   }
 }
+
+resource "azurerm_key_vault_certificate" "pay-wallet-jwt-token-issuer-certificate-ec" {
+  name         = "jwt-token-issuer-cert-ec"
+  key_vault_id = module.key_vault.id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_size   = 256
+      key_type   = "EC"
+      reuse_key  = false
+      curve      = "P-256"
+    }
+
+    lifetime_action {
+      action {
+        action_type = "AutoRenew"
+      }
+
+      trigger {
+        days_before_expiry = 2
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
+
+    x509_certificate_properties {
+      key_usage = [
+        "digitalSignature"
+      ]
+      subject            = "CN=${var.env}-${var.domain}-jwt-issuer"
+      validity_in_months = 1
+    }
+  }
+}

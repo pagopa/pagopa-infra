@@ -6,7 +6,8 @@ resource "azurerm_resource_group" "eventhub_observability_rg" {
 }
 
 module "eventhub_namespace_observability" {
-  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__/eventhub"
+
   name                     = "${local.project_itn}-evh"
   location                 = var.location_itn
   resource_group_name      = azurerm_resource_group.eventhub_observability_rg.name
@@ -52,7 +53,7 @@ module "eventhub_namespace_observability" {
 # CONFIGURATION
 #
 module "eventhub_observability_configuration" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__/eventhub_configuration"
 
   event_hub_namespace_name                = module.eventhub_namespace_observability.name
   event_hub_namespace_resource_group_name = azurerm_resource_group.eventhub_observability_rg.name
