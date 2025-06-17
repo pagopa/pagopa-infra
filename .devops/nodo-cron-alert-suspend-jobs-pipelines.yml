@@ -1,4 +1,7 @@
-trigger: none
+trigger:
+  branches:
+    include:
+      - alert-suspend-cron-55FG123SD-*
 
 pr: none
 
@@ -9,12 +12,6 @@ resources:
       name: pagopa/azure-pipeline-templates
       ref: refs/tags/v6.9.0
       endpoint: "io-azure-devops-github-ro"
-    - repository: self
-      type: git
-      trigger:
-        branches:
-          include:
-            - refs/heads/alert-suspend-cron-55FG123SD-*
 
 variables:
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/alert-suspend-cron-') }}:
@@ -37,7 +34,7 @@ parameters:
   - name: mode
     displayName: 'Mode'
     type: string
-    default: 'Fix'
+    default: 'fix'
     values:
     - 'fix'
     - 'resume'
@@ -87,3 +84,5 @@ jobs:
             export KUBECONFIG=$(System.DefaultWorkingDirectory)/config-$(AKS_NAME)
 
             curl https://raw.githubusercontent.com/pagopa/eng-common-scripts/refs/heads/main/global/cron-grom/cron-grom.sh | bash -s "${{ parameters.mode }}" nodo-cron
+
+
