@@ -85,14 +85,4 @@ jobs:
 
             curl https://raw.githubusercontent.com/pagopa/eng-common-scripts/refs/heads/main/global/cron-grom/cron-grom.sh | bash -s "${{ parameters.mode }}" nodo-cron
 
-      - task: AzureCLI@2
-        displayName: "Delete Current Branch"
-        condition: succeeded()
-        inputs:
-          azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
-          scriptType: 'bash'
-          scriptLocation: 'inlineScript'
-          inlineScript: |
-            branch_name=$(echo "$(Build.SourceBranch)" | sed 's/refs\/heads\///')
-            git push origin --delete $branch_name
 
