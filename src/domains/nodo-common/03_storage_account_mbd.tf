@@ -44,7 +44,6 @@ resource "azurerm_storage_share" "firmatore_mbd" {
   quota                = 50
 }
 
-
 # SID-Flussi-e-bollo/SID_cartelle/file_da_predisporre/
 
 resource "azurerm_storage_share_directory" "dir_SID-Flussi-e-bollo" {
@@ -52,13 +51,13 @@ resource "azurerm_storage_share_directory" "dir_SID-Flussi-e-bollo" {
   storage_share_id = azurerm_storage_share.firmatore_mbd.id
 }
 resource "azurerm_storage_share_directory" "dir_SID_cartelle" {
-  name             = "SID_cartelle"
+  name             = "SID-Flussi-e-bollo/SID_cartelle"
   storage_share_id = azurerm_storage_share.firmatore_mbd.id
 
   depends_on = [azurerm_storage_share_directory.dir_SID-Flussi-e-bollo]
 }
 resource "azurerm_storage_share_directory" "dir_file_da_predisporre" {
-  name             = "file_da_predisporre"
+  name             = "SID-Flussi-e-bollo/SID_cartelle/file_da_predisporre"
   storage_share_id = azurerm_storage_share.firmatore_mbd.id
 
   depends_on = [azurerm_storage_share_directory.dir_SID_cartelle]
