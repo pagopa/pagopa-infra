@@ -20,7 +20,7 @@
   {
     "node_id": "NDP004PROD",
     "description": "Nodo PostgreSQL OnPrem Nexi",
-    "node_uri": "https://10.79.20.63",
+    "node_uri": "https://10.79.20.25",
     "routing": 0,
     "broker_psps": [],
     "cis": [
