@@ -19,7 +19,7 @@
           <!-- add here handling for future api clients to be integrated, such as SEND -->
       </choose>
       <!-- Set payment-requests API Key header -->
-      <set-header name="X-Api-Key" exists-action="override">
+      <set-header name="x-api-key" exists-action="override">
         <value>{{ecommerce-payment-requests-api-key-for-checkout-carts-auth-value}}</value>
       </set-header>
   </inbound>
