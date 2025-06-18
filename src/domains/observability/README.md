@@ -14,6 +14,7 @@
 ## Modules
 
 | Name | Source | Version |
+|------|--------|---------|
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 087a57940a67444c3b883030c54ceb78562c64ef |
 | <a name="module_apim_app_forwarder_api"></a> [apim\_app\_forwarder\_api](#module\_apim\_app\_forwarder\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_app_forwarder_product"></a> [apim\_app\_forwarder\_product](#module\_apim\_app\_forwarder\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
