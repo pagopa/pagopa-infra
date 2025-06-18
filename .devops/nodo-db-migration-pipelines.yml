@@ -24,10 +24,12 @@ parameters:
   - name: dbVersion
     displayName: Database Version
     type: string
+    default: '3.35.0'
   # version of liquibase db.changelog-master-*.xml to run
   - name: dbVersionSt
     displayName: Database Version Storico patch
     type: string
+    default: '1.0.0'
   # liquibase context to run specific changelogs,default to '_' to run only uncontexted changelogs
   - name: lbContexts
     displayName: Liquibase Contexts
