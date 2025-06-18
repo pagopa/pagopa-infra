@@ -278,7 +278,7 @@ BODY
       {
         "name": "branchName",
         "type": "string",
-        "value": "alert-suspend-cron-55FG123SD-@{convertFromUtc(utcNow(), 'W. Europe Standard Time', 'yyyyMMddHHmmss')}-dev"
+        "value": "alert-suspend-cron-55FG123SD-@{convertFromUtc(utcNow(), 'W. Europe Standard Time', 'yyyyMMddHHmmss')}-${var.env}"
       }
     ]
   },
