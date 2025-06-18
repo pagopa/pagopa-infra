@@ -14,7 +14,7 @@
     </choose>
     <!-- pass rptId value into header END -->
     <!-- Set payment-requests API Key header -->
-    <set-header name="X-Api-Key" exists-action="override">
+    <set-header name="x-api-key" exists-action="override">
       <value>{{ecommerce-payment-requests-api-key-for-checkout-value}}</value>
     </set-header>
     <base />
