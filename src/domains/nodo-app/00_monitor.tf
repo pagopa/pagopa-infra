@@ -53,6 +53,7 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_metrics_error" {
   scopes              = [data.azurerm_kubernetes_cluster.aks.id]
   description         = "Action will be triggered when Pod count nodo-cron is greater than 100."
   severity            = 1
+  auto_mitigate       = false
 
   criteria {
     aggregation      = "Average"
@@ -116,10 +117,6 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_metrics" {
 
   action {
     action_group_id    = data.azurerm_monitor_action_group.slack.id
-    webhook_properties = null
-  }
-  action {
-    action_group_id    = azurerm_monitor_action_group.logic_app.id
     webhook_properties = null
   }
   dynamic "action" {
