@@ -50,3 +50,5 @@ pagopa_vpn_dr = {
     "0.0.0.0",
   ]
 }
+
+ecommerce_helpdesk_commands_service_api_key_use_primary = true

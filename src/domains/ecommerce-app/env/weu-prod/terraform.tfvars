@@ -102,3 +102,5 @@ pagopa_vpn_dr = {
     "93.63.219.234", # PagoPA on prem VPN DR
   ]
 }
+
+ecommerce_helpdesk_commands_service_api_key_use_primary = true
