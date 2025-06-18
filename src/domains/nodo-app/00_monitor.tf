@@ -44,14 +44,15 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_metrics" {
   name                = "${local.aks_name}-nodo-cron-pod_number"
   resource_group_name = var.monitor_resource_group_name
   scopes              = [data.azurerm_kubernetes_cluster.aks.id]
-  description         = "Action will be triggered when Pod count nodo-cron is greater than 200."
+  description         = "Action will be triggered when Pod count nodo-cron is greater than 100."
+  severity            = 1
 
   criteria {
     aggregation      = "Average"
     metric_namespace = "Microsoft.ContainerService/managedClusters"
     metric_name      = "kube_pod_status_phase"
     operator         = "GreaterThan"
-    threshold        = 200
+    threshold        = 100
     dimension {
       name     = "Namespace"
       operator = "Include"
@@ -77,7 +78,8 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_metrics_error" {
   name                = "${local.aks_name}-nodo-cron-pod_error"
   resource_group_name = var.monitor_resource_group_name
   scopes              = [data.azurerm_kubernetes_cluster.aks.id]
-  description         = "Action will be triggered when Pod count nodo-cron is greater than 200."
+  description         = "Action will be triggered when Pod count nodo-cron is greater than 30."
+  severity            = 3
 
   criteria {
     aggregation      = "Average"
@@ -100,10 +102,6 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_metrics_error" {
 
   action {
     action_group_id    = data.azurerm_monitor_action_group.slack.id
-    webhook_properties = null
-  }
-  action {
-    action_group_id    = azurerm_monitor_action_group.logic_app.id
     webhook_properties = null
   }
 }
@@ -278,7 +276,7 @@ BODY
       {
         "name": "branchName",
         "type": "string",
-        "value": "alert-suspend-cron-55FG123SD-@{convertFromUtc(utcNow(), 'W. Europe Standard Time', 'yyyyMMddHHmmss')}-dev"
+        "value": "alert-suspend-cron-55FG123SD-@{convertFromUtc(utcNow(), 'W. Europe Standard Time', 'yyyyMMddHHmmss')}-${var.env}"
       }
     ]
   },
