@@ -1,7 +1,7 @@
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-anonymizer-rest-responsetime-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-alert_pagopa-anonymizer-responsetime @ _anonymize"
+  name                = "pagopa-${var.env_short}-opex_pagopa-anonymizer-responsetime @ _anonymize"
   location            = var.location
 
   action {
@@ -35,7 +35,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-anonymizer-rest-availability-upd" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-alert_pagopa-anonymizer-availability@ _anonymize"
+  name                = "pagopa-${var.env_short}-opex_pagopa-anonymizer-availability @ _anonymize"
   location            = var.location
 
   action {
