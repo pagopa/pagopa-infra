@@ -32,6 +32,7 @@
 | <a name="module_cosmosdb_wisp_converter_snet"></a> [cosmosdb\_wisp\_converter\_snet](#module\_cosmosdb\_wisp\_converter\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | ./.terraform/modules/__v3__/github_federated_identity | n/a |
 | <a name="module_identity_ci_01"></a> [identity\_ci\_01](#module\_identity\_ci\_01) | ./.terraform/modules/__v3__/github_federated_identity | n/a |
+| <a name="module_mbd_storage_account"></a> [mbd\_storage\_account](#module\_mbd\_storage\_account) | ./.terraform/modules/__v3__/storage_account | n/a |
 | <a name="module_nodo_cfg_sync_re_storage_account"></a> [nodo\_cfg\_sync\_re\_storage\_account](#module\_nodo\_cfg\_sync\_re\_storage\_account) | ./.terraform/modules/__v3__/storage_account | n/a |
 | <a name="module_nodo_re_storage_account"></a> [nodo\_re\_storage\_account](#module\_nodo\_re\_storage\_account) | ./.terraform/modules/__v3__/storage_account | n/a |
 | <a name="module_nodo_storico_storage_account"></a> [nodo\_storico\_storage\_account](#module\_nodo\_storico\_storage\_account) | ./.terraform/modules/__v3__/storage_account | n/a |
@@ -91,6 +92,8 @@
 | [azurerm_key_vault_secret.integration_test_gpd_subscription_key_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.integration_test_nodo_subscription_key_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.integration_test_technical_support_subscription_key_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.mbd_storage_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [azurerm_key_vault_secret.mbd_storage_name](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.node_cfg_sync_re_sa_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.redis_hostname](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.redis_primary_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -137,6 +140,7 @@
 | [azurerm_private_endpoint.wispconv_private_endpoint_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.data_factory_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.db_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.mbd_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.nodo_cfg_sync_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.nodo_storico_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.nodo_verifyko_to_datastore_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -154,6 +158,10 @@
 | [azurerm_storage_container.sogei](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.storico_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
 | [azurerm_storage_container.wisp_converter_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_container) | resource |
+| [azurerm_storage_share.firmatore_mbd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_share) | resource |
+| [azurerm_storage_share_directory.dir_SID-Flussi-e-bollo](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_share_directory) | resource |
+| [azurerm_storage_share_directory.dir_SID_cartelle](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_share_directory) | resource |
+| [azurerm_storage_share_directory.dir_file_da_predisporre](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_share_directory) | resource |
 | [azurerm_storage_table.nodo_re_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [azurerm_storage_table.nodo_verifyko_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
 | [azurerm_storage_table.wisp_converter_table](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_table) | resource |
@@ -250,6 +258,7 @@
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_name"></a> [log\_analytics\_workspace\_name](#input\_log\_analytics\_workspace\_name) | Specifies the name of the Log Analytics Workspace. | `string` | n/a | yes |
 | <a name="input_log_analytics_workspace_resource_group_name"></a> [log\_analytics\_workspace\_resource\_group\_name](#input\_log\_analytics\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace is located in. | `string` | n/a | yes |
+| <a name="input_mbd_storage_account"></a> [mbd\_storage\_account](#input\_mbd\_storage\_account) | n/a | <pre>object({<br/>    account_kind                  = string<br/>    account_tier                  = string<br/>    account_replication_type      = string<br/>    advanced_threat_protection    = bool<br/>    blob_delete_retention_days    = number<br/>    blob_versioning_enabled       = bool<br/>    public_network_access_enabled = bool<br/>    backup_enabled                = bool<br/>    backup_retention_days         = number<br/>    use_legacy_defender_version   = bool<br/>  })</pre> | n/a | yes |
 | <a name="input_monitor_resource_group_name"></a> [monitor\_resource\_group\_name](#input\_monitor\_resource\_group\_name) | Monitor resource group name | `string` | n/a | yes |
 | <a name="input_nodo_cfg_sync_storage_account"></a> [nodo\_cfg\_sync\_storage\_account](#input\_nodo\_cfg\_sync\_storage\_account) | n/a | <pre>object({<br/>    account_kind                  = string<br/>    account_tier                  = string<br/>    account_replication_type      = string<br/>    advanced_threat_protection    = bool<br/>    blob_delete_retention_days    = number<br/>    blob_versioning_enabled       = bool<br/>    public_network_access_enabled = bool<br/>    backup_enabled                = bool<br/>    backup_retention_days         = number<br/>  })</pre> | n/a | yes |
 | <a name="input_nodo_re_storage_account"></a> [nodo\_re\_storage\_account](#input\_nodo\_re\_storage\_account) | n/a | <pre>object({<br/>    account_kind                  = string<br/>    account_tier                  = string<br/>    account_replication_type      = string<br/>    advanced_threat_protection    = bool<br/>    blob_delete_retention_days    = number<br/>    blob_versioning_enabled       = bool<br/>    public_network_access_enabled = bool<br/>    backup_enabled                = bool<br/>    backup_retention              = optional(number, 0)<br/>  })</pre> | <pre>{<br/>  "account_kind": "StorageV2",<br/>  "account_replication_type": "LRS",<br/>  "account_tier": "Standard",<br/>  "advanced_threat_protection": false,<br/>  "backup_enabled": false,<br/>  "backup_retention": 0,<br/>  "blob_delete_retention_days": 0,<br/>  "blob_versioning_enabled": false,<br/>  "public_network_access_enabled": false<br/>}</pre> | no |
