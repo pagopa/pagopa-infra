@@ -67,3 +67,9 @@ data "azurerm_private_dns_zone" "privatelink_table_cosmos_azure_com" {
   name                = "privatelink.table.cosmos.azure.com"
   resource_group_name = "pagopa-${var.env_short}-vnet-rg"
 }
+
+data "azurerm_private_dns_zone" "privatelink_postgres_azure_com" {
+  count               = var.env_short != "d" ? 1 : 0
+  name                = "private.postgres.database.azure.com"
+  resource_group_name = "pagopa-${var.env_short}-vnet-rg"
+}

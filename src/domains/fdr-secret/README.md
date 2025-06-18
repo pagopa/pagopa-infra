@@ -18,7 +18,7 @@
 |------|--------|---------|
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.53.0 |
 | <a name="module_letsencrypt_fdr"></a> [letsencrypt\_fdr](#module\_letsencrypt\_fdr) | git::https://github.com/pagopa/terraform-azurerm-v3.git//letsencrypt_credential | v8.53.0 |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 
 ## Resources
 
