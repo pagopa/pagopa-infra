@@ -7,19 +7,14 @@ pool:
   vmImage: 'ubuntu-latest'
 
 parameters:
-  - name: k8sEnv
-    displayName: K8s Environment
+  - name: env
+    displayName: Environment
     type: string
     default: dev
     values:
       - dev
-      - dev-storico
-      - it
-      - prf
       - uat
-      - uat-storico
       - prd
-      - prd-storico
   # version of liquibase db.changelog-master-*.xml to run
   - name: dbVersion
     displayName: Database Version
@@ -47,7 +42,7 @@ parameters:
       - SEVERE
 
 variables:
-  ${{ if eq(parameters.k8sEnv, 'dev') }}:
+  ${{ if eq(parameters.env, 'dev') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
     JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
     JDBC_URL_STORICO: jdbc:postgresql://pagopa-d-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
@@ -57,19 +52,7 @@ variables:
     poolImage: 'pagopa-dev-linux-infra'
     NODO_DB_HOST: pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com
     NODO_DB_PORT: 6432
-  ${{ if eq(parameters.k8sEnv, 'it') }}:
-    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_DEV)'
-    JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo-replica?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
-    KEY_VAULT_NAME: pagopa-d-nodo-kv
-    poolImage: 'pagopa-dev-linux-infra'
-  ${{ elseif eq(parameters.k8sEnv, 'prf') }}:
-    AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
-    JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo-replica?sslmode=require&prepareThreshold=0
-    POSTGRES_JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/postgres?sslmode=require&prepareThreshold=0
-    KEY_VAULT_NAME: pagopa-u-nodo-kv
-    poolImage: 'pagopa-uat-linux-infra'
-  ${{ elseif eq(parameters.k8sEnv, 'uat') }}:
+  ${{ elseif eq(parameters.env, 'uat') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
     JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
     JDBC_URL_STORICO: jdbc:postgresql://pagopa-u-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
@@ -79,7 +62,7 @@ variables:
     NODO_DB_PORT: 6432
     KEY_VAULT_NAME: pagopa-u-nodo-kv
     poolImage: 'pagopa-uat-linux-infra'
-  ${{ elseif eq(parameters.k8sEnv, 'prd') }}:
+  ${{ elseif eq(parameters.env, 'prd') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
     JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
     JDBC_URL__STORICO: jdbc:postgresql://pagopa-p-weu-nodo-storico-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
@@ -99,12 +82,8 @@ variables:
   ONLINE_SCHEMA: online
   RE_USERNAME: re
   RE_SCHEMA: re
-  WFESP_USERNAME: wfesp
-  WFESP_SCHEMA: wfesp
   PARTITION_USERNAME: partition
   PARTITION_SCHEMA: partition
-  CRON_USERNAME: partition
-  CRON_SCHEMA: cron
   ADMIN_USERNAME: azureuser
   ADMIN_SCHEMA: public
   liquibase_folder: 'changelog'
@@ -144,7 +123,7 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password,db-administrator-login-password'
+              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-partition-password,db-administrator-login-password'
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/cfg/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
                 echo "Version ${{ parameters.dbVersion }} not defined on cfg!"
@@ -257,34 +236,6 @@ stages:
                 status -Dschema=$(RE_SCHEMA)
               fi
             displayName: "re db status"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/wfesp/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version ${{ parameters.dbVersion }} not defined on wfesp!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(WFESP_USERNAME)" \
-                --password="$(db-wfesp-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/wfesp \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(WFESP_SCHEMA)" \
-                --defaultSchemaName="$(WFESP_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                status -Dschema=$(WFESP_SCHEMA)
-                liquibase \
-                --url="$(JDBC_URL_STORICO)" \
-                --username="$(WFESP_USERNAME)" \
-                --password="$(db-wfesp-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/wfesp \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(WFESP_SCHEMA)" \
-                --defaultSchemaName="$(WFESP_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                status -Dschema=$(WFESP_SCHEMA)
-              fi
-            displayName: "wfeps db status"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/partition/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
                 echo "Version ${{ parameters.dbVersion }} not defined on partition!"
@@ -456,38 +407,9 @@ stages:
               fi
             displayName: "re db validate"
           - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/wfesp/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version ${{ parameters.dbVersion }} not defined on wfesp!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(WFESP_USERNAME)" \
-                --password="$(db-wfesp-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/wfesp \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(WFESP_SCHEMA)" \
-                --defaultSchemaName="$(WFESP_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                validate -Dschema=$(WFESP_SCHEMA)
-                liquibase \
-                --url="$(JDBC_URL_STORICO)" \
-                --username="$(WFESP_USERNAME)" \
-                --password="$(db-wfesp-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/wfesp \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(WFESP_SCHEMA)" \
-                --defaultSchemaName="$(WFESP_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                validate -Dschema=$(WFESP_SCHEMA)
-              fi
-            displayName: "wfeps db validate"
-          - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/partition/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
                 echo "Version ${{ parameters.dbVersion }} not defined on partition!"
               else
-                echo "partition on db nodo"
                 liquibase \
                 --url="$(JDBC_URL)" \
                 --username="$(PARTITION_USERNAME)" \
@@ -499,7 +421,6 @@ stages:
                 --contexts="${{ parameters.lbContexts }}" \
                 --log-level=${{ parameters.lbLogLevel }} \
                 validate -Dschema=$(PARTITION_SCHEMA)
-                echo "partition on db nodo-storico"
                 liquibase \
                 --url="$(JDBC_URL_STORICO)" \
                 --username="$(PARTITION_USERNAME)" \
@@ -515,7 +436,6 @@ stages:
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo)/partition/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
                 echo "Version ${{ parameters.dbVersionSt }} not defined on partition st nodo!"
               else
-                echo "partition st on db nodo"
                 liquibase \
                 --url="$(JDBC_URL)" \
                 --username="$(PARTITION_USERNAME)" \
@@ -531,7 +451,6 @@ stages:
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder_st_nodo_storico)/partition/db.changelog-master-${{ parameters.dbVersionSt }}.xml ]; then
                 echo "Version ${{ parameters.dbVersionSt }} not defined on partition st storico!"
               else
-                echo "partition st on db nodo-storico"
                 liquibase \
                 --url="$(JDBC_URL_STORICO)" \
                 --username="$(PARTITION_USERNAME)" \
@@ -585,7 +504,7 @@ stages:
             displayName: "admin postgres db validate"
       - job: approval
         dependsOn: liquibase_status_job
-        condition: eq('${{ parameters.k8sEnv }}', 'prd')
+        condition: eq('${{ parameters.env }}', 'prd')
         pool: server
         displayName: "Approval"
         timeoutInMinutes: 16
@@ -602,7 +521,7 @@ stages:
         pool: $(poolImage)
         dependsOn: [liquibase_status_job,approval]
         condition: and(not(failed('liquibase_status_job')), not(failed('approval')))
-        displayName: "Update nodo DB ${{ parameters.k8sEnv }}"
+        displayName: "Update nodo DB ${{ parameters.env }}"
         steps:
           - checkout: self
             clean: true
@@ -631,7 +550,7 @@ stages:
             inputs:
               azureSubscription: $(AZURE_SERVICE_CONNECTION)
               keyVaultName: $(KEY_VAULT_NAME)
-              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-wfesp-password,db-partition-password,db-administrator-login-password'
+              secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-partition-password,db-administrator-login-password'
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/cfg/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
                 echo "Version ${{ parameters.dbVersion }} not defined on cfg!"
@@ -856,62 +775,6 @@ stages:
                 tag ${{ parameters.dbVersion }}
               fi
             displayName: "Tag re"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/wfesp/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version ${{ parameters.dbVersion }} not defined on wfesp!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(WFESP_USERNAME)" \
-                --password="$(db-wfesp-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/wfesp \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(WFESP_SCHEMA)" \
-                --defaultSchemaName="$(WFESP_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                update -Dschema=$(WFESP_SCHEMA)
-                liquibase \
-                --url="$(JDBC_URL_STORICO)" \
-                --username="$(WFESP_USERNAME)" \
-                --password="$(db-wfesp-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/wfesp \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(WFESP_SCHEMA)" \
-                --defaultSchemaName="$(WFESP_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                update -Dschema=$(WFESP_SCHEMA)
-              fi
-            displayName: "Run Liquibase wfesp"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/wfesp/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version ${{ parameters.dbVersion }} not defined on wfesp!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(WFESP_USERNAME)" \
-                --password="$(db-wfesp-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/wfesp \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(WFESP_SCHEMA)" \
-                --defaultSchemaName="$(WFESP_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-                liquibase \
-                --url="$(JDBC_URL_STORICO)" \
-                --username="$(WFESP_USERNAME)" \
-                --password="$(db-wfesp-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/wfesp \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(WFESP_SCHEMA)" \
-                --defaultSchemaName="$(WFESP_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-              fi
-            displayName: "Tag wfesp"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/partition/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
                 echo "Version ${{ parameters.dbVersion }} not defined on partition!"
