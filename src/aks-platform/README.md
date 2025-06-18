@@ -22,7 +22,7 @@
 | <a name="module_nginx_ingress"></a> [nginx\_ingress](#module\_nginx\_ingress) | terraform-module/release/helm | 2.8.0 |
 | <a name="module_opencosts"></a> [opencosts](#module\_opencosts) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_opencosts | v8.71.0 |
 | <a name="module_prometheus_managed_addon"></a> [prometheus\_managed\_addon](#module\_prometheus\_managed\_addon) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed | v8.97.0 |
-| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../tag_config | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | git::https://github.com/pagopa/terraform-azurerm-v3.git//tls_checker | v8.54.0 |
 | <a name="module_tls_checker_workload_identity_configuration"></a> [tls\_checker\_workload\_identity\_configuration](#module\_tls\_checker\_workload\_identity\_configuration) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_workload_identity_configuration | v8.54.0 |
 | <a name="module_tls_checker_workload_identity_init"></a> [tls\_checker\_workload\_identity\_init](#module\_tls\_checker\_workload\_identity\_init) | git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_workload_identity_init | v8.54.0 |
