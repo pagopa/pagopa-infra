@@ -821,9 +821,3 @@ resource "azurerm_key_vault_secret" "helpdesk_service_requests_secondary_api_key
   value        = random_password.helpdesk_service_requests_secondary_api_key_pass.result
   key_vault_id = module.key_vault.id
 }
-
-resource "azurerm_key_vault_secret" "helpdesk_service_requests_active_api_key" {
-  name         = "helpdesk-service-requests-active-api-key"
-  value        = var.helpdesk_service_requests_api_key_use_primary ? azurerm_key_vault_secret.helpdesk_service_requests_primary_api_key.value : azurerm_key_vault_secret.helpdesk_service_requests_secondary_api_key.value
-  key_vault_id = module.key_vault.id
-}

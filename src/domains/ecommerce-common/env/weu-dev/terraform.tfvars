@@ -94,5 +94,3 @@ ecommerce_storage_transient_params = {
 }
 
 enable_iac_pipeline = true
-
-helpdesk_service_requests_api_key_use_primary
