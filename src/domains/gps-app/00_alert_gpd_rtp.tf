@@ -153,7 +153,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-message-se
   QUERY
     , local.app_name
   )
-  severity    = 2
+  severity    = 1
   frequency   = 15
   time_window = 15
   trigger {
