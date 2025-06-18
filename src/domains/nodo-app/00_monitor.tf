@@ -96,7 +96,6 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_metrics" {
   scopes              = [data.azurerm_kubernetes_cluster.aks.id]
   description         = "Action will be triggered when Pod count nodo-cron is greater than 30."
   severity            = 3
-  auto_mitigate       = false
 
   criteria {
     aggregation      = "Average"
