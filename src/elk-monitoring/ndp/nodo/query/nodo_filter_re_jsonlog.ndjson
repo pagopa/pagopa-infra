@@ -1,2 +1,0 @@
-{"attributes":{"description":"","filters":[],"query":{"language":"kuery","query":"app.reJsonLog : true"},"title":"Filter nodo RE json log"},"coreMigrationVersion":"8.6.2","created_at":"2023-04-07T07:42:35.920Z","id":"c37e45b0-d517-11ed-bb48-d58ae524b61f","migrationVersion":{"query":"8.0.0"},"references":[],"type":"query","updated_at":"2023-04-07T07:42:35.920Z","version":"WzEzMzEzLDFd"}
-{"excludedObjects":[],"excludedObjectsCount":0,"exportedCount":1,"missingRefCount":0,"missingReferences":[]}
