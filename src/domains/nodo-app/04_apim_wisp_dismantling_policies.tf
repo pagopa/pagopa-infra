@@ -54,7 +54,7 @@ resource "azurerm_api_management_named_value" "wisp_dismantling_backend_url" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   display_name        = "wisp-dismantling-backend-url"
-  value               = "https://${local.nodo_hostname}/wisp-soap-converter"
+  value               = "https://${local.nodo_hostname}/wisp-soapconverter"
 }
 
 resource "azurerm_api_management_named_value" "wisp_dismantling_converter_base_url" {
@@ -62,7 +62,7 @@ resource "azurerm_api_management_named_value" "wisp_dismantling_converter_base_u
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   display_name        = "wisp-dismantling-converter-base-url"
-  value               = "https://${local.nodo_hostname}/pagopa-wisp-converter"
+  value               = "https://${local.nodo_hostname}/pagopa-wispconverter"
 }
 
 resource "azurerm_api_management_named_value" "wisp_checkout_predefined_expiration_time" {
