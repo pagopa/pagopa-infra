@@ -27,3 +27,12 @@ spec:
           - name: script-volume
             configMap:
               name: debezium-health-checker-script
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: node_type
+                        operator: In
+                        values:
+                          - user

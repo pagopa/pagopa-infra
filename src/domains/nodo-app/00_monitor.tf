@@ -173,13 +173,32 @@ resource "azurerm_logic_app_action_http" "create_branch" {
   }
   body = <<SCHEMA
 {
-  "ref": "refs/heads/alert-suspend-cron-55FG123SD-@{convertFromUtc(utcNow(), 'W. Europe Standard Time', 'yyyyMMddHHmmss')}-${var.env}",
+  "ref": "refs/heads/@{variables('branchName')}",
   "sha": "@{body('${local.custom_action_schema.parse_json.name}')?['object']?['sha']}"
 }
 SCHEMA
   uri  = "https://api.github.com/repos/${local.github.org}/${local.github.repository}/git/refs"
   run_after {
-    action_name   = local.custom_action_schema.parse_json.name
+    action_name   = local.custom_action_schema.init_branch_variable.name
+    action_result = "Succeeded"
+  }
+}
+
+resource "azurerm_logic_app_action_http" "delete_branch" {
+  name         = "Delete alert branch"
+  logic_app_id = azurerm_logic_app_workflow.logic.id
+  method       = "DELETE"
+  headers = {
+    "Accept"               = "application/vnd.github+json"
+    "Authorization"        = "Bearer ${local.github.pat}"
+    "X-GitHub-Api-Version" = "2022-11-28"
+  }
+
+  body = ""
+
+  uri = "https://api.github.com/repos/${local.github.org}/${local.github.repository}/git/refs/heads/@{variables('branchName')}"
+  run_after {
+    action_name   = local.custom_action_schema.wait.name
     action_result = "Succeeded"
   }
 }
@@ -213,19 +232,11 @@ locals {
   "inputs": {
     "content": "@body('GET latest SHA256')",
     "schema": {
-      "type": "object",
       "properties": {
-        "ref": {
-          "type": "string"
-        },
         "node_id": {
           "type": "string"
         },
-        "url": {
-          "type": "string"
-        },
         "object": {
-          "type": "object",
           "properties": {
             "sha": {
               "type": "string"
@@ -236,13 +247,62 @@ locals {
             "url": {
               "type": "string"
             }
-          }
+          },
+          "type": "object"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
         }
-      }
+      },
+      "type": "object"
     }
   },
   "runAfter": {
     "GET latest SHA256": [
+      "Succeeded"
+    ]
+  }
+}
+BODY
+    }
+    init_branch_variable = {
+      name = "Initialize variables"
+      body = <<BODY
+{
+  "type": "InitializeVariable",
+  "inputs": {
+    "variables": [
+      {
+        "name": "branchName",
+        "type": "string",
+        "value": "alert-suspend-cron-55FG123SD-@{convertFromUtc(utcNow(), 'W. Europe Standard Time', 'yyyyMMddHHmmss')}-dev"
+      }
+    ]
+  },
+  "runAfter": {
+    "Parse sha256 sum from main": [
+      "Succeeded"
+    ]
+  }
+}
+BODY
+    }
+    wait = {
+      name = "Delay"
+      body = <<BODY
+{
+  "type": "Wait",
+  "inputs": {
+    "interval": {
+      "count": 10,
+      "unit": "Second"
+    }
+  },
+  "runAfter": {
+    "Create alert branch": [
       "Succeeded"
     ]
   }
