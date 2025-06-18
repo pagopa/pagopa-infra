@@ -13,7 +13,8 @@ resource "azurerm_role_definition" "iac_reader" {
       "Microsoft.Web/sites/slots/config/list/action", # read app config for function app, app service slots
       "Microsoft.Web/staticSites/listSecrets/action",
       "Microsoft.Web/staticSites/listAppSettings/action",
-      "Microsoft.ContainerService/*/read", # help to generate cluster credentials
+      "Microsoft.Logic/workflows/triggers/listCallbackUrl/action", # read callback url from logic app triggers
+      "Microsoft.ContainerService/*/read",                         # help to generate cluster credentials
       # "Microsoft.ContainerService/managedClusters/read",                                 # help to generate cluster credentials
       # "Microsoft.ContainerService/managedClusters/listClusterUserCredential/action",     # help to generate cluster credentials
       # "Microsoft.ContainerService/managedClusters/accessProfiles/listCredential/action", # help to generate cluster credentials and read cluster roles
