@@ -22,7 +22,7 @@ dns_zone_internal_prefix = "internal.platform"
 
 ## CIDR nodo per database pgsql
 cidr_subnet_flex_dbms         = ["10.1.160.0/24"]
-cidr_subnet_flex_storico_dbms = ["10.1.176.0/24"]
+cidr_subnet_flex_storico_dbms = ["10.1.176.0/28"]
 
 ## CIDR storage subnet
 cidr_subnet_storage_account = ["10.1.137.16/29"]
