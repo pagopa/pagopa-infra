@@ -212,9 +212,3 @@ variable "enable_iac_pipeline" {
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."
   default     = false
 }
-
-variable "ecommerce_payment_requests_api_key_use_primary" {
-  type        = bool
-  description = "If true the current active API key used for payment requests will be the primary one."
-  default     = true
-}
