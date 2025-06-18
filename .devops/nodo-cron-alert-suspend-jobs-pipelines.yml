@@ -41,7 +41,7 @@ parameters:
     - 'soft'
 
 pool:
-  vmImage: $[ format('$(TF_POOL_NAME_{0})', coalesce(upper(variables['env']), 'DEV')) ]
+  name: $[ format('$(TF_POOL_NAME_{0})', coalesce(upper(variables['env']), 'DEV')) ]
 
 jobs:
   - job: SuspendCronJobs
