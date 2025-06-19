@@ -332,6 +332,35 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_blob_azure
   tags = module.tag_config.tags
 }
 
+### 🔮 Private DNS Zone for Storage Accounts File Shared
+
+resource "azurerm_private_dns_zone" "storage_account_file_shared" {
+  name                = "privatelink.file.core.windows.net"
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  tags = module.tag_config.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_file_azure_com_vnet" {
+  name                  = module.vnet.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.storage_account_file_shared.name
+  virtual_network_id    = module.vnet.id
+  registration_enabled  = false
+
+  tags = module.tag_config.tags
+}
+
+resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_file_azure_com_vnet_integration" {
+  name                  = module.vnet_integration.name
+  resource_group_name   = azurerm_resource_group.rg_vnet.name
+  private_dns_zone_name = azurerm_private_dns_zone.storage_account_file_shared.name
+  virtual_network_id    = module.vnet_integration.id
+  registration_enabled  = false
+
+  tags = module.tag_config.tags
+}
+
 ### 🔮 DNS private: internal.dev.platform.pagopa.it
 
 resource "azurerm_private_dns_zone" "internal_platform_pagopa_it" {
