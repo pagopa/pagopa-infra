@@ -24,13 +24,19 @@ module "nodocerts_sa" {
   }
   blob_delete_retention_days = var.nodo_cert_storage_account.blob_delete_retention_days
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 resource "azurerm_storage_share" "firmatore" {
   name                 = var.az_nodo_sa_share_name_firmatore
   storage_account_name = module.nodocerts_sa.name
   quota                = 50
 }
+
+# :warning: The following resource is deprecated and should not be used in new deployments.\
+# ⚠️⚠️⚠️
+# DEPRACATED: upload manually ✋ via Az portal or Az CLI
+# ⚠️⚠️⚠️
+
 resource "azurerm_storage_share_file" "upload_firmatore" {
   for_each         = var.upload_firmatore
   name             = each.key

@@ -7,14 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/ecommerce"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "ecommerce"
-}
 
 ### External resources
 
@@ -58,3 +50,5 @@ pagopa_vpn_dr = {
     "0.0.0.0",
   ]
 }
+
+ecommerce_payment_requests_api_key_use_primary = true

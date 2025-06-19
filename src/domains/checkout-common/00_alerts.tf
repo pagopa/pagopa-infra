@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "rg_checkout_alerts" {
   count    = var.env_short == "p" ? 1 : 0
   name     = "${local.project}-alerts-rg"
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 #Checkout auth service internal (without external dependencies) api availability alert
@@ -98,9 +98,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "checkout_auth_service_v1
   query = (<<-QUERY
 AzureDiagnostics
 | where url_s startswith 'https://api.platform.pagopa.it/checkout/auth-service/v1'
-| summarize 
+| summarize
   Total = count() ,
-  UnautorizedCount= countif(responseCode_d == 401) 
+  UnautorizedCount= countif(responseCode_d == 401)
   by Time = bin(TimeGenerated, 15m)
 | extend UnauthorizedPercentage = (UnautorizedCount * 1.0 / Total) * 100
 | where UnauthorizedPercentage > 10

@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "redis_pay_wallet_rg" {
   name     = "${local.project}-redis-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "pagopa_pay_wallet_redis" {
@@ -54,7 +54,7 @@ module "pagopa_pay_wallet_redis" {
     },
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # -----------------------------------------------
@@ -100,5 +100,5 @@ resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
     action_group_id = azurerm_monitor_action_group.payment_wallet_opsgenie[0].id
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

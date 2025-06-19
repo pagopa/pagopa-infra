@@ -1,6 +1,7 @@
 
 module "eventhub_namespace_observability_gpd" {
-  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__/eventhub"
+
   name                     = "${local.project_itn}-gpd-evh"
   location                 = var.location_itn
   resource_group_name      = azurerm_resource_group.eventhub_observability_rg.name
@@ -39,14 +40,14 @@ module "eventhub_namespace_observability_gpd" {
   metric_alerts_create = var.ehns_alerts_enabled
   metric_alerts        = var.ehns_metric_alerts_gpd
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 #
 # CONFIGURATION
 #
 module "eventhub_observability_gpd_configuration" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub_configuration?ref=v8.22.0"
+  source = "./.terraform/modules/__v3__/eventhub_configuration"
 
   event_hub_namespace_name                = module.eventhub_namespace_observability_gpd.name
   event_hub_namespace_resource_group_name = azurerm_resource_group.eventhub_observability_rg.name
@@ -96,6 +97,13 @@ resource "azurerm_key_vault_secret" "azure_web_jobs_storage_kv" {
   value        = azurerm_eventhub_namespace_authorization_rule.cdc_test_connection_string[0].primary_connection_string
   content_type = "text/plain"
   key_vault_id = data.azurerm_key_vault.gps_kv.id
+}
+
+resource "azurerm_eventhub_consumer_group" "rtp_consumer_gpd" {
+  name                = "rtp"
+  namespace_name      = module.eventhub_namespace_observability_gpd.name
+  eventhub_name       = "cdc-raw-auto.apd.payment_option"
+  resource_group_name = azurerm_resource_group.eventhub_observability_rg.name
 }
 
 

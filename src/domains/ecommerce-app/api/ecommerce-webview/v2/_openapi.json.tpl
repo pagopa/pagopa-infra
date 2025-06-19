@@ -98,97 +98,6 @@
           }
         }
       }
-    },
-    "/transactions/{transactionId}/outcomes": {
-      "get": {
-        "tags": [
-          "ecommerce-transactions"
-        ],
-        "operationId": "getTransactionOutcomes",
-        "summary": "Get transaction outcome",
-        "description": "Return outcome information for the input specific transaction resource",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "transactionId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Transaction ID"
-          }
-        ],
-        "security": [
-          {
-            "eCommerceSessionToken": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Transaction authorization request successfully updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionOutcomeInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid transaction id",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized, access token missing or invalid"
-          },
-          "404": {
-            "description": "Transaction not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "Bad gateway",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          },
-          "504": {
-            "description": "Gateway timeout",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemJson"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -398,33 +307,6 @@
           "status",
           "transactionId",
           "payments"
-        ]
-      },
-      "TransactionOutcomeInfo" : {
-        "type": "object",
-        "description": "Transaction outcome info returned when querying for an existing transaction outcome status. The field totalAmount, if present, is intended as the total amount paid for the transaction in eurocents fees excluded. Fees too, if present, is in eurocents",
-        "properties": {
-          "outcome": {
-            "type": "number",
-            "enum": [
-              0, 1, 2, 3, 4, 7, 8, 10, 17, 18, 25, 99, 116, 117, 121
-            ],
-            "description": "`0` - Success `1` - Generic error `2` - Authorization error `3` - Invalid data `4` - Timeout `7` - Invalid card: expired card etc `8` - Canceled by the user `10` - Excessive amount `17` - Taken in charge `18` - Refunded `25` - PSP Error `99` - Backend Error `116` - Balance not available `117` - CVV Error `121` - Limit exceeded"
-          },
-          "isFinalStatus": {
-            "type": "boolean",
-            "description": "A flag that describe the outcome as final or not. If true, the outcome will not change in the future and the client can interrupt polling."
-          },
-          "totalAmount": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          },
-          "fees": {
-            "$ref": "#/components/schemas/AmountEuroCents"
-          }
-        },
-        "required": [
-          "outcome",
-          "isFinalStatus"
         ]
       },
       "AmountEuroCents": {

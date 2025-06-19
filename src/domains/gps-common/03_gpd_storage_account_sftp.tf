@@ -25,7 +25,7 @@ module "gpd_sa_sftp" {
     virtual_network_subnet_ids = var.gpd_sftp_disable_network_rules ? [] : [data.azurerm_subnet.aks_snet.id, data.azurerm_subnet.azdo_snet.id]
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_private_endpoint" "gpd_blob" {
@@ -52,7 +52,34 @@ resource "azurerm_private_endpoint" "gpd_blob" {
     module.gpd_sa_sftp
   ]
 
-  tags = var.tags
+  tags = module.tag_config.tags
+}
+
+resource "azurerm_private_endpoint" "gpd_queue" {
+  count = var.gpd_sftp_enable_private_endpoint ? 1 : 0
+
+  name                = "${module.gpd_sa_sftp.name}-queue-endpoint"
+  resource_group_name = azurerm_resource_group.gpd_rg.name
+  location            = azurerm_resource_group.gpd_rg.location
+  subnet_id           = module.storage_account_snet.id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-storage-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.storage_queue[0].id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-storage-private-service-connection"
+    private_connection_resource_id = module.gpd_sa_sftp.id
+    is_manual_connection           = false
+    subresource_names              = ["queue"]
+  }
+
+  depends_on = [
+    module.gpd_sa_sftp
+  ]
+
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_storage_management_policy" "gpd_sa_lifecycle_policy" {

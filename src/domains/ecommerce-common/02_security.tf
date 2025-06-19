@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "sec_rg" {
   name     = "${local.product}-${var.domain}-sec-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "key_vault" {
@@ -15,7 +15,7 @@ module "key_vault" {
   tenant_id                  = data.azurerm_client_config.current.tenant_id
   soft_delete_retention_days = 90
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 ## ad group policy ##
@@ -703,5 +703,121 @@ resource "azurerm_key_vault_secret" "ecommerce_gha_bot_pat" {
     ignore_changes = [
       value,
     ]
+  }
+}
+
+resource "azurerm_key_vault_secret" "service_management_opsgenie_webhook_token" {
+  count        = var.env_short == "p" ? 1 : 0
+  name         = "service-management-opsgenie-webhook-token"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
+resource "random_password" "ecommerce_payment_requests_primary_api_key_pass" {
+  length  = 32
+  special = false
+}
+
+resource "random_password" "ecommerce_payment_requests_secondary_api_key_pass" {
+  length  = 32
+  special = false
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_payment_requests_primary_api_key" {
+  name         = "ecommerce-payment-requests-primary-api-key"
+  value        = random_password.ecommerce_payment_requests_primary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_payment_requests_secondary_api_key" {
+  name         = "ecommerce-payment-requests-secondary-api-key"
+  value        = random_password.ecommerce_payment_requests_secondary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_certificate" "ecommerce-jwt-token-issuer-certificate" {
+  name         = "jwt-token-issuer-cert"
+  key_vault_id = module.key_vault.id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_size   = 2048
+      key_type   = "RSA"
+      reuse_key  = false
+    }
+
+    lifetime_action {
+      action {
+        action_type = "AutoRenew"
+      }
+
+      trigger {
+        days_before_expiry = 2
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
+
+    x509_certificate_properties {
+      key_usage = [
+        "digitalSignature"
+      ]
+      subject            = "CN=${var.env}-${var.domain}-jwt-issuer"
+      validity_in_months = 1
+    }
+  }
+}
+
+resource "azurerm_key_vault_certificate" "ecommerce-jwt-token-issuer-certificate-ec" {
+  name         = "jwt-token-issuer-cert-ec"
+  key_vault_id = module.key_vault.id
+
+  certificate_policy {
+    issuer_parameters {
+      name = "Self"
+    }
+
+    key_properties {
+      exportable = true
+      key_size   = 256
+      key_type   = "EC"
+      reuse_key  = false
+      curve      = "P-256"
+    }
+
+    lifetime_action {
+      action {
+        action_type = "AutoRenew"
+      }
+
+      trigger {
+        days_before_expiry = 2
+      }
+    }
+
+    secret_properties {
+      content_type = "application/x-pkcs12"
+    }
+
+    x509_certificate_properties {
+      key_usage = [
+        "digitalSignature"
+      ]
+      subject            = "CN=${var.env}-${var.domain}-jwt-issuer"
+      validity_in_months = 1
+    }
   }
 }

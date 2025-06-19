@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "nodo_verifyko_to_datastore_rg" {
   name     = "${local.project}-verifyko-to-datastore-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "cosmosdb_account_nodo_verifyko" {
@@ -38,7 +38,7 @@ module "cosmosdb_account_nodo_verifyko" {
 
   backup_continuous_enabled = var.verifyko_cosmos_nosql_db_params.backup_continuous_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb database for nodo_verify_ko

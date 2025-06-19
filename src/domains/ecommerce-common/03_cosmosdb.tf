@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "cosmosdb_ecommerce_rg" {
   name     = "${local.project}-cosmosdb-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "cosmosdb_ecommerce_snet" {
@@ -59,7 +59,7 @@ module "cosmosdb_account_mongodb" {
   private_endpoint_mongo_name           = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
   private_service_connection_mongo_name = "${local.project}-cosmos-account-private-endpoint" # forced after update module vers
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_cosmosdb_mongo_database" "ecommerce" {
@@ -318,5 +318,9 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
     action_group_id = azurerm_monitor_action_group.ecommerce_opsgenie[0].id
   }
 
-  tags = var.tags
+  action {
+    action_group_id = azurerm_monitor_action_group.service_management_opsgenie[0].id
+  }
+
+  tags = module.tag_config.tags
 }

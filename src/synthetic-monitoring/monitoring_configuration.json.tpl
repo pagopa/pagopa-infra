@@ -737,7 +737,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeExternal",
+    "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
     "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo-auth/node-for-psp/v1",
     "type" : "apim",
@@ -761,7 +761,7 @@
       "Content-Type": "application/xml"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to external service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -769,7 +769,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeInternal",
+    "apiName" : "verifyPaymentNoticeOnGPD",
     "appName" : "nodo",
     "url" : "https://${api_dot_env_name}.platform.pagopa.it/nodo-auth/node-for-psp/v1",
     "type" : "apim",
@@ -793,7 +793,7 @@
       "Content-Type": "application/xml"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to internal service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -801,7 +801,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeInternal",
+    "apiName" : "verifyPaymentNoticeOnGPD",
     "appName" : "nodo",
     "url" : "https://${appgw_public_ip}/nodo-auth/node-for-psp/v1",
     "type" : "appgw",
@@ -826,7 +826,7 @@
       "Host": "${api_dot_env_name}.platform.pagopa.it"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to internal service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -834,7 +834,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeInternal",
+    "apiName" : "verifyPaymentNoticeOnGPD",
     "appName" : "nodo",
     "url" : "https://${nexi_node_ip}/webservices/input",
     "type" : "nexi",
@@ -859,7 +859,7 @@
       "Host": "${nexi_ndp_host}"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to internal service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -867,7 +867,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeExternal",
+    "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
     "url" : "https://${appgw_public_ip}/nodo-auth/node-for-psp/v1",
     "type" : "appgw",
@@ -892,7 +892,7 @@
       "Host": "${api_dot_env_name}.platform.pagopa.it"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to external service"
+      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
@@ -900,7 +900,7 @@
     }
   },
   {
-    "apiName" : "verifyPaymentNoticeExternal",
+    "apiName" : "verifyPaymentNoticeOnPartner",
     "appName" : "nodo",
     "url" : "https://${nexi_node_ip}/webservices/input",
     "type" : "nexi",
@@ -925,14 +925,47 @@
       "Host": "${nexi_ndp_host}"
     },
     "tags" : {
-      "description" : "pagopa nodo ${env_name} verify payment notice to external service trough nexi"
+      "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
     },
     "durationLimit" : 10000,
     "alertConfiguration" : {
       "enabled" : ${alert_enabled}
     }
-  }
-
-
-
+  },
+  {
+    "apiName" : "getConnectorStatus",
+    "appName" : "debeziumConnectorPostgres",
+    "url" : "https://${internal_api_domain_prefix}.gps.${internal_api_domain_suffix}/debezium-gpd/connectors/debezium-connector-postgres/status",
+    "type" : "aks",
+    "checkCertificate" : true,
+    "method" : "GET",
+    "expectedCodes" : ["200"],
+    "expectedBody": {"name":"debezium-connector-postgres","connector":{"state":"RUNNING"},"tasks":[{"state":"RUNNING"}]},
+    "bodyCompareStrategy": "contains",
+    "tags" : {
+      "description" : "pagopa gpd debezium-connector-postgres ${env_name} status monitor"
+    },
+    "durationLimit" : 10000,
+    "alertConfiguration" : {
+      "enabled" : ${alert_enabled},
+      "customActionGroupIds" : ${developers_action_group_ids}
+    }
+  },
+  {
+      "apiName": "iuvgenerator",
+      "appName": "shared",
+      "url": "https://${internal_api_domain_prefix}.shared.${internal_api_domain_suffix}/pagopa-iuv-generator/info",
+      "type": "aks",
+      "checkCertificate": true,
+      "method": "GET",
+      "expectedCodes": ["200"],
+      "tags": {
+        "description": "pagopa ${env_name} shared status endpoint"
+      },
+      "durationLimit": 10000,
+      "alertConfiguration": {
+        "enabled": ${alert_enabled},
+        "customActionGroupIds" : ${developers_action_group_ids}
+      }
+    }
 ]

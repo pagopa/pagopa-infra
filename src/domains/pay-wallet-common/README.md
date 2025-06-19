@@ -24,6 +24,7 @@
 | <a name="module_pay_wallet_storage"></a> [pay\_wallet\_storage](#module\_pay\_wallet\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.20.1 |
 | <a name="module_redis_pagopa_pay_wallet_snet"></a> [redis\_pagopa\_pay\_wallet\_snet](#module\_redis\_pagopa\_pay\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.20.1 |
 | <a name="module_storage_pay_wallet_snet"></a> [storage\_pay\_wallet\_snet](#module\_storage\_pay\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.20.1 |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_wallet_fe_cdn"></a> [wallet\_fe\_cdn](#module\_wallet\_fe\_cdn) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cdn | v8.20.1 |
 | <a name="module_wallet_fe_web_test"></a> [wallet\_fe\_web\_test](#module\_wallet\_fe\_web\_test) | git::https://github.com/pagopa/terraform-azurerm-v3.git//application_insights_standard_web_test | v8.20.1 |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
@@ -42,6 +43,8 @@
 | [azurerm_key_vault_access_policy.azdevops_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.azdevops_iac_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_access_policy.cdn_wallet_kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_certificate.pay-wallet-jwt-token-issuer-certificate](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
+| [azurerm_key_vault_certificate.pay-wallet-jwt-token-issuer-certificate-ec](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
 | [azurerm_key_vault_secret.ai_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.elastic_otel_token_header](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.migration_wallet_token_test_dev](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -153,7 +156,6 @@
 | <a name="input_pay_wallet_storage_params"></a> [pay\_wallet\_storage\_params](#input\_pay\_wallet\_storage\_params) | Azure storage DB params for pagoPA wallet resources. | <pre>object({<br/>    kind                          = string,<br/>    tier                          = string,<br/>    account_replication_type      = string,<br/>    advanced_threat_protection    = bool,<br/>    retention_days                = number,<br/>    public_network_access_enabled = bool,<br/>  })</pre> | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_redis_pay_wallet_params"></a> [redis\_pay\_wallet\_params](#input\_redis\_pay\_wallet\_params) | n/a | <pre>object({<br/>    capacity = number<br/>    sku_name = string<br/>    family   = string<br/>    version  = string<br/>    zones    = list(number)<br/>  })</pre> | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 

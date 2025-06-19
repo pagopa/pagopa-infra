@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "crusc8_fe_rg" {
   name     = "${local.project_weu}-fe-rg" #-${var.domain}
   location = var.location_weu
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 locals {
@@ -49,7 +49,7 @@ locals {
 // public storage used to serve FE
 #tfsec:ignore:azure-storage-default-action-deny
 module "crusc8_cdn" {
-  source = "./.terraform/modules/__v3__/cdn"
+  source = "./.terraform/modules/__v4__/cdn"
 
   name                = "crusc8"
   prefix              = local.product
@@ -60,12 +60,12 @@ module "crusc8_cdn" {
   https_rewrite_enabled = true
 
   index_document     = "index.html"
-  error_404_document = "error.html"
+  error_404_document = "index.html"
 
   #                             <ENV>.platform.pagopa.it
   # create_dns_record            = false # Skip creation
   dns_zone_name                = "${local.dns_zone_platform}.${local.external_domain}"
-  dns_zone_resource_group_name = local.vnet_resource_group_name
+  dns_zone_resource_group_name = local.vnet_resource_group_name_weu
 
   keyvault_resource_group_name = data.azurerm_key_vault.kv.resource_group_name
   keyvault_subscription_id     = data.azurerm_subscription.current.subscription_id
@@ -287,7 +287,7 @@ module "crusc8_cdn" {
     }
   ]
 
-  tags                       = var.tags
+  tags                       = module.tag_config.tags
   log_analytics_workspace_id = data.azurerm_log_analytics_workspace.log_analytics_italy.id
 }
 
@@ -354,7 +354,7 @@ resource "azurerm_dns_cname_record" "hostname_cruscotto" {
   #   value = var.create_dns_record ? var.dns_zone_name == var.hostname ? trimsuffix(azurerm_dns_a_record.apex_hostname[0].fqdn, ".") : trimsuffix(azurerm_dns_cname_record.hostname[0].fqdn, ".") : null
   record = "pagopa-${var.env_short}-crusc8-cdn-endpoint.azureedge.net"
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
 
   # depends_on = [ null_resource.custom_hostname_cruscotto ]

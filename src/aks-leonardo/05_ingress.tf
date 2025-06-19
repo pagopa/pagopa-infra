@@ -2,10 +2,6 @@ resource "kubernetes_namespace" "ingress" {
   metadata {
     name = "ingress"
   }
-
-  depends_on = [
-    module.aks_leonardo
-  ]
 }
 
 #ingress
@@ -53,9 +49,5 @@ module "nginx_ingress" {
       name  = "controller.service.annotations.service\\.beta\\.kubernetes\\.io/azure-load-balancer-health-probe-request-path"
       value = "/healthz"
     }
-  ]
-
-  depends_on = [
-    module.aks_leonardo
   ]
 }

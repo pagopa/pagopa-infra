@@ -13,7 +13,7 @@ data "azurerm_resource_group" "nodo_verify_ko_rg" {
 #  name     = "${local.project}-verifyko-to-datastore-rg-TMP"
 #  location = var.location
 #
-#  tags = var.tags
+#  tags = module.tag_config.tags
 #}
 
 
@@ -102,7 +102,7 @@ module "nodo_verifyko_to_tablestorage_function" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "nodo_verifyko_to_tablestorage_function_slot_staging" {
@@ -137,7 +137,7 @@ module "nodo_verifyko_to_tablestorage_function_slot_staging" {
   allowed_subnets = [data.azurerm_subnet.apim_vnet.id]
   allowed_ips     = []
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_autoscale_setting" "nodo_verifyko_to_tablestorage_function" {

@@ -7,14 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/gps"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-  domain      = "gps"
-}
 
 ## APIM
 apim_logger_resource_id = "/subscriptions/bbe47ad4-08b3-4925-94c5-1278e5819b86/resourceGroups/pagopa-d-api-rg/providers/Microsoft.ApiManagement/service/pagopa-d-apim/loggers/pagopa-d-apim-logger"
@@ -79,9 +71,9 @@ zookeeper_storage_size   = "100Gi"
 ### debezium kafka_connect_yaml
 replicas           = 1
 request_cpu        = 0.5
-limits_cpu         = 0.5
+limits_cpu         = 2
 request_memory     = "512Mi"
-limits_memory      = "512Mi"
+limits_memory      = "1024Mi"
 postgres_db_name   = "apd"
 tasks_max          = "1"
 container_registry = "pagopadcommonacr.azurecr.io"
