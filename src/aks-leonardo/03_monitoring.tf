@@ -50,7 +50,7 @@ data "azurerm_monitor_workspace" "workspace" {
 }
 
 module "prometheus_managed_addon" {
-  source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.84.0"
+  source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.97.0"
   cluster_name           = module.aks_leonardo.name
   resource_group_name    = module.aks_leonardo.aks_resource_group_name
   location               = var.location
