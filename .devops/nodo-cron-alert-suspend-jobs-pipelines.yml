@@ -54,7 +54,7 @@ pool:
   name: $[ format('$(TF_POOL_NAME_{0})', coalesce(upper(variables['finalEnv']), 'DEV')) ]
 
 jobs:
-  - job: ['$(finalEnv)'] SuspendCronJobs
+  - job: SuspendCronJobs
     displayName: '['$(finalEnv)'] Suspend Nodo Cron Jobs'
     steps:
       - task: AzureCLI@2
