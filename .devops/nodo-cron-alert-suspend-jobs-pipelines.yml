@@ -55,10 +55,10 @@ pool:
 
 jobs:
   - job: SuspendCronJobs
-    displayName: '['$(finalEnv)'] Suspend Nodo Cron Jobs'
+    displayName: '[$(finalEnv)] Suspend Nodo Cron Jobs'
     steps:
       - task: AzureCLI@2
-        displayName: '['$(finalEnv)'] Check For Requirements'
+        displayName: '[$(finalEnv)] Check For Requirements'
         inputs:
           azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
           scriptType: 'bash'
@@ -85,7 +85,7 @@ jobs:
 
 
       - task: AzureCLI@2
-        displayName: "['$(finalEnv)'] Perform CRON GROM (Generic Recovery & Outage Mitigator)"
+        displayName: "[$(finalEnv)] Perform CRON GROM (Generic Recovery & Outage Mitigator)"
         inputs:
           azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
           scriptType: 'bash'
