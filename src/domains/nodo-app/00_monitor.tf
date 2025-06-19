@@ -130,6 +130,23 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_metrics" {
 }
 
 
+################
+## DASHBOARDS ##
+################
+resource "azurerm_portal_dashboard" "multi-instance-ndp-dashboard" {
+  count               = var.env_short == "p" ? 1 : 0
+  name                = "[PROD] Multi-instance NdP - Monitoring"
+  resource_group_name = var.monitor_resource_group_name
+  location            = var.location
+  tags = {
+    source = "terraform"
+  }
+  dashboard_properties = templatefile("./dashboard/dashboard-multi-instance-ndp.tpl", {
+    subscription_id = data.azurerm_subscription.current.subscription_id,
+    env_short       = var.env_short
+  })
+}
+
 ##################################
 ## NODO CRON JOB ALERT WORKFLOW ##
 ##################################
@@ -161,7 +178,6 @@ resource "azurerm_logic_app_workflow" "logic" {
 
   tags = module.tag_config.tags
 }
-
 
 
 resource "azurerm_logic_app_trigger_http_request" "trigger" {
