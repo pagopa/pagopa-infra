@@ -55,7 +55,7 @@ pool:
 
 jobs:
   - job: SuspendCronJobs
-    displayName: '[$(finalEnv)] Suspend Nodo Cron Jobs'
+    displayName: 'Suspend Nodo Cron Jobs'
     steps:
       - task: AzureCLI@2
         displayName: '[$(finalEnv)] Check For Requirements'
