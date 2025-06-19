@@ -21,6 +21,10 @@
       <set-header name="x-client-id" exists-action="override">
         <value>CHECKOUT_CART</value>
       </set-header>
+      <!-- Set payment-requests API Key header -->
+      <set-header name="x-api-key" exists-action="override">
+        <value>{{ecommerce-payment-requests-api-key-for-checkout-ec-value}}</value>
+      </set-header>
   </inbound>
 
   <outbound>
