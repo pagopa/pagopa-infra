@@ -29,7 +29,7 @@ parameters:
   - name: env
     displayName: 'Environment (optional, if set it takes precedence over branch value)'
     type: string
-    default: 'unset'
+    default: 'dev'
     values:
       - 'dev'
       - 'uat'
@@ -41,8 +41,9 @@ variables:
     branchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
     alertKey: $[ split(variables['branchName'], '-')[3] ]
     timestamp: $[ split(variables['branchName'], '-')[4] ]
-    envFromBranch: $[ split(variables['branchName'], '-')[5] ]
-  finalEnv: $[ coalesce(${{ parameters.env }} != 'unset' && '${{ parameters.env }}' || '', variables['envFromBranch'], 'DEV') ]
+    finalEnv: $[ split(variables['branchName'], '-')[5] ]
+  ${{ if not(startsWith(variables['Build.SourceBranch'], 'refs/heads/alert-suspend-cron-')) }}:
+    finalEnv: ${{ parameters.env }}
   AZURE_SERVICE_CONNECTION_NAME: $[ format('$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_{0})', coalesce(upper(variables['finalEnv']), 'DEV')) ]
   AKS_NAME: $[ format('$(TF_AKS_{0}_NAME)', coalesce(upper(variables['finalEnv']), 'DEV')) ]
   AKS_API_SERVER_URL: $[ format('$(TF_{0}_AKS_APISERVER_URL)', coalesce(upper(variables['finalEnv']), 'DEV')) ]
