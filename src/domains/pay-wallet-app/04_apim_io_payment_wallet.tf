@@ -90,7 +90,7 @@ resource "azurerm_api_management_api_operation_policy" "post_io_wallets" {
   operation_id        = "createIOPaymentWallet"
 
   xml_content = templatefile("./api/io-payment-wallet/v1/_post_wallets.xml.tpl", {
-    env                = var.env == "prod" ? "" : "${var.env}.",
-    ecommerce_hostname = local.ecommerce_hostname
+    env      = var.env == "prod" ? "" : "${var.env}.",
+    hostname = local.payment_wallet_hostname
   })
 }
