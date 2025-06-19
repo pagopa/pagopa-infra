@@ -177,3 +177,9 @@ variable "pagopa_vpn_dr" {
   })
   description = "pagoPA on prem VPN DR"
 }
+
+variable "ecommerce_notification_service_api_key_use_primary" {
+  type        = bool
+  description = "If true the current active API key used for notification service will be the primary one."
+  default     = true
+}
