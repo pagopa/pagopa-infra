@@ -35,12 +35,12 @@ pgres_flex_params = {
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                             = 1048576 # 1Tib
   zone                                   = 1
-  backup_retention_days                  = 30
-  geo_redundant_backup_enabled           = true
+  backup_retention_days                  = 7
+  geo_redundant_backup_enabled           = false
   create_mode                            = "Default"
   pgres_flex_private_endpoint_enabled    = true
-  pgres_flex_ha_enabled                  = true
-  pgres_flex_pgbouncer_enabled           = true
+  pgres_flex_ha_enabled                  = false
+  pgres_flex_pgbouncer_enabled           = false
   standby_availability_zone              = 2
   pgres_flex_diagnostic_settings_enabled = false
   alerts_enabled                         = false
@@ -109,4 +109,3 @@ custom_metric_alerts = {
     severity         = 2
   }
 }
-
