@@ -183,3 +183,9 @@ variable "ecommerce_helpdesk_commands_service_api_key_use_primary" {
   description = "If true the current active API key used for helpdesk commands service requests will be the primary one."
   default     = true
 }
+
+variable "ecommerce_payment_requests_api_key_use_primary" {
+  type        = bool
+  description = "If true the current active API key used for payment requests will be the primary one."
+  default     = true
+}

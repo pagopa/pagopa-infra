@@ -23,8 +23,8 @@ module "aks_leonardo" {
   # ff: Enabled cost analysis on UAT/PROD
   cost_analysis_enabled = var.env_short != "d" ? true : false
 
-  automatic_channel_upgrade = "node-image"
-  node_os_channel_upgrade   = "NodeImage"
+  automatic_channel_upgrade = null
+  node_os_channel_upgrade   = "None"
   maintenance_windows_node_os = {
     enabled = true
   }
