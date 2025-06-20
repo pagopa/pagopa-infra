@@ -124,16 +124,6 @@
     </inbound>
     <outbound>
         <base />
-        <set-body>@{
-            JObject inBody = context.Response.Body.As<JObject>(preserveContent: true);
-            foreach (JObject bundle in ((JArray)(inBody["bundles"]))) {
-                if( bundle.ContainsKey("primaryCiIncurredFee") == false )
-                {
-                    bundle.Add("primaryCiIncurredFee",0);
-                }
-            }
-            return inBody.ToString();
-        }</set-body>
     </outbound>
     <backend>
         <base />
