@@ -39,7 +39,7 @@
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service")"/>
       </when>
       <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationIdV2","").Split(','), operations => operations == context.Operation.Id))">
-        <set-backend-service base-url="@("https://weudev.ecommerce.internal.dev.platform.pagopa.it"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service/v2")" />
+        <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service/v2")" />
       </when>
       <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentRequestsOperationId","").Split(','), operations => operations == context.Operation.Id))">
         <!-- Set payment-requests API Key header -->
