@@ -17,7 +17,7 @@ module "tf_audit_logic_app" {
   }
   tags = module.tag_config.tags
   trigger = {
-    interval  = 20
+    interval  = 15
     frequency = "Minute"
   }
 
