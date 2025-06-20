@@ -72,22 +72,3 @@ module "apim_pagopa_ecommerce_helpdesk_commands_service_api_v1" {
     pagopa_vpn_dr = var.pagopa_vpn_dr.ips[0]
   })
 }
-
-data "azurerm_key_vault_secret" "pagopa_ecommerce_helpdesk_commands_service_rest_api_primary_key" {
-  name         = "ecommerce-helpdesk-service-primary-api-key"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-data "azurerm_key_vault_secret" "pagopa_ecommerce_helpdesk_commands_service_rest_api_secondary_key" {
-  name         = "ecommerce-helpdesk-service-secondary-api-key"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-resource "azurerm_api_management_named_value" "pagopa_ecommerce_helpdesk_commands_service_rest_api_key" {
-  name                = "ecommerce-helpdesk-commands-service-rest-api-key"
-  api_management_name = local.pagopa_apim_name
-  resource_group_name = local.pagopa_apim_rg
-  display_name        = "ecommerce-helpdesk-commands-service-rest-api-key"
-  value               = var.ecommerce_helpdesk_commands_service_api_key_use_primary ? data.azurerm_key_vault_secret.pagopa_ecommerce_helpdesk_commands_service_rest_api_primary_key.value : data.azurerm_key_vault_secret.pagopa_ecommerce_helpdesk_commands_service_rest_api_secondary_key.value
-  secret              = true
-}
