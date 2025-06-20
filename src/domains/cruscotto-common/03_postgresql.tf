@@ -35,7 +35,7 @@ module "postgres_flexible_server_crus8" {
   location            = azurerm_resource_group.db_rg.location
   resource_group_name = azurerm_resource_group.db_rg.name
 
-  env          = var.env
+  env          = var.env_short != "p" ? var.env : "uat" # ⚠️⚠️⚠️ Italy : Cannot create a server with geo-redundant backup enabled in this location
   idh_resource = var.pgres_flex_params.idh_resource
   prefix       = var.prefix
 
