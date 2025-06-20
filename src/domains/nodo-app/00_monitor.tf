@@ -34,24 +34,33 @@ data "azurerm_monitor_action_group" "opsgenie" {
   name                = local.monitor_action_group_opsgenie_name
 }
 
+data "azurerm_monitor_action_group" "infra_opsgenie" {
+  count = var.env_short == "p" ? 1 : 0
+
+  resource_group_name = var.monitor_resource_group_name
+  name                = local.monitor_action_group_infra_opsgenie_name
+}
+
 data "azurerm_monitor_action_group" "smo_opsgenie" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = var.monitor_resource_group_name
   name                = "SmoOpsgenie"
 }
 
-resource "azurerm_monitor_metric_alert" "aks_nodo_metrics" {
-  name                = "${local.aks_name}-nodo-cron-pod_number"
+resource "azurerm_monitor_metric_alert" "aks_nodo_metrics_error" {
+  name                = "${local.aks_name}-nodo-cron-pod_number_error"
   resource_group_name = var.monitor_resource_group_name
   scopes              = [data.azurerm_kubernetes_cluster.aks.id]
-  description         = "Action will be triggered when Pod count nodo-cron is greater than 200."
+  description         = "Action will be triggered when Pod count nodo-cron is greater than 100."
+  severity            = 1
+  auto_mitigate       = false
 
   criteria {
     aggregation      = "Average"
     metric_namespace = "Microsoft.ContainerService/managedClusters"
     metric_name      = "kube_pod_status_phase"
     operator         = "GreaterThan"
-    threshold        = 200
+    threshold        = 100
     dimension {
       name     = "Namespace"
       operator = "Include"
@@ -71,13 +80,22 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_metrics" {
     action_group_id    = azurerm_monitor_action_group.logic_app.id
     webhook_properties = null
   }
+  dynamic "action" {
+    for_each = var.env == "prod" ? [data.azurerm_monitor_action_group.infra_opsgenie.0.id] : []
+    content {
+      action_group_id    = action.value
+      webhook_properties = null
+    }
+  }
+
 }
 
-resource "azurerm_monitor_metric_alert" "aks_nodo_metrics_error" {
-  name                = "${local.aks_name}-nodo-cron-pod_error"
+resource "azurerm_monitor_metric_alert" "aks_nodo_metrics" {
+  name                = "${local.aks_name}-nodo-cron-pod"
   resource_group_name = var.monitor_resource_group_name
   scopes              = [data.azurerm_kubernetes_cluster.aks.id]
-  description         = "Action will be triggered when Pod count nodo-cron is greater than 200."
+  description         = "Action will be triggered when Pod count nodo-cron is greater than 30."
+  severity            = 3
 
   criteria {
     aggregation      = "Average"
@@ -95,17 +113,20 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_metrics_error" {
       operator = "Include"
       values   = ["Failed", "Pending"]
     }
-
   }
 
   action {
     action_group_id    = data.azurerm_monitor_action_group.slack.id
     webhook_properties = null
   }
-  action {
-    action_group_id    = azurerm_monitor_action_group.logic_app.id
-    webhook_properties = null
+  dynamic "action" {
+    for_each = var.env == "prod" ? [data.azurerm_monitor_action_group.infra_opsgenie.0.id] : []
+    content {
+      action_group_id    = action.value
+      webhook_properties = null
+    }
   }
+
 }
 
 
@@ -278,7 +299,7 @@ BODY
       {
         "name": "branchName",
         "type": "string",
-        "value": "alert-suspend-cron-55FG123SD-@{convertFromUtc(utcNow(), 'W. Europe Standard Time', 'yyyyMMddHHmmss')}-dev"
+        "value": "alert-suspend-cron-55FG123SD-@{convertFromUtc(utcNow(), 'W. Europe Standard Time', 'yyyyMMddHHmmss')}-${var.env}"
       }
     ]
   },
