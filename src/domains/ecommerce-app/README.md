@@ -199,7 +199,7 @@
 | <a name="input_dns_zone_checkout"></a> [dns\_zone\_checkout](#input\_dns\_zone\_checkout) | The checkout dns subdomain. | `string` | `null` | no |
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
-| <a name="input_ecommerce_helpdesk_commands_service_api_key_use_primary"></a> [ecommerce\_helpdesk\_commands\_service\_api\_key\_use\_primary](#input\_ecommerce\_helpdesk\_commands\_service\_api\_key\_use\_primary) | If true the current active API key used for helpdesk commands service requests will be the primary one. | `bool` | `true` | no |
+| <a name="input_ecommerce_helpdesk_service_api_key_use_primary"></a> [ecommerce\_helpdesk\_service\_api\_key\_use\_primary](#input\_ecommerce\_helpdesk\_service\_api\_key\_use\_primary) | If true the current active API key used for helpdesk commands service requests will be the primary one. | `bool` | `true` | no |
 | <a name="input_ecommerce_io_with_pm_enabled"></a> [ecommerce\_io\_with\_pm\_enabled](#input\_ecommerce\_io\_with\_pm\_enabled) | ecommerce for IO using Payment Manager enabled | `bool` | `false` | no |
 | <a name="input_ecommerce_payment_requests_api_key_use_primary"></a> [ecommerce\_payment\_requests\_api\_key\_use\_primary](#input\_ecommerce\_payment\_requests\_api\_key\_use\_primary) | If true the current active API key used for payment requests will be the primary one. | `bool` | `true` | no |
 | <a name="input_ecommerce_vpos_psps_list"></a> [ecommerce\_vpos\_psps\_list](#input\_ecommerce\_vpos\_psps\_list) | psps list using vpos as comma separated value | `string` | `""` | no |
