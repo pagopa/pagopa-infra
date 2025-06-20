@@ -822,24 +822,24 @@ resource "azurerm_key_vault_certificate" "ecommerce-jwt-token-issuer-certificate
   }
 }
 
-resource "random_password" "ecommerce_helpdesk_service_requests_primary_api_key_pass" {
+resource "random_password" "ecommerce_helpdesk_service_primary_api_key_pass" {
   length  = 32
   special = false
 }
 
-resource "random_password" "ecommerce_helpdesk_service_requests_secondary_api_key_pass" {
+resource "random_password" "ecommerce_helpdesk_service_secondary_api_key_pass" {
   length  = 32
   special = false
 }
 
-resource "azurerm_key_vault_secret" "ecommerce_helpdesk_service_requests_primary_api_key" {
-  name         = "ecommerce-helpdesk-service-requests-primary-api-key"
-  value        = random_password.ecommerce_helpdesk_service_requests_primary_api_key_pass.result
+resource "azurerm_key_vault_secret" "ecommerce_helpdesk_service_primary_api_key" {
+  name         = "ecommerce-helpdesk-service-primary-api-key"
+  value        = random_password.ecommerce_helpdesk_service_primary_api_key_pass.result
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "ecommerce_helpdesk_service_requests_secondary_api_key" {
-  name         = "ecommerce-helpdesk-service-requests-secondary-api-key"
-  value        = random_password.ecommerce_helpdesk_service_requests_secondary_api_key_pass.result
+resource "azurerm_key_vault_secret" "ecommerce_helpdesk_service_secondary_api_key" {
+  name         = "ecommerce-helpdesk-service-secondary-api-key"
+  value        = random_password.ecommerce_helpdesk_service_secondary_api_key_pass.result
   key_vault_id = module.key_vault.id
 }
