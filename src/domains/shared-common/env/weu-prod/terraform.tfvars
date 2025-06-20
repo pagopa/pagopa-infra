@@ -105,4 +105,4 @@ taxonomy_network_rules = {
 }
 
 redis_ha_enabled          = true
-github_runner_ita_enabled = false
+github_runner_ita_enabled = true
