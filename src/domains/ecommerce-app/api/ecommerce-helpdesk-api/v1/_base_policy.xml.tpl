@@ -3,7 +3,7 @@
       <base />
       <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-helpdesk-service" />
       <set-header name="x-api-key" exists-action="override">
-        <value>{{ecommerce-helpdesk-commands-service-api-key-for-checkout-value}}</value>
+        <value>{{ecommerce-helpdesk-commands-service-rest-api-key}}</value>
       </set-header>
     </inbound>
     <outbound>
