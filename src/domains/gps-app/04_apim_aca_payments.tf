@@ -11,7 +11,6 @@ locals {
     subscription_required = true
     approval_required     = false
     subscriptions_limit   = 1000
-    service_url           = format("https://%s/pagopa-gpd-payments/partner", local.gps_hostname)
   }
 }
 
@@ -41,7 +40,7 @@ resource "azurerm_api_management_api" "apim_api_aca_payments_soap_api_v1" {
   display_name = local.apim_aca_payments_soap_api.display_name
   path         = local.apim_aca_payments_soap_api.path
   protocols    = ["https"]
-  service_url  = local.apim_aca_payments_soap_api.service_url
+  service_url  = local.apim_gpd_payments_soap_api.service_url
 
   soap_pass_through = true
 
