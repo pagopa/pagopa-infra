@@ -9,7 +9,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-json" {
   location            = var.location
 
   action {
-    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "gpd-rtp-error-json"
     custom_webhook_payload = "{}"
@@ -41,7 +41,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-generic" {
   location            = var.location
 
   action {
-    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "gpd-rtp-error-generic"
     custom_webhook_payload = "{}"
@@ -73,7 +73,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-rtp-messag
   location            = var.location
 
   action {
-    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "gpd-rtp-error-rtp-message-not-sent"
     custom_webhook_payload = "{}"
@@ -105,7 +105,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-redis-cach
   location            = var.location
 
   action {
-    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     # action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
     email_subject          = "gpd-rtp-error-redis-cache-not-updated"
     custom_webhook_payload = "{}"
