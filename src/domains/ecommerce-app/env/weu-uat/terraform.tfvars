@@ -52,5 +52,5 @@ pagopa_vpn_dr = {
 }
 
 ecommerce_helpdesk_commands_service_api_key_use_primary = true
-ecommerce_payment_requests_api_key_use_primary = true
+ecommerce_payment_requests_api_key_use_primary          = true
 
