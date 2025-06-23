@@ -15,10 +15,9 @@ if [ -n "$3" ] && [ -f "$3" ]; then
 else
   FILE_ACTION=false
 fi
-export TERMINFO=/usr/lib/terminfo
-bold=$(tput bold)
-normal=$(tput sgr0)
-red=$(tput setaf 1)
+bold='\033[1m'
+red='\033[0;31m'
+normal='\033[0m'
 # Define functions
 function clean_environment() {
   rm -rf .terraform
