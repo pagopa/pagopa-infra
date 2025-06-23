@@ -64,3 +64,15 @@ data "azurerm_api_management_user" "apim_qa_user" {
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   user_id             = "pagopa-qa-pagopa-it"
 }
+
+data "azurerm_api_management_product" "apim_fdr_orgs" {
+  product_id          = "fdr-org"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+
+data "azurerm_api_management_product" "apim_fdr_internal" {
+  product_id          = "fdr-internal"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
