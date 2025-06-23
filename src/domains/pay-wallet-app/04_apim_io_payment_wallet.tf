@@ -94,3 +94,17 @@ resource "azurerm_api_management_api_operation_policy" "post_io_wallets" {
     hostname = local.payment_wallet_hostname
   })
 }
+
+data "azurerm_key_vault_secret" "ecommerce_payment_methods_active_api_for_io_pay_wallet_key" {
+  name         = "ecommerce-payment-methods-active-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_payment_methods_api_key_value_for_io_pay_wallet" {
+  name                = "ecommerce-payment-methods-api-key-for-io-pay-wallet-value"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  display_name        = "ecommerce-payment-methods-api-key-for-io-pay-wallet-value"
+  value               = data.azurerm_key_vault_secret.ecommerce_payment_methods_active_api_for_io_pay_wallet_key.value
+  secret              = true
+}
