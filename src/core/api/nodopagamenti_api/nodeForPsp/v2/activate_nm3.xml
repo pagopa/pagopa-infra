@@ -236,7 +236,7 @@
                 var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
                 return isBrkPSPintoPSPwhiteList && isFiscalCodeNotInBlackList && isIdempotencyKeyNotAlreadytRx;
             }">
-                    <trace source="fc-check-error" severity="information">remove-me-239</trace>
+<!--                    <trace source="fc-check-error" severity="information">remove-me-239</trace>-->
 <!--                        <trace source="ottimizzazione-sent-verify" severity="information">ottimizzazione-sent-verify</trace>-->
                         <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
                             <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
