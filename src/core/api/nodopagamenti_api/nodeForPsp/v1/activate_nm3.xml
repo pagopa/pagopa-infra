@@ -236,6 +236,7 @@
                 var isIdempotencyKeyNotAlreadytRx = !context.Variables.ContainsKey("idempotencyKeyRx");
                 return isBrkPSPintoPSPwhiteList && isFiscalCodeNotInBlackList && isIdempotencyKeyNotAlreadytRx;
             }">
+                    <trace source="fc-check-error" severity="information">remove-me-239</trace>
 <!--                        <trace source="ottimizzazione-sent-verify" severity="information">ottimizzazione-sent-verify</trace>-->
                         <send-request ignore-error="true" timeout="20" response-variable-name="verifica" mode="new">
                             <set-url>@{return ((string) context.Variables["baseUrl"]+"/webservices/input"); }</set-url>
@@ -267,14 +268,20 @@
 								</soapenv:Envelope>
 							</set-body>
                         </send-request>
+                    <trace source="fc-check-error" severity="information">remove-me-271</trace>
                         <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["verifica"]).Body.As<string>(preserveContent: true))" />
                         <set-variable name="outcome" value="@{
-                    var dom2parse = ((string) context.Variables["leggirisposta"]);
-                    String[] spearator = {"outcome"};
-                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                    var outcome = result[1].Substring(1,result[1].Length-3);
-                    return outcome;
+                        try {
+                            var dom2parse = ((string) context.Variables["leggirisposta"]);
+                            String[] spearator = {"outcome"};
+                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                            var outcome = result[1].Substring(1,result[1].Length-3);
+                            return outcome;
+                        } catch (Exception e) {
+                          return "KO";
+                        }
                 }" />
+                    <trace source="fc-check-error" severity="information">remove-me-284</trace>
                         <choose>
                             <!-- check if outcome is OK -->
                             <when condition="@("OK".Equals((string)context.Variables["outcome"]))">
