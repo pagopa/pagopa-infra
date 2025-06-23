@@ -329,6 +329,18 @@ resource "azurerm_key_vault_secret" "payment_wallet_gha_bot_pat" {
   }
 }
 
+resource "azurerm_key_vault_secret" "ecommerce_payment_methods_active_api_key" {
+  name         = "ecommerce-payment-methods-active-api-key"
+  value        = "<TO UPDATE MANUALLY ON PORTAL>"
+  key_vault_id = module.key_vault.id
+
+  lifecycle {
+    ignore_changes = [
+      value,
+    ]
+  }
+}
+
 
 resource "azurerm_key_vault_certificate" "pay-wallet-jwt-token-issuer-certificate" {
   name         = "jwt-token-issuer-cert"
