@@ -15,10 +15,19 @@ if [ -n "$3" ] && [ -f "$3" ]; then
 else
   FILE_ACTION=false
 fi
-echo "tput longname: $(tput longname)"
-bold='\033[1m'
-red='\033[0;31m'
-normal='\033[0m'
+tput_name=$(tput longname)
+# Define colors and styles
+bold=""
+normal=""
+red=""
+# Define colors and styles
+if [ -v "$tput_name" ]; then
+  # Define colors and styles
+  bold=$(tput bold)
+  normal=$(tput sgr0)
+  red=$(tput setaf 1)
+fi
+
 # Define functions
 function clean_environment() {
   rm -rf .terraform
