@@ -411,7 +411,7 @@ resource "azurerm_key_vault_certificate" "pay-wallet-jwt-token-issuer-certificat
   }
 }
 
-resource "random_password" payment_wallet_service_primary_api_key_pass" {
+resource "random_password" "payment_wallet_service_primary_api_key_pass" {
   length  = 32
   special = false
 }
