@@ -757,8 +757,6 @@ resource "azurerm_api_management_named_value" "ecommerce_transactions_service_ap
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
   display_name        = "ecommerce-transactions-service-api-key-value"
-  value               = var.ecommerce_transactions_service_api_key_use_primary ? 
-                        data.azurerm_key_vault_secret.ecommerce_transactions_service_primary_api_key.value : 
-                        data.azurerm_key_vault_secret.ecommerce_transactions_service_secondary_api_key.value
+  value               = var.ecommerce_transactions_service_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_transactions_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_transactions_service_secondary_api_key.value
   secret              = true
 }
