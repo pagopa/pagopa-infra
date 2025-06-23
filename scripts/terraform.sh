@@ -15,6 +15,7 @@ if [ -n "$3" ] && [ -f "$3" ]; then
 else
   FILE_ACTION=false
 fi
+export TERMINFO=/usr/lib/terminfo
 bold=$(tput bold)
 normal=$(tput sgr0)
 red=$(tput setaf 1)
