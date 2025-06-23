@@ -15,9 +15,11 @@ if [ -n "$3" ] && [ -f "$3" ]; then
 else
   FILE_ACTION=false
 fi
-bold=$(tput bold)
-normal=$(tput sgr0)
-red=$(tput setaf 1)
+# Define colors and styles
+bold=""
+normal=""
+red=""
+
 # Define functions
 function clean_environment() {
   rm -rf .terraform
@@ -277,6 +279,7 @@ function other_actions() {
 
       check_plan_output "$file_name"
 
+      echo ""
       # ask user confirmation before applying changes
       read -p "${bold}Apply these changes (only yes will be accepted): ${normal}" apply_confirmation
       if [ "$apply_confirmation" == "yes" ]; then
