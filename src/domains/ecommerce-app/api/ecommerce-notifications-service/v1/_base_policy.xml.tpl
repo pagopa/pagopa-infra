@@ -1,7 +1,7 @@
 <policies>
     <inbound>
       <base />
-      <!-- Set notifications-serivce API Key header -->
+      <!-- Set notifications-service API Key header -->
       <set-header name="x-api-key" exists-action="override">
         <value>{{ecommerce-notification-service-api-key-value}}</value>
       </set-header>
