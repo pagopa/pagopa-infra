@@ -269,7 +269,14 @@
 							</set-body>
                         </send-request>
 <!--                    <trace source="fc-check-error" severity="information">remove-me-271</trace>-->
-                        <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["verifica"]).Body.As<string>(preserveContent: true))" />
+<!--                        <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["verifica"]).Body.As<string>(preserveContent: true))" />-->
+                        <set-variable name="leggirisposta" value="@{
+                        try {
+                          return (string)((IResponse)context.Variables["verifica"]).Body.As<string>(preserveContent: true);
+                        } catch (Exception e) {
+                          return "";
+                        }
+                        }" />
                         <set-variable name="outcome" value="@{
                     try {
                             var dom2parse = ((string) context.Variables["leggirisposta"]);
