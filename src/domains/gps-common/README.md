@@ -14,7 +14,6 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 745f8cf8faa1a53878939fc3b0fd944eef257f8e |
-| <a name="module_eventhub_rtp_namespace"></a> [eventhub\_rtp\_namespace](#module\_eventhub\_rtp\_namespace) | ./.terraform/modules/__v3__/eventhub | n/a |
 | <a name="module_eventhub_rtp_namespace_integration"></a> [eventhub\_rtp\_namespace\_integration](#module\_eventhub\_rtp\_namespace\_integration) | ./.terraform/modules/__v3__/eventhub | n/a |
 | <a name="module_flows"></a> [flows](#module\_flows) | ./.terraform/modules/__v3__/storage_account | n/a |
 | <a name="module_gpd_cosmosdb_containers"></a> [gpd\_cosmosdb\_containers](#module\_gpd\_cosmosdb\_containers) | ./.terraform/modules/__v3__/cosmosdb_sql_container | n/a |
@@ -144,7 +143,6 @@
 | [azurerm_eventhub_authorization_rule.gpd_ingestion_apd_payment_option_tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.gpd_ingestion_apd_payment_position_tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-evh-rtp-integration-tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
-| [azurerm_eventhub_authorization_rule.pagopa-evh-rtp-tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_key_vault_secret.pgres_admin_login](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.pgres_admin_pwd](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_kubernetes_cluster.aks](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/kubernetes_cluster) | data source |
