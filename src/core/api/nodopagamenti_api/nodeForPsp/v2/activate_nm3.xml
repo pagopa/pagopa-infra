@@ -268,7 +268,7 @@
 								</soapenv:Envelope>
 							</set-body>
                         </send-request>
-                    <trace source="fc-check-error" severity="information">remove-me-271</trace>
+<!--                    <trace source="fc-check-error" severity="information">remove-me-271</trace>-->
                         <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["verifica"]).Body.As<string>(preserveContent: true))" />
                         <set-variable name="outcome" value="@{
                     try {
@@ -281,7 +281,7 @@
                           return "KO";
                         }
                 }" />
-                    <trace source="fc-check-error" severity="information">remove-me-284</trace>
+<!--                    <trace source="fc-check-error" severity="information">remove-me-284</trace>-->
                         <choose>
                             <!-- check if outcome is OK -->
                             <when condition="@("OK".Equals((string)context.Variables["outcome"]))">
