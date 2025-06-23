@@ -26,7 +26,8 @@
     <!-- Headers settings required for backend service END -->
     <set-variable name="blueDeploymentPrefix" value="@(context.Request.Headers.GetValueOrDefault("deployment","").Contains("blue")?"/beta":"")" />
     <set-variable name="transactionsOperationId" value="newTransactionForIO,getTransactionInfoForIO,requestTransactionUserCancellationForIO,requestTransactionAuthorizationForIO" />
-    <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethodsForIO,calculateFeesForIO" />
+    <set-variable name="paymentMethodsOperationId" value="getAllPaymentMethodsForIO" />
+    <set-variable name="paymentMethodsOperationIdV2" value="calculateFeesForIO" />
     <set-variable name="paymentRequestsOperationId" value="getPaymentRequestInfoForIO" />
     <set-variable name="lastPaymentMethodUsedOperationId" value="getUserLastPaymentMethodUsed" />
     <set-variable name="walletsOperationId" value="createWalletForTransactionsForIO,getWalletsByIdIOUser" />
@@ -37,7 +38,14 @@
       <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationId","").Split(','), operations => operations == context.Operation.Id))">
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service")"/>
       </when>
+      <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationIdV2","").Split(','), operations => operations == context.Operation.Id))">
+        <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service/v2")" />
+      </when>
       <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentRequestsOperationId","").Split(','), operations => operations == context.Operation.Id))">
+        <!-- Set payment-requests API Key header -->
+        <set-header name="x-api-key" exists-action="override">
+          <value>{{ecommerce-payment-requests-api-key-for-io-value}}</value>
+        </set-header>
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
       </when>
       <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("lastPaymentMethodUsedOperationId","").Split(','), operations => operations == context.Operation.Id))">
