@@ -122,7 +122,7 @@
             <value>application/json</value>
         </set-header>
         <set-header name="x-api-key" exists-action="override">
-        <value>{{ecommerce-transactions-service-api-key-value}}</value>
+            <value>{{ecommerce-transactions-service-api-key-value}}</value>
         </set-header>
         <set-header name="x-payment-gateway-type" exists-action="override">
             <value>"NPG"</value>
