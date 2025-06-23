@@ -14,7 +14,8 @@ locals {
     "pagopa-platform-authorizer",
     "pagopa-platform-authorizer-config",
     "pagopa-iuvgenerator",
-    "pagopa-infra"
+    "pagopa-infra",
+    "pagopa-anonymizer",
   ]
 
   federations_01 = [
