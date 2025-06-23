@@ -425,10 +425,16 @@ resource "azurerm_key_vault_secret" "payment_wallet_service_primary_api_key" {
   name         = "payment-wallet-service-primary-api-key"
   value        = random_password.payment_wallet_service_primary_api_key_pass.result
   key_vault_id = module.key_vault.id
+  keepers = {
+    "version" : "1"
+  }
 }
 
 resource "azurerm_key_vault_secret" "payment_wallet_service_secondary_api_key" {
   name         = "payment-wallet-service-secondary-api-key"
   value        = random_password.payment_wallet_service_secondary_api_key_pass.result
   key_vault_id = module.key_vault.id
+  keepers = {
+    "version" : "1"
+  }
 }
