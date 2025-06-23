@@ -21,7 +21,7 @@ bold=""
 normal=""
 red=""
 # Define colors and styles
-if [ -v "$tput_name" ]; then
+if [ -n "$tput_name" ]; then
   # Define colors and styles
   bold=$(tput bold)
   normal=$(tput sgr0)
