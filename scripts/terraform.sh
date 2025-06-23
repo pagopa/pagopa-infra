@@ -15,6 +15,7 @@ if [ -n "$3" ] && [ -f "$3" ]; then
 else
   FILE_ACTION=false
 fi
+echo "tput longname: $(tput longname)"
 bold='\033[1m'
 red='\033[0;31m'
 normal='\033[0m'
@@ -277,6 +278,7 @@ function other_actions() {
 
       check_plan_output "$file_name"
 
+      echo ""
       # ask user confirmation before applying changes
       read -p "${bold}Apply these changes (only yes will be accepted): ${normal}" apply_confirmation
       if [ "$apply_confirmation" == "yes" ]; then
