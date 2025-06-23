@@ -118,5 +118,9 @@ variable "nexi_node_ip_postgres" {
 }
 variable "nexi_ndp_host" {
   type        = string
-  description = "Nodo Pagamenti Nexi ip"
+  description = "Nodo Pagamenti Nexi hostname"
+}
+variable "nexi_ndp_host_postgres" {
+  type        = string
+  description = "Nodo Pagamenti Nexi postgres hostname"
 }

@@ -751,7 +751,7 @@
     "headers": {
       "Content-Type": "application/json",
       "ndphost": "nodo-${env_short}.nexigroup.com",
-      "Host": "${nexi_ndp_host}"
+      "Host": "${nexi_ndp_host_postgres}"
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} check position"
@@ -915,7 +915,7 @@
       "SOAPAction": "verifyPaymentNotice",
       "Content-Type": "application/xml",
       "ndphost": "nodo-${env_short}.nexigroup.com",
-      "Host": "${nexi_ndp_host}"
+      "Host": "${nexi_ndp_host_postgres}"
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} verify payment notice using GPD service"
@@ -1015,7 +1015,7 @@
       "SOAPAction": "verifyPaymentNotice",
       "Content-Type": "application/xml",
       "ndphost": "nodo-${env_short}.nexigroup.com",
-      "Host": "${nexi_ndp_host}"
+      "Host": "${nexi_ndp_host_postgres}"
     },
     "tags" : {
       "description" : "pagopa nodo ${env_name} verify payment notice using partner's service"
