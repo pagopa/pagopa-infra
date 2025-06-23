@@ -741,6 +741,36 @@ resource "azurerm_key_vault_secret" "ecommerce_payment_requests_secondary_api_ke
   key_vault_id = module.key_vault.id
 }
 
+resource "random_password" "ecommerce_payment_methods_primary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "random_password" "ecommerce_payment_methods_secondary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_payment_methods_primary_api_key" {
+  name         = "ecommerce-payment-methods-primary-api-key"
+  value        = random_password.ecommerce_payment_methods_primary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "ecommerce_payment_methods_secondary_api_key" {
+  name         = "ecommerce-payment-methods-secondary-api-key"
+  value        = random_password.ecommerce_payment_methods_secondary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
 resource "azurerm_key_vault_certificate" "ecommerce-jwt-token-issuer-certificate" {
   name         = "jwt-token-issuer-cert"
   key_vault_id = module.key_vault.id
