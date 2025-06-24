@@ -435,6 +435,25 @@ resource "azurerm_api_management_api_version_set" "pagopa_notifications_service_
   versioning_scheme   = "Segment"
 }
 
+data "azurerm_key_vault_secret" "ecommerce_notification_service_primary_api_key" {
+  name         = "ecommerce-notification-service-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "ecommerce_notification_service_secondary_api_key" {
+  name         = "ecommerce-notification-service-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_notification_service_api_key_value" {
+  name                = "ecommerce-notification-service-api-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-notification-service-api-key-value"
+  value               = var.ecommerce_notification_service_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_notification_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_notification_service_secondary_api_key.value
+  secret              = true
+}
+
 module "apim_pagopa_notifications_service_api_v1" {
   source = "./.terraform/modules/__v3__/api_management_api"
 
