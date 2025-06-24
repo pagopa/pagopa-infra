@@ -5,7 +5,7 @@
 ############################################################
 # Global variables
 # Version format x.y accepted
-vers="2.0"
+vers="2.2"
 script_name=$(basename "$0")
 git_repo="https://raw.githubusercontent.com/pagopa/eng-common-scripts/main/azure/${script_name}"
 tmp_file="${script_name}.new"
@@ -16,6 +16,7 @@ else
   FILE_ACTION=false
 fi
 # Define colors and styles
+# fixme find a way to color output on local and on devops agent, where tput returns an error
 bold=""
 normal=""
 red=""
@@ -235,16 +236,14 @@ function check_arguments() {
 }
 
 function check_plan_output(){
-  file_name=$1
+  plan_exitcode=$1
   # check if changes are present
-  no_changes=$(terraform show -no-color "$file_name.tfplan" | grep -c "No changes")
-  errors=$(terraform show -no-color "$file_name.tfplan" | grep -c "Planning failed")
-  if [ "$no_changes" == 1 ]; then
+  if [ "$plan_exitcode" == 0 ]; then
     echo "${bold}No changes to apply!${normal}"
     rm "$file_name.tfplan" 2>/dev/null
     exit 0
   fi
-  if [ "$errors" == 1 ]; then
+  if [ "$plan_exitcode" == 1 ]; then
     rm "$file_name.tfplan" 2>/dev/null
     exit 1
   fi
@@ -275,9 +274,9 @@ function other_actions() {
       file_name="$partition_key-$row_key"
 
       # plan to file
-      terraform plan -var-file="./env/$env/terraform.tfvars" -compact-warnings -out="$file_name.tfplan" $other
-
-      check_plan_output "$file_name"
+      terraform plan -var-file="./env/$env/terraform.tfvars" -compact-warnings -out="$file_name.tfplan" -detailed-exitcode $other
+      plan_exitcode=$?
+      check_plan_output "$plan_exitcode"
 
       echo ""
       # ask user confirmation before applying changes
