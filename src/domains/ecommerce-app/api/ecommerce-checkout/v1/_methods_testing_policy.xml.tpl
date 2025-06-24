@@ -37,6 +37,7 @@
                         allowedPaymentTypeCodes.Add("SATY");//Satispay
                         allowedPaymentTypeCodes.Add("APPL");//Applepay
                         allowedPaymentTypeCodes.Add("RICO");//iConto
+                        allowedPaymentTypeCodes.Add("KLAR");//Klarna
                         for(int i = methods.Count - 1; i >= 0; i--) {
                             String paymentTypeCode = (string)((JObject)methods[i])["paymentTypeCode"];
                             if( !allowedPaymentTypeCodes.Contains(paymentTypeCode) ) {
