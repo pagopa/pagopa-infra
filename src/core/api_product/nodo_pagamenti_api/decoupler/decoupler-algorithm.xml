@@ -114,7 +114,14 @@ new JProperty("ttl", 1)
                         var requestData = JObject.Parse((string)context.Variables["requestData"]);
                         return domain + "_" + (string)requestData["key"];
                     }" variable-name="nodeId" default-value="LIST" caching-type="internal" />
-			<choose>
+      <trace source="decouplerDebug" severity="information">@{
+      var domain = (string)context.Variables["domain"];
+      var requestData = JObject.Parse((string)context.Variables["requestData"]);
+      var key = domain + "_" + (string)requestData["key"];
+      var response = "decoupler lookup for token: " + key + "\n";
+      response += "decoupler lookup response: " context.Variables.GetValueOrDefault<string>("nodeId", "key not cached");
+      }</trace>
+      <choose>
 				<!-- if key not in cache -->
 				<when condition="@(context.Variables.GetValueOrDefault<string>("nodeId", "").Equals("LIST"))">
 					<!-- Execute cache lookup for default node ID if WISP dismantling is enabled -->
