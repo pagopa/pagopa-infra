@@ -29,4 +29,6 @@ check_position_body = {
 }
 verify_payment_internal_expected_outcome = "KO"
 nexi_node_ip                             = "10.70.74.200"
+nexi_node_ip_postgres                    = "10.70.74.200"
 nexi_ndp_host                            = "nodo-p-uat.tst-npc.sia.eu"
+nexi_ndp_host_postgres                   = "nodo-p-uat.tst-npc.sia.eu"

@@ -111,6 +111,17 @@
                     transfer.Remove("paFiscalCode");
                 }
             }
+            JArray paymentNotices = new JArray();  
+            JObject paymentNotice = new JObject(
+                new JProperty("transferList", ((JArray)(inBody["transferList"]))),
+                new JProperty("paymentAmount", inBody["paymentAmount"]),
+                new JProperty("primaryCreditorInstitution", inBody["primaryCreditorInstitution"])
+            );
+            paymentNotices.Add(paymentNotice);
+            inBody.Add("paymentNotices",paymentNotices);
+            inBody.Remove("transferList");
+            inBody.Remove("paymentAmount");
+            inBody.Remove("primaryCreditorInstitution");
             return inBody.ToString();
         }</set-body>
     </inbound>
