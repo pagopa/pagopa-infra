@@ -20,4 +20,6 @@ locals {
   cstar_vnet_rg_name = "cstar-${var.env_short}-itn-core-network-rg"
   cstar_vnet_name    = "cstar-${var.env_short}-itn-core-spoke-compute-vnet"
 
+  cstar_weu_vnet_rg_name = "cstar-${var.env_short}-weu-${var.env}01-vnet-rg"
+  cstar_weu_vnet_name    = "cstar-${var.env_short}-weu-${var.env}01-vnet"
 }
