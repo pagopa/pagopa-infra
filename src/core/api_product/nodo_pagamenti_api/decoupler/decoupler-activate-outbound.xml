@@ -33,6 +33,7 @@
           var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
           response += "decoupler key: " + (string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"] + "\n";
           response += "decoupler nodeId: " + (string)requestData["nodeId"] + "\n";
+        return response;
             }
       </trace>
     </when>

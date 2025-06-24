@@ -119,7 +119,8 @@ new JProperty("ttl", 1)
       var requestData = JObject.Parse((string)context.Variables["requestData"]);
       var key = domain + "_" + (string)requestData["key"];
       var response = "decoupler lookup for token: " + key + "\n";
-      response += "decoupler lookup response: " context.Variables.GetValueOrDefault<string>("nodeId", "key not cached");
+      response += "decoupler lookup response: " + context.Variables.GetValueOrDefault<string>("nodeId", "key not cached");
+      return response;
       }</trace>
       <choose>
 				<!-- if key not in cache -->
