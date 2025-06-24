@@ -54,8 +54,10 @@
 | <a name="input_law_sku"></a> [law\_sku](#input\_law\_sku) | Sku of the Log Analytics Workspace | `string` | `"PerGB2018"` | no |
 | <a name="input_location"></a> [location](#input\_location) | One of westeurope, northeurope | `string` | n/a | yes |
 | <a name="input_location_short"></a> [location\_short](#input\_location\_short) | One of wue, neu | `string` | n/a | yes |
-| <a name="input_nexi_ndp_host"></a> [nexi\_ndp\_host](#input\_nexi\_ndp\_host) | Nodo Pagamenti Nexi ip | `string` | n/a | yes |
+| <a name="input_nexi_ndp_host"></a> [nexi\_ndp\_host](#input\_nexi\_ndp\_host) | Nodo Pagamenti Nexi hostname | `string` | n/a | yes |
+| <a name="input_nexi_ndp_host_postgres"></a> [nexi\_ndp\_host\_postgres](#input\_nexi\_ndp\_host\_postgres) | Nodo Pagamenti Nexi postgres hostname | `string` | n/a | yes |
 | <a name="input_nexi_node_ip"></a> [nexi\_node\_ip](#input\_nexi\_node\_ip) | Nodo Pagamenti Nexi ip | `string` | n/a | yes |
+| <a name="input_nexi_node_ip_postgres"></a> [nexi\_node\_ip\_postgres](#input\_nexi\_node\_ip\_postgres) | Nodo Pagamenti Nexi postgres ip | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_self_alert_enabled"></a> [self\_alert\_enabled](#input\_self\_alert\_enabled) | (Optional) enables the alert on the function itself | `bool` | `true` | no |
 | <a name="input_storage_account_replication_type"></a> [storage\_account\_replication\_type](#input\_storage\_account\_replication\_type) | (Required) table storage replication type | `string` | n/a | yes |
