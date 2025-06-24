@@ -118,7 +118,7 @@ new JProperty("ttl", 1)
       var domain = (string)context.Variables["domain"];
       var requestData = JObject.Parse((string)context.Variables["requestData"]);
       var key = domain + "_" + (string)requestData["key"];
-      var response = "decoupler lookup for token: " + key + "\n";
+      var response = "decoupler lookup for token: " + key + "   ";
       response += "decoupler lookup response: " + context.Variables.GetValueOrDefault<string>("nodeId", "key not cached");
       return response;
       }</trace>
