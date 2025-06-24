@@ -28,13 +28,12 @@
                         }" duration="86400" caching-type="internal" />
         </when>
       </choose>
-      <trace source="decouplerDebug" severity="information">
-        <message>@{
+      <trace source="decouplerDebug" severity="information">@{
           var response = "";
           var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
           response += "decoupler key: " + (string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"] + "\n";
           response += "decoupler nodeId: " + (string)requestData["nodeId"] + "\n";
-            }</message>
+            }
       </trace>
     </when>
   </choose>
