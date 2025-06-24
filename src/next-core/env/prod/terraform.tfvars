@@ -879,5 +879,12 @@ route_tools = [
     address_prefix         = "10.79.20.34/32"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # dev aks nodo oncloud postgres
+    name                   = "tools-outbound-to-nexy-nodo-postgres"
+    address_prefix         = "10.79.20.25/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
   }
 ]
