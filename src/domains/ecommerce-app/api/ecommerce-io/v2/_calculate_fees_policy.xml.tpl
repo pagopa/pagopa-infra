@@ -51,6 +51,9 @@
                 <send-request ignore-error="false" timeout="10" response-variable-name="authDataResponse">
                     <set-url>@($"https://${wallet-basepath}/pagopa-wallet-service/wallets/{(string)context.Variables["walletId"]}/auth-data")</set-url>
                     <set-method>GET</set-method>
+                    <set-header name="x-api-key" exists-action="override">
+                      <value>{{payment-wallet-service-api-key-for-ecommerce-auth-value}}</value>
+                    </set-header>
                 </send-request>
                 <choose>
                     <when condition="@(((int)((IResponse)context.Variables["authDataResponse"]).StatusCode) == 200)">

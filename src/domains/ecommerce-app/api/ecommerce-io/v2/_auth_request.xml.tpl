@@ -26,6 +26,9 @@
                     <set-header name="x-user-id" exists-action="override">
                         <value>@((string)context.Request.Headers.GetValueOrDefault("x-user-id",""))</value>
                     </set-header>
+                    <set-header name="x-api-key" exists-action="override">
+                       <value>{{payment-wallet-service-api-key-for-ecommerce-auth-value}}</value>
+                    </set-header>
                 </send-request>
                 <choose>
                     <when condition="@(((int)((IResponse)context.Variables["walletResponse"]).StatusCode) == 200)">
