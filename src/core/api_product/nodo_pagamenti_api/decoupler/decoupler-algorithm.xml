@@ -270,17 +270,17 @@ new JProperty("ttl", requestData.GetValue("ttl"))
                                 var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
                                 return !dataToSet.GetValue("nodeId").ToString().Equals("NONE");
                             }">
-									<cache-store-value key="@{
-                                    var domain = (string)context.Variables["domain"];
-                                    var requestData = JObject.Parse((string)context.Variables["requestData"]);
-                                    return domain + "_" + (string)requestData["key"];
-                                }" value="@{
-                                    var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
-                                    return (string)requestData["nodeId"];
-                                }" duration="@{
-                                    var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
-                                    return (int)requestData["ttl"];
-                                }" caching-type="internal" />
+<!--									<cache-store-value key="@{-->
+<!--                                    var domain = (string)context.Variables["domain"];-->
+<!--                                    var requestData = JObject.Parse((string)context.Variables["requestData"]);-->
+<!--                                    return domain + "_" + (string)requestData["key"];-->
+<!--                                }" value="@{-->
+<!--                                    var requestData = JObject.Parse((string)context.Variables["dataToSet"]);-->
+<!--                                    return (string)requestData["nodeId"];-->
+<!--                                }" duration="@{-->
+<!--                                    var requestData = JObject.Parse((string)context.Variables["dataToSet"]);-->
+<!--                                    return (int)requestData["ttl"];-->
+<!--                                }" caching-type="internal" />-->
 									<cache-store-value key="@{
                                     var domain = (string)context.Variables["domain"];
                                     var requestData = JObject.Parse((string)context.Variables["requestData"]);
