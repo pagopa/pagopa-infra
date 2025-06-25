@@ -113,16 +113,32 @@ new JProperty("ttl", 1)
                         var domain = (string)context.Variables["domain"];
                         var requestData = JObject.Parse((string)context.Variables["requestData"]);
                         return domain + "_" + (string)requestData["key"];
-                    }" variable-name="nodeId" default-value="LIST" caching-type="internal" />
-      <trace source="decouplerDebug" severity="information">@{
-      var domain = (string)context.Variables["domain"];
-      var requestData = JObject.Parse((string)context.Variables["requestData"]);
-      var key = domain + "_" + (string)requestData["key"];
-      var response = "decoupler lookup for token: " + key + "   ";
-      response += "decoupler lookup response: " + context.Variables.GetValueOrDefault<string>("nodeId", "key not cached");
-      return response;
-      }</trace>
-      <choose>
+                    }" variable-name="nodeId_int" default-value="LIST" caching-type="internal" />
+			<cache-lookup-value key="@{
+                        var domain = (string)context.Variables["domain"];
+                        var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                        return domain + "_" + (string)requestData["key"];
+                    }" variable-name="nodeId_ext" default-value="LIST" caching-type="external" />
+			<set-variable name="nodeId" value="@{
+                var nodeIdInt = (string)context.Variables["nodeId_int"];
+                var nodeIdExt = (string)context.Variables["nodeId_ext"];
+                if (nodeIdExt == "LIST") {
+                    if (nodeIdInt != "LIST") {
+                        return nodeIdInt;
+                    }
+                }
+                return nodeIdExt;
+            }" />
+            <trace source="decouplerDebug" severity="information">@{
+                var domain = (string)context.Variables["domain"];
+                var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                var key = domain + "_" + (string)requestData["key"];
+                var response = "decoupler lookup for token: " + key + "   ";
+                response += "decoupler lookup response: " + context.Variables.GetValueOrDefault<string>("nodeId", "key not cached");
+                response += " internal: " + (string)context.Variables["nodeId_int"] + " - external:" + (string)context.Variables["nodeId_ext"];
+                return response;
+            }</trace>
+			<choose>
 				<!-- if key not in cache -->
 				<when condition="@(context.Variables.GetValueOrDefault<string>("nodeId", "").Equals("LIST"))">
 					<!-- Execute cache lookup for default node ID if WISP dismantling is enabled -->
@@ -139,6 +155,7 @@ new JProperty("ttl", 1)
 							<cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
 							<choose>
 								<when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+									<!-- WISP -->
 									<cache-store-value key="@{
                                             var domain = (string) context.Variables["domain"];
                                             var requestData = JObject.Parse((string) context.Variables["requestData"]);
@@ -147,6 +164,14 @@ new JProperty("ttl", 1)
                                             var requestData = JObject.Parse((string) context.Variables["requestData"]);
                                             return (int) requestData["ttl"];
                                         }" caching-type="internal" />
+									<cache-store-value key="@{
+                                            var domain = (string) context.Variables["domain"];
+                                            var requestData = JObject.Parse((string) context.Variables["requestData"]);
+                                            return domain + "_" + (string) requestData["key"];
+                                        }" value="@((string) context.Variables["baseNodeId"])" duration="@{
+                                            var requestData = JObject.Parse((string) context.Variables["requestData"]);
+                                            return (int) requestData["ttl"];
+                                        }" caching-type="external" />
 									<!-- dataToSet is used in decoupler-activate-outbound -->
 									<set-variable name="dataToSet" value="@{
 											var baseNodeId = context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
@@ -190,7 +215,7 @@ new JProperty("ttl", 1)
                             var requestData = JObject.Parse((string)context.Variables["requestData"]);
                             bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true");
 
-if (enable_nm3_switch && !((string)context.Variables["eCommerceChannel"]).Contains(context.Variables.GetValueOrDefault<string>("idChannel", "NONE"))) {
+if (enable_nm3_switch && !context.Variables.GetValueOrDefault<string>("idChannel", "NONE").Equals((string)context.Variables["eCommerceChannel"])) {
 foreach (JObject item in configuration) {
 bool brokerPspFound = false;
 bool ciFound = false;
@@ -256,6 +281,17 @@ new JProperty("ttl", requestData.GetValue("ttl"))
                                     var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
                                     return (int)requestData["ttl"];
                                 }" caching-type="internal" />
+									<cache-store-value key="@{
+                                    var domain = (string)context.Variables["domain"];
+                                    var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                                    return domain + "_" + (string)requestData["key"];
+                                }" value="@{
+                                    var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
+                                    return (string)requestData["nodeId"];
+                                }" duration="@{
+                                    var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
+                                    return (int)requestData["ttl"];
+                                }" caching-type="external" />
 								</when>
 							</choose>
 						</when>
