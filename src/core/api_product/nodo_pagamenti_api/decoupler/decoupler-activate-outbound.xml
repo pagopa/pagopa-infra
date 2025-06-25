@@ -32,7 +32,8 @@
           var response = "";
           var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
           response += "decoupler key: " + (string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"] + "   ";
-          response += "decoupler nodeId: " + (string)requestData["nodeId"] + "   ";
+        response += "decoupler nodeId: " + (string)requestData["nodeId"] + "   ";
+        response += "decoupler soapAction: " + (string)context.Variables["soapAction"] + "   ";
         return response;
             }
       </trace>

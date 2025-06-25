@@ -219,6 +219,14 @@ new JProperty("nodeUri", baseUrl),
 new JProperty("ttl", requestData.GetValue("ttl"))
 ).ToString();
 }" />
+            <trace source="decouplerDebug" severity="information">@{
+              var response = "";
+              var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
+              response += "decoupler activate setNodeId: " + dataToSet.GetValue("nodeId").ToString() + "   ";
+              response += "url: " + dataToSet.GetValue("nodeUri").ToString() + "   ";
+              return response;
+              }
+            </trace>
 							<!-- set base url -->
 							<choose>
 								<!-- if enable_nm3_decoupler_switch == true -->
