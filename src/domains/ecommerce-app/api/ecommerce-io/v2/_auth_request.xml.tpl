@@ -27,7 +27,7 @@
                         <value>@((string)context.Request.Headers.GetValueOrDefault("x-user-id",""))</value>
                     </set-header>
                     <set-header name="x-api-key" exists-action="override">
-                       <value>{{payment-wallet-service-api-key-for-ecommerce-auth-value}}</value>
+                       <value>{{payment-wallet-service-api-key-for-ecommerce-value}}</value>
                     </set-header>
                 </send-request>
                 <choose>

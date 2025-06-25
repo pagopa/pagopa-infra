@@ -52,7 +52,7 @@
                     <set-url>@($"https://${wallet-basepath}/pagopa-wallet-service/wallets/{(string)context.Variables["walletId"]}/auth-data")</set-url>
                     <set-method>GET</set-method>
                     <set-header name="x-api-key" exists-action="override">
-                      <value>{{payment-wallet-service-api-key-for-ecommerce-auth-value}}</value>
+                      <value>{{payment-wallet-service-api-key-for-ecommerce-value}}</value>
                     </set-header>
                 </send-request>
                 <choose>
@@ -111,7 +111,7 @@
                     transfer.Remove("paFiscalCode");
                 }
             }
-            JArray paymentNotices = new JArray();  
+            JArray paymentNotices = new JArray();
             JObject paymentNotice = new JObject(
                 new JProperty("transferList", ((JArray)(inBody["transferList"]))),
                 new JProperty("paymentAmount", inBody["paymentAmount"]),
