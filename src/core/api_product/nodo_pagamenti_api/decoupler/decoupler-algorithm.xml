@@ -215,7 +215,7 @@ new JProperty("ttl", 1)
                             var requestData = JObject.Parse((string)context.Variables["requestData"]);
                             bool enable_nm3_switch = context.Variables.GetValueOrDefault<string>("enable_nm3_switch", "").Equals("true");
 
-if (enable_nm3_switch && !context.Variables.GetValueOrDefault<string>("idChannel", "NONE").Equals((string)context.Variables["eCommerceChannel"])) {
+if (enable_nm3_switch && !((string)context.Variables["eCommerceChannel"]).Contains(context.Variables.GetValueOrDefault<string>("idChannel", "NONE"))) {
 foreach (JObject item in configuration) {
 bool brokerPspFound = false;
 bool ciFound = false;
