@@ -5,13 +5,13 @@
     - Copy and paste your code here or simply start coding
 -->
 <fragment>
-  <choose>
-    <when condition="@{
+	<choose>
+		<when condition="@{
             string[] activatePayment = new string[] {"activatePaymentNotice", "activateIOPayment", "activatePaymentNoticeV2"};
             var soapAction = (string)context.Variables["soapAction"];
             return activatePayment.Contains(soapAction);
         }">
-      <set-variable name="paymentToken" value="@{
+			<set-variable name="paymentToken" value="@{
                 XElement response = context.Response.Body.As<XElement>(preserveContent: true);
                 XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
                 XElement primitive = (XElement) body.FirstNode;
@@ -19,36 +19,38 @@
 
                 return paymentToken != null ? paymentToken.Value.ToString() : "NONE";
             }" />
-      <choose>
-        <when condition="@(!((string)context.Variables["paymentToken"]).Equals("NONE"))">
-          <!-- store paymentToken in cache for 1day -->
-          <cache-store-value key="@((string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"])" value="@{
+			<choose>
+				<when condition="@(!((string)context.Variables["paymentToken"]).Equals("NONE"))">
+					<cache-store-value key="@((string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"])" value="@{
                             var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
                             return (string)requestData["nodeId"];
-                        }" duration="86400" caching-type="internal" />
-        </when>
-      </choose>
-      <trace source="decouplerDebug" severity="information">@{
-          var response = "";
-          var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
-          response += "decoupler key: " + (string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"] + "   ";
-        response += "decoupler nodeId: " + (string)requestData["nodeId"] + "   ";
-        response += "decoupler soapAction: " + (string)context.Variables["soapAction"] + "   ";
-        return response;
-            }
-      </trace>
-    </when>
-  </choose>
-<choose>
-<when condition="@{
+                        }" duration="@{
+                            var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
+                            return (int)requestData["ttl"];
+                        }" caching-type="external" />
+				</when>
+			</choose>
+            <trace source="decouplerDebug" severity="information">@{
+                var response = "";
+                var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
+                response += "decoupler key: " + (string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"] + "   ";
+                response += "decoupler nodeId: " + (string)requestData["nodeId"] + "   ";
+                response += "decoupler soapAction: " + (string)context.Variables["soapAction"] + "   ";
+                return response;
+                    }
+            </trace>
+		</when>
+	</choose>
+	<choose>
+		<when condition="@{
             string[] activatePayment = new string[] {"activatePaymentNoticeV2"};
             var soapAction = (string)context.Variables["soapAction"];
             return activatePayment.Contains(soapAction);
         }">
-<choose>
-  <!-- Caching wisp_paymenttoken key if WISP dismantling is enabled and the payment belongs to WISP dismantling -->
-  <when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") )">
-  <set-variable name="wisp_fiscalcode_noticenumber" value="@{
+			<choose>
+				<!-- Caching wisp_paymenttoken key if WISP dismantling is enabled and the payment belongs to WISP dismantling -->
+				<when condition="@(context.Variables.GetValueOrDefault<string>("enable_wisp_dismantling_switch", "").Equals("true") )">
+					<set-variable name="wisp_fiscalcode_noticenumber" value="@{
                         try {
                             var requestData = JObject.Parse((string)context.Variables["requestData"]);
                             var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
@@ -58,15 +60,14 @@
                             return "wisp_FAKE";
                         }
                     }" />
-  <cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
-  <choose>
-    <when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
-
-      <choose>
-        <when condition="@(!((string)context.Variables["paymentToken"]).Equals("NONE") )">
-          <!-- acitvateResp OK with paymentToken START -->
-          <!-- call create receipt timer -->
-          <set-variable name="wisp-paymentToken-obj" value="@{
+					<cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
+					<choose>
+						<when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+							<choose>
+								<when condition="@(!((string)context.Variables["paymentToken"]).Equals("NONE") )">
+									<!-- acitvateResp OK with paymentToken START -->
+									<!-- call create receipt timer -->
+									<set-variable name="wisp-paymentToken-obj" value="@{
             var requestData = JObject.Parse((string) context.Variables["requestData"]);
             var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
             var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
@@ -79,9 +80,9 @@
             new JProperty("sessionId", sessionId)
             ).ToString();
           }" />
-          <!-- etichetta wisp_paymentToken -->
-          <cache-store-value key="@("wisp_" + (string)context.Variables["paymentToken"])" value="@((string) context.Variables["wisp-paymentToken-obj"])" duration="172800" caching-type="external" /> <!-- TODO to change type to internal -->
-          <set-variable name="paymentToken-expirationTime" value="@{
+									<!-- etichetta wisp_paymentToken -->
+									<cache-store-value key="@("wisp_" + (string)context.Variables["paymentToken"])" value="@((string) context.Variables["wisp-paymentToken-obj"])" duration="172800" caching-type="external" />
+									<set-variable name="paymentToken-expirationTime" value="@{
                                       var expirationTime = 30 * 60000; // 30 minutes to milliseconds
                                       // get request body content
                                       XElement request = context.Request.Body.As<XElement>(preserveContent: true);
@@ -99,28 +100,28 @@
                                       }
                                       return expirationTime.ToString();
                                   }" />
-          <!-- deleting wisp_timer_hang will avoid multiple activations starting from the same WISP dismantling trigger (nodoInviaRPT / nodoInviaCarrelloRPT) -->
-          <!-- the variable wisp_ecommerce_paymentNote is defined in decoupler-activate-inbound fragment -->
-          <cache-remove-value  key="@("wisp_timer_hang_" + ((string)context.Variables["wisp_ecommerce_paymentNote"] ?? "") + (((string) context.Variables["wisp_fiscalcode_noticenumber"])).Substring(4))" caching-type="external" />
-          <send-one-way-request mode="new">
-            <set-url>{{wisp-dismantling-converter-base-url}}/receipt/timer</set-url>
-            <set-method>POST</set-method>
-            <set-header name="Content-Type" exists-action="override">
-              <value>application/json</value>
-            </set-header>
-            <set-body>@{
+									<!-- deleting wisp_timer_hang will avoid multiple activations starting from the same WISP dismantling trigger (nodoInviaRPT / nodoInviaCarrelloRPT) -->
+									<!-- the variable wisp_ecommerce_paymentNote is defined in decoupler-activate-inbound fragment -->
+									<cache-remove-value key="@("wisp_timer_hang_" + ((string)context.Variables["wisp_ecommerce_paymentNote"] ?? "") + (((string) context.Variables["wisp_fiscalcode_noticenumber"])).Substring(4))" caching-type="external" />
+									<send-one-way-request mode="new">
+										<set-url>{{wisp-dismantling-converter-base-url}}/receipt/timer</set-url>
+										<set-method>POST</set-method>
+										<set-header name="Content-Type" exists-action="override">
+											<value>application/json</value>
+										</set-header>
+										<set-body>@{
               var paymentTokenObj = JObject.Parse((string)context.Variables["wisp-paymentToken-obj"]);
               paymentTokenObj["expirationTime"] = JToken.FromObject(context.Variables["paymentToken-expirationTime"]);
               return paymentTokenObj.ToString();
               }</set-body>
-          </send-one-way-request>
-          <!-- acitvateResp OK with paymentToken STOP -->
-        </when>
-        <otherwise>
-          <!-- acitvateResp KO START -->
-          <!-- only trace for Dismissione dash -->
-          <trace source="wrn_dash_wips" severity="information">
-            <message>@{
+									</send-one-way-request>
+									<!-- acitvateResp OK with paymentToken STOP -->
+								</when>
+								<otherwise>
+									<!-- acitvateResp KO START -->
+									<!-- only trace for Dismissione dash -->
+									<trace source="wrn_dash_wips" severity="information">
+										<message>@{
               var requestData = JObject.Parse((string) context.Variables["requestData"]);
               var noticeNumber = requestData.ContainsKey("noticeNumber") ? (string) requestData["noticeNumber"] : "";
               var ci = requestData.ContainsKey("ci") ? (string) requestData["ci"] : "";
@@ -128,19 +129,19 @@
               "noticeNumber :" + noticeNumber + " ci: "+ ci;
               return error;
               }</message>
-          </trace>
-          <!-- acitvateResp KO STOP -->
-        </otherwise>
-      </choose>
-  </when>
-</choose>
-</when>
-  </choose>
-  </when>
-  </choose>
-    <choose>
-      <when condition="@( context.Variables.GetValueOrDefault<bool>("is_wfesp", false) )">
-        <set-variable name="outcome_wfesp_cart" value="@{
+									</trace>
+									<!-- acitvateResp KO STOP -->
+								</otherwise>
+							</choose>
+						</when>
+					</choose>
+				</when>
+			</choose>
+		</when>
+	</choose>
+	<choose>
+		<when condition="@( context.Variables.GetValueOrDefault<bool>("is_wfesp", false) )">
+			<set-variable name="outcome_wfesp_cart" value="@{
                   string outcomeWfespCart = "";
                   try {
                     XElement response = context.Response.Body.As<XElement>(preserveContent: true);
@@ -153,27 +154,27 @@
                     }
                   return outcomeWfespCart;
                   }" />
-        <choose>
-          <when condition="@( context.Variables.GetValueOrDefault<string>("outcome_wfesp_cart", "").Equals("OK"))">
-            <set-variable name="wfesp_fixed_url" value="{{wfesp-fixed-url}}" />
-            <set-variable name="wfesp_fixed_url_completed" value="@{
+			<choose>
+				<when condition="@( context.Variables.GetValueOrDefault<string>("outcome_wfesp_cart", "").Equals("OK"))">
+					<set-variable name="wfesp_fixed_url" value="{{wfesp-fixed-url}}" />
+					<set-variable name="wfesp_fixed_url_completed" value="@{
                 return ((string) context.Variables["wfesp_fixed_url"]) + context.Response.Headers.GetValueOrDefault("sessionId");
             }" />
-            <set-header name="Content-Type" exists-action="override">
-              <value>text/xml</value>
-            </set-header>
-            <set-body template="liquid">
-              <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ppt="http://ws.pagamenti.telematici.gov/" xmlns:tns="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT" xmlns:ppthead="http://ws.pagamenti.telematici.gov/ppthead">
-                <soapenv:Body>
-                  <ppt:nodoInviaCarrelloRPTRisposta>
-                    <esitoComplessivoOperazione>OK</esitoComplessivoOperazione>
-                    <url>{{context.Variables["wfesp_fixed_url_completed"]}}</url>
-                  </ppt:nodoInviaCarrelloRPTRisposta>
-                </soapenv:Body>
-              </soapenv:Envelope>
-            </set-body>
-          </when>
-        </choose>
-      </when>
-    </choose>
-  </fragment>
+					<set-header name="Content-Type" exists-action="override">
+						<value>text/xml</value>
+					</set-header>
+					<set-body template="liquid">
+						<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ppt="http://ws.pagamenti.telematici.gov/" xmlns:tns="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT" xmlns:ppthead="http://ws.pagamenti.telematici.gov/ppthead">
+							<soapenv:Body>
+								<ppt:nodoInviaCarrelloRPTRisposta>
+									<esitoComplessivoOperazione>OK</esitoComplessivoOperazione>
+									<url>{{context.Variables["wfesp_fixed_url_completed"]}}</url>
+								</ppt:nodoInviaCarrelloRPTRisposta>
+							</soapenv:Body>
+						</soapenv:Envelope>
+					</set-body>
+				</when>
+			</choose>
+		</when>
+	</choose>
+</fragment>
