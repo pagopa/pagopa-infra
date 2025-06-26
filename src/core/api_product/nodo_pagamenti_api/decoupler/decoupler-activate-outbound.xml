@@ -36,6 +36,7 @@
                 response += "decoupler key: " + (string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"] + "   ";
                 response += "decoupler nodeId: " + (string)requestData["nodeId"] + "   ";
                 response += "decoupler soapAction: " + (string)context.Variables["soapAction"] + "   ";
+				response += "decoupler ttl: " + (int)requestData["ttl"] + "   ";
                 return response;
                     }
             </trace>
