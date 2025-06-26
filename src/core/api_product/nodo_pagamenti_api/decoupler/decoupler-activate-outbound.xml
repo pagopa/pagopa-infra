@@ -24,10 +24,7 @@
 					<cache-store-value key="@((string)context.Variables["domain"]+"_"+(string)context.Variables["paymentToken"])" value="@{
                             var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
                             return (string)requestData["nodeId"];
-                        }" duration="@{
-                            var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
-                            return (int)requestData["ttl"];
-                        }" caching-type="external" />
+                        }" duration="86400" caching-type="external" />
 				</when>
 			</choose>
             <trace source="decouplerDebug" severity="information">@{
