@@ -10,7 +10,7 @@
             </set-header>
             <!-- Set payment-methods API Key header -->
             <set-header name="x-api-key" exists-action="override">
-              <value>{{ecommerce-payment-methods-api-key-for-io-value}}</value>
+              <value>{{ecommerce-payment-methods-api-key-value}}</value>
             </set-header>
         </send-request>
         <choose>
