@@ -57,7 +57,7 @@
             </set-header>
             <!-- Set payment-methods API Key header -->
             <set-header name="x-api-key" exists-action="override">
-              <value>{{commerce-payment-methods-api-key-value}}</value>
+              <value>{{ecommerce-payment-methods-api-key-value}}</value>
             </set-header>
         </send-request>
 
