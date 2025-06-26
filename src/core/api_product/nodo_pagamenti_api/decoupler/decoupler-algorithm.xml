@@ -136,6 +136,7 @@ new JProperty("ttl", 1)
                 var response = "decoupler lookup for token: " + key + "   ";
                 response += "decoupler lookup response: " + context.Variables.GetValueOrDefault<string>("nodeId", "key not cached");
                 response += " internal: " + (string)context.Variables["nodeId_int"] + " - external:" + (string)context.Variables["nodeId_ext"];
+				response += " ttl: " + requestData["ttl"];
                 return response;
             }</trace>
 			<choose>
@@ -241,6 +242,7 @@ new JProperty("ttl", requestData.GetValue("ttl"))
               var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
               response += "decoupler activate setNodeId: " + dataToSet.GetValue("nodeId").ToString() + "   ";
               response += "url: " + dataToSet.GetValue("nodeUri").ToString() + "   ";
+			  response += "ttl: " + dataToSet.GetValue("ttl").ToString() + "   ";
               return response;
               }
             </trace>
