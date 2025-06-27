@@ -80,18 +80,18 @@ module "apim_cache_v1" {
 
   xml_content = local.apim_apim_cache
 
-  # api_operation_policies = [
-  #   {
-  #     operation_id = "getCache"
-  #     xml_content  = local.getCache_v1_policy
-  #   },
-  #   {
-  #     operation_id = "deleteCache"
-  #     xml_content  = local.deleteCache_v1_policy
-  #   },
-  #   {
-  #     operation_id = "setCache"
-  #     xml_content  = local.setCache_v1_policy
-  #   }
-  # ]
+  api_operation_policies = [
+    {
+      operation_id = "getCache"
+      xml_content  = local.getCache_v1_policy
+    },
+    {
+      operation_id = "deleteCache"
+      xml_content  = local.deleteCache_v1_policy
+    },
+    {
+      operation_id = "setCache"
+      xml_content  = local.setCache_v1_policy
+    }
+  ]
 }
