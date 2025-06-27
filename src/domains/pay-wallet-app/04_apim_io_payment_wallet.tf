@@ -83,6 +83,25 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_methods_for_
   )
 }
 
+data "azurerm_key_vault_secret" "pay_wallet_jwt_issuer_primary_api_key" {
+  name         = "pay-wallet-jwt-issuer-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "pay_wallet_jwt_issuer_secondary_api_key" {
+  name         = "pay-wallet-jwt-issuer-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "pay_wallet_jwt_issuer_api_key_value" {
+  name                = "pay-wallet-jwt-issuer-api-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "pay-wallet-jwt-issuer-api-key-value"
+  value               = var.pay_wallet_jwt_issuer_api_key_use_primary ? data.azurerm_key_vault_secret.pay_wallet_jwt_issuer_primary_api_key.value : data.azurerm_key_vault_secret.pay_wallet_jwt_issuer_secondary_api_key.value
+  secret              = true
+}
+
 resource "azurerm_api_management_api_operation_policy" "post_io_wallets" {
   api_name            = "${local.project}-io-payment-wallet-api-v1"
   resource_group_name = local.pagopa_apim_rg
