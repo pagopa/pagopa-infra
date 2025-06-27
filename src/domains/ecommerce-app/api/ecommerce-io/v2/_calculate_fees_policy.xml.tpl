@@ -52,7 +52,7 @@
                     <set-url>@($"https://${wallet-basepath}/pagopa-wallet-service/wallets/{(string)context.Variables["walletId"]}/auth-data")</set-url>
                     <set-method>GET</set-method>
                     <set-header name="x-api-key" exists-action="override">
-                      <value>{{payment-wallet-service-api-key-for-ecommerce-value}}</value>
+                      <value>{{payment-wallet-service-rest-api-key}}</value>
                     </set-header>
                 </send-request>
                 <choose>

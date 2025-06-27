@@ -3,7 +3,7 @@
      <base />
       <set-backend-service base-url="https://${wallet-basepath}/pagopa-wallet-service" />
       <set-header name="x-api-key" exists-action="override">
-        <value>{{payment-wallet-service-api-key-for-ecommerce-value}}</value>
+        <value>{{payment-wallet-service-rest-api-key}}</value>
       </set-header>
     </inbound>
     <outbound>
