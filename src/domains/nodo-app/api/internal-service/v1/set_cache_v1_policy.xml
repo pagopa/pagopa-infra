@@ -1,0 +1,26 @@
+<policies>
+    <inbound>
+        <base />
+        <set-variable name="key" value="@(context.Request.MatchedParameters["key"])" />
+        <set-variable name="value" value="@(context.Request.MatchedParameters["value"])" />
+        <!-- cached for 7 days -->
+        <cache-store-value key="@((string)context.Variables["key"])" value="@((string)context.Variables["value"])" duration="604800" caching-type="external" />
+        <trace source="decouplerDebug">@("decoupler fix set token " + (string)context.Variables["key"])</trace>
+        <return-response>
+            <set-status code="200" reason="OK" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body />
+        </return-response>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
