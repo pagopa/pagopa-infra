@@ -64,13 +64,13 @@ module "apim_cache_v1" {
 
   product_ids = [module.apim_cfg_for_node_product.product_id]
 
-  subscription_required = false
+  subscription_required = true
 
   version_set_id = azurerm_api_management_api_version_set.apim_cache_v1.id
   api_version    = "v1"
   service_url    = null
 
-  description  = azurerm_api_management_api_version_set.apim_cache_v1.description
+  description  = "API to manage the cache used by the APIM"
   display_name = azurerm_api_management_api_version_set.apim_cache_v1.display_name
   path         = "apim-cache"
   protocols    = ["https"]
@@ -80,18 +80,18 @@ module "apim_cache_v1" {
 
   xml_content = local.apim_apim_cache
 
-  api_operation_policies = [
-    {
-      operation_id = "getCache"
-      xml_content  = local.getCache_v1_policy
-    },
-    {
-      operation_id = "deleteCache"
-      xml_content  = local.deleteCache_v1_policy
-    },
-    {
-      operation_id = "setCache"
-      xml_content  = local.setCache_v1_policy
-    }
-  ]
+  # api_operation_policies = [
+  #   {
+  #     operation_id = "getCache"
+  #     xml_content  = local.getCache_v1_policy
+  #   },
+  #   {
+  #     operation_id = "deleteCache"
+  #     xml_content  = local.deleteCache_v1_policy
+  #   },
+  #   {
+  #     operation_id = "setCache"
+  #     xml_content  = local.setCache_v1_policy
+  #   }
+  # ]
 }
