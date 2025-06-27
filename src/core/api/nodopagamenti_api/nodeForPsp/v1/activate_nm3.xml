@@ -270,25 +270,26 @@
                         </send-request>
 <!--                    <trace source="fc-check-error" severity="information">remove-me-271</trace>-->
 <!--                        <set-variable name="leggirisposta" value="@((string)((IResponse)context.Variables["verifica"]).Body.As<string>(preserveContent: true))" />-->
-                    <set-variable name="leggirisposta" value="@{
-                        try {
-                          return (string)((IResponse)context.Variables["verifica"]).Body.As<string>(preserveContent: true);
-                        } catch (Exception e) {
-                          return "";
-                    }
-                    }" />
+                        <set-variable name="leggirisposta" value="@{
+                                try {
+                                return (string)((IResponse)context.Variables["verifica"]).Body.As<string>(preserveContent: true);
+                                } catch (Exception e) {
+                                return "";
+                                }
+                         }" />
                         <set-variable name="outcome" value="@{
-                        try {
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"outcome"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            var outcome = result[1].Substring(1,result[1].Length-3);
-                            return outcome;
-                        } catch (Exception e) {
-                          return "KO";
-                        }
-                }" />
+                                try {
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"outcome"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    var outcome = result[1].Substring(1,result[1].Length-3);
+                                    return outcome;
+                                } catch (Exception e) {
+                                return "KO";
+                                }
+                        }" />
 <!--                    <trace source="fc-check-error" severity="information">remove-me-284</trace>-->
+
                         <choose>
                             <!-- check if outcome is OK -->
                             <when condition="@("OK".Equals((string)context.Variables["outcome"]))">
@@ -411,68 +412,111 @@
                                 </choose>
                             </when>
                             <otherwise>
+                            <!-- #1 faultCode mandatory value for KO activatePaymentNoticeRes -->
                                 <set-variable name="faultCode" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"faultCode"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            var faultCode = result[1].Substring(1,result[1].Length-3);
-                            return faultCode;
+                                try {
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"faultCode"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    var faultCode = result[1].Substring(1,result[1].Length-3);
+                                    return faultCode;
+                                }
+                                catch (Exception e) {
+                                    return "PPT_SYSTEM_ERROR";
+                                }
                         }" />
+                            <!-- #2 faultString mandatory value for KO activatePaymentNoticeRes -->
                                 <set-variable name="faultString" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"faultString"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            var faultString = result[1].Substring(1,result[1].Length-3);
-                            return faultString;
+                                try { 
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"faultString"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    var faultString = result[1].Substring(1,result[1].Length-3);
+                                    return faultString;
+                                }
+                                catch (Exception e) {
+                                    return "ErrorONVerificatore";
+                                }                                
                         }" />
+                            <!-- #3 id mandatory value for KO activatePaymentNoticeRes NodoDeiPagamentiSPC NodoDeiPagamentiSPC_Verificatore ??? -->
                                 <set-variable name="id" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"id"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            var id = result[1].Substring(1,result[1].Length-3);
-                            return id;
+                                try { 
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"id"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    var id = result[1].Substring(1,result[1].Length-3);
+                                    return id;
+                                }
+                                catch (Exception e) {
+                                    return "NodoDeiPagamentiSPC";
+                                }                                
+
                         }" />
+                            <!-- #4 description mandatory value for KO activatePaymentNoticeRes -->
                                 <set-variable name="description" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"description"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            var description = result[1].Substring(1,result[1].Length-3);
-                            return description;
+                                try { 
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"description"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    var description = result[1].Substring(1,result[1].Length-3);
+                                    return description;
+                                }
+                                catch (Exception e) {
+                                    return "ErrorONVerificatoreDesc";
+                                }                                
+
                         }" />
+
+                            <!--for all following fields try/catch and return empty string --> 
                                 <set-variable name="originalFaultCode" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"originalFaultCode"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            if (result.Length > 2) {
-                                var originalFaultCode = result[1].Substring(1,result[1].Length-3);
-                                return originalFaultCode;
-                            } else {
-                                return "";
-                            }
+                                try {                                 
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"originalFaultCode"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    if (result.Length > 2) {
+                                        var originalFaultCode = result[1].Substring(1,result[1].Length-3);
+                                        return originalFaultCode;
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                                catch (Exception e) {
+                                    return "";
+                                }                                          
 
                         }" />
                                 <set-variable name="originalFaultString" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"originalFaultString"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            if (result.Length > 2) {
-                                var originalFaultString = result[1].Substring(1,result[1].Length-3);
-                                return originalFaultString;
-                            } else {
-                                return "";
-                            }
+                                try {                                 
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"originalFaultString"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    if (result.Length > 2) {
+                                        var originalFaultString = result[1].Substring(1,result[1].Length-3);
+                                        return originalFaultString;
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                                catch (Exception e) {
+                                    return "";
+                                }                                          
+
                         }" />
                                 <set-variable name="originalDescription" value="@{
-                            var dom2parse = ((string) context.Variables["leggirisposta"]);
-                            String[] spearator = {"originalDescription"};
-                            String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
-                            if (result.Length > 2) {
-                                var originalDescription = result[1].Substring(1,result[1].Length-3);
-                                return originalDescription;
-                            } else {
-                                return "";
-                            }
-
+                                try {                                 
+                                    var dom2parse = ((string) context.Variables["leggirisposta"]);
+                                    String[] spearator = {"originalDescription"};
+                                    String[] result = dom2parse.Split(spearator, StringSplitOptions.RemoveEmptyEntries);
+                                    if (result.Length > 2) {
+                                        var originalDescription = result[1].Substring(1,result[1].Length-3);
+                                        return originalDescription;
+                                    } else {
+                                        return "";
+                                    }
+                                }
+                                catch (Exception e) {
+                                    return "";
+                                }                                          
                         }" />
                                 <!-- on KO response custoim delete cache attvazionePrenotata #1 -->
                                 <cache-remove-value key="@((string) context.Variables["fiscalCode"]+""+(string) context.Variables["noticeNumber"])" caching-type="internal" />
