@@ -10,6 +10,10 @@
           <send-request ignore-error="true" timeout="10" response-variable-name="x-jwt-token" mode="new">
               <set-url>https://${hostname}/pagopa-jwt-issuer-service/tokens</set-url>
               <set-method>POST</set-method>
+              <!-- Set jwt-issuer-service API Key header -->
+              <set-header name="x-api-key" exists-action="override">
+                <value>{{pay-wallet-jwt-issuer-api-key-value}}</value>
+              </set-header>
               <set-header name="Content-Type" exists-action="override">
                   <value>application/json</value>
               </set-header>
