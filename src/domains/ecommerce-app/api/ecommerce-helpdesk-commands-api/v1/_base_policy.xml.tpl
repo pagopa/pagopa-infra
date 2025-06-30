@@ -13,6 +13,9 @@
       <set-header name="x-user-id" exists-action="override">
         <value>@(context.Subscription.Id)</value>
       </set-header>  
+      <set-header name="x-api-key" exists-action="override">
+        <value>{{ecommerce-helpdesk-command-service-api-key-value}}</value>
+      </set-header>  
       <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-helpdesk-commands-service" />
     </inbound>
     <outbound>
