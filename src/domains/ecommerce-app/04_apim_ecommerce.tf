@@ -760,3 +760,80 @@ resource "azurerm_api_management_named_value" "ecommerce_payment_requests_api_ke
   value               = var.ecommerce_payment_requests_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_payment_requests_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_payment_requests_secondary_api_key.value
   secret              = true
 }
+
+data "azurerm_key_vault_secret" "ecommerce_user_stats_service_primary_api_key" {
+  name         = "ecommerce-user-stats-service-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "ecommerce_user_stats_service_secondary_api_key" {
+  name         = "ecommerce-user-stats-service-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_user_stats_service_api_key_value" {
+  name                = "ecommerce-user-stats-service-api-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-user-stats-service-api-key-value"
+  value               = var.ecommerce_user_stats_service_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_user_stats_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_user_stats_service_secondary_api_key.value
+  secret              = true
+}
+data "azurerm_key_vault_secret" "ecommerce_payment_methods_primary_api_key" {
+  name         = "ecommerce-payment-methods-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "ecommerce_payment_methods_secondary_api_key" {
+  name         = "ecommerce-payment-methods-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_payment_methods_api_key_value" {
+  name                = "ecommerce-payment-methods-api-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-payment-methods-api-key-value"
+  value               = var.ecommerce_payment_methods_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_payment_methods_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_payment_methods_secondary_api_key.value
+  secret              = true
+}
+
+
+data "azurerm_key_vault_secret" "ecommerce_transactions_service_primary_api_key" {
+  name         = "ecommerce-transactions-service-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "ecommerce_transactions_service_secondary_api_key" {
+  name         = "ecommerce-transactions-service-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_transactions_service_api_key_value" {
+  name                = "ecommerce-transactions-service-api-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-transactions-service-api-key-value"
+  value               = var.ecommerce_transactions_service_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_transactions_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_transactions_service_secondary_api_key.value
+  secret              = true
+}
+
+
+data "azurerm_key_vault_secret" "pagopa_ecommerce_helpdesk_service_rest_api_primary_key" {
+  name         = "ecommerce-helpdesk-service-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "pagopa_ecommerce_helpdesk_service_rest_api_secondary_key" {
+  name         = "ecommerce-helpdesk-service-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "pagopa_ecommerce_helpdesk_service_rest_api_key" {
+  name                = "ecommerce-helpdesk-service-rest-api-key"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-helpdesk-service-rest-api-key"
+  value               = var.ecommerce_helpdesk_service_api_key_use_primary ? data.azurerm_key_vault_secret.pagopa_ecommerce_helpdesk_service_rest_api_primary_key.value : data.azurerm_key_vault_secret.pagopa_ecommerce_helpdesk_service_rest_api_secondary_key.value
+  secret              = true
+}

@@ -55,6 +55,10 @@
             <set-header name="x-client-id" exists-action="override">
                 <value>IO</value>
             </set-header>
+            <!-- Set payment-methods API Key header -->
+            <set-header name="x-api-key" exists-action="override">
+              <value>{{ecommerce-payment-methods-api-key-value}}</value>
+            </set-header>
         </send-request>
 
         <set-variable name="paymentMethodsResponseBody" value="@(((IResponse)context.Variables["paymentMethodsResponse"]).Body.As<JObject>())" />
