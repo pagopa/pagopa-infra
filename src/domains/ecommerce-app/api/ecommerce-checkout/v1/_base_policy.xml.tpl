@@ -45,7 +45,7 @@
         )">
           <!-- Set payment-requests API Key header -->
           <set-header name="x-api-key" exists-action="override">
-            <value>{{ecommerce-payment-requests-api-key-for-checkout-value}}</value>
+            <value>{{ecommerce-payment-requests-api-key-value}}</value>
           </set-header>
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-requests-service")"/>
         </when>

@@ -761,6 +761,7 @@ resource "azurerm_api_management_named_value" "ecommerce_payment_requests_api_ke
   secret              = true
 }
 
+<<<<<<< HEAD
 data "azurerm_key_vault_secret" "ecommerce_transactions_service_primary_api_key" {
   name         = "ecommerce-transactions-service-primary-api-key"
   key_vault_id = data.azurerm_key_vault.kv.id
@@ -777,5 +778,59 @@ resource "azurerm_api_management_named_value" "ecommerce_transactions_service_ap
   resource_group_name = local.pagopa_apim_rg
   display_name        = "ecommerce-transactions-service-api-key-value"
   value               = var.ecommerce_transactions_service_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_transactions_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_transactions_service_secondary_api_key.value
+=======
+data "azurerm_key_vault_secret" "ecommerce_user_stats_service_primary_api_key" {
+  name         = "ecommerce-user-stats-service-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "ecommerce_user_stats_service_secondary_api_key" {
+  name         = "ecommerce-user-stats-service-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_user_stats_service_api_key_value" {
+  name                = "ecommerce-user-stats-service-api-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-user-stats-service-api-key-value"
+  value               = var.ecommerce_user_stats_service_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_user_stats_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_user_stats_service_secondary_api_key.value
+>>>>>>> origin/main
+  secret              = true
+}
+data "azurerm_key_vault_secret" "ecommerce_transactions_service_primary_api_key" {
+  name         = "ecommerce-transactions-service-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "ecommerce_transactions_service_secondary_api_key" {
+  name         = "ecommerce-transactions-service-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_transactions_service_api_key_value" {
+  name                = "ecommerce-transactions-service-api-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-transactions-service-api-key-value"
+  value               = var.ecommerce_transactions_service_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_transactions_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_transactions_service_secondary_api_key.value
+  secret              = true
+}
+data "azurerm_key_vault_secret" "ecommerce_user_stats_service_primary_api_key" {
+  name         = "ecommerce-user-stats-service-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "ecommerce_user_stats_service_secondary_api_key" {
+  name         = "ecommerce-user-stats-service-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_user_stats_service_api_key_value" {
+  name                = "ecommerce-user-stats-service-api-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-user-stats-service-api-key-value"
+  value               = var.ecommerce_user_stats_service_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_user_stats_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_user_stats_service_secondary_api_key.value
   secret              = true
 }
