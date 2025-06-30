@@ -65,7 +65,7 @@ resource "azurerm_api_management_named_value" "apim_checkout_feature_flags_map_v
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
   display_name        = "checkout-feature-flag-map"
-  value               = "{ \"enableAuthIpWhiteList\": \"-\", \"enablePspPickerPageIpWhiteList\": \"-\", \"enableMaintenancePage\": \"-\"}"
+  value               = "{ \"enableAuthIpWhiteList\": \"-\", \"enablePspPickerPageIpWhiteList\": \"-\", \"enableMaintenancePage\": \"false\"}"
   secret              = true
   lifecycle {
     ignore_changes = [

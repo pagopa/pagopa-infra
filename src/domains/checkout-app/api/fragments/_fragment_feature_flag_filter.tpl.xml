@@ -31,7 +31,7 @@
         var response = new {
             isAuthenticationEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enableAuthIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
             isPspPickerPageEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enablePspPickerPageIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
-            isMaintenancePageEnabled = isPageEnabled(featureFlagsStatusMap.GetValueOrDefault("enableMaintenancePage", ""))
+            isMaintenancePageEnabled = isPageEnabled(featureFlagsStatusMap.GetValueOrDefault("isMaintenancePageEnabled", ""))
         };
 
         return JsonConvert.SerializeObject(response);
