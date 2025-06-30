@@ -184,6 +184,12 @@ variable "ecommerce_payment_requests_api_key_use_primary" {
   default     = true
 }
 
+variable "ecommerce_payment_methods_api_key_use_primary" {
+  type        = bool
+  description = "If true the current active API key used for payment methods will be the primary one."
+  default     = true
+}
+
 
 variable "ecommerce_transactions_service_api_key_use_primary" {
   type        = bool
