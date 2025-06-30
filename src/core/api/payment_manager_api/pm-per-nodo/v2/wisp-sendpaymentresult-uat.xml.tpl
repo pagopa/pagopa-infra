@@ -22,6 +22,9 @@
     <set-variable name="clientId" value="@(context.Request.OriginalUrl.Query.GetValueOrDefault("clientId"))" />
     <choose>
         <when condition="@("ecomm".Equals(context.Variables["clientId"]))">
+          <set-header name="x-api-key" exists-action="override">
+            <value>{{ecommerce-transactions-service-api-key-value}}</value>
+          </set-header>
           <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}/pagopa-ecommerce-transactions-service/")" />
         </when>
         <otherwise>
