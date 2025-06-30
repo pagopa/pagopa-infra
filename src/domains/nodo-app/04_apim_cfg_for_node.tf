@@ -75,23 +75,23 @@ module "apim_cache_v1" {
   path         = "apim-cache"
   protocols    = ["https"]
 
-  content_format = "swagger-json"
+  content_format = "openapi"
   content_value = file("./api/internal-service/v1/apim_cache_openapi.json")
 
   xml_content = local.apim_apim_cache
 
-  # api_operation_policies = [
-  #   {
-  #     operation_id = "getCache"
-  #     xml_content  = local.getCache_v1_policy
-  #   },
-  #   {
-  #     operation_id = "deleteCache"
-  #     xml_content  = local.deleteCache_v1_policy
-  #   },
-  #   {
-  #     operation_id = "setCache"
-  #     xml_content  = local.setCache_v1_policy
-  #   }
-  # ]
+  api_operation_policies = [
+    {
+      operation_id = "getCache"
+      xml_content  = local.getCache_v1_policy
+    },
+    {
+      operation_id = "deleteCache"
+      xml_content  = local.deleteCache_v1_policy
+    },
+    {
+      operation_id = "setCache"
+      xml_content  = local.setCache_v1_policy
+    }
+  ]
 }

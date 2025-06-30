@@ -2,13 +2,13 @@
     <inbound>
         <base />
         <set-variable name="key" value="@(context.Request.MatchedParameters["key"])" />
-        <cache-remove-value key="@((string)context.Variables["key"])" caching-type="external"  / >
+        <cache-remove-value key="@((string)context.Variables["key"])" caching-type="external"  />
         <return-response>
             <set-status code="200" reason="OK" />
             <set-header name="Content-Type" exists-action="override">
                 <value>application/json</value>
             </set-header>
-            <set-body/>
+            <set-body />
         </return-response>
     </inbound>
     <backend>
