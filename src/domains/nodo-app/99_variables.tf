@@ -60,12 +60,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### External resources
 
@@ -477,4 +471,18 @@ variable "gh_runner_job_location" {
   type        = string
   description = "(Optional) The GH runner container app job location. Consistent with the container app environment location"
   default     = "westeurope"
+}
+
+variable "workflow" {
+  type = object({
+    workflow_parameters = optional(map(string), {})
+    workflow_schema     = optional(string)
+    workflow_version    = optional(string)
+  })
+  default = {
+    workflow_parameters = {}
+    workflow_schema     = "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#"
+    workflow_version    = "1.0.0.0"
+  }
+  description = "(Optional) Specify the workflow input parameters and schema version to use."
 }

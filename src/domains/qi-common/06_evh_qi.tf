@@ -44,7 +44,7 @@ module "eventhub_namespace_qi" {
   metric_alerts_create = var.ehns_alerts_enabled
   metric_alerts        = var.ehns_metric_alerts_qi
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "eventhub_qi_configuration" {

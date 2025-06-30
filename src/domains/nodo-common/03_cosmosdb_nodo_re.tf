@@ -31,7 +31,7 @@ module "cosmosdb_account_nodo_re" {
 
   backup_continuous_enabled = var.cosmos_nosql_db_params.backup_continuous_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb database for nodo_re

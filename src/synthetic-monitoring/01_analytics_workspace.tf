@@ -13,11 +13,12 @@ resource "azurerm_log_analytics_workspace" "log_analytics_workspace" {
   daily_quota_gb                     = var.law_daily_quota_gb
   reservation_capacity_in_gb_per_day = var.env_short == "p" ? 100 : null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   lifecycle {
     ignore_changes = [
-      sku
+      sku,
+      reservation_capacity_in_gb_per_day
     ]
   }
 }
@@ -31,5 +32,6 @@ resource "azurerm_application_insights" "application_insights" {
 
   workspace_id = azurerm_log_analytics_workspace.log_analytics_workspace.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
+

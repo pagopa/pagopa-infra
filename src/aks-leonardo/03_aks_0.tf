@@ -2,11 +2,11 @@
 resource "azurerm_resource_group" "rg_aks" {
   name     = local.aks_rg_name
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 module "aks_leonardo" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.84.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.90.0"
 
   name                       = local.aks_cluster_name
   location                   = var.location
@@ -22,6 +22,12 @@ module "aks_leonardo" {
 
   # ff: Enabled cost analysis on UAT/PROD
   cost_analysis_enabled = var.env_short != "d" ? true : false
+
+  automatic_channel_upgrade = null
+  node_os_channel_upgrade   = "None"
+  maintenance_windows_node_os = {
+    enabled = true
+  }
 
   #
   # 🤖 System node pool
@@ -91,7 +97,7 @@ module "aks_leonardo" {
 
   microsoft_defender_log_analytics_workspace_id = var.env == "prod" ? data.azurerm_log_analytics_workspace.log_analytics_italy.id : null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "user_nodepool_default" {
@@ -130,7 +136,7 @@ resource "azurerm_kubernetes_cluster_node_pool" "user_nodepool_default" {
     max_surge = var.aks_user_node_pool.upgrade_settings_max_surge
   }
 
-  tags = merge(var.tags, var.aks_user_node_pool.node_tags)
+  tags = merge(module.tag_config.tags, var.aks_user_node_pool.node_tags)
 
   lifecycle {
     ignore_changes = [

@@ -26,6 +26,14 @@ module "gh_runner_job" {
     {
       name : "pagopa-observability-bdi",
       short_name : "qi-bdi"
+    },
+    {
+      name : "pagopa-qi-alerts-management-function",
+      short_name : "qi-alerts"
+    },
+    {
+      name : "pagopa-qi-jsm-management-function",
+      short_name : "qi-jsm"
     }
   ]
   job = {
@@ -49,6 +57,6 @@ module "gh_runner_job" {
   prefix                  = var.prefix
   resource_group_name     = data.azurerm_resource_group.identity_rg.name
   domain_security_rg_name = "${local.product}-${var.domain}-sec-rg"
-  tags                    = var.tags
+  tags                    = module.tag_config.tags
 
 }

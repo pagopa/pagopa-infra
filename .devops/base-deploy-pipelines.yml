@@ -55,6 +55,12 @@ parameters:
   - name: 'MODULE_USE_AKS'
     type: boolean
     default: false
+  - name: 'COMMON_USE_AKS'
+    type: boolean
+    default: true
+  - name: 'APP_USE_AKS'
+    type: boolean
+    default: true
 
 
 stages:
@@ -85,10 +91,11 @@ stages:
         WORKINGDIR: ${{ parameters.WORKING_DIR_COMMON }}
         AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{parameters.SC_PLAN_NAME}}"
         AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{parameters.SC_APPLY_NAME}}"
-        AKS_NAME: ${{ parameters.AKS_NAME }}
-        AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
+        ${{ if eq(parameters.COMMON_USE_AKS, 'true') }}:
+          AKS_NAME: ${{ parameters.AKS_NAME }}
+          AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
+          AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
+          AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
   - ${{ if ne(parameters.WORKING_DIR_APP, '') }}:
     #APP
     - template: templates/terraform-plan-apply/template.yaml@terraform
@@ -100,10 +107,11 @@ stages:
         WORKINGDIR: ${{ parameters.WORKING_DIR_APP }}
         AZURE_SERVICE_CONNECTION_PLAN_NAME: "${{parameters.SC_PLAN_NAME}}"
         AZURE_SERVICE_CONNECTION_APPLY_NAME: "${{parameters.SC_APPLY_NAME}}"
-        AKS_NAME: ${{ parameters.AKS_NAME }}
-        AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
-        AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
-        AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
+        ${{ if eq(parameters.APP_USE_AKS, 'true') }}:
+          AKS_NAME: ${{ parameters.AKS_NAME }}
+          AKS_API_SERVER_URL: ${{ parameters.AKS_APISERVER_URL }}
+          AKS_AZURE_DEVOPS_SA_CA_CRT: ${{ parameters.AKS_AZURE_DEVOPS_SA_CACRT }}
+          AKS_AZURE_DEVOPS_SA_TOKEN: ${{ parameters.AKS_AZURE_DEVOPS_SA_TOKEN }}
   - ${{ if ne(parameters.WORKING_DIR_MODULE, '') }}:
     #MODULE
     - template: templates/terraform-plan-apply/template.yaml@terraform

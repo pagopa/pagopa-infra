@@ -1,5 +1,5 @@
 data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko-tx" {
-  name                = "nodo-dei-pagamenti-verify-ko-tx"
+  name                = "nodo-dei-pagamenti-verify-ko-tx-PAGOPA"
   namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
   eventhub_name       = "nodo-dei-pagamenti-verify-ko"
   resource_group_name = "${local.product}-msg-rg"
@@ -19,6 +19,33 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-v
   resource_group_name = "${local.product}-msg-rg"
 }
 
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-biz-evt_pagopa-biz-evt-tx" {
+  name                = "pagopa-biz-evt-tx-PAGOPA"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
+  eventhub_name       = "nodo-dei-pagamenti-biz-evt"
+  resource_group_name = "${local.product}-msg-rg"
+}
+
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-negative-biz-evt_pagopa-negative-biz-evt-tx" {
+  name                = "pagopa-negative-biz-evt-tx-PAGOPA"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
+  eventhub_name       = "nodo-dei-pagamenti-negative-biz-evt"
+  resource_group_name = "${local.product}-msg-rg"
+}
+
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-verify-ko_nodo-dei-pagamenti-verify-ko-tx" {
+  name                = "nodo-dei-pagamenti-verify-ko-tx-PAGOPA"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
+  eventhub_name       = "nodo-dei-pagamenti-verify-ko"
+  resource_group_name = "${local.product}-msg-rg"
+}
+
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-ns03_nodo-dei-pagamenti-re_nodo-dei-pagamenti" {
+  name                = "nodo-dei-pagamenti-PAGOPA"
+  namespace_name      = "${local.product}-${var.location_short}-core-evh-ns03"
+  eventhub_name       = "nodo-dei-pagamenti-re"
+  resource_group_name = "${local.product}-msg-rg"
+}
 
 data "azurerm_eventhub_authorization_rule" "pagopa-weu-core-evh-ns04_nodo-dei-pagamenti-cache-sync-rx" {
   name                = "nodo-dei-pagamenti-cache-sync-rx"

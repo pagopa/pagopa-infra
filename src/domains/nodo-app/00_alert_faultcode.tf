@@ -3,7 +3,7 @@ locals {
   action_groups_default = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
 
   # ENABLE PROD afert deploy
-  action_groups = var.env_short == "p" ? concat(local.action_groups_default, [data.azurerm_monitor_action_group.opsgenie[0].id]) : local.action_groups_default
+  action_groups = var.env_short == "p" ? concat(local.action_groups_default, [data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]) : local.action_groups_default
   # SEV3 -> No Opsgenie alert
   action_groups_sev3 = var.env_short == "p" ? concat(local.action_groups_default) : local.action_groups_default
   # action_groups = local.action_groups_default

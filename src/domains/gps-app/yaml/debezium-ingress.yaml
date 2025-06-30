@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 1m
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  labels:
+    ingress: debezium
+  name: debezium-ingress
+  namespace: ${namespace}
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: ${host}
+      http:
+        paths:
+          - backend:
+              service:
+                name: debezium-connect-cluster-connect-api
+                port:
+                  number: 8083
+            path: /debezium-gpd/(.*)
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - ${host}
+      secretName: ${secret}

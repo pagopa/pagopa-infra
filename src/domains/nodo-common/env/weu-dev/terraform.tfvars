@@ -6,13 +6,6 @@ location       = "westeurope"
 location_short = "weu"
 instance       = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/nodo-common"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -39,7 +32,7 @@ pgres_flex_params = {
 
   enabled    = true
   sku_name   = "GP_Standard_D4s_v3"
-  db_version = "13"
+  db_version = "16"
   # Possible values are 32768, 65536, 131072, 262144, 524288, 1048576,
   # 2097152, 4194304, 8388608, 16777216, and 33554432.
   storage_mb                                       = 32768
@@ -315,6 +308,19 @@ nodo_storico_storage_account = {
   backup_enabled                = false
   blob_delete_retention_days    = 0
   backup_retention              = 0
+}
+
+mbd_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "LRS"
+  blob_versioning_enabled       = false
+  advanced_threat_protection    = false
+  blob_delete_retention_days    = 0
+  public_network_access_enabled = true
+  backup_enabled                = false
+  backup_retention_days         = 0
+  use_legacy_defender_version   = false
 }
 
 redis_ha_enabled = false

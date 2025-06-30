@@ -15,7 +15,7 @@ module "poc_reporting_enrollment_sa" {
   advanced_threat_protection    = var.poc_advanced_threat_protection
   public_network_access_enabled = true
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 

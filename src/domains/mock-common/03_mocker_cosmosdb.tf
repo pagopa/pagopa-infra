@@ -7,11 +7,11 @@ resource "azurerm_resource_group" "mock_rg" {
   name     = "${local.product}-mock-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "mocker_cosmosdb_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v6.7.0"
+  source               = "./.terraform/modules/__v3__/subnet"
   name                 = "${local.project}-cosmosdb-snet"
   address_prefixes     = var.cidr_subnet_mocker_cosmosdb
   resource_group_name  = local.vnet_resource_group_name
@@ -27,7 +27,7 @@ module "mocker_cosmosdb_snet" {
 }
 
 module "mocker_cosmosdb_account" {
-  source   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account?ref=v6.7.0"
+  source   = "./.terraform/modules/__v3__/cosmosdb_account"
   name     = "${local.project}-cosmos-account"
   location = var.location
   domain   = var.domain
@@ -58,11 +58,11 @@ module "mocker_cosmosdb_account" {
   allowed_virtual_network_subnet_ids = var.mocker_cosmosdb_params.public_network_access_enabled ? [] : [data.azurerm_subnet.aks_subnet.id]
 
 
-  private_endpoint_enabled = var.mocker_cosmosdb_params.private_endpoint_enabled
-  subnet_id                = module.mocker_cosmosdb_snet.id
-  private_dns_zone_ids     = [data.azurerm_private_dns_zone.cosmos.id]
+  private_endpoint_enabled   = var.mocker_cosmosdb_params.private_endpoint_enabled
+  subnet_id                  = module.mocker_cosmosdb_snet.id
+  private_dns_zone_mongo_ids = [data.azurerm_private_dns_zone.cosmos.id]
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_cosmosdb_mongo_database" "mocker" {

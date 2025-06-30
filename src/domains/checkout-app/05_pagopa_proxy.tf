@@ -73,7 +73,7 @@ module "pagopa_proxy_app_service" {
   allowed_ips     = []
   subnet_id       = module.pagopa_proxy_snet.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
@@ -106,7 +106,7 @@ module "pagopa_proxy_app_service_slot_staging" {
   allowed_ips     = []
   subnet_id       = module.pagopa_proxy_snet.id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_monitor_autoscale_setting" "pagopa_proxy_app_service_autoscale" {

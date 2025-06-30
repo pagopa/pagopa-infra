@@ -2,12 +2,12 @@ resource "azurerm_resource_group" "aks_rg" {
   name     = "${local.project}-aks-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 
 module "aks" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.84.1"
+  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_cluster?ref=v8.90.0"
 
   name                       = local.aks_name
   location                   = var.location
@@ -26,6 +26,12 @@ module "aks" {
 
   # ffppa: Enabled cost analysis on UAT/PROD
   cost_analysis_enabled = var.env_short != "d" ? true : false
+
+  automatic_channel_upgrade = null
+  node_os_channel_upgrade   = "None"
+  maintenance_windows_node_os = {
+    enabled = true
+  }
 
   #
   # 🤖 System node pool
@@ -110,7 +116,7 @@ module "aks" {
 
   microsoft_defender_log_analytics_workspace_id = var.env == "prod" ? data.azurerm_log_analytics_workspace.log_analytics.id : null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 data "azurerm_container_registry" "acr" {

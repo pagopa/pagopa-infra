@@ -25,7 +25,6 @@
 | <a name="module_apim_ecommerce_io_api_v2"></a> [apim\_ecommerce\_io\_api\_v2](#module\_apim\_ecommerce\_io\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_io_outcomes_api_v1"></a> [apim\_ecommerce\_io\_outcomes\_api\_v1](#module\_apim\_ecommerce\_io\_outcomes\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_io_product"></a> [apim\_ecommerce\_io\_product](#module\_apim\_ecommerce\_io\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
-| <a name="module_apim_ecommerce_io_webview_pay_v1"></a> [apim\_ecommerce\_io\_webview\_pay\_v1](#module\_apim\_ecommerce\_io\_webview\_pay\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_payment_methods_product"></a> [apim\_ecommerce\_payment\_methods\_product](#module\_apim\_ecommerce\_payment\_methods\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
 | <a name="module_apim_ecommerce_payment_methods_service_api_v1"></a> [apim\_ecommerce\_payment\_methods\_service\_api\_v1](#module\_apim\_ecommerce\_payment\_methods\_service\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_ecommerce_payment_methods_service_api_v2"></a> [apim\_ecommerce\_payment\_methods\_service\_api\_v2](#module\_apim\_ecommerce\_payment\_methods\_service\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
@@ -49,6 +48,7 @@
 | <a name="module_apim_pagopa_ecommerce_technical_helpdesk_service_api_v2"></a> [apim\_pagopa\_ecommerce\_technical\_helpdesk\_service\_api\_v2](#module\_apim\_pagopa\_ecommerce\_technical\_helpdesk\_service\_api\_v2) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_pagopa_notifications_service_api_v1"></a> [apim\_pagopa\_notifications\_service\_api\_v1](#module\_apim\_pagopa\_notifications\_service\_api\_v1) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_cert_mounter"></a> [cert\_mounter](#module\_cert\_mounter) | ./.terraform/modules/__v3__/cert_mounter | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_tls_checker"></a> [tls\_checker](#module\_tls\_checker) | ./.terraform/modules/__v3__/tls_checker | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_configuration | n/a |
 
@@ -70,7 +70,6 @@
 | [azurerm_api_management_api_operation_policy.create_session](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.create_transactions_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.delete_transaction](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
-| [azurerm_api_management_api_operation_policy.delete_transactions_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_card_data](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_card_data_information](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_carts_redirect](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
@@ -82,15 +81,13 @@
 | [azurerm_api_management_api_operation_policy.get_state](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_transaction_info](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.get_transaction_info_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
-| [azurerm_api_management_api_operation_policy.get_transactions_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
+| [azurerm_api_management_api_operation_policy.get_transaction_outcomes](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.helpdesk_pgs_vpos](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.helpdesk_pgs_xpay](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.helpdesk_pm_search_bulk](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.io_calculate_fee_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
-| [azurerm_api_management_api_operation_policy.io_get_all_payment_methods](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.io_post_wallet_transactions_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.io_transaction_authorization_request_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
-| [azurerm_api_management_api_operation_policy.io_wallets_by_user_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.npg_notifications_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.post_orders_build](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
 | [azurerm_api_management_api_operation_policy.refund_payment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_operation_policy) | resource |
@@ -119,7 +116,6 @@
 | [azurerm_api_management_api_version_set.ecommerce_healthcheck_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_io_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_io_outcomes_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
-| [azurerm_api_management_api_version_set.ecommerce_io_webview_pay_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_payment_methods_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_payment_requests_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.ecommerce_transaction_auth_requests_service_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
@@ -138,6 +134,10 @@
 | [azurerm_api_management_named_value.ecommerce_dev_sendpaymentresult_subscription_key_named_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.ecommerce_for_checkout_google_recaptcha_secret_named_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.ecommerce_io_transaction_jwt_signing_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.ecommerce_notification_service_api_key_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.ecommerce_payment_methods_api_key_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.ecommerce_payment_requests_api_key_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
+| [azurerm_api_management_named_value.ecommerce_user_stats_service_api_key_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.npg_notification_jwt_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_product_api.apim_ecommerce_gec_mock_product_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_api) | resource |
 | [azurerm_api_management_product_api.apim_ecommerce_gec_mock_product_api_v2](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_api) | resource |
@@ -170,6 +170,14 @@
 | [azurerm_key_vault_secret.ecommerce_for_checkout_google_recaptcha_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.ecommerce_io_jwt_signing_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.ecommerce_io_sessions_jwt_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.ecommerce_notification_service_primary_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.ecommerce_notification_service_secondary_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.ecommerce_payment_methods_primary_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.ecommerce_payment_methods_secondary_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.ecommerce_payment_requests_primary_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.ecommerce_payment_requests_secondary_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.ecommerce_user_stats_service_primary_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.ecommerce_user_stats_service_secondary_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.ecommerce_webview_jwt_signing_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.npg_notification_jwt_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.personal_data_vault_api_key_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
@@ -192,6 +200,10 @@
 | <a name="input_dns_zone_internal_prefix"></a> [dns\_zone\_internal\_prefix](#input\_dns\_zone\_internal\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_domain"></a> [domain](#input\_domain) | n/a | `string` | n/a | yes |
 | <a name="input_ecommerce_io_with_pm_enabled"></a> [ecommerce\_io\_with\_pm\_enabled](#input\_ecommerce\_io\_with\_pm\_enabled) | ecommerce for IO using Payment Manager enabled | `bool` | `false` | no |
+| <a name="input_ecommerce_notification_service_api_key_use_primary"></a> [ecommerce\_notification\_service\_api\_key\_use\_primary](#input\_ecommerce\_notification\_service\_api\_key\_use\_primary) | If true the current active API key used for notification service will be the primary one. | `bool` | `true` | no |
+| <a name="input_ecommerce_payment_methods_api_key_use_primary"></a> [ecommerce\_payment\_methods\_api\_key\_use\_primary](#input\_ecommerce\_payment\_methods\_api\_key\_use\_primary) | If true the current active API key used for payment methods will be the primary one. | `bool` | `true` | no |
+| <a name="input_ecommerce_payment_requests_api_key_use_primary"></a> [ecommerce\_payment\_requests\_api\_key\_use\_primary](#input\_ecommerce\_payment\_requests\_api\_key\_use\_primary) | If true the current active API key used for payment requests will be the primary one. | `bool` | `true` | no |
+| <a name="input_ecommerce_user_stats_service_api_key_use_primary"></a> [ecommerce\_user\_stats\_service\_api\_key\_use\_primary](#input\_ecommerce\_user\_stats\_service\_api\_key\_use\_primary) | Whenever to use primary or secondary key invoking user-stats-service | `bool` | `true` | no |
 | <a name="input_ecommerce_vpos_psps_list"></a> [ecommerce\_vpos\_psps\_list](#input\_ecommerce\_vpos\_psps\_list) | psps list using vpos as comma separated value | `string` | `""` | no |
 | <a name="input_ecommerce_xpay_psps_list"></a> [ecommerce\_xpay\_psps\_list](#input\_ecommerce\_xpay\_psps\_list) | psps list using xpay as comma separated value | `string` | `""` | no |
 | <a name="input_enabled_payment_wallet_method_ids_pm"></a> [enabled\_payment\_wallet\_method\_ids\_pm](#input\_enabled\_payment\_wallet\_method\_ids\_pm) | Comma separated list of eCommerce payment method ids that are enabled with PM APIs | `string` | `""` | no |
@@ -212,7 +224,6 @@
 | <a name="input_pdv_api_base_path"></a> [pdv\_api\_base\_path](#input\_pdv\_api\_base\_path) | Personal data vault api base path | `string` | `null` | no |
 | <a name="input_pod_disruption_budgets"></a> [pod\_disruption\_budgets](#input\_pod\_disruption\_budgets) | Pod disruption budget for domain namespace | <pre>map(object({<br/>    name         = optional(string, null)<br/>    minAvailable = optional(number, null)<br/>    matchLabels  = optional(map(any), {})<br/>  }))</pre> | `{}` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 | <a name="input_tls_cert_check_helm"></a> [tls\_cert\_check\_helm](#input\_tls\_cert\_check\_helm) | tls cert helm chart configuration | <pre>object({<br/>    chart_version = string,<br/>    image_name    = string,<br/>    image_tag     = string<br/>  })</pre> | n/a | yes |
 
 ## Outputs

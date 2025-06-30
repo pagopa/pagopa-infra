@@ -14,14 +14,14 @@ locals {
     XDT_MicrosoftApplicationInsights_BaseExtensions = "disabled"
     XDT_MicrosoftApplicationInsights_Mode           = "recommended"
     XDT_MicrosoftApplicationInsights_PreemptSdk     = "disabled"
-    WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
-    TIMEOUT_DELAY                                   = 300
+    # WEBSITE_HEALTHCHECK_MAXPINGFAILURES             = 10
+    TIMEOUT_DELAY = 300
     # Integration with private DNS (see more: https://docs.microsoft.com/en-us/answers/questions/85359/azure-app-service-unable-to-resolve-hostname-of-vi.html)
     WEBSITE_ADD_SITENAME_BINDINGS_IN_APPHOST_CONFIG = "1"
     WEBSITE_RUN_FROM_PACKAGE                        = "1"
-    WEBSITE_VNET_ROUTE_ALL                          = "1"
-    WEBSITE_DNS_SERVER                              = "168.63.129.16"
-    WEBSITE_ENABLE_SYNC_UPDATE_SITE                 = true
+    # WEBSITE_VNET_ROUTE_ALL                          = "1"
+    WEBSITE_DNS_SERVER              = "168.63.129.16"
+    WEBSITE_ENABLE_SYNC_UPDATE_SITE = true
     # Spring Environment
     DEFAULT_LOGGING_LEVEL = "INFO"
     APP_LOGGING_LEVEL     = "INFO"
@@ -85,11 +85,13 @@ data "azurerm_container_registry" "acr" {
 module "app_forwarder_app_service" {
   count = var.app_forwarder_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service?ref=v8.12.2"
+  source = "./.terraform/modules/__v3__/app_service"
 
   vnet_integration    = false
   resource_group_name = data.azurerm_resource_group.rg_node_forwarder.name
   location            = var.location
+
+  ip_restriction_default_action = var.app_forwarder_ip_restriction_default_action
 
   # App service plan vars
   plan_name = format("%s-plan-app-forwarder", local.project)
@@ -112,13 +114,13 @@ module "app_forwarder_app_service" {
 
   subnet_id = data.azurerm_subnet.subnet_node_forwarder[0].id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "app_forwarder_slot_staging" {
   count = var.app_forwarder_enabled ? 1 : 0
 
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//app_service_slot?ref=v8.12.2"
+  source = "./.terraform/modules/__v3__/app_service_slot"
 
   # App service plan
   app_service_id   = module.app_forwarder_app_service[0].id
@@ -143,7 +145,7 @@ module "app_forwarder_slot_staging" {
   allowed_ips     = []
   subnet_id       = data.azurerm_subnet.subnet_node_forwarder[0].id
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 

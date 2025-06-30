@@ -8,13 +8,6 @@ location_string        = "West Europe"
 instance               = "prod"
 gh_runner_job_location = "italynorth"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/shared"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -95,5 +88,4 @@ robots_indexed_paths          = []
 io_backend_base_path = "https://api-app.io.pagopa.it"
 pdv_api_base_path    = "https://api.tokenizer.pdv.pagopa.it/tokenizer/v1"
 
-ecommerce_for_io_pm_npg                    = "NPG"
 function_app_ip_restriction_default_action = "Deny"

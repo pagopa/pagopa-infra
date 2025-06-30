@@ -6,29 +6,33 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | = 2.21.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >= 3.30.0, <= 3.53.0 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | = 3.1.1 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | <= 2.21.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | <= 3.110.0 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | <= 3.2.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_azurerm_cosmosdb_sql_stored_procedure"></a> [azurerm\_cosmosdb\_sql\_stored\_procedure](#module\_azurerm\_cosmosdb\_sql\_stored\_procedure) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_stored_procedure | PRDP-276-feat-add-conflict-resolution-policy-and-stored-procedure |
-| <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | github.com/pagopa/terraform-azurerm-v3//github_federated_identity | v7.45.0 |
-| <a name="module_receipts_datastore_cosmosdb_account"></a> [receipts\_datastore\_cosmosdb\_account](#module\_receipts\_datastore\_cosmosdb\_account) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_account | v6.7.0 |
-| <a name="module_receipts_datastore_cosmosdb_containers"></a> [receipts\_datastore\_cosmosdb\_containers](#module\_receipts\_datastore\_cosmosdb\_containers) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_container | PRDP-276-feat-add-conflict-resolution-policy-and-stored-procedure |
-| <a name="module_receipts_datastore_cosmosdb_database"></a> [receipts\_datastore\_cosmosdb\_database](#module\_receipts\_datastore\_cosmosdb\_database) | git::https://github.com/pagopa/terraform-azurerm-v3.git//cosmosdb_sql_database | v6.7.0 |
-| <a name="module_receipts_datastore_cosmosdb_snet"></a> [receipts\_datastore\_cosmosdb\_snet](#module\_receipts\_datastore\_cosmosdb\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.4.1 |
-| <a name="module_receipts_datastore_fn_sa"></a> [receipts\_datastore\_fn\_sa](#module\_receipts\_datastore\_fn\_sa) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v7.18.0 |
-| <a name="module_receipts_st_snet"></a> [receipts\_st\_snet](#module\_receipts\_st\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v6.7.0 |
+| <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | f3485105e35ce8c801209dcbb4ef72f3d944f0e5 |
+| <a name="module_identity_cd_01"></a> [identity\_cd\_01](#module\_identity\_cd\_01) | ./.terraform/modules/__v3__/github_federated_identity | n/a |
+| <a name="module_receipts_datastore_cosmosdb_account"></a> [receipts\_datastore\_cosmosdb\_account](#module\_receipts\_datastore\_cosmosdb\_account) | ./.terraform/modules/__v3__/cosmosdb_account | n/a |
+| <a name="module_receipts_datastore_cosmosdb_containers"></a> [receipts\_datastore\_cosmosdb\_containers](#module\_receipts\_datastore\_cosmosdb\_containers) | ./.terraform/modules/__v3__/cosmosdb_sql_container | n/a |
+| <a name="module_receipts_datastore_cosmosdb_database"></a> [receipts\_datastore\_cosmosdb\_database](#module\_receipts\_datastore\_cosmosdb\_database) | ./.terraform/modules/__v3__/cosmosdb_sql_database | n/a |
+| <a name="module_receipts_datastore_cosmosdb_snet"></a> [receipts\_datastore\_cosmosdb\_snet](#module\_receipts\_datastore\_cosmosdb\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_receipts_datastore_fn_sa"></a> [receipts\_datastore\_fn\_sa](#module\_receipts\_datastore\_fn\_sa) | ./.terraform/modules/__v3__/storage_account | n/a |
+| <a name="module_receipts_st_snet"></a> [receipts\_st\_snet](#module\_receipts\_st\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
+| <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
+| [azurerm_cosmosdb_sql_stored_procedure.azurerm_cosmosdb_sql_stored_procedure](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_stored_procedure) | resource |
 | [azurerm_key_vault_access_policy.gha_iac_managed_identities](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_monitor_metric_alert.cosmos_db_normalized_ru_exceeded](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.cosmos_db_provisioned_throughput_exceeded_ProvisionedThroughput](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_private_dns_a_record.ingress](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
 | [azurerm_private_endpoint.queue_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_private_endpoint.storage_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
@@ -38,11 +42,11 @@
 | [azurerm_storage_management_policy.st_blob_receipts_management_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy) | resource |
 | [azurerm_storage_queue.queue-receipt-io-notifier-error](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
 | [azurerm_storage_queue.queue-receipt-waiting-4-gen](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_queue) | resource |
-| [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/3.1.1/docs/resources/resource) | resource |
-| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
-| [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
+| [null_resource.github_runner_app_permissions_to_namespace_cd_01](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
+| [azuread_group.adgroup_admin](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_security](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/group) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault.key_vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
@@ -97,7 +101,6 @@
 | <a name="input_receipts_queue_retention_sec"></a> [receipts\_queue\_retention\_sec](#input\_receipts\_queue\_retention\_sec) | The maximum time to allow the message to be in the queue. | `number` | `86400` | no |
 | <a name="input_receipts_storage_account_replication_type"></a> [receipts\_storage\_account\_replication\_type](#input\_receipts\_storage\_account\_replication\_type) | (Optional) Receipts datastore storage account replication type | `string` | `"LRS"` | no |
 | <a name="input_receipts_tier_to_archive_after_days_since_last_access_time_greater_than"></a> [receipts\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than](#input\_receipts\_tier\_to\_archive\_after\_days\_since\_last\_access\_time\_greater\_than) | Number of days since last access to blob before moving to archive tier | `number` | `730` | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 

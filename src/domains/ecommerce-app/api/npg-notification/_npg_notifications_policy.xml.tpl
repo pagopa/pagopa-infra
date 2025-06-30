@@ -3,32 +3,60 @@
         <base />
         <!-- start validation policy -->
         <set-variable name="orderId" value="@(context.Request.MatchedParameters["orderId"])" />
-        <validate-jwt query-parameter-name="sessionToken" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="jwtToken">
-        <issuer-signing-keys>
-            <key>{{npg-notification-jwt-secret}}</key>
-        </issuer-signing-keys>
-        <required-claims>
-          <claim name="orderId" match="all">
-            <value>@((string)context.Variables.GetValueOrDefault("orderId",""))</value>
-          </claim>
-       </required-claims>
-      </validate-jwt>
-      <!-- end validation policy -->
+        <!--  Check if Authorization header is present -->
+        <choose>
+            <when condition="@(!context.Request.Url.Query.ContainsKey("sessionToken"))">
+                <return-response>
+                    <set-status code="401" reason="Unauthorized" />
+                    <set-body>Unauthorized</set-body>
+                </return-response>
+            </when>
+        </choose>
+        <!-- Extract 'iss' claim -->
+        <set-variable name="jwtIssuer" value="@{
+            Jwt jwt;
+            context.Request.Url.Query.GetValueOrDefault("sessionToken","").Split(' ').Last().TryParseJwt(out jwt);
+            return jwt?.Claims.GetValueOrDefault("iss", "");
+        }" />
+        <!-- Store useOpenId as string 'true' or 'false' -->
+        <set-variable name="useOpenId" value="@(
+            (context.Variables.GetValueOrDefault<string>("jwtIssuer")?.Contains("jwt-issuer-service") == true).ToString()
+        )" />
+        <!-- Conditional validation -->
+        <choose>
+            <when condition="@(bool.Parse(context.Variables.GetValueOrDefault<string>("useOpenId")))">
+                <validate-jwt query-parameter-name="sessionToken" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-scheme="Bearer" require-signed-tokens="true" output-token-variable-name="jwtToken">
+                  <openid-config url="https://${hostname}/pagopa-jwt-issuer-service/.well-known/openid-configuration" />
+                  <audiences>
+                    <audience>npg</audience>
+                  </audiences>
+                  <required-claims>
+                    <claim name="orderId" match="all">
+                      <value>@((string)context.Variables.GetValueOrDefault("orderId",""))</value>
+                    </claim>
+                 </required-claims>
+                </validate-jwt>
+            </when>
+            <otherwise>
+                <validate-jwt query-parameter-name="sessionToken" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized" require-expiration-time="true" require-signed-tokens="true" output-token-variable-name="jwtToken">
+                  <issuer-signing-keys>
+                      <key>{{npg-notification-jwt-secret}}</key>
+                  </issuer-signing-keys>
+                  <required-claims>
+                    <claim name="orderId" match="all">
+                      <value>@((string)context.Variables.GetValueOrDefault("orderId",""))</value>
+                    </claim>
+                 </required-claims>
+                </validate-jwt>
+            </otherwise>
+        </choose>
+        <!-- end validation policy -->
       <!-- start policy variables -->
       <set-variable name="transactionId" value="@{
            var jwt = (Jwt)context.Variables["jwtToken"];
            if(jwt.Claims.ContainsKey("transactionId")){
                string uuidString = jwt.Claims["transactionId"][0];
-               uuidString = uuidString.Replace("-", "");
-               byte[] transactionIdBase64 = new byte[uuidString.Length / 2];
-               for (int i = 0; i < transactionIdBase64.Length; i++)
-               {
-                   transactionIdBase64[i] = Convert.ToByte(uuidString.Substring(i * 2, 2), 16);
-               }
-               return Convert.ToBase64String(transactionIdBase64)
-                   .Replace('+', '-')
-                   .Replace('/', '_')
-                   .Replace("=", "");
+               return uuidString.Replace("-", "");
            }
            return "";
         }" />
@@ -59,10 +87,14 @@
         <choose>
             <when condition="@((string)context.Variables["transactionId"] == "")">
                 <send-request mode="new" response-variable-name="paymentMethodSessionVerificationResponse" timeout="10" ignore-error="true">
-                    <set-url>@(String.Format((string)context.Variables["paymentMethodBackendUri"]+"/payment-methods/{0}/sessions/{1}/transactionId", (string)context.Variables["paymentMethodId"], (string)context.Variables["orderId"]))</set-url>
+                    <set-url>@(String.Format((string)context.Variables["paymentMethodBackendUri"]+"/v2/payment-methods/{0}/sessions/{1}/transactionId", (string)context.Variables["paymentMethodId"], (string)context.Variables["orderId"]))</set-url>
                     <set-method>GET</set-method>
                     <set-header name="Content-Type" exists-action="override">
                         <value>application/json</value>
+                    </set-header>
+                    <!-- Set payment-methods API Key header -->
+                    <set-header name="x-api-key" exists-action="override">
+                      <value>{{ecommerce-payment-methods-api-key-value}}</value>
                     </set-header>
                     <set-header name="Authorization" exists-action="override">
                         <value> @{
@@ -88,7 +120,7 @@
         <!-- end payment method verify session -->
         <!-- send transactions service PATCH request -->
         <set-backend-service base-url="@((string)context.Variables["transactionServiceBackendUri"])" />
-        <rewrite-uri template="@(String.Format("/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))" copy-unmatched-params="false"/>
+        <rewrite-uri template="@(String.Format("/v2/transactions/{0}/auth-requests", (string)context.Variables["transactionId"]))" copy-unmatched-params="false"/>
         <set-method>PATCH</set-method>
         <set-header name="Content-Type" exists-action="override">
             <value>application/json</value>

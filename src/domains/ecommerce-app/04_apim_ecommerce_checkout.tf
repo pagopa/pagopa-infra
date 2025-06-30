@@ -105,7 +105,9 @@ resource "azurerm_api_management_api_operation_policy" "get_transaction_info" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "getTransactionInfo"
 
-  xml_content = file("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl")
+  xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+  })
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_transaction_info_v2" {
@@ -114,7 +116,20 @@ resource "azurerm_api_management_api_operation_policy" "get_transaction_info_v2"
   api_management_name = local.pagopa_apim_name
   operation_id        = "getTransactionInfo"
 
-  xml_content = file("./api/ecommerce-checkout/v2/_validate_transactions_jwt_token.tpl")
+  xml_content = templatefile("./api/ecommerce-checkout/v2/_validate_transactions_jwt_token.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+  })
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_transaction_outcomes" {
+  api_name            = "${local.project}-ecommerce-checkout-api-v1"
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getTransactionOutcomes"
+
+  xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+  })
 }
 
 resource "azurerm_api_management_api_operation_policy" "delete_transaction" {
@@ -123,7 +138,9 @@ resource "azurerm_api_management_api_operation_policy" "delete_transaction" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "requestTransactionUserCancellation"
 
-  xml_content = file("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl")
+  xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+  })
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_fees" {
@@ -132,7 +149,9 @@ resource "azurerm_api_management_api_operation_policy" "get_fees" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "calculateFees"
 
-  xml_content = file("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl")
+  xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_transactions_jwt_token.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+  })
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_card_data_information" {
@@ -141,7 +160,9 @@ resource "azurerm_api_management_api_operation_policy" "get_card_data_informatio
   api_management_name = local.pagopa_apim_name
   operation_id        = "getSessionPaymentMethod"
 
-  xml_content = file("./api/ecommerce-checkout/v1/_validate_jwt_with_order_and_transaction_id.tpl")
+  xml_content = templatefile("./api/ecommerce-checkout/v1/_validate_jwt_with_order_and_transaction_id.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+  })
 }
 
 resource "azurerm_api_management_api_operation_policy" "get_payment_request_info_api_policy" {
@@ -160,8 +181,9 @@ resource "azurerm_api_management_api_operation_policy" "transaction_authorizatio
   operation_id        = "requestTransactionAuthorization"
 
   xml_content = templatefile("./api/ecommerce-checkout/v1/_auth_request.xml.tpl", {
-    ecommerce_xpay_psps_list = var.ecommerce_xpay_psps_list
-    ecommerce_vpos_psps_list = var.ecommerce_vpos_psps_list
+    ecommerce_xpay_psps_list   = var.ecommerce_xpay_psps_list
+    ecommerce_vpos_psps_list   = var.ecommerce_vpos_psps_list
+    ecommerce_ingress_hostname = local.ecommerce_hostname
   })
 }
 
@@ -251,7 +273,9 @@ resource "azurerm_api_management_api_operation_policy" "get_fees_v2" {
   api_management_name = local.pagopa_apim_name
   operation_id        = "calculateFees"
 
-  xml_content = file("./api/ecommerce-checkout/v2/_validate_transactions_jwt_token.tpl")
+  xml_content = templatefile("./api/ecommerce-checkout/v2/_validate_transactions_jwt_token.tpl", {
+    ecommerce_ingress_hostname = local.ecommerce_hostname
+  })
 }
 
 # pagopa-ecommerce APIs for checkout V3 (authenticated)
@@ -306,3 +330,4 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_request_info
 
   xml_content = file("./api/ecommerce-checkout/v3/_payment_request_policy.xml.tpl")
 }
+

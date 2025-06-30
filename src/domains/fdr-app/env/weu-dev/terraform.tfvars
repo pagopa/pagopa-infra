@@ -7,13 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/fdr"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 # function app
 reporting_fdr_function_always_on = false

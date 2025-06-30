@@ -31,7 +31,7 @@ module "cosmosdb_account_standin" {
 
   backup_continuous_enabled = var.standin_cosmos_nosql_db_params.backup_continuous_enabled
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 # cosmosdb database for standin
@@ -93,3 +93,11 @@ module "cosmosdb_account_standin_containers" {
   autoscale_settings = contains(var.standin_cosmos_nosql_db_params.capabilities, "EnableServerless") ? null : lookup(each.value, "autoscale_settings", null)
 }
 
+resource "azurerm_key_vault_secret" "cosmos_standin_connection_string_readonly" {
+  depends_on   = [module.cosmosdb_account_standin]
+  name         = "cosmos-standin-connection-string-readonly"
+  value        = module.cosmosdb_account_standin.connection_strings[2]
+  content_type = "text/plain"
+
+  key_vault_id = data.azurerm_key_vault.key_vault.id
+}

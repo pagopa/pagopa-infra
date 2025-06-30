@@ -85,17 +85,16 @@ variable "vnet_ita_ddos_protection_plan" {
   default = null
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 ### Network
 
 variable "cidr_vnet_italy" {
   type        = list(string)
   description = "Address prefixes for vnet in italy."
+}
+
+variable "cidr_vnet_italy_cstar_integration" {
+  type        = list(string)
+  description = "Address prefixes for vnet cstar integration in italy."
 }
 
 variable "cidr_eventhubs_italy" {

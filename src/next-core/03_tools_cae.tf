@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "tools_rg" {
   name     = "${local.product}-${var.domain}-tools-rg"
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_subnet" "tools_cae_subnet" {
@@ -37,5 +37,5 @@ module "route_table_peering_nexi" {
 
   routes = var.route_tools
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

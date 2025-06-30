@@ -9,13 +9,6 @@ instance        = "prod"
 
 gh_runner_job_location = "italynorth"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/qi-app"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 

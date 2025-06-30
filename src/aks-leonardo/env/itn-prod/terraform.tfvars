@@ -9,13 +9,6 @@ location_short      = "itn"
 location_westeurope = "westeurope"
 
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "PROD"
-  Owner       = "PAGOPA"
-  Source      = "https://github.com/pagopa/pagopa-infrastructure"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### Network
 
@@ -41,7 +34,7 @@ monitor_appinsights_name                    = "pagopa-p-appinsights"
 #
 aks_private_cluster_enabled  = true
 aks_alerts_enabled           = false
-aks_kubernetes_version       = "1.29.4"
+aks_kubernetes_version       = "1.31.8"
 aks_sku_tier                 = "Standard"
 aks_enable_workload_identity = true
 
@@ -79,8 +72,8 @@ aks_addons = {
 # This is the k8s ingress controller ip. It must be in the aks subnet range.
 ingress_load_balancer_ip = "10.3.2.250"
 ingress_replica_count    = "2"
-nginx_helm_version       = "4.10.0"
+nginx_helm_version       = "4.12.1"
 
-keda_helm_version = "2.14.0"
+keda_helm_version = "2.17.1"
 
 enable_elastic_agent = false

@@ -30,6 +30,7 @@
 | <a name="module_postgres_flexible_snet"></a> [postgres\_flexible\_snet](#module\_postgres\_flexible\_snet) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_postgres_flexible_snet_replica"></a> [postgres\_flexible\_snet\_replica](#module\_postgres\_flexible\_snet\_replica) | ./.terraform/modules/__v3__/subnet | n/a |
 | <a name="module_postgresql_fdr_replica_db"></a> [postgresql\_fdr\_replica\_db](#module\_postgresql\_fdr\_replica\_db) | ./.terraform/modules/__v3__/postgres_flexible_server_replica | n/a |
+| <a name="module_tag_config"></a> [tag\_config](#module\_tag\_config) | ../../tag_config | n/a |
 | <a name="module_workload_identity"></a> [workload\_identity](#module\_workload\_identity) | ./.terraform/modules/__v3__/kubernetes_workload_identity_init | n/a |
 
 ## Resources
@@ -47,7 +48,6 @@
 | [azurerm_key_vault_secret.evthub_fdr-qi-flows_tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.evthub_fdr-qi-reported-iuv_rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.evthub_fdr-qi-reported-iuv_tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
-| [azurerm_key_vault_secret.fdr-re-tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.fdr_re_mongodb_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.fdr_re_storage_account_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [azurerm_key_vault_secret.fdr_storage_account_connection_string](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
@@ -98,7 +98,6 @@
 | [azurerm_api_management_product.fdr_psp_product](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/api_management_product) | data source |
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
-| [azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns03_fdr-re-fdr-re-tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_fdr-qi-flows-rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_fdr-qi-flows-tx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
 | [azurerm_eventhub_authorization_rule.pagopa-weu-core-evh-ns04_fdr-qi-reported-iuv-rx](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/eventhub_authorization_rule) | data source |
@@ -171,7 +170,6 @@
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_reporting_fdr_blobs_retention_days"></a> [reporting\_fdr\_blobs\_retention\_days](#input\_reporting\_fdr\_blobs\_retention\_days) | The number of day for storage\_management\_policy | `number` | `30` | no |
 | <a name="input_reporting_fdr_storage_account"></a> [reporting\_fdr\_storage\_account](#input\_reporting\_fdr\_storage\_account) | n/a | <pre>object({<br/>    advanced_threat_protection         = bool<br/>    advanced_threat_protection_enabled = bool<br/>    blob_versioning_enabled            = bool<br/>    blob_delete_retention_days         = number<br/>    account_replication_type           = string<br/>  })</pre> | <pre>{<br/>  "account_replication_type": "LRS",<br/>  "advanced_threat_protection": false,<br/>  "advanced_threat_protection_enabled": false,<br/>  "blob_delete_retention_days": 30,<br/>  "blob_versioning_enabled": false<br/>}</pre> | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | n/a | `map(any)` | <pre>{<br/>  "CreatedBy": "Terraform"<br/>}</pre> | no |
 
 ## Outputs
 

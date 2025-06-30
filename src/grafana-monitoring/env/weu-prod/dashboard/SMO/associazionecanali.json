@@ -1,0 +1,823 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 44,
+    "links": [],
+    "liveNow": false,
+    "panels": [
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "id": 6,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "INTERMEDIARI_PSP\n| where ENABLED == \"Y\"\n| summarize TOTALE=count()",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Intermediari PSP presenti sul nodo",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "id": 4,
+        "options": {
+          "displayLabels": [
+            "name"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "percent",
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "PT_REL_PSP\n| summarize TOTALE=count() by INTERMEDIARIO_DESCR\n| sort by TOTALE desc",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Percentuale di intermediazioni presenti sul nodo",
+        "type": "piechart"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 8
+        },
+        "id": 10,
+        "panels": [],
+        "title": "Dettaglio Intermediazione - $Intermediario",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 9
+        },
+        "id": 8,
+        "options": {
+          "displayLabels": [],
+          "legend": {
+            "displayMode": "table",
+            "placement": "right",
+            "showLegend": true,
+            "values": [
+              "value"
+            ]
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "PT_REL_PSP\n| where ID_INTERMEDIARIO == $Intermediario\n| summarize TOTALE=count() by CANALE",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Numero di intermediazioni per ogni canale",
+        "type": "piechart"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "filterable": true,
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 9
+        },
+        "id": 12,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": true,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "PT_REL_PSP\n| where ID_INTERMEDIARIO == $Intermediario\n| where CANALE in ($Canale)\n| extend PSP_DESCR=case(isempty(PSP_DESCR), PSP_RAGIONE_SOCIALE, PSP_DESCR)\n| project-rename PSP=PSP_DESCR\n| project PSP, ID_PSP, CANALE\n| sort by PSP asc",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Intermediati da $Intermediario",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "filterable": true,
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 17
+        },
+        "id": 2,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "enablePagination": true,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "PT_REL_PSP\n| where ID_INTERMEDIARIO in ($Intermediario)\n| where CANALE == $Canale",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Dettaglio",
+        "type": "table"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 26
+        },
+        "id": 14,
+        "panels": [],
+        "title": "Dettaglio $psp",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "grafana-azure-data-explorer-datasource",
+          "uid": "2mZ1xay4z"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "CANALE"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 190
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 27
+        },
+        "id": 16,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "10.4.15",
+        "targets": [
+          {
+            "database": "re",
+            "datasource": {
+              "type": "grafana-azure-data-explorer-datasource",
+              "uid": "2mZ1xay4z"
+            },
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "PT_REL_PSP\n| where ID_PSP == $psp",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "refId": "A",
+            "resultFormat": "table"
+          }
+        ],
+        "title": "Dettaglio $psp",
+        "type": "table"
+      }
+    ],
+    "refresh": "",
+    "revision": 1,
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "definition": "INTERMEDIARI_PSP\n| extend variable = strcat(ID_INTERMEDIARIO_PSP,\"|(\",ID_INTERMEDIARIO_PSP,\") \",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PSP, \" : \", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
+          "hide": 0,
+          "includeAll": true,
+          "multi": false,
+          "name": "Intermediario",
+          "options": [],
+          "query": {
+            "database": "re",
+            "expression": {
+              "columns": {
+                "columns": [
+                  "ID_INTERMEDIARIO_PSP",
+                  "INTERMEDIARIO_DESCR",
+                  "ENABLED"
+                ],
+                "type": "property"
+              },
+              "from": {
+                "property": {
+                  "name": "INTERMEDIARI_PSP",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [
+                  {
+                    "expressions": [],
+                    "type": "or"
+                  }
+                ],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "INTERMEDIARI_PSP\n| extend variable = strcat(ID_INTERMEDIARIO_PSP,\"|(\",ID_INTERMEDIARIO_PSP,\") \",INTERMEDIARIO_DESCR)\n| extend v = strcat(ID_INTERMEDIARIO_PSP, \" : \", INTERMEDIARIO_DESCR)\n| sort by INTERMEDIARIO_DESCR asc\n| project variable",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "resultFormat": "table"
+          },
+          "refresh": 1,
+          "regex": "/(?<value>.*)\\|(?<text>.*)/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "definition": "PT_REL_PSP\n| where ID_INTERMEDIARIO == $Intermediario\n| extend v = strcat(CANALE, \"|\", CANALE)\n| sort by CANALE asc\n| project v",
+          "error": {},
+          "hide": 0,
+          "includeAll": true,
+          "multi": true,
+          "name": "Canale",
+          "options": [],
+          "query": {
+            "database": "re",
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "PT_REL_PSP\n| where ID_INTERMEDIARIO == $Intermediario\n| extend v = strcat(CANALE, \"|\", CANALE)\n| sort by CANALE asc\n| project v",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "resultFormat": "table"
+          },
+          "refresh": 1,
+          "regex": "/(?<value>.*)\\|(?<text>.*)/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": {
+            "type": "grafana-azure-data-explorer-datasource",
+            "uid": "2mZ1xay4z"
+          },
+          "definition": "PSP\n| where ENABLED == \"Y\"\n| extend l = strcat(ID_PSP,\"|\", \"(\", ID_PSP,\") \", RAGIONE_SOCIALE)\n| project l",
+          "hide": 0,
+          "includeAll": true,
+          "label": "PSP",
+          "multi": false,
+          "name": "psp",
+          "options": [],
+          "query": {
+            "database": "re",
+            "expression": {
+              "from": {
+                "property": {
+                  "name": "ReEvent",
+                  "type": "string"
+                },
+                "type": "property"
+              },
+              "groupBy": {
+                "expressions": [],
+                "type": "and"
+              },
+              "reduce": {
+                "expressions": [],
+                "type": "and"
+              },
+              "where": {
+                "expressions": [],
+                "type": "and"
+              }
+            },
+            "pluginVersion": "4.3.0",
+            "query": "PSP\n| where ENABLED == \"Y\"\n| extend l = strcat(ID_PSP,\"|\", \"(\", ID_PSP,\") \", RAGIONE_SOCIALE)\n| project l",
+            "querySource": "raw",
+            "queryType": "KQL",
+            "rawMode": true,
+            "resultFormat": "table"
+          },
+          "refresh": 1,
+          "regex": "/(?<value>.*)\\|(?<text>.*)/",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "[CONFIG] - PSP Associazioni Canali",
+    "uid": "rkcXOdP4k",
+    "version": 7,
+    "weekStart": ""
+  }

@@ -1,7 +1,7 @@
 resource "azurerm_dns_zone" "payment_wallet_public" {
   name                = "${var.dns_zone_prefix}.${var.external_domain}"
   resource_group_name = local.vnet_core_resource_group_name
-  tags                = var.tags
+  tags                = module.tag_config.tags
 }
 
 //Prod ONLY record to DEV public DNS delegation
@@ -17,7 +17,7 @@ resource "azurerm_dns_ns_record" "dev_payment_wallet" {
     "ns4-06.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 //Prod ONLY record to UAT public DNS delegation
@@ -33,7 +33,7 @@ resource "azurerm_dns_ns_record" "uat_payment_wallet" {
     "ns4-35.azure-dns.info."
   ]
   ttl  = var.dns_default_ttl_sec
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_dns_caa_record" "payment_wallet_pagopa_it" {
@@ -54,5 +54,5 @@ resource "azurerm_dns_caa_record" "payment_wallet_pagopa_it" {
     value = "mailto:security+caa@pagopa.it"
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

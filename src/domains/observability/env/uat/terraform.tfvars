@@ -8,13 +8,6 @@ location_itn       = "italynorth" # itn
 location_short_itn = "itn"        # itn
 instance           = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/observability"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 
@@ -70,7 +63,7 @@ ehns_sku_name = "Standard"
 # to avoid https://docs.microsoft.com/it-it/azure/event-hubs/event-hubs-messaging-exceptions#error-code-50002
 ehns_auto_inflate_enabled     = true
 ehns_maximum_throughput_units = 5
-ehns_capacity                 = 1
+ehns_capacity                 = 3
 ehns_alerts_enabled           = false
 ehns_zone_redundant           = false
 
@@ -344,7 +337,7 @@ eventhubs_gpd = [
   },
 ]
 
-
+app_forwarder_ip_restriction_default_action = "Allow"
 #  alert evh
 ehns_metric_alerts_gpd = {
   no_trx = {

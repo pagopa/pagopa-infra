@@ -2,7 +2,7 @@ resource "azurerm_resource_group" "cosmosdb_pay_wallet_rg" {
   name     = format("${local.project}-cosmosdb-rg", )
   location = var.location
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 module "cosmosdb_account_mongodb" {
@@ -38,7 +38,7 @@ module "cosmosdb_account_mongodb" {
 
   enable_provisioned_throughput_exceeded_alert = var.cosmos_mongo_db_params.enable_provisioned_throughput_exceeded_alert
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }
 
 resource "azurerm_cosmosdb_mongo_database" "pay_wallet" {
@@ -210,5 +210,5 @@ resource "azurerm_monitor_metric_alert" "cosmos_db_normalized_ru_exceeded" {
     action_group_id = azurerm_monitor_action_group.payment_wallet_opsgenie[0].id
   }
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

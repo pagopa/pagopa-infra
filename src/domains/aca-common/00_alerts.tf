@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "rg_aca_alerts" {
   count    = var.env_short == "p" ? 1 : 0
   name     = "${local.project}-alerts-rg"
   location = var.location
-  tags     = var.tags
+  tags     = module.tag_config.tags
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "debt_positions_for_aca_availability_v1" {

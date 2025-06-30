@@ -1,6 +1,9 @@
 <policies>
     <inbound>
       <base />
+      <set-header name="x-api-key" exists-action="override">
+        <value>{{ecommerce-payment-requests-api-key-value}}</value>
+      </set-header>
       <set-backend-service base-url="https://${hostname}/pagopa-ecommerce-payment-requests-service" />
     </inbound>
     <outbound>

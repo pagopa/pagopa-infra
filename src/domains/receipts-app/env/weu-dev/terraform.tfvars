@@ -7,13 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/receipts"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 

@@ -125,7 +125,7 @@ data "azurerm_monitor_workspace" "workspace" {
 }
 
 module "prometheus_managed_addon" {
-  source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.83.1"
+  source                 = "git::https://github.com/pagopa/terraform-azurerm-v3.git//kubernetes_prometheus_managed?ref=v8.97.0"
   cluster_name           = module.aks.name
   resource_group_name    = module.aks.aks_resource_group_name
   location               = var.location
@@ -148,5 +148,5 @@ module "prometheus_managed_addon" {
     ] : [])
   ])
 
-  tags = var.tags
+  tags = module.tag_config.tags
 }

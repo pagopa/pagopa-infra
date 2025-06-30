@@ -7,13 +7,6 @@ location_short  = "weu"
 location_string = "West Europe"
 instance        = "prod"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Prod"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/nodo-app"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 

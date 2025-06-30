@@ -7,13 +7,6 @@ location_short  = "itn"
 location_string = "Italy North"
 instance        = "uat"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Uat"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/ebollo-app"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 

@@ -29,7 +29,7 @@ module "monitoring_function" {
 
   private_endpoint_subnet_id = var.use_private_endpoint ? data.azurerm_subnet.private_endpoint_subnet[0].id : null
 
-  tags = var.tags
+  tags = module.tag_config.tags
 
   self_alert_configuration = {
     enabled = var.self_alert_enabled
@@ -46,7 +46,12 @@ module "monitoring_function" {
     alert_enabled                            = var.synthetic_alerts_enabled
     verify_payment_internal_expected_outcome = var.verify_payment_internal_expected_outcome
     nexi_node_ip                             = var.nexi_node_ip
+    nexi_node_ip_postgres                    = var.nexi_node_ip_postgres
     fdr_enabled                              = var.env == "prod" ? false : true
     nexi_ndp_host                            = var.nexi_ndp_host
+    nexi_ndp_host_postgres                   = var.nexi_ndp_host_postgres
+    developers_action_group_ids              = jsonencode((can(data.azurerm_monitor_action_group.opsgenie[0]) ? [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id] : [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]))
+    nexi_postgres_enabled                    = var.env == "prod" ? true : false
+
   })
 }

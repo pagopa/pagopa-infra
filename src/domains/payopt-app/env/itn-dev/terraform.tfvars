@@ -7,13 +7,6 @@ location_short  = "itn"
 location_string = "Italy North"
 instance        = "dev"
 
-tags = {
-  CreatedBy   = "Terraform"
-  Environment = "Dev"
-  Owner       = "pagoPA"
-  Source      = "https://github.com/pagopa/pagopa-infra/tree/main/src/domains/paymentoptions-app"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
-}
 
 ### External resources
 

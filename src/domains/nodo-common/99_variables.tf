@@ -55,12 +55,6 @@ variable "instance" {
   description = "One of beta, prod01, prod02"
 }
 
-variable "tags" {
-  type = map(any)
-  default = {
-    CreatedBy = "Terraform"
-  }
-}
 
 ### External resources
 
@@ -582,6 +576,21 @@ variable "wisp_converter_storage_account" {
     public_network_access_enabled = bool
     backup_enabled                = bool
     backup_retention_days         = number
+  })
+}
+
+variable "mbd_storage_account" {
+  type = object({
+    account_kind                  = string
+    account_tier                  = string
+    account_replication_type      = string
+    advanced_threat_protection    = bool
+    blob_delete_retention_days    = number
+    blob_versioning_enabled       = bool
+    public_network_access_enabled = bool
+    backup_enabled                = bool
+    backup_retention_days         = number
+    use_legacy_defender_version   = bool
   })
 }
 
