@@ -123,9 +123,6 @@
           }
       </set-body>
       <set-backend-service base-url="https://${hostname}/pagopa-wallet-service" />
-      <set-header name="x-api-key" exists-action="override">
-        <value>{{payment-wallet-service-rest-api-key}}</value>
-      </set-header>
     </inbound>
     <backend>
       <retry condition="@(context.Response.StatusCode >= 500)"
