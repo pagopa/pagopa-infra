@@ -190,6 +190,11 @@ variable "ecommerce_notification_service_api_key_use_primary" {
   default     = true
 }
 
+variable "ecommerce_user_stats_service_api_key_use_primary" {
+  type        = bool
+  description = "Whenever to use primary or secondary key invoking user-stats-service"
+  default     = true
+}
 variable "ecommerce_jwt_issuer_api_key_use_primary" {
   type        = bool
   description = "If true the current active API key used for jwt issuer service will be the primary one."
