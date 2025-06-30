@@ -1,7 +1,3 @@
-locals {
-  app_name = "gpd-rtp"
-}
-
 resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-json" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
@@ -22,7 +18,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-json" {
       | where customDimensions.type == "JSON_NOT_PROCESSABLE"
       | order by timestamp desc
   QUERY
-    , local.app_name
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
@@ -53,7 +48,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-generic" {
       | where customDimensions.type == "INTERNAL_SERVER_ERROR"
       | order by timestamp desc
   QUERY
-    , local.app_name
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
@@ -84,7 +78,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-rtp-messag
       | where customDimensions.type == "RTP_MESSAGE_NOT_SENT"
       | order by timestamp desc
   QUERY
-    , local.app_name
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
@@ -115,7 +108,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-redis-cach
       | where customDimensions.type == "REDIS_CACHE_NOT_UPDATED"
       | order by timestamp desc
   QUERY
-    , local.app_name
   )
   severity    = 2 // Sev 2	Warning
   frequency   = 15
@@ -141,12 +133,11 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-message-se
   description    = "gpd-rtp message sent to dead letter"
   enabled        = true
   query = format(<<-QUERY
-     customEvents
-      | where name == "RTP_ALERT"
-      | where customDimensions.type == "DEAD_LETTER"
-      | order by timestamp desc
+  customEvents
+    | where name == "RTP_ALERT"
+    | where customDimensions.type == "DEAD_LETTER"
+    | order by timestamp desc
   QUERY
-    , local.app_name
   )
   severity    = 1
   frequency   = 15
@@ -156,3 +147,4 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-message-se
     threshold = 1
   }
 }
+
