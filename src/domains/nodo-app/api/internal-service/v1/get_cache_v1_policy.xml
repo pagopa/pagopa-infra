@@ -1,0 +1,24 @@
+<policies>
+    <inbound>
+        <base />
+        <set-variable name="key" value="@(context.Request.MatchedParameters["key"])" />
+        <!-- cached for 7 days -->
+        <cache-lookup-value key="@((string)context.Variables["key"])" default-value="not-set" variable-name="cached_value" />
+        <return-response>
+            <set-status code="200" reason="OK" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>@((string)context.Variables["cached_value"])</set-body>
+        </return-response>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>
