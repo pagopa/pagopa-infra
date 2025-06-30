@@ -190,6 +190,12 @@ variable "ecommerce_payment_methods_api_key_use_primary" {
   default     = true
 }
 
+
+variable "ecommerce_transactions_service_api_key_use_primary" {
+  type        = bool
+  description = "Whenever to use primary or secondary key invoking transactions-service"
+  default     = true
+}
 variable "ecommerce_notification_service_api_key_use_primary" {
   type        = bool
   description = "If true the current active API key used for notification service will be the primary one."
