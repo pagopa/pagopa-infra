@@ -1,15 +1,11 @@
 <policies>
   <inbound>
     <set-variable name="requestPath" value="@(context.Request.Url.Path)" />
+    <set-variable name="debtpositionsRequestPath" value="@("/pagopa-gpd-core/organizations/" + (string)context.Request.MatchedParameters["organizationfiscalcode"] + "/debtpositions")" />
     <choose>
-      <when condition="@(context.Request.MatchedParameters.ContainsKey("organizationfiscalcode"))">
-        <set-variable name="debtpositionsRequestPath" value="@("/pagopa-gpd-core/organizations/" + (string)context.Request.MatchedParameters["organizationfiscalcode"] + "/debtpositions")" />
-        <choose>
-          <when condition="@(((string)context.Variables["requestPath"]).Equals((string)context.Variables["debtpositionsRequestPath"]) && ((string)context.Request.Method).Equals(" POST"))">
+        <when condition="@(((string)context.Variables["requestPath"]).Equals((string)context.Variables["debtpositionsRequestPath"]) && ((string)context.Request.Method).Equals("POST"))">
             <rewrite-uri template="@("/organizations/" + (string)context.Request.MatchedParameters["organizationfiscalcode"] + "/debtpositions/bulk")" copy-unmatched-params="true" />
-          </when>
-        </choose>
-      </when>
+        </when>
     </choose>
   </inbound>
   <outbound>
