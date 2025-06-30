@@ -1,21 +1,21 @@
-resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-json" {
+resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-opt-in-refresh-error" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-gpd-rtp-error-json"
+  name                = "pagopa-${var.env_short}-gpd-rtp-opt-in-refresh-error"
   location            = var.location
 
   action {
     action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
-    email_subject          = "gpd-rtp-error-json"
+    email_subject          = "gpd-rtp-opt-in-refresh-error"
     custom_webhook_payload = "{}"
   }
   data_source_id = data.azurerm_application_insights.application_insights.id
-  description    = "gpd-rtp error JSON_NOT_PROCESSABLE"
+  description    = "gpd-rtp error OPT_INT_REFRESH_ERROR"
   enabled        = true
   query = format(<<-QUERY
      customEvents
       | where name == "RTP_ALERT"
-      | where customDimensions.type == "JSON_NOT_PROCESSABLE"
+      | where customDimensions.type == "OPT_INT_REFRESH_ERROR"
       | order by timestamp desc
   QUERY
   )
