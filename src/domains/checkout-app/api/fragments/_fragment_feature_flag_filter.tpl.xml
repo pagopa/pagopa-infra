@@ -17,13 +17,21 @@
             }
             return false;
         }
+        bool isPageEnabled(string pageEnabled){
+            if (pageEnabled == "true"){
+                return true;
+            };
+            else{
+                return false
+            };
+        }
 
         var featureFlagsStatusMap = JsonConvert.DeserializeObject<IDictionary<string, string>>(context.Variables.GetValueOrDefault("featureFlagsStatusMap", "{}"));
 
         var response = new {
             isAuthenticationEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enableAuthIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
             isPspPickerPageEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enablePspPickerPageIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
-            isMaintenancePageEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enableMaintenancePageIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
+            isMaintenancePageEnabled = isPageEnabled(featureFlagsStatusMap.GetValueOrDefault("enableMaintenancePage", ""))
         };
 
         return JsonConvert.SerializeObject(response);
