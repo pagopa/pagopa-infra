@@ -227,4 +227,3 @@ resource "azurerm_api_management_named_value" "ecommerce_payment_requests_api_ke
   value               = var.ecommerce_payment_requests_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_payment_requests_primary_api_for_io_key.value : data.azurerm_key_vault_secret.ecommerce_payment_requests_secondary_api_for_io_key.value
   secret              = true
 }
-
