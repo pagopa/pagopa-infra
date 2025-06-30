@@ -799,6 +799,26 @@ resource "azurerm_api_management_named_value" "ecommerce_payment_methods_api_key
 }
 
 
+data "azurerm_key_vault_secret" "ecommerce_transactions_service_primary_api_key" {
+  name         = "ecommerce-transactions-service-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "ecommerce_transactions_service_secondary_api_key" {
+  name         = "ecommerce-transactions-service-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+resource "azurerm_api_management_named_value" "ecommerce_transactions_service_api_key_value" {
+  name                = "ecommerce-transactions-service-api-key-value"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+  display_name        = "ecommerce-transactions-service-api-key-value"
+  value               = var.ecommerce_transactions_service_api_key_use_primary ? data.azurerm_key_vault_secret.ecommerce_transactions_service_primary_api_key.value : data.azurerm_key_vault_secret.ecommerce_transactions_service_secondary_api_key.value
+  secret              = true
+}
+
+
 data "azurerm_key_vault_secret" "pagopa_ecommerce_helpdesk_service_rest_api_primary_key" {
   name         = "ecommerce-helpdesk-service-primary-api-key"
   key_vault_id = data.azurerm_key_vault.kv.id
