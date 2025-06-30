@@ -37,10 +37,10 @@ resource "azurerm_api_management_product_group" "access_control_developers_for_c
 ##  -> INTERNAL              ##
 ###############################
 locals {
-  apim_apim_cache = file("./api/internal-service/v1/apim_cache_base_policy.xml")
-  getCache_v1_policy = file("./api/internal-service/v1/get_cache_v1_policy.xml")
+  apim_apim_cache       = file("./api/internal-service/v1/apim_cache_base_policy.xml")
+  getCache_v1_policy    = file("./api/internal-service/v1/get_cache_v1_policy.xml")
   deleteCache_v1_policy = file("./api/internal-service/v1/delete_cache_v1_policy.xml")
-  setCache_v1_policy = file("./api/internal-service/v1/set_cache_v1_policy.xml")
+  setCache_v1_policy    = file("./api/internal-service/v1/set_cache_v1_policy.xml")
 }
 
 resource "azurerm_api_management_api_version_set" "apim_cache_v1" {
@@ -76,7 +76,7 @@ module "apim_cache_v1" {
   protocols    = ["https"]
 
   content_format = "openapi"
-  content_value = file("./api/internal-service/v1/apim_cache_openapi.json")
+  content_value  = file("./api/internal-service/v1/apim_cache_openapi.json")
 
   xml_content = local.apim_apim_cache
 
