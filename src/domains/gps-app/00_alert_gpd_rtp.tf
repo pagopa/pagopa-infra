@@ -15,7 +15,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-opt-in-refresh-e
   query = format(<<-QUERY
      customEvents
       | where name == "RTP_ALERT"
-      | where customDimensions.type == "OPT_INT_REFRESH_ERROR"
+      | where customDimensions.type == "OPT_IN_REFRESH_ERROR"
       | order by timestamp desc
   QUERY
   )
