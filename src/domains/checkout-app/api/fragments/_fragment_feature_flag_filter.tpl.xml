@@ -22,7 +22,8 @@
 
         var response = new {
             isAuthenticationEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enableAuthIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
-            isPspPickerPageEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enablePspPickerPageIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
+            isPspPickerPageEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enablePspPickerPageIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", "")),
+            isMaintenancePageEnabled = IsIpAllowed(featureFlagsStatusMap.GetValueOrDefault("enableMaintenancePageIpWhiteList", ""), context.Variables.GetValueOrDefault("requestIpAddress", ""))
         };
 
         return JsonConvert.SerializeObject(response);
