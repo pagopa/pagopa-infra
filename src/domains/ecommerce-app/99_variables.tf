@@ -208,6 +208,12 @@ variable "ecommerce_notification_service_api_key_use_primary" {
   default     = true
 }
 
+variable "ecommerce_helpdesk_command_service_api_key_use_primary" {
+  type        = bool
+  description = "Whenever to use primary or secondary key invoking helpdesk-command-service"
+  default     = true
+}
+
 variable "ecommerce_user_stats_service_api_key_use_primary" {
   type        = bool
   description = "Whenever to use primary or secondary key invoking user-stats-service"
