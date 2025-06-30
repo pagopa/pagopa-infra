@@ -780,13 +780,6 @@ resource "azurerm_api_management_named_value" "ecommerce_user_stats_service_api_
   secret              = true
 }
 
-
-data "azurerm_key_vault_secret" "ecommerce_transactions_service_primary_api_key" {
-  name         = "ecommerce-transactions-service-primary-api-key"
-  key_vault_id = data.azurerm_key_vault.kv.id
-}
-
-
 data "azurerm_key_vault_secret" "ecommerce_transactions_service_primary_api_key" {
   name         = "ecommerce-transactions-service-primary-api-key"
   key_vault_id = data.azurerm_key_vault.kv.id
