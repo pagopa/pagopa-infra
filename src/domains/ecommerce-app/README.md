@@ -136,8 +136,6 @@
 | [azurerm_api_management_named_value.ecommerce_io_transaction_jwt_signing_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.ecommerce_notification_service_api_key_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.ecommerce_payment_requests_api_key_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
-| [azurerm_api_management_named_value.ecommerce_payment_requests_api_key_value_for_checkout](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
-| [azurerm_api_management_named_value.ecommerce_payment_requests_api_key_value_for_io](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.ecommerce_user_stats_service_api_key_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.npg_notification_jwt_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_product_api.apim_ecommerce_gec_mock_product_api_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_product_api) | resource |
