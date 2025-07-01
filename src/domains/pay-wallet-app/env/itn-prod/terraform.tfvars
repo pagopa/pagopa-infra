@@ -61,3 +61,5 @@ pod_disruption_budgets = {
     }
   },
 }
+
+payment_wallet_service_api_key_use_primary = true
