@@ -626,6 +626,25 @@ resource "azurerm_key_vault_secret" "ehub_rtp_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-integration-test" {
+  count = var.env_short != "p" ? 1 : 0
+
+  name                = "rtp-events-integration-test-rx"
+  namespace_name      = "${local.project_itn}-rtp-integration-evh"
+  eventhub_name       = "rtp-events"
+  resource_group_name = azurerm_resource_group.rtp_rg.name
+}
+
+resource "azurerm_key_vault_secret" "ehub_rtp_connection_string" {
+  count = var.env_short != "p" ? 1 : 0
+
+  name         = format("ehub-%s-rtp-integration-test-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-rtp-integration-test.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_redis_cache" "redis_cache" {
   name                = var.redis_ha_enabled ? format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short) : format("%s-%s-redis", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)

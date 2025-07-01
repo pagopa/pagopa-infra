@@ -152,6 +152,12 @@ eventhubs_rtp = [
         listen = true
         send   = false
         manage = false
+      },
+      {
+        name   = "rtp-events-integration-test-rx"
+        listen = true
+        send   = false
+        manage = false
       }
     ]
   }
