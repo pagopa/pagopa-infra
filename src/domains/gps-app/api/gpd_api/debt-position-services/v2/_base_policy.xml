@@ -11,15 +11,11 @@
     <!-- Calling Authorizer's fragment -->
     <set-variable name="application_domain" value="gpd" />
     <set-variable name="metadata" value="no-metadata" />
+    <set-variable name="debtpositionsRequestPath" value="@("/pagopa-gpd-core/organizations/" + (string)context.Request.MatchedParameters["organizationfiscalcode"] + "/debtpositions")" />
     <choose>
-      <when condition="@(context.Request.MatchedParameters.ContainsKey("organizationfiscalcode"))">
-      <set-variable name="debtpositionsRequestPath" value="@("/pagopa-gpd-core/organizations/" + (string)context.Request.MatchedParameters["organizationfiscalcode"] + "/debtpositions")" />
-      <choose>
         <when condition="@(((string)context.Variables["requestPath"]).Equals((string)context.Variables["debtpositionsRequestPath"]) && ((string)context.Request.Method).Equals("POST"))">
-          <rewrite-uri template="@("/organizations/" + (string)context.Request.MatchedParameters["organizationfiscalcode"] + "/debtpositions/bulk")" copy-unmatched-params="true" />
+            <rewrite-uri template="@("/organizations/" + (string)context.Request.MatchedParameters["organizationfiscalcode"] + "/debtpositions/bulk")" copy-unmatched-params="true" />
         </when>
-      </choose>
-      </when>
     </choose>
     <choose>
       <!-- Making sure that will excludes all APIs that does not includes CI fiscal code -->
