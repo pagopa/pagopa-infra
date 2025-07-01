@@ -1,5 +1,5 @@
-locals{
-    app_name = "gpd-rtp"
+locals {
+  app_name = "gpd-rtp"
 }
 
 resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-json" {
@@ -133,7 +133,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "gpd-rtp-error-message-se
   location            = var.location
 
   action {
-    action_group = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
+    action_group           = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id, data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]
     email_subject          = "gpd-rtp-error-message-sent-to-dead-letter"
     custom_webhook_payload = "{}"
   }
