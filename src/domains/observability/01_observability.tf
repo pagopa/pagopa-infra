@@ -178,3 +178,59 @@ resource "azurerm_role_assignment" "fdr_qi_fdr_iuvs_data_evh_data_receiver_role"
 #   continue_on_errors_enabled         = true
 #   force_an_update_when_value_changed = "v6" # change this version to re-execute the script
 # }
+
+
+data "azuread_group" "adgroup_developers" {
+  display_name = "${local.product}-adgroup-developers"
+}
+data "azuread_group" "adgroup_externals" {
+  display_name = "${local.product}-adgroup-externals"
+}
+data "azuread_group" "adgroup_operations" {
+  display_name = "${local.product}-adgroup-operations"
+}
+data "azuread_group" "adgroup_technical_project_managers" {
+  display_name = "${local.product}-adgroup-technical-project-managers"
+}
+
+locals {
+  # How to share an Azure Managed Grafana instance
+  # https://learn.microsoft.com/en-us/azure/managed-grafana/how-to-share-grafana-workspace#assign-an-admin-viewer-or-editor-role-to-a-user
+
+  grafana_admins = [
+    data.azuread_group.adgroup_developers.id,
+  ]
+
+  grafana_editors = [
+    data.azuread_group.adgroup_technical_project_managers.id,
+  ]
+
+  grafana_viewers = [
+    data.azuread_group.adgroup_operations.id,
+    data.azuread_group.adgroup_externals.id,
+  ]
+}
+
+
+locals {
+  dataexp_contributor_groups = [
+    data.azuread_group.adgroup_technical_project_managers.id,
+    data.azuread_group.adgroup_operations.id,
+    data.azuread_group.adgroup_externals.id,
+  ]
+
+}
+resource "azurerm_role_assignment" "adgroup_dataexp_reader" {
+  for_each = toset(local.dataexp_contributor_groups)
+
+  scope                = azurerm_kusto_cluster.data_explorer_cluster[0].id
+  role_definition_name = "Reader"
+  principal_id         = each.key
+}
+# resource "azurerm_role_assignment" "adgroup_dataexp_contributor" {
+#   for_each = toset(local.dataexp_contributor_groups)
+
+#   scope                = azurerm_kusto_cluster.data_explorer_cluster.id
+#   role_definition_name = "Contributor"
+#   principal_id         = each.key
+# }
