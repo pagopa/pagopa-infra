@@ -178,6 +178,24 @@ locals {
       },
       analytical_storage_ttl = null,
       partition_key_version  = null # 1,2
+    },
+    {
+      name               = "paymentmethods",
+      partition_key_path = "/group",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
+      analytical_storage_ttl = null,
+      partition_key_version  = null # 1,2
+    },
+        {
+      name               = "privacypsp",
+      partition_key_path = "/idPsp",
+      autoscale_settings = {
+        max_throughput = 1000
+      },
+      analytical_storage_ttl = null,
+      partition_key_version  = null # 1,2
     }
   ]
 }
