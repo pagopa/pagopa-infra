@@ -1028,6 +1028,12 @@ resource "azurerm_key_vault_secret" "ecommerce_jwt_issuer_service_secondary_api_
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "ecommerce_jwt_issuer_service_active_api_key" {
+  name         = "ecommerce-jwt-issuer-service-active-api-key"
+  value        = var.ecommerce_jwt_issuer_api_key_use_primary ? azurerm_key_vault_secret.ecommerce_jwt_issuer_service_primary_api_key.value : azurerm_key_vault_secret.ecommerce_jwt_issuer_service_secondary_api_key.value
+  key_vault_id = module.key_vault.id
+}
+
 resource "random_password" "ecommerce_helpdesk_command_service_primary_api_key_pass" {
   length  = 32
   special = false
