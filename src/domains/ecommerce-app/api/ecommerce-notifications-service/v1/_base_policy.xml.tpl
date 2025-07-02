@@ -1,6 +1,10 @@
 <policies>
     <inbound>
       <base />
+      <!-- Set notifications-service API Key header -->
+      <set-header name="x-api-key" exists-action="override">
+        <value>{{ecommerce-notification-service-api-key-value}}</value>
+      </set-header>
       <!-- Handle X-Client-Id - multi channel - START -->
       <set-header name="X-Client-Id" exists-action="delete" />
       <choose>

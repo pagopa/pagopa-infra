@@ -622,16 +622,17 @@ resource "azurerm_key_vault_secret" "gpd_ingestion_apd_payment_option_transfer_t
   key_vault_id = module.key_vault.id
 }
 
-data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-tx" {
+
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-integration-tx" {
   name                = "rtp-events-tx"
-  namespace_name      = "${local.project_itn}-rtp-evh"
+  namespace_name      = "${local.project_itn}-rtp-integration-evh"
   eventhub_name       = "rtp-events"
   resource_group_name = azurerm_resource_group.rtp_rg.name
 }
 
 resource "azurerm_key_vault_secret" "ehub_rtp_connection_string" {
   name         = format("ehub-%s-tx-rtp-connection-string", var.env_short)
-  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-rtp-tx.primary_connection_string
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-rtp-integration-tx.primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id

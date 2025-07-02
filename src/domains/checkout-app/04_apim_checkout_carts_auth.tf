@@ -65,17 +65,3 @@ module "apim_checkout_carts_auth_v1" {
     ecommerce_ingress_hostname = var.ecommerce_ingress_hostname,
   })
 }
-
-data "azurerm_key_vault_secret" "ecommerce_payment_requests_active_api_for_checkout_carts_auth_key" {
-  name         = "ecommerce-payment-requests-active-api-key"
-  key_vault_id = data.azurerm_key_vault.key_vault_checkout.id
-}
-
-resource "azurerm_api_management_named_value" "ecommerce_payment_requests_api_key_value_for_checkout_carts_auth" {
-  name                = "ecommerce-payment-requests-api-key-for-checkout-carts-auth-value"
-  api_management_name = data.azurerm_api_management.apim.name
-  resource_group_name = data.azurerm_resource_group.rg_api.name
-  display_name        = "ecommerce-payment-requests-api-key-for-checkout-carts-auth-value"
-  value               = data.azurerm_key_vault_secret.ecommerce_payment_requests_active_api_for_checkout_carts_auth_key.value
-  secret              = true
-}
