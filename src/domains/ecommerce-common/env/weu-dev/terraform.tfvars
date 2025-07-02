@@ -94,3 +94,5 @@ ecommerce_storage_transient_params = {
 }
 
 enable_iac_pipeline = true
+
+ecommerce_jwt_issuer_api_key_use_primary = true
