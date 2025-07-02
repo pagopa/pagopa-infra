@@ -194,25 +194,6 @@ data "azuread_group" "adgroup_technical_project_managers" {
 }
 
 locals {
-  # How to share an Azure Managed Grafana instance
-  # https://learn.microsoft.com/en-us/azure/managed-grafana/how-to-share-grafana-workspace#assign-an-admin-viewer-or-editor-role-to-a-user
-
-  grafana_admins = [
-    data.azuread_group.adgroup_developers.id,
-  ]
-
-  grafana_editors = [
-    data.azuread_group.adgroup_technical_project_managers.id,
-  ]
-
-  grafana_viewers = [
-    data.azuread_group.adgroup_operations.id,
-    data.azuread_group.adgroup_externals.id,
-  ]
-}
-
-
-locals {
   dataexp_contributor_groups = [
     data.azuread_group.adgroup_technical_project_managers.id,
     data.azuread_group.adgroup_operations.id,
@@ -221,17 +202,21 @@ locals {
 
 }
 
-resource "azurerm_role_assignment" "adx_cluster_viewer" {
-  for_each             = toset(local.dataexp_contributor_groups)
-  scope                = azurerm_kusto_cluster.data_explorer_cluster[0].id
-  role_definition_name = "Cluster AllDatabases Viewer"
-  principal_id         = each.key
-}
+# resource "azurerm_role_assignment" "adgroup_dataexp_contributor" {
+#   for_each = toset(local.dataexp_contributor_groups)
+
+#   scope                = azurerm_kusto_cluster.data_explorer_cluster[0].id
+#   role_definition_name = "Contributor"
+#   principal_id         = each.key
+# }
+
+# https://learn.microsoft.com/it-it/azure/data-explorer/manage-cluster-permissions
 
 # resource "azurerm_role_assignment" "adgroup_dataexp_contributor" {
 #   for_each = toset(local.dataexp_contributor_groups)
 
-#   scope                = azurerm_kusto_cluster.data_explorer_cluster.id
-#   role_definition_name = "Contributor"
+#   scope                = azurerm_kusto_cluster.data_explorer_cluster[0].id
+#   role_definition_name = "AllDatabasesViewer"
 #   principal_id         = each.key
 # }
+
