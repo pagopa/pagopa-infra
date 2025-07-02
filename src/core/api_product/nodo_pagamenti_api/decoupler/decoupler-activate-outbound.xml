@@ -27,6 +27,7 @@
                         }" duration="604800" caching-type="external" />
 				</when>
 			</choose>
+            <!--
             <trace source="decouplerDebug" severity="information">@{
                 var response = "";
                 var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
@@ -37,6 +38,7 @@
                 return response;
                     }
             </trace>
+            -->
 		</when>
 	</choose>
 	<choose>
