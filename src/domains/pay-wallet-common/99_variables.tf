@@ -236,3 +236,9 @@ variable "aks_user_node_pool" {
   })
   description = "AKS node pool user configuration"
 }
+
+variable "payment_wallet_service_api_key_use_primary" {
+  type        = bool
+  description = "If true the current active API key used for wallet service requests will be the primary one."
+  default     = true
+}
