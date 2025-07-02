@@ -525,7 +525,7 @@ resource "azurerm_key_vault_secret" "azure_web_jobs_storage_kv" {
 # #############################
 
 resource "azurerm_key_vault_secret" "config-cache-eh-connection-for-aca-payments" {
-  name         = "config-cache-event-hub-connection-string-for-aca-payments"
+  name         = "config-cache-event-hub-connection-string-for-aca-payments-rx"
   value        = data.azurerm_eventhub_authorization_rule.nodo_dei_pagamenti_cache_aca_rx.primary_connection_string
   content_type = "text/plain"
   key_vault_id = module.key_vault.id
@@ -715,7 +715,7 @@ resource "azurerm_key_vault_secret" "apiconfig_cache_subkey_store_kv" {
   depends_on = [
     azurerm_api_management_subscription.apiconfig_cache_subkey
   ]
-  name         = "gpd-${var.env_short}-config-cache-subscription-key"
+  name         = "gpd-${var.env_short}-config-cache-subkey"
   value        = azurerm_api_management_subscription.apiconfig_cache_subkey.primary_key
   content_type = "text/plain"
 
