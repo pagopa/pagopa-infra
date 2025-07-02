@@ -410,3 +410,61 @@ resource "azurerm_key_vault_certificate" "pay-wallet-jwt-token-issuer-certificat
     }
   }
 }
+
+resource "random_password" "pay_wallet_jwt_issuer_service_primary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "random_password" "pay_wallet_jwt_issuer_service_secondary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "azurerm_key_vault_secret" "pay_wallet_jwt_issuer_service_primary_api_key" {
+  name         = "pay-wallet-jwt-issuer-service-primary-api-key"
+  value        = random_password.pay_wallet_jwt_issuer_service_primary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "pay_wallet_jwt_issuer_service_secondary_api_key" {
+  name         = "pay-wallet-jwt-issuer-service-secondary-api-key"
+  value        = random_password.pay_wallet_jwt_issuer_service_secondary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "random_password" "payment_wallet_service_primary_api_key_pass" {
+  length  = 32
+  special = false
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "random_password" "payment_wallet_service_secondary_api_key_pass" {
+  length  = 32
+  special = false
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "azurerm_key_vault_secret" "payment_wallet_service_primary_api_key" {
+  name         = "payment-wallet-service-primary-api-key"
+  value        = random_password.payment_wallet_service_primary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "payment_wallet_service_secondary_api_key" {
+  name         = "payment-wallet-service-secondary-api-key"
+  value        = random_password.payment_wallet_service_secondary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
