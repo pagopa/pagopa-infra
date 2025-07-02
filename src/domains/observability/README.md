@@ -104,7 +104,7 @@
 | [azurerm_resource_group.eventhub_observability_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.gpd_ingestion_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.st_observability_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/resource_group) | resource |
-| [azurerm_role_assignment.adgroup_dataexp_reader](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.adx_cluster_viewer](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.fdr_qi_fdr_iuvs_data_evh_data_receiver_role](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.fdr_qi_flow_data_evh_data_receiver_role](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/role_assignment) | resource |
 | [azurerm_storage_container.blob-observability-st](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/storage_container) | resource |

@@ -220,13 +220,14 @@ locals {
   ]
 
 }
-resource "azurerm_role_assignment" "adgroup_dataexp_reader" {
-  for_each = toset(local.dataexp_contributor_groups)
 
+resource "azurerm_role_assignment" "adx_cluster_viewer" {
+  for_each             = toset(local.dataexp_contributor_groups)
   scope                = azurerm_kusto_cluster.data_explorer_cluster[0].id
-  role_definition_name = "Reader"
+  role_definition_name = "Cluster AllDatabases Viewer"
   principal_id         = each.key
 }
+
 # resource "azurerm_role_assignment" "adgroup_dataexp_contributor" {
 #   for_each = toset(local.dataexp_contributor_groups)
 
