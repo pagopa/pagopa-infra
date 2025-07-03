@@ -165,3 +165,9 @@ variable "pay_wallet_jwt_issuer_api_key_use_primary" {
   description = "If true the current active API key used for jwt issuer service will be the primary one."
   default     = true
 }
+
+variable "payment_wallet_service_api_key_use_primary" {
+  type        = bool
+  description = "If true the current active API key used for wallet service requests will be the primary one."
+  default     = true
+}
