@@ -236,3 +236,9 @@ variable "aks_user_node_pool" {
   })
   description = "AKS node pool user configuration"
 }
+
+variable "pay_wallet_jwt_issuer_api_key_use_primary" {
+  type        = bool
+  description = "If true the current active API key used for jwt issuer service will be the primary one."
+  default     = true
+}
