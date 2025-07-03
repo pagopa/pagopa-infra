@@ -113,7 +113,34 @@ new JProperty("ttl", 1)
                         var domain = (string)context.Variables["domain"];
                         var requestData = JObject.Parse((string)context.Variables["requestData"]);
                         return domain + "_" + (string)requestData["key"];
-                    }" variable-name="nodeId" default-value="LIST" caching-type="internal" />
+                    }" variable-name="nodeId_int" default-value="LIST" caching-type="internal" />
+			<cache-lookup-value key="@{
+                        var domain = (string)context.Variables["domain"];
+                        var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                        return domain + "_" + (string)requestData["key"];
+                    }" variable-name="nodeId_ext" default-value="LIST" caching-type="external" />
+			<set-variable name="nodeId" value="@{
+                var nodeIdInt = (string)context.Variables["nodeId_int"];
+                var nodeIdExt = (string)context.Variables["nodeId_ext"];
+                if (nodeIdExt == "LIST") {
+                    if (nodeIdInt != "LIST") {
+                        return nodeIdInt;
+                    }
+                }
+                return nodeIdExt;
+            }" />
+            <!--
+            <trace source="decouplerDebug" severity="information">@{
+                var domain = (string)context.Variables["domain"];
+                var requestData = JObject.Parse((string)context.Variables["requestData"]);
+                var key = domain + "_" + (string)requestData["key"];
+                var response = "decoupler lookup for token: " + key + "   ";
+                response += "decoupler lookup response: " + context.Variables.GetValueOrDefault<string>("nodeId", "key not cached");
+                response += " internal: " + (string)context.Variables["nodeId_int"] + " - external:" + (string)context.Variables["nodeId_ext"];
+				response += " ttl: " + requestData["ttl"];
+                return response;
+            }</trace>
+            -->
 			<choose>
 				<!-- if key not in cache -->
 				<when condition="@(context.Variables.GetValueOrDefault<string>("nodeId", "").Equals("LIST"))">
@@ -131,6 +158,7 @@ new JProperty("ttl", 1)
 							<cache-lookup-value key="@((string) context.Variables["wisp_fiscalcode_noticenumber"])" variable-name="belongs_to_wisp" default-value="NONE" caching-type="external" />
 							<choose>
 								<when condition="@(!context.Variables.GetValueOrDefault<string>("belongs_to_wisp", "NONE").Equals("NONE"))">
+									<!-- WISP -->
 									<cache-store-value key="@{
                                             var domain = (string) context.Variables["domain"];
                                             var requestData = JObject.Parse((string) context.Variables["requestData"]);
@@ -138,7 +166,7 @@ new JProperty("ttl", 1)
                                         }" value="@((string) context.Variables["baseNodeId"])" duration="@{
                                             var requestData = JObject.Parse((string) context.Variables["requestData"]);
                                             return (int) requestData["ttl"];
-                                        }" caching-type="internal" />
+                                        }" caching-type="external" />
 									<!-- dataToSet is used in decoupler-activate-outbound -->
 									<set-variable name="dataToSet" value="@{
 											var baseNodeId = context.Variables.GetValueOrDefault<string>("baseNodeId", "NONE");
@@ -211,6 +239,17 @@ new JProperty("nodeUri", baseUrl),
 new JProperty("ttl", requestData.GetValue("ttl"))
 ).ToString();
 }" />
+            <!--
+            <trace source="decouplerDebug" severity="information">@{
+              var response = "";
+              var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
+              response += "decoupler activate setNodeId: " + dataToSet.GetValue("nodeId").ToString() + "   ";
+              response += "url: " + dataToSet.GetValue("nodeUri").ToString() + "   ";
+			  response += "ttl: " + dataToSet.GetValue("ttl").ToString() + "   ";
+              return response;
+              }
+            </trace>
+            -->
 							<!-- set base url -->
 							<choose>
 								<!-- if enable_nm3_decoupler_switch == true -->
@@ -239,7 +278,7 @@ new JProperty("ttl", requestData.GetValue("ttl"))
                                 }" duration="@{
                                     var requestData = JObject.Parse((string)context.Variables["dataToSet"]);
                                     return (int)requestData["ttl"];
-                                }" caching-type="internal" />
+                                }" caching-type="external" />
 								</when>
 							</choose>
 						</when>

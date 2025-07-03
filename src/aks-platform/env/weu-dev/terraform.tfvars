@@ -17,7 +17,7 @@ log_analytics_workspace_resource_group_name = "pagopa-d-monitor-rg"
 ### Aks
 # https://pagopa.atlassian.net/wiki/spaces/DEVOPS/pages/482967553/AKS#sku-(dimensionamento)
 
-aks_sku_tier                   = "Free"
+aks_sku_tier                   = "Standard"
 aks_private_cluster_is_enabled = false
 aks_alerts_enabled             = false
 aks_enable_workload_identity   = true

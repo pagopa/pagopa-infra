@@ -205,9 +205,9 @@ integration_app_gateway_sku_name                    = "Standard_v2"
 integration_app_gateway_sku_tier                    = "Standard_v2"
 cidr_subnet_appgateway_integration                  = ["10.230.10.192/26"]
 integration_appgateway_private_ip                   = "10.230.10.200"
-integration_app_gateway_api_certificate_name        = "api-platform-pagopa-it"
-integration_app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
-integration_app_gateway_management_certificate_name = "management-platform-pagopa-it"
+integration_app_gateway_api_certificate_name        = "api-platform-pagopa-it-stable"
+integration_app_gateway_portal_certificate_name     = "portal-platform-pagopa-it-stable"
+integration_app_gateway_management_certificate_name = "management-platform-pagopa-it-stable"
 integration_appgateway_zones                        = [1, 2, 3]
 
 nodo_pagamenti_psp            = "97249640588,05425630968,06874351007,08301100015,02224410023,02224410023,06529501006,00194450219,02113530345,01369030935,07783020725,00304940980,03339200374,14070851002,06556440961"
@@ -767,11 +767,11 @@ integration_app_gateway_max_capacity  = 50
 
 # public app gateway
 # app_gateway
-app_gateway_api_certificate_name        = "api-platform-pagopa-it"
-app_gateway_upload_certificate_name     = "upload-platform-pagopa-it"
-app_gateway_portal_certificate_name     = "portal-platform-pagopa-it"
-app_gateway_management_certificate_name = "management-platform-pagopa-it"
-app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it"
+app_gateway_api_certificate_name        = "api-platform-pagopa-it-stable"
+app_gateway_upload_certificate_name     = "upload-platform-pagopa-it-stable"
+app_gateway_portal_certificate_name     = "portal-platform-pagopa-it-stable"
+app_gateway_management_certificate_name = "management-platform-pagopa-it-stable"
+app_gateway_wisp2_certificate_name      = "wisp2-pagopa-it-stable"
 app_gateway_wisp2govit_certificate_name = "wisp2-pagopa-gov-it"
 app_gateway_wfespgovit_certificate_name = "wfesp-pagopa-gov-it"
 app_gateway_min_capacity                = 8 # 5 capacity=baseline, 8 capacity=high volume event, 15 capacity=very high volume event
@@ -877,6 +877,13 @@ route_tools = [
     # dev aks nodo oncloud
     name                   = "tools-outbound-to-nexy-nodo"
     address_prefix         = "10.79.20.34/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # dev aks nodo oncloud postgres
+    name                   = "tools-outbound-to-nexy-nodo-postgres"
+    address_prefix         = "10.79.20.25/32"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.10.150"
   }

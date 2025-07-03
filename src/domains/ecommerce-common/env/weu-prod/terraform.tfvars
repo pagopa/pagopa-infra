@@ -96,3 +96,5 @@ ecommerce_storage_deadletter_params = {
 }
 
 enable_iac_pipeline = true
+
+ecommerce_jwt_issuer_api_key_use_primary = true

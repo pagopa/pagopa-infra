@@ -330,3 +330,4 @@ resource "azurerm_api_management_api_operation_policy" "get_payment_request_info
 
   xml_content = file("./api/ecommerce-checkout/v3/_payment_request_policy.xml.tpl")
 }
+

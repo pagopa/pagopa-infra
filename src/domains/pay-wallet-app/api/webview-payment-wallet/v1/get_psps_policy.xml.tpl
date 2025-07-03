@@ -12,6 +12,9 @@
             <set-header name="x-user-id" exists-action="override">
                 <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
             </set-header>
+            <set-header name="x-api-key" exists-action="override">
+              <value>{{payment-wallet-service-rest-api-key}}</value>
+            </set-header>
         </send-request>
 
         <choose>
@@ -54,6 +57,10 @@
             <set-method>GET</set-method>
             <set-header name="x-client-id" exists-action="override">
                 <value>IO</value>
+            </set-header>
+            <!-- Set payment-methods API Key header -->
+            <set-header name="x-api-key" exists-action="override">
+              <value>{{ecommerce-payment-methods-api-key-value}}</value>
             </set-header>
         </send-request>
 

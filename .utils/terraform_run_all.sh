@@ -18,7 +18,6 @@ array=(
     'src/aks-leonardo::itn-dev'
     'src/aks-platform::weu-dev'
     'src/core::dev'
-    'src/elk-monitoring::weu-dev'
     'src/grafana-monitoring::weu-dev'
     'src/next-aks::weu-dev'
     'src/next-core::dev'
