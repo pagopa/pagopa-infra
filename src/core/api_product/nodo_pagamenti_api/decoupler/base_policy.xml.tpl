@@ -142,7 +142,7 @@
 
 <!-- set backend service url -->
 <set-backend-service base-url="@((string)context.Variables["baseUrl"])" />
-<trace source="decouplerDebug" severity="information">@("decoupler final baseUrl: " + (string)context.Variables["baseUrl"])</trace>
+<!--<trace source="decouplerDebug" severity="information">@("decoupler final baseUrl: " + (string)context.Variables["baseUrl"])</trace>-->
 <include-fragment fragment-id="decoupler-activate-inbound" />
 </inbound>
 <backend>

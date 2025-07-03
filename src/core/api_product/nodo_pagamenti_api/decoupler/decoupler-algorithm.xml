@@ -129,6 +129,7 @@ new JProperty("ttl", 1)
                 }
                 return nodeIdExt;
             }" />
+            <!--
             <trace source="decouplerDebug" severity="information">@{
                 var domain = (string)context.Variables["domain"];
                 var requestData = JObject.Parse((string)context.Variables["requestData"]);
@@ -139,6 +140,7 @@ new JProperty("ttl", 1)
 				response += " ttl: " + requestData["ttl"];
                 return response;
             }</trace>
+            -->
 			<choose>
 				<!-- if key not in cache -->
 				<when condition="@(context.Variables.GetValueOrDefault<string>("nodeId", "").Equals("LIST"))">
@@ -237,6 +239,7 @@ new JProperty("nodeUri", baseUrl),
 new JProperty("ttl", requestData.GetValue("ttl"))
 ).ToString();
 }" />
+            <!--
             <trace source="decouplerDebug" severity="information">@{
               var response = "";
               var dataToSet = JObject.Parse((string)context.Variables["dataToSet"]);
@@ -246,6 +249,7 @@ new JProperty("ttl", requestData.GetValue("ttl"))
               return response;
               }
             </trace>
+            -->
 							<!-- set base url -->
 							<choose>
 								<!-- if enable_nm3_decoupler_switch == true -->
