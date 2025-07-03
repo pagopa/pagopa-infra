@@ -6,9 +6,9 @@ resource "azurerm_resource_group" "rtp_rg" {
 }
 
 
-module "eventhub_rtp_namespace" {
-  source                   = "git::https://github.com/pagopa/terraform-azurerm-v3.git//eventhub?ref=v8.93.1"
-  name                     = "${local.project_itn}-rtp-evh"
+module "eventhub_rtp_namespace_integration" {
+  source                   = "./.terraform/modules/__v3__/eventhub"
+  name                     = "${local.project_itn}-rtp-integration-evh"
   location                 = var.location_ita # <-- italy north
   resource_group_name      = azurerm_resource_group.rtp_rg.name
   auto_inflate_enabled     = var.eventhub_namespace_rtp.auto_inflate_enabled
@@ -17,9 +17,9 @@ module "eventhub_rtp_namespace" {
   maximum_throughput_units = var.eventhub_namespace_rtp.maximum_throughput_units
   #zone_redundat is always true
 
-  virtual_network_ids           = [data.azurerm_virtual_network.vnet_italy.id]
-  public_network_access_enabled = var.eventhub_namespace_rtp.public_network_access
-  private_endpoint_subnet_id    = data.azurerm_subnet.common_itn_private_endpoint_subnet.id
+  virtual_network_ids           = [data.azurerm_virtual_network.vnet_italy_cstar_integration.id]
+  public_network_access_enabled = false
+  private_endpoint_subnet_id    = data.azurerm_subnet.common_itn_cstar_integration_private_endpoint_subnet.id
   private_endpoint_created      = var.eventhub_namespace_rtp.private_endpoint_created
 
   private_endpoint_resource_group_name = azurerm_resource_group.rtp_rg.name
@@ -30,7 +30,7 @@ module "eventhub_rtp_namespace" {
     resource_group_name = data.azurerm_resource_group.rg_event_private_dns_zone.name
   }
 
-  private_dns_zone_record_A_name = "${var.domain}.${var.location_short_ita}.eventhub_rtp"
+  private_dns_zone_record_A_name = "${var.domain}.${var.location_short_ita}.integration.eventhub_rtp"
 
   eventhubs = var.eventhubs_rtp
 

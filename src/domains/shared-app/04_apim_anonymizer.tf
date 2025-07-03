@@ -3,7 +3,7 @@ locals {
     display_name          = "Anonymizer Product pagoPA"
     description           = "API to anonymize PII",
     path                  = "shared/anonymizer"
-    subscription_required = false
+    subscription_required = true
     service_url           = null
   }
 }

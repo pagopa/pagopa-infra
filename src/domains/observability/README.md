@@ -14,6 +14,7 @@
 ## Modules
 
 | Name | Source | Version |
+|------|--------|---------|
 | <a name="module___v3__"></a> [\_\_v3\_\_](#module\_\_\_v3\_\_) | git::https://github.com/pagopa/terraform-azurerm-v3 | 087a57940a67444c3b883030c54ceb78562c64ef |
 | <a name="module_apim_app_forwarder_api"></a> [apim\_app\_forwarder\_api](#module\_apim\_app\_forwarder\_api) | ./.terraform/modules/__v3__/api_management_api | n/a |
 | <a name="module_apim_app_forwarder_product"></a> [apim\_app\_forwarder\_product](#module\_apim\_app\_forwarder\_product) | ./.terraform/modules/__v3__/api_management_product | n/a |
@@ -108,6 +109,10 @@
 | [azurerm_storage_container.blob-observability-st](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/storage_container) | resource |
 | [azurerm_subnet.eventhub_observability_gpd_snet](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/subnet) | resource |
 | [azurerm_subnet.eventhub_observability_snet](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/subnet) | resource |
+| [azuread_group.adgroup_developers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_externals](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_operations](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
+| [azuread_group.adgroup_technical_project_managers](https://registry.terraform.io/providers/hashicorp/azuread/2.21.0/docs/data-sources/group) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/client_config) | data source |
 | [azurerm_container_registry.acr](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/container_registry) | data source |
 | [azurerm_cosmosdb_account.afm_cosmos_account](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/data-sources/cosmosdb_account) | data source |

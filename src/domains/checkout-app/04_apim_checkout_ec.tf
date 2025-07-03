@@ -65,3 +65,4 @@ module "apim_checkout_ec_api_v1" {
     ecommerce_ingress_hostname = var.ecommerce_ingress_hostname,
   })
 }
+

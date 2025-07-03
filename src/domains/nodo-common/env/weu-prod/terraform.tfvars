@@ -22,7 +22,7 @@ dns_zone_internal_prefix = "internal.platform"
 
 ## CIDR nodo per database pgsql
 cidr_subnet_flex_dbms         = ["10.1.160.0/24"]
-cidr_subnet_flex_storico_dbms = ["10.1.176.0/24"]
+cidr_subnet_flex_storico_dbms = ["10.1.176.0/28"]
 
 ## CIDR storage subnet
 cidr_subnet_storage_account = ["10.1.137.16/29"]
@@ -338,6 +338,19 @@ wisp_converter_storage_account = {
   public_network_access_enabled = false
   backup_enabled                = true
   backup_retention_days         = 30
+}
+
+mbd_storage_account = {
+  account_kind                  = "StorageV2"
+  account_tier                  = "Standard"
+  account_replication_type      = "GZRS"
+  blob_versioning_enabled       = true
+  advanced_threat_protection    = true
+  blob_delete_retention_days    = 90
+  public_network_access_enabled = false
+  backup_enabled                = true
+  backup_retention_days         = 60
+  use_legacy_defender_version   = false
 }
 
 redis_ha_enabled = true

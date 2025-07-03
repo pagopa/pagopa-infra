@@ -8,6 +8,10 @@
             <set-header name="X-Client-Id" exists-action="override">
                 <value>IO</value>
             </set-header>
+            <!-- Set payment-methods API Key header -->
+            <set-header name="x-api-key" exists-action="override">
+              <value>{{ecommerce-payment-methods-api-key-value}}</value>
+            </set-header>
         </send-request>
         <choose>
             <when condition="@(((int)((IResponse)context.Variables["paymentMethodsResponse"]).StatusCode) == 200)">
@@ -108,6 +112,17 @@
                     transfer.Remove("paFiscalCode");
                 }
             }
+            JArray paymentNotices = new JArray();
+            JObject paymentNotice = new JObject(
+                new JProperty("transferList", ((JArray)(inBody["transferList"]))),
+                new JProperty("paymentAmount", inBody["paymentAmount"]),
+                new JProperty("primaryCreditorInstitution", inBody["primaryCreditorInstitution"])
+            );
+            paymentNotices.Add(paymentNotice);
+            inBody.Add("paymentNotices",paymentNotices);
+            inBody.Remove("transferList");
+            inBody.Remove("paymentAmount");
+            inBody.Remove("primaryCreditorInstitution");
             return inBody.ToString();
         }</set-body>
     </inbound>
