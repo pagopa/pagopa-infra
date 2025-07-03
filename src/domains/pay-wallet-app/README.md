@@ -51,6 +51,7 @@
 | [azurerm_api_management_api_version_set.wallet_outcomes_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_api_version_set.wallet_webview_api](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_api_version_set) | resource |
 | [azurerm_api_management_group.payment-wallet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_group) | resource |
+| [azurerm_api_management_named_value.pay_wallet_jwt_issuer_api_key_value](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.pagopa_payment_wallet_service_rest_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.wallet-jwt-signing-key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
 | [azurerm_api_management_named_value.wallet_personal_data_vault_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/api_management_named_value) | resource |
@@ -71,6 +72,8 @@
 | [azurerm_application_insights.application_insights_italy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/application_insights) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault) | data source |
+| [azurerm_key_vault_secret.pay_wallet_jwt_issuer_service_primary_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
+| [azurerm_key_vault_secret.pay_wallet_jwt_issuer_service_secondary_api_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.pagopa_payment_wallet_service_rest_api_primary_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.pagopa_payment_wallet_service_rest_api_secondary_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
 | [azurerm_key_vault_secret.personal_data_vault_api_key_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/key_vault_secret) | data source |
@@ -105,6 +108,7 @@
 | <a name="input_log_analytics_italy_workspace_name"></a> [log\_analytics\_italy\_workspace\_name](#input\_log\_analytics\_italy\_workspace\_name) | Specifies the name of the Log Analytics Workspace Italy. | `string` | n/a | yes |
 | <a name="input_log_analytics_italy_workspace_resource_group_name"></a> [log\_analytics\_italy\_workspace\_resource\_group\_name](#input\_log\_analytics\_italy\_workspace\_resource\_group\_name) | The name of the resource group in which the Log Analytics workspace Italy is located in. | `string` | n/a | yes |
 | <a name="input_monitor_italy_resource_group_name"></a> [monitor\_italy\_resource\_group\_name](#input\_monitor\_italy\_resource\_group\_name) | Monitor Italy resource group name | `string` | n/a | yes |
+| <a name="input_pay_wallet_jwt_issuer_api_key_use_primary"></a> [pay\_wallet\_jwt\_issuer\_api\_key\_use\_primary](#input\_pay\_wallet\_jwt\_issuer\_api\_key\_use\_primary) | If true the current active API key used for jwt issuer service will be the primary one. | `bool` | `true` | no |
 | <a name="input_payment_wallet_migrations_enabled"></a> [payment\_wallet\_migrations\_enabled](#input\_payment\_wallet\_migrations\_enabled) | Payment wallet migrations enabled | `bool` | `false` | no |
 | <a name="input_payment_wallet_service_api_key_use_primary"></a> [payment\_wallet\_service\_api\_key\_use\_primary](#input\_payment\_wallet\_service\_api\_key\_use\_primary) | If true the current active API key used for wallet service requests will be the primary one. | `bool` | `true` | no |
 | <a name="input_payment_wallet_with_pm_enabled"></a> [payment\_wallet\_with\_pm\_enabled](#input\_payment\_wallet\_with\_pm\_enabled) | payment wallet using Payment Manager | `bool` | `false` | no |
