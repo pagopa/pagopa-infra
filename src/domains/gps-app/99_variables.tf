@@ -566,7 +566,7 @@ variable "container_cusmtom_image" {
   default = {
     cpu    = 0.5
     memory = "1Gi"
-    image  = "ghcr.io/pagopa/github-self-hosted-runner-azure:add-docker-compose"
+    image  = "ghcr.io/pagopa/github-self-hosted-runner-azure:beta-add-docker-compose"
   }
 
   description = "Job Container configuration"
