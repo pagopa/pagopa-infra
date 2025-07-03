@@ -555,3 +555,19 @@ variable "gpd_cdc_enabled" {
   description = "Enable CDC for GDP"
   default     = false
 }
+
+variable "container_cusmtom_image" {
+  type = object({
+    cpu    = number
+    memory = string
+    image  = string
+  })
+
+  default = {
+    cpu    = 0.5
+    memory = "1Gi"
+    image  = "ghcr.io/pagopa/github-self-hosted-runner-azure:add-docker-compose"
+  }
+
+  description = "Job Container configuration"
+}

@@ -77,6 +77,7 @@ module "gh_runner_job" {
     rg          = "${local.product}-sec-rg" # Resource group of the KeyVault which stores PAT as secret
     secret_name = "gh-runner-job-pat"       # Data of the KeyVault which stores PAT as secret
   }
+  container = var.container_cusmtom_image
   kubernetes_deploy = {
     enabled      = true
     namespaces   = [kubernetes_namespace.namespace.metadata[0].name]
