@@ -1,6 +1,7 @@
 <policies>
     <inbound>
       <base />
+      <rate-limit-by-key calls="30" renewal-period="10" counter-key="@(context.Subscription != null ? context.Subscription.Id.ToLower() : "unknown_subscription")" />
       <set-header name="x-api-key" exists-action="override">
         <value>{{ecommerce-payment-requests-api-key-value}}</value>
       </set-header>
