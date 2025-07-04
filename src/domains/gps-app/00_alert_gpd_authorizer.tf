@@ -18,18 +18,18 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-gpd-unauthor
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Unauthorized for GPD APIs is greater than or equal to 10%"
   enabled        = true
-  query          = (<<-QUERY
+  query = (<<-QUERY
 let threshold = 0.10;
 AzureDiagnostics
-| where url_s matches regex "/gpd/debt-positions-service/"
-| and url_s matches regex "/gps/spontaneous-payments-enrollments-service"
-| and url_s matches regex "/upload/gpd/debt-positions-service"
-| and url_s matches regex "/gpd/payments-receipts-service"
-| and url_s matches regex "/gpd-reporting/api"
-| and url_s matches regex "/gps/gpd-reporting-orgs-enrollment/api"
+| where url_s matches regex "/gpd/debt-positions-service/" 
+    or url_s matches regex "/gps/spontaneous-payments-enrollments-service" 
+    or url_s matches regex "/upload/gpd/debt-positions-service" 
+    or url_s matches regex "/gpd/payments-receipts-service" 
+    or url_s matches regex "/gpd-reporting/api" 
+    or url_s matches regex "/gps/gpd-reporting-orgs-enrollment/api"
 | summarize
     Total=count(),
-    Unauthorized=count(responseCode_d = 403)
+    Unauthorized=count(responseCode_d == 403)
     by bin(TimeGenerated, 5m)
 | extend KO=toreal(Unauthorized) / Total
 | where KO > threshold

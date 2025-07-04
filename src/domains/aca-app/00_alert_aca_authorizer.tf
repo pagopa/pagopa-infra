@@ -18,14 +18,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-aca-unauthor
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Unauthorized for ACA APIs is greater than or equal to 10%"
   enabled        = true
-  query          = (<<-QUERY
+  query = (<<-QUERY
 let threshold = 0.10;
 AzureDiagnostics
-| where url_s matches regex "/aca"
-| and url_s matches regex "/aca/debt-positions-service"
+| where url_s matches regex "/aca" or url_s matches regex "/aca/debt-positions-service"
 | summarize
     Total=count(),
-    Unauthorized=count(responseCode_d = 403)
+    Unauthorized=count(responseCode_d == 403)
     by bin(TimeGenerated, 5m)
 | extend KO=toreal(Unauthorized) / Total
 | where KO > threshold

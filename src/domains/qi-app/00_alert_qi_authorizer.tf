@@ -18,13 +18,13 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-qi-unauthori
   data_source_id = data.azurerm_api_management.apim.id
   description    = "Unauthorized for QI APIs is greater than or equal to 10%"
   enabled        = true
-  query          = (<<-QUERY
+  query = (<<-QUERY
 let threshold = 0.10;
 AzureDiagnostics
 | where url_s matches regex "/qi/fdr-kpi-service"
 | summarize
     Total=count(),
-    Unauthorized=count(responseCode_d = 403)
+    Unauthorized=count(responseCode_d == 403)
     by bin(TimeGenerated, 5m)
 | extend KO=toreal(Unauthorized) / Total
 | where KO > threshold
