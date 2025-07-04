@@ -44,6 +44,34 @@ resource "azurerm_storage_share" "firmatore_mbd" {
   quota                = 50
 }
 
+resource "azurerm_private_endpoint" "firmatore_mbd_private_endpoint" {
+  count = var.env_short == "d" ? 0 : 1
+
+  name                = "${local.project}-firmatore-mbd-private-endpoint"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.mbd_rg.name
+  subnet_id           = data.azurerm_subnet.private_endpoint_snet.id
+
+  private_dns_zone_group {
+    name                 = "${local.project}-firmatore-mbd-private-dns-zone-group"
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.privatelink_file_azure_com.id]
+  }
+
+  private_service_connection {
+    name                           = "${local.project}-firmatore-mbd-private-service-connection"
+    private_connection_resource_id = module.mbd_storage_account.id
+    is_manual_connection           = false
+    subresource_names              = ["file"]
+  }
+
+  tags = module.tag_config.tags
+
+  depends_on = [
+    module.mbd_storage_account
+  ]
+}
+
+
 # SID-Flussi-e-bollo/SID_cartelle/file_da_predisporre/
 
 resource "azurerm_storage_share_directory" "dir_SID-Flussi-e-bollo" {
