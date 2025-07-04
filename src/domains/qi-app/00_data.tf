@@ -1,7 +1,3 @@
-data "azurerm_resource_group" "identity_rg" {
-  name = "${local.product}-identity-rg"
-}
-
 data "azurerm_resource_group" "rg_api" {
   name = format("%s-api-rg", local.product)
 }
