@@ -13,7 +13,6 @@
 <policies>
   <inbound>
     <base />
-    <include-fragment fragment-id="ndphost-header" />
   </inbound>
   <backend>
     <base />
