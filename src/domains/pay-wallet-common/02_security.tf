@@ -468,3 +468,45 @@ resource "azurerm_key_vault_secret" "payment_wallet_service_secondary_api_key" {
   value        = random_password.payment_wallet_service_secondary_api_key_pass.result
   key_vault_id = module.key_vault.id
 }
+
+
+resource "random_password" "pay_wallet_event_dispatcher_service_primary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "random_password" "pay_wallet_event_dispatcher_service_secondary_api_key_pass" {
+  length  = 32
+  special = false
+  #key-value string map used to track resource state: if one key-value change a resource regeneration is triggered
+  keepers = {
+    "version" : "1"
+  }
+}
+
+resource "azurerm_key_vault_secret" "pay_wallet_event_dispatcher_service_primary_api_key" {
+  name         = "pay-wallet-event-dispatcher-service-primary-api-key"
+  value        = random_password.pay_wallet_event_dispatcher_service_primary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "pay_wallet_event_dispatcher_service_secondary_api_key" {
+  name         = "pay-wallet-event-dispatcher-service-secondary-api-key"
+  value        = random_password.pay_wallet_event_dispatcher_service_secondary_api_key_pass.result
+  key_vault_id = module.key_vault.id
+}
+resource "azurerm_key_vault_secret" "pay_wallet_jwt_issuer_service_active_api_key" {
+  name         = "pay-wallet-jwt-issuer-service-active-api-key"
+  value        = var.pay_wallet_jwt_issuer_api_key_use_primary ? azurerm_key_vault_secret.pay_wallet_jwt_issuer_service_primary_api_key.value : azurerm_key_vault_secret.payment_wallet_service_secondary_api_key.value
+  key_vault_id = module.key_vault.id
+}
+
+resource "azurerm_key_vault_secret" "payment_wallet_service_active_api_key" {
+  name         = "payment-wallet-service-active-api-key"
+  value        = var.payment_wallet_service_api_key_use_primary ? azurerm_key_vault_secret.payment_wallet_service_primary_api_key.value : azurerm_key_vault_secret.payment_wallet_service_secondary_api_key.value
+  key_vault_id = module.key_vault.id
+}
