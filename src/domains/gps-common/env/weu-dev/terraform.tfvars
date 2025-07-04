@@ -145,7 +145,7 @@ eventhubs_rtp = [
     name              = "rtp-events"
     partitions        = 1 # in PROD shall be changed
     message_retention = 1 # in PROD shall be changed
-    consumers         = ["rtp-events-processor"]
+    consumers         = ["rtp-events-processor", "gpd-rtp-integration-test-consumer-group"]
     keys = [
       {
         name   = "rtp-events-tx"
