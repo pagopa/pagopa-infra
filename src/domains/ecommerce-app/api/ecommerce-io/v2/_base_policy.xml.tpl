@@ -41,7 +41,7 @@
       <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("paymentMethodsOperationId","").Split(','), operations => operations == context.Operation.Id))">
         <!-- Set payment-methods API Key header -->
         <set-header name="x-api-key" exists-action="override">
-          <value>{{{ecommerce-payment-methods-api-key-value}}</value>
+          <value>{{ecommerce-payment-methods-api-key-value}}</value>
         </set-header>
         <set-backend-service base-url="@("https://${ecommerce_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-ecommerce-payment-methods-service")"/>
       </when>
@@ -67,6 +67,9 @@
       </when>
       <when condition="@(Array.Exists(context.Variables.GetValueOrDefault("walletsOperationId","").Split(','), operations => operations == context.Operation.Id))">
         <set-backend-service base-url="@("https://${wallet_ingress_hostname}"+context.Variables["blueDeploymentPrefix"]+"/pagopa-wallet-service")"/>
+        <set-header name="x-api-key" exists-action="override">
+          <value>{{payment-wallet-service-rest-api-key}}</value>
+        </set-header>
       </when>
     </choose>
   </inbound>
