@@ -106,5 +106,6 @@ aks_user_node_pool = {
   node_taints     = ["paymentWalletOnly=true:NoSchedule"],
   node_tags       = { payWallet : "true" },
 }
+payment_wallet_service_api_key_use_primary = true
 
 pay_wallet_jwt_issuer_api_key_use_primary = true

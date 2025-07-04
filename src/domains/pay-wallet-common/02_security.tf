@@ -504,3 +504,9 @@ resource "azurerm_key_vault_secret" "pay_wallet_jwt_issuer_service_active_api_ke
   value        = var.pay_wallet_jwt_issuer_api_key_use_primary ? azurerm_key_vault_secret.pay_wallet_jwt_issuer_service_primary_api_key.value : azurerm_key_vault_secret.payment_wallet_service_secondary_api_key.value
   key_vault_id = module.key_vault.id
 }
+
+resource "azurerm_key_vault_secret" "payment_wallet_service_active_api_key" {
+  name         = "payment-wallet-service-active-api-key"
+  value        = var.payment_wallet_service_api_key_use_primary ? azurerm_key_vault_secret.payment_wallet_service_primary_api_key.value : azurerm_key_vault_secret.payment_wallet_service_secondary_api_key.value
+  key_vault_id = module.key_vault.id
+}

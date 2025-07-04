@@ -12,3 +12,13 @@ data "azurerm_key_vault_secret" "pay_wallet_jwt_issuer_service_secondary_api_key
   name         = "pay-wallet-jwt-issuer-service-secondary-api-key"
   key_vault_id = data.azurerm_key_vault.kv.id
 }
+
+data "azurerm_key_vault_secret" "pagopa_payment_wallet_service_rest_api_primary_key" {
+  name         = "payment-wallet-service-primary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
+
+data "azurerm_key_vault_secret" "pagopa_payment_wallet_service_rest_api_secondary_key" {
+  name         = "payment-wallet-service-secondary-api-key"
+  key_vault_id = data.azurerm_key_vault.kv.id
+}
