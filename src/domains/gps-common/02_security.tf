@@ -645,6 +645,8 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-integration-test" {
   namespace_name      = "${local.project_itn}-rtp-integration-evh"
   eventhub_name       = "rtp-events"
   resource_group_name = azurerm_resource_group.rtp_rg.name
+
+  depends_on = [module.eventhub_rtp_namespace_integration]
 }
 
 resource "azurerm_key_vault_secret" "ehub_rtp_integration_test_connection_string" {
