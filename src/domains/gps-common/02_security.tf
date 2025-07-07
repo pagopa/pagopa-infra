@@ -520,8 +520,20 @@ resource "azurerm_key_vault_secret" "azure_web_jobs_storage_kv" {
   key_vault_id = module.key_vault.id
 }
 
+# #############################
+# CONFIG CACHE GDP in EventHub
+# #############################
 
+resource "azurerm_key_vault_secret" "config-cache-eh-connection-for-aca-payments" {
+  name         = "config-cache-event-hub-connection-string-for-aca-payments-rx"
+  value        = data.azurerm_eventhub_authorization_rule.nodo_dei_pagamenti_cache_aca_rx.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+# ##########################
 # CDC GDP in eventhub
+# ##########################
 data "azurerm_eventhub_authorization_rule" "cdc-raw-auto_apd_payment_option-rx" {
   name                = "cdc-raw-auto.apd.payment_option-rx"
   namespace_name      = "pagopa-${var.env_short}-itn-observ-gpd-evh"
@@ -696,6 +708,34 @@ resource "azurerm_key_vault_secret" "shared_anonymizer_api_keysubkey_store_kv" {
   ]
   name         = "shared-anonymizer-api-key"
   value        = azurerm_api_management_subscription.shared_anonymizer_api_key_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+# ##############################
+# apiconfig-cache product subkey
+# ##############################
+data "azurerm_api_management_product" "apiconfig_cache_product" {
+  product_id          = "apiconfig-cache"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+resource "azurerm_api_management_subscription" "apiconfig_cache_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apiconfig_cache_product.id
+  display_name  = "apiconfig-cache-api-key-for-gpd"
+  allow_tracing = false
+  state         = "active"
+}
+resource "azurerm_key_vault_secret" "apiconfig_cache_subkey_store_kv" {
+  depends_on = [
+    azurerm_api_management_subscription.apiconfig_cache_subkey
+  ]
+  name         = "gpd-${var.env_short}-config-cache-subkey"
+  value        = azurerm_api_management_subscription.apiconfig_cache_subkey.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
