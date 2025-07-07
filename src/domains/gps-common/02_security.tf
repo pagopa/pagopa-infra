@@ -56,8 +56,8 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_externals.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", "Restore", ]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
@@ -633,6 +633,27 @@ data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-integration-tx" {
 resource "azurerm_key_vault_secret" "ehub_rtp_connection_string" {
   name         = format("ehub-%s-tx-rtp-connection-string", var.env_short)
   value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-rtp-integration-tx.primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-integration-test" {
+  count = var.env_short != "p" ? 1 : 0
+
+  name                = "rtp-events-integration-test-rx"
+  namespace_name      = "${local.project_itn}-rtp-integration-evh"
+  eventhub_name       = "rtp-events"
+  resource_group_name = azurerm_resource_group.rtp_rg.name
+
+  depends_on = [module.eventhub_rtp_namespace_integration]
+}
+
+resource "azurerm_key_vault_secret" "ehub_rtp_integration_test_connection_string" {
+  count = var.env_short != "p" ? 1 : 0
+
+  name         = format("ehub-%s-rtp-integration-test-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-rtp-integration-test[0].primary_connection_string
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
