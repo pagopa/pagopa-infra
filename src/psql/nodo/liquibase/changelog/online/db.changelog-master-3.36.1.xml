@@ -7,7 +7,7 @@
 
 	<property name="version" value="3.36.1" global="false" />
 
-	<include file="./db.changelog-master-3.36.1.xml" />
+	<include file="./db.changelog-master-3.36.0.xml" />
 
 	<include file="./${version}/db.changelog-2025070416310000_alter_table.xml" />
 
