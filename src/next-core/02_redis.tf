@@ -71,9 +71,9 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_integration_netwo
 resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
   count = var.env_short == "p" ? 1 : 0
 
-  name                = "[${module.redis.name}] Used Memory close to the threshold"
+  name                = "[${module.redis[0].name}] Used Memory close to the threshold"
   resource_group_name = azurerm_resource_group.data.name
-  scopes              = [module.redis.id]
+  scopes              = [module.redis[0].id]
   description         = "The amount of cache memory in MB that is used for key/value pairs in the cache during the specified reporting interval, this amount is close to 200 MB so close to the threshold (250 MB)"
   severity            = 0
   window_size         = "PT5M"

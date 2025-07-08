@@ -78,7 +78,7 @@ variables:
     ${{ if eq(parameters.ACTION, 'setup') }}:
       value: "Premium"
     ${{ if eq(parameters.ACTION, 'teardown') }}:
-      value: "Standard"
+      value: "Developer"
 
   - name: appgwMinCapacity
     ${{ if eq(parameters.ACTION, 'setup') }}:
