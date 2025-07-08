@@ -19,11 +19,11 @@
         <dropView viewName="V_RT"/>
     </changeSet>
 
-    <changeSet author="liquibase" id="202507081515" >
+    <changeSet author="liquibase" id="202507081516" >
         <dropView viewName="V_RPT_VERSAMENTI"/>
     </changeSet>
 
-    <changeSet author="liquibase" id="202507081516" >
+    <changeSet author="liquibase" id="202507081517" >
         <dropView viewName="V_RPT"/>
     </changeSet>
 
