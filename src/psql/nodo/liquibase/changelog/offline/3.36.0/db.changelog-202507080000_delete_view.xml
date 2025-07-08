@@ -7,4 +7,25 @@
         <dropView viewName="V_POSITION_TRANSFER"/>
     </changeSet>
 
+    <changeSet author="liquibase" id="202507081513" >
+        <dropView viewName="V_RT_VERSAMENTI"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081514" >
+        <dropView viewName="V_PM_SESSION_DATA"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081515" >
+        <dropView viewName="V_RT"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081515" >
+        <dropView viewName="V_RPT_VERSAMENTI"/>
+    </changeSet>
+
+    <changeSet author="liquibase" id="202507081516" >
+        <dropView viewName="V_RPT"/>
+    </changeSet>
+
+
 </databaseChangeLog>
