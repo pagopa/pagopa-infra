@@ -13,7 +13,7 @@
                     <set-body>
                         {
                             "outcome": "KO",
-                            "description": "400 Bad request error"
+                            "description": "Generic error description"
                         }
                     </set-body>
                 </return-response>
@@ -28,7 +28,7 @@
                     <set-body>
                         {
                             "outcome": "KO",
-                            "description": "404 Not found error"
+                            "description": "Generic error description"
                         }
                     </set-body>
                 </return-response>
@@ -43,7 +43,7 @@
                     <set-body>
                         {
                             "outcome": "KO",
-                            "description": "422 Unprocessable entity"
+                            "description": "Generic error description"
                         }
                     </set-body>
                 </return-response>
@@ -73,7 +73,7 @@
                     <set-body>
                         {
                             "outcome": "KO",
-                            "description": "Internal server error"
+                            "description": "Generic error description"
                         }
                     </set-body>
                 </return-response>
@@ -89,7 +89,7 @@
                     <set-body>
                         {
                             "outcome": "KO",
-                            "description": "Internal server error"
+                            "description": "Generic error description"
                         }
                     </set-body>
                 </return-response>
