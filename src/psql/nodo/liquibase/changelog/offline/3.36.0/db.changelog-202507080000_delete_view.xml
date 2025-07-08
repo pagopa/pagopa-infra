@@ -4,9 +4,9 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
 
     <changeSet author="liquibase" id="20250708165000">
-        <createView replaceIfExists="true" viewName="V_POSITION_PAYMENT">
-            SELECT 1 as ID, null as PA_FISCAL_CODE, null as NOTICE_ID, null as CREDITOR_REFERENCE_ID, null as PAYMENT_TOKEN, null as BROKER_PA_ID, null as STATION_ID, null as STATION_VERSION, null as PSP_ID, null as BROKER_PSP_ID, null as CHANNEL_ID, null as IDEMPOTENCY_KEY, null as AMOUNT, null as FEE, null as OUTCOME, null as PAYMENT_METHOD, null as PAYMENT_CHANNEL, null as TRANSFER_DATE, null as PAYER_ID, null as APPLICATION_DATE, null as INSERTED_TIMESTAMP, null as UPDATED_TIMESTAMP, null as FK_PAYMENT_PLAN, null as RPT_ID, null as PAYMENT_TYPE, null as CARRELLO_ID, null as ORIGINAL_PAYMENT_TOKEN, null as FLAG_IO, null as RICEVUTA_PM, null as FLAG_ACTIVATE_RESP_MISSING, null as FLAG_PAYPAL, null as INSERTED_BY, null as UPDATED_BY, null as TRANSACTION_ID, null as CLOSE_VERSION, null as FEE_PA, null as BUNDLE_ID, null as BUNDLE_PA_ID, null as PM_INFO, null as MBD, null as FEE_SPO
-            FROM dual
+        <createView replaceIfExists="true" viewName="V_POSITION_TRANSFER">
+            SELECT 1 as ID, null as  NOTICE_ID, null as  CREDITOR_REFERENCE_ID, null as  PA_FISCAL_CODE, null as  PA_FISCAL_CODE_SECONDARY, null as  IBAN, null as  AMOUNT, null as  REMITTANCE_INFORMATION, null as  TRANSFER_CATEGORY, null as  TRANSFER_IDENTIFIER, null as  VALID, null as  INSERTED_TIMESTAMP, null as  UPDATED_TIMESTAMP, null as  FK_PAYMENT_PLAN, null as  FK_POSITION_PAYMENT, null as  INSERTED_BY, null as  UPDATED_BY, null as  METADATA, null as  REQ_TIPO_BOLLO, null as  REQ_HASH_DOCUMENTO, null as  REQ_PROVINCIA_RESIDENZA
+            FROM DUAL
         </createView>
     </changeSet>
     
