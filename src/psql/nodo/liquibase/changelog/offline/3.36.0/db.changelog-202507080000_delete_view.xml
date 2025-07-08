@@ -43,5 +43,9 @@
         <dropView viewName="RPT"/>
     </changeSet>
 
+    <changeSet author="liquibase" id="202507081540" >
+        <dropView viewName="RT_VERSAMENTI"/>
+    </changeSet>
+
 
 </databaseChangeLog>
