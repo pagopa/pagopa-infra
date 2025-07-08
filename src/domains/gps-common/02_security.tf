@@ -56,8 +56,8 @@ resource "azurerm_key_vault_access_policy" "adgroup_externals_policy" {
   tenant_id = data.azurerm_client_config.current.tenant_id
   object_id = data.azuread_group.adgroup_externals.object_id
 
-  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", ]
-  secret_permissions  = ["Get", "List", "Set", "Delete", ]
+  key_permissions     = ["Get", "List", "Update", "Create", "Import", "Delete", "Encrypt", "Decrypt", "GetRotationPolicy"]
+  secret_permissions  = ["Get", "List", "Set", "Delete", "Recover", "Restore", ]
   storage_permissions = []
   certificate_permissions = [
     "Get", "List", "Update", "Create", "Import",
@@ -520,8 +520,20 @@ resource "azurerm_key_vault_secret" "azure_web_jobs_storage_kv" {
   key_vault_id = module.key_vault.id
 }
 
+# #############################
+# CONFIG CACHE GDP in EventHub
+# #############################
 
+resource "azurerm_key_vault_secret" "config-cache-eh-connection-for-aca-payments" {
+  name         = "config-cache-event-hub-connection-string-for-aca-payments-rx"
+  value        = data.azurerm_eventhub_authorization_rule.nodo_dei_pagamenti_cache_aca_rx.primary_connection_string
+  content_type = "text/plain"
+  key_vault_id = module.key_vault.id
+}
+
+# ##########################
 # CDC GDP in eventhub
+# ##########################
 data "azurerm_eventhub_authorization_rule" "cdc-raw-auto_apd_payment_option-rx" {
   name                = "cdc-raw-auto.apd.payment_option-rx"
   namespace_name      = "pagopa-${var.env_short}-itn-observ-gpd-evh"
@@ -626,6 +638,27 @@ resource "azurerm_key_vault_secret" "ehub_rtp_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
+data "azurerm_eventhub_authorization_rule" "pagopa-evh-rtp-integration-test" {
+  count = var.env_short != "p" ? 1 : 0
+
+  name                = "rtp-events-integration-test-rx"
+  namespace_name      = "${local.project_itn}-rtp-integration-evh"
+  eventhub_name       = "rtp-events"
+  resource_group_name = azurerm_resource_group.rtp_rg.name
+
+  depends_on = [module.eventhub_rtp_namespace_integration]
+}
+
+resource "azurerm_key_vault_secret" "ehub_rtp_integration_test_connection_string" {
+  count = var.env_short != "p" ? 1 : 0
+
+  name         = format("ehub-%s-rtp-integration-test-connection-string", var.env_short)
+  value        = data.azurerm_eventhub_authorization_rule.pagopa-evh-rtp-integration-test[0].primary_connection_string
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
 data "azurerm_redis_cache" "redis_cache" {
   name                = var.redis_ha_enabled ? format("%s-%s-%s-redis", var.prefix, var.env_short, var.location_short) : format("%s-%s-redis", var.prefix, var.env_short)
   resource_group_name = format("%s-%s-data-rg", var.prefix, var.env_short)
@@ -677,6 +710,34 @@ resource "azurerm_key_vault_secret" "shared_anonymizer_api_keysubkey_store_kv" {
   ]
   name         = "shared-anonymizer-api-key"
   value        = azurerm_api_management_subscription.shared_anonymizer_api_key_subkey.primary_key
+  content_type = "text/plain"
+
+  key_vault_id = module.key_vault.id
+}
+
+# ##############################
+# apiconfig-cache product subkey
+# ##############################
+data "azurerm_api_management_product" "apiconfig_cache_product" {
+  product_id          = "apiconfig-cache"
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+}
+resource "azurerm_api_management_subscription" "apiconfig_cache_subkey" {
+  api_management_name = local.pagopa_apim_name
+  resource_group_name = local.pagopa_apim_rg
+
+  product_id    = data.azurerm_api_management_product.apiconfig_cache_product.id
+  display_name  = "apiconfig-cache-api-key-for-gpd"
+  allow_tracing = false
+  state         = "active"
+}
+resource "azurerm_key_vault_secret" "apiconfig_cache_subkey_store_kv" {
+  depends_on = [
+    azurerm_api_management_subscription.apiconfig_cache_subkey
+  ]
+  name         = "gpd-${var.env_short}-config-cache-subkey"
+  value        = azurerm_api_management_subscription.apiconfig_cache_subkey.primary_key
   content_type = "text/plain"
 
   key_vault_id = module.key_vault.id
