@@ -27,5 +27,9 @@
         <dropView viewName="V_RPT"/>
     </changeSet>
 
+    <changeSet author="liquibase" id="202507081518" >
+        <dropView viewName="PM_SESSION_DATA"/>
+    </changeSet>
+
 
 </databaseChangeLog>
