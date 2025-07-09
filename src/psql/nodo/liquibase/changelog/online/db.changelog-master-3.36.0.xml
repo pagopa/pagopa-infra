@@ -9,4 +9,6 @@
 
 	<include file="./db.changelog-master-3.35.0.xml" />
 	
+	<include file="./${version}/db.changelog-2025070416310000_alter_table.xml" />
+	
 </databaseChangeLog>
