@@ -147,7 +147,7 @@ locals {
       name               = "validbundles",
       partition_key_path = "/idPsp",
       autoscale_settings = {
-        max_throughput = 1000
+        max_throughput = var.env_short != "p" ? 1000 : 2000
       },
       analytical_storage_ttl = -1,
       partition_key_version  = null # 1,2
@@ -156,7 +156,7 @@ locals {
       name               = "touchpoints",
       partition_key_path = "/name",
       autoscale_settings = {
-        max_throughput = 1000
+        max_throughput = var.env_short != "p" ? 1000 : 2000
       },
       analytical_storage_ttl = -1, # ingested_2_DL
       partition_key_version  = null
@@ -165,7 +165,7 @@ locals {
       name               = "paymenttypes",
       partition_key_path = "/name",
       autoscale_settings = {
-        max_throughput = 1000
+        max_throughput = var.env_short != "p" ? 1000 : 2000
       },
       analytical_storage_ttl = -1, # ingested_2_DL
       partition_key_version  = null
@@ -183,7 +183,7 @@ locals {
       name               = "paymentmethods",
       partition_key_path = "/group",
       autoscale_settings = {
-        max_throughput = 1000
+        max_throughput = var.env_short != "p" ? 1000 : 2000
       },
       analytical_storage_ttl = null,
       partition_key_version  = null # 1,2
@@ -192,7 +192,7 @@ locals {
       name               = "privacypsp",
       partition_key_path = "/idPsp",
       autoscale_settings = {
-        max_throughput = 1000
+        max_throughput = var.env_short != "p" ? 1000 : 2000
       },
       analytical_storage_ttl = null,
       partition_key_version  = null # 1,2
