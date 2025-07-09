@@ -188,7 +188,7 @@ locals {
       analytical_storage_ttl = null,
       partition_key_version  = null # 1,2
     },
-        {
+    {
       name               = "privacypsp",
       partition_key_path = "/idPsp",
       autoscale_settings = {
