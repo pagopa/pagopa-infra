@@ -1063,3 +1063,42 @@ resource "azurerm_key_vault_secret" "ecommerce_helpdesk_command_service_secondar
   value        = random_password.ecommerce_helpdesk_command_service_secondary_api_key_pass.result
   key_vault_id = module.key_vault.id
 }
+
+
+data "azurerm_storage_account_sas" "ecommerce_storage_transient_sas" {
+  connection_string = module.ecommerce_storage_transient.primary_connection_string
+  https_only        = true
+  resource_types {
+    service   = false
+    container = false
+    object    = true
+  }
+  services {
+    blob  = false
+    queue = true
+    table = false
+    file  = false
+  }
+  start  = "2025-01-01T00:00:00Z"
+  expiry = "2030-01-01T00:00:00Z"
+  permissions {
+    read    = false
+    write   = false
+    delete  = false
+    list    = false
+    add     = true
+    create  = false
+    update  = false
+    process = false
+    tag     = false
+    filter  = false
+  }
+}
+
+
+resource "azurerm_key_vault_secret" "ecommerce_transient_storage_queue_sas_token" {
+  count        = var.env_short == "u" ? 1 : 0
+  name         = "ecommerce-transient-storage-queue-sas-token"
+  value        = data.azurerm_storage_account_sas.ecommerce_storage_transient_sas.sas
+  key_vault_id = module.key_vault.id
+}
