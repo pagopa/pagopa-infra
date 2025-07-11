@@ -61,7 +61,7 @@
                         "operationCurrency": "EUR",
                         "operationId": "1779d43c-33ae-4a61-b1db-79c0149307ea",
                         "operationResult": "VOIDED",
-                        "operationTime": "2024-05-09 12:36:53.971",
+                        "operationTime": "2025-01-01 00:00:10.000",
                         "operationType": "REFUND",
                         "orderId": "E00000000000000001",
                         "paymentCircuit": "MC",
@@ -74,7 +74,7 @@
                 "orderStatus": {
                     "authorizedAmount": "0",
                     "capturedAmount": "0",
-                    "lastOperationTime": "2024-05-09T12:36:53.971+02:00",
+                    "lastOperationTime": "2025-01-01 00:00:10.000",
                     "lastOperationType": "REFUND",
                     "order": {
                         "amount": "12150",
