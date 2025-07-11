@@ -2,7 +2,7 @@
     <inbound>
         <base />
         <set-variable name="requestBody" value="@((JObject)context.Request.Body.As<JObject>(true))" />
-        <set-variable name="transactionId" value="@(((JObject)context.Variables["requestBody"]).Value<String>("transactionId")?.ToString() ?? "N/A")" />
+        <set-variable name="transactionId" value="@(((JObject)context.Variables["requestBody"]).Value<String>("idTransaction")?.ToString() ?? "N/A")" />
         <choose>
             <when condition="@(context.Request.Headers.GetValueOrDefault("X-Host-Path", "").Contains("redirections/refunds"))">
                 <choose>
@@ -61,7 +61,7 @@
                             <set-body>
                                 {
                                     "idTransaction": "123",
-                                    "outcome": "KO"
+                                    "outcome": "OK"
                                 }       
                             </set-body>
                         </return-response>
