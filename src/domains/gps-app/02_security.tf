@@ -93,3 +93,18 @@ resource "azurerm_key_vault_secret" "gpd_qa_integration_testing_subscription_key
 
   key_vault_id = data.azurerm_key_vault.gps_kv.id
 }
+
+### FDR1-FDR3 secrets
+resource "azurerm_key_vault_secret" "fdr1_subscription_key" {
+  name         = "apikey-fdr1"
+  value        = azurerm_api_management_subscription.fdr1_flow_subkey.primary_key
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}
+
+resource "azurerm_key_vault_secret" "fdr3_subscription_key" {
+  name         = "apikey-fdr3"
+  value        = azurerm_api_management_subscription.fdr3_flow_subkey.primary_key
+  content_type = "text/plain"
+  key_vault_id = data.azurerm_key_vault.gps_kv.id
+}

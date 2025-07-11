@@ -142,6 +142,10 @@ locals {
     WEBSITES_ENABLE_APP_SERVICE_STORAGE = false
     WEBSITE_ENABLE_SYNC_UPDATE_SITE     = true
 
+    # FDR1-FDR3 Integration
+    FDR3_APIM_SUBSCRIPTION_KEY = azurerm_key_vault_secret.fdr3_subscription_key.value
+    FDR1_APIM_SUBSCRIPTION_KEY = azurerm_key_vault_secret.fdr1_subscription_key.value
+
     # ACR
     DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = data.azurerm_container_registry.acr.admin_username
