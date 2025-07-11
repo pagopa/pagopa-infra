@@ -3,7 +3,8 @@
         <base />
 
         <set-backend-service base-url="https://${gec_hostname}/pagopa-afm-calculator-service" />
-        <rewrite-uri template="fees" />
+        <!-- afm v2 api calls are redirected to path/multi api path -->
+        <rewrite-uri template="fees/multi" />
         <set-method>POST</set-method>
 
         <send-request ignore-error="false" timeout="10" response-variable-name="walletResponse">
@@ -125,18 +126,23 @@
                 var requestBody = new JObject();
                 requestBody["touchpoint"] = "IO";
                 requestBody["paymentMethod"] = (string) context.Variables["paymentMethodTypeCode"];
-                requestBody["paymentAmount"] = 1;
-                requestBody["isAllCcp"] = false;
-                requestBody["primaryCreditorInstitution"] = "";
-
+                //payment notice list section
+                var paymentNoticeList = new JArray();
+                var paymentNotice = new JObject();
+                paymentNotice["paymentAmount"] = 1;
+                paymentNotice["primaryCreditorInstitution"] = "";
+                //transfer section
                 var transfer = new JObject();
                 transfer["creditorInstitution"] = "";
                 transfer["digitalStamp"] = false;
 
                 var transferList = new JArray();
                 transferList.Add(transfer);
-                requestBody["transferList"] = transferList;
+                paymentNotice["transferList"] = transferList;
 
+                paymentNoticeList.Add(paymentNotice);
+
+                requestBody["paymentNotice"] = paymentNoticeList;
                 return requestBody.ToString();
             }
         </set-body>
@@ -151,12 +157,10 @@
                         var response = context.Response.Body.As<JObject>();
                         foreach (var value in response["bundleOptions"]) {
                             var bundle = (JObject) value;
-
-                            if (bundle["idCiBundle"].Type == JTokenType.Null) {
-                                bundle.Remove("idCiBundle");
-                            }
+                            bundle.Remove("idsCiBundle");
+                            bundle.Remove("fees");
+                            bundle.Remove("actualPayerFee");
                         }
-
                         return response.ToString();
                     }
                 </set-body>
