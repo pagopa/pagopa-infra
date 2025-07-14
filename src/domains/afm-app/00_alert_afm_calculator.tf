@@ -156,12 +156,12 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculat
   }
 
   data_source_id = data.azurerm_api_management.apim.id
-  description    = "Response time for V1 version of /psps/[^/]+/fees is less than or equal to 1.5s - ${local.afm-calculator-dash.calculator-v1}"
+  description    = "Response time for V1 version of /payment-methods/search is less than or equal to 1.5s - ${local.afm-calculator-dash.calculator-v1}"
   enabled        = true
   query = (<<-QUERY
 let threshold = 1500;
 AzureDiagnostics
-| where url_s matches regex "/v1/psps/[^/]+/fees"
+| where url_s matches regex "/payment-methods/search"
 | summarize
     watermark=threshold,
     duration_percentile_95=percentiles(DurationMs, 95) by bin(TimeGenerated, 5m)
