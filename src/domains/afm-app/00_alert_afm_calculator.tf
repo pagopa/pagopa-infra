@@ -146,7 +146,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculator-responsetime-searchpaymentmethods" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v1-responsetime_psps_idPsp_fees"
+  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v1-responsetime_search_payment_method"
   location            = var.location
 
   action {
@@ -179,7 +179,7 @@ AzureDiagnostics
 resource "azurerm_monitor_scheduled_query_rules_alert" "opex_pagopa-afm-calculator-availability-searchpaymentmethods" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v1-availability_psps_idPsp_fees"
+  name                = "pagopa-${var.env_short}-opex_pagopa-afm-calculator-v1-availability_search_payment_method"
   location            = var.location
 
   action {
