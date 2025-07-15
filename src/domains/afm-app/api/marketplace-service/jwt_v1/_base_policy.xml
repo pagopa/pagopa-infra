@@ -1,0 +1,58 @@
+<policies>
+    <inbound>
+      <cors>
+        <allowed-origins>
+          <origin>*</origin>
+        </allowed-origins>
+        <allowed-methods>
+          <method>GET</method>
+          <method>POST</method>
+          <method>PUT</method>
+          <method>DELETE</method>
+          <method>OPTIONS</method>
+        </allowed-methods>
+        <allowed-headers>
+          <header>*</header>
+        </allowed-headers>
+      </cors>
+      <base />
+      <set-backend-service base-url="https://${hostname}/pagopa-afm-marketplace-service" />
+      <set-variable name="aud" value="@{
+            string aud = "";
+      string authHeader = context.Request.Headers.GetValueOrDefault("Authorization", "");
+      if (authHeader?.Length > 0)
+      {
+      string[] authHeaderParts = authHeader.Split(' ');
+      if (authHeaderParts?.Length == 2 && authHeaderParts[0].Equals("Bearer", StringComparison.InvariantCultureIgnoreCase))
+      {
+      Jwt jwt;
+      if (authHeaderParts[1].TryParseJwt(out jwt))
+      {
+      aud = jwt.Claims.GetValueOrDefault("aud", "");
+      }
+      }
+      }
+      return aud;
+      }" />
+      <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized. Access token is missing or invalid.">
+        <openid-config url="https://login.microsoftonline.com/${pagopa_tenant_id}/v2.0/.well-known/openid-configuration" />
+        <required-claims>
+          <claim name="aud">
+            <value>${apiconfig_fe_client_id}</value>
+          </claim>
+          <claim name="groups" match="any">
+            <value>68e78f4f-ee0c-4ade-9523-0f69e71a3d2f</value>
+          </claim>
+        </required-claims>
+      </validate-jwt>
+    </inbound>
+    <outbound>
+      <base />
+    </outbound>
+    <backend>
+      <base />
+    </backend>
+    <on-error>
+      <base />
+    </on-error>
+  </policies>
