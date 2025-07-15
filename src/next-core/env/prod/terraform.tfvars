@@ -677,7 +677,7 @@ eventhubs_04 = [
     name              = "nodo-dei-pagamenti-cache"
     partitions        = 32
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-cache-sync-rx"]
+    consumers         = ["nodo-dei-pagamenti-cache-sync-rx", "nodo-dei-pagamenti-cache-aca-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-cache-tx"
@@ -687,6 +687,12 @@ eventhubs_04 = [
       },
       {
         name   = "nodo-dei-pagamenti-cache-sync-rx" # node-cfg-sync
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-cache-aca-rx" # node-cfg for ACA-Payments
         listen = true
         send   = false
         manage = false
@@ -877,6 +883,13 @@ route_tools = [
     # dev aks nodo oncloud
     name                   = "tools-outbound-to-nexy-nodo"
     address_prefix         = "10.79.20.34/32"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = "10.230.10.150"
+  },
+  {
+    # dev aks nodo oncloud postgres
+    name                   = "tools-outbound-to-nexy-nodo-postgres"
+    address_prefix         = "10.79.20.25/32"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = "10.230.10.150"
   }

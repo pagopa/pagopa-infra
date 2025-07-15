@@ -5,14 +5,14 @@ parameters:
   - name: 'ENV'
     displayName: 'Environment to switch'
     type: string
-    default: dev
+    default: uat
     values:
       - dev
       - uat
   - name: 'ACTION'
     displayName: 'Action to perform'
     type: string
-    default: setup
+    default: teardown
     values:
       - setup
       - teardown
@@ -78,7 +78,7 @@ variables:
     ${{ if eq(parameters.ACTION, 'setup') }}:
       value: "Premium"
     ${{ if eq(parameters.ACTION, 'teardown') }}:
-      value: "Standard"
+      value: "Developer"
 
   - name: appgwMinCapacity
     ${{ if eq(parameters.ACTION, 'setup') }}:

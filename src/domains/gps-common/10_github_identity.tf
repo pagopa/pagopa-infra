@@ -32,7 +32,13 @@ locals {
     }
   ]
 
-  # to avoid subscription Contributor -> https://github.com/microsoft/azure-container-apps/issues/35
+  federations_01_oidc = [
+    for repo in local.repos_01 : {
+      repository = repo
+      subject    = "oidc"
+    }
+  ]
+
   environment_cd_roles = {
     subscription = [
       "Contributor"
@@ -72,6 +78,29 @@ module "identity_cd_01" {
   ]
 }
 
+# create a module for each 20 repos
+module "identity_oidc_01" {
+  source    = "github.com/pagopa/terraform-azurerm-v3//github_federated_identity?ref=v8.36.1"
+  prefix    = var.prefix
+  env_short = var.env_short
+  domain    = "${var.domain}-01-oidc"
+
+  identity_role = "cd"
+
+  github_federations = local.federations_01_oidc
+
+  cd_rbac_roles = {
+    subscription_roles = local.environment_cd_roles.subscription
+    resource_groups    = local.environment_cd_roles.resource_groups
+  }
+
+  tags = module.tag_config.tags
+
+  depends_on = [
+    data.azurerm_resource_group.identity_rg
+  ]
+}
+
 
 resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
   key_vault_id = module.key_vault.id
@@ -85,6 +114,8 @@ resource "azurerm_key_vault_access_policy" "gha_iac_managed_identities" {
 
   storage_permissions = []
 }
+
+
 
 resource "null_resource" "github_runner_app_permissions_to_namespace_cd_01" {
   triggers = {
