@@ -233,7 +233,7 @@ resource "azurerm_logic_app_action_custom" "custom" {
 
 
 data "azurerm_key_vault_secret" "github_pat" {
-  name         = "bot-token-github"
+  name         = "payments-cloud-github-bot-pat"
   key_vault_id = data.azurerm_key_vault.kv_core.id
 }
 
