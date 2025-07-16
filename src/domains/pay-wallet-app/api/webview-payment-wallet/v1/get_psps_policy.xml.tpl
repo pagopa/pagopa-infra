@@ -3,7 +3,8 @@
         <base />
 
         <set-backend-service base-url="https://${gec_hostname}/pagopa-afm-calculator-service" />
-        <rewrite-uri template="fees" />
+        <!-- afm v2 api calls are redirected to path/multi api path -->
+        <rewrite-uri template="fees/multi" />
         <set-method>POST</set-method>
 
         <send-request ignore-error="false" timeout="10" response-variable-name="walletResponse">
@@ -11,6 +12,9 @@
             <set-method>GET</set-method>
             <set-header name="x-user-id" exists-action="override">
                 <value>@((string)context.Variables.GetValueOrDefault("xUserId",""))</value>
+            </set-header>
+            <set-header name="x-api-key" exists-action="override">
+              <value>{{payment-wallet-service-rest-api-key}}</value>
             </set-header>
         </send-request>
 
@@ -54,6 +58,10 @@
             <set-method>GET</set-method>
             <set-header name="x-client-id" exists-action="override">
                 <value>IO</value>
+            </set-header>
+            <!-- Set payment-methods API Key header -->
+            <set-header name="x-api-key" exists-action="override">
+              <value>{{ecommerce-payment-methods-api-key-value}}</value>
             </set-header>
         </send-request>
 
@@ -118,18 +126,23 @@
                 var requestBody = new JObject();
                 requestBody["touchpoint"] = "IO";
                 requestBody["paymentMethod"] = (string) context.Variables["paymentMethodTypeCode"];
-                requestBody["paymentAmount"] = 1;
-                requestBody["isAllCcp"] = false;
-                requestBody["primaryCreditorInstitution"] = "";
-
+                //payment notice list section
+                var paymentNoticeList = new JArray();
+                var paymentNotice = new JObject();
+                paymentNotice["paymentAmount"] = 1;
+                paymentNotice["primaryCreditorInstitution"] = "";
+                //transfer section
                 var transfer = new JObject();
                 transfer["creditorInstitution"] = "";
                 transfer["digitalStamp"] = false;
 
                 var transferList = new JArray();
                 transferList.Add(transfer);
-                requestBody["transferList"] = transferList;
+                paymentNotice["transferList"] = transferList;
 
+                paymentNoticeList.Add(paymentNotice);
+
+                requestBody["paymentNotice"] = paymentNoticeList;
                 return requestBody.ToString();
             }
         </set-body>
@@ -144,12 +157,10 @@
                         var response = context.Response.Body.As<JObject>();
                         foreach (var value in response["bundleOptions"]) {
                             var bundle = (JObject) value;
-
-                            if (bundle["idCiBundle"].Type == JTokenType.Null) {
-                                bundle.Remove("idCiBundle");
-                            }
+                            bundle.Remove("idsCiBundle");
+                            bundle.Remove("fees");
+                            bundle.Remove("actualPayerFee");
                         }
-
                         return response.ToString();
                     }
                 </set-body>
