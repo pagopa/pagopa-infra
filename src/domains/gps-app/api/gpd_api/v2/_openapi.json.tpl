@@ -4,7 +4,7 @@
     "title" : "PagoPA API Debt Position ${service}",
     "description" : "Progetto Gestione Posizioni Debitorie",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.14.4"
+    "version" : "0.14.8"
   },
   "servers" : [ {
     "url" : "https://api.uat.platform.pagopa.it/gpd/api/v2",
@@ -2471,6 +2471,9 @@
             "items" : {
               "$ref" : "#/components/schemas/TransferModelResponse"
             }
+          },
+          "serviceType" : {
+            "type" : "string"
           }
         }
       },
@@ -2596,6 +2599,7 @@
             "type" : "string"
           },
           "amount" : {
+            "minimum" : 1,
             "type" : "integer",
             "format" : "int64"
           },
@@ -2754,6 +2758,7 @@
             "enum" : [ "1", "2", "3", "4", "5" ]
           },
           "amount" : {
+            "minimum" : 1,
             "type" : "integer",
             "format" : "int64"
           },
