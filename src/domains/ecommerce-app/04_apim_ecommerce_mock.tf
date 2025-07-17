@@ -129,6 +129,26 @@ resource "azurerm_api_management_api_policy" "apim_ecommerce_nodo_per_pm_mock_po
   xml_content = file("./api/ecommerce-mock/nodoPerPM/v1/_base_policy.xml.tpl")
 }
 
+resource "azurerm_api_management_api_operation_policy" "nodo_per_pm_check_position_policy" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_nodo_per_pm_mock[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "checkPosition"
+
+  xml_content = file("./api/ecommerce-mock/nodoPerPM/v1/check_position_mock.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "nodo_per_pm_close_payment_policy" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_nodo_per_pm_mock[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "closePayment"
+
+  xml_content = file("./api/ecommerce-mock/nodoPerPM/v1/close_payment_mock.xml.tpl")
+}
+
 
 ##############################
 ## API Mock PDV             ##
@@ -421,6 +441,16 @@ resource "azurerm_api_management_api_operation_policy" "refund_payment" {
   operation_id        = "refundPayment"
 
   xml_content = file("./api/ecommerce-mock/npg/v1/refund_payment.xml.tpl")
+}
+
+resource "azurerm_api_management_api_operation_policy" "get_order" {
+  count               = var.env_short == "u" ? 1 : 0
+  api_name            = azurerm_api_management_api.apim_ecommerce_npg_mock[0].name
+  resource_group_name = local.pagopa_apim_rg
+  api_management_name = local.pagopa_apim_name
+  operation_id        = "getOrder"
+
+  xml_content = file("./api/ecommerce-mock/npg/v1/get_order.xml.tpl")
 }
 
 ####################################
