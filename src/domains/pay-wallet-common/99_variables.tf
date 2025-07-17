@@ -196,6 +196,16 @@ variable "redis_pay_wallet_params" {
   })
 }
 
+variable "redis_std_pay_wallet_params" {
+  type = object({
+    capacity = number
+    sku_name = string
+    family   = string
+    version  = string
+    zones    = list(number)
+  })
+}
+
 variable "enable_iac_pipeline" {
   type        = bool
   description = "If true create the key vault policy to allow used by azure devops iac pipelines."

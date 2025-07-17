@@ -81,6 +81,14 @@ redis_pay_wallet_params = {
   zones    = []
 }
 
+redis_std_pay_wallet_params = {
+  capacity = 0
+  sku_name = "Basic"
+  family   = "C"
+  version  = 6
+  zones    = []
+}
+
 ### Storage
 
 pay_wallet_storage_params = {
