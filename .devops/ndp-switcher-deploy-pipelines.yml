@@ -16,7 +16,6 @@ parameters:
     default: 'toNexiPublic'
     values:
       - toNexiPublic
-      - toNexiPrivateHTTP
       - toNexiPrivateHTTPS
       - toPagoPA
 
@@ -81,14 +80,6 @@ variables:
       value: "https://test.nexi.ndp.pagopa.it"
     ${{ if eq(parameters.ENV, 'prod') }}:
       value: "https://nexi.ndp.pagopa.it"
-
-  - name: nexiNodePrivateAddressHttp
-    ${{ if eq(parameters.ENV, 'dev') }}:
-      value: "http://10.79.20.63"
-    ${{ if eq(parameters.ENV, 'uat') }}:
-      value: "http://10.79.20.63"
-    ${{ if eq(parameters.ENV, 'prod') }}:
-      value: "http://10.79.20.25"
 
   - name: nexiNodePrivateAddressHttps
     ${{ if eq(parameters.ENV, 'dev') }}:
@@ -180,34 +171,10 @@ stages:
                   - name: default-nodo-backend-prf
                     value: "${{variables.nexiNodePublicAddress}}"
 
-      - ${{ if eq(parameters.SWITCH, 'toNexiPrivateHTTP') }}:
-        - job: "update_values_nexi_private_http"
-          displayName: "Switching to Nexi NdP via private route with HTTPS"
-          dependsOn: waitForValidation
-          steps:
-          - template: templates/apim-set-values/template.yaml@terraform
-            parameters:
-              AZURE_APPLY_SERVICE_CONNECTION_NAME: "${{variables.azureServiceConnectionApplyName}}"
-              APIM_NAME: "${{variables.apimName}}"
-              APIM_RG: "${{variables.apimRg}}"
-              NAMED_VALUES:
-                - name: enable-nm3-decoupler-switch
-                  value: "false"
-                - name: enable-routing-decoupler-switch
-                  value: "false"
-                - name: default-nodo-id
-                  value: "${{variables.nexiNodeId}}"
-                - name: default-nodo-backend
-                  value: "${{variables.nexiNodePrivateAddressHttp}}"
-                - name: schema-ip-nexi
-                  value: "${{variables.nexiNodePrivateAddressHttp}}"
-                - ${{ if eq(parameters.ENV, 'uat') }}:
-                    - name: default-nodo-backend-prf
-                      value: "${{variables.nexiNodePrivateAddressHttp}}"
 
       - ${{ if eq(parameters.SWITCH, 'toNexiPrivateHTTPS') }}:
         - job: "update_values_nexi_private_https"
-          displayName: "Switching to Nexi NdP via private route with HTTP"
+          displayName: "Switching to Nexi NdP via private route with HTTPS"
           dependsOn: waitForValidation
           steps:
           - template: templates/apim-set-values/template.yaml@terraform
