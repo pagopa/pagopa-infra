@@ -393,3 +393,9 @@ variable "fdr_soap_request_ci_whitelist" {
   # default     = "*" # No Default to explicits set into ENV settings
   description = "String list comma separated"
 }
+
+variable "nodo_nexi_fdr_backend_url" {
+  type = string
+  description = "Backend used by Nexi for managing FDR in FTP mode"
+}
+

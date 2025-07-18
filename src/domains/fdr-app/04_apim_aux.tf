@@ -54,3 +54,14 @@ resource "azurerm_api_management_named_value" "fdrsaname" {
   display_name        = "fdrsaname"
   value               = data.azurerm_storage_account.fdr_flows_sa.name
 }
+
+########################
+##  Fix for Nodo Nexi ##
+########################
+resource "azurerm_api_management_named_value" "nodo_nexi_fdr_backend" {
+  name                = "nodo-nexi-fdr-backend"
+  api_management_name = data.azurerm_api_management.apim.name
+  resource_group_name = data.azurerm_resource_group.rg_api.name
+  display_name        = "nodo-nexi-fdr-backend"
+  value = var.nodo_nexi_fdr_backend_url
+}
