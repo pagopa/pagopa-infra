@@ -1099,7 +1099,7 @@
         "description": "Amount for payments, in euro cents",
         "type": "integer",
         "minimum": 0,
-        "maximum": 9999999999
+        "maximum": 99999999999
       },
       "TransactionStatus": {
         "type": "string",
