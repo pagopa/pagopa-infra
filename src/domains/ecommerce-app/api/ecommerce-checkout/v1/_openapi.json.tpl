@@ -1150,7 +1150,7 @@
             "description": "Payment notice amount",
             "type": "integer",
             "minimum": 0,
-            "maximum": 999999999
+            "maximum": 9999999999
           },
           "dueDate": {
             "description": "Payment notice due date",
@@ -2081,7 +2081,7 @@
         "description": "Amount for payments, in euro cents",
         "type": "integer",
         "minimum": 0,
-        "maximum": 999999999
+        "maximum": 9999999999
       },
       "AuthorizationResult": {
         "description": "Authorization result",
