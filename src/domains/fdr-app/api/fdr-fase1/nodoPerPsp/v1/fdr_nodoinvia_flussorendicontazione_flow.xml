@@ -71,7 +71,7 @@
               <choose>
                   <when condition="@((bool)context.Variables["is-ftp-enabled"])">
                       <!-- use specific named value to set backend url for Nexi FTP -->
-                      <set-backend-service base-url="{{nodo-nexi-fdr-backend}}/webservices/input" />
+                      <set-backend-service base-url="{{nodo-nexi-fdr-backend}}" />
                       <!--
                         in the case of CI uses FTP, traffic is redirect to the default nodo,
                         then it is forwarded to FdR service to manage JSON conversion
