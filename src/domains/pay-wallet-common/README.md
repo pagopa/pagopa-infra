@@ -21,6 +21,7 @@
 | <a name="module_cosmosdb_pay_wallet_snet"></a> [cosmosdb\_pay\_wallet\_snet](#module\_cosmosdb\_pay\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.20.1 |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | git::https://github.com/pagopa/terraform-azurerm-v3.git//key_vault | v8.20.1 |
 | <a name="module_pagopa_pay_wallet_redis"></a> [pagopa\_pay\_wallet\_redis](#module\_pagopa\_pay\_wallet\_redis) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v8.20.1 |
+| <a name="module_pagopa_pay_wallet_redis_std"></a> [pagopa\_pay\_wallet\_redis\_std](#module\_pagopa\_pay\_wallet\_redis\_std) | git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache | v8.20.1 |
 | <a name="module_pay_wallet_storage"></a> [pay\_wallet\_storage](#module\_pay\_wallet\_storage) | git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account | v8.20.1 |
 | <a name="module_redis_pagopa_pay_wallet_snet"></a> [redis\_pagopa\_pay\_wallet\_snet](#module\_redis\_pagopa\_pay\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.20.1 |
 | <a name="module_storage_pay_wallet_snet"></a> [storage\_pay\_wallet\_snet](#module\_storage\_pay\_wallet\_snet) | git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet | v8.20.1 |
@@ -80,6 +81,7 @@
 | [azurerm_monitor_metric_alert.cosmos_db_normalized_ru_exceeded](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.queue_storage_account_average_message_count](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_metric_alert.redis_cache_used_memory_exceeded](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
+| [azurerm_monitor_metric_alert.redis_std_cache_used_memory_exceeded](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_metric_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.pay_wallet_enqueue_rate_alert](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.pay_wallet_enqueue_rate_alert_visibility_timeout_diff](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
 | [azurerm_monitor_scheduled_query_rules_alert.payment_wallet_for_ecommerce_availability_v1](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/monitor_scheduled_query_rules_alert) | resource |
@@ -91,6 +93,7 @@
 | [azurerm_private_endpoint.storage_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.cosmosdb_pay_wallet_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.redis_pay_wallet_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
+| [azurerm_resource_group.redis_std_pay_wallet_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_payment_wallet_alerts](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.sec_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.storage_pay_wallet_rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
@@ -172,6 +175,7 @@
 | <a name="input_payment_wallet_service_api_key_use_primary"></a> [payment\_wallet\_service\_api\_key\_use\_primary](#input\_payment\_wallet\_service\_api\_key\_use\_primary) | If true the current active API key used for wallet service requests will be the primary one. | `bool` | `true` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | n/a | `string` | n/a | yes |
 | <a name="input_redis_pay_wallet_params"></a> [redis\_pay\_wallet\_params](#input\_redis\_pay\_wallet\_params) | n/a | <pre>object({<br/>    capacity = number<br/>    sku_name = string<br/>    family   = string<br/>    version  = string<br/>    zones    = list(number)<br/>  })</pre> | n/a | yes |
+| <a name="input_redis_std_pay_wallet_params"></a> [redis\_std\_pay\_wallet\_params](#input\_redis\_std\_pay\_wallet\_params) | n/a | <pre>object({<br/>    capacity = number<br/>    sku_name = string<br/>    family   = string<br/>    version  = string<br/>    zones    = list(number)<br/>  })</pre> | n/a | yes |
 
 ## Outputs
 
