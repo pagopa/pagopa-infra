@@ -94,3 +94,5 @@ fdr_xml_to_json_function_autoscale = {
   maximum = 1
 }
 
+nodo_nexi_fdr_backend_url = "http://10.70.74.200/nodo-uat"
+
