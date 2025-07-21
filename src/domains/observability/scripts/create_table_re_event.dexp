@@ -36,7 +36,7 @@
   ]
 }```
 
-.create table ReEvent ingestion json mapping 'ReMapping' '[
+.create-or-alter table ReEvent ingestion json mapping 'ReMapping' '[
   {"column":"insertedTimestamp","Properties":{"Path":"$.insertedTimestamp"}},
   {"column":"categoriaEvento","Properties":{"Path":"$.categoriaEvento"}},
   {"column":"sottoTipoEvento","Properties":{"Path":"$.sottoTipoEvento"}},
