@@ -100,6 +100,12 @@ resource "azurerm_key_vault_secret" "redis_wallet_password" {
   key_vault_id = module.key_vault.id
 }
 
+resource "azurerm_key_vault_secret" "redis_std_wallet_password" {
+  name         = "redis-std-wallet-password"
+  value        = module.pagopa_pay_wallet_redis_std[0].primary_access_key
+  key_vault_id = module.key_vault.id
+}
+
 resource "azurerm_key_vault_secret" "sender_evt_tx_event_hub_connection_string" {
   name         = "sender-evt-tx-event-hub-connection-string"
   value        = data.azurerm_eventhub_authorization_rule.sender_evt_tx_event_hub_connection_string.primary_connection_string
