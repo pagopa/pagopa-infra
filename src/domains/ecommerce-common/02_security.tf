@@ -1063,3 +1063,4 @@ resource "azurerm_key_vault_secret" "ecommerce_helpdesk_command_service_secondar
   value        = random_password.ecommerce_helpdesk_command_service_secondary_api_key_pass.result
   key_vault_id = module.key_vault.id
 }
+
