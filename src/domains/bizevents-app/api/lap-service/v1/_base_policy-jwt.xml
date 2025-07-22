@@ -84,6 +84,14 @@
     </inbound>
     <outbound>
         <base />
+        <set-body>@{
+            var body = context.Response.Body.As<JObject>();
+            if (body["infoNotice"]?["origin"]?.ToString() == "NDP002PROD")
+            {
+                body["infoNotice"]["origin"] = "NDP999PROD";
+            }
+            return body.ToString();
+        }</set-body>        
     </outbound>
     <backend>
         <base />
