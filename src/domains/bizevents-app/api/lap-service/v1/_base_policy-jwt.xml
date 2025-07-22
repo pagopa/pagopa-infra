@@ -86,9 +86,9 @@
         <base />
         <set-body>@{
             var body = context.Response.Body.As<JObject>();
-            if (body["infoNotice"]?["origin"]?.ToString() == "NDP002PROD")
+            if (body["infoNotice"]?["origin"]?.ToString() == "NDP004PROD")
             {
-                body["infoNotice"]["origin"] = "NDP999PROD";
+                body["infoNotice"]["origin"] = "NDP003PROD";
             }
             return body.ToString();
         }</set-body>        
