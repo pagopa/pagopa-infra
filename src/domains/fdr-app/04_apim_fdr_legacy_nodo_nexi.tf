@@ -139,9 +139,7 @@ resource "azurerm_api_management_api_policy" "apim_fdr_per_pa_policy" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  xml_content = templatefile("./api/fdr-legacy/v1/_base_policy.xml", {
-    alternative-nodo-backend = var.env_short == "p" ? "https://10.79.20.34" : (var.env_short == "u" ? "http://10.70.74.200/nodo-uat" : "http://10.70.66.200/nodo-sit")
-  })
+  xml_content = file("./api/fdr-legacy/v1/_base_policy.xml")
 }
 
 resource "azurerm_api_management_api_policy" "apim_fdr_per_psp_policy" {
@@ -149,7 +147,5 @@ resource "azurerm_api_management_api_policy" "apim_fdr_per_psp_policy" {
   api_management_name = local.pagopa_apim_name
   resource_group_name = local.pagopa_apim_rg
 
-  xml_content = templatefile("./api/fdr-legacy/v1/_base_policy.xml", {
-    alternative-nodo-backend = var.env_short == "p" ? "https://10.79.20.34" : (var.env_short == "u" ? "http://10.70.74.200/nodo-uat" : "http://10.70.66.200/nodo-sit")
-  })
+  xml_content = file("./api/fdr-legacy/v1/_base_policy.xml")
 }

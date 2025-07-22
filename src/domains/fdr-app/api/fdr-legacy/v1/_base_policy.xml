@@ -1,59 +1,15 @@
 <policies>
     <inbound>
-        <base />
-
-        <!-- [START][MITIGATION] Routing requests on Nodo Oracle's instance if in error -->
-        <set-variable name="renewrequest" value="@(context.Request.Body.As<string>(preserveContent: true))" />
-        <set-variable name="alternativeUrl" value="${alternative-nodo-backend}" />
-        <set-variable name="soapAction" value="@((string)context.Request.Headers.GetValueOrDefault("SOAPAction"))" />
-        <!-- [END][MITIGATION] -->
-
-        <set-backend-service base-url="{{default-nodo-backend}}/webservices/input" />
+        <base/>
+        <set-backend-service base-url="{{default-nodo-backend}}/webservices/input"/>
     </inbound>
     <backend>
-        <base />
+        <base/>
     </backend>
     <outbound>
-        <base />
-
-        <!-- [START][MITIGATION] Routing requests on Nodo Oracle's instance if in error -->
-        <choose>
-            <when condition="@(string.Equals((string) context.Variables["soapAction"], "nodoChiediFlussoRendicontazione", StringComparison.OrdinalIgnoreCase))">
-                <set-variable name="faultCode" value="@{
-                    XElement response = context.Response.Body.As<XElement>(preserveContent: true);
-                    XElement body = response.Descendants(response.Name.Namespace + "Body").FirstOrDefault();
-                    XElement primitive = (XElement) body.FirstNode;
-                    var faultCode = primitive.Descendants("faultCode").FirstOrDefault();
-                    return faultCode != null ? faultCode.Value.ToString() : "OK";
-                }" />
-                <choose>
-                    <when condition="@(((string)context.Variables["faultCode"]).Equals("PPT_ID_FLUSSO_SCONOSCIUTO"))">
-                        <send-request mode="new" ignore-error="true" response-variable-name="fallbackResponse">
-                            <set-url>@{return ((string) context.Variables["alternativeUrl"] + "/webservices/input"); }</set-url>
-                            <set-method>POST</set-method>
-                            <set-header name="Content-Type" exists-action="override">
-                                <value>text/xml</value>
-                            </set-header>
-                            <set-header name="SOAPAction" exists-action="override">
-                                <value>@(context.Variables.GetValueOrDefault<string>("soapAction", ""))</value>
-                            </set-header>
-                            <set-body>@{return (string) context.Variables["renewrequest"];}</set-body>
-                        </send-request>
-                        <set-variable name="receivedFallbackResponse" value="@((string)((IResponse)context.Variables["fallbackResponse"]).Body.As<string>(preserveContent: true))" />
-                        <return-response>
-                            <set-header name="Content-Type" exists-action="override">
-                                <value>text/xml</value>
-                            </set-header>
-                            <set-body>@{return (string)context.Variables["receivedFallbackResponse"];}</set-body>
-                        </return-response>
-                    </when>
-                </choose>
-            </when>
-        </choose>
-        <!-- [END][MITIGATION] -->
-
+        <base/>
     </outbound>
     <on-error>
-        <base />
+        <base/>
     </on-error>
 </policies>
