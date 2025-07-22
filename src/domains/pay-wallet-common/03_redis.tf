@@ -21,7 +21,7 @@ module "pagopa_pay_wallet_redis" {
   redis_version                 = var.redis_pay_wallet_params.version
   public_network_access_enabled = var.env_short == "d"
 
-  #zones = var.redis_pay_wallet_params.zones
+  custom_zones = var.redis_pay_wallet_params.zones
 
   private_endpoint = {
     enabled              = var.env_short != "d"
