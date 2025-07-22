@@ -86,12 +86,12 @@ redis_pay_wallet_params = {
 }
 
 redis_std_pay_wallet_params = {
-  capacity   = 1
+  capacity   = 0
   sku_name   = "Standard"
   family     = "C"
   version    = 6
   ha_enabled = true
-  zones      = [1, 2, 3]
+  zones      = []
 }
 
 ### Storage

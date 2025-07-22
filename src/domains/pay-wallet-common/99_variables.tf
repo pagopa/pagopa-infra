@@ -170,7 +170,7 @@ variable "cosmos_mongo_db_params" {
     public_network_access_enabled                = bool
     is_virtual_network_filter_enabled            = bool
     backup_continuous_enabled                    = bool
-    ip_range_filter                              = optional(string, null)
+    ip_range_filter                              = list(string)
     enable_provisioned_throughput_exceeded_alert = bool
   })
 }

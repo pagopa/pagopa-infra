@@ -16,11 +16,11 @@ resource "azurerm_kubernetes_cluster_node_pool" "user_nodepool_pay_wallet" {
   os_disk_size_gb        = var.aks_user_node_pool.os_disk_size_gb
   zones                  = var.aks_user_node_pool.zones
   ultra_ssd_enabled      = var.aks_user_node_pool.ultra_ssd_enabled
-  enable_host_encryption = var.aks_user_node_pool.enable_host_encryption
+  host_encryption_enabled = var.aks_user_node_pool.enable_host_encryption
   os_type                = "Linux"
 
   ### autoscaling
-  enable_auto_scaling = true
+  auto_scaling_enabled = true
   node_count          = var.aks_user_node_pool.node_count_min
   min_count           = var.aks_user_node_pool.node_count_min
   max_count           = var.aks_user_node_pool.node_count_max
@@ -32,10 +32,12 @@ resource "azurerm_kubernetes_cluster_node_pool" "user_nodepool_pay_wallet" {
 
   ### networking
   vnet_subnet_id        = azurerm_subnet.pay_wallet_user_aks_subnet.id
-  enable_node_public_ip = false
+  node_public_ip_enabled = false
 
   upgrade_settings {
     max_surge = var.aks_user_node_pool.upgrade_settings_max_surge
+    drain_timeout_in_minutes      = 30 
+    node_soak_duration_in_minutes = 0 
   }
 
   tags = merge(module.tag_config.tags, var.aks_user_node_pool.node_tags)

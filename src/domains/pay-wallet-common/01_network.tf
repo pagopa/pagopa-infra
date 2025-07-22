@@ -11,13 +11,13 @@ resource "azurerm_private_dns_a_record" "ingress" {
 #
 
 module "cosmosdb_pay_wallet_snet" {
-  source               = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.20.1"
+  source               = "./.terraform/modules/__v4__/subnet"
   name                 = "${local.project}-cosmosb-snet"
   address_prefixes     = var.cidr_subnet_cosmosdb_pay_wallet
   resource_group_name  = local.vnet_italy_resource_group_name
   virtual_network_name = local.vnet_italy_name
 
-  private_endpoint_network_policies_enabled = true
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Web",
@@ -26,24 +26,24 @@ module "cosmosdb_pay_wallet_snet" {
 }
 
 module "redis_pagopa_pay_wallet_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.20.1"
+  source = "./.terraform/modules/__v4__/subnet"
 
   name                                      = "${local.project}-redis-snet"
   address_prefixes                          = var.cidr_subnet_redis_pay_wallet
   resource_group_name                       = local.vnet_italy_resource_group_name
   virtual_network_name                      = local.vnet_italy_name
-  private_endpoint_network_policies_enabled = true
+  private_endpoint_network_policies = "Enabled"
 }
 
 module "storage_pay_wallet_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.20.1"
+  source = "./.terraform/modules/__v4__/subnet"
 
   name                 = "${local.project}-storage-snet"
   address_prefixes     = var.cidr_subnet_storage_pay_wallet
   resource_group_name  = local.vnet_italy_resource_group_name
   virtual_network_name = local.vnet_italy_name
 
-  private_endpoint_network_policies_enabled = true
+  private_endpoint_network_policies = "Enabled"
 
   service_endpoints = [
     "Microsoft.Storage",
