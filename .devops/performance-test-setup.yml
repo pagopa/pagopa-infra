@@ -128,7 +128,7 @@ stages:
         timeoutInMinutes: ${{ variables.TIME_OUT }}
         steps:
           - script: |
-              if [ "$(Build.Reason)" != "Schedule" && "${{parameters.REASON}}" = "Scheduled"]; then
+              if [ "$(Build.Reason)" != "Schedule" ] && [ "${{parameters.REASON}}" = "Scheduled" ]; then
                 echo "##vso[task.logissue type=error]Esecuzione manuale con REASON non specificata!"
                 echo "##vso[task.logissue type=error]Specifica una reason valida"
                 exit 1
