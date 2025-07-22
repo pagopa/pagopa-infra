@@ -96,3 +96,5 @@ fdr_xml_to_json_function_autoscale = {
   maximum = 10
 }
 
+nodo_nexi_fdr_backend_url = "https://10.79.20.34"
+
