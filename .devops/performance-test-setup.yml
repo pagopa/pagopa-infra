@@ -23,6 +23,8 @@ parameters:
 variables:
   - name: TIME_OUT
     value: 60
+  - name: APPROVE_NOTIFY_ADMIN
+    value: '[pagoPA-iac]\Project Administrators'
 
   - name: azureServiceConnectionApplyName
     ${{ if eq(parameters.ENV, 'dev') }}:
