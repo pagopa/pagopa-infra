@@ -7,14 +7,18 @@
     </inbound>
     <outbound>
         <base />
-        <set-body>@{
-            var body = context.Response.Body.As<JObject>();
-            if (body["infoNotice"]?["origin"]?.ToString() == "NDP004PROD")
-            {
-                body["infoNotice"]["origin"] = "NDP003PROD";
-            }
-            return body.ToString();
-        }</set-body>
+        <choose>
+            <when condition="@(!context.Request.Url.Path.Contains("pdf") && context.Operation.Method.Equals("GET") )">
+                <set-body>@{
+                    var body = context.Response.Body.As<JObject>();
+                    if (body["infoNotice"]?["origin"]?.ToString() == "NDP004PROD")
+                    {
+                        body["infoNotice"]["origin"] = "NDP003PROD";
+                    }
+                    return body.ToString();
+                }</set-body>
+            </when>
+        </choose>
     </outbound>
     <backend>
         <base />
