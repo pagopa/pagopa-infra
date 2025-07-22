@@ -1,0 +1,26 @@
+trigger: none
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+    - repository: terraform
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v6.11.0
+      endpoint: "io-azure-devops-github-ro"
+
+name: "Weekly scheduled teardown - $(Date:yyyyMMdd).$(Rev:r)"
+stages:
+  - template: './performance-test-setup.yml'
+    parameters:
+      ENV: 'dev'
+      ACTION: 'teardown'
+      REASON: 'scheduled weekly teardown'
+  - template: './performance-test-setup.yml'
+    parameters:
+      ENV: 'uat'
+      ACTION: 'teardown'
+      REASON: 'scheduled weekly teardown'
