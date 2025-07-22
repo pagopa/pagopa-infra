@@ -174,9 +174,9 @@ resource "azurerm_kusto_script" "create_merge_table" {
   name        = "MergeTable"
   database_id = azurerm_kusto_database.re_db[count.index].id
 
-  script_content             = file("scripts/create_table_re_event.dexp")
+  script_content = file("scripts/create_table_re_event.dexp")
 
-  continue_on_errors_enabled = false
+  continue_on_errors_enabled         = false
   force_an_update_when_value_changed = filesha256("scripts/create_table_re_event.dexp")
 }
 
