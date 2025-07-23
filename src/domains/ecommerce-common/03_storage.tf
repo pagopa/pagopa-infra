@@ -392,60 +392,60 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
 locals {
   queue_expiration_alert_props = var.env_short == "p" ? [
     {
-      "queue_key"   = "transactions-expiration-queue"
-      "severity"    = 1
-      "time_window" = 15
+      "queue_key"         = "transactions-expiration-queue"
+      "severity"          = 1
+      "time_window"       = 15
       "fetch_time_window" = 75
-      "frequency"   = 15
-      "threshold"   = 40
+      "frequency"         = 15
+      "threshold"         = 40
     },
     {
-      "queue_key"   = "notifications-service-retry-queue"
-      "severity"    = 1
-      "time_window" = 30
+      "queue_key"         = "notifications-service-retry-queue"
+      "severity"          = 1
+      "time_window"       = 30
       "fetch_time_window" = 75
-      "frequency"   = 15
-      "threshold"   = 10
+      "frequency"         = 15
+      "threshold"         = 10
     },
     {
-      "queue_key"   = "transaction-notifications-retry-queue"
-      "severity"    = 1
-      "time_window" = 30
+      "queue_key"         = "transaction-notifications-retry-queue"
+      "severity"          = 1
+      "time_window"       = 30
       "fetch_time_window" = 75
-      "frequency"   = 15
-      "threshold"   = 20
+      "frequency"         = 15
+      "threshold"         = 20
     },
     {
-      "queue_key"   = "transactions-refund-retry-queue"
-      "severity"    = 1
-      "time_window" = 30
+      "queue_key"         = "transactions-refund-retry-queue"
+      "severity"          = 1
+      "time_window"       = 30
       "fetch_time_window" = 75
-      "frequency"   = 15
-      "threshold"   = 10
+      "frequency"         = 15
+      "threshold"         = 10
     },
     {
-      "queue_key"   = "transaction-auth-outcome-waiting-queue"
-      "severity"    = 1
-      "time_window" = 30
+      "queue_key"         = "transaction-auth-outcome-waiting-queue"
+      "severity"          = 1
+      "time_window"       = 30
       "fetch_time_window" = 75
-      "frequency"   = 15
-      "threshold"   = 40
+      "frequency"         = 15
+      "threshold"         = 40
     },
     {
-      "queue_key"   = "transaction-auth-requested-queue"
-      "severity"    = 1
-      "time_window" = 30
+      "queue_key"         = "transaction-auth-requested-queue"
+      "severity"          = 1
+      "time_window"       = 30
       "fetch_time_window" = 75
-      "frequency"   = 15
-      "threshold"   = 400
+      "frequency"         = 15
+      "threshold"         = 400
     },
     {
-      "queue_key"   = "transactions-close-payment-retry-queue"
-      "severity"    = 1
-      "time_window" = 30
+      "queue_key"         = "transactions-close-payment-retry-queue"
+      "severity"          = 1
+      "time_window"       = 30
       "fetch_time_window" = 75
-      "frequency"   = 15
-      "threshold"   = 10
+      "frequency"         = 15
+      "threshold"         = 10
     }
   ] : []
 }
