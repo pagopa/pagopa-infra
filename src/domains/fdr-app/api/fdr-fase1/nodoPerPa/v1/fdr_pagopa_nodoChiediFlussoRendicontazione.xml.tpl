@@ -24,6 +24,7 @@
                               var is_ftp_enabled = Array.Exists(org_list, e => e == org_fiscal_code);
                               return is_ftp_enabled;
                               }" />
+                <!-- Always on FdR-Fase1 -->
                 <set-backend-service base-url="${base-url}" />
             </when>
         </choose>
@@ -34,6 +35,7 @@
     <outbound>
         <base />
         <choose>
+            <!-- Resolving bug described in: https://pagopa.atlassian.net/browse/PIDM-834 -->
             <when condition="@(context.Variables.GetValueOrDefault<bool>("is-ftp-enabled", false) )">
                 <return-response>
                     <set-header name="Content-Type" exists-action="override">
