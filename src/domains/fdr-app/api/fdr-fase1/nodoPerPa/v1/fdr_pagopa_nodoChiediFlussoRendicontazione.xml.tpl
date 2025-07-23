@@ -24,6 +24,7 @@
                               var is_ftp_enabled = Array.Exists(org_list, e => e == org_fiscal_code);
                               return is_ftp_enabled;
                               }" />
+                <set-backend-service base-url="${base-url}" />
             </when>
         </choose>
     </inbound>
@@ -33,7 +34,7 @@
     <outbound>
         <base />
         <choose>
-            <when condition="@(!context.Variables.GetValueOrDefault<bool>("is-ftp-enabled", false) )">
+            <when condition="@(context.Variables.GetValueOrDefault<bool>("is-ftp-enabled", false) )">
                 <return-response>
                     <set-header name="Content-Type" exists-action="override">
                         <value>text/xml</value>
