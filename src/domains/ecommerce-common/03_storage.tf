@@ -345,9 +345,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
   enabled        = true
   query = format(<<-QUERY
     let endDelete = ago(10m);
-    let startDelete = endDelete - 30m;
+    let startDelete = endDelete - ${each.value.time_window}m;
     let endPut = endDelete;
-    let startPut = endPut - 30m;
+    let startPut = endPut - ${each.value.time_window}m;
     let OpCountForQueue = (operation: string, queueKey: string, timestart: datetime, timeend: datetime) {
         StorageQueueLogs
         | where OperationName == operation and ObjectKey startswith queueKey
