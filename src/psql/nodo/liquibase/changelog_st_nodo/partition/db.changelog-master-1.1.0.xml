@@ -9,6 +9,6 @@
   <include file="./db.changelog-master-1.0.0.xml"/>
 
   <!-- 1.1.0 -->
-  <include file="./${version}/db.changelog-20250732000000_update_storico_config.xml" labels="${version}"/>
+  <include file="./${version}/db.changelog-20250723000000_update_storico_config.xml" labels="${version}"/>
 
 </databaseChangeLog>
