@@ -344,30 +344,35 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "ecommerce_transient_enqu
   description    = format("Enqueuing rate for queue %s > ${each.value.dynamic_threshold} percent threshold of 'PutMessage' (at least 10) during last ${each.value.time_window} minutes", replace("${each.value.queue_key}", "-", " "))
   enabled        = true
   query = format(<<-QUERY
-    let OpCountForQueue = (operation: string, queueKey: string) {
+    let endDelete = ago(10m);
+    let startDelete = endDelete - 30m;
+    let endPut = endDelete;
+    let startPut = endPut - 30m;
+    let OpCountForQueue = (operation: string, queueKey: string, timestart: datetime, timeend: datetime) {
         StorageQueueLogs
         | where OperationName == operation and ObjectKey startswith queueKey
+        | where TimeGenerated between (timestart .. timeend)
         | summarize count()
         | project count_
         | extend dummy=1
     };
-    let PutMessages = (queueName: string) {
-      OpCountForQueue("PutMessage", queueName)
+    let PutMessages = (queueName: string, timestart: datetime, timeend: datetime) {
+      OpCountForQueue("PutMessage", queueName, timestart, timeend)
         | project PutCount = count_
         | extend dummy = 1
     };
-    let DeletedMessages =  (queueName: string) {
-      OpCountForQueue("DeleteMessage", queueName)
+    let DeletedMessages =  (queueName: string, timestart: datetime, timeend: datetime) {
+      OpCountForQueue("DeleteMessage", queueName, timestart, timeend)
         | project DeleteCount = count_
         | extend dummy = 1
     };
-    let MessageRateForQueue = (queueKey: string) {
-        PutMessages(queueKey)
-        | join kind=inner (DeletedMessages(queueKey)) on dummy
+    let MessageRateForQueue = (queueKey: string, timestartPut: datetime, timeendPut: datetime, timestartDelete: datetime, timeendDelete: datetime) {
+        PutMessages(queueKey, timestartPut, timeendPut)
+        | join kind=inner (DeletedMessages(queueKey, timestartDelete, timeendDelete)) on dummy
         | extend Diff = PutCount - DeleteCount
         | project PutCount, DeleteCount, Diff
     };
-    MessageRateForQueue("%s")
+    MessageRateForQueue("%s", startPut, endPut, startDelete, endDelete)
     | where Diff > max_of(PutCount*(${each.value.dynamic_threshold}/100.0), ${each.value.threshold})
     QUERY
     , "/${module.ecommerce_storage_transient.name}/${local.project}-${each.value.queue_key}"
