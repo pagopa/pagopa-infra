@@ -213,6 +213,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63b6e2da2a92e811a8f338f8\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -324,6 +326,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63b6e2da2a92e811a8f338f8\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -339,6 +343,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63b6e2da2a92e811a8f338f8\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -542,6 +548,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e04\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -653,6 +661,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e04\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -668,6 +678,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e04\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -871,6 +883,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63b6e2da2a92e811a8f338f9\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -982,6 +996,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63b6e2da2a92e811a8f338f9\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -997,6 +1013,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63b6e2da2a92e811a8f338f9\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -1200,6 +1218,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e02\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -1311,6 +1331,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e02\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -1326,6 +1348,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e02\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -1529,6 +1553,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38dfe\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -1640,6 +1666,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38dfe\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -1655,6 +1683,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38dfe\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -1858,6 +1888,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e05\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -1969,6 +2001,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e05\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -1984,6 +2018,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e05\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -2187,6 +2223,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38dfd\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -2298,6 +2336,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38dfd\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -2313,6 +2353,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38dfd\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -2516,6 +2558,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e00\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -2627,6 +2671,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e00\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -2642,6 +2688,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e00\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -2845,6 +2893,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38dff\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -2956,6 +3006,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38dff\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -2971,6 +3023,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38dff\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -3174,6 +3228,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e03\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -3285,6 +3341,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e03\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -3300,6 +3358,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e03\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -3503,6 +3563,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e01\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -3614,6 +3676,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e01\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -3629,6 +3693,8 @@
           },
           "queryType": "Azure Log Analytics",
           "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
             "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e01\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
@@ -3697,7 +3763,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Nodo Opex - Nodo per PA Auth",
-  "uid": "nodo-per-pa-auth-1753344222824",
+  "uid": "nodo-per-pa-auth-1753369633783",
   "version": 1,
   "weekStart": ""
 }
