@@ -87,10 +87,6 @@ locals {
     FLOWS_QUEUE               = replace("${local.product}flowsaqueueflows", "-", "")
     OPTIONS_QUEUE             = replace("${local.product}flowsaqueueopt", "-", "")
     FLOWS_XML_BLOB            = replace("${local.product}flowsaflowscontainer", "-", "")
-    FDR1_BASE_URL             = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "fdr-nodo/service-internal", "v1")
-    FDR3_BASE_URL             = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "fdr-org/service", "v1")
-    FDR3_FLOW_LIST_DEPTH      =  "2"
-    FDR3_LIST_ELEMENTS_FOR_PAGE = "30000"
 
     PAA_ID_INTERMEDIARIO = var.gpd_paa_id_intermediario
     PAA_STAZIONE_INT     = var.gpd_paa_stazione_int
@@ -149,6 +145,10 @@ locals {
     # FDR1-FDR3 Integration
     FDR3_APIM_SUBSCRIPTION_KEY = azurerm_key_vault_secret.fdr3_subscription_key.value
     FDR1_APIM_SUBSCRIPTION_KEY = azurerm_key_vault_secret.fdr1_subscription_key.value
+    FDR1_BASE_URL             = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "fdr-nodo/service-internal", "v1")
+    FDR3_BASE_URL             = format("https://api.%s.%s/%s/%s", var.apim_dns_zone_prefix, var.external_domain, "fdr-org/service", "v1")
+    FDR3_FLOW_LIST_DEPTH      =  "2"
+    FDR3_LIST_ELEMENTS_FOR_PAGE = "30000"
 
     # ACR
     DOCKER_REGISTRY_SERVER_URL      = "https://${data.azurerm_container_registry.acr.login_server}"

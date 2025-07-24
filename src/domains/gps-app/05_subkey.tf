@@ -30,7 +30,7 @@ resource "azurerm_api_management_subscription" "gpd_integration_qa_subkey" {
 }
 
 # FDR1-FDR3 Integration
-resource "azurerm_api_management_subscription" "fdr1_flow_subkey" {
+resource "azurerm_api_management_subscription" "fdr3_flow_subkey" {
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   product_id          = data.azurerm_api_management_product.apim_fdr_orgs.id
@@ -39,7 +39,7 @@ resource "azurerm_api_management_subscription" "fdr1_flow_subkey" {
   state               = "active"
 }
 
-resource "azurerm_api_management_subscription" "fdr3_flow_subkey" {
+resource "azurerm_api_management_subscription" "fdr1_flow_subkey" {
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_api_management.apim.resource_group_name
   product_id          = data.azurerm_api_management_product.apim_fdr_internal.id
