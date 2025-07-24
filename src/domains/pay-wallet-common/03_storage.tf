@@ -7,7 +7,7 @@ resource "azurerm_resource_group" "storage_pay_wallet_rg" {
 module "pay_wallet_storage" {
 
   count  = var.is_feature_enabled.storage ? 1 : 0
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//storage_account?ref=v8.20.1"
+  source = "./.terraform/modules/__v4__/storage_account"
 
   name                            = replace("${local.project}-sa", "-", "")
   account_kind                    = var.pay_wallet_storage_params.kind

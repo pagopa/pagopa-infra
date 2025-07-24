@@ -1,15 +1,15 @@
 <policies>
     <inbound>
-        <base />
-        <set-backend-service base-url="{{default-nodo-backend}}/webservices/input" />
+        <base/>
+        <set-backend-service base-url="{{default-nodo-backend}}/webservices/input"/>
     </inbound>
     <backend>
-        <base />
+        <base/>
     </backend>
     <outbound>
-        <base />
+        <base/>
     </outbound>
     <on-error>
-        <base />
+        <base/>
     </on-error>
 </policies>
