@@ -535,7 +535,7 @@
             "description": "Payment notice amount",
             "type": "integer",
             "minimum": 0,
-            "maximum": 9999999999
+            "maximum": 99999999999
           },
           "dueDate": {
             "description": "Payment notice due date",
