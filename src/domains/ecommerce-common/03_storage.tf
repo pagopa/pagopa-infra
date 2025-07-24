@@ -327,6 +327,24 @@ locals {
       "frequency"         = 15
       "threshold"         = 20
       "dynamic_threshold" = 2.0
+    },
+    {
+      "queue_key"         = "transaction-auth-outcome-waiting-queue"
+      "severity"          = 1
+      "time_window"       = 30
+      "fetch_time_window" = 45
+      "frequency"         = 15
+      "threshold"         = 100
+      "dynamic_threshold" = 3.0
+    },
+    {
+      "queue_key"         = "transaction-auth-requested-queue"
+      "severity"          = 1
+      "time_window"       = 30
+      "fetch_time_window" = 45
+      "frequency"         = 15
+      "threshold"         = 400
+      "dynamic_threshold" = 3.0
     }
   ] : []
 }
@@ -422,22 +440,6 @@ locals {
       "fetch_time_window" = 75
       "frequency"         = 15
       "threshold"         = 10
-    },
-    {
-      "queue_key"         = "transaction-auth-outcome-waiting-queue"
-      "severity"          = 1
-      "time_window"       = 30
-      "fetch_time_window" = 75
-      "frequency"         = 15
-      "threshold"         = 40
-    },
-    {
-      "queue_key"         = "transaction-auth-requested-queue"
-      "severity"          = 1
-      "time_window"       = 30
-      "fetch_time_window" = 75
-      "frequency"         = 15
-      "threshold"         = 400
     },
     {
       "queue_key"         = "transactions-close-payment-retry-queue"
