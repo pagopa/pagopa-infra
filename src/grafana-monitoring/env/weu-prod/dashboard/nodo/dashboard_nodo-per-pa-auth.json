@@ -1,0 +1,3703 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63b6e2da2a92e811a8f338f8\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize total = count(), ko = countif(outcome != \"OK\") by bin(timestamp, 1m)\n| extend availability = 1 - todouble(ko) / todouble(total)\n| project timestamp, value = availability, series = \"Availability\"\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediElencoFlussiRendicontazione Availability",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63b6e2da2a92e811a8f338f8\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediElencoFlussiRendicontazione Fault Code",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "series"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "duration",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63b6e2da2a92e811a8f338f8\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63b6e2da2a92e811a8f338f8\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediElencoFlussiRendicontazione Response Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 8
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e04\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize total = count(), ko = countif(outcome != \"OK\") by bin(timestamp, 1m)\n| extend availability = 1 - todouble(ko) / todouble(total)\n| project timestamp, value = availability, series = \"Availability\"\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediElencoQuadraturePA Availability",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 8
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e04\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediElencoQuadraturePA Fault Code",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "series"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "duration",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 8
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e04\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e04\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediElencoQuadraturePA Response Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 16
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63b6e2da2a92e811a8f338f9\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize total = count(), ko = countif(outcome != \"OK\") by bin(timestamp, 1m)\n| extend availability = 1 - todouble(ko) / todouble(total)\n| project timestamp, value = availability, series = \"Availability\"\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediFlussoRendicontazione Availability",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 16
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63b6e2da2a92e811a8f338f9\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediFlussoRendicontazione Fault Code",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "series"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "duration",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 16
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63b6e2da2a92e811a8f338f9\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63b6e2da2a92e811a8f338f9\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediFlussoRendicontazione Response Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 24
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e02\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize total = count(), ko = countif(outcome != \"OK\") by bin(timestamp, 1m)\n| extend availability = 1 - todouble(ko) / todouble(total)\n| project timestamp, value = availability, series = \"Availability\"\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediInformativaPSP Availability",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 24
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e02\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediInformativaPSP Fault Code",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "series"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "duration",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 24
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e02\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e02\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediInformativaPSP Response Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 32
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38dfe\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize total = count(), ko = countif(outcome != \"OK\") by bin(timestamp, 1m)\n| extend availability = 1 - todouble(ko) / todouble(total)\n| project timestamp, value = availability, series = \"Availability\"\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediListaPendentiRPT Availability",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 32
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38dfe\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediListaPendentiRPT Fault Code",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "series"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "duration",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 32
+      },
+      "id": 15,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38dfe\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38dfe\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediListaPendentiRPT Response Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 40
+      },
+      "id": 16,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e05\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize total = count(), ko = countif(outcome != \"OK\") by bin(timestamp, 1m)\n| extend availability = 1 - todouble(ko) / todouble(total)\n| project timestamp, value = availability, series = \"Availability\"\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediQuadraturaPA Availability",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 40
+      },
+      "id": 17,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e05\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediQuadraturaPA Fault Code",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "series"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "duration",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 40
+      },
+      "id": 18,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e05\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e05\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediQuadraturaPA Response Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 48
+      },
+      "id": 19,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38dfd\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize total = count(), ko = countif(outcome != \"OK\") by bin(timestamp, 1m)\n| extend availability = 1 - todouble(ko) / todouble(total)\n| project timestamp, value = availability, series = \"Availability\"\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediStatoRPT Availability",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 48
+      },
+      "id": 20,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38dfd\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediStatoRPT Fault Code",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "series"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "duration",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 48
+      },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38dfd\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38dfd\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoChiediStatoRPT Response Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 56
+      },
+      "id": 22,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e00\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize total = count(), ko = countif(outcome != \"OK\") by bin(timestamp, 1m)\n| extend availability = 1 - todouble(ko) / todouble(total)\n| project timestamp, value = availability, series = \"Availability\"\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoInviaCarrelloRPT Availability",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 56
+      },
+      "id": 23,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e00\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoInviaCarrelloRPT Fault Code",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "series"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "duration",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 56
+      },
+      "id": 24,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e00\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e00\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoInviaCarrelloRPT Response Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 64
+      },
+      "id": 25,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38dff\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize total = count(), ko = countif(outcome != \"OK\") by bin(timestamp, 1m)\n| extend availability = 1 - todouble(ko) / todouble(total)\n| project timestamp, value = availability, series = \"Availability\"\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoInviaRPT Availability",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 64
+      },
+      "id": 26,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38dff\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoInviaRPT Fault Code",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "series"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "duration",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 64
+      },
+      "id": 27,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38dff\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38dff\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoInviaRPT Response Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 72
+      },
+      "id": 28,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e03\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize total = count(), ko = countif(outcome != \"OK\") by bin(timestamp, 1m)\n| extend availability = 1 - todouble(ko) / todouble(total)\n| project timestamp, value = availability, series = \"Availability\"\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoPAChiediInformativaPA Availability",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 72
+      },
+      "id": 29,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e03\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoPAChiediInformativaPA Fault Code",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "series"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "duration",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 72
+      },
+      "id": 30,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e03\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e03\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "nodoPAChiediInformativaPA Response Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMax": 1,
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.9
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 80
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "dashboardTime": true,
+            "timeColumn": "timestamp",
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e01\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize total = count(), ko = countif(outcome != \"OK\") by bin(timestamp, 1m)\n| extend availability = 1 - todouble(ko) / todouble(total)\n| project timestamp, value = availability, series = \"Availability\"\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "[DEPRECATED] nodoChiediCopiaRT Availability",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "count",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 80
+      },
+      "id": 32,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\ndependencies\n| extend operationId = tostring(split(operation_Name, \" - \")[1])\n| where operationId in (\"63e5d8212a92e80448d38e01\")\n| extend faultCode = tostring(customDimensions.faultCode)\n| extend outcome = iif(resultCode == \"200\" and isempty(faultCode), \"OK\", iif(isempty(faultCode), tostring(resultCode), faultCode))\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize count() by bin(timestamp, 1m), outcome\n| project timestamp, value = count_, series = outcome\n",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "[DEPRECATED] nodoChiediCopiaRT Fault Code",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "series"
+            ],
+            "keepFields": false
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-azure-monitor-datasource",
+        "uid": "azure-monitor-oob"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "duration",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 80
+      },
+      "id": 33,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e01\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "grafana-azure-monitor-datasource",
+            "uid": "azure-monitor-oob"
+          },
+          "queryType": "Azure Log Analytics",
+          "azureLogAnalytics": {
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"63e5d8212a92e80448d38e01\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
+            "resources": [
+              "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
+            ],
+            "resultFormat": "logs"
+          }
+        }
+      ],
+      "title": "[DEPRECATED] nodoChiediCopiaRT Response Time",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [
+    "ndp",
+    "nodo",
+    "nodo dei pagamenti",
+    "generated"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": "No filter",
+          "value": "No filter"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "Instance",
+        "options": [
+          {
+            "selected": true,
+            "text": "No filter",
+            "value": "No filter"
+          },
+          {
+            "selected": false,
+            "text": "Nexi Oracle",
+            "value": "Nexi Oracle"
+          },
+          {
+            "selected": false,
+            "text": "Nexi Postgres",
+            "value": "Nexi Postgres"
+          },
+          {
+            "selected": false,
+            "text": "PagoPA Postgres",
+            "value": "PagoPA Postgres"
+          }
+        ],
+        "query": "No filter,Nexi Oracle,Nexi Postgres,PagoPA Postgres",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Nodo Opex - Nodo per PA Auth",
+  "uid": "nodo-per-pa-auth-1753344222824",
+  "version": 1,
+  "weekStart": ""
+}
