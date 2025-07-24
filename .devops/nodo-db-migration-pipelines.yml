@@ -607,62 +607,7 @@ stages:
                 tag ${{ parameters.dbVersion }}
               fi
             displayName: "Tag cfg"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/online/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version ${{ parameters.dbVersion }} not defined on online!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(ONLINE_USERNAME)" \
-                --password="$(db-online-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/online \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
-                --defaultSchemaName="$(ONLINE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                update -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
-                liquibase \
-                --url="$(JDBC_URL_STORICO)" \
-                --username="$(ONLINE_USERNAME)" \
-                --password="$(db-online-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/online \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
-                --defaultSchemaName="$(ONLINE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                update -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
-              fi
-            displayName: "Run Liquibase online"
-          - script: |
-              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/online/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
-                echo "Version ${{ parameters.dbVersion }} not defined on online!"
-              else
-                liquibase \
-                --url="$(JDBC_URL)" \
-                --username="$(ONLINE_USERNAME)" \
-                --password="$(db-online-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/online \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
-                --defaultSchemaName="$(ONLINE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-                liquibase \
-                --url="$(JDBC_URL_STORICO)" \
-                --username="$(ONLINE_USERNAME)" \
-                --password="$(db-online-password)" \
-                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/online \
-                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
-                --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
-                --defaultSchemaName="$(ONLINE_SCHEMA)" \
-                --contexts="${{ parameters.lbContexts }}" \
-                --log-level=${{ parameters.lbLogLevel }} \
-                tag ${{ parameters.dbVersion }}
-              fi
-            displayName: "Tag online"
+
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/offline/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
                 echo "Version ${{ parameters.dbVersion }} not defined on offline!"
@@ -719,6 +664,62 @@ stages:
                 tag ${{ parameters.dbVersion }}
               fi
             displayName: "Tag offline"
+          - script: |
+              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/online/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
+                echo "Version ${{ parameters.dbVersion }} not defined on online!"
+              else
+                liquibase \
+                --url="$(JDBC_URL)" \
+                --username="$(ONLINE_USERNAME)" \
+                --password="$(db-online-password)" \
+                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/online \
+                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+                --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
+                --defaultSchemaName="$(ONLINE_SCHEMA)" \
+                --contexts="${{ parameters.lbContexts }}" \
+                --log-level=${{ parameters.lbLogLevel }} \
+                update -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
+                liquibase \
+                --url="$(JDBC_URL_STORICO)" \
+                --username="$(ONLINE_USERNAME)" \
+                --password="$(db-online-password)" \
+                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/online \
+                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+                --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
+                --defaultSchemaName="$(ONLINE_SCHEMA)" \
+                --contexts="${{ parameters.lbContexts }}" \
+                --log-level=${{ parameters.lbLogLevel }} \
+                update -Dschema=$(ONLINE_SCHEMA) -DschemaOffline=$(OFFLINE_SCHEMA) -DusernameOffline=$(OFFLINE_USERNAME)
+              fi
+            displayName: "Run Liquibase online"
+          - script: |
+              if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/online/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
+                echo "Version ${{ parameters.dbVersion }} not defined on online!"
+              else
+                liquibase \
+                --url="$(JDBC_URL)" \
+                --username="$(ONLINE_USERNAME)" \
+                --password="$(db-online-password)" \
+                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/online \
+                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+                --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
+                --defaultSchemaName="$(ONLINE_SCHEMA)" \
+                --contexts="${{ parameters.lbContexts }}" \
+                --log-level=${{ parameters.lbLogLevel }} \
+                tag ${{ parameters.dbVersion }}
+                liquibase \
+                --url="$(JDBC_URL_STORICO)" \
+                --username="$(ONLINE_USERNAME)" \
+                --password="$(db-online-password)" \
+                --classpath=src/psql/nodo/liquibase/$(liquibase_folder)/online \
+                --changeLogFile=db.changelog-master-${{ parameters.dbVersion }}.xml \
+                --liquibaseSchemaName="$(ONLINE_SCHEMA)" \
+                --defaultSchemaName="$(ONLINE_SCHEMA)" \
+                --contexts="${{ parameters.lbContexts }}" \
+                --log-level=${{ parameters.lbLogLevel }} \
+                tag ${{ parameters.dbVersion }}
+              fi
+            displayName: "Tag online"
           - script: |
               if [ ! -f src/psql/nodo/liquibase/$(liquibase_folder)/re/db.changelog-master-${{ parameters.dbVersion }}.xml ]; then
                 echo "Version ${{ parameters.dbVersion }} not defined on re!"
