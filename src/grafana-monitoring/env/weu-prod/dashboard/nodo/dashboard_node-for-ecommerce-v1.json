@@ -328,7 +328,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "timeColumn": "timestamp",
-            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"checkPosition\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 5m)\n| project timestamp, value, series = \"Avg\"",
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"checkPosition\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=avg(duration) by bin(timestamp, 1m)\n| project timestamp, value, series = \"Avg\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
             ],
@@ -345,7 +345,7 @@
           "azureLogAnalytics": {
             "dashboardTime": true,
             "timeColumn": "timestamp",
-            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"checkPosition\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 5m)\n| project timestamp, value, series = \"P95\"",
+            "query": "let instanceRaw = \"${Instance}\";\nlet instanceSelected = case(instanceRaw == \"Nexi Oracle\", \"NDP003PROD\", instanceRaw == \"Nexi Postgres\", \"NDP004PROD\", instanceRaw == \"PagoPA Postgres\", \"NDP001PROD\", \"No filter\");\nrequests\n| where operation_Name contains \"checkPosition\"\n| project timestamp, operation_Id\n| join kind=inner (dependencies | project operation_Id, duration, target) on operation_Id\n| extend backend = case (target startswith \"https://weuprod.nodo.internal.platform.pagopa.it/nodo\", \"NDP001PROD\", target startswith \"https://10.79.20.34\", \"NDP003PROD\", target startswith \"https://10.79.20.25\", \"NDP004PROD\", \"Unknown\")\n| where iif(instanceSelected == \"No filter\", true, backend == instanceSelected)\n| summarize value=percentile(duration, 95) by bin(timestamp, 1m)\n| project timestamp, value, series = \"P95\"",
             "resources": [
               "/subscriptions/b9fc9419-6097-45fe-9f74-ba0641c91912/resourceGroups/pagopa-p-monitor-rg/providers/Microsoft.Insights/components/pagopa-p-appinsights"
             ],
@@ -413,7 +413,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Nodo Opex - Node for eCommerce V1",
-  "uid": "node-for-ecommerce-v1-1753369633810",
+  "uid": "node-for-ecommerce-v1-1753370216254",
   "version": 1,
   "weekStart": ""
 }
