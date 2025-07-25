@@ -36,24 +36,4 @@
   ]
 }```
 
-.create-or-alter table ReEvent ingestion json mapping 'ReMapping' '[
-  {"column":"insertedTimestamp","Properties":{"Path":"$.insertedTimestamp"}},
-  {"column":"categoriaEvento","Properties":{"Path":"$.categoriaEvento"}},
-  {"column":"sottoTipoEvento","Properties":{"Path":"$.sottoTipoEvento"}},
-  {"column":"idDominio","Properties":{"Path":"$.idDominio"}},
-  {"column":"iuv","Properties":{"Path":"$.iuv"}},
-  {"column":"ccp","Properties":{"Path":"$.ccp"}},
-  {"column":"psp","Properties":{"Path":"$.psp"}},
-  {"column":"tipoEvento","Properties":{"Path":"$.tipoEvento"}},
-  {"column":"stazione","Properties":{"Path":"$.stazione"}},
-  {"column":"canale","Properties":{"Path":"$.canale"}},
-  {"column":"sessionId","Properties":{"Path":"$.sessionId"}}
-  {"column":"payload","Properties":{"Path":"$.payload"}},
-  {"column":"pspDescr","Properties":{"Path":"$.pspDescr"}},
-  {"column":"noticeNumber","Properties":{"Path":"$.noticeNumber"}},
-  {"column":"creditorReferenceId","Properties":{"Path":"$.creditorReferenceId"}},
-  {"column":"paymentToken","Properties":{"Path":"$.paymentToken"}},
-  {"column":"sessionIdOriginal","Properties":{"Path":"$.sessionIdOriginal"}},
-  {"column":"dataOraEvento","Properties":{"Path":"$.dataOraEvento"}},
-  {"column":"uniqueId","Properties":{"Path":"$.uniqueId"}},
-  {"column":"serviceIdentifier","Properties":{"Path":"$.serviceIdentifier"}}]'
+.create-or-alter table ReEvent ingestion json mapping 'ReMapping' '[{"column":"insertedTimestamp","Properties":{"Path":"$.insertedTimestamp"}},{"column":"categoriaEvento","Properties":{"Path":"$.categoriaEvento"}},{"column":"sottoTipoEvento","Properties":{"Path":"$.sottoTipoEvento"}},{"column":"idDominio","Properties":{"Path":"$.idDominio"}},{"column":"iuv","Properties":{"Path":"$.iuv"}},{"column":"ccp","Properties":{"Path":"$.ccp"}},{"column":"psp","Properties":{"Path":"$.psp"}},{"column":"tipoEvento","Properties":{"Path":"$.tipoEvento"}},{"column":"stazione","Properties":{"Path":"$.stazione"}},{"column":"canale","Properties":{"Path":"$.canale"}},{"column":"sessionId","Properties":{"Path":"$.sessionId"}},{"column":"payload","Properties":{"Path":"$.payload"}},{"column":"pspDescr","Properties":{"Path":"$.pspDescr"}},{"column":"noticeNumber","Properties":{"Path":"$.noticeNumber"}},{"column":"creditorReferenceId","Properties":{"Path":"$.creditorReferenceId"}},{"column":"paymentToken","Properties":{"Path":"$.paymentToken"}},{"column":"sessionIdOriginal","Properties":{"Path":"$.sessionIdOriginal"}},{"column":"dataOraEvento","Properties":{"Path":"$.dataOraEvento"}},{"column":"uniqueId","Properties":{"Path":"$.uniqueId"}},{"column":"serviceIdentifier","Properties":{"Path":"$.serviceIdentifier"}}]'

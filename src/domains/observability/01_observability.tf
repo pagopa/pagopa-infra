@@ -171,7 +171,7 @@ resource "azurerm_role_assignment" "fdr_qi_fdr_iuvs_data_evh_data_receiver_role"
 resource "azurerm_kusto_script" "create_merge_table" {
   count = var.dexp_db.enable ? 1 : 0
 
-  name        = "MergeTable"
+  name        = "MergeTableRENodo"
   database_id = azurerm_kusto_database.re_db[count.index].id
 
   script_content = file("scripts/create_table_re_event.dexp")
