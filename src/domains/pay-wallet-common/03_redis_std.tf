@@ -1,27 +1,27 @@
-resource "azurerm_resource_group" "redis_pay_wallet_rg" {
-  name     = "${local.project}-redis-rg"
+resource "azurerm_resource_group" "redis_std_pay_wallet_rg" {
+  name     = "${local.project}-redis-std-rg"
   location = var.location
 
   tags = module.tag_config.tags
 }
 
-module "pagopa_pay_wallet_redis" {
+module "pagopa_pay_wallet_redis_std" {
   count = var.is_feature_enabled.redis ? 1 : 0
 
   source = "./.terraform/modules/__v4__/redis_cache"
 
-  name                          = "${local.project}-redis"
-  resource_group_name           = azurerm_resource_group.redis_pay_wallet_rg.name
-  location                      = azurerm_resource_group.redis_pay_wallet_rg.location
-  capacity                      = var.redis_pay_wallet_params.capacity
+  name                          = "${local.project}-redis-std"
+  resource_group_name           = azurerm_resource_group.redis_std_pay_wallet_rg.name
+  location                      = azurerm_resource_group.redis_std_pay_wallet_rg.location
+  capacity                      = var.redis_std_pay_wallet_params.capacity
   enable_non_ssl_port           = false
-  family                        = var.redis_pay_wallet_params.family
-  sku_name                      = var.redis_pay_wallet_params.sku_name
+  family                        = var.redis_std_pay_wallet_params.family
+  sku_name                      = var.redis_std_pay_wallet_params.sku_name
   enable_authentication         = true
-  redis_version                 = var.redis_pay_wallet_params.version
+  redis_version                 = var.redis_std_pay_wallet_params.version
   public_network_access_enabled = var.env_short == "d"
 
-  custom_zones = var.redis_pay_wallet_params.zones
+  custom_zones = var.redis_std_pay_wallet_params.zones
 
   private_endpoint = {
     enabled              = var.env_short != "d"
@@ -61,13 +61,13 @@ module "pagopa_pay_wallet_redis" {
 # Alerts
 # -----------------------------------------------
 
-resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
+resource "azurerm_monitor_metric_alert" "redis_std_cache_used_memory_exceeded" {
   count = var.is_feature_enabled.redis && var.env_short == "p" ? 1 : 0
 
 
-  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.pagopa_pay_wallet_redis[0].name}] Used Memory close to the threshold"
-  resource_group_name = azurerm_resource_group.redis_pay_wallet_rg.name
-  scopes              = [module.pagopa_pay_wallet_redis[0].id]
+  name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.pagopa_pay_wallet_redis_std[0].name}] Used Memory close to the threshold"
+  resource_group_name = azurerm_resource_group.redis_std_pay_wallet_rg.name
+  scopes              = [module.pagopa_pay_wallet_redis_std[0].id]
   description         = "The amount of cache memory in MB that is used for key/value pairs in the cache during the specified reporting interval, this amount is close to 200 MB so close to the threshold (250 MB)"
   severity            = 0
   window_size         = "PT5M"
