@@ -100,6 +100,7 @@
 | [azurerm_kusto_eventhub_data_connection.eventhub_connection_for_ingestion_qi_fdr](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/kusto_eventhub_data_connection) | resource |
 | [azurerm_kusto_eventhub_data_connection.eventhub_connection_for_ingestion_qi_iuvs](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/kusto_eventhub_data_connection) | resource |
 | [azurerm_kusto_eventhub_data_connection.eventhub_connection_for_re_event](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/kusto_eventhub_data_connection) | resource |
+| [azurerm_kusto_script.create_merge_table](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/kusto_script) | resource |
 | [azurerm_private_endpoint.observability_storage_private_endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/private_endpoint) | resource |
 | [azurerm_resource_group.eventhub_observability_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.gpd_ingestion_rg](https://registry.terraform.io/providers/hashicorp/azurerm/3.117.0/docs/resources/resource_group) | resource |
