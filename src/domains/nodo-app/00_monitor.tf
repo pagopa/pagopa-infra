@@ -34,24 +34,33 @@ data "azurerm_monitor_action_group" "opsgenie" {
   name                = local.monitor_action_group_opsgenie_name
 }
 
+data "azurerm_monitor_action_group" "infra_opsgenie" {
+  count = var.env_short == "p" ? 1 : 0
+
+  resource_group_name = var.monitor_resource_group_name
+  name                = local.monitor_action_group_infra_opsgenie_name
+}
+
 data "azurerm_monitor_action_group" "smo_opsgenie" {
   count               = var.env_short == "p" ? 1 : 0
   resource_group_name = var.monitor_resource_group_name
   name                = "SmoOpsgenie"
 }
 
-resource "azurerm_monitor_metric_alert" "aks_nodo_metrics" {
-  name                = "${local.aks_name}-nodo-cron-pod_number"
+resource "azurerm_monitor_metric_alert" "aks_nodo_metrics_error" {
+  name                = "${local.aks_name}-nodo-cron-pod_number_error"
   resource_group_name = var.monitor_resource_group_name
   scopes              = [data.azurerm_kubernetes_cluster.aks.id]
-  description         = "Action will be triggered when Pod count nodo-cron is greater than 200."
+  description         = "Action will be triggered when Pod count nodo-cron is greater than 100."
+  severity            = 1
+  auto_mitigate       = false
 
   criteria {
     aggregation      = "Average"
     metric_namespace = "Microsoft.ContainerService/managedClusters"
     metric_name      = "kube_pod_status_phase"
     operator         = "GreaterThan"
-    threshold        = 200
+    threshold        = 100
     dimension {
       name     = "Namespace"
       operator = "Include"
@@ -71,13 +80,22 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_metrics" {
     action_group_id    = azurerm_monitor_action_group.logic_app.id
     webhook_properties = null
   }
+  dynamic "action" {
+    for_each = var.env == "prod" ? [data.azurerm_monitor_action_group.infra_opsgenie.0.id] : []
+    content {
+      action_group_id    = action.value
+      webhook_properties = null
+    }
+  }
+
 }
 
-resource "azurerm_monitor_metric_alert" "aks_nodo_metrics_error" {
-  name                = "${local.aks_name}-nodo-cron-pod_error"
+resource "azurerm_monitor_metric_alert" "aks_nodo_metrics" {
+  name                = "${local.aks_name}-nodo-cron-pod"
   resource_group_name = var.monitor_resource_group_name
   scopes              = [data.azurerm_kubernetes_cluster.aks.id]
-  description         = "Action will be triggered when Pod count nodo-cron is greater than 200."
+  description         = "Action will be triggered when Pod count nodo-cron is greater than 30."
+  severity            = 3
 
   criteria {
     aggregation      = "Average"
@@ -95,17 +113,20 @@ resource "azurerm_monitor_metric_alert" "aks_nodo_metrics_error" {
       operator = "Include"
       values   = ["Failed", "Pending"]
     }
-
   }
 
   action {
     action_group_id    = data.azurerm_monitor_action_group.slack.id
     webhook_properties = null
   }
-  action {
-    action_group_id    = azurerm_monitor_action_group.logic_app.id
-    webhook_properties = null
+  dynamic "action" {
+    for_each = var.env == "prod" ? [data.azurerm_monitor_action_group.infra_opsgenie.0.id] : []
+    content {
+      action_group_id    = action.value
+      webhook_properties = null
+    }
   }
+
 }
 
 
@@ -173,13 +194,32 @@ resource "azurerm_logic_app_action_http" "create_branch" {
   }
   body = <<SCHEMA
 {
-  "ref": "refs/heads/alert-suspend-cron-55FG123SD-@{convertFromUtc(utcNow(), 'W. Europe Standard Time', 'yyyyMMddHHmmss')}-${var.env}",
+  "ref": "refs/heads/@{variables('branchName')}",
   "sha": "@{body('${local.custom_action_schema.parse_json.name}')?['object']?['sha']}"
 }
 SCHEMA
   uri  = "https://api.github.com/repos/${local.github.org}/${local.github.repository}/git/refs"
   run_after {
-    action_name   = local.custom_action_schema.parse_json.name
+    action_name   = local.custom_action_schema.init_branch_variable.name
+    action_result = "Succeeded"
+  }
+}
+
+resource "azurerm_logic_app_action_http" "delete_branch" {
+  name         = "Delete alert branch"
+  logic_app_id = azurerm_logic_app_workflow.logic.id
+  method       = "DELETE"
+  headers = {
+    "Accept"               = "application/vnd.github+json"
+    "Authorization"        = "Bearer ${local.github.pat}"
+    "X-GitHub-Api-Version" = "2022-11-28"
+  }
+
+  body = ""
+
+  uri = "https://api.github.com/repos/${local.github.org}/${local.github.repository}/git/refs/heads/@{variables('branchName')}"
+  run_after {
+    action_name   = local.custom_action_schema.wait.name
     action_result = "Succeeded"
   }
 }
@@ -193,7 +233,7 @@ resource "azurerm_logic_app_action_custom" "custom" {
 
 
 data "azurerm_key_vault_secret" "github_pat" {
-  name         = "bot-token-github"
+  name         = "payments-cloud-github-bot-pat"
   key_vault_id = data.azurerm_key_vault.kv_core.id
 }
 
@@ -213,19 +253,11 @@ locals {
   "inputs": {
     "content": "@body('GET latest SHA256')",
     "schema": {
-      "type": "object",
       "properties": {
-        "ref": {
-          "type": "string"
-        },
         "node_id": {
           "type": "string"
         },
-        "url": {
-          "type": "string"
-        },
         "object": {
-          "type": "object",
           "properties": {
             "sha": {
               "type": "string"
@@ -236,13 +268,62 @@ locals {
             "url": {
               "type": "string"
             }
-          }
+          },
+          "type": "object"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
         }
-      }
+      },
+      "type": "object"
     }
   },
   "runAfter": {
     "GET latest SHA256": [
+      "Succeeded"
+    ]
+  }
+}
+BODY
+    }
+    init_branch_variable = {
+      name = "Initialize variables"
+      body = <<BODY
+{
+  "type": "InitializeVariable",
+  "inputs": {
+    "variables": [
+      {
+        "name": "branchName",
+        "type": "string",
+        "value": "alert-suspend-cron-55FG123SD-@{convertFromUtc(utcNow(), 'W. Europe Standard Time', 'yyyyMMddHHmmss')}-${var.env}"
+      }
+    ]
+  },
+  "runAfter": {
+    "Parse sha256 sum from main": [
+      "Succeeded"
+    ]
+  }
+}
+BODY
+    }
+    wait = {
+      name = "Delay"
+      body = <<BODY
+{
+  "type": "Wait",
+  "inputs": {
+    "interval": {
+      "count": 10,
+      "unit": "Second"
+    }
+  },
+  "runAfter": {
+    "Create alert branch": [
       "Succeeded"
     ]
   }

@@ -208,5 +208,3 @@ resource "azurerm_api_management_api_operation_policy" "create_transactions_v2" 
     ecommerce_ingress_hostname = local.ecommerce_hostname
   })
 }
-
-

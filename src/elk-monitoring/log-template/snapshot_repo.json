@@ -1,9 +1,0 @@
-{
-  "type": "azure",
-  "settings": {
-    "container": "${snapshot_container_name}",
-    "base_path": "backups",
-    "chunk_size": "32MB",
-    "compress": true
-  }
-}

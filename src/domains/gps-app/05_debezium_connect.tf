@@ -30,6 +30,9 @@ resource "helm_release" "strimzi-kafka-operator" {
   repository = "oci://quay.io/strimzi-helm"
   version    = "0.43.0"
   namespace  = "gps" # kubernetes_namespace.namespace.metadata[0].name
+  values = [
+    file("${path.module}/yaml/node-affinity.yaml")
+  ]
 }
 
 locals {
@@ -123,6 +126,13 @@ resource "kubectl_manifest" "debezium_secrets" {
 
   force_conflicts = true
   yaml_body       = local.debezium_secrets_yaml
+
+  lifecycle {
+    ignore_changes = [
+      # ⚠️ DEBEZIUM-CDC-PWD warning to avoid fake update on database.password ⚠️ remove it to real update
+      yaml_body
+    ]
+  }
 }
 
 resource "kubectl_manifest" "debezoum_rbac" {
@@ -132,6 +142,7 @@ resource "kubectl_manifest" "debezoum_rbac" {
   depends_on      = [kubectl_manifest.debezium_role]
   force_conflicts = true
   yaml_body       = local.debezium_rbac_yaml
+
 }
 
 # resource "kubectl_manifest" "zookeper_manifest" {
@@ -200,6 +211,13 @@ resource "kubectl_manifest" "postgres_connector" {
   ]
   force_conflicts = true
   yaml_body       = local.postgres_connector_yaml
+
+  lifecycle {
+    ignore_changes = [
+      # ⚠️ DEBEZIUM-CDC-PWD warning to avoid fake update on database.password ⚠️ remove it to real update
+      yaml_body
+    ]
+  }
 }
 
 resource "null_resource" "wait_postgres_connector" {

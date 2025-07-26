@@ -1,4 +1,7 @@
-trigger: none
+trigger:
+  branches:
+    include:
+      - alert-suspend-cron-55FG123SD-*
 
 pr: none
 
@@ -9,25 +12,6 @@ resources:
       name: pagopa/azure-pipeline-templates
       ref: refs/tags/v6.9.0
       endpoint: "io-azure-devops-github-ro"
-    - repository: self
-      type: git
-      trigger:
-        branches:
-          include:
-            - refs/heads/alert-suspend-cron-55FG123SD-*
-
-variables:
-  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/alert-suspend-cron-') }}:
-    branchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
-    alertKey: $[ split(variables['branchName'], '-')[3] ]
-    timestamp: $[ split(variables['branchName'], '-')[4] ]
-    env: $[ split(variables['branchName'], '-')[5] ]
-  AZURE_SERVICE_CONNECTION_NAME: $[ format('$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_{0})', coalesce(upper(variables['env']), 'DEV')) ]
-  AKS_NAME: $[ format('$(TF_AKS_{0}_NAME)', coalesce(upper(variables['env']), 'DEV')) ]
-  AKS_API_SERVER_URL: $[ format('$(TF_{0}_AKS_APISERVER_URL)', coalesce(upper(variables['env']), 'DEV')) ]
-  AKS_AZURE_DEVOPS_SA_CA_CRT: $[ format('$(TF_{0}_AKS_AZURE_DEVOPS_SA_CACRT)', coalesce(upper(variables['env']), 'DEV')) ]
-  AKS_AZURE_DEVOPS_SA_TOKEN: $[ format('$(TF_{0}_AKS_AZURE_DEVOPS_SA_TOKEN)', coalesce(upper(variables['env']), 'DEV')) ]
-
 
 parameters:
   # Operation mode for the cron jobs suspension pipeline
@@ -37,21 +21,45 @@ parameters:
   - name: mode
     displayName: 'Mode'
     type: string
-    default: 'Fix'
+    default: 'fix'
     values:
     - 'fix'
     - 'resume'
     - 'soft'
+  - name: env
+    displayName: 'Environment (optional, if set it takes precedence over branch value)'
+    type: string
+    default: 'dev'
+    values:
+      - 'dev'
+      - 'uat'
+      - 'prod'
+
+
+variables:
+  ${{ if startsWith(variables['Build.SourceBranch'], 'refs/heads/alert-suspend-cron-') }}:
+    branchName: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
+    alertKey: $[ split(variables['branchName'], '-')[3] ]
+    timestamp: $[ split(variables['branchName'], '-')[4] ]
+    finalEnv: $[ split(variables['branchName'], '-')[5] ]
+  ${{ if not(startsWith(variables['Build.SourceBranch'], 'refs/heads/alert-suspend-cron-')) }}:
+    finalEnv: ${{ parameters.env }}
+  AZURE_SERVICE_CONNECTION_NAME: $[ format('$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_{0})', coalesce(upper(variables['finalEnv']), 'DEV')) ]
+  AKS_NAME: $[ format('$(TF_AKS_{0}_NAME)', coalesce(upper(variables['finalEnv']), 'DEV')) ]
+  AKS_API_SERVER_URL: $[ format('$(TF_{0}_AKS_APISERVER_URL)', coalesce(upper(variables['finalEnv']), 'DEV')) ]
+  AKS_AZURE_DEVOPS_SA_CA_CRT: $[ format('$(TF_{0}_AKS_AZURE_DEVOPS_SA_CACRT)', coalesce(upper(variables['finalEnv']), 'DEV')) ]
+  AKS_AZURE_DEVOPS_SA_TOKEN: $[ format('$(TF_{0}_AKS_AZURE_DEVOPS_SA_TOKEN)', coalesce(upper(variables['finalEnv']), 'DEV')) ]
+
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: $[ format('$(TF_POOL_NAME_{0})', coalesce(upper(variables['finalEnv']), 'DEV')) ]
 
 jobs:
   - job: SuspendCronJobs
     displayName: 'Suspend Nodo Cron Jobs'
     steps:
       - task: AzureCLI@2
-        displayName: 'Check For Requirements'
+        displayName: '[$(finalEnv)] Check For Requirements'
         inputs:
           azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
           scriptType: 'bash'
@@ -78,7 +86,7 @@ jobs:
 
 
       - task: AzureCLI@2
-        displayName: "Perform CRON GROM (Generic Recovery & Outage Mitigator)"
+        displayName: "[$(finalEnv)] Perform CRON GROM (Generic Recovery & Outage Mitigator)"
         inputs:
           azureSubscription: '$(AZURE_SERVICE_CONNECTION_NAME)'
           scriptType: 'bash'
@@ -87,3 +95,5 @@ jobs:
             export KUBECONFIG=$(System.DefaultWorkingDirectory)/config-$(AKS_NAME)
 
             curl https://raw.githubusercontent.com/pagopa/eng-common-scripts/refs/heads/main/global/cron-grom/cron-grom.sh | bash -s "${{ parameters.mode }}" nodo-cron
+
+

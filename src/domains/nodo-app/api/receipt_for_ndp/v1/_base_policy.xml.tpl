@@ -60,6 +60,9 @@
                         -->
                         
                         <!-- https://github.com/MicrosoftDocs/azure-docs/issues/79088 -->
+                        <set-header name="x-api-key" exists-action="override">
+                            <value>{{ecommerce-transactions-service-api-key-value}}</value>
+                        </set-header>
                         <set-backend-service base-url="https://weu${environ}.ecommerce.internal.${environ}.platform.pagopa.it/pagopa-ecommerce-transactions-service" />
                     </otherwise>                       
                 </choose>
