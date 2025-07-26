@@ -1,4 +1,4 @@
-package terraform.analysis
+package it.pagopa.opa.terraform.plan
 
 import input as tfplan
 
@@ -7,16 +7,16 @@ import input as tfplan
 ########################
 
 # acceptable score for automated authorization
-blast_radius := 55
+blast_radius := 100
 
 # weights assigned for each operation on each resource-type
 weights := {
-	"azurerm_storage_account": {"delete": 100, "create": 10, "modify": 10},
-	"azurerm_monitor_metric_alert": {"delete": 100, "create": 1, "modify": 10},
+	"azurerm_api_management_api_policy": {"delete": 100, "create": 1, "modify": 10},
+	"azurerm_monitor_metric_alert": {"delete": 20, "create": 1, "modify": 10},
 }
 
 # Consider exactly these resource types in calculations
-resource_types := {"azurerm_storage_account", "azurerm_monitor_metric_alert"}
+resource_types := {"azurerm_api_management_api_policy", "azurerm_monitor_metric_alert"}
 
 #########
 # Policy
