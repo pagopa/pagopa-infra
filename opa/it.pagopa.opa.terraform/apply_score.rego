@@ -1,4 +1,4 @@
-package it.pagopa.opa.terraform.plan
+package it.pagopa.opa.terraform.plan.apply_score
 
 import input as tfplan
 

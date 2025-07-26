@@ -1,4 +1,4 @@
-package it.pagopa.opa.terraform
+package it.pagopa.opa.terraform.version
 
 import input as tfplan
 import rego.v1

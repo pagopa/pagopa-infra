@@ -1,4 +1,4 @@
-package it.pagopa.opa.apim
+package it.pagopa.opa.apim.protocol
 
 not_allowed_uri_protocol := "http://"
 

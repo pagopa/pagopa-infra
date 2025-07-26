@@ -1,4 +1,4 @@
-package it.pagopa.opa.storage_account
+package it.pagopa.opa.storage_account.replication
 
 
 is_in_scope(resource, type) if {
