@@ -234,5 +234,5 @@ resource "azurerm_api_management_named_value" "pagopa_appservice_proxy_url_value
   api_management_name = data.azurerm_api_management.apim.name
   resource_group_name = data.azurerm_resource_group.rg_api.name
   display_name        = "pagopa-appservice-proxy-url"
-  value               = "TODELETE"
+  value               = format("https://%s", "module.pagopa_proxy_app_service.default_site_hostname")
 }
