@@ -301,24 +301,30 @@ function other_actions() {
 
       echo ""
 
-      ##### OPA start
-      terraform show -json "$file_name.tfplan" > "$file_name.json"
-      # calcolo score
-      score=$(opa eval --data ./opa/it.pagopa.opa.terraform/apply_score.rego --input "$file_name.json" "data.it.pagopa.opa.terraform.plan.apply_score.score" --format pretty)
-      read -p "${bold}Apply Score: ${red}${score}${normal} Continue (only yes will be accepted): ${normal}" score_confirmation
-      if [ "$score_confirmation" != "yes" ]; then
-        exit 1
+      if [ -f "$root_folder/.terraform-opa" ]
+      then
+        # load opa config
+        source "$root_folder/.terraform-opa"
+        ##### OPA start
+        terraform show -json "$file_name.tfplan" > "$file_name.json"
+        # calcolo score
+        score=$(opa eval --data "$root_folder/$opa_policy_folder/it.pagopa.opa.terraform/apply_score.rego" --input "$file_name.json" "data.it.pagopa.opa.terraform.plan.apply_score.score" --format pretty)
+        read -p "${bold}Apply Score: ${red}${score}${normal} Continue (only yes will be accepted): ${normal}" score_confirmation
+        if [ "$score_confirmation" != "yes" ]; then
+          exit 1
+        fi
+
+        conftest test /tmp/opa_final.json -p ./opa -o table --all-namespaces --quiet
+        opa_exitcode=$?
+
+        check_conftest_output "$opa_exitcode"
+        ###### OPA end
       fi
 
-      conftest test /tmp/opa_final.json -p ./opa -o table --all-namespaces --quiet 
-      opa_exitcode=$?
-
-      check_conftest_output "$opa_exitcode"
-      ###### OPA end
 
       ####
       # show plan
-      echo "${bold}Plan file: ${file_name}.tfplan${normal}"      
+      echo "${bold}Plan file: ${file_name}.tfplan${normal}"
       # ask user confirmation before applying changes
       read -p "${bold}Apply these changes (only yes will be accepted): ${normal}" apply_confirmation
       if [ "$apply_confirmation" == "yes" ]; then
