@@ -279,6 +279,20 @@ function other_actions() {
       check_plan_output "$plan_exitcode"
 
       echo ""
+
+      ##### OPA start
+      terraform show -json "$file_name.tfplan" > "$file_name.json"
+      # calcolo score
+      score=$(opa eval --data ./opa/it.pagopa.opa.terraform/apply_score.rego --input "$file_name.json" "data.it.pagopa.opa.terraform.plan.apply_score.score" --format pretty)
+      read -p "${bold}Apply Score: ${score}${normal} Continue (only yes will be accepted): ${normal} score_confirmation:"
+      if [ "$apply_confirmation" != "yes" ]; then
+        exit 1
+      fi
+      ###### OPA end
+
+      ####
+      # show plan
+      echo "${bold}Plan file: ${file_name}.tfplan${normal}"      
       # ask user confirmation before applying changes
       read -p "${bold}Apply these changes (only yes will be accepted): ${normal}" apply_confirmation
       if [ "$apply_confirmation" == "yes" ]; then
