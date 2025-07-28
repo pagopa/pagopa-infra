@@ -261,12 +261,16 @@ function check_conftest_output(){
   # check if changes are present
   if [ "$opa_exitcode" == 0 ]; then
     echo "${bold}${green}OPEN Policy Test SUCCESS!${normal}"
-    rm "$file_name.json" 2>/dev/null
   fi
   if [ "$opa_exitcode" == 1 ]; then
-    echo "${bold}${red}OPEN Policy Test FAILURE!${black} Are you sure? Re-run apply with -skipPolicy parameter to skip OPA Policy Check${normal}"
-    rm "$file_name.json" 2>/dev/null
-    exit 1
+    echo "${bold}${red}OPEN Policy Test FAILURE!${black}${normal}"
+    read -p "${bold}${red}Are you sure to continue? (only yes will be accepted): ${normal}" skip_confirmation
+    if [ "$skip_confirmation" != "yes" ]; then
+        clean_audit_files  "$file_name"
+        exit 1
+    fi
+    
+
   fi
 }
 
@@ -276,6 +280,8 @@ function clean_audit_files() {
   rm "$file_name.plan" 2>/dev/null
   rm "$file_name.apply" 2>/dev/null
   rm "$file_name.tfplan" 2>/dev/null
+  rm "$file_name.json" 2>/dev/null
+
 }
 
 function other_actions() {
@@ -311,10 +317,11 @@ function other_actions() {
         score=$(opa eval --data "$root_folder/$opa_policy_folder/it.pagopa.opa.terraform/apply_score.rego" --input "$file_name.json" "data.it.pagopa.opa.terraform.plan.apply_score.score" --format pretty)
         read -p "${bold}Apply Score: ${red}${score}${normal} Continue (only yes will be accepted): ${normal}" score_confirmation
         if [ "$score_confirmation" != "yes" ]; then
+          clean_audit_files  "$file_name"
           exit 1
         fi
 
-        conftest test /tmp/opa_final.json -p ./opa -o table --all-namespaces --quiet
+        conftest test /tmp/opa_final.json -p $root_folder/$opa_policy_folder -o table --all-namespaces --quiet
         opa_exitcode=$?
 
         check_conftest_output "$opa_exitcode"
