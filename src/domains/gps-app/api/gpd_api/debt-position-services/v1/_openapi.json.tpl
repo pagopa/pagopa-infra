@@ -4,18 +4,15 @@
     "title" : "PagoPA API Debt Position ${service}",
     "description" : "Progetto Gestione Posizioni Debitorie",
     "termsOfService" : "https://www.pagopa.gov.it/",
-    "version" : "0.14.8"
+    "version" : "0.14.8-1-PIDM-821"
   },
-  "servers" : [
-    {
-      "url" : "https://api.uat.platform.pagopa.it/gpd/debt-positions-service/v1",
-      "description" : "GPD Test environment"
-    },
-    {
-      "url" : "https://api.platform.pagopa.it/gpd/debt-positions-service/v1",
-      "description" : "GPD Production Environment"
-    }
-  ],
+  "servers" : [ {
+    "url" : "https://api.uat.platform.pagopa.it/gpd/debt-positions-service/v1",
+    "description" : "GPD Test environment"
+  }, {
+    "url" : "https://api.platform.pagopa.it/gpd/debt-positions-service/v1",
+    "description" : "GPD Production Environment"
+  } ],
   "paths" : {
     "/info" : {
       "get" : {
@@ -1305,16 +1302,17 @@
           "schema" : {
             "type" : "string"
           }
-        }, {
-          "name" : "paymentDate",
-          "in" : "query",
-          "description" : "Date on which the payment was made outside the pagoPA platform",
-          "required" : false,
-          "schema" : {
-            "type" : "string",
-            "format" : "date-time"
-          }
         } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AlreadyPaidPaymentOptionModel"
+              }
+            }
+          },
+          "required" : true
+        },
         "responses" : {
           "200" : {
             "description" : "Request set as paid.",
@@ -1724,6 +1722,15 @@
             "type" : "string",
             "description" : "A human readable explanation specific to this occurrence of the problem.",
             "example" : "There was an error processing the request"
+          }
+        }
+      },
+      "AlreadyPaidPaymentOptionModel" : {
+        "type" : "object",
+        "properties" : {
+          "paymentDate" : {
+            "type" : "string",
+            "format" : "date-time"
           }
         }
       },
