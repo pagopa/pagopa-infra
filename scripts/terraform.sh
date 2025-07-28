@@ -249,6 +249,20 @@ function check_plan_output(){
   fi
 }
 
+function check_conftest_output(){
+  opa_exitcode=$1
+  # check if changes are present
+  if [ "$opa_exitcode" == 0 ]; then
+    echo "${bold}OPEN Policy Test SUCCESS!${normal}"
+    rm "$file_name.json" 2>/dev/null
+    exit 0
+  fi
+  if [ "$opa_exitcode" == 1 ]; then
+    rm "$file_name.json" 2>/dev/null
+    exit 1
+  fi
+}
+
 function clean_audit_files() {
   file_name=$1
   # cleanup temporary files
@@ -285,9 +299,14 @@ function other_actions() {
       # calcolo score
       score=$(opa eval --data ./opa/it.pagopa.opa.terraform/apply_score.rego --input "$file_name.json" "data.it.pagopa.opa.terraform.plan.apply_score.score" --format pretty)
       read -p "${bold}Apply Score: ${score}${normal} Continue (only yes will be accepted): ${normal} score_confirmation:"
-      if [ "$apply_confirmation" != "yes" ]; then
+      if [ "$score_confirmation" != "yes" ]; then
         exit 1
       fi
+
+      conftest test /tmp/opa_final.json -p ./opa -o table --all-namespaces
+      opa_exitcode=$?
+
+      check_conftest_output "$opa_exitcode"
       ###### OPA end
 
       ####
