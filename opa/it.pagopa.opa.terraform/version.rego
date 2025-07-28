@@ -3,7 +3,7 @@ package it.pagopa.opa.terraform.version
 import input as tfplan
 import rego.v1
 
-minimum_terraform := "1.9.0"
+minimum_terraform := "1.11.0"
 
 deny contains msg if {
     v := tfplan.terraform_version

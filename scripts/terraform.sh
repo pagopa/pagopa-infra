@@ -17,9 +17,16 @@ else
 fi
 # Define colors and styles
 # fixme find a way to color output on local and on devops agent, where tput returns an error
-bold=""
-normal=""
-red=""
+bold="$(tput bold)"
+normal="$(tput sgr0)"
+red="$(tput setaf 1)"
+black="$(tput setaf 0)"
+green="$(tput setaf 2)"
+yellow="$(tput setaf 3)"
+blue="$(tput setaf 4)"
+magenta="$(tput setaf 5)"
+cyan="$(tput setaf 6)"
+white="$(tput setaf 7)"
 
 # Define functions
 function clean_environment() {
@@ -253,11 +260,11 @@ function check_conftest_output(){
   opa_exitcode=$1
   # check if changes are present
   if [ "$opa_exitcode" == 0 ]; then
-    echo "${bold}OPEN Policy Test SUCCESS!${normal}"
+    echo "${bold}${green}OPEN Policy Test SUCCESS!${normal}"
     rm "$file_name.json" 2>/dev/null
-    exit 0
   fi
   if [ "$opa_exitcode" == 1 ]; then
+    echo "${bold}${red}OPEN Policy Test FAILURE!${black} Are you sure? Re-run apply with -skipPolicy parameter to skip OPA Policy Check${normal}"
     rm "$file_name.json" 2>/dev/null
     exit 1
   fi
@@ -275,7 +282,7 @@ function other_actions() {
   if [ -n "$env" ] && [ -n "$action" ]; then
     root_folder=$(git rev-parse --show-toplevel)
     # if apply in prod environment and audit settings are defined
-    if [ "$action" == "apply" ] && [[ "$env" == *"prod" ]] && [ -f "$root_folder/.terraform-audit" ]; then
+    if [ "$action" == "apply" ] && [[ "$env" == *"dev" ]] && [ -f "$root_folder/.terraform-audit" ]; then
 
       check_arguments
 
@@ -298,12 +305,12 @@ function other_actions() {
       terraform show -json "$file_name.tfplan" > "$file_name.json"
       # calcolo score
       score=$(opa eval --data ./opa/it.pagopa.opa.terraform/apply_score.rego --input "$file_name.json" "data.it.pagopa.opa.terraform.plan.apply_score.score" --format pretty)
-      read -p "${bold}Apply Score: ${score}${normal} Continue (only yes will be accepted): ${normal} score_confirmation:"
+      read -p "${bold}Apply Score: ${red}${score}${normal} Continue (only yes will be accepted): ${normal}" score_confirmation
       if [ "$score_confirmation" != "yes" ]; then
         exit 1
       fi
 
-      conftest test /tmp/opa_final.json -p ./opa -o table --all-namespaces
+      conftest test /tmp/opa_final.json -p ./opa -o table --all-namespaces --quiet 
       opa_exitcode=$?
 
       check_conftest_output "$opa_exitcode"
