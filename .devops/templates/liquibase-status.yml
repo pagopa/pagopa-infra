@@ -82,11 +82,8 @@ parameters:
     type: string
     default: "-"
 
-jobs:
-- job: liquibase_status_${{ replace(parameters.DATABASE_NAME, '-', '_') }}_${{ parameters.TARGET_DB_TYPE }}_${{ parameters.LIQUIBASE_FOLDER }}
-  pool: $(poolImage)
-  displayName: "Liquibase status and validation ${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} for ${{ parameters.LIQUIBASE_FOLDER }}"
-  steps:
+
+steps:
   - script: |
       if [ ! -f src/psql/nodo/liquibase/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
         echo "Version ${{ parameters.LIQUIBASE_DB_VERSION }} not defined for ${{ parameters.DATABASE_NAME }}"
