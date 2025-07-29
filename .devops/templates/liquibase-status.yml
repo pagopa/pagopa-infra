@@ -95,7 +95,7 @@ steps:
       fi
     displayName: "Check if Liquibase version exists"
   - script: |
-      if [ "${{ parameters.LIQUIBASE_SCHEMA_NAME }}" -eq "-" ]; then
+      if [[ "${{ parameters.LIQUIBASE_SCHEMA_NAME }}" == "-" ]]; then
         echo "Liquibase schema name is not set, using default schema: ${{ parameters.SCHEMA }}"
         echo "##vso[task.setvariable variable=LIQUIBASE_SCHEMA_NAME]${{ parameters.SCHEMA }}"
       else
@@ -103,7 +103,7 @@ steps:
         echo "##vso[task.setvariable variable=LIQUIBASE_SCHEMA_NAME]${{ parameters.LIQUIBASE_SCHEMA_NAME }}"
       fi
 
-      if [ "${{ parameters.CHANGELOG_LOCK_TABLE }}" -eq "-" ]; then
+      if [[ "${{ parameters.CHANGELOG_LOCK_TABLE }}" == "-" ]]; then
         echo "Liquibase changelog lock table name not set, using default name: DATABASECHANGELOGLOCK"
         echo "##vso[task.setvariable variable=CHANGELOG_LOCK_TABLE]DATABASECHANGELOGLOCK"
       else
@@ -111,7 +111,7 @@ steps:
         echo "##vso[task.setvariable variable=CHANGELOG_LOCK_TABLE]${{ parameters.CHANGELOG_LOCK_TABLE }}"
       fi
 
-      if [ "${{ parameters.CHANGELOG_TABLE }}" -eq "-" ]; then
+      if [[ "${{ parameters.CHANGELOG_TABLE }}" == "-" ]]; then
         echo "Liquibase changelog table name is not set, using default name: DATABASECHANGELOG"
         echo "##vso[task.setvariable variable=CHANGELOG_TABLE]DATABASECHANGELOG"
       else
@@ -145,7 +145,6 @@ steps:
       --password="${{ parameters.PASSWORD }}" \
       --classpath=src/psql/nodo/liquibase/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }} \
       --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
-      --liquibaseSchemaName="iif(eq(parameters.LIQUIBASE_SCHEMA_NAME, '-'), parameters.SCHEMA, parameters.LIQUIBASE_SCHEMA_NAME) ${{ parameters.SCHEMA }}" \
       --liquibaseSchemaName="$(LIQUIBASE_SCHEMA_NAME)" \
       --defaultSchemaName="${{ parameters.SCHEMA }}" \
       --contexts="${{ parameters.lbContexts }}" \
