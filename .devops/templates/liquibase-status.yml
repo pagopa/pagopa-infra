@@ -83,9 +83,9 @@ parameters:
     default: "-"
 
 jobs:
-- job: liquibase_status_job
+- job: liquibase_status_job_${{ parameters.DATABASE_NAME }}_${{ parameters.TARGET_DB_TYPE }}_${{ parameters.LIQUIBASE_FOLDER }}
   pool: $(poolImage)
-  displayName: "Liquibase status and validation ${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }}"
+  displayName: "Liquibase status and validation ${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} for ${{ parameters.LIQUIBASE_FOLDER }}"
   steps:
   - script: |
       if [ ! -f src/psql/nodo/liquibase/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
