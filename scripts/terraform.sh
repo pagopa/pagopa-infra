@@ -5,7 +5,7 @@
 ############################################################
 # Global variables
 # Version format x.y accepted
-vers="2.2"
+vers="3.0"
 script_name=$(basename "$0")
 git_repo="https://raw.githubusercontent.com/pagopa/eng-common-scripts/main/azure/${script_name}"
 tmp_file="${script_name}.new"
@@ -305,7 +305,7 @@ function other_actions() {
   if [ -n "$env" ] && [ -n "$action" ]; then
     root_folder=$(git rev-parse --show-toplevel)
     # if apply in prod environment and audit settings are defined
-    if [ "$action" == "apply" ] && [[ "$env" == *"dev" ]] && [ -f "$root_folder/.terraform-audit" ]; then
+    if [ "$action" == "apply" ] && [[ "$env" == *"prod" ]] && [ -f "$root_folder/.terraform-audit" ]; then
 
       check_arguments
 
