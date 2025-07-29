@@ -290,7 +290,7 @@ stages:
               USERNAME: $(ADMIN_USERNAME)
               PASSWORD: $(db-administrator-login-password)
               SCHEMA: $(ADMIN_SCHEMA)
-              TARGET_DB_TYPE: main
+              TARGET_DB_TYPE: storico
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_SCHEMA_NAME: public

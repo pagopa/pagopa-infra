@@ -88,9 +88,37 @@ steps:
       if [ ! -f src/psql/nodo/liquibase/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
         echo "Version ${{ parameters.LIQUIBASE_DB_VERSION }} not defined for ${{ parameters.DATABASE_NAME }}"
         echo "File db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml not found in folder ${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}!"
-        exit 1
+        echo "##vso[task.setvariable variable=file_present]false"
+      else
+        echo "File db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml found in folder ${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}!"
+        echo "##vso[task.setvariable variable=file_present]true"
       fi
     displayName: "Check if Liquibase version exists"
+  - script: |
+      if [ "${{ parameters.LIQUIBASE_SCHEMA_NAME }}" -eq "-" ]; then
+        echo "Liquibase schema name is not set, using default schema: ${{ parameters.SCHEMA }}"
+        echo "##vso[task.setvariable variable=LIQUIBASE_SCHEMA_NAME]${{ parameters.SCHEMA }}"
+      else
+        echo "Using Liquibase schema name: ${{ parameters.LIQUIBASE_SCHEMA_NAME }}"
+        echo "##vso[task.setvariable variable=LIQUIBASE_SCHEMA_NAME]${{ parameters.LIQUIBASE_SCHEMA_NAME }}"
+      fi
+
+      if [ "${{ parameters.CHANGELOG_LOCK_TABLE }}" -eq "-" ]; then
+        echo "Liquibase changelog lock table name not set, using default name: DATABASECHANGELOGLOCK"
+        echo "##vso[task.setvariable variable=CHANGELOG_LOCK_TABLE]DATABASECHANGELOGLOCK"
+      else
+        echo "Using Liquibase changelog lock table name: ${{ parameters.CHANGELOG_LOCK_TABLE }}"
+        echo "##vso[task.setvariable variable=CHANGELOG_LOCK_TABLE]${{ parameters.CHANGELOG_LOCK_TABLE }}"
+      fi
+
+      if [ "${{ parameters.CHANGELOG_TABLE }}" -eq "-" ]; then
+        echo "Liquibase changelog table name is not set, using default name: DATABASECHANGELOG"
+        echo "##vso[task.setvariable variable=CHANGELOG_TABLE]DATABASECHANGELOG"
+      else
+        echo "Using Liquibase changelog table name: ${{ parameters.CHANGELOG_TABLE }}"
+        echo "##vso[task.setvariable variable=CHANGELOG_TABLE]${{ parameters.CHANGELOG_TABLE }}"
+      fi
+    displayName: "Set variables"
   - script: |
         liquibase \
         --url="${{ parameters.JDBC_URL }}" \
@@ -109,7 +137,7 @@ steps:
         -Dnodo-db-host=${{ parameters.NODO_DB_HOST }} -Dnodo-db-port=${{ parameters.NODO_DB_PORT }} \
         -Dpartition-password=${{ parameters.DB_PARTITION_PASSWORD }} -Dadmin-password=${{ parameters.DB_ADMIN_PASSWORD }}
     displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} db status"
-    condition: succeeded()
+    condition: and(succeeded(), variables['file_present'] == 'true')
   - script: |
       liquibase \
       --url="${{ parameters.JDBC_URL }}" \
@@ -128,4 +156,4 @@ steps:
       -Dnodo-db-host=${{ parameters.NODO_DB_HOST }} -Dnodo-db-port=${{ parameters.NODO_DB_PORT }} \
       -Dpartition-password=${{ parameters.DB_PARTITION_PASSWORD }} -Dadmin-password=${{ parameters.DB_ADMIN_PASSWORD }}
     displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} db validate"
-    condition: succeeded()
+    condition: and(succeeded(), variables['file_present'] == 'true')
