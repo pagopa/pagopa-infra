@@ -327,6 +327,25 @@ function other_actions() {
       if [ -f "$root_folder/.terraform-opa" ]
       then
         # load opa config
+        if ! command -v opa &> /dev/null && [ ! -f "opa" ]; then
+          brew install opa --quiet
+          if [ $? -ne 0 ]; then
+            echo "${red}Error: Failed to install opa!!"
+            exit 1
+          else
+            echo "Install opa ${green}SUCCESS!"
+          fi
+        fi
+        if ! command -v conftest &> /dev/null && [ ! -f "conftest" ]; then
+          brew install conftest --quiet
+          if [ $? -ne 0 ]; then
+            echo "${red}Error: Failed to install conftest!!"
+            exit 1
+          else
+            echo "Install conftest ${green}SUCCESS!"
+          fi
+        fi
+
         source "$root_folder/.terraform-opa"
         ##### OPA start
         terraform show -json "$file_name.tfplan" > "$file_name.json"
