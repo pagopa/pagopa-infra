@@ -83,7 +83,7 @@ parameters:
     default: "-"
 
 jobs:
-- job: liquibase_status_${{ parameters.DATABASE_NAME }}_${{ parameters.TARGET_DB_TYPE }}_${{ parameters.LIQUIBASE_FOLDER }}
+- job: liquibase_status_${{ replace(parameters.DATABASE_NAME, '-', '_') }}_${{ parameters.TARGET_DB_TYPE }}_${{ parameters.LIQUIBASE_FOLDER }}
   pool: $(poolImage)
   displayName: "Liquibase status and validation ${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} for ${{ parameters.LIQUIBASE_FOLDER }}"
   steps:
