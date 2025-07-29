@@ -118,7 +118,7 @@ steps:
         echo "Using Liquibase changelog table name: ${{ parameters.CHANGELOG_TABLE }}"
         echo "##vso[task.setvariable variable=CHANGELOG_TABLE]${{ parameters.CHANGELOG_TABLE }}"
       fi
-    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} - Set variables"
+    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} ${{ parameters.LIQUIBASE_FOLDER }} - Set variables"
     condition: and(succeeded(), eq(variables.file_present, true))
   - script: |
       liquibase \
@@ -137,7 +137,7 @@ steps:
       -DusernameOffline=${{ parameters.OFFLINE_USERNAME }} -DschemaOnline=${{ parameters.ONLINE_SCHEMA }} \
       -Dnodo-db-host=${{ parameters.NODO_DB_HOST }} -Dnodo-db-port=${{ parameters.NODO_DB_PORT }} \
       -Dpartition-password=${{ parameters.DB_PARTITION_PASSWORD }} -Dadmin-password=${{ parameters.DB_ADMIN_PASSWORD }}
-    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} - db status"
+    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} ${{ parameters.LIQUIBASE_FOLDER }} - db status"
     condition: and(succeeded(), eq(variables.file_present, true))
   - script: |
       liquibase \
@@ -156,5 +156,5 @@ steps:
       -DusernameOffline=${{ parameters.OFFLINE_USERNAME }} -DschemaOnline=${{ parameters.ONLINE_SCHEMA }} \
       -Dnodo-db-host=${{ parameters.NODO_DB_HOST }} -Dnodo-db-port=${{ parameters.NODO_DB_PORT }} \
       -Dpartition-password=${{ parameters.DB_PARTITION_PASSWORD }} -Dadmin-password=${{ parameters.DB_ADMIN_PASSWORD }}
-    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} - db validate"
+    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} ${{ parameters.LIQUIBASE_FOLDER }} - db validate"
     condition: and(succeeded(), eq(variables.file_present, true))
