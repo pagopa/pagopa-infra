@@ -283,7 +283,7 @@ stages:
           # admin st_nodo_storico status
           - template: ./templates/liquibase-status.yml
             parameters:
-              DATABASE_NAME: partition
+              DATABASE_NAME: admin
               LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo_storico)
               LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
               JDBC_URL: $(JDBC_URL_STORICO)
