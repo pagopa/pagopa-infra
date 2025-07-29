@@ -128,7 +128,7 @@ stages:
       - template: ./templates/liquibase-status.yml
         parameters:
           DATABASE_NAME: cfg
-          LIQUIBASE_FOLDER: $(liquibase_folder)
+          LIQUIBASE_FOLDER: ${{ variables.liquibase_folder }}
           LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
           JDBC_URL: $(JDBC_URL)
           USERNAME: $(CFG_USERNAME)
