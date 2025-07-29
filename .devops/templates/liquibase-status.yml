@@ -137,7 +137,7 @@ steps:
       -Dnodo-db-host=${{ parameters.NODO_DB_HOST }} -Dnodo-db-port=${{ parameters.NODO_DB_PORT }} \
       -Dpartition-password=${{ parameters.DB_PARTITION_PASSWORD }} -Dadmin-password=${{ parameters.DB_ADMIN_PASSWORD }}
     displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} db status"
-    condition: and(succeeded(), variables['file_present'] == 'true')
+    condition: and(succeeded(), eq(variables.file_present, true))
   - script: |
       liquibase \
       --url="${{ parameters.JDBC_URL }}" \
@@ -157,4 +157,4 @@ steps:
       -Dnodo-db-host=${{ parameters.NODO_DB_HOST }} -Dnodo-db-port=${{ parameters.NODO_DB_PORT }} \
       -Dpartition-password=${{ parameters.DB_PARTITION_PASSWORD }} -Dadmin-password=${{ parameters.DB_ADMIN_PASSWORD }}
     displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} db validate"
-    condition: and(succeeded(), variables['file_present'] == 'true')
+    condition: and(succeeded(), eq(variables.file_present, true))
