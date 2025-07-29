@@ -271,7 +271,7 @@ stages:
           - template: ./templates/liquibase-status.yml
             parameters:
               DATABASE_NAME: partition
-              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo)
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo_storico)
               LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
               JDBC_URL: $(JDBC_URL_STORICO)
               USERNAME: $(PARTITION_USERNAME)
