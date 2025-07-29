@@ -82,11 +82,8 @@ parameters:
     type: string
     default: "-"
 
-jobs:
-- job: liquibase_status_job
-  pool: $(poolImage)
-  displayName: "Liquibase status and validation ${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }}"
-  steps:
+
+steps:
   - script: |
       if [ ! -f src/psql/nodo/liquibase/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }}/db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml ]; then
         echo "Version ${{ parameters.LIQUIBASE_DB_VERSION }} not defined for ${{ parameters.DATABASE_NAME }}"
@@ -136,11 +133,11 @@ jobs:
       --log-level=${{ parameters.lbLogLevel }} \
       --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
       --database-changelog-table-name="$(CHANGELOG_TABLE)" \
-      status -Dschema=${{ parameters.SCHEMA }} -DschemaOffline=${{ parameters.OFFLINE_SCHEMA }} \
+      update -Dschema=${{ parameters.SCHEMA }} -DschemaOffline=${{ parameters.OFFLINE_SCHEMA }} \
       -DusernameOffline=${{ parameters.OFFLINE_USERNAME }} -DschemaOnline=${{ parameters.ONLINE_SCHEMA }} \
       -Dnodo-db-host=${{ parameters.NODO_DB_HOST }} -Dnodo-db-port=${{ parameters.NODO_DB_PORT }} \
       -Dpartition-password=${{ parameters.DB_PARTITION_PASSWORD }} -Dadmin-password=${{ parameters.DB_ADMIN_PASSWORD }}
-    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} - db status"
+    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} - db update"
     condition: and(succeeded(), eq(variables.file_present, true))
   - script: |
       liquibase \
@@ -155,9 +152,6 @@ jobs:
       --log-level=${{ parameters.lbLogLevel }} \
       --database-changelog-lock-table-name="$(CHANGELOG_LOCK_TABLE)"  \
       --database-changelog-table-name="$(CHANGELOG_TABLE)" \
-      validate -Dschema=${{ parameters.SCHEMA }} -DschemaOffline=${{ parameters.OFFLINE_SCHEMA }} \
-      -DusernameOffline=${{ parameters.OFFLINE_USERNAME }} -DschemaOnline=${{ parameters.ONLINE_SCHEMA }} \
-      -Dnodo-db-host=${{ parameters.NODO_DB_HOST }} -Dnodo-db-port=${{ parameters.NODO_DB_PORT }} \
-      -Dpartition-password=${{ parameters.DB_PARTITION_PASSWORD }} -Dadmin-password=${{ parameters.DB_ADMIN_PASSWORD }}
-    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} - db validate"
+      tag ${{ parameters.LIQUIBASE_DB_VERSION }}
+    displayName: "${{ parameters.DATABASE_NAME }} ${{ parameters.TARGET_DB_TYPE }} - db tag"
     condition: and(succeeded(), eq(variables.file_present, true))
