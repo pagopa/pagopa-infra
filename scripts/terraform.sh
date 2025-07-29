@@ -15,18 +15,35 @@ if [ -n "$3" ] && [ -f "$3" ]; then
 else
   FILE_ACTION=false
 fi
+
 # Define colors and styles
 # fixme find a way to color output on local and on devops agent, where tput returns an error
-bold="$(tput bold)"
-normal="$(tput sgr0)"
-red="$(tput setaf 1)"
-black="$(tput setaf 0)"
-green="$(tput setaf 2)"
-yellow="$(tput setaf 3)"
-blue="$(tput setaf 4)"
-magenta="$(tput setaf 5)"
-cyan="$(tput setaf 6)"
-white="$(tput setaf 7)"
+bold=""
+normal=""
+red=""
+black=""
+green=""
+yellow=""
+blue=""
+magenta=""
+cyan=""
+white=""
+
+os_type=$(uname)
+ if [ "$os_type" == "Darwin" ]; then
+    # Define colors and styles
+    # fixme find a way to color output on local and on devops agent, where tput returns an error
+    bold="$(tput bold)"
+    normal="$(tput sgr0)"
+    red="$(tput setaf 1)"
+    black="$(tput setaf 0)"
+    green="$(tput setaf 2)"
+    yellow="$(tput setaf 3)"
+    blue="$(tput setaf 4)"
+    magenta="$(tput setaf 5)"
+    cyan="$(tput setaf 6)"
+    white="$(tput setaf 7)"
+fi
 
 # Define functions
 function clean_environment() {
@@ -321,7 +338,7 @@ function other_actions() {
           exit 1
         fi
 
-        conftest test /tmp/opa_final.json -p $root_folder/$opa_policy_folder -o table --all-namespaces --quiet
+        conftest test $file_name.json -p $root_folder/$opa_policy_folder -o table --all-namespaces --quiet
         opa_exitcode=$?
 
         check_conftest_output "$opa_exitcode"
@@ -329,9 +346,6 @@ function other_actions() {
       fi
 
 
-      ####
-      # show plan
-      echo "${bold}Plan file: ${file_name}.tfplan${normal}"
       # ask user confirmation before applying changes
       read -p "${bold}Apply these changes (only yes will be accepted): ${normal}" apply_confirmation
       if [ "$apply_confirmation" == "yes" ]; then
