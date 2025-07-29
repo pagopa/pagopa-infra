@@ -98,17 +98,12 @@ steps:
         --password="${{ parameters.PASSWORD }}" \
         --classpath=src/psql/nodo/liquibase/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }} \
         --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
-        ${{ if eq(parameters.LIQUIBASE_SCHEMA_NAME, '-') }}:
-          --liquibaseSchemaName="${{ parameters.SCHEMA }}" \
-        ${{ else }}:
-          --liquibaseSchemaName="${{ parameters.LIQUIBASE_SCHEMA_NAME }}" \
+        --liquibaseSchemaName="iif(eq(parameters.LIQUIBASE_SCHEMA_NAME, '-'), parameters.SCHEMA, parameters.LIQUIBASE_SCHEMA_NAME) ${{ parameters.SCHEMA }}" \
         --defaultSchemaName="${{ parameters.SCHEMA }}" \
         --contexts="${{ parameters.lbContexts }}" \
         --log-level=${{ parameters.lbLogLevel }} \
-        ${{ if ne(parameters.CHANGELOG_LOCK_TABLE, '-') }}:
-          --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_ADMIN" \
-        ${{ if ne(parameters.CHANGELOG_TABLE, '-') }}:
-          --database-changelog-table-name="DATABASECHANGELOG_ADMIN" \
+        --database-changelog-lock-table-name="iif(eq(parameters.CHANGELOG_LOCK_TABLE, '-'), DATABASECHANGELOGLOCK, parameters.CHANGELOG_LOCK_TABLE)"  \
+        --database-changelog-table-name="iif(eq(parameters.CHANGELOG_TABLE, '-'), DATABASECHANGELOG, parameters.CHANGELOG_TABLE)" \
         status -Dschema=${{ parameters.SCHEMA }} -DschemaOffline=${{ parameters.OFFLINE_SCHEMA }} \
         -DusernameOffline=${{ parameters.OFFLINE_USERNAME }} -DschemaOnline=${{ parameters.ONLINE_SCHEMA }} \
         -Dnodo-db-host=${{ parameters.NODO_DB_HOST }} -Dnodo-db-port=${{ parameters.NODO_DB_PORT }} \
@@ -122,17 +117,12 @@ steps:
       --password="${{ parameters.PASSWORD }}" \
       --classpath=src/psql/nodo/liquibase/${{ parameters.LIQUIBASE_FOLDER }}/${{ parameters.DATABASE_NAME }} \
       --changeLogFile=db.changelog-master-${{ parameters.LIQUIBASE_DB_VERSION }}.xml \
-      ${{ if eq(parameters.LIQUIBASE_SCHEMA_NAME, '-') }}:
-          --liquibaseSchemaName="${{ parameters.SCHEMA }}" \
-      ${{ else }}:
-          --liquibaseSchemaName="${{ parameters.LIQUIBASE_SCHEMA_NAME }}" \
+      --liquibaseSchemaName="iif(eq(parameters.LIQUIBASE_SCHEMA_NAME, '-'), parameters.SCHEMA, parameters.LIQUIBASE_SCHEMA_NAME) ${{ parameters.SCHEMA }}" \
       --defaultSchemaName="${{ parameters.SCHEMA }}" \
       --contexts="${{ parameters.lbContexts }}" \
       --log-level=${{ parameters.lbLogLevel }} \
-      ${{ if ne(parameters.CHANGELOG_LOCK_TABLE, '-') }}:
-        --database-changelog-lock-table-name="DATABASECHANGELOGLOCK_ADMIN" \
-      ${{ if ne(parameters.CHANGELOG_TABLE, '-') }}:
-        --database-changelog-table-name="DATABASECHANGELOG_ADMIN" \
+      --database-changelog-lock-table-name="iif(eq(parameters.CHANGELOG_LOCK_TABLE, '-'), DATABASECHANGELOGLOCK, parameters.CHANGELOG_LOCK_TABLE)"  \
+      --database-changelog-table-name="iif(eq(parameters.CHANGELOG_TABLE, '-'), DATABASECHANGELOG, parameters.CHANGELOG_TABLE)" \
       validate -Dschema=${{ parameters.SCHEMA }} -DschemaOffline=${{ parameters.OFFLINE_SCHEMA }} \
       -DusernameOffline=${{ parameters.OFFLINE_USERNAME }} -DschemaOnline=${{ parameters.ONLINE_SCHEMA }} \
       -Dnodo-db-host=${{ parameters.NODO_DB_HOST }} -Dnodo-db-port=${{ parameters.NODO_DB_PORT }} \
