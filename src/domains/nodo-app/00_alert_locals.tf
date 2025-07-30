@@ -1,6 +1,6 @@
 locals {
   grouped_operation_sets = {
-    node_for_io_auth = [
+    node_for_io_auth = var.env_short != "p" ? [] : [
       // Node for IO WS (AUTH)
       {
         operationId_s = "63b6e2da2a92e811a8f338ec",
@@ -9,7 +9,7 @@ locals {
       }
     ]
 
-    node_for_io = [
+    node_for_io = var.env_short != "p" ? [] : [
       {
         operationId_s = "61dedb1eea7c4a07cc7d47b8",
         primitiva     = "activateIOPaymentReq",
@@ -17,7 +17,7 @@ locals {
       },
     ]
 
-    nodo_per_pa_auth = [
+    nodo_per_pa_auth = var.env_short != "p" ? [] : [
       {
         operationId_s = "63e5d8212a92e80448d38dfd",
         primitiva     = "nodoChiediStatoRPT",
@@ -83,7 +83,7 @@ locals {
       },
     ]
 
-    nodo_per_pa = [
+    nodo_per_pa = var.env_short != "p" ? [] : [
       // nodo-per-pa
       {
         operationId_s = "62189aea2a92e81fa4f15ec4",
@@ -143,7 +143,7 @@ locals {
       },
     ]
 
-    nodo_per_psp_auth = [
+    nodo_per_psp_auth = var.env_short != "p" ? [] : [
       // Nodo per PSP WS (AUTH)
       {
         operationId_s = "63b6e2da2a92e811a8f338fb",
@@ -183,7 +183,7 @@ locals {
       },
     ]
 
-    nodo_per_psp = [
+    nodo_per_psp = var.env_short != "p" ? [] : [
       // nodo-per-psp
       {
         operationId_s = "61dedafb2a92e81a0c7a58f5",
@@ -235,7 +235,7 @@ locals {
       }
     ]
 
-    node_for_psp_auth = [
+    node_for_psp_auth = var.env_short != "p" ? [] : [
       // Node for PSP WS (NM3) (AUTH)
       {
         operationId_s = "63b6e2daea7c4a25440fda9f",
@@ -294,7 +294,7 @@ locals {
       },
     ]
 
-    node_for_psp = [
+    node_for_psp = var.env_short != "p" ? [] : [
       // node-for-psp
       {
         operationId_s = "61dedafc2a92e81a0c7a58fb",
@@ -338,7 +338,7 @@ locals {
       },
     ]
 
-    nodo_for_pa_auth = [
+    nodo_for_pa_auth = var.env_short != "p" ? [] : [
       // Node for PA WS (AUTH)
       {
         operationId_s : "63ff73adea7c4a1860530e3a",
@@ -352,7 +352,7 @@ locals {
       },
     ]
 
-    node_for_ecommerce_auth = [
+    node_for_ecommerce_auth = var.env_short != "p" ? [] : [
       // Node for eCommerce API(AUTH)
       {
         operationId_s : "checkPosition",
@@ -367,14 +367,14 @@ locals {
     ]
   }
 
-  formatted_operation_data = {
+  formatted_operation_data = var.env_short == "p" ? {
     for key, ops in local.grouped_operation_sets : key => {
       sub_service = ops[0].sub_service
       formatted_operations = join(",\n  ", [
         for op in ops : "\"${op.operationId_s}\", \"${op.primitiva}\""
       ])
     }
-  }
+  } : {}
 
   error_fault_code = "('${join("', '", ["PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMPOTENZA"])}')"
 
@@ -385,7 +385,7 @@ locals {
 
   action_groups_default = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
 
-  # ENABLE PROD afert deploy
+  #
   action_groups = var.env_short == "p" ? concat(local.action_groups_default, [data.azurerm_monitor_action_group.opsgenie[0].id, data.azurerm_monitor_action_group.smo_opsgenie[0].id]) : local.action_groups_default
   # SEV3 -> No Opsgenie alert
   action_groups_sev3 = var.env_short == "p" ? concat(local.action_groups_default) : local.action_groups_default
