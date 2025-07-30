@@ -10,8 +10,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availabi
   time_window         = 5
 
   action {
-    action_group       = local.action_groups
-    email_subject      = "Nodo PagoPA NODE_FOR_PSP_AUTH API Availability Alert"
+    action_group           = local.action_groups
+    email_subject          = "Nodo PagoPA NODE_FOR_PSP_AUTH API Availability Alert"
     custom_webhook_payload = "{}"
   }
 
@@ -58,8 +58,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_psp_api_faul
   location            = var.location
 
   action {
-    action_group       = local.action_groups
-    email_subject      = "Nodo PagoPA PSP API Fault Code Availability Alert"
+    action_group           = local.action_groups
+    email_subject          = "Nodo PagoPA PSP API Fault Code Availability Alert"
     custom_webhook_payload = "{}"
   }
 
