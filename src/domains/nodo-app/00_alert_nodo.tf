@@ -1,9 +1,11 @@
-resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availability" {
-  name                = "pagopa-${var.env_short}-nodo-pagopa-node_for_psp_auth-api-availability"
+resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availability" {
+  for_each = local.formatted_operation_data
+
+  name                = "pagopa-${var.env_short}-nodo-pagopa-${each.key}-api-availability"
   resource_group_name = "dashboards"
   location            = var.location
   data_source_id      = data.azurerm_api_management.apim.id
-  description         = "Alert when any PagoPA Nodo NODE_FOR_PSP_AUTH (NM3-NMU) API operation falls below 99% availability."
+  description         = "Alert when any PagoPA Nodo ${upper(each.key)} API operation falls below 99% availability."
   enabled             = true
   severity            = 1
   frequency           = 5
@@ -11,14 +13,14 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availabi
 
   action {
     action_group       = local.action_groups
-    email_subject      = "Nodo PagoPA NODE_FOR_PSP_AUTH API Availability Alert"
+    email_subject      = "Nodo PagoPA ${upper(each.key)} API Availability Alert"
     custom_webhook_payload = "{}"
   }
 
   query = <<-EOT
     let operationMap = datatable(operationId_s: string, apiName: string)
     [
-        ${local.formatted_operation_data["node_for_psp_auth"].formatted_operations}
+        ${each.value.formatted_operations}
     ];
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
     let thresholdTrafficMin = 150;
@@ -29,8 +31,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availabi
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     AzureDiagnostics
     | where TimeGenerated > ago(5m)
-    | where backendUrl_s == "${local.pagopa_nodo_ingress}${local.nodo_soap_path}"
-    | where url_s matches regex "${local.formatted_operation_data["node_for_psp_auth"].sub_service}"
+    | where url_s matches regex "${each.value.sub_service}"
     | where operationId_s in (operationIds)
     | summarize
         Total = count(),
@@ -50,9 +51,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availabi
     threshold = 0
   }
 }
-
-// Alert to monitor fault code based availability
-resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_psp_api_fault_code_availability_alert" {
+// Alert to monitor availability based on fault code, it does not filter by target, so monitors all node types.
+resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_code_availability_alert" {
   resource_group_name = "dashboards"
   name                = "pagopa-${var.env_short}-nodo-pagoapa-psp-api-fault-code-availability"
   location            = var.location
@@ -76,6 +76,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_psp_api_faul
         ${local.formatted_operation_data["node_for_psp_auth"].formatted_operations}
     ];
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
+    let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
     let thresholdTrafficMin = 150;
     let thresholdTrafficLinear = 400;
     let lowTrafficAvailability = 96;
@@ -85,7 +86,6 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_psp_api_faul
     dependencies
     | where timestamp > ago(5m)
     | where name == "POST ${local.nodo_soap_path}/"
-    | where target == "${local.pagopa_nodo_ingress}"
     | extend operationId_s = tostring(split(operation_Name, " - ")[1])
     | where operationId_s in (operationIds)
     | extend response = tostring(customDimensions["Response-Body"])
