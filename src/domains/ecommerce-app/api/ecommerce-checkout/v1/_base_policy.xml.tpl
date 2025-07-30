@@ -16,6 +16,7 @@
           <header>Authorization</header>
           <header>x-transaction-id-from-client</header>
           <header>lang</header>
+          <header>Traceparent</header>
         </allowed-headers>
       </cors>
       <base />

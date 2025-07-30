@@ -10,6 +10,7 @@
       </allowed-methods>
       <allowed-headers>
         <header>Content-Type</header>
+        <header>Traceparent</header>
       </allowed-headers>
     </cors>
     <base />

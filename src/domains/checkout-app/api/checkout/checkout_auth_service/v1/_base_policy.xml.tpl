@@ -21,6 +21,7 @@
           <header>Content-Type</header>
           <header>Authorization</header>
           <header>x-rpt-id</header>
+          <header>Traceparent</header>
         </allowed-headers>
       </cors>
       <!-- Feature flag check - is authentication enabled -->
