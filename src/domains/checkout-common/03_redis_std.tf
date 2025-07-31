@@ -3,25 +3,26 @@
 # -----------------------------------------------
 
 # Redis resource group
-resource "azurerm_resource_group" "redis_std_checkout_rg" {
-  name     = "${local.project}-redis-std-rg"
+resource "azurerm_resource_group" "redis_checkout_rg" {
+  name     = "${local.project}-redis-rg"
   location = var.location
   tags     = module.tag_config.tags
 }
 
-module "pagopa_checkout_redis_std" {
+
+module "pagopa_checkout_redis" {
   source                        = "./.terraform/modules/__v4__/redis_cache"
-  name                          = var.redis_checkout_params_std.ha_enabled ? "${local.project}-redis-std-ha" : "${local.project}-redis-std"
-  resource_group_name           = azurerm_resource_group.redis_std_checkout_rg.name
-  location                      = azurerm_resource_group.redis_std_checkout_rg.location
-  capacity                      = var.redis_checkout_params_std.capacity
+  name                          = var.redis_checkout_params.ha_enabled ? "${local.project}-redis-ha" : "${local.project}-redis"
+  resource_group_name           = azurerm_resource_group.redis_checkout_rg.name
+  location                      = azurerm_resource_group.redis_checkout_rg.location
+  capacity                      = var.redis_checkout_params.capacity
   enable_non_ssl_port           = false
-  family                        = var.redis_checkout_params_std.family
-  sku_name                      = var.redis_checkout_params_std.sku_name
+  family                        = var.redis_checkout_params.family
+  sku_name                      = var.redis_checkout_params.sku_name
   enable_authentication         = true
-  redis_version                 = var.redis_checkout_params_std.version
+  redis_version                 = var.redis_checkout_params.version
   public_network_access_enabled = false
-  custom_zones                  = var.redis_checkout_params_std.zones
+  custom_zones                  = var.redis_checkout_params.zones
 
   private_endpoint = {
     enabled              = true
@@ -62,12 +63,12 @@ module "pagopa_checkout_redis_std" {
 # Alerts
 # -----------------------------------------------
 
-resource "azurerm_monitor_metric_alert" "redis_std_cache_used_memory_exceeded" {
+resource "azurerm_monitor_metric_alert" "redis_cache_used_memory_exceeded" {
   count = var.env_short == "p" ? 1 : 0
 
   name                = "[${var.domain != null ? "${var.domain} | " : ""}${module.pagopa_checkout_redis.name}] Used Memory close to the threshold"
-  resource_group_name = azurerm_resource_group.redis_std_checkout_rg.name
-  scopes              = [module.pagopa_checkout_redis_std.id]
+  resource_group_name = azurerm_resource_group.redis_checkout_rg.name
+  scopes              = [module.pagopa_checkout_redis.id]
   description         = "The amount of cache memory in MB that is used for key/value pairs in the cache during the specified reporting interval, this amount is close to 200 MB so close to the threshold (250 MB)"
   severity            = 0
   window_size         = "PT5M"

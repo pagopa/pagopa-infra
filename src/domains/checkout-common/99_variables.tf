@@ -173,6 +173,17 @@ variable "redis_checkout_params" {
   })
 }
 
+variable "redis_checkout_params_std" {
+  type = object({
+    capacity   = number
+    sku_name   = string
+    family     = string
+    version    = string
+    ha_enabled = bool
+    zones      = list(number)
+  })
+}
+
 # Redis
 variable "cidr_subnet_redis_checkout" {
   type        = list(string)
