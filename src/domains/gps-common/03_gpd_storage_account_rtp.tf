@@ -59,3 +59,24 @@ resource "azurerm_storage_container" "rtp_dead_letter_blob_file" {
   name                 = "rtp-dead-letter"
   storage_account_name = module.gpd_rtp_sa.name
 }
+
+resource "azurerm_storage_management_policy" "time_to_live" {
+  count = var.env_short == "p" ? 0 : 1
+
+  storage_account_id = module.gpd_rtp_sa.id
+
+  rule {
+    name    = "time_to_live"
+    enabled = true
+    filters {
+      blob_types = ["blockBlob"]
+    }
+    actions {
+      base_blob {
+        tier_to_cool_after_days_since_modification_greater_than    = 5
+        tier_to_archive_after_days_since_modification_greater_than = 7
+        delete_after_days_since_modification_greater_than          = 10
+      }
+    }
+  }
+}

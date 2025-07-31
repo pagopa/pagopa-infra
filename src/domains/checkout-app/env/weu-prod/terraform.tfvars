@@ -17,16 +17,6 @@ dns_zone_prefix      = "platform"
 apim_dns_zone_prefix = "platform"
 dns_zone_checkout    = "checkout"
 
-### pagopa-proxy app service
-
-cidr_subnet_pagopa_proxy    = ["10.1.132.0/24"]
-cidr_subnet_pagopa_proxy_ha = ["10.1.194.0/27"]
-
-pagopa_proxy_plan_sku             = "P1v3"
-pagopa_proxy_zone_balance_enabled = true
-pagopa_proxy_ha_enabled           = false
-
-
 # Networking
 
 cidr_subnet_checkout_be = ["10.1.133.0/24"]
@@ -51,9 +41,8 @@ function_app_storage_account_info = {
   advanced_threat_protection_enable = true
 }
 
-checkout_cdn_storage_replication_type      = "GZRS"
-checkout_ip_restriction_default_action     = "Deny"
-pagopa_proxy_ip_restriction_default_action = "Deny"
+checkout_cdn_storage_replication_type  = "GZRS"
+checkout_ip_restriction_default_action = "Deny"
 
 # chart releases: https://github.com/pagopa/aks-microservice-chart-blueprint/releases
 # image tags: https://github.com/pagopa/infra-ssl-check/releases
