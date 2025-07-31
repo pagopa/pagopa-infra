@@ -11,7 +11,7 @@ resource "azurerm_resource_group" "redis_std_checkout_rg" {
 
 module "pagopa_checkout_redis_std" {
   source                        = "./.terraform/modules/__v4__/redis_cache"
-  name                          = var.redis_checkout_params_std.ha_enabled ? "${local.project}-redis-std-ha" : "${local.project}-redis-std"
+  name                          = "${local.project}-redis-std"
   resource_group_name           = azurerm_resource_group.redis_std_checkout_rg.name
   location                      = azurerm_resource_group.redis_std_checkout_rg.location
   capacity                      = var.redis_checkout_params_std.capacity
