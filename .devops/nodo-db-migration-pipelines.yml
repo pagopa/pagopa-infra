@@ -366,18 +366,18 @@ stages:
               keyVaultName: $(KEY_VAULT_NAME)
               secretsFilter: 'db-cfg-password,db-online-password,db-offline-password,db-re-password,db-partition-password,db-administrator-login-password'
           # cfg apply
-#          - template: ./templates/liquibase-apply.yml
-#            parameters:
-#              DATABASE_NAME: cfg
-#              LIQUIBASE_FOLDER: $(liquibase_folder)
-#              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
-#              JDBC_URL: $(JDBC_URL)
-#              USERNAME: $(CFG_USERNAME)
-#              PASSWORD: $(db-cfg-password)
-#              SCHEMA: $(CFG_SCHEMA)
-#              TARGET_DB_TYPE: main
-#              lbContexts: ${{ parameters.lbContexts }}
-#              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: cfg
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(CFG_USERNAME)
+              PASSWORD: $(db-cfg-password)
+              SCHEMA: $(CFG_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
           - template: ./templates/liquibase-apply.yml
             parameters:
               DATABASE_NAME: cfg
@@ -391,20 +391,20 @@ stages:
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
           # online apply
-#          - template: ./templates/liquibase-apply.yml
-#            parameters:
-#              DATABASE_NAME: online
-#              LIQUIBASE_FOLDER: $(liquibase_folder)
-#              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
-#              JDBC_URL: $(JDBC_URL)
-#              USERNAME: $(ONLINE_USERNAME)
-#              PASSWORD: $(db-online-password)
-#              SCHEMA: $(ONLINE_SCHEMA)
-#              TARGET_DB_TYPE: main
-#              lbContexts: ${{ parameters.lbContexts }}
-#              lbLogLevel: ${{ parameters.lbLogLevel }}
-#              OFFLINE_SCHEMA: $(OFFLINE_SCHEMA)
-#              OFFLINE_USERNAME: $(OFFLINE_USERNAME)
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: online
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(ONLINE_USERNAME)
+              PASSWORD: $(db-online-password)
+              SCHEMA: $(ONLINE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              OFFLINE_SCHEMA: $(OFFLINE_SCHEMA)
+              OFFLINE_USERNAME: $(OFFLINE_USERNAME)
           - template: ./templates/liquibase-apply.yml
             parameters:
               DATABASE_NAME: online
@@ -420,19 +420,19 @@ stages:
               OFFLINE_SCHEMA: $(OFFLINE_SCHEMA)
               OFFLINE_USERNAME: $(OFFLINE_USERNAME)
           # offline apply
-#          - template: ./templates/liquibase-apply.yml
-#            parameters:
-#              DATABASE_NAME: offline
-#              LIQUIBASE_FOLDER: $(liquibase_folder)
-#              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
-#              JDBC_URL: $(JDBC_URL)
-#              USERNAME: $(OFFLINE_USERNAME)
-#              PASSWORD: $(db-offline-password)
-#              SCHEMA: $(OFFLINE_SCHEMA)
-#              TARGET_DB_TYPE: main
-#              lbContexts: ${{ parameters.lbContexts }}
-#              lbLogLevel: ${{ parameters.lbLogLevel }}
-#              ONLINE_SCHEMA: $(ONLINE_SCHEMA)
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: offline
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(OFFLINE_USERNAME)
+              PASSWORD: $(db-offline-password)
+              SCHEMA: $(OFFLINE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              ONLINE_SCHEMA: $(ONLINE_SCHEMA)
           - template: ./templates/liquibase-apply.yml
             parameters:
               DATABASE_NAME: offline
@@ -447,18 +447,18 @@ stages:
               lbLogLevel: ${{ parameters.lbLogLevel }}
               ONLINE_SCHEMA: $(ONLINE_SCHEMA)
           # RE apply
-#          - template: ./templates/liquibase-apply.yml
-#            parameters:
-#              DATABASE_NAME: re
-#              LIQUIBASE_FOLDER: $(liquibase_folder)
-#              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
-#              JDBC_URL: $(JDBC_URL)
-#              USERNAME: $(RE_USERNAME)
-#              PASSWORD: $(db-re-password)
-#              SCHEMA: $(RE_SCHEMA)
-#              TARGET_DB_TYPE: main
-#              lbContexts: ${{ parameters.lbContexts }}
-#              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: re
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(RE_USERNAME)
+              PASSWORD: $(db-re-password)
+              SCHEMA: $(RE_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
           - template: ./templates/liquibase-apply.yml
             parameters:
               DATABASE_NAME: re
@@ -472,18 +472,18 @@ stages:
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
           # partition apply
-#          - template: ./templates/liquibase-apply.yml
-#            parameters:
-#              DATABASE_NAME: partition
-#              LIQUIBASE_FOLDER: $(liquibase_folder)
-#              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
-#              JDBC_URL: $(JDBC_URL)
-#              USERNAME: $(PARTITION_USERNAME)
-#              PASSWORD: $(db-partition-password)
-#              SCHEMA: $(PARTITION_SCHEMA)
-#              TARGET_DB_TYPE: main
-#              lbContexts: ${{ parameters.lbContexts }}
-#              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersion }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
           - template: ./templates/liquibase-apply.yml
             parameters:
               DATABASE_NAME: partition
@@ -497,18 +497,18 @@ stages:
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
           # partition st_nodo apply
-#          - template: ./templates/liquibase-apply.yml
-#            parameters:
-#              DATABASE_NAME: partition
-#              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo)
-#              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
-#              JDBC_URL: $(JDBC_URL)
-#              USERNAME: $(PARTITION_USERNAME)
-#              PASSWORD: $(db-partition-password)
-#              SCHEMA: $(PARTITION_SCHEMA)
-#              TARGET_DB_TYPE: main
-#              lbContexts: ${{ parameters.lbContexts }}
-#              lbLogLevel: ${{ parameters.lbLogLevel }}
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: partition
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(JDBC_URL)
+              USERNAME: $(PARTITION_USERNAME)
+              PASSWORD: $(db-partition-password)
+              SCHEMA: $(PARTITION_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
           - template: ./templates/liquibase-apply.yml
             parameters:
               DATABASE_NAME: partition
@@ -542,18 +542,18 @@ stages:
               DB_PARTITION_PASSWORD: $(db-partition-password)
               DB_ADMIN_PASSWORD: $(db-administrator-login-password)
           # admin st_nodo_storico apply
-#          - template: ./templates/liquibase-apply.yml
-#            parameters:
-#              DATABASE_NAME: admin-postgres
-#              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo)
-#              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
-#              JDBC_URL: $(POSTGRES_JDBC_URL)
-#              USERNAME: $(ADMIN_USERNAME)
-#              PASSWORD: $(db-administrator-login-password)
-#              SCHEMA: $(ADMIN_SCHEMA)
-#              TARGET_DB_TYPE: main
-#              lbContexts: ${{ parameters.lbContexts }}
-#              lbLogLevel: ${{ parameters.lbLogLevel }}
-#              LIQUIBASE_SCHEMA_NAME: public
-#              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
-#              CHANGELOG_TABLE: DATABASECHANGELOG_CRON
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: admin-postgres
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(POSTGRES_JDBC_URL)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(ADMIN_SCHEMA)
+              TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_SCHEMA_NAME: public
+              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
+              CHANGELOG_TABLE: DATABASECHANGELOG_CRON
