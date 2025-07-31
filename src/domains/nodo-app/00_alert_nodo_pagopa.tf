@@ -1,4 +1,6 @@
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availability" {
+  count = var.env_short == "p" ? 1 : 0
+
   name                = "pagopa-${var.env_short}-nodo-pagopa-node_for_psp_auth-api-availability"
   resource_group_name = "dashboards"
   location            = var.location
@@ -23,7 +25,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availabi
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
     let thresholdTrafficMin = 150;
     let thresholdTrafficLinear = 400;
-    let lowTrafficAvailability = 96;
+    let lowTrafficAvailability = 90;
     let highTrafficAvailability = 99;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
@@ -53,8 +55,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availabi
 
 // Alert to monitor fault code based availability
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_psp_api_fault_code_availability_alert" {
+  count = var.env_short == "p" ? 1 : 0
+
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-nodo-pagoapa-psp-api-fault-code-availability"
+  name                = "pagopa-${var.env_short}-nodo-pagoaa-psp-api-fault-code-availability"
   location            = var.location
 
   action {
@@ -78,8 +82,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_psp_api_faul
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
     let thresholdTrafficMin = 150;
     let thresholdTrafficLinear = 400;
-    let lowTrafficAvailability = 96;
-    let highTrafficAvailability = 99;
+    let lowTrafficAvailability = 95;
+    let highTrafficAvailability = 97;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     dependencies

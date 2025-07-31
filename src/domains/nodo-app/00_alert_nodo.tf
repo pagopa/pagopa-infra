@@ -1,7 +1,7 @@
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availability" {
   for_each = local.formatted_operation_data
 
-  name                = "pagopa-${var.env_short}-nodo-pagopa-${each.key}-api-availability"
+  name                = "pagopa-${var.env_short}-nodo-${each.key}-api-availability"
   resource_group_name = "dashboards"
   location            = var.location
   data_source_id      = data.azurerm_api_management.apim.id
@@ -25,7 +25,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
     let thresholdTrafficMin = 150;
     let thresholdTrafficLinear = 400;
-    let lowTrafficAvailability = 96;
+    let lowTrafficAvailability = 90;
     let highTrafficAvailability = 99;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
@@ -53,8 +53,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
 }
 // Alert to monitor availability based on fault code, it does not filter by target, so monitors all node types.
 resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_code_availability_alert" {
+  count = var.env_short == "p" ? 1 : 0
+
   resource_group_name = "dashboards"
-  name                = "pagopa-${var.env_short}-nodo-pagoapa-psp-api-fault-code-availability"
+  name                = "pagopa-${var.env_short}-nodo-psp-api-fault-code-availability"
   location            = var.location
 
   action {
@@ -76,11 +78,10 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_c
         ${local.formatted_operation_data["node_for_psp_auth"].formatted_operations}
     ];
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
-    let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
     let thresholdTrafficMin = 150;
     let thresholdTrafficLinear = 400;
-    let lowTrafficAvailability = 96;
-    let highTrafficAvailability = 99;
+    let lowTrafficAvailability = 95;
+    let highTrafficAvailability = 97;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     dependencies
