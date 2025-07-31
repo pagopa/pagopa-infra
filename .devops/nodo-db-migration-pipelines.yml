@@ -318,7 +318,7 @@ stages:
               CHANGELOG_TABLE: DATABASECHANGELOG_CRON
       - job: approval
         dependsOn: liquibase_status_job
-        condition: eq('${{ parameters.env }}', 'prd')
+        condition: and(eq('${{ parameters.env }}', 'prd'), succeeded())
         pool: server
         displayName: "Approval"
         timeoutInMinutes: 16
