@@ -316,6 +316,22 @@ stages:
               LIQUIBASE_SCHEMA_NAME: public
               CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
               CHANGELOG_TABLE: DATABASECHANGELOG_CRON
+          # admin st_nodo_storico status
+          - template: ./templates/liquibase-status.yml
+            parameters:
+              DATABASE_NAME: admin-postgres
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(POSTGRES_JDBC_URL_STORICO)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(ADMIN_SCHEMA)
+              TARGET_DB_TYPE: storico
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_SCHEMA_NAME: public
+              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
+              CHANGELOG_TABLE: DATABASECHANGELOG_CRON
       - job: approval
         dependsOn: liquibase_status_job
         condition: and(eq('${{ parameters.env }}', 'prd'), succeeded())
@@ -552,6 +568,22 @@ stages:
               PASSWORD: $(db-administrator-login-password)
               SCHEMA: $(ADMIN_SCHEMA)
               TARGET_DB_TYPE: main
+              lbContexts: ${{ parameters.lbContexts }}
+              lbLogLevel: ${{ parameters.lbLogLevel }}
+              LIQUIBASE_SCHEMA_NAME: public
+              CHANGELOG_LOCK_TABLE: DATABASECHANGELOGLOCK_CRON
+              CHANGELOG_TABLE: DATABASECHANGELOG_CRON
+          # admin st_nodo_storico apply
+          - template: ./templates/liquibase-apply.yml
+            parameters:
+              DATABASE_NAME: admin-postgres
+              LIQUIBASE_FOLDER: $(liquibase_folder_st_nodo)
+              LIQUIBASE_DB_VERSION: ${{ parameters.dbVersionSt }}
+              JDBC_URL: $(POSTGRES_JDBC_URL_STORICO)
+              USERNAME: $(ADMIN_USERNAME)
+              PASSWORD: $(db-administrator-login-password)
+              SCHEMA: $(ADMIN_SCHEMA)
+              TARGET_DB_TYPE: storico
               lbContexts: ${{ parameters.lbContexts }}
               lbLogLevel: ${{ parameters.lbLogLevel }}
               LIQUIBASE_SCHEMA_NAME: public
