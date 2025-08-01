@@ -6,17 +6,14 @@ import input as tfplan
 # Parameters for Policy
 ########################
 
-# acceptable score for automated authorization
+# acceptable score for authorization
 blast_radius := 100
 
 # weights assigned for each operation on each resource-type
-weights := {
-	"azurerm_api_management_api_policy": {"delete": 100, "create": 1, "modify": 10},
-	"azurerm_monitor_metric_alert": {"delete": 20, "create": 1, "modify": 10},
-}
+weights := {{"delete": 50, "create": 1, "modify": 20}}
 
 # Consider exactly these resource types in calculations
-resource_types := {"azurerm_api_management_api_policy", "azurerm_monitor_metric_alert"}
+resource_types := {"*"}
 
 #########
 # Policy
@@ -27,26 +24,23 @@ default authz := false
 
 authz if {
 	score < blast_radius
-	not touches_iam
 }
 
 # Compute the score for a Terraform plan as the weighted sum of deletions, creations, modifications
 score := s if {
 	all_resources := [x |
-		some resource_type, crud in weights
-
-		del := crud.delete * num_deletes[resource_type]
-		new := crud.create * num_creates[resource_type]
-		mod := crud.modify * num_modifies[resource_type]
+		some crud in weights
+		print(crud)
+		del := crud.delete * num_deletes
+		print(num_deletes)
+		new := crud.create * num_creates
+		print(num_creates)
+		mod := crud.modify * num_modifies
+		print(num_modifies)
 		x := (del + new) + mod
 	]
 	s := sum(all_resources)
-}
-
-# Whether there is any change to IAM
-touches_iam if {
-	all_resources := resources.aws_iam
-	count(all_resources) > 0
+	
 }
 
 ####################
@@ -54,49 +48,47 @@ touches_iam if {
 ####################
 
 # list of all resources of a given type
-resources[resource_type] := all_resources if {
-	some resource_type, _ in resource_types
+resources := all_resources if {
 
 	all_resources := [name |
 		some name in tfplan.resource_changes
-		name.type == resource_type
 	]
 }
 
 # number of creations of resources of a given type
-num_creates[resource_type] := num if {
-	some resource_type, _ in resource_types
+num_creates := num if {
 
-	all_resources := resources[resource_type]
+	all_resources := resources
 	creates := [res |
 		some res in all_resources
 		"create" in res.change.actions
 	]
 	num := count(creates)
+	print(num)
 }
 
 # number of deletions of resources of a given type
-num_deletes[resource_type] := num if {
-	some resource_type, _ in resource_types
+num_deletes := num if {
 
-	all_resources := resources[resource_type]
-
+	all_resources := resources
 	deletions := [res |
 		some res in all_resources
 		"delete" in res.change.actions
 	]
+
 	num := count(deletions)
+	print(num)
 }
 
 # number of modifications to resources of a given type
-num_modifies[resource_type] := num if {
-	some resource_type, _ in resource_types
+num_modifies := num if {
 
-	all_resources := resources[resource_type]
+	all_resources := resources
 
 	modifies := [res |
 		some res in all_resources
 		"update" in res.change.actions
 	]
 	num := count(modifies)
+	print(num)
 }

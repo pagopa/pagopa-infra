@@ -187,6 +187,7 @@ function audit_pre_apply() {
   file_name=$1
   partition_key=$2
   row_key=$3
+  skip_policy=$4
 
   # load audit config
   source "$root_folder/.terraform-audit"
@@ -209,7 +210,7 @@ function audit_pre_apply() {
     --table-name "$audit_table_name" \
     --auth-mode key \
     --only-show-errors \
-    --entity PartitionKey="$partition_key" RowKey="$row_key" BranchName="$branch_name" CommitHash="$commit_hash" SkipPolicy="false" SkipPolicy@odata.type=Edm.Boolean Watched="false" Watched@odata.type=Edm.Boolean PlanFile="$file_name.plan" ApplyFile="$file_name.apply" Arguments="$other" User="$current_user" Folder="$current_folder" Project="$git_project")
+    --entity PartitionKey="$partition_key" RowKey="$row_key" BranchName="$branch_name" CommitHash="$commit_hash" SkipPolicy="$skip_policy" SkipPolicy@odata.type=Edm.Boolean Watched="false" Watched@odata.type=Edm.Boolean PlanFile="$file_name.plan" ApplyFile="$file_name.apply" Arguments="$other" User="$current_user" Folder="$current_folder" Project="$git_project")
   # save plan to audit container
   plan_upload=$(az storage blob upload --account-name "$audit_storage_account_name" \
   --container-name "$audit_container_name" \
@@ -277,7 +278,7 @@ function check_conftest_output(){
   opa_exitcode=$1
   # check if changes are present
   if [ "$opa_exitcode" == 0 ]; then
-    echo "${bold}${green}OPEN Policy Test SUCCESS!${normal}"
+    echo "${bold}${blue}OPEN Policy Test SUCCESS!${normal}"
   fi
   if [ "$opa_exitcode" == 1 ]; then
     echo "${bold}${red}OPEN Policy Test FAILURE!${black}${normal}"
@@ -285,6 +286,8 @@ function check_conftest_output(){
     if [ "$skip_confirmation" != "yes" ]; then
         clean_audit_files  "$file_name"
         exit 1
+    else 
+        skip_policy="true"
     fi
     
 
@@ -298,7 +301,8 @@ function clean_audit_files() {
   rm "$file_name.apply" 2>/dev/null
   rm "$file_name.tfplan" 2>/dev/null
   rm "$file_name.json" 2>/dev/null
-
+  rm "$file_name.jq" 2>/dev/null
+  rm "$file_name.jqarray" 2>/dev/null
 }
 
 function other_actions() {
@@ -308,7 +312,8 @@ function other_actions() {
     if [ "$action" == "apply" ] && [[ "$env" == *"prod" ]] && [ -f "$root_folder/.terraform-audit" ]; then
 
       check_arguments
-
+      # skip_policy to false by default
+      skip_policy="false"
       # parameters for audit
       uuid=$(uuidgen)
       # unique record keys
@@ -351,14 +356,23 @@ function other_actions() {
         terraform show -json "$file_name.tfplan" > "$file_name.json"
         # calcolo score
         score=$(opa eval --data "$root_folder/$opa_policy_folder/it.pagopa.opa.terraform/apply_score.rego" --input "$file_name.json" "data.it.pagopa.opa.terraform.plan.apply_score.score" --format pretty)
-        read -p "${bold}Apply Score: ${red}${score}${normal} Continue (only yes will be accepted): ${normal}" score_confirmation
+        authz=$(opa eval --data "$root_folder/$opa_policy_folder/it.pagopa.opa.terraform/apply_score.rego" --input "$file_name.json" "data.it.pagopa.opa.terraform.plan.apply_score.authz" --format pretty)
+        if [ "$authz" != "true" ]; then
+          scorecolor="${red}"
+        else
+          scorecolor="${green}"
+        fi
+        read -p "${bold}Apply Score: ${scorecolor}${score}${normal} Continue (only yes will be accepted): ${normal}" score_confirmation
+        
         if [ "$score_confirmation" != "yes" ]; then
           clean_audit_files  "$file_name"
           exit 1
         fi
 
-        conftest test $file_name.json -p $root_folder/$opa_policy_folder -o table --all-namespaces --quiet
+        conftest test $file_name.json -p $root_folder/$opa_policy_folder -o json --all-namespaces --quiet > $file_name.jq 
         opa_exitcode=$?
+        cat $file_name.jq | jq -r  '.[] | select(.failures != null) | [{ "namespace": .namespace, "msg": .failures.[].msg }]' >  $file_name.jqarray
+        cat $file_name.jqarray | jq -r ' ( .[] |[ .namespace, .msg ]) | @tsv' | awk -v FS="\t" 'BEGIN{print ""}{printf "%s\t%s\n","\033[33m"$1,"\033[31m"$2}'
 
         check_conftest_output "$opa_exitcode"
         ###### OPA end
@@ -368,7 +382,7 @@ function other_actions() {
       # ask user confirmation before applying changes
       read -p "${bold}Apply these changes (only yes will be accepted): ${normal}" apply_confirmation
       if [ "$apply_confirmation" == "yes" ]; then
-        audit_pre_apply "$file_name" "$partition_key" "$row_key"
+        audit_pre_apply "$file_name" "$partition_key" "$row_key" "$skip_policy"
         terraform apply -auto-approve "$file_name.tfplan" -compact-warnings | tee "$file_name.apply"
         audit_post_apply "$file_name" "$partition_key" "$row_key"
         # cleanup temporary files
