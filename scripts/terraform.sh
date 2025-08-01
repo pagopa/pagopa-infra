@@ -5,7 +5,7 @@
 ############################################################
 # Global variables
 # Version format x.y accepted
-vers="2.2"
+vers="3.0"
 script_name=$(basename "$0")
 git_repo="https://raw.githubusercontent.com/pagopa/eng-common-scripts/main/azure/${script_name}"
 tmp_file="${script_name}.new"
@@ -15,11 +15,35 @@ if [ -n "$3" ] && [ -f "$3" ]; then
 else
   FILE_ACTION=false
 fi
+
 # Define colors and styles
 # fixme find a way to color output on local and on devops agent, where tput returns an error
 bold=""
 normal=""
 red=""
+black=""
+green=""
+yellow=""
+blue=""
+magenta=""
+cyan=""
+white=""
+
+os_type=$(uname)
+ if [ "$os_type" == "Darwin" ]; then
+    # Define colors and styles
+    # fixme find a way to color output on local and on devops agent, where tput returns an error
+    bold="$(tput bold)"
+    normal="$(tput sgr0)"
+    red="$(tput setaf 1)"
+    black="$(tput setaf 0)"
+    green="$(tput setaf 2)"
+    yellow="$(tput setaf 3)"
+    blue="$(tput setaf 4)"
+    magenta="$(tput setaf 5)"
+    cyan="$(tput setaf 6)"
+    white="$(tput setaf 7)"
+fi
 
 # Define functions
 function clean_environment() {
@@ -163,6 +187,7 @@ function audit_pre_apply() {
   file_name=$1
   partition_key=$2
   row_key=$3
+  skip_policy=$4
 
   # load audit config
   source "$root_folder/.terraform-audit"
@@ -185,7 +210,7 @@ function audit_pre_apply() {
     --table-name "$audit_table_name" \
     --auth-mode key \
     --only-show-errors \
-    --entity PartitionKey="$partition_key" RowKey="$row_key" BranchName="$branch_name" CommitHash="$commit_hash" SkipPolicy="false" SkipPolicy@odata.type=Edm.Boolean Watched="false" Watched@odata.type=Edm.Boolean PlanFile="$file_name.plan" ApplyFile="$file_name.apply" Arguments="$other" User="$current_user" Folder="$current_folder" Project="$git_project")
+    --entity PartitionKey="$partition_key" RowKey="$row_key" BranchName="$branch_name" CommitHash="$commit_hash" SkipPolicy="$skip_policy" SkipPolicy@odata.type=Edm.Boolean Watched="false" Watched@odata.type=Edm.Boolean PlanFile="$file_name.plan" ApplyFile="$file_name.apply" Arguments="$other" User="$current_user" Folder="$current_folder" Project="$git_project")
   # save plan to audit container
   plan_upload=$(az storage blob upload --account-name "$audit_storage_account_name" \
   --container-name "$audit_container_name" \
@@ -249,22 +274,46 @@ function check_plan_output(){
   fi
 }
 
+function check_conftest_output(){
+  opa_exitcode=$1
+  # check if changes are present
+  if [ "$opa_exitcode" == 0 ]; then
+    echo "${bold}${blue}OPEN Policy Test SUCCESS!${normal}"
+  fi
+  if [ "$opa_exitcode" == 1 ]; then
+    echo "${bold}${red}OPEN Policy Test FAILURE!${black}${normal}"
+    read -p "${bold}${red}Are you sure to continue? (only yes will be accepted): ${normal}" skip_confirmation
+    if [ "$skip_confirmation" != "yes" ]; then
+        clean_audit_files  "$file_name"
+        exit 1
+    else 
+        skip_policy="true"
+    fi
+    
+
+  fi
+}
+
 function clean_audit_files() {
   file_name=$1
   # cleanup temporary files
   rm "$file_name.plan" 2>/dev/null
   rm "$file_name.apply" 2>/dev/null
   rm "$file_name.tfplan" 2>/dev/null
+  rm "$file_name.json" 2>/dev/null
+  rm "$file_name.jq" 2>/dev/null
+  rm "$file_name.jqarray" 2>/dev/null
 }
 
 function other_actions() {
   if [ -n "$env" ] && [ -n "$action" ]; then
     root_folder=$(git rev-parse --show-toplevel)
     # if apply in prod environment and audit settings are defined
-    if [ "$action" == "apply" ] && [[ "$env" == *"prod" ]] && [ -f "$root_folder/.terraform-audit" ]; then
+    if [ "$action" == "apply" ] && [[ "$env" == *"dev" ]] && [ -f "$root_folder/.terraform-audit" ]; then
 
       check_arguments
-
+      # skip_policy to false by default
+      skip_policy="false"
       # parameters for audit
       uuid=$(uuidgen)
       # unique record keys
@@ -279,10 +328,61 @@ function other_actions() {
       check_plan_output "$plan_exitcode"
 
       echo ""
+
+      if [ -f "$root_folder/.terraform-opa" ]
+      then
+        # load opa config
+        if ! command -v opa &> /dev/null && [ ! -f "opa" ]; then
+          brew install opa --quiet
+          if [ $? -ne 0 ]; then
+            echo "${red}Error: Failed to install opa!!"
+            exit 1
+          else
+            echo "Install opa ${green}SUCCESS!"
+          fi
+        fi
+        if ! command -v conftest &> /dev/null && [ ! -f "conftest" ]; then
+          brew install conftest --quiet
+          if [ $? -ne 0 ]; then
+            echo "${red}Error: Failed to install conftest!!"
+            exit 1
+          else
+            echo "Install conftest ${green}SUCCESS!"
+          fi
+        fi
+
+        source "$root_folder/.terraform-opa"
+        ##### OPA start
+        terraform show -json "$file_name.tfplan" > "$file_name.json"
+        # calcolo score
+        score=$(opa eval --data "$root_folder/$opa_policy_folder/it.pagopa.opa.terraform/apply_score.rego" --input "$file_name.json" "data.it.pagopa.opa.terraform.plan.apply_score.score" --format pretty)
+        authz=$(opa eval --data "$root_folder/$opa_policy_folder/it.pagopa.opa.terraform/apply_score.rego" --input "$file_name.json" "data.it.pagopa.opa.terraform.plan.apply_score.authz" --format pretty)
+        if [ "$authz" != "true" ]; then
+          scorecolor="${red}"
+        else
+          scorecolor="${green}"
+        fi
+        read -p "${bold}Apply Score: ${scorecolor}${score}${normal} Continue (only yes will be accepted): ${normal}" score_confirmation
+        
+        if [ "$score_confirmation" != "yes" ]; then
+          clean_audit_files  "$file_name"
+          exit 1
+        fi
+
+        conftest test $file_name.json -p $root_folder/$opa_policy_folder -o json --all-namespaces --quiet > $file_name.jq 
+        opa_exitcode=$?
+        cat $file_name.jq | jq -r  '.[] | select(.failures != null) | [{ "namespace": .namespace, "msg": .failures.[].msg }]' >  $file_name.jqarray
+        cat $file_name.jqarray | jq -r ' ( .[] |[ .namespace, .msg ]) | @tsv' | awk -v FS="\t" 'BEGIN{print ""}{printf "%s\t%s\n","\033[33m"$1,"\033[31m"$2}'
+
+        check_conftest_output "$opa_exitcode"
+        ###### OPA end
+      fi
+
+
       # ask user confirmation before applying changes
       read -p "${bold}Apply these changes (only yes will be accepted): ${normal}" apply_confirmation
       if [ "$apply_confirmation" == "yes" ]; then
-        audit_pre_apply "$file_name" "$partition_key" "$row_key"
+        audit_pre_apply "$file_name" "$partition_key" "$row_key" "$skip_policy"
         terraform apply -auto-approve "$file_name.tfplan" -compact-warnings | tee "$file_name.apply"
         audit_post_apply "$file_name" "$partition_key" "$row_key"
         # cleanup temporary files
