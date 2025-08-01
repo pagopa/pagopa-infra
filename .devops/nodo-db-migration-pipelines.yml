@@ -349,7 +349,7 @@ stages:
               onTimeout: 'reject'
       - job: initialization
         pool: $(poolImage)
-        ${{ if eq(parameters.env, 'prd') }}:
+        ${{ if eq(parameters.env, 'dev') }}:
           dependsOn: [liquibase_status_job,approval]
         ${{ else }}:
           dependsOn: [liquibase_status_job]

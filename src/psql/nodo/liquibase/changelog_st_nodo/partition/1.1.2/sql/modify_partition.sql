@@ -3,8 +3,8 @@
 -- DROP PROCEDURE IF EXISTS partition.modify_partition(integer, integer);
 
 CREATE OR REPLACE PROCEDURE partition.modify_partition(
-	IN a integer,
-	IN n_day integer)
+	a integer,
+	n_day integer)
 LANGUAGE 'plpgsql'
 AS $BODY$
 
@@ -88,7 +88,6 @@ END IF;
 	   THEN
 
 		  l_sql := format('CREATE TABLE  %I.%I PARTITION OF %I.%I FOR VALUES FROM (%L) TO (%L)',  tab_schema, l_partname,  tab_schema, tab_record, l_part_list, l_part_listb);
-		  raise notice 'create: %', l_sql;
 		  execute l_sql;
 
   	 END IF;
@@ -121,7 +120,9 @@ WHEN OTHERS THEN
 								  CONCAT('Step:',tLabelStep,' , sqlerrm : ',sqlerrm));
 
 END;
-$BODY$;
+$BODY$
+;
+
 ALTER PROCEDURE partition.modify_partition(integer, integer)
     OWNER TO partition;
 
@@ -130,4 +131,3 @@ GRANT EXECUTE ON PROCEDURE partition.modify_partition(integer, integer) TO PUBLI
 GRANT EXECUTE ON PROCEDURE partition.modify_partition(integer, integer) TO azureuser;
 
 GRANT EXECUTE ON PROCEDURE partition.modify_partition(integer, integer) TO partition;
-
