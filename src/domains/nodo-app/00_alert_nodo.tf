@@ -11,7 +11,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_api_availabilit
   frequency           = 5
   # the time window was updated from 5 to 7 because the delay between the call and log
   # sometimes can be 2 minutes, this can affect the alert query
-  time_window         = 7
+  time_window = 7
   action {
     action_group           = local.action_groups
     email_subject          = "Nodo PagoPA ${upper(each.key)} API Availability Alert"
@@ -70,8 +70,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_all_psp_api_fault_c
   description    = "Alert when any PagoPA Nodo PSP operation API falls, based on fault code, below 99% availability."
   enabled        = true
 
-  severity    = 1
-  frequency   = 5
+  severity  = 1
+  frequency = 5
   # the time window was updated from 5 to 7 because the delay between the call and log
   # sometimes can be 2 minutes, this can affect the alert query
   time_window = 7
