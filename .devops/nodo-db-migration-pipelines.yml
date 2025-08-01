@@ -52,6 +52,7 @@ variables:
     poolImage: 'pagopa-dev-linux-infra'
     NODO_DB_HOST: pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com
     NODO_DB_PORT: 6432
+    REQUIRE_VALIDATION: true
   ${{ elseif eq(parameters.env, 'uat') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
     JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
@@ -62,6 +63,7 @@ variables:
     NODO_DB_PORT: 6432
     KEY_VAULT_NAME: pagopa-u-nodo-kv
     poolImage: 'pagopa-uat-linux-infra'
+    REQUIRE_VALIDATION: false
   ${{ elseif eq(parameters.env, 'prd') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_PROD)'
     JDBC_URL: jdbc:postgresql://pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
@@ -72,6 +74,7 @@ variables:
     NODO_DB_HOST: pagopa-p-weu-nodo-flexible-postgresql.postgres.database.azure.com
     NODO_DB_PORT: 6432
     poolImage: 'pagopa-prod-linux-infra'
+    REQUIRE_VALIDATION: true
   APPROVE_NOTIFY_GROUP: '[pagoPA-iac]\pagopa-iac-externals-team'
   APPROVE_NOTIFY_ADMIN: '[pagoPA-iac]\Project Administrators'
   CFG_USERNAME: cfg
@@ -334,7 +337,7 @@ stages:
               CHANGELOG_TABLE: DATABASECHANGELOG_CRON
       - job: approval
         dependsOn: liquibase_status_job
-        condition: and(eq('${{ parameters.env }}', 'dev'), succeeded())
+        condition: and(eq('${{ variables.REQUIRE_VALIDATION }}', 'true'), succeeded())
         pool: server
         displayName: "Approval"
         timeoutInMinutes: 16
@@ -349,7 +352,7 @@ stages:
               onTimeout: 'reject'
       - job: initialization
         pool: $(poolImage)
-        ${{ if eq(parameters.env, 'dev') }}:
+        ${{ if eq(variables.REQUIRE_VALIDATION, 'true') }}:
           dependsOn: [liquibase_status_job,approval]
         ${{ else }}:
           dependsOn: [liquibase_status_job]
