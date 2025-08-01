@@ -24,11 +24,8 @@
                               var is_ftp_enabled = Array.Exists(org_list, e => e == org_fiscal_code);
                               return is_ftp_enabled;
                               }" />
-                <choose>
-                    <when condition="@(!context.Variables.GetValueOrDefault<bool>("is-ftp-enabled", false) )">
-                        <set-backend-service base-url="${base-url}" />
-                    </when>
-                </choose>
+                <!-- Always on FdR-Fase1 -->
+                <set-backend-service base-url="${base-url}" />
             </when>
         </choose>
     </inbound>
@@ -37,6 +34,23 @@
     </backend>
     <outbound>
         <base />
+        <choose>
+            <!-- Resolving bug described in: https://pagopa.atlassian.net/browse/PIDM-834 -->
+            <when condition="@(context.Variables.GetValueOrDefault<bool>("is-ftp-enabled", false) )">
+                <return-response>
+                    <set-header name="Content-Type" exists-action="override">
+                        <value>text/xml</value>
+                    </set-header>
+                    <set-body template="liquid">
+                        <soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ppt="http://ws.pagamenti.telematici.gov/" xmlns:tns="http://NodoPagamentiSPC.spcoop.gov.it/servizi/PagamentiTelematiciRPT" xmlns:ppthead="http://ws.pagamenti.telematici.gov/ppthead">
+                            <soapenv:Body>
+                                <ppt:nodoChiediFlussoRendicontazioneRisposta/>
+                            </soapenv:Body>
+                        </soapenv:Envelope>
+                    </set-body>
+                </return-response>
+            </when>
+        </choose>
     </outbound>
     <on-error>
         <base />
