@@ -19,12 +19,12 @@ parameters:
   - name: dbVersion
     displayName: Database Version
     type: string
-    default: '3.35.0'
+    default: '3.36.2'
   # version of liquibase db.changelog-master-*.xml to run
   - name: dbVersionSt
     displayName: Database Version Storico patch
     type: string
-    default: '1.0.0'
+    default: '1.1.2'
   # liquibase context to run specific changelogs,default to '_' to run only uncontexted changelogs
   - name: lbContexts
     displayName: Liquibase Contexts
@@ -52,7 +52,7 @@ variables:
     poolImage: 'pagopa-dev-linux-infra'
     NODO_DB_HOST: pagopa-d-weu-nodo-flexible-postgresql.postgres.database.azure.com
     NODO_DB_PORT: 6432
-    REQUIRE_VALIDATION: true
+    REQUIRE_VALIDATION: false
   ${{ elseif eq(parameters.env, 'uat') }}:
     AZURE_SERVICE_CONNECTION: '$(TF_AZURE_SERVICE_CONNECTION_PLAN_NAME_UAT)'
     JDBC_URL: jdbc:postgresql://pagopa-u-weu-nodo-flexible-postgresql.postgres.database.azure.com:5432/nodo?sslmode=require&prepareThreshold=0
