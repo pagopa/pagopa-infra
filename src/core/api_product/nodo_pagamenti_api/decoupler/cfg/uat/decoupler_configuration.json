@@ -6,7 +6,7 @@
     "routing": 0,
     "broker_psps": [],
     "cis": [],
-    "list_priority": 4
+    "list_priority": 3
   },
   {
     "node_id": "NDP001UAT",
@@ -15,18 +15,13 @@
     "routing": 0,
     "broker_psps": [],
     "cis": [
-      "15376371009"
+      "15376371009",
+      "12300020158",
+      "00347000721",
+      "00395920788",
+      "96289850586"
     ],
     "list_priority": 1
-  },
-  {
-    "node_id": "NDP005UAT",
-    "description": "Nodo PostgreSQL OnPrem Nexi",
-    "node_uri": "https://10.79.20.63",
-    "routing": 100,
-    "broker_psps": [],
-    "cis": ["80005570561"],
-    "list_priority": 2
   },
   {
     "node_id": "NDP004UAT",
@@ -35,6 +30,6 @@
     "routing": 100,
     "broker_psps": [],
     "cis": [],
-    "list_priority": 3
+    "list_priority": 2
   }
 ]
