@@ -16,6 +16,7 @@
               <header>x-transaction-id-from-client</header>
               <header>x-correlation-id</header>
               <header>x-client-id-from-client</header>
+              <header>Traceparent</header>
           </allowed-headers>
         </cors>
       <base />

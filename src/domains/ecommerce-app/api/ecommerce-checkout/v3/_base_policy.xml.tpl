@@ -18,6 +18,7 @@
           <header>x-correlation-id</header>
           <header>x-client-id-from-client</header>
           <header>x-rpt-id</header>
+          <header>Traceparent</header>
         </allowed-headers>
       </cors>
       <base />
