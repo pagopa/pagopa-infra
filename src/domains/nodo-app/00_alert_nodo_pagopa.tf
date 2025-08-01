@@ -25,8 +25,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availabi
         ${local.formatted_operation_data["node_for_psp_auth"].formatted_operations}
     ];
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
-    let thresholdTrafficMin = 150;
-    let thresholdTrafficLinear = 400;
+    let thresholdTrafficMin = 100;
+    let thresholdTrafficLinear = 200;
     let lowTrafficAvailability = 92;
     let highTrafficAvailability = 99;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
@@ -84,8 +84,8 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_psp_api_faul
         ${local.formatted_operation_data["node_for_psp_auth"].formatted_operations}
     ];
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
-    let thresholdTrafficMin = 150;
-    let thresholdTrafficLinear = 400;
+    let thresholdTrafficMin = 100;
+    let thresholdTrafficLinear = 200;
     let lowTrafficAvailability = 95;
     let highTrafficAvailability = 97;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
