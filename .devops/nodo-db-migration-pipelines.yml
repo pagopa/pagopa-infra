@@ -334,7 +334,7 @@ stages:
               CHANGELOG_TABLE: DATABASECHANGELOG_CRON
       - job: approval
         dependsOn: liquibase_status_job
-        condition: and(eq('${{ parameters.env }}', 'prd'), succeeded())
+        condition: and(eq('${{ parameters.env }}', 'dev'), succeeded())
         pool: server
         displayName: "Approval"
         timeoutInMinutes: 16
@@ -349,8 +349,11 @@ stages:
               onTimeout: 'reject'
       - job: initialization
         pool: $(poolImage)
-        dependsOn: [liquibase_status_job,approval]
-        condition: and(not(failed('liquibase_status_job')), not(failed('approval')))
+        ${{ if eq(parameters.env, 'prd') }}:
+          dependsOn: [liquibase_status_job,approval]
+        ${{ else }}:
+          dependsOn: [liquibase_status_job]
+        condition: succeeded()
         displayName: "Update nodo DB ${{ parameters.env }}"
         steps:
           - checkout: self
