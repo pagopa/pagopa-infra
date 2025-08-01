@@ -9,7 +9,9 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availabi
   enabled             = true
   severity            = 1
   frequency           = 5
-  time_window         = 5
+  # the time window was updated from 5 to 7 because the delay between the call and log
+  # sometimes can be 2 minutes, this can affect the alert query
+  time_window = 7
 
   action {
     action_group           = local.action_groups
@@ -23,21 +25,21 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availabi
         ${local.formatted_operation_data["node_for_psp_auth"].formatted_operations}
     ];
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
-    let thresholdTrafficMin = 150;
-    let thresholdTrafficLinear = 400;
-    let lowTrafficAvailability = 90;
+    let thresholdTrafficMin = 100;
+    let thresholdTrafficLinear = 200;
+    let lowTrafficAvailability = 92;
     let highTrafficAvailability = 99;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     AzureDiagnostics
-    | where TimeGenerated > ago(5m)
+    | where TimeGenerated > ago(7m)
     | where backendUrl_s == "${local.pagopa_nodo_ingress}${local.nodo_soap_path}"
     | where url_s matches regex "${local.formatted_operation_data["node_for_psp_auth"].sub_service}"
     | where operationId_s in (operationIds)
     | summarize
         Total = count(),
         Success = countif(todouble(responseCode_d) < 500)
-        by bin(TimeGenerated, 5m), operationId_s
+        by bin(TimeGenerated, 7m), operationId_s
     | extend trafficUp = Total-thresholdTrafficMin
     | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
     | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
@@ -71,23 +73,25 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_psp_api_faul
   description    = "Alert when any PagoPA Nodo PSP operation API falls, based on fault code, below 99% availability."
   enabled        = true
 
-  severity    = 1
-  frequency   = 5
-  time_window = 5
+  severity  = 1
+  frequency = 5
+  # the time window was updated from 5 to 7 because the delay between the call and log
+  # sometimes can be 2 minutes, this can affect the alert query
+  time_window = 7
   query       = <<-EOT
     let operationMap = datatable(operationId_s: string, apiName: string)
     [
         ${local.formatted_operation_data["node_for_psp_auth"].formatted_operations}
     ];
     let operationIds = toscalar(operationMap | summarize make_list(operationId_s, 20));
-    let thresholdTrafficMin = 150;
-    let thresholdTrafficLinear = 400;
+    let thresholdTrafficMin = 100;
+    let thresholdTrafficLinear = 200;
     let lowTrafficAvailability = 95;
     let highTrafficAvailability = 97;
     let thresholdDelta = thresholdTrafficLinear - thresholdTrafficMin;
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     dependencies
-    | where timestamp > ago(5m)
+    | where timestamp > ago(7m)
     | where name == "POST ${local.nodo_soap_path}/"
     | where target == "${local.pagopa_nodo_ingress}"
     | extend operationId_s = tostring(split(operation_Name, " - ")[1])
@@ -98,7 +102,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_psp_api_faul
     | summarize
         Total=count(),
         Success=countif(outcome == "OK" or faultCode !in ${local.error_fault_code})
-        by bin(timestamp, 5m), operationId_s
+        by bin(timestamp, 7m), operationId_s
     | extend trafficUp = Total-thresholdTrafficMin
     | extend deltaRatio = todouble(todouble(trafficUp)/todouble(thresholdDelta))
     | extend expectedAvailability = iff(Total >= thresholdTrafficLinear, toreal(highTrafficAvailability), iff(Total <= thresholdTrafficMin, toreal(lowTrafficAvailability), (deltaRatio*(availabilityDelta))+lowTrafficAvailability))
