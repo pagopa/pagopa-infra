@@ -19,7 +19,7 @@ resource_types := {"*"}
 # Policy
 #########
 
-# Authorization holds if score for the plan is acceptable and no changes are made to IAM
+# Authorization holds if score for the plan is acceptable
 default authz := false
 
 authz if {
