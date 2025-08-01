@@ -30,13 +30,13 @@ authz if {
 score := s if {
 	all_resources := [x |
 		some crud in weights
-		print(crud)
+		#print(crud)
 		del := crud.delete * num_deletes
-		print(num_deletes)
+		#print(num_deletes)
 		new := crud.create * num_creates
-		print(num_creates)
+		#print(num_creates)
 		mod := crud.modify * num_modifies
-		print(num_modifies)
+		#print(num_modifies)
 		x := (del + new) + mod
 	]
 	s := sum(all_resources)
@@ -64,7 +64,7 @@ num_creates := num if {
 		"create" in res.change.actions
 	]
 	num := count(creates)
-	print(num)
+	#print(num)
 }
 
 # number of deletions of resources of a given type
@@ -77,7 +77,7 @@ num_deletes := num if {
 	]
 
 	num := count(deletions)
-	print(num)
+	#print(num)
 }
 
 # number of modifications to resources of a given type
@@ -90,5 +90,5 @@ num_modifies := num if {
 		"update" in res.change.actions
 	]
 	num := count(modifies)
-	print(num)
+	#print(num)
 }
