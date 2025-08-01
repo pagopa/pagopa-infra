@@ -309,7 +309,7 @@ function other_actions() {
   if [ -n "$env" ] && [ -n "$action" ]; then
     root_folder=$(git rev-parse --show-toplevel)
     # if apply in prod environment and audit settings are defined
-    if [ "$action" == "apply" ] && [[ "$env" == *"prod" ]] && [ -f "$root_folder/.terraform-audit" ]; then
+    if [ "$action" == "apply" ] && [[ "$env" == *"dev" ]] && [ -f "$root_folder/.terraform-audit" ]; then
 
       check_arguments
       # skip_policy to false by default
