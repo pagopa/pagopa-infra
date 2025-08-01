@@ -5,7 +5,7 @@
 
     <sqlFile
       encoding="UTF-8"
-      path="sql/modify_partition.sql"
+      path="sql/update_storico_config.sql"
       relativeToChangelogFile="true"
       splitStatements="true"
       stripComments="true"/>
