@@ -60,7 +60,7 @@ cosmos_mongo_db_params = {
   is_virtual_network_filter_enabled            = false
   enable_provisioned_throughput_exceeded_alert = false
   backup_continuous_enabled                    = false
-  ip_range_filter                              = null
+  ip_range_filter                              = []
 }
 
 cosmos_mongo_db_pay_wallet_params = {
@@ -74,6 +74,14 @@ cosmos_mongo_db_pay_wallet_params = {
 ### Redis
 
 redis_pay_wallet_params = {
+  capacity = 0
+  sku_name = "Basic"
+  family   = "C"
+  version  = 6
+  zones    = []
+}
+
+redis_std_pay_wallet_params = {
   capacity = 0
   sku_name = "Basic"
   family   = "C"

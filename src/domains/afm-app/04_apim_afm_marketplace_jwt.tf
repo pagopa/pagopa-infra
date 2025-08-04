@@ -9,7 +9,7 @@ resource "azurerm_api_management_api_version_set" "api_afm_marketplace_jwt_api" 
   name                = format("%s-afm-marketplace-service-jwt-api", var.env_short)
   resource_group_name = local.pagopa_apim_rg
   api_management_name = local.pagopa_apim_name
-  display_name        = local.apim_afm_marketplace_service_api.display_name
+  display_name        = "AFM Marketplace pagoPA JWT"
   versioning_scheme   = "Segment"
 }
 
