@@ -150,7 +150,7 @@ eventhubs_rtp = [
       {
         name   = "rtp-events-rx"
         listen = true
-        send   = false
+        send   = true
         manage = false
       },
       {
