@@ -381,7 +381,7 @@ locals {
   // Nodo SOAP path
   nodo_soap_path = "/webservices/input"
   // PagoPA Nodo ingress
-  pagopa_nodo_ingress = "https://weuprod.nodo.internal.platform.pagopa.it/nodopagamenti"
+  pagopa_nodo_ingress = "https://weuprod.nodo.internal.platform.pagopa.it/nodo"
 
   # Default alert action groups: slack channel and email
   action_groups_default = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
