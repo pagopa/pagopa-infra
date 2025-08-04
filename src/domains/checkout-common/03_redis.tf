@@ -9,21 +9,9 @@ resource "azurerm_resource_group" "redis_checkout_rg" {
   tags     = module.tag_config.tags
 }
 
-# Redis cache subnet
-module "pagopa_checkout_redis_snet" {
-  source = "git::https://github.com/pagopa/terraform-azurerm-v3.git//subnet?ref=v8.83.1"
-
-  name                                      = "${local.project}-redis-snet"
-  address_prefixes                          = var.cidr_subnet_redis_checkout
-  resource_group_name                       = data.azurerm_resource_group.rg_vnet.name
-  virtual_network_name                      = data.azurerm_virtual_network.vnet.name
-  private_endpoint_network_policies_enabled = true
-}
-
-
 
 module "pagopa_checkout_redis" {
-  source                        = "git::https://github.com/pagopa/terraform-azurerm-v3.git//redis_cache?ref=v8.83.1"
+  source                        = "./.terraform/modules/__v4__/redis_cache"
   name                          = var.redis_checkout_params.ha_enabled ? "${local.project}-redis-ha" : "${local.project}-redis"
   resource_group_name           = azurerm_resource_group.redis_checkout_rg.name
   location                      = azurerm_resource_group.redis_checkout_rg.location
@@ -34,7 +22,7 @@ module "pagopa_checkout_redis" {
   enable_authentication         = true
   redis_version                 = var.redis_checkout_params.version
   public_network_access_enabled = false
-  zones                         = var.redis_checkout_params.zones
+  custom_zones                  = var.redis_checkout_params.zones
 
   private_endpoint = {
     enabled              = true
