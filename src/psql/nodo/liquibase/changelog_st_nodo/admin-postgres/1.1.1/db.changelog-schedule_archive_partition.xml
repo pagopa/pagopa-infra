@@ -4,41 +4,11 @@
   <changeSet author="liquibase" id="202503100000">
     <sqlFile
       encoding="UTF-8"
-      path="sql/grant_partition.sql"
-      relativeToChangelogFile="true"
-      splitStatements="true"
-      stripComments="true"/>
-
-    <sqlFile
-      encoding="UTF-8"
-      path="sql/insert_tab_part.sql"
-      relativeToChangelogFile="true"
-      splitStatements="true"
-      stripComments="true"/>
-
-    <sqlFile
-      encoding="UTF-8"
-      path="sql/modify_partition.sql"
+      path="sql/schedule_archive_partition.sql"
       relativeToChangelogFile="true"
       splitStatements="false"
       stripComments="false"/>
 
-    <sqlFile
-      encoding="UTF-8"
-      path="sql/archive_partition.sql"
-      relativeToChangelogFile="true"
-      splitStatements="false"
-      stripComments="false"/>
-  </changeSet>
-
-  <changeSet author="liquibase" id="202503110000">
-
-    <sqlFile
-      encoding="UTF-8"
-      path="sql/create_sequence_log.sql"
-      relativeToChangelogFile="true"
-      splitStatements="false"
-      stripComments="false"/>
   </changeSet>
 
 
