@@ -379,9 +379,9 @@ locals {
   error_fault_code = "('${join("', '", ["PPT_AUTENTICAZIONE", "PPT_SYSTEM_ERROR", "PPT_ERRORE_IDEMPOTENZA"])}')"
 
   // Nodo SOAP path
-  nodo_soap_path = "/webservices/input"
+  nodo_soap_path = "/nodo/webservices/input"
   // PagoPA Nodo ingress
-  pagopa_nodo_ingress = "https://weuprod.nodo.internal.platform.pagopa.it/nodo"
+  pagopa_nodo_ingress = "https://weuprod.nodo.internal.platform.pagopa.it"
 
   # Default alert action groups: slack channel and email
   action_groups_default = [data.azurerm_monitor_action_group.email.id, data.azurerm_monitor_action_group.slack.id]
