@@ -322,7 +322,7 @@ function opa_check_policy() {
         terraform show -json "$file_name.tfplan" > "$file_name.json"
 
         # checkout opa policies
-        git clone --branch "$opa_policy_version" git@github.com:pagopa/opa-policy.git  "$root_folder/$opa_policy_clone_folder" --quiet
+        git clone -c advice.detachedHead=false --branch "$opa_policy_version" git@github.com:pagopa/opa-policy.git  "$root_folder/$opa_policy_clone_folder" --quiet
 
         # calcolo score
         score=$(opa eval --data "$root_folder/$opa_policy_folder/global/opa.terraform/apply_score.rego" --input "$file_name.json" "data.pagopa.score.opa.terraform.plan.apply_score.score" --format pretty)
