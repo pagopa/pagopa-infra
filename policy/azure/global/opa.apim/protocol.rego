@@ -1,4 +1,4 @@
-package it.pagopa.azure.global.apim.protocol
+package azure.global.opa.apim.protocol
 
 # METADATA
 # title: Deny http backend

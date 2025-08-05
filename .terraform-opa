@@ -1,2 +1,2 @@
-opa_policy_folder=./opa
+opa_policy_folder=./policy/azure
 opa_service_tag=pagopa

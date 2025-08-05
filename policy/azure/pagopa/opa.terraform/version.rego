@@ -1,4 +1,4 @@
-package it.pagopa.azure.pagopa.terraform.version
+package azure.pagopa.opa.terraform.version
 
 import input as tfplan
 import rego.v1

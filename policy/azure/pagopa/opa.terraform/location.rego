@@ -1,6 +1,6 @@
 # Enforce a list of allowed locations / availability zones for each provider
 
-package it.pagopa.azure.pagopa.terraform.location
+package azure.pagopa.opa.terraform.location
 
 import input as tfplan
 

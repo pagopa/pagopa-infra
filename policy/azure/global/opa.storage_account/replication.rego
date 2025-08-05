@@ -1,4 +1,4 @@
-package it.pagopa.azure.global.storage_account.replication
+package azure.global.opa.storage_account.replication
 
 is_in_scope(resource, type) if {
     resource.type == type

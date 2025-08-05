@@ -304,6 +304,53 @@ function clean_audit_files() {
   rm "$file_name.jq" 2>/dev/null
 }
 
+function opa_check_policy() {
+       
+        # load opa config
+        if ! command -v opa &> /dev/null && [ ! -f "opa" ]; then
+          brew install opa --quiet
+          if [ $? -ne 0 ]; then
+            echo "${red}Error: Failed to install opa!!"
+            exit 1
+          else
+            echo "Install opa ${green}SUCCESS!"
+          fi
+        fi
+        
+        source "$root_folder/.terraform-opa"
+        
+        terraform show -json "$file_name.tfplan" > "$file_name.json"
+        
+        # calcolo score
+        score=$(opa eval --data "$root_folder/$opa_policy_folder/global/opa.terraform/apply_score.rego" --input "$file_name.json" "data.pagopa.score.opa.terraform.plan.apply_score.score" --format pretty)
+        authz=$(opa eval --data "$root_folder/$opa_policy_folder/global/opa.terraform/apply_score.rego" --input "$file_name.json" "data.pagopa.score.opa.terraform.plan.apply_score.authz" --format pretty)
+        if [ "$authz" != "true" ]; then
+          scorecolor="${red}"
+        else
+          scorecolor="${green}"
+        fi
+        read -p "${bold}Apply Score: ${scorecolor}${score}${normal} Continue (only yes will be accepted): ${normal}" score_confirmation
+        
+        if [ "$score_confirmation" != "yes" ]; then
+          clean_audit_files  "$file_name"
+          exit 1
+        fi
+
+        #policy evaluation
+        opa eval --data $root_folder/$opa_policy_folder --input "$file_name.json" "data.azure.global.opa" --format values --fail-defined > $file_name.jq
+        opa_exitcode=$?
+        opa eval --data $root_folder/$opa_policy_folder --input "$file_name.json" "data.azure.$opa_service_tag.opa" --format values --fail-defined >> $file_name.jq
+        opa_custom_exitcode=$?
+
+        opa_global_exitcode=$((opa_exitcode+opa_custom_exitcode))
+        if [ $opa_global_exitcode -gt 0 ]; then
+          cat $file_name.jq | jq -r '..|.deny? | select(. != null) '| jq -r ' ( .[])| @tsv' | awk -v FS="|" 'BEGIN{print ""}{printf "%s\t%s\n","\033[33m"$1,"\033[31m"$2}'
+          check_conftest_output "$opa_global_exitcode"
+        fi
+
+}
+
+
 function other_actions() {
   if [ -n "$env" ] && [ -n "$action" ]; then
     root_folder=$(git rev-parse --show-toplevel)
@@ -330,48 +377,9 @@ function other_actions() {
 
       if [ -f "$root_folder/.terraform-opa" ]
       then
-        # load opa config
-        if ! command -v opa &> /dev/null && [ ! -f "opa" ]; then
-          brew install opa --quiet
-          if [ $? -ne 0 ]; then
-            echo "${red}Error: Failed to install opa!!"
-            exit 1
-          else
-            echo "Install opa ${green}SUCCESS!"
-          fi
-        fi
-        
 
-        source "$root_folder/.terraform-opa"
-        ##### OPA start
-        terraform show -json "$file_name.tfplan" > "$file_name.json"
-        # calcolo score
-        score=$(opa eval --data "$root_folder/$opa_policy_folder/azure/global/it.pagopa.opa.terraform/apply_score.rego" --input "$file_name.json" "data.it.pagopa.opa.terraform.plan.apply_score.score" --format pretty)
-        authz=$(opa eval --data "$root_folder/$opa_policy_folder/azure/global/it.pagopa.opa.terraform/apply_score.rego" --input "$file_name.json" "data.it.pagopa.opa.terraform.plan.apply_score.authz" --format pretty)
-        if [ "$authz" != "true" ]; then
-          scorecolor="${red}"
-        else
-          scorecolor="${green}"
-        fi
-        read -p "${bold}Apply Score: ${scorecolor}${score}${normal} Continue (only yes will be accepted): ${normal}" score_confirmation
-        
-        if [ "$score_confirmation" != "yes" ]; then
-          clean_audit_files  "$file_name"
-          exit 1
-        fi
+        opa_check_policy 
 
-        
-        opa eval --data $root_folder/$opa_policy_folder --input "$file_name.json" "data.it.pagopa.azure.global" --format values --fail-defined > $file_name.jq
-        opa_exitcode=$?
-        opa eval --data $root_folder/$opa_policy_folder --input "$file_name.json" "data.it.pagopa.azure.$opa_service_tag" --format values --fail-defined >> $file_name.jq
-        opa_custom_exitcode=$?
-
-        opa_global_exitcode=$((opa_exitcode+opa_custom_exitcode))
-        if [ $opa_global_exitcode -gt 0 ]; then
-          cat $file_name.jq | jq -r '..|.deny? | select(. != null) '| jq -r ' ( .[])| @tsv' | awk -v FS="|" 'BEGIN{print ""}{printf "%s\t%s\n","\033[33m"$1,"\033[31m"$2}'
-          check_conftest_output "$opa_global_exitcode"
-        fi
-        ###### OPA end
       fi
 
 
