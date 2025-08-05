@@ -33,7 +33,7 @@ resource "azurerm_monitor_scheduled_query_rules_alert" "nodo_pagopa_api_availabi
     let availabilityDelta = highTrafficAvailability - lowTrafficAvailability;
     AzureDiagnostics
     | where TimeGenerated > ago(7m)
-    | where backendUrl_s == "${local.pagopa_nodo_ingress}${local.nodo_soap_path}"
+    | where backendUrl_s == "${local.pagopa_nodo_ingress}${local.nodo_soap_path}/"
     | where url_s matches regex "${local.formatted_operation_data["node_for_psp_auth"].sub_service}"
     | where operationId_s in (operationIds)
     | summarize
