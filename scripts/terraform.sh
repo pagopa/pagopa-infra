@@ -346,6 +346,8 @@ function opa_check_policy() {
         opa_custom_exitcode=$?
 
         opa_global_exitcode=$((opa_exitcode+opa_custom_exitcode))
+
+        rm -rf "$root_folder/$opa_policy_clone_folder" 2>/dev/null
         if [ $opa_global_exitcode -gt 0 ]; then
           cat $file_name.jq | jq -r '..|.deny? | select(. != null) '| jq -r ' ( .[])| @tsv' | awk -v FS="|" 'BEGIN{print ""}{printf "%s\t%s\n","\033[33m"$1,"\033[31m"$2}'
           check_conftest_output "$opa_global_exitcode"
