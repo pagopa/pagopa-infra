@@ -286,10 +286,10 @@ function check_conftest_output(){
     if [ "$skip_confirmation" != "yes" ]; then
         clean_audit_files  "$file_name"
         exit 1
-    else 
+    else
         skip_policy="true"
     fi
-    
+
 
   fi
 }
@@ -305,7 +305,7 @@ function clean_audit_files() {
 }
 
 function opa_check_policy() {
-       
+
         # load opa config
         if ! command -v opa &> /dev/null && [ ! -f "opa" ]; then
           brew install opa --quiet
@@ -316,11 +316,14 @@ function opa_check_policy() {
             echo "Install opa ${green}SUCCESS!"
           fi
         fi
-        
+
         source "$root_folder/.terraform-opa"
-        
+
         terraform show -json "$file_name.tfplan" > "$file_name.json"
-        
+
+        # checkout opa policies
+        git clone --branch "$opa_policy_version" git@github.com:pagopa/opa-policy.git  "$root_folder/$opa_policy_clone_folder" --quiet
+
         # calcolo score
         score=$(opa eval --data "$root_folder/$opa_policy_folder/global/opa.terraform/apply_score.rego" --input "$file_name.json" "data.pagopa.score.opa.terraform.plan.apply_score.score" --format pretty)
         authz=$(opa eval --data "$root_folder/$opa_policy_folder/global/opa.terraform/apply_score.rego" --input "$file_name.json" "data.pagopa.score.opa.terraform.plan.apply_score.authz" --format pretty)
@@ -330,7 +333,7 @@ function opa_check_policy() {
           scorecolor="${green}"
         fi
         read -p "${bold}Apply Score: ${scorecolor}${score}${normal} Continue (only yes will be accepted): ${normal}" score_confirmation
-        
+
         if [ "$score_confirmation" != "yes" ]; then
           clean_audit_files  "$file_name"
           exit 1
@@ -378,7 +381,7 @@ function other_actions() {
       if [ -f "$root_folder/.terraform-opa" ]
       then
 
-        opa_check_policy 
+        opa_check_policy
 
       fi
 
