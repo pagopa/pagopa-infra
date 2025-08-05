@@ -5,8 +5,8 @@ package azure.global.opa.apim.protocol
 # description: Protocol in URL backend should be set to HTTPS
 # custom:
 #  severity: MEDIUM
-#  package_string: it.pagopa.azure.global.apim.protocol
-#  message: "Protocol in URL backend should be set to HTTPS"
+#  package_string: azure.global.opa.apim.protocol
+#  message: "Found HTTP protocol in URL backend: should be set to HTTPS"
 #  label: pagoPa-OPA
 
 deny contains {

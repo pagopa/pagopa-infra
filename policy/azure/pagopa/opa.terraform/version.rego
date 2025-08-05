@@ -8,7 +8,7 @@ import rego.v1
 # description: Minimum Terraform version must be 1.9.0
 # custom:
 #  severity: MEDIUM
-#  package_string: it.pagopa.azure.pagopa.terraform.version
+#  package_string: azure.pagopa.opa.terraform.version
 #  message: "Terraform version is not supported"
 #  label: pagoPa-OPA
 
