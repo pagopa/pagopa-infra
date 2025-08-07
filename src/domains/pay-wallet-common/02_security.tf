@@ -94,11 +94,6 @@ resource "azurerm_key_vault_secret" "ai_connection_string" {
   key_vault_id = module.key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "redis_wallet_password" {
-  name         = "redis-wallet-password"
-  value        = module.pagopa_pay_wallet_redis[0].primary_access_key
-  key_vault_id = module.key_vault.id
-}
 
 resource "azurerm_key_vault_secret" "redis_std_wallet_password" {
   name         = "redis-std-wallet-password"
