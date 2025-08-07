@@ -85,7 +85,7 @@ module "postgres_flexible_server" {
   private_dns_record_cname = "nodo-db"
 
 
-  tags = module.tag_config.tags
+  tags = local.tags_grafana
 }
 
 # Nodo database

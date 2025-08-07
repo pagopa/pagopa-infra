@@ -25,13 +25,6 @@
 
     <sqlFile
       encoding="UTF-8"
-      path="sql/call_modify_partition.sql"
-      relativeToChangelogFile="true"
-      splitStatements="true"
-      stripComments="true"/>
-
-    <sqlFile
-      encoding="UTF-8"
       path="sql/archive_partition.sql"
       relativeToChangelogFile="true"
       splitStatements="false"
