@@ -65,7 +65,7 @@ module "checkout_cdn" {
       {
         action = "Append"
         name   = local.content_security_policy_header_name
-        value  = " https://acardste.vaservices.eu:* https://recaptcha.net/;"
+        value  = " https://acardste.vaservices.eu:* https://recaptcha.net/ https://pagopa-s-weu-ec.apm.westeurope.azure.elastic-cloud.com;"
       },
       {
         action = "Append"
