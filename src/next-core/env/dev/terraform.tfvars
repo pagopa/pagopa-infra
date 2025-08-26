@@ -641,7 +641,7 @@ eventhubs_04 = [
     name              = "nodo-dei-pagamenti-cache"
     partitions        = 1
     message_retention = 7
-    consumers         = ["nodo-dei-pagamenti-cache-sync-rx", "nodo-dei-pagamenti-cache-aca-rx"]
+    consumers         = ["nodo-dei-pagamenti-cache-sync-rx", "nodo-dei-pagamenti-cache-aca-rx", "nodo-dei-pagamenti-cache-stand-in-rx"]
     keys = [
       {
         name   = "nodo-dei-pagamenti-cache-tx"
@@ -657,6 +657,12 @@ eventhubs_04 = [
       },
       {
         name   = "nodo-dei-pagamenti-cache-aca-rx" # node-cfg for ACA-Payments
+        listen = true
+        send   = false
+        manage = false
+      },
+      {
+        name   = "nodo-dei-pagamenti-cache-stand-in-rx" # node-cfg for Stand-In Manager
         listen = true
         send   = false
         manage = false
